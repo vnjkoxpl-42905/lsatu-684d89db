@@ -1,0 +1,112 @@
+{
+  "date": "2026-09-30",
+  "manifestSha256": "714b27008d5c301c660d830d59562cc69814d06baae9d1e767240bece48b0c95",
+  "activationSqlSha256": "3cc3299de2aa16e4782e66a1f8aeba3a4176a2fabb241d7ed112a621c816f2e4",
+  "actualDefinitions": {
+    "rows": [
+      {
+        "digest": "86e8ed3eef6936e488684e07fcd68017",
+        "sections": 236
+      }
+    ]
+  },
+  "selected": {
+    "rows": [
+      {
+        "selected": {
+          "catalogSections": 236,
+          "fullPrepTest": {
+            "enabled": true,
+            "lease_ms": 30000,
+            "manifest_sha256": "c27b478f2d50f8353a98d4a1a905d2f94f87929ba2ea2179230d4f7a3d51c25c",
+            "singleton": true
+          },
+          "standalone": {
+            "enabled": true,
+            "lease_ms": 30000,
+            "manifest_sha256": "714b27008d5c301c660d830d59562cc69814d06baae9d1e767240bece48b0c95",
+            "singleton": true
+          }
+        }
+      }
+    ]
+  },
+  "isolatedChecks": {
+    "pglite": 618,
+    "realPostgres": 618
+  },
+  "existingFullPrepTestUnchanged": true,
+  "creditSpend": false,
+  "frontendExpandedRosterPublished": true,
+  "independentReview": {
+    "result": "no high-priority blocker",
+    "focusedTests": 12,
+    "date": "2026-09-30"
+  },
+  "localBrowser": {
+    "lr": {
+      "sittingId": "46e55825-eb2e-412d-85d2-9b34129aa5ee",
+      "pt": 118,
+      "section": 3,
+      "questionCount": 24,
+      "position22": "PT118-S3-Q23",
+      "removedQ22Excluded": true,
+      "pauseReloadTime": "34:30",
+      "result": {
+        "answered": 1,
+        "correct": 1,
+        "total": 24,
+        "timeMs": 66326,
+        "historyId": "c8dde243-2bef-4e6d-9497-b93645caa987"
+      }
+    },
+    "rc": {
+      "sittingId": "bae082d4-5e88-45c6-bb93-2179c27ea658",
+      "sessionId": "686a6ebc-218f-4a1c-85f8-1e2536ee03b9",
+      "pt": 101,
+      "section": 4,
+      "questionCount": 27,
+      "failedCheckpointHidQuestions": true,
+      "retryAcknowledgedQuestion": 2,
+      "pauseReloadTime": "34:10",
+      "result": {
+        "answered": 1,
+        "correct": 1,
+        "total": 27,
+        "unanswered": 26,
+        "timeMs": 93005
+      },
+      "reportSectionTime": "1:33",
+      "reportAverageRecordedQuestionTime": "0:03"
+    },
+    "proofDirectory": "C:/Users/Joshu/dev/ai-os/research/2026-09-30-lsatu-foundation-evidence",
+    "limitations": [
+      "No physical second-device UI",
+      "No committed-but-lost TCP reply",
+      "No revoked in-flight UI write",
+      "Assigned/custom protected coverage remains separate"
+    ]
+  },
+  "frontendCommit": "6b69bc75f88e8d8c0987c702f0c7b9a60db50e46",
+  "githubMainVerified": true,
+  "lovableExactImportVerified": true,
+  "freeDeployment": {
+    "id": "5784d95b-ac01-4bed-83f6-2d88d78b18eb",
+    "toolStatus": "pending"
+  },
+  "productionChecks": {
+    "differentAccountProtectedLrDenied": true,
+    "studentOwnerCompletedLrReport": "1 / 24, one answered",
+    "expandedRcReport": "1 / 27, 26 unanswered,1:33 account clock",
+    "expandedRosterLaunchPending": false,
+    "freshStudentLaunch": {
+      "sittingId": "f2be0976-abc2-4a2f-afe6-fce99abeef43",
+      "pt": 118,
+      "section": 3,
+      "questionCount": 24,
+      "prepareBeforeClock": true,
+      "actualQuestionsRendered": true,
+      "actualBrowserCompletion": true
+    }
+  }
+}

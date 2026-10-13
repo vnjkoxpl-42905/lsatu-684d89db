@@ -1,0 +1,2370 @@
+[
+  {
+    "qid": "PT101-S2-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT101-S2-Q13",
+    "features": [
+      {
+        "name": "Focused on Evidence",
+        "rationale": "Correct answer (B) undermines whether whitecaps actually exist, attacking the evidence rather than the conclusion."
+      }
+    ]
+  },
+  {
+    "qid": "PT101-S3-Q4",
+    "features": [
+      {
+        "name": "2-Speaker",
+        "rationale": "Named dialogue between speakers M and P."
+      },
+      {
+        "name": "Rebuttals",
+        "rationale": "P rebuts M's hypothesis ('Your hypothesis is laughable!')."
+      }
+    ]
+  },
+  {
+    "qid": "PT101-S3-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT101-S3-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT101-S3-Q12",
+    "features": [
+      {
+        "name": "Famous Flaws",
+        "rationale": "Intent vs. Result: 'never knowingly damage' is treated as meaning nothing to fear, ignoring unintentional harm (answer D)."
+      }
+    ]
+  },
+  {
+    "qid": "PT102-S2-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT102-S3-Q3",
+    "features": [
+      {
+        "name": "Causal Chains",
+        "rationale": "Explicit causal chain (spending down -> layoffs -> jobless up; recovery -> need workers but hiring delayed); answer D synthesizes it."
+      }
+    ]
+  },
+  {
+    "qid": "PT102-S3-Q4",
+    "features": [
+      {
+        "name": "Explain Curious Fact",
+        "rationale": "Curious fact = surprisingly low CO2 with high ferrous in ice-age air; scientist proposes a causal hypothesis (ferrous -> algae bloom)."
+      },
+      {
+        "name": "Science",
+        "rationale": "Geological/biological jargon: ferrous dust, ice-age atmosphere, diatoms, algae."
+      }
+    ]
+  },
+  {
+    "qid": "PT102-S3-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT102-S3-Q7",
+    "features": [
+      {
+        "name": "Relative vs. Absolute",
+        "rationale": "Flaw uses raw accident counts while ignoring that left-handers are a small fraction of the population (answer B)."
+      }
+    ]
+  },
+  {
+    "qid": "PT102-S3-Q14",
+    "features": [
+      {
+        "name": "Famous Flaws",
+        "rationale": "Ad Hominem: dismisses doctors by impugning their motive (monopoly) rather than addressing the claim (answer C)."
+      },
+      {
+        "name": "Medical",
+        "rationale": "Stimulus is about herbs, doctors, and medical therapies."
+      }
+    ]
+  },
+  {
+    "qid": "PT102-S3-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT102-S3-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT102-S4-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT102-S4-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT102-S4-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT102-S4-Q10",
+    "features": [
+      {
+        "name": "Part vs. Whole",
+        "rationale": "Reasons from the inferior quality of individual paintings (parts) to no loss in the collection's overall quality (whole); answer B denies that whole-collection quality reduces to individual quality."
+      }
+    ]
+  },
+  {
+    "qid": "PT102-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT102-S4-Q16",
+    "features": [
+      {
+        "name": "Quantifiers",
+        "rationale": "Item turns on quantified trait-overlap of 'wise' vs 'intelligent' (one or the other but not both); answers are all quantified (most/no one/many)."
+      }
+    ]
+  },
+  {
+    "qid": "PT102-S4-Q21",
+    "features": [
+      {
+        "name": "2-Speaker",
+        "rationale": "Named exchange: Paul responds to Sarah."
+      },
+      {
+        "name": "Rebuttals",
+        "rationale": "Paul rebuts Sarah's argument (question asks for his counter-technique)."
+      }
+    ]
+  },
+  {
+    "qid": "PT102-S4-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT103-S1-Q1",
+    "features": [
+      {
+        "name": "Famous Flaws",
+        "rationale": "Possible vs. Probable vs. Certain: slides from 'probably the same illness' to 'definitely not strep' (answer D)."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S1-Q6",
+    "features": [
+      {
+        "name": "Famous Flaws",
+        "rationale": "Causal flaw: infers VCRs cause more theater-going from a correlation, ignoring a common cause (answer C)."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S1-Q7",
+    "features": [
+      {
+        "name": "Explain Curious Fact",
+        "rationale": "Curious fact = surge in casualties by the late Bronze Age; archaeologists hypothesize new warfare methods, and the answer supplies evidence for that explanation."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S1-Q10",
+    "features": [
+      {
+        "name": "Plans / Recommendations",
+        "rationale": "Conclusion recommends candidates use the technique; correct answer attacks the plan's feasibility (media controls excerpts)."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S1-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT103-S1-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT103-S1-Q17",
+    "features": [
+      {
+        "name": "2-Speaker",
+        "rationale": "Named dialogue: Henry and Winifred."
+      },
+      {
+        "name": "Rebuttals",
+        "rationale": "Winifred rebuts Henry ('Not necessarily')."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S1-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT103-S1-Q20",
+    "features": [
+      {
+        "name": "Medical",
+        "rationale": "Stimulus is about migraines, treatment, and a psychological anxiety scale."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S1-Q22",
+    "features": [
+      {
+        "name": "Science",
+        "rationale": "Astronomical content: planetary-system formation, Jupiter/Saturn gravity, comet deflection."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S2-Q18",
+    "features": [
+      {
+        "name": "Analogies",
+        "rationale": "Rebuts a claim by analogy (watching someone eat does not fill your stomach); a Parallel item built on the analogy structure."
+      },
+      {
+        "name": "Rebuttals",
+        "rationale": "Counters the 'some people believe' position with a rhetorical analogy."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S2-Q20",
+    "features": [
+      {
+        "name": "Plans / Recommendations",
+        "rationale": "Concludes the permanent solution is population control, not desalination."
+      },
+      {
+        "name": "Alternatives",
+        "rationale": "Dismisses desalination for population control; the weakener revives desalination as a viable alternative."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S2-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT103-S2-Q26",
+    "features": [
+      {
+        "name": "Conditional Diagramming",
+        "rationale": "Pure formal puzzle chaining 'only if'/grammatical/understood conditionals."
+      },
+      {
+        "name": "Contrapositive Logic",
+        "rationale": "Correct inference applies the contrapositive of the chained rules."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S3-Q1",
+    "features": [
+      {
+        "name": "Explain Curious Fact",
+        "rationale": "Explains an asymmetric outcome (Norse settlements vanished while Inuit survived)."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S3-Q4",
+    "features": [
+      {
+        "name": "Plans / Recommendations",
+        "rationale": "Main conclusion recommends redirecting budget toward prevention."
+      }
+    ]
+  },
+  {
+    "qid": "PT103-S3-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT104-S4-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT105-S1-Q5",
+    "features": [
+      {
+        "name": "Ruling Out Options",
+        "rationale": "False-choice flaw: treats exceptional service as the only retention option, ignoring others (answer E)."
+      }
+    ]
+  },
+  {
+    "qid": "PT105-S1-Q6",
+    "features": [
+      {
+        "name": "Conditional Diagramming",
+        "rationale": "Inference requires chaining normative 'should'/virtue conditionals to reach the answer."
+      }
+    ]
+  },
+  {
+    "qid": "PT105-S1-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT105-S1-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT105-S1-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT105-S2-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT105-S4-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT105-S4-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT105-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT105-S4-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT105-S4-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT105-S4-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT105-S4-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT105-S4-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT106-S2-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT106-S2-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT106-S2-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT106-S2-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT106-S2-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT106-S3-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT107-S3-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT107-S3-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT107-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT107-S3-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT107-S3-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT107-S3-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT108-S2-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT108-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT108-S2-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT108-S2-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT108-S2-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT108-S2-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT108-S2-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT108-S2-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT108-S3-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT108-S3-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT108-S3-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT108-S3-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT108-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT108-S3-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT108-S3-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT109-S1-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT109-S1-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT109-S1-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT109-S1-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT109-S1-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT109-S3-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT109-S3-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT109-S4-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT110-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT110-S2-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT110-S2-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT110-S2-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT110-S2-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT110-S2-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT110-S2-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT110-S2-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT110-S2-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT110-S3-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT110-S3-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT110-S3-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT111-S1-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT111-S3-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT111-S3-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT111-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT111-S3-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT111-S3-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT111-S3-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT111-S4-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT111-S4-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT111-S4-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT111-S4-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT111-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT111-S4-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT111-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT112-S3-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT112-S3-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT112-S4-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT112-S4-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT112-S4-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT113-S2-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT113-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT113-S2-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT113-S2-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT113-S2-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT113-S2-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT113-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT113-S3-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT113-S3-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT113-S3-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT113-S3-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT113-S3-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT113-S3-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT113-S3-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT113-S4-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT113-S4-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT113-S4-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT113-S4-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT113-S4-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT113-S4-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT114-S1-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT114-S1-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT114-S1-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT114-S1-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT114-S1-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT114-S1-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT114-S2-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT114-S2-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT114-S2-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT114-S2-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT114-S2-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT114-S2-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT114-S4-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT114-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT114-S4-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT114-S4-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT114-S4-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT115-S2-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT115-S4-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT115-S4-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT115-S4-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT115-S4-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT115-S4-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT115-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT116-S2-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT116-S3-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT117-S2-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT117-S3-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT117-S3-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT117-S3-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT117-S3-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT117-S4-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT117-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT117-S4-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT117-S4-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT118-S1-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT118-S1-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT118-S1-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT118-S3-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT118-S3-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT118-S3-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT118-S3-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT118-S4-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT118-S4-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT118-S4-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT119-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT119-S2-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT119-S2-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT119-S2-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT119-S2-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT119-S2-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT119-S3-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT119-S3-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT119-S3-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT119-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT119-S3-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT119-S3-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT119-S3-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT119-S3-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT119-S4-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT119-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT119-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT120-S1-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT120-S1-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT120-S1-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT120-S1-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT120-S1-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT120-S3-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT120-S3-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT120-S3-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT120-S3-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT120-S3-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT120-S4-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT120-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT121-S1-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT121-S1-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT121-S1-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT121-S1-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT121-S1-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT121-S1-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT121-S4-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT121-S4-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT121-S4-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT121-S4-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT121-S4-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT121-S4-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT121-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT121-S4-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT122-S1-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT122-S1-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT122-S1-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT122-S1-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT122-S2-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT122-S2-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT122-S2-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT122-S4-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT122-S4-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT122-S4-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT122-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT122-S4-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT122-S4-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT122-S4-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT122-S4-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT123-S2-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT125-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT125-S2-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT125-S4-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT125-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT125-S4-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT126-S4-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT126-S4-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT127-S1-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT127-S1-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT128-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT128-S2-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT128-S2-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT128-S3-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT129-S1-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT129-S3-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT130-S4-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT130-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT131-S1-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT131-S2-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT131-S3-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT132-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT132-S2-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT132-S2-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT132-S4-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT132-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT132-S4-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT132-S4-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT133-S1-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT133-S2-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT133-S3-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT133-S3-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT133-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT133-S3-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT133-S3-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT133-S3-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT134-S1-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT134-S1-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT134-S1-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT134-S1-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT134-S1-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT134-S2-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT134-S3-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT134-S3-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT134-S3-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT134-S3-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT134-S3-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT135-S1-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT135-S4-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT135-S4-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT136-S2-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT136-S2-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT136-S2-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT136-S2-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT136-S2-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT136-S2-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT136-S2-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT136-S4-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT136-S4-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT136-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT136-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT136-S4-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT136-S4-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT137-S2-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT137-S2-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT137-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT137-S2-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT137-S2-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT137-S3-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT137-S3-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT137-S4-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT137-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT137-S4-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT137-S4-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT137-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT138-S2-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT138-S2-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT138-S2-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT138-S2-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT138-S2-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT138-S2-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT138-S2-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT138-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT138-S3-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT138-S3-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT138-S4-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT139-S1-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT139-S1-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT139-S1-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT139-S4-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT139-S4-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT139-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT139-S4-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT139-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT140-S2-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT140-S2-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT140-S2-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT140-S2-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT140-S2-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT140-S3-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT140-S3-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT141-S2-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT141-S2-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT141-S2-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT141-S4-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT142-S1-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT142-S1-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT142-S1-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT142-S1-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT142-S1-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT142-S1-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT142-S1-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT142-S2-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT142-S2-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT142-S2-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT142-S4-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT143-S1-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT143-S1-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT143-S1-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT143-S1-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT143-S1-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT143-S3-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT143-S3-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT143-S3-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT143-S4-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT143-S4-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT143-S4-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT144-S2-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT144-S2-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT144-S2-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT144-S3-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT144-S3-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT144-S3-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT144-S4-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT144-S4-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT145-S2-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT145-S4-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT146-S3-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT146-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT146-S3-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT147-S1-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT147-S4-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT147-S4-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT148-S3-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT148-S4-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT148-S4-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT148-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT149-S1-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT149-S3-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT149-S4-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT149-S4-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT149-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT149-S4-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT149-S4-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT150-S2-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT150-S2-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT150-S2-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT150-S2-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT150-S2-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT150-S2-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT150-S2-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT150-S2-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT150-S2-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT150-S3-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT150-S3-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT150-S3-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT150-S3-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT150-S3-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT150-S3-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT150-S3-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT151-S2-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT151-S3-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT151-S3-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q11",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT151-S4-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT152-S1-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT152-S1-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT152-S1-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT152-S2-Q1",
+    "features": []
+  },
+  {
+    "qid": "PT152-S2-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT152-S2-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT152-S2-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT152-S2-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT152-S2-Q17",
+    "features": []
+  },
+  {
+    "qid": "PT152-S2-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT152-S2-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT152-S4-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT152-S4-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT153-S2-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT153-S2-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT153-S2-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT153-S3-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT153-S3-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT153-S3-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT154-S1-Q2",
+    "features": []
+  },
+  {
+    "qid": "PT154-S1-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT154-S1-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT154-S1-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT154-S1-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT154-S1-Q16",
+    "features": []
+  },
+  {
+    "qid": "PT154-S1-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT154-S1-Q24",
+    "features": []
+  },
+  {
+    "qid": "PT154-S1-Q25",
+    "features": []
+  },
+  {
+    "qid": "PT154-S2-Q12",
+    "features": []
+  },
+  {
+    "qid": "PT154-S2-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT154-S2-Q22",
+    "features": []
+  },
+  {
+    "qid": "PT154-S2-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q7",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q8",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q10",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q13",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q21",
+    "features": []
+  },
+  {
+    "qid": "PT154-S4-Q26",
+    "features": []
+  },
+  {
+    "qid": "PT155-S1-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT155-S1-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT156-S2-Q3",
+    "features": []
+  },
+  {
+    "qid": "PT156-S4-Q15",
+    "features": []
+  },
+  {
+    "qid": "PT157-S2-Q19",
+    "features": []
+  },
+  {
+    "qid": "PT157-S3-Q18",
+    "features": []
+  },
+  {
+    "qid": "PT157-S3-Q23",
+    "features": []
+  },
+  {
+    "qid": "PT158-S2-Q5",
+    "features": []
+  },
+  {
+    "qid": "PT158-S3-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT158-S3-Q20",
+    "features": []
+  },
+  {
+    "qid": "PT159-S1-Q4",
+    "features": []
+  },
+  {
+    "qid": "PT159-S1-Q9",
+    "features": []
+  },
+  {
+    "qid": "PT159-S1-Q14",
+    "features": []
+  },
+  {
+    "qid": "PT159-S3-Q6",
+    "features": []
+  },
+  {
+    "qid": "PT159-S3-Q7",
+    "features": []
+  }
+]

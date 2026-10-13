@@ -1,0 +1,540 @@
+// AI Teaching Assistant — admin-only chat backend.
+// Mirrors tutor-chat patterns for CORS, LLM fetch, error handling. Differences:
+// 1. Admin verification is required (students must never hit this surface).
+// 2. Conversation history is loaded from ta_interactions, not passed by client.
+// 3. The model is instructed to emit draft assignments inside a
+//    <<<DRAFT>>>...<<<END>>> JSON block that the function parses, strips from
+//    the visible message, and persists to ta_interactions.draft_content.
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
+const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
+
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
+const DRAFT_RE = /<<<DRAFT>>>([\s\S]*?)<<<END>>>/;
+
+interface DraftPayload {
+  title: string;
+  content_html: string;
+  asset_ids: string[];
+}
+
+interface AttemptRow {
+  qtype: string | null;
+  section: number | null;
+  correct: boolean | null;
+  timestamp_iso: string | null;
+}
+
+interface WAJRow {
+  qid: string;
+  qtype: string | null;
+  last_status: string | null;
+}
+
+interface AssignmentRow {
+  title: string;
+  status: string;
+  assigned_at: string;
+}
+
+interface InteractionRow {
+  id: string;
+  role: "admin" | "assistant";
+  message: string;
+  draft_content: DraftPayload | null;
+  draft_status: string | null;
+  created_at: string;
+}
+
+interface AssetMatch {
+  id: string;
+  title: string;
+  description: string | null;
+  asset_type: string;
+  excerpt: string | null;
+  rank: number;
+}
+
+interface StudentContextRow {
+  id: string;
+  context_type: "file" | "screenshot" | "transcript" | "note" | "external_score";
+  title: string;
+  content_text: string | null;
+  source: string | null;
+  metadata: Record<string, unknown> | null;
+  created_at: string;
+}
+
+interface StudentSessionRow {
+  id: string;
+  scheduled_at: string;
+  status: "scheduled" | "completed" | "cancelled" | "no_show";
+  duration_minutes: number | null;
+  notes: string | null;
+  transcript_id: string | null;
+}
+
+// Per-item truncation budgets. Transcripts are narrative and benefit from
+// more context; files and notes are typically denser/structured, so a
+// tighter cap protects the overall prompt budget.
+const CONTEXT_CAP_TRANSCRIPT = 4000;
+const CONTEXT_CAP_DEFAULT    = 1500;
+const CONTEXT_MAX_ITEMS      = 10;
+const SESSIONS_MAX_ITEMS     = 6;
+
+const SYSTEM_PROMPT = `You are a Teaching Assistant for LSAT U, an LSAT prep course run by Joshua. You help Joshua prepare and assign work to individual students. You have access to the current student's performance data, a permanent teaching library, per-student external context (files, screenshots, transcripts, notes), and a log of past/upcoming tutoring sessions.
+
+RULES:
+1. Only suggest assignments or study plans when Joshua explicitly asks.
+2. Only create new content (questions, explanations, worksheets) when Joshua explicitly requests it.
+3. Always present a draft and ask for approval before assigning anything to a student.
+4. When you search the library, cite which assets you are pulling from by title.
+5. When you rely on STUDENT CONTEXT (transcripts, uploaded notes, screenshots), cite the item by title so Joshua can verify.
+6. Be direct and concise. No filler, no hedging, no em-dashes.
+7. When proposing an assignment, emit the draft as JSON wrapped in <<<DRAFT>>>...<<<END>>> with keys "title" (string), "content_html" (safe inline HTML, no scripts or external resources), "asset_ids" (array of UUID strings for the assets you used). Always include a short plain-English explanation BEFORE the draft block so Joshua can skim.
+8. If Joshua approves, rejects, or asks a question after a prior draft was shown, respond with plain text only — do not emit another draft block unless asked to revise or create a new one.
+9. Never write content for the student to read; your audience is Joshua. Assignment content inside draft blocks IS for students and must be written accordingly.
+
+PREP MODE:
+When Joshua asks you to prepare for the next session (e.g. "/prep" intent, or the message explicitly asks for a session briefing), do NOT emit a draft block. Instead output a structured briefing with these sections in order, using plain markdown headings:
+- Next session: the upcoming scheduled session if one exists, or "no upcoming session on file".
+- Since last session: what assignments were completed/overdue, notable activity deltas.
+- Analytics shifts: improved and declined areas since the last logged session.
+- WAJ highlights: top 2-3 unresolved items worth discussing.
+- Transcript recap: one-paragraph summary of the most recent transcript if one exists.
+- External context: any uploaded files/screenshots/notes relevant to the briefing.
+- Suggested agenda: 3-5 bullets for what to cover, ordered by priority.
+- Discussion prompts: 3 open-ended questions tailored to this student.
+- Single most important follow-up from the last session.
+Keep each section tight; Joshua will read this right before the session.`;
+
+async function verifyAdmin(req: Request) {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) throw new Error("Missing auth");
+
+  const anonClient = createClient(supabaseUrl, anonKey, {
+    global: { headers: { Authorization: authHeader } },
+  });
+  const {
+    data: { user },
+    error,
+  } = await anonClient.auth.getUser();
+  if (error || !user) throw new Error("Unauthorized");
+
+  const admin = createClient(supabaseUrl, serviceRoleKey);
+  const { data: roleData } = await admin
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .eq("role", "admin")
+    .maybeSingle();
+
+  if (!roleData) throw new Error("Forbidden");
+  return { admin, callerId: user.id };
+}
+
+function json(data: unknown, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
+
+function clamp(str: string, n: number) {
+  if (!str) return "";
+  return str.length > n ? str.slice(0, n) + "…" : str;
+}
+
+function formatStudentContext(items: StudentContextRow[]): string {
+  if (!items.length) return "No external context on file for this student.";
+  return items
+    .slice(0, CONTEXT_MAX_ITEMS)
+    .map((it) => {
+      const cap =
+        it.context_type === "transcript"
+          ? CONTEXT_CAP_TRANSCRIPT
+          : CONTEXT_CAP_DEFAULT;
+      const body = it.content_text
+        ? clamp(it.content_text, cap)
+        : it.context_type === "screenshot"
+        ? "(image — no text extracted)"
+        : "(no text content)";
+      const when = new Date(it.created_at).toISOString().slice(0, 10);
+      return `- [${it.context_type}] "${clamp(it.title, 120)}" (${when})\n  ${body}`;
+    })
+    .join("\n\n");
+}
+
+function formatSessions(sessions: StudentSessionRow[]): string {
+  if (!sessions.length) return "No tutoring sessions logged.";
+  const now = Date.now();
+  const upcoming = sessions
+    .filter((s) => s.status === "scheduled" && new Date(s.scheduled_at).getTime() > now)
+    .sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())[0];
+  const past = sessions
+    .filter((s) => s.status !== "scheduled" || new Date(s.scheduled_at).getTime() <= now)
+    .slice(0, SESSIONS_MAX_ITEMS);
+
+  const lines: string[] = [];
+  if (upcoming) {
+    lines.push(
+      `Next session (scheduled): ${upcoming.scheduled_at} · duration ${
+        upcoming.duration_minutes ?? "?"
+      } min`
+    );
+  } else {
+    lines.push("Next session: none scheduled.");
+  }
+  if (past.length) {
+    lines.push("Recent sessions:");
+    for (const s of past) {
+      const when = s.scheduled_at;
+      const dur = s.duration_minutes != null ? `${s.duration_minutes}m` : "?m";
+      const note = s.notes ? ` — ${clamp(s.notes, 200)}` : "";
+      lines.push(`  - ${when} · ${s.status} · ${dur}${note}`);
+    }
+  }
+  return lines.join("\n");
+}
+
+function summarizeAnalytics(attempts: AttemptRow[], waj: WAJRow[], asg: AssignmentRow[]) {
+  if (!attempts.length && !waj.length && !asg.length) {
+    return "No analytics yet — this student has not attempted questions.";
+  }
+  // Per-qtype accuracy from recent attempts.
+  const byType = new Map<string, { total: number; correct: number }>();
+  for (const a of attempts) {
+    const k = a.qtype || "unknown";
+    const agg = byType.get(k) ?? { total: 0, correct: 0 };
+    agg.total += 1;
+    if (a.correct) agg.correct += 1;
+    byType.set(k, agg);
+  }
+  const perTypeLines = [...byType.entries()]
+    .sort((a, b) => b[1].total - a[1].total)
+    .slice(0, 12)
+    .map(([k, v]) => `  - ${k}: ${v.correct}/${v.total} (${Math.round((v.correct / v.total) * 100)}%)`)
+    .join("\n");
+
+  const overall = attempts.length
+    ? `${attempts.filter((a) => a.correct).length}/${attempts.length} (${Math.round(
+        (attempts.filter((a) => a.correct).length / attempts.length) * 100
+      )}%) over last ${attempts.length} attempts`
+    : "no attempts";
+
+  const wajLine = waj.length
+    ? `${waj.length} unresolved WAJ items (top types: ${[
+        ...new Set(waj.map((w) => w.qtype).filter(Boolean)),
+      ]
+        .slice(0, 5)
+        .join(", ")})`
+    : "WAJ is empty";
+
+  const asgLine = asg.length
+    ? `Recent TA assignments:\n${asg
+        .slice(0, 5)
+        .map((a) => `  - "${clamp(a.title, 80)}" (${a.status})`)
+        .join("\n")}`
+    : "No prior TA assignments.";
+
+  return `Overall: ${overall}\nPer question type:\n${perTypeLines}\n${wajLine}\n${asgLine}`;
+}
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  try {
+    let admin, callerId;
+    try {
+      ({ admin, callerId } = await verifyAdmin(req));
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Auth failed";
+      const status = msg === "Forbidden" ? 403 : 401;
+      return json({ error: msg }, status);
+    }
+
+    const body = await req.json().catch(() => null);
+    const studentId: string | undefined = body?.student_id;
+    const message: string | undefined = body?.message;
+    if (!studentId || typeof studentId !== "string") {
+      return json({ error: "student_id required" }, 400);
+    }
+    if (!message || typeof message !== "string" || message.length > 10_000) {
+      return json({ error: "message required (≤10k chars)" }, 400);
+    }
+
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) {
+      return json({ error: "LOVABLE_API_KEY not configured" }, 500);
+    }
+
+    // Parallel context loads.
+    const [
+      profileRes,
+      attemptsRes,
+      wajRes,
+      asgRes,
+      historyRes,
+      libraryRes,
+      guidedSetsRes,
+      contextRes,
+      sessionsRes,
+    ] = await Promise.all([
+      admin
+        .from("profiles")
+        .select("display_name")
+        .eq("class_id", studentId)
+        .maybeSingle(),
+      admin
+        .from("attempts")
+        .select("qtype, section, correct, timestamp_iso")
+        .eq("class_id", studentId)
+        .order("timestamp_iso", { ascending: false })
+        .limit(200),
+      admin
+        .from("wrong_answer_journal")
+        .select("qid, qtype, last_status")
+        .eq("class_id", studentId)
+        .limit(50),
+      admin
+        .from("ta_assignments")
+        .select("title, status, assigned_at")
+        .eq("student_id", studentId)
+        .order("assigned_at", { ascending: false })
+        .limit(10),
+      admin
+        .from("ta_interactions")
+        .select("id, role, message, draft_content, draft_status, created_at")
+        .eq("student_id", studentId)
+        .order("created_at", { ascending: false })
+        .limit(20),
+      admin.rpc("search_teaching_assets", { q: message, max_rows: 5 }),
+      admin.rpc("search_guided_drill_sets", { q: message, max_rows: 5 }),
+      admin
+        .from("student_context")
+        .select("id, context_type, title, content_text, source, metadata, created_at")
+        .eq("student_id", studentId)
+        .order("created_at", { ascending: false })
+        .limit(CONTEXT_MAX_ITEMS),
+      admin
+        .from("student_sessions")
+        .select("id, scheduled_at, status, duration_minutes, notes, transcript_id")
+        .eq("student_id", studentId)
+        .order("scheduled_at", { ascending: false })
+        .limit(20),
+    ]);
+
+    const studentName = (profileRes.data as { display_name?: string } | null)?.display_name ?? "this student";
+    const analytics = summarizeAnalytics(
+      (attemptsRes.data as AttemptRow[] | null) ?? [],
+      (wajRes.data as WAJRow[] | null) ?? [],
+      (asgRes.data as AssignmentRow[] | null) ?? []
+    );
+
+    // History is fetched desc; reverse to chronological.
+    const history = ((historyRes.data as InteractionRow[] | null) ?? [])
+      .slice()
+      .reverse();
+
+    const libraryMatches = (libraryRes.data as AssetMatch[] | null) ?? [];
+    const libraryIdsCited = libraryMatches.map((m) => m.id);
+    const libraryBlock = libraryMatches.length
+      ? libraryMatches
+          .map(
+            (m) =>
+              `- [${m.id}] ${m.title} (${m.asset_type})\n  ${clamp(
+                m.description ?? m.excerpt ?? "",
+                400
+              )}`
+          )
+          .join("\n")
+      : "No relevant library assets matched this query.";
+
+    type GuidedSetMatch = {
+      id: string;
+      title: string;
+      description: string | null;
+      question_type: string | null;
+      reasoning_type: string | null;
+      question_feature: string | null;
+      guided_set_type: string | null;
+      estimated_minutes: number | null;
+      difficulty_min: number | null;
+      difficulty_max: number | null;
+      question_count: number | null;
+      instructions_excerpt: string | null;
+    };
+    const guidedSets = (guidedSetsRes.data as GuidedSetMatch[] | null) ?? [];
+    const guidedSetsBlock = guidedSets.length
+      ? guidedSets
+          .map((g) => {
+            const meta = [
+              g.guided_set_type,
+              g.question_type,
+              g.reasoning_type,
+              g.question_feature,
+              g.question_count != null ? `${g.question_count} qs` : null,
+              g.estimated_minutes != null ? `~${g.estimated_minutes} min` : null,
+              g.difficulty_min != null && g.difficulty_max != null
+                ? `L${g.difficulty_min}–${g.difficulty_max}`
+                : null,
+            ]
+              .filter(Boolean)
+              .join(" · ");
+            const head = `- [${g.id}] ${g.title}${meta ? ` (${meta})` : ""}`;
+            const desc = g.description ? `\n  ${clamp(g.description, 240)}` : "";
+            return head + desc;
+          })
+          .join("\n")
+      : "No guided drill sets matched this query.";
+
+    const studentContextRows =
+      (contextRes.data as StudentContextRow[] | null) ?? [];
+    const sessionRows =
+      (sessionsRes.data as StudentSessionRow[] | null) ?? [];
+    const studentContextBlock = formatStudentContext(studentContextRows);
+    const sessionsBlock = formatSessions(sessionRows);
+
+    const contextHeader = `STUDENT: ${studentName} (id: ${studentId})
+
+ANALYTICS:
+${analytics}
+
+SESSIONS:
+${sessionsBlock}
+
+STUDENT CONTEXT (per-student external artifacts — files, transcripts, notes, screenshots):
+${clamp(studentContextBlock, 24000)}
+
+RELEVANT LIBRARY ASSETS:
+${clamp(libraryBlock, 8000)}
+
+GUIDED DRILL SETS (assignable; cite a set's id in asset_ids when proposing it):
+${clamp(guidedSetsBlock, 4000)}`;
+
+    const messagesForModel: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "system", content: contextHeader },
+      ...history.map((h) => ({
+        role: h.role === "admin" ? ("user" as const) : ("assistant" as const),
+        content: h.message,
+      })),
+      { role: "user", content: message },
+    ];
+
+    const response = await fetch(
+      `${LSATU_GEMINI_PROXY_URL}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+          "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
+        },
+        body: JSON.stringify({
+          // Gemini 3 Flash Preview — best-value flash tier in the Gemini 3 line.
+          // Fast + cheap, strong enough for TA reasoning over student analytics
+          // and library context. Upgrade to gemini-3.1-pro-preview only if quality
+          // regresses on draft generation.
+          model: "gemini-3.8-flash",
+          messages: messagesForModel,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.error("AI gateway error:", response.status);
+      if (response.status === 429) {
+        return json({ error: "Rate limited. Try again in a moment." }, 429);
+      }
+      if (response.status === 402) {
+        return json({ error: "Out of credits. Add funds to continue." }, 402);
+      }
+      return json({ error: "TA is having trouble connecting. Try again." }, 500);
+    }
+
+    const data = await response.json();
+    const raw: string = data?.choices?.[0]?.message?.content ?? "";
+    if (!raw) {
+      return json({ error: "TA returned an empty response." }, 500);
+    }
+
+    // Parse the draft sentinel block if present.
+    let draft: DraftPayload | null = null;
+    let content = raw;
+    let parse_error: "malformed_draft" | undefined;
+    const match = raw.match(DRAFT_RE);
+    if (match) {
+      content = raw.replace(DRAFT_RE, "").trim();
+      try {
+        const parsed = JSON.parse(match[1].trim());
+        if (
+          typeof parsed?.title === "string" &&
+          typeof parsed?.content_html === "string" &&
+          Array.isArray(parsed?.asset_ids) &&
+          parsed.asset_ids.every((x: unknown) => typeof x === "string")
+        ) {
+          draft = {
+            title: parsed.title,
+            content_html: parsed.content_html,
+            asset_ids: parsed.asset_ids,
+          };
+        } else {
+          parse_error = "malformed_draft";
+        }
+      } catch {
+        parse_error = "malformed_draft";
+      }
+    }
+
+    // Persist both turns via service role (bypasses RLS for logging).
+    const { error: adminTurnError } = await admin.from("ta_interactions").insert({
+      student_id: studentId,
+      role: "admin",
+      message,
+      created_by: callerId,
+    });
+    if (adminTurnError) {
+      console.error("Failed to write admin turn:", adminTurnError);
+    }
+
+    const { data: assistantRow, error: assistantTurnError } = await admin
+      .from("ta_interactions")
+      .insert({
+        student_id: studentId,
+        role: "assistant",
+        message: content,
+        draft_content: draft,
+        draft_status: draft ? "pending" : null,
+        asset_ids: libraryIdsCited,
+      })
+      .select("id")
+      .single();
+    if (assistantTurnError) {
+      console.error("Failed to write assistant turn:", assistantTurnError);
+      return json({ error: "Response generated but failed to persist." }, 500);
+    }
+
+    return json({
+      content,
+      draft,
+      interaction_id: (assistantRow as { id: string }).id,
+      ...(parse_error ? { parse_error } : {}),
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Unknown error";
+    console.error("ta-chat error:", msg);
+    return json({ error: msg }, 500);
+  }
+});

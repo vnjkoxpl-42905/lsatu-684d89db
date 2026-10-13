@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-30",
+  "artifact": "docs/implementation-plans/artifacts/2026-09-30-module-progress-preservation.sql",
+  "backend": {
+    "status": "deployed",
+    "evidence_source": "Root agent managed-backend deployment and read-only verification, reported to review agent",
+    "existing_bootcamp_kv_rows_before": 213,
+    "existing_bootcamp_kv_rows_after": 213,
+    "existing_rows_digest_before": "cfa54115013550c6fab25f9c7e224df8",
+    "existing_rows_digest_after": "cfa54115013550c6fab25f9c7e224df8",
+    "existing_rows_unchanged": true,
+    "module_progress_envelope_identity_rows_checked": 7,
+    "module_progress_envelope_identity_rows_valid": 7,
+    "change": "Additive invoker BEFORE UPDATE trigger preserves completed_ and unlocked_ string-array members, omitted extension fields and module row identity. No existing row rewrite."
+  },
+  "isolated_regression": {
+    "script": "scripts/verification/module-progress-preservation.mjs",
+    "engine": "PGlite",
+    "assertions_passed": 19,
+    "includes": ["existing record preservation", "old background upsert", "current CAS", "other namespace unaffected", "malformed arrays", "identity moves", "RLS owner boundary", "direct function execution denied"]
+  },
+  "frontend": {
+    "published": false,
+    "implemented": "Authenticated actor checks before cloud read, before CAS write and after returned acknowledgement; bounded CAS merge and acknowledgement before local completion.",
+    "live_browser_acknowledgement_verified": false
+  },
+  "limits": ["Trigger does not change INSERT or DELETE policies.", "Native lab pending answer recovery across reload is not established.", "Frontend release and live signed-in save verification belong to the release agent."]
+}
