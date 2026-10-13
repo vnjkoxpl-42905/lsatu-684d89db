@@ -84,6 +84,8 @@ export interface WorldRenderArgs {
    * relationship is "still undrawn" because they phrased the type differently.
    */
   verdict?: Verdict | null;
+  /** Actual items resolved correctly in this run, including restored progress. */
+  completedItems?: ActivityItem[];
   /** The whole run's progress. Worlds that draw a rail read it; the rest ignore it. */
   mileposts?: RunMilepost[];
   /** Which milepost is the item on screen. */
@@ -230,14 +232,21 @@ const WORLDS: WorldBinding[] = [
     accent: "235 48% 56%",
     carriesPrompt: true,
     Entrance: ObservatoryEntrance,
-    render: ({ item, response, answered, verdict }) => {
+    render: ({ item, response, answered, verdict, completedItems = [] }) => {
       const signal = parseSignal(item);
       if (!signal) return null;
       // A correct verdict draws the whole figure. The reader only decides what
       // to draw when the answer fell short, which is where it is useful.
       const reading =
         answered && response && verdict !== "correct" ? readAnswer(signal, response) : null;
-      return <ObservatoryStage signal={signal} phase={answered ? "drawn" : "arrival"} reading={reading} />;
+      const seals = { conditional: false, causal: false, comparative: false };
+      for (const completed of completedItems) {
+        for (const relation of parseSignal(completed)?.relations ?? []) seals[relation.kind] = true;
+      }
+      if (answered && verdict === "correct") {
+        for (const relation of signal.relations) seals[relation.kind] = true;
+      }
+      return <ObservatoryStage signal={signal} phase={answered ? "drawn" : "arrival"} reading={reading} seals={seals} />;
     },
     // Every credited answer here is a structured "type, indicator" list, so an
     // answer that names exactly those types and quotes a credited indicator for
