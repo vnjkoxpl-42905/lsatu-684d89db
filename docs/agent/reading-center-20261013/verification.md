@@ -1,0 +1,36 @@
+# Reading Center integration verification, 2026-10-13
+
+Recovered Claude chat: `bf955c16-f999-4fd3-bce9-90b0cab25ac4`, Spreeder website analysis. The newer standalone Reading Center is the source for this port.
+
+## Implemented and checked
+
+- Five reading modes, preferences, speed controls, search, bookmarks and notes, tags, imports, library shelves, Profile, goals and reading sessions use the LSAT U feature routes under `/reading-center`.
+- Cloud storage replaces standalone browser storage. User-specific queries and private imports are isolated by account. Personal edits to shared texts do not change the teacher's published passage.
+- Reading Center is issued as one Classroom tool assignment. `/teacher/tools/reading-center` selects an exact student and verifies the saved launcher; student cards resolve to `/reading-center`. Classroom navigation shows Reading Center only after a verified assignment, including accounts without broad access flags.
+- Database access requires an unlocked, visible assignment using immutable Classroom source fields, or administrator access. Repeated assignment reuses the same launcher. Revocation preserves saved reading work.
+- Browser-found defects repaired: Flow pause/resume, missing Finished shelf, eReader completion, immediate completion persistence, import error/format handling, narrow sidebar/header/dialog/Profile layouts, saved eReader page restoration, paste autosave and slow bookmark creation.
+- Completion and bookmark saves confirm backend writes before reporting success. Failed saves retain a retry path.
+
+## Evidence
+
+- Final affected test slice: **132 tests in 17 files passed**. Full application TypeScript check passed. Production build and postbuild content guard passed. Existing large-chunk and unrelated Tailwind warnings remain.
+- [30 live authorization assertions](security-receipt.md), [probe SQL](security-probes.sql): anonymous/unassigned/wrong account denial, duplicate grant, private data isolation, future unlock, revocation and forged metadata. Every probe write rolled back.
+- [16 live tag assertions](tag-security-receipt.md), [probe SQL](tag-security-probes.sql): duplicate rename refusal, validation, color updates and atomic metadata propagation. Every probe write rolled back.
+- [Responsive matrix](responsive-matrix.json): actual browser CSS widths 375, 640, 1036 and 1440; reader, preferences, library and Profile have no horizontal page overflow. Browser overrides restored.
+- Local signed-in LSAT U preview connected to the real backend: the QA account `joshua.fisseha01@gmail.com` was denied before assignment, then saw Reading Center in Classroom and opened it from Start assigned work. Grant `689b3dfb-e18b-43fe-9b28-b2f42c10f541` persisted and changed to in_progress after reading.
+- HTML import omitted scripts/styles and persisted a private QA text. Bookmark saved across reload; pasted note autosaved to the live database. Serial and eReader completion appeared in Finished after confirmed saves. Tool assignment remains in_progress after finishing one text.
+- Multipage eReader stored word 214, reopened at page 3 of 6, and retained page 3 after a full reload. Fullscreen returned true on entry and false on exit through actual document state. High Contrast applied scoped tokens; System followed emulated dark/light and emulation was cleared.
+- Flow revealed while playing, held the identical mask transform across pauses, and resumed from that transform. Serial, Highlight, Scroll and eReader layouts inspected; wide keyboard help and keyboard speed/restart/play controls checked.
+- Original Spreeder import opens a single-file chooser; original Profile Dashboard and Stats empty state and the wide keyboard popover compared live. Original fullscreen is an app focus view that hides the header and transport; its enter/exit controls were checked and reading progress stayed at 3%. No original source account content created, saved or deleted during this takeover.
+
+## Preserved test records
+
+The first browser assignment selected the separate account named tester instead of the saved QA login. This identity mistake was reported immediately; the test grant was preserved rather than deleted. Both are test accounts. The correct QA assignment and its private import, bookmark, tag, progress and sessions are retained. No real student's assignment was changed.
+
+## Publication
+
+Publication and production browser readback are recorded below after deployment. Local preview checks above are not claims of production frontend acceptance.
+
+## Scope
+
+AI Summary/Generate remain excluded by Joshua's earlier decision. Import supports text, Markdown and HTML up to 5 MB; PDF/DOCX parsing, Wordela integration and the original Spreeder commercial catalogue are outside this feature. No Edge Function deployment or Lovable AI credit spending was used.

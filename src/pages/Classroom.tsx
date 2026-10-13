@@ -3,6 +3,8 @@ import AnnouncementBanner from "@/components/classroom/AnnouncementBanner";
 import ClassroomHome from "@/components/classroom/home/ClassroomHome";
 import LockedModule from "@/components/LockedModule";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
+import AssignedReadingCenterLink from '@/components/classroom/AssignedReadingCenterLink';
 
 /**
  * The classroom home: the student dashboard.
@@ -25,6 +27,7 @@ import { useUserPermissions } from "@/hooks/useUserPermissions";
 export default function Classroom() {
   const { loaded, completed, setCompleted, name, answers, save } = useOrientation();
   const permissions = useUserPermissions();
+  const readingCenter = useReadingCenterAccess();
 
   // Nothing until the profile read lands: drawing the home first and swapping
   // it for the intake a beat later is worse than a moment of quiet.
@@ -42,7 +45,15 @@ export default function Classroom() {
     );
   }
 
+  if (permissions.loading) return <div role="status">Checking workspace access…</div>;
+
   if (!permissions.loading && !permissions.is_admin && !permissions.has_classroom_access) {
+    if (readingCenter.isPending) return <div role="status">Checking assigned work…</div>;
+    if (readingCenter.allowed) return <section className="mx-auto max-w-xl space-y-4 p-6">
+      <h1 className="text-2xl font-semibold">Reading Center is assigned to you</h1>
+      <p>Open your reading library to practice, add articles, or pick up where you left off.</p>
+      <AssignedReadingCenterLink label="Open Reading Center" />
+    </section>;
     return <LockedModule />;
   }
 

@@ -76,34 +76,46 @@ alter table public.reading_center_bookmarks   enable row level security;
 alter table public.reading_center_sessions    enable row level security;
 
 -- Passages: signed-in users read published rows; admins read and write everything.
+drop policy if exists "rc passages read published" on public.reading_center_passages;
 create policy "rc passages read published" on public.reading_center_passages
   for select to authenticated using (is_published or public.has_role(auth.uid(), 'admin'));
+drop policy if exists "rc passages admin insert" on public.reading_center_passages;
 create policy "rc passages admin insert" on public.reading_center_passages
   for insert to authenticated with check (public.has_role(auth.uid(), 'admin'));
+drop policy if exists "rc passages admin update" on public.reading_center_passages;
 create policy "rc passages admin update" on public.reading_center_passages
   for update to authenticated using (public.has_role(auth.uid(), 'admin'))
   with check (public.has_role(auth.uid(), 'admin'));
+drop policy if exists "rc passages admin delete" on public.reading_center_passages;
 create policy "rc passages admin delete" on public.reading_center_passages
   for delete to authenticated using (public.has_role(auth.uid(), 'admin'));
 
 -- Per-user tables: owner full access, admins read.
+drop policy if exists "rc prefs own" on public.reading_center_preferences;
 create policy "rc prefs own" on public.reading_center_preferences
   for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists "rc prefs admin read" on public.reading_center_preferences;
 create policy "rc prefs admin read" on public.reading_center_preferences
   for select to authenticated using (public.has_role(auth.uid(), 'admin'));
 
+drop policy if exists "rc progress own" on public.reading_center_progress;
 create policy "rc progress own" on public.reading_center_progress
   for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists "rc progress admin read" on public.reading_center_progress;
 create policy "rc progress admin read" on public.reading_center_progress
   for select to authenticated using (public.has_role(auth.uid(), 'admin'));
 
+drop policy if exists "rc bookmarks own" on public.reading_center_bookmarks;
 create policy "rc bookmarks own" on public.reading_center_bookmarks
   for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists "rc bookmarks admin read" on public.reading_center_bookmarks;
 create policy "rc bookmarks admin read" on public.reading_center_bookmarks
   for select to authenticated using (public.has_role(auth.uid(), 'admin'));
 
+drop policy if exists "rc sessions own" on public.reading_center_sessions;
 create policy "rc sessions own" on public.reading_center_sessions
   for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists "rc sessions admin read" on public.reading_center_sessions;
 create policy "rc sessions admin read" on public.reading_center_sessions
   for select to authenticated using (public.has_role(auth.uid(), 'admin'));
 

@@ -1,33 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  ArrowLeft,
-  Bookmark as BookmarkIcon,
-  ChevronLeft,
-  ChevronRight,
-  Gauge,
-  Loader2,
-  Maximize,
-  Minimize,
-  Pause,
-  Play,
-  Search,
-  Settings,
-  SkipBack,
-  SkipForward,
-} from "lucide-react";
-import { toast } from "sonner";
-import { Slider } from "@/components/ui/slider";
-import { ReaderSurface } from "../components/ReaderSurface";
-import { ModeRenderer } from "../components/modes";
-import { WpmDialog } from "../components/WpmDialog";
-import { PreferencesDialog } from "../components/PreferencesDialog";
-import { ViewPanel } from "../components/ViewPanel";
-import { BookmarksDialog } from "../components/BookmarksDialog";
-import { ShortcutsPopover } from "../components/ShortcutsPopover";
-import { CompletionCard } from "../components/CompletionCard";
-import { ResumePrompt } from "../components/ResumePrompt";
-import {
   useAddBookmark,
   useBookmarks,
   useDeleteBookmark,
@@ -37,558 +10,479 @@ import {
   useRecordSession,
   useSavePreferences,
   useSaveProgress,
+  useUpdateBookmark,
 } from "../hooks/useReadingCenterData";
-import { useReadingClock } from "../hooks/useReadingClock";
-import { chunkIndexForWord, chunkTokens, tokenize } from "../lib/tokenize";
-import { chunkDurations, formatRemaining, percentRead, remainingMs } from "../lib/timing";
-import { DEFAULT_PREFERENCES, WPM_MAX, WPM_MIN } from "../lib/constants";
+import { useSpreederEngine, type StageSize } from "../hooks/useSpreederEngine";
+import { buildTextModel, canvasFont, clampFontSize, clampWpm, formatDuration, progressPercent, remainingMs, type Word } from "../lib/spreeder";
+import { DEFAULT_PREFERENCES, FONTS } from "../lib/constants";
 import { RC_LIBRARY_PATH } from "../lib/routes";
-import type { Passage, Preferences, Progress } from "../lib/types";
-
-const MIN_SESSION_MS = 5000;
-
-function IconButton({
-  label,
-  onClick,
-  children,
-  className = "",
-}: {
-  label: string;
-  onClick: () => void;
-  children: React.ReactNode;
-  className?: string;
-}): React.ReactElement {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      onClick={onClick}
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-md opacity-75 transition hover:opacity-100 focus-visible:outline focus-visible:outline-2 ${className}`}
-    >
-      {children}
-    </button>
-  );
-}
+import { useReadingProfile } from "../hooks/useReadingCenterData";
+import type { Bookmark, Passage, Preferences, Progress } from "../lib/types";
+import { ReadingVisit } from "../lib/session";
+import { Icon, MIcon } from "../components/Icon";
+import { SpreederStage } from "../components/SpreederStage";
+import { EReader, EReaderBar, EReaderSearch, usePageOf } from "../components/EReader";
+import { Modal } from "../components/spreeder-ui";
+import { ViewPanel } from "../components/ViewPanel";
+import {
+  BookmarkNoteDialog,
+  BookmarksDialog,
+  FinishAlert,
+  PreferencesDialog,
+  ShortcutsPopover,
+  SpeedToast,
+  WordActionSheet,
+  WpmDialog,
+  type BookmarkNoteState,
+} from "../components/ReaderDialogs";
 
 export default function ReaderPage(): React.ReactElement {
   const { slug } = useParams<{ slug: string }>();
-  const passageQuery = usePassageBySlug(slug);
-  const prefsQuery = usePreferences();
-  const progressQuery = useProgressList();
-
-  if (passageQuery.isLoading || prefsQuery.isLoading || progressQuery.isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin" aria-label="Loading" />
-      </div>
-    );
-  }
-  if (!passageQuery.data) {
+  const passage = usePassageBySlug(slug);
+  const prefs = usePreferences();
+  const progress = useProgressList();
+  if (passage.isLoading || prefs.isLoading || progress.isLoading) return <div className="min-h-screen" style={{ background: "var(--rc-page)" }} />;
+  if (passage.error || prefs.error || progress.error) return (
+    <div className="flex min-h-screen flex-col items-center justify-center gap-3 px-4">
+      <p role="alert">Your saved reading work could not load. Check your connection and try again.</p>
+      <button type="button" className="rc-green-btn" onClick={() => { void passage.refetch(); void prefs.refetch(); void progress.refetch(); }}>Try again</button>
+      <Link to={RC_LIBRARY_PATH} className="underline">Back to library</Link>
+    </div>
+  );
+  if (!passage.data) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3">
-        <p className="text-lg font-semibold">Passage not found</p>
+        <p className="text-lg">Passage not found</p>
         <Link to={RC_LIBRARY_PATH} className="text-sm underline">Back to library</Link>
       </div>
     );
   }
   return (
     <Reader
-      key={passageQuery.data.id}
-      passage={passageQuery.data}
-      initialPrefs={prefsQuery.data ?? DEFAULT_PREFERENCES}
-      savedProgress={(progressQuery.data ?? []).find((p) => p.passage_id === passageQuery.data!.id)}
+      key={passage.data.id}
+      passage={passage.data}
+      initialPrefs={prefs.data ?? DEFAULT_PREFERENCES}
+      saved={(progress.data ?? []).find((p) => p.passage_id === passage.data!.id)}
     />
   );
 }
 
-function Reader({
-  passage,
-  initialPrefs,
-  savedProgress,
-}: {
-  passage: Passage;
-  initialPrefs: Preferences;
-  savedProgress: Progress | undefined;
-}): React.ReactElement {
+/** Canvas text measurement in the font Spreeder draws with. */
+function useMeasure(stack: string, size: number) {
+  return useMemo(() => {
+    const ctx = document.createElement("canvas").getContext("2d")!;
+    ctx.font = canvasFont(stack, size);
+    const cache = new Map<string, number>();
+    return (t: string) => {
+      let w = cache.get(t);
+      if (w == null) {
+        w = ctx.measureText(t).width;
+        cache.set(t, w);
+      }
+      return w;
+    };
+  }, [stack, size]);
+}
+
+function HeaderIcon({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }): React.ReactElement {
+  return (
+    <button type="button" aria-label={label} title={label} onClick={onClick} className="flex h-10 w-8 shrink-0 items-center justify-center rounded-full sm:h-[46px] sm:w-[46px]" style={{ color: "var(--rc-hdr-icon, var(--rc-strong))" }}>
+      {children}
+    </button>
+  );
+}
+
+function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPrefs: Preferences; saved: Progress | undefined }): React.ReactElement {
   const navigate = useNavigate();
-  const bookmarksQuery = useBookmarks(passage.id);
-  const addBookmark = useAddBookmark();
-  const deleteBookmark = useDeleteBookmark();
   const savePrefs = useSavePreferences();
   const saveProgress = useSaveProgress();
   const recordSession = useRecordSession();
+  const bookmarks = useBookmarks(passage.id);
+  const addBookmark = useAddBookmark();
+  const updateBookmark = useUpdateBookmark();
+  const deleteBookmark = useDeleteBookmark();
 
-  const tokens = useMemo(() => tokenize(passage.body), [passage.body]);
-
-  // ---- preferences: live locally, saved debounced -------------------------
-  const [prefs, setPrefs] = useState<Preferences>(initialPrefs);
-  const pendingPrefs = useRef<Partial<Preferences>>({});
-  const prefsTimer = useRef<number | null>(null);
-  const flushPrefs = useCallback(() => {
-    if (prefsTimer.current) window.clearTimeout(prefsTimer.current);
-    prefsTimer.current = null;
-    if (Object.keys(pendingPrefs.current).length === 0) return;
-    savePrefs.mutate(pendingPrefs.current);
-    pendingPrefs.current = {};
-  }, [savePrefs]);
+  const model = useMemo(() => buildTextModel(passage.body), [passage.body]);
+  const [prefs, setPrefs] = useState<Preferences>({ ...initialPrefs, wpm: clampWpm(initialPrefs.wpm), font_size: clampFontSize(initialPrefs.font_size) });
   const updatePrefs = useCallback(
-    (partial: Partial<Preferences>) => {
-      setPrefs((p) => ({ ...p, ...partial }));
-      pendingPrefs.current = { ...pendingPrefs.current, ...partial };
-      if (prefsTimer.current) window.clearTimeout(prefsTimer.current);
-      prefsTimer.current = window.setTimeout(flushPrefs, 500);
+    (p: Partial<Preferences>) => {
+      setPrefs((cur) => ({ ...cur, ...p }));
+      savePrefs.mutate(p);
     },
-    [flushPrefs],
+    [savePrefs],
   );
-
-  // ---- position -----------------------------------------------------------
-  const [wordIndex, setWordIndex] = useState<number>(0);
-  const wordIndexRef = useRef<number>(0);
-  const setWord = useCallback((i: number) => {
-    wordIndexRef.current = i;
-    setWordIndex(i);
-  }, []);
-
+  const fontStack = FONTS.find((f) => f.label === prefs.font_family)?.stack ?? FONTS[0].stack;
+  const measure = useMeasure(fontStack, prefs.font_size);
   const isEReader = prefs.reading_mode === "ereader";
-  const chunks = useMemo(
-    () =>
-      chunkTokens(
-        tokens,
-        prefs.words_per_line,
-        prefs.reading_mode === "serial" || prefs.reading_mode === "highlight" ? prefs.number_of_lines : 1,
-      ),
-    [tokens, prefs.words_per_line, prefs.number_of_lines, prefs.reading_mode],
-  );
-  const chunksRef = useRef(chunks);
-  chunksRef.current = chunks;
-  const durations = useMemo(
-    () => chunkDurations(chunks, prefs),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [chunks, prefs.wpm, prefs.punctuation_pauses, prefs.speed_variability],
-  );
 
-  // ---- session stretch (words read while playing) -------------------------
-  const wordsReadRef = useRef(0);
-  const stretchActiveStart = useRef(0);
-  const stretchPausedStart = useRef(0);
-  const stretchStartedAt = useRef<string>(new Date().toISOString());
-  const lastChunkRef = useRef(0);
-
-  const [finished, setFinished] = useState<{ words: number; activeMs: number } | null>(null);
-  const finishRef = useRef<() => void>(() => {});
-  const clock = useReadingClock({
-    durations,
-    chunkCount: chunks.length,
-    initialChunk: 0,
-    onChunkChange: (c) => {
-      const all = chunksRef.current;
-      const prev = lastChunkRef.current;
-      // Count a chunk as read only when playback advanced past it on its own.
-      if (playingRef.current && c === prev + 1 && all[prev]) {
-        wordsReadRef.current += all[prev].endWord - all[prev].startWord + 1;
-      }
-      lastChunkRef.current = c;
-      if (all[c]) setWord(all[c].startWord);
-    },
-    onFinish: () => finishRef.current(),
-  });
-  const playingRef = useRef(false);
-  playingRef.current = clock.playing;
-
-  const jumpToWord = useCallback(
-    (i: number) => {
-      setWord(i);
-      const c = chunkIndexForWord(chunksRef.current, i);
-      lastChunkRef.current = c;
-      clock.goTo(c);
-    },
-    [clock, setWord],
-  );
-
-  // Settings changes rebuild the chunks; keep the reader on the same word.
+  // ---- stage size (the reading card's content box)
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const [stage, setStage] = useState<StageSize>({ width: 0, height: 0 });
   useEffect(() => {
-    const c = chunkIndexForWord(chunks, wordIndexRef.current);
-    lastChunkRef.current = c;
-    clock.goTo(c);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chunks]);
+    const el = stageRef.current;
+    if (!el) return;
+    const read = () => setStage((s) => (s.width === el.clientWidth && s.height === el.clientHeight ? s : { width: el.clientWidth, height: el.clientHeight }));
+    // Measure now as well: ResizeObserver does not report while the tab is hidden.
+    read();
+    const ro = new ResizeObserver(read);
+    ro.observe(el);
+    window.addEventListener("resize", read);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", read);
+    };
+  }, [isEReader]);
 
-  // ---- resume -------------------------------------------------------------
-  const canResume = !!savedProgress && savedProgress.word_index > 0 && !savedProgress.completed_at;
-  const [resumeOpen, setResumeOpen] = useState<boolean>(canResume);
-  // Progress is not written until the resume choice is made, so opening a
-  // passage can never overwrite saved progress with word 0.
-  const progressArmed = useRef<boolean>(!canResume);
-  const lastSavedWord = useRef<number>(savedProgress?.word_index ?? -1);
+  // ---- engine
+  const [finished, setFinished] = useState(false);
+  const [completionState, setCompletionState] = useState<"idle" | "saving" | "error">("idle");
+  const completionSaving = useRef(false);
+  const visit = useRef(new ReadingVisit());
+  const visitMeta = useRef({ reading_mode: prefs.reading_mode, wpm: prefs.wpm });
+  const sessionContext = useRef({ prefs, recordSession });
+  sessionContext.current = { prefs, recordSession };
+  const flushSession = useCallback(() => {
+    const session = visit.current.finish();
+    if (!session) return;
+    const context = sessionContext.current;
+    context.recordSession.mutate({ ...session, passage_id: passage.id, ...visitMeta.current });
+  }, [passage.id]);
+  const complete = async () => {
+    if (finished || completionSaving.current) return;
+    completionSaving.current = true;
+    setCompletionState("saving");
+    try {
+      await saveProgress.mutateAsync({ passage_id: passage.id, word_index: Math.max(0, model.words.length - 1), completed: true });
+      flushSession();
+      setCompletionState("idle");
+      setFinished(true);
+    } catch {
+      setCompletionState("error");
+    } finally {
+      completionSaving.current = false;
+    }
+  };
+  const startWord = saved && !saved.completed_at ? Math.min(saved.word_index, model.words.length - 1) : 0;
+  const engine = useSpreederEngine({ model, prefs, stage, measure, initialWord: startWord, onFinish: complete, onReadChunk: (words) => visit.current.read(words) });
+  const { activeWord, playing } = engine;
 
-  const saveNow = useCallback(
-    (completed = false) => {
-      if (!progressArmed.current) return;
-      const w = wordIndexRef.current;
-      if (!completed && w === lastSavedWord.current) return;
-      lastSavedWord.current = w;
-      saveProgress.mutate({ passage_id: passage.id, word_index: w, ...(completed ? { completed: true } : {}) });
-    },
-    [passage.id, saveProgress],
-  );
-
+  // Spreeder pauses and relays out on resize.
   useEffect(() => {
-    const t = window.setTimeout(() => saveNow(), 2000);
-    return () => window.clearTimeout(t);
-  }, [wordIndex, saveNow]);
+    if (visitMeta.current.reading_mode !== prefs.reading_mode) {
+      flushSession();
+      visitMeta.current = { reading_mode: prefs.reading_mode, wpm: prefs.wpm };
+    }
+  }, [prefs.reading_mode, prefs.wpm, flushSession]);
+  useEffect(() => {
+    const onResize = () => engine.pause();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [engine.pause]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const record = useCallback(
-    (force: boolean) => {
-      const active = clock.activeMs() - stretchActiveStart.current;
-      if (active <= 0 || (!force && active < MIN_SESSION_MS) || wordsReadRef.current <= 0) return;
-      recordSession.mutate({
-        passage_id: passage.id,
-        reading_mode: prefs.reading_mode,
-        wpm: prefs.wpm,
-        words_read: wordsReadRef.current,
-        active_ms: active,
-        paused_ms: Math.max(0, clock.pausedMs() - stretchPausedStart.current),
-        started_at: stretchStartedAt.current,
-        ended_at: new Date().toISOString(),
-      });
-      wordsReadRef.current = 0;
-      stretchActiveStart.current = clock.activeMs();
-      stretchPausedStart.current = clock.pausedMs();
-      stretchStartedAt.current = new Date().toISOString();
-    },
-    [clock, passage.id, prefs.reading_mode, prefs.wpm, recordSession],
-  );
+  // Opening a text puts it back on the Recent shelf.
+  useEffect(() => {
+    saveProgress.mutate({ passage_id: passage.id, word_index: startWord, hidden_from_recent: false });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const play = useCallback(() => {
+  // ---- progress (Spreeder stores Text_position, debounced 200 ms)
+  useEffect(() => {
     if (finished) return;
-    if (wordsReadRef.current === 0) stretchStartedAt.current = new Date().toISOString();
-    clock.play();
-  }, [clock, finished]);
+    const t = window.setTimeout(() => saveProgress.mutate({ passage_id: passage.id, word_index: activeWord }), 200);
+    return () => window.clearTimeout(t);
+  }, [activeWord, finished]); // eslint-disable-line react-hooks/exhaustive-deps
+  const exitProgress = useRef({ activeWord, finished, completionState, saveProgress });
+  exitProgress.current = { activeWord, finished, completionState, saveProgress };
+  useEffect(() => () => {
+    const current = exitProgress.current;
+    if (!current.finished && current.completionState === "idle") current.saveProgress.mutate({ passage_id: passage.id, word_index: current.activeWord });
+  }, [passage.id]);
 
-  const pause = useCallback(() => {
-    if (!clock.playing) return;
-    clock.pause();
-    saveNow();
-    record(false);
-  }, [clock, saveNow, record]);
+  // ---- reading sessions (feed the Profile stats)
+  useEffect(() => {
+    if (playing) visit.current.play();
+    else visit.current.pause();
+  }, [playing]);
+  useEffect(() => () => flushSession(), [flushSession]);
 
-  const toggle = useCallback(() => (clock.playing ? pause() : play()), [clock.playing, pause, play]);
+  // ---- dialogs
+  const [prefsOpen, setPrefsOpen] = useState(false);
+  const [wpmOpen, setWpmOpen] = useState(false);
+  const [viewOpen, setViewOpen] = useState(false);
+  const [bmOpen, setBmOpen] = useState(false);
+  const [kbdOpen, setKbdOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [sheetWord, setSheetWord] = useState<Word | null>(null);
+  const [note, setNote] = useState<BookmarkNoteState | null>(null);
+  const [toast, setToast] = useState({ text: "", nonce: 0 });
+  const anyOpen = prefsOpen || wpmOpen || viewOpen || bmOpen || !!sheetWord || !!note || finished || completionState !== "idle";
+  const kbdBtn = useRef<HTMLButtonElement | null>(null);
 
-  finishRef.current = () => {
-    const all = chunksRef.current;
-    const last = all[all.length - 1];
-    if (last) wordsReadRef.current += last.endWord - last.startWord + 1;
-    const totalActive = clock.activeMs() - stretchActiveStart.current;
-    const totalWords = wordsReadRef.current;
-    saveNow(true);
-    record(true);
-    setFinished({ words: totalWords, activeMs: totalActive });
+  const changeSpeed = (wpm: number) => {
+    const v = clampWpm(wpm);
+    updatePrefs({ wpm: v });
+    setToast((t) => ({ text: `${v} WPM`, nonce: t.nonce + 1 }));
   };
 
-  // Save and record on leave. Refs hold the latest versions.
-  const leaveRef = useRef<() => void>(() => {});
-  leaveRef.current = () => {
-    flushPrefs();
-    saveNow();
-    record(false);
+  const openWordActions = (w: Word) => {
+    engine.pause();
+    setSheetWord(w);
   };
-  useEffect(() => () => leaveRef.current(), []);
+  const openBookmarkFor = (w: Word) => {
+    setSheetWord(null);
+    const existing = (bookmarks.data ?? []).find((b) => b.word_index === w.index);
+    setNote(existing ? { mode: "edit", word: w, bookmark: existing } : { mode: "create", word: w });
+  };
 
-  // ---- e-Reader paging ----------------------------------------------------
+  const goToBookmarkWord = (w: Word | undefined) => {
+    if (!w) return;
+    engine.goToWord(w.index);
+    if (isEReader) setPage(pageOf(w.index));
+  };
+
+  // ---- e-Reader paging
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState(1);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const onPageCountChange = useCallback((n: number) => {
-    setPageCount(n);
-    setPage((p) => Math.min(p, n - 1));
-  }, []);
-  const goPage = useCallback((p: number) => setPage(Math.max(0, Math.min(pageCount - 1, p))), [pageCount]);
-
-  // ---- dialogs ------------------------------------------------------------
-  const [wpmOpen, setWpmOpen] = useState(false);
-  const [prefsOpen, setPrefsOpen] = useState(false);
-  const [viewOpen, setViewOpen] = useState(false);
-  const [bookmarksOpen, setBookmarksOpen] = useState(false);
-  const anyDialogOpen = wpmOpen || prefsOpen || viewOpen || bookmarksOpen || resumeOpen;
-
-  const openDialog = (setter: (v: boolean) => void) => {
-    pause();
-    setter(true);
-  };
-
-  // ---- bookmarks ----------------------------------------------------------
-  const onWordClick = useCallback(
-    (i: number) => {
-      if (clock.playing && !isEReader) {
-        if (prefs.reading_mode === "highlight" || prefs.reading_mode === "scroll") jumpToWord(i);
-        return;
-      }
-      addBookmark.mutate(
-        { passage_id: passage.id, word_index: i },
-        {
-          onSuccess: () => toast.success("Bookmark added"),
-          onError: (e) => toast.error(e.message || "Could not add bookmark"),
-        },
-      );
-    },
-    [addBookmark, clock.playing, isEReader, jumpToWord, passage.id, prefs.reading_mode],
-  );
-
-  // ---- fullscreen ---------------------------------------------------------
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(!!document.fullscreenElement);
+  const [marks, setMarks] = useState<{ start: number; length: number }[]>([]);
+  const pageOf = usePageOf();
+  const goPage = (p: number) => setPage(Math.max(0, Math.min(pageCount - 1, p)));
+  const pageRange = useRef({ start: 0, end: 0, shownAt: Date.now() });
+  const onPageWord = useCallback((i: number, end: number) => {
+    const prior = pageRange.current;
+    if (prior.start !== i && Date.now() - prior.shownAt >= 5000) visit.current.read(prior.end - prior.start);
+    if (prior.start !== i || prior.end !== end) pageRange.current = { start: i, end, shownAt: Date.now() };
+    engine.goToWord(i);
+  }, [engine.goToWord]);
+  const onPageCount = useCallback((n: number) => setPageCount(n), []);
   useEffect(() => {
-    const onChange = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", onChange);
-    return () => document.removeEventListener("fullscreenchange", onChange);
-  }, []);
-  const toggleFullscreen = () => {
-    if (document.fullscreenElement) void document.exitFullscreen();
-    else void document.documentElement.requestFullscreen?.();
-  };
+    if (!isEReader) return;
+    const pause = () => visit.current.pause();
+    const resume = () => { if (!finished && !anyOpen) visit.current.play(); };
+    if (anyOpen || finished || document.hidden) pause();
+    else resume();
+    window.addEventListener("blur", pause);
+    window.addEventListener("focus", resume);
+    return () => { pause(); window.removeEventListener("blur", pause); window.removeEventListener("focus", resume); };
+  }, [isEReader, anyOpen, finished]);
 
-  // ---- keyboard -----------------------------------------------------------
-  const keyState = useRef({ anyDialogOpen, isEReader, page, finished });
-  keyState.current = { anyDialogOpen, isEReader, page, finished };
-  const keyActions = useRef({ toggle, pause, goPage, updatePrefs, prefs, clock, setPrefsOpen });
-  keyActions.current = { toggle, pause, goPage, updatePrefs, prefs, clock, setPrefsOpen };
+  // ---- keyboard (Spreeder shortcuts)
+  const keys = useRef({ anyOpen, isEReader, page, prefs, engine });
+  keys.current = { anyOpen, isEReader, page, prefs, engine };
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const el = e.target as HTMLElement | null;
-      if (el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable)) return;
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
-      const s = keyState.current;
-      const a = keyActions.current;
-      if (s.anyDialogOpen || s.finished) return;
-      const setWpm = (delta: number) =>
-        a.updatePrefs({ wpm: Math.max(WPM_MIN, Math.min(WPM_MAX, a.prefs.wpm + delta)) });
+      const t = e.target as HTMLElement;
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable || e.ctrlKey || e.metaKey || e.altKey) return;
+      const k = keys.current;
+      if (k.anyOpen) return;
       switch (e.key) {
-        case "ArrowUp":
-        case "+":
-        case "=":
-          e.preventDefault();
-          setWpm(10);
-          break;
-        case "ArrowDown":
-        case "-":
-          e.preventDefault();
-          setWpm(-10);
-          break;
-        case " ":
-        case "p":
-        case "P":
-          e.preventDefault();
-          if (!s.isEReader) a.toggle();
-          break;
+        case "ArrowUp": case "+": case "=":
+          e.preventDefault(); changeSpeed(k.prefs.wpm + 10); break;
+        case "ArrowDown": case "-":
+          e.preventDefault(); changeSpeed(k.prefs.wpm - 10); break;
+        case " ": case "p": case "P":
+          e.preventDefault(); if (!k.isEReader) k.engine.toggle(); break;
         case "ArrowRight":
-          e.preventDefault();
-          if (s.isEReader) a.goPage(s.page + 1);
-          else a.clock.next();
-          break;
+          e.preventDefault(); if (k.isEReader) setPage((p) => Math.min(p + 1, pageCount - 1)); else k.engine.next(); break;
         case "ArrowLeft":
-          e.preventDefault();
-          if (s.isEReader) a.goPage(s.page - 1);
-          else a.clock.prev();
-          break;
-        case "r":
-        case "R":
-          a.clock.restart();
-          break;
-        case "s":
-        case "S":
-          a.pause();
-          a.setPrefsOpen(true);
-          break;
+          e.preventDefault(); if (k.isEReader) setPage((p) => Math.max(p - 1, 0)); else k.engine.prev(); break;
+        case "r": case "R":
+          k.engine.restartSection(); break;
+        case "s": case "S":
+          k.engine.pause(); setPrefsOpen(true); break;
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+  }, [pageCount]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ---- fullscreen
+  const [fullscreen, setFullscreen] = useState(!!document.fullscreenElement);
+  useEffect(() => {
+    const f = () => setFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", f);
+    return () => document.removeEventListener("fullscreenchange", f);
   }, []);
 
-  const remainingText = formatRemaining(remainingMs(durations, clock.chunk));
-  const percent = percentRead(wordIndex, tokens.length);
+  const remaining = remainingMs(model, activeWord, { wpm: prefs.wpm, groupSize: prefs.words_per_line, numberOfLines: prefs.number_of_lines, punctuationPauses: prefs.punctuation_pauses });
+  const pct = progressPercent(model, activeWord);
+  const name = useReadingProfile().data ?? "Reader";
 
   return (
-    <ReaderSurface prefs={prefs} className="relative flex h-screen flex-col overflow-hidden">
-      {/* Top bar */}
-      <header className="flex h-14 shrink-0 items-center gap-2 px-4">
-        <button
-          type="button"
-          onClick={() => navigate(RC_LIBRARY_PATH)}
-          className="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm opacity-75 hover:opacity-100"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
+    <div className="relative flex h-screen flex-col overflow-hidden" style={{ background: "var(--rc-page)", color: "var(--rc-text)" }}>
+      <Modal open={completionState !== "idle"} onClose={() => {}} width={440} labelledBy="rc-completion-save">
+        <div className="space-y-4 p-5">
+          <h2 id="rc-completion-save" className="text-lg">{completionState === "saving" ? "Saving your finished text" : "Your finished text has not saved"}</h2>
+          <p role="status">{completionState === "saving" ? "Please wait while Reading Center saves your progress." : "Check your connection and try again. Keep this page open to save your result."}</p>
+          {completionState === "error" && <button type="button" className="rc-green-btn" onClick={() => void complete()}>Retry save</button>}
+        </div>
+      </Modal>
+      {/* Header */}
+      {!fullscreen && <header className="relative flex h-14 shrink-0 items-center gap-2 px-2 sm:px-5">
+        <button type="button" aria-label="Back to library" onClick={() => navigate(RC_LIBRARY_PATH)} className="z-10 flex shrink-0 items-center gap-2.5 sm:pl-3" style={{ color: "var(--rc-text)" }}>
+          <Icon name="arrowBack" size={24} />
+          <span className="hidden text-sm font-medium tracking-[0.28px] sm:inline">Back</span>
         </button>
-        <h1 className="min-w-0 flex-1 truncate text-center text-sm font-semibold">{passage.title}</h1>
-        <div className="flex items-center gap-1">
-          {isEReader && searchOpen && (
-            <input
-              autoFocus
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search"
-              aria-label="Search the passage"
-              className="h-8 w-40 rounded-md border border-[color-mix(in_srgb,currentColor_30%,transparent)] bg-transparent px-2 text-sm"
-            />
-          )}
+        <h1 className="min-w-0 flex-1 truncate text-center text-sm tracking-[0.72px] sm:text-lg" style={{ color: "var(--rc-text)" }}>{passage.title}</h1>
+        <div className="z-10 flex shrink-0 items-center" style={{ ["--rc-hdr-icon" as string]: "var(--rc-text)" }}>
           {isEReader && (
-            <IconButton
-              label="Search"
-              onClick={() => {
-                setSearchOpen((o) => !o);
-                if (searchOpen) setSearchQuery("");
-              }}
-            >
-              <Search className="h-4 w-4" />
-            </IconButton>
+            <HeaderIcon label="Search" onClick={() => setSearchOpen((o) => !o)}><Icon name="search" size={26} /></HeaderIcon>
           )}
-          <IconButton label={isFullscreen ? "Exit fullscreen" : "Fullscreen"} onClick={toggleFullscreen}>
-            {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
-          </IconButton>
-          <IconButton label="Bookmarks" onClick={() => openDialog(setBookmarksOpen)}>
-            <BookmarkIcon className="h-4 w-4" />
-          </IconButton>
-          <IconButton label="Settings" onClick={() => openDialog(setPrefsOpen)}>
-            <Settings className="h-4 w-4" />
-          </IconButton>
+          <HeaderIcon label={fullscreen ? "Exit fullscreen" : "Fullscreen"} onClick={() => {
+            const request = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+            if (!request) setToast((t) => ({ text: "Fullscreen is unavailable in this browser.", nonce: t.nonce + 1 }));
+            else void request.catch(() => setToast((t) => ({ text: "Fullscreen could not open. Try again.", nonce: t.nonce + 1 })));
+          }}>
+            <Icon name={fullscreen ? "contract" : "expand"} size={26} />
+          </HeaderIcon>
+          <HeaderIcon label="Bookmarks" onClick={() => { engine.pause(); setBmOpen(true); }}><Icon name="bookmark" size={26} /></HeaderIcon>
+          <HeaderIcon label="Settings" onClick={() => { engine.pause(); setPrefsOpen(true); }}><Icon name="settings" size={26} /></HeaderIcon>
         </div>
-      </header>
+      </header>}
+      {fullscreen && <button type="button" aria-label="Exit fullscreen" title="Exit fullscreen" className="absolute right-3 top-3 z-20 flex h-10 w-10 items-center justify-center rounded-full" style={{ color: "var(--rc-blue)" }} onClick={() => {
+        engine.pause();
+        void document.exitFullscreen().catch(() => setToast((t) => ({ text: "Fullscreen could not close. Try again.", nonce: t.nonce + 1 })));
+      }}><Icon name="contract" size={26} /></button>}
 
-      {/* Stage */}
-      <main className="flex min-h-0 flex-1 flex-col">
-        <ModeRenderer
-          tokens={tokens}
-          chunks={chunks}
-          chunk={clock.chunk}
-          prefs={prefs}
-          playing={clock.playing}
-          onWordClick={onWordClick}
-          page={page}
-          onPageCountChange={onPageCountChange}
-          onPageChange={goPage}
-          searchQuery={searchQuery}
-        />
+      {/* Reading area */}
+      <main className="relative min-h-0 flex-1">
+        {isEReader ? (
+          <EReader prefs={prefs} fontStack={fontStack} words={model.words} page={page} initialWord={activeWord} onResumePage={setPage} onPageCount={onPageCount} onPageWord={onPageWord} highlight={marks} onWordClick={openWordActions} />
+        ) : (
+          <div className="rc-reading-stage mx-auto h-[calc(100%-20px)] w-full rounded-[10px] py-5" style={{ background: "var(--rc-surface)" }}>
+            <div ref={stageRef} className="relative h-full w-full">
+              <SpreederStage
+                prefs={prefs}
+                fontStack={fontStack}
+                stage={stage}
+                layout={engine.layout}
+                chunk={engine.chunk}
+                chunkIndex={engine.chunkIndex}
+                delay={engine.delay}
+                playing={playing}
+                seekVersion={engine.seekVersion}
+                onWordClick={openWordActions}
+                onStageClick={engine.toggle}
+              />
+              <SpeedToast text={toast.text} nonce={toast.nonce} />
+            </div>
+          </div>
+        )}
+        {!isEReader && !playing && !fullscreen && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-[50px] flex items-center justify-center gap-[50px]">
+            <TransportButton label="Previous" onClick={engine.prev}>
+              <svg viewBox="0 0 50 50" width="50" height="50" aria-hidden><path d="M33 13 L15 25 L33 37 Z" fill="none" stroke="currentColor" strokeWidth="4" strokeLinejoin="round" /></svg>
+            </TransportButton>
+            <TransportButton label="Play" onClick={engine.play} big>
+              <svg viewBox="0 0 60 60" width="60" height="60" aria-hidden><circle cx="30" cy="30" r="27" fill="none" stroke="currentColor" strokeWidth="5" /><path d="M24 18 L42 30 L24 42 Z" fill="currentColor" /></svg>
+            </TransportButton>
+            <TransportButton label="Next" onClick={engine.next}>
+              <svg viewBox="0 0 50 50" width="50" height="50" aria-hidden><path d="M17 13 L35 25 L17 37 Z" fill="none" stroke="currentColor" strokeWidth="4" strokeLinejoin="round" /></svg>
+            </TransportButton>
+          </div>
+        )}
       </main>
-
-      {/* Transport */}
-      {!isEReader && (
-        <div className="flex shrink-0 items-center justify-center gap-6 py-3">
-          <IconButton label="Previous" onClick={() => clock.prev()}>
-            <SkipBack className="h-5 w-5" />
-          </IconButton>
-          <button
-            type="button"
-            aria-label={clock.playing ? "Pause" : "Play"}
-            onClick={toggle}
-            className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-current transition hover:opacity-80"
-          >
-            {clock.playing ? <Pause className="h-6 w-6" /> : <Play className="ml-0.5 h-6 w-6" />}
-          </button>
-          <IconButton label="Next" onClick={() => clock.next()}>
-            <SkipForward className="h-5 w-5" />
-          </IconButton>
-        </div>
-      )}
 
       {/* Bottom bar */}
       {isEReader ? (
-        <footer className="flex h-12 shrink-0 items-center gap-4 border-t border-[color-mix(in_srgb,currentColor_15%,transparent)] px-4 text-sm">
-          <IconButton label="Previous page" onClick={() => goPage(page - 1)}>
-            <ChevronLeft className="h-4 w-4" />
-          </IconButton>
-          <Slider
-            className="flex-1"
-            value={[page]}
-            min={0}
-            max={Math.max(0, pageCount - 1)}
-            step={1}
-            onValueChange={([v]) => goPage(v)}
-            aria-label="Page"
-          />
-          <span className="tabular-nums">
-            {page + 1} / {pageCount}
-          </span>
-          <IconButton label="Next page" onClick={() => goPage(page + 1)}>
-            <ChevronRight className="h-4 w-4" />
-          </IconButton>
-        </footer>
+        <EReaderBar page={page} pageCount={pageCount} onPage={goPage} onFinish={() => {
+          visit.current.read(pageRange.current.end - pageRange.current.start);
+          complete();
+        }} />
       ) : (
-        <footer className="grid h-12 shrink-0 grid-cols-[1fr_auto_1fr] items-center border-t border-[color-mix(in_srgb,currentColor_15%,transparent)] px-4 text-sm">
-          <div>
-            <ShortcutsPopover />
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => openDialog(setWpmOpen)}
-              className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 opacity-80 hover:opacity-100"
-            >
-              <Gauge className="h-4 w-4" />
-              <span className="tabular-nums">{prefs.wpm}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => openDialog(setViewOpen)}
-              className="rounded-md px-2 py-1 opacity-80 hover:opacity-100"
-            >
-              View
+        <footer className="rc-reader-footer flex h-10 shrink-0 items-center px-5" style={{ background: "var(--rc-bottombar)", borderTop: "0.8px solid var(--rc-bottombar-border)" }}>
+          {/* Spreeder at 1180px and below: keyboard button hidden, time left, speed + View right. */}
+          <div className="rc-reader-keyboard hidden justify-center">
+            <button ref={kbdBtn} type="button" aria-label="Keyboard shortcuts" onClick={() => setKbdOpen((o) => !o)} className="flex h-8 w-10 items-center justify-center" style={{ color: "var(--rc-text)" }}>
+              <MIcon name="keyboard" size={24} />
             </button>
           </div>
-          <div className="justify-self-end truncate text-xs opacity-70">
-            {percent}% - {remainingText}
+          <div className="rc-reader-controls order-2 ml-auto mr-[5px] flex items-center gap-[19px]">
+            <BarButton onClick={() => { engine.pause(); setWpmOpen(true); }} icon="speedometer">{prefs.wpm}</BarButton>
+            <BarButton onClick={() => { engine.pause(); setViewOpen(true); }} icon="list">View</BarButton>
+          </div>
+          <div className="rc-reader-progress order-1 pl-[3px] text-sm leading-[39px]" style={{ color: "var(--rc-text)", opacity: 0.8 }}>
+            {pct}% - {formatDuration(remaining)} remaining
           </div>
         </footer>
       )}
 
-      {finished && (
-        <CompletionCard
-          wordsRead={finished.words}
-          activeMs={finished.activeMs}
-          onReadAgain={() => {
-            setFinished(null);
-            jumpToWord(0);
-          }}
-          onBack={() => navigate(RC_LIBRARY_PATH)}
-        />
-      )}
-
-      <ResumePrompt
-        open={resumeOpen}
-        onResume={() => {
-          progressArmed.current = true;
-          setResumeOpen(false);
-          jumpToWord(savedProgress?.word_index ?? 0);
-        }}
-        onStartOver={() => {
-          progressArmed.current = true;
-          setResumeOpen(false);
-          jumpToWord(0);
-        }}
-      />
-      <WpmDialog open={wpmOpen} onOpenChange={setWpmOpen} value={prefs.wpm} onSave={(v) => updatePrefs({ wpm: v })} />
-      <PreferencesDialog open={prefsOpen} onOpenChange={setPrefsOpen} prefs={prefs} onChange={updatePrefs} />
+      <ShortcutsPopover open={kbdOpen} anchorX={kbdBtn.current?.getBoundingClientRect().left ?? 230} onClose={() => setKbdOpen(false)} />
+      <PreferencesDialog open={prefsOpen} onClose={() => setPrefsOpen(false)} prefs={prefs} onChange={updatePrefs} name={name} />
+      <WpmDialog open={wpmOpen} onClose={() => setWpmOpen(false)} value={prefs.wpm} onSave={changeSpeed} />
       <ViewPanel
         open={viewOpen}
-        onOpenChange={setViewOpen}
+        onClose={() => setViewOpen(false)}
         title={passage.title}
-        tokens={tokens}
-        prefs={prefs}
-        currentWord={wordIndex}
-        wpm={prefs.wpm}
-        remainingText={remainingText}
-        onJump={jumpToWord}
-        onPlay={play}
+        words={model.words}
+        currentWord={activeWord}
+        footer={`${formatDuration(remaining)} to go - ${prefs.wpm} WPM`}
+        onJump={(w) => engine.goToWord(w.index)}
+        onPlay={engine.play}
       />
       <BookmarksDialog
-        open={bookmarksOpen}
-        onOpenChange={setBookmarksOpen}
-        bookmarks={bookmarksQuery.data ?? []}
-        tokens={tokens}
-        onJump={jumpToWord}
-        onDelete={(id) => deleteBookmark.mutate({ id, passage_id: passage.id })}
+        open={bmOpen}
+        onClose={() => setBmOpen(false)}
+        title={passage.title}
+        bookmarks={bookmarks.data ?? []}
+        words={model.words}
+        onOpenBookmark={(b: Bookmark) => setNote({ mode: "edit", word: model.words[b.word_index], bookmark: b })}
+        onGoTo={(b: Bookmark) => { setBmOpen(false); goToBookmarkWord(model.words[b.word_index]); }}
+        onDelete={(b: Bookmark) => deleteBookmark.mutate({ id: b.id, passage_id: passage.id })}
       />
-    </ReaderSurface>
+      <WordActionSheet word={sheetWord} onClose={() => setSheetWord(null)} onBookmark={openBookmarkFor} />
+      <BookmarkNoteDialog
+        state={note}
+        title={passage.title}
+        onClose={() => setNote(null)}
+        onSave={async (text, close) => {
+          const current = note;
+          if (!current) return;
+          const done = () => setToast((t) => ({ text: "Bookmark saved.", nonce: t.nonce + 1 }));
+          if (current.mode === "edit") {
+            await updateBookmark.mutateAsync({ id: current.bookmark.id, note: text || null });
+            done();
+          } else {
+            const bookmark = await addBookmark.mutateAsync({ passage_id: passage.id, word_index: current.word.index, note: text || null });
+            done();
+            if (!close) setNote({ mode: "edit", word: current.word, bookmark });
+          }
+          if (close) setNote(null);
+        }}
+        onGoTo={(w) => { setNote(null); setBmOpen(false); goToBookmarkWord(w); }}
+      />
+      {isEReader && (
+        <EReaderSearch open={searchOpen} onClose={() => { setSearchOpen(false); setMarks([]); }} words={model.words} pageOf={pageOf} onSelect={(p, hits) => { setPage(p); setMarks(hits); }} />
+      )}
+      <FinishAlert
+        open={finished}
+        title={passage.title}
+        onOkay={() => {
+          if (document.fullscreenElement) document.exitFullscreen();
+          navigate(RC_LIBRARY_PATH);
+        }}
+      />
+    </div>
+  );
+}
+
+function TransportButton({ label, onClick, children, big = false }: { label: string; onClick: () => void; children: React.ReactNode; big?: boolean }): React.ReactElement {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      className="pointer-events-auto flex items-center justify-center rounded-full transition-colors hover:bg-[rgba(128,128,128,.18)]"
+      style={{ width: big ? 64 : 54, height: big ? 64 : 54, color: "var(--rc-text)" }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function BarButton({ onClick, icon, children }: { onClick: () => void; icon: "speedometer" | "list"; children: React.ReactNode }): React.ReactElement {
+  return (
+    <button type="button" onClick={onClick} className="flex h-[30px] w-20 items-center justify-center gap-1.5 rounded text-[13px] font-medium" style={{ color: "var(--rc-blue)", border: "0.8px solid var(--rc-bottombar-border)" }}>
+      <Icon name={icon} size={20} />
+      {children}
+    </button>
   );
 }

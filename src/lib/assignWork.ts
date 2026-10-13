@@ -6,6 +6,7 @@ import { notifyStudentOfClassroomItem, type NotifyResult } from '@/lib/classroom
 import { parseLocalDay } from '@/lib/localDate';
 import { coerceStudentLevel, type StudentLevel } from '@/lib/studentLevel';
 import { resolveConditionalAssignment, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
+import { assignReadingCenter, READING_CENTER_PATH } from '@/lib/readingCenterAccess';
 
 /**
  * The one thing a teacher can hand a student. Every assign surface in the
@@ -16,6 +17,7 @@ export type AssignableItem =
   | { kind: 'homework_set'; setId: string }
   | { kind: 'guided_drill'; drillId: string }
   | { kind: 'activity'; activityId: string }
+  | { kind: 'reading_center' }
   | { kind: 'bootcamp'; topicId: string; conditionalTarget?: ConditionalAssignmentTarget };
 
 export interface StudentResult {
@@ -157,6 +159,8 @@ async function planFor(
   const unlockAt = scheduledDay ? scheduledDay.toISOString() : null;
 
   switch (item.kind) {
+    case 'reading_center':
+      throw new Error('Assign Reading Center separately so its access grant can be verified.');
     case 'homework_set': {
       const { data: set, error } = await supabase
         .from('homework_sets')
@@ -390,6 +394,36 @@ export async function assignWork(input: {
    */
   notify?: boolean;
 }): Promise<AssignWorkResult> {
+  if (input.item.kind === 'reading_center') {
+    const ok: StudentResult[] = [];
+    const failed: StudentResult[] = [];
+    for (const studentId of [...new Set(input.studentIds)]) {
+      try {
+        const { item, reused } = await assignReadingCenter({
+          studentId, scheduledForLocalDate: input.scheduledForLocalDate,
+          title: input.overrides?.title, description: input.overrides?.description,
+        });
+        // Repeating a successful assignment returns its existing launcher and
+        // does not send the same notification again.
+        let notify: NotifyResult | undefined;
+        if (input.notify !== false && !reused) {
+          try {
+            notify = await notifyStudentOfClassroomItem({ adminUserId: input.teacherId, studentId,
+              title: item.title, description: item.description ?? undefined,
+              route: READING_CENTER_PATH, assignmentType: 'reading practice' });
+          } catch (error) {
+            console.error('[assignWork] Reading Center notification failed after verified assignment', error);
+            notify = { inbox_ok: false, bell_ok: false, email_ok: false };
+          }
+        }
+        ok.push({ studentId, assignmentId: item.id, classroomItemId: item.id,
+          route: READING_CENTER_PATH, classroomItemIds: [item.id], notify });
+      } catch (error) {
+        failed.push({ studentId, error: message(error, 'Could not assign Reading Center') });
+      }
+    }
+    return { ok, failed };
+  }
   return runAssign({ ...input, items: [input.item] });
 }
 
