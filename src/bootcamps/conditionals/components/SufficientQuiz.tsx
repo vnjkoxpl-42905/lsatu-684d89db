@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useLessonInteraction } from '../courseProgress';
 import { Check, RotateCcw, X } from 'lucide-react';
 import { Pill } from './ContrapositiveVisuals';
 
@@ -59,15 +60,24 @@ export function SufficientQuiz() {
 
 /** One question at a time, one tap each. A wrong tap says "Not that one." and why; the right tap gives the answer as a plain sentence. */
 export function QuickQuiz({ items, idPrefix }: { items: QuizItem[]; idPrefix: string }) {
-  const [step, setStep] = useState(0);
-  const [wrong, setWrong] = useState<number[]>([]);
-  const [solved, setSolved] = useState<number | null>(null);
+  const signature = JSON.stringify(items);
+  const empty = () => ({ signature, step: 0, complete: false, answers: items.map(() => ({ wrong: [] as number[], solved: null as number | null, attempts: 0, assisted: false })) });
+  const [saved, save] = useLessonInteraction(`quiz:${idPrefix}`, empty());
+  const valid = saved.signature === signature && saved.answers?.length === items.length && Number.isInteger(saved.step) && saved.step >= 0 && saved.step < items.length;
+  const state = valid ? saved : empty();
+  useEffect(() => { if (!valid) save(empty()); }, [valid, signature, save]);
+  const { step } = state;
+  const { wrong, solved, attempts } = state.answers[step];
+  const changeAnswer = (patch: Partial<typeof state.answers[number]>) => {
+    const answers = state.answers.map((answer, index) => index === step ? { ...answer, ...patch } : answer);
+    save({ ...state, answers, complete: answers.every((answer, index) => answer.solved === items[index].correct) });
+  };
   const item = items[step];
   const last = step === items.length - 1;
   const lastWrong = wrong.length ? item.options[wrong[wrong.length - 1]] : null;
   const message = solved !== null ? item.answer : lastWrong ? `Not that one. ${lastWrong.reason}` : 'Pick the answer the rule supports.';
-  const next = () => { setStep(value => value + 1); setWrong([]); setSolved(null); };
-  const restart = () => { setStep(0); setWrong([]); setSolved(null); };
+  const next = () => save({ ...state, step: step + 1 });
+  const restart = () => save(empty());
   return <div className="ct-drill" data-step={step}>
     <div className="ct-drill-top">
       <p className="ct-picker-kicker">Your turn</p>
@@ -78,16 +88,17 @@ export function QuickQuiz({ items, idPrefix }: { items: QuizItem[]; idPrefix: st
     <div className="ct-drill-options" role="group" aria-labelledby={`${idPrefix}-q-${step}`}>
       {item.options.map((option, index) => {
         const state = solved === index ? 'right' : wrong.includes(index) ? 'wrong' : 'open';
-        return <button key={option.text} type="button" className="ct-drill-option" data-state={state} disabled={solved !== null && solved !== index} onClick={() => { if (solved !== null) return; if (index === item.correct) setSolved(index); else setWrong(list => list.includes(index) ? list : [...list, index]); }}>
-          {option.tone ? <Pill text={option.text} tone={option.tone} negated={false}/> : <span className="sq-option-text">{option.text}</span>}
+        return <button key={option.text} type="button" className="ct-drill-option" data-state={state} disabled={solved !== null && solved !== index} onClick={() => { if (solved !== null) return; if (index === item.correct) changeAnswer({ solved: index }); else changeAnswer({ wrong: wrong.includes(index) ? wrong : [...wrong, index], attempts: attempts + 1 }); }}>
+          {solved !== null && option.tone ? <Pill text={option.text} tone={option.tone} negated={false}/> : <span className="sq-option-text">{option.text}</span>}
           {state === 'right' && <span className="ct-drill-mark" data-kind="right"><Check size={16} strokeWidth={3} aria-hidden="true"/>Yes</span>}
           {state === 'wrong' && <span className="ct-drill-mark" data-kind="wrong"><X size={16} strokeWidth={3} aria-hidden="true"/>No</span>}
         </button>;
       })}
     </div>
     <p className="ct-picker-message" role="status" data-solved={solved !== null}>{message}</p>
+    {solved === null && attempts >= 2 && <button type="button" className="ct-drill-next" onClick={() => changeAnswer({ solved: item.correct, assisted: true })}>Show me</button>}
     {solved !== null && (last
-      ? <div className="ct-drill-end"><strong>That is all four.</strong><button type="button" className="ct-drill-next" onClick={restart}><RotateCcw size={15} aria-hidden="true"/>Try them again</button></div>
+      ? <div className="ct-drill-end"><strong>You worked through all {items.length} questions.</strong><button type="button" className="ct-drill-next" onClick={restart}><RotateCcw size={15} aria-hidden="true"/>Try them again</button></div>
       : <button type="button" className="ct-drill-next" onClick={next}>Next question</button>)}
   </div>;
 }

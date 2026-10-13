@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, Bookmark, Check, Dumbbell, Menu, Sparkles } from 'lucide-react';
-import { CourseProgressProvider, useCourseProgress, useDeviceCourseProgress, type CourseProgressStore } from '../courseProgress';
+import { CourseLessonProvider, CourseProgressProvider, useCourseProgress, useDeviceCourseProgress, type CourseProgressStore } from '../courseProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { OPENING_COURSE_PATH, openingCourseStep, type OpeningCourseStep } from '../openingCoursePath';
@@ -55,11 +55,11 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
 const drillInstructions: Record<string, { summary: string; heading: string; steps: string[] }> = {
   'sufficient-practice': {
     summary: 'Condition groups and diagrams', heading: 'Find the whole sufficient condition',
-    steps: ['Find the indicator that introduces the sufficient condition.', 'Find the complete condition it points to. Keep every word that limits it.', 'Build the diagram: the guarantee goes on the left, what it requires on the right.', 'Write the rule in ordinary English and compare it with our version.'],
+    steps: ['Find the indicator that introduces the sufficient condition.', 'Find the complete condition it points to. Keep every word that limits it.', 'Build the diagram: the condition that is enough goes on the left, what it requires goes on the right.', 'Write the rule in ordinary English and compare it with our version.'],
   },
   'contrapositive-practice': {
     summary: 'Originals and contrapositives', heading: 'Check the direction and each negation',
-    steps: ['Choose the original arrow that keeps both complete conditions.', 'Choose its contrapositive: reverse the sides and negate both conditions. Correct each choice before continuing.', 'Write each form in ordinary English, then compare your wording with the explanation.'],
+    steps: ['Choose the original arrow that keeps both complete conditions.', 'Choose its contrapositive: flip the sides and negate both conditions. Correct each choice before continuing.', 'Write each form in ordinary English, then compare your wording with the explanation.'],
   },
 };
 
@@ -108,29 +108,31 @@ function CourseTracker({ steps }: { steps: OpeningCourseStep[] }) {
   </div>;
 }
 
-/** Marks a lesson started on arrival and done once its closing navigation is reached. */
+/** Reading and completing an embedded quiz are explicit actions, not scroll events. */
 function LessonCompletion({ stepId }: { stepId: string }) {
   const store = useCourseProgress();
   const save = store?.save;
+  const started = useRef(false);
   useEffect(() => {
-    if (!save) return;
+    if (!save || started.current) return;
+    started.current = true;
     save(stepId, {});
-    const end = document.querySelector('.oc-course-turn');
-    if (!end || typeof IntersectionObserver === 'undefined') return;
-    const observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) { save(stepId, { status: 'done' }); observer.disconnect(); }
-    });
-    observer.observe(end);
-    return () => observer.disconnect();
   }, [save, stepId]);
-  return null;
+  const quizKeys: Record<string, string> = { sufficient: 'quiz:sq', necessary: 'quiz:nq', 'four-situations': 'quiz:fs', contrapositive: 'quiz:contrapositive', 'must-arrow': 'quiz:must-arrow' };
+  const state = store?.steps[stepId]?.state as { lessonInteractions?: Record<string, { complete?: boolean }> } | undefined;
+  const done = store?.steps[stepId]?.status === 'done';
+  const quizKey = quizKeys[stepId];
+  const quizDone = !quizKey || state?.lessonInteractions?.[quizKey]?.complete === true;
+  return <div className="oc-lesson-completion">{!quizDone && !done && <p>Complete the quiz before marking this lesson as read.</p>}<button type="button" className="oc-action" disabled={done || !quizDone} onClick={() => save?.(stepId, { status: 'done' })}>{done ? 'Lesson read' : 'Mark lesson as read'}<Check size={16} aria-hidden/></button></div>;
 }
 
 export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps = OPENING_COURSE_PATH, recordedPractice, storageScope, progressStore }: {
   view?: string; run?: boolean; url: OpeningCourseUrl; steps?: OpeningCourseStep[]; recordedPractice?: ReactNode; storageScope?: string; progressStore?: CourseProgressStore;
 }) {
   const device = useDeviceCourseProgress(storageScope);
-  return <CourseProgressProvider store={progressStore ?? device}><CourseScreen view={view} run={run} url={url} steps={steps} recordedPractice={recordedPractice} storageScope={storageScope}/></CourseProgressProvider>;
+  const store = progressStore ?? device;
+  if (store.ready === false) return <p role="status">Loading your saved course work...</p>;
+  return <CourseProgressProvider store={store}><CourseScreen key={storageScope ?? 'preview'} view={view} run={run} url={url} steps={steps} recordedPractice={recordedPractice} storageScope={storageScope}/></CourseProgressProvider>;
 }
 
 function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }: {
@@ -141,6 +143,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (current && (current.type === 'note' || run)) setVisited(prior => prior.includes(view) ? prior : [...prior, view]);
+    root.current?.querySelectorAll<HTMLVideoElement>('.oc-course-body[hidden] video').forEach(video => { if (!video.paused) video.pause(); });
     requestAnimationFrame(() => {
       const heading = root.current?.querySelector<HTMLElement>('[data-course-heading] h1');
       if (heading) heading.tabIndex = -1;
@@ -154,6 +157,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
   const next = steps[index + 1];
   const list = view === 'labs' || view === 'practice' ? steps.filter(step => step.type === 'drill') : steps;
   const isIndex = ['lessons', 'labs', 'practice'].includes(view);
+  const indicatorFlashcardsAllowed = steps.some(step => step.unitId === 'group-1' || step.unitId === 'group-2');
   return <div ref={root} className={`oc-course-screen${view === 'foundation-practice' ? ' d1-screen' : ''}`}>
     {isIndex && <div className="oc-course-index">
       <div data-course-heading><PageHeader noBloom eyebrow={view === 'lessons' ? 'Introduction' : 'Practice'} title={view === 'lessons' ? 'Conditional reasoning.' : view === 'labs' ? 'Make the move yourself.' : 'Practice the reasoning.'}/></div>
@@ -171,7 +175,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
       </header> : <header><p className="oc-label">Practice</p><h1>{current.title}</h1></header>}</div>
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions</Link>}
     </div>}
-    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}>{getSourceWorksheetDrill(step.id) ? <SourceWorksheetDrill setId={step.id} run startUrl={url(step.id, true)} storageScope={storageScope}/> : <OpeningCourseContent id={step.id}/>}</CourseFlashcardUrl.Provider></div>)}</div>
+    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={indicatorFlashcardsAllowed ? url : null}><CourseLessonProvider stepId={step.id}>{getSourceWorksheetDrill(step.id) ? <SourceWorksheetDrill setId={step.id} run startUrl={url(step.id, true)} storageScope={storageScope}/> : <OpeningCourseContent id={step.id}/>}</CourseLessonProvider></CourseFlashcardUrl.Provider></div>)}</div>
     {current?.type === 'note' && <LessonCompletion key={current.id} stepId={current.id}/>}
     {current && (current.type === 'note' || run) && <nav className="oc-course-turn" aria-label="Course navigation">{prior ? <Link to={url(prior.id)}><span>Previous {prior.type === 'note' ? 'lesson' : 'drill'}</span><strong>{prior.title}</strong></Link> : <Link to={url('lessons')}>All lessons</Link>}{next ? <Link to={url(next.id)}><span>Next {next.type === 'note' ? 'lesson' : 'drill'}</span><strong>{next.title}<ArrowRight size={18}/></strong></Link> : <Link to={url('lessons')}>Return to lessons<ArrowRight size={18}/></Link>}</nav>}
     {!isIndex && view !== 'tools' && !current && <div className="oc-course-note"><h1>This lesson is not available here.</h1><Link to={url('lessons')}>Return to lessons</Link></div>}

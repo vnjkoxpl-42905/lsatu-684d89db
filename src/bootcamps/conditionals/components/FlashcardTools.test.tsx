@@ -3,6 +3,7 @@ import { MemoryRouter, useLocation } from 'react-router-dom';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { OpeningCourseScreen } from './OpeningCourse';
 import { flashcardUrl } from './FlashcardTools';
+import { OPENING_COURSE_PATH } from '../openingCoursePath';
 beforeEach(() => localStorage.clear());
 afterEach(cleanup);
 const url = (id: string) => `/dev/conditional-opening-preview?page=${id}`;
@@ -10,12 +11,14 @@ function Harness() {
   const location = useLocation();
   return <OpeningCourseScreen view={new URLSearchParams(location.search).get('page') || 'lessons'} url={url}/>;
 }
-it('keeps flashcards out of the lessons', () => {
+it('links to flashcard practice without embedding a deck in either definition lesson', () => {
   render(<MemoryRouter initialEntries={[url('sufficient')]}><Harness/></MemoryRouter>);
-  expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
+  expect(screen.getByRole('link', { name: 'Go to flashcards' })).toHaveAttribute('href', `${url('tools')}&deck=group-1&from=sufficient`);
+  expect(screen.queryByText('Which group?')).toBeNull();
   cleanup();
   render(<MemoryRouter initialEntries={[url('necessary')]}><Harness/></MemoryRouter>);
-  expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
+  expect(screen.getByRole('link', { name: 'Go to flashcards' })).toHaveAttribute('href', `${url('tools')}&deck=group-2&from=necessary`);
+  expect(screen.queryByText('Which group?')).toBeNull();
 });
 it('lists one mixed word deck beside the concept cards, and old group links open it', () => {
   render(<MemoryRouter initialEntries={[url('tools')]}><Harness/></MemoryRouter>);
@@ -31,10 +34,17 @@ it('lists one mixed word deck beside the concept cards, and old group links open
     cleanup();
   }
 });
-it('does not expose a concept set the work does not include', () => {
+it('does not expose flashcard sets when the work does not include their units', () => {
   render(<MemoryRouter initialEntries={[`${url('tools')}&deck=foundation`]}><OpeningCourseScreen view="tools" steps={[]} url={url}/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Indicator words' })).toBeNull();
   expect(screen.queryByRole('heading', { name: 'Sufficient and necessary' })).toBeNull();
+  expect(screen.getByText('No flashcards are available in this work.')).toBeVisible();
+});
+it('does not link an orientation-only learner to an unavailable indicator deck', () => {
+  const steps = OPENING_COURSE_PATH.filter(step => step.unitId === 'orientation' || step.alsoAvailableIn?.includes('orientation'));
+  render(<MemoryRouter><OpeningCourseScreen view="necessary" steps={steps} url={url}/></MemoryRouter>);
+  expect(screen.getByRole('heading', { level: 1, name: 'The Necessary Condition' })).toBeVisible();
+  expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
 });
 it('turns a key-term card with one tap and moves on', () => {
   render(<MemoryRouter initialEntries={[`${url('tools')}&deck=foundation`]}><Harness/></MemoryRouter>);

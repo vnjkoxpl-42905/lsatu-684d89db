@@ -1,5 +1,7 @@
 import { ContrapositiveLecture, DoubleNegativeDemo, FlipAndNegateDemo, Neg, PopQuizTitle, PulseWord, PunchWord, RuleDrill, ThreeMoves } from './ContrapositiveVisuals';
-import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
+import { Children, cloneElement, Fragment, isValidElement, useContext, type ReactElement, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { CourseFlashcardUrl, flashcardUrl } from './FlashcardTools';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
 import { StagedReasoningDrill } from './StagedReasoningDrill';
@@ -133,35 +135,15 @@ function ContrapositiveNote() {
 }
 
 function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
-  const [selected, setSelected] = useState(0);
-  const [opened, setOpened] = useState<number[]>([0]);
-  const [focusPanel, setFocusPanel] = useState(false);
-  const panels = useRef<(HTMLDivElement | null)[]>([]);
-  const id = useId();
+  const flashcards = useContext(CourseFlashcardUrl);
   const content = groupSections(group);
   const expressions = content.slice(2, 9);
-  const names = expressions.map(section => section.props.title?.split(':')[0]);
-  useEffect(() => {
-    if (!focusPanel) return;
-    panels.current[selected]?.focus();
-    setFocusPanel(false);
-  }, [focusPanel, selected]);
-  const choose = (index: number, moveFocus = false) => {
-    setSelected(index);
-    setOpened(previous => previous.includes(index) ? previous : [...previous, index]);
-    setFocusPanel(moveFocus);
-  };
-  const last = selected === expressions.length - 1;
-  // Two introductions and the seven complete expression explanations belong
-  // together in one concept note, not nine separate navigation destinations.
-  return <>{content.slice(0, 2)}
-    <p className="co-word-guide">Work through all seven indicators. Each one does the same job in a different sentence, and each has its own trap to check. Use Next indicator to go in order, or choose any indicator to read it again.</p>
-    <div className="co-word-tabs" role="group" aria-label="Choose an indicator">{expressions.map((section, index) => <button type="button" key={section.props.title} aria-pressed={selected === index} aria-controls={`${id}-${index}`} onClick={() => choose(index)}>{names[index]}{opened.includes(index) && <><span aria-hidden="true"> ✓</span><span className="co-sr-only">, opened</span></>}</button>)}</div>
-    <p className="co-kicker" role="status">Indicator {selected + 1} of {expressions.length} · {opened.length} of {expressions.length} opened</p>
-    {expressions.map((section, index) => <div key={section.props.title} id={`${id}-${index}`} hidden={selected !== index} tabIndex={-1} ref={element => { panels.current[index] = element; }}>{section}</div>)}
-    <div className="co-choices">{last
-      ? <p>That was the last of the seven indicators. Choose any of them to read it again, or recall them with the cards below.</p>
-      : <button type="button" className="co-primary" onClick={() => choose(selected + 1, true)}>Next indicator: {names[selected + 1]}</button>}</div>
+  return <><NoteSection title={group === 'group-1' ? 'Which cases does the rule cover?' : 'What does the rule require?'}>
+    <p>{group === 'group-1' ? 'You know what a sufficient condition does. Now find the complete condition in differently worded rules. Keep every restriction on who, what, where or when before you put that condition on the left.' : 'You know what a necessary condition does. Now read the requirement in each sentence, even when it appears first. Keep its full meaning before you put it on the right.'}</p>
+    <p>Read each example, make the decision, then use the feedback to check your reasoning.</p>
+    {flashcards && <Link className="oc-action" to={flashcardUrl(flashcards, group)}>Go to flashcards</Link>}
+  </NoteSection>
+    {expressions}
     {group === 'group-2' && <><OnlyAndOnlyIf/><OnlyAfter/></>}
     <FamilySupplement group={group}/>
   </>;
@@ -264,7 +246,7 @@ function WholeMeaningNote() {
 
 const freshCases = [
   { rule: 'If it rains on Saturday, the market moves into the town hall.', questions: [
-    { prompt: "It's Friday. You've read this rule and nothing else. Where will the market be on Saturday?", options: ['In the town hall.', 'Outdoors, as usual.', "The rule alone doesn't settle it."], correct: 2, feedback: ['You treated the rule as a weather report. It tells you what follows if it rains. Nobody has told you that it will rain.', "You assumed it won't rain. The rule hasn't told you that either, so the market's location is still open.", "The rule describes what would happen if it rains. It's a promise about a possible case, not a report that the case happened."] },
+    { prompt: "It's Friday. You've read this rule and nothing else. Where will the market be on Saturday?", options: ['In the town hall.', 'Outdoors, as usual.', "The rule alone doesn't settle it."], correct: 2, feedback: ['You treated the rule as a weather report. It tells you what follows if it rains. Nobody has told you that it will rain.', "You assumed it won't rain. The rule hasn't told you that either, so the market's location is still open.", "The rule tells you what follows if it rains. It doesn't report that it rained."] },
     { prompt: "Saturday arrives, and it's raining. Now where is the market?", options: ['In the town hall.', 'Still not settled.'], correct: 0, feedback: ['Now you have a fact, not just a rule. Rain on Saturday meets the condition, so the rule puts the market in the town hall.', "The fact changes things. The rule covers a rainy Saturday, and that's what we have, so the market's location is settled."] },
   ] },
   { rule: 'Every student going on the museum trip has a signed permission slip.', questions: [
@@ -289,8 +271,8 @@ const foundationConceptQuestions: DrillOneQuestion[] = [
   { rule: 'A visitor receives a badge if the visitor signs in.', prompt: 'Which diagram keeps this rule?', options: ['Visitor receives a badge → Visitor signs in', 'Visitor signs in → Visitor receives a badge', 'Both directions are guaranteed.'], correct: 1, feedback: ['This reverses the guarantee. The rule gives a badge to someone who signs in, not a sign-in to everyone with a badge.', 'If introduces signing in, even at the end of the rule. Signing in is sufficient and goes left.', 'The rule guarantees only one direction. It does not exclude a visitor who receives a badge another way.'], conditions: ['Visitor signs in', 'Visitor receives a badge'] },
   { rule: 'If a member books a room, the member must have an active account.', prompt: 'Which word identifies the sufficient condition here?', options: ['If.', 'Must.', 'Both words identify the sufficient condition.'], correct: 0, feedback: ['If introduces the sufficient condition: the member books a room. Must expresses the requirement that follows from it.', 'Must tells us what is required: having an active account. Look for the word that introduces the condition that is enough.', 'The two words have different jobs. Only one of them introduces what is enough; the other marks what is required.'], conditions: ['Member books a room', 'Member has an active account'] },
   { rule: 'Every volunteer wearing a green badge must have completed training.', prompt: 'Which word acts as the sufficient-condition indicator?', options: ['Must.', 'Wearing.', 'Every.'], correct: 2, feedback: ['Must marks what is required: completed training. Look for the word that introduces the group the rule covers.', 'Wearing is part of the condition itself: it describes which volunteers the rule covers. An indicator is the word that tells you the rule applies to that whole group.', 'Every covers all volunteers wearing a green badge. That qualified group is sufficient to prove the training that must have been completed.'], conditions: ['Volunteer wears a green badge', 'Volunteer has completed training'] },
-  { rule: 'Every parcel weighing more than ten kilograms has a handling label.', prompt: 'Which complete condition belongs on the left?', options: ['The item is a parcel.', 'The item is a parcel weighing more than ten kilograms.', 'The item has a handling label.'], correct: 1, feedback: ['Parcel alone drops the weight restriction. The rule does not promise a handling label for every parcel.', 'Keep the weight restriction. The rule guarantees a handling label for every parcel weighing more than ten kilograms.', 'Having a handling label is the required condition, so it goes on the right.'], conditions: ['Parcel weighs more than ten kilograms', 'Parcel has a handling label'] },
-  { rule: 'A document is archived only if it has a catalogue number.', prompt: 'Which indicator introduces the requirement?', options: ['Only if.', 'If, taken on its own.', 'Archived.'], correct: 0, feedback: ['Read only if as one phrase. It identifies having a catalogue number as necessary for being archived.', 'If on its own would introduce what is enough. Here if does not stand alone. Read it together with the word right before it.', 'Archived is part of a condition: the document is archived. It is not an indicator. Look for the phrase that tells you what archiving requires.'], conditions: ['Document is archived', 'Document has a catalogue number'] },
+  { rule: 'Every parcel weighing more than ten kilograms has a handling label.', prompt: 'Which complete condition belongs on the left?', options: ['The item is a parcel.', 'The item is a parcel weighing more than ten kilograms.', 'The item has a handling label.'], correct: 1, feedback: ['Parcel alone drops the weight restriction. The rule does not give every parcel a handling label.', 'Keep the weight restriction. The rule guarantees a handling label for every parcel weighing more than ten kilograms.', 'Having a handling label is the required condition, so it goes on the right.'], conditions: ['Parcel weighs more than ten kilograms', 'Parcel has a handling label'] },
+  { rule: 'A document is archived only if it has a catalogue number.', prompt: 'Which indicator introduces the requirement?', options: ['Only if.', 'If, taken on its own.', 'Archived.'], correct: 0, feedback: ['Read only if as one phrase. It identifies having a catalogue number as necessary for being archived.', 'If alone would introduce what is enough, and this rule names a requirement.', 'Archived is part of a condition: the document is archived. It is not an indicator. Look for the phrase that tells you what archiving requires.'], conditions: ['Document is archived', 'Document has a catalogue number'] },
   { rule: 'A researcher enters the reading room only if the researcher has a visitor permit.', prompt: 'Which diagram matches this rule?', options: ['Has a visitor permit → Enters the reading room', 'Only if → Has a visitor permit', 'Enters the reading room → Has a visitor permit'], correct: 2, feedback: ['This arrow starts from having a permit. Could a researcher have a permit and still never enter the reading room? If so, the permit is not enough to prove entry.', 'Only if is an indicator, not a condition. Put the complete ideas on the two sides of the arrow.', 'Entering the reading room requires a visitor permit. Entry goes left; having the required permit goes right.'], conditions: ['Researcher enters the reading room', 'Researcher has a visitor permit'] },
   { rule: 'Filing a claim requires a signed form.', prompt: 'What is the necessary condition?', options: ['Filing a claim.', 'Having a signed form.', 'Having any form, even an unsigned one.'], correct: 1, feedback: ['Filing is what has the requirement. Ask what filing requires: a signed form.', 'A signed form is required for filing a claim. Having one alone does not prove that someone files a claim.', 'Signed is part of the requirement. Dropping it would wrongly include an unsigned form.'], conditions: ['Person files a claim', 'Person has a signed form'] },
   { rule: 'Every completed registration requires a paid deposit.', prompt: 'Which word identifies the necessary condition?', options: ['Every.', 'Paid.', 'Requires.'], correct: 2, feedback: ['Every introduces the group the rule covers: completed registrations. That is the sufficient side. Look for the word that tells you what each one must have.', 'Paid limits which deposit counts. It is part of the condition, not the word expressing the requirement.', 'Requires identifies a paid deposit as necessary. Every completed registration must have one, but a paid deposit alone does not prove completion.'], conditions: ['Registration is complete', 'Registration has a paid deposit'] },
@@ -320,7 +302,7 @@ function FoundationPractice() {
     { ...anchorQuestion.props, rule: 'If you win the raffle, you get a bicycle.' },
     ...freshCases.flatMap(item => item.questions.map(question => ({ ...question, rule: item.rule }))),
     { ...freshCheck.props, rule: 'Every delivery marked collected has a pickup receipt.', prompt: 'What is sufficient here?' },
-    { rule: 'If you win the raffle, you get a bicycle.', prompt: 'Someone claims that getting a bicycle proves you won the raffle. Which possible case fits our rule but disproves that claim?', options: ['You win and get a bicycle.', 'You do not win, but get a bicycle as a gift.', 'You win and never get a bicycle.'], correct: 1, feedback: ['This fits both the rule and the claim, so it cannot disprove the claim. We need a case where the rule holds but the claim does not.', 'The rule promises a bicycle to a winner. It does not exclude a bicycle received as a gift without winning, so this case fits the rule and disproves the claim.', 'Winning without getting a bicycle breaks the original rule. We need a case that keeps the rule true.'] },
+    { rule: 'If a car is parked in the staff lot, it has a permit sticker.', prompt: 'Someone claims that a permit sticker proves the car is parked in the staff lot. Which possible case fits our rule but disproves that claim?', options: ['The car is parked in the staff lot and has a sticker.', 'The car has a sticker but is parked on the street.', 'The car is parked in the staff lot without a sticker.'], correct: 1, feedback: ['This car fits both the rule and the claim, so it cannot disprove the claim. We need a car that keeps the rule true while the claim gets it wrong.', 'The rule tells you every car in the staff lot has a sticker. It says nothing about where cars with stickers park. A car with a sticker on the street fits the rule, and it shows the sticker does not prove the staff lot.', 'A car in the staff lot without a sticker breaks the rule. We need a case that keeps the rule true.'] },
   ];
   const conditions: Array<[string, string]> = [
     ['You win the raffle', 'You get a bicycle'],
@@ -329,7 +311,7 @@ function FoundationPractice() {
     ['A student goes on the museum trip', 'That student has a signed permission slip'],
     ['The café runs out of bread', 'The café closes early'],
     ['A delivery is marked collected', 'That delivery has a pickup receipt'],
-    ['You win the raffle', 'You get a bicycle'],
+    ['A car is parked in the staff lot', 'The car has a permit sticker'],
   ];
   const ruleAndFact = questions.map((question, index) => ({ ...question, conditions: conditions[index] }));
   // Order 2: rule-vs-fact questions, then the five concept checks, then indicators.

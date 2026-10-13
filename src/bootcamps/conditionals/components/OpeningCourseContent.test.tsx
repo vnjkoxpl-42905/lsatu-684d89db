@@ -224,9 +224,10 @@ it('checks the corrected bus and phone translations through the learner controls
 
 it('teaches every Group 1 indicator before the sufficient-side drill, then the complete phrase', () => {
   render(<OpeningCourseContent id="sufficient-words"/>);
-  const tabs = within(screen.getByRole('group', { name: 'Choose an indicator' })).getAllByRole('button').map(tab => tab.textContent?.replace(/[^A-Za-z ]/g, '').replace(/ opened$/, '').trim());
-  expect(tabs).toEqual(['If', 'When', 'Where', 'All', 'The only', 'Every', 'Any']);
-  expect(screen.getByText(/Work through all seven indicators/)).toBeVisible();
+  expect(screen.queryByRole('group', { name: 'Choose an indicator' })).toBeNull();
+  const expressions = [...document.querySelectorAll('.co-expression-section h2')].map(heading => heading.textContent?.split(':')[0]);
+  expect(expressions).toEqual(['If', 'When', 'Where', 'All', 'The only', 'Every', 'Any']);
+  expect(screen.getByText(/Now find the complete condition/)).toBeVisible();
   expect(screen.queryByRole('heading', { name: 'Recall the indicators' })).toBeNull();
   const text = document.body.textContent ?? '';
   // Words the drills test: when, whenever, where, each, every, any, people who.
@@ -285,7 +286,7 @@ it('opens with one raffle question, then tests fresh cases with reasoned feedbac
     fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
     explanations.add(question.querySelector('.d1-feedback')?.textContent || '');
     expect(explanations.size).toBe(choices.length);
-    if (index === 0) expect(within(question).getByText(/a promise about a possible case, not a report that the case happened/)).toBeVisible();
+    if (index === 0) expect(within(question).getByText(/The rule tells you what follows if it rains. It doesn't report that it rained./)).toBeVisible();
     if (index < 3) fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   }
 });
@@ -383,7 +384,7 @@ it('works through four fresh rules one at a time, one for each place a not can s
   const rules = [
     ['If a guest is on the list, the guest gets a wristband.', 'not wristband → not on the list'],
     ['If the shop is open, the shutters are not down.', 'shutters down → not shop open'],
-    ['If the gate is not locked, the dog can get out.', 'not dog gets out → gate locked'],
+    ['If the gate is not locked, the dog can get out.', 'not dog can get out → gate locked'],
     ['If a ticket is not stamped, it is not valid.', 'ticket valid → ticket stamped'],
   ];
   rules.forEach(([sentence, correct], index) => {

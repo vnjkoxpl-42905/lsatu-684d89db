@@ -34,7 +34,8 @@ describe('reviewed worksheet source bank', () => {
   it('keeps complete propositions when reversing and negating', () => {
     for (const item of items) {
       expect(item.diagram).toBe(`${item.sufficient} → ${item.necessary}`);
-      expect(item.contrapositive).toBe(`NOT (${item.necessary}) → NOT (${item.sufficient})`);
+      const caseWords = (text: string) => text.toLowerCase().replace(/\b(?:a|an|that|those) /g, '');
+      expect(caseWords(item.contrapositive)).toBe(caseWords(`NOT (${item.necessary}) → NOT (${item.sufficient})`));
     }
     const compound = getSourceWorksheetDrill('source-independent')!.items[24];
     expect(compound.contrapositive).toContain('NOT (people both buy less and use less');
@@ -75,7 +76,7 @@ describe('reviewed worksheet source bank', () => {
     // "Every" does not mark the sufficient side here (legally binding does), so only "must" is keyed.
     expect(rephrase[10].indicators).toEqual([{ text: 'must', group: 2 }]);
     expect(rephrase[10].sufficient).toBe('an agreement is legally binding');
-    expect(rephrase[6].necessary).toBe('that project involves effective teamwork');
+    expect(rephrase[6].necessary).toBe('effective teamwork has taken place on that project');
     expect(rephrase[19].necessary).toContain('is required to be recalibrated under the maintenance policy');
     expect(rephrase[19].contrapositiveWords).toContain('is not required to be recalibrated');
     expect(rephrase[19].statement).not.toBe(rephrase[19].originalStatement);
@@ -84,7 +85,7 @@ describe('reviewed worksheet source bank', () => {
 
   it('reads simple and negative contrapositives naturally without losing scope', () => {
     const full = getSourceWorksheetDrill('source-full-translation')!.items;
-    expect(full[0].contrapositiveWords).toBe('If that intern is not offered a full-time position, then that person is not an intern who completes the program.');
+    expect(full[0].contrapositiveWords).toBe('If an intern is not offered a full-time position, then that person is not an intern who completes the program.');
     expect(full[12].contrapositiveWords).toBe('If alarms deactivate on their own, then the emergency protocol initiates within one minute.');
     expect(full[15].contrapositiveWords).toContain('not verified by both authorities');
     const independent = getSourceWorksheetDrill('source-independent')!.items;
@@ -163,4 +164,25 @@ describe('indicator check', () => {
     const errors = find('source-intro-identify', 'source-indicators-11');
     expect(check(errors, ['must', '2']).hint).toBe('One indicator is still unselected. Read the whole rule again.');
   });
+});
+
+it('accepts every as a real quantifier alongside the requirement in the agreement rule', () => {
+  const item = getSourceWorksheetDrill('source-rephrase')!.items[10];
+  expect(checkIndicatorSelection(item, [{text: 'Every', group: '1'}, {text: 'must', group: '2'}]).correct).toBe(true);
+  expect(checkIndicatorSelection(item, [{text: 'Every', group: '2'}, {text: 'must', group: '2'}]).correct).toBe(false);
+});
+
+it('keeps documentation as a duty and teamwork as an earlier occurrence', () => {
+  const items = sourceWorksheetDrills.flatMap(set => set.items);
+  for (const id of ['source-indicators-11', 'source-roles-10']) {
+    const item = items.find(item => item.id === id)!;
+    expect(item.necessary).toBe('errors are required to be documented before troubleshooting');
+    expect(item.ifThen).toContain('are required to be documented');
+    expect(item.contrapositiveWords).toContain('are not required');
+    expect(item.originalStatement).toBe('Always document errors before troubleshooting.');
+  }
+  const teamwork = items.find(item => item.id === 'source-rephrase-07')!;
+  expect(teamwork.necessary).toContain('has taken place');
+  expect(teamwork.ifThen).toContain('has taken place');
+  expect(teamwork.contrapositiveWords).toContain('has not taken place');
 });

@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, it } from 'vitest';
 import { IndicatorWordDeck } from './IndicatorWordDeck';
 import { CourseProgressProvider, useDeviceCourseProgress } from '../courseProgress';
 import { displayWord, indicatorWordCards } from '../content/indicatorWordCards';
+import { vi } from 'vitest';
 
 beforeEach(() => localStorage.clear());
 afterEach(cleanup);
@@ -64,4 +65,19 @@ it('saves every answer to the course record, and resumes from it when the device
   render(<Provider/>);
   expect(screen.getByText('Card 2 of 20')).toBeVisible();
   expect(screen.getByRole('button', { name: 'Next card' })).toBeVisible();
+});
+
+it('does not copy an anonymous device round into a fresh account', () => {
+  const anonymous = render(<IndicatorWordDeck/>);
+  answer(true); click('Next card'); answer(false);
+  const deviceRound = localStorage.getItem('conditional-indicator-words-v1');
+  anonymous.unmount();
+  const save = vi.fn();
+  render(<CourseProgressProvider store={{ steps: {}, save }}><IndicatorWordDeck/></CourseProgressProvider>);
+  expect(screen.getByText('Card 1 of 20')).toBeVisible();
+  expect(screen.queryByRole('button', { name: 'Next card' })).toBeNull();
+  expect(save).not.toHaveBeenCalled();
+  answer(true);
+  expect(save).toHaveBeenCalled();
+  expect(localStorage.getItem('conditional-indicator-words-v1')).toBe(deviceRound);
 });

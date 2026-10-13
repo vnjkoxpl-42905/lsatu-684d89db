@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
-# Safe push to origin/main when Lovable may have committed in parallel.
+# Safe push to origin/main, or an explicit review branch, when Lovable may have committed in parallel.
 # Fetches, fast-forwards or merges (never rebases, never force-pushes), then pushes.
 
 set -e
 cd "$(git rev-parse --show-toplevel)"
+TARGET="${1:-main}"
+if [ "$#" -gt 1 ] || ! git check-ref-format --branch "$TARGET" >/dev/null; then
+  echo "Usage: .claude/safe-push.sh [target-branch]" >&2
+  exit 1
+fi
 
 # Typecheck gate: tsc does not run during `vite build` (esbuild strips types), so a
 # type error (e.g. a missing import that crashes at runtime) would otherwise ship to
@@ -34,5 +39,5 @@ else
 fi
 
 # Push the checkout that passed the gate, including an isolated detached worktree.
-git push origin HEAD:main
-echo "[safe-push] Pushed $(git log -1 --format='%h %s')"
+git push origin "HEAD:$TARGET"
+echo "[safe-push] Pushed $(git log -1 --format='%h %s') to origin/$TARGET"

@@ -27,11 +27,11 @@ it('shows one foundation question at a time and retains checked feedback when re
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   expect(screen.getByRole('heading', { level: 2, name: /Saturday arrives/ })).toHaveFocus();
-  expect(screen.queryByText(/The rule describes what would happen if it rains/)).toBeNull();
+  expect(screen.queryByText(/The rule tells you what follows if it rains/)).toBeNull();
   expect(container.querySelectorAll('[data-practice-task]')).toHaveLength(1);
   fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
   expect(screen.getByRole('button', { name: /^The rule alone doesn't settle it\. Correct answer$/ })).toHaveAttribute('aria-pressed', 'true');
-  expect(screen.getByText(/The rule describes what would happen if it rains/)).toBeVisible();
+  expect(screen.getByText(/The rule tells you what follows if it rains/)).toBeVisible();
 });
 
 it('runs sufficient-side practice as the staged drill and keeps a fresh counterexample item', () => {

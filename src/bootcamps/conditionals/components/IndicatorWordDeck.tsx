@@ -17,7 +17,9 @@ function readDevice(): unknown {
 export function IndicatorWordDeck({ stepId = INDICATOR_DECK_STEP }: { stepId?: string }) {
   const course = useCourseStep(stepId);
   const record = course?.record;
-  const [state, setState] = useState<DeckState>(() => readDeckState(course?.saved?.state) ?? readDeckState(readDevice()) ?? newRound());
+  const [state, setState] = useState<DeckState>(() => course
+    ? readDeckState(course.saved?.state) ?? newRound()
+    : readDeckState(readDevice()) ?? newRound());
   const next = useRef<HTMLButtonElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const finished = isFinished(state);
@@ -26,7 +28,9 @@ export function IndicatorWordDeck({ stepId = INDICATOR_DECK_STEP }: { stepId?: s
   // Every answer is saved to the account, so the student can leave and pick up on the same card in the same order.
   useEffect(() => {
     if (touched) record?.({ state, done: Math.min(state.index + (state.picked !== null ? 1 : 0), state.queue.length), total: state.queue.length, ...(finished ? { status: 'done' as const } : {}) });
-    try { localStorage.setItem(DEVICE_KEY, JSON.stringify(state)); } catch { /* the account copy still holds it */ }
+    if (!record) {
+      try { localStorage.setItem(DEVICE_KEY, JSON.stringify(state)); } catch { /* keep this preview round in memory */ }
+    }
   }, [state, record, touched, finished]);
   useEffect(() => { if (state.picked !== null) next.current?.focus({ preventScroll: true }); }, [state.picked]);
   useEffect(() => { if (finished) heading.current?.focus({ preventScroll: true }); }, [finished]);

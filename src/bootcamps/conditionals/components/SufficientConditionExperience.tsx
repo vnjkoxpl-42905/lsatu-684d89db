@@ -1,4 +1,5 @@
 import { useId, useRef, useState } from 'react';
+import { useLessonInteraction } from '../courseProgress';
 import './sufficient-condition-experience.css';
 
 const relationships = [
@@ -24,7 +25,7 @@ function StudentSymbol({ x, y }: { x: number; y: number }) {
 }
 
 export function SufficientConditionExperience() {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useLessonInteraction('sufficient:case', 0);
   const titleId = useId();
   const diagramId = useId();
   const readingId = useId();
@@ -94,8 +95,8 @@ const explanations = {
 } as const;
 
 export function SufficientReasoningWalkthrough() {
-  const [revealed, setRevealed] = useState(false);
-  const [selected, setSelected] = useState<keyof typeof explanations>('trigger');
+  const [revealed, setRevealed] = useLessonInteraction('sufficient:revealed', false);
+  const [selected, setSelected] = useLessonInteraction<keyof typeof explanations>('sufficient:explanation', 'trigger');
   const triggerButton = useRef<HTMLButtonElement>(null);
   const headingId = useId();
   const relationshipId = useId();

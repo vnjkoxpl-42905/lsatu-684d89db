@@ -24,3 +24,16 @@ describe('drill instruction walkthroughs', () => {
     }
   });
 });
+
+it('highlights valid tokens and separates adjacent conditions', () => {
+  for (const demo of Object.values(drillDemos)) for (const step of demo.steps) {
+    if (step.frame.kind !== 'pick') continue;
+    const frame = step.frame;
+    expect(frame.picks.every(index => index >= 0 && index < frame.words.length)).toBe(true);
+    if (step.title === 'Highlight both conditions') {
+      expect(frame.spans).toHaveLength(2);
+      for (const [from, to] of frame.spans!) expect(from >= 0 && to < frame.words.length && from <= to).toBe(true);
+      expect(frame.spans![0][1]).toBeLessThan(frame.spans![1][0]);
+    }
+  }
+});

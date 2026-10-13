@@ -1,6 +1,7 @@
 import type { ConditionalDifficulty, ConditionalUnit } from './content/types';
 import { getCurriculumDifficulty, getCurriculumUnits } from './curriculumPath';
 import { conditionalOpeningEditionKey, isConditionalLessonEditionKey, openingQuestionRevisions } from './openingRevision';
+import { OPENING_COURSE_PATH } from './openingCoursePath';
 
 export interface AnswerDraft {
   working: string;
@@ -56,11 +57,25 @@ export function markConditionalLessonRead(progress: ConditionalProgress, unitId:
   const editionKey = conditionalOpeningEditionKey(unitId);
   return { ...progress, lessons: { ...progress.lessons, [unitId]: readAt, ...(editionKey ? { [editionKey]: readAt } : {}) } };
 }
+export function mergeCourseStepState(prior: unknown, next: unknown): unknown {
+  const incoming = next as { lessonInteractions?: Record<string, unknown> } | null;
+  if (!incoming?.lessonInteractions) return next;
+  const previous = prior as { lessonInteractions?: Record<string, unknown> } | null;
+  return { ...previous, ...incoming, lessonInteractions: { ...previous?.lessonInteractions, ...incoming.lessonInteractions } };
+}
+
 export function recordCourseStep(progress: ConditionalProgress, stepId: string, patch: Partial<Omit<CourseStepProgress, 'updatedAt'>>, at = new Date().toISOString()): ConditionalProgress {
   const prior = progress.course?.[stepId];
   // Finishing is permanent: revisiting or resetting a drill never un-completes it.
   const status = prior?.status === 'done' ? 'done' : patch.status ?? prior?.status ?? 'started';
-  return { ...progress, course: { ...progress.course, [stepId]: { ...prior, ...patch, status, updatedAt: at } } };
+  const next = { ...progress, course: { ...progress.course, [stepId]: { ...prior, ...patch, ...(patch.state !== undefined ? { state: mergeCourseStepState(prior?.state, patch.state) } : {}), status, updatedAt: at } } };
+  const note = OPENING_COURSE_PATH.find(step => step.id === stepId && step.type === 'note');
+  if (patch.status !== 'done' || !note) return next;
+  const notes = OPENING_COURSE_PATH.filter(step => step.type === 'note' && step.unitId === note.unitId);
+  if (!notes.every(step => next.course[step.id]?.status === 'done')) return next;
+  const edition = conditionalOpeningEditionKey(note.unitId);
+  if (next.lessons[note.unitId] && (!edition || next.lessons[edition])) return next;
+  return markConditionalLessonRead(next, note.unitId, at);
 }
 function cleanCourse(course: unknown): Record<string, CourseStepProgress> | undefined {
   if (course === undefined) return undefined;

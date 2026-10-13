@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { afterEach, beforeEach, expect, it } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
+import { CourseProgressProvider } from '../courseProgress';
 import { SourceWorksheetDrill } from './SourceWorksheetDrill';
 import { sourceWorksheetDrills } from '../content/sourceWorksheetDrills';
 
@@ -59,7 +60,7 @@ it('requires the whole indicator phrase and correct group before advancing, with
   click('Check this step');
   expect(screen.getByText(/Indicators:/)).toBeVisible();
   click('Continue');
-  expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Highlight both conditions' })).toBeVisible();
 });
 
 it('carries indicator work from the folded drill into Drill 2 without marking the rule reviewed', () => {
@@ -72,7 +73,7 @@ it('carries indicator work from the folded drill into Drill 2 without marking th
   run('source-intro-identify');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   fireEvent.change(screen.getByLabelText('Go to question'), { target: { value: 15 } });
-  expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Highlight both conditions' })).toBeVisible();
   expect(JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-indicators')!).answers['source-indicators-01'].review).toBe('matched');
 });
 
@@ -103,7 +104,7 @@ it('keeps every source task reachable and future operations gated', () => {
     fireEvent.change(navigator, { target: { value: set.items.length - 1 } });
     expect(screen.getByText(`Question ${set.items.length} of ${set.items.length}`)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Bring it together' })).toBeDisabled();
-    if (set.taskKind !== 'contrapositive') expect(screen.queryByRole('button', { name: 'Reverse and negate' })).toBeNull();
+    if (set.taskKind !== 'contrapositive') expect(screen.queryByRole('button', { name: 'Flip and negate' })).toBeNull();
     view.unmount();
   }
 });
@@ -221,3 +222,56 @@ it('recovers malformed saved state and links the landing to its run route', () =
   expect(screen.getByRole('link', { name: 'Start practice' })).toHaveAttribute('href', '/?page=source-rephrase&run=1');
 });
 
+
+it('waits for loaded account progress before reading or recording the worksheet', () => {
+  const save = vi.fn();
+  const set = sourceWorksheetDrills.find(s => s.id === 'source-rephrase')!;
+  const item = set.items[0];
+  const state = { current: 0, answers: { [item.id]: { groups: {}, words: [], left: '', right: '', contraLeft: '', contraRight: '', writing: 'Saved account wording', stage: 0, passed: [], fingerprint: '', review: null } } };
+  const tree = (ready: boolean) => <CourseProgressProvider store={{ready, steps: ready ? { [set.id]: {status: 'started', updatedAt: '', state} } : {}, save}}><SourceWorksheetDrill setId={set.id} run/></CourseProgressProvider>;
+  const view = render(tree(false));
+  expect(save).not.toHaveBeenCalled();
+  expect(localStorage.getItem(`conditional-worksheet-v1:${set.id}`)).toBeNull();
+  view.rerender(tree(true));
+  expect(screen.getByRole('textbox')).toHaveValue('Saved account wording');
+  expect(save.mock.calls.at(-1)?.[1].state.answers[item.id].writing).toBe('Saved account wording');
+});
+
+it('records completed work only after its final self-review', () => {
+  const save = vi.fn();
+  render(<CourseProgressProvider store={{steps: {}, save}}><SourceWorksheetDrill setId="source-intro-identify" run/></CourseProgressProvider>);
+  click('if');
+  fireEvent.change(screen.getByLabelText(/Which group/), {target: {value: '1'}});
+  click('Check this step'); click('Continue');
+  mark(5, 11); mark(0, 3); click('Check this step'); click('Continue');
+  expect(save.mock.calls.at(-1)?.[1].done).toBe(0);
+  click('My reasoning matched');
+  expect(save.mock.calls.at(-1)?.[1].done).toBe(1);
+});
+
+it('keeps contrapositive explanations hidden through the early choice steps', () => {
+  const set = sourceWorksheetDrills.find(s => s.id === 'source-full-translation')!;
+  run(set.id);
+  click('All');
+  fireEvent.change(screen.getByLabelText(/Which group/), {target: {value: '1'}});
+  click('Check this step');
+  expect(screen.queryByText(set.items[0].explanation)).toBeNull();
+});
+
+it('keeps a duty in the symbols even when the highlight leaves must out', () => {
+  run('source-intro-diagrams');
+  fireEvent.change(screen.getByRole('combobox', { name: 'Go to question' }), {target: {value: '3'}});
+  mark(1, 1); mark(3, 5);
+  click('Check this step'); click('Continue');
+  expect(screen.getByText('that person is required to undergo annual training', {selector: 'strong'})).toBeVisible();
+  write('First condition’s symbol', 'M'); write('Second condition’s symbol', 'T');
+  click('Save and continue');
+  const saved = JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-intro-diagrams')!);
+  expect(saved.answers['source-intro-diagrams-04'].conditionTwo).toBe('that person is required to undergo annual training');
+  expect(saved.answers['source-intro-diagrams-04'].spans).toEqual([[1, 1], [3, 5]]);
+  cleanup();
+  saved.answers['source-intro-diagrams-04'].conditionTwo = 'undergo annual training';
+  localStorage.setItem('conditional-worksheet-v1:source-intro-diagrams', JSON.stringify(saved));
+  run('source-intro-diagrams');
+  expect(screen.getByText(/that person is required to undergo annual training/)).toBeVisible();
+});

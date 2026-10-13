@@ -2,9 +2,22 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { CourseProgressProvider, type CourseProgressStore } from './courseProgress';
 import { emptyProgress, parseConditionalProgress, recordCourseStep } from './progress';
+import { conditionalOpeningEditionKey } from './openingRevision';
 import { StagedReasoningDrill } from './components/StagedReasoningDrill';
 
 describe('opening course progress', () => {
+  it('stamps the legacy unit only when every primary opening note is explicitly completed', () => {
+    let progress = recordCourseStep(emptyProgress(), 'sufficient', { status: 'done' }, '2026-10-13T20:00:00Z');
+    expect(progress.lessons['sufficient-necessary']).toBeUndefined();
+    progress = recordCourseStep(progress, 'foundation-practice', { status: 'done' });
+    expect(progress.lessons['sufficient-necessary']).toBeUndefined();
+    progress = recordCourseStep(progress, 'necessary', { status: 'done' }, '2026-10-13T20:01:00Z');
+    expect(progress.lessons['sufficient-necessary']).toBe('2026-10-13T20:01:00Z');
+    expect(progress.lessons[conditionalOpeningEditionKey('sufficient-necessary')!]).toBe('2026-10-13T20:01:00Z');
+    expect(progress.lessons.orientation).toBeUndefined();
+    const restored = parseConditionalProgress(progress);
+    expect(recordCourseStep(restored, 'necessary', { status: 'done' }).lessons).toEqual(progress.lessons);
+  });
   it('keeps a finished step finished when it is revisited', () => {
     let progress = recordCourseStep(emptyProgress(), 'sufficient-practice', { status: 'done', done: 24, total: 24 });
     progress = recordCourseStep(progress, 'sufficient-practice', { done: 3 });

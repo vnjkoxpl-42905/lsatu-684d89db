@@ -21,8 +21,8 @@ const sets = [
 ];
 export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowed: string[] }) {
   const [params] = useSearchParams();
-  // The word deck always mixes both groups, so it is one set for everyone. Old Group 1 and Group 2 links land on it.
-  const available = [...allowed.filter(id => id === 'foundation'), 'indicators'];
+  // The word deck mixes both groups. Old Group 1 and Group 2 links land on it.
+  const available = [...allowed.filter(id => id === 'foundation'), ...(allowed.some(id => id === 'group-1' || id === 'group-2') ? ['indicators'] : [])];
   const requested = ['group-1', 'group-2'].includes(params.get('deck') ?? '') ? 'indicators' : params.get('deck');
   const set = sets.find(item => item.id === requested && available.includes(item.id));
   if (!set) return <div className="oc-course-note co-flashcard-tools">

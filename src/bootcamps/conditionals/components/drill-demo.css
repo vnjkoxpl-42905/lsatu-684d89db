@@ -52,3 +52,7 @@
 @media(prefers-reduced-motion:reduce){.dd-stage,.dd-picked,.dd-chip,.dd-typed,.dd-card-left,.dd-card-right,.dd-correct,.dd-correct i{animation-duration:1ms!important;animation-delay:0s!important}}
 .dark .dd-demo{--dd-ink:#edf4ed;--dd-soft:#b5c9cc;--dd-line:#4f666d;--dd-paper:#1e3741;--dd-right-bg:#1d4a38;--dd-right:#5fc495}
 .dark .dd-field,.dark .dd-card,.dark .dd-option{background:#152b36}.dark .dd-picked{color:#173544}
+
+.dd-word[data-span="1"] { background: #fef3c7; }
+.dd-word[data-span="2"] { background: #ccfbf1; }
+.dd-word[data-span] { border-radius: 3px; }

@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef } from 'react';
+import { useLessonInteraction } from '../courseProgress';
 import './must-arrow-practice.css';
 
 // Practice follows the lesson's source-supported sufficient-to-necessary convention.
@@ -66,17 +67,26 @@ const questions = [
 ];
 
 export function MustArrowPractice() {
-  const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [choice, setChoice] = useState<number | null>(null);
+  type Answer = { choice: number | null; first: number | null; checked: boolean; misses: number; assisted: boolean };
+  const signature = JSON.stringify(questions);
+  const empty = () => ({ signature, index: 0, complete: false, answers: questions.map((): Answer => ({ choice: null, first: null, checked: false, misses: 0, assisted: false })) });
+  const [saved, save] = useLessonInteraction('quiz:must-arrow', empty());
+  const state = saved.signature === signature && saved.answers?.length === questions.length && Number.isInteger(saved.index) && saved.index >= 0 && saved.index < questions.length ? saved : empty();
+  const { index, answers } = state;
+  const answer = answers[index];
+  const choice = answer.choice;
   const heading = useRef<HTMLHeadingElement>(null);
   const feedbackHeading = useRef<HTMLHeadingElement>(null);
   const focusFeedback = useRef(false);
   const id = useId();
   const question = questions[index];
-  const answer = answers[question.id];
-  const answered = answer !== undefined;
-  const count = Object.keys(answers).length;
+  const answered = answer.checked;
+  const resolved = answer.assisted || answered && choice === question.correct;
+  const count = answers.filter((item, index) => item.assisted || item.checked && item.choice === questions[index].correct).length;
+  function changeAnswer(patch: Partial<Answer>) {
+    const updated = answers.map((item, position) => position === index ? { ...item, ...patch } : item);
+    save({ ...state, answers: updated, complete: updated.every((item, index) => item.assisted || item.checked && item.choice === questions[index].correct) });
+  }
 
   useEffect(() => {
     if (focusFeedback.current) {
@@ -86,8 +96,7 @@ export function MustArrowPractice() {
   }, [answers]);
 
   function move(next: number) {
-    setIndex(next);
-    setChoice(null);
+    save({ ...state, index: next });
     heading.current?.focus();
   }
 
@@ -99,33 +108,35 @@ export function MustArrowPractice() {
     <div className="ma-question-practice-question">
       <h4 ref={heading} tabIndex={-1}>Question {index + 1} of {questions.length}</h4>
       <p className="ma-question-practice-rule">{question.rule}</p>
-      <fieldset className="ma-question-practice-choices" disabled={answered}>
+      <fieldset className="ma-question-practice-choices" disabled={answered || answer.assisted}>
         <legend className="ma-question-practice-prompt">{question.prompt}</legend>
-        {question.options.map((option, optionIndex) => <label key={option} className={(answered ? answer : choice) === optionIndex ? 'is-selected' : undefined}>
-          <input type="radio" name={`${id}-${question.id}`} checked={(answered ? answer : choice) === optionIndex}
-            onChange={() => setChoice(optionIndex)}/>
+        {question.options.map((option, optionIndex) => <label key={option} className={choice === optionIndex ? 'is-selected' : undefined}>
+          <input type="radio" name={`${id}-${question.id}`} checked={choice === optionIndex}
+            onChange={() => changeAnswer({ choice: optionIndex })}/>
           <span>{option}</span>
         </label>)}
       </fieldset>
-      {!answered && <button type="button" disabled={choice === null} onClick={() => {
+      {!answered && !answer.assisted && <button type="button" disabled={choice === null} onClick={() => {
         if (choice !== null) {
           focusFeedback.current = true;
-          setAnswers(items => ({ ...items, [question.id]: choice }));
+          changeAnswer({ checked: true, first: answer.first ?? choice, misses: answer.misses + (choice === question.correct ? 0 : 1) });
         }
       }}>Check answer</button>}
       <div className="ma-question-practice-feedback">
-        {answered && <div className="ma-question-practice-explanation">
-          <h5 ref={feedbackHeading} tabIndex={-1}>{answer === question.correct ? 'Correct.' : 'Not quite.'}</h5>
-          <p>{question.feedback[answer]}</p>
-          {answer !== question.correct && <p><strong>The answer: {question.options[question.correct]}</strong></p>}
-          <p>{question.explanation}</p>
+        {(answered || answer.assisted) && <div className="ma-question-practice-explanation">
+          <h5 ref={feedbackHeading} tabIndex={-1}>{answer.assisted ? 'Worked explanation' : choice === question.correct ? 'Correct.' : 'Not quite.'}</h5>
+          {!answer.assisted && choice !== null && <p>{question.feedback[choice]}</p>}
+          {answer.assisted && <><p><strong>The answer: {question.options[question.correct]}</strong></p><p>{question.feedback[question.correct]}</p><p>You reviewed this question with help. Your first answer stays recorded.</p></>}
+          {resolved && <p>{question.explanation}</p>}
           {count === questions.length && <p className="ma-question-practice-finished">You've answered all {questions.length} questions. Review the explanations, then continue to the next drill.</p>}
         </div>}
       </div>
+      {answered && !resolved && <button type="button" onClick={() => changeAnswer({ choice: null, checked: false })}>Try again</button>}
+      {!resolved && answer.misses >= 2 && <button type="button" onClick={() => { focusFeedback.current = true; changeAnswer({ assisted: true }); }}>Show me</button>}
     </div>
     <div className="ma-question-practice-navigation">
       <button type="button" disabled={index === 0} onClick={() => move(index - 1)}>Previous question</button>
-      {index < questions.length - 1 && <button type="button" disabled={!answered} onClick={() => move(index + 1)}>Next question <span aria-hidden="true">→</span></button>}
+      {index < questions.length - 1 && <button type="button" disabled={!resolved} onClick={() => move(index + 1)}>Next question <span aria-hidden="true">→</span></button>}
     </div>
   </div>;
 }

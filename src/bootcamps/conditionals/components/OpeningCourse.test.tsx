@@ -44,7 +44,8 @@ it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an o
   await waitFor(() => expect(document.querySelector('.opening-course-content')).not.toBeNull());
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(screen.getByRole('navigation', { name: 'Course navigation' })).toBeVisible();
-  expect(screen.queryByRole('button', { name: /Mark lesson/ })).toBeNull();
+  if (step.type === 'note') expect(screen.getByRole('button', { name: /Mark lesson/ })).toBeVisible();
+  else expect(screen.queryByRole('button', { name: /Mark lesson/ })).toBeNull();
 });
 
 it('separates a drill landing from its attempt surface', () => {

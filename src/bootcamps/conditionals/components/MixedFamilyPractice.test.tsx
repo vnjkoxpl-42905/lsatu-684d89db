@@ -52,7 +52,7 @@ it('requires an independent diagram and readback before exposing complete labels
 it('describes hidden family labels truthfully for the deterministic mixed order', () => {
   const view = render(<MixedFamilyPractice/>);
   expect(mixedFamilyItems.map(item => item.family)).toEqual(['sufficient', 'necessary', 'sufficient', 'necessary', 'sufficient', 'necessary']);
-  expect(view.container.textContent).toContain('The family name stays hidden until you check your choices.');
+  expect(view.container.textContent).toContain('Translate first, then compare the complete conditions and arrow direction.');
   expect(view.container.textContent).not.toContain('nothing tells you which kind is coming');
 });
 
@@ -73,4 +73,21 @@ it('asks an authored question about each rule and gives only the arrow hint when
     expect(view.getByRole('status')).not.toHaveTextContent('complete group');
     view.unmount();
   }
+});
+
+
+it('keeps the next question locked until both checked choices are correct', () => {
+  const view = render(<MixedFamilyPractice/>);
+  const scope = within(view.container.querySelector<HTMLElement>('[data-mixed-item="1"]')!);
+  const item = mixedFamilyItems[0];
+  fireEvent.change(scope.getByLabelText('Your diagram for sentence 1'), { target: { value: 'My diagram' } });
+  fireEvent.change(scope.getByLabelText('Your English readback for sentence 1'), { target: { value: 'My readback' } });
+  fireEvent.click(scope.getByRole('button', { name: 'Compare my translation for sentence 1' }));
+  fireEvent.click(scope.getByRole('button', { name: item.target }));
+  fireEvent.click(scope.getByRole('button', { name: item.right }));
+  fireEvent.click(scope.getByRole('button', { name: 'Check question 1' }));
+  expect(view.getByRole('button', { name: 'Next mixed question' })).toBeDisabled();
+  fireEvent.click(scope.getByRole('button', { name: item.left }));
+  fireEvent.click(scope.getByRole('button', { name: 'Check question 1' }));
+  expect(view.getByRole('button', { name: 'Next mixed question' })).toBeEnabled();
 });

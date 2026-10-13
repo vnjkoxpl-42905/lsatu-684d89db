@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { checkIndicatorSelection, getSourceWorksheetDrill, type SourceWorksheetDrillSet } from '../content/sourceWorksheetDrills';
 import { checkConditionSpans, conditionAnswer, spanText } from '../content/conditionSpans';
-import { useCourseStep } from '../courseProgress';
+import { useCourseStep, useCourseProgress } from '../courseProgress';
 import { DrillDemo } from './DrillDemo';
 import './source-worksheet-drill.css';
 
@@ -17,7 +17,7 @@ type Attempt = {
 };
 const blank = (): Attempt => ({ groups: {}, fingerprint: '', words: [], left: '', right: '', contraLeft: '', contraRight: '', negateLeft: false, negateRight: false, writing: '', contraWriting: '', conditionOne: '', conditionTwo: '', symbolOne: '', symbolTwo: '', spans: [], stage: 0, passed: [], revealed: false, review: null });
 type Saved = { current: number; answers: Record<string, Attempt> };
-const names: Record<Stage, string> = { indicators: 'Find the indicators', conditions: 'Keep the complete ideas', symbols: 'Define your symbols', diagram: 'Build the diagram', contra: 'Reverse and negate', readback: 'Read the original', 'contra-readback': 'Read the contrapositive', review: 'Bring it together' };
+const names: Record<Stage, string> = { indicators: 'Find the indicators', conditions: 'Highlight both conditions', symbols: 'Define your symbols', diagram: 'Build the diagram', contra: 'Flip and negate', readback: 'Read the original', 'contra-readback': 'Read the contrapositive', review: 'Bring it together' };
 function stagesFor(kind: SourceWorksheetDrillSet['taskKind']): Stage[] {
   if (kind === 'indicators') return ['indicators', 'review'];
   if (kind === 'identify') return ['indicators', 'conditions', 'review'];
@@ -47,8 +47,10 @@ function readSaved(key: string, accountState?: unknown): Saved {
 }
 
 export function SourceWorksheetDrill({ setId, run = false, startUrl, title, storageScope = 'preview' }: { setId: string; run?: boolean; startUrl?: string; title?: string; storageScope?: string }) {
+  const progress = useCourseProgress();
   const set = getSourceWorksheetDrill(setId);
   if (!set) return <p>This practice set is unavailable.</p>;
+  if (progress?.ready === false) return <p role="status">Loading your saved practice…</p>;
   return <div className="opening-course-content"><WorksheetRun key={`${storageScope}-${setId}-${run}`} set={set} title={title} run={run} startUrl={startUrl} storageScope={storageScope}/></div>;
 }
 
@@ -74,6 +76,14 @@ function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: Source
     }
     for (const item of set.items) {
       const a = restored.answers[item.id];
+      if (a) {
+        const checked = checkConditionSpans(item.statement, a.spans);
+        if (checked.correct) {
+          // Highlights omit signal words such as must. Symbols keep their semantic force.
+          a.conditionOne = checked.roles[0] === 'sufficient' ? item.sufficient : item.necessary;
+          a.conditionTwo = checked.roles[1] === 'sufficient' ? item.sufficient : item.necessary;
+        }
+      }
       if (a && (a.fingerprint !== fingerprint(item) || !a.passed.length)) {
         // Keep earlier drafts. The new staged workflow asks the learner to check each operation again.
         a.revealed = false; a.review = null; a.stage = 0; a.passed = [];
@@ -122,14 +132,14 @@ function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: Source
   const deferredComparison = stage === 'symbols' || set.taskKind === 'contrapositive' && ['readback', 'contra-readback'].includes(stage) || set.taskKind === 'rephrase' && stage === 'readback';
   const objective = ['indicators', 'conditions', 'diagram', 'contra'].includes(stage);
   const correct = stage === 'indicators' ? indicatorsCorrect : stage === 'conditions' ? spanCheck.correct : stage === 'diagram' ? placementCorrect : stage === 'contra' ? contraCorrect : true;
-  const holdExplanation = set.taskKind === 'contrapositive' && ['diagram', 'contra'].includes(stage);
+  const holdExplanation = set.taskKind === 'contrapositive';
   const deferredNote = stage === 'symbols' ? '' : set.taskKind === 'contrapositive' ? 'You compare your wording with ours at the end.' : 'Our version stays hidden until you have completed the whole translation.';
   const ready = stage === 'indicators' ? phrases.length > 0 && phrases.every(p => !!answer.groups[p.join('-')]) : stage === 'conditions' ? answer.spans.length === 2 : stage === 'symbols' ? symbolsValid : stage === 'diagram' ? !!answer.left && !!answer.right : stage === 'contra' ? !!answer.contraLeft && !!answer.contraRight : stage === 'readback' ? !!answer.writing.trim() : stage === 'contra-readback' ? !!answer.contraWriting.trim() : true;
   const choices = current % 2 ? ['necessary', 'sufficient'] : ['sufficient', 'necessary'];
   const neutralConditions = current % 2 === 0 ? [item.necessary, item.sufficient] : [item.sufficient, item.necessary];
   const condition = (value: string) => value === 'sufficient' ? item.sufficient : item.necessary;
 
-  const finishedItems = set.items.filter(entry => { const a = saved.answers[entry.id]; return !!a && stages.every(name => name === 'review' || a.passed.includes(name)); }).length;
+  const finishedItems = set.items.filter(entry => { const a = saved.answers[entry.id]; return !!a?.review && stages.every(name => name === 'review' || a.passed.includes(name)); }).length;
   useEffect(() => {
     if (started) record?.({ state: saved, done: finishedItems, total: set.items.length, ...(finishedItems === set.items.length ? { status: 'done' as const } : {}) });
     try { localStorage.setItem(storageKey, JSON.stringify(saved)); setStorageFailed(false); } catch { setStorageFailed(!record); }
@@ -139,7 +149,14 @@ function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: Source
   function update(patch: Partial<Attempt>) { setSaved(s => ({ ...s, answers: { ...s.answers, [item.id]: { ...(s.answers[item.id] ?? blank()), ...patch, fingerprint: fingerprint(item) } } })); }
   function edit(patch: Partial<Attempt>) { setChecked(false); update({ ...patch, revealed: false, review: null, passed: answer.passed.filter(s => stages.indexOf(s) < stageIndex) }); }
   function go(index: number) { setSaved(s => ({ ...s, current: index })); setChecked(false); setResults(false); setStarted(true); }
-  function advance() { update({ stage: stageIndex + 1, passed: [...new Set([...answer.passed, stage])], revealed: false }); setChecked(false); }
+  function advance() {
+    const meanings = stage === 'conditions' && spanCheck.correct ? {
+      conditionOne: spanCheck.roles[0] === 'sufficient' ? item.sufficient : item.necessary,
+      conditionTwo: spanCheck.roles[1] === 'sufficient' ? item.sufficient : item.necessary,
+    } : {};
+    update({ ...meanings, stage: stageIndex + 1, passed: [...new Set([...answer.passed, stage])], revealed: false });
+    setChecked(false);
+  }
   function setSpans(spans: number[][]) {
     const text = (i: number) => spans[i] ? spanText(item.statement, spans[i]) : '';
     // New highlights change what each letter means, so anything built on the old ones starts over.
@@ -182,7 +199,7 @@ function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: Source
       {production && ['diagram', 'contra', 'readback', 'contra-readback'].includes(stage) && <div className="sw-learner-legend"><span>Your letters</span><p><strong>{answer.symbolOne}</strong> = {answer.conditionOne}</p><p><strong>{answer.symbolTwo}</strong> = {answer.conditionTwo}</p></div>}
       {stage === 'diagram' && production && <><p>Use your letters to build the diagram. Put the sufficient condition on the left and the necessary condition on the right.</p><div className="sw-arrow-row">{symbolSlot('Left: sufficient condition', 'left')}<span className="sw-arrow" aria-label="requires">→</span>{symbolSlot('Right: necessary condition', 'right')}</div></>}
       {stage === 'diagram' && !production && <><p>Which condition is enough? Put it on the left. Put what it requires on the right.</p><div className="sw-arrow-row">{slot('Left: sufficient condition', 'left')}<span className="sw-arrow" aria-label="requires">→</span>{slot('Right: necessary condition', 'right')}</div></>}
-      {stage === 'contra' && <><div className="sw-prior-rule"><span>Your original diagram</span><p>{originalText}</p></div><p>Reverse your two conditions, then negate each one. Turn NOT on for a side to negate it. Keep your letters’ meanings unchanged.</p><div className="sw-arrow-row"><div className="sw-slot-wrap">{symbolSlot('Left side', 'contraLeft')}<label className="sw-negation"><input type="checkbox" checked={answer.negateLeft} onChange={e => edit({ negateLeft: e.target.checked })}/>NOT on the left side</label></div><span className="sw-arrow" aria-label="requires">→</span><div className="sw-slot-wrap">{symbolSlot('Right side', 'contraRight')}<label className="sw-negation"><input type="checkbox" checked={answer.negateRight} onChange={e => edit({ negateRight: e.target.checked })}/>NOT on the right side</label></div></div></>}
+      {stage === 'contra' && <><div className="sw-prior-rule"><span>Your original diagram</span><p>{originalText}</p></div><p>Flip the sides, then negate each whole condition. Turn NOT on for a side to negate it. Keep your letters’ meanings unchanged.</p><div className="sw-arrow-row"><div className="sw-slot-wrap">{symbolSlot('Left side', 'contraLeft')}<label className="sw-negation"><input type="checkbox" checked={answer.negateLeft} onChange={e => edit({ negateLeft: e.target.checked })}/>NOT on the left side</label></div><span className="sw-arrow" aria-label="requires">→</span><div className="sw-slot-wrap">{symbolSlot('Right side', 'contraRight')}<label className="sw-negation"><input type="checkbox" checked={answer.negateRight} onChange={e => edit({ negateRight: e.target.checked })}/>NOT on the right side</label></div></div></>}
       {(stage === 'readback' || stage === 'contra-readback') && <>{production ? <div className="sw-prior-rule"><span>{stage === 'readback' ? 'Your original diagram' : 'Your contrapositive diagram'}</span><p>{stage === 'readback' ? originalText : contraText}</p></div> : <p>Start with the rule. Write its meaning in ordinary if/then language before you compare it with our version.</p>}<label className="sw-writing">{stage === 'readback' ? 'Write this rule as an if/then sentence.' : 'Write the contrapositive in ordinary language.'}<textarea rows={4} value={stage === 'readback' ? answer.writing : answer.contraWriting} onChange={e => edit(stage === 'readback' ? { writing: e.target.value } : { contraWriting: e.target.value })} placeholder="If …, then …"/></label></>}
       {stage !== 'review' && deferredComparison && <>{deferredNote && <p className="sw-notation-help">{deferredNote}</p>}<button className="sw-primary" disabled={!ready} onClick={advance}>Save and continue<ArrowRight size={17}/></button></>}
       {stage !== 'review' && !deferredComparison && <>{!checked ? <button className="sw-primary" disabled={!ready} onClick={() => { setChecked(true); if (objective && !correct) setMisses(count => count + 1); }}>{objective ? 'Check this step' : 'Compare this step'}<ArrowRight size={17}/></button> : <section className={`sw-feedback ${objective && !correct ? 'sw-feedback-revise' : ''}`}><h3 ref={feedback} tabIndex={-1}>{objective ? correct ? 'That step works.' : 'Make one adjustment.' : 'Compare the complete meaning.'}</h3>{stage === 'indicators' && (indicatorsCorrect ? <><p>You found the indicators and their groups.</p><p><strong>Indicators: </strong>{item.indicators.map(i => `${i.text} (Group ${i.group})`).join('; ')}.</p></> : <p>{indicatorCheck.hint}</p>)}{stage === 'conditions' && (spanCheck.correct ? <><p>Both conditions are marked, restrictions included. Here they are in full.</p><ul className="sw-condition-model">{neutralConditions.map(text => <li key={text}>{text}</li>)}</ul></> : <p>{spanCheck.hint}</p>)}{stage === 'diagram' && <><p>{placementCorrect ? 'The sufficient condition points to what it requires.' : answer.left === answer.right ? 'You used the same condition twice. Each side needs a different complete condition.' : 'Which condition is enough to prove the other? That one goes on the left.'}</p>{placementCorrect && <p className="sw-answer-diagram">{item.diagram}</p>}</>}{stage === 'contra' && <>{objective && !correct ? <p>{contraHint}</p> : <><p>{objective ? 'Both sides switched, and both were negated. Compare with our version.' : 'Compare your contrapositive with ours. Different labels are fine; both sides must switch and both must be negated.'}</p><p className="sw-answer-diagram">{item.contrapositive}</p>{!production && <p>{item.contrapositiveWords}</p>}</>}</>}{stage === 'readback' && <p className="sw-model-writing">{item.ifThen}</p>}{stage === 'contra-readback' && <p className="sw-model-writing">{item.contrapositiveWords}</p>}{objective && !correct && misses >= 2 && ready && (shown ? <p className="sw-answer-diagram sw-shown">{stage === 'indicators' ? item.indicators.map(i => `${i.text} (Group ${i.group})`).join('; ') : stage === 'conditions' ? `${conditionAnswer(item.statement, 'sufficient')}; ${conditionAnswer(item.statement, 'necessary')}` : production ? stage === 'contra' ? `NOT ${symbolFor(sufficientKey === '1' ? '2' : '1')} → NOT ${symbolFor(sufficientKey)}` : `${symbolFor(sufficientKey)} → ${symbolFor(necessaryKey)}` : stage === 'contra' ? item.contrapositive : item.diagram}</p> : <button type="button" className="sw-text" onClick={() => setShown(true)}>Show me</button>)}{(!objective || correct) && !holdExplanation && <p>{item.explanation}</p>}{(!objective || correct) && <button className="sw-primary" onClick={advance}>{objective ? 'Continue' : 'I compared the meaning'}<ArrowRight size={17}/></button>}<button className="sw-text-button" onClick={() => setChecked(false)}>Revise this step</button></section>}</>}

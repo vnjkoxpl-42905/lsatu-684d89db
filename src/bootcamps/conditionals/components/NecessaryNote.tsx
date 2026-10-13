@@ -1,4 +1,7 @@
-import { useState, type ReactNode } from 'react';
+import { useContext, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { useLessonInteraction } from '../courseProgress';
+import { CourseFlashcardUrl, flashcardUrl } from './FlashcardTools';
 import { Check, RotateCcw, X } from 'lucide-react';
 import { Pill, PopQuizTitle, PulseWord } from './ContrapositiveVisuals';
 import { QuickQuiz, type QuizItem } from './SufficientQuiz';
@@ -29,7 +32,7 @@ const fuel: FindDemo = {
 
 /** Step 1 sweeps a highlight across the requirement in the sentence. Step 2 drops both ideas into an if-then frame. */
 function FindTheRequirement({ label, parts, ifIdea, thenIdea, result, captions }: FindDemo) {
-  const [stage, setStage] = useState(0);
+  const [stage, setStage] = useLessonInteraction(`requirement:${label}`, 0);
   return <div className="ns-find" data-stage={stage} role="group" aria-label={label}>
     <p className="ns-find-rule"><span>The rule</span>{parts.map((part, index) => typeof part === 'string' ? part : <mark key={index} className="ns-mark" data-role={part.role} data-lit={part.role === 'necessary' ? stage >= 1 : stage >= 2}>{part.text}</mark>)}</p>
     <div className="ns-frame" data-show={stage >= 2} aria-hidden={stage < 2}>
@@ -85,7 +88,7 @@ const quiz: QuizItem[] = [
     answer: 'If a bike has working brakes, the rule doesn’t say whether it’s in the race.',
   },
   {
-    rule: 'You must show a passport to board the flight.',
+    rule: 'Only travelers who have shown a passport board this flight.',
     question: 'Which idea is required?',
     options: [
       { text: 'Board the flight', tone: 'amber', reason: 'Boarding is what needs the passport.' },
@@ -112,6 +115,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 
 /** The Necessary Condition page, built to the Contrapositive page's shape. */
 export function NecessaryNote() {
+  const flashcards = useContext(CourseFlashcardUrl);
   return <>
     <Section title="What a necessary condition is">
       <p className="ct-definition"><strong>A necessary condition is a requirement. It has to be met, but meeting it might not be enough.</strong></p>
@@ -119,7 +123,7 @@ export function NecessaryNote() {
     </Section>
     <Section title="Where the certainty is">
       <p><strong>The necessary condition is what you can guarantee will occur if the sufficient condition happens.</strong></p>
-      <p>Look at the name. It's called necessary because it is necessary. If someone is enrolled in law school, being a student has to be true.</p>
+      <p>If someone is enrolled in law school, being a student has to be true. Enrollment is enough to prove that requirement.</p>
       <p>The sufficient condition opens the door. Once it's open, the necessary condition is guaranteed to be on the other side. That makes it <PulseWord>the place of certainty.</PulseWord> It's what you can prove.</p>
     </Section>
     <Section title="Watch the lesson">
@@ -138,13 +142,14 @@ export function NecessaryNote() {
       <p>In the fuel rule, <strong>necessary</strong> marked the requirement. These Group 2 words and phrases mark it too:</p>
       <ul className="ns-words">{groupTwoWords.map(word => <li key={word}>{word}</li>)}</ul>
       <p>The indicator is the word. The necessary condition is the whole idea it points to.</p>
+      {flashcards && <Link className="oc-action" to={flashcardUrl(flashcards, 'group-2', undefined, 'necessary')}>Go to flashcards</Link>}
     </Section>
     <Section title="What it is not">
-      <p>A requirement is not a guarantee. Wrong answer choices count on you forgetting that.</p>
+      <p>Meeting a requirement might not be enough. Wrong answer choices count on you treating it as a guarantee.</p>
       <RequiredNotEnough/>
     </Section>
     <Section title="Picture it on its own">
-      <p>When you find the requirement, picture it true while the other idea is false. A history student. A car with fuel and a dead battery. If that picture fits the rule, you have a requirement, and it proves nothing by itself.</p>
+      <p>Once the rule identifies a requirement, picture that requirement met while the sufficient condition is false. A history student who is not enrolled in law school. A car with fuel and a dead battery. These cases fit their rules. They show why meeting those requirements does not prove enrollment or a running car.</p>
     </Section>
     <section className="co-section"><div className="co-section-heading"><PopQuizTitle/></div><QuickQuiz items={quiz} idPrefix="nq"/></section>
   </>;

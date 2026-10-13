@@ -227,7 +227,11 @@ function itemContrapositive(item: DiagramItem): { left: string; right: string } 
 
 const norm = (s: string) => s.trim().replace(/\s+/g, " ").toLowerCase();
 
+export type DiagramAttempt = { left: string[]; right: string[]; side: "left" | "right"; checked: boolean | null };
+
 export interface DiagramDrillsProps {
+  initialAttempt?: DiagramAttempt;
+  onAttempt?: (attempt: DiagramAttempt) => void;
   items?: DiagramItem[];
   persistProgress?: boolean;
   allowContrapositive?: boolean;
@@ -240,6 +244,8 @@ export interface DiagramDrillsProps {
 }
 
 export function DiagramDrills({
+  initialAttempt,
+  onAttempt,
   items = DIAGRAM_ITEMS,
   persistProgress = true,
   allowContrapositive = true,
@@ -252,17 +258,20 @@ export function DiagramDrills({
 }: DiagramDrillsProps = {}) {
   const [queue, setQueue] = useState(() => shuffleItems ? shuffle(items) : [...items]);
   const [index, setIndex] = useState(0);
-  const [side, setSide] = useState<"left" | "right">("left");
-  const [left, setLeft] = useState<string[]>([]);
-  const [right, setRight] = useState<string[]>([]);
-  const [checked, setChecked] = useState<null | boolean>(null);
+  const [side, setSide] = useState<"left" | "right">(initialAttempt?.side ?? "left");
+  const [left, setLeft] = useState<string[]>(initialAttempt?.left ?? []);
+  const [right, setRight] = useState<string[]>(initialAttempt?.right ?? []);
+  const [checked, setChecked] = useState<null | boolean>(initialAttempt?.checked ?? null);
+  useEffect(() => { onAttempt?.({ left, right, side, checked }); }, [left, right, side, checked, onAttempt]);
+  const [misses, setMisses] = useState(0);
+  const [shown, setShown] = useState(false);
   const retryButton = useRef<HTMLButtonElement>(null);
   const leftButton = useRef<HTMLButtonElement>(null);
   useEffect(() => { if (checked !== null) retryButton.current?.focus(); }, [checked]);
   const item = queue[index];
   const done = index >= queue.length;
 
-  const reset = useCallback(() => { leftButton.current?.focus(); setLeft([]); setRight([]); setSide("left"); setChecked(null); onResult?.(null); }, [onResult]);
+  const reset = useCallback(() => { leftButton.current?.focus(); setLeft([]); setRight([]); setSide("left"); setChecked(null); setShown(false); onResult?.(null); }, [onResult]);
   const push = (token: string) => {
     if (checked !== null) return;
     (side === "left" ? setLeft : setRight)(v => [...v, token]);
@@ -276,6 +285,7 @@ export function DiagramDrills({
     const ok = (mine.left === target.left && mine.right === target.right)
       || (allowContrapositive && mine.left === norm(contra.left) && mine.right === norm(contra.right));
     setChecked(ok);
+    if (!ok) setMisses(previous => previous + 1);
     onResult?.({ itemId: item.id, left: mine.left, right: mine.right, correct: ok });
     if (persistProgress) {
       const saved = readSaved().diagram ?? { done: 0, correct: 0 };
@@ -288,7 +298,7 @@ export function DiagramDrills({
       <section className="cir-card">
         <p className="cir-prompt">All diagram drills done.</p>
         <div className="cir-actions">
-          <button type="button" className="cir-btn" onClick={() => { setQueue(shuffleItems ? shuffle(items) : [...items]); setIndex(0); reset(); }}>{shuffleItems ? "Shuffle again" : "Practice again"}</button>
+          <button type="button" className="cir-btn" onClick={() => { setQueue(shuffleItems ? shuffle(items) : [...items]); setIndex(0); setMisses(0); reset(); }}>{shuffleItems ? "Shuffle again" : "Practice again"}</button>
         </div>
       </section>
     );
@@ -321,7 +331,7 @@ export function DiagramDrills({
           <button key={token} type="button" className="cir-token" aria-label={token.startsWith("/") ? `Not ${token.slice(1)}` : token} disabled={checked !== null} onClick={() => push(token)}><Tok text={token} /></button>
         ))}
         {(item.connectors ?? []).map(c => (
-          <button key={c} type="button" className="cir-token" onClick={() => push(c)}>{c}</button>
+          <button key={c} type="button" className="cir-token" disabled={checked !== null} onClick={() => push(c)}>{c}</button>
         ))}
         <button type="button" className="cir-token" onClick={undo} disabled={checked !== null}>Undo</button>
       </div>
@@ -332,18 +342,20 @@ export function DiagramDrills({
         ) : (
           <>
             <button ref={retryButton} type="button" className="cir-btn ghost" onClick={reset}>Try again</button>
-            {!embedded && <button type="button" className="cir-btn" onClick={() => { setIndex(i => i + 1); reset(); }}>Next</button>}
+            {!embedded && <button type="button" className="cir-btn" disabled={!checked && !shown} onClick={() => { setIndex(i => i + 1); setMisses(0); reset(); }}>Next</button>}
           </>
         )}
       </div>
 
       <div className={checked !== null ? "cir-feedback" : undefined} role="status" aria-atomic="true">
         {checked !== null && <>
-          {!embedded && <p>{checked ? "Right." : "Not quite."}</p>}
+          {(!embedded || !feedbackForResult) && <p>{checked ? "Right." : "Not quite. Check the complete conditions and arrow direction."}</p>}
           {feedbackForResult && <p>{feedbackForResult({ left: norm(left.join(' ')), right: norm(right.join(' ')), correct: checked })}</p>}
-          <p>Conditional: <Diagram left={item.left} right={item.right} /></p>
-          {explanations[item.id] && <p>{explanations[item.id]}</p>}
-          {allowContrapositive && <p>Contrapositive: <Diagram left={contra.left} right={contra.right} /></p>}
+          {!embedded && checked === false && misses >= 2 && !shown && <button type="button" className="cir-btn ghost" onClick={() => setShown(true)}>Show me</button>}
+          {shown && <p>Compare the model with your attempt. This question was completed with help.</p>}
+          {(checked === true || shown) && <p>Conditional: <Diagram left={item.left} right={item.right} /></p>}
+          {(checked === true || shown) && explanations[item.id] && <p>{explanations[item.id]}</p>}
+          {(checked === true || shown) && allowContrapositive && <p>Contrapositive: <Diagram left={contra.left} right={contra.right} /></p>}
         </>}
       </div>
     </section>

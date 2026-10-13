@@ -39,12 +39,13 @@ it('gates feedback, explains reversal and retry, and keeps original-only practic
   expect(screen.queryByRole('button', { name: /^Not / })).toBeNull();
   expect(screen.queryByRole('button', { name: 'Next' })).toBeNull();
   build('qualifies', 'trains');
-  expect(screen.getByText('Not quite.')).toBeVisible();
-  expect(screen.getByText(openingActivityExplanations.d1)).toBeVisible();
+  expect(screen.getByText('Not quite. Check the complete conditions and arrow direction.')).toBeVisible();
+  expect(screen.queryByText(openingActivityExplanations.d1)).toBeNull();
+  expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
   expect(screen.queryByText(/Contrapositive/i)).toBeNull();
   rerender(<div hidden><OpeningActivityPractice /></div>);
   rerender(<div><OpeningActivityPractice /></div>);
-  expect(screen.getByText('Not quite.')).toBeVisible();
+  expect(screen.getByText('Not quite. Check the complete conditions and arrow direction.')).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
   expect(screen.getByRole('status')).toBeEmptyDOMElement();
   build('trains', 'qualifies');
@@ -84,6 +85,6 @@ it('retains legacy contrapositive acceptance and browser progress by default', (
 it('rejects the contrapositive when the opening requests the original, even if negation controls are available', () => {
   render(<DiagramDrills items={[DIAGRAM_ITEMS[0]]} persistProgress={false} allowContrapositive={false} />);
   build('Not qualifies', 'Not trains');
-  expect(screen.getByText('Not quite.')).toBeVisible();
+  expect(screen.getByText('Not quite. Check the complete conditions and arrow direction.')).toBeVisible();
   expect(screen.queryByText('Contrapositive:')).toBeNull();
 });

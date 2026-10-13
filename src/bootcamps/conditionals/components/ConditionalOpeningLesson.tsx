@@ -9,6 +9,7 @@ import type { ConditionalLessonNoteProps } from './ConditionalLessonNote';
 import './opening.css';
 import { conditionalReferencePages } from './ConditionalReferenceSequence';
 import './opening-polish.css';
+import { useLessonInteraction } from '../courseProgress';
 
 export const hasOpeningLesson = (id: string) => ['orientation', 'sufficient-necessary', 'group-1', 'group-2'].includes(id);
 function Section({ title, children, dark = false, expressionNumber, id }: { title: string; children: ReactNode; dark?: boolean; expressionNumber?: number; id?: string }) {
@@ -29,19 +30,19 @@ function Arrow({ left, right }: { left: string; right: string }) {
   return <div className="co-arrow"><span>{left}</span><b aria-hidden="true">→</b><span className="co-sr-only">implies</span><span>{right}</span></div>;
 }
 function ThinkPause({ prompt, children }: { prompt: string; children: ReactNode }) {
-  const [revealed, setRevealed] = useState(false);
+  const [revealed, setRevealed] = useLessonInteraction(`think:${prompt}`, false);
   const answerId = useId();
   return <div className="co-think-pause"><h3 id={`${answerId}-prompt`}>{prompt}</h3><button type="button" className="co-primary" aria-describedby={`${answerId}-prompt`} aria-expanded={revealed} aria-controls={answerId} onClick={() => setRevealed(!revealed)}>{revealed ? 'Hide the reasoning' : 'Show the reasoning'}</button><div id={answerId} aria-live="polite">{revealed && <div className="co-pause-answer">{children}</div>}</div></div>;
 }
 function Check({ prompt, options, correct, feedback }: { prompt: string; options: string[]; correct: number; feedback: string[] }) {
-  const [choice, setChoice] = useState<number | null>(null);
+  const [choice, setChoice] = useLessonInteraction<number | null>(`check:${JSON.stringify({ prompt, options, correct })}`, null);
   if (!Array.isArray(feedback) || feedback.length !== options.length || feedback.some(message => typeof message !== 'string' || !message.trim())) {
     throw new Error(`Every answer choice needs an explanation: ${prompt}`);
   }
   return <div className="co-check"><p className="co-kicker">Try it</p><h3>{prompt}</h3><div className="co-choices">{options.map((option, i) => <button key={option} type="button" aria-pressed={choice === i} onClick={() => setChoice(i)}>{option}</button>)}</div><div role="status">{choice !== null && <div className={`co-feedback ${choice === correct ? 'co-correct' : ''}`} ><span className="co-answer-state">{choice === correct ? 'Correct.' : 'Not quite.'}</span><strong>Your choice: {options[choice]}</strong><p>{feedback[choice]}</p></div>}</div></div>;
 }
 function GateExplorer() {
-  const [fact, setFact] = useState<'win' | 'bicycle'>('win');
+  const [fact, setFact] = useLessonInteraction<'win' | 'bicycle'>('gate-explorer', 'win');
   return <div className="co-gate"><p className="co-kicker">Enough and required</p><Arrow left="Win the raffle" right="Get a bicycle"/><div className="co-choices"><button aria-pressed={fact === 'win'} onClick={() => setFact('win')}>You win the raffle</button><button aria-pressed={fact === 'bicycle'} onClick={() => setFact('bicycle')}>You get a bicycle</button></div><div className="co-gate-track"><div className={fact === 'win' ? 'co-lit' : ''}>Win the raffle<span>Sufficient: enough</span></div><b aria-hidden="true">→</b><span className="co-sr-only">implies</span><div className="co-lit">Get a bicycle<span>Necessary: required</span></div></div><p role="status">{fact === 'win' ? 'You get a bicycle because the rule gives you that result if you win.' : 'You get a bicycle. Winning remains unknown: you could have bought it or received it as a gift instead.'}</p></div>;
 }
 type Translation = { word: string; sentence: string; target: string; other: string; left: string; right: string; why: string; readback: string };
@@ -451,16 +452,16 @@ function TargetSentence({ item, marked }: { item: MappedTranslation; marked: boo
 }
 
 function TranslationLab({ id }: { id: string }) {
-  const [index, setIndex] = useState(0);
-  const [choice, setChoice] = useState<string | null>(null);
-  const [diagram, setDiagram] = useState(false);
+  const [index, setIndex] = useLessonInteraction(`translation:${id}:index`, 0);
+  const [choice, setChoice] = useLessonInteraction<string | null>(`translation:${id}:choice`, null);
+  const [diagram, setDiagram] = useLessonInteraction(`translation:${id}:diagram`, false);
   const item = translationExamples[id][index];
   return <div className="co-lab"><p className="co-kicker">Which words does the indicator refer to?</p><div className="co-word-tabs" role="group" aria-label="Indicator examples">{translationExamples[id].map((e, i) => <button key={e.word} aria-pressed={i === index} onClick={() => { setIndex(i); setChoice(null); setDiagram(false); }}>{e.word}</button>)}</div><TargetSentence item={item} marked={choice === item.target}/><p>What is <strong>{item.word}</strong> referring to?</p><div className="co-choices">{orderedConditionalIdeas(item).map(value => <button key={value} aria-pressed={choice === value} onClick={() => { setChoice(value); setDiagram(false); }}>{value}</button>)}</div><div role="status">{choice && <div className={`co-feedback ${choice === item.target ? 'co-correct' : ''}`}><span className="co-answer-state">{choice === item.target ? 'Correct group.' : 'Not quite.'}</span><strong>{choice === item.target ? 'You have the complete group.' : 'You chose the other condition.'}</strong>{choice !== item.target && <p>You chose {choice}, but {item.word} refers to {item.target}. {id === 'group-1' ? 'You selected the result rather than the complete sufficient idea.' : 'You selected the condition that needs the requirement rather than the required idea.'}</p>}<p>{item.why}</p>{choice === item.target && <button className="co-primary" onClick={() => setDiagram(true)}>Show the {id === 'group-1' ? 'sufficient condition on the left' : 'requirement on the right'}</button>}</div>}</div>{diagram && <Arrow left={item.left} right={item.right}/>}</div>;
 }
 function Flashcards({ id }: { id: string }) {
   const cards = flashcardExamples[id];
-  const [index, setIndex] = useState(0);
-  const [back, setBack] = useState(false);
+  const [index, setIndex] = useLessonInteraction(`flashcards:${id}:index`, 0);
+  const [back, setBack] = useLessonInteraction(`flashcards:${id}:back`, false);
   const faceId = useId();
   const card = cards[index];
   return <div className="co-flash"><p className="co-kicker">Recall before revealing · {index + 1} / {cards.length}</p>
@@ -468,14 +469,14 @@ function Flashcards({ id }: { id: string }) {
     <div className="co-choices"><button aria-expanded={back} aria-controls={faceId} onClick={() => setBack(!back)}>{back ? 'Hide answer' : 'Reveal answer'}</button><button disabled={index === 0} onClick={() => { setIndex(index - 1); setBack(false); }}>Previous sentence</button><button onClick={() => { setIndex((index + 1) % cards.length); setBack(false); }}>{index === cards.length - 1 ? 'Start again' : 'Next example'}</button></div><p className="co-small">These examples help you recall the rule. Your attached drill gives you separate questions.</p></div>;
 }
 function DirectionSwitch() {
-  const [only, setOnly] = useState(false);
+  const [only, setOnly] = useLessonInteraction('direction-switch', false);
   return <div className="co-switch"><div className="co-choices"><button aria-pressed={!only} onClick={() => setOnly(false)}>if</button><button aria-pressed={only} onClick={() => setOnly(true)}>only if</button></div><blockquote>A student enters <mark>{only ? 'only if' : 'if'}</mark> the student has a pass.</blockquote><Arrow left={only ? 'Enters' : 'Has pass'} right={only ? 'Has pass' : 'Enters'}/><p role="status">{only ? 'The pass is required. Having one does not prove entry.' : 'This rule guarantees entry for a student who has a pass.'}</p></div>;
 }
 function DiagramBuilder({ id }: { id: string }) {
   const items = diagramExamples[id];
-  const [index, setIndex] = useState(0);
-  const [left, setLeft] = useState<string | null>(null);
-  const [checked, setChecked] = useState(false);
+  const [index, setIndex] = useLessonInteraction(`builder:${id}:index`, 0);
+  const [left, setLeft] = useLessonInteraction<string | null>(`builder:${id}:left`, null);
+  const [checked, setChecked] = useLessonInteraction(`builder:${id}:checked`, false);
   const item = items[index];
   return <div className="co-lab"><p className="co-kicker">Build the diagram</p><TargetSentence item={item} marked={checked && left === item.left}/><p>Both complete ideas are below. Choose the sufficient condition, the one that gives you enough to prove the other. It belongs on the left of the arrow.</p><div className="co-choices">{orderedConditionalIdeas(item).map(value => <button key={value} aria-pressed={left === value} onClick={() => { setLeft(value); setChecked(false); }}>{value}</button>)}</div>{left && <><Arrow left={left} right={left === item.target ? item.other : item.target}/><button className="co-primary" onClick={() => setChecked(true)}>Check my diagram</button></>}<div role="status">{checked && <div className={`co-feedback ${left === item.left ? 'co-correct' : ''}`}><strong>{left === item.left ? 'Your arrow keeps the rule.' : 'Your arrow reverses this rule.'}</strong>{left !== item.left && <p>{item.reversedPromise}</p>}<p>{item.why}</p><p>{item.readback}</p><button onClick={() => { setIndex((index + 1) % items.length); setLeft(null); setChecked(false); }}>{index === items.length - 1 ? 'Practice these again' : 'Next example'}</button></div>}</div></div>;
 }

@@ -1,16 +1,16 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { DiagramDrills } from '@/features/conditional-refresher/ConditionalIndicatorsRefresher';
+import { DiagramDrills, type DiagramAttempt } from '@/features/conditional-refresher/ConditionalIndicatorsRefresher';
 import { openingActivityExplanations, openingActivityItems } from '../content/openingActivityItems';
 import { completeConditionItems, confirmationItemsByError, equivalenceItems, obligationConfirmationItem, transferItems, type MixedDrillChoiceItem, type MixedDrillError } from '../content/mixedDrillItems';
-import { MixedItemCheck, mixedFamilyItems } from './MixedFamilyPractice';
+import { MixedItemCheck, mixedFamilyItems, type MixedAttempt } from './MixedFamilyPractice';
 import { useCourseStep } from '../courseProgress';
 import './opening-mixed-drill.css';
 
 const stages = [
-  { title: 'What does the rule cover?', purpose: 'Keep the restriction that tells you which cases the rule covers.', example: 'Every guest wearing a gold badge receives a voucher.', explanation: 'The rule covers guests wearing a gold badge. Leaving out wearing a gold badge would make a claim about all guests.', instruction: 'Choose the description that keeps the restriction in each rule.' },
+  { title: 'What does the rule cover?', purpose: 'Keep the restriction that tells you which cases the rule covers.', example: 'Every camper arriving after dark receives a lantern.', explanation: 'The rule covers campers arriving after dark. Leaving out arriving after dark would make a claim about all campers.', instruction: 'Choose the description that keeps the restriction in each rule.' },
   { title: 'Build the diagram', purpose: 'If the condition on the left is true, what must follow on the right?', example: 'If a parcel has a blue sticker, it has been inspected.', explanation: 'A blue sticker is enough to prove inspection. Inspection is required for a blue-sticker parcel. An inspected parcel could still have no blue sticker.', instruction: 'Choose a side of the arrow, then choose the condition that belongs there. Read the diagram in English before checking.' },
   { title: 'Translate the rule yourself', purpose: 'Write your own diagram before looking at supplied conditions.', example: 'Only members use the studio.', explanation: 'First decide what the rule says you need in order to use the studio. Write both conditions and an arrow, then read your diagram as an if/then sentence.', instruction: 'Write your diagram and English version. Compare with the choices only after making that attempt.' },
-  { title: 'Does the meaning change?', purpose: 'Different wording can keep a rule or change what it promises.', example: 'Every parcel in Locker 4 has been scanned.', explanation: 'This tells you something about parcels in Locker 4. It leaves scanned parcels elsewhere possible. Use that distinction when comparing another way of wording a rule.', instruction: 'Compare what each rule requires. Try a possible case that fits one but would break the other.' },
+  { title: 'Does the meaning change?', purpose: 'Different wording can keep a rule or change what it says.', example: 'Every parcel in Locker 4 has been scanned.', explanation: 'This tells you something about parcels in Locker 4. It leaves scanned parcels elsewhere possible. Use that distinction when comparing another way of wording a rule.', instruction: 'Compare what each rule requires. Try a possible case that fits one but would break the other.' },
   { title: 'Try unfamiliar cases', purpose: 'Use the same reasoning with new wording.', example: 'Visitors must wear a badge.', explanation: 'This gives visitors an obligation. It does not tell you whether a visitor actually wore a badge. Permission, requirements and completed actions need different labels.', instruction: 'Read what is stated and choose only what it proves. Keep qualifications and the strength of the claim.' },
   { title: 'Try the distinction in a new case', purpose: 'Now use the distinctions you revised with different rules.', example: '', explanation: 'The next questions revisit mistakes from this practice with fresh examples.', instruction: 'Make a new attempt before checking. An answer you reach after feedback is useful practice, but it is different from getting a fresh case right on the first check.' },
 ];
@@ -57,20 +57,25 @@ const errorLabels: Record<MixedDrillError, string> = {
   requirement: 'Separating what is enough from what is required', equivalence: 'Comparing the whole meaning',
 };
 type Result = { firstCorrect: boolean; correct: boolean; errors: MixedDrillError[] };
+type ChoiceAttempt = { picked: number | null; checked: boolean };
+type Attempt = ChoiceAttempt | MixedAttempt | DiagramAttempt;
 type Check = (correct: boolean | null, errors?: MixedDrillError[]) => void;
 
 function confirmationQuestions(results: Record<string, Result>): Question[] {
   const errors = [...new Set(baselineQuestions.flatMap(item => results[item.id]?.errors ?? []))];
   return errors.flatMap(error => {
-    const items = error === 'equivalence' && results['mixed-transfer-4']?.errors.includes('equivalence') ? [obligationConfirmationItem] : confirmationItemsByError[error].slice(0, 1);
+    const obligationMiss = error === 'equivalence' && results['mixed-transfer-4']?.errors.includes('equivalence');
+    const ruleComparisonMiss = equivalenceItems.some(item => results[item.id]?.errors.includes('equivalence'));
+    const items = obligationMiss ? [...(ruleComparisonMiss ? confirmationItemsByError.equivalence.slice(0, 1) : []), obligationConfirmationItem] : confirmationItemsByError[error].slice(0, 1);
     return items.map(item => ({ id: item.id, stage: 5, kind: 'choice' as const, item }));
   });
 }
 
-function ChoiceQuestion({ item, onCheck }: { item: MixedDrillChoiceItem; onCheck: Check }) {
-  const [picked, setPicked] = useState<number | null>(null);
+function ChoiceQuestion({ item, onCheck, initialAttempt, onAttempt }: { item: MixedDrillChoiceItem; onCheck: Check; initialAttempt?: ChoiceAttempt; onAttempt: (attempt: Attempt) => void }) {
+  const [picked, setPicked] = useState<number | null>(initialAttempt?.picked ?? null);
   const firstAnswer = useRef<HTMLButtonElement>(null);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(initialAttempt?.checked ?? false);
+  useEffect(() => { onAttempt({ picked, checked }); }, [picked, checked, onAttempt]);
   return <div className="omd-question">
     <blockquote>{item.sentence}</blockquote><h3>{item.prompt}</h3>
     <div className="omd-options" role="group" aria-label="Answer choices">{item.options.map((option, index) => <button ref={index === 0 ? firstAnswer : undefined} type="button" key={option} aria-pressed={picked === index} onClick={() => { setPicked(index); setChecked(false); onCheck(null); }}>{option}</button>)}</div>
@@ -81,25 +86,25 @@ function ChoiceQuestion({ item, onCheck }: { item: MixedDrillChoiceItem; onCheck
   </div>;
 }
 
-function DrillQuestion({ question, onCheck }: { question: Question; onCheck: Check }) {
-  if (question.kind === 'choice') return <ChoiceQuestion item={question.item} onCheck={onCheck}/>;
-  if (question.kind === 'independent') return <MixedItemCheck item={question.item} index={question.itemIndex} embedded onChecked={() => undefined} onResult={result => {
+function DrillQuestion({ question, onCheck, initialAttempt, onAttempt }: { question: Question; onCheck: Check; initialAttempt?: Attempt; onAttempt: (attempt: Attempt) => void }) {
+  if (question.kind === 'choice') return <ChoiceQuestion item={question.item} onCheck={onCheck} initialAttempt={initialAttempt as ChoiceAttempt} onAttempt={onAttempt}/>;
+  if (question.kind === 'independent') return <MixedItemCheck initialAttempt={initialAttempt as MixedAttempt} onAttempt={onAttempt} item={question.item} index={question.itemIndex} embedded onChecked={() => undefined} onResult={result => {
     if (!result) return onCheck(null);
     const errors: MixedDrillError[] = [];
-    if (!result.targetCorrect) errors.push(result.targetIncomplete ? 'qualification' : 'direction');
+    if (!result.targetCorrect) errors.push(result.targetIncomplete ? 'qualification' : question.item.family === 'necessary' ? 'requirement' : 'direction');
     if (!result.sideCorrect) errors.push(question.item.family === 'necessary' ? 'requirement' : 'direction');
     onCheck(result.targetCorrect && result.sideCorrect, errors);
   }}/>;
-  return <DiagramQuestion item={question.item} onCheck={onCheck}/>;
+  return <DiagramQuestion item={question.item} onCheck={onCheck} initialAttempt={initialAttempt as DiagramAttempt} onAttempt={onAttempt}/>;
 }
 
 /** Hint only on a wrong diagram; the full diagram and explanation appear once it is right. */
-function DiagramQuestion({ item, onCheck }: { item: DiagramItem; onCheck: Check }) {
-  const [solved, setSolved] = useState<boolean | null>(null);
+function DiagramQuestion({ item, onCheck, initialAttempt, onAttempt }: { item: DiagramItem; onCheck: Check; initialAttempt?: DiagramAttempt; onAttempt: (attempt: Attempt) => void }) {
+  const [solved, setSolved] = useState<boolean | null>(initialAttempt?.checked ?? null);
   const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
   return <div className="cir-root omd-diagram" data-result={solved === null ? undefined : solved ? 'right' : 'wrong'}><p>Build the original diagram, then read it as an if/then sentence before checking.</p>
-    <DiagramDrills items={[item]} embedded persistProgress={false} allowContrapositive={false} allowNegation={false} shuffleItems={false} explanations={solved ? diagramFollowUps : {}} feedbackForResult={result => {
-      if (result.correct) return `Right. Read it back: ${diagramReadbacks[item.id]?.readback ?? `If ${item.left.toLowerCase()}, then ${item.right.toLowerCase()}.`}`;
+    <DiagramDrills initialAttempt={initialAttempt} onAttempt={onAttempt} items={[item]} embedded persistProgress={false} allowContrapositive={false} allowNegation={false} shuffleItems={false} explanations={solved ? diagramFollowUps : {}} feedbackForResult={result => {
+      if (result.correct) return `Correct. Read it back: ${diagramReadbacks[item.id]?.readback ?? `If ${item.left.toLowerCase()}, then ${item.right.toLowerCase()}.`}`;
       const reversed = same(result.left, item.right) && same(result.right, item.left);
       if (reversed) return 'Check which condition is enough to prove the other.';
       return 'Use each condition once, one on each side. Extra or repeated words change the diagram. Check which condition is enough to prove the other.';
@@ -112,38 +117,56 @@ function DiagramQuestion({ item, onCheck }: { item: DiagramItem; onCheck: Check 
   </div>;
 }
 
-const RetainedQuestion = memo(function RetainedQuestion({ question, record }: {
+const RetainedQuestion = memo(function RetainedQuestion({ question, record, initialAttempt, recordAttempt }: {
   question: Question;
   record: (id: string, correct: boolean | null, errors?: MixedDrillError[]) => void;
+  initialAttempt?: Attempt;
+  recordAttempt: (id: string, attempt: Attempt) => void;
 }) {
-  return <DrillQuestion question={question} onCheck={(correct, errors) => record(question.id, correct, errors)}/>;
+  const onAttempt = useCallback((attempt: Attempt) => recordAttempt(question.id, attempt), [question.id, recordAttempt]);
+  return <DrillQuestion question={question} initialAttempt={initialAttempt} onAttempt={onAttempt} onCheck={(correct, errors) => record(question.id, correct, errors)}/>;
 });
 
 const confirmationPool: MixedDrillChoiceItem[] = [...Object.values(confirmationItemsByError).flat(), obligationConfirmationItem];
-type MixedState = { questions: Question[]; current: number; visited: string[]; results: Record<string, Result>; finished: boolean; introducedStages: number[] };
+const questionFingerprint = JSON.stringify(baselineQuestions);
+type MixedState = { archived: unknown[]; attempts: Record<string, Attempt>; questions: Question[]; current: number; visited: string[]; results: Record<string, Result>; finished: boolean; introducedStages: number[] };
 /** Rebuilds a saved run. Anything that no longer matches the current question set starts fresh. */
 function restoreMixed(state: unknown): MixedState | null {
-  const data = state as { questionIds?: unknown; current?: unknown; visited?: unknown; results?: unknown; finished?: unknown; introducedStages?: unknown } | undefined;
+  const data = state as { archived?: unknown[]; fingerprint?: unknown; attempts?: Record<string, Attempt>; questionIds?: unknown; current?: unknown; visited?: unknown; results?: unknown; finished?: unknown; introducedStages?: unknown } | undefined;
   if (!data || !Array.isArray(data.questionIds) || !data.results || typeof data.results !== 'object') return null;
+  const currentContent = data.fingerprint === questionFingerprint;
+  const archived = [...(Array.isArray(data.archived) ? data.archived : []), ...(!currentContent ? [{ ...data, archived: undefined }] : [])].slice(-3);
   const ids = data.questionIds as unknown[];
   if (ids.length < baselineQuestions.length || baselineQuestions.some((question, index) => ids[index] !== question.id)) return null;
   const extra = ids.slice(baselineQuestions.length).map(id => confirmationPool.find(item => item.id === id));
   if (extra.some(item => !item)) return null;
   const questions: Question[] = [...baselineQuestions, ...extra.map(item => ({ id: item!.id, stage: 5, kind: 'choice' as const, item: item! }))];
+  const attempts: Record<string, Attempt> = {};
+  if (currentContent && data.attempts && typeof data.attempts === 'object') for (const question of questions) {
+    const raw = data.attempts[question.id] as Record<string, unknown> | undefined;
+    if (!raw || typeof raw.checked !== 'boolean' && raw.checked !== null) continue;
+    if (question.kind === 'choice' && (raw.picked === null || Number.isInteger(raw.picked) && Number(raw.picked) >= 0 && Number(raw.picked) < question.item.options.length) && typeof raw.checked === 'boolean') attempts[question.id] = raw as ChoiceAttempt;
+    if (question.kind === 'diagram' && Array.isArray(raw.left) && Array.isArray(raw.right) && [...raw.left, ...raw.right].every(token => typeof token === 'string') && (raw.side === 'left' || raw.side === 'right')) attempts[question.id] = raw as DiagramAttempt;
+    if (question.kind === 'independent' && typeof raw.draftDiagram === 'string' && typeof raw.draftReadback === 'string' && typeof raw.comparing === 'boolean' && typeof raw.checked === 'boolean' && (raw.target === null || typeof raw.target === 'string') && (raw.left === null || typeof raw.left === 'string')) attempts[question.id] = raw as MixedAttempt;
+  }
   const results: Record<string, Result> = {};
   for (const [id, raw] of Object.entries(data.results as Record<string, Partial<Result>>)) {
-    if (raw && typeof raw.firstCorrect === 'boolean' && typeof raw.correct === 'boolean' && Array.isArray(raw.errors)) results[id] = { firstCorrect: raw.firstCorrect, correct: raw.correct, errors: raw.errors.filter((error): error is MixedDrillError => error in errorLabels) };
+    if (currentContent && attempts[id] && questions.some(question => question.id === id) && raw && typeof raw.firstCorrect === 'boolean' && typeof raw.correct === 'boolean' && Array.isArray(raw.errors)) results[id] = { firstCorrect: raw.firstCorrect, correct: raw.correct, errors: raw.errors.filter((error): error is MixedDrillError => error in errorLabels) };
   }
-  const current = Number.isInteger(data.current) && (data.current as number) >= 0 && (data.current as number) < questions.length ? data.current as number : 0;
+  const savedCurrent = Number.isInteger(data.current) && (data.current as number) >= 0 && (data.current as number) < questions.length ? data.current as number : 0;
+  const firstUnfinished = questions.findIndex(question => !results[question.id]?.correct);
+  const current = firstUnfinished < 0 ? savedCurrent : Math.min(savedCurrent, firstUnfinished);
   const visited = Array.isArray(data.visited) ? (data.visited as unknown[]).filter((id): id is string => questions.some(question => question.id === id)) : [];
   const introducedStages = Array.isArray(data.introducedStages) ? (data.introducedStages as unknown[]).filter((value): value is number => Number.isInteger(value)) : [];
-  return { questions, current, visited: visited.length ? visited : [questions[current].id], results, finished: data.finished === true, introducedStages };
+  return { archived, attempts, questions, current, visited: visited.length ? visited : [questions[current].id], results, finished: data.finished === true && questions.every(question => results[question.id]?.correct), introducedStages };
 }
 
 export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
   const course = useCourseStep(stepId);
   const saveStep = course?.record;
   const [restored] = useState(() => restoreMixed(course?.saved?.state));
+  const [attempts, setAttempts] = useState<Record<string, Attempt>>(restored?.attempts ?? {});
+  const recordAttempt = useCallback((id: string, attempt: Attempt) => setAttempts(previous => ({ ...previous, [id]: attempt })), []);
   const [questions, setQuestions] = useState<Question[]>(restored?.questions ?? baselineQuestions);
   const [current, setCurrent] = useState(restored?.current ?? 0);
   const [visited, setVisited] = useState(restored?.visited ?? [baselineQuestions[0].id]);
@@ -151,8 +174,8 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
   const [finished, setFinished] = useState(restored?.finished ?? false);
   const [introducedStages, setIntroducedStages] = useState<number[]>(restored?.introducedStages ?? []);
   useEffect(() => {
-    saveStep?.({ state: { questionIds: questions.map(question => question.id), current, visited, results, finished, introducedStages }, done: baselineQuestions.filter(question => results[question.id]).length, total: baselineQuestions.length, ...(finished ? { status: 'done' as const } : {}) });
-  }, [saveStep, questions, current, visited, results, finished, introducedStages]);
+    saveStep?.({ state: { archived: restored?.archived ?? [], fingerprint: questionFingerprint, attempts, questionIds: questions.map(question => question.id), current, visited, results, finished, introducedStages }, done: questions.filter(question => results[question.id]?.correct).length, total: questions.length, status: finished ? 'done' : 'started' });
+  }, [saveStep, questions, current, visited, results, finished, introducedStages, attempts]);
   const heading = useRef<HTMLHeadingElement>(null);
   const runner = useRef<HTMLElement>(null);
   const question = questions[current];
@@ -189,6 +212,8 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
         return;
       }
     }
+    const unfinished = questions.findIndex(item => !results[item.id]?.correct);
+    if (unfinished >= 0) return move(unfinished);
     setFinished(true);
   }
 
@@ -200,7 +225,7 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
       <p>You answered {firstCorrect} of {baselineQuestions.length} correctly on your first try. You corrected {corrected} after checking the explanation.</p>
       <p>This result covers your answer choices and the diagrams you built with the supplied words. Your written translations are for you to compare with the examples.</p>
       {!!confirmations.length && <><h3>How the new sentences went</h3><ul>{confirmations.map(item => <li key={item.id}>{item.id === obligationConfirmationItem.id ? 'What is required and what actually happened' : item.kind === 'choice' && errorLabels[item.item.skill]}: {results[item.id]?.firstCorrect ? 'you answered the new question correctly on your first try' : 'you corrected the new question after checking the explanation. Give this another try with a different sentence'}.</li>)}</ul></>}
-      <p>When you return to a sentence, read your diagram back in English. Keep every restriction, and ask whether your arrow promises more than the rule does.</p>
+      <p>When you return to a sentence, read your diagram back in English. Keep every restriction, and ask whether your arrow says more than the rule does.</p>
       <button type="button" className="omd-primary" onClick={() => { setFinished(false); move(0); }}>Review my answers</button>
     </div>
     <div className="omd-introduction" hidden={!showIntroduction}>
@@ -215,7 +240,7 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
     <div className="omd-progress" role="progressbar" aria-label={question.stage < 5 ? 'Main questions completed' : 'Fresh checks completed'} aria-valuemin={0} aria-valuemax={question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length} aria-valuenow={questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length}><span style={{ width: `${questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length / (question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length) * 100}%` }}/></div>
     <h2 ref={!finished && !showIntroduction ? heading : undefined} tabIndex={-1}>{stage.title}</h2><p className="omd-purpose">{stage.purpose}</p>
     </div>
-    {questions.filter(item => visited.includes(item.id)).map(item => <div key={item.id} hidden={finished || showIntroduction || item.id !== question.id} data-mixed-question={item.id}><RetainedQuestion question={item} record={record}/></div>)}
+    {questions.filter(item => visited.includes(item.id)).map(item => <div key={item.id} hidden={finished || showIntroduction || item.id !== question.id} data-mixed-question={item.id}><RetainedQuestion question={item} record={record} initialAttempt={restored?.attempts[item.id]} recordAttempt={recordAttempt}/></div>)}
     {!finished && !showIntroduction && <nav className="omd-navigation" aria-label="Practice questions"><button type="button" disabled={current === 0} onClick={() => move(current - 1)}>Previous question</button><button type="button" className="omd-primary" disabled={!results[question.id]?.correct} onClick={next}>{current === questions.length - 1 ? (question.stage === 5 ? 'Finish practice' : pendingConfirmations.length ? 'Try a fresh case' : 'Review practice') : 'Next question'}</button></nav>}
   </section>;
 }

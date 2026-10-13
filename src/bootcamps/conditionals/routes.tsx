@@ -14,6 +14,7 @@ import { conditionalAssignmentAllowsAction, type ResolvedConditionalAssignment a
 import { ConditionalLessonNote } from './components/ConditionalLessonNote';
 import { OpeningCourseNavigation, OpeningCourseScreen, type OpeningCourseUrl } from './components/OpeningCourse';
 import { OPENING_COURSE_PATH, openingCourseStep, openingStepAccessUnits } from './openingCoursePath';
+import { CourseLessonProvider, CourseProgressProvider } from './courseProgress';
 
 const BASE = '/bootcamp/conditionals';
 const names: Record<ConditionalArea, string> = { understanding: 'Understand the rule', translation: 'Translate the language', linking: 'Link the rules', inference: 'Draw conclusions', complex: 'Handle complex rules', application: 'Apply to LR', quantifiers: 'Some, most, and all' };
@@ -183,7 +184,7 @@ function OpeningCourseRoute({ view: surface }: { view?: string }) {
   const { isAdmin, active, selection, userId } = useWork();
   const { progress, update } = useCourse();
   const saveStep = useCallback((stepId: string, patch: Parameters<typeof recordCourseStep>[2]) => update(prior => recordCourseStep(prior, stepId, patch)), [update]);
-  const progressStore = useMemo(() => ({ steps: progress?.course ?? {}, save: saveStep }), [progress?.course, saveStep]);
+  const progressStore = useMemo(() => ({ ready: progress !== null, steps: progress?.course ?? {}, save: saveStep }), [progress, saveStep]);
   const steps = OPENING_COURSE_PATH.filter(step => isAdmin || !!active && openingStepAccessUnits(step).some(unitId => conditionalAssignmentAllowsAction(active, {
     unitId, action: step.type === 'note' ? 'lesson' : 'guided', difficulty: active.difficulty ?? getCurriculumDifficulty(unitId),
   })));
@@ -231,6 +232,8 @@ function Lesson() {
   const { selection } = useWork();
   const unit = findConditionalUnit(unitId ?? '');
   const { progress, update } = useCourse();
+  const saveStep = useCallback((stepId: string, patch: Parameters<typeof recordCourseStep>[2]) => update(prior => recordCourseStep(prior, stepId, patch)), [update]);
+  const store = useMemo(() => ({ ready: progress !== null, steps: progress?.course ?? {}, save: saveStep }), [progress, saveStep]);
   useEffect(() => {
     if (unit && location.hash === '#repair') document.getElementById('repair')?.scrollIntoView({ block: 'start' });
   }, [unit, location.hash, location.key]);
@@ -238,7 +241,7 @@ function Lesson() {
   const target = { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) };
   const units = selectedUnits(selection);
   const previous = units[units.indexOf(unit) - 1];
-  return <ConditionalLessonNote unit={unit} reviewed={!!progress.lessons[unit.id] && !needsExpandedConditionalLessonReview(progress.lessons, unit.id)} onComplete={() => update(prior => markConditionalLessonRead(prior, unit.id))} continueHref={actionUrl(unit, 'guided', target)} previousHref={previous ? actionUrl(previous, 'lesson', target) : undefined} />;
+  return <CourseProgressProvider store={store}><CourseLessonProvider key={unit.id} stepId={`legacy:${unit.id}`}><ConditionalLessonNote unit={unit} reviewed={!!progress.lessons[unit.id] && !needsExpandedConditionalLessonReview(progress.lessons, unit.id)} onComplete={() => update(prior => markConditionalLessonRead(prior, unit.id))} continueHref={actionUrl(unit, 'guided', target)} previousHref={previous ? actionUrl(previous, 'lesson', target) : undefined} /></CourseLessonProvider></CourseProgressProvider>;
 }
 
 function GuidedActivity() {

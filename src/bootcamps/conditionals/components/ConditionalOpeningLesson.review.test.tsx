@@ -4,6 +4,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { conditionalUnits } from '../content';
 import { ConditionalLessonNote } from './ConditionalLessonNote';
 import { diagramExamples, orderedConditionalIdeas, translationExamples } from './ConditionalOpeningLesson';
+import { CourseLessonProvider, CourseProgressProvider, useDeviceCourseProgress } from '../courseProgress';
 
 vi.mock('@/components/ui/dynamic-island-toc', () => ({ DynamicIslandTOC: () => null }));
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
@@ -46,6 +47,40 @@ it('lets learners test a requirement before translating its word family', () => 
   expect(within(section).getByText(/Having a reservation still leaves open whether the person uses it/)).toBeTruthy();
   expect(screen.queryByRole('button', { name: 'Reduce animation in this lesson' })).toBeNull();
   expect(complete).not.toHaveBeenCalled();
+});
+
+it('resumes sibling lesson checks, reveal state and indicator diagram without overwriting them', () => {
+  localStorage.removeItem('conditional-course-progress:opening-interactions');
+  let store: ReturnType<typeof useDeviceCourseProgress> | undefined;
+  function Provider() {
+    store = useDeviceCourseProgress('opening-interactions');
+    return <MemoryRouter><CourseProgressProvider store={store}><CourseLessonProvider stepId="group-2"><ConditionalLessonNote unit={conditionalUnits.find(unit => unit.id === 'group-2')!} onComplete={() => undefined} reviewed={false} continueHref="/guided"/></CourseLessonProvider></CourseProgressProvider></MemoryRouter>;
+  }
+  const view = render(<Provider/>);
+  const section = document.querySelector<HTMLElement>('#co-read-it-as-a-requirement')!;
+  showPageFor(section);
+  fireEvent.click(within(section).getByRole('button', { name: 'Show the reasoning' }));
+  fireEvent.click(within(section).getByRole('button', { name: 'Has a reservation' }));
+  const lab = screen.getByText('Which words does the indicator refer to?').closest<HTMLElement>('.co-lab')!;
+  showPageFor(lab);
+  fireEvent.click(within(lab).getByRole('button', { name: 'must' }));
+  fireEvent.click(within(lab).getByRole('button', { name: 'Required to attend interview' }));
+  fireEvent.click(within(lab).getByRole('button', { name: 'Show the requirement on the right' }));
+  const interactions = (store!.steps['group-2'].state as { lessonInteractions: Record<string, unknown> }).lessonInteractions;
+  expect(Object.keys(interactions).some(key => key.startsWith('think:'))).toBe(true);
+  expect(Object.keys(interactions).some(key => key.startsWith('check:'))).toBe(true);
+  expect(interactions['translation:group-2:diagram']).toBe(true);
+  view.unmount();
+  render(<Provider/>);
+  const restoredSection = document.querySelector<HTMLElement>('#co-read-it-as-a-requirement')!;
+  showPageFor(restoredSection);
+  expect(within(restoredSection).getByRole('button', { name: 'Hide the reasoning' })).toBeVisible();
+  expect(within(restoredSection).getByRole('button', { name: 'Has a reservation' })).toHaveAttribute('aria-pressed', 'true');
+  const restoredLab = screen.getByText('Which words does the indicator refer to?').closest<HTMLElement>('.co-lab')!;
+  showPageFor(restoredLab);
+  expect(within(restoredLab).getByRole('button', { name: 'must' })).toHaveAttribute('aria-pressed', 'true');
+  expect(within(restoredLab).getByRole('button', { name: 'Required to attend interview' })).toHaveAttribute('aria-pressed', 'true');
+  expect(restoredLab.querySelector('.co-arrow')).toBeVisible();
 });
 
 it('orders complete ideas consistently while varying the correct position within every group', () => {

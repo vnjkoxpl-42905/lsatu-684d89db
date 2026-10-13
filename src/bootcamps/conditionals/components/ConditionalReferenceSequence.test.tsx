@@ -211,7 +211,7 @@ it('requires both independent diagrams before giving nine fresh practice keys an
   const expected = [
     ['RT → PT', '~PT → ~RT'], ['SF → RC', '~RC → ~SF'], ['A → C', '~C → ~A'],
     ['D → B', '~B → ~D'], ['E → P', '~P → ~E'], ['M → V', '~V → ~M'],
-    ['~C → H', '~H → C'], ['A → ~R', 'R → ~A'], ['~R → ~L', 'L → R'],
+    ['~C → H', '~H → C'], ['A → ~R', 'R → ~A'], ['~S → ~R', 'R → S'],
   ];
   const items = [...step(13).querySelectorAll<HTMLElement>('[data-reference-practice]')];
   expect(items).toHaveLength(9);
@@ -236,6 +236,9 @@ it('requires both independent diagrams before giving nine fresh practice keys an
     fireEvent.click(check);
     expect(item.querySelector('.cr-correct')).toBeNull();
     expect(within(item).getByRole('status').textContent).toMatch(/original keeps the direction.*contrapositive must start/i);
+    expect(item.querySelector('.cr-answer-key')).toBeNull();
+    fireEvent.click(check);
+    fireEvent.click(within(item).getByRole('button', { name: 'Show me' }));
     expect(item.querySelector('.cr-answer-key')?.textContent).toContain(spoken(original));
     expect(item.querySelector('.cr-answer-key')?.textContent).toContain(spoken(contra));
     fireEvent.click(within(contraChoices).getByRole('button', { name: spoken(contra) }));

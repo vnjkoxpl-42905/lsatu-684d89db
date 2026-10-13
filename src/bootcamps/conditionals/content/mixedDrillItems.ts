@@ -19,19 +19,19 @@ export const completeConditionItems: MixedDrillChoiceItem[] = [
     id: 'mixed-condition-1', stage: 'complete-condition', skill: 'qualification',
     sentence: 'Every swimmer training before dawn receives a wristband.',
     prompt: 'Who does the rule say will receive a wristband?',
-    options: ['Every swimmer', 'Every swimmer training before dawn', 'Anyone who receives a wristband'], correct: 1,
+    options: ['Every swimmer', 'Every swimmer training before dawn', 'Receiving a wristband'], correct: 1,
     errorByOption: ['qualification', null, 'direction'],
     feedback: [
       'Every swimmer includes people training later in the day. Reread the rule for the words that limit which swimmers the rule covers.',
       'Each swimmer training before dawn receives a wristband. The time restriction matters: the rule does not tell us what swimmers training later receive.',
-      'The wristband is what the rule proves, not the group it covers. Ask: every what? Keep every word that limits that group.',
+      'Receiving a wristband is what the rule proves, not the group it covers. Ask: every what? Keep every word that limits that group.',
     ],
   },
   {
     id: 'mixed-condition-2', stage: 'complete-condition', skill: 'qualification',
     sentence: 'Only locker keys with yellow tags open the cabinet.',
     prompt: 'What kind of key is needed to open the cabinet?',
-    options: ['A locker key', 'A key that opens the cabinet', 'A locker key with a yellow tag'], correct: 2,
+    options: ['A locker key', 'Opening the cabinet', 'A locker key with a yellow tag'], correct: 2,
     errorByOption: ['qualification', 'direction', null],
     feedback: [
       'Locker key alone leaves out part of the description. Would any locker key open the cabinet under this rule? Keep every word that limits which keys qualify.',
@@ -97,7 +97,7 @@ export const equivalenceItems: MixedDrillChoiceItem[] = [
     options: ['Same rule', 'Reversed rule'], correct: 0,
     errorByOption: [null, 'equivalence'],
     feedback: [
-      'Only if makes being stamped a requirement for going into the tray. Every envelope in the tray must meet that requirement. It does not promise a place there to every stamped envelope.',
+      'Only if makes being stamped a requirement for going into the tray. Every envelope in the tray must meet that requirement. It does not put every stamped envelope in the tray.',
       'Read only if as the whole phrase. The stamp is required for the tray, rather than enough for it. That keeps the original rule.',
     ],
   },
@@ -164,7 +164,7 @@ export const confirmationItemsByError: Record<MixedDrillError, MixedDrillChoiceI
     feedback: [
       'Printing is what the rule proves, not what proves something. The rule has not said every printed invitation means the registration was accepted. Ask: when what? Start from that condition.',
       'Acceptance is enough for printing, so put registration accepted on the left and invitation printed on the right. A printed invitation alone leaves acceptance open.',
-      'Submitted is not the same as accepted. A registration can be submitted and then turned down, and the rule promises nothing for it. Keep the exact condition the rule uses.',
+      'Submitted is not the same as accepted. A registration can be submitted and then turned down, and the rule says nothing about it. Keep the exact condition the rule uses.',
     ],
   }],
   qualification: [{
@@ -174,7 +174,7 @@ export const confirmationItemsByError: Record<MixedDrillError, MixedDrillChoiceI
     options: ['Courier delivering refrigerated medicine', 'Courier', 'Courier delivering medicine'], correct: 0,
     errorByOption: [null, 'qualification', 'qualification'],
     feedback: [
-      'Keep delivering refrigerated medicine attached to courier. The rule proves an insulated pack for each courier in that complete group. It leaves other couriers outside this promise.',
+      'Keep delivering refrigerated medicine attached to courier. The rule proves an insulated pack for each courier in that complete group. It leaves other couriers outside the rule.',
       'Courier alone includes couriers carrying other deliveries. Keep every detail that limits which couriers the rule covers.',
       'Delivering medicine includes medicine that is not refrigerated. That would broaden the group beyond the rule. Which word did you drop?',
     ],

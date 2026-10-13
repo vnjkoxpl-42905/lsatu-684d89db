@@ -18,7 +18,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
   {
     "id": "source-intro-identify",
     "title": "Find the indicators and both conditions",
-    "shortTitle": "Intro training",
+    "shortTitle": "Find both conditions",
     "stage": "Recognize",
     "taskKind": "identify",
     "instructions": "Select the indicators and choose each one’s group. Then highlight the two complete conditions in the rule. Keep words that limit who, when, or what the rule covers.",
@@ -40,7 +40,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the warranty is valid) → NOT (the product is registered within 30 days)",
         "ifThen": "If the product is registered within 30 days, then the warranty is valid.",
         "contrapositiveWords": "If the warranty is not valid, then the product is not registered within 30 days.",
-        "explanation": "The deadline belongs inside the sufficient condition. Registration after 30 days does not meet this trigger.",
+        "explanation": "The deadline belongs inside the sufficient condition. Registration after 30 days does not meet this sufficient condition.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -66,7 +66,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you should expect thunder to follow) → NOT (you see lightning)",
         "ifThen": "If you see lightning, then you should expect thunder to follow.",
         "contrapositiveWords": "If it is not true that you should expect thunder to follow, then you do not see lightning.",
-        "explanation": "The result is that you should expect thunder. The rule does not promise that thunder actually follows.",
+        "explanation": "The result is that you should expect thunder. The rule does not say that thunder actually follows.",
         "correctionNotes": [
           "The key strengthens “expect thunder” to “thunder will follow.” Preserve the expectation.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -122,9 +122,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is a manager",
         "necessary": "that person is required to undergo annual training",
         "diagram": "a person is a manager → that person is required to undergo annual training",
-        "contrapositive": "NOT (that person is required to undergo annual training) → NOT (a person is a manager)",
+        "contrapositive": "NOT (a person is required to undergo annual training) → NOT (a person is a manager)",
         "ifThen": "If a person is a manager, then that person is required to undergo annual training.",
-        "contrapositiveWords": "If that person is not required to undergo annual training, then that person is not a manager.",
+        "contrapositiveWords": "If a person is not required to undergo annual training, then that person is not a manager.",
         "explanation": "Keep the requirement in the outcome. A manager who skips training can still be a manager.",
         "correctionNotes": [
           "Preserve the training requirement; a duty does not prove actual compliance."
@@ -230,9 +230,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is a member who pays their dues",
         "necessary": "that person can attend the meeting",
         "diagram": "a person is a member who pays their dues → that person can attend the meeting",
-        "contrapositive": "NOT (that person can attend the meeting) → NOT (a person is a member who pays their dues)",
+        "contrapositive": "NOT (a person can attend the meeting) → NOT (a person is a member who pays their dues)",
         "ifThen": "If a person is a member who pays their dues, then that person can attend the meeting.",
-        "contrapositiveWords": "If that person cannot attend the meeting, then that person is not a member who pays their dues.",
+        "contrapositiveWords": "If a person cannot attend the meeting, then that person is not a member who pays their dues.",
         "explanation": "Keep both membership and payment. Can attend does not say that the member attends.",
         "correctionNotes": [
           "Keep membership and “can attend.”"
@@ -286,9 +286,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a passenger is allowed to board the train",
         "necessary": "that passenger presents a ticket",
         "diagram": "a passenger is allowed to board the train → that passenger presents a ticket",
-        "contrapositive": "NOT (that passenger presents a ticket) → NOT (a passenger is allowed to board the train)",
+        "contrapositive": "NOT (a passenger presents a ticket) → NOT (a passenger is allowed to board the train)",
         "ifThen": "If a passenger is allowed to board the train, then that passenger presents a ticket.",
-        "contrapositiveWords": "If that passenger does not present a ticket, then that passenger is not allowed to board the train.",
+        "contrapositiveWords": "If a passenger does not present a ticket, then that passenger is not allowed to board the train.",
         "explanation": "This is a boarding requirement. Keep presents a ticket, rather than merely owns a ticket.",
         "correctionNotes": [
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -317,7 +317,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the item is returned unopened) → NOT (a refund is issued)",
         "ifThen": "If a refund is issued, then the item is returned unopened.",
         "contrapositiveWords": "If the item is not returned unopened, then that refund is not issued.",
-        "explanation": "Not returned unopened includes no return at all. It does not mean only returned opened.",
+        "explanation": "Unopened is part of the requirement. A refund needs the item returned unopened.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -366,10 +366,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is an applicant who passes the test",
         "necessary": "that person receives an interview call",
         "diagram": "a person is an applicant who passes the test → that person receives an interview call",
-        "contrapositive": "NOT (that person receives an interview call) → NOT (a person is an applicant who passes the test)",
+        "contrapositive": "NOT (a person receives an interview call) → NOT (a person is an applicant who passes the test)",
         "ifThen": "If a person is an applicant who passes the test, then that person receives an interview call.",
-        "contrapositiveWords": "If that person does not receive an interview call, then that person is not an applicant who passes the test.",
-        "explanation": "Keep applicant who passes the test together. Passing alone is not the whole trigger.",
+        "contrapositiveWords": "If a person does not receive an interview call, then that person is not an applicant who passes the test.",
+        "explanation": "Keep applicant who passes the test together. Passing alone is not the whole sufficient condition.",
         "correctionNotes": [
           "Keep the applicant restriction."
         ],
@@ -394,7 +394,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person votes in the club election",
         "necessary": "that person is over 18",
         "diagram": "a person votes in the club election → that person is over 18",
-        "contrapositive": "NOT (that person is over 18) → NOT (a person votes in the club election)",
+        "contrapositive": "NOT (a person is over 18) → NOT (a person votes in the club election)",
         "ifThen": "If a person votes in the club election, then that person is over 18.",
         "contrapositiveWords": "If a person is not over 18, then that person does not vote in the club election.",
         "explanation": "Over 18 means older than 18. Voting requires being over 18, but being over 18 does not prove that a person votes.",
@@ -425,7 +425,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you support the environment) → NOT (you plant trees)",
         "ifThen": "If you plant trees, then you support the environment.",
         "contrapositiveWords": "If you do not support the environment, then you do not plant trees.",
-        "explanation": "Use the supplied rule. Planting trees is enough for its stated result; the result alone does not prove planting.",
+        "explanation": "Use the rule. Planting trees is enough for its stated result; the result alone does not prove planting.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -448,9 +448,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "employees qualify for promotion",
         "necessary": "those employees complete training",
         "diagram": "employees qualify for promotion → those employees complete training",
-        "contrapositive": "NOT (those employees complete training) → NOT (employees qualify for promotion)",
+        "contrapositive": "NOT (employees complete training) → NOT (employees qualify for promotion)",
         "ifThen": "If employees qualify for promotion, then those employees complete training.",
-        "contrapositiveWords": "If those employees do not complete training, then employees do not qualify for promotion.",
+        "contrapositiveWords": "If employees do not complete training, then employees do not qualify for promotion.",
         "explanation": "The training requirement comes first in the rule, but qualification goes on the left of the arrow.",
         "correctionNotes": [],
         "source": {
@@ -474,10 +474,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is a student who misses a lesson",
         "necessary": "that student receives notes",
         "diagram": "a person is a student who misses a lesson → that student receives notes",
-        "contrapositive": "NOT (that student receives notes) → NOT (a person is a student who misses a lesson)",
+        "contrapositive": "NOT (a student receives notes) → NOT (a person is a student who misses a lesson)",
         "ifThen": "If a person is a student who misses a lesson, then that student receives notes.",
-        "contrapositiveWords": "If that student does not receive notes, then that person is not a student who misses a lesson.",
-        "explanation": "Keep the student and missed-lesson restriction in the trigger.",
+        "contrapositiveWords": "If a student does not receive notes, then that person is not a student who misses a lesson.",
+        "explanation": "Keep the student and missed-lesson restriction in the sufficient condition.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -526,9 +526,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a food spoils quickly",
         "necessary": "that food has no preservatives",
         "diagram": "a food spoils quickly → that food has no preservatives",
-        "contrapositive": "NOT (that food has no preservatives) → NOT (a food spoils quickly)",
+        "contrapositive": "NOT (a food has no preservatives) → NOT (a food spoils quickly)",
         "ifThen": "If a food spoils quickly, then that food has no preservatives.",
-        "contrapositiveWords": "If that food has preservatives, then that food does not spoil quickly.",
+        "contrapositiveWords": "If a food has preservatives, then that food does not spoil quickly.",
         "explanation": "Here the only foods that spoil quickly identifies the sufficient category. Quickly spoiling food requires no preservatives; the reverse is not given.",
         "correctionNotes": [
           "The source key conflicts over the classification of “the only.”"
@@ -557,7 +557,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (servers restart) → NOT (maintenance is complete)",
         "ifThen": "If maintenance is complete, then servers restart.",
         "contrapositiveWords": "If servers do not restart, then maintenance is not complete.",
-        "explanation": "Where introduces the situation sufficient for restarting in this supplied rule.",
+        "explanation": "Where introduces the situation sufficient for restarting in this rule.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -580,9 +580,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a driver avoids fines under this rule",
         "necessary": "that driver wears a seatbelt",
         "diagram": "a driver avoids fines under this rule → that driver wears a seatbelt",
-        "contrapositive": "NOT (that driver wears a seatbelt) → NOT (a driver avoids fines under this rule)",
+        "contrapositive": "NOT (a driver wears a seatbelt) → NOT (a driver avoids fines under this rule)",
         "ifThen": "If a driver avoids fines under this rule, then that driver wears a seatbelt.",
-        "contrapositiveWords": "If that driver does not wear a seatbelt, then that driver does not avoid fines under this rule.",
+        "contrapositiveWords": "If a driver does not wear a seatbelt, then that driver does not avoid fines under this rule.",
         "explanation": "Avoiding fines requires a seatbelt. Wearing one alone does not guarantee avoiding every fine.",
         "correctionNotes": [],
         "source": {
@@ -661,9 +661,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "an application is submitted on time",
         "necessary": "that application is reviewed",
         "diagram": "an application is submitted on time → that application is reviewed",
-        "contrapositive": "NOT (that application is reviewed) → NOT (an application is submitted on time)",
+        "contrapositive": "NOT (an application is reviewed) → NOT (an application is submitted on time)",
         "ifThen": "If an application is submitted on time, then that application is reviewed.",
-        "contrapositiveWords": "If that application is not reviewed, then that application is not submitted on time.",
+        "contrapositiveWords": "If an application is not reviewed, then that application is not submitted on time.",
         "explanation": "On time belongs to the sufficient condition. The rule does not cover late applications.",
         "correctionNotes": [],
         "source": {
@@ -687,9 +687,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "visitors show ID",
         "necessary": "those visitors can enter",
         "diagram": "visitors show ID → those visitors can enter",
-        "contrapositive": "NOT (those visitors can enter) → NOT (visitors show ID)",
+        "contrapositive": "NOT (visitors can enter) → NOT (visitors show ID)",
         "ifThen": "If visitors show ID, then those visitors can enter.",
-        "contrapositiveWords": "If those visitors cannot enter, then visitors do not show ID.",
+        "contrapositiveWords": "If visitors cannot enter, then visitors do not show ID.",
         "explanation": "Keep can enter. Permission is not proof that entry occurs.",
         "correctionNotes": [],
         "source": {
@@ -715,15 +715,16 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
           }
         ],
         "sufficient": "troubleshooting begins",
-        "necessary": "errors have been documented before troubleshooting",
-        "diagram": "troubleshooting begins → errors have been documented before troubleshooting",
-        "contrapositive": "NOT (errors have been documented before troubleshooting) → NOT (troubleshooting begins)",
-        "ifThen": "If troubleshooting begins, then errors have been documented before troubleshooting.",
-        "contrapositiveWords": "If errors have not been documented before troubleshooting, then troubleshooting does not begin.",
-        "explanation": "Must and always both point to the requirement. Before is part of it: documentation after troubleshooting would not meet it.",
+        "necessary": "errors are required to be documented before troubleshooting",
+        "diagram": "troubleshooting begins → errors are required to be documented before troubleshooting",
+        "contrapositive": "NOT (errors are required to be documented before troubleshooting) → NOT (troubleshooting begins)",
+        "ifThen": "If troubleshooting begins, then errors are required to be documented before troubleshooting.",
+        "contrapositiveWords": "If errors are not required to be documented before troubleshooting, then troubleshooting does not begin.",
+        "explanation": "Must and always state a requirement to document errors before troubleshooting. Beginning troubleshooting does not prove that anyone followed that requirement. Keep before in the duty.",
         "correctionNotes": [
           "This is an instruction. Do not treat it as proof of actual compliance.",
-          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement.",
+          "Preserve the documentation duty in every translation; actual compliance is not guaranteed."
         ],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -772,9 +773,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is an author who publishes",
         "necessary": "that author gains recognition",
         "diagram": "a person is an author who publishes → that author gains recognition",
-        "contrapositive": "NOT (that author gains recognition) → NOT (a person is an author who publishes)",
+        "contrapositive": "NOT (an author gains recognition) → NOT (a person is an author who publishes)",
         "ifThen": "If a person is an author who publishes, then that author gains recognition.",
-        "contrapositiveWords": "If that author does not gain recognition, then that person is not an author who publishes.",
+        "contrapositiveWords": "If an author does not gain recognition, then that person is not an author who publishes.",
         "explanation": "The publishing restriction is part of the sufficient condition.",
         "correctionNotes": [],
         "source": {
@@ -789,10 +790,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
   {
     "id": "source-intro-diagrams",
     "title": "Put the conditions beside the arrow",
-    "shortTitle": "Intro training revisited",
+    "shortTitle": "Build the diagram",
     "stage": "Diagram",
     "taskKind": "forward",
-    "instructions": "Return to the 15 intro rules. Highlight the complete conditions, give each a letter, then build the original diagram with your own letters. It is checked for direction and complete meaning.",
+    "instructions": "Return to the first 15 rules from Drill 2. Highlight the complete conditions, give each a letter, then build the original diagram with your own letters. It is checked for direction and complete meaning.",
     "items": [
       {
         "id": "source-intro-diagrams-01",
@@ -811,7 +812,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the warranty is valid) → NOT (the product is registered within 30 days)",
         "ifThen": "If the product is registered within 30 days, then the warranty is valid.",
         "contrapositiveWords": "If the warranty is not valid, then the product is not registered within 30 days.",
-        "explanation": "The deadline belongs inside the sufficient condition. Registration after 30 days does not meet this trigger.",
+        "explanation": "The deadline belongs inside the sufficient condition. Registration after 30 days does not meet this sufficient condition.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -837,7 +838,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you should expect thunder to follow) → NOT (you see lightning)",
         "ifThen": "If you see lightning, then you should expect thunder to follow.",
         "contrapositiveWords": "If it is not true that you should expect thunder to follow, then you do not see lightning.",
-        "explanation": "The result is that you should expect thunder. The rule does not promise that thunder actually follows.",
+        "explanation": "The result is that you should expect thunder. The rule does not say that thunder actually follows.",
         "correctionNotes": [
           "The key strengthens “expect thunder” to “thunder will follow.” Preserve the expectation.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -893,9 +894,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is a manager",
         "necessary": "that person is required to undergo annual training",
         "diagram": "a person is a manager → that person is required to undergo annual training",
-        "contrapositive": "NOT (that person is required to undergo annual training) → NOT (a person is a manager)",
+        "contrapositive": "NOT (a person is required to undergo annual training) → NOT (a person is a manager)",
         "ifThen": "If a person is a manager, then that person is required to undergo annual training.",
-        "contrapositiveWords": "If that person is not required to undergo annual training, then that person is not a manager.",
+        "contrapositiveWords": "If a person is not required to undergo annual training, then that person is not a manager.",
         "explanation": "Keep the requirement in the outcome. A manager who skips training can still be a manager.",
         "correctionNotes": [
           "Preserve the training requirement; a duty does not prove actual compliance."
@@ -1001,9 +1002,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is a member who pays their dues",
         "necessary": "that person can attend the meeting",
         "diagram": "a person is a member who pays their dues → that person can attend the meeting",
-        "contrapositive": "NOT (that person can attend the meeting) → NOT (a person is a member who pays their dues)",
+        "contrapositive": "NOT (a person can attend the meeting) → NOT (a person is a member who pays their dues)",
         "ifThen": "If a person is a member who pays their dues, then that person can attend the meeting.",
-        "contrapositiveWords": "If that person cannot attend the meeting, then that person is not a member who pays their dues.",
+        "contrapositiveWords": "If a person cannot attend the meeting, then that person is not a member who pays their dues.",
         "explanation": "Keep both membership and payment. Can attend does not say that the member attends.",
         "correctionNotes": [
           "Keep membership and “can attend.”"
@@ -1057,9 +1058,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a passenger is allowed to board the train",
         "necessary": "that passenger presents a ticket",
         "diagram": "a passenger is allowed to board the train → that passenger presents a ticket",
-        "contrapositive": "NOT (that passenger presents a ticket) → NOT (a passenger is allowed to board the train)",
+        "contrapositive": "NOT (a passenger presents a ticket) → NOT (a passenger is allowed to board the train)",
         "ifThen": "If a passenger is allowed to board the train, then that passenger presents a ticket.",
-        "contrapositiveWords": "If that passenger does not present a ticket, then that passenger is not allowed to board the train.",
+        "contrapositiveWords": "If a passenger does not present a ticket, then that passenger is not allowed to board the train.",
         "explanation": "This is a boarding requirement. Keep presents a ticket, rather than merely owns a ticket.",
         "correctionNotes": [
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -1088,7 +1089,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the item is returned unopened) → NOT (a refund is issued)",
         "ifThen": "If a refund is issued, then the item is returned unopened.",
         "contrapositiveWords": "If the item is not returned unopened, then that refund is not issued.",
-        "explanation": "Not returned unopened includes no return at all. It does not mean only returned opened.",
+        "explanation": "Unopened is part of the requirement. A refund needs the item returned unopened.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -1137,10 +1138,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is an applicant who passes the test",
         "necessary": "that person receives an interview call",
         "diagram": "a person is an applicant who passes the test → that person receives an interview call",
-        "contrapositive": "NOT (that person receives an interview call) → NOT (a person is an applicant who passes the test)",
+        "contrapositive": "NOT (a person receives an interview call) → NOT (a person is an applicant who passes the test)",
         "ifThen": "If a person is an applicant who passes the test, then that person receives an interview call.",
-        "contrapositiveWords": "If that person does not receive an interview call, then that person is not an applicant who passes the test.",
-        "explanation": "Keep applicant who passes the test together. Passing alone is not the whole trigger.",
+        "contrapositiveWords": "If a person does not receive an interview call, then that person is not an applicant who passes the test.",
+        "explanation": "Keep applicant who passes the test together. Passing alone is not the whole sufficient condition.",
         "correctionNotes": [
           "Keep the applicant restriction."
         ],
@@ -1165,7 +1166,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person votes in the club election",
         "necessary": "that person is over 18",
         "diagram": "a person votes in the club election → that person is over 18",
-        "contrapositive": "NOT (that person is over 18) → NOT (a person votes in the club election)",
+        "contrapositive": "NOT (a person is over 18) → NOT (a person votes in the club election)",
         "ifThen": "If a person votes in the club election, then that person is over 18.",
         "contrapositiveWords": "If a person is not over 18, then that person does not vote in the club election.",
         "explanation": "Over 18 means older than 18. Voting requires being over 18, but being over 18 does not prove that a person votes.",
@@ -1196,7 +1197,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you support the environment) → NOT (you plant trees)",
         "ifThen": "If you plant trees, then you support the environment.",
         "contrapositiveWords": "If you do not support the environment, then you do not plant trees.",
-        "explanation": "Use the supplied rule. Planting trees is enough for its stated result; the result alone does not prove planting.",
+        "explanation": "Use the rule. Planting trees is enough for its stated result; the result alone does not prove planting.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -1229,9 +1230,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "employees qualify for promotion",
         "necessary": "those employees complete training",
         "diagram": "employees qualify for promotion → those employees complete training",
-        "contrapositive": "NOT (those employees complete training) → NOT (employees qualify for promotion)",
+        "contrapositive": "NOT (employees complete training) → NOT (employees qualify for promotion)",
         "ifThen": "If employees qualify for promotion, then those employees complete training.",
-        "contrapositiveWords": "If those employees do not complete training, then employees do not qualify for promotion.",
+        "contrapositiveWords": "If employees do not complete training, then employees do not qualify for promotion.",
         "explanation": "The training requirement comes first in the rule, but qualification goes on the left of the arrow.",
         "correctionNotes": [],
         "source": {
@@ -1255,10 +1256,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is a student who misses a lesson",
         "necessary": "that student receives notes",
         "diagram": "a person is a student who misses a lesson → that student receives notes",
-        "contrapositive": "NOT (that student receives notes) → NOT (a person is a student who misses a lesson)",
+        "contrapositive": "NOT (a student receives notes) → NOT (a person is a student who misses a lesson)",
         "ifThen": "If a person is a student who misses a lesson, then that student receives notes.",
-        "contrapositiveWords": "If that student does not receive notes, then that person is not a student who misses a lesson.",
-        "explanation": "Keep the student and missed-lesson restriction in the trigger.",
+        "contrapositiveWords": "If a student does not receive notes, then that person is not a student who misses a lesson.",
+        "explanation": "Keep the student and missed-lesson restriction in the sufficient condition.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -1307,9 +1308,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a driver avoids fines under this rule",
         "necessary": "that driver wears a seatbelt",
         "diagram": "a driver avoids fines under this rule → that driver wears a seatbelt",
-        "contrapositive": "NOT (that driver wears a seatbelt) → NOT (a driver avoids fines under this rule)",
+        "contrapositive": "NOT (a driver wears a seatbelt) → NOT (a driver avoids fines under this rule)",
         "ifThen": "If a driver avoids fines under this rule, then that driver wears a seatbelt.",
-        "contrapositiveWords": "If that driver does not wear a seatbelt, then that driver does not avoid fines under this rule.",
+        "contrapositiveWords": "If a driver does not wear a seatbelt, then that driver does not avoid fines under this rule.",
         "explanation": "Avoiding fines requires a seatbelt. Wearing one alone does not guarantee avoiding every fine.",
         "correctionNotes": [],
         "source": {
@@ -1333,9 +1334,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "an application is submitted on time",
         "necessary": "that application is reviewed",
         "diagram": "an application is submitted on time → that application is reviewed",
-        "contrapositive": "NOT (that application is reviewed) → NOT (an application is submitted on time)",
+        "contrapositive": "NOT (an application is reviewed) → NOT (an application is submitted on time)",
         "ifThen": "If an application is submitted on time, then that application is reviewed.",
-        "contrapositiveWords": "If that application is not reviewed, then that application is not submitted on time.",
+        "contrapositiveWords": "If an application is not reviewed, then that application is not submitted on time.",
         "explanation": "On time belongs to the sufficient condition. The rule does not cover late applications.",
         "correctionNotes": [],
         "source": {
@@ -1414,9 +1415,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "visitors show ID",
         "necessary": "those visitors can enter",
         "diagram": "visitors show ID → those visitors can enter",
-        "contrapositive": "NOT (those visitors can enter) → NOT (visitors show ID)",
+        "contrapositive": "NOT (visitors can enter) → NOT (visitors show ID)",
         "ifThen": "If visitors show ID, then those visitors can enter.",
-        "contrapositiveWords": "If those visitors cannot enter, then visitors do not show ID.",
+        "contrapositiveWords": "If visitors cannot enter, then visitors do not show ID.",
         "explanation": "Keep can enter. Permission is not proof that entry occurs.",
         "correctionNotes": [],
         "source": {
@@ -1440,9 +1441,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is an author who publishes",
         "necessary": "that author gains recognition",
         "diagram": "a person is an author who publishes → that author gains recognition",
-        "contrapositive": "NOT (that author gains recognition) → NOT (a person is an author who publishes)",
+        "contrapositive": "NOT (an author gains recognition) → NOT (a person is an author who publishes)",
         "ifThen": "If a person is an author who publishes, then that author gains recognition.",
-        "contrapositiveWords": "If that author does not gain recognition, then that person is not an author who publishes.",
+        "contrapositiveWords": "If an author does not gain recognition, then that person is not an author who publishes.",
         "explanation": "The publishing restriction is part of the sufficient condition.",
         "correctionNotes": [],
         "source": {
@@ -1468,15 +1469,16 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
           }
         ],
         "sufficient": "troubleshooting begins",
-        "necessary": "errors have been documented before troubleshooting",
-        "diagram": "troubleshooting begins → errors have been documented before troubleshooting",
-        "contrapositive": "NOT (errors have been documented before troubleshooting) → NOT (troubleshooting begins)",
-        "ifThen": "If troubleshooting begins, then errors have been documented before troubleshooting.",
-        "contrapositiveWords": "If errors have not been documented before troubleshooting, then troubleshooting does not begin.",
-        "explanation": "Must and always both point to the requirement. Before is part of it: documentation after troubleshooting would not meet it.",
+        "necessary": "errors are required to be documented before troubleshooting",
+        "diagram": "troubleshooting begins → errors are required to be documented before troubleshooting",
+        "contrapositive": "NOT (errors are required to be documented before troubleshooting) → NOT (troubleshooting begins)",
+        "ifThen": "If troubleshooting begins, then errors are required to be documented before troubleshooting.",
+        "contrapositiveWords": "If errors are not required to be documented before troubleshooting, then troubleshooting does not begin.",
+        "explanation": "Must and always state a requirement to document errors before troubleshooting. Beginning troubleshooting does not prove that anyone followed that requirement. Keep before in the duty.",
         "correctionNotes": [
           "Keep “before” and distinguish an instruction from actual compliance.",
-          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement.",
+          "Preserve the documentation duty in every translation; actual compliance is not guaranteed."
         ],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -1513,9 +1515,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is a runner in a marathon",
         "necessary": "that runner is required to hydrate before the marathon",
         "diagram": "a person is a runner in a marathon → that runner is required to hydrate before the marathon",
-        "contrapositive": "NOT (that runner is required to hydrate before the marathon) → NOT (a person is a runner in a marathon)",
+        "contrapositive": "NOT (a runner is required to hydrate before the marathon) → NOT (a person is a runner in a marathon)",
         "ifThen": "If a person is a runner in a marathon, then that runner is required to hydrate before the marathon.",
-        "contrapositiveWords": "If that runner is not required to hydrate before the marathon, then that person is not a runner in a marathon.",
+        "contrapositiveWords": "If a runner is not required to hydrate before the marathon, then that person is not a runner in a marathon.",
         "explanation": "The outcome is a hydration duty, not proof that a runner complied. Keep before the marathon.",
         "correctionNotes": [
           "Mixed indicators and obligation: do not force one group label.",
@@ -1568,9 +1570,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person receives the rebate",
         "necessary": "that person conserves water",
         "diagram": "a person receives the rebate → that person conserves water",
-        "contrapositive": "NOT (that person conserves water) → NOT (a person receives the rebate)",
+        "contrapositive": "NOT (a person conserves water) → NOT (a person receives the rebate)",
         "ifThen": "If a person receives the rebate, then that person conserves water.",
-        "contrapositiveWords": "If that person does not conserve water, then that person does not receive the rebate.",
+        "contrapositiveWords": "If a person does not conserve water, then that person does not receive the rebate.",
         "explanation": "Receiving the rebate requires conservation. Conservation alone need not prove a rebate.",
         "correctionNotes": [],
         "source": {
@@ -1584,22 +1586,23 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-rephrase-04",
         "sourceId": "rephrase-04",
         "originalStatement": "The only key to unlocking that door is the blue key.",
-        "statement": "The only key to unlocking that door is the blue key.",
+        "statement": "The only key that starts this tractor is the blue key.",
         "indicators": [
           {
             "text": "The only",
             "group": 1
           }
         ],
-        "sufficient": "a key unlocks that door",
+        "sufficient": "a key starts this tractor",
         "necessary": "that key is the blue key",
-        "diagram": "a key unlocks that door → that key is the blue key",
-        "contrapositive": "NOT (that key is the blue key) → NOT (a key unlocks that door)",
-        "ifThen": "If a key unlocks that door, then that key is the blue key.",
-        "contrapositiveWords": "If a key is not the blue key, then that key does not unlock that door.",
-        "explanation": "The only what? The only key to unlocking that door. Any key that unlocks it has to be the blue key. The rule is about keys, so it says nothing about other ways of opening the door.",
+        "diagram": "a key starts this tractor → that key is the blue key",
+        "contrapositive": "NOT (a key is the blue key) → NOT (that key starts this tractor)",
+        "ifThen": "If a key starts this tractor, then that key is the blue key.",
+        "contrapositiveWords": "If a key is not the blue key, then that key does not start this tractor.",
+        "explanation": "Starting this tractor requires the blue key. The rule does not say that every blue key starts it.",
         "correctionNotes": [
-          "Restored the source wording on 2026-10-11 so the item practises the indicator the only."
+          "Restored the source wording on 2026-10-11 so the item practises the indicator the only.",
+          "Reviewed derivative: use a fresh tractor example; original worksheet wording is retained."
         ],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -1622,9 +1625,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person succeeds in chess",
         "necessary": "that person uses strategic thinking",
         "diagram": "a person succeeds in chess → that person uses strategic thinking",
-        "contrapositive": "NOT (that person uses strategic thinking) → NOT (a person succeeds in chess)",
+        "contrapositive": "NOT (a person uses strategic thinking) → NOT (a person succeeds in chess)",
         "ifThen": "If a person succeeds in chess, then that person uses strategic thinking.",
-        "contrapositiveWords": "If that person does not use strategic thinking, then that person does not succeed in chess.",
+        "contrapositiveWords": "If a person does not use strategic thinking, then that person does not succeed in chess.",
         "explanation": "Success requires strategic thinking. Strategic thinking alone is not guaranteed success.",
         "correctionNotes": [],
         "source": {
@@ -1652,9 +1655,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is an artist who uses oil paints",
         "necessary": "that artist is required to clean their brushes thoroughly",
         "diagram": "a person is an artist who uses oil paints → that artist is required to clean their brushes thoroughly",
-        "contrapositive": "NOT (that artist is required to clean their brushes thoroughly) → NOT (a person is an artist who uses oil paints)",
+        "contrapositive": "NOT (an artist is required to clean their brushes thoroughly) → NOT (a person is an artist who uses oil paints)",
         "ifThen": "If a person is an artist who uses oil paints, then that artist is required to clean their brushes thoroughly.",
-        "contrapositiveWords": "If that artist is not required to clean their brushes thoroughly, then that person is not an artist who uses oil paints.",
+        "contrapositiveWords": "If an artist is not required to clean their brushes thoroughly, then that person is not an artist who uses oil paints.",
         "explanation": "The outcome is the cleaning requirement. Noncompliance alone does not prove the artist avoided oil paints.",
         "correctionNotes": [
           "Mixed indicators and obligation: preserve the duty."
@@ -1682,15 +1685,16 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
           }
         ],
         "sufficient": "a project is successful",
-        "necessary": "that project involves effective teamwork",
-        "diagram": "a project is successful → that project involves effective teamwork",
-        "contrapositive": "NOT (that project involves effective teamwork) → NOT (a project is successful)",
-        "ifThen": "If a project is successful, then that project involves effective teamwork.",
-        "contrapositiveWords": "If that project does not involve effective teamwork, then that project is not successful.",
-        "explanation": "The rule makes teamwork necessary for success. Teamwork alone does not guarantee a successful project.",
+        "necessary": "effective teamwork has taken place on that project",
+        "diagram": "a project is successful → effective teamwork has taken place on that project",
+        "contrapositive": "NOT (effective teamwork has taken place on a project) → NOT (that project is successful)",
+        "ifThen": "If a project is successful, then effective teamwork has taken place on that project.",
+        "contrapositiveWords": "If effective teamwork has not taken place on a project, then that project is not successful.",
+        "explanation": "Keep to have taken place. The rule says effective teamwork has occurred on every successful project. Teamwork alone does not guarantee success.",
         "correctionNotes": [
           "Allow a separate group label for each indicator.",
-          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement.",
+          "Preserve the completed occurrence of teamwork stated in the reviewed sentence."
         ],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -1713,9 +1717,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person can apply for this position",
         "necessary": "that person has a degree in architecture",
         "diagram": "a person can apply for this position → that person has a degree in architecture",
-        "contrapositive": "NOT (that person has a degree in architecture) → NOT (a person can apply for this position)",
+        "contrapositive": "NOT (a person has a degree in architecture) → NOT (a person can apply for this position)",
         "ifThen": "If a person can apply for this position, then that person has a degree in architecture.",
-        "contrapositiveWords": "If that person does not have a degree in architecture, then that person cannot apply for this position.",
+        "contrapositiveWords": "If a person does not have a degree in architecture, then that person cannot apply for this position.",
         "explanation": "Can apply is not actually applies. Keep eligibility in both translations.",
         "correctionNotes": [
           "Preserve “can apply.”"
@@ -1744,7 +1748,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the streetlights turn on) → NOT (the sun sets)",
         "ifThen": "If the sun sets, then the streetlights turn on.",
         "contrapositiveWords": "If the streetlights do not turn on, then the sun does not set.",
-        "explanation": "Sunset is the trigger in the supplied rule. Lights being on need not prove sunset.",
+        "explanation": "Sunset is the sufficient condition in the rule. Lights being on need not prove sunset.",
         "correctionNotes": [],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -1793,12 +1797,13 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "an agreement is legally binding",
         "necessary": "that agreement is in writing",
         "diagram": "an agreement is legally binding → that agreement is in writing",
-        "contrapositive": "NOT (that agreement is in writing) → NOT (an agreement is legally binding)",
+        "contrapositive": "NOT (an agreement is in writing) → NOT (an agreement is legally binding)",
         "ifThen": "If an agreement is legally binding, then that agreement is in writing.",
-        "contrapositiveWords": "If that agreement is not in writing, then that agreement is not legally binding.",
+        "contrapositiveWords": "If an agreement is not in writing, then that agreement is not legally binding.",
         "explanation": "Must introduces the requirement: being in writing. The full sufficient condition is that an agreement is legally binding, so every does not mark the sufficient condition here.",
         "correctionNotes": [
-          "Keep the legally-binding restriction; classify each expression separately."
+          "Keep the legally-binding restriction; classify each expression separately.",
+          "Every remains a valid sufficient-group quantifier; must identifies the requirement."
         ],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -1847,9 +1852,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person studies physics",
         "necessary": "that person encounters complex mathematical concepts",
         "diagram": "a person studies physics → that person encounters complex mathematical concepts",
-        "contrapositive": "NOT (that person encounters complex mathematical concepts) → NOT (a person studies physics)",
+        "contrapositive": "NOT (a person encounters complex mathematical concepts) → NOT (a person studies physics)",
         "ifThen": "If a person studies physics, then that person encounters complex mathematical concepts.",
-        "contrapositiveWords": "If that person does not encounter complex mathematical concepts, then that person does not study physics.",
+        "contrapositiveWords": "If a person does not encounter complex mathematical concepts, then that person does not study physics.",
         "explanation": "Anyone makes the rule cover every person who studies physics, not everyone without restriction.",
         "correctionNotes": [],
         "source": {
@@ -1873,10 +1878,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "artists are inspired",
         "necessary": "those artists create their most celebrated pieces",
         "diagram": "artists are inspired → those artists create their most celebrated pieces",
-        "contrapositive": "NOT (those artists create their most celebrated pieces) → NOT (artists are inspired)",
+        "contrapositive": "NOT (artists create their most celebrated pieces) → NOT (artists are inspired)",
         "ifThen": "If artists are inspired, then those artists create their most celebrated pieces.",
-        "contrapositiveWords": "If those artists do not create their most celebrated pieces, then those artists were not inspired.",
-        "explanation": "Assume the rule as the exercise rule. Do not judge the diagram by whether this claim is realistic.",
+        "contrapositiveWords": "If artists do not create their most celebrated pieces, then those artists were not inspired.",
+        "explanation": "Take the rule as given. Do not judge the diagram by whether this claim is realistic.",
         "correctionNotes": [],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -1980,7 +1985,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (an evaluator whose authorization is currently active signs the form) → NOT (certification occurs)",
         "ifThen": "If certification occurs, then an evaluator whose authorization is currently active signs the form.",
         "contrapositiveWords": "If no evaluator whose authorization is currently active signs the form, then certification does not occur.",
-        "explanation": "Negation means no currently authorized evaluator signs. One evaluator declining to sign does not rule out another qualifying signer.",
+        "explanation": "Keep currently active. A signer whose authorization has lapsed does not count.",
         "correctionNotes": [
           "Keep “currently active”; negate the whole qualified signing condition."
         ],
@@ -2037,7 +2042,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a device bears a failed seal",
         "necessary": "that device is required to be recalibrated under the maintenance policy",
         "diagram": "a device bears a failed seal → that device is required to be recalibrated under the maintenance policy",
-        "contrapositive": "NOT (that device is required to be recalibrated under the maintenance policy) → NOT (a device bears a failed seal)",
+        "contrapositive": "NOT (a device is required to be recalibrated under the maintenance policy) → NOT (a device bears a failed seal)",
         "ifThen": "If a device bears a failed seal, then that device is required to be recalibrated under the maintenance policy.",
         "contrapositiveWords": "If a device is not required to be recalibrated under the maintenance policy, then that device does not bear a failed seal.",
         "explanation": "The policy creates an obligation. A device still waiting for recalibration can bear a failed seal. Keep the requirement in the result.",
@@ -2066,10 +2071,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person's registration is verified by the registrar",
         "necessary": "that person is granted admission",
         "diagram": "a person's registration is verified by the registrar → that person is granted admission",
-        "contrapositive": "NOT (that person is granted admission) → NOT (a person's registration is verified by the registrar)",
+        "contrapositive": "NOT (a person is granted admission) → NOT (a person's registration is verified by the registrar)",
         "ifThen": "If a person's registration is verified by the registrar, then that person is granted admission.",
-        "contrapositiveWords": "If that person is not granted admission, then that person's registration is not verified by the registrar.",
-        "explanation": "Keep the registrar's verification, not registration alone, as the trigger.",
+        "contrapositiveWords": "If a person is not granted admission, then that person's registration is not verified by the registrar.",
+        "explanation": "Keep the registrar's verification, not registration alone, as the sufficient condition.",
         "correctionNotes": [],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -2121,7 +2126,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (access is granted) → NOT (verification that the training requirement is met appears in the file)",
         "ifThen": "If verification that the training requirement is met appears in the file, then access is granted.",
         "contrapositiveWords": "If access is not granted, then verification that the training requirement is met does not appear in the file.",
-        "explanation": "The trigger is verification appearing in the file, not merely training being completed.",
+        "explanation": "The sufficient condition is verification appearing in the file, not merely training being completed.",
         "correctionNotes": [],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -2147,7 +2152,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (an investigation begins) → NOT (a complaint meeting the policy threshold is filed with the office)",
         "ifThen": "If a complaint meeting the policy threshold is filed with the office, then an investigation begins.",
         "contrapositiveWords": "If an investigation does not begin, then no complaint meeting the policy threshold has been filed with the office.",
-        "explanation": "Both the policy threshold and filing with the office belong in the trigger.",
+        "explanation": "Both the policy threshold and filing with the office belong in the sufficient condition.",
         "correctionNotes": [],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -2174,9 +2179,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a permit is issued by the agency",
         "necessary": "that permit includes an audit trail matching the transaction record",
         "diagram": "a permit is issued by the agency → that permit includes an audit trail matching the transaction record",
-        "contrapositive": "NOT (that permit includes an audit trail matching the transaction record) → NOT (a permit is issued by the agency)",
+        "contrapositive": "NOT (a permit includes an audit trail matching the transaction record) → NOT (a permit is issued by the agency)",
         "ifThen": "If a permit is issued by the agency, then that permit includes an audit trail matching the transaction record.",
-        "contrapositiveWords": "If that permit does not include an audit trail matching the transaction record, then that permit is not issued by the agency.",
+        "contrapositiveWords": "If a permit does not include an audit trail matching the transaction record, then that permit is not issued by the agency.",
         "explanation": "Keep agency-issued and the matching record. All marks the covered permits; always describes their required feature.",
         "correctionNotes": [
           "Keep the matching transaction record and classify expressions separately."
@@ -2212,9 +2217,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is an intern who completes the program",
         "necessary": "that intern is offered a full-time position",
         "diagram": "a person is an intern who completes the program → that intern is offered a full-time position",
-        "contrapositive": "NOT (that intern is offered a full-time position) → NOT (a person is an intern who completes the program)",
+        "contrapositive": "NOT (an intern is offered a full-time position) → NOT (a person is an intern who completes the program)",
         "ifThen": "If a person is an intern who completes the program, then that intern is offered a full-time position.",
-        "contrapositiveWords": "If that intern is not offered a full-time position, then that person is not an intern who completes the program.",
+        "contrapositiveWords": "If an intern is not offered a full-time position, then that person is not an intern who completes the program.",
         "explanation": "Keep intern and program completion together. An offer is not the same as taking the job.",
         "correctionNotes": [],
         "source": {
@@ -2241,7 +2246,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (your grade is finalized) → NOT (you submit your report by Friday)",
         "ifThen": "If you submit your report by Friday, then your grade is finalized.",
         "contrapositiveWords": "If your grade is not finalized, then you do not submit your report by Friday.",
-        "explanation": "Negate submission by Friday as a whole. A late submission does not meet the trigger.",
+        "explanation": "Negate submission by Friday as a whole. A late submission does not meet the sufficient condition.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -2290,10 +2295,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is a participant who finishes the marathon",
         "necessary": "that participant receives a medal",
         "diagram": "a person is a participant who finishes the marathon → that participant receives a medal",
-        "contrapositive": "NOT (that participant receives a medal) → NOT (a person is a participant who finishes the marathon)",
+        "contrapositive": "NOT (a participant receives a medal) → NOT (a person is a participant who finishes the marathon)",
         "ifThen": "If a person is a participant who finishes the marathon, then that participant receives a medal.",
-        "contrapositiveWords": "If that participant does not receive a medal, then that person is not a participant who finishes the marathon.",
-        "explanation": "Finishing, rather than simply participating, is the full trigger.",
+        "contrapositiveWords": "If a participant does not receive a medal, then that person is not a participant who finishes the marathon.",
+        "explanation": "Finishing, rather than simply participating, is the full sufficient condition.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -2316,9 +2321,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a device is left unattended",
         "necessary": "that device powers down automatically",
         "diagram": "a device is left unattended → that device powers down automatically",
-        "contrapositive": "NOT (that device powers down automatically) → NOT (a device is left unattended)",
+        "contrapositive": "NOT (a device powers down automatically) → NOT (a device is left unattended)",
         "ifThen": "If a device is left unattended, then that device powers down automatically.",
-        "contrapositiveWords": "If that device does not power down automatically, then that device is not left unattended.",
+        "contrapositiveWords": "If a device does not power down automatically, then that device is not left unattended.",
         "explanation": "Automatically belongs in the result. A manual shutdown is not the same condition.",
         "correctionNotes": [],
         "source": {
@@ -2368,9 +2373,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "employees qualify for bonuses",
         "necessary": "those employees exceed sales targets",
         "diagram": "employees qualify for bonuses → those employees exceed sales targets",
-        "contrapositive": "NOT (those employees exceed sales targets) → NOT (employees qualify for bonuses)",
+        "contrapositive": "NOT (employees exceed sales targets) → NOT (employees qualify for bonuses)",
         "ifThen": "If employees qualify for bonuses, then those employees exceed sales targets.",
-        "contrapositiveWords": "If those employees do not exceed sales targets, then employees do not qualify for bonuses.",
+        "contrapositiveWords": "If employees do not exceed sales targets, then employees do not qualify for bonuses.",
         "explanation": "Qualification requires exceeding the targets. Exceeding them alone need not guarantee a bonus.",
         "correctionNotes": [],
         "source": {
@@ -2425,7 +2430,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (system maintenance is performed) → NOT (operations are halted temporarily)",
         "ifThen": "If operations are halted temporarily, then system maintenance is performed.",
         "contrapositiveWords": "If system maintenance is not performed, then operations are not halted temporarily.",
-        "explanation": "The reviewed rule makes maintenance a prerequisite for the halt. Maintenance alone does not prove that operations halt.",
+        "explanation": "The rule makes maintenance a prerequisite for the halt. Maintenance alone does not prove that operations halt.",
         "correctionNotes": [
           "The key changes a requirement into completed maintenance.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -2506,7 +2511,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (security checks have been conducted before entry) → NOT (entry occurs)",
         "ifThen": "If entry occurs, then security checks have been conducted before entry.",
         "contrapositiveWords": "If security checks have not been conducted before entry, then entry does not occur.",
-        "explanation": "The reviewed rule is factual. Keep the checks and their timing together.",
+        "explanation": "This rule states a fact. Keep the checks and their timing together.",
         "correctionNotes": [
           "Keep “before”; this instruction needs a compliance-rule frame.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -2640,9 +2645,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a sample is exposed to extreme temperatures",
         "necessary": "that sample's integrity is compromised",
         "diagram": "a sample is exposed to extreme temperatures → that sample's integrity is compromised",
-        "contrapositive": "NOT (that sample's integrity is compromised) → NOT (a sample is exposed to extreme temperatures)",
+        "contrapositive": "NOT (a sample's integrity is compromised) → NOT (a sample is exposed to extreme temperatures)",
         "ifThen": "If a sample is exposed to extreme temperatures, then that sample's integrity is compromised.",
-        "contrapositiveWords": "If that sample's integrity is not compromised, then that sample is not exposed to extreme temperatures.",
+        "contrapositiveWords": "If a sample's integrity is not compromised, then that sample is not exposed to extreme temperatures.",
         "explanation": "The rule covers any such exposure. Uncompromised integrity rules out that exposure.",
         "correctionNotes": [],
         "source": {
@@ -2782,9 +2787,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "an individual is a member of the Q continuum",
         "necessary": "that individual is omnipotent",
         "diagram": "an individual is a member of the Q continuum → that individual is omnipotent",
-        "contrapositive": "NOT (that individual is omnipotent) → NOT (an individual is a member of the Q continuum)",
+        "contrapositive": "NOT (an individual is omnipotent) → NOT (an individual is a member of the Q continuum)",
         "ifThen": "If an individual is a member of the Q continuum, then that individual is omnipotent.",
-        "contrapositiveWords": "If that individual is not omnipotent, then that individual is not a member of the Q continuum.",
+        "contrapositiveWords": "If an individual is not omnipotent, then that individual is not a member of the Q continuum.",
         "explanation": "Each and every works like every. Membership is sufficient; omnipotence alone does not prove membership.",
         "correctionNotes": [],
         "source": {
@@ -2811,7 +2816,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you run quickly) → NOT (there is a bear behind you)",
         "ifThen": "If there is a bear behind you, then you run quickly.",
         "contrapositiveWords": "If you do not run quickly, then there is not a bear behind you.",
-        "explanation": "The unclear name in the source has been replaced with a clear result. The conditional direction is unchanged.",
+        "explanation": "A bear behind you is enough, in this rule, to make you run quickly. Running quickly does not prove a bear.",
         "correctionNotes": [
           "Named comparison is unclear in the source.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -2866,7 +2871,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you beat the LSAT) → NOT (you study)",
         "ifThen": "If you study, then you beat the LSAT.",
         "contrapositiveWords": "If you do not beat the LSAT, then you do not study.",
-        "explanation": "This is an assumed exercise rule, not a promise about test results. Study is sufficient within this premise.",
+        "explanation": "Take the rule as given. In this rule, studying is enough to beat the LSAT.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -2892,7 +2897,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (there is fun at that place) → NOT (there is beer at a place)",
         "ifThen": "If there is beer at a place, then there is fun at that place.",
         "contrapositiveWords": "If there is no fun at that place, then there is no beer at that place.",
-        "explanation": "Keep the location consistent. The supplied rule does not make fun proof that beer is present.",
+        "explanation": "Keep the location consistent. The rule does not make fun proof that beer is present.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -2944,7 +2949,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (it pours) → NOT (it rains)",
         "ifThen": "If it rains, then it pours.",
         "contrapositiveWords": "If it does not pour, then it does not rain.",
-        "explanation": "Read the words literally for this supplied rule. Pouring is the required result.",
+        "explanation": "Read the words literally for this rule. Pouring is the required result.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -2967,9 +2972,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is one of the King's men",
         "necessary": "that person swore an oath of allegiance",
         "diagram": "a person is one of the King's men → that person swore an oath of allegiance",
-        "contrapositive": "NOT (that person swore an oath of allegiance) → NOT (a person is one of the King's men)",
+        "contrapositive": "NOT (a person swore an oath of allegiance) → NOT (a person is one of the King's men)",
         "ifThen": "If a person is one of the King's men, then that person swore an oath of allegiance.",
-        "contrapositiveWords": "If that person did not swear an oath of allegiance, then that person is not one of the King's men.",
+        "contrapositiveWords": "If a person did not swear an oath of allegiance, then that person is not one of the King's men.",
         "explanation": "Keep the King's men as the category. Men alone would change the rule.",
         "correctionNotes": [],
         "source": {
@@ -2993,9 +2998,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "an animal is a monkey",
         "necessary": "that animal lives in trees",
         "diagram": "an animal is a monkey → that animal lives in trees",
-        "contrapositive": "NOT (that animal lives in trees) → NOT (an animal is a monkey)",
+        "contrapositive": "NOT (an animal lives in trees) → NOT (an animal is a monkey)",
         "ifThen": "If an animal is a monkey, then that animal lives in trees.",
-        "contrapositiveWords": "If that animal does not live in trees, then that animal is not a monkey.",
+        "contrapositiveWords": "If an animal does not live in trees, then that animal is not a monkey.",
         "explanation": "The only monkeys identifies the sufficient category. Monkeys require tree dwelling in this rule.",
         "correctionNotes": [
           "The key explanation conflicts with its correctly directed arrow."
@@ -3011,21 +3016,23 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-independent-11",
         "sourceId": "translation-11",
         "originalStatement": "You will become a magician if you drink coffee.",
-        "statement": "You will become a magician if you drink coffee.",
+        "statement": "You will become a magician if you find the silver wand.",
         "indicators": [
           {
             "text": "if",
             "group": 1
           }
         ],
-        "sufficient": "you drink coffee",
+        "sufficient": "you find the silver wand",
         "necessary": "you become a magician",
-        "diagram": "you drink coffee → you become a magician",
-        "contrapositive": "NOT (you become a magician) → NOT (you drink coffee)",
-        "ifThen": "If you drink coffee, then you become a magician.",
-        "contrapositiveWords": "If you do not become a magician, then you do not drink coffee.",
+        "diagram": "you find the silver wand → you become a magician",
+        "contrapositive": "NOT (you become a magician) → NOT (you find the silver wand)",
+        "ifThen": "If you find the silver wand, then you become a magician.",
+        "contrapositiveWords": "If you do not become a magician, then you do not find the silver wand.",
         "explanation": "Treat this as a fictional rule. A valid diagram need not describe a realistic causal connection.",
-        "correctionNotes": [],
+        "correctionNotes": [
+          "Reviewed derivative: replace the coffee example; original worksheet wording is retained."
+        ],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
           "sha256": "16be3555a66c9313fffa6afcd071ec0ca8816d7c8fbf7808a0acf42e6dd2ac05",
@@ -3047,9 +3054,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is a lawyer",
         "necessary": "that person can read",
         "diagram": "a person is a lawyer → that person can read",
-        "contrapositive": "NOT (that person can read) → NOT (a person is a lawyer)",
+        "contrapositive": "NOT (a person can read) → NOT (a person is a lawyer)",
         "ifThen": "If a person is a lawyer, then that person can read.",
-        "contrapositiveWords": "If that person cannot read, then that person is not a lawyer.",
+        "contrapositiveWords": "If a person cannot read, then that person is not a lawyer.",
         "explanation": "Can read is an ability, not evidence that reading is occurring now.",
         "correctionNotes": [],
         "source": {
@@ -3073,9 +3080,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "an object is a computer",
         "necessary": "that object can do addition",
         "diagram": "an object is a computer → that object can do addition",
-        "contrapositive": "NOT (that object can do addition) → NOT (an object is a computer)",
+        "contrapositive": "NOT (an object can do addition) → NOT (an object is a computer)",
         "ifThen": "If an object is a computer, then that object can do addition.",
-        "contrapositiveWords": "If that object cannot do addition, then that object is not a computer.",
+        "contrapositiveWords": "If an object cannot do addition, then that object is not a computer.",
         "explanation": "Keep can. An ability to add does not mean an addition operation is happening.",
         "correctionNotes": [],
         "source": {
@@ -3099,9 +3106,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "an animal is a beaver",
         "necessary": "that animal loves to eat maple trees",
         "diagram": "an animal is a beaver → that animal loves to eat maple trees",
-        "contrapositive": "NOT (that animal loves to eat maple trees) → NOT (an animal is a beaver)",
+        "contrapositive": "NOT (an animal loves to eat maple trees) → NOT (an animal is a beaver)",
         "ifThen": "If an animal is a beaver, then that animal loves to eat maple trees.",
-        "contrapositiveWords": "If that animal does not love to eat maple trees, then that animal is not a beaver.",
+        "contrapositiveWords": "If an animal does not love to eat maple trees, then that animal is not a beaver.",
         "explanation": "Loves to eat is not the same as eats. Keep the complete stated result.",
         "correctionNotes": [],
         "source": {
@@ -3151,9 +3158,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a device reveals where you are",
         "necessary": "that device is a GPS",
         "diagram": "a device reveals where you are → that device is a GPS",
-        "contrapositive": "NOT (that device is a GPS) → NOT (a device reveals where you are)",
+        "contrapositive": "NOT (a device is a GPS) → NOT (a device reveals where you are)",
         "ifThen": "If a device reveals where you are, then that device is a GPS.",
-        "contrapositiveWords": "If that device is not a GPS, then that device does not reveal where you are.",
+        "contrapositiveWords": "If a device is not a GPS, then that device does not reveal where you are.",
         "explanation": "Only identifies GPS as necessary. Where inside reveals where you are is not a separate conditional indicator.",
         "correctionNotes": [],
         "source": {
@@ -3203,9 +3210,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person has expertise",
         "necessary": "that person has practiced",
         "diagram": "a person has expertise → that person has practiced",
-        "contrapositive": "NOT (that person has practiced) → NOT (a person has expertise)",
+        "contrapositive": "NOT (a person has practiced) → NOT (a person has expertise)",
         "ifThen": "If a person has expertise, then that person has practiced.",
-        "contrapositiveWords": "If that person has not practiced, then that person does not have expertise.",
+        "contrapositiveWords": "If a person has not practiced, then that person does not have expertise.",
         "explanation": "Expertise requires practice. Practice does not by itself guarantee expertise.",
         "correctionNotes": [],
         "source": {
@@ -3229,10 +3236,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "an animal swims",
         "necessary": "that animal is a fish",
         "diagram": "an animal swims → that animal is a fish",
-        "contrapositive": "NOT (that animal is a fish) → NOT (an animal swims)",
+        "contrapositive": "NOT (an animal is a fish) → NOT (an animal swims)",
         "ifThen": "If an animal swims, then that animal is a fish.",
-        "contrapositiveWords": "If that animal is not a fish, then that animal does not swim.",
-        "explanation": "Only points to the necessary category, fish. Apply the supplied rule even though other animals swim in real life.",
+        "contrapositiveWords": "If an animal is not a fish, then that animal does not swim.",
+        "explanation": "Only points to the necessary category, fish. Apply the rule even though other animals swim in real life.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3255,7 +3262,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a mango is ripe",
         "necessary": "that mango is soft to the touch",
         "diagram": "a mango is ripe → that mango is soft to the touch",
-        "contrapositive": "NOT (that mango is soft to the touch) → NOT (a mango is ripe)",
+        "contrapositive": "NOT (a mango is soft to the touch) → NOT (a mango is ripe)",
         "ifThen": "If a mango is ripe, then that mango is soft to the touch.",
         "contrapositiveWords": "If a mango is not soft to the touch, then that mango is not ripe.",
         "explanation": "Always points to what every ripe mango has: softness. A soft mango is not proven ripe.",
@@ -3310,10 +3317,10 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person dies young",
         "necessary": "that person is good",
         "diagram": "a person dies young → that person is good",
-        "contrapositive": "NOT (that person is good) → NOT (a person dies young)",
+        "contrapositive": "NOT (a person is good) → NOT (a person dies young)",
         "ifThen": "If a person dies young, then that person is good.",
-        "contrapositiveWords": "If that person is not good, then that person does not die young.",
-        "explanation": "Dying young is sufficient for goodness within the supplied rule, not the reverse.",
+        "contrapositiveWords": "If a person is not good, then that person does not die young.",
+        "explanation": "Dying young is sufficient for goodness within the rule, not the reverse.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3416,7 +3423,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a place has independent judges",
         "necessary": "that place has a good legal system",
         "diagram": "a place has independent judges → that place has a good legal system",
-        "contrapositive": "NOT (that place has a good legal system) → NOT (a place has independent judges)",
+        "contrapositive": "NOT (a place has a good legal system) → NOT (a place has independent judges)",
         "ifThen": "If a place has independent judges, then that place has a good legal system.",
         "contrapositiveWords": "If a place does not have a good legal system, then that place does not have independent judges.",
         "explanation": "Keep the same place on both sides. No causal claim is needed to translate the rule.",
@@ -3442,9 +3449,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "an organism is a tree",
         "necessary": "that organism is a perennial plant with an elongated stem",
         "diagram": "an organism is a tree → that organism is a perennial plant with an elongated stem",
-        "contrapositive": "NOT (that organism is a perennial plant with an elongated stem) → NOT (an organism is a tree)",
+        "contrapositive": "NOT (an organism is a perennial plant with an elongated stem) → NOT (an organism is a tree)",
         "ifThen": "If an organism is a tree, then that organism is a perennial plant with an elongated stem.",
-        "contrapositiveWords": "If that organism is not a perennial plant with an elongated stem, then that organism is not a tree.",
+        "contrapositiveWords": "If an organism is not a perennial plant with an elongated stem, then that organism is not a tree.",
         "explanation": "Negate the full combined description. Failing either part is enough; both need not fail.",
         "correctionNotes": [
           "Keep the whole compound condition."
@@ -3499,9 +3506,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a behavior is a mating ritual",
         "necessary": "that behavior can be conceptualized as a game to illuminate its underlying strategies",
         "diagram": "a behavior is a mating ritual → that behavior can be conceptualized as a game to illuminate its underlying strategies",
-        "contrapositive": "NOT (that behavior can be conceptualized as a game to illuminate its underlying strategies) → NOT (a behavior is a mating ritual)",
+        "contrapositive": "NOT (a behavior can be conceptualized as a game to illuminate its underlying strategies) → NOT (a behavior is a mating ritual)",
         "ifThen": "If a behavior is a mating ritual, then that behavior can be conceptualized as a game to illuminate its underlying strategies.",
-        "contrapositiveWords": "If that behavior cannot be conceptualized as a game to illuminate its underlying strategies, then that behavior is not a mating ritual.",
+        "contrapositiveWords": "If a behavior cannot be conceptualized as a game to illuminate its underlying strategies, then that behavior is not a mating ritual.",
         "explanation": "Keep can be conceptualized and the purpose clause. Possibility is different from actual conceptualization.",
         "correctionNotes": [
           "Preserve “can be conceptualized.”"
@@ -3527,9 +3534,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a feature is a Martian gully",
         "necessary": "that feature is poleward of 30 degrees latitude",
         "diagram": "a feature is a Martian gully → that feature is poleward of 30 degrees latitude",
-        "contrapositive": "NOT (that feature is poleward of 30 degrees latitude) → NOT (a feature is a Martian gully)",
+        "contrapositive": "NOT (a feature is poleward of 30 degrees latitude) → NOT (a feature is a Martian gully)",
         "ifThen": "If a feature is a Martian gully, then that feature is poleward of 30 degrees latitude.",
-        "contrapositiveWords": "If that feature is not poleward of 30 degrees latitude, then that feature is not a Martian gully.",
+        "contrapositiveWords": "If a feature is not poleward of 30 degrees latitude, then that feature is not a Martian gully.",
         "explanation": "Keep Martian and the full latitude boundary. The rule is not about all gullies everywhere.",
         "correctionNotes": [],
         "source": {
@@ -3553,7 +3560,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a mix of fresh and dried grass clippings is worked into garden soil",
         "necessary": "that soil holds water longer",
         "diagram": "a mix of fresh and dried grass clippings is worked into garden soil → that soil holds water longer",
-        "contrapositive": "NOT (that soil holds water longer) → NOT (a mix of fresh and dried grass clippings is worked into garden soil)",
+        "contrapositive": "NOT (a soil holds water longer) → NOT (a mix of fresh and dried grass clippings is worked into garden soil)",
         "ifThen": "If a mix of fresh and dried grass clippings is worked into garden soil, then that soil holds water longer.",
         "contrapositiveWords": "If garden soil does not hold water longer, then a mix of fresh and dried grass clippings was not worked into that soil.",
         "explanation": "Keep both fresh and dried clippings in the condition. Soil that holds water longer does not prove that clippings were added.",
@@ -3585,7 +3592,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (atmospheric pressure is high) → NOT (the sky is clear)",
         "ifThen": "If the sky is clear, then atmospheric pressure is high.",
         "contrapositiveWords": "If atmospheric pressure is not high, then the sky is not clear.",
-        "explanation": "Clear sky is sufficient in the exercise rule. High pressure alone does not prove a clear sky.",
+        "explanation": "Clear sky is sufficient in the rule. High pressure alone does not prove a clear sky.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3608,9 +3615,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a person is infected by virus X",
         "necessary": "that person's body produces antibodies to fight virus X after a week",
         "diagram": "a person is infected by virus X → that person's body produces antibodies to fight virus X after a week",
-        "contrapositive": "NOT (that person's body produces antibodies to fight virus X after a week) → NOT (a person is infected by virus X)",
+        "contrapositive": "NOT (a person's body produces antibodies to fight virus X after a week) → NOT (a person is infected by virus X)",
         "ifThen": "If a person is infected by virus X, then that person's body produces antibodies to fight virus X after a week.",
-        "contrapositiveWords": "If that person's body does not produce antibodies to fight virus X after a week, then that person is not infected by virus X.",
+        "contrapositiveWords": "If a person's body does not produce antibodies to fight virus X after a week, then that person is not infected by virus X.",
         "explanation": "Anyone supplies the universal coverage. Will is not the indicator. Keep the one-week timing.",
         "correctionNotes": [
           "The key misidentifies “will” and drops the timing."
@@ -3662,9 +3669,9 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "sufficient": "a moral duty exists",
         "necessary": "that moral duty supersedes every legal duty and every other kind of duty",
         "diagram": "a moral duty exists → that moral duty supersedes every legal duty and every other kind of duty",
-        "contrapositive": "NOT (that moral duty supersedes every legal duty and every other kind of duty) → NOT (a moral duty exists)",
+        "contrapositive": "NOT (a moral duty supersedes every legal duty and every other kind of duty) → NOT (a moral duty exists)",
         "ifThen": "If a moral duty exists, then that moral duty supersedes every legal duty and every other kind of duty.",
-        "contrapositiveWords": "If that moral duty fails to supersede at least one legal duty or other kind of duty, then that moral duty does not exist.",
+        "contrapositiveWords": "If a moral duty fails to supersede at least one legal duty or other kind of duty, then that moral duty does not exist.",
         "explanation": "Negate the whole superseding claim. Failure to supersede at least one covered duty is enough.",
         "correctionNotes": [
           "Negate the whole qualified duty claim."
@@ -3685,7 +3692,7 @@ const contrapositiveRevisits: Record<string, { sourceSetId: string; title: strin
   'source-intro-diagrams-contrapositive': {
     sourceSetId: 'source-intro-diagrams',
     title: 'Revisit the intro: build the contrapositive',
-    shortTitle: 'Intro training: contrapositives',
+    shortTitle: 'Build the contrapositives',
   },
   'source-rephrase-contrapositive': {
     sourceSetId: 'source-rephrase',
@@ -3708,7 +3715,7 @@ export const getSourceWorksheetDrill = (id: string): SourceWorksheetDrillSet | u
     shortTitle: revisit.shortTitle,
     stage: 'After contraposition',
     taskKind: 'contrapositive',
-    instructions: 'Return to these familiar sentences. Find the indicators, write the complete conditions, and define your symbols. Build the original diagram and compare it with ours, then build the contrapositive and check it. Last, write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.',
+    instructions: 'Return to these familiar sentences. Find the indicators, highlight the complete conditions, and define your symbols. Build the original diagram and compare it with ours, then build the contrapositive and check it. Last, write both in ordinary if/then language. Flip the sides and negate each complete condition, including its restrictions.',
   };
 };
 
@@ -3765,6 +3772,10 @@ export function checkIndicatorSelection(item: Pick<SourceWorksheetItem, 'stateme
       continue;
     }
     if (whoIntroducesCondition && WHO_PHRASE.test(text)) {
+      if (selection.group !== '1') wrongGroup.push(selection.text);
+      continue;
+    }
+    if (item.statement === 'Every agreement must be in writing to be legally binding.' && text === 'every') {
       if (selection.group !== '1') wrongGroup.push(selection.text);
       continue;
     }

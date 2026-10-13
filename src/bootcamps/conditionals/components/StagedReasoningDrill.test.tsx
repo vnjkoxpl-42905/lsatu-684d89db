@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { afterEach, beforeEach, expect, it } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { CourseProgressProvider } from '../courseProgress';
 import { MemoryRouter } from 'react-router-dom';
 import { StagedReasoningDrill, sufficientStagedItems, contrapositiveStagedItems } from './StagedReasoningDrill';
 import { diagramExamples, flashcardExamples, translationExamples } from './ConditionalOpeningLesson';
@@ -45,7 +46,7 @@ it('shows one stage at a time and requires a correct checked choice', () => {
   fireEvent.click(options[1]);
   fireEvent.click(screen.getByRole('button', { name: 'Check this step' }));
   expect(screen.getByRole('heading', { name: 'Not quite. Try again.' })).toHaveFocus();
-  expect(screen.getByText(/“only if” introduces what is required, not what is enough/)).toBeVisible();
+  expect(screen.getByText(/“raining” is part of the condition itself/)).toBeVisible();
   expect(screen.queryByText(/with the complete condition it refers to/)).toBeNull();
   expect(screen.getByRole('button', { name: 'Next step' })).toBeDisabled();
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
@@ -107,4 +108,19 @@ it('restores drafts and invalidates later checks when an earlier step is revised
   expect(stored.answers['0:1'].accepted).toBe(false);
   expect(stored.answers['0:2'].checked).toBe(false);
   expect(stored.answers['0:2'].writing).toBe('My saved reasoning.');
+});
+
+
+it('starts a new course account fresh without importing or overwriting standalone device work', () => {
+  const device = JSON.stringify({ index: 0, step: 0, answers: { '0:0': { choice: 0, writing: '', checked: true, accepted: true } }, fingerprint: JSON.stringify(sufficientStagedItems) });
+  localStorage.setItem('conditional-staged-v1:sufficient', device);
+  const save = vi.fn();
+  render(<MemoryRouter><CourseProgressProvider store={{ steps: {}, save }}><StagedReasoningDrill mode="sufficient"/></CourseProgressProvider></MemoryRouter>);
+  expect(screen.queryByRole('heading', { name: 'Right indicator.' })).toBeNull();
+  expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
+  expect(localStorage.getItem('conditional-staged-v1:sufficient')).toBe(device);
+  expect(save).toHaveBeenCalledWith('sufficient-practice', expect.objectContaining({ state: expect.objectContaining({ answers: {} }) }));
+  fireEvent.click(within(screen.getByRole('group', { name: 'Answer choices' })).getAllByRole('button')[0]);
+  fireEvent.click(screen.getByRole('button', { name: 'Check this step' }));
+  expect(localStorage.getItem('conditional-staged-v1:sufficient')).toBe(device);
 });

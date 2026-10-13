@@ -61,7 +61,7 @@ it('diagnoses the chosen error rather than tagging every answer with the exercis
   const swimmer = completeConditionItems[0];
   expect(swimmer.options[0]).toBe('Every swimmer');
   expect(swimmer.errorByOption?.[0]).toBe('qualification');
-  expect(swimmer.options[2]).toBe('Anyone who receives a wristband');
+  expect(swimmer.options[2]).toBe('Receiving a wristband');
   expect(swimmer.errorByOption?.[2]).toBe('direction');
   const trainee = transferItems.find(item => item.id === 'mixed-transfer-2')!;
   expect(trainee.errorByOption).toEqual(['qualification', 'direction', null]);
