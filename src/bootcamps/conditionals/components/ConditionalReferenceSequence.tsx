@@ -10,7 +10,6 @@ import { necessaryConditionFilms } from '../content/necessaryConditionFilms';
 import { NecessaryConditionExperience } from './NecessaryConditionExperience';
 import { NecessaryConditionStatement } from './NecessaryConditionStatement';
 import { NecessaryIndicatorExplorer } from './NecessaryIndicatorExplorer';
-import { PulseWord } from './ContrapositiveVisuals';
 import { Neg, Notation, PopQuizTitle } from './ContrapositiveVisuals';
 
 const raffleRule = 'If you win the raffle, you get a bicycle.';
@@ -274,12 +273,6 @@ export function conditionalReferenceContent() {
         <NecessaryConditionStatement/>
         <p>But being a student doesn’t mean you’re enrolled in law school. You could be studying history instead.</p>
         <p className="nc-takeaway"><strong>Being a student is required. It doesn’t prove enrollment on its own.</strong></p>
-        <section className="cr-sufficient-explanation nc-certainty" aria-label="Where the certainty is">
-          <h3>Where the certainty is</h3>
-          <p><strong>The necessary condition is what you can guarantee will occur if the sufficient condition happens.</strong></p>
-          <p>Look at the name. It's called necessary because it is necessary. If someone is enrolled in law school, being a student has to be true.</p>
-          <p>The sufficient condition opens the door. Once it's open, the necessary condition is guaranteed to be on the other side. That makes it <PulseWord>the place of certainty.</PulseWord> It's what you can prove.</p>
-        </section>
         <NecessaryConditionExperience/>
         <section className="cr-sufficient-explanation" aria-label="Why a requirement is not necessarily enough">
           <h3>Two roles in the same rule</h3>
@@ -290,7 +283,7 @@ export function conditionalReferenceContent() {
         <SufficientConditionFilm key="necessary-definition" assets={necessaryConditionFilms} title="Why the requirement is not enough here" ariaLabel="Short explanation of necessity"/>
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 2 indicator words">
           <h3>Group 2: Necessary-condition indicators</h3>
-          <p>In an if-then rule, the necessary condition is the part after <strong>then</strong>. These words and phrases mark that same part, wherever it sits in the sentence. Each one tells you a <strong>necessary condition</strong> is in play. Read the whole rule, then identify <strong>what is required and what requires it</strong>.</p>
+          <p>These words and phrases help you identify the <strong>necessary condition</strong>. Read the whole rule, then identify <strong>what is required and what requires it</strong>.</p>
           <NecessaryIndicatorExplorer/>
           <h3>Why only if is different from if</h3>
           <div className="nc-role-comparison">

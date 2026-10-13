@@ -7,11 +7,11 @@ import { OpeningCourseNavigation, OpeningCourseScreen } from './OpeningCourse';
 const url = (id: string, run = false) => `/course/${id}${run ? '?run=1' : ''}`;
 afterEach(cleanup);
 
-it('offers ten dedicated notes and twelve interleaved drill entries', () => {
+it('offers nine dedicated notes and twelve interleaved drill entries', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
   const list = document.querySelector<HTMLElement>('ol.oc-course-path')!;
-  expect(list.children).toHaveLength(22);
-  expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(10);
+  expect(list.children).toHaveLength(21);
+  expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(9);
   expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(12);
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'missing-requirement', 'foundation-practice']);
@@ -35,7 +35,6 @@ it('teaches each prerequisite before the source drills that use it', () => {
   expect(position('contrapositive')).toBeLessThan(position('source-intro-diagrams-contrapositive'));
   expect(position('contrapositive')).toBeLessThan(position('source-rephrase-contrapositive'));
   expect(position('contrapositive-practice')).toBeLessThan(position('source-independent'));
-  expect(position('four-situations')).toBe(position('contrapositive') + 1);
 });
 
 it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an old reader index', async step => {

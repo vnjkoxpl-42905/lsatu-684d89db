@@ -452,30 +452,3 @@ it('shows a rule that already has a not, and its double negative turning positiv
   expect(chips).toEqual(['true', 'false']);
   expect(within(demo).getByRole('status').textContent).toMatch(/the two cancel and it turns positive/);
 });
-
-it('follows the contrapositive with the four-situation chart: two rows settle something, two settle nothing', () => {
-  render(<OpeningCourseContent id="four-situations"/>);
-  const names = ['All a rule gives you', 'Don’t fall for the necessary condition', 'Four situations', 'Ask where the fact lands'];
-  for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
-  const full = document.body.textContent ?? '';
-  const text = full.slice(0, full.indexOf('Pop Quiz'));
-  const order = names.map(name => text.indexOf(name));
-  expect(order).toEqual([...order].sort((m, n) => m - n));
-  const rows = within(screen.getByRole('table')).getAllByRole('row').slice(1);
-  expect(rows.map(row => row.getAttribute('data-settled'))).toEqual(['true', 'true', 'false', 'false']);
-  expect(rows.map(row => within(row).getByRole('rowheader').textContent)).toEqual(['Sufficient present', 'Necessary absent', 'Sufficient absent', 'Necessary present']);
-  expect(rows.slice(2).every(row => row.textContent?.includes('Nothing!'))).toBe(true);
-  expect(text).not.toMatch(/raffle|breathing|air is present|promise|depends on|door|[—–~]/i);
-  expect(screen.getByRole('heading', { name: 'Pop Quiz' })).toBeVisible();
-});
-
-it('quizzes all four situations on a fresh rule and explains a wrong tap', () => {
-  render(<OpeningCourseContent id="four-situations"/>);
-  expect(screen.getAllByText('If a library book is overdue, the borrower gets a reminder text.')).toHaveLength(1);
-  fireEvent.click(screen.getByRole('button', { name: 'Nothing. Sam may or may not get a text.' }));
-  expect(screen.getByRole('status')).toHaveTextContent(/^Not that one\. An overdue book is the sufficient condition/);
-  fireEvent.click(screen.getByRole('button', { name: 'Sam gets a reminder text.' }));
-  fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
-  fireEvent.click(screen.getByRole('button', { name: 'Her book is overdue.' }));
-  expect(screen.getByRole('status')).toHaveTextContent(/hold that is ready/);
-});
