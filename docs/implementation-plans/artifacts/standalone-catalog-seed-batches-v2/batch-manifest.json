@@ -1,0 +1,195 @@
+{
+  "schemaOutput": "C:\\Users\\Joshu\\AppData\\Local\\Temp\\lsatu-standalone-catalog-schema-only-20260930.sql",
+  "schemaSha256": "61a859b1ba25c8420ebe2eb39e7dda4f3bde52f84ce8333da06cc8e1233ffb14",
+  "schemaBytes": 14904,
+  "preservedTables": [
+    "practice_test_runs",
+    "attempts",
+    "bootcamp_kv",
+    "section_history",
+    "rc_drill_sessions",
+    "rc_attempts",
+    "wrong_answer_journal",
+    "profiles",
+    "user_roles",
+    "practice_test_assignments",
+    "timed_pt_configuration_v1",
+    "timed_content_manifests_v1",
+    "timed_pt_receipts_v1",
+    "timed_pt_lr_bindings_v1",
+    "timed_section_configuration_v1",
+    "timed_section_sittings_v1",
+    "timed_section_receipts_v1",
+    "timed_section_source_bindings_v1",
+    "review_episodes_v1",
+    "review_episode_events_v1",
+    "intro_lr_attempts"
+  ],
+  "sections": 236,
+  "activation": false,
+  "maximumBatchBytes": 48000,
+  "batches": [
+    {
+      "name": "batch-01.sql",
+      "sections": 9,
+      "bytes": 44514,
+      "sha256": "a77a36f5ed41da4fbdaa59f150e56893311b33de2705857d505ac7cb3634fa8b"
+    },
+    {
+      "name": "batch-02.sql",
+      "sections": 9,
+      "bytes": 44257,
+      "sha256": "610b78b5850086583dd51b75a889cb477e3a1a1a4ef81a39a61fea8fc8d38b21"
+    },
+    {
+      "name": "batch-03.sql",
+      "sections": 9,
+      "bytes": 44464,
+      "sha256": "ac7e4b7d73fe61a6c11b9bf91c1ee39227ce778e4c3b422a9826a4105df03eae"
+    },
+    {
+      "name": "batch-04.sql",
+      "sections": 9,
+      "bytes": 44469,
+      "sha256": "c4db3f9481f4c2db4cbc4180e237e983299791c0174675a2169d79d855af4edd"
+    },
+    {
+      "name": "batch-05.sql",
+      "sections": 9,
+      "bytes": 44748,
+      "sha256": "15100ec4edf6abe69302efbb85ce3348039fd2cfcf47ab75baffb3800c88ea9e"
+    },
+    {
+      "name": "batch-06.sql",
+      "sections": 9,
+      "bytes": 43681,
+      "sha256": "bebf10e205c0f51e60b86aa0cbb1c67bab3d06ccba01e7da52bfa8b688fe617d"
+    },
+    {
+      "name": "batch-07.sql",
+      "sections": 9,
+      "bytes": 45337,
+      "sha256": "9e108c532d88bde1b3b9b7dfcea8b6ab2c2eae3a65e18a1bb64015d95194685a"
+    },
+    {
+      "name": "batch-08.sql",
+      "sections": 9,
+      "bytes": 44228,
+      "sha256": "ac0b10a2be0a9b70f37b1b883359575c8528587b5ea590699c77b70a51cace04"
+    },
+    {
+      "name": "batch-09.sql",
+      "sections": 9,
+      "bytes": 44221,
+      "sha256": "b1bfec29d75e004be5767cfdd8f0825294d22ca01d707deebcb0f6d02cb1949d"
+    },
+    {
+      "name": "batch-10.sql",
+      "sections": 9,
+      "bytes": 44809,
+      "sha256": "9739ecab8371d3e7cc404f73d0a7ae47a8a948e0fddb40c9d3ce6fcf09b8369f"
+    },
+    {
+      "name": "batch-11.sql",
+      "sections": 9,
+      "bytes": 44692,
+      "sha256": "5a119c687994778e65e2a3293d5e7622270c7aab80f475d9fa5ba3bda3799acb"
+    },
+    {
+      "name": "batch-12.sql",
+      "sections": 9,
+      "bytes": 43966,
+      "sha256": "53601c36aa78907f1ff06f53e691f43234e7ec9c9560e4804649619ae5480234"
+    },
+    {
+      "name": "batch-13.sql",
+      "sections": 9,
+      "bytes": 44669,
+      "sha256": "4a71cf2a23439484bb66c5657d294f7e52efca5b2b8326b89c4ca90234a24d2d"
+    },
+    {
+      "name": "batch-14.sql",
+      "sections": 9,
+      "bytes": 44438,
+      "sha256": "7ecc9c6f7004bdba3de4b00ef53edb6627d5a5b09bcccd240561f99c26af2f9c"
+    },
+    {
+      "name": "batch-15.sql",
+      "sections": 9,
+      "bytes": 44327,
+      "sha256": "871ca6192a5b9535d783354340130daa8386f12fc98ab7517e28510ea2280340"
+    },
+    {
+      "name": "batch-16.sql",
+      "sections": 9,
+      "bytes": 44830,
+      "sha256": "ad7d665645038eb701d798f1b3664d0b8280dc78b5be95a6865c60efb52e42e0"
+    },
+    {
+      "name": "batch-17.sql",
+      "sections": 9,
+      "bytes": 43679,
+      "sha256": "919244229f4a206f8150a0980925f619c6375ea5cb7d21bda192d8a3dff85cca"
+    },
+    {
+      "name": "batch-18.sql",
+      "sections": 9,
+      "bytes": 44786,
+      "sha256": "0423790bd945f3a6ec06918844a42638ad413116e336022d9f3437ab17623b22"
+    },
+    {
+      "name": "batch-19.sql",
+      "sections": 9,
+      "bytes": 44684,
+      "sha256": "920b3097d1ddb93b3333718c4a4e4fc05899e8199d852a416818e89489c20d1a"
+    },
+    {
+      "name": "batch-20.sql",
+      "sections": 9,
+      "bytes": 44580,
+      "sha256": "a384d3c86311bd8ec34a62be457bff010de65ad062190accbd9b2972810dc31f"
+    },
+    {
+      "name": "batch-21.sql",
+      "sections": 9,
+      "bytes": 44576,
+      "sha256": "5e2817ca002e333a2324e5dffbf25acc73fa643659d0f103f6eebe95d3b22385"
+    },
+    {
+      "name": "batch-22.sql",
+      "sections": 9,
+      "bytes": 44657,
+      "sha256": "8b497dda44c1bca41210fea40f03b4739d2e21ace708abab4329fc1437c3065e"
+    },
+    {
+      "name": "batch-23.sql",
+      "sections": 9,
+      "bytes": 44400,
+      "sha256": "28a251bdbead0056a9af4e9888bc23f901cc56331e5f39f583ddf7368d45f3dc"
+    },
+    {
+      "name": "batch-24.sql",
+      "sections": 9,
+      "bytes": 44839,
+      "sha256": "8395aaa63015f8d138a241e916634e988a49c012234147e0560576bda32feff4"
+    },
+    {
+      "name": "batch-25.sql",
+      "sections": 9,
+      "bytes": 45499,
+      "sha256": "fb98a141c414de178de49c2d977647cab8b8140448105e2d852feb94d0d885bc"
+    },
+    {
+      "name": "batch-26.sql",
+      "sections": 9,
+      "bytes": 44986,
+      "sha256": "35fce0112b0a566841a16f0dd48986cafbc59a68e4c847afaa23692ae25f5d83"
+    },
+    {
+      "name": "batch-27.sql",
+      "sections": 2,
+      "bytes": 10124,
+      "sha256": "ce6928d3f3c350e959d8ede32f3191d1ce5a0b8c37c24ed6e222fb9cf945a0e4"
+    }
+  ]
+}
