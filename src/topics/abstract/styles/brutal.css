@@ -752,3 +752,70 @@
   .topic-abstract .choice-breakdown-prose .example { padding: 22px 20px; }
   .topic-abstract .source-review-summary { padding: 22px; }
 }
+
+/* Applied lessons only: retain the Contrapositive reading hierarchy despite
+ * the legacy note shell's forced font and size rules. */
+.topic-abstract .advanced-choice-lesson h2 {
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 30px !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  color: #0f2a38 !important;
+  margin: 42px 0 22px !important;
+}
+.topic-abstract .advanced-choice-lesson .choice-breakdown-prose,
+.topic-abstract .advanced-choice-lesson p,
+.topic-abstract .advanced-choice-lesson blockquote,
+.topic-abstract .advanced-choice-lesson li {
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  line-height: 1.8 !important;
+  letter-spacing: normal !important;
+}
+.topic-abstract .advanced-choice-lesson .choice-breakdown-prose > p {
+  margin: 26px 0 !important;
+}
+.topic-abstract .advanced-choice-lesson strong {
+  font-weight: 750 !important;
+  color: #136b66;
+}
+.topic-abstract .advanced-choice-lesson .example {
+  border-left: 4px solid #a0541c !important;
+  border-radius: 0 8px 8px 0;
+  background: #fbf4e8 !important;
+  padding: 24px !important;
+}
+.topic-abstract .advanced-choice-lesson blockquote {
+  border-left-color: #136b66 !important;
+  background: #edf6f3 !important;
+}
+.topic-abstract .advanced-choice-lesson table th {
+  font-size: 17px !important;
+  line-height: 1.6 !important;
+  font-weight: 700 !important;
+  background: #0f2a38 !important;
+  color: #fffdf7 !important;
+}
+.topic-abstract .advanced-choice-lesson table td {
+  font-size: 17px !important;
+  line-height: 1.7 !important;
+  vertical-align: top;
+}
+.topic-abstract .advanced-choice-lesson table td:first-child {
+  font-weight: 650;
+  color: #136b66;
+}
+.topic-abstract .advanced-choice-lesson .definition p {
+  margin: 0 !important;
+  color: #fffdf7 !important;
+}
+.topic-abstract .advanced-choice-lesson .definition strong {
+  color: #8ce2d0 !important;
+}
+@media (max-width: 639px) {
+  .topic-abstract .advanced-choice-lesson .example {
+    padding: 20px !important;
+  }
+}

@@ -2,7 +2,7 @@ import { useApp } from "../../store/AppContext";
 import { ArrowRight, CheckCircle2, Lock, Star, Flame, Medal } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { cn } from "../../lib/utils";
-import { MODULES } from "../../data/modules";
+import { LECTURE_MODULES } from "../../data/modules";
 import type { MasteryLevel } from "../../types";
 
 const container: Variants = {
@@ -24,12 +24,12 @@ export default function Dashboard() {
   } = useApp();
   const prefersReducedMotion = useReducedMotion();
 
-  const completedCount = MODULES.filter((m) => isModuleComplete(m.id)).length;
-  const overallPct = Math.round((completedCount / MODULES.length) * 100);
+  const completedCount = LECTURE_MODULES.filter((m) => isModuleComplete(m.id)).length;
+  const overallPct = Math.round((completedCount / LECTURE_MODULES.length) * 100);
 
   // Recommended next: first module that is unlocked and not complete.
   const recommended =
-    MODULES.find((m) => isModuleUnlocked(m.id) && !isModuleComplete(m.id)) ?? null;
+    LECTURE_MODULES.find((m) => isModuleUnlocked(m.id) && !isModuleComplete(m.id)) ?? null;
 
   return (
     <motion.div
@@ -90,7 +90,7 @@ export default function Dashboard() {
           The 7 Modules
         </h2>
         <ul className="space-y-3 list-none m-0 p-0">
-          {MODULES.map((m) => {
+          {LECTURE_MODULES.map((m) => {
             const row = bootcampState.moduleProgress[m.id];
             const noteDone = Boolean(row?.noteComplete);
             const quizPassed =
@@ -98,7 +98,7 @@ export default function Dashboard() {
             const drillDone = isModuleComplete(m.id);
             const unlocked = isModuleUnlocked(m.id);
             const aced = Boolean(m.quizSource) && bootcampState.aceBadges.includes(m.id);
-            const mastery: MasteryLevel = m.id === "m3" ? "none" : row?.masteryLevel ?? "none";
+            const mastery: MasteryLevel = ["m3", "m5", "m6", "m7"].includes(m.id) ? "none" : row?.masteryLevel ?? "none";
             const medalColor =
               mastery === "mastered"
                 ? "text-brutal-yellow"

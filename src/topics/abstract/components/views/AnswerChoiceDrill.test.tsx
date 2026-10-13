@@ -18,6 +18,7 @@ beforeEach(() => {
 });
 async function revealAndNext(last = false) {
   await act(async () => { fireEvent.click(screen.getByRole("button", { name: "Show breakdown" })); });
+  if (last) expect(screen.getByRole("heading", { name: "Check the whole description" })).toBeInTheDocument();
   await waitFor(() => expect(screen.getByRole("button", { name: last ? "Finish the exercise" : "Next answer choice" })).toBeEnabled());
   await act(async () => { fireEvent.click(screen.getByRole("button", { name: last ? "Finish the exercise" : "Next answer choice" })); });
 }
@@ -41,6 +42,8 @@ it("reviews all 15, retains review-only completion after remount, and never save
     await revealAndNext(index === 14);
   }
   await waitFor(() => expect(screen.getByText("15 of 15 breakdowns reviewed.")).toBeInTheDocument());
+  expect(screen.getByText("Answer-choice recap")).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Continue to the next module" })).not.toBeInTheDocument();
   expect(screen.getByText("0 of 15 written exercises saved.")).toBeInTheDocument();
   expect(onDone).not.toHaveBeenCalled(); expect(actions.markTranslatorComplete).not.toHaveBeenCalled(); expect(actions.markModuleDrillComplete).not.toHaveBeenCalled();
   expect(actions.markDrillComplete).toHaveBeenCalledTimes(15);

@@ -775,7 +775,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const isModuleComplete = useCallback(
     (moduleId: ModuleId): boolean => {
       const row = bootcampState.moduleProgress[moduleId];
-      return Boolean(row?.drillComplete) && (moduleId !== "m3" || getModule("m3")!.drillIds.every((id) => sourceExerciseIds(bootcampState.drillAttempts).has(id)));
+      return Boolean(row?.drillComplete) && (moduleId === "m3" ? getModule("m3")!.drillIds.every((id) => sourceExerciseIds(bootcampState.drillAttempts).has(id)) : ["m5", "m6", "m7"].includes(moduleId) ? getModule(moduleId)!.drillIds.every(id => bootcampState.completedDrills.includes(id)) : true);
     },
     [bootcampState.moduleProgress, bootcampState.drillAttempts],
   );

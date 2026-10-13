@@ -81,37 +81,44 @@ export const MODULES: ModuleRecord[] = [
     id: "m5",
     number: 5,
     name: "Spot The Method",
-    subtitle: "Name what the author does, not what the author says.",
+    subtitle: "Explain how the author challenges a conclusion.",
     noteLessonId: "master_keys",
-    quizSource: "methodQuizItems",
+    quizSource: null,
     quizPassThreshold: 0.6,
-    drillIds: ["drill_9", "drill_11", "drill_12", "drill_13"],
+    drillIds: ["source_pt103_s1_q18"],
   },
   {
     id: "m6",
     number: 6,
     name: "Catch The Traps",
-    subtitle: "Wrong role, wrong method, structural mismatch, one-word traps.",
+    subtitle: "Check the exact word or relationship that makes a choice wrong.",
     noteLessonId: "five_bucket_indicators",
-    quizSource: "trapItems",
+    quizSource: null,
     quizPassThreshold: 0.6,
-    drillIds: ["drill_4", "drill_18", "drill_19", "drill_20"],
+    drillIds: ["source_pt139_s1_q23"],
   },
   {
     id: "m7",
     number: 7,
     name: "Put It Together",
-    subtitle: "The whole routine on fresh answer choices and full questions.",
+    subtitle: "Use the whole routine on a fresh full source question.",
     noteLessonId: "abstract_15",
-    quizSource: "abstractChoices",
+    quizSource: null,
     quizPassThreshold: 0.6,
-    drillIds: ["drill_14", "drill_15", "drill_16", "drill_17"],
+    drillIds: ["source_pt118_s4_q12"],
   },
 ];
 
 export function getModule(id: ModuleId): ModuleRecord | undefined {
   return MODULES.find((m) => m.id === id);
 }
+
+// Joshua's newest scope keeps the full course and rebuilds later teaching.
+// Final timed sets remain separate from this module path.
+export const COURSE_MODULES = MODULES;
+export const LECTURE_MODULES = COURSE_MODULES;
+export const LECTURE_DRILL_IDS = new Set(LECTURE_MODULES.flatMap((module) => module.drillIds));
+export const LECTURE_LESSON_IDS = new Set(LECTURE_MODULES.map((module) => module.noteLessonId));
 
 const DRILL_MODULE_MAP: Record<string, ModuleId> = MODULES.reduce(
   (acc, m) => {

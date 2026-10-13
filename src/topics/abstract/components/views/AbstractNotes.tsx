@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Check, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { ROLE_CHOICE_INTRO_HTML } from "../../data/answerChoiceDrill";
+import { RoleChoiceGuide, RoleChoicePracticeInstructions } from "./RoleChoiceLecture";
+import { RequirementMatchingLesson, ReasoningMoveLesson, PreciseDescriptionLesson, CompleteProcedureLesson } from "./AdvancedChoiceLessons";
 
 // The seven module notes for the Abstract bootcamp, one component per note.
 // LessonReader maps lesson ids to these. Copy follows Joshua's teaching voice:
@@ -73,6 +75,7 @@ export function WhyHardNote() {
   return (
     <div>
       <div className={SOURCE_NOTE_CLASSES} dangerouslySetInnerHTML={{ __html: ROLE_CHOICE_INTRO_HTML }} />
+      <RoleChoiceGuide />
       <div className={SOURCE_NOTE_CLASSES} dangerouslySetInnerHTML={{ __html: ANSWER_CHOICE_TRAPS_HTML }} />
     </div>
   );
@@ -171,10 +174,13 @@ export function WordsNote() {
 
 export function BreakItDownNote() {
   return (
-    <div
-      className={SOURCE_NOTE_CLASSES}
-      dangerouslySetInnerHTML={{ __html: ROLE_CHOICE_INTRO_HTML.slice(ROLE_CHOICE_INTRO_HTML.lastIndexOf("<p>")) }}
-    />
+    <div>
+      <div
+        className={SOURCE_NOTE_CLASSES}
+        dangerouslySetInnerHTML={{ __html: ROLE_CHOICE_INTRO_HTML.slice(ROLE_CHOICE_INTRO_HTML.lastIndexOf("<p>")) }}
+      />
+      <RoleChoicePracticeInstructions />
+    </div>
   );
 }
 
@@ -492,8 +498,8 @@ export const NOTE_COMPONENTS: Record<string, () => JSX.Element> = {
   why_hard: WhyHardNote,
   words_to_know: WordsNote,
   deabstractifying_method: BreakItDownNote,
-  art_of_matching: MatchingNote,
-  master_keys: MethodNote,
-  five_bucket_indicators: TrapsNote,
-  abstract_15: PutTogetherNote,
+  art_of_matching: RequirementMatchingLesson,
+  master_keys: ReasoningMoveLesson,
+  five_bucket_indicators: PreciseDescriptionLesson,
+  abstract_15: CompleteProcedureLesson,
 };

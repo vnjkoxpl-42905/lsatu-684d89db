@@ -1,4 +1,6 @@
 import { AppProvider, useApp } from "./store/AppContext";
+import { useEffect } from "react";
+import { LECTURE_MODULES } from "./data/modules";
 import AppShell from "./components/layout/AppShell";
 import Dashboard from "./components/views/Dashboard";
 import ModuleView from "./components/views/ModuleView";
@@ -11,7 +13,11 @@ import CompletionReport from "./components/views/CompletionReport";
 import "./styles/brutal.css";
 
 export function ViewManager() {
-  const { currentView, currentModuleId } = useApp();
+  const { currentView, currentModuleId, openModule } = useApp();
+  const retired = currentView === "module" && !LECTURE_MODULES.some((module) => module.id === currentModuleId);
+  const retiredFinal = currentView === "timed_set" || currentView === "timed_final_set";
+  useEffect(() => { if (retired || retiredFinal) openModule("m3"); }, [retired, retiredFinal, openModule]);
+  if (retired || retiredFinal) return <Dashboard />;
 
   switch (currentView) {
     case "dashboard":
@@ -28,8 +34,6 @@ export function ViewManager() {
       return <Flashcards />;
     case "methods_library":
       return <MethodsLibrary />;
-    case "timed_set":
-      return <TimedFinalSet />;
     case "completion_report":
       return <CompletionReport />;
     default:

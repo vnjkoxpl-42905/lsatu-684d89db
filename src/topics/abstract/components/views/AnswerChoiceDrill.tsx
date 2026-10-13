@@ -4,6 +4,7 @@ import { useApp } from "../../store/AppContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { emptySourceSession, loadSourceSession, restoreSourceSession, saveSourceSession, sourceSessionKey, SOURCE_REVIEW_TAG, type SourceExerciseSession } from "../../lib/source-exercise-session";
 import ChoiceResponseTimeline from "./ChoiceResponseTimeline";
+import { RoleChoiceClosing } from "./RoleChoiceLecture";
 import { BookOpen, ArrowRight } from "lucide-react";
 
 export function AnswerChoiceSteps({ onStart }: { onStart: () => void }) {
@@ -14,7 +15,7 @@ export function AnswerChoiceSteps({ onStart }: { onStart: () => void }) {
 }
 
 export default function AnswerChoiceDrill({ onDone }: { onDone: () => void }) {
-  const { bootcampState, loading, progressOwnerId, markTranslatorComplete, markDrillComplete, markModuleDrillComplete, setCurrentView } = useApp();
+  const { bootcampState, loading, progressOwnerId, markTranslatorComplete, markDrillComplete, markModuleDrillComplete, setCurrentView, openModule } = useApp();
   const { user } = useAuth();
   const key = sourceSessionKey(user?.id);
   const [session, setSession] = useState<SourceExerciseSession>(emptySourceSession);
@@ -126,11 +127,13 @@ export default function AnswerChoiceDrill({ onDone }: { onDone: () => void }) {
   if (loading || progressOwnerId !== (user?.id ?? null) || !ready || initialized.current !== key) return <p role="status">Loading your saved practice...</p>;
   if (session.finished) return <section ref={sectionRef} className="source-review-summary space-y-5">
     <h1 className="text-3xl font-black">Your answer-choice review</h1>
+    <details className="border-t border-brutal-ink-trace pt-5"><summary className="font-semibold cursor-pointer">Answer-choice recap</summary><div className="mt-6"><RoleChoiceClosing /></div></details>
     <p className="text-xl"><strong>{session.reviewedIds.length} of 15 breakdowns reviewed.</strong></p>
     <p><strong>{session.practicedIds.length} of 15 written exercises saved.</strong> Reviewing a breakdown does not earn correctness or mastery.</p>
     <p className="choice-completion-note">Your place and drafts are saved on this browser.</p>
     <button className="brutal-btn bg-brutal-ink text-brutal-paper" onClick={() => commit({ ...sessionRef.current, index: 0, finished: false, drafts: Object.fromEntries(Object.entries(sessionRef.current.drafts).map(([id, value]) => [id, { ...value, revealed: false }])) })}>Review from the beginning</button>
-    <button className="brutal-btn" onClick={() => session.practicedIds.length === 15 ? onDone() : setCurrentView("dashboard")}>{session.practicedIds.length === 15 ? "Continue to the next module" : "Back to dashboard"}</button>
+    <button className="brutal-btn" onClick={() => setCurrentView("dashboard")}>Back to dashboard</button>
+    <button className="brutal-btn bg-brutal-ink text-brutal-paper" onClick={() => openModule("m4")}>Match descriptions to a full argument</button>
   </section>;
   return <section ref={sectionRef} className="abstract-choice-exercise scroll-mt-24">
     <header className="choice-exercise-header">
@@ -149,6 +152,7 @@ export default function AnswerChoiceDrill({ onDone }: { onDone: () => void }) {
     {!draft.revealed && <button onClick={showBreakdown} className="brutal-btn bg-brutal-ink text-brutal-paper choice-reveal-button"><BookOpen className="w-5 h-5" aria-hidden="true" />Show breakdown</button>}
     {draft.revealed && <>
       <div className="choice-breakdown-card"><div className="choice-breakdown-heading"><BookOpen aria-hidden="true" /><h2>The breakdown</h2></div><div ref={sourceRef} data-testid="source-breakdown" className="choice-breakdown-prose" dangerouslySetInnerHTML={{ __html: item.breakdownHtml }} /></div>
+      {session.index === ANSWER_CHOICE_ITEMS.length - 1 && <RoleChoiceClosing />}
       <p className="choice-completion-note">{hasWrittenWork ? "Compare your work with the breakdown. Your responses are saved as practice, without a correctness score." : "Review the breakdown, then continue. Reviewed breakdowns and written exercises are tracked separately."}</p>
       {saveError && <p role="alert">{saveError}</p>}
       <button className="brutal-btn bg-brutal-ink text-brutal-paper choice-reveal-button" disabled={busy} onClick={next}>{busy ? "Saving..." : session.index === 14 ? "Finish the exercise" : "Next answer choice"}<ArrowRight className="w-5 h-5" aria-hidden="true" /></button>

@@ -10,7 +10,7 @@ export function computeMastery(row: ModuleProgressRow | undefined): MasteryLevel
   if (!row) return "none";
   // Module 3 is an ungraded source exercise. Completion is practice, not proof
   // of correctness; legacy quiz or coach scores cannot grant mastery here.
-  if (row.moduleId === "m3") return "none";
+  if (["m3", "m5", "m6", "m7"].includes(row.moduleId)) return "none";
   if (row.quizTotal === 0) return "none";
   const quizPct = row.quizScore / row.quizTotal;
   if (quizPct < 0.6) return "none";
