@@ -20,11 +20,13 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { computeMastery } from "../../lib/mastery";
+import { sourceExerciseIds } from "../../lib/grading-status";
 import type { MasteryLevel } from "../../types";
 import { useApp } from "../../store/AppContext";
 import { cn } from "../../lib/utils";
 import {
   MODULES,
+  LECTURE_MODULES,
   type ModuleId,
   type ModulePart,
   type QuizSource,
@@ -34,20 +36,26 @@ import { LESSONS } from "../../data/lessons";
 import LessonBody from "./LessonBody";
 import { TermText } from "./LSATTermCard";
 import { DRILLS } from "../../data/drills";
-import { TRANSLATOR_ITEMS } from "../../data/translatorItems";
+import { TRANSLATOR_QUIZ_ITEMS } from "../../data/translatorItems";
 import { MATCHING_ITEMS } from "../../data/matchingItems";
-import { ABSTRACT_CHOICES } from "../../data/abstractChoices";
+import { GAUNTLET_QUIZ_ITEMS } from "../../data/abstractChoices";
+import BreakdownDrill from "./BreakdownDrill";
+import AnswerChoiceDrill, { AnswerChoiceSteps } from "./AnswerChoiceDrill";
+import { RoleChoiceClosing } from "./RoleChoiceLecture";
 import { WHY_HARD_ITEMS } from "../../data/whyHardItems";
 import { TERM_QUIZ_ITEMS } from "../../data/termQuizItems";
 import { METHOD_QUIZ_ITEMS } from "../../data/methodQuizItems";
 import { TRAP_ITEMS, TRAP_OPTION_TEXT } from "../../data/trapItems";
 import type { DrillItem, DrillType } from "../../types";
 
-type Stage = "overview" | "note" | "quiz" | "drill" | "complete";
+type Stage = "overview" | "note" | "steps" | "quiz" | "drill" | "complete";
 
 export default function ModuleView() {
   const { currentModuleId, setCurrentView, isModuleUnlocked } = useApp();
   const [stage, setStage] = useState<Stage>("overview");
+  const moduleRef = useRef<HTMLDivElement>(null);
+  useEffect(() => { setStage("overview"); }, [currentModuleId]);
+  useEffect(() => { moduleRef.current?.scrollIntoView({ block: "start" }); }, [stage]);
 
   if (!currentModuleId) {
     return (
@@ -90,7 +98,7 @@ export default function ModuleView() {
   }
 
   return (
-    <div className="p-6 md:p-10 max-w-3xl mx-auto">
+    <div ref={moduleRef} className="p-6 md:p-10 max-w-3xl mx-auto scroll-mt-24">
       <button
         type="button"
         onClick={() => {
@@ -111,7 +119,7 @@ export default function ModuleView() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
-            <ModuleOverview moduleId={currentModuleId} onPick={setStage} />
+            <ModuleOverview moduleId={currentModuleId} onPick={(next) => setStage(next === "drill" && mod.drillKind === "answer-choice" ? "steps" : next)} />
           </motion.div>
         )}
         {stage === "note" && (
@@ -125,8 +133,13 @@ export default function ModuleView() {
             <ModuleNote
               moduleId={currentModuleId}
               onDone={() => setStage("overview")}
-              onStartQuiz={() => setStage("quiz")}
+              onStartQuiz={() => setStage(mod.quizSource ? "quiz" : mod.drillKind === "answer-choice" ? "steps" : "drill")}
             />
+          </motion.div>
+        )}
+        {stage === "steps" && (
+          <motion.div key="steps" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <AnswerChoiceSteps onStart={() => setStage("drill")} />
           </motion.div>
         )}
         {stage === "quiz" && (
@@ -176,13 +189,14 @@ function ModuleOverview({
   moduleId: ModuleId;
   onPick: (stage: Stage) => void;
 }) {
-  const { bootcampState, isPartUnlocked } = useApp();
+  const { bootcampState, isPartUnlocked, isModuleComplete } = useApp();
   const mod = getModule(moduleId)!;
   const row = bootcampState.moduleProgress[moduleId];
   const noteDone = Boolean(row?.noteComplete);
   const quizDone = row?.quizTotal > 0 && row.quizScore / row.quizTotal >= mod.quizPassThreshold;
-  const drillDone = Boolean(row?.drillComplete);
-  const mastery: MasteryLevel = row?.masteryLevel ?? "none";
+  const sourceWork = sourceExerciseIds(bootcampState.drillAttempts);
+  const drillDone = isModuleComplete(moduleId);
+  const mastery: MasteryLevel = ["m3", "m5", "m6", "m7"].includes(moduleId) ? computeMastery(row) : row?.masteryLevel ?? "none";
 
   return (
     <>
@@ -211,7 +225,7 @@ function ModuleOverview({
           onOpen={() => onPick("note")}
           ctaLabel={noteDone ? "Re-read" : "Start"}
         />
-        <PartRow
+        {mod.quizSource && <PartRow
           icon={ListChecks}
           label="Quiz"
           meta={
@@ -224,13 +238,19 @@ function ModuleOverview({
           accent="yellow"
           onOpen={() => onPick("quiz")}
           ctaLabel={quizDone ? "Retake" : "Start"}
-        />
+        />}
         <PartRow
           icon={Target}
           label="Drill"
-          meta={`${mod.drillIds.length} LSAT questions`}
+          meta={
+            mod.drillKind === "answer-choice"
+              ? `${mod.drillIds.length} answer choices`
+              : mod.drillKind === "breakdown"
+              ? `${mod.drillIds.length} breakdown items`
+              : `${mod.drillIds.length} practice question${mod.drillIds.length === 1 ? "" : "s"}`
+          }
           status={drillDone ? "done" : isPartUnlocked(moduleId, "drill") ? "active" : "locked"}
-          lockedHint={`Pass the quiz at ${Math.round(mod.quizPassThreshold * 100)}% to unlock.`}
+          lockedHint={mod.quizSource ? `Pass the quiz at ${Math.round(mod.quizPassThreshold * 100)}% to unlock.` : "Read the note to unlock."}
           accent="pink"
           onOpen={() => onPick("drill")}
           ctaLabel={drillDone ? "Retake" : "Start"}
@@ -321,7 +341,7 @@ function quizItemCount(source: QuizSource): number {
     case "termQuizItems":
       return TERM_QUIZ_ITEMS.length;
     case "translatorItems":
-      return TRANSLATOR_ITEMS.length;
+      return TRANSLATOR_QUIZ_ITEMS.length;
     case "matchingItems":
       return MATCHING_ITEMS.length;
     case "methodQuizItems":
@@ -329,7 +349,7 @@ function quizItemCount(source: QuizSource): number {
     case "trapItems":
       return TRAP_ITEMS.length;
     case "abstractChoices":
-      return ABSTRACT_CHOICES.length;
+      return GAUNTLET_QUIZ_ITEMS.length;
   }
 }
 
@@ -402,7 +422,7 @@ function ModuleNote({
   return (
     <div>
       <h2 className="text-2xl font-black uppercase tracking-tight mb-2">
-        Note: {lesson?.title ?? mod.name}
+        Note: {["m4", "m5", "m6", "m7"].includes(moduleId) ? mod.name : lesson?.title ?? mod.name}
       </h2>
       <p className="font-bold text-brutal-ink-soft mb-6">{mod.subtitle}</p>
 
@@ -455,10 +475,10 @@ function ModuleNote({
               onClick={onStartQuiz}
               className="brutal-btn bg-brutal-green inline-flex items-center gap-2"
             >
-              Start quiz <ArrowRight className="w-4 h-4" />
+              {mod.quizSource ? "Start quiz" : mod.drillKind === "answer-choice" ? "Read the seven steps" : "Try the worked question"} <ArrowRight className="w-4 h-4" />
             </button>
             <span className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft">
-              Quiz unlocked
+              {mod.quizSource ? "Quiz unlocked" : "Practice unlocked"}
             </span>
           </motion.div>
         )}
@@ -615,7 +635,7 @@ function loadQuizItems(source: QuizSource): unknown[] {
     case "termQuizItems":
       return TERM_QUIZ_ITEMS;
     case "translatorItems":
-      return TRANSLATOR_ITEMS;
+      return TRANSLATOR_QUIZ_ITEMS;
     case "matchingItems":
       return MATCHING_ITEMS;
     case "methodQuizItems":
@@ -623,7 +643,7 @@ function loadQuizItems(source: QuizSource): unknown[] {
     case "trapItems":
       return TRAP_ITEMS;
     case "abstractChoices":
-      return ABSTRACT_CHOICES;
+      return GAUNTLET_QUIZ_ITEMS;
   }
 }
 
@@ -644,7 +664,7 @@ function QuizItemRenderer({
     case "termQuizItems":
       return <TermQuizRenderer item={item as typeof TERM_QUIZ_ITEMS[number]} onAnswer={onAnswer} onNext={onNext} />;
     case "translatorItems":
-      return <KeywordExtractionRenderer item={item as typeof TRANSLATOR_ITEMS[number]} onAnswer={onAnswer} onNext={onNext} />;
+      return <KeywordExtractionRenderer item={item as typeof TRANSLATOR_QUIZ_ITEMS[number]} onAnswer={onAnswer} onNext={onNext} />;
     case "matchingItems":
       return <MatchToStimulusRenderer item={item as typeof MATCHING_ITEMS[number]} onAnswer={onAnswer} onNext={onNext} />;
     case "methodQuizItems":
@@ -652,7 +672,7 @@ function QuizItemRenderer({
     case "trapItems":
       return <TrapSpotterRenderer item={item as typeof TRAP_ITEMS[number]} onAnswer={onAnswer} onNext={onNext} />;
     case "abstractChoices":
-      return <DecodingGauntletRenderer item={item as typeof ABSTRACT_CHOICES[number]} onAnswer={onAnswer} onNext={onNext} />;
+      return <DecodingGauntletRenderer item={item as typeof GAUNTLET_QUIZ_ITEMS[number]} onAnswer={onAnswer} onNext={onNext} />;
   }
 }
 
@@ -663,6 +683,7 @@ function MultipleChoiceCard({
   options,
   correctIndex,
   explanation,
+  optionExplanations,
   onAnswer,
   onNext,
 }: {
@@ -671,6 +692,7 @@ function MultipleChoiceCard({
   options: string[];
   correctIndex: number;
   explanation: string;
+  optionExplanations?: string[];
   onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
@@ -799,6 +821,9 @@ function MultipleChoiceCard({
             />
           </div>
           <p className="text-xs font-black uppercase tracking-widest mb-2">Why</p>
+          {picked !== null && picked !== correctIndex && optionExplanations?.[picked] && (
+            <p className="font-bold mb-2">{optionExplanations[picked]}</p>
+          )}
           <p className="font-bold">{explanation}</p>
           {hintUsed && (
             <p className="text-xs italic mt-2 text-brutal-ink-soft">
@@ -867,6 +892,7 @@ function WhyHardRenderer({
       options={item.options.map((o) => o.text)}
       correctIndex={correctIdx}
       explanation={item.options[correctIdx]?.explanation ?? ""}
+      optionExplanations={item.options.map((o) => o.explanation)}
       onAnswer={onAnswer}
       onNext={onNext}
     />
@@ -951,13 +977,61 @@ function TrapSpotterRenderer({
   );
 }
 
-// Keyword extraction: clickable stem + translation textarea + reveal.
+// Clickable words for the keyword step. Real buttons, so they work from the
+// keyboard and announce their pressed state.
+function WordPicker({
+  tokens,
+  picked,
+  onToggle,
+  locked,
+  isCorrectWord,
+}: {
+  tokens: string[];
+  picked: Set<number>;
+  onToggle: (i: number) => void;
+  locked: boolean;
+  isCorrectWord: (token: string) => boolean;
+}) {
+  return (
+    <p className="text-lg md:text-xl font-semibold leading-loose m-0">
+      {tokens.map((t, i) => {
+        if (!/\w/.test(t)) return <span key={i}>{t}</span>;
+        const isPicked = picked.has(i);
+        const right = locked && isCorrectWord(t);
+        return (
+          <button
+            key={i}
+            type="button"
+            disabled={locked}
+            aria-pressed={isPicked}
+            onClick={() => onToggle(i)}
+            className={cn(
+              "px-0.5 transition-colors",
+              !locked && isPicked && "bg-brutal-yellow outline outline-2 outline-brutal-ink",
+              !locked && !isPicked && "hover:bg-brutal-yellow/40",
+              locked && right && isPicked && "bg-brutal-green",
+              locked && right && !isPicked && "bg-brutal-yellow underline decoration-2",
+              locked && isPicked && !right && "bg-brutal-red text-brutal-paper line-through",
+            )}
+          >
+            {t}
+          </button>
+        );
+      })}
+    </p>
+  );
+}
+
+// Keyword extraction (Module 3 quiz): click the keywords, write the plain
+// English version, then compare it with the model sentence. Keywords are
+// auto-graded. The sentence is a self-check: "not quite" turns a correct
+// keyword score into partial credit.
 function KeywordExtractionRenderer({
   item,
   onAnswer,
   onNext,
 }: {
-  item: typeof TRANSLATOR_ITEMS[number];
+  item: typeof TRANSLATOR_QUIZ_ITEMS[number];
   onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
@@ -966,11 +1040,12 @@ function KeywordExtractionRenderer({
   const [picked, setPicked] = useState<Set<number>>(new Set());
   const [translation, setTranslation] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [finalVerdict, setFinalVerdict] = useState<QuizVerdict | null>(null);
 
   const correctLower = item.correctKeywords.map((k) => k.toLowerCase());
+  const isCorrectWord = (t: string) => correctLower.includes(stripPunc(t).toLowerCase());
 
   const togglePick = (i: number) => {
-    if (submitted) return;
     setPicked((prev) => {
       const next = new Set(prev);
       if (next.has(i)) next.delete(i);
@@ -980,12 +1055,11 @@ function KeywordExtractionRenderer({
   };
 
   const canSubmit = picked.size > 0 && translation.trim().length >= 10;
-
   const pickedWords = Array.from(picked).map((i) => stripPunc(tokens[i]).toLowerCase());
-  const matched = pickedWords.filter((w) => correctLower.includes(w));
+  const matched = correctLower.filter((k) => pickedWords.includes(k));
   const wrong = pickedWords.filter((w) => !correctLower.includes(w));
   const pctCorrect = correctLower.length > 0 ? matched.length / correctLower.length : 0;
-  const verdict: QuizVerdict =
+  const keywordVerdict: QuizVerdict =
     pctCorrect >= 0.75 && wrong.length === 0
       ? "correct"
       : pctCorrect >= 0.75 && wrong.length <= 2
@@ -994,7 +1068,6 @@ function KeywordExtractionRenderer({
 
   const submit = () => {
     setSubmitted(true);
-    onAnswer(verdict);
     void markTranslatorComplete(
       item.stemNumber,
       Array.from(picked).map((i) => tokens[i]),
@@ -1002,122 +1075,120 @@ function KeywordExtractionRenderer({
     );
   };
 
+  const selfCheck = (same: boolean) => {
+    const verdict: QuizVerdict = !same && keywordVerdict === "correct" ? "partial" : keywordVerdict;
+    setFinalVerdict(verdict);
+    onAnswer(verdict);
+  };
+
   return (
-    <div className="bg-brutal-paper border-4 border-brutal-ink p-6 brutal-shadow">
-      <p className="text-xs font-black uppercase tracking-widest mb-2">Stem {item.stemNumber} of {TRANSLATOR_ITEMS.length}</p>
-      <div className="bg-brutal-paper border-4 border-brutal-ink p-5 mb-4">
-        <p className="text-xl italic font-black leading-snug">
-          {tokens.map((t, i) => {
-            const isPicked = picked.has(i);
-            const isWord = /\w/.test(t);
-            const isCorrectWord = submitted && correctLower.includes(stripPunc(t).toLowerCase());
-            const isWrongPick = submitted && isPicked && !isCorrectWord;
-            const cls = cn(
-              "transition-colors",
-              isWord ? "cursor-pointer" : "",
-              !submitted && isPicked ? "bg-brutal-yellow" : "",
-              submitted && isCorrectWord && isPicked ? "bg-brutal-green" : "",
-              submitted && isCorrectWord && !isPicked ? "bg-brutal-yellow" : "",
-              isWrongPick ? "bg-brutal-red text-brutal-paper" : "",
-            );
-            return (
-              <span
-                key={i}
-                onClick={() => isWord && togglePick(i)}
-                className={cls}
-              >
-                {t}
-              </span>
-            );
-          })}
-        </p>
+    <div className="bg-brutal-paper border-4 border-brutal-ink p-5 md:p-6 brutal-shadow">
+      <p className="text-xs font-black uppercase tracking-widest mb-3">
+        Answer choice
+      </p>
+      <p className="font-black mb-2">Step 1. Click the words that carry the meaning.</p>
+      <div className="bg-white border-4 border-brutal-ink p-4 md:p-5 mb-5">
+        <WordPicker
+          tokens={tokens}
+          picked={picked}
+          onToggle={togglePick}
+          locked={submitted}
+          isCorrectWord={isCorrectWord}
+        />
       </div>
-      <p className="text-xs font-black uppercase tracking-widest mb-2">Step 2: Plain English</p>
+      <p className="font-black mb-2">Step 2. Say it in plain English.</p>
       <textarea
         value={translation}
         onChange={(e) => setTranslation(e.target.value)}
         disabled={submitted}
-        placeholder="Translate the stem in your own words..."
-        className="w-full min-h-[100px] border-2 border-brutal-ink p-3 font-bold bg-white"
+        aria-label="Plain English version"
+        placeholder="The statement is..."
+        className="w-full min-h-[96px] border-2 border-brutal-ink p-3 font-medium bg-white"
       />
       {!submitted && (
         <button
           type="button"
           disabled={!canSubmit}
           onClick={submit}
-          className={cn(
-            "mt-4 brutal-btn",
-            canSubmit ? "bg-brutal-yellow" : "bg-brutal-paper opacity-60",
-          )}
+          className={cn("mt-4 brutal-btn", canSubmit ? "bg-brutal-yellow" : "bg-brutal-paper opacity-60")}
         >
-          Submit
+          Check my work
         </button>
       )}
       {submitted && (
         <div className="mt-5 space-y-4">
-          <VerdictHeader verdict={verdict} />
-          <p className="text-sm font-bold">
-            You picked {matched.length} correct keyword{matched.length === 1 ? "" : "s"} out of {correctLower.length}.{" "}
+          <p className="font-medium">
+            <span className="font-black">Keywords:</span> you found {matched.length} of {correctLower.length}.{" "}
             {wrong.length > 0
-              ? `You also picked ${wrong.length} word${wrong.length === 1 ? "" : "s"} that ${wrong.length === 1 ? "is" : "are"} not load-bearing.`
-              : "No off-target picks."}
+              ? `${wrong.length} of your picks ${wrong.length === 1 ? "is" : "are"} filler (struck through). Green is a keyword you found; yellow is one you missed.`
+              : "No filler picked."}
           </p>
-          <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
-            <p className="text-xs font-black uppercase tracking-widest mb-2">Ideal keywords</p>
-            <p className="font-bold">
-              {item.correctKeywords.map((k, i) => (
-                <span
-                  key={i}
-                  className="inline-block bg-brutal-green border-2 border-brutal-ink px-2 py-0.5 mr-2 mb-1"
-                >
-                  {k}
-                </span>
-              ))}
-            </p>
-          </div>
-          <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
-            <p className="text-xs font-black uppercase tracking-widest mb-2">Ideal translation</p>
-            <p className="font-bold italic">{item.idealTranslation}</p>
-          </div>
-          <div className="bg-white border-2 border-brutal-ink p-4">
-            <p className="text-xs font-black uppercase tracking-widest mb-2">Walkthrough</p>
-            {item.walkthrough.reasoning.map((p, i) => (
-              <p key={i} className="font-bold mb-2"><TermText>{p}</TermText></p>
-            ))}
-          </div>
-          {item.walkthrough.vocab.length > 0 && (
-            <div className="space-y-2">
-              {item.walkthrough.vocab.map((v, i) => (
-                <div key={i} className="bg-brutal-yellow border-2 border-brutal-ink p-3">
-                  <p className="font-black uppercase text-xs tracking-widest">{v.term}</p>
-                  <p className="font-bold">{v.meaning}</p>
-                  {v.note && <p className="text-xs italic mt-1">{v.note}</p>}
-                </div>
-              ))}
+          <div className="grid md:grid-cols-2 gap-3">
+            <div className="bg-white border-2 border-brutal-ink p-4">
+              <p className="text-xs font-black uppercase tracking-widest mb-2">Yours</p>
+              <p className="font-medium m-0">{translation}</p>
             </div>
-          )}
-          {item.walkthrough.requirements.length > 0 && (
-            <div className="bg-brutal-cyan border-2 border-brutal-ink p-4">
-              <p className="text-xs font-black uppercase tracking-widest mb-2">Stimulus must have</p>
-              <ul className="list-disc pl-5 space-y-1">
-                {item.walkthrough.requirements.map((r, i) => (
-                  <li key={i} className="font-bold">{r}</li>
+            <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
+              <p className="text-xs font-black uppercase tracking-widest mb-2">Model</p>
+              <p className="font-medium m-0">{item.idealTranslation}</p>
+            </div>
+          </div>
+          {finalVerdict === null ? (
+            <div>
+              <p className="font-black mb-2">Self-check: does yours say the same thing as the model?</p>
+              <div className="flex flex-wrap gap-3">
+                <button type="button" onClick={() => selfCheck(true)} className="brutal-btn bg-brutal-green">
+                  Yes, same idea
+                </button>
+                <button type="button" onClick={() => selfCheck(false)} className="brutal-btn bg-white">
+                  Not quite
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <VerdictHeader verdict={finalVerdict} />
+              <div className="bg-white border-2 border-brutal-ink p-4">
+                <p className="text-xs font-black uppercase tracking-widest mb-2">Walkthrough</p>
+                {item.walkthrough.reasoning.map((p, i) => (
+                  <p key={i} className="font-medium mb-2">
+                    <TermText>{p}</TermText>
+                  </p>
                 ))}
-              </ul>
-            </div>
+              </div>
+              {item.walkthrough.vocab.length > 0 && (
+                <div className="grid md:grid-cols-2 gap-2">
+                  {item.walkthrough.vocab.map((v, i) => (
+                    <div key={i} className="bg-brutal-yellow border-2 border-brutal-ink p-3">
+                      <p className="font-black text-sm">{v.term}</p>
+                      <p className="font-medium m-0">{v.meaning}</p>
+                      {v.note && <p className="text-sm mt-1 m-0">{v.note}</p>}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {item.walkthrough.requirements.length > 0 && (
+                <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
+                  <p className="text-xs font-black uppercase tracking-widest mb-2">The stimulus must have</p>
+                  <ul className="list-disc pl-5 space-y-1 m-0">
+                    {item.walkthrough.requirements.map((r, i) => (
+                      <li key={i} className="font-medium">
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div className="bg-white border-2 border-brutal-ink p-4">
+                <p className="text-xs font-black uppercase tracking-widest mb-2">Worked example</p>
+                <p className="italic font-medium mb-2">{item.walkthrough.example.stimulus}</p>
+                <p className="font-medium text-brutal-ink-soft m-0">{item.walkthrough.example.explanation}</p>
+              </div>
+              <button type="button" onClick={onNext} className="brutal-btn bg-brutal-green inline-flex items-center gap-2">
+                Next answer choice <ArrowRight className="w-4 h-4" />
+              </button>
+            </>
           )}
-          <div className="bg-white border-2 border-brutal-ink p-4">
-            <p className="text-xs font-black uppercase tracking-widest mb-2">Worked example</p>
-            <p className="italic font-bold mb-2">{item.walkthrough.example.stimulus}</p>
-            <p className="font-bold text-brutal-ink-soft">{item.walkthrough.example.explanation}</p>
-          </div>
-          <button
-            type="button"
-            onClick={onNext}
-            className="brutal-btn bg-brutal-green inline-flex items-center gap-2"
-          >
-            Next stem <ArrowRight className="w-4 h-4" />
-          </button>
         </div>
       )}
     </div>
@@ -1132,7 +1203,7 @@ function VerdictHeader({ verdict }: { verdict: QuizVerdict }) {
         ? "bg-brutal-yellow"
         : "bg-brutal-red text-brutal-paper";
   const label =
-    verdict === "correct" ? "Correct" : verdict === "partial" ? "Partial" : "Try again";
+    verdict === "correct" ? "Correct" : verdict === "partial" ? "Partial" : "Not quite";
   return (
     <div
       className={cn(
@@ -1248,42 +1319,61 @@ function MatchToStimulusRenderer({
   );
 }
 
-// Decoding Gauntlet: 3-step inline (keyword + translation + requirements checklist).
+// Decoding Gauntlet (Module 7 quiz): keywords, plain English, then pick what
+// the stimulus must contain. Requirements and trap descriptions are mixed in
+// a stable shuffled order; the student checks only the real requirements.
+function seededShuffle<T>(items: T[], seed: number): T[] {
+  let h = (seed * 2654435761) >>> 0;
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i--) {
+    h = (h * 1103515245 + 12345) >>> 0;
+    const j = h % (i + 1);
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
 function DecodingGauntletRenderer({
   item,
   onAnswer,
   onNext,
 }: {
-  item: typeof ABSTRACT_CHOICES[number];
+  item: typeof GAUNTLET_QUIZ_ITEMS[number];
   onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   const { recordGauntletItem } = useApp();
   const tokens = useMemo(() => splitTokens(item.original), [item.original]);
   const correctLower = item.correctKeywords.map((k) => k.toLowerCase());
+  const isCorrectWord = (t: string) =>
+    correctLower.some((k) => k.split(/\s+/).includes(stripPunc(t).toLowerCase()));
+  const allRequirements = useMemo(
+    () => [...item.stimulusRequirements, ...item.trapRequirements].map((text, index) => ({ text, index })),
+    [item],
+  );
+  const shuffled = useMemo(() => seededShuffle(allRequirements, item.id), [allRequirements, item.id]);
+  const isRequired = (index: number) => index < item.stimulusRequirements.length;
+
   const [picked, setPicked] = useState<Set<number>>(new Set());
   const [translation, setTranslation] = useState("");
   const [reqChecked, setReqChecked] = useState<Set<number>>(new Set());
   const [submitted, setSubmitted] = useState(false);
 
   const pickedWords = Array.from(picked).map((i) => stripPunc(tokens[i]).toLowerCase());
-  const matched = pickedWords.filter((w) =>
-    correctLower.some((k) => k.split(/\s+/).includes(w)),
-  );
-  const wrong = pickedWords.filter(
-    (w) => !correctLower.some((k) => k.split(/\s+/).includes(w)),
-  );
-  // Count distinct correct keyword phrases hit (one count per ideal phrase).
-  const phrasesHit = correctLower.filter((k) =>
-    k.split(/\s+/).some((part) => pickedWords.includes(part)),
-  ).length;
-  const pctCorrect = correctLower.length > 0 ? phrasesHit / correctLower.length : 0;
+  const wrong = pickedWords.filter((w) => !correctLower.some((k) => k.split(/\s+/).includes(w)));
+  const phrasesHit = correctLower.filter((k) => k.split(/\s+/).some((part) => pickedWords.includes(part))).length;
+  const keywordsOk = correctLower.length > 0 && phrasesHit / correctLower.length >= 0.75 && wrong.length <= 2;
+  const reqsOk = allRequirements.every((r) => reqChecked.has(r.index) === isRequired(r.index));
   const verdict: QuizVerdict =
-    pctCorrect >= 0.75 && wrong.length === 0
-      ? "correct"
-      : pctCorrect >= 0.75 && wrong.length <= 2
-        ? "partial"
-        : "incorrect";
+    keywordsOk && reqsOk && wrong.length === 0 ? "correct" : keywordsOk || reqsOk ? "partial" : "incorrect";
+
+  const toggle = (setter: typeof setPicked, i: number) =>
+    setter((prev) => {
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
 
   const submit = () => {
     setSubmitted(true);
@@ -1293,102 +1383,115 @@ function DecodingGauntletRenderer({
       keywordsPicked: Array.from(picked).map((i) => tokens[i]),
       translationText: translation,
       requirementsChecked: Array.from(reqChecked),
-      correctCount: matched.length,
+      correctCount: phrasesHit,
     });
   };
 
   return (
-    <div className="bg-brutal-paper border-4 border-brutal-ink p-6 brutal-shadow">
-      <p className="text-xs font-black uppercase tracking-widest mb-2">Item {item.id} of {ABSTRACT_CHOICES.length}</p>
-      <div className="bg-brutal-paper border-4 border-brutal-ink p-5 mb-4">
-        <p className="text-lg italic font-black leading-snug">
-          {tokens.map((t, i) => {
-            const isWord = /\w/.test(t);
-            const isPicked = picked.has(i);
-            const isCorrectWord = submitted && correctLower.some((k) => k.split(/\s+/).includes(stripPunc(t).toLowerCase()));
-            const cls = cn(
-              "transition-colors",
-              isWord ? "cursor-pointer" : "",
-              !submitted && isPicked ? "bg-brutal-yellow" : "",
-              submitted && isCorrectWord ? "bg-brutal-green" : "",
-              submitted && isPicked && !isCorrectWord ? "bg-brutal-red text-brutal-paper" : "",
-            );
-            return (
-              <span
-                key={i}
-                onClick={() => isWord && !submitted && setPicked((p) => {
-                  const next = new Set(p);
-                  if (next.has(i)) next.delete(i);
-                  else next.add(i);
-                  return next;
-                })}
-                className={cls}
-              >
-                {t}
-              </span>
-            );
-          })}
-        </p>
+    <div className="bg-brutal-paper border-4 border-brutal-ink p-5 md:p-6 brutal-shadow">
+      <p className="text-xs font-black uppercase tracking-widest mb-3">
+        Answer choice
+      </p>
+      <p className="font-black mb-2">Step 1. Click the words that carry the meaning.</p>
+      <div className="bg-white border-4 border-brutal-ink p-4 md:p-5 mb-5">
+        <WordPicker
+          tokens={tokens}
+          picked={picked}
+          onToggle={(i) => toggle(setPicked, i)}
+          locked={submitted}
+          isCorrectWord={isCorrectWord}
+        />
       </div>
+      <p className="font-black mb-2">Step 2. Say it in plain English.</p>
       <textarea
         value={translation}
         onChange={(e) => setTranslation(e.target.value)}
         disabled={submitted}
-        placeholder="Plain English..."
-        className="w-full min-h-[80px] border-2 border-brutal-ink p-3 font-bold bg-white mb-4"
+        aria-label="Plain English version"
+        placeholder="The statement is..."
+        className="w-full min-h-[80px] border-2 border-brutal-ink p-3 font-medium bg-white mb-5"
       />
+      <p className="font-black mb-1">Step 3. Which of these must be true of the stimulus for this choice to be right?</p>
+      <p className="text-sm font-medium text-brutal-ink-soft mb-3">
+        Pick every one that applies. Some describe ways the choice would be wrong.
+      </p>
+      <div className="space-y-2 mb-5">
+        {shuffled.map((r) => {
+          const checked = reqChecked.has(r.index);
+          const required = isRequired(r.index);
+          return (
+            <button
+              key={r.index}
+              type="button"
+              disabled={submitted}
+              aria-pressed={checked}
+              onClick={() => toggle(setReqChecked, r.index)}
+              className={cn(
+                "w-full text-left flex items-start gap-3 border-2 border-brutal-ink p-3 font-medium transition-colors",
+                !submitted && (checked ? "bg-brutal-cyan/50" : "bg-white hover:bg-brutal-cyan/15"),
+                submitted && required && "bg-brutal-green/50",
+                submitted && !required && checked && "bg-brutal-red/20",
+                submitted && !required && !checked && "bg-white opacity-70",
+              )}
+            >
+              <span
+                className={cn(
+                  "w-5 h-5 mt-0.5 border-2 border-brutal-ink shrink-0 flex items-center justify-center",
+                  checked ? "bg-brutal-ink text-brutal-paper" : "bg-white",
+                )}
+                aria-hidden
+              >
+                {checked && <CheckCircle2 className="w-3.5 h-3.5" />}
+              </span>
+              <span className="flex-1">
+                {r.text}
+                {submitted && (
+                  <span className="block text-xs font-black uppercase tracking-wider mt-1">
+                    {required
+                      ? checked
+                        ? "Required. You caught it."
+                        : "Required. You missed it."
+                      : checked
+                        ? "Not required. This would make the choice wrong."
+                        : "Correctly left out."}
+                  </span>
+                )}
+              </span>
+            </button>
+          );
+        })}
+      </div>
       {!submitted ? (
         <button
           type="button"
-          disabled={picked.size === 0 || translation.trim().length < 10}
+          disabled={picked.size === 0 || translation.trim().length < 10 || reqChecked.size === 0}
           onClick={submit}
-          className="brutal-btn bg-brutal-yellow"
+          className="brutal-btn bg-brutal-yellow disabled:opacity-60"
         >
-          Submit
+          Check my work
         </button>
       ) : (
         <div className="space-y-3">
           <VerdictHeader verdict={verdict} />
-          <p className="text-sm font-bold">
-            You picked {phrasesHit} correct keyword{phrasesHit === 1 ? "" : "s"} out of {correctLower.length}.{" "}
-            {wrong.length > 0
-              ? `You also picked ${wrong.length} word${wrong.length === 1 ? "" : "s"} that ${wrong.length === 1 ? "is" : "are"} not load-bearing.`
-              : "No off-target picks."}
+          <p className="text-sm font-medium">
+            Keywords: {phrasesHit} of {correctLower.length}. Stimulus checklist:{" "}
+            {reqsOk ? "all right." : "not all right."}
           </p>
-          <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
-            <p className="text-xs font-black uppercase tracking-widest mb-2">Ideal keywords</p>
-            <p className="font-bold">
-              {item.correctKeywords.map((k, i) => (
-                <span
-                  key={i}
-                  className="inline-block bg-brutal-green border-2 border-brutal-ink px-2 py-0.5 mr-2 mb-1"
-                >
-                  {k}
-                </span>
-              ))}
-            </p>
-          </div>
-          <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
-            <p className="text-xs font-black uppercase tracking-widest mb-2">Plain English</p>
-            <p className="font-bold italic">{item.plainEnglish}</p>
-          </div>
-          <div className="bg-white border-2 border-brutal-ink p-4">
-            <p className="text-xs font-black uppercase tracking-widest mb-2">Stimulus must have</p>
-            <ul className="list-disc pl-5 space-y-1">
-              {item.stimulusRequirements.map((r, i) => (
-                <li key={i} className="font-bold">{r}</li>
-              ))}
-            </ul>
+          <div className="grid md:grid-cols-2 gap-3">
+            <div className="bg-white border-2 border-brutal-ink p-4">
+              <p className="text-xs font-black uppercase tracking-widest mb-2">Yours</p>
+              <p className="font-medium m-0">{translation}</p>
+            </div>
+            <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
+              <p className="text-xs font-black uppercase tracking-widest mb-2">Model</p>
+              <p className="font-medium m-0">{item.plainEnglish}</p>
+            </div>
           </div>
           <div className="bg-brutal-yellow border-2 border-brutal-ink p-4">
             <p className="text-xs font-black uppercase tracking-widest mb-2">Coach note</p>
-            <p className="font-bold">{item.coachNote}</p>
+            <p className="font-medium m-0">{item.coachNote}</p>
           </div>
-          <button
-            type="button"
-            onClick={onNext}
-            className="brutal-btn bg-brutal-green inline-flex items-center gap-2"
-          >
+          <button type="button" onClick={onNext} className="brutal-btn bg-brutal-green inline-flex items-center gap-2">
             Next <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -1399,7 +1502,7 @@ function DecodingGauntletRenderer({
 
 // ============ Drill ============
 
-function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
+export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
   const { markDrillComplete, markModuleDrillComplete, addXp } = useApp();
   const mod = getModule(moduleId)!;
   const drills = useMemo(
@@ -1408,8 +1511,21 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
   );
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
-  const [correctCount, setCorrectCount] = useState(0);
-  const startedRef = useState(() => Date.now())[0];
+  const [, setCorrectCount] = useState(0);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  // Time per question: restart the clock whenever a new question shows.
+  const startedRef = useRef(Date.now());
+  useEffect(() => {
+    startedRef.current = Date.now();
+  }, [index]);
+
+  if (mod.drillKind === "answer-choice") {
+    return <AnswerChoiceDrill onDone={onDone} />;
+  }
+  if (mod.drillKind === "breakdown") {
+    return <BreakdownDrill onDone={onDone} />;
+  }
 
   if (drills.length === 0) {
     return (
@@ -1422,28 +1538,33 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
 
   const current = drills[index];
 
-  const submit = (i: number) => {
+  const submit = async (i: number) => {
+    setSaving(true);
+    setSaveError(null);
     setPicked(i);
     const correct = i === current.correctOptionIndex;
     if (correct) {
       setCorrectCount((c) => c + 1);
       addXp(5);
     }
-    void markDrillComplete(
+    const result = await markDrillComplete(
       current.id,
       current.type as DrillType,
       correct,
       i,
       "Pretty sure",
       current.trapTag,
-      Date.now() - startedRef,
+      Date.now() - startedRef.current,
     );
+    setSaving(false);
+    if (!result.ok) setSaveError("Your answer could not be saved. Choose it again to retry.");
   };
 
   const nextItem = async () => {
     if (index + 1 >= drills.length) {
-      await markModuleDrillComplete(moduleId);
-      onDone();
+      const result = await markModuleDrillComplete(moduleId);
+      if (result.ok) onDone();
+      else setSaveError("Your module progress could not be saved. Try again.");
     } else {
       setPicked(null);
       setIndex(index + 1);
@@ -1453,7 +1574,7 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
   return (
     <div>
       <p className="text-xs font-black uppercase tracking-widest mb-3 text-brutal-ink-soft">
-        Drill {index + 1} of {drills.length}
+        Question {index + 1} of {drills.length}{current.id.startsWith("source_") && ` · ${current.id.replace("source_", "").toUpperCase().replace(/_/g, "-")}`}
       </p>
       <div className="bg-brutal-paper border-4 border-brutal-ink p-6 brutal-shadow">
         {current.stimulus && (
@@ -1480,11 +1601,11 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
               <li key={i}>
                 <button
                   type="button"
-                  disabled={picked !== null}
-                  onClick={() => submit(i)}
+                  disabled={saving || (picked !== null && !saveError)}
+                  onClick={() => void submit(i)}
                   className={cn("w-full text-left p-4 border-2 border-brutal-ink font-bold", tone)}
                 >
-                  {opt.text}
+                  {current.id.startsWith("source_") && <span className="mr-2 font-black">{String.fromCharCode(65 + i)}.</span>}{opt.text}
                 </button>
                 {picked !== null && (isCorrect || isPicked) && (
                   <p className="text-xs italic font-bold p-2 text-brutal-ink-soft">{opt.explanation}</p>
@@ -1497,12 +1618,14 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
           <div className="mt-5 bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
             <p className="text-xs font-black uppercase tracking-widest mb-2">Why</p>
             <p className="font-bold">{current.explanation}</p>
+            {saveError && <p role="alert">{saveError}</p>}
             <button
               type="button"
               onClick={nextItem}
+              disabled={saving || Boolean(saveError)}
               className="mt-4 brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
             >
-              {index + 1 >= drills.length ? "Finish module" : "Next drill"}
+              {index + 1 >= drills.length ? "Finish module" : "Next question"}
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -1515,12 +1638,12 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
 // ============ Complete ============
 
 function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContinue: () => void }) {
-  const { bootcampState, openModule } = useApp();
+  const { bootcampState, openModule, setCurrentView } = useApp();
   const mod = getModule(moduleId)!;
   const row = bootcampState.moduleProgress[moduleId];
-  const aced = bootcampState.aceBadges.includes(moduleId);
-  const mastery: MasteryLevel = row?.masteryLevel ?? computeMastery(row);
-  const nextModule = MODULES[MODULES.findIndex((m) => m.id === moduleId) + 1];
+  const aced = Boolean(mod.quizSource) && bootcampState.aceBadges.includes(moduleId);
+  const mastery: MasteryLevel = ["m3", "m5", "m6", "m7"].includes(moduleId) ? computeMastery(row) : row?.masteryLevel ?? computeMastery(row);
+  const nextModule = LECTURE_MODULES[LECTURE_MODULES.findIndex((m) => m.id === moduleId) + 1];
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -1558,7 +1681,7 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
         Module {mod.number}
       </p>
       <h2 className="text-4xl font-black uppercase tracking-tight mb-2">Done.</h2>
-      <MasteryBadge level={mastery} />
+      {mastery !== "none" && <MasteryBadge level={mastery} />}
       {aced && (
         <p className="inline-flex items-center gap-2 font-black uppercase tracking-wider text-sm bg-brutal-yellow border-2 border-brutal-ink px-4 py-2 mt-3">
           <Star className="w-4 h-4" /> Aced It
@@ -1566,19 +1689,20 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
       )}
 
       <div className="mt-6 inline-flex flex-wrap items-center gap-3 justify-center">
-        {row && row.quizTotal > 0 && (
+        {mod.quizSource && row && row.quizTotal > 0 && (
           <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-black uppercase tracking-wider">
             Quiz {row.quizScore} / {row.quizTotal}
           </span>
         )}
-        {row && row.drillTotal && (
+        {moduleId === "m3" && row?.drillComplete && <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-bold">Completed the 15 source exercises. Ungraded practice.</span>}
+        {moduleId !== "m3" && row && row.drillTotal && (
           <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-black uppercase tracking-wider">
             Drill {row.drillCorrect ?? 0} / {row.drillTotal}
           </span>
         )}
       </div>
 
-      <p className="font-bold mt-6 mb-6">Nice. Next.</p>
+      {moduleId === "m3" ? <details className="text-left mt-8"><summary className="font-semibold cursor-pointer">Answer-choice recap</summary><div className="mt-6"><RoleChoiceClosing /></div></details> : <p className="font-bold mt-6 mb-6">Continue when you are ready.</p>}
       {nextModule ? (
         <div>
           <p className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft mb-3">
@@ -1595,7 +1719,7 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
       ) : (
         <button
           type="button"
-          onClick={onContinue}
+          onClick={() => setCurrentView("dashboard")}
           className="brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
         >
           Back to Dashboard <ArrowRight className="w-4 h-4" />

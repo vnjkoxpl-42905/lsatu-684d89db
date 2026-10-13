@@ -11,7 +11,9 @@
         "A statement can carry more than one relationship. When it does, every relationship must be named with its own indicators, and naming a relationship that is not there is also wrong.",
         "The strongest causal indicator is often a verb rather than a connective. Raises, drives, yields, starves, dries, lowers and homogenizes are causal words, and a student who quotes one has found the right thing.",
         "Requirement language is conditional, not causal. Requires, depends on, contingent on and provided name what must be true; they do not claim that anything made anything happen.",
-        "Accept any reasonable quotation of the indicator. Do not penalise capitalisation, a slightly wider or narrower span, or a student who writes only if as only-if."
+        "Accept any reasonable quotation of the indicator. Do not penalise capitalisation, a slightly wider or narrower span, or a student who writes only if as only-if.",
+        "Comparisons can use a stated second term, a numeric benchmark, or a comparison standard recoverable from context. Do not require two named objects or the word than. Heavier contrasts with the light bell in item 31; longer contrasts with the hard-mortar case in item 36; higher still contrasts with the previous pressure in item 47. Plain adjectives such as deep and adverbs such as efficiently alone are not comparisons.",
+        "The explanation count groups relationship types, not every separate claim. Multiple comparisons or causal claims can share one type. Accept any valid indicator for a credited type, including a narrower quoted span, but check that the student pairs it with the right type."
       ],
       "partial_rule": "Mark 'partial' when the student names the right type with wrong or missing indicators, quotes the credited indicators but labels the type wrongly, or finds some but not all of the relationships in a multi-relationship statement. Mark 'incorrect' only when both parts miss."
     },
@@ -20,9 +22,10 @@
     "rules": [
       "Answer in the game format: type, then the words. Conditional, only if. Causal, caused. Comparative, heavier than.",
       "A conditional says what must be true. A causal says one thing made another happen. A comparative measures one thing against another.",
+      "A comparison needs something to compare against: another thing, a number, or an earlier state. That second term can be stated or clear from the sentence. A description like deep or efficient alone isn't a comparison.",
       "Causal words are often verbs, not connectives. Raises, drives, dries, starves and lowers are all causal.",
       "Requires, depends on and contingent on are conditional. They name a requirement, not a mechanism.",
-      "Some sentences carry two or three relationships at once. Name every one you find."
+      "Some sentences contain all three types. Name each type you find with its own indicators. Several comparisons still count as one type: comparative."
     ],
     "worked_example": {
       "statement": "A lantern can be lit only if its wick is dry.",
@@ -37,7 +40,7 @@
   "items": [
     {
       "order": 1,
-      "prompt": "A greenhouse vent opens only if the interior temperature exceeds 28 degrees.",
+      "prompt": "A greenhouse vent opens only if the interior temperature reaches 28 degrees.",
       "credited_answers": [
         "conditional, \"only if\""
       ],
@@ -226,11 +229,11 @@
     },
     {
       "order": 22,
-      "prompt": "Longer soak times yield a deeper indigo.",
+      "prompt": "Prolonged soaking yields a deep indigo.",
       "credited_answers": [
-        "causal, \"yield\""
+        "causal, \"yields\""
       ],
-      "explanation": "1 relationship in this sentence. Bait: the comparatives *longer* and *deeper* are real words on the page, but neither one compares two named things. The sentence claims a mechanism.",
+      "explanation": "1 relationship in this sentence. *Yields* says the soaking produces the colour, so this is causal. *Prolonged* and *deep* describe the soaking and colour. Neither measures them against something else.",
       "category": "Rung 2: Discrimination"
     },
     {
@@ -271,7 +274,7 @@
     },
     {
       "order": 27,
-      "prompt": "Only if the vat is held below four degrees does the culture stay viable, because warmth accelerates the competing bacteria.",
+      "prompt": "Only if the vat is held at four degrees does the culture stay viable, because warmth accelerates the competing bacteria.",
       "credited_answers": [
         "conditional, \"Only if\"; causal, \"because\" and \"accelerates\""
       ],
@@ -280,11 +283,11 @@
     },
     {
       "order": 28,
-      "prompt": "The northern kiln fires more evenly than the southern one, since its flue draws harder.",
+      "prompt": "The northern kiln fires more evenly than the southern one, since its flue draws efficiently.",
       "credited_answers": [
         "comparative, \"more evenly than\"; causal, \"since\" and \"draws\""
       ],
-      "explanation": "2 relationships in this sentence. Note *harder* is part of the causal clause, not a second comparison between two named things.",
+      "explanation": "2 relationships in this sentence. *More evenly than* compares the two kilns. *Since* introduces the reason for the difference: the northern kiln's flue draws efficiently. That makes the second clause causal. *Efficiently* describes how the flue works without comparing it with a second flue.",
       "category": "Rung 3: Compound sentences"
     },
     {
@@ -311,7 +314,7 @@
       "credited_answers": [
         "comparative, \"heavier\" and \"farther than\"; causal, \"which is why\""
       ],
-      "explanation": "2 relationships in this sentence. A causal connective that is not a single word.",
+      "explanation": "2 relationships in this sentence. *Heavier* contrasts one bell with the light one, and *farther than* compares how far their sound carries. *Which is why* gives the reason the foundry chose the larger mould. There are several comparisons here, but only two types: comparative and causal.",
       "category": "Rung 3: Compound sentences"
     },
     {
@@ -329,7 +332,7 @@
       "credited_answers": [
         "conditional, \"Provided\"; comparative, \"colder than\"; causal, \"because\" and \"lags\""
       ],
-      "explanation": "3 relationships in this sentence.",
+      "explanation": "3 relationships in this sentence. *Provided* gives a condition: if the sample is colder than the reference cell, the reading drifts upward. *Colder than* compares their temperatures. *Because* introduces the cause of the drift, the thermocouple's lag. The technical name doesn't change what those words tell us.",
       "category": "Rung 3: Compound sentences"
     },
     {
@@ -338,7 +341,7 @@
       "credited_answers": [
         "comparative, \"harder than\"; causal, \"so\"; conditional, \"only if\""
       ],
-      "explanation": "3 relationships in this sentence. Three relationships in three clauses, in an order that hides the conditional at the end.",
+      "explanation": "3 relationships in this sentence. *Harder ... than* compares stone from the eastern and western quarries. *So* connects that difference to the masons' choice: the stone's hardness is the reason they reserve it for thresholds. *Only if* adds a requirement for that use: the block must be free of iron staining. Being stain-free alone doesn't guarantee they will use it.",
       "category": "Rung 3: Compound sentences"
     },
     {
@@ -347,7 +350,7 @@
       "credited_answers": [
         "causal, \"Since\" and \"silted\"; comparative, \"slower than\"; conditional, \"unless\""
       ],
-      "explanation": "3 relationships in this sentence. The causal opens, which students read as a support indicator.",
+      "explanation": "3 relationships in this sentence. *Since* gives the cause of the slower turning: the mill race silted. *Slower than* compares the wheel's present speed with its earlier speed. *Unless* introduces a requirement for grinding: without dredging each spring, the mill cannot grind. Here *since* gives a reason, not merely a date.",
       "category": "Rung 3: Compound sentences"
     },
     {
@@ -356,7 +359,7 @@
       "credited_answers": [
         "conditional, \"when\"; comparative, \"longer\" and \"softer than\"; causal, \"because\" and \"drives\""
       ],
-      "explanation": "3 relationships in this sentence.",
+      "explanation": "3 relationships in this sentence. *When* gives the condition under which repointing lasts longer. *Softer than* compares the mortar with the brick. *Longer* also compares durability with the hard-mortar case described later in the sentence; a comparison needn't repeat *than* when the contrast is clear. *Because* and *drives* explain how hard mortar causes damage by sending stress into the brick's face.",
       "category": "Rung 3: Compound sentences"
     },
     {
@@ -365,7 +368,7 @@
       "credited_answers": [
         "conditional, \"only if\"; comparative, \"more vigorous than\"; causal, \"since\" and \"starves\""
       ],
-      "explanation": "3 relationships in this sentence.",
+      "explanation": "3 relationships in this sentence. *Only if* says the transplant needs a rootstock more vigorous than the scion. *More vigorous than* compares those two parts of the plant. *Since* and *starves* give the causal explanation: a weak stock deprives the graft of what it needs. The requirement and its explanation do different jobs.",
       "category": "Rung 3: Compound sentences"
     },
     {
@@ -374,7 +377,7 @@
       "credited_answers": [
         "conditional, \"Only where\"; comparative, \"denser than\"; causal, \"because\" and \"dries\""
       ],
-      "explanation": "3 relationships in this sentence. *Only where* is the spatial sibling of *only when*.",
+      "explanation": "3 relationships in this sentence. *Only where* makes dense canopy a requirement for seedling survival. *Denser than* measures that canopy against sixty percent, so a number can be the second term of a comparison. *Because* and *dries* explain the cause: direct sun dries the litter layer. Finding a dense canopy alone doesn't prove the seedlings survive.",
       "category": "Rung 3: Compound sentences"
     },
     {
@@ -383,7 +386,7 @@
       "credited_answers": [
         "conditional, \"Only when\"; comparative, \"closer to … than to\"; causal, \"since\" and \"elevates\""
       ],
-      "explanation": "3 relationships in this sentence. The same three relationships as before, now under technical vocabulary. The jargon changes nothing about the structure.",
+      "explanation": "3 relationships in this sentence. *Only when* gives a requirement for accepting the attribution. *Closer to ... than to* compares the sample's distance from two ranges, C3 and C4. *Since* and *elevates* explain what maize agriculture does to the ratio. You don't need to define every scientific term to see the requirement, comparison and cause.",
       "category": "Rung 4: The same structures under jargon"
     },
     {
@@ -392,7 +395,7 @@
       "credited_answers": [
         "causal, \"passivates\" and \"so\"; comparative, \"thicker than\"; conditional, \"provided\""
       ],
-      "explanation": "3 relationships in this sentence. Causal first, conditional last, which inverts the usual reading order.",
+      "explanation": "3 relationships in this sentence. *Passivates* names what anodization does to the surface, and *so* connects that effect to resistance to pitting. *Thicker ... than* compares the coupon's oxide layer with the control's. *Provided* supplies the condition for the stated result: the electrolyte must be chloride-free. The sentence opens with a cause and adds its condition at the end.",
       "category": "Rung 4: The same structures under jargon"
     },
     {
@@ -401,7 +404,7 @@
       "credited_answers": [
         "conditional, \"Unless\"; comparative, \"exceeds\"; causal, \"because\" and \"follows\""
       ],
-      "explanation": "3 relationships in this sentence.",
+      "explanation": "3 relationships in this sentence. *Unless* gives a requirement: without the higher fluid osmolality, the multiplier cannot concentrate the urine. *Exceeds* compares the fluid's osmolality with the filtrate's. *Because* gives the causal explanation, water moving along the gradient. The long scientific names don't change the meaning of *unless* or *exceeds*.",
       "category": "Rung 4: The same structures under jargon"
     },
     {
@@ -410,7 +413,7 @@
       "credited_answers": [
         "conditional, \"only if\"; comparative, \"higher than\"; causal, \"since\" and \"inflate\""
       ],
-      "explanation": "3 relationships in this sentence.",
+      "explanation": "3 relationships in this sentence. *Only if* makes a coefficient above the site threshold necessary for accepting the match. *Higher than* compares the coefficient with that threshold. *Since* gives the reason for the requirement: short series allow spurious matches to increase. Meeting the threshold alone doesn't guarantee acceptance.",
       "category": "Rung 4: The same structures under jargon"
     },
     {
@@ -419,7 +422,7 @@
       "credited_answers": [
         "causal, \"lowers\" and \"which is why\"; comparative, \"faster … than\""
       ],
-      "explanation": "2 relationships in this sentence. Two relationships only, at a point where you may start expecting three. Naming a relationship that is not there is not a correct answer.",
+      "explanation": "2 relationships in this sentence. *Lowers* says the catalyst changes the activation barrier, and *which is why* connects that change to the reaction's speed. *Faster ... than* compares the catalyzed reaction with the uncatalyzed route. *At ambient temperature* names the setting; it doesn't introduce an if/then rule. Don't add a conditional just because nearby questions had one.",
       "category": "Rung 4: The same structures under jargon"
     },
     {
@@ -428,7 +431,7 @@
       "credited_answers": [
         "conditional, \"Only where\"; comparative, \"lower than\"; causal, \"because\" and \"homogenizes\""
       ],
-      "explanation": "3 relationships in this sentence.",
+      "explanation": "3 relationships in this sentence. *Only where* makes susceptibility below the baseline necessary for preserving the intact excursion. *Lower than* compares the sediment's susceptibility with that baseline. *Because* and *homogenizes* give the causal explanation: bioturbation blends the signal. A required condition and an explanation of damage can appear in the same sentence.",
       "category": "Rung 4: The same structures under jargon"
     },
     {
@@ -437,7 +440,7 @@
       "credited_answers": [
         "conditional, \"Provided\"; comparative, \"finer than\"; causal, \"since\" and \"produces\""
       ],
-      "explanation": "3 relationships in this sentence.",
+      "explanation": "3 relationships in this sentence. *Provided* gives a condition under which a null result is meaningful. *Finer than* compares the assay's detection limit with the regulatory threshold. *Since* and *produces* give the reason: a coarse assay can produce a null that tells us nothing useful. The cause explains why the detection limit matters.",
       "category": "Rung 4: The same structures under jargon"
     },
     {
@@ -446,16 +449,16 @@
       "credited_answers": [
         "causal, \"raises\" and \"so\"; comparative, \"higher than\"; conditional, \"unless\""
       ],
-      "explanation": "3 relationships in this sentence. The conditional arrives last, after the student has already committed.",
+      "explanation": "3 relationships in this sentence. *Raises* says rebound causes the shoreline to rise, and *so* connects that rise to the terraces' relative heights. *Higher than* compares a terrace formed after deglaciation with one formed before. *Unless* qualifies the result: if local subsidence offsets the uplift, that height difference is no longer guaranteed. *After* and *before* mark times, not extra conditional rules.",
       "category": "Rung 4: The same structures under jargon"
     },
     {
       "order": 47,
-      "prompt": "The membrane fouls only when the transmembrane pressure climbs above the critical flux, and the fouling itself drives the pressure higher still.",
+      "prompt": "The membrane fouls only when the transmembrane pressure climbs above the critical pressure threshold, and the fouling itself drives the pressure higher still.",
       "credited_answers": [
         "conditional, \"only when\"; comparative, \"above\" and \"higher still\"; causal, \"drives\""
       ],
-      "explanation": "3 relationships in this sentence. A feedback loop: the effect feeds the condition.",
+      "explanation": "3 relationships in this sentence. *Only when* makes pressure above the critical pressure threshold necessary for fouling. *Above* compares pressure with a pressure threshold. *Drives* says fouling then causes pressure to rise, and *higher still* compares that later pressure with its already elevated level. This is a feedback loop: fouling increases the pressure involved in its own required condition. A pressure measurement must be compared with pressure, not with flux.",
       "category": "Rung 4: The same structures under jargon"
     },
     {
@@ -464,7 +467,7 @@
       "credited_answers": [
         "conditional, \"Only if\"; comparative, \"more … than\"; causal, \"because\" and \"produces\""
       ],
-      "explanation": "3 relationships in this sentence. The hardest reading order in this set: the conditional's main clause is inverted and sits behind a long comparative phrase.",
+      "explanation": "3 relationships in this sentence. *Only if* gives a requirement for trusting the offset: calibration against a more regionally appropriate curve. *More ... than* compares that curve with the global one. *Because* and *produces* give the causal reason, atmospheric mixing creating hemispheric differences. Read past the long comparison to find what the requirement applies to: trusting the offset.",
       "category": "Rung 4: The same structures under jargon"
     }
   ]

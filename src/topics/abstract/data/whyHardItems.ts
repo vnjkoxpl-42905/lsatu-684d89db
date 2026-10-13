@@ -1,13 +1,12 @@
-// 5 "Why is this hard?" items for Module 1.
+// 5 Module 1 quiz items: "Which sentence is this answer choice describing?"
 //
-// Items are derived from the coachNote and trapRequirements fields of
-// existing abstractChoices items. The student sees a stimulus snippet and an
-// abstract answer choice, and picks what makes that choice hard to evaluate.
-// Distractors are drawn from real LSAT trap categories (extreme language,
-// scope shift, role confusion, missing match) so wrong picks are educational.
+// Module 1 shows that an abstract answer choice is a description of the
+// argument with the content stripped out. These items make the student do the
+// first half of that by hand: read a short numbered argument, read the
+// abstract description, and point to the sentence it describes. No method
+// required yet, only careful reading.
 //
-// No fresh LSAT stimuli authored here: every stimulus + answer choice is
-// reframed from material already in data/abstractChoices.ts.
+// Arguments are original to this quiz.
 
 export interface WhyHardItem {
   id: string;
@@ -17,158 +16,128 @@ export interface WhyHardItem {
   options: { text: string; correct: boolean; explanation: string }[];
 }
 
+const QUESTION = "Which sentence is this answer choice describing?";
+
 export const WHY_HARD_ITEMS: WhyHardItem[] = [
   {
     id: "wh_1",
     stimulus:
-      "Tired commuters waste hours each year stuck in traffic. The city should fund the new express train, since cities that have invested in rail consistently see commute times fall.",
+      "(1) Our library should stay open until midnight during finals. (2) Last spring, every study room was still full at 11 p.m. (3) Students clearly need the late hours.",
     answerChoice:
-      "It is used to illustrate the general principle that the argument presupposes.",
-    question: "What makes this answer choice hard to evaluate?",
+      "It is offered as evidence for a claim that, in turn, supports the argument's main conclusion.",
+    question: QUESTION,
     options: [
       {
-        text: "Three LSAT-specific words (illustrate, general principle, presuppose) all carry meanings that differ from everyday usage.",
+        text: "Sentence 1",
+        correct: false,
+        explanation: "Not that one. Sentence 1 is the main conclusion. Nothing in the argument uses it as evidence.",
+      },
+      {
+        text: "Sentence 2",
         correct: true,
         explanation:
-          "On the LSAT, illustrate means example, general principle means a rule that applies across cases, and presuppose means require. All three meanings must hold for the answer to fit.",
+          "Correct. The full study rooms support the claim that students need late hours (sentence 3), and that claim supports staying open (sentence 1).",
       },
       {
-        text: "The answer is hard because it uses too many short words.",
+        text: "Sentence 3",
         correct: false,
-        explanation: "Word count is not the obstacle. Specific LSAT vocabulary is.",
-      },
-      {
-        text: "The answer is hard because the stimulus has no conclusion.",
-        correct: false,
-        explanation: "The stimulus has a clear conclusion: the city should fund the express train.",
-      },
-      {
-        text: "The answer is hard because the stimulus contains numbers.",
-        correct: false,
-        explanation: "The difficulty is vocabulary, not quantitative content.",
+        explanation: "Not that one. Sentence 3 is the claim in the middle. It gets support from sentence 2; it isn't evidence for it.",
       },
     ],
   },
   {
     id: "wh_2",
     stimulus:
-      "Critics worry the festival will hurt local business. But each of the past five years that the festival ran, downtown shop revenue rose by double digits.",
-    answerChoice:
-      "It is used to counter a consideration that might be taken to undermine the argument's conclusion.",
-    question: "What makes this answer choice hard to evaluate?",
+      "(1) Some parents worry that video games make kids aggressive. (2) But a ten-year study found no link between gaming and aggression. (3) So that worry isn't backed by the evidence.",
+    answerChoice: "It presents evidence against a position that the argument rejects.",
+    question: QUESTION,
     options: [
       {
-        text: "The choice describes a structural move (preempting an objection) rather than a content claim, so the student must read the stimulus for an objection and a counter to that objection.",
+        text: "Sentence 1",
+        correct: false,
+        explanation: "Not that one. Sentence 1 is the position being rejected, not the evidence against it.",
+      },
+      {
+        text: "Sentence 2",
         correct: true,
-        explanation:
-          "This is a structural role description. The stimulus must actually contain an objection (the critics' worry) and a counter to it (the revenue data).",
+        explanation: "Correct. The study is the evidence, and the parents' worry is the position the argument rejects.",
       },
       {
-        text: "The choice is hard because it uses the word \"the\" too often.",
+        text: "Sentence 3",
         correct: false,
-        explanation: "Common words are not the difficulty. Structural vocabulary is.",
-      },
-      {
-        text: "The choice is hard because it includes a number.",
-        correct: false,
-        explanation: "No numbers appear in the answer choice itself.",
-      },
-      {
-        text: "The choice is hard because the stimulus contains a name.",
-        correct: false,
-        explanation: "Names in the stimulus do not affect the structural reading.",
+        explanation: "Not that one. Sentence 3 is where the argument rejects the position. It doesn't present the evidence.",
       },
     ],
   },
   {
     id: "wh_3",
     stimulus:
-      "Opponent: Solar panels do not pay back their cost in cloudy regions. Author: That ignores the federal tax credit, which alone covers 40 percent of installation cost.",
-    answerChoice:
-      "It makes an observation that, according to the argument, is insufficient to justify the claim that the argument concludes is false.",
-    question: "What makes this answer choice hard to evaluate?",
+      "(1) Anyone who adopts a dog from the shelter must attend a training class. (2) Priya is adopting a dog from the shelter. (3) So Priya must attend the training class.",
+    answerChoice: "It states a requirement that the conclusion depends on.",
+    question: QUESTION,
     options: [
       {
-        text: "The choice nests four moves (observation, insufficiency, opposing claim, the author's rejection). The student must verify all four in the stimulus.",
+        text: "Sentence 1",
         correct: true,
-        explanation:
-          "This is layered structural language. Every layer must match the stimulus or the answer dies.",
+        explanation: "Correct. \"Must attend a training class\" is the requirement, and the conclusion about Priya can't work without it.",
       },
       {
-        text: "The choice is hard because it lacks a verb.",
+        text: "Sentence 2",
         correct: false,
-        explanation: "The choice has multiple verbs: makes, justify, concludes.",
+        explanation: "Not that one. Sentence 2 is a fact about Priya, not a requirement.",
       },
       {
-        text: "The choice is hard because the stimulus uses a percentage.",
+        text: "Sentence 3",
         correct: false,
-        explanation: "The percentage in the stimulus does not change the structural reading.",
-      },
-      {
-        text: "The choice is hard because it uses no LSAT-specific terms.",
-        correct: false,
-        explanation: "Observation, insufficient, and conclude are all LSAT structural terms.",
+        explanation: "Not that one. Sentence 3 is the conclusion itself.",
       },
     ],
   },
   {
     id: "wh_4",
     stimulus:
-      "Most professionals at the firm have law degrees. John is a senior partner. Therefore, John must have passed the bar.",
-    answerChoice:
-      "It is an intermediate conclusion that supports the main conclusion.",
-    question: "What makes this answer choice hard to evaluate?",
+      "(1) The museum's attendance tripled last summer. (2) Some people credit the new dinosaur exhibit. (3) But that was also the summer the museum stopped charging admission.",
+    answerChoice: "It offers an alternative explanation for a phenomenon.",
+    question: QUESTION,
     options: [
       {
-        text: "Role labels (intermediate conclusion, main conclusion) require the student to map the argument's structure precisely, not just read it linearly.",
+        text: "Sentence 1",
+        correct: false,
+        explanation: "Not that one. Sentence 1 is the phenomenon, the thing being explained.",
+      },
+      {
+        text: "Sentence 2",
+        correct: false,
+        explanation: "Not that one. Sentence 2 is the first explanation. The alternative comes after it.",
+      },
+      {
+        text: "Sentence 3",
         correct: true,
-        explanation:
-          "An intermediate conclusion must itself be supported by other premises AND must support the final claim. Both relationships must hold.",
-      },
-      {
-        text: "The choice is hard because John is mentioned twice.",
-        correct: false,
-        explanation: "Repetition is not the issue. Role mapping is.",
-      },
-      {
-        text: "The choice is hard because the stimulus contains the word \"most.\"",
-        correct: false,
-        explanation: "The quantifier does not change the role of the quoted statement.",
-      },
-      {
-        text: "The choice is hard because it ends with the word conclusion.",
-        correct: false,
-        explanation: "The structural meaning of conclusion is what matters, not the surface word.",
+        explanation: "Correct. Free admission is a different possible cause of the jump in attendance.",
       },
     ],
   },
   {
     id: "wh_5",
     stimulus:
-      "Smoking is a leading cause of lung cancer. John has lung cancer. Therefore, John must have been a heavy smoker.",
-    answerChoice: "It is what the author's argument purports to explain.",
-    question: "What makes this answer choice hard to evaluate?",
+      "(1) Hiking boots are a better buy than sneakers for trail runners. (2) Boots last about three times as long on rocky trails. (3) And they cost only about twice as much.",
+    answerChoice: "It is the main conclusion, and two premises support it.",
+    question: QUESTION,
     options: [
       {
-        text: "Purports to explain means the statement is the effect or phenomenon the argument is trying to account for, not the cause. Student must invert the everyday reading.",
+        text: "Sentence 1",
         correct: true,
-        explanation:
-          "On the LSAT, purports to explain points to the thing being explained. Here John's lung cancer is the phenomenon; smoking is the proposed cause.",
+        explanation: "Correct. Sentences 2 and 3 are the two reasons boots are the better buy.",
       },
       {
-        text: "The choice is hard because it uses the word \"author.\"",
+        text: "Sentence 2",
         correct: false,
-        explanation: "Author is standard LSAT vocabulary, not the source of difficulty.",
+        explanation: "Not that one. Sentence 2 is one of the two premises.",
       },
       {
-        text: "The choice is hard because the stimulus has three sentences.",
+        text: "Sentence 3",
         correct: false,
-        explanation: "Sentence count is unrelated to the difficulty.",
-      },
-      {
-        text: "The choice is hard because purports is a rare English word.",
-        correct: false,
-        explanation: "Word rarity is not the issue. The structural reversal is.",
+        explanation: "Not that one. Sentence 3 is the other premise.",
       },
     ],
   },

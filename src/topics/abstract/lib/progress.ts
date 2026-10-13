@@ -1,10 +1,16 @@
+import { bootcampIdFromRoute } from "@/lib/bootcamps";
+export const ABSTRACT_BOOTCAMP_ID = bootcampIdFromRoute("/topics/abstract");
 // Progress roll-up helpers used by the Dashboard and Sidebar to reduce
 // raw bootcamp state into per-surface percentages and an overall weighted
 // completion number. Centralised here so the same weights apply across
 // surfaces and the weights stay easy to tune.
 
-import { LESSONS, DRILLS, FLASHCARDS, ABSTRACT_CHOICES, TRANSLATOR_ITEMS } from "../data/mockData";
+import { LESSONS, DRILLS, FLASHCARDS } from "../data/mockData";
+import { ANSWER_CHOICE_ITEMS } from "../data/answerChoiceDrill";
+import { APPLIED_SOURCE_QUESTIONS } from "../data/appliedSourceQuestions";
 import type { BootcampState } from "../types";
+import { sourceExerciseIds } from "./grading-status";
+import { LECTURE_DRILL_IDS, LECTURE_LESSON_IDS, MODULES, getModule, type ModuleId } from "../data/modules";
 
 export interface ProgressBreakdown {
   lessons: { done: number; total: number; pct: number };
@@ -18,11 +24,11 @@ export interface ProgressBreakdown {
 
 const WEIGHTS = {
   lessons: 0.25,
-  translator: 0.1,
+  translator: 0.2,
   gauntlet: 0.2,
-  drills: 0.2,
-  flashcards: 0.15,
-  finalSet: 0.1,
+  drills: 0.35,
+  flashcards: 0,
+  finalSet: 0,
 } as const;
 
 function pct(done: number, total: number): number {
@@ -31,23 +37,29 @@ function pct(done: number, total: number): number {
 }
 
 export function computeProgress(state: BootcampState): ProgressBreakdown {
-  const lessonsTotal = LESSONS.length;
-  const lessonsDone = state.completedLessons.length;
+  const lessonsTotal = LECTURE_LESSON_IDS.size;
+  const lessonsDone = state.completedLessons.filter((id) => LECTURE_LESSON_IDS.has(id)).length;
 
-  const translatorTotal = TRANSLATOR_ITEMS.length;
-  const translatorDone = new Set(state.translatorAttempts.map((a) => a.stemNumber)).size;
+  // Only the answer choices a student can actually reach count toward progress.
+  const translatorIds = new Set(ANSWER_CHOICE_ITEMS.map((i) => i.id));
+  const translatorTotal = translatorIds.size;
+  const translatorDone = [...sourceExerciseIds(state.drillAttempts)].filter((id) => translatorIds.has(id)).length;
 
-  const gauntletTotal = ABSTRACT_CHOICES.length;
-  const gauntletDone = new Set(state.gauntletAttempts.map((a) => a.choiceId)).size;
+  const gauntletIds = new Set(APPLIED_SOURCE_QUESTIONS.map((item) => item.id));
+  const gauntletTotal = gauntletIds.size;
+  const gauntletDone = new Set(
+    state.completedDrills.filter((id) => gauntletIds.has(id)),
+  ).size;
 
-  const drillsTotal = DRILLS.length;
-  const drillsDone = Math.min(state.completedDrills.length, drillsTotal);
+  const drillIds = new Set(DRILLS.filter((item) => LECTURE_DRILL_IDS.has(item.id) && !gauntletIds.has(item.id)).map((item) => item.id));
+  const drillsTotal = drillIds.size;
+  const drillsDone = state.completedDrills.filter((id) => drillIds.has(id)).length;
 
   const flashcardsTotal = FLASHCARDS.length;
   const flashcardsDone = Object.values(state.cards).filter((c) => c.status === "mastered").length;
 
-  const finalSetTotal = 1;
-  const finalSetDone = state.finalSetScore ? 1 : 0;
+  const finalSetTotal = 0;
+  const finalSetDone = 0;
 
   const lessonsPct = pct(lessonsDone, lessonsTotal);
   const translatorPct = pct(translatorDone, translatorTotal);
@@ -92,43 +104,43 @@ export function recommendNext(p: ProgressBreakdown): {
   }> = [
     {
       key: "lessons",
-      label: "Guided lessons",
-      view: "lesson",
-      blurb: "Work through the next lesson to keep building the S + K method.",
+      label: "Lecture notes",
+      view: "dashboard",
+      blurb: "Return to the lecture notes.",
     },
     {
       key: "translator",
-      label: "Translator",
-      view: "lesson",
-      blurb: "Translate the next abstract question stem and see the walkthrough.",
-    },
-    {
-      key: "gauntlet",
-      label: "Decoding Gauntlet",
-      view: "lesson",
-      blurb: "Decode one more abstract answer choice and stress-test your translations.",
+      label: "The 15 answer choices",
+      view: "module",
+      blurb: "Return to the original answer choices and their breakdowns.",
     },
     {
       key: "drills",
       label: "Targeted drills",
       view: "drill",
-      blurb: "Pick a drill type and grind a few more reps under timed conditions.",
+      blurb: "Revisit the practice in the lecture.",
     },
     {
-      key: "flashcards",
-      label: "Flashcards",
-      view: "flashcards",
-      blurb: "Burn down the due-now queue before it builds up.",
-    },
-    {
-      key: "finalSet",
-      label: "Final timed set",
-      view: "timed_set",
-      blurb: "Run the timed simulation when the other surfaces are at 100%.",
+      key: "gauntlet",
+      label: "Put It Together",
+      view: "dashboard",
+      blurb: "Return to Module 7 when you are ready to put the course skills together.",
     },
   ];
 
   // Find the first candidate with pct < 100; if none, default to final set.
-  const next = candidates.find((c) => p[c.key].pct < 100) ?? candidates[candidates.length - 1];
+  const next = candidates.find((c) => p[c.key].pct < 100) ?? candidates[1];
   return { label: next.label, view: next.view, blurb: next.blurb };
+}
+
+/** Saved work, not a local completion button or reviewed breakdown, completes homework. */
+export function moduleRequirementsComplete(state: BootcampState, moduleId: ModuleId): boolean {
+  const mod = getModule(moduleId);
+  if (!mod || !state.completedLessons.includes(mod.noteLessonId)) return false;
+  const saved = moduleId === "m3" ? sourceExerciseIds(state.drillAttempts) : new Set(state.completedDrills);
+  return mod.drillIds.every((id) => saved.has(id));
+}
+
+export function completedModuleDays(state: BootcampState): number[] {
+  return MODULES.filter((mod) => moduleRequirementsComplete(state, mod.id)).map((mod) => mod.number);
 }

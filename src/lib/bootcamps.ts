@@ -42,6 +42,8 @@ export interface BootcampDef {
   legacyRoutes?: string[];
   /** Short, repeatable drills list under Quick Drills instead of Bootcamps. */
   group?: 'quick-drill';
+  /** Optional module list shown on the large Library preview card. */
+  outline?: string[];
   theme: BootcampTheme;
 }
 
@@ -175,9 +177,18 @@ export const BOOTCAMPS: BootcampDef[] = [
     id: 'abstraction',
     title: 'Abstract',
     description:
-      'Strip-down, decode, match-to-stimulus, method patterns, and trap catching.',
+      'Work through Modules 1–7: read each note and complete its drill. For all 15 answer choices in Module 3, write the requirements and your own example, then compare the breakdown.',
     route: '/topics/abstract',
-    stats: ['Chapter + 7 drills', 'Flashcards + decoder', 'Methods library'],
+    stats: ['7 modules', '15 written exercises', 'Notes + drills; quizzes optional'],
+    outline: [
+      'Why Abstract Is Hard',
+      'LSAT Words You Must Know',
+      'Break It Down',
+      'Match To The Stimulus',
+      'Spot The Method',
+      'Catch The Traps',
+      'Put It Together',
+    ],
     legacyRoutes: ['/bootcamp/abstraction'],
     // Neo-brutalist: electric yellow, paper bg, hard black borders (src/topics/abstract).
     theme: {

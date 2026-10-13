@@ -20,15 +20,16 @@ export function useBootcampProgress(opts: {
   bootcampId: string;
   completedDays: number[];
   totalDays: number;
+  enabled?: boolean;
 }) {
-  const { bootcampId, completedDays, totalDays } = opts;
+  const { bootcampId, completedDays, totalDays, enabled = true } = opts;
   const { user } = useAuth();
   const lastWriteRef = useRef<string>('');
 
   // Find the active classroom_items row for this student + bootcamp
-  const { data: itemId } = useQuery<string | null>({
+  const { data: item } = useQuery<{ id: string; metadata: Record<string, unknown> } | null>({
     queryKey: ['bootcamp-item', user?.id, bootcampId],
-    enabled: !!user && !!bootcampId,
+    enabled: enabled && !!user && !!bootcampId,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('classroom_items')
@@ -47,25 +48,27 @@ export function useBootcampProgress(opts: {
           bootcampId,
         ),
       );
-      return match?.id ?? null;
+      return match ? { id: match.id, metadata: (match.metadata_json as Record<string, unknown>) ?? {} } : null;
     },
     staleTime: 60_000,
   });
 
   useEffect(() => {
-    if (!itemId || totalDays <= 0) return;
-    const sorted = [...new Set(completedDays)].sort((a, b) => a - b);
+    if (!enabled || !user || !item || totalDays <= 0 || completedDays.length === 0) return;
+    const sorted = [...new Set(completedDays.filter((day) => Number.isInteger(day) && day >= 1 && day <= totalDays))].sort((a, b) => a - b);
     const percent = Math.round((sorted.length / totalDays) * 100);
     const allDone = sorted.length >= totalDays;
-    const signature = `${sorted.join(',')}|${allDone}`;
+    const signature = `${user.id}|${item.id}|${bootcampId}|${totalDays}|${sorted.join(',')}|${allDone}`;
     if (signature === lastWriteRef.current) return;
 
     const t = setTimeout(async () => {
       try {
         const patch: Parameters<typeof updateClassroomItem>[1] = {
           metadata_json: {
+            ...item.metadata,
             bootcamp_id: bootcampId,
             progress: {
+              ...((item.metadata.progress as Record<string, unknown>) ?? {}),
               completedDays: sorted,
               totalDays,
               percent,
@@ -79,7 +82,7 @@ export function useBootcampProgress(opts: {
         } else if (sorted.length > 0) {
           patch.status = 'in_progress';
         }
-        await updateClassroomItem(itemId, patch);
+        await updateClassroomItem(item.id, patch);
         lastWriteRef.current = signature;
       } catch (e) {
         console.warn('[useBootcampProgress] save failed', e);
@@ -87,5 +90,5 @@ export function useBootcampProgress(opts: {
     }, 1000);
 
     return () => clearTimeout(t);
-  }, [itemId, bootcampId, completedDays, totalDays]);
+  }, [item, user?.id, enabled, bootcampId, completedDays, totalDays]);
 }

@@ -1,9 +1,10 @@
-// 10 vocab quiz items for Module 2.
+// 14 vocab quiz items for Module 2. Every term tested here is taught in the
+// Module 2 note (LessonReader "words_to_know").
 //
 // Items 1-7 are the 7 entries from data/terms.ts (forward direction: see the
-// term, pick the LSAT meaning). Items 8-10 reverse direction: see the LSAT
-// meaning, pick the term. All content reframed from existing TERMS; no new
-// LSAT content authored.
+// term, pick the LSAT meaning). Items 8-11 add the terms from Joshua's
+// Advanced Parsing answer key (explanation, defend, supported premise) and
+// hypothesis. Items 12-14 run in reverse: see the meaning, pick the term.
 
 import { TERMS } from "./terms";
 
@@ -22,6 +23,52 @@ const FORWARD: TermQuizItem[] = TERMS.map((t) => ({
   correctOption: t.correctOption,
   explanation: t.explanation,
 }));
+
+const MORE_FORWARD: TermQuizItem[] = [
+  {
+    id: "tq_explanation",
+    prompt: 'On the LSAT, what does "explanation" mean?',
+    options: [
+      "Extra detail that clarifies a claim",
+      "A cause: what produced the effect",
+      "A summary of the argument",
+      "A definition of a key term",
+    ],
+    correctOption: 1,
+    explanation: "To explain something on the LSAT is to give its cause. It does not mean adding detail.",
+  },
+  {
+    id: "tq_hypothesis",
+    prompt: 'On the LSAT, what does "hypothesis" mean?',
+    options: [
+      "Any claim the author makes",
+      "A prediction about the future",
+      "A possible explanation: a proposed cause",
+      "A fact accepted by both sides",
+    ],
+    correctOption: 2,
+    explanation: "A hypothesis is a proposed cause, a guess about why something happened. Don't flatten it into \"claim.\"",
+  },
+  {
+    id: "tq_supported_premise",
+    prompt: 'What is another name for a "supported premise"?',
+    options: ["Main conclusion", "Intermediate conclusion", "Counterargument", "Background information"],
+    correctOption: 1,
+    explanation: "It gets support from one statement and gives support to another, so it is an intermediate conclusion.",
+  },
+  {
+    id: "tq_defend",
+    prompt: 'On the LSAT, what does it mean to "defend" a position?',
+    options: [
+      "To explain why someone holds it",
+      "To argue that it is right",
+      "To describe it neutrally",
+      "To admit it has weaknesses",
+    ],
+    correctOption: 1,
+    explanation: "Defending means arguing the position is right. Stating someone's motive for holding it is not a defense.",
+  },
+];
 
 // Reverse-direction items: pick the term that matches the LSAT-specific
 // meaning. Distractors are sibling terms from TERMS.
@@ -49,4 +96,4 @@ const REVERSE: TermQuizItem[] = [
   },
 ];
 
-export const TERM_QUIZ_ITEMS: TermQuizItem[] = [...FORWARD, ...REVERSE];
+export const TERM_QUIZ_ITEMS: TermQuizItem[] = [...FORWARD, ...MORE_FORWARD, ...REVERSE];

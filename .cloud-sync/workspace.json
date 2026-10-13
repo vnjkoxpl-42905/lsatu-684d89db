@@ -1,7 +1,7 @@
 {
   "repository": "vnjkoxpl-42905/lsatu-684d89db",
-  "source_head": "900662810be29705dd5dc1a0fd53a0cde1538994",
-  "source_branch": "claude/spot-the-relationship-fix",
+  "source_head": "916f195e36c55874d9c99b4931140600d03a51e3",
+  "source_branch": "codex/relationship-followup",
   "snapshot_branch": "codex/local-sync/laptop-le9a083p/lsatu-str",
   "encrypted_original_context": {
     "enabled": true,

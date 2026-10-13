@@ -359,3 +359,9 @@ export const ABSTRACT_CHOICES: AbstractChoice[] = [
     example: "They say all birds fly. But penguins are birds and they do not fly.",
   },
 ];
+
+// Module 7 quiz: answer choices the student has not decoded before. Items 1-7
+// are the Module 3 quiz and item 11 is the Module 3 worked example.
+export const GAUNTLET_QUIZ_ITEMS: AbstractChoice[] = ABSTRACT_CHOICES.filter(
+  (choice) => choice.id >= 8 && choice.id !== 11,
+);
