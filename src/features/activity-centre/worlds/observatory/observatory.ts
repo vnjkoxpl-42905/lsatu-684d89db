@@ -249,23 +249,13 @@ export function readAnswer(signal: Signal, response: string): Reading {
 
   const found = [...named].filter((k) => real.has(k));
   const invented = [...named].filter((k) => !real.has(k));
-  const missed = [...real].filter((k) => !named.has(k));
+  const drawn = matchedKinds(signal, response);
+  const missed = [...real].filter((k) => !drawn.includes(k));
 
   // Did they quote an actual indicator for each type they got right?
-  const quotedIndicators =
-    found.length > 0 &&
-    found.every((kind) =>
-      signal.relations
-        .filter((r) => r.kind === kind)
-        .some((r) =>
-          r.indicators.some((ind) => {
-            const bare = ind.replace(/[.,]+$/, "").split(/…|\.\.\./)[0].trim();
-            return bare.length > 1 && new RegExp(`\\b${escape(bare)}\\b`, "i").test(response);
-          }),
-        ),
-    );
+  const quotedIndicators = found.length > 0 && found.every((kind) => drawn.includes(kind));
 
-  return { found, invented, missed, quotedIndicators, drawn: found };
+  return { found, invented, missed, quotedIndicators, drawn };
 }
 
 /* ------------------------------------------------------------------ *
@@ -312,12 +302,35 @@ function quotes(indicator: string, answer: string): boolean {
  * needs judgment, and the Coach takes it. That is what makes it safe to trust:
  * it confirms the answer key rather than reasoning about the student.
  */
+function answerPairs(response: string) {
+  // Confirm each type/indicator pair locally. A bag of words cannot distinguish
+  // "causal, since; comparative, more evenly than" from the swapped labels.
+  // Unstructured prose stays with the Coach rather than being guessed correct.
+  return response.split(/[;\n]+|,\s*(?=(?:conditional|causal|causation|comparative|comparison|necessary condition|sufficient condition)\b)/i).filter((part) => part.trim()).map((part) => ({
+    named: namedKinds(part),
+    answer: normalize(part),
+  }));
+}
+
+function matchedKinds(signal: Signal, response: string): RelationKind[] {
+  const pairs = answerPairs(response);
+  return signal.relations.filter((r) => {
+    const claimed = pairs.filter((pair) => pair.named.has(r.kind));
+    return claimed.length > 0 && claimed.every((pair) =>
+      pair.named.size === 1 && r.indicators.some((indicator) => quotes(indicator, pair.answer)),
+    );
+  }).map((r) => r.kind);
+}
+
 export function matchesCredited(item: ActivityItem, response: string): boolean {
   const signal = parseSignal(item);
   if (!signal || !response.trim()) return false;
   const named = namedKinds(response);
   const real = new Set(signal.relations.map((r) => r.kind));
   if (named.size !== real.size || [...named].some((k) => !real.has(k))) return false;
-  const answer = normalize(response);
-  return signal.relations.every((r) => r.indicators.some((ind) => quotes(ind, answer)));
+  if (!answerPairs(response).every((pair) => pair.named.size === 1 && signal.relations.some((r) =>
+    pair.named.has(r.kind) && r.indicators.some((indicator) => quotes(indicator, pair.answer)),
+  ))) return false;
+  const matched = matchedKinds(signal, response);
+  return signal.relations.every((r) => matched.includes(r.kind));
 }

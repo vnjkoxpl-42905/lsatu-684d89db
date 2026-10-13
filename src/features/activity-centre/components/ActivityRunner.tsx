@@ -344,10 +344,11 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       response: responses[currentItem.order],
       answered: verdicts[currentItem.order] !== undefined,
       verdict: verdicts[currentItem.order],
+      completedItems: items.filter((item) => verdicts[item.order] === "correct"),
       mileposts: isGeneral ? undefined : mileposts,
       currentOrder: currentItem.order,
     });
-  }, [world, currentItem, responses, verdicts, mileposts, timedGeneral, isGeneral]);
+  }, [world, currentItem, items, responses, verdicts, mileposts, timedGeneral, isGeneral]);
 
   // Mirror progress into the Classroom feed row so a completed activity stops
   // showing "Start". Best-effort: the assignment is the source of truth.
