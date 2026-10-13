@@ -1,3 +1,5 @@
+import { bootcampIdFromRoute } from "@/lib/bootcamps";
+export const ABSTRACT_BOOTCAMP_ID = bootcampIdFromRoute("/topics/abstract");
 // Progress roll-up helpers used by the Dashboard and Sidebar to reduce
 // raw bootcamp state into per-surface percentages and an overall weighted
 // completion number. Centralised here so the same weights apply across
@@ -8,7 +10,7 @@ import { ANSWER_CHOICE_ITEMS } from "../data/answerChoiceDrill";
 import { APPLIED_SOURCE_QUESTIONS } from "../data/appliedSourceQuestions";
 import type { BootcampState } from "../types";
 import { sourceExerciseIds } from "./grading-status";
-import { LECTURE_DRILL_IDS, LECTURE_LESSON_IDS } from "../data/modules";
+import { LECTURE_DRILL_IDS, LECTURE_LESSON_IDS, MODULES, getModule, type ModuleId } from "../data/modules";
 
 export interface ProgressBreakdown {
   lessons: { done: number; total: number; pct: number };
@@ -129,4 +131,16 @@ export function recommendNext(p: ProgressBreakdown): {
   // Find the first candidate with pct < 100; if none, default to final set.
   const next = candidates.find((c) => p[c.key].pct < 100) ?? candidates[1];
   return { label: next.label, view: next.view, blurb: next.blurb };
+}
+
+/** Saved work, not a local completion button or reviewed breakdown, completes homework. */
+export function moduleRequirementsComplete(state: BootcampState, moduleId: ModuleId): boolean {
+  const mod = getModule(moduleId);
+  if (!mod || !state.completedLessons.includes(mod.noteLessonId)) return false;
+  const saved = moduleId === "m3" ? sourceExerciseIds(state.drillAttempts) : new Set(state.completedDrills);
+  return mod.drillIds.every((id) => saved.has(id));
+}
+
+export function completedModuleDays(state: BootcampState): number[] {
+  return MODULES.filter((mod) => moduleRequirementsComplete(state, mod.id)).map((mod) => mod.number);
 }

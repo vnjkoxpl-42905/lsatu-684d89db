@@ -1,3 +1,6 @@
+import { useAuth } from "@/contexts/AuthContext";
+import { useBootcampProgress } from "@/hooks/useBootcampProgress";
+import { ABSTRACT_BOOTCAMP_ID, completedModuleDays } from "./lib/progress";
 import { AppProvider, useApp } from "./store/AppContext";
 import { useEffect } from "react";
 import { LECTURE_MODULES } from "./data/modules";
@@ -46,6 +49,13 @@ export function ViewManager() {
   }
 }
 
+function HomeworkProgressSync() {
+  const { user } = useAuth();
+  const { bootcampState, loading, progressOwnerId } = useApp();
+  useBootcampProgress({ bootcampId: ABSTRACT_BOOTCAMP_ID, completedDays: completedModuleDays(bootcampState), totalDays: 7, enabled: !loading && !!user && progressOwnerId === user.id });
+  return null;
+}
+
 // AbstractBootcamp: LSATU mount component for /topics/abstract route.
 // Wraps the brutalist bootcamp in a `.topic-abstract` scope so the cream
 // paper background and 4px-border aesthetic stays scoped to this surface
@@ -54,6 +64,7 @@ export default function AbstractBootcamp() {
   return (
     <div className="topic-abstract h-screen w-full">
       <AppProvider>
+        <HomeworkProgressSync />
         <AppShell>
           <ViewManager />
         </AppShell>

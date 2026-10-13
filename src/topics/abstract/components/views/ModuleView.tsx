@@ -1638,7 +1638,7 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
 // ============ Complete ============
 
 function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContinue: () => void }) {
-  const { bootcampState, openModule } = useApp();
+  const { bootcampState, openModule, setCurrentView } = useApp();
   const mod = getModule(moduleId)!;
   const row = bootcampState.moduleProgress[moduleId];
   const aced = Boolean(mod.quizSource) && bootcampState.aceBadges.includes(moduleId);
@@ -1719,7 +1719,7 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
       ) : (
         <button
           type="button"
-          onClick={onContinue}
+          onClick={() => setCurrentView("dashboard")}
           className="brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
         >
           Back to Dashboard <ArrowRight className="w-4 h-4" />

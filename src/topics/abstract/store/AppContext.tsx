@@ -22,9 +22,10 @@ import type {
   TranslatorAttempt,
   ViewState,
 } from "../types";
-import { type ModuleId, getModule } from "../data/modules";
+import { MODULES, type ModuleId, getModule } from "../data/modules";
+import { moduleRequirementsComplete } from "../lib/progress";
 import { computeMastery } from "../lib/mastery";
-import { isUngradedAttempt, sourceExerciseIds } from "../lib/grading-status";
+import { isUngradedAttempt } from "../lib/grading-status";
 import {
   fetchDrillAttempts,
   fetchGauntletAttempts,
@@ -110,7 +111,11 @@ const defaultState: BootcampState = {
 
 const MODULE_LOCAL_KEY = "lsatu_abstract_v3_modules";
 
-function loadModuleCache(): {
+export function moduleCacheKey(ownerId: string | null): string {
+  return `${MODULE_LOCAL_KEY}:${ownerId ?? "preview"}`;
+}
+
+function loadModuleCache(ownerId: string | null): {
   moduleProgress: Record<string, ModuleProgressRow>;
   xpTotal: number;
   dailyStreak: number;
@@ -118,7 +123,7 @@ function loadModuleCache(): {
   aceBadges: string[];
 } {
   try {
-    const raw = localStorage.getItem(MODULE_LOCAL_KEY);
+    const raw = localStorage.getItem(moduleCacheKey(ownerId));
     if (raw) return JSON.parse(raw);
   } catch (e) {
     console.error("Failed to load Abstract v3 module cache", e);
@@ -126,10 +131,10 @@ function loadModuleCache(): {
   return { moduleProgress: {}, xpTotal: 0, dailyStreak: 0, aceBadges: [] };
 }
 
-function persistModuleCache(state: BootcampState) {
+function persistModuleCache(state: BootcampState, ownerId: string | null) {
   try {
     mirroredSetItem(
-      MODULE_LOCAL_KEY,
+      moduleCacheKey(ownerId),
       JSON.stringify({
         moduleProgress: state.moduleProgress,
         xpTotal: state.xpTotal,
@@ -152,9 +157,9 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 // through that hook.
 const CARDS_LOCAL_KEY = "lsatu_abstract_v2_cards";
 
-function loadCardsCache(): Record<string, CardReview> {
+function loadCardsCache(ownerId: string | null): Record<string, CardReview> {
   try {
-    const raw = localStorage.getItem(CARDS_LOCAL_KEY);
+    const raw = localStorage.getItem(`${CARDS_LOCAL_KEY}:${ownerId ?? "preview"}`);
     if (raw) return JSON.parse(raw);
   } catch (e) {
     console.error("Failed to load Abstract v2 cards cache", e);
@@ -162,9 +167,9 @@ function loadCardsCache(): Record<string, CardReview> {
   return {};
 }
 
-function persistCardsCache(cards: Record<string, CardReview>) {
+function persistCardsCache(cards: Record<string, CardReview>, ownerId: string | null) {
   try {
-    mirroredSetItem(CARDS_LOCAL_KEY, JSON.stringify(cards));
+    mirroredSetItem(`${CARDS_LOCAL_KEY}:${ownerId ?? "preview"}`, JSON.stringify(cards));
   } catch (e) {
     console.error("Failed to persist Abstract v2 cards cache", e);
   }
@@ -200,10 +205,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, []);
   const [bootcampState, setBootcampState] = useState<BootcampState>(() => {
-    const moduleCache = loadModuleCache();
+    const moduleCache = loadModuleCache(user?.id ?? null);
     return {
       ...defaultState,
-      cards: loadCardsCache(),
+      cards: loadCardsCache(user?.id ?? null),
       moduleProgress: moduleCache.moduleProgress,
       xpTotal: moduleCache.xpTotal,
       dailyStreak: moduleCache.dailyStreak,
@@ -224,15 +229,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Persist the flashcard cache as a side effect of state changes, so setState
   // updaters can stay pure (no I/O inside them).
   useEffect(() => {
-    persistCardsCache(bootcampState.cards);
-  }, [bootcampState.cards]);
+    if (!loading && progressOwnerId === (user?.id ?? null)) {
+      persistCardsCache(bootcampState.cards, progressOwnerId);
+      persistModuleCache(bootcampState, progressOwnerId);
+    }
+  }, [bootcampState, loading, progressOwnerId, user?.id]);
 
   // Hydrate from Supabase on mount whenever we have an authed user.
   useEffect(() => {
     if (!authReady) return;
     setLoading(true);
     setProgressOwnerId(user?.id ?? null);
-    setBootcampState((prev) => ({ ...prev, completedDrills: [], drillAttempts: [], translatorAttempts: [], drillsStats: {} }));
+    const cache = loadModuleCache(user?.id ?? null);
+    setBootcampState({ ...defaultState, ...cache, cards: loadCardsCache(user?.id ?? null) });
+    setCurrentView("dashboard");
+    setCurrentModuleId(null);
     if (!user) {
       setLoading(false);
       return;
@@ -262,6 +273,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setBootcampState((prev) => ({
           ...prev,
           completedLessons: lessons.map((r) => r.lessonId),
+          moduleProgress: Object.fromEntries(MODULES.map((mod) => [mod.id, {
+            ...(prev.moduleProgress[mod.id] ?? { moduleId: mod.id, quizScore: 0, quizTotal: 0, quizStreakHigh: 0, aced: false, masteryLevel: "none" }),
+            noteComplete: lessons.some((lesson) => lesson.lessonId === mod.noteLessonId),
+            drillComplete: mod.drillIds.every((id) => drills.some((row) => row.drill_id === id && (mod.id !== "m3" || row.trap_tag === "source_exercise_ungraded"))),
+          }])),
           completedDrills: completedDrillIds,
           drillAttempts: drills.map((r) => ({
             drillId: r.drill_id,
@@ -297,6 +313,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             : undefined,
         }));
       } catch (err) {
+        if (!cancelled) setProgressOwnerId(null);
         if (isSessionDeadError(err)) {
           toast.error("Your session expired. Please sign in again.");
         } else {
@@ -316,13 +333,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const markLessonComplete = useCallback(
     async (lessonId: string): Promise<BootcampMutationResult> => {
-      setBootcampState((prev) =>
-        prev.completedLessons.includes(lessonId)
-          ? prev
-          : { ...prev, completedLessons: [...prev.completedLessons, lessonId] },
+      const applyLocal = () => setBootcampState((prev) =>
+        prev.completedLessons.includes(lessonId) ? prev : { ...prev, completedLessons: [...prev.completedLessons, lessonId] },
       );
-
-      if (!user) return { ok: true };
+      if (!user) { applyLocal(); return { ok: true }; }
 
       const writeRes = await upsertLessonProgress(user.id, lessonId);
       if (!writeRes.ok) {
@@ -336,6 +350,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return writeRes;
       }
 
+      if (activeUserIdRef.current !== user.id) return { ok: true };
+      applyLocal();
       // Analytics mirror so the teacher Bootcamps dashboard sees this lesson.
       const mirror = await recordChapterProgress(user.id, TOPIC_TAG, lessonId);
       if (!mirror.ok) {
@@ -378,9 +394,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         };
       });
 
-      const sourceWork = trapTag === "source_exercise_ungraded" || trapTag === "source_breakdown_reviewed";
       if (!user) { applyLocal(); return { ok: true }; }
-      if (!sourceWork) applyLocal();
+
 
       const res = await insertDrillAttempt(user.id, {
         drillId,
@@ -400,7 +415,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           });
         }
       }
-      if (res.ok && sourceWork && activeUserIdRef.current === user.id) applyLocal();
+      if (res.ok && activeUserIdRef.current === user.id) applyLocal();
       return res;
     },
     [user],
@@ -621,7 +636,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         };
         const nextProgress = { ...prev.moduleProgress, [moduleId]: merged };
         const nextState: BootcampState = { ...prev, moduleProgress: nextProgress };
-        persistModuleCache(nextState);
+
         return nextState;
       });
     },
@@ -632,7 +647,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (!amount) return;
     setBootcampState((prev) => {
       const next: BootcampState = { ...prev, xpTotal: prev.xpTotal + amount };
-      persistModuleCache(next);
+
       return next;
     });
   }, []);
@@ -648,7 +663,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           prev.dailyStreakLastActive === yesterday ? prev.dailyStreak + 1 : 1,
         dailyStreakLastActive: today,
       };
-      persistModuleCache(next);
+
       return next;
     });
   }, []);
@@ -657,14 +672,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
     async (moduleId: ModuleId): Promise<BootcampMutationResult> => {
       const mod = getModule(moduleId);
       if (!mod) return { ok: false, error: new Error("unknown module") };
+      const result = await markLessonComplete(mod.noteLessonId);
+      if (!result.ok) return result;
+      if (user && activeUserIdRef.current !== user.id) return result;
       writeModuleRow(moduleId, { noteComplete: true });
       addXp(10);
       bumpStreakActivity();
       // Persist via existing lesson-complete pathway so chapter_progress
       // mirror stays consistent. {ok,error} returned upstream.
-      return await markLessonComplete(mod.noteLessonId);
+      return result;
     },
-    [writeModuleRow, addXp, bumpStreakActivity, markLessonComplete],
+    [writeModuleRow, addXp, bumpStreakActivity, markLessonComplete, user],
   );
 
   const recordQuizScore = useCallback(
@@ -744,7 +762,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           moduleProgress: nextProgress,
           aceBadges: nextAceBadges,
         };
-        persistModuleCache(next);
+
         return next;
       });
       bumpStreakActivity();
@@ -774,10 +792,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const isModuleComplete = useCallback(
     (moduleId: ModuleId): boolean => {
-      const row = bootcampState.moduleProgress[moduleId];
-      return Boolean(row?.drillComplete) && (moduleId === "m3" ? getModule("m3")!.drillIds.every((id) => sourceExerciseIds(bootcampState.drillAttempts).has(id)) : ["m5", "m6", "m7"].includes(moduleId) ? getModule(moduleId)!.drillIds.every(id => bootcampState.completedDrills.includes(id)) : true);
+      return moduleRequirementsComplete(bootcampState, moduleId);
     },
-    [bootcampState.moduleProgress, bootcampState.drillAttempts],
+    [bootcampState],
   );
 
   const openModule = useCallback((id: ModuleId) => {
