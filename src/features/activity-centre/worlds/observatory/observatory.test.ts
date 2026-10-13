@@ -32,13 +32,25 @@ describe("parsing the bank", () => {
     }
   });
 
-  it("agrees with the count the bank declares, on all but the one it got wrong", () => {
-    const agree = signals.filter((s) => s.declared === s.relations.length);
-    // Item 40 declares four relationships and lists three. The parse follows
-    // the credited answer, because that is what a student is graded against.
-    expect(agree.length).toBe(47);
-    expect(byOrder(40).declared).toBe(4);
-    expect(byOrder(40).relations.length).toBe(3);
+  it("agrees with the count the bank declares on every item", () => {
+    // Item 40 used to declare four and list three, with a teaching note pasted
+    // into its answer key. Both were fixed in the content; this holds the line.
+    for (const s of signals) expect(s.declared, `item ${s.order}`).toBe(s.relations.length);
+  });
+
+  it("keeps notes and stray full stops out of every answer key", () => {
+    for (const item of drill.items) {
+      for (const answer of item.credited_answers) {
+        expect(answer, `item ${item.order}`).not.toMatch(/[A-Za-z]\."/);
+        expect(answer.split(";").every((g) => /^\s*(conditional|causal|comparative)\s*,/i.test(g)), `item ${item.order}`).toBe(true);
+      }
+    }
+  });
+
+  it("shows students no production notes in the explanations", () => {
+    for (const item of drill.items) {
+      expect(item.explanation, `item ${item.order}`).not.toMatch(/\bseed\b|\bPair [A-D]\b|\bthe Coach\b|\bhis own\b|\bin the bank\b|\bstatement\b/i);
+    }
   });
 
   it("reads a rung off every item", () => {
@@ -143,6 +155,46 @@ describe("reading the answer", () => {
     const r = readAnswer(multi, "conditional and comparative");
     expect(r.drawn).toEqual(["conditional"]);
     expect(r.invented).toEqual(["comparative"]);
+  });
+
+  /**
+   * The dial says "Comparison", so students write it. The reader used to know
+   * only "comparative" and told a right answer its figure was still undrawn.
+   */
+  it("reads the names students actually use for each type", () => {
+    const comparative = byOrder(9);
+    for (const answer of ["comparison, louder than", "Comparisons: louder than", "comparative, louder than"]) {
+      expect(readAnswer(comparative, answer).missed, answer).toEqual([]);
+    }
+    const causal = byOrder(6);
+    for (const answer of ["causation: destroyed", "cause and effect, destroyed", "causal, destroyed"]) {
+      expect(readAnswer(causal, answer).missed, answer).toEqual([]);
+    }
+    const conditional = byOrder(1);
+    for (const answer of ["Necessary condition: only if", "if-then, only if", "if/then rule, only if", "a requirement, only if"]) {
+      expect(readAnswer(conditional, answer).missed, answer).toEqual([]);
+    }
+  });
+
+  it("does not hear 'because' as naming a cause", () => {
+    expect(readAnswer(byOrder(1), "conditional, because of only if").invented).toEqual([]);
+  });
+
+  /**
+   * Ruling a type out is the discrimination this drill trains. Counting the
+   * ruled-out word as a claim drew a ghost for the mistake the student avoided.
+   */
+  it("does not count a type the student explicitly ruled out", () => {
+    expect(readAnswer(byOrder(15), "conditional, requires (not causal)").invented).toEqual([]);
+    expect(readAnswer(byOrder(1), "Conditional. It isn't causal. Only if").invented).toEqual([]);
+    expect(readAnswer(byOrder(22), "causal, yield. Not a comparison").invented).toEqual([]);
+    expect(readAnswer(byOrder(22), "causal, yield, rather than comparative").invented).toEqual([]);
+  });
+
+  it("still counts a type named after a ruled-out one", () => {
+    const r = readAnswer(byOrder(1), "not causal, conditional: only if");
+    expect(r.found).toEqual(["conditional"]);
+    expect(r.invented).toEqual([]);
   });
 
   it("finds nothing in an answer that names no type", () => {

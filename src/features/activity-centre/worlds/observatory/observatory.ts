@@ -13,10 +13,10 @@
 //   a quote carrying a trailing period ("lags."), a split comparative
 //   ("more … than"), and a separated pair ("stronger than" appearing as
 //   "stronger ... than").
-// - The authored relationship count agrees with the parsed group count on 47 of
-//   48. Item 40 declares four and lists three; that is an authoring
-//   inconsistency, flagged rather than papered over, and the parse follows the
-//   credited answer because that is what the student is graded against.
+// - The authored relationship count agrees with the parsed group count on all
+//   48. Item 40 once declared four and listed three; the content was fixed, and
+//   the parse still follows the credited answer, because that is what the
+//   student is graded against.
 //
 // What this module does NOT do is decide which words are jargon. The Rung 4
 // dimming is still an open question on the drill's README and would need a
@@ -203,11 +203,37 @@ export interface Reading {
   drawn: RelationKind[];
 }
 
+/**
+ * The words a student uses to name each type. The drill's own dial says
+ * "Comparison", so that has to count; so do the textbook names a student brings
+ * from elsewhere ("necessary condition", "if-then", "cause and effect").
+ */
 const KIND_WORDS: [RegExp, RelationKind][] = [
-  [/\bconditional(?:ly)?\b/i, "conditional"],
-  [/\bcausal(?:ity|ly)?\b|\bcause[sd]?\b/i, "causal"],
-  [/\bcomparat(?:ive|ison)\b|\bcompar(?:e|ing|ed)\b/i, "comparative"],
+  [
+    /\bconditional(?:s|ly)?\b|\b(?:necessary|sufficient)\s+condition\b|\bif\s*[-/]?\s*then\b|\brequirement\b/gi,
+    "conditional",
+  ],
+  [/\bcausal(?:ity|ly)?\b|\bcausation\b|\bcause[sd]?\b/gi, "causal"],
+  [/\bcomparat(?:ive|ively)\b|\bcomparisons?\b|\bcompar(?:e|es|ing|ed)\b/gi, "comparative"],
 ];
+
+/**
+ * "Conditional, requires (not causal)" rules causal OUT. Counting that as a
+ * claim of causation drew a ghost for the exact mistake the student had just
+ * avoided, so a type word sitting right after a negation is not a claim.
+ */
+const NEGATED_BEFORE = /\b(?:not|no|never|isn't|isnt|is\s+not|rather\s+than|instead\s+of|neither|nor)\s+(?:a\s+|an\s+|the\s+)?$/i;
+
+function namedKinds(response: string): Set<RelationKind> {
+  const named = new Set<RelationKind>();
+  for (const [re, kind] of KIND_WORDS) {
+    for (const m of response.matchAll(re)) {
+      const before = response.slice(Math.max(0, (m.index ?? 0) - 24), m.index);
+      if (!NEGATED_BEFORE.test(before)) named.add(kind);
+    }
+  }
+  return named;
+}
 
 /**
  * Read a free-text answer in the drill's game format ("conditional, only if").
@@ -217,8 +243,7 @@ const KIND_WORDS: [RegExp, RelationKind][] = [
  * world should be able to show a figure drawn from the wrong anchor words.
  */
 export function readAnswer(signal: Signal, response: string): Reading {
-  const named = new Set<RelationKind>();
-  for (const [re, kind] of KIND_WORDS) if (re.test(response)) named.add(kind);
+  const named = namedKinds(response);
 
   const real = new Set(signal.relations.map((r) => r.kind));
 

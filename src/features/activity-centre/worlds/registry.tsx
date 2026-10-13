@@ -77,6 +77,13 @@ export interface WorldRenderArgs {
   response?: string;
   /** Whether the run has judged this item yet. Drives the world's phase. */
   answered: boolean;
+  /**
+   * The verdict the item resolved with, once it has. A world that reads the
+   * answer for itself still has to defer to this: its reader is a quick
+   * pattern match, and a student the Coach marked correct must not be told a
+   * relationship is "still undrawn" because they phrased the type differently.
+   */
+  verdict?: Verdict | null;
   /** The whole run's progress. Worlds that draw a rail read it; the rest ignore it. */
   mileposts?: RunMilepost[];
   /** Which milepost is the item on screen. */
@@ -223,10 +230,13 @@ const WORLDS: WorldBinding[] = [
     accent: "235 48% 56%",
     carriesPrompt: true,
     Entrance: ObservatoryEntrance,
-    render: ({ item, response, answered }) => {
+    render: ({ item, response, answered, verdict }) => {
       const signal = parseSignal(item);
       if (!signal) return null;
-      const reading = answered && response ? readAnswer(signal, response) : null;
+      // A correct verdict draws the whole figure. The reader only decides what
+      // to draw when the answer fell short, which is where it is useful.
+      const reading =
+        answered && response && verdict !== "correct" ? readAnswer(signal, response) : null;
       return <ObservatoryStage signal={signal} phase={answered ? "drawn" : "arrival"} reading={reading} />;
     },
   },

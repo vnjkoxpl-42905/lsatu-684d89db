@@ -323,14 +323,13 @@ g[data-kind="causal"] .ob-arrowhead {
   }
 }
 
-/* The balance beam tips toward the greater term. */
+/* The balance beam stays level. It used to tip, but it tipped the same way on
+   every item, including "as strong as", and an SVG transform-origin of
+   "center" is the centre of the whole field, so the tip swung the beam off its
+   own words. The figure does not know which term is greater; it says only that
+   two things are weighed. */
 .ob-beam {
-  transform-origin: center;
-  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.ob-beam[data-tipped="true"] {
-  transform: rotate(-6deg);
+  transform-box: fill-box;
 }
 
 /* ---------- The three seals ---------- */
