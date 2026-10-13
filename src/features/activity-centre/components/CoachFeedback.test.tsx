@@ -78,3 +78,20 @@ describe("what the credited answers after the first are called", () => {
     expect(screen.queryByText(/Contrapositive:/)).not.toBeInTheDocument();
   });
 });
+
+describe("emphasis in the explanation", () => {
+  /**
+   * Explanations are authored with *emphasis* the same way prompts are. The
+   * panel printed them raw, so a student read "the closing *makes* the rise
+   * happen", asterisks and all.
+   */
+  it("renders *emphasis* as emphasis rather than asterisks", () => {
+    show({
+      resolved: true,
+      item: { ...item, explanation: "Same facts, and now it claims the closing *makes* the rise happen." },
+    });
+    const em = screen.getByText("makes");
+    expect(em.tagName).toBe("EM");
+    expect(screen.queryByText(/\*makes\*/)).not.toBeInTheDocument();
+  });
+});

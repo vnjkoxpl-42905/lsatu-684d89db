@@ -343,6 +343,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       item: currentItem,
       response: responses[currentItem.order],
       answered: verdicts[currentItem.order] !== undefined,
+      verdict: verdicts[currentItem.order],
       mileposts: isGeneral ? undefined : mileposts,
       currentOrder: currentItem.order,
     });
