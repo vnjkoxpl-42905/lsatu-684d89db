@@ -21,7 +21,7 @@ describe("tokenize", () => {
     expect(t[0].hasPunctuation).toBe(false);
   });
   it("treats a closing quote or bracket after a full stop as a sentence end", () => {
-    expect(tokenize("He left.)")[0].endsSentence).toBe(true);
+    expect(tokenize("He left.)")[1].endsSentence).toBe(true);
     expect(tokenize("home.’")[0].endsSentence).toBe(true);
   });
 });
