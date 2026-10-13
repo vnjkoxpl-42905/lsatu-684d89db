@@ -9,6 +9,7 @@ import {
   MessageSquare,
   PencilRuler,
   Sparkles,
+  Wrench,
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -39,6 +40,7 @@ const ROOMS: Room[] = [
   { to: '/teacher/library', label: 'Library', Icon: Library },
   { to: '/teacher/assistant', label: 'Teaching Assistant', Icon: Sparkles },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
+  { to: '/teacher/tools', label: 'Tools', Icon: Wrench },
 ];
 
 /**

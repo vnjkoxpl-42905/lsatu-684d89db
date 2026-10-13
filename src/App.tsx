@@ -127,6 +127,11 @@ const TeacherWorkspaceShell = safeLazy(() => import("./pages/teacher/shell/Teach
 const DeskTodaySurface = safeLazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
 const TeacherPayments = safeLazy(() => import("./pages/teacher/shell/TeacherPayments"));
 const TeacherDevIndex = safeLazy(() => import("./pages/teacher/shell/TeacherDevIndex"));
+const TeacherToolsRoom = safeLazy(() => import("./pages/teacher/tools/TeacherToolsRoom"));
+const ReadingCenterLibrary = safeLazy(() => import("./features/reading-center/pages/LibraryPage"));
+const ReadingCenterReader = safeLazy(() => import("./features/reading-center/pages/ReaderPage"));
+const ReadingCenterStats = safeLazy(() => import("./features/reading-center/pages/StatsPage"));
+const ReadingCenterAdmin = safeLazy(() => import("./features/reading-center/pages/AdminPassagesPage"));
 const DeskPeopleSurface = safeLazy(() => import("./pages/teacher/desk/DeskPeopleSurface"));
 const DeskLibrarySurface = safeLazy(() => import("./pages/teacher/desk/DeskLibrarySurface"));
 const TeacherInboxRoom = safeLazy(() => import("./pages/teacher/inbox/TeacherInboxRoom"));
@@ -341,6 +346,16 @@ const App = () => {
               <ProtectedRoute requireAdmin>
                 <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
                   <TeacherSmartboard />
+                </React.Suspense>
+              </ProtectedRoute>
+            } />
+            {/* The Reading Center reader takes the whole viewport, like the
+                whiteboard; the library, stats and passage manager render
+                inside the workspace shell under /teacher/tools. */}
+            <Route path="/teacher/tools/reading-center/read/:slug" element={
+              <ProtectedRoute requireAdmin>
+                <React.Suspense fallback={<div className="min-h-screen" />}>
+                  <ReadingCenterReader />
                 </React.Suspense>
               </ProtectedRoute>
             } />
@@ -864,6 +879,19 @@ const App = () => {
                         <React.Suspense fallback={<div />}>
                           <TeacherAssistant />
                         </React.Suspense>
+                      } />
+                      {/* Tools: standalone utilities. Reading Center ships admin-only. */}
+                      <Route path="tools" element={
+                        <React.Suspense fallback={<div />}><TeacherToolsRoom /></React.Suspense>
+                      } />
+                      <Route path="tools/reading-center" element={
+                        <React.Suspense fallback={<div />}><ReadingCenterLibrary /></React.Suspense>
+                      } />
+                      <Route path="tools/reading-center/stats" element={
+                        <React.Suspense fallback={<div />}><ReadingCenterStats /></React.Suspense>
+                      } />
+                      <Route path="tools/reading-center/manage" element={
+                        <React.Suspense fallback={<div />}><ReadingCenterAdmin /></React.Suspense>
                       } />
                       <Route path="dev" element={
                         <React.Suspense fallback={<div />}>
