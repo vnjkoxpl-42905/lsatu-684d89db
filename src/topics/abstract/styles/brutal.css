@@ -13,17 +13,31 @@
    * 80deg hue, never pure black or pure white, per the project-wide
    * tinted-neutral rule. Accent colors keep their saturated brutalist
    * character but tighten chroma at the lightness extremes. */
-  --brutal-yellow: oklch(0.94 0.20 100);
-  --brutal-cyan: oklch(0.90 0.16 200);
-  --brutal-pink: oklch(0.72 0.30 340);
-  --brutal-green: oklch(0.88 0.27 145);
-  --brutal-red: oklch(0.65 0.24 25);
-  --brutal-bg: oklch(0.96 0.005 80);
-  --brutal-paper: oklch(0.99 0.003 80);
-  --brutal-ink: oklch(0.14 0.012 80);
-  --brutal-ink-soft: oklch(0.40 0.010 80);
-  --brutal-ink-faint: oklch(0.55 0.008 80);
-  --brutal-ink-trace: oklch(0.78 0.005 80);
+  /* 2026-10-13: Amber Slate palette, from the 21st.dev theme of that
+   * name (picked by Joshua). Slate-grey page, white cards, charcoal ink,
+   * burnt-orange accent, steel-blue highlight. Token names keep their old
+   * "brutal" names so the components need no rewrite:
+   * yellow = steel-blue highlight, ink = charcoal, paper = white.
+   * --brutal-accent-strong darkens the theme orange (#df6035, 3.6:1 on
+   * white) to #c24a22 (4.9:1) wherever white text sits on it. */
+  --brutal-yellow: #d6e4f0;
+  --brutal-cyan: #e3e9ee;
+  --brutal-pink: #fbe4da;
+  --brutal-green: #d5eedd;
+  --brutal-red: #f6d6d0;
+  --brutal-bg: #e8ebed;
+  --brutal-paper: #ffffff;
+  --brutal-ink: #333333;
+  --brutal-ink-soft: #5a636b;
+  --brutal-ink-faint: #7a838b;
+  --brutal-ink-trace: #cccccc;
+  --brutal-accent: #df6035;
+  --brutal-accent-strong: #c24a22;
+  --brutal-highlight-edge: #9fb6cc;
+  --brutal-radius: 8px;
+  --brutal-line: #cccccc;
+  --brutal-soft-shadow: 0 1px 2px rgb(51 51 51 / 0.06), 0 2px 8px rgb(51 51 51 / 0.06);
+  --brutal-soft-shadow-lg: 0 10px 28px rgb(51 51 51 / 0.10);
 
   /* Source-compat aliases so the new-bootcamp inline styles
    * (style={{ backgroundColor: 'var(--color-brutal-yellow)' }}) keep
@@ -38,7 +52,8 @@
 
   background-color: var(--brutal-bg);
   color: var(--brutal-ink);
-  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 .topic-abstract h1,
@@ -47,9 +62,9 @@
 .topic-abstract h4,
 .topic-abstract h5,
 .topic-abstract h6 {
-  font-family: "Space Grotesk", "Inter", sans-serif;
-  font-weight: 900;
-  letter-spacing: -0.025em;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.015em;
 }
 
 .topic-abstract ::selection {
@@ -336,4 +351,89 @@
 .topic-abstract .lesson-cased li {
   margin-bottom: 0.5rem;
   font-weight: 400;
+}
+
+/* ── Intro to LR look (2026-10-13) ────────────────────────────────────
+ * Joshua asked for Abstract to match Intro to LR instead of the yellow
+ * neo-brutalist style. Rather than rewrite ~1,500 class names, this layer
+ * re-skins them inside .topic-abstract: hairline borders, soft shadows,
+ * 2px radius, calmer type. Specificity (.topic-abstract .x) beats the
+ * single-class Tailwind utilities it overrides. */
+.topic-abstract .border-4,
+.topic-abstract .border-2,
+.topic-abstract .border-\[3px\] { border-width: 1px; }
+.topic-abstract .border-b-4, .topic-abstract .border-b-2 { border-bottom-width: 1px; }
+.topic-abstract .border-t-4, .topic-abstract .border-t-2 { border-top-width: 1px; }
+.topic-abstract .border-r-4, .topic-abstract .border-r-2 { border-right-width: 1px; }
+.topic-abstract .border-l-4, .topic-abstract .border-l-2 { border-left-width: 1px; }
+.topic-abstract .border-brutal-ink { border-color: var(--brutal-line); }
+
+.topic-abstract .brutal-shadow,
+.topic-abstract .brutal-shadow-sm,
+.topic-abstract .brutal-btn { box-shadow: var(--brutal-soft-shadow); }
+.topic-abstract .brutal-shadow-lg { box-shadow: var(--brutal-soft-shadow-lg); }
+.topic-abstract .brutal-shadow-hover:hover,
+.topic-abstract .brutal-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--brutal-soft-shadow-lg);
+}
+.topic-abstract .brutal-shadow-active:active,
+.topic-abstract .brutal-btn:active:not(:disabled) {
+  transform: none;
+  box-shadow: var(--brutal-soft-shadow);
+}
+.topic-abstract .brutal-btn {
+  border: 1px solid var(--brutal-line);
+  font-weight: 600;
+  border-radius: var(--brutal-radius);
+}
+.topic-abstract .brutal-grid,
+.topic-abstract .brutal-dotted { background-image: none; }
+
+.topic-abstract .border-brutal-ink,
+.topic-abstract .brutal-btn,
+.topic-abstract .brutal-shadow,
+.topic-abstract .brutal-shadow-lg { border-radius: var(--brutal-radius); }
+
+/* Type: no shouting. Black weight drops to bold, italics come off
+ * headline-sized text, uppercase stays only on small labels. */
+.topic-abstract .font-black { font-weight: 700; }
+.topic-abstract .text-lg.uppercase,
+.topic-abstract .text-xl.uppercase,
+.topic-abstract .text-2xl.uppercase,
+.topic-abstract .text-3xl.uppercase,
+.topic-abstract .text-4xl.uppercase,
+.topic-abstract .text-5xl.uppercase,
+.topic-abstract .text-6xl.uppercase,
+.topic-abstract h1.uppercase,
+.topic-abstract h2.uppercase,
+.topic-abstract h3.uppercase { text-transform: none; }
+.topic-abstract h1.italic, .topic-abstract h2.italic, .topic-abstract h3.italic,
+.topic-abstract .text-2xl.italic, .topic-abstract .text-3xl.italic,
+.topic-abstract .text-4xl.italic, .topic-abstract .text-5xl.italic { font-style: normal; }
+.topic-abstract .uppercase { letter-spacing: 0.06em; }
+
+.topic-abstract ::selection { background: var(--brutal-yellow); color: var(--brutal-ink); }
+.topic-abstract :focus-visible {
+  outline: 2px solid var(--brutal-accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.topic-abstract .custom-scrollbar::-webkit-scrollbar-track { border-left: 1px solid var(--brutal-line); }
+.topic-abstract .custom-scrollbar::-webkit-scrollbar-thumb { background-color: var(--brutal-ink-trace); }
+
+/* Capitals only on tiny labels (text-xs and the bracketed 9-11px sizes). */
+.topic-abstract .uppercase:not(.text-xs):not([class*="text-[9"]):not([class*="text-[10"]):not([class*="text-[11"]) {
+  text-transform: none;
+  letter-spacing: -0.005em;
+}
+
+/* Highlight blocks get a steel-blue edge so they read as "active". */
+.topic-abstract .bg-brutal-yellow.border-brutal-ink { border-color: var(--brutal-highlight-edge); }
+
+/* Solid charcoal fills with white text are the primary actions and
+ * selected states; Amber Slate paints those burnt orange. */
+.topic-abstract .bg-brutal-ink.text-brutal-paper {
+  background-color: var(--brutal-accent-strong);
+  border-color: var(--brutal-accent-strong);
 }
