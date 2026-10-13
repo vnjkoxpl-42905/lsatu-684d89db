@@ -184,7 +184,7 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
                 ) : (
                   <ProgressRing pct={pct} />
                 )}
-                <span className="flex-1 text-left truncate">
+                <span className="flex-1 text-left leading-snug">
                   M{m.number}. {m.name}
                 </span>
                 {mastery !== "none" && (

@@ -1,17 +1,15 @@
-// 10 "Spot the Trap" quiz items for Module 6.
+// 10 "What kind of trap is this?" quiz items for Module 6.
 //
-// Each item presents a wrong-answer choice (lifted from a real drill in
-// data/drills.ts: a wrong option whose explanation describes the trap), then
-// asks the student to label the trap type. The four trap-type labels come
-// directly from the trapTag taxonomy already documented at the top of
-// data/drills.ts. The student picks from: wrong_role, wrong_method,
-// structural_mismatch, attractive_language.
+// Each item shows a stimulus and one wrong answer choice, and the student
+// names the trap. The label belongs to that specific wrong choice (an earlier
+// version graded against the whole drill's tag, which did not always match the
+// option shown).
 //
-// No new LSAT content authored: every stimulus, every wrong-answer choice,
-// and every explanation is a verbatim field from data/drills.ts.
+// Items 1-6 reuse wrong choices from drills the student meets in Modules 1, 2,
+// 4 and 5, so nothing here gives away an answer in a later drill. Items 7-10
+// are original to this quiz.
 
 import { DRILLS } from "./drills";
-import { DrillItem } from "../types";
 
 export type TrapTag =
   | "wrong_role"
@@ -30,10 +28,10 @@ export interface TrapItem {
 }
 
 const TRAP_LABELS: Record<TrapTag, string> = {
-  wrong_role: "Wrong Role",
-  wrong_method: "Wrong Method",
-  structural_mismatch: "Structural Mismatch",
-  attractive_language: "Attractive Language",
+  wrong_role: "Wrong role",
+  wrong_method: "Wrong method",
+  structural_mismatch: "Structural mismatch",
+  attractive_language: "Attractive language",
 };
 
 export const TRAP_OPTION_ORDER: TrapTag[] = [
@@ -45,30 +43,103 @@ export const TRAP_OPTION_ORDER: TrapTag[] = [
 
 export const TRAP_OPTION_TEXT: string[] = TRAP_OPTION_ORDER.map((tag) => TRAP_LABELS[tag]);
 
-// Pick the first 10 drills that have a defined trapTag and at least one
-// wrong option with a substantive explanation. Use option[0] when it is the
-// wrong answer; otherwise use the first incorrect option.
-function pickWrongOption(drill: DrillItem): { text: string; explanation: string } | null {
-  for (let i = 0; i < drill.options.length; i++) {
-    if (i === drill.correctOptionIndex) continue;
-    const opt = drill.options[i];
-    if (opt.explanation && opt.explanation.length > 20) return opt;
-  }
-  return null;
+const PROMPT = "What kind of trap is this wrong answer?";
+
+// Stimulus text comes straight from the drill so the two never drift apart.
+function drillStimulus(drillId: string, about?: string): string {
+  const stimulus = DRILLS.find((d) => d.id === drillId)?.stimulus ?? "";
+  return about ? `${stimulus}
+
+About: ${about}` : stimulus;
 }
 
-const SOURCE_DRILLS = DRILLS.filter((d) => Boolean(d.trapTag)).slice(0, 10);
-
-export const TRAP_ITEMS: TrapItem[] = SOURCE_DRILLS.map((drill, index) => {
-  const wrong = pickWrongOption(drill);
-  const trapTag = (drill.trapTag as TrapTag) ?? "attractive_language";
+function item(
+  id: string,
+  stimulus: string,
+  wrongChoice: string,
+  tag: TrapTag,
+  explanation: string,
+): TrapItem {
   return {
-    id: `trap_${drill.id}`,
-    stimulus: drill.stimulus ?? "",
-    wrongChoice: wrong?.text ?? drill.options[0].text,
-    prompt: "What kind of trap is this wrong answer?",
+    id,
+    stimulus,
+    wrongChoice,
+    prompt: PROMPT,
     options: TRAP_OPTION_ORDER,
-    correctOption: TRAP_OPTION_ORDER.indexOf(trapTag),
-    explanation: wrong?.explanation ?? drill.explanation,
+    correctOption: TRAP_OPTION_ORDER.indexOf(tag),
+    explanation,
   };
-});
+}
+
+export const TRAP_ITEMS: TrapItem[] = [
+  item(
+    "trap_1",
+    drillStimulus("drill_1", "the claim that the crew has been working double shifts."),
+    "It is the argument's main conclusion.",
+    "wrong_role",
+    "Wrong role. The double shifts are a reason. The main conclusion is that the project will finish ahead of schedule.",
+  ),
+  item(
+    "trap_2",
+    drillStimulus("drill_5", "the claim that cities that fund the arts generously have stronger economies."),
+    "It is a counterconsideration the argument acknowledges before rejecting.",
+    "wrong_role",
+    "Wrong role. The author isn't conceding anything here. The claim is part of the author's own support.",
+  ),
+  item(
+    "trap_3",
+    drillStimulus("drill_2"),
+    "Providing an alternative explanation for the recent outage.",
+    "wrong_method",
+    "Wrong method. The IT Lead never explains why the outage happened. They bring up information the Manager ignored.",
+  ),
+  item(
+    "trap_4",
+    drillStimulus("drill_11"),
+    "Pointing out an inappropriate analogy in Hill's reasoning.",
+    "wrong_method",
+    "Wrong method. Hill never compares two things, so there's no analogy for Watkins to criticize.",
+  ),
+  item(
+    "trap_5",
+    drillStimulus("drill_13"),
+    "Attacking Vega's premise that children's advertising is manipulative.",
+    "wrong_method",
+    "Wrong method. Lin never disputes that the ads manipulate children. Lin argues the ban would cause other problems.",
+  ),
+  item(
+    "trap_6",
+    drillStimulus("drill_3"),
+    "Mistakes a temporal relationship between two events for a causal relationship.",
+    "structural_mismatch",
+    "Structural mismatch. The argument is about a requirement for driving, not about one event coming before another.",
+  ),
+  item(
+    "trap_7",
+    "Everyone who works the night shift gets a parking pass. Dana has a parking pass. So Dana works the night shift.",
+    "Mistakes a temporal relationship between two events for a causal relationship.",
+    "structural_mismatch",
+    "Structural mismatch. Nothing here depends on time order. The real flaw reads the rule backwards: having a pass doesn't mean Dana works nights.",
+  ),
+  item(
+    "trap_8",
+    "Cities with more bike lanes have fewer traffic deaths. So adding bike lanes to our city would cut traffic deaths.",
+    "Treats a necessary condition as if it were sufficient.",
+    "structural_mismatch",
+    "Structural mismatch. The argument has no requirement in it. Its real problem is reading a correlation as a cause.",
+  ),
+  item(
+    "trap_9",
+    "A survey of 200 runners found that those who stretched before races reported fewer injuries. So stretching before a race may help prevent injuries.",
+    "The argument proves that stretching prevents every running injury.",
+    "attractive_language",
+    "Attractive language. \"Proves\" and \"every\" are far stronger than \"may help.\" Two words sink an otherwise close description.",
+  ),
+  item(
+    "trap_10",
+    "Library visits rose after a café opened inside the building. The café probably drew in some new visitors.",
+    "The argument concludes that the café is the only reason library visits rose.",
+    "attractive_language",
+    "Attractive language. \"Only\" turns \"drew in some new visitors\" into the whole story.",
+  ),
+];

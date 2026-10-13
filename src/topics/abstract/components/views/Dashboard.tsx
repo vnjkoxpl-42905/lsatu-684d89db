@@ -134,8 +134,8 @@ export default function Dashboard() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-black uppercase tracking-tight truncate">{m.name}</p>
-                    <p className="text-xs font-bold text-brutal-ink-soft truncate mt-0.5">
+                    <p className="font-black uppercase tracking-tight">{m.name}</p>
+                    <p className="text-xs font-bold text-brutal-ink-soft mt-0.5">
                       {m.subtitle}
                     </p>
                     <div className="mt-2 h-1.5 w-full bg-brutal-ink-trace">

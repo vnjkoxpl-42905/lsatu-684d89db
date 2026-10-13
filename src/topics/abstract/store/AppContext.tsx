@@ -22,7 +22,7 @@ import type {
   TranslatorAttempt,
   ViewState,
 } from "../types";
-import { MODULES, type ModuleId, getModule } from "../data/modules";
+import { type ModuleId, getModule } from "../data/modules";
 import { computeMastery } from "../lib/mastery";
 import {
   fetchDrillAttempts,
@@ -750,33 +750,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [bumpStreakActivity, user],
   );
 
-  const isModuleUnlocked = useCallback(
-    (moduleId: ModuleId): boolean => {
-      if (moduleId === "m1") return true;
-      const idx = MODULES.findIndex((m) => m.id === moduleId);
-      if (idx <= 0) return true;
-      const prevModule = MODULES[idx - 1];
-      const prevRow = bootcampState.moduleProgress[prevModule.id];
-      return Boolean(prevRow?.drillComplete);
-    },
-    [bootcampState.moduleProgress],
-  );
+  // Nothing is locked. Modules run in a recommended order, but a student or a
+  // teacher previewing can open any module, note, quiz or drill directly.
+  // Progress (note read, quiz score, drill done) is still tracked per part.
+  const isModuleUnlocked = useCallback((_moduleId: ModuleId): boolean => true, []);
 
   const isPartUnlocked = useCallback(
-    (moduleId: ModuleId, part: ModulePartName): boolean => {
-      if (!isModuleUnlocked(moduleId)) return false;
-      const row = bootcampState.moduleProgress[moduleId];
-      if (part === "note") return true;
-      if (part === "quiz") return Boolean(row?.noteComplete);
-      // drill
-      if (!row?.noteComplete) return false;
-      const mod = getModule(moduleId);
-      if (!mod) return false;
-      const passed =
-        row.quizTotal > 0 && row.quizScore / row.quizTotal >= mod.quizPassThreshold;
-      return passed;
-    },
-    [bootcampState.moduleProgress, isModuleUnlocked],
+    (_moduleId: ModuleId, _part: ModulePartName): boolean => true,
+    [],
   );
 
   const isModuleComplete = useCallback(

@@ -1,4 +1,7 @@
-// 7-module linear bootcamp definition.
+import { BREAKDOWN_DRILL_IDS } from "./breakdownDrill";
+
+// 7-module bootcamp definition. Modules are taken in order but nothing is
+// locked: a student (or teacher previewing) can open any module or part.
 //
 // Each module has 3 parts: Note, Quiz, Drill. Lessons and drills are tagged
 // to modules via the maps below (kept here rather than in-line on each item
@@ -27,6 +30,9 @@ export interface ModuleRecord {
   quizSource: QuizSource;
   quizPassThreshold: number;
   drillIds: string[];
+  // "breakdown" modules run the step-by-step breakdown drill
+  // (data/breakdownDrill.ts) instead of multiple-choice questions.
+  drillKind?: "questions" | "breakdown";
 }
 
 export const MODULES: ModuleRecord[] = [
@@ -34,7 +40,7 @@ export const MODULES: ModuleRecord[] = [
     id: "m1",
     number: 1,
     name: "Why Abstract Is Hard",
-    subtitle: "Feel the difficulty before learning the fix.",
+    subtitle: "What an abstract answer choice is, and why it reads like a riddle.",
     noteLessonId: "why_hard",
     quizSource: "whyHardItems",
     quizPassThreshold: 0.6,
@@ -44,61 +50,62 @@ export const MODULES: ModuleRecord[] = [
     id: "m2",
     number: 2,
     name: "LSAT Words You Must Know",
-    subtitle: "Seven terms with LSAT-specific meanings.",
+    subtitle: "Thirteen everyday words with strict LSAT meanings.",
     noteLessonId: "words_to_know",
     quizSource: "termQuizItems",
     quizPassThreshold: 0.6,
-    drillIds: ["drill_3", "drill_4"],
+    drillIds: ["drill_3", "drill_10"],
   },
   {
     id: "m3",
     number: 3,
-    name: "Stimulus + Keyword Extraction",
-    subtitle: "The core method. Find the load-bearing words.",
+    name: "Break It Down",
+    subtitle: "Turn an abstract answer choice into plain English, then into the stimulus.",
     noteLessonId: "deabstractifying_method",
     quizSource: "translatorItems",
     quizPassThreshold: 0.6,
-    drillIds: ["drill_5", "drill_6", "drill_7", "drill_8", "drill_9"],
+    drillIds: BREAKDOWN_DRILL_IDS,
+    drillKind: "breakdown",
   },
   {
     id: "m4",
     number: 4,
     name: "Match To The Stimulus",
-    subtitle: "Test each part of the answer choice against the stimulus.",
+    subtitle: "Point to every piece of the answer choice in the stimulus.",
     noteLessonId: "art_of_matching",
     quizSource: "matchingItems",
     quizPassThreshold: 0.6,
-    drillIds: ["drill_10", "drill_11", "drill_12", "drill_13", "drill_14"],
+    drillIds: ["drill_5", "drill_6", "drill_7", "drill_8"],
   },
   {
     id: "m5",
     number: 5,
     name: "Spot The Method",
-    subtitle: "Seventeen method-of-reasoning patterns.",
+    subtitle: "Name what the author does, not what the author says.",
     noteLessonId: "master_keys",
     quizSource: "methodQuizItems",
     quizPassThreshold: 0.6,
-    drillIds: ["drill_15", "drill_16"],
+    drillIds: ["drill_9", "drill_11", "drill_12", "drill_13"],
   },
   {
     id: "m6",
     number: 6,
     name: "Catch The Traps",
-    subtitle: "One-word swaps, wrong roles, structural mismatches.",
+    subtitle: "Wrong role, wrong method, structural mismatch, one-word traps.",
     noteLessonId: "five_bucket_indicators",
     quizSource: "trapItems",
     quizPassThreshold: 0.6,
-    drillIds: ["drill_17", "drill_18"],
+    drillIds: ["drill_4", "drill_18", "drill_19", "drill_20"],
   },
   {
     id: "m7",
     number: 7,
     name: "Put It Together",
-    subtitle: "The whole workflow. The full 18-item gauntlet.",
+    subtitle: "The whole routine on fresh answer choices and full questions.",
     noteLessonId: "abstract_15",
     quizSource: "abstractChoices",
     quizPassThreshold: 0.6,
-    drillIds: ["drill_19", "drill_20"],
+    drillIds: ["drill_14", "drill_15", "drill_16", "drill_17"],
   },
 ];
 

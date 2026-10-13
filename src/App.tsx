@@ -292,6 +292,8 @@ const App = () => {
             <Route path="/auth" element={<Auth />} />
             {import.meta.env.DEV && <Route path="/dev/drill-setup-preview" element={<DrillSetupPreview />} />}
             {import.meta.env.DEV && <Route path="/dev/conditional-opening-preview" element={<ConditionalOpeningPreview />} />}
+            {/* Dev-only: the Abstract bootcamp without sign-in or assignment, for local QA. Progress writes are skipped with no user. */}
+            {import.meta.env.DEV && <Route path="/dev/abstract-preview" element={<AbstractBootcamp />} />}
             {import.meta.env.DEV && <Route path="/dev/practice-exams-preview/*" element={<PracticeExamsPreview />} />}
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
