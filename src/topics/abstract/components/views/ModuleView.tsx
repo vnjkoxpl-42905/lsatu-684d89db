@@ -1626,7 +1626,7 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
   const { bootcampState, openModule } = useApp();
   const mod = getModule(moduleId)!;
   const row = bootcampState.moduleProgress[moduleId];
-  const aced = bootcampState.aceBadges.includes(moduleId);
+  const aced = Boolean(mod.quizSource) && bootcampState.aceBadges.includes(moduleId);
   const mastery: MasteryLevel = moduleId === "m3" ? computeMastery(row) : row?.masteryLevel ?? computeMastery(row);
   const nextModule = MODULES[MODULES.findIndex((m) => m.id === moduleId) + 1];
   const prefersReducedMotion = useReducedMotion();

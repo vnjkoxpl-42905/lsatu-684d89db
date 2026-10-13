@@ -144,7 +144,7 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
           const unlocked = isModuleUnlocked(m.id);
           const done = isModuleComplete(m.id);
           const active = currentView === "module" && currentModuleId === m.id;
-          const aced = bootcampState.aceBadges.includes(m.id);
+          const aced = Boolean(m.quizSource) && bootcampState.aceBadges.includes(m.id);
           const mastery: MasteryLevel = m.id === "m3" && (!drillDone || !row?.drillCorrect) ? "none" : row?.masteryLevel ?? "none";
           const medalColor =
             mastery === "mastered"
