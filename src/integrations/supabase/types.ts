@@ -4266,6 +4266,299 @@ export type Database = {
         }
         Relationships: []
       }
+      reading_center_bookmarks: {
+        Row: {
+          created_at: string
+          id: string
+          note: string | null
+          passage_id: string
+          user_id: string
+          word_index: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          passage_id: string
+          user_id: string
+          word_index: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          passage_id?: string
+          user_id?: string
+          word_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reading_center_bookmarks_passage_id_fkey"
+            columns: ["passage_id"]
+            isOneToOne: false
+            referencedRelation: "reading_center_passages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reading_center_passage_metadata: {
+        Row: {
+          author_override: string | null
+          body_override: string | null
+          cover_url_override: string | null
+          genre_override: string | null
+          hidden: boolean
+          passage_id: string
+          tags: string[]
+          title_override: string | null
+          user_id: string
+        }
+        Insert: {
+          author_override?: string | null
+          body_override?: string | null
+          cover_url_override?: string | null
+          genre_override?: string | null
+          hidden?: boolean
+          passage_id: string
+          tags?: string[]
+          title_override?: string | null
+          user_id: string
+        }
+        Update: {
+          author_override?: string | null
+          body_override?: string | null
+          cover_url_override?: string | null
+          genre_override?: string | null
+          hidden?: boolean
+          passage_id?: string
+          tags?: string[]
+          title_override?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reading_center_passage_metadata_passage_id_fkey"
+            columns: ["passage_id"]
+            isOneToOne: false
+            referencedRelation: "reading_center_passages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reading_center_passages: {
+        Row: {
+          author: string | null
+          body: string
+          cover_url: string | null
+          created_at: string
+          genre: string | null
+          id: string
+          is_published: boolean
+          owner_id: string | null
+          slug: string
+          sort_order: number
+          title: string
+          updated_at: string
+          word_count: number
+        }
+        Insert: {
+          author?: string | null
+          body: string
+          cover_url?: string | null
+          created_at?: string
+          genre?: string | null
+          id?: string
+          is_published?: boolean
+          owner_id?: string | null
+          slug: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+          word_count?: number
+        }
+        Update: {
+          author?: string | null
+          body?: string
+          cover_url?: string | null
+          created_at?: string
+          genre?: string | null
+          id?: string
+          is_published?: boolean
+          owner_id?: string | null
+          slug?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+          word_count?: number
+        }
+        Relationships: []
+      }
+      reading_center_preferences: {
+        Row: {
+          center_text: boolean
+          font_family: string
+          font_size: number
+          goal_wpm: number
+          line_spacing: number
+          number_of_lines: number
+          punctuation_pauses: boolean
+          reading_mode: string
+          speed_variability: boolean
+          theme: string
+          updated_at: string
+          user_id: string
+          words_per_line: number
+          wpm: number
+        }
+        Insert: {
+          center_text?: boolean
+          font_family?: string
+          font_size?: number
+          goal_wpm?: number
+          line_spacing?: number
+          number_of_lines?: number
+          punctuation_pauses?: boolean
+          reading_mode?: string
+          speed_variability?: boolean
+          theme?: string
+          updated_at?: string
+          user_id: string
+          words_per_line?: number
+          wpm?: number
+        }
+        Update: {
+          center_text?: boolean
+          font_family?: string
+          font_size?: number
+          goal_wpm?: number
+          line_spacing?: number
+          number_of_lines?: number
+          punctuation_pauses?: boolean
+          reading_mode?: string
+          speed_variability?: boolean
+          theme?: string
+          updated_at?: string
+          user_id?: string
+          words_per_line?: number
+          wpm?: number
+        }
+        Relationships: []
+      }
+      reading_center_profile: {
+        Row: {
+          display_name: string
+          user_id: string
+        }
+        Insert: {
+          display_name?: string
+          user_id: string
+        }
+        Update: {
+          display_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reading_center_progress: {
+        Row: {
+          completed_at: string | null
+          hidden_from_recent: boolean
+          last_opened_at: string
+          passage_id: string
+          user_id: string
+          word_index: number
+        }
+        Insert: {
+          completed_at?: string | null
+          hidden_from_recent?: boolean
+          last_opened_at?: string
+          passage_id: string
+          user_id: string
+          word_index?: number
+        }
+        Update: {
+          completed_at?: string | null
+          hidden_from_recent?: boolean
+          last_opened_at?: string
+          passage_id?: string
+          user_id?: string
+          word_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reading_center_progress_passage_id_fkey"
+            columns: ["passage_id"]
+            isOneToOne: false
+            referencedRelation: "reading_center_passages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reading_center_sessions: {
+        Row: {
+          active_ms: number
+          ended_at: string
+          id: string
+          passage_id: string
+          paused_ms: number
+          reading_mode: string
+          started_at: string
+          user_id: string
+          words_read: number
+          wpm: number
+        }
+        Insert: {
+          active_ms: number
+          ended_at: string
+          id?: string
+          passage_id: string
+          paused_ms?: number
+          reading_mode: string
+          started_at: string
+          user_id: string
+          words_read: number
+          wpm: number
+        }
+        Update: {
+          active_ms?: number
+          ended_at?: string
+          id?: string
+          passage_id?: string
+          paused_ms?: number
+          reading_mode?: string
+          started_at?: string
+          user_id?: string
+          words_read?: number
+          wpm?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reading_center_sessions_passage_id_fkey"
+            columns: ["passage_id"]
+            isOneToOne: false
+            referencedRelation: "reading_center_passages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reading_center_tags: {
+        Row: {
+          color: number
+          name: string
+          user_id: string
+        }
+        Insert: {
+          color?: number
+          name: string
+          user_id: string
+        }
+        Update: {
+          color?: number
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       reasoning_type_guidance: {
         Row: {
           common_flaws: string[] | null
@@ -6744,6 +7037,17 @@ export type Database = {
         }
         Returns: Json
       }
+      activity_ai_source_base_v1: {
+        Args: {
+          p_attempt: number
+          p_kind: string
+          p_order: number
+          p_owner: string
+          p_response: string
+          p_source: string
+        }
+        Returns: Json
+      }
       activity_ai_source_v1: {
         Args: {
           p_attempt: number
@@ -6927,6 +7231,15 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      assign_reading_center: {
+        Args: {
+          p_description?: string
+          p_student_id: string
+          p_title?: string
+          p_unlock_at?: string
+        }
+        Returns: Json
       }
       attach_single_session_checkout: {
         Args: {
@@ -7897,6 +8210,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      has_reading_center_access: { Args: never; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -8137,6 +8451,14 @@ export type Database = {
         Returns: Json
       }
       read_timed_section_v1: { Args: { p_work_id: string }; Returns: Json }
+      reading_center_delete_tag: {
+        Args: { p_name: string }
+        Returns: undefined
+      }
+      reading_center_rename_tag: {
+        Args: { p_color: number; p_new_name: string; p_old_name: string }
+        Returns: undefined
+      }
       reconcile_booking_calendar_event: {
         Args: {
           _deleted?: boolean
@@ -8407,6 +8729,10 @@ export type Database = {
       revoke_activity_assignment: {
         Args: { p_assignment_id: string; p_student_id: string }
         Returns: Json
+      }
+      revoke_reading_center: {
+        Args: { p_student_id: string }
+        Returns: undefined
       }
       rotate_weak_booking_slugs: {
         Args: { _apply?: boolean }

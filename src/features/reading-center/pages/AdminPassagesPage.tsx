@@ -32,7 +32,7 @@ function DeletePassageDialog({
   passage: Passage | null;
   onClose: () => void;
 }): React.ReactElement {
-  const del = useDeletePassage();
+  const del = useDeletePassage(true);
   const [count, setCount] = useState<number | null>(null);
   const [typed, setTyped] = useState("");
 
@@ -46,7 +46,7 @@ function DeletePassageDialog({
       .eq("passage_id", passage.id)
       .then(({ count: c, error }: { count: number | null; error: { message: string } | null }) => {
         if (cancelled) return;
-        if (error) toast.error(`Could not check progress: ${error.message}`);
+        if (error) { toast.error(`Could not check progress: ${error.message}`); return; }
         setCount(c ?? 0);
       });
     return () => {
@@ -96,7 +96,7 @@ function DeletePassageDialog({
 }
 
 export default function AdminPassagesPage(): React.ReactElement {
-  const passagesQuery = usePassages();
+  const passagesQuery = usePassages(true);
   const reorder = useReorderPassages();
   const upsert = useUpsertPassage();
   const [editing, setEditing] = useState<Passage | null | undefined>(undefined);
@@ -174,7 +174,7 @@ export default function AdminPassagesPage(): React.ReactElement {
                     aria-label={`Published: ${p.title}`}
                     onCheckedChange={(v) =>
                       upsert.mutate(
-                        { id: p.id, slug: p.slug, title: p.title, body: p.body, is_published: v },
+                        { id: p.id, slug: p.slug, title: p.title, body: p.body, owner_id: p.owner_id ?? null, is_published: v },
                         { onError: (e) => toast.error(e.message) },
                       )
                     }

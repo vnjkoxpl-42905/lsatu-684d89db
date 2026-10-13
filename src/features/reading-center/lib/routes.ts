@@ -5,10 +5,15 @@
  * passage slug can never collide with "stats" or "manage".
  */
 export const TOOLS_PATH = "/teacher/tools";
-export const RC_LIBRARY_PATH = "/teacher/tools/reading-center";
-export const RC_STATS_PATH = "/teacher/tools/reading-center/stats";
-export const RC_MANAGE_PATH = "/teacher/tools/reading-center/manage";
+export const RC_LIBRARY_PATH = "/reading-center";
+export const RC_STATS_PATH = "/reading-center/profile";
+export const RC_PROFILE_PATH = "/reading-center/profile";
+export const RC_TAGS_PATH = "/reading-center/tags";
+export const RC_COURSES_PATH = "/reading-center/courses";
+export const RC_MANAGE_PATH = "/reading-center/manage";
+
+export function rcTagPath(tag: string): string { return `${RC_TAGS_PATH}/${encodeURIComponent(tag)}`; }
 
 export function rcReaderPath(slug: string): string {
-  return `/teacher/tools/reading-center/read/${slug}`;
+  return `/reading-center/read/${encodeURIComponent(slug)}`;
 }

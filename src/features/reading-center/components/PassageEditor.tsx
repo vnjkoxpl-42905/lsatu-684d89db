@@ -49,8 +49,8 @@ export function PassageEditor({
     };
     // The slug is fixed at creation so reader links and saved progress never break.
     const payload = passage
-      ? { id: passage.id, slug: passage.slug, ...fields }
-      : { slug: slugify(fields.title), sort_order: nextSortOrder, is_published: true, ...fields };
+      ? { id: passage.id, owner_id: passage.owner_id ?? null, slug: passage.slug, ...fields }
+      : { owner_id: null, slug: slugify(fields.title), sort_order: nextSortOrder, is_published: true, ...fields };
     upsert.mutate(payload, { onSuccess: () => onOpenChange(false) });
   };
 

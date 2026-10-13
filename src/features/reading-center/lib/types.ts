@@ -3,16 +3,27 @@ export type ReaderTheme = "light" | "dark" | "high_contrast" | "system";
 
 export interface Passage {
   id: string;
+  owner_id?: string | null;
   slug: string;
   title: string;
   author: string | null;
+  /** Spreeder Edit Text: Genre (standalone only for now). */
+  genre?: string | null;
   body: string;
   cover_url: string | null;
   word_count: number;
   sort_order: number;
   is_published: boolean;
+  /** Spreeder tags (standalone only for now). */
+  tags?: string[];
   created_at: string;
   updated_at: string;
+}
+
+/** Spreeder UserTag. color is 1..24 from TAG_COLORS, or 0 for none (grey). */
+export interface UserTag {
+  name: string;
+  color: number;
 }
 
 export interface Preferences {
@@ -43,6 +54,8 @@ export interface Bookmark {
   passage_id: string;
   word_index: number;
   created_at: string;
+  /** Spreeder Bookmark/Note: optional note text. */
+  note?: string | null;
 }
 
 export interface ReadingSession {

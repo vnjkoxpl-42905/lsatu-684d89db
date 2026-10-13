@@ -63,15 +63,15 @@ export const BOOTCAMP_TOPICS: BootcampTopicDef[] = [
     id: "abstract",
     name: "Abstract",
     blurb:
-      "Strip-Down + Decode. Foundation topic feeding Causation, Role, Method, Flaw, Main Conclusion, Parallel, Principle.",
+      "Read each note, then complete its drill. Includes 15 written answer-choice exercises and guided Role, Method and Flaw practice.",
     topicPath: "/topics/abstract",
     topicTag: "abstract",
     flashcardTotal: 68,
-    // Eight published lessons. Completion is counted only against these
+    // Seven current module notes. Completion is counted only against these
     // canonical lesson ids (see chapterSections); translator/gauntlet/module
     // mirror rows in chapter_progress are excluded so completion cannot exceed
     // 100%.
-    chapterSectionCount: 8,
+    chapterSectionCount: 7,
     // Abstract writes drill attempts to its own table keyed by `drill_type`
     // (the DrillType enum in src/topics/abstract/types.ts), not the shared
     // `attempts.mode` column. attemptMode values below match those enum values.
@@ -95,14 +95,13 @@ export const BOOTCAMP_TOPICS: BootcampTopicDef[] = [
     // (src/topics/abstract/store/AppContext.tsx) and defined in
     // src/topics/abstract/data/lessons.ts.
     chapterSections: [
-      { id: "why_hard", title: "Why Abstract Answer Choices Feel Hard" },
-      { id: "deabstractifying_method", title: "The De-abstractify Method" },
-      { id: "words_to_know", title: "The Words You Must Know" },
-      { id: "master_keys", title: "Master Keys (Explanation, Hypothesis, Presuppose)" },
-      { id: "five_bucket_indicators", title: "Five-Bucket Indicator Schema" },
-      { id: "art_of_matching", title: "The Art of Matching Keywords" },
-      { id: "abstract_15", title: "Decode the 18 Abstract Answer Choices" },
-      { id: "decode_practice", title: "Decode Practice" },
+      { id: "why_hard", title: "Why Abstract Is Hard" },
+      { id: "words_to_know", title: "LSAT Words You Must Know" },
+      { id: "deabstractifying_method", title: "Break It Down" },
+      { id: "art_of_matching", title: "Match To The Stimulus" },
+      { id: "master_keys", title: "Spot The Method" },
+      { id: "five_bucket_indicators", title: "Catch The Traps" },
+      { id: "abstract_15", title: "Put It Together" },
     ],
   },
 ];

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import AskJoshuaFab from "./AskJoshuaFab";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -9,7 +9,8 @@ import { useApp } from "../../store/AppContext";
 // The sidebar is permanent on tablet and up, off-canvas with a scrim on
 // phone. Reduced-motion collapses the view transition to a snap.
 export default function AppShell({ children }: { children: ReactNode }) {
-  const { currentView } = useApp();
+  const { currentView, currentModuleId } = useApp();
+  const mainRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -17,7 +18,8 @@ export default function AppShell({ children }: { children: ReactNode }) {
   // surface is not occluded by a dangling sidebar.
   useEffect(() => {
     setMobileNavOpen(false);
-  }, [currentView]);
+    mainRef.current?.scrollTo({ top: 0 });
+  }, [currentView, currentModuleId]);
 
   // Lock body scroll while the drawer is open on phone.
   useEffect(() => {
@@ -71,6 +73,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
       </AnimatePresence>
 
       <main
+        ref={mainRef}
         id="abstract-main"
         className="flex-1 overflow-auto relative z-10 custom-scrollbar brutal-dotted"
       >

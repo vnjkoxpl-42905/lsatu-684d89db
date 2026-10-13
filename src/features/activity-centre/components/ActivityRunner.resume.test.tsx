@@ -133,6 +133,23 @@ describe("ActivityRunner resume", () => {
     expect(screen.getByText("Statement number 4.")).toBeInTheDocument();
   });
 
+  it("restores Observatory dials from correct answers without lighting partial ones", async () => {
+    const source = SEED_ACTIVITIES.find((a) => a.slug === "spot-the-relationship")!;
+    activityState.assignment = {
+      ...makeAssignment(), title: source.title, instructions: source.instructions,
+      items: [source.items[1], source.items[4], source.items[8]],
+    };
+    listItemResponses.mockResolvedValue([
+      row(2, 1, "correct", source.items[1].credited_answers[0]),
+      row(5, 2, "partial", "causal"),
+    ]);
+    renderRouted();
+    await screen.findByTestId("ob-seal-conditional");
+    await waitFor(() => expect(screen.getByTestId("ob-seal-conditional")).toHaveAttribute("data-lit", "true"));
+    expect(screen.getByTestId("ob-seal-causal")).not.toHaveAttribute("data-lit");
+    expect(screen.getByTestId("ob-seal-comparative")).not.toHaveAttribute("data-lit");
+  });
+
   it("blocks practice on an owned revoked source even when admin reads still return it", async () => {
     activityState.assignment = { ...makeAssignment("assigned"), revoked_at: "2026-09-30T10:00:00Z", revoked_by: "teacher-1" };
     renderRouted();
