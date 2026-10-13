@@ -460,3 +460,9 @@ export const TRANSLATOR_BONUS_ITEM: TranslatorDrillItem = {
     },
   },
 };
+
+// Module 3 quiz: the first seven answer choices. Items 8-14 are held back for
+// the Module 7 quiz (as gauntlet items), so a student never decodes the same
+// choice twice. Item 11 is the worked example in the Module 3 note and is
+// used in neither quiz.
+export const TRANSLATOR_QUIZ_ITEMS: TranslatorDrillItem[] = TRANSLATOR_ITEMS.slice(0, 7);
