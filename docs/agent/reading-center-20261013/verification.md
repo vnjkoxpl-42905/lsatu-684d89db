@@ -31,6 +31,8 @@ The first browser assignment selected the separate account named tester instead 
 
 Publication and production browser readback are recorded below after deployment. Local preview checks above are not claims of production frontend acceptance.
 
+Release candidate `3389858bf83c34cb1526d68a19a5075efbba3be6` passed the post-merge push TypeScript gate and is on GitHub main. Lovable's free Git settings reported GitHub four commits ahead; the project remained at `8244623f`. A new receipt commit is being pushed to trigger the documented missing-push-notification recovery. The checked QA production account identity is `joshua.fisseha01@gmail.com`; its existing Classroom launcher and notification are visible before frontend publication. The old Reading Center route still returns 404, so no production acceptance is claimed at this checkpoint.
+
 ## Scope
 
 AI Summary/Generate remain excluded by Joshua's earlier decision. Import supports text, Markdown and HTML up to 5 MB; PDF/DOCX parsing, Wordela integration and the original Spreeder commercial catalogue are outside this feature. No Edge Function deployment or Lovable AI credit spending was used.
