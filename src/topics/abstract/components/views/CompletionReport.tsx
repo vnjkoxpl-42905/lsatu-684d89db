@@ -1,8 +1,12 @@
 import { useMemo } from "react";
 import { useApp } from "../../store/AppContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { loadSourceSession, restoreSourceSession, sourceSessionKey } from "../../lib/source-exercise-session";
+import { LECTURE_DRILL_IDS, LECTURE_LESSON_IDS } from "../../data/modules";
 import { LESSONS, FLASHCARDS } from "../../data/mockData";
-import { TRANSLATOR_QUIZ_ITEMS } from "../../data/translatorItems";
-import { GAUNTLET_QUIZ_ITEMS } from "../../data/abstractChoices";
+import { ANSWER_CHOICE_ITEMS } from "../../data/answerChoiceDrill";
+import { APPLIED_SOURCE_QUESTIONS } from "../../data/appliedSourceQuestions";
+import { isUngradedAttempt, sourceExerciseIds } from "../../lib/grading-status";
 import { CheckCircle2, ArrowRight, BookOpen, Target, Brain, Flag, Timer, Layers, FileText } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { CardReview, ConfidenceLevel, DrillAttempt, DrillType } from "../../types";
@@ -29,7 +33,7 @@ const TYPE_LABEL: Record<DrillType, string> = {
 // Compute the most-fallen-into trap from the student's wrong drill attempts.
 // Returns null when there isn't enough data to make an honest claim.
 function pickWeakestTrap(attempts: DrillAttempt[]): { tag: string; count: number } | null {
-  const wrong = attempts.filter((a) => !a.correct && a.trapTag);
+  const wrong = attempts.filter((a) => !a.correct && a.trapTag && !isUngradedAttempt(a.trapTag));
   if (wrong.length < 2) return null;
   const counts = new Map<string, number>();
   for (const a of wrong) {
@@ -59,37 +63,45 @@ function pickStrongestType(
 }
 
 export default function CompletionReport() {
-  const { bootcampState, setCurrentView } = useApp();
+  const { bootcampState, setCurrentView, openModule } = useApp();
+  const { user } = useAuth();
   const prefersReducedMotion = useReducedMotion();
 
-  const lessonsCompleted = bootcampState.completedLessons.length;
-  const drillsCompleted = bootcampState.completedDrills.length;
+  const lessonsCompleted = bootcampState.completedLessons.filter((id) => LECTURE_LESSON_IDS.has(id)).length;
+  const lectureAttempts = bootcampState.drillAttempts.filter((attempt) => LECTURE_DRILL_IDS.has(attempt.drillId));
+  const lectureStats: typeof bootcampState.drillsStats = {};
+  for (const attempt of lectureAttempts) {
+    if (isUngradedAttempt(attempt.trapTag)) continue;
+    const prior = lectureStats[attempt.drillType] ?? { correct: 0, total: 0 };
+    lectureStats[attempt.drillType] = { correct: prior.correct + Number(attempt.correct), total: prior.total + 1 };
+  }
+  const drillsCompleted = new Set(lectureAttempts.filter((a) => !isUngradedAttempt(a.trapTag)).map((a) => a.drillId)).size;
   const cardsReviewed = Object.values(bootcampState.cards as Record<string, CardReview>)
     .filter((c) => c.status !== "unseen").length;
 
-  const totalCorrect = Object.values(bootcampState.drillsStats).reduce(
+  const totalCorrect = Object.values(lectureStats).reduce(
     (acc, curr) => acc + (curr?.correct ?? 0),
     0,
   );
-  const totalAttempted = Object.values(bootcampState.drillsStats).reduce(
+  const totalAttempted = Object.values(lectureStats).reduce(
     (acc, curr) => acc + (curr?.total ?? 0),
     0,
   );
   const accuracy = totalAttempted > 0 ? Math.round((totalCorrect / totalAttempted) * 100) : null;
 
-  const weakest = pickWeakestTrap(bootcampState.drillAttempts);
-  const strongest = pickStrongestType(bootcampState.drillsStats);
+  const weakest = pickWeakestTrap(lectureAttempts);
+  const strongest = pickStrongestType(lectureStats);
   const hasData = drillsCompleted > 0 || lessonsCompleted > 0 || cardsReviewed > 0;
 
   const totalTimeMs = useMemo(
-    () => bootcampState.drillAttempts.reduce((sum, a) => sum + (a.timeMs ?? 0), 0),
+    () => lectureAttempts.reduce((sum, a) => sum + (a.timeMs ?? 0), 0),
     [bootcampState.drillAttempts],
   );
   const totalTimeMinutes = Math.round(totalTimeMs / 60_000);
 
   const perTypeBreakdown = useMemo(() => {
     const out: { type: DrillType; correct: number; total: number; pct: number }[] = [];
-    for (const [type, stats] of Object.entries(bootcampState.drillsStats)) {
+    for (const [type, stats] of Object.entries(lectureStats)) {
       if (!stats || stats.total === 0) continue;
       out.push({
         type: type as DrillType,
@@ -99,7 +111,7 @@ export default function CompletionReport() {
       });
     }
     return out.sort((a, b) => b.total - a.total);
-  }, [bootcampState.drillsStats]);
+  }, [bootcampState.drillAttempts]);
 
   const confidenceCalibration = useMemo(() => {
     const buckets: Record<ConfidenceLevel, { correct: number; total: number }> = {
@@ -108,7 +120,8 @@ export default function CompletionReport() {
       "Pretty sure": { correct: 0, total: 0 },
       Confident: { correct: 0, total: 0 },
     };
-    for (const a of bootcampState.drillAttempts) {
+    for (const a of lectureAttempts) {
+      if (isUngradedAttempt(a.trapTag)) continue;
       const b = buckets[a.confidence];
       if (!b) continue;
       b.total += 1;
@@ -119,8 +132,8 @@ export default function CompletionReport() {
 
   const trapFrequency = useMemo(() => {
     const counts = new Map<string, number>();
-    for (const a of bootcampState.drillAttempts) {
-      if (a.correct || !a.trapTag) continue;
+    for (const a of lectureAttempts) {
+      if (a.correct || !a.trapTag || isUngradedAttempt(a.trapTag)) continue;
       counts.set(a.trapTag, (counts.get(a.trapTag) ?? 0) + 1);
     }
     return Array.from(counts.entries())
@@ -128,14 +141,13 @@ export default function CompletionReport() {
       .sort((a, b) => b.count - a.count);
   }, [bootcampState.drillAttempts]);
 
-  const gauntletIds = new Set(GAUNTLET_QUIZ_ITEMS.map((c) => c.id));
-  const translatorIds = new Set(TRANSLATOR_QUIZ_ITEMS.map((i) => i.stemNumber));
+  const gauntletIds = new Set(APPLIED_SOURCE_QUESTIONS.map((c) => c.id));
+  const sourceWorkIds = sourceExerciseIds(bootcampState.drillAttempts);
   const gauntletDone = new Set(
-    bootcampState.gauntletAttempts.map((a) => a.choiceId).filter((id) => gauntletIds.has(id)),
+    bootcampState.completedDrills.filter((id) => gauntletIds.has(id)),
   ).size;
-  const translatorDone = new Set(
-    bootcampState.translatorAttempts.map((a) => a.stemNumber).filter((n) => translatorIds.has(n)),
-  ).size;
+  const sourceSession = restoreSourceSession(loadSourceSession(sourceSessionKey(user?.id)), bootcampState.drillAttempts);
+  const translatorDone = sourceSession.practicedIds.length;
   const mastered = Object.values(bootcampState.cards).filter((c) => c.status === "mastered").length;
 
   return (
@@ -161,7 +173,7 @@ export default function CompletionReport() {
       <section aria-label="Headline numbers" className="space-y-4 border-t-4 border-brutal-ink pt-8">
         <p className="text-xl sm:text-2xl font-black text-brutal-ink leading-snug tracking-tight">
           <span className="bg-brutal-yellow px-2 py-0.5 border-2 border-brutal-ink">
-            {lessonsCompleted} of {LESSONS.length}
+            {lessonsCompleted} of {LECTURE_LESSON_IDS.size}
           </span>{" "}
           lessons cleared.{" "}
           {drillsCompleted > 0 ? (
@@ -171,7 +183,7 @@ export default function CompletionReport() {
               {accuracy !== null ? ` (${accuracy}%)` : ""}.
             </>
           ) : (
-            "No drills logged yet."
+            "No graded drill attempts yet."
           )}{" "}
           {cardsReviewed > 0
             ? `${cardsReviewed} flashcards in active rotation.`
@@ -181,12 +193,12 @@ export default function CompletionReport() {
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4" aria-hidden="true" />
             <dt className="sr-only">Lessons cleared</dt>
-            <dd>{lessonsCompleted}/{LESSONS.length} lessons</dd>
+            <dd>{lessonsCompleted}/{LECTURE_LESSON_IDS.size} lessons</dd>
           </div>
           <div className="flex items-center gap-2">
             <Target className="w-4 h-4" aria-hidden="true" />
             <dt className="sr-only">Drill accuracy</dt>
-            <dd>{accuracy !== null ? `${accuracy}% accuracy` : "No drill data"}</dd>
+            <dd>{accuracy !== null ? `${accuracy}% accuracy` : "No graded attempts"}</dd>
           </div>
           <div className="flex items-center gap-2">
             <Brain className="w-4 h-4" aria-hidden="true" />
@@ -208,8 +220,9 @@ export default function CompletionReport() {
         </h2>
         <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5 text-brutal-ink">
           <MetricCard label="Total practice" icon={Timer} value={totalTimeMinutes > 0 ? `${totalTimeMinutes} min` : "··"} hint="Sum of drill response time" />
-          <MetricCard label="Break It Down quiz" icon={FileText} value={`${translatorDone}/${TRANSLATOR_QUIZ_ITEMS.length}`} hint="Answer choices decoded" />
-          <MetricCard label="Put It Together quiz" icon={Layers} value={`${gauntletDone}/${GAUNTLET_QUIZ_ITEMS.length}`} hint="Answer choices decoded" />
+          <MetricCard label="Break It Down drill" icon={FileText} value={`${translatorDone}/${ANSWER_CHOICE_ITEMS.length}`} hint="Answer choices practiced" />
+          <MetricCard label="Breakdowns reviewed" icon={BookOpen} value={`${sourceSession.reviewedIds.length}/${ANSWER_CHOICE_ITEMS.length}`} hint="Viewed, without a correctness score" />
+          <MetricCard label="Applied source practice" icon={Layers} value={`${gauntletDone}/${APPLIED_SOURCE_QUESTIONS.length}`} hint="Full original questions attempted" />
           <MetricCard label="Mastered cards" icon={Brain} value={`${mastered}/${FLASHCARDS.length}`} hint="Rated easy twice or more" />
         </dl>
 
@@ -301,7 +314,7 @@ export default function CompletionReport() {
           <div className="bg-brutal-green border-4 border-brutal-ink brutal-shadow p-5 sm:p-6 flex flex-wrap items-end justify-between gap-3">
             <div>
               <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
-                Final timed set
+                Historical final timed set
               </h3>
               <p className="text-3xl sm:text-4xl font-black text-brutal-ink uppercase italic tracking-tighter">
                 {bootcampState.finalSetScore.score}/{bootcampState.finalSetScore.total}
@@ -389,37 +402,21 @@ export default function CompletionReport() {
             Recommended next step
           </span>
           <h2 id="next-step-heading" className="text-2xl sm:text-3xl font-black uppercase italic tracking-tight leading-tight">
-            {hasData
-              ? weakest
-                ? "Run a focused drill set on your weakest trap"
-                : "Log a few more drills so the diagnosis sharpens"
-              : "Start with a guided lesson, then come back here"}
+            Return to the lecture when you want to review
           </h2>
         </div>
         <p className="text-base font-bold text-brutal-ink-soft leading-snug">
-          {hasData
-            ? "You have the keywords. Slow your matching step and check each structural verb in the choice against the actual moves of the argument."
-            : "Open the first lesson and work the De-abstractify method end to end. The numbers in this report fill in as you go."}
+          You can reread the original breakdowns, revisit your written work, or continue through the course modules.
         </p>
         <div className="flex flex-wrap gap-4">
           <button
             type="button"
-            onClick={() => setCurrentView(hasData ? "module" : "dashboard")}
+            onClick={() => openModule("m3")}
             className="inline-flex items-center gap-3 px-6 py-4 bg-brutal-ink text-brutal-paper border-4 border-brutal-ink font-black uppercase tracking-widest text-sm brutal-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-transform min-h-[44px]"
           >
-            {hasData ? "Open module practice" : "Back to module map"}
+            Review the 15 answer choices
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </button>
-          {hasData && bootcampState.finalSetScore === undefined ? (
-            <button
-              type="button"
-              onClick={() => setCurrentView("timed_set")}
-              className="inline-flex items-center gap-3 px-6 py-4 bg-brutal-paper border-4 border-brutal-ink font-black uppercase tracking-widest text-sm brutal-shadow-sm hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_var(--brutal-ink)] transition-transform min-h-[44px]"
-            >
-              <Flag className="w-4 h-4" aria-hidden="true" />
-              Take the final set
-            </button>
-          ) : null}
         </div>
       </section>
     </motion.div>

@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { resolve, join } from "node:path";
 import { BOOTCAMP_TOPICS, findTopic } from "../topicRegistry";
+import { LECTURE_MODULES } from "@/topics/abstract/data/modules";
 
 const EM_DASH = String.fromCharCode(0x2014);
 const ROOT = resolve(__dirname, "..");
@@ -25,8 +26,10 @@ describe("bootcamp topic registry", () => {
     expect(abstract?.name).toBe("Abstract");
     // Drills mirror the DrillType enum students actually attempt.
     expect(abstract?.drills.length).toBe(9);
-    // Eight published lessons are the canonical chapter sections.
-    expect(abstract?.chapterSections.length).toBe(8);
+    expect(abstract?.chapterSections).toEqual(LECTURE_MODULES.map((module) => ({
+      id: module.noteLessonId,
+      title: module.name,
+    })));
   });
 
   it("Abstract reads its own attempts table, and its chapterSections length matches chapterSectionCount", () => {
