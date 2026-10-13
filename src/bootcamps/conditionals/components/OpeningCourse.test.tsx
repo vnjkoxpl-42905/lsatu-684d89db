@@ -14,7 +14,7 @@ it('offers nine dedicated notes and twelve interleaved drill entries', () => {
   expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(9);
   expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(12);
   expect(document.querySelector('.co-pages')).toBeNull();
-  expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'missing-requirement', 'foundation-practice']);
+  expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'foundation-practice', 'sufficient-words']);
 });
 
 it('shows the rule count in plain words and never says statements or practise', () => {
@@ -35,6 +35,7 @@ it('teaches each prerequisite before the source drills that use it', () => {
   expect(position('contrapositive')).toBeLessThan(position('source-intro-diagrams-contrapositive'));
   expect(position('contrapositive')).toBeLessThan(position('source-rephrase-contrapositive'));
   expect(position('contrapositive-practice')).toBeLessThan(position('source-independent'));
+  expect(position('four-situations')).toBe(position('contrapositive') + 1);
 });
 
 it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an old reader index', async step => {
