@@ -218,7 +218,7 @@ function MapRunner({ item, onComplete }: { item: MapItem; onComplete: (correct: 
                 className={cn(
                   "border-4 border-brutal-ink w-20 h-16 text-2xl font-black transition-colors",
                   letterDone && l === item.conclusion && "bg-brutal-green",
-                  letterWrong.includes(l) && "bg-brutal-red/20 line-through",
+                  letterWrong.includes(l) && "bg-brutal-red/20 opacity-50",
                   !letterDone && !letterWrong.includes(l) && "bg-white hover:bg-brutal-yellow/50",
                 )}
               >

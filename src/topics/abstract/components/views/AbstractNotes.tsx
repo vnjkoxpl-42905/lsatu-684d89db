@@ -101,11 +101,11 @@ function WhichSentence() {
   return (
     <div className="my-6">
       <Label>The argument</Label>
-      <ol className="list-none p-0 m-0 space-y-2">
+      <div role="list" className="space-y-2">
         {POOL_SENTENCES.map((s, i) => {
           const isPicked = picked === i;
           return (
-            <li key={i} className="m-0">
+            <div role="listitem" key={i}>
               <button
                 type="button"
                 onClick={() => setPicked(i)}
@@ -121,10 +121,10 @@ function WhichSentence() {
                 <span className="font-black mr-2">({i + 1})</span>
                 {s}
               </button>
-            </li>
+            </div>
           );
         })}
-      </ol>
+      </div>
       <AnswerChoice>It is supported by another statement, and it supports the main conclusion.</AnswerChoice>
       <p className="font-semibold">Click the sentence this answer choice is describing.</p>
       {picked !== null &&
@@ -151,6 +151,10 @@ function WhichSentence() {
             <Label>Abstract</Label>
             <p className="m-0">A claim that is supported by another statement and supports the main conclusion.</p>
           </div>
+          <p className="md:col-span-2 m-0">
+            Same sentence, two descriptions. The abstract one strips out the pool and the families and keeps only the
+            job the sentence does in the argument.
+          </p>
         </div>
       )}
     </div>
@@ -171,10 +175,6 @@ export function WhyHardNote() {
 
       <h3>See one</h3>
       <WhichSentence />
-      <p>
-        Same sentence, two descriptions. The abstract one strips out the pool and the families and keeps only the
-        job the sentence does in the argument.
-      </p>
 
       <h3>Why they feel hard</h3>
       <p>
@@ -483,14 +483,14 @@ function BreakdownDemo() {
             ))}
           </div>
           <div className="bg-white border-2 border-brutal-ink p-4 mb-4 text-base leading-relaxed">{stim.text}</div>
-          <ol className="list-none p-0 m-0 space-y-3">
+          <div role="list" className="space-y-3">
             {DEMO_REQUIREMENTS.map((req, r) => {
               const key = `${stimIndex}-${r}`;
               const mark = marks[key];
               const answered = mark !== undefined;
               const right = answered && mark === stim.present[r];
               return (
-                <li key={key} className="m-0 border-2 border-brutal-ink bg-white p-3">
+                <div role="listitem" key={key} className="border-2 border-brutal-ink bg-white p-3">
                   <div className="flex flex-col md:flex-row md:items-center gap-3">
                     <span className="flex-1 font-semibold">
                       {r + 1}. {req}
@@ -519,10 +519,10 @@ function BreakdownDemo() {
                       {stim.why[r]}
                     </Verdict>
                   )}
-                </li>
+                </div>
               );
             })}
-          </ol>
+          </div>
           {stimDone && (
             <div
               className={cn(

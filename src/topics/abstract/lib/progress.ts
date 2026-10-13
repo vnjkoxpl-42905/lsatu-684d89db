@@ -3,7 +3,9 @@
 // completion number. Centralised here so the same weights apply across
 // surfaces and the weights stay easy to tune.
 
-import { LESSONS, DRILLS, FLASHCARDS, ABSTRACT_CHOICES, TRANSLATOR_ITEMS } from "../data/mockData";
+import { LESSONS, DRILLS, FLASHCARDS } from "../data/mockData";
+import { TRANSLATOR_QUIZ_ITEMS } from "../data/translatorItems";
+import { GAUNTLET_QUIZ_ITEMS } from "../data/abstractChoices";
 import type { BootcampState } from "../types";
 
 export interface ProgressBreakdown {
@@ -34,11 +36,18 @@ export function computeProgress(state: BootcampState): ProgressBreakdown {
   const lessonsTotal = LESSONS.length;
   const lessonsDone = state.completedLessons.length;
 
-  const translatorTotal = TRANSLATOR_ITEMS.length;
-  const translatorDone = new Set(state.translatorAttempts.map((a) => a.stemNumber)).size;
+  // Only the answer choices a student can actually reach count toward progress.
+  const translatorIds = new Set(TRANSLATOR_QUIZ_ITEMS.map((i) => i.stemNumber));
+  const translatorTotal = translatorIds.size;
+  const translatorDone = new Set(
+    state.translatorAttempts.map((a) => a.stemNumber).filter((n) => translatorIds.has(n)),
+  ).size;
 
-  const gauntletTotal = ABSTRACT_CHOICES.length;
-  const gauntletDone = new Set(state.gauntletAttempts.map((a) => a.choiceId)).size;
+  const gauntletIds = new Set(GAUNTLET_QUIZ_ITEMS.map((c) => c.id));
+  const gauntletTotal = gauntletIds.size;
+  const gauntletDone = new Set(
+    state.gauntletAttempts.map((a) => a.choiceId).filter((id) => gauntletIds.has(id)),
+  ).size;
 
   const drillsTotal = DRILLS.length;
   const drillsDone = Math.min(state.completedDrills.length, drillsTotal);

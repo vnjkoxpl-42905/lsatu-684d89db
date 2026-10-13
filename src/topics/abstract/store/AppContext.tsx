@@ -22,7 +22,7 @@ import type {
   TranslatorAttempt,
   ViewState,
 } from "../types";
-import { MODULES, type ModuleId, getModule } from "../data/modules";
+import { type ModuleId, getModule } from "../data/modules";
 import { computeMastery } from "../lib/mastery";
 import {
   fetchDrillAttempts,

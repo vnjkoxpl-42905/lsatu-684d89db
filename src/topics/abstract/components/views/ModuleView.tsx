@@ -1026,7 +1026,6 @@ function KeywordExtractionRenderer({
   const [translation, setTranslation] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [finalVerdict, setFinalVerdict] = useState<QuizVerdict | null>(null);
-  const position = TRANSLATOR_QUIZ_ITEMS.findIndex((i) => i.stemNumber === item.stemNumber) + 1;
 
   const correctLower = item.correctKeywords.map((k) => k.toLowerCase());
   const isCorrectWord = (t: string) => correctLower.includes(stripPunc(t).toLowerCase());
@@ -1070,7 +1069,7 @@ function KeywordExtractionRenderer({
   return (
     <div className="bg-brutal-paper border-4 border-brutal-ink p-5 md:p-6 brutal-shadow">
       <p className="text-xs font-black uppercase tracking-widest mb-3">
-        Answer choice {position} of {TRANSLATOR_QUIZ_ITEMS.length}
+        Answer choice
       </p>
       <p className="font-black mb-2">Step 1. Click the words that carry the meaning.</p>
       <div className="bg-white border-4 border-brutal-ink p-4 md:p-5 mb-5">
@@ -1339,7 +1338,6 @@ function DecodingGauntletRenderer({
   );
   const shuffled = useMemo(() => seededShuffle(allRequirements, item.id), [allRequirements, item.id]);
   const isRequired = (index: number) => index < item.stimulusRequirements.length;
-  const position = GAUNTLET_QUIZ_ITEMS.findIndex((c) => c.id === item.id) + 1;
 
   const [picked, setPicked] = useState<Set<number>>(new Set());
   const [translation, setTranslation] = useState("");
@@ -1377,7 +1375,7 @@ function DecodingGauntletRenderer({
   return (
     <div className="bg-brutal-paper border-4 border-brutal-ink p-5 md:p-6 brutal-shadow">
       <p className="text-xs font-black uppercase tracking-widest mb-3">
-        Answer choice {position} of {GAUNTLET_QUIZ_ITEMS.length}
+        Answer choice
       </p>
       <p className="font-black mb-2">Step 1. Click the words that carry the meaning.</p>
       <div className="bg-white border-4 border-brutal-ink p-4 md:p-5 mb-5">
