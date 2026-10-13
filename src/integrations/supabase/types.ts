@@ -7037,6 +7037,17 @@ export type Database = {
         }
         Returns: Json
       }
+      activity_ai_source_base_v1: {
+        Args: {
+          p_attempt: number
+          p_kind: string
+          p_order: number
+          p_owner: string
+          p_response: string
+          p_source: string
+        }
+        Returns: Json
+      }
       activity_ai_source_v1: {
         Args: {
           p_attempt: number
