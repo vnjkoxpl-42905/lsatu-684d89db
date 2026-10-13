@@ -17,7 +17,7 @@ import { DrillItem } from "../types";
 // - structural_mismatch: necessary <-> sufficient flip, sample bias, etc.
 // - attractive_language: extreme word, scope shift, or single word that
 //   invalidates an otherwise good answer
-export const DRILLS: DrillItem[] = [
+export const LEGACY_DRILLS: DrillItem[] = [
   {
     id: "drill_1",
     type: "role",
@@ -359,3 +359,7 @@ export const DRILLS: DrillItem[] = [
     trapTag: "attractive_language",
   },
 ];
+
+// Preserve the legacy registry while adding the rebuilt source practice.
+import { APPLIED_SOURCE_QUESTIONS } from "./appliedSourceQuestions";
+export const DRILLS: DrillItem[] = [...LEGACY_DRILLS, ...APPLIED_SOURCE_QUESTIONS];

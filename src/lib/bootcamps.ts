@@ -177,9 +177,9 @@ export const BOOTCAMPS: BootcampDef[] = [
     id: 'abstraction',
     title: 'Abstract',
     description:
-      'Break abstract Role, Method and Flaw answer choices into plain English, then match every piece to the stimulus.',
+      'Work through Modules 1–7: read each note and complete its drill. For all 15 answer choices in Module 3, write the requirements and your own example, then compare the breakdown.',
     route: '/topics/abstract',
-    stats: ['7 modules', 'Notes, quizzes, drills', 'Methods library'],
+    stats: ['7 modules', '15 written exercises', 'Notes + drills; quizzes optional'],
     outline: [
       'Why Abstract Is Hard',
       'LSAT Words You Must Know',

@@ -249,7 +249,7 @@ export function StudentBootcampDetail() {
                           {row.correct}
                         </td>
                         <td className="px-3 py-2 text-black/60">
-                          {row.accuracyPct}%
+                          {row.attempts ? `${row.accuracyPct}%` : "No graded attempts"}
                         </td>
                       </tr>
                     ))}
