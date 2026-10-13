@@ -202,9 +202,9 @@ export default {
          * defined inside .topic-abstract. Outside the wrapper these tokens
          * fall back to the closest defined value (or transparent), which is
          * desired since shadow-brutal-* classes never appear outside it. */
-        "brutal-sm": "2px 2px 0px 0px var(--brutal-ink, currentColor)",
-        "brutal": "4px 4px 0px 0px var(--brutal-ink, currentColor)",
-        "brutal-lg": "8px 8px 0px 0px var(--brutal-ink, currentColor)",
+        "brutal-sm": "var(--brutal-soft-shadow, 2px 2px 0px 0px currentColor)",
+        "brutal": "var(--brutal-soft-shadow, 4px 4px 0px 0px currentColor)",
+        "brutal-lg": "var(--brutal-soft-shadow-lg, 8px 8px 0px 0px currentColor)",
 
         /* Causation Station neon glow shadows (scoped to .cs-punk usage) */
         "neon-cyan": "0 0 8px var(--punk-cyan, #00FFF0), 0 0 20px var(--punk-cyan, #00FFF0)",
