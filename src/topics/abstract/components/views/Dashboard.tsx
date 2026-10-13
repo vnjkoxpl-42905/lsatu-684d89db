@@ -95,10 +95,10 @@ export default function Dashboard() {
             const noteDone = Boolean(row?.noteComplete);
             const quizPassed =
               row?.quizTotal > 0 && row.quizScore / row.quizTotal >= m.quizPassThreshold;
-            const drillDone = Boolean(row?.drillComplete) && (m.id !== "m3" || row.drillTotal === 15);
+            const drillDone = isModuleComplete(m.id);
             const unlocked = isModuleUnlocked(m.id);
             const aced = Boolean(m.quizSource) && bootcampState.aceBadges.includes(m.id);
-            const mastery: MasteryLevel = m.id === "m3" && (!drillDone || !row?.drillCorrect) ? "none" : row?.masteryLevel ?? "none";
+            const mastery: MasteryLevel = m.id === "m3" ? "none" : row?.masteryLevel ?? "none";
             const medalColor =
               mastery === "mastered"
                 ? "text-brutal-yellow"

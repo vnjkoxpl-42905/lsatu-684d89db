@@ -8,16 +8,9 @@ import type { MasteryLevel, ModuleProgressRow } from "../types";
 // - mastered: 95%+ on quiz AND drill at 80%+
 export function computeMastery(row: ModuleProgressRow | undefined): MasteryLevel {
   if (!row) return "none";
-  // Module 3 has no quiz. Only authenticated coach judgments count as correct;
-  // self-check attempts are saved as unverified and cannot earn mastery.
-  if (row.moduleId === "m3") {
-    if (!row.drillComplete || row.drillTotal !== 15) return "none";
-    const pct = (row.drillCorrect ?? 0) / row.drillTotal;
-    if (pct >= 0.95) return "mastered";
-    if (pct >= 0.8) return "solid";
-    if (pct >= 0.6) return "practicing";
-    return "none";
-  }
+  // Module 3 is an ungraded source exercise. Completion is practice, not proof
+  // of correctness; legacy quiz or coach scores cannot grant mastery here.
+  if (row.moduleId === "m3") return "none";
   if (row.quizTotal === 0) return "none";
   const quizPct = row.quizScore / row.quizTotal;
   if (quizPct < 0.6) return "none";

@@ -37,12 +37,12 @@ describe("quizless Module 3 progress", () => {
   const row: ModuleProgressRow = { moduleId: "m3", noteComplete: true, quizScore: 7, quizTotal: 7, quizStreakHigh: 0, drillComplete: true, drillCorrect: 0, drillTotal: 15, aced: false, masteryLevel: "none" };
   it("never grants mastery from legacy quiz or unverified practice", () => {
     expect(computeMastery(row)).toBe("none");
-    expect(computeMastery({ ...row, quizTotal: 0, drillCorrect: 15 })).toBe("mastered");
-    expect(computeMastery({ ...row, quizTotal: 0, drillCorrect: 12 })).toBe("solid");
+    expect(computeMastery({ ...row, quizTotal: 0, drillCorrect: 15 })).toBe("none");
+    expect(computeMastery({ ...row, quizTotal: 0, drillCorrect: 12 })).toBe("none");
     expect(computeMastery({ ...row, drillCorrect: 15, drillComplete: false })).toBe("none");
   });
   it("counts 15 reachable choices without letting choice IDs inflate question-drill totals", () => {
-    const state = { completedLessons: [], completedDrills: ["choice_1"], translatorAttempts: [{ stemNumber: 15 }], gauntletAttempts: [], cards: {}, finalSetScore: null } as unknown as BootcampState;
+    const state = { completedLessons: [], completedDrills: ["choice_1"], drillAttempts: [{ drillId: "choice_1", trapTag: "coach_got_it" }, { drillId: "choice_15", trapTag: "source_exercise_ungraded" }], translatorAttempts: [{ stemNumber: 15 }], gauntletAttempts: [], cards: {}, finalSetScore: null } as unknown as BootcampState;
     const progress = computeProgress(state);
     expect(progress.translator).toMatchObject({ done: 1, total: 15 });
     expect(progress.drills.done).toBe(0);

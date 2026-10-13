@@ -1,8 +1,11 @@
 import { useMemo } from "react";
 import { useApp } from "../../store/AppContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { loadSourceSession, restoreSourceSession, sourceSessionKey } from "../../lib/source-exercise-session";
 import { LESSONS, FLASHCARDS } from "../../data/mockData";
 import { ANSWER_CHOICE_ITEMS } from "../../data/answerChoiceDrill";
 import { GAUNTLET_QUIZ_ITEMS } from "../../data/abstractChoices";
+import { isUngradedAttempt, sourceExerciseIds } from "../../lib/grading-status";
 import { CheckCircle2, ArrowRight, BookOpen, Target, Brain, Flag, Timer, Layers, FileText } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { CardReview, ConfidenceLevel, DrillAttempt, DrillType } from "../../types";
@@ -29,7 +32,7 @@ const TYPE_LABEL: Record<DrillType, string> = {
 // Compute the most-fallen-into trap from the student's wrong drill attempts.
 // Returns null when there isn't enough data to make an honest claim.
 function pickWeakestTrap(attempts: DrillAttempt[]): { tag: string; count: number } | null {
-  const wrong = attempts.filter((a) => !a.correct && a.trapTag && a.trapTag !== "self_check_unverified");
+  const wrong = attempts.filter((a) => !a.correct && a.trapTag && !isUngradedAttempt(a.trapTag));
   if (wrong.length < 2) return null;
   const counts = new Map<string, number>();
   for (const a of wrong) {
@@ -60,10 +63,11 @@ function pickStrongestType(
 
 export default function CompletionReport() {
   const { bootcampState, setCurrentView } = useApp();
+  const { user } = useAuth();
   const prefersReducedMotion = useReducedMotion();
 
   const lessonsCompleted = bootcampState.completedLessons.length;
-  const drillsCompleted = bootcampState.completedDrills.length;
+  const drillsCompleted = new Set(bootcampState.drillAttempts.filter((a) => !isUngradedAttempt(a.trapTag)).map((a) => a.drillId)).size;
   const cardsReviewed = Object.values(bootcampState.cards as Record<string, CardReview>)
     .filter((c) => c.status !== "unseen").length;
 
@@ -109,7 +113,7 @@ export default function CompletionReport() {
       Confident: { correct: 0, total: 0 },
     };
     for (const a of bootcampState.drillAttempts) {
-      if (a.trapTag === "self_check_unverified") continue;
+      if (isUngradedAttempt(a.trapTag)) continue;
       const b = buckets[a.confidence];
       if (!b) continue;
       b.total += 1;
@@ -121,7 +125,7 @@ export default function CompletionReport() {
   const trapFrequency = useMemo(() => {
     const counts = new Map<string, number>();
     for (const a of bootcampState.drillAttempts) {
-      if (a.correct || !a.trapTag || a.trapTag === "self_check_unverified") continue;
+      if (a.correct || !a.trapTag || isUngradedAttempt(a.trapTag)) continue;
       counts.set(a.trapTag, (counts.get(a.trapTag) ?? 0) + 1);
     }
     return Array.from(counts.entries())
@@ -130,13 +134,12 @@ export default function CompletionReport() {
   }, [bootcampState.drillAttempts]);
 
   const gauntletIds = new Set(GAUNTLET_QUIZ_ITEMS.map((c) => c.id));
-  const translatorIds = new Set(ANSWER_CHOICE_ITEMS.map((i) => i.stemNumber));
+  const sourceWorkIds = sourceExerciseIds(bootcampState.drillAttempts);
   const gauntletDone = new Set(
     bootcampState.gauntletAttempts.map((a) => a.choiceId).filter((id) => gauntletIds.has(id)),
   ).size;
-  const translatorDone = new Set(
-    bootcampState.translatorAttempts.map((a) => a.stemNumber).filter((n) => translatorIds.has(n)),
-  ).size;
+  const sourceSession = restoreSourceSession(loadSourceSession(sourceSessionKey(user?.id)), bootcampState.drillAttempts);
+  const translatorDone = sourceSession.practicedIds.length;
   const mastered = Object.values(bootcampState.cards).filter((c) => c.status === "mastered").length;
 
   return (
@@ -172,7 +175,7 @@ export default function CompletionReport() {
               {accuracy !== null ? ` (${accuracy}%)` : ""}.
             </>
           ) : (
-            "No drills logged yet."
+            "No graded drill attempts yet."
           )}{" "}
           {cardsReviewed > 0
             ? `${cardsReviewed} flashcards in active rotation.`
@@ -187,7 +190,7 @@ export default function CompletionReport() {
           <div className="flex items-center gap-2">
             <Target className="w-4 h-4" aria-hidden="true" />
             <dt className="sr-only">Drill accuracy</dt>
-            <dd>{accuracy !== null ? `${accuracy}% accuracy` : "No drill data"}</dd>
+            <dd>{accuracy !== null ? `${accuracy}% accuracy` : "No graded attempts"}</dd>
           </div>
           <div className="flex items-center gap-2">
             <Brain className="w-4 h-4" aria-hidden="true" />
@@ -210,6 +213,7 @@ export default function CompletionReport() {
         <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5 text-brutal-ink">
           <MetricCard label="Total practice" icon={Timer} value={totalTimeMinutes > 0 ? `${totalTimeMinutes} min` : "··"} hint="Sum of drill response time" />
           <MetricCard label="Break It Down drill" icon={FileText} value={`${translatorDone}/${ANSWER_CHOICE_ITEMS.length}`} hint="Answer choices practiced" />
+          <MetricCard label="Breakdowns reviewed" icon={BookOpen} value={`${sourceSession.reviewedIds.length}/${ANSWER_CHOICE_ITEMS.length}`} hint="Viewed, without a correctness score" />
           <MetricCard label="Put It Together quiz" icon={Layers} value={`${gauntletDone}/${GAUNTLET_QUIZ_ITEMS.length}`} hint="Answer choices decoded" />
           <MetricCard label="Mastered cards" icon={Brain} value={`${mastered}/${FLASHCARDS.length}`} hint="Rated easy twice or more" />
         </dl>

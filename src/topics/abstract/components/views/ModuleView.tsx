@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { computeMastery } from "../../lib/mastery";
+import { sourceExerciseIds } from "../../lib/grading-status";
 import type { MasteryLevel } from "../../types";
 import { useApp } from "../../store/AppContext";
 import { cn } from "../../lib/utils";
@@ -191,7 +192,8 @@ function ModuleOverview({
   const row = bootcampState.moduleProgress[moduleId];
   const noteDone = Boolean(row?.noteComplete);
   const quizDone = row?.quizTotal > 0 && row.quizScore / row.quizTotal >= mod.quizPassThreshold;
-  const drillDone = Boolean(row?.drillComplete) && (moduleId !== "m3" || row.drillTotal === 15);
+  const sourceWork = sourceExerciseIds(bootcampState.drillAttempts);
+  const drillDone = Boolean(row?.drillComplete) && (moduleId !== "m3" || mod.drillIds.every((id) => sourceWork.has(id)));
   const mastery: MasteryLevel = moduleId === "m3" ? computeMastery(row) : row?.masteryLevel ?? "none";
 
   return (
@@ -1681,9 +1683,10 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
             Quiz {row.quizScore} / {row.quizTotal}
           </span>
         )}
-        {row && row.drillTotal && (
+        {moduleId === "m3" && row?.drillComplete && <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-bold">Completed the 15 source exercises. Ungraded practice.</span>}
+        {moduleId !== "m3" && row && row.drillTotal && (
           <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-black uppercase tracking-wider">
-            {moduleId === "m3" ? "Coach confirmed" : "Drill"} {row.drillCorrect ?? 0} / {row.drillTotal}
+            Drill {row.drillCorrect ?? 0} / {row.drillTotal}
           </span>
         )}
       </div>

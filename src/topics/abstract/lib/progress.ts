@@ -7,6 +7,7 @@ import { LESSONS, DRILLS, FLASHCARDS } from "../data/mockData";
 import { ANSWER_CHOICE_ITEMS } from "../data/answerChoiceDrill";
 import { GAUNTLET_QUIZ_ITEMS } from "../data/abstractChoices";
 import type { BootcampState } from "../types";
+import { sourceExerciseIds } from "./grading-status";
 
 export interface ProgressBreakdown {
   lessons: { done: number; total: number; pct: number };
@@ -37,11 +38,9 @@ export function computeProgress(state: BootcampState): ProgressBreakdown {
   const lessonsDone = state.completedLessons.length;
 
   // Only the answer choices a student can actually reach count toward progress.
-  const translatorIds = new Set(ANSWER_CHOICE_ITEMS.map((i) => i.stemNumber));
+  const translatorIds = new Set(ANSWER_CHOICE_ITEMS.map((i) => i.id));
   const translatorTotal = translatorIds.size;
-  const translatorDone = new Set(
-    state.translatorAttempts.map((a) => a.stemNumber).filter((n) => translatorIds.has(n)),
-  ).size;
+  const translatorDone = [...sourceExerciseIds(state.drillAttempts)].filter((id) => translatorIds.has(id)).length;
 
   const gauntletIds = new Set(GAUNTLET_QUIZ_ITEMS.map((c) => c.id));
   const gauntletTotal = gauntletIds.size;

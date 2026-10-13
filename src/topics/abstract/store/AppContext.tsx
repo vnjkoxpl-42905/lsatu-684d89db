@@ -24,6 +24,7 @@ import type {
 } from "../types";
 import { type ModuleId, getModule } from "../data/modules";
 import { computeMastery } from "../lib/mastery";
+import { isUngradedAttempt, sourceExerciseIds } from "../lib/grading-status";
 import {
   fetchDrillAttempts,
   fetchGauntletAttempts,
@@ -52,6 +53,7 @@ interface AppContextType {
   openModule: (id: ModuleId) => void;
   bootcampState: BootcampState;
   loading: boolean;
+  progressOwnerId: string | null;
   markNoteRead: (moduleId: ModuleId) => Promise<BootcampMutationResult>;
   recordQuizScore: (
     moduleId: ModuleId,
@@ -177,6 +179,8 @@ function describeError(error: unknown): string | undefined {
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const { user, authReady } = useAuth();
+  const activeUserIdRef = useRef(user?.id ?? null);
+  activeUserIdRef.current = user?.id ?? null;
   const [currentView, setCurrentView] = useState<ViewState>("dashboard");
   const [currentModuleId, setCurrentModuleId] = useState<ModuleId | null>(null);
   const [autoAdvance, setAutoAdvance] = useState<boolean>(() => {
@@ -208,6 +212,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
   });
   const [loading, setLoading] = useState(true);
+  const [progressOwnerId, setProgressOwnerId] = useState<string | null>(null);
 
   // Mirror the latest state in a ref so event handlers (e.g. rateCard) can read
   // current values without doing DB-affecting work inside a setState updater.
@@ -225,6 +230,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Hydrate from Supabase on mount whenever we have an authed user.
   useEffect(() => {
     if (!authReady) return;
+    setLoading(true);
+    setProgressOwnerId(user?.id ?? null);
+    setBootcampState((prev) => ({ ...prev, completedDrills: [], drillAttempts: [], translatorAttempts: [], drillsStats: {} }));
     if (!user) {
       setLoading(false);
       return;
@@ -242,7 +250,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         if (cancelled) return;
         const drillsStats: BootcampState["drillsStats"] = {};
         for (const row of drills) {
-          if (row.trap_tag === "self_check_unverified") continue;
+          if (isUngradedAttempt(row.trap_tag)) continue;
           const key = row.drill_type as DrillType;
           const prior = drillsStats[key] ?? { correct: 0, total: 0 };
           drillsStats[key] = {
@@ -349,7 +357,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       timeMs?: number,
     ): Promise<BootcampMutationResult> => {
       const completedAt = new Date().toISOString();
-      setBootcampState((prev) => {
+      const applyLocal = () => setBootcampState((prev) => {
         const stats = prev.drillsStats[drillType] || { correct: 0, total: 0 };
         return {
           ...prev,
@@ -360,7 +368,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             ...prev.drillAttempts,
             { drillId, drillType, selectedIndex, correct, confidence, trapTag, timeMs, completedAt },
           ],
-          drillsStats: trapTag === "self_check_unverified" ? prev.drillsStats : {
+          drillsStats: isUngradedAttempt(trapTag) ? prev.drillsStats : {
             ...prev.drillsStats,
             [drillType]: {
               correct: stats.correct + (correct ? 1 : 0),
@@ -370,7 +378,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         };
       });
 
-      if (!user) return { ok: true };
+      const sourceWork = trapTag === "source_exercise_ungraded" || trapTag === "source_breakdown_reviewed";
+      if (!user) { applyLocal(); return { ok: true }; }
+      if (!sourceWork) applyLocal();
 
       const res = await insertDrillAttempt(user.id, {
         drillId,
@@ -390,6 +400,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           });
         }
       }
+      if (res.ok && sourceWork && activeUserIdRef.current === user.id) applyLocal();
       return res;
     },
     [user],
@@ -701,7 +712,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         };
         const quizPerfect = Boolean(mod.quizSource) && existing.quizTotal > 0 && existing.quizScore === existing.quizTotal;
         const drillStats = mod.drillIds.map((id) =>
-          prev.drillAttempts.filter((a) => a.drillId === id).sort((a, b) => a.completedAt.localeCompare(b.completedAt)),
+          prev.drillAttempts.filter((a) => a.drillId === id && (moduleId !== "m3" || a.trapTag === "source_exercise_ungraded")).sort((a, b) => a.completedAt.localeCompare(b.completedAt)),
         );
         const lastAttemptCorrect = drillStats.every(
           (attempts) => attempts.length > 0 && attempts[attempts.length - 1].correct,
@@ -764,9 +775,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const isModuleComplete = useCallback(
     (moduleId: ModuleId): boolean => {
       const row = bootcampState.moduleProgress[moduleId];
-      return Boolean(row?.drillComplete) && (moduleId !== "m3" || row.drillTotal === 15);
+      return Boolean(row?.drillComplete) && (moduleId !== "m3" || getModule("m3")!.drillIds.every((id) => sourceExerciseIds(bootcampState.drillAttempts).has(id)));
     },
-    [bootcampState.moduleProgress],
+    [bootcampState.moduleProgress, bootcampState.drillAttempts],
   );
 
   const openModule = useCallback((id: ModuleId) => {
@@ -783,6 +794,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       openModule,
       bootcampState,
       loading,
+      progressOwnerId,
       markNoteRead,
       recordQuizScore,
       markModuleDrillComplete,
@@ -808,6 +820,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       bootcampState,
       loading,
       markNoteRead,
+      progressOwnerId,
       recordQuizScore,
       markModuleDrillComplete,
       isModuleUnlocked,
