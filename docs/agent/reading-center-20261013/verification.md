@@ -29,9 +29,20 @@ The first browser assignment selected the separate account named tester instead 
 
 ## Publication
 
-Publication and production browser readback are recorded below after deployment. Local preview checks above are not claims of production frontend acceptance.
+**Published and verified on `https://lsatprep.study` on 2026-10-13.** Free deployment `1ec3b668-7a31-4f13-bdd4-3ec5be5fe82b` completed with the editor reporting "Your website was updated". The release was the checked merged commit `5d6e59410c0355ff4758165777430e974a58a560`.
+
+- The old production entry `/assets/index-vys3nUC2.js` changed to `/assets/index-D7yiy4Es.js`. The new entry references `TeacherReadingCenter-C01svRYb.js`, which contains the unique "Reading Center assignment verified" marker. Teacher chunk SHA-256: `6a8962ee552104f884422022216051b7f13f4174c56fb381bf147b65ef199a2a`.
+- Signed-in production teacher route `/teacher/tools/reading-center?student=d763bfe6-d710-4c4b-90ff-4b3a20929211` selected the exact QA account and confirmed its existing assignment. [Production assignment screenshot](production-teacher-assignment.png).
+- Signed-in QA student Classroom displayed the Reading Center quick-access link and Continue assigned work. Continue opened the integrated library. Its private imported text and Finished shelf loaded from the live backend. The reader retained 210 WPM; its bookmark note "Cloud autosave verified 2026-10-13" survived a full production reload. [Production bookmark screenshot](production-student-bookmark.png).
+- During publication one transient recovery screen appeared while the live entry changed. The page recovered before its reset control could be clicked; subsequent Classroom, library, reader and full reload worked. No credential or cache clearing was performed. Physical-device acceptance and filled lists/completion effects on the original Spreeder account remain outside the verified evidence.
+
+Release history follows for the recovered synchronization issue.
 
 Release candidate `3389858bf83c34cb1526d68a19a5075efbba3be6` passed the post-merge push TypeScript gate and is on GitHub main. Lovable's free Git settings reported GitHub four commits ahead; the project remained at `8244623f`. A new receipt commit is being pushed to trigger the documented missing-push-notification recovery. The checked QA production account identity is `joshua.fisseha01@gmail.com`; its existing Classroom launcher and notification are visible before frontend publication. The old Reading Center route still returns 404, so no production acceptance is claimed at this checkpoint.
+
+Lovable's concurrent grading task then saved `13af89c9` to `lovable-sync-1791933310`. Its work was preserved in a clean merge into the Reading Center checkout. Renewed affected checks passed 152 tests in 19 files, including the new answer-key tests and all Reading Center access, persistence and playback tests. The original 252-test run remains evidence for unchanged Activity Centre integration coverage.
+
+The merged release `5d6e59410c0355ff4758165777430e974a58a560` passed the guarded TypeScript push and a fresh production build/content guard. Independent merge review found no high-priority issue; 119 additional ActivityRunner, Observatory and grading regression tests in 6 files passed. Lovable confirmed this exact SHA before free deployment `1ec3b668-7a31-4f13-bdd4-3ec5be5fe82b` was started.
 
 ## Scope
 
