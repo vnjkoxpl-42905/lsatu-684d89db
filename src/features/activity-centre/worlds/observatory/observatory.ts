@@ -267,3 +267,57 @@ export function readAnswer(signal: Signal, response: string): Reading {
 
   return { found, invented, missed, quotedIndicators, drawn: found };
 }
+
+/* ------------------------------------------------------------------ *
+ * Instant grading
+ * ------------------------------------------------------------------ */
+
+/** Lowercase, straight quotes gone, "only-if" read as "only if". */
+function normalize(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[‘’“”"'`]/g, " ")
+    .replace(/[-_/]/g, " ")
+    .replace(/\s+/g, " ");
+}
+
+/**
+ * Words that turn a short indicator into a different one. "Only if" is not
+ * "if", and a student who writes "only if" on an item keyed "if" has named the
+ * wrong condition, so a bare "if" match inside "only if" proves nothing.
+ */
+const LONGER_FORM = /\b(?:only|even|as|not)\s+$/;
+
+function quotes(indicator: string, answer: string): boolean {
+  const parts = normalize(indicator.replace(/[.,]+$/, ""))
+    .split(/…|\.\.\./)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (!parts.length) return false;
+  return parts.every((part) => {
+    const re = new RegExp(`\\b${escape(part)}\\b`, "g");
+    for (const m of answer.matchAll(re)) {
+      if (!LONGER_FORM.test(answer.slice(0, m.index))) return true;
+    }
+    return false;
+  });
+}
+
+/**
+ * True when an answer is the credited answer in substance: it names exactly the
+ * types the sentence carries, none it does not, and quotes at least one
+ * credited indicator for every relationship.
+ *
+ * This only ever says yes. False is not a verdict of wrong; it means the answer
+ * needs judgment, and the Coach takes it. That is what makes it safe to trust:
+ * it confirms the answer key rather than reasoning about the student.
+ */
+export function matchesCredited(item: ActivityItem, response: string): boolean {
+  const signal = parseSignal(item);
+  if (!signal || !response.trim()) return false;
+  const named = namedKinds(response);
+  const real = new Set(signal.relations.map((r) => r.kind));
+  if (named.size !== real.size || [...named].some((k) => !real.has(k))) return false;
+  const answer = normalize(response);
+  return signal.relations.every((r) => r.indicators.some((ind) => quotes(ind, answer)));
+}

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { SEED_ACTIVITIES } from "../../content";
-import { anchorsFor, parseSignal, readAnswer } from "./observatory";
+import { anchorsFor, matchesCredited, parseSignal, readAnswer } from "./observatory";
 
 // Every figure this world draws is anchored to words in the statement, so the
 // anchoring is the thing to pin: a figure drawn from a position I invented
@@ -202,6 +202,47 @@ describe("reading the answer", () => {
     expect(r.found).toEqual([]);
     expect(r.drawn).toEqual([]);
     expect(r.missed.length).toBeGreaterThan(0);
+  });
+});
+
+describe("instant grading", () => {
+  const item = (n: number) => drill.items.find((i) => i.order === n)!;
+
+  it("accepts every credited answer as written", () => {
+    for (const i of drill.items) expect(matchesCredited(i, i.credited_answers[0]), `item ${i.order}`).toBe(true);
+  });
+
+  it("accepts the game format without quotes, and the names students use", () => {
+    expect(matchesCredited(item(1), "conditional, only if")).toBe(true);
+    expect(matchesCredited(item(1), "Conditional - only-if")).toBe(true);
+    expect(matchesCredited(item(1), "necessary condition: ONLY IF")).toBe(true);
+    expect(matchesCredited(item(9), "comparison, louder than")).toBe(true);
+    expect(matchesCredited(item(6), "causation: destroyed")).toBe(true);
+    expect(matchesCredited(item(15), "conditional, requires (not causal)")).toBe(true);
+    expect(matchesCredited(item(27), "conditional only if; causal because")).toBe(true);
+    expect(matchesCredited(item(29), "conditional only when, comparative lower than, causal expands")).toBe(true);
+  });
+
+  /** False never means wrong. These all go to the Coach for a real judgment. */
+  it("leaves anything short of the key to the Coach", () => {
+    expect(matchesCredited(item(1), "conditional")).toBe(false); // type alone
+    expect(matchesCredited(item(1), "only if")).toBe(false); // words alone
+    expect(matchesCredited(item(1), "causal, only if")).toBe(false); // wrong type
+    expect(matchesCredited(item(1), "conditional and causal, only if")).toBe(false); // invented type
+    expect(matchesCredited(item(29), "conditional, only when")).toBe(false); // one of three
+    expect(matchesCredited(item(29), "conditional only when, comparative lower than, causal")).toBe(false); // causal unquoted
+    expect(matchesCredited(item(15), "causal, requires")).toBe(false);
+    expect(matchesCredited(item(1), "")).toBe(false);
+  });
+
+  it("does not hear 'only if' as the 'if' an item is keyed on", () => {
+    expect(matchesCredited(item(2), "conditional, only if")).toBe(false);
+    expect(matchesCredited(item(2), "conditional, if")).toBe(true);
+  });
+
+  it("needs both halves of a split indicator", () => {
+    expect(matchesCredited(item(48), "conditional Only if; comparative more; causal produces")).toBe(false);
+    expect(matchesCredited(item(48), "conditional Only if; comparative more ... than; causal produces")).toBe(true);
   });
 });
 

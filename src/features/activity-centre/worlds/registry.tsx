@@ -16,7 +16,7 @@ import { parseCallback, readThrow } from "./loom/loom";
 
 import { ObservatoryEntrance } from "./observatory/ObservatoryEntrance";
 import { ObservatoryStage } from "./observatory/ObservatoryStage";
-import { parseSignal, readAnswer } from "./observatory/observatory";
+import { matchesCredited, parseSignal, readAnswer } from "./observatory/observatory";
 
 import { PolarityEntrance } from "./polarity/PolarityEntrance";
 import { PolarityStage } from "./polarity/PolarityStage";
@@ -239,6 +239,10 @@ const WORLDS: WorldBinding[] = [
         answered && response && verdict !== "correct" ? readAnswer(signal, response) : null;
       return <ObservatoryStage signal={signal} phase={answered ? "drawn" : "arrival"} reading={reading} />;
     },
+    // Every credited answer here is a structured "type, indicator" list, so an
+    // answer that names exactly those types and quotes a credited indicator for
+    // each is correct without asking anyone. Anything else goes to the Coach.
+    fastPath: (item, response) => matchesCredited(item, response),
   },
   {
     slug: "conditional-rephrase",
