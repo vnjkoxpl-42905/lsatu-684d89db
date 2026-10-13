@@ -4,6 +4,7 @@ import { SEED_ACTIVITIES } from "../../content";
 import { ObservatoryStage } from "./ObservatoryStage";
 import { ObservatoryEntrance } from "./ObservatoryEntrance";
 import { directionOf, parseSignal, readAnswer, splitWords } from "./observatory";
+import { WORLD_BINDINGS } from "../registry";
 
 const drill = SEED_ACTIVITIES.find((a) => a.slug === "spot-the-relationship")!;
 const signals = drill.items.map((i) => parseSignal(i)!);
@@ -136,6 +137,100 @@ describe("every signal can be staged", () => {
       expect(getByTestId("observatory"), `item ${s.order}`).toBeTruthy();
       unmount();
     }
+  });
+});
+
+describe("figures stay off the words", () => {
+  /**
+   * Lay the words out as a browser would: WORDS_PER_LINE to a line, letters
+   * LETTERS tall, lines PITCH apart. jsdom does no layout, so the boxes are
+   * stated rather than measured.
+   */
+  const WORDS_PER_LINE = 6;
+  const LETTERS = 28;
+  const PITCH = 48;
+  const WIDTH = 90;
+
+  beforeEach(() => {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
+      if (this.classList.contains("ob-word")) {
+        const i = [...this.parentElement!.children].indexOf(this);
+        const line = Math.floor(i / WORDS_PER_LINE);
+        const col = i % WORDS_PER_LINE;
+        return { left: col * WIDTH, top: line * PITCH, width: WIDTH - 10, height: LETTERS, right: 0, bottom: 0, x: 0, y: 0, toJSON() {} } as DOMRect;
+      }
+      return { left: 0, top: 0, width: WORDS_PER_LINE * WIDTH, height: 4 * PITCH, right: 0, bottom: 0, x: 0, y: 0, toJSON() {} } as DOMRect;
+    });
+  });
+  afterEach(() => vi.restoreAllMocks());
+
+  /**
+   * The highest and lowest y the drawn curve reaches. A quadratic's control
+   * point is not on the curve; its peak is a quarter of each end plus half the
+   * control. A causal echo is shifted by its own transform.
+   */
+  const reach = (path: Element) => {
+    const [, y0, , cy, , y1] = [...path.getAttribute("d")!.matchAll(/-?[\d.]+/g)].map(Number);
+    const shift = Number(path.getAttribute("transform")?.match(/translate\(0,(-?[\d.]+)\)/)?.[1] ?? 0);
+    const peak = 0.25 * y0 + 0.5 * cy + 0.25 * y1;
+    return { top: Math.min(y0, y1, peak) + shift, bottom: Math.max(y0, y1, peak) + shift };
+  };
+
+  /**
+   * Item 29's causal figure ("because" ... "expands") sits on the second line.
+   * It used to be placed from the top of the word's box less a fixed offset,
+   * which put it straight through the first line's words.
+   */
+  it("never draws a figure through the line above it", () => {
+    for (const s of signals) {
+      const { container, unmount } = render(<ObservatoryStage signal={s} phase="drawn" />);
+      for (const path of container.querySelectorAll("path.ob-figure:not([data-ghost])")) {
+        const { top, bottom } = reach(path);
+        const d = path.getAttribute("d");
+        // The line this stretch sits over is the one whose letters start just
+        // below the path; the line above it ends LETTERS below its own top.
+        const line = Math.ceil(bottom / PITCH);
+        const ceiling = line === 0 ? -Infinity : (line - 1) * PITCH + LETTERS;
+        expect(top, `item ${s.order}: ${d}`).toBeGreaterThan(ceiling);
+        expect(bottom, `item ${s.order}: ${d}`).toBeLessThan(line * PITCH);
+      }
+      unmount();
+    }
+  });
+
+  it("splits a figure whose words wrap into one stretch per line", () => {
+    // Item 47: "above" sets early, "higher still" sets on a later line.
+    const s = byOrder(47);
+    const { getByTestId } = render(<ObservatoryStage signal={s} phase="drawn" />);
+    const paths = getByTestId("ob-figure-comparative").querySelectorAll("path.ob-figure");
+    const lines = new Set([...paths].map((p) => Math.ceil(reach(p).bottom / PITCH)));
+    expect(lines.size).toBe(paths.length);
+    expect(paths.length).toBeGreaterThan(1);
+  });
+});
+
+describe("the verdict decides what is drawn", () => {
+  const world = WORLD_BINDINGS.find((w) => w.slug === "spot-the-relationship")!;
+  const item = drill.items.find((i) => i.order === 29)!;
+
+  /**
+   * The reader is a pattern match and the Coach is the judge. A student the
+   * Coach marked correct used to be told "Still undrawn" when they phrased a
+   * type in words the reader did not know.
+   */
+  it("draws the whole figure for a correct answer, however it was phrased", () => {
+    const { queryByTestId, getByTestId } = render(
+      world.render({ item, response: "requirement only when; lower than; because/expands", answered: true, verdict: "correct" })!,
+    );
+    expect(queryByTestId("ob-missed")).toBeNull();
+    expect(getByTestId("ob-captions").querySelectorAll("[data-kind]").length).toBe(3);
+  });
+
+  it("still shows what a partial answer missed", () => {
+    const { getByTestId } = render(
+      world.render({ item, response: "conditional, only when", answered: true, verdict: "partial" })!,
+    );
+    expect(getByTestId("ob-missed").textContent).toContain("causal");
   });
 });
 
