@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Check, RotateCcw, X } from 'lucide-react';
 import { Pill } from './ContrapositiveVisuals';
 
-type Option = { text: string; tone?: 'amber' | 'teal'; reason?: string };
-type Item = { rule: string; question: string; options: Option[]; correct: number; answer: string };
+export type QuizOption = { text: string; tone?: 'amber' | 'teal'; reason?: string };
+export type QuizItem = { rule: string; question: string; options: QuizOption[]; correct: number; answer: string };
 
-const items: Item[] = [
+const items: QuizItem[] = [
   {
     rule: 'Every applicant invited to an interview receives an email.',
     question: 'Which idea is enough to guarantee the email?',
@@ -54,6 +54,11 @@ const items: Item[] = [
 
 /** Four questions, one at a time, each answered with one tap. The sufficient-condition twin of the contrapositive quiz. */
 export function SufficientQuiz() {
+  return <QuickQuiz items={items} idPrefix="sq"/>;
+}
+
+/** One question at a time, one tap each. A wrong tap says "Not that one." and why; the right tap gives the answer as a plain sentence. */
+export function QuickQuiz({ items, idPrefix }: { items: QuizItem[]; idPrefix: string }) {
   const [step, setStep] = useState(0);
   const [wrong, setWrong] = useState<number[]>([]);
   const [solved, setSolved] = useState<number | null>(null);
@@ -69,8 +74,8 @@ export function SufficientQuiz() {
       <p className="ct-drill-count">Question {step + 1} of {items.length}<span className="ct-drill-dots" aria-hidden="true">{items.map((entry, index) => <i key={index} data-state={index < step ? 'done' : index === step ? 'now' : 'todo'}/>)}</span></p>
     </div>
     <p className="ct-drill-sentence">{item.rule}</p>
-    <p className="ct-picker-question" id={`sq-q-${step}`}>{item.question}</p>
-    <div className="ct-drill-options" role="group" aria-labelledby={`sq-q-${step}`}>
+    <p className="ct-picker-question" id={`${idPrefix}-q-${step}`}>{item.question}</p>
+    <div className="ct-drill-options" role="group" aria-labelledby={`${idPrefix}-q-${step}`}>
       {item.options.map((option, index) => {
         const state = solved === index ? 'right' : wrong.includes(index) ? 'wrong' : 'open';
         return <button key={option.text} type="button" className="ct-drill-option" data-state={state} disabled={solved !== null && solved !== index} onClick={() => { if (solved !== null) return; if (index === item.correct) setSolved(index); else setWrong(list => list.includes(index) ? list : [...list, index]); }}>

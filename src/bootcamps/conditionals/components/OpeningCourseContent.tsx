@@ -3,6 +3,7 @@ import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, use
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
 import { StagedReasoningDrill } from './StagedReasoningDrill';
+import { FourSituationsNote, FourSituationsQuiz } from './FourSituations';
 import { DrillOneExperience, type DrillOneQuestion } from './DrillOneExperience';
 import './must-arrow-note.css';
 import './missing-requirement-note.css';
@@ -377,6 +378,7 @@ function Content({ id }: { id: string }) {
     case 'whole-meaning': return <WholeMeaningNote/>;
     case 'missing-requirement': return <MissingRequirementNote/>;
     case 'contrapositive': return <><ContrapositiveNote/><FourRules/></>;
+    case 'four-situations': return <><FourSituationsNote/><section className="co-section"><div className="co-section-heading"><PopQuizTitle/></div><FourSituationsQuiz/></section></>;
     case 'foundation-practice': return <FoundationPractice/>;
     case 'sufficient-practice': return <StagedReasoningDrill mode="sufficient"/>;
     case 'mixed-practice': return <StagedReasoningDrill mode="mixed"/>;

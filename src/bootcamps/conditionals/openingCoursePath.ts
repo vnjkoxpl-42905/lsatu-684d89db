@@ -25,6 +25,7 @@ export const OPENING_COURSE_PATH: OpeningCourseStep[] = [
   { id: 'source-rephrase', type: 'drill', title: 'Drill 5: Write it as if/then', description: 'Rewrite each rule as if/then without changing its meaning, then compare your wording with the explanation.', unitId: 'group-2' },
   { id: 'mixed-practice', type: 'drill', title: 'Conditional translation practice', description: 'Who or what does the rule cover? What does it require? Answer without adding anything the rule does not say.', unitId: 'group-2' },
   { id: 'contrapositive', type: 'note', title: 'Contrapositive', description: 'What it is, how to write it, and what it is not.', unitId: 'orientation' },
+  { id: 'four-situations', type: 'note', title: 'What the rule tells you', description: 'Four situations: two settle something, two settle nothing.', unitId: 'orientation' },
   { id: 'source-intro-diagrams-contrapositive', type: 'drill', title: 'Revisit Drill 4: Add the contrapositive', description: 'Add the contrapositive to the rules you already know.', unitId: 'group-2' },
   { id: 'source-rephrase-contrapositive', type: 'drill', title: 'Revisit Drill 5: Negate the whole condition', description: 'Complete the contrapositive for each rewritten rule. Keep every qualification.', unitId: 'group-2' },
   { id: 'contrapositive-practice', type: 'drill', title: 'Check your contrapositive', description: 'Choose the correct transformation, including rules that already contain negative conditions.', unitId: 'orientation' },
