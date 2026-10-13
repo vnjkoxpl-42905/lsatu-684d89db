@@ -2,6 +2,13 @@ import React, { useState, useEffect, useMemo } from "react";
 import type { Preferences, ReaderTheme } from "../lib/types";
 import { FONTS, THEME_CLASSES } from "../lib/constants";
 
+/** Apply to the element that holds the passage text (mode renderers, View panel body, e-Reader). */
+export const READING_TEXT_STYLE: React.CSSProperties = {
+  fontFamily: "var(--rc-font-family)",
+  fontSize: "var(--rc-font-size)",
+  lineHeight: "var(--rc-line-height)",
+};
+
 export interface ReaderSurfaceProps {
   prefs: Preferences;
   children: React.ReactNode;
@@ -46,11 +53,13 @@ export function ReaderSurface({ prefs, children, className = "" }: ReaderSurface
     <div
       data-theme={resolvedTheme}
       className={`min-h-screen w-full ${themeClass} ${className}`}
+      // Reading styles are exposed as CSS variables, NOT applied to the whole page, so the top bar,
+      // buttons and dialogs keep normal app sizing. Only the reading text uses them, via READING_TEXT_STYLE.
       style={{
-        fontFamily: fontStack,
-        fontSize: `${prefs.font_size}px`,
-        lineHeight: prefs.line_spacing,
-      }}
+        ["--rc-font-family" as string]: fontStack,
+        ["--rc-font-size" as string]: `${prefs.font_size}px`,
+        ["--rc-line-height" as string]: String(prefs.line_spacing),
+      } as React.CSSProperties}
     >
       {children}
     </div>
