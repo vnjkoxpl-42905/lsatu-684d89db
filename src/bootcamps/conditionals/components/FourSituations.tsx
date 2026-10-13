@@ -100,7 +100,7 @@ export function FourSituationsNote() {
     </Section>
     <Section title="Don’t fall for the necessary condition">
       <p>The LSAT will give you a rule, then tell you the necessary condition is present. A lifeguard is on duty! You’ll want to conclude the pool is open. Don’t. The lifeguard could be there for a training session with the pool closed.</p>
-      <p>When the necessary condition is present, <PulseWord>the rule tells you nothing</PulseWord>. Set it aside.</p>
+      <p>When the necessary condition is present, <PulseWord>the rule tells you nothing.</PulseWord> Set it aside.</p>
     </Section>
     <Section title="Four situations">
       <p>Any fact about a rule puts you in one of four situations. Two of them settle something. Two settle nothing.</p>
