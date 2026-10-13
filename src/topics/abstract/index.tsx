@@ -10,14 +10,16 @@ import TimedFinalSet from "./components/views/TimedFinalSet";
 import CompletionReport from "./components/views/CompletionReport";
 import "./styles/brutal.css";
 
-function ViewManager() {
-  const { currentView } = useApp();
+export function ViewManager() {
+  const { currentView, currentModuleId } = useApp();
 
   switch (currentView) {
     case "dashboard":
       return <Dashboard />;
     case "module":
-      return <ModuleView />;
+      // Remount before rendering the new module. An effect reset happens too
+      // late: a retained question index can exceed the new module's item count.
+      return <ModuleView key={currentModuleId} />;
     case "lesson":
       return <LessonReader />;
     case "drill":

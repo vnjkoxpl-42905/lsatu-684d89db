@@ -50,7 +50,9 @@ type Stage = "overview" | "note" | "steps" | "quiz" | "drill" | "complete";
 export default function ModuleView() {
   const { currentModuleId, setCurrentView, isModuleUnlocked } = useApp();
   const [stage, setStage] = useState<Stage>("overview");
+  const moduleRef = useRef<HTMLDivElement>(null);
   useEffect(() => { setStage("overview"); }, [currentModuleId]);
+  useEffect(() => { moduleRef.current?.scrollIntoView({ block: "start" }); }, [stage]);
 
   if (!currentModuleId) {
     return (
@@ -93,7 +95,7 @@ export default function ModuleView() {
   }
 
   return (
-    <div className="p-6 md:p-10 max-w-3xl mx-auto">
+    <div ref={moduleRef} className="p-6 md:p-10 max-w-3xl mx-auto scroll-mt-24">
       <button
         type="button"
         onClick={() => {
