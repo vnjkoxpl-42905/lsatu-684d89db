@@ -1,0 +1,578 @@
+[
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Pundit: Our city made a mistake when it sold a private\ncompany the rights to assess and collect parking\nfees. The private company raised parking fees\nand so has been able to reap profits far greater\nthan what it paid for the rights to assess and\ncollect the fees. If the city had not sold the rights,\nthen that money would have gone to the city.",
+    "questionStem": "The pundit’s argument requires the assumption that",
+    "answerChoices": {
+      "A": "other private companies would have been willing to pay for the rights to assess and collect parking fees",
+      "B": "the city could have raised parking fees had it not sold the rights",
+      "C": "municipal functions like assessing and collecting parking fees should always be handled directly by the municipality in question",
+      "D": "the revenue from parking fees is not the only factor that cities need to consider in setting the rates for parking fees",
+      "E": "private companies assess and collect parking fees more efficiently than cities do"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Popular science publications that explain new\ndevelopments in science face a dilemma. In order to\nreach a wide audience, these publications must rely\nheavily on metaphorical writing, which usually fails\nto convey the science accurately. If the writing is more\nrigorous, they get the science right but fail to reach a\nwide audience. These publications should therefore give\nup trying to explain new developments in science to a\nwide audience.",
+    "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "Science publications should balance the use of metaphors with more rigorous writing.",
+      "B": "The more recent a scientific development is, the harder it is to explain it accurately to a wide audience.",
+      "C": "In reporting scientific developments, it is better to fail to reach a wide audience than to be inaccurate.",
+      "D": "In reporting scientific developments, it is better to reach a wide audience than to be accurate.",
+      "E": "Even the most rigorous explanations of some scientific concepts must still contain metaphors."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Critic: Rock music is musically bankrupt and socially\ndestructive, but at least the album covers of rock\nLPs from the 1960s and 1970s often featured\ninnovative visual art. But now, since the success\nof digital music has almost ended the production\nof LPs, rock music has nothing going for it.",
+    "questionStem": "Which one of the following is an assumption on which\nthe critic’s argument relies?",
+    "answerChoices": {
+      "A": "Digital music is not distributed with accompanying innovative visual art.",
+      "B": "Although very few LPs are produced today, most of these are rock LPs.",
+      "C": "In the 1960s and 1970s, only rock LPs featured innovative album cover art.",
+      "D": "The LPs being produced today have innovative album cover art.",
+      "E": "Rock music is less sophisticated musically and more destructive socially now than it was in the 1960s and 1970s."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Scientist: In testing whether a baby’s babbling is a\nlinguistic task or just random sounds, researchers\nvideotaped the mouths of babies as they babbled.\nThey discovered that babbling babies open\nthe right sides of their mouths wider than the\nleft. Past studies have established that during\nnonlinguistic vocalizations people generally open\nthe left side of the mouth wider. So babbling\nturns out to be a linguistic task.",
+    "questionStem": "Which one of the following most accurately describes\nhow the scientist’s argument proceeds?",
+    "answerChoices": {
+      "A": "It describes an argument for a given conclusion and presents a counterargument to suggest that its conclusion is incorrect.",
+      "B": "It questions the adequacy of a generally accepted principle by providing evidence to undermine that principle, and offers a different principle in its place.",
+      "C": "It raises a question, describes a potential experimental test, and argues that the test is necessary to answer the question.",
+      "D": "It describes an explanation for some facts, counters assertions that the explanation is unlikely to be correct, and concludes that it is correct after all.",
+      "E": "It presents two possible interpretations of a phenomenon and provides evidence in support of one interpretation and against the other."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Environment minister: Because of our concern about\nglobal warming, this country has committed\nitself to reducing its emissions of carbon dioxide\nsubstantially over the next ten years. Since trees\nabsorb carbon dioxide, planting large numbers of\ntrees will help us fulfill our commitment.",
+    "questionStem": "Which one of the following, if true, would most weaken\nthe environment minister’s argument?",
+    "answerChoices": {
+      "A": "Owners of large tracts of private land are usually unwilling to plant trees unless they are given a financial incentive for doing so.",
+      "B": "Over the last ten years the proportion of land that is deforested annually has not increased as much as has the proportion of carbon dioxide in the atmosphere.",
+      "C": "When ground is disturbed in the course of planting trees, more carbon dioxide is released into the atmosphere by rotting organic matter in the soil than the new trees will absorb in ten years.",
+      "D": "Many climate researchers believe that global warming is such an urgent problem that carbon dioxide emissions should be substantially reduced in less than ten years.",
+      "E": "Gases other than carbon dioxide contribute to global warming, and trees do not absorb any of these other gases."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Sport utility vehicles (SUVs) are, because of their weight,\nextremely expensive to operate but, for the same reason,\nin an accident they are safer for their occupants than\nsmaller vehicles are. Nonetheless, an analysis of recent\ntraffic fatality statistics has led auto safety experts to\nconclude that the increasing popularity of SUVs is an\nalarming trend.",
+    "questionStem": "Which one of the following, if true, most helps to\naccount for the response of auto safety experts to the\npopularity of SUVs?",
+    "answerChoices": {
+      "A": "Vehicles with a reputation for being safer than others tend to be driven more carefully than other vehicles.",
+      "B": "Vehicles with a high average fuel consumption have fuel tanks with larger capacities.",
+      "C": "Recent statistics suggest that large vehicles such as SUVs tend to carry more passengers than smaller vehicles do.",
+      "D": "Recent statistics suggest that the average number of fatalities in collisions between SUVs and smaller vehicles is higher than for other collisions.",
+      "E": "Recent statistics suggest that SUVs are as likely to be involved in collisions as smaller vehicles are."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Political advertisement: Sherwood campaigns as an\nopponent of higher taxes. But is anybody fooled? For the last 10 years, while Sherwood served\non the city council, the council consistently\nincreased taxes year after year. Break the cycle\nof higher and higher taxes: reject Sherwood’s bid\nfor reelection to city council.",
+    "questionStem": "The argument in the political advertisement is most\nvulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "bases a crucial generalization on a very limited sample",
+      "B": "fails to consider the possibility that something that is unavoidable might nonetheless be undesirable",
+      "C": "mistakes something that is sufficient to bring about a result for something that is necessary to bring about that result",
+      "D": "makes a personal attack on someone who holds a certain view rather than addressing the reasonableness of that view",
+      "E": "takes for granted that a characteristic of a group as a whole is shared by an individual member of that group"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Part vs. Whole"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Client: The owners of the catering company we use\ndecided to raise their rates. They argued that the\nincrease was necessary to allow them to hire and\ntrain new staff to accommodate their expanding\nclient base. They should reconsider that decision\nand not raise their rates. After all, the mission\nof the company is to provide low-cost gourmet\ncatering, and this mission will be jeopardized if\nthey raise rates.",
+    "questionStem": "Which one of the following most accurately expresses\nthe main conclusion of the client’s argument?",
+    "answerChoices": {
+      "A": "The owners of the catering company decided to raise their rates.",
+      "B": "The catering company needs to increase its rates to accommodate its expanding client base.",
+      "C": "The catering company’s rates should not be raised.",
+      "D": "The catering company’s mission is to provide low-cost gourmet catering.",
+      "E": "The catering company’s mission will be jeopardized if its rates are increased."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Red admiral butterflies fly in a highly irregular fashion,\nconstantly varying their speed, wing strokes, and\nflight path. While predators avoid poisonous butterfly\nspecies, nonpoisonous butterflies like the red admiral\nneed to elude predators to survive. Scientists therefore\nhypothesize that the red admiral’s flight style, which\nis clearly not energy efficient, evolved as a means of\navoiding predators.",
+    "questionStem": "Which one of the following, if true, most strengthens the\nsupport for the scientists’ hypothesis?",
+    "answerChoices": {
+      "A": "No species of poisonous butterfly has an irregular flight style like that of the red admiral.",
+      "B": "Attacks from predators are not the most common cause of death for butterflies.",
+      "C": "Many other types of butterfly have flight styles similar to that of the red admiral.",
+      "D": "It is much more energy efficient for butterflies to fly in an irregular fashion than it is for heavier varieties of insects.",
+      "E": "All of the predators that prey on the red admiral also prey on other species of nonpoisonous butterflies."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Copyright statutes benefit society by providing incentive\nto produce original works, so some kind of copyright\nstatute is ultimately justified. But these statutes also\nrepresent a significant cost to society because they create\nprotected monopolies. In many countries, copyright\nstatutes grant copyright protection for the life of the\nauthor plus several decades. This is too long, since the\nsocietal benefit from the additional years of copyright is\nmore than offset by the societal cost.",
+    "questionStem": "Which one of the following principles, if valid, most\nstrongly supports the reasoning in the argument?",
+    "answerChoices": {
+      "A": "A statute should be written in a way that eliminates any appearance of its being inconsistent in its aims.",
+      "B": "A statute should be repealed if the conditions that originally justified enacting the statute no longer hold true.",
+      "C": "A statute that is justified in one country is justified in every country.",
+      "D": "A statute should not limit rights unless it can be shown that it thereby enhances other rights.",
+      "E": "If a statute is to be justified by its benefit to society, it should be designed so that its societal benefit always exceeds its societal cost."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Police chief: During my tenure as chief, crime in this city\nhas fallen by 20 percent. This is clearly the result\nof my policing strategy, which uses real-time\ncrime data and focuses police resources on the\nareas with the most crime.",
+    "questionStem": "Which one of the following, if true, most calls into\nquestion the police chief’s explanation for the drop in\ncrime?",
+    "answerChoices": {
+      "A": "The crime rate in the police chief’s city is still significantly higher than in many other cities.",
+      "B": "The crime rate in the police chief’s city is higher now than it was several decades before the chief’s tenure began.",
+      "C": "The crime rate in the police chief’s city fell significantly during the first few years of the chief’s tenure, then it leveled off.",
+      "D": "The crime rate in the country as a whole fell by about 30 percent during the police chief’s tenure.",
+      "E": "The variation in crime rates between different areas of the city is smaller in the police chief’s city than in many other cities."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Commentator: The Duke of Acredia argued long ago\nthat only virtuous Acredian rulers concerned\nwith the well-being of the people will be able\nto rule successfully. Since then, when Acredian\ngovernments have fallen, their falls have always\nbeen during the rule of one who viciously\ndisregards the people’s needs. The Duke, then,\nwas right about at least one thing: Concern for\nthe welfare of the people is necessary for the\nsuccessful governance of Acredia.",
+    "questionStem": "The reasoning in the commentator’s argument is most\nvulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "ignores the possibility that the conditions that are necessary for the welfare of the people are likely to change over time",
+      "B": "infers the necessity of a certain condition for success from the fact that its absence has always led to failure",
+      "C": "appeals to evidence from sources that are likely to be in some way biased or unreliable",
+      "D": "infers that a certain condition is required for success from the fact that the lack of that condition is associated with failure",
+      "E": "presumes, without providing justification, that the character of past rulers can be assessed in some completely objective way"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Dr. Khan: Professor Burns recognizes that recent\nobservations fail to confirm earlier ones that\napparently showed a comet reservoir far out in\nour solar system. She claims this nonconfirmation\nis enough to show that the earlier observations\nare incorrect. But the recent observations\noccurred under poor conditions.",
+    "questionStem": "Which one of the following is most supported by Dr.\nKhan’s statements?",
+    "answerChoices": {
+      "A": "If the recent observations had been made under good conditions, they would have provided conclusive evidence of a comet reservoir far out in our solar system.",
+      "B": "Contrary to Professor Burns’s view, the recent observations confirm the earlier ones.",
+      "C": "Professor Burns’s claim about the implications of the recent observations is incorrect.",
+      "D": "The recent observations, even if they had been made under good conditions, would not have been enough to suggest that the earlier ones are incorrect.",
+      "E": "The poor conditions present during recent observations render them worthless."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Role",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "If people refrained from being impolite to one another\nthe condition of society would be greatly improved.\nBut society would not be better off if the government\nenacted laws requiring people to be polite to each other.\nEnforcing such laws would create even more problems\nthan does impoliteness.",
+    "questionStem": "Which one of the following most accurately describes\nthe role played in the argument by the claim that society\nwould not be better off if the government enacted laws\nrequiring people to be polite to each other?",
+    "answerChoices": {
+      "A": "It is the conclusion drawn by the argument as a whole.",
+      "B": "It is cited as evidence for the generalization that is the argument’s overall conclusion.",
+      "C": "It is cited as evidence for the assertion used to support the argument’s overall conclusion.",
+      "D": "It is cited as an illustration of a generalization that serves as the main premise of the argument.",
+      "E": "It describes a phenomenon that the conclusion of the argument purports to explain."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Astronomer: In most cases in which a planet has been\ndetected orbiting a distant star, the planet’s orbit\nis distinctly oval, whereas the orbits of Earth\nand several other planets around our sun are\napproximately circular. However, many comets\norbiting our sun have been thrown into oval\norbits by close encounters with planets orbiting\nour sun. So some of the planets in oval orbits\naround distant stars were probably thrown into\nthose orbits by close encounters with other\nplanets orbiting the same stars.",
+    "questionStem": "Which one of the following, if true, would most\nstrengthen the astronomer’s argument?",
+    "answerChoices": {
+      "A": "When two planets or other large objects in orbit have a close encounter, usually the smaller of the two is the more greatly affected.",
+      "B": "There is no indication that the orbit of any planet orbiting our sun has been affected by a close encounter with another planet orbiting our sun.",
+      "C": "In most cases in which planets have been discovered orbiting a distant star, more than one planet has been found orbiting the star.",
+      "D": "Most comets with an oval orbit around our sun were thrown into that orbit by a close encounter with some other object.",
+      "E": "For each distant star that has been found to have a planet, no other object large enough to affect the planet’s orbit has been found orbiting the star."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "It is possible to grow agricultural crops that can\nthrive when irrigated with seawater. Such farming, if\nundertaken near oceans, would actually be cheaper\nthan most other irrigated agriculture, since the water\nwould not have to be pumped far. The greatest expense\nin irrigated agriculture is in pumping the water, and the\npumping costs increase with the distance the water is\npumped.",
+    "questionStem": "Which one of the following most accurately describes\nthe role played in the argument by the claim that the\ngreatest expense in irrigated agriculture is in pumping\nthe water?",
+    "answerChoices": {
+      "A": "It is a claim that the argument shows to be false.",
+      "B": "It is a hypothesis that, if proven, would undermine the argument’s conclusion.",
+      "C": "It is evidence provided to support the argument’s conclusion.",
+      "D": "It is the argument’s conclusion.",
+      "E": "It is a claim for which the argument provides evidence, but which is not the argument’s conclusion."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Critics worry that pessimistic news reports about the\neconomy harm it by causing people to lose confidence\nin the economy, of which everyone has direct experience\nevery day. Journalists respond that to do their jobs well\nthey cannot worry about the effects of their work. Also,\nstudies show that people do not defer to journalists except\non matters of which they have no direct experience.",
+    "questionStem": "The statements above, if true, most strongly support\nwhich one of the following?",
+    "answerChoices": {
+      "A": "Critics who think that the economy is affected by the extent of people’s confidence in it are wrong.",
+      "B": "Pessimistic news reports about such matters as foreign policy, of which people do not have experience every day, are likely to have a negative impact.",
+      "C": "Pessimistic news reports about the state of the economy are likely to harm the economy.",
+      "D": "News reports about the economy are unlikely to have a significant effect on people’s opinions about the state of the economy.",
+      "E": "Journalists need not be deeply concerned about their reporting’s effects on the well-being of the average citizen."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Police captain: The chief of police has indicated that gifts\nof cash or objects valued at more than $100 count\nas graft. However, I know with certainty that no\nofficer in my precinct has ever taken such gifts,\nso the recent accusations of graft in my precinct\nare unfounded.",
+    "questionStem": "The reasoning in the police captain’s argument is most\nvulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "bases a rebuttal of accusations of graft on knowledge about only a limited sample of officers",
+      "B": "fails to consider that there may be other instances of graft besides those indicated by the chief of police",
+      "C": "bases a claim about the actions of individuals on an appeal to the character of those individuals",
+      "D": "takes for granted that if the accusations of graft are unfounded, so is any accusation of corruption",
+      "E": "relies on a premise that contradicts the conclusion drawn in the argument"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Economist: Although average hourly wages vary\nconsiderably between different regions of this\ncountry, in each region, the average hourly\nwage for full-time jobs increased last year.\nParadoxically, however, in the country as a\nwhole, the average hourly wage for full-time jobs\ndecreased last year.",
+    "questionStem": "Which one of the following, if true of the economist’s\ncountry, most helps to resolve the apparent paradox in\nthe economist’s statements?",
+    "answerChoices": {
+      "A": "In the country as a whole, the average hourly wage for full-time jobs has decreased slightly for each of the last three years.",
+      "B": "Last year, to reduce costs, employers moved many full-time jobs from regions with relatively high hourly wages to regions where those jobs typically pay much less.",
+      "C": "The year before last, the unemployment rate reached a ten-year low; last year, however, the unemployment rate increased slightly.",
+      "D": "Last year, the rate at which the average hourly wage for full-time jobs increased varied considerably between different regions of the country.",
+      "E": "Last year, hourly wages for most full-time jobs in the manufacturing sector declined while those for most full-time jobs in the service sector increased."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Researchers compared the brains of recently deceased\npeople who had schizophrenia with those of recently\ndeceased people who did not have schizophrenia. They\nfound that 35 percent of the former and none of the latter\nshowed evidence of damage to a structure of nerve cells\ncalled the subplate. They knew that this damage must\nhave occurred prior to the second fetal trimester, when\nthe subplate controls the development of the connections\nbetween the different parts of the brain.",
+    "questionStem": "Which one of the following conclusions is most strongly\nsupported by the information above?",
+    "answerChoices": {
+      "A": "Roughly 35 percent of people with abnormal brain subplates will eventually have schizophrenia.",
+      "B": "A promising treatment in some cases of schizophrenia is repair of the damaged connections between the different parts of the brain.",
+      "C": "Some people developed schizophrenia because of damage to the brain subplate after the second fetal trimester.",
+      "D": "Schizophrenia is determined by genetic factors.",
+      "E": "There may be a cause of schizophrenia that predates birth."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A new device uses the global positioning system to\ndetermine a cow’s location and, when a cow strays\noutside of its pasture, makes noises in the cow’s ears to\nsteer it back to its home range. Outfitting all of the cattle\nin a herd with this device is far more expensive than\nother means of keeping cattle in their pastures, such as\nfences. The device’s maker nevertheless predicts that\nranchers will purchase the device at its current price.",
+    "questionStem": "Which one of the following, if true, does the most to\nsupport the prediction made by the device’s maker?",
+    "answerChoices": {
+      "A": "The price of the device will come down appreciably if the device’s maker is able to produce it in large quantities.",
+      "B": "As they graze, cattle in a herd follow the lead of the same few members of the herd.",
+      "C": "The device has been shown not to cause significant stress to cattle.",
+      "D": "The device has been shown to be as effective as fences at keeping cattle in their pastures.",
+      "E": "The device’s maker offers significant discounts to purchasers who buy in bulk."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Food co-ops are a type of consumer cooperative.\nConsumer cooperatives offer the same products as\nother stores but usually more cheaply. It is therefore\nmore economical to shop at a food co-op than at a\nsupermarket.",
+    "questionStem": "Which one of the following is most appropriate as an\nanalogy demonstrating that the reasoning in the\nargument above is flawed?",
+    "answerChoices": {
+      "A": "By that line of reasoning, we could conclude that people who own sports cars use much more gasoline in their cars than people who own other types of cars, since sports cars use more gasoline per mile than most other cars.",
+      "B": "By that line of reasoning, we could conclude that it is better to buy frozen vegetables than fresh vegetables, since fresh vegetables are more expensive than frozen vegetables and spoil more quickly.",
+      "C": "By that line of reasoning, we could conclude that a person who rides a bicycle causes more pollution per mile traveled than one who rides a public bus, since bicycling is a private means of transportation and private means of transportation tend to generate more pollution per mile traveled than do public means.",
+      "D": "By that line of reasoning, we could conclude that more people must be shopping at health food stores than ever before, since people tend to choose healthful food over unhealthful food as long as the healthful food tastes at least as good, and healthful food today is better tasting than ever.",
+      "E": "By that line of reasoning, we could conclude that the best way to lose weight is to increase one’s consumption of artificially sweetened foods, since artificially sweetened foods have fewer calories than foods sweetened with sugar, and excessive calorie intake contributes to weight gain."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Sampling"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Editorial: The gates at most railroad crossings, while\nthey give clear warning of oncoming trains, are\nnot large enough to prevent automobile drivers\nfrom going around them onto the tracks. Some\npeople claim that the ensuing accidents are partly\nthe fault of the railroad company, but this is a\nmistake. Granted, if one has a small child in the\nhouse, then one ought to block access to stairs\ncompletely; but a licensed driver is a capable\nadult who should know better.",
+    "questionStem": "The editorial’s conclusion follows logically if which one\nof the following is assumed?",
+    "answerChoices": {
+      "A": "The gates could be made larger, yet irresponsible drivers might still be able to go around them onto the tracks.",
+      "B": "Capable adults have a responsibility to take some measures to ensure their own safety.",
+      "C": "When the warnings of companies are disregarded by capable adults, the adults are fully responsible for any resulting accidents.",
+      "D": "Small children are not involved in accidents resulting from drivers going around the gates.",
+      "E": "Any company’s responsibility to promote public safety is not unlimited."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Difference"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Researcher: People who participate in opinion surveys\noften give answers they believe the opinion\nsurveyor expects to hear, and it is for this reason\nthat some opinion surveys do not reflect the\nactual views of those being surveyed. However,\nin well-constructed surveys, the questions are\nworded so as to provide respondents with no\nindication of which answers the surveyor might\nexpect. So if a survey is well constructed,\nsurvey respondents’ desire to meet surveyors’\nexpectations has no effect on the survey’s results.",
+    "questionStem": "The reasoning in the researcher’s argument is\nquestionable in that the argument overlooks the\npossibility that",
+    "answerChoices": {
+      "A": "an opinion survey that disguises the surveyor’s expectations may be flawed in a number of ways, some of which have nothing to do with the surveyor’s expectations",
+      "B": "when people who respond to opinion surveys hold strong opinions, their answers are unlikely to be influenced by other people’s expectations",
+      "C": "many opinion surveyors have no expectations whatsoever regarding the answers of people who respond to surveys",
+      "D": "some people who know what answers an opinion surveyor expects to hear will purposefully try to thwart the surveyor’s expectations",
+      "E": "the answers of opinion-survey respondents can be influenced by beliefs about the surveyor’s expectations even if those beliefs are unfounded"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The availability of television reduces the amount\nof reading children do. When television is made\nunavailable, a nearly universal increase in reading, both\nby parents and by children, is reported. When television\nis available again, the level of reading by\nboth parents and children relapses to its previous level.",
+    "questionStem": "The reasoning in which one of the following is most\nsimilar to the reasoning above?",
+    "answerChoices": {
+      "A": "Whenever the money supply in an economy fluctuates, interest rates tend to fluctuate. When the money supply remains constant, interest rates tend to remain stable. Thus, the money supply’s remaining constant stabilizes interest rates.",
+      "B": "The consumption of candy between meals disrupts a child’s appetite at mealtimes. When candy is not consumed, blood sugar declines until mealtime, so the child feels hungry. A child who eats healthy meals feels less desire for candy.",
+      "C": "Global warming is caused by increased carbon dioxide in the atmosphere. Furthermore, industrial pollution causes increased carbon dioxide in the atmosphere. So industrial pollution causes global warming.",
+      "D": "Voting behavior is affected by factors other than political candidates’ records of political achievement. For example, a candidate who projects confidence will gain votes as a result, whereas a candidate with a supercilious facial expression will lose votes.",
+      "E": "Adults read less than they once did because there are so many other activities to divert them. This can be seen from the fact that the more time they spend on such other activities, the less they read. Conversely, the less they read, the more time they spend on such other activities."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Binaries",
+      "Plausibility"
+    ]
+  }
+]

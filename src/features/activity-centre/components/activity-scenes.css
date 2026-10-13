@@ -1,0 +1,251 @@
+/*
+ * The hall of doorways: one miniature diorama per Activity card.
+ *
+ * Each Activity opens into a world, and its card on the Centre's list carries a
+ * small painted view of that world — the aurora chamber, the naturalist's
+ * study, the observatory dome — so the list reads as eight different places
+ * rather than eight rows. Pure CSS: every scene is layered gradients on one
+ * band, keyed by the Activity's slug.
+ *
+ * The band is scenery only (aria-hidden in the card); every fact on the card
+ * stays on the module's paper surface below it.
+ */
+
+.act-scene {
+  position: relative;
+  display: block;
+  height: 84px;
+  border-radius: 14px 14px 4px 4px;
+  overflow: hidden;
+  transition: filter 300ms ease;
+}
+
+.act-scene::before,
+.act-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .act-scene {
+  filter: brightness(1.12) saturate(1.08);
+}
+
+.group:hover .act-scene::before {
+  transform: scale(1.05);
+}
+
+/* ---- The Polarity Chamber: obsidian void, aurora, one glass plate ---- */
+
+.act-scene--negation-station {
+  background: hsl(262 58% 5%);
+}
+
+.act-scene--negation-station::before {
+  background:
+    radial-gradient(46% 74% at 32% 8%, hsl(275 96% 64% / 0.5), transparent 70%),
+    radial-gradient(36% 60% at 70% 4%, hsl(190 95% 62% / 0.32), transparent 66%);
+  filter: blur(9px);
+}
+
+.act-scene--negation-station::after {
+  background: linear-gradient(164deg, hsl(256 30% 14%), hsl(260 46% 6%));
+  inset: 34% 30% 26% 30%;
+  border: 1px solid hsl(258 34% 40% / 0.8);
+  box-shadow:
+    inset 0 1px 0 hsl(264 45% 88% / 0.35),
+    0 8px 14px hsl(262 58% 3% / 0.9);
+}
+
+/* ---- The Specimen Lab: green wall, parchment bench, bell jar ---- */
+
+.act-scene--vocab-rehab {
+  background: linear-gradient(180deg, hsl(163 32% 14%) 0 46%, hsl(40 40% 88%) 46%);
+}
+
+.act-scene--vocab-rehab::before {
+  /* brass rail + lamp pool */
+  background:
+    linear-gradient(180deg, transparent 0 44%, hsl(40 58% 48%) 44% 47%, transparent 47%),
+    radial-gradient(40% 50% at 50% 52%, hsl(46 80% 82% / 0.5), transparent 72%);
+}
+
+.act-scene--vocab-rehab::after {
+  /* the bell jar on its plinth */
+  inset: 22% 42% 26% 42%;
+  border-radius: 60px 60px 4px 4px;
+  background: linear-gradient(145deg, hsl(43 55% 96% / 0.85), hsl(175 24% 86% / 0.4));
+  border: 1px solid hsl(175 24% 78%);
+  box-shadow:
+    inset 2px 2px 0 hsl(0 0% 100% / 0.8),
+    0 3px 0 hsl(40 58% 46%),
+    0 5px 0 hsl(36 52% 30%),
+    0 9px 12px hsl(30 24% 30% / 0.4);
+}
+
+/* ---- The Signal Observatory: indigo dome, stars, one gold figure ---- */
+
+.act-scene--spot-the-relationship {
+  background: radial-gradient(120% 130% at 50% -20%, hsl(233 46% 12%), hsl(237 55% 5%));
+}
+
+.act-scene--spot-the-relationship::before {
+  background-image:
+    radial-gradient(1.5px 1.5px at 18% 34%, hsl(45 85% 76%), transparent 100%),
+    radial-gradient(1px 1px at 34% 18%, hsl(0 0% 100% / 0.9), transparent 100%),
+    radial-gradient(1.5px 1.5px at 56% 44%, hsl(187 85% 62%), transparent 100%),
+    radial-gradient(1px 1px at 72% 22%, hsl(45 85% 76% / 0.8), transparent 100%),
+    radial-gradient(1.5px 1.5px at 86% 52%, hsl(330 72% 70% / 0.8), transparent 100%),
+    radial-gradient(1px 1px at 44% 68%, hsl(0 0% 100% / 0.7), transparent 100%);
+}
+
+.act-scene--spot-the-relationship::after {
+  /* the drawn constellation arc */
+  inset: 40% 20% 30% 20%;
+  border: 1px solid transparent;
+  border-top-color: hsl(45 90% 68% / 0.9);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  filter: drop-shadow(0 0 4px hsl(45 90% 68% / 0.7));
+}
+
+/* ---- The Switchyard: night steel, converging rails, sodium light ---- */
+
+.act-scene--conditional-rephrase {
+  background: linear-gradient(180deg, hsl(215 28% 6%), hsl(212 20% 9%));
+}
+
+.act-scene--conditional-rephrase::before {
+  /* sodium floods */
+  background:
+    radial-gradient(40% 70% at 22% -10%, hsl(36 96% 58% / 0.4), transparent 70%),
+    radial-gradient(46% 76% at 76% -12%, hsl(36 96% 58% / 0.3), transparent 72%);
+}
+
+.act-scene--conditional-rephrase::after {
+  /* two rails converging on a vanishing point under the fog, and one emerald
+     signal lamp burning at the point itself */
+  background:
+    radial-gradient(4px 4px at 50% 30%, hsl(158 78% 52%), transparent 100%),
+    radial-gradient(10px 10px at 50% 30%, hsl(158 78% 48% / 0.4), transparent 100%),
+    conic-gradient(
+      from 156deg at 50% 30%,
+      transparent 0deg,
+      hsl(36 55% 52% / 0.85) 1.6deg,
+      transparent 3.2deg,
+      transparent 40deg,
+      hsl(36 55% 52% / 0.7) 41.6deg,
+      transparent 43.2deg
+    );
+}
+
+/* ---- The Argument Atelier: umber workshop, lamp cone, glass panes ---- */
+
+.act-scene--find-the-conclusion {
+  background: hsl(24 32% 8%);
+}
+
+.act-scene--find-the-conclusion::before {
+  background:
+    radial-gradient(56% 72% at 78% -8%, hsl(40 88% 62% / 0.42), transparent 68%),
+    conic-gradient(from 205deg at 78% -6%, transparent 0deg, hsl(40 88% 62% / 0.2) 16deg, transparent 38deg);
+}
+
+.act-scene--find-the-conclusion::after {
+  /* three leaning panes of colored glass */
+  background:
+    linear-gradient(155deg, hsl(196 45% 40% / 0.5), hsl(196 45% 26% / 0.25)) 18% 68% / 22% 42% no-repeat,
+    linear-gradient(155deg, hsl(350 42% 44% / 0.45), hsl(350 42% 28% / 0.22)) 44% 58% / 22% 48% no-repeat,
+    linear-gradient(155deg, hsl(40 88% 55% / 0.6), hsl(40 88% 40% / 0.3)) 70% 48% / 22% 54% no-repeat;
+}
+
+/* ---- The Debate Chamber: porphyry rotunda, two plinths, torchlight ---- */
+
+.act-scene--rebuttal-rephrase {
+  background: hsl(356 32% 7%);
+}
+
+.act-scene--rebuttal-rephrase::before {
+  background:
+    radial-gradient(30% 74% at 28% -8%, hsl(36 80% 72% / 0.6), transparent 70%),
+    radial-gradient(30% 74% at 72% -8%, hsl(36 80% 72% / 0.5), transparent 70%),
+    radial-gradient(18% 30% at 28% -4%, hsl(28 90% 60% / 0.4), transparent 74%),
+    radial-gradient(16% 26% at 72% -4%, hsl(28 90% 60% / 0.34), transparent 74%);
+}
+
+.act-scene--rebuttal-rephrase::after {
+  /* the two plinths, one solid porphyry, its twin drawn empty beside it, over
+     the bronze arc inlaid between them */
+  background:
+    linear-gradient(180deg, hsl(355 30% 26%), hsl(355 26% 14%)) 22% 74% / 20% 44% no-repeat,
+    radial-gradient(26% 30% at 50% 96%, transparent 62%, hsl(30 48% 48% / 0.8) 64%, transparent 67%);
+  border: 0;
+  box-shadow: none;
+}
+
+.act-scene--rebuttal-rephrase .act-scene-extra {
+  position: absolute;
+  right: 22%;
+  bottom: 22%;
+  width: 20%;
+  height: 40%;
+  border: 1px dashed hsl(28 38% 52% / 0.8);
+}
+
+/* ---- The Press: iron shop, platen, paper proof ---- */
+
+.act-scene--dumb-it-down {
+  background: linear-gradient(180deg, hsl(19 20% 7%), hsl(21 16% 10%));
+}
+
+.act-scene--dumb-it-down::before {
+  /* the platen bar with its vermilion working edge */
+  background:
+    linear-gradient(180deg, hsl(26 12% 38%), hsl(24 14% 14%)) 50% 22% / 72% 12% no-repeat,
+    linear-gradient(180deg, hsl(14 78% 50% / 0.85), hsl(14 78% 50% / 0.85)) 50% 34% / 68% 2px no-repeat,
+    radial-gradient(60% 60% at 50% 0%, hsl(38 60% 60% / 0.2), transparent 70%);
+}
+
+.act-scene--dumb-it-down::after {
+  /* the pulled proof strip */
+  inset: 58% 22% 22% 22%;
+  background: linear-gradient(180deg, hsl(42 52% 93%), hsl(40 45% 88%));
+  box-shadow: 0 5px 10px hsl(19 20% 4% / 0.8);
+}
+
+/* ---- The Loom: indigo dye-house, warp, saffron thread ---- */
+
+.act-scene--spot-the-callback {
+  background: hsl(238 50% 8%);
+}
+
+.act-scene--spot-the-callback::before {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 14px,
+      hsl(42 88% 60% / 0.2) 14px 15px,
+      transparent 15px 34px,
+      hsl(224 40% 55% / 0.24) 34px 35px
+    ),
+    radial-gradient(60% 70% at 50% 110%, hsl(224 70% 34% / 0.5), transparent 72%);
+}
+
+.act-scene--spot-the-callback::after {
+  /* the thrown thread */
+  inset: 30% 16% 36% 16%;
+  border: 1.5px solid transparent;
+  border-bottom-color: hsl(42 88% 60%);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  filter: drop-shadow(0 0 4px hsl(42 88% 60% / 0.7));
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .act-scene,
+  .act-scene::before,
+  .act-scene::after {
+    transition: none !important;
+  }
+}

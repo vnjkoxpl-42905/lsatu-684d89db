@@ -1,0 +1,619 @@
+[
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "One should not do anything that has the potential to\n produce serious harm to one’s society. The public\n actions—or inactions—of celebrities and of people\n who are widely respected are widely emulated. Some\n celebrities do not vote. Serious harm befalls a society in\n which many people refrain from voting.",
+    "questionStem": "Which one of the following principles can be properly\n inferred from the statements above?",
+    "answerChoices": {
+      "A": "A society should require all celebrities to vote.",
+      "B": "One should vote only if one expects that doing so will cause many other people to do likewise.",
+      "C": "Celebrities who do not vote should not be widely respected.",
+      "D": "People should not emulate celebrities who are not widely respected.",
+      "E": "Widely respected people should not publicly refrain from voting."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The sculptor Barajas died before she could even begin\n sculpting the statue called Sonora. However, because\n Sonora was sculpted by Barajas’s assistants, working\n from three sketches Barajas drew in preparing to create\n the statue herself, the statue probably looks very much\n like it would have looked if she had lived to complete it.",
+    "questionStem": "Which one of the following, if true, most weakens the\n argument?",
+    "answerChoices": {
+      "A": "Ordinarily, Barajas’s ideas for her statues were revised substantially throughout a series of dozens of preliminary sketches.",
+      "B": "One of the assistants who worked closely with Barajas in planning Sonora did not participate in sculpting it.",
+      "C": "Sonora is composed partly of materials that Barajas did not frequently use in the statues that she completed during her lifetime.",
+      "D": "Barajas always worked from sketches when she sculpted a statue.",
+      "E": "Barajas never took as long to complete a statue as the assistants did to sculpt Sonora."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Focused on Evidence",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Although there are immediate short-term gains in crop\n yield from a single application of certain hydrocarbon-based pesticides to fields on which they have not been\n previously used, studies have shown clearly that long-term use gradually depresses crop yield from this initially\n elevated level. We should conclude that use of these\n pesticides _______.",
+    "questionStem": "Which one of the following would most logically\n complete the argument above?",
+    "answerChoices": {
+      "A": "is uneconomic",
+      "B": "damages the environment",
+      "C": "will eventually make pest problems unmanageable",
+      "D": "is probably not occurring in accordance with manufacturers’ instructions",
+      "E": "gives financial returns that diminish over time"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Weighing Tradeoffs",
+      "Logical Completion",
+      "Timeframes",
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Economist: Our country needs as much capital as\n possible from overseas investors in order to\n sustain our economy. Hence, we cannot afford\n any reduction in the amount of capital that\n overseas investors have invested here. Therefore,\n to sustain our economy, we should pass laws\n making it much more difficult for overseas\n investors to remove their capital.",
+    "questionStem": "Which one of the following, if true, most weakens the\n economist’s reasoning?",
+    "answerChoices": {
+      "A": "To sustain its economy, the country needs to diversify its investments more evenly across the country’s industries.",
+      "B": "Laws that would make it more difficult for overseas investors to remove their capital would strongly discourage them from investing any additional capital.",
+      "C": "The historical periods during which the country’s economy had the highest rate of growth were those periods during which the amount of capital invested by overseas investors was highest.",
+      "D": "In countries other than the economist’s, passage of laws that made it very difficult for overseas investors to remove their capital have not entirely prevented the removal of capital invested by overseas investors.",
+      "E": "Two years ago, the country enacted laws that place some restrictions on the removal of capital by overseas investors."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Columnist: Many people with access to the Internet\n express a longing for emotional connection to\n a global human community. This longing often\n leads them to use the Internet to learn about\n other cultures. However, learning about other\n cultures probably will not satisfy their longing,\n for the Internet is utilized primarily for acquiring\n information rather than developing feelings of\n interconnectedness.",
+    "questionStem": "Which one of the following most accurately expresses\n the conclusion drawn in the columnist’s argument?",
+    "answerChoices": {
+      "A": "It is common for people who have access to the Internet to express a longing for emotional connection to an international human community.",
+      "B": "The longing for emotional connection to a global human community frequently leads people to use the Internet in order to acquire information about other cultures.",
+      "C": "People who have access to the Internet tend to use it primarily for acquiring information and only secondarily for developing feelings of interconnectedness.",
+      "D": "For people desiring connection to a global human community, learning about other cultures through the Internet probably will not provide emotional connection to those cultures.",
+      "E": "When people long for connection to a global human community, they tend to engage in behavior that results in the acquisition of knowledge about other cultures but rarely produces genuine emotional connection to those cultures."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot",
+      "Anti-Causal",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Democratic societies in which there is widespread\n discontent more often blame their politicians than they\n do other powerful figures who are at least as responsible\n for those societies’ woes. This is not primarily because\n politicians are more familiar to people than are\n other powerful figures; rather it is because people in\n democratic societies feel that they have more power over\n politicians than they have over other powerful figures.",
+    "questionStem": "The case described above best illustrates which one of\n the following generalizations?",
+    "answerChoices": {
+      "A": "Often the people who have the most power in a society are not the people who are generally perceived by the public as having the most power.",
+      "B": "People tend to ascribe more power to a person with whom they are familiar than to one with whom they are unfamiliar.",
+      "C": "To the extent that a person is well known to the public, that person is more likely to be blamed for the woes of society.",
+      "D": "Publicly known people are usually not held sufficiently responsible for the problems they cause.",
+      "E": "People are more inclined to blame a publicly known person if that person is someone over whom they feel they have power."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The mu mesons generated by cosmic rays just\n outside Earth’s atmosphere travel to Earth at speeds\n approaching the speed of light. Mu mesons generated in\n the laboratory, however, are nearly at rest. Mu mesons\n generated in the laboratory typically decay in much less\n time than it takes for a mu meson to travel from just\n outside Earth’s atmosphere to our detection apparatus on\n Earth. If mu mesons traveling through the atmosphere at\n speeds approaching the speed of light typically decay as\n fast as they do in the laboratory, then we should detect\n only about one one-hundredth of the number we actually\n do detect. Apparently, mu mesons moving at speeds near\n the speed of light _______.",
+    "questionStem": "Which one of the following most logically completes the\n argument?",
+    "answerChoices": {
+      "A": "take longer to reach Earth than was supposed",
+      "B": "are quite difficult to detect with available equipment",
+      "C": "are much less numerous than previously thought",
+      "D": "decay more slowly than mu mesons almost at rest",
+      "E": "are probably not generated by cosmic rays."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Science",
+      "Dense Stimulus",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Buyer: As a buyer for a large chain of department stores,\n I will buy a garment only if it is fashionable\n and not too expensive for our clientele. The\n evening dress from the fall collection by Peruka\n is certainly fashionable, but it is far too expensive\n for our clientele. Therefore, I will not buy that\n dress.",
+    "questionStem": "The pattern of reasoning in which one of the following\n arguments most closely resembles the pattern of\n reasoning in the buyer’s argument?",
+    "answerChoices": {
+      "A": "A snowflake will melt if it is in a warm place and not protected by insulation. This snowflake is in a warm place, but it is protected by insulation. Therefore, this snowflake will not melt.",
+      "B": "A stuffed animal, in order to pass inspection, must be free of sharp edges and completely sealed. This stuffed hippo is free of sharp edges, but it is not completely sealed. Therefore, this hippo will not pass inspection.",
+      "C": "A sidewalk is accessible if its edges are fully graded and if it has no sizable bumps. This sidewalk’s edges are fully graded, and it has no sizable bumps. Therefore, this sidewalk is accessible.",
+      "D": "A poetic translation is accurate only if it adequately expresses the meaning of the original poem and gives an idea of the meter. This translation adequately expresses the meaning of the original and gives an idea of the meter. Therefore, this translation is accurate.",
+      "E": "An assembly may call a meeting of the executive board only if the assembly meets quorum requirements and the motion passes by two-thirds. This assembly meets quorum requirements, so unless the motion does not pass by two-thirds, this assembly may call a meeting of the executive board."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Psychologists report that children in nine-month schools\n typically forget a significant amount of schooling during\n summer breaks. So, some educators have proposed a\n twelve-month schedule in which there are three month-long breaks spread throughout the year. We should\n conclude, on the basis of the psychologists’ research, that\n the twelve-month schedule is to be preferred insofar as\n academic learning is concerned, since this schedule will\n insure that students will not forget their schooling during\n their breaks.",
+    "questionStem": "The reasoning above is most vulnerable to the criticism\n that it",
+    "answerChoices": {
+      "A": "relies on an unsubstantiated assumption about the comparative worth of academic and nonacademic learning experiences",
+      "B": "draws on an arbitrary distinction between two groups",
+      "C": "takes for granted, in comparing two situations, that a certain undesirable result is correlated with only one of them",
+      "D": "fails to show that the data on which the psychologists’ conclusions were based was adequately representative of children in the population as a whole",
+      "E": "claims to accept a view, but then rejects it in the course of argument"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Assumes Difference",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The Industrial Revolution decreased the value that\n society conferred on physical labor because it enabled\n unskilled workers to quickly produce goods that\n formerly took skilled craftspeople long periods of time\n to produce. Clearly, our most important intellectual\n skills will similarly be devalued by electronic data-processing technology. Computations that once took\n skilled mathematicians a long time to perform can now\n be quickly performed by moderately well-trained high\n school students using computers.",
+    "questionStem": "Which one of the following, if true, most seriously\n weakens the argument?",
+    "answerChoices": {
+      "A": "Much industrial machinery is now designed and built with the aid of computers.",
+      "B": "Before electronic data-processing technology, improvements in mathematical techniques reduced the amount of time it took to perform computations.",
+      "C": "On average, skilled mathematicians tend to be much younger when they are in their most productive years than are skilled craftspeople.",
+      "D": "The intellectual skills that society values most highly are not computational ones.",
+      "E": "Electronic data-processing technology has enabled people to perform some tasks that previously could not be performed at all."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Timeframes",
+      "Analogies",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Wounds become infected because the break in the\n skin allows bacteria to enter. Infection slows healing.\n Often bacteria-killing ointment is applied to wounds\n after they have been cleaned, but a study at a Nigerian\n hospital found that cleaned wounds that were treated\n with honey—which contains significant quantities of\n bacteria—healed faster, on average, than both cleaned\n wounds treated with antibiotic ointment and wounds\n cleaned but not otherwise treated.",
+    "questionStem": "Which one of the following, if true, most helps to resolve\n the apparent discrepancy between the results of the\n study and the stated facts about wounds, bacteria,\n infection, and healing?",
+    "answerChoices": {
+      "A": "Wounds that have simply been cleaned with soap and water and not otherwise treated heal faster than wounds that have been cleaned and then treated with antibiotic ointment.",
+      "B": "The bacteria found in honey are present in much lower concentrations than the concentrations of bacteria typically present in infected wounds, and applying antibiotic ointment to a wound rarely if ever kills all of the bacteria infecting the wound.",
+      "C": "Honey has properties that inhibit the growth of bacteria in wounds, including the bacteria the honey contains, and antibiotic ointments damage sensitive wound tissue, which slows healing.",
+      "D": "The high concentration of sugar in honey inhibits the growth of bacteria in wounds, including the bacteria contained in the honey itself.",
+      "E": "The antibiotic ointment used in the study damages sensitive tissue in wounds, which slows healing, but honey does not have this effect if the wound has been cleaned."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Art student: Great works of art evoke passionate\n responses in those who view them. Thus, since it\n is well known in art circles that the provocative\n work of abstract painter Ezekiel Reilly elicits\n intensely emotional responses in those who view\n them, his art is great.",
+    "questionStem": "Which one of the following most accurately describes a\n flaw in the argument’s reasoning?",
+    "answerChoices": {
+      "A": "One of the premises used to support the argument’s conclusion assumes the truth of that conclusion.",
+      "B": "The argument treats a condition that is necessary for having a certain quality as if it must also be sufficient for having that quality.",
+      "C": "The argument misapplies a general claim about the members of a class to an atypical instance of that class.",
+      "D": "The argument contains a generalization derived from an insufficient number of instances.",
+      "E": "The argument draws a conclusion expressing a value judgment from premises that do not involve statements about values."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "In northern Europe, archaeologists have discovered\n 400,000-year-old sharpened wooden poles alongside\n flint cutting implements and the remains of horses.\n Since it is normally assumed that Homo sapiens did not\n inhabit Europe prior to 200,000 years ago, this discovery\n effectively disproves the widespread belief that the\n humanlike precursors of Homo sapiens were entirely\n gatherers and scavengers and did not hunt.",
+    "questionStem": "Which one of the following, if true, would add the most\n support to the argument?",
+    "answerChoices": {
+      "A": "Sharpened wooden poles were not used by humanlike precursors of Homo sapiens for self-defense or to cut or transport scavenged carcasses.",
+      "B": "Humanlike inhabitants of northern Europe are known to have used stones and wooden sticks as tools more than 400,000 years ago.",
+      "C": "Homo sapiens evolved from humanlike precursors at least 200,000 years earlier than is normally assumed.",
+      "D": "The humanlike precursors of Homo sapiens developed widely divergent patterns of behavior in the very different ecosystems they inhabited.",
+      "E": "Prehistoric Homo sapiens who adopted hunting as a means of food acquisition did not abandon scavenging and gathering."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Defender",
+      "Alternatives",
+      "Timeframes",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Politician: Our public libraries are open only on\n weekdays and generally at times when most\n children are at school and most adults at work.\n Hence, most taxpayers and their families\n have few opportunities to use public libraries.\n Therefore, no new taxes supporting the library\n system should be approved unless the library\n hours are changed to better suit taxpayers and\n their families.",
+    "questionStem": "Which one of the following principles, if valid, would\n most help to justify the politician’s reasoning?",
+    "answerChoices": {
+      "A": "Libraries and other public facilities that serve an educational purpose should be made as convenient as possible for taxpayers and their families to use.",
+      "B": "If use of a public facility is made more convenient for taxpayers and their families, then new taxes supporting that facility should be approved.",
+      "C": "Taxpayers who have plenty of opportunities to use a public facility should have to pay taxes to support that facility.",
+      "D": "The best way to increase usage of public libraries is to change the library hours for the convenience of most people.",
+      "E": "A new tax supporting a public facility should be approved only when most taxpayers have ample opportunities to use that facility."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The introduction of mass production techniques in\n modern industrial economies allowed the owners of\n industries to lower prices because they could employ\n fewer workers, many of whom required little training.\n The lower prices allowed workers to buy goods that they\n previously would not have been able to afford. But since\n jobs for workers with little training are more vulnerable\n to elimination than those for more highly trained\n workers, _______.",
+    "questionStem": "Which one of the following most logically completes the\n argument?",
+    "answerChoices": {
+      "A": "highly trained workers have more purchasing power in modern industrial economies than workers who are less trained",
+      "B": "the introduction of mass production techniques has decreased benefits for workers as it has increased the profits for owners of industries",
+      "C": "even the highest paid employees in modern industrial economies are never able to achieve job security",
+      "D": "a source of increased purchasing power for workers in modern industrial economies also undermines their job security",
+      "E": "the percentage of workers who can afford to purchase goods produced by modern industrial techniques is shrinking"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Weighing Tradeoffs",
+      "Logical Completion",
+      "Causal Difference-Maker",
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Child psychologist: Psychologists have found that most\n children under the age of six are egocentric\n and selfish in their attitudes toward animals. Ordinarily, it is only between the ages of six\n and nine that children begin to understand that\n animals are independent creatures with their own\n feelings and needs. Hence, most children should\n not have pets until they are at least six years old.",
+    "questionStem": "The child psychologist’s conclusion follows logically if\n which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Most children who are egocentric and selfish in their attitudes towards animals rely on others to take care of a pet.",
+      "B": "Children who are old enough to understand that animals are independent creatures with their own feelings and needs should be allowed to have pets.",
+      "C": "Most children who are egocentric and selfish in their attitudes towards animals do not have pets.",
+      "D": "Most children are egocentric and selfish in their attitudes towards their pets and do not understand that their pets are independent creatures with their own feelings and needs.",
+      "E": "The only children who should have pets are those who understand that their pets are independent creatures with their own feelings and needs."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The average tax refund received by taxpayers who use\n tax preparation services is about 50 percent higher than\n the average refund received by those who do not. So if\n you want a large refund, you should use a tax preparation\n service.",
+    "questionStem": "Which one of the following arguments exhibits flawed\n reasoning most similar to the flawed reasoning exhibited\n by the argument above?",
+    "answerChoices": {
+      "A": "People who invest heavily in the stock market generally have higher incomes than people who do not; so if you want to have a high income, you should invest heavily in the stock market.",
+      "B": "Establishing an in-house print shop usually enables companies to produce their publications more efficiently. So if your company produces publications, then it should establish an in-house print shop.",
+      "C": "Quitting smoking will lower your life insurance premium and will also decrease your risk of lung cancer. So if you want to lower your life insurance premium, you should try to reduce your risk of lung cancer.",
+      "D": "People with larger-than-average estates to manage usually find it helpful to have their own lawyers; so if you have a larger-than-average estate to manage, you should get your own lawyer.",
+      "E": "In deciding who they will call, telemarketers target people who have purchased from telemarketers in the past. So if you do not want to receive calls from telemarketers, you should not purchase anything from them."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In an experiment, each of 200 randomly selected people\n was videotaped while describing action-packed excerpts\n from previously unfamiliar cartoons. Half the subjects were\n allowed to gesture while speaking, and the other half were\n not. Those who gestured spoke more quickly and repeated\n themselves less. This indicates that gesturing helps\n speakers quickly find the phrases they want.",
+    "questionStem": "Which one of the following, if assumed, enables the\n conclusion in the argument to be properly drawn?",
+    "answerChoices": {
+      "A": "Ordinarily almost everyone regularly gestures when speaking quickly and with little repetition, regardless of the topic being discussed.",
+      "B": "The cartoons were chosen by those who conducted the experiment and were selected from a variety of sources.",
+      "C": "Any form of behavior correlated with quicker speech and less repetition in speech helps speakers find the phrases they want quickly.",
+      "D": "Any form of behavior that helps speakers quickly find the phrases they want also enables them to speak more quickly and repeat themselves less than they would if they were not engaged in that behavior.",
+      "E": "Of the subjects who were allowed to gesture, those who spoke the most quickly and repeated themselves least were among those who gestured the most."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Committee chairperson: No new course will be approved\n for next year’s schedule unless a proposal for it has\n already been received either by this committee or\n by Dean Wilson. Dean Wilson has received only\n one new course proposal, and all of the new course\n proposals that this committee has received are\n for upper-level courses. It has been decided that,\n beginning next year, all upper-level courses will\n have prerequisites.",
+    "questionStem": "Which one of the following can be properly inferred if the\n chairperson’s statements are true?",
+    "answerChoices": {
+      "A": "If there are no new upper-level courses next year, then there will be no new courses next year that have prerequisites.",
+      "B": "If all of the new courses next year are upper-level courses, then all of the new course proposals submitted to the committee will have been approved.",
+      "C": "If there is more than one new course next year, at least one of them will be a course that has a prerequisite.",
+      "D": "If the new course proposal that Dean Wilson received is for an upper-level course, then all courses offered next year will have prerequisites.",
+      "E": "If there are no new upper-level courses next year, then the new course proposal that was submitted to Dean Wilson will have been approved."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The olecranon process is a bony part of the mammalian\n elbow. The shorter the olecranon process, the faster the\n forelimbs can typically be moved. Predatory mammals\n must move their forelimbs very quickly when attacking\n prey, and thus generally have short olecranon processes. It has recently been found that the extinct mammal\n Megatherium had a short olecranon process. Hence, in all\n probability, Megatherium was a predator.",
+    "questionStem": "The argument is most vulnerable to criticism on which\n one of the following grounds?",
+    "answerChoices": {
+      "A": "It fails to address the possibility that most mammals with short olecranon processes have not been predators.",
+      "B": "It takes for granted that the only reason predators need to move their forelimbs quickly is to attack prey.",
+      "C": "It overlooks the possibility that Megatherium could have been a successful predator even if it did not have a short olecranon process.",
+      "D": "It takes for granted that, on average, the olecranon processes of extinct mammals were no shorter than those of living mammals are.",
+      "E": "It fails to address the possibility that a longer olecranon process may confer some other advantage, such as greater strength."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Essayist: Commitment to relationships or careers\n is commonly held to be virtuous. But all\n commitments should be seen as morally neutral.\n After all, what one is committed to might be\n either good or bad; for example, commitment to\n a relationship that benefits none of the people\n involved deserves no praise. Often, commitment\n is nothing more than involvement that has\n outlasted its original justification.",
+    "questionStem": "Which one of the following principles, if valid, most\n helps to justify the essayist’s reasoning?",
+    "answerChoices": {
+      "A": "Any commitment that is morally neutral either has outlasted its original justification or deserves no praise, or both.",
+      "B": "Commitment to a relationship or career is virtuous when, but only when, the relationship or career is good.",
+      "C": "If a commitment deserves no praise, then that commitment is morally neutral.",
+      "D": "If a commitment has outlasted its original justification, then it cannot be virtuous.",
+      "E": "All commitments are morally neutral if there are any commitments that are undeserving of praise."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Because of the ubiquity of television in modern\n households, few children today spend their free time\n reading stories, which lack the visual appeal of flashy\n television programs. Thus, few children today will\n develop a lifelong interest in literature.",
+    "questionStem": "The conclusion drawn above follows logically if which\n one of the following is assumed?",
+    "answerChoices": {
+      "A": "No children who spend their free time reading stories fail to develop a lifelong interest in literature.",
+      "B": "Only those people who currently spend their free time reading stories will develop a lifelong interest in literature.",
+      "C": "No children who grow up in a household that lacks a television fail to spend their free time reading stories.",
+      "D": "Few people who watch a great deal of television develop a lifelong interest in literature.",
+      "E": "Few children who spend their free time reading stories watch television."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "New Concept in Conclusion",
+      "Missing Link / Idea",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Filmmaker: I use hidden cameras when filming\n documentaries, because people behave differently\n when they are aware of being filmed. Although\n my subjects have been told that a camera is\n present, they remain unaware of its location and\n act naturally. Hence, my documentaries are more\n worthwhile than documentaries in which, for\n example, people speak directly to the camera.",
+    "questionStem": "Which one of the following principles, if valid, most\n helps to justify the filmmaker’s argument?",
+    "answerChoices": {
+      "A": "A documentary with no purpose other than authentically depicting the behavior of its human subjects can be legitimate.",
+      "B": "A documentary can be authentic only if it does not include any subjects speaking directly to a camera.",
+      "C": "Makers of documentaries do not have a moral obligation to reveal to their subjects the location of the cameras filming them.",
+      "D": "The more authentically a documentary depicts its subjects, the more worthwhile it is.",
+      "E": "Subjects of documentaries should not try to discover the locations of the cameras filming them."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "New Concept in Conclusion",
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The more profitable a corporation is, the more valuable\n its managers’ time is. As a result, it is especially costly\n for highly profitable corporations to have their managers\n spend time monitoring employees. Such corporations can\n save money by reducing this monitoring, as long as the\n employees are given strong incentives to keep working\n hard. So highly profitable corporations can save money\n by giving their employees expensive bonuses.",
+    "questionStem": "The argument requires the assumption that",
+    "answerChoices": {
+      "A": "only a few corporations give their employees bonuses that provide strong enough incentives for the employees to keep working hard even when they are not being monitored",
+      "B": "if a highly profitable corporation could save money by giving its employees expensive bonuses, it is because giving such bonuses would reduce the amount of time its managers must spend monitoring those employees",
+      "C": "the more valuable the managers’ time is at a corporation, the less likely it is that the corporation will actually have those managers spend time monitoring employees",
+      "D": "for people who are employees of highly profitable corporations where monitoring is reduced, expensive bonuses constitute strong incentives to keep working hard",
+      "E": "a highly profitable corporation can save money by reducing its managers’ monitoring of employees only if its employees are given expensive bonuses"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Columnist: Consent forms filled out by subjects prior\n to their participation in tests of experimental\n medicines designed to treat the diseases from\n which they are suffering show that almost all\n subjects accept the risk of receiving ineffective\n substances. This casts doubt on the claim made\n by some medical ethicists that many test subjects\n resent being given placebos (as happens to\n roughly half of all test subjects) or resent being\n given medicines that turn out to be ineffective (as\n also often occurs).",
+    "questionStem": "The reasoning in the columnist’s argument is most\n vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "infers that two phenomena are associated merely from the claim that there are many instances in which both phenomena are present",
+      "B": "uses as evidence the opinions of people who are unlikely to be qualified to make informed judgments about the scientific value of placebos",
+      "C": "uses evidence drawn from a sample that is likely to be unrepresentative",
+      "D": "takes for granted that most test subjects do not change their attitudes toward the chance of taking ineffective substances once the substances they take turn out to be ineffective",
+      "E": "draws a conclusion that is essentially about a moral issue by appealing to evidence that is purely factual"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Medical",
+      "Rebuttals",
+      "Timeframes"
+    ]
+  }
+]

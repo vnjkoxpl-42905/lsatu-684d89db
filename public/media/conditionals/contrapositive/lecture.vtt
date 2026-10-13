@@ -1,0 +1,105 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:04.461
+Here's a rule: if the ceiling light is on, then the power must be on.
+
+2
+00:00:05.261 --> 00:00:06.554
+Now flip the question.
+
+3
+00:00:06.554 --> 00:00:08.141
+What if the power goes out?
+
+4
+00:00:08.541 --> 00:00:10.322
+Could the light still be on?
+
+5
+00:00:10.322 --> 00:00:10.640
+Nope.
+
+6
+00:00:10.640 --> 00:00:11.848
+No power, no light.
+
+7
+00:00:12.248 --> 00:00:15.710
+That's a second rule, and it was hiding inside the first one.
+
+8
+00:00:15.710 --> 00:00:18.435
+If the power is off, then the light must be off.
+
+9
+00:00:19.235 --> 00:00:20.861
+That's the contrapositive.
+
+10
+00:00:20.861 --> 00:00:25.677
+If the necessary condition is absent, the sufficient condition is absent too.
+
+11
+00:00:26.477 --> 00:00:27.848
+Here's how you write it.
+
+12
+00:00:27.848 --> 00:00:30.189
+Start with the rule: Light, arrow, Power.
+
+13
+00:00:30.589 --> 00:00:32.127
+Step one: flip the sides.
+
+14
+00:00:32.127 --> 00:00:35.325
+Power goes on the left, and Light goes on the right.
+
+15
+00:00:35.725 --> 00:00:37.442
+Step two: put a not on both.
+
+16
+00:00:37.442 --> 00:00:39.160
+Not power, arrow, not light.
+
+17
+00:00:39.560 --> 00:00:42.547
+Read it back: if there's no power, the light is not on.
+
+18
+00:00:43.347 --> 00:00:47.233
+The original and the contrapositive are logically equivalent.
+
+19
+00:00:47.233 --> 00:00:51.119
+If one is true, the other is true, so you can use either one.
+
+20
+00:00:51.119 --> 00:00:52.648
+They're interchangeable!
+
+21
+00:00:53.448 --> 00:00:54.613
+Be careful, though.
+
+22
+00:00:54.613 --> 00:00:59.763
+Only flipping the sides is not the contrapositive, and neither is only adding a not.
+
+23
+00:01:00.163 --> 00:01:03.992
+Each one is a different rule, and the original doesn't give it to you.
+
+24
+00:01:03.992 --> 00:01:05.688
+You need both changes together.
+
+25
+00:01:06.488 --> 00:01:12.186
+So when you see a rule, flip it, put a not on both sides, and you've got the contrapositive.
+
+26
+00:01:12.186 --> 00:01:14.787
+Now try it on the next few rules yourself.
