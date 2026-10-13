@@ -158,21 +158,21 @@ export default {
         /* Abstract bootcamp brutalist tokens (scoped to .topic-abstract)
          * These resolve only inside .topic-abstract ancestors, where the
          * matching CSS custom properties are defined
-         * (src/topics/abstract/styles/brutal.css). The vars hold oklch()
-         * colors, so each token goes through color-mix with <alpha-value>:
-         * a bare var() silently dropped opacity shorthands like
-         * bg-brutal-green/40 (no CSS was generated for them). */
-        "brutal-yellow": "color-mix(in oklch, var(--brutal-yellow) calc(<alpha-value> * 100%), transparent)",
-        "brutal-cyan": "color-mix(in oklch, var(--brutal-cyan) calc(<alpha-value> * 100%), transparent)",
-        "brutal-pink": "color-mix(in oklch, var(--brutal-pink) calc(<alpha-value> * 100%), transparent)",
-        "brutal-green": "color-mix(in oklch, var(--brutal-green) calc(<alpha-value> * 100%), transparent)",
-        "brutal-red": "color-mix(in oklch, var(--brutal-red) calc(<alpha-value> * 100%), transparent)",
-        "brutal-ink": "color-mix(in oklch, var(--brutal-ink) calc(<alpha-value> * 100%), transparent)",
-        "brutal-ink-soft": "color-mix(in oklch, var(--brutal-ink-soft) calc(<alpha-value> * 100%), transparent)",
-        "brutal-ink-faint": "color-mix(in oklch, var(--brutal-ink-faint) calc(<alpha-value> * 100%), transparent)",
-        "brutal-ink-trace": "color-mix(in oklch, var(--brutal-ink-trace) calc(<alpha-value> * 100%), transparent)",
-        "brutal-bg": "color-mix(in oklch, var(--brutal-bg) calc(<alpha-value> * 100%), transparent)",
-        "brutal-paper": "color-mix(in oklch, var(--brutal-paper) calc(<alpha-value> * 100%), transparent)",
+         * (src/topics/abstract/styles/brutal.css). Each token goes through
+         * color-mix with <alpha-value> (in srgb: mixing near-greys in oklch
+         * against transparent dropped their hue and tinted slate pink); a bare
+         * var() silently dropped opacity shorthands like bg-brutal-green/40. */
+        "brutal-yellow": "color-mix(in srgb, var(--brutal-yellow) calc(<alpha-value> * 100%), transparent)",
+        "brutal-cyan": "color-mix(in srgb, var(--brutal-cyan) calc(<alpha-value> * 100%), transparent)",
+        "brutal-pink": "color-mix(in srgb, var(--brutal-pink) calc(<alpha-value> * 100%), transparent)",
+        "brutal-green": "color-mix(in srgb, var(--brutal-green) calc(<alpha-value> * 100%), transparent)",
+        "brutal-red": "color-mix(in srgb, var(--brutal-red) calc(<alpha-value> * 100%), transparent)",
+        "brutal-ink": "color-mix(in srgb, var(--brutal-ink) calc(<alpha-value> * 100%), transparent)",
+        "brutal-ink-soft": "color-mix(in srgb, var(--brutal-ink-soft) calc(<alpha-value> * 100%), transparent)",
+        "brutal-ink-faint": "color-mix(in srgb, var(--brutal-ink-faint) calc(<alpha-value> * 100%), transparent)",
+        "brutal-ink-trace": "color-mix(in srgb, var(--brutal-ink-trace) calc(<alpha-value> * 100%), transparent)",
+        "brutal-bg": "color-mix(in srgb, var(--brutal-bg) calc(<alpha-value> * 100%), transparent)",
+        "brutal-paper": "color-mix(in srgb, var(--brutal-paper) calc(<alpha-value> * 100%), transparent)",
 
         /* Causation Station neon "punk" tokens (scoped to .cs-punk)
          * These resolve only inside .cs-punk ancestors, where the matching
