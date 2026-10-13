@@ -1,6 +1,7 @@
 import { DrillItem } from "../types";
 
-// 20 drill items: 5 role, 6 method, 5 flaw, 4 one_word_trap.
+// 20 drill items: 5 role, 6 method, 5 flaw, 4 one_word_trap. Every drill
+// has four choices. drill_20 uses its own story (drill_9 owns the traffic camera).
 //
 // Correct answers are spread across choice positions. drill_1 and drill_2 keep
 // their original order because saved attempts point at those positions.
@@ -75,12 +76,14 @@ export const DRILLS: DrillItem[] = [
       "Some people argue that reading fiction is a waste of time. But reading fiction builds empathy by exposing readers to different perspectives. Empathy is a crucial skill for navigating social interactions in the workplace.",
     question: "Which of the following describes the role of the claim that reading fiction builds empathy?",
     options: [
-      { text: "It is a premise offered to counter the claim that reading fiction is a waste of time.", explanation: "Correct. The claim builds empathy, which the author uses to argue against the idea that fiction is a waste of time." },
-      { text: "It is a premise that completely proves the main conclusion that reading fiction is not a waste of time.", explanation: "Wrong. Premises support a conclusion; they rarely completely prove it in a formal sense. This is an overstatement." },
+      { text: "It is a premise that completely proves the main conclusion that reading fiction is not a waste of time.", explanation: "Not that one. \"Completely proves\" is too strong. The claim supports the author's point; it doesn't prove it." },
+      { text: "It is the main conclusion of the argument.", explanation: "Not that one. The author's point is that fiction is not a waste of time. The empathy claim is a reason for that point." },
+      { text: "It is a premise offered to counter the claim that reading fiction is a waste of time.", explanation: "Correct. The author uses empathy as a reason to push back on the idea that fiction is a waste of time." },
+      { text: "It is a concession the author makes before rejecting it.", explanation: "Not that one. The author doesn't concede the empathy claim. The author relies on it." },
     ],
-    correctOptionIndex: 0,
+    correctOptionIndex: 2,
     explanation:
-      "The first option uses the extreme word \"completely proves\". The premise supports the conclusion but does not completely prove it in a formal logic sense. The second option accurately describes its role as countering the first sentence.",
+      "The empathy claim is the author's reason against the waste-of-time view. The near miss says it \"completely proves\" the conclusion, and that one word is too strong.",
     trapTag: "attractive_language",
   },
   {
@@ -311,12 +314,14 @@ export const DRILLS: DrillItem[] = [
       "Every successful product launch we have studied had at least three rounds of customer testing. Therefore, conducting three rounds of customer testing always guarantees a successful product launch.",
     question: "Which of the following describes a flaw in the argument?",
     options: [
-      { text: "The argument treats a sufficient condition as if it were necessary.", explanation: "The reverse of the actual flip. The evidence is about a feature shared by successful launches, not about what is enough to cause success." },
-      { text: "The argument treats a necessary condition as if it were sufficient.", explanation: "Correct. \"Always guarantees\" is the trap word. The evidence shows three rounds were necessary; the conclusion claims they are sufficient." },
+      { text: "The argument treats a necessary condition as if it were sufficient.", explanation: "Correct. The evidence suggests testing is something successful launches need. \"Always guarantees\" treats it as enough." },
+      { text: "The argument treats a sufficient condition as if it were necessary.", explanation: "Not that one. This is the flip in the wrong direction. The evidence is about something successful launches had, not what is enough to cause success." },
+      { text: "The argument mistakes a temporal relationship for a causal one.", explanation: "Not that one. Nothing in the argument depends on one event coming before another." },
+      { text: "The argument relies on the testimony of an unqualified expert.", explanation: "Not that one. No expert is cited." },
     ],
-    correctOptionIndex: 1,
+    correctOptionIndex: 0,
     explanation:
-      "The single word \"guarantees\" turns an observed necessary condition into a sufficient one. That single-word flip is the trap.",
+      "\"Always guarantees\" turns something successful launches had into something that is enough for success. That one phrase is the flaw.",
     trapTag: "attractive_language",
   },
   {
@@ -326,27 +331,31 @@ export const DRILLS: DrillItem[] = [
       "Researcher: A new study suggests that meditation may reduce stress in some individuals.\nAdvocate: This study proves that everyone should meditate daily.",
     question: "The advocate's response is flawed because it:",
     options: [
-      { text: "Rejects the researcher's finding without offering counter-evidence.", explanation: "The advocate accepts, not rejects, the finding." },
-      { text: "Strengthens the researcher's tentative finding into a universal prescription.", explanation: "Correct. \"Suggests\" and \"may\" become \"proves\" and \"everyone should\". The trap is the strength escalation." },
+      { text: "Rejects the researcher's finding without offering counter-evidence.", explanation: "Not that one. The advocate accepts the finding." },
+      { text: "Attacks the researcher's motives rather than the study.", explanation: "Not that one. The advocate never mentions the researcher's motives." },
+      { text: "Confuses correlation with causation.", explanation: "Not that one. The researcher already describes a possible effect. The advocate's problem is how much stronger the claim becomes." },
+      { text: "Turns a tentative finding about some people into a universal prescription.", explanation: "Correct. \"Suggests,\" \"may\" and \"some\" become \"proves,\" \"everyone\" and \"should.\"" },
     ],
-    correctOptionIndex: 1,
+    correctOptionIndex: 3,
     explanation:
-      "Words like \"suggests\" and \"may\" are deliberately weak. \"Proves\" and \"everyone should\" are absolute. Watch for this strength flip on Inference and Strengthen questions.",
+      "The researcher's words are deliberately weak: suggests, may, some. The advocate's are absolute: proves, everyone, should. That jump in strength is the flaw.",
     trapTag: "attractive_language",
   },
   {
     id: "drill_20",
     type: "one_word_trap",
     stimulus:
-      "Officials claim that the new traffic camera caused the 30% reduction in accidents. But the reduction is also consistent with the citywide infrastructure repair project completed in the same month.",
+      "The school board credits its new homework policy for the rise in this year's reading scores. But this was also the first year every classroom had a full-time reading aide.",
     question: "Which of the following accurately describes the role of the second sentence?",
     options: [
-      { text: "It offers an alternative explanation that is consistent with the same observed effect.", explanation: "Correct. The author opens room for another cause without ruling out the original." },
-      { text: "It conclusively proves that the camera did not cause the reduction.", explanation: "Wrong. \"Conclusively proves\" is the trap word. The author shows an alternative is consistent, not that the camera explanation is impossible." },
+      { text: "It conclusively proves that the homework policy did not raise reading scores.", explanation: "Not that one. \"Conclusively proves\" is too strong. The author only raises another possible cause." },
+      { text: "It offers another possible explanation for the rise in reading scores.", explanation: "Correct. The reading aides could explain the same rise. The author opens room for another cause without ruling out the policy." },
+      { text: "It is the main conclusion of the argument.", explanation: "Not that one. The second sentence is evidence against the board's explanation, not a conclusion." },
+      { text: "It provides support for the school board's explanation.", explanation: "Not that one. The \"But\" signals the second sentence pushes against the board's explanation." },
     ],
-    correctOptionIndex: 0,
+    correctOptionIndex: 1,
     explanation:
-      "\"Conclusively proves\" is an extreme word that overstates what the second sentence actually does. The author opens room for an alternative, not eliminates the original.",
+      "The second sentence offers a different cause for the same effect. The near miss says it \"conclusively proves\" the policy didn't work, which overstates what it does.",
     trapTag: "attractive_language",
   },
 ];
