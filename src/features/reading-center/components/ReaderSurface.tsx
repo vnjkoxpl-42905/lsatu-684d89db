@@ -9,6 +9,19 @@ export const READING_TEXT_STYLE: React.CSSProperties = {
   lineHeight: "var(--rc-line-height)",
 };
 
+/**
+ * The same reading style built straight from prefs, for text that renders outside
+ * the surface: dialogs portal to <body>, so they cannot inherit the variables.
+ */
+export function readingTextStyleFor(prefs: Preferences): React.CSSProperties {
+  const match = FONTS.find((f) => f.label.toLowerCase() === prefs.font_family.toLowerCase());
+  return {
+    fontFamily: match ? match.stack : "Arial, Helvetica, sans-serif",
+    fontSize: `${prefs.font_size}px`,
+    lineHeight: String(prefs.line_spacing),
+  };
+}
+
 export interface ReaderSurfaceProps {
   prefs: Preferences;
   children: React.ReactNode;

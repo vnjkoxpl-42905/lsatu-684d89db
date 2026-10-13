@@ -16,6 +16,7 @@
     "content:pull": "vite-node scripts/content-push.ts -- --pull --apply",
     "assign": "vite-node scripts/assign.ts --",
     "student-work": "vite-node scripts/student-work.ts --",
+    "reading-center:import": "vite-node scripts/reading-center-import.ts --",
     "booking:link": "vite-node scripts/booking-link.ts --",
     "lint": "eslint .",
     "lint:changed": "bash scripts/lint-changed.sh",
