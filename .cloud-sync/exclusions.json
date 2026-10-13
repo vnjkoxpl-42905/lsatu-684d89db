@@ -332,6 +332,18 @@
     "reason": "excluded file"
   },
   {
+    "path": ".playwright-cli/console-2026-10-13T21-14-50-516Z.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".playwright-cli/console-2026-10-13T21-20-25-950Z.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".playwright-cli/console-2026-10-13T21-28-21-810Z.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "dist",
     "reason": "excluded directory"
   },
@@ -372,11 +384,43 @@
     "reason": "excluded file"
   },
   {
+    "path": "output/playwright/conditional-takeover/merged-900-index.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-takeover/merged-build.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-takeover/merged-integration-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-takeover/merged-preview.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-takeover/merged-typecheck.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "output/playwright/conditional-takeover/test-type-fix.log",
     "reason": "excluded file"
   },
   {
+    "path": "output/playwright/conditional-takeover/visual-final.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "output/playwright/conditional-takeover/visual-matrix.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-takeover/visual-merged.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-takeover/visual-representative.log",
     "reason": "excluded file"
   },
   {

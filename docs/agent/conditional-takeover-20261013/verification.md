@@ -14,6 +14,7 @@ Recovered Claude's “Conditional bootcamp improvements” session `9e2e52ef-70a
 - Replaced indicator tabs with a continuous teaching sequence. Flashcard links respect assigned access. Unanswered quiz options do not disclose their roles by color.
 - Paused retained teaching videos on navigation and corrected the accessible order of the animated contrapositive diagram.
 - Added an explicit target-branch argument to the existing safe-push helper so this review branch can be updated without pushing to main.
+- Moved its typecheck gate after the main merge so the actual final checkout is checked before push.
 
 ## Verification
 
@@ -25,10 +26,11 @@ Recovered Claude's “Conditional bootcamp improvements” session `9e2e52ef-70a
 - Browser checks covered wrong-answer gating, hints/Show me, written drafts, reload, final self-review, results, review navigation, first-answer scoring and course Done status. A foundation new round reset current progress while keeping historical Done and its earlier score.
 - All four existing sufficiency, necessity and contrapositive clips played. A playing clip paused after internal lesson navigation. Subjective narration quality was not assessed.
 - Independent final source review found no actionable issue at its stated confidence threshold. It was a source review, not independent browser or cloud acceptance.
+- Main advanced during the guarded push and was merged without conflict (`a3ff1e95`). The combined checkout passed a new app typecheck, production build/content guards and **38 focused progress integration tests**. The original repair commit is `7dce7199`. A representative post-merge layout sweep passed 29 screen checks at the same four widths/default tokens; the index at 900 pixels passed separately after one viewport-transition navigation timeout.
 
 Local browser evidence and reusable acceptance scripts are under the ignored `output/playwright/conditional-takeover/` directory. The snapshot taken before changes is `C:/Users/Joshu/AppData/Local/Temp/conditional-takeover-20261013.patch`.
 
-Responsive verification results are recorded after the final layout pass.
+Responsive browser sweep: **150 screen checks passed**, covering all 21 course steps, drill entry and run surfaces, index and flashcard tools at **375, 640, 900 and 1440 pixels**, plus two default dark-token samples at 640 pixels. No document overflow or clipped controls were detected. Representative mobile, desktop and docked-pane screenshots were inspected. Earlier harness runs stalled; the final bounded run completed successfully. Physical-device and screen-reader acceptance remain separate.
 
 ## Release boundary
 

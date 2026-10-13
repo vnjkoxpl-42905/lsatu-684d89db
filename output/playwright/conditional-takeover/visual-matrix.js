@@ -1,4 +1,5 @@
 async (page) => {
+  page.setDefaultTimeout(5000);
   const base = new URL(page.url());
   const steps = await page.evaluate(async () => (await import('/src/bootcamps/conditionals/openingCoursePath.ts')).OPENING_COURSE_PATH);
   const widths = [375, 640, 900, 1440];
@@ -48,7 +49,7 @@ async (page) => {
   for (const width of widths) {
     await page.setViewportSize({ width, height: 900 });
     for (const route of routes) {
-      await navigate(route, 'light');
+      try { await navigate(route, 'light'); } catch (error) { failures.push({ width, page: route.id, run: !!route.run, deck: route.deck, navigationError: error.message.slice(0, 400) }); continue; }
       const result = await inspect();
       const record = { width, page: route.id, run: !!route.run, deck: route.deck, theme: 'light', ...result };
       checks.push(record);
@@ -70,6 +71,7 @@ async (page) => {
   await page.evaluate(() => document.documentElement.classList.add('light'));
   return { authoredCourseRoutes: steps.length, viewports: widths, checkedSurfaces: checks.length, failures, screenshots };
 }
+
 
 
 

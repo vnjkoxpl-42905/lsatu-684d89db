@@ -119,7 +119,7 @@ export function BootcampDetail() {
                     <td className="px-3 py-2 text-black/60">{row.attempts}</td>
                     <td className="px-3 py-2 text-black/60">{row.correct}</td>
                     <td className="px-3 py-2 text-black/60">
-                      {row.accuracyPct}%
+                      {row.attempts ? `${row.accuracyPct}%` : "No graded attempts"}
                     </td>
                   </tr>
                 ))}
@@ -186,7 +186,7 @@ export function BootcampDetail() {
                       {s.completionPct}%
                     </td>
                     <td className="px-3 py-2 text-black/60">
-                      {s.drillAccuracyPct}%
+                      {s.attemptsCount ? `${s.drillAccuracyPct}%` : "No graded attempts"}
                     </td>
                     <td className="px-3 py-2 text-black/60">
                       {s.attemptsCount}

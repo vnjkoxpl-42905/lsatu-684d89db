@@ -20,11 +20,13 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { computeMastery } from "../../lib/mastery";
+import { sourceExerciseIds } from "../../lib/grading-status";
 import type { MasteryLevel } from "../../types";
 import { useApp } from "../../store/AppContext";
 import { cn } from "../../lib/utils";
 import {
   MODULES,
+  LECTURE_MODULES,
   type ModuleId,
   type ModulePart,
   type QuizSource,
@@ -38,17 +40,22 @@ import { TRANSLATOR_QUIZ_ITEMS } from "../../data/translatorItems";
 import { MATCHING_ITEMS } from "../../data/matchingItems";
 import { GAUNTLET_QUIZ_ITEMS } from "../../data/abstractChoices";
 import BreakdownDrill from "./BreakdownDrill";
+import AnswerChoiceDrill, { AnswerChoiceSteps } from "./AnswerChoiceDrill";
+import { RoleChoiceClosing } from "./RoleChoiceLecture";
 import { WHY_HARD_ITEMS } from "../../data/whyHardItems";
 import { TERM_QUIZ_ITEMS } from "../../data/termQuizItems";
 import { METHOD_QUIZ_ITEMS } from "../../data/methodQuizItems";
 import { TRAP_ITEMS, TRAP_OPTION_TEXT } from "../../data/trapItems";
 import type { DrillItem, DrillType } from "../../types";
 
-type Stage = "overview" | "note" | "quiz" | "drill" | "complete";
+type Stage = "overview" | "note" | "steps" | "quiz" | "drill" | "complete";
 
 export default function ModuleView() {
   const { currentModuleId, setCurrentView, isModuleUnlocked } = useApp();
   const [stage, setStage] = useState<Stage>("overview");
+  const moduleRef = useRef<HTMLDivElement>(null);
+  useEffect(() => { setStage("overview"); }, [currentModuleId]);
+  useEffect(() => { moduleRef.current?.scrollIntoView({ block: "start" }); }, [stage]);
 
   if (!currentModuleId) {
     return (
@@ -91,7 +98,7 @@ export default function ModuleView() {
   }
 
   return (
-    <div className="p-6 md:p-10 max-w-3xl mx-auto">
+    <div ref={moduleRef} className="p-6 md:p-10 max-w-3xl mx-auto scroll-mt-24">
       <button
         type="button"
         onClick={() => {
@@ -112,7 +119,7 @@ export default function ModuleView() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
-            <ModuleOverview moduleId={currentModuleId} onPick={setStage} />
+            <ModuleOverview moduleId={currentModuleId} onPick={(next) => setStage(next === "drill" && mod.drillKind === "answer-choice" ? "steps" : next)} />
           </motion.div>
         )}
         {stage === "note" && (
@@ -126,8 +133,13 @@ export default function ModuleView() {
             <ModuleNote
               moduleId={currentModuleId}
               onDone={() => setStage("overview")}
-              onStartQuiz={() => setStage("quiz")}
+              onStartQuiz={() => setStage(mod.quizSource ? "quiz" : mod.drillKind === "answer-choice" ? "steps" : "drill")}
             />
+          </motion.div>
+        )}
+        {stage === "steps" && (
+          <motion.div key="steps" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <AnswerChoiceSteps onStart={() => setStage("drill")} />
           </motion.div>
         )}
         {stage === "quiz" && (
@@ -177,13 +189,14 @@ function ModuleOverview({
   moduleId: ModuleId;
   onPick: (stage: Stage) => void;
 }) {
-  const { bootcampState, isPartUnlocked } = useApp();
+  const { bootcampState, isPartUnlocked, isModuleComplete } = useApp();
   const mod = getModule(moduleId)!;
   const row = bootcampState.moduleProgress[moduleId];
   const noteDone = Boolean(row?.noteComplete);
   const quizDone = row?.quizTotal > 0 && row.quizScore / row.quizTotal >= mod.quizPassThreshold;
-  const drillDone = Boolean(row?.drillComplete);
-  const mastery: MasteryLevel = row?.masteryLevel ?? "none";
+  const sourceWork = sourceExerciseIds(bootcampState.drillAttempts);
+  const drillDone = isModuleComplete(moduleId);
+  const mastery: MasteryLevel = ["m3", "m5", "m6", "m7"].includes(moduleId) ? computeMastery(row) : row?.masteryLevel ?? "none";
 
   return (
     <>
@@ -212,7 +225,7 @@ function ModuleOverview({
           onOpen={() => onPick("note")}
           ctaLabel={noteDone ? "Re-read" : "Start"}
         />
-        <PartRow
+        {mod.quizSource && <PartRow
           icon={ListChecks}
           label="Quiz"
           meta={
@@ -225,17 +238,19 @@ function ModuleOverview({
           accent="yellow"
           onOpen={() => onPick("quiz")}
           ctaLabel={quizDone ? "Retake" : "Start"}
-        />
+        />}
         <PartRow
           icon={Target}
           label="Drill"
           meta={
-            mod.drillKind === "breakdown"
+            mod.drillKind === "answer-choice"
+              ? `${mod.drillIds.length} answer choices`
+              : mod.drillKind === "breakdown"
               ? `${mod.drillIds.length} breakdown items`
-              : `${mod.drillIds.length} practice questions`
+              : `${mod.drillIds.length} practice question${mod.drillIds.length === 1 ? "" : "s"}`
           }
           status={drillDone ? "done" : isPartUnlocked(moduleId, "drill") ? "active" : "locked"}
-          lockedHint={`Pass the quiz at ${Math.round(mod.quizPassThreshold * 100)}% to unlock.`}
+          lockedHint={mod.quizSource ? `Pass the quiz at ${Math.round(mod.quizPassThreshold * 100)}% to unlock.` : "Read the note to unlock."}
           accent="pink"
           onOpen={() => onPick("drill")}
           ctaLabel={drillDone ? "Retake" : "Start"}
@@ -407,7 +422,7 @@ function ModuleNote({
   return (
     <div>
       <h2 className="text-2xl font-black uppercase tracking-tight mb-2">
-        Note: {lesson?.title ?? mod.name}
+        Note: {["m4", "m5", "m6", "m7"].includes(moduleId) ? mod.name : lesson?.title ?? mod.name}
       </h2>
       <p className="font-bold text-brutal-ink-soft mb-6">{mod.subtitle}</p>
 
@@ -460,10 +475,10 @@ function ModuleNote({
               onClick={onStartQuiz}
               className="brutal-btn bg-brutal-green inline-flex items-center gap-2"
             >
-              Start quiz <ArrowRight className="w-4 h-4" />
+              {mod.quizSource ? "Start quiz" : mod.drillKind === "answer-choice" ? "Read the seven steps" : "Try the worked question"} <ArrowRight className="w-4 h-4" />
             </button>
             <span className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft">
-              Quiz unlocked
+              {mod.quizSource ? "Quiz unlocked" : "Practice unlocked"}
             </span>
           </motion.div>
         )}
@@ -1487,7 +1502,7 @@ function DecodingGauntletRenderer({
 
 // ============ Drill ============
 
-function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
+export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
   const { markDrillComplete, markModuleDrillComplete, addXp } = useApp();
   const mod = getModule(moduleId)!;
   const drills = useMemo(
@@ -1497,12 +1512,17 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [, setCorrectCount] = useState(0);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   // Time per question: restart the clock whenever a new question shows.
   const startedRef = useRef(Date.now());
   useEffect(() => {
     startedRef.current = Date.now();
   }, [index]);
 
+  if (mod.drillKind === "answer-choice") {
+    return <AnswerChoiceDrill onDone={onDone} />;
+  }
   if (mod.drillKind === "breakdown") {
     return <BreakdownDrill onDone={onDone} />;
   }
@@ -1518,14 +1538,16 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
 
   const current = drills[index];
 
-  const submit = (i: number) => {
+  const submit = async (i: number) => {
+    setSaving(true);
+    setSaveError(null);
     setPicked(i);
     const correct = i === current.correctOptionIndex;
     if (correct) {
       setCorrectCount((c) => c + 1);
       addXp(5);
     }
-    void markDrillComplete(
+    const result = await markDrillComplete(
       current.id,
       current.type as DrillType,
       correct,
@@ -1534,12 +1556,15 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
       current.trapTag,
       Date.now() - startedRef.current,
     );
+    setSaving(false);
+    if (!result.ok) setSaveError("Your answer could not be saved. Choose it again to retry.");
   };
 
   const nextItem = async () => {
     if (index + 1 >= drills.length) {
-      await markModuleDrillComplete(moduleId);
-      onDone();
+      const result = await markModuleDrillComplete(moduleId);
+      if (result.ok) onDone();
+      else setSaveError("Your module progress could not be saved. Try again.");
     } else {
       setPicked(null);
       setIndex(index + 1);
@@ -1549,7 +1574,7 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
   return (
     <div>
       <p className="text-xs font-black uppercase tracking-widest mb-3 text-brutal-ink-soft">
-        Question {index + 1} of {drills.length}
+        Question {index + 1} of {drills.length}{current.id.startsWith("source_") && ` · ${current.id.replace("source_", "").toUpperCase().replace(/_/g, "-")}`}
       </p>
       <div className="bg-brutal-paper border-4 border-brutal-ink p-6 brutal-shadow">
         {current.stimulus && (
@@ -1576,11 +1601,11 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
               <li key={i}>
                 <button
                   type="button"
-                  disabled={picked !== null}
-                  onClick={() => submit(i)}
+                  disabled={saving || (picked !== null && !saveError)}
+                  onClick={() => void submit(i)}
                   className={cn("w-full text-left p-4 border-2 border-brutal-ink font-bold", tone)}
                 >
-                  {opt.text}
+                  {current.id.startsWith("source_") && <span className="mr-2 font-black">{String.fromCharCode(65 + i)}.</span>}{opt.text}
                 </button>
                 {picked !== null && (isCorrect || isPicked) && (
                   <p className="text-xs italic font-bold p-2 text-brutal-ink-soft">{opt.explanation}</p>
@@ -1593,9 +1618,11 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
           <div className="mt-5 bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
             <p className="text-xs font-black uppercase tracking-widest mb-2">Why</p>
             <p className="font-bold">{current.explanation}</p>
+            {saveError && <p role="alert">{saveError}</p>}
             <button
               type="button"
               onClick={nextItem}
+              disabled={saving || Boolean(saveError)}
               className="mt-4 brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
             >
               {index + 1 >= drills.length ? "Finish module" : "Next question"}
@@ -1611,12 +1638,12 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
 // ============ Complete ============
 
 function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContinue: () => void }) {
-  const { bootcampState, openModule } = useApp();
+  const { bootcampState, openModule, setCurrentView } = useApp();
   const mod = getModule(moduleId)!;
   const row = bootcampState.moduleProgress[moduleId];
-  const aced = bootcampState.aceBadges.includes(moduleId);
-  const mastery: MasteryLevel = row?.masteryLevel ?? computeMastery(row);
-  const nextModule = MODULES[MODULES.findIndex((m) => m.id === moduleId) + 1];
+  const aced = Boolean(mod.quizSource) && bootcampState.aceBadges.includes(moduleId);
+  const mastery: MasteryLevel = ["m3", "m5", "m6", "m7"].includes(moduleId) ? computeMastery(row) : row?.masteryLevel ?? computeMastery(row);
+  const nextModule = LECTURE_MODULES[LECTURE_MODULES.findIndex((m) => m.id === moduleId) + 1];
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -1654,7 +1681,7 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
         Module {mod.number}
       </p>
       <h2 className="text-4xl font-black uppercase tracking-tight mb-2">Done.</h2>
-      <MasteryBadge level={mastery} />
+      {mastery !== "none" && <MasteryBadge level={mastery} />}
       {aced && (
         <p className="inline-flex items-center gap-2 font-black uppercase tracking-wider text-sm bg-brutal-yellow border-2 border-brutal-ink px-4 py-2 mt-3">
           <Star className="w-4 h-4" /> Aced It
@@ -1662,19 +1689,20 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
       )}
 
       <div className="mt-6 inline-flex flex-wrap items-center gap-3 justify-center">
-        {row && row.quizTotal > 0 && (
+        {mod.quizSource && row && row.quizTotal > 0 && (
           <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-black uppercase tracking-wider">
             Quiz {row.quizScore} / {row.quizTotal}
           </span>
         )}
-        {row && row.drillTotal && (
+        {moduleId === "m3" && row?.drillComplete && <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-bold">Completed the 15 source exercises. Ungraded practice.</span>}
+        {moduleId !== "m3" && row && row.drillTotal && (
           <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-black uppercase tracking-wider">
             Drill {row.drillCorrect ?? 0} / {row.drillTotal}
           </span>
         )}
       </div>
 
-      <p className="font-bold mt-6 mb-6">Nice. Next.</p>
+      {moduleId === "m3" ? <details className="text-left mt-8"><summary className="font-semibold cursor-pointer">Answer-choice recap</summary><div className="mt-6"><RoleChoiceClosing /></div></details> : <p className="font-bold mt-6 mb-6">Continue when you are ready.</p>}
       {nextModule ? (
         <div>
           <p className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft mb-3">
@@ -1691,7 +1719,7 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
       ) : (
         <button
           type="button"
-          onClick={onContinue}
+          onClick={() => setCurrentView("dashboard")}
           className="brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
         >
           Back to Dashboard <ArrowRight className="w-4 h-4" />
