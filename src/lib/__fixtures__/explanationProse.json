@@ -1,0 +1,10 @@
+[
+  { "name": "no styles at all", "styles": [], "expected": false },
+  { "name": "one style, empty steps and notes", "styles": [{ "steps": [], "notes": [] }], "expected": false },
+  { "name": "whitespace-only step and note", "styles": [{ "steps": [{ "body": "   \n\t" }], "notes": [{ "body": " " }] }], "expected": false },
+  { "name": "null bodies", "styles": [{ "steps": [{ "body": null }], "notes": [{ "body": null }] }], "expected": false },
+  { "name": "step only", "styles": [{ "steps": [{ "body": "The conclusion is the first sentence." }], "notes": [] }], "expected": true },
+  { "name": "note only", "styles": [{ "steps": [], "notes": [{ "body": "Out of scope: the argument never mentions cost." }] }], "expected": true },
+  { "name": "mixed styles, prose only in the second", "styles": [{ "steps": [{ "body": "" }], "notes": [] }, { "steps": [], "notes": [{ "body": "Brief: it restates the premise." }] }], "expected": true },
+  { "name": "mixed styles, none with prose", "styles": [{ "steps": [{ "body": "" }], "notes": [{ "body": null }] }, { "steps": [], "notes": [] }], "expected": false }
+]

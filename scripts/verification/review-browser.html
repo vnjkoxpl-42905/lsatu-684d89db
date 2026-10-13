@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Review responsive verification</title>
+<style>body{margin:0;font:14px system-ui}nav{padding:8px;display:flex;flex-wrap:wrap;gap:8px}iframe{display:block;border:0;width:100%;height:calc(100vh - 60px)}</style>
+<nav><button id="normal">Normal text</button><button id="double">Double text</button><button id="sidecar">700px pane</button><button id="full">Full pane</button></nav>
+<iframe id="app" title="Actual authenticated Review app" src="/review/to-review"></iframe>
+<script>
+const app=document.getElementById('app');
+document.getElementById('normal').onclick=()=>app.contentDocument.documentElement.style.fontSize='16px';
+document.getElementById('double').onclick=()=>app.contentDocument.documentElement.style.fontSize='32px';
+document.getElementById('sidecar').onclick=()=>app.style.width='700px';
+document.getElementById('full').onclick=()=>app.style.width='100%';
+</script></html>

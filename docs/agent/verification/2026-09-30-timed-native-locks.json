@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-09-30",
+  "browser": "Codex In-app Browser",
+  "origin": "http://127.0.0.1:8080",
+  "secureContext": true,
+  "nativeWebLocks": true,
+  "separateTabs": 2,
+  "heldWhileContending": 1,
+  "waitingWhileContending": 1,
+  "firstPrepare": "fulfilled",
+  "secondPrepare": "conflict",
+  "sameRetainedCommandId": true,
+  "backendRequests": 0,
+  "syntheticTransportOnly": true,
+  "syntheticKeyCleared": true,
+  "locksRemaining": 0,
+  "temporaryTabsClosed": true,
+  "productionAcceptance": false
+}

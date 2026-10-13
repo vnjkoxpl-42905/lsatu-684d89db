@@ -1,0 +1,176 @@
+- generic [ref=f1e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=f1e4]:
+    - complementary [ref=f1e5]:
+      - link "Classroom" [ref=f1e6] [cursor=pointer]:
+        - /url: /classroom
+      - generic [ref=f1e9]: Conditional logic
+      - navigation "Conditional course" [ref=f1e10]:
+        - paragraph [ref=f1e11]: Intro path
+        - link "Lessons" [ref=f1e12] [cursor=pointer]:
+          - /url: /dev/conditional-opening-preview?page=lessons
+        - paragraph [ref=f1e15]: Practice
+        - link "Practice Drills" [ref=f1e16] [cursor=pointer]:
+          - /url: /dev/conditional-opening-preview?page=practice
+        - link "Drill Lab" [ref=f1e19] [cursor=pointer]:
+          - /url: /dev/conditional-opening-preview?page=labs
+        - paragraph [ref=f1e26]: Tools
+        - link "Flashcards" [ref=f1e27] [cursor=pointer]:
+          - /url: /dev/conditional-opening-preview?page=tools
+    - main [ref=f1e30]:
+      - generic [ref=f1e31]:
+        - generic [ref=f1e294]:
+          - heading "The Necessary Condition" [active] [level=1] [ref=f1e295]
+          - paragraph [ref=f1e296]:
+            - strong [ref=f1e297]: What the sufficient condition requires.
+        - generic [ref=f1e300]:
+          - generic [ref=f1e301]:
+            - heading "What a necessary condition is" [level=2] [ref=f1e303]
+            - paragraph [ref=f1e304]:
+              - strong [ref=f1e305]: A necessary condition is a requirement. It has to be met, but meeting it might not be enough.
+            - paragraph [ref=f1e306]:
+              - text: You have to be a student to be enrolled in law school. Being a student is
+              - strong [ref=f1e307]: necessary
+              - text: for law-school enrollment. But being a student doesn’t prove you’re enrolled. You could be studying history.
+          - generic [ref=f1e308]:
+            - heading "Where the certainty is" [level=2] [ref=f1e310]
+            - paragraph [ref=f1e311]:
+              - strong [ref=f1e312]: The necessary condition is what you can guarantee will occur if the sufficient condition happens.
+            - paragraph [ref=f1e313]: If someone is enrolled in law school, being a student has to be true. Enrollment is enough to prove that requirement.
+            - paragraph [ref=f1e314]:
+              - text: The sufficient condition opens the door. Once it's open, the necessary condition is guaranteed to be on the other side. That makes it
+              - generic [ref=f1e315]: the place of certainty.
+              - text: It's what you can prove.
+          - generic [ref=f1e316]:
+            - heading "Watch the lesson" [level=2] [ref=f1e318]
+            - region "Short explanation of necessity" [ref=f1e319]:
+              - generic [ref=f1e320]:
+                - paragraph [ref=f1e321]: Watch the explanation
+                - heading "Why the requirement is not enough" [level=3] [ref=f1e322]
+              - figure "Law-school students and history students both belong to the student group. Being a student alone does not prove law-school enrollment." [ref=f1e323]:
+                - generic "Law-school students and history students both belong to the student group. Being a student alone does not prove law-school enrollment." [ref=f1e324]: Your browser cannot play this clip. The explanation is available below.
+              - group [ref=f1e326]:
+                - generic "Read the video explanation" [ref=f1e327]
+          - generic [ref=f1e328]:
+            - heading "How to find it" [level=2] [ref=f1e330]
+            - list [ref=f1e331]:
+              - listitem [ref=f1e332]:
+                - strong [ref=f1e333]: "Step 1: Find the requirement."
+                - text: Ask what has to be true if the other idea happens.
+              - listitem [ref=f1e334]:
+                - strong [ref=f1e335]: "Step 2: Put it after “then.”"
+                - text: The idea that requires it goes after “if.”
+            - group "Find the requirement in the law-school rule" [ref=f1e336]:
+              - paragraph [ref=f1e337]:
+                - generic [ref=f1e338]: The rule
+                - text: You have to be
+                - mark [ref=f1e339]: a student
+                - text: to be
+                - mark [ref=f1e340]: enrolled in law school
+                - text: .
+              - generic [aria-hidden] [ref=f1e341]:
+                - generic [ref=f1e342]: If
+                - generic [ref=f1e343]: Enrolled in law school
+                - generic [ref=f1e344]: then
+                - generic [ref=f1e345]: A student
+              - status [ref=f1e346]: This is the rule. Click Step 1.
+              - generic [ref=f1e347]:
+                - button "Step 1. Click here to find the requirement" [ref=f1e348] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f1e349]: "1"
+                  - text: Step 1. Click here to find the requirement
+                - button "Step 2. Click here to put it after “then”" [disabled] [ref=f1e350]:
+                  - generic [aria-hidden] [ref=f1e351]: "2"
+                  - text: Step 2. Click here to put it after “then”
+            - paragraph [ref=f1e352]: "Same two steps when the rule names the requirement first:"
+            - group "A rule that names the requirement first" [ref=f1e353]:
+              - paragraph [ref=f1e354]:
+                - generic [ref=f1e355]: The rule
+                - mark [ref=f1e356]: Fuel
+                - text: is necessary for
+                - mark [ref=f1e357]: the car to start
+                - text: .
+              - generic [aria-hidden] [ref=f1e358]:
+                - generic [ref=f1e359]: If
+                - generic [ref=f1e360]: The car starts
+                - generic [ref=f1e361]: then
+                - generic [ref=f1e362]: It has fuel
+              - status [ref=f1e363]: This rule names the requirement first. Click Step 1.
+              - generic [ref=f1e364]:
+                - button "Step 1. Click here to find the requirement" [ref=f1e365] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f1e366]: "1"
+                  - text: Step 1. Click here to find the requirement
+                - button "Step 2. Click here to put it after “then”" [disabled] [ref=f1e367]:
+                  - generic [aria-hidden] [ref=f1e368]: "2"
+                  - text: Step 2. Click here to put it after “then”
+          - generic [ref=f1e369]:
+            - heading "Words that mark the requirement" [level=2] [ref=f1e371]
+            - paragraph [ref=f1e372]:
+              - text: In the fuel rule,
+              - strong [ref=f1e373]: necessary
+              - text: "marked the requirement. These Group 2 words and phrases mark it too:"
+            - list [ref=f1e374]:
+              - listitem [ref=f1e375]: only
+              - listitem [ref=f1e376]: only if
+              - listitem [ref=f1e377]: only when
+              - listitem [ref=f1e378]: only where
+              - listitem [ref=f1e379]: always
+              - listitem [ref=f1e380]: requires
+              - listitem [ref=f1e381]: must
+            - paragraph [ref=f1e382]: The indicator is the word. The necessary condition is the whole idea it points to.
+            - link "Go to flashcards" [ref=f1e383] [cursor=pointer]:
+              - /url: /dev/conditional-opening-preview?page=tools&deck=group-2&from=necessary
+          - generic [ref=f1e384]:
+            - heading "What it is not" [level=2] [ref=f1e386]
+            - paragraph [ref=f1e387]: Meeting a requirement might not be enough. Wrong answer choices count on you treating it as a guarantee.
+            - generic [ref=f1e388]:
+              - article [ref=f1e389]:
+                - paragraph [ref=f1e390]: Wrong
+                - paragraph [ref=f1e394]: Treat the requirement as enough.
+                - paragraph [ref=f1e395]:
+                  - generic [ref=f1e396]: Student
+                  - generic [aria-hidden] [ref=f1e397]: →
+                  - generic [ref=f1e398]: Enrolled
+              - article [ref=f1e399]:
+                - paragraph [ref=f1e400]: Right
+                - paragraph [ref=f1e403]: Enrollment guarantees the requirement.
+                - paragraph [ref=f1e404]:
+                  - generic [ref=f1e405]: Enrolled
+                  - generic [aria-hidden] [ref=f1e406]: →
+                  - generic [ref=f1e407]: Student
+          - generic [ref=f1e408]:
+            - heading "Picture it on its own" [level=2] [ref=f1e410]
+            - paragraph [ref=f1e411]: Once the rule identifies a requirement, picture that requirement met while the sufficient condition is false. A history student who is not enrolled in law school. A car with fuel and a dead battery. These cases fit their rules. They show why meeting those requirements does not prove enrollment or a running car.
+          - generic [ref=f1e412]:
+            - heading "Pop Quiz" [level=2] [ref=f1e414]:
+              - generic [aria-hidden] [ref=f1e415]: P
+              - generic [aria-hidden] [ref=f1e416]: o
+              - generic [aria-hidden] [ref=f1e417]: p
+              - generic [aria-hidden] [ref=f1e418]: Q
+              - generic [aria-hidden] [ref=f1e419]: u
+              - generic [aria-hidden] [ref=f1e420]: i
+              - generic [aria-hidden] [ref=f1e421]: z
+            - generic [ref=f1e422]:
+              - generic [ref=f1e423]:
+                - paragraph [ref=f1e424]: Your turn
+                - paragraph [ref=f1e425]: Question 1 of 4
+              - paragraph [ref=f1e431]: Every bike in the race has working brakes.
+              - paragraph [ref=f1e432]: Which idea is required?
+              - group "Which idea is required?" [ref=f1e433]:
+                - button "In the race" [ref=f1e434] [cursor=pointer]
+                - button "Working brakes" [ref=f1e436] [cursor=pointer]
+                - button "Any bike" [ref=f1e438] [cursor=pointer]
+              - status [ref=f1e440]: Pick the answer the rule supports.
+        - generic [ref=f1e441]:
+          - paragraph [ref=f1e442]: Complete the quiz before marking this lesson as read.
+          - button "Mark lesson as read" [disabled] [ref=f1e443]
+        - navigation "Course navigation" [ref=f1e446]:
+          - link "Previous lesson The Sufficient Condition" [ref=f1e447] [cursor=pointer]:
+            - /url: /dev/conditional-opening-preview?page=sufficient
+            - generic [ref=f1e448]: Previous lesson
+            - strong [ref=f1e449]: The Sufficient Condition
+          - link "Next lesson Must arrow" [ref=f1e450] [cursor=pointer]:
+            - /url: /dev/conditional-opening-preview?page=must-arrow
+            - generic [ref=f1e451]: Next lesson
+            - strong [ref=f1e452]: Must arrow

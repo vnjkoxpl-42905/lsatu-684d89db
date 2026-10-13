@@ -1,0 +1,72 @@
+{
+  "date": "2026-09-30",
+  "ordinaryJwt": true,
+  "fixtureLabel": "[Verification only] Timed PrepTest atomic v1",
+  "fixtureIds": {
+    "studentParent": "qa-timed-v1-b0b19142-ff65-4da1-affc-db116eb9c07a",
+    "adminParent": "qa-timed-v1-3110adc6-fbca-4a66-89b4-8931c268c981"
+  },
+  "checks": [
+    "ordinary student/admin actors; active exact v1 capability",
+    "two dedicated QA parents; student read/command cross-owner denied; admin QA retained ready for root UI proof",
+    "discarded application reply; exact UUID/envelope replay returns current authority; changed payload PT412",
+    "live foreign claim denied; real expired lease PT410; takeover epoch increments; stale epoch and concurrent CAS denied",
+    "tester-only access revoke denies writes and preserves owner history; exact original flag restored",
+    "LR leg 0: saved unanswered states; legacy KV blocked; mandatory full-key/history/attempt/WAJ closeout",
+    "LR leg 1: saved unanswered states; legacy KV blocked; mandatory full-key/history/attempt/WAJ closeout",
+    "server break pause, retained same-command retry, resume/heartbeat/finish",
+    "RC leg 2: mutable choice stable UUID; reload; raw attempt blocked; blanks and analysis closeout",
+    "confirmed parent completion, official aggregates, terminal command/direct-write denial",
+    "all snapshotted original student work rows unchanged; QA parents retained; no deletes/notifications/AI grading"
+  ],
+  "profileRestored": true,
+  "notifications": 0,
+  "gradingRequests": 0,
+  "deletes": 0,
+  "preExistingRowsModified": 0,
+  "passed": true,
+  "deviceA": "qa-device-a-a6b54b98-af39-4fec-8343-5aec7b75c121",
+  "deviceB": "qa-device-b-4b1ced1b-0e47-4ec9-ae7d-cc0866e03e13",
+  "pt": 103,
+  "manifestSha256": "cacaf2b0ab5cc71535d1efa543f284d601404ae7d0133dc32126ea4801878872",
+  "originalPracticeFlag": true,
+  "preExistingSnapshots": {
+    "practice_test_runs": {
+      "count": 1,
+      "sha256": "c03e3b418933d46115f975643cff1b1d253ea260089942644a41dbe1bd9f22ff"
+    },
+    "attempts": {
+      "count": 14,
+      "sha256": "fe5ddbb209f9ca18f329b24038069ccd40cd985c11e721032ffeb9ddb52dd0fd"
+    },
+    "bootcamp_kv": {
+      "count": 15,
+      "sha256": "a8513d7514f33976c8a4ed0bfee40d725ee0f350a7231916dbcc9df0a3d25987"
+    },
+    "section_history": {
+      "count": 6,
+      "sha256": "44a6b5e54e1fc1306620e5bd72e66d8d5d26b3bc5c3aade197f8c26ebb69fddf"
+    },
+    "rc_drill_sessions": {
+      "count": 9,
+      "sha256": "7b3b2a204eccea97189246ce98905148433afdd50d951966f7e99feb56e53111"
+    },
+    "rc_attempts": {
+      "count": 27,
+      "sha256": "7491472d2e96d0b3cf086b037621e50524446e1a5d2a7ec417b548efcc907af6"
+    },
+    "wrong_answer_journal": {
+      "count": 77,
+      "sha256": "c7303f581a58b3b390b55c36499b779e6c6ad48283a5225c2acacfc67ea2733e"
+    }
+  },
+  "final": {
+    "revision": 20,
+    "epoch": 2,
+    "status": "complete",
+    "completedAt": "2026-09-30T14:18:48.885996+00:00",
+    "rawCorrect": 1,
+    "rawTotal": 78,
+    "scaledScore": 120
+  }
+}

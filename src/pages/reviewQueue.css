@@ -1,0 +1,47 @@
+.classroom-root .review-queue { color: var(--classroom-ink); }
+.classroom-root .review-queue-intro { align-items: start; display: flex; gap: 20px; justify-content: space-between; }
+.classroom-root .review-queue-intro h2 { font-family: Georgia, serif; font-size: 25px; font-weight: 400; margin: 0; }
+.classroom-root .review-queue-intro p { color: var(--classroom-meta-text); font-size: 14px; line-height: 1.5; margin: 8px 0 0; max-width: 68ch; }
+.classroom-root .review-queue-count { color: var(--classroom-meta-text); flex: none; font-size: 13px; padding-top: 7px; }
+.classroom-root .review-queue-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 18px; }
+.classroom-root .review-queue-filters { background: var(--classroom-hover); border: 1px solid var(--classroom-line); border-radius: 16px; display: flex; flex-wrap: wrap; gap: 2px; max-width: 100%; padding: 3px; }
+.classroom-root .review-queue-filters button { border-radius: 999px; color: var(--classroom-meta-text); font-size: 13px; min-height: 34px; padding: 5px 13px; }
+.classroom-root .review-queue-filters button[aria-pressed="true"] { background: var(--classroom-active); color: var(--classroom-active-ink); }
+.classroom-root .review-queue-filters button:disabled { opacity: .45; }
+.classroom-root .review-queue-search { flex: 1 1 180px; }
+.classroom-root .review-queue-search input { background: var(--classroom-surface); border: 1px solid var(--classroom-line-strong); border-radius: 8px; color: var(--classroom-ink); font-size: 14px; min-height: 42px; padding: 8px 12px; width: 100%; }
+.classroom-root .review-queue-view { border: 1px solid var(--classroom-line-strong); border-radius: 8px; color: var(--classroom-ink); font-size: 13px; min-height: 42px; padding: 8px 13px; }
+.classroom-root .review-queue-select { color: var(--classroom-meta-text); display: flex; flex: 1 1 180px; flex-direction: column; font-size: 13px; gap: 4px; min-width: 0; }
+.classroom-root .review-queue-select select { background: var(--classroom-surface); border: 1px solid var(--classroom-line-strong); border-radius: 8px; color: var(--classroom-ink); max-width: 100%; min-height: 42px; padding: 8px; width: 100%; }
+.classroom-root .review-queue-selected { background: var(--classroom-hover); box-shadow: inset 3px 0 var(--classroom-accent); }
+.classroom-root .review-queue-list { list-style: none; margin: 0; padding: 0; }
+.classroom-root .review-queue-list li + li { border-top: 1px solid var(--classroom-line); }
+.classroom-root .review-queue-card { align-items: start; color: var(--classroom-ink); display: flex; gap: 18px; justify-content: space-between; min-height: 86px; padding: 18px 8px; text-decoration: none; }
+.classroom-root .review-queue-card:hover { background: var(--classroom-hover); }
+.classroom-root .review-queue-card-main, .classroom-root .review-queue-card-side { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.classroom-root .review-queue-card-main strong { font-family: Georgia, serif; font-size: 19px; font-weight: 400; }
+.classroom-root .review-queue-card-main > span { color: var(--classroom-meta-text); font-size: 13px; }
+.classroom-root .review-queue-card-main .review-queue-note { color: var(--classroom-ink-body); max-width: min(68ch, 100%); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.classroom-root .review-queue-card-side { align-items: end; flex: none; }
+.classroom-root .review-queue-reason { background: var(--classroom-hover); border: 1px solid var(--classroom-line); border-radius: 999px; color: var(--classroom-meta-text); font-size: 11px; padding: 3px 8px; }
+.classroom-root .review-queue-open { color: var(--classroom-link-text); font-size: 12px; margin-top: 3px; }
+.classroom-root .review-queue-state, .classroom-root .review-queue-error { border: 1px solid var(--classroom-line); border-radius: 12px; padding: 22px; }
+.classroom-root .review-queue-state h3 { font-family: Georgia, serif; font-size: 20px; font-weight: 400; margin: 0 0 7px; }
+.classroom-root .review-queue-state p { color: var(--classroom-meta-text); font-size: 14px; margin: 0; }
+.classroom-root .review-queue-error { background: var(--classroom-hover); display: flex; gap: 12px; justify-content: space-between; margin-bottom: 16px; }
+.classroom-root .review-queue-error button { color: var(--classroom-link-text); text-decoration: underline; }
+.classroom-root .review-queue-table-wrap { border: 1px solid var(--classroom-line); border-radius: 10px; max-width: 100%; overflow-x: auto; }
+.classroom-root .review-queue-table { border-collapse: collapse; font-size: 13px; min-width: 800px; text-align: left; width: 100%; }
+.classroom-root .review-queue-table th, .classroom-root .review-queue-table td { border-bottom: 1px solid var(--classroom-line); padding: 12px; vertical-align: top; }
+.classroom-root .review-queue-table th { color: var(--classroom-meta-text); font-weight: 600; white-space: nowrap; }
+.classroom-root .review-queue-table td a { color: var(--classroom-link-text); font-weight: 600; }
+.classroom-root .review-queue-table td small { color: var(--classroom-meta-text); display: block; margin-top: 3px; }
+.classroom-root .review-queue-more { align-items: center; color: var(--classroom-meta-text); display: flex; font-size: 13px; gap: 14px; justify-content: space-between; padding: 20px 6px; }
+.classroom-root .review-queue-more button { border: 1px solid var(--classroom-line-strong); border-radius: 8px; color: var(--classroom-ink); min-height: 40px; padding: 8px 14px; }
+.classroom-root .review-queue-return { color: var(--classroom-link-text); display: inline-block; font-size: 13px; margin: 0 0 20px; text-decoration: none; }
+.classroom-root .review-queue-return:hover { text-decoration: underline; }
+.classroom-root .review-queue-return:focus-visible { outline: 2px solid var(--classroom-accent); outline-offset: 3px; }
+.classroom-root.classroom-root-review-return .classroom-section-list { display: none; }
+@media (min-width: 1100px) { .classroom-root.classroom-root-journal-detail.classroom-root-review-return { grid-template-columns: 280px minmax(0, 1fr) 320px; } .classroom-root.classroom-root-journal-detail.classroom-root-review-return .classroom-journal-stage { grid-column: 2; } .classroom-root.classroom-root-journal-detail.classroom-root-review-return .classroom-aside { grid-column: 3; } }
+.classroom-root .review-queue button:focus-visible, .classroom-root .review-queue input:focus-visible, .classroom-root .review-queue select:focus-visible, .classroom-root .review-queue a:focus-visible { outline: 2px solid var(--classroom-accent); outline-offset: 3px; }
+@media (max-width: 600px) { .classroom-root .review-queue-intro { flex-direction: column; gap: 6px; } .classroom-root .review-queue-count { padding: 0; } .classroom-root .review-queue-card { flex-direction: column; } .classroom-root .review-queue-card-side { align-items: start; flex-direction: row; flex-wrap: wrap; } .classroom-root .review-queue-open { margin: 3px 0 0; width: 100%; } }
