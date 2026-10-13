@@ -1,0 +1,48 @@
+/* Necessary Condition page. Teal is the requirement, amber what requires it. Every animation has a still end state and stops under reduced motion. */
+
+/* ---- Find the requirement: a highlighter sweep, then an if-then frame ---- */
+.ns-find{display:grid;gap:1rem;margin:1.5rem 0;padding:clamp(1.1rem,3vw,1.75rem);border-radius:20px;background:linear-gradient(160deg,#f2fafb,#fffaf0);border:1px solid #cfe3e6;color:#173544}
+.ns-find-rule{margin:0;padding:1rem 1.2rem;border-radius:14px;background:#fff;border:1px solid #d6e4e7;font-family:Georgia,serif;font-size:clamp(1.2rem,1.05rem + .5vw,1.45rem);line-height:1.5}
+.ns-find-rule>span,.ns-find-result>span{display:block;margin-bottom:.2rem;font-family:Arial,sans-serif;font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#0b6f80}
+.ns-mark{padding:.05em .12em;margin:0 -.12em;border-radius:.25em;color:inherit;background-color:transparent;background-image:linear-gradient(transparent 12%,var(--ns-ink) 12%,var(--ns-ink) 92%,transparent 92%);background-repeat:no-repeat;background-size:0% 100%;transition:background-size .7s cubic-bezier(.6,0,.2,1)}
+.ns-mark[data-role=necessary]{--ns-ink:#9fe3ea}
+.ns-mark[data-role=sufficient]{--ns-ink:#ffe29a}
+.ns-mark[data-lit=true]{background-size:100% 100%}
+.ns-mark[data-role=necessary][data-lit=true]{font-weight:700}
+
+.ns-frame{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem .75rem;padding:.9rem 1rem;border-radius:14px;border:2px dashed #b8cdd2}
+.ns-frame-word{font-size:1.05rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#4b5f69}
+.ns-slot{display:inline-flex;align-items:center;min-height:3rem;padding:.5rem 1.1rem;border-radius:999px;font-size:1.15rem;font-weight:900;color:#4a2f00;background:linear-gradient(135deg,#ffe29a,#ffc247);box-shadow:0 10px 20px -12px #f2a516;opacity:0;filter:blur(6px);transform:translateY(-18px) scale(1.06);transition:opacity .45s,filter .55s,transform .6s cubic-bezier(.3,1.5,.5,1)}
+.ns-slot[data-role=necessary]{color:#06343b;background:linear-gradient(135deg,#9fe3ea,#3fb8c6);box-shadow:0 10px 20px -12px #1394a6;transition-delay:.18s}
+.ns-frame[data-show=true]{border-style:solid;border-color:#3fb8c6}
+.ns-frame[data-show=true] .ns-slot{opacity:1;filter:none;transform:none}
+.ns-find-result{margin:0;padding:.8rem 1rem;border-radius:14px;background:#0b6f80;color:#fff;font-weight:700;font-size:1.05rem;animation:ns-settle .5s .35s both}
+@keyframes ns-settle{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ns-find-result>span{color:#c9f4f8}
+.ns-find-caption{margin:0;font-size:clamp(1.05rem,1rem + .3vw,1.2rem);font-weight:700;min-height:1.6em}
+
+/* ---- Group 2 words: a row of quiet teal tags ---- */
+#root .co-opening ul.ns-words{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0;padding:0;list-style:none}
+#root .co-opening ul.ns-words li{margin:0;padding:.35rem .85rem;border-radius:999px;background:#e3f6f8;border:1px solid #9fd8de;color:#0b4f5a;font-weight:800}
+
+/* ---- Wrong and right, side by side ---- */
+.ns-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.25rem 0}
+#root .co-opening .ns-cards article.ct-move{padding-bottom:1.2rem}
+.ns-cards .ct-move-diagram .ct-pill[data-tone=amber]{color:#4a2f00}
+.ns-cards .ct-move-diagram .ct-pill[data-tone=teal]{color:#06343b}
+@media (max-width:640px){.ns-cards{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){
+  .ns-mark,.ns-slot{transition:none}
+  .ns-find-result{animation:none}
+}
+
+/* ---- Dark ---- */
+.dark .ns-find{background:linear-gradient(160deg,#1d3a40,#25454b);border-color:#50636a;color:#edf3ed}
+.dark .ns-find-rule{background:#203b40;border-color:#50636a}
+.dark .ns-find-rule>span{color:#9fe3ea}
+.dark .ns-mark{color:#06343b}
+.dark .ns-mark[data-lit=false]{color:inherit}
+.dark .ns-frame{border-color:#50636a}
+.dark .ns-frame-word{color:#c3d2cb}
+.dark #root .co-opening ul.ns-words li,.dark .co-opening ul.ns-words li{background:#17383d;border-color:#2f6b74;color:#9fe3ea}

@@ -4,6 +4,7 @@ import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
 import { StagedReasoningDrill } from './StagedReasoningDrill';
 import { FourSituationsNote, FourSituationsQuiz } from './FourSituations';
+import { NecessaryNote } from './NecessaryNote';
 import { DrillOneExperience, type DrillOneQuestion } from './DrillOneExperience';
 import './must-arrow-note.css';
 import { MustArrowPractice } from './MustArrowPractice';
@@ -346,7 +347,7 @@ function Content({ id }: { id: string }) {
   switch (id) {
     case 'meaning': return <ReferenceBody number={1} omitTransition/>;
     case 'sufficient': return <ReferenceBody number={2} omitTransition/>;
-    case 'necessary': return <ReferenceBody number={4} omitTransition/>;
+    case 'necessary': return <NecessaryNote/>;
     case 'must-arrow': return <MustArrowNote/>;
     case 'sufficient-words': return <><IndicatorNote group="group-1"/><CompleteConditionNote/></>;
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;

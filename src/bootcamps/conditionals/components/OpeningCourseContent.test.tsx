@@ -5,36 +5,50 @@ import { MixedFamilyPractice, mixedFamilyItems } from './MixedFamilyPractice';
 
 afterEach(cleanup);
 
-it('teaches necessity before the visual and distinguishes a requirement from a guarantee in fresh practice', () => {
+it('builds the necessary page to the contrapositive shape: definition, certainty, video, steps, words, look-alike, habit, Pop Quiz', () => {
   const { container } = render(<OpeningCourseContent id="necessary"/>);
-  expect(screen.queryByText(/raffle|bicycle|breathing/i)).toBeNull();
-  const explanation = container.querySelector('.nc-lesson .cr-sufficiency-lead')!;
-  expect(explanation).toHaveTextContent('A necessary condition is a requirement. It has to be met, but meeting it might not be enough.');
-  expect(screen.queryByText('Replay emphasis')).toBeNull();
-  expect(screen.queryByText(/Then is the indicator/)).toBeNull();
-  const firstControl = container.querySelector('.nc-person-tabs button')!;
-  expect(explanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  const distinction = screen.getByRole('heading', { name: 'Two roles in the same rule' });
-  expect(firstControl.compareDocumentPosition(distinction) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  const names = ['What a necessary condition is', 'Where the certainty is', 'Watch the lesson', 'How to find it', 'Words that mark the requirement', 'What it is not', 'Picture it on its own', 'Pop Quiz'];
+  for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
+  const text = container.textContent ?? '';
+  const order = names.slice(0, -1).map(name => text.indexOf(name));
+  expect(order).toEqual([...order].sort((m, n) => m - n));
+  expect(container.querySelector('.ct-definition')).toHaveTextContent('A necessary condition is a requirement. It has to be met, but meeting it might not be enough.');
+  expect(screen.getByText('The necessary condition is what you can guarantee will occur if the sufficient condition happens.')).toBeVisible();
+  expect(text).not.toMatch(/raffle|bicycle|breathing|promise|depends on|[—–~]/i);
+  expect(container.querySelector('[role=tablist]')).toBeNull();
   const film = screen.getByRole('region', { name: 'Short explanation of necessity' });
-  expect(firstControl.compareDocumentPosition(film) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(film.querySelector('source')).toHaveAttribute('src', '/media/conditionals/necessity/required-not-enough.mp4');
-  expect(within(film).queryByRole('group', { name: 'Choose an explanation' })).toBeNull();
   expect(film.querySelector('video')).toHaveAttribute('controls');
   expect(film.querySelector('video')).not.toHaveAttribute('autoplay');
-  const questions = [...container.querySelectorAll<HTMLElement>('.nc-checks .cr-question')];
-  const correctAnswers = [0, 1];
-  questions.forEach((question, index) => {
-    const area = within(question);
-    const answers = area.getAllByRole('button');
-    fireEvent.click(answers[1 - correctAnswers[index]]);
-    expect(area.getByRole('status')).toHaveTextContent('Not quite.');
-    fireEvent.click(answers[correctAnswers[index]]);
-    expect(area.getByRole('status')).toHaveTextContent('Correct.');
-    fireEvent.click(area.getByRole('button', { name: 'Try again' }));
-    expect(answers[0]).toHaveFocus();
-    expect(area.getByRole('status')).toBeEmptyDOMElement();
-  });
+  expect([...container.querySelectorAll('.ns-words li')].map(item => item.textContent)).toEqual(['only', 'only if', 'only when', 'only where', 'always', 'requires', 'must']);
+  expect([...container.querySelectorAll('.ns-cards .ct-move')].map(card => card.getAttribute('data-verdict'))).toEqual(['wrong', 'right']);
+});
+
+it('finds the requirement in two steps, including a rule that names it first', () => {
+  render(<OpeningCourseContent id="necessary"/>);
+  const [lawSchool, fuel] = [...document.querySelectorAll<HTMLElement>('.ns-find')];
+  const demo = within(fuel);
+  expect(demo.getByRole('button', { name: /Step 2/ })).toBeDisabled();
+  fireEvent.click(demo.getByRole('button', { name: /Step 1/ }));
+  expect(fuel.querySelector('.ns-mark[data-role=necessary]')).toHaveAttribute('data-lit', 'true');
+  expect(fuel.querySelector('.ns-mark[data-role=sufficient]')).toHaveAttribute('data-lit', 'false');
+  fireEvent.click(demo.getByRole('button', { name: /Step 2/ }));
+  expect(fuel.querySelector('.ns-find-result')).toHaveTextContent('If the car starts, then it has fuel.');
+  expect(demo.getByRole('status')).toHaveTextContent('Its place in the sentence doesn’t decide its role.');
+  expect(lawSchool.querySelector('.ns-frame')).toHaveAttribute('data-show', 'false');
+});
+
+it('runs the necessary Pop Quiz one question at a time on fresh rules', () => {
+  render(<OpeningCourseContent id="necessary"/>);
+  const quiz = within(document.querySelector('.ct-drill') as HTMLElement);
+  expect(quiz.getByText('Question 1 of 4')).toBeVisible();
+  fireEvent.click(quiz.getByRole('button', { name: 'In the race' }));
+  expect(quiz.getByRole('status')).toHaveTextContent(/^Not that one\. Being in the race guarantees the brakes/);
+  fireEvent.click(quiz.getByRole('button', { name: 'Working brakes' }));
+  expect(quiz.getByRole('status')).toHaveTextContent('If a bike is in the race, then it has working brakes.');
+  fireEvent.click(quiz.getByRole('button', { name: 'Next question' }));
+  fireEvent.click(quiz.getByRole('button', { name: 'Yes, it’s in the race.' }));
+  expect(quiz.getByRole('status')).toHaveTextContent(/Brakes are required, not enough/);
 });
 
 it('keeps the sufficient page short: definition, indicators, demo, video, Pop Quiz, then the necessity bridge', () => {
