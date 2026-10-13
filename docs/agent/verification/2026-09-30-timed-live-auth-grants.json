@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-09-30",
+  "readOnly": true,
+  "containsUserRecords": false,
+  "rows": [
+    {
+      "auth_schema_acl": "{supabase_admin=UC/supabase_admin,anon=U/supabase_admin,authenticated=U/supabase_admin,service_role=U/supabase_admin,supabase_auth_admin=UC/supabase_admin,dashboard_user=UC/supabase_admin,postgres=U/supabase_admin}",
+      "auth_schema_owner": "supabase_admin",
+      "auth_usage_grant": false,
+      "migration_auth_users_references": true,
+      "uid_acl": "{=X/supabase_auth_admin,supabase_auth_admin=X/supabase_auth_admin,dashboard_user=X/supabase_auth_admin}",
+      "uid_execute_grant": false,
+      "uid_owner": "supabase_auth_admin"
+    }
+  ]
+}

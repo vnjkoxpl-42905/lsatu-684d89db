@@ -1,0 +1,2795 @@
+{
+ "slug": "read-recall-colour-pt140-s1",
+ "title": "Read, Recall, Colour \u00b7 PT140 Section 1",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT140.S1",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT140_S1_Q1",
+   "prompt": "Several years ago, most of one country's large banks failed and were taken over by a government agency. The agency is now selling these banks, aiming to strengthen the banking system in the process. But the banking system will not be strengthened if the former owners of these banks buy them back. So the agency is unlikely to achieve its goal, since _______.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This happened several years ago. \u00b7 The banks in question were large. \u00b7 The banks belonged to one country. \u00b7 Most of those banks failed. \u00b7 A government agency took them over. (2) This is about the agency. \u00b7 The agency is selling the banks now. \u00b7 The agency has an aim. \u00b7 Its aim is to strengthen the banking system. \u00b7 The strengthening would happen in the process of selling. (3) This is a contrast with what came before. \u00b7 The banking system will not be strengthened. \u00b7 That holds under a condition. \u00b7 The condition is that the banks are bought back. \u00b7 The buyers would be the former owners of these banks. (4) This is the conclusion. \u00b7 The agency is unlikely to achieve its goal. \u00b7 A reason is being given for this. \u00b7 The reason itself is left blank.",
+   "category": "Sufficient Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Several years ago, most of one country's large banks failed and were taken over by a government agency.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This happened several years ago."
+      },
+      {
+       "n": 2,
+       "text": "The banks in question were large."
+      },
+      {
+       "n": 3,
+       "text": "The banks belonged to one country."
+      },
+      {
+       "n": 4,
+       "text": "Most of those banks failed."
+      },
+      {
+       "n": 5,
+       "text": "A government agency took them over."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The agency is now selling these banks, aiming to strengthen the banking system in the process.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the agency."
+      },
+      {
+       "n": 2,
+       "text": "The agency is selling the banks now."
+      },
+      {
+       "n": 3,
+       "text": "The agency has an aim."
+      },
+      {
+       "n": 4,
+       "text": "Its aim is to strengthen the banking system."
+      },
+      {
+       "n": 5,
+       "text": "The strengthening would happen in the process of selling."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "But the banking system will not be strengthened if the former owners of these banks buy them back.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "The banking system will not be strengthened."
+      },
+      {
+       "n": 3,
+       "text": "That holds under a condition."
+      },
+      {
+       "n": 4,
+       "text": "The condition is that the banks are bought back."
+      },
+      {
+       "n": 5,
+       "text": "The buyers would be the former owners of these banks."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "So the agency is unlikely to achieve its goal, since _______.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The agency is unlikely to achieve its goal."
+      },
+      {
+       "n": 3,
+       "text": "A reason is being given for this."
+      },
+      {
+       "n": 4,
+       "text": "The reason itself is left blank."
+      }
+     ]
+    }
+   ],
+   "the_read": "The only possible buyers are the former owners.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q1",
+     "qnum": 1,
+     "question_type": "Sufficient Assumption",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT140_S1_Q2",
+   "prompt": "Accountant: The newspaper industry habitually cites the rising cost of newsprint to explain falling profits. But when corrected for inflation, the cost of newsprint is no more than it was ten years ago. Far from being victims of high costs, newspapers have been benefiting from cheap newsprint for decades. The real threats to their profitability are falling circulation and falling advertising.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The accountant is the speaker. \u00b7 The newspaper industry cites a cost. \u00b7 The cost is the cost of newsprint. \u00b7 That cost is rising. \u00b7 The industry cites it to explain falling profits. \u00b7 The industry does this habitually. (2) This is a contrast. \u00b7 The cost of newsprint is corrected for inflation. \u00b7 Corrected that way, the cost is no more than it once was. \u00b7 The comparison is with ten years ago. (3) Newspapers are not victims of high costs. \u00b7 Newspapers have been benefiting instead. \u00b7 What they benefit from is cheap newsprint. \u00b7 They have benefited for decades. (4) There are real threats. \u00b7 The threats are to the newspapers' profitability. \u00b7 One threat is falling circulation. \u00b7 The other threat is falling advertising.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Accountant: The newspaper industry habitually cites the rising cost of newsprint to explain falling profits.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The accountant is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "The newspaper industry cites a cost."
+      },
+      {
+       "n": 3,
+       "text": "The cost is the cost of newsprint."
+      },
+      {
+       "n": 4,
+       "text": "That cost is rising."
+      },
+      {
+       "n": 5,
+       "text": "The industry cites it to explain falling profits."
+      },
+      {
+       "n": 6,
+       "text": "The industry does this habitually."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But when corrected for inflation, the cost of newsprint is no more than it was ten years ago.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "The cost of newsprint is corrected for inflation."
+      },
+      {
+       "n": 3,
+       "text": "Corrected that way, the cost is no more than it once was."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with ten years ago."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Far from being victims of high costs, newspapers have been benefiting from cheap newsprint for decades.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Newspapers are not victims of high costs."
+      },
+      {
+       "n": 2,
+       "text": "Newspapers have been benefiting instead."
+      },
+      {
+       "n": 3,
+       "text": "What they benefit from is cheap newsprint."
+      },
+      {
+       "n": 4,
+       "text": "They have benefited for decades."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "The real threats to their profitability are falling circulation and falling advertising.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There are real threats."
+      },
+      {
+       "n": 2,
+       "text": "The threats are to the newspapers' profitability."
+      },
+      {
+       "n": 3,
+       "text": "One threat is falling circulation."
+      },
+      {
+       "n": 4,
+       "text": "The other threat is falling advertising."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the cost of newsprint and falling profits were problematic 10 years ago as well?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q2",
+     "qnum": 2,
+     "question_type": "Method",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT140_S1_Q3",
+   "prompt": "Peter: Recent evidence suggests that moderate alcohol consumption has certain beneficial effects on health. In particular, alcohol creates an inhospitable environment in the human body for certain bacteria that can cause illness. Thus, alcohol consumption is, on balance, beneficial.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Peter is the speaker. \u00b7 The evidence is recent. \u00b7 The evidence suggests something. \u00b7 Alcohol consumption has beneficial effects. \u00b7 The consumption is moderate. \u00b7 The effects are on health. \u00b7 Only certain effects are beneficial. (2) This is a specific case of the point before. \u00b7 Alcohol creates an environment. \u00b7 The environment is inhospitable. \u00b7 The environment is in the human body. \u00b7 It is inhospitable to certain bacteria. \u00b7 Those bacteria can cause illness. (3) This is the conclusion. \u00b7 Alcohol consumption is beneficial. \u00b7 It is beneficial on balance.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Peter: Recent evidence suggests that moderate alcohol consumption has certain beneficial effects on health.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Peter is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "The evidence is recent."
+      },
+      {
+       "n": 3,
+       "text": "The evidence suggests something."
+      },
+      {
+       "n": 4,
+       "text": "Alcohol consumption has beneficial effects."
+      },
+      {
+       "n": 5,
+       "text": "The consumption is moderate."
+      },
+      {
+       "n": 6,
+       "text": "The effects are on health."
+      },
+      {
+       "n": 7,
+       "text": "Only certain effects are beneficial."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In particular, alcohol creates an inhospitable environment in the human body for certain bacteria that can cause illness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a specific case of the point before."
+      },
+      {
+       "n": 2,
+       "text": "Alcohol creates an environment."
+      },
+      {
+       "n": 3,
+       "text": "The environment is inhospitable."
+      },
+      {
+       "n": 4,
+       "text": "The environment is in the human body."
+      },
+      {
+       "n": 5,
+       "text": "It is inhospitable to certain bacteria."
+      },
+      {
+       "n": 6,
+       "text": "Those bacteria can cause illness."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Thus, alcohol consumption is, on balance, beneficial.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Alcohol consumption is beneficial."
+      },
+      {
+       "n": 3,
+       "text": "It is beneficial on balance."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the negative health effects of alcohol outweigh the positives?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q3",
+     "qnum": 3,
+     "question_type": "Classic Flaw",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT140_S1_Q4",
+   "prompt": "Consultant: Children taught using innovative new educational methods learn to think more creatively than children taught using rote methods such as drills, but they are less adept at memorizing large amounts of information. Most jobs at Grodex Corporation require the ability to think creatively but do not require a strong ability to memorize. So Grodex should probably conduct its employee-training seminars using the innovative methods, because _______.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The consultant is the speaker. \u00b7 Some children are taught using certain methods. \u00b7 Those methods are innovative and new. \u00b7 The methods are educational ones. \u00b7 Those children learn to think more creatively. \u00b7 The comparison is with children taught by rote methods. \u00b7 Drills are an example of rote methods. (2) This is a contrast. \u00b7 This is about the children taught the new way. \u00b7 They are less adept at memorizing. \u00b7 What they memorize is information. \u00b7 The amounts of information are large. (3) This is about jobs at Grodex Corporation. \u00b7 Most of those jobs require an ability. \u00b7 The required ability is to think creatively. \u00b7 Those jobs do not require another ability. \u00b7 The ability they do not require is a strong ability to memorize. (4) This is the conclusion. \u00b7 Grodex should conduct its seminars a certain way. \u00b7 The seminars are for employee training. \u00b7 It should use the innovative methods. \u00b7 This is only probably so. \u00b7 A reason is being given. \u00b7 The reason itself is left blank.",
+   "category": "Fill In",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Consultant: Children taught using innovative new educational methods learn to think more creatively than children taught using rote methods such as drills,",
+     "details": [
+      {
+       "n": 1,
+       "text": "The consultant is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "Some children are taught using certain methods."
+      },
+      {
+       "n": 3,
+       "text": "Those methods are innovative and new."
+      },
+      {
+       "n": 4,
+       "text": "The methods are educational ones."
+      },
+      {
+       "n": 5,
+       "text": "Those children learn to think more creatively."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with children taught by rote methods."
+      },
+      {
+       "n": 7,
+       "text": "Drills are an example of rote methods."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "but they are less adept at memorizing large amounts of information.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "This is about the children taught the new way."
+      },
+      {
+       "n": 3,
+       "text": "They are less adept at memorizing."
+      },
+      {
+       "n": 4,
+       "text": "What they memorize is information."
+      },
+      {
+       "n": 5,
+       "text": "The amounts of information are large."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Most jobs at Grodex Corporation require the ability to think creatively but do not require a strong ability to memorize.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about jobs at Grodex Corporation."
+      },
+      {
+       "n": 2,
+       "text": "Most of those jobs require an ability."
+      },
+      {
+       "n": 3,
+       "text": "The required ability is to think creatively."
+      },
+      {
+       "n": 4,
+       "text": "Those jobs do not require another ability."
+      },
+      {
+       "n": 5,
+       "text": "The ability they do not require is a strong ability to memorize."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "So Grodex should probably conduct its employee-training seminars using the innovative methods, because _______.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Grodex should conduct its seminars a certain way."
+      },
+      {
+       "n": 3,
+       "text": "The seminars are for employee training."
+      },
+      {
+       "n": 4,
+       "text": "It should use the innovative methods."
+      },
+      {
+       "n": 5,
+       "text": "This is only probably so."
+      },
+      {
+       "n": 6,
+       "text": "A reason is being given."
+      },
+      {
+       "n": 7,
+       "text": "The reason itself is left blank."
+      }
+     ]
+    }
+   ],
+   "the_read": "What is true of children's teaching methods is true of adult teaching methods.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q4",
+     "qnum": 4,
+     "question_type": "Fill In",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT140_S1_Q5",
+   "prompt": "Essayist: If Earth's population continues to grow geometrically, then in a few centuries there will be ten people for every square meter (approximately one person per square foot) of Earth's surface. Some people have claimed that this will probably not be a problem, since humans will have learned by then how to colonize other planets. This would, however, be a temporary solution at best: if the population continues to double every 30 years, and if in the year 2500 half of Earth's population emigrated to Mars, then by the year 2530 Earth would be just as crowded as it had been before the emigration.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The essayist is the speaker. \u00b7 This states a condition. \u00b7 Earth's population might continue to grow. \u00b7 The growth is geometric. (2) This is what would follow. \u00b7 It would happen in a few centuries. \u00b7 There would be ten people per square meter. \u00b7 The square meters are of Earth's surface. \u00b7 That is about one person per square foot. \u00b7 The square-foot figure is approximate. (3) Some people have made a claim. \u00b7 Their claim is that this will not be a problem. \u00b7 They say it probably will not be. \u00b7 They give a reason. \u00b7 The reason is that humans will have learned to colonize other planets. \u00b7 Humans will have learned that by then. (4) This is a contrast with the claim. \u00b7 The solution would be temporary. \u00b7 It would be temporary at best. \u00b7 A condition is introduced. \u00b7 The condition is that the population keeps doubling. \u00b7 The doubling happens every 30 years. (5) A second condition is added. \u00b7 The second condition is set in the year 2500. \u00b7 Half of Earth's population would emigrate. \u00b7 They would emigrate to Mars. \u00b7 Something would follow by the year 2530. \u00b7 Earth would be just as crowded as it had been. \u00b7 The comparison is with how crowded it was before the emigration.",
+   "category": "Conclusion",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Essayist: If Earth's population continues to grow geometrically,",
+     "details": [
+      {
+       "n": 1,
+       "text": "The essayist is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "This states a condition."
+      },
+      {
+       "n": 3,
+       "text": "Earth's population might continue to grow."
+      },
+      {
+       "n": 4,
+       "text": "The growth is geometric."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "then in a few centuries there will be ten people for every square meter (approximately one person per square foot) of Earth's surface.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is what would follow."
+      },
+      {
+       "n": 2,
+       "text": "It would happen in a few centuries."
+      },
+      {
+       "n": 3,
+       "text": "There would be ten people per square meter."
+      },
+      {
+       "n": 4,
+       "text": "The square meters are of Earth's surface."
+      },
+      {
+       "n": 5,
+       "text": "That is about one person per square foot."
+      },
+      {
+       "n": 6,
+       "text": "The square-foot figure is approximate."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Some people have claimed that this will probably not be a problem, since humans will have learned by then how to colonize other planets.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some people have made a claim."
+      },
+      {
+       "n": 2,
+       "text": "Their claim is that this will not be a problem."
+      },
+      {
+       "n": 3,
+       "text": "They say it probably will not be."
+      },
+      {
+       "n": 4,
+       "text": "They give a reason."
+      },
+      {
+       "n": 5,
+       "text": "The reason is that humans will have learned to colonize other planets."
+      },
+      {
+       "n": 6,
+       "text": "Humans will have learned that by then."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "This would, however, be a temporary solution at best: if the population continues to double every 30 years,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with the claim."
+      },
+      {
+       "n": 2,
+       "text": "The solution would be temporary."
+      },
+      {
+       "n": 3,
+       "text": "It would be temporary at best."
+      },
+      {
+       "n": 4,
+       "text": "A condition is introduced."
+      },
+      {
+       "n": 5,
+       "text": "The condition is that the population keeps doubling."
+      },
+      {
+       "n": 6,
+       "text": "The doubling happens every 30 years."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "and if in the year 2500 half of Earth's population emigrated to Mars, then by the year 2530 Earth would be just as crowded as it had been before the emigration.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A second condition is added."
+      },
+      {
+       "n": 2,
+       "text": "The second condition is set in the year 2500."
+      },
+      {
+       "n": 3,
+       "text": "Half of Earth's population would emigrate."
+      },
+      {
+       "n": 4,
+       "text": "They would emigrate to Mars."
+      },
+      {
+       "n": 5,
+       "text": "Something would follow by the year 2530."
+      },
+      {
+       "n": 6,
+       "text": "Earth would be just as crowded as it had been."
+      },
+      {
+       "n": 7,
+       "text": "The comparison is with how crowded it was before the emigration."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rate at which we colonize other planets can outpace population growth? What if space constraints on other planets are different than those on Earth?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q5",
+     "qnum": 5,
+     "question_type": "Conclusion",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT140_S1_Q6",
+   "prompt": "A recent taste test reveals that most people like low-fat chocolate ice cream as much as its full-fat counterpart. Previous tests with vanilla ice cream found that people tended to dislike low-fat versions, complaining of a harsher taste. Chemists point out that chocolate is a very complex flavor, requiring around 500 distinct chemical compounds to produce it. Hence, this complexity probably masks any difference in taste due to the lack of fat.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There was a taste test. \u00b7 The test was recent. \u00b7 The test reveals something. \u00b7 Most people like low-fat chocolate ice cream. \u00b7 They like it as much as the full-fat version. (2) There were earlier tests. \u00b7 Those tests used vanilla ice cream. \u00b7 Those tests found that people disliked the low-fat versions. \u00b7 People tended to dislike them rather than always doing so. \u00b7 People complained about the taste. \u00b7 They said the taste was harsher. (3) Chemists point something out. \u00b7 Chocolate is a flavor. \u00b7 The flavor is very complex. \u00b7 Producing it requires chemical compounds. \u00b7 The compounds are distinct from one another. \u00b7 The number of compounds is around 500. (4) This is the conclusion. \u00b7 The complexity masks a difference. \u00b7 The difference is in taste. \u00b7 The difference is due to the lack of fat. \u00b7 This is only probably so.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A recent taste test reveals that most people like low-fat chocolate ice cream as much as its full-fat counterpart.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There was a taste test."
+      },
+      {
+       "n": 2,
+       "text": "The test was recent."
+      },
+      {
+       "n": 3,
+       "text": "The test reveals something."
+      },
+      {
+       "n": 4,
+       "text": "Most people like low-fat chocolate ice cream."
+      },
+      {
+       "n": 5,
+       "text": "They like it as much as the full-fat version."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Previous tests with vanilla ice cream found that people tended to dislike low-fat versions, complaining of a harsher taste.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There were earlier tests."
+      },
+      {
+       "n": 2,
+       "text": "Those tests used vanilla ice cream."
+      },
+      {
+       "n": 3,
+       "text": "Those tests found that people disliked the low-fat versions."
+      },
+      {
+       "n": 4,
+       "text": "People tended to dislike them rather than always doing so."
+      },
+      {
+       "n": 5,
+       "text": "People complained about the taste."
+      },
+      {
+       "n": 6,
+       "text": "They said the taste was harsher."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Chemists point out that chocolate is a very complex flavor, requiring around 500 distinct chemical compounds to produce it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Chemists point something out."
+      },
+      {
+       "n": 2,
+       "text": "Chocolate is a flavor."
+      },
+      {
+       "n": 3,
+       "text": "The flavor is very complex."
+      },
+      {
+       "n": 4,
+       "text": "Producing it requires chemical compounds."
+      },
+      {
+       "n": 5,
+       "text": "The compounds are distinct from one another."
+      },
+      {
+       "n": 6,
+       "text": "The number of compounds is around 500."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Hence, this complexity probably masks any difference in taste due to the lack of fat.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The complexity masks a difference."
+      },
+      {
+       "n": 3,
+       "text": "The difference is in taste."
+      },
+      {
+       "n": 4,
+       "text": "The difference is due to the lack of fat."
+      },
+      {
+       "n": 5,
+       "text": "This is only probably so."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if some other difference between chocolate and vanilla, like texture and color, accounts for the differing opinions?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q6",
+     "qnum": 6,
+     "question_type": "Strengthen",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT140_S1_Q7",
+   "prompt": "Ethicist: Robert Gillette has argued that because a thorough knowledge of genetics would enable us to cure the over 3,000 inherited disorders that affect humanity, deciphering the human genetic code will certainly benefit humanity despite its enormous cost. Gillette's argument is not persuasive, however, because he fails to consider that such knowledge might ultimately harm human beings more than it would benefit them.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The ethicist is the speaker. \u00b7 Robert Gillette has made an argument. \u00b7 His reason involves knowledge of genetics. \u00b7 The knowledge would be thorough. \u00b7 Such knowledge would enable us to cure disorders. \u00b7 The disorders are inherited ones. \u00b7 There are over 3,000 of them. \u00b7 Those disorders affect humanity. (2) This is Gillette's conclusion. \u00b7 Deciphering the human genetic code will benefit humanity. \u00b7 It will certainly do so. \u00b7 There is a cost to deciphering it. \u00b7 The cost is enormous. \u00b7 The benefit holds despite that cost. (3) This is a contrast with Gillette. \u00b7 The ethicist says Gillette's argument is not persuasive. \u00b7 A reason is given for that. \u00b7 The reason is that Gillette fails to consider something. \u00b7 What he fails to consider is that the knowledge might harm human beings. \u00b7 The harm might come ultimately. \u00b7 The comparison is with how much the knowledge would benefit them.",
+   "category": "Conclusion",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Ethicist: Robert Gillette has argued that because a thorough knowledge of genetics would enable us to cure the over 3,000 inherited disorders that affect humanity,",
+     "details": [
+      {
+       "n": 1,
+       "text": "The ethicist is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "Robert Gillette has made an argument."
+      },
+      {
+       "n": 3,
+       "text": "His reason involves knowledge of genetics."
+      },
+      {
+       "n": 4,
+       "text": "The knowledge would be thorough."
+      },
+      {
+       "n": 5,
+       "text": "Such knowledge would enable us to cure disorders."
+      },
+      {
+       "n": 6,
+       "text": "The disorders are inherited ones."
+      },
+      {
+       "n": 7,
+       "text": "There are over 3,000 of them."
+      },
+      {
+       "n": 8,
+       "text": "Those disorders affect humanity."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "deciphering the human genetic code will certainly benefit humanity despite its enormous cost.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is Gillette's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Deciphering the human genetic code will benefit humanity."
+      },
+      {
+       "n": 3,
+       "text": "It will certainly do so."
+      },
+      {
+       "n": 4,
+       "text": "There is a cost to deciphering it."
+      },
+      {
+       "n": 5,
+       "text": "The cost is enormous."
+      },
+      {
+       "n": 6,
+       "text": "The benefit holds despite that cost."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Gillette's argument is not persuasive, however, because he fails to consider that such knowledge might ultimately harm human beings more than it would benefit them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with Gillette."
+      },
+      {
+       "n": 2,
+       "text": "The ethicist says Gillette's argument is not persuasive."
+      },
+      {
+       "n": 3,
+       "text": "A reason is given for that."
+      },
+      {
+       "n": 4,
+       "text": "The reason is that Gillette fails to consider something."
+      },
+      {
+       "n": 5,
+       "text": "What he fails to consider is that the knowledge might harm human beings."
+      },
+      {
+       "n": 6,
+       "text": "The harm might come ultimately."
+      },
+      {
+       "n": 7,
+       "text": "The comparison is with how much the knowledge would benefit them."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Gillette reasonably assumes that enabling the curing of 3,000 genetic disorders is the only goal of humanity, meaning no harm could reasonably outweigh that benefit?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q7",
+     "qnum": 7,
+     "question_type": "Conclusion",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT140_S1_Q8",
+   "prompt": "Many uses have been claimed for hypnosis, from combating drug addiction to overcoming common phobias. A recent experimental study helps illuminate the supposed connection between hypnosis and increased power of recall. A number of subjects listened to a long, unfamiliar piece of instrumental music. Under subsequent hypnosis, half the subjects were asked to recall salient passages from the musical piece and half were asked to describe scenes from \"the film they had just viewed,\" despite their not having just seen a film. The study found that the subjects in the second group were equally confident and detailed in their movie recollections as the subjects in the first group were in their music recollections.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Uses have been claimed for hypnosis. \u00b7 Many uses have been claimed. \u00b7 One claimed use is combating drug addiction. \u00b7 Another claimed use is overcoming phobias. \u00b7 Those phobias are common ones. (2) There is a study. \u00b7 The study is recent. \u00b7 The study is experimental. \u00b7 The study helps illuminate a connection. \u00b7 The connection is between hypnosis and power of recall. \u00b7 The recall power is increased. \u00b7 The connection is only supposed. (3) Some subjects listened to a piece of music. \u00b7 The number of subjects is not given. \u00b7 The piece was long. \u00b7 The piece was unfamiliar to them. \u00b7 The music was instrumental. (4) The subjects were hypnotized afterward. \u00b7 Half of the subjects got one request. \u00b7 They were asked to recall passages from the musical piece. \u00b7 The passages were salient ones. \u00b7 The other half got a different request. \u00b7 They were asked to describe scenes from a film. \u00b7 The request said they had just viewed that film. \u00b7 Those subjects had not just seen a film. (5) The study made a finding. \u00b7 It is about the subjects in the second group. \u00b7 Those subjects were confident in their movie recollections. \u00b7 They were also detailed in those recollections. \u00b7 The comparison is with the subjects in the first group. \u00b7 The first group's recollections were of the music. \u00b7 The two groups were equal on both counts.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Many uses have been claimed for hypnosis, from combating drug addiction to overcoming common phobias.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Uses have been claimed for hypnosis."
+      },
+      {
+       "n": 2,
+       "text": "Many uses have been claimed."
+      },
+      {
+       "n": 3,
+       "text": "One claimed use is combating drug addiction."
+      },
+      {
+       "n": 4,
+       "text": "Another claimed use is overcoming phobias."
+      },
+      {
+       "n": 5,
+       "text": "Those phobias are common ones."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "A recent experimental study helps illuminate the supposed connection between hypnosis and increased power of recall.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a study."
+      },
+      {
+       "n": 2,
+       "text": "The study is recent."
+      },
+      {
+       "n": 3,
+       "text": "The study is experimental."
+      },
+      {
+       "n": 4,
+       "text": "The study helps illuminate a connection."
+      },
+      {
+       "n": 5,
+       "text": "The connection is between hypnosis and power of recall."
+      },
+      {
+       "n": 6,
+       "text": "The recall power is increased."
+      },
+      {
+       "n": 7,
+       "text": "The connection is only supposed."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "A number of subjects listened to a long, unfamiliar piece of instrumental music.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some subjects listened to a piece of music."
+      },
+      {
+       "n": 2,
+       "text": "The number of subjects is not given."
+      },
+      {
+       "n": 3,
+       "text": "The piece was long."
+      },
+      {
+       "n": 4,
+       "text": "The piece was unfamiliar to them."
+      },
+      {
+       "n": 5,
+       "text": "The music was instrumental."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Under subsequent hypnosis, half the subjects were asked to recall salient passages from the musical piece and half were asked to describe scenes from \"the film they had just viewed,\" despite their not having just seen a film.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The subjects were hypnotized afterward."
+      },
+      {
+       "n": 2,
+       "text": "Half of the subjects got one request."
+      },
+      {
+       "n": 3,
+       "text": "They were asked to recall passages from the musical piece."
+      },
+      {
+       "n": 4,
+       "text": "The passages were salient ones."
+      },
+      {
+       "n": 5,
+       "text": "The other half got a different request."
+      },
+      {
+       "n": 6,
+       "text": "They were asked to describe scenes from a film."
+      },
+      {
+       "n": 7,
+       "text": "The request said they had just viewed that film."
+      },
+      {
+       "n": 8,
+       "text": "Those subjects had not just seen a film."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "The study found that the subjects in the second group were equally confident and detailed in their movie recollections as the subjects in the first group were in their music recollections.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The study made a finding."
+      },
+      {
+       "n": 2,
+       "text": "It is about the subjects in the second group."
+      },
+      {
+       "n": 3,
+       "text": "Those subjects were confident in their movie recollections."
+      },
+      {
+       "n": 4,
+       "text": "They were also detailed in those recollections."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with the subjects in the first group."
+      },
+      {
+       "n": 6,
+       "text": "The first group's recollections were of the music."
+      },
+      {
+       "n": 7,
+       "text": "The two groups were equal on both counts."
+      }
+     ]
+    }
+   ],
+   "the_read": "People under hypnosis may \"remember\" things that did not actually occur.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q8",
+     "qnum": 8,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT140_S1_Q9",
+   "prompt": "Records from 1850 to 1900 show that in a certain region, babies' birth weights each year varied with the success of the previous year's crops: the more successful the crops, the higher the birth weights. This indicates that the health of a newborn depends to a large extent on the amount of food available to the mother during her pregnancy.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The records run from 1850 to 1900. \u00b7 The records show something. \u00b7 What they show holds in a certain region. \u00b7 Babies' birth weights varied. \u00b7 The weights varied each year. \u00b7 They varied with the success of the crops. \u00b7 The crops were the previous year's. (2) This spells out the pattern. \u00b7 The crops could be more successful. \u00b7 The birth weights were then higher. (3) This is the conclusion. \u00b7 A newborn's health depends on something. \u00b7 It depends to a large extent. \u00b7 What it depends on is the amount of food available. \u00b7 The food is available to the mother. \u00b7 The availability is during her pregnancy.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Records from 1850 to 1900 show that in a certain region, babies' birth weights each year varied with the success of the previous year's crops:",
+     "details": [
+      {
+       "n": 1,
+       "text": "The records run from 1850 to 1900."
+      },
+      {
+       "n": 2,
+       "text": "The records show something."
+      },
+      {
+       "n": 3,
+       "text": "What they show holds in a certain region."
+      },
+      {
+       "n": 4,
+       "text": "Babies' birth weights varied."
+      },
+      {
+       "n": 5,
+       "text": "The weights varied each year."
+      },
+      {
+       "n": 6,
+       "text": "They varied with the success of the crops."
+      },
+      {
+       "n": 7,
+       "text": "The crops were the previous year's."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "the more successful the crops, the higher the birth weights.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This spells out the pattern."
+      },
+      {
+       "n": 2,
+       "text": "The crops could be more successful."
+      },
+      {
+       "n": 3,
+       "text": "The birth weights were then higher."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "This indicates that the health of a newborn depends to a large extent on the amount of food available to the mother during her pregnancy.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "A newborn's health depends on something."
+      },
+      {
+       "n": 3,
+       "text": "It depends to a large extent."
+      },
+      {
+       "n": 4,
+       "text": "What it depends on is the amount of food available."
+      },
+      {
+       "n": 5,
+       "text": "The food is available to the mother."
+      },
+      {
+       "n": 6,
+       "text": "The availability is during her pregnancy."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if, in this region, all crops are sold internationally, so more a successful crop doesn't mean more plentiful food? What if birth weights were higher during years with more successful crops because of the increased oxygen that the crops put into the atmosphere?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q9",
+     "qnum": 9,
+     "question_type": "Method",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT140_S1_Q10",
+   "prompt": "Vincent: No scientific discipline can study something that cannot be measured, and since happiness is an entirely subjective experience, it cannot be measured.\n\nYolanda: Just as optometry relies on patients' reports of what they see, happiness research relies on subjects' reports of how they feel. Surely optometry is a scientific discipline.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Vincent is the first speaker. \u00b7 No scientific discipline can study certain things. \u00b7 The things it cannot study are those that cannot be measured. \u00b7 Vincent gives a reason about happiness. \u00b7 Happiness is an experience. \u00b7 The experience is entirely subjective. \u00b7 Happiness therefore cannot be measured. (2) Yolanda is the second speaker. \u00b7 She draws a comparison. \u00b7 Optometry relies on reports. \u00b7 The reports come from patients about what they see. \u00b7 Happiness research also relies on reports. \u00b7 Those reports come from subjects about how they feel. (3) This is about optometry. \u00b7 Optometry is a scientific discipline. \u00b7 She treats this as obvious.",
+   "category": "Controversy",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Vincent: No scientific discipline can study something that cannot be measured, and since happiness is an entirely subjective experience, it cannot be measured.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Vincent is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "No scientific discipline can study certain things."
+      },
+      {
+       "n": 3,
+       "text": "The things it cannot study are those that cannot be measured."
+      },
+      {
+       "n": 4,
+       "text": "Vincent gives a reason about happiness."
+      },
+      {
+       "n": 5,
+       "text": "Happiness is an experience."
+      },
+      {
+       "n": 6,
+       "text": "The experience is entirely subjective."
+      },
+      {
+       "n": 7,
+       "text": "Happiness therefore cannot be measured."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Yolanda: Just as optometry relies on patients' reports of what they see, happiness research relies on subjects' reports of how they feel.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Yolanda is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "She draws a comparison."
+      },
+      {
+       "n": 3,
+       "text": "Optometry relies on reports."
+      },
+      {
+       "n": 4,
+       "text": "The reports come from patients about what they see."
+      },
+      {
+       "n": 5,
+       "text": "Happiness research also relies on reports."
+      },
+      {
+       "n": 6,
+       "text": "Those reports come from subjects about how they feel."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Surely optometry is a scientific discipline.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about optometry."
+      },
+      {
+       "n": 2,
+       "text": "Optometry is a scientific discipline."
+      },
+      {
+       "n": 3,
+       "text": "She treats this as obvious."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether scientific disciplines can rely on things reported by patients.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q10",
+     "qnum": 10,
+     "question_type": "Controversy",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT140_S1_Q11",
+   "prompt": "Although large cities are generally more polluted than the countryside, increasing urbanization may actually reduce the total amount of pollution generated nationwide. Residents of large cities usually rely more on mass transportation and live in smaller, more energy-efficient dwellings than do people in rural areas. Thus, a given number of people will produce less pollution if concentrated in a large city than if dispersed among many small towns.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This opens with a concession. \u00b7 Large cities are more polluted than the countryside. \u00b7 That is generally so. \u00b7 The urbanization is increasing. \u00b7 Increasing urbanization may reduce pollution. \u00b7 What may be reduced is the total amount generated nationwide. (2) This is about residents of large cities. \u00b7 They rely more on mass transportation. \u00b7 They usually do so. \u00b7 They live in smaller dwellings. \u00b7 Their dwellings are more energy-efficient. \u00b7 The comparison is with people in rural areas. (3) This is the conclusion. \u00b7 It is about a given number of people. \u00b7 Those people will produce less pollution. \u00b7 That holds if they are concentrated in a large city. \u00b7 The comparison is with their being dispersed among small towns. \u00b7 The towns would be many.",
+   "category": "Argument Part",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Although large cities are generally more polluted than the countryside, increasing urbanization may actually reduce the total amount of pollution generated nationwide.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This opens with a concession."
+      },
+      {
+       "n": 2,
+       "text": "Large cities are more polluted than the countryside."
+      },
+      {
+       "n": 3,
+       "text": "That is generally so."
+      },
+      {
+       "n": 4,
+       "text": "The urbanization is increasing."
+      },
+      {
+       "n": 5,
+       "text": "Increasing urbanization may reduce pollution."
+      },
+      {
+       "n": 6,
+       "text": "What may be reduced is the total amount generated nationwide."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Residents of large cities usually rely more on mass transportation and live in smaller, more energy-efficient dwellings than do people in rural areas.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about residents of large cities."
+      },
+      {
+       "n": 2,
+       "text": "They rely more on mass transportation."
+      },
+      {
+       "n": 3,
+       "text": "They usually do so."
+      },
+      {
+       "n": 4,
+       "text": "They live in smaller dwellings."
+      },
+      {
+       "n": 5,
+       "text": "Their dwellings are more energy-efficient."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with people in rural areas."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Thus, a given number of people will produce less pollution if concentrated in a large city than if dispersed among many small towns.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about a given number of people."
+      },
+      {
+       "n": 3,
+       "text": "Those people will produce less pollution."
+      },
+      {
+       "n": 4,
+       "text": "That holds if they are concentrated in a large city."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with their being dispersed among small towns."
+      },
+      {
+       "n": 6,
+       "text": "The towns would be many."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if other things unique to city life more than make up for the pollution saved by public transit and energy efficient dwellings?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q11",
+     "qnum": 11,
+     "question_type": "Argument Part",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT140_S1_Q12",
+   "prompt": "Climatologist: Over the coming century, winter temperatures are likely to increase in the Rocky Mountains due to global warming. This will cause a greater proportion of precipitation to fall as rain instead of snow. Therefore, the mountain snowpack will probably melt more rapidly and earlier in the season, leading to greater spring flooding and less storable water to meet summer demands.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The climatologist is the speaker. \u00b7 This concerns the coming century. \u00b7 Winter temperatures are likely to increase. \u00b7 The increase would be in the Rocky Mountains. \u00b7 The cause would be global warming. (2) This is what the increase will cause. \u00b7 Precipitation will fall as rain. \u00b7 A greater proportion of it will do so. \u00b7 The alternative is falling as snow. (3) This is the conclusion. \u00b7 It is about the mountain snowpack. \u00b7 The snowpack will melt more rapidly. \u00b7 It will also melt earlier in the season. \u00b7 This is only probably so. \u00b7 One result would be greater spring flooding. \u00b7 Another result would be less storable water. \u00b7 The water would be needed to meet summer demands.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Climatologist: Over the coming century, winter temperatures are likely to increase in the Rocky Mountains due to global warming.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The climatologist is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "This concerns the coming century."
+      },
+      {
+       "n": 3,
+       "text": "Winter temperatures are likely to increase."
+      },
+      {
+       "n": 4,
+       "text": "The increase would be in the Rocky Mountains."
+      },
+      {
+       "n": 5,
+       "text": "The cause would be global warming."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This will cause a greater proportion of precipitation to fall as rain instead of snow.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is what the increase will cause."
+      },
+      {
+       "n": 2,
+       "text": "Precipitation will fall as rain."
+      },
+      {
+       "n": 3,
+       "text": "A greater proportion of it will do so."
+      },
+      {
+       "n": 4,
+       "text": "The alternative is falling as snow."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, the mountain snowpack will probably melt more rapidly and earlier in the season, leading to greater spring flooding and less storable water to meet summer demands.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the mountain snowpack."
+      },
+      {
+       "n": 3,
+       "text": "The snowpack will melt more rapidly."
+      },
+      {
+       "n": 4,
+       "text": "It will also melt earlier in the season."
+      },
+      {
+       "n": 5,
+       "text": "This is only probably so."
+      },
+      {
+       "n": 6,
+       "text": "One result would be greater spring flooding."
+      },
+      {
+       "n": 7,
+       "text": "Another result would be less storable water."
+      },
+      {
+       "n": 8,
+       "text": "The water would be needed to meet summer demands."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the temperature on the mountain peaks won't rise enough to get above freezing?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q12",
+     "qnum": 12,
+     "question_type": "Strengthen",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT140_S1_Q13",
+   "prompt": "Animal feed should not include genetically modified plants. A study found that laboratory rats fed genetically modified potatoes for 30 days tended to develop intestinal deformities and a weakened immune system, whereas rats fed a normal diet of foods that were not genetically modified did not develop these problems.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about animal feed. \u00b7 Animal feed should not include certain plants. \u00b7 The plants are genetically modified ones. (2) A study made a finding. \u00b7 The finding is about rats. \u00b7 The rats were laboratory rats. \u00b7 The rats were fed genetically modified potatoes. \u00b7 They were fed them for 30 days. \u00b7 Those rats developed intestinal deformities. \u00b7 They also developed a weakened immune system. \u00b7 They tended to do so rather than always doing so. (3) This is a contrast with the other rats. \u00b7 Some rats were fed a normal diet. \u00b7 The foods in that diet were not genetically modified. \u00b7 Those rats did not develop the problems.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Animal feed should not include genetically modified plants.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about animal feed."
+      },
+      {
+       "n": 2,
+       "text": "Animal feed should not include certain plants."
+      },
+      {
+       "n": 3,
+       "text": "The plants are genetically modified ones."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "A study found that laboratory rats fed genetically modified potatoes for 30 days tended to develop intestinal deformities and a weakened immune system,",
+     "details": [
+      {
+       "n": 1,
+       "text": "A study made a finding."
+      },
+      {
+       "n": 2,
+       "text": "The finding is about rats."
+      },
+      {
+       "n": 3,
+       "text": "The rats were laboratory rats."
+      },
+      {
+       "n": 4,
+       "text": "The rats were fed genetically modified potatoes."
+      },
+      {
+       "n": 5,
+       "text": "They were fed them for 30 days."
+      },
+      {
+       "n": 6,
+       "text": "Those rats developed intestinal deformities."
+      },
+      {
+       "n": 7,
+       "text": "They also developed a weakened immune system."
+      },
+      {
+       "n": 8,
+       "text": "They tended to do so rather than always doing so."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "whereas rats fed a normal diet of foods that were not genetically modified did not develop these problems.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with the other rats."
+      },
+      {
+       "n": 2,
+       "text": "Some rats were fed a normal diet."
+      },
+      {
+       "n": 3,
+       "text": "The foods in that diet were not genetically modified."
+      },
+      {
+       "n": 4,
+       "text": "Those rats did not develop the problems."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rats fed GMOs didn't exercise and the normal diet rats did, and that's what caused the difference? What if it was the potatoes themselves, not the GMO nature, that harmed the rats?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q13",
+     "qnum": 13,
+     "question_type": "Weaken",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT140_S1_Q14",
+   "prompt": "Some philosophers explain visual perception by suggesting that when we visually perceive an object, a mental image of that object forms in our mind. However, this hypothesis cannot be correct, since it would require an inner self visually perceiving the newly formed mental image; this would in turn require that the inner self have a mental image of that mental image, and so on. But such an infinite regress is absurd.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Some philosophers explain visual perception. \u00b7 They explain it by a suggestion. \u00b7 Their suggestion concerns when we perceive an object. \u00b7 The perceiving is visual. \u00b7 A mental image forms. \u00b7 The image is of that object. \u00b7 The image forms in our mind. (2) This is a contrast with the philosophers. \u00b7 The hypothesis cannot be correct. \u00b7 A reason is given for that. \u00b7 The hypothesis would require an inner self. \u00b7 That inner self would visually perceive the mental image. \u00b7 The image is the newly formed one. (3) This is a further requirement. \u00b7 The inner self would have to have a mental image. \u00b7 That image would be of the first mental image. \u00b7 The pattern continues without end. (4) This is a contrast. \u00b7 The regress described is infinite. \u00b7 Such a regress is absurd.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Some philosophers explain visual perception by suggesting that when we visually perceive an object, a mental image of that object forms in our mind.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some philosophers explain visual perception."
+      },
+      {
+       "n": 2,
+       "text": "They explain it by a suggestion."
+      },
+      {
+       "n": 3,
+       "text": "Their suggestion concerns when we perceive an object."
+      },
+      {
+       "n": 4,
+       "text": "The perceiving is visual."
+      },
+      {
+       "n": 5,
+       "text": "A mental image forms."
+      },
+      {
+       "n": 6,
+       "text": "The image is of that object."
+      },
+      {
+       "n": 7,
+       "text": "The image forms in our mind."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "However, this hypothesis cannot be correct, since it would require an inner self visually perceiving the newly formed mental image;",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with the philosophers."
+      },
+      {
+       "n": 2,
+       "text": "The hypothesis cannot be correct."
+      },
+      {
+       "n": 3,
+       "text": "A reason is given for that."
+      },
+      {
+       "n": 4,
+       "text": "The hypothesis would require an inner self."
+      },
+      {
+       "n": 5,
+       "text": "That inner self would visually perceive the mental image."
+      },
+      {
+       "n": 6,
+       "text": "The image is the newly formed one."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "this would in turn require that the inner self have a mental image of that mental image, and so on.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a further requirement."
+      },
+      {
+       "n": 2,
+       "text": "The inner self would have to have a mental image."
+      },
+      {
+       "n": 3,
+       "text": "That image would be of the first mental image."
+      },
+      {
+       "n": 4,
+       "text": "The pattern continues without end."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "But such an infinite regress is absurd.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "The regress described is infinite."
+      },
+      {
+       "n": 3,
+       "text": "Such a regress is absurd."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the absurd is, in fact, true?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q14",
+     "qnum": 14,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT140_S1_Q15",
+   "prompt": "Greatly exceeding the recommended daily intake of vitamins A and D is dangerous, for they can be toxic at high levels. For some vitamin-fortified foods, each serving, as defined by the manufacturer, has 100 percent of the recommended daily intake of these vitamins. But many people overestimate what counts as a standard serving of vitamin-fortified foods such as cereal, consuming two to three times what the manufacturers define as standard servings.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Exceeding a recommended intake is dangerous. \u00b7 The excess must be great. \u00b7 The intake is the recommended daily one. \u00b7 The vitamins are A and D. \u00b7 A reason is given for this. \u00b7 Those vitamins can be toxic. \u00b7 They are toxic at high levels. (2) This is about vitamin-fortified foods. \u00b7 It holds for only some of them. \u00b7 Each serving of those foods has a certain amount. \u00b7 The serving is defined by the manufacturer. \u00b7 The amount is 100 percent of the recommended daily intake. \u00b7 The intake is of these vitamins. (3) This is a contrast. \u00b7 Many people overestimate something. \u00b7 What they overestimate is what counts as a standard serving. \u00b7 The serving is of vitamin-fortified foods. \u00b7 Cereal is an example of such foods. (4) This is about how much those people consume. \u00b7 They consume more than a standard serving. \u00b7 The amount is two to three times as much. \u00b7 The manufacturers define the standard servings.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Greatly exceeding the recommended daily intake of vitamins A and D is dangerous, for they can be toxic at high levels.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Exceeding a recommended intake is dangerous."
+      },
+      {
+       "n": 2,
+       "text": "The excess must be great."
+      },
+      {
+       "n": 3,
+       "text": "The intake is the recommended daily one."
+      },
+      {
+       "n": 4,
+       "text": "The vitamins are A and D."
+      },
+      {
+       "n": 5,
+       "text": "A reason is given for this."
+      },
+      {
+       "n": 6,
+       "text": "Those vitamins can be toxic."
+      },
+      {
+       "n": 7,
+       "text": "They are toxic at high levels."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "For some vitamin-fortified foods, each serving, as defined by the manufacturer, has 100 percent of the recommended daily intake of these vitamins.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about vitamin-fortified foods."
+      },
+      {
+       "n": 2,
+       "text": "It holds for only some of them."
+      },
+      {
+       "n": 3,
+       "text": "Each serving of those foods has a certain amount."
+      },
+      {
+       "n": 4,
+       "text": "The serving is defined by the manufacturer."
+      },
+      {
+       "n": 5,
+       "text": "The amount is 100 percent of the recommended daily intake."
+      },
+      {
+       "n": 6,
+       "text": "The intake is of these vitamins."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "But many people overestimate what counts as a standard serving of vitamin-fortified foods such as cereal,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Many people overestimate something."
+      },
+      {
+       "n": 3,
+       "text": "What they overestimate is what counts as a standard serving."
+      },
+      {
+       "n": 4,
+       "text": "The serving is of vitamin-fortified foods."
+      },
+      {
+       "n": 5,
+       "text": "Cereal is an example of such foods."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "consuming two to three times what the manufacturers define as standard servings.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about how much those people consume."
+      },
+      {
+       "n": 2,
+       "text": "They consume more than a standard serving."
+      },
+      {
+       "n": 3,
+       "text": "The amount is two to three times as much."
+      },
+      {
+       "n": 4,
+       "text": "The manufacturers define the standard servings."
+      }
+     ]
+    }
+   ],
+   "the_read": "If consuming 200-300 times the daily recommended intake of vitamins is harmful, some people may put themselves in danger by eating two to three times the recommended serving of vitamin-fortified cereal.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q15",
+     "qnum": 15,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT140_S1_Q16",
+   "prompt": "At the end of 1997 several nations stated that their oil reserves had not changed since the end of 1996. But oil reserves gradually drop as old oil fields are drained and rise suddenly as new oil fields are discovered. Therefore, oil reserves are unlikely to remain unchanged from one year to the next. So most of the nations stating that their oil reserves were unchanged are probably incorrect.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This happened at the end of 1997. \u00b7 Several nations made a statement. \u00b7 They stated that their oil reserves had not changed. \u00b7 The period of no change began at the end of 1996. (2) This is a contrast. \u00b7 Oil reserves go down. \u00b7 The dropping is gradual. \u00b7 Reserves drop as old oil fields are drained. \u00b7 Oil reserves also rise. \u00b7 The rising is sudden. \u00b7 Reserves rise as new oil fields are discovered. (3) This is a conclusion drawn from what came before. \u00b7 Oil reserves are unlikely to remain unchanged. \u00b7 The span considered is one year to the next. (4) This is a further conclusion. \u00b7 It is about the nations that stated their reserves were unchanged. \u00b7 Most of those nations are incorrect. \u00b7 They are probably incorrect.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "At the end of 1997 several nations stated that their oil reserves had not changed since the end of 1996.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This happened at the end of 1997."
+      },
+      {
+       "n": 2,
+       "text": "Several nations made a statement."
+      },
+      {
+       "n": 3,
+       "text": "They stated that their oil reserves had not changed."
+      },
+      {
+       "n": 4,
+       "text": "The period of no change began at the end of 1996."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But oil reserves gradually drop as old oil fields are drained and rise suddenly as new oil fields are discovered.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Oil reserves go down."
+      },
+      {
+       "n": 3,
+       "text": "The dropping is gradual."
+      },
+      {
+       "n": 4,
+       "text": "Reserves drop as old oil fields are drained."
+      },
+      {
+       "n": 5,
+       "text": "Oil reserves also rise."
+      },
+      {
+       "n": 6,
+       "text": "The rising is sudden."
+      },
+      {
+       "n": 7,
+       "text": "Reserves rise as new oil fields are discovered."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, oil reserves are unlikely to remain unchanged from one year to the next.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a conclusion drawn from what came before."
+      },
+      {
+       "n": 2,
+       "text": "Oil reserves are unlikely to remain unchanged."
+      },
+      {
+       "n": 3,
+       "text": "The span considered is one year to the next."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "So most of the nations stating that their oil reserves were unchanged are probably incorrect.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a further conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the nations that stated their reserves were unchanged."
+      },
+      {
+       "n": 3,
+       "text": "Most of those nations are incorrect."
+      },
+      {
+       "n": 4,
+       "text": "They are probably incorrect."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the nations discovered new oil fields with as much oil as had been consumed between 1996 and 1997?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q16",
+     "qnum": 16,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT140_S1_Q17",
+   "prompt": "If a motor is sound-insulated, then it is quiet enough to use in home appliances. If a motor is quiet enough to use in home appliances, then it can be used in institutional settings. None of the motors manufactured by EM Industries are quiet enough to use in home appliances.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This states a condition about a motor. \u00b7 The condition is that the motor is sound-insulated. \u00b7 Such a motor is quiet enough. \u00b7 It is quiet enough to use in home appliances. (2) This states another condition. \u00b7 The condition is that a motor is quiet enough for home appliances. \u00b7 Such a motor can be used elsewhere. \u00b7 It can be used in institutional settings. (3) This is about motors manufactured by EM Industries. \u00b7 None of those motors are quiet enough. \u00b7 They are not quiet enough for home appliances.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "If a motor is sound-insulated, then it is quiet enough to use in home appliances.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This states a condition about a motor."
+      },
+      {
+       "n": 2,
+       "text": "The condition is that the motor is sound-insulated."
+      },
+      {
+       "n": 3,
+       "text": "Such a motor is quiet enough."
+      },
+      {
+       "n": 4,
+       "text": "It is quiet enough to use in home appliances."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "If a motor is quiet enough to use in home appliances, then it can be used in institutional settings.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This states another condition."
+      },
+      {
+       "n": 2,
+       "text": "The condition is that a motor is quiet enough for home appliances."
+      },
+      {
+       "n": 3,
+       "text": "Such a motor can be used elsewhere."
+      },
+      {
+       "n": 4,
+       "text": "It can be used in institutional settings."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "None of the motors manufactured by EM Industries are quiet enough to use in home appliances.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about motors manufactured by EM Industries."
+      },
+      {
+       "n": 2,
+       "text": "None of those motors are quiet enough."
+      },
+      {
+       "n": 3,
+       "text": "They are not quiet enough for home appliances."
+      }
+     ]
+    }
+   ],
+   "the_read": "None of the motors manufactured by EM Industries are sound-insulated.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q17",
+     "qnum": 17,
+     "question_type": "Inference",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT140_S1_Q18",
+   "prompt": "Mayor: A huge protest against plans to build a chemical plant in this town was held yesterday. The protesters claim that the factory could cause health problems. But this worry can be dismissed. Most of the protesters were there only because they were paid to show up by property developers who are concerned that the factory would lower the value of nearby land that they own.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The mayor is the speaker. \u00b7 A protest was held. \u00b7 The protest was huge. \u00b7 It was held yesterday. \u00b7 The protest was against plans. \u00b7 The plans are to build a chemical plant. \u00b7 The plant would be in this town. (2) This is about the protesters. \u00b7 The protesters make a claim. \u00b7 Their claim is that the factory could cause problems. \u00b7 The problems would be health problems. (3) This is a contrast with the protesters. \u00b7 The protesters' claim is a worry. \u00b7 That worry can be dismissed. (4) This is about most of the protesters. \u00b7 They were there for one reason only. \u00b7 The reason is that they were paid to show up. \u00b7 Property developers paid them. \u00b7 Those developers are concerned about something. \u00b7 Their concern is that the factory would lower land value. \u00b7 The land is nearby. \u00b7 The developers own that land.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Mayor: A huge protest against plans to build a chemical plant in this town was held yesterday.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The mayor is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "A protest was held."
+      },
+      {
+       "n": 3,
+       "text": "The protest was huge."
+      },
+      {
+       "n": 4,
+       "text": "It was held yesterday."
+      },
+      {
+       "n": 5,
+       "text": "The protest was against plans."
+      },
+      {
+       "n": 6,
+       "text": "The plans are to build a chemical plant."
+      },
+      {
+       "n": 7,
+       "text": "The plant would be in this town."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The protesters claim that the factory could cause health problems.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the protesters."
+      },
+      {
+       "n": 2,
+       "text": "The protesters make a claim."
+      },
+      {
+       "n": 3,
+       "text": "Their claim is that the factory could cause problems."
+      },
+      {
+       "n": 4,
+       "text": "The problems would be health problems."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "But this worry can be dismissed.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with the protesters."
+      },
+      {
+       "n": 2,
+       "text": "The protesters' claim is a worry."
+      },
+      {
+       "n": 3,
+       "text": "That worry can be dismissed."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Most of the protesters were there only because they were paid to show up by property developers who are concerned that the factory would lower the value of nearby land that they own.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about most of the protesters."
+      },
+      {
+       "n": 2,
+       "text": "They were there for one reason only."
+      },
+      {
+       "n": 3,
+       "text": "The reason is that they were paid to show up."
+      },
+      {
+       "n": 4,
+       "text": "Property developers paid them."
+      },
+      {
+       "n": 5,
+       "text": "Those developers are concerned about something."
+      },
+      {
+       "n": 6,
+       "text": "Their concern is that the factory would lower land value."
+      },
+      {
+       "n": 7,
+       "text": "The land is nearby."
+      },
+      {
+       "n": 8,
+       "text": "The developers own that land."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because the protestors had ulterior motives, that doesn't mean the factory won't be harmful to health?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q18",
+     "qnum": 18,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT140_S1_Q19",
+   "prompt": "One should not intentionally misrepresent another person's beliefs unless one's purpose in doing so is to act in the interest of that other person.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) One should not misrepresent another person's beliefs. \u00b7 The misrepresenting would be intentional. \u00b7 There is an exception to this. \u00b7 The exception depends on one's purpose. \u00b7 The purpose would be to act in that other person's interest.",
+   "category": "Contradiction",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "One should not intentionally misrepresent another person's beliefs unless one's purpose in doing so is to act in the interest of that other person.",
+     "details": [
+      {
+       "n": 1,
+       "text": "One should not misrepresent another person's beliefs."
+      },
+      {
+       "n": 2,
+       "text": "The misrepresenting would be intentional."
+      },
+      {
+       "n": 3,
+       "text": "There is an exception to this."
+      },
+      {
+       "n": 4,
+       "text": "The exception depends on one's purpose."
+      },
+      {
+       "n": 5,
+       "text": "The purpose would be to act in that other person's interest."
+      }
+     ]
+    }
+   ],
+   "the_read": "If a journalist's misquoting a source in an article was done with no intention of acting in the source's interest, they should not do it.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q19",
+     "qnum": 19,
+     "question_type": "Contradiction",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT140_S1_Q20",
+   "prompt": "Adjusted for inflation, the income earned from wool sales by a certain family of Australian sheep farmers grew substantially during the period from 1840 to 1860. This is because the price for wool sold on the international market was higher than the price paid on domestic markets and the percentage and amount of its wool that this family sold internationally increased dramatically during that period. But even though the family generated more income from selling their wool, they failed to enjoy a commensurate increase in prosperity.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The figures are adjusted for inflation. \u00b7 There was income earned from wool sales. \u00b7 The income belonged to a certain family. \u00b7 The family were sheep farmers. \u00b7 The family were Australian. \u00b7 The family's income from wool grew. \u00b7 The growth was substantial. \u00b7 The period ran from 1840 to 1860. (2) This gives the reason for the growth. \u00b7 Wool sold on the international market had a price. \u00b7 That price was higher than another price. \u00b7 The comparison is with the price paid on domestic markets. \u00b7 The family sold some of its wool internationally. \u00b7 Both the percentage and the amount sold internationally increased. \u00b7 The increase was dramatic. \u00b7 The increase happened during that period. (3) This is a contrast. \u00b7 The family generated more income. \u00b7 The income came from selling their wool. \u00b7 The family did not enjoy a matching increase. \u00b7 What did not increase to match was their prosperity.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Adjusted for inflation, the income earned from wool sales by a certain family of Australian sheep farmers grew substantially during the period from 1840 to 1860.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The figures are adjusted for inflation."
+      },
+      {
+       "n": 2,
+       "text": "There was income earned from wool sales."
+      },
+      {
+       "n": 3,
+       "text": "The income belonged to a certain family."
+      },
+      {
+       "n": 4,
+       "text": "The family were sheep farmers."
+      },
+      {
+       "n": 5,
+       "text": "The family were Australian."
+      },
+      {
+       "n": 6,
+       "text": "The family's income from wool grew."
+      },
+      {
+       "n": 7,
+       "text": "The growth was substantial."
+      },
+      {
+       "n": 8,
+       "text": "The period ran from 1840 to 1860."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This is because the price for wool sold on the international market was higher than the price paid on domestic markets and the percentage and amount of its wool that this family sold internationally increased dramatically during that period.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason for the growth."
+      },
+      {
+       "n": 2,
+       "text": "Wool sold on the international market had a price."
+      },
+      {
+       "n": 3,
+       "text": "That price was higher than another price."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with the price paid on domestic markets."
+      },
+      {
+       "n": 5,
+       "text": "The family sold some of its wool internationally."
+      },
+      {
+       "n": 6,
+       "text": "Both the percentage and the amount sold internationally increased."
+      },
+      {
+       "n": 7,
+       "text": "The increase was dramatic."
+      },
+      {
+       "n": 8,
+       "text": "The increase happened during that period."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "But even though the family generated more income from selling their wool, they failed to enjoy a commensurate increase in prosperity.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "The family generated more income."
+      },
+      {
+       "n": 3,
+       "text": "The income came from selling their wool."
+      },
+      {
+       "n": 4,
+       "text": "The family did not enjoy a matching increase."
+      },
+      {
+       "n": 5,
+       "text": "What did not increase to match was their prosperity."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if wool sales is a very small part of this family's income source, and they lost money on all their other ventures?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q20",
+     "qnum": 20,
+     "question_type": "Resolution",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT140_S1_Q21",
+   "prompt": "Lawyer: If you take something that you have good reason to think is someone else's property, that is stealing, and stealing is wrong. However, Meyers had no good reason to think that the compost in the public garden was anyone else's property, so it was not wrong for Meyers to take it.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The lawyer is the speaker. \u00b7 This states a condition about taking something. \u00b7 The condition is that you have good reason to think it is someone else's property. \u00b7 Taking it under that condition is stealing. \u00b7 The lawyer says stealing is wrong. (2) This is a contrast. \u00b7 It is about Meyers. \u00b7 Meyers had no good reason to think something. \u00b7 What he had no reason to think is that the compost was anyone else's property. \u00b7 The compost was in the public garden. \u00b7 A conclusion follows from this. \u00b7 Taking the compost was not wrong for Meyers.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Lawyer: If you take something that you have good reason to think is someone else's property, that is stealing, and stealing is wrong.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The lawyer is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "This states a condition about taking something."
+      },
+      {
+       "n": 3,
+       "text": "The condition is that you have good reason to think it is someone else's property."
+      },
+      {
+       "n": 4,
+       "text": "Taking it under that condition is stealing."
+      },
+      {
+       "n": 5,
+       "text": "The lawyer says stealing is wrong."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "However, Meyers had no good reason to think that the compost in the public garden was anyone else's property, so it was not wrong for Meyers to take it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "It is about Meyers."
+      },
+      {
+       "n": 3,
+       "text": "Meyers had no good reason to think something."
+      },
+      {
+       "n": 4,
+       "text": "What he had no reason to think is that the compost was anyone else's property."
+      },
+      {
+       "n": 5,
+       "text": "The compost was in the public garden."
+      },
+      {
+       "n": 6,
+       "text": "A conclusion follows from this."
+      },
+      {
+       "n": 7,
+       "text": "Taking the compost was not wrong for Meyers."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if taking compost is always wrong? What if we can't use bad conditional reasoning?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q21",
+     "qnum": 21,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT140_S1_Q22",
+   "prompt": "From time to time there is a public outcry against predatory pricing\u2014where a company deliberately sells its products at prices low enough to drive its competitors out of business. But this practice clearly should be acceptable, because even after its competitors go out of business, the mere threat of renewed competition will prevent the company from raising its prices to unreasonable levels.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a public outcry. \u00b7 The outcry happens from time to time. \u00b7 The outcry is against predatory pricing. \u00b7 Predatory pricing is then defined. \u00b7 A company sells its products at low prices. \u00b7 The company does this deliberately. \u00b7 The prices are low enough to drive competitors out of business. (2) This is a contrast. \u00b7 The practice should be acceptable. \u00b7 This is said to be clear. \u00b7 A reason is being given. \u00b7 The reason covers the time after competitors go out of business. (3) There is a threat of renewed competition. \u00b7 The threat alone is enough. \u00b7 The threat will prevent the company from doing something. \u00b7 What it prevents is raising prices. \u00b7 The prices would otherwise reach unreasonable levels.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "From time to time there is a public outcry against predatory pricing\u2014where a company deliberately sells its products at prices low enough to drive its competitors out of business.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a public outcry."
+      },
+      {
+       "n": 2,
+       "text": "The outcry happens from time to time."
+      },
+      {
+       "n": 3,
+       "text": "The outcry is against predatory pricing."
+      },
+      {
+       "n": 4,
+       "text": "Predatory pricing is then defined."
+      },
+      {
+       "n": 5,
+       "text": "A company sells its products at low prices."
+      },
+      {
+       "n": 6,
+       "text": "The company does this deliberately."
+      },
+      {
+       "n": 7,
+       "text": "The prices are low enough to drive competitors out of business."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But this practice clearly should be acceptable, because even after its competitors go out of business,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "The practice should be acceptable."
+      },
+      {
+       "n": 3,
+       "text": "This is said to be clear."
+      },
+      {
+       "n": 4,
+       "text": "A reason is being given."
+      },
+      {
+       "n": 5,
+       "text": "The reason covers the time after competitors go out of business."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "the mere threat of renewed competition will prevent the company from raising its prices to unreasonable levels.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a threat of renewed competition."
+      },
+      {
+       "n": 2,
+       "text": "The threat alone is enough."
+      },
+      {
+       "n": 3,
+       "text": "The threat will prevent the company from doing something."
+      },
+      {
+       "n": 4,
+       "text": "What it prevents is raising prices."
+      },
+      {
+       "n": 5,
+       "text": "The prices would otherwise reach unreasonable levels."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if any act that forces current companies out of business should be outlawed, whether or not consumer prices remain reasonable?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q22",
+     "qnum": 22,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 23,
+   "slug": "PT140_S1_Q23",
+   "prompt": "If the prosecutor wanted to charge Frank with embezzlement, then Frank would already have been indicted. But Frank has not been indicted. So clearly Frank is not an embezzler.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This states a condition. \u00b7 The condition is that the prosecutor wanted to charge Frank. \u00b7 The charge would be embezzlement. \u00b7 In that case Frank would have been indicted. \u00b7 He would already have been indicted. (2) This is a contrast. \u00b7 This is about Frank. \u00b7 Frank has not been indicted. (3) This is the conclusion. \u00b7 Frank is not an embezzler. \u00b7 This is said to be clear.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "If the prosecutor wanted to charge Frank with embezzlement, then Frank would already have been indicted.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This states a condition."
+      },
+      {
+       "n": 2,
+       "text": "The condition is that the prosecutor wanted to charge Frank."
+      },
+      {
+       "n": 3,
+       "text": "The charge would be embezzlement."
+      },
+      {
+       "n": 4,
+       "text": "In that case Frank would have been indicted."
+      },
+      {
+       "n": 5,
+       "text": "He would already have been indicted."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But Frank has not been indicted.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "This is about Frank."
+      },
+      {
+       "n": 3,
+       "text": "Frank has not been indicted."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "So clearly Frank is not an embezzler.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Frank is not an embezzler."
+      },
+      {
+       "n": 3,
+       "text": "This is said to be clear."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because the prosecutor didn't want to charge Frank, that doesn't mean he's not an embezzler?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q23",
+     "qnum": 23,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 24,
+   "slug": "PT140_S1_Q24",
+   "prompt": "Pediatrician: Swollen tonsils give rise to breathing problems during sleep, and the surgical removal of children's swollen tonsils has been shown to alleviate sleep disturbances. So removing children's tonsils before swelling even occurs will ensure that the children do not experience any breathing problems during sleep.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The pediatrician is the speaker. \u00b7 Swollen tonsils give rise to breathing problems. \u00b7 The problems occur during sleep. \u00b7 Swollen tonsils can be removed surgically. \u00b7 The removal is of children's tonsils. \u00b7 That removal has been shown to alleviate sleep disturbances. (2) This is the conclusion. \u00b7 Children's tonsils could be removed before swelling occurs. \u00b7 Such removal will ensure something. \u00b7 It will ensure the children do not experience breathing problems. \u00b7 They would not experience any such problems. \u00b7 The problems would be during sleep.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Pediatrician: Swollen tonsils give rise to breathing problems during sleep, and the surgical removal of children's swollen tonsils has been shown to alleviate sleep disturbances.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The pediatrician is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "Swollen tonsils give rise to breathing problems."
+      },
+      {
+       "n": 3,
+       "text": "The problems occur during sleep."
+      },
+      {
+       "n": 4,
+       "text": "Swollen tonsils can be removed surgically."
+      },
+      {
+       "n": 5,
+       "text": "The removal is of children's tonsils."
+      },
+      {
+       "n": 6,
+       "text": "That removal has been shown to alleviate sleep disturbances."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "So removing children's tonsils before swelling even occurs will ensure that the children do not experience any breathing problems during sleep.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Children's tonsils could be removed before swelling occurs."
+      },
+      {
+       "n": 3,
+       "text": "Such removal will ensure something."
+      },
+      {
+       "n": 4,
+       "text": "It will ensure the children do not experience breathing problems."
+      },
+      {
+       "n": 5,
+       "text": "They would not experience any such problems."
+      },
+      {
+       "n": 6,
+       "text": "The problems would be during sleep."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if removing un-swollen tonsils causes even worse sleep problems?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q24",
+     "qnum": 24,
+     "question_type": "Classic Flaw",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 25,
+   "slug": "PT140_S1_Q25",
+   "prompt": "It is unethical for government officials to use their knowledge of impending policies to financially benefit themselves if that knowledge is not available to the general public.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Certain conduct is unethical. \u00b7 It concerns government officials. \u00b7 The officials have knowledge of policies. \u00b7 The policies are impending ones. \u00b7 The officials would use that knowledge to benefit themselves. \u00b7 The benefit would be financial. \u00b7 This holds under a condition. \u00b7 The condition is that the knowledge is not available to the general public.",
+   "category": "Principle Conform",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "It is unethical for government officials to use their knowledge of impending policies to financially benefit themselves if that knowledge is not available to the general public.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Certain conduct is unethical."
+      },
+      {
+       "n": 2,
+       "text": "It concerns government officials."
+      },
+      {
+       "n": 3,
+       "text": "The officials have knowledge of policies."
+      },
+      {
+       "n": 4,
+       "text": "The policies are impending ones."
+      },
+      {
+       "n": 5,
+       "text": "The officials would use that knowledge to benefit themselves."
+      },
+      {
+       "n": 6,
+       "text": "The benefit would be financial."
+      },
+      {
+       "n": 7,
+       "text": "This holds under a condition."
+      },
+      {
+       "n": 8,
+       "text": "The condition is that the knowledge is not available to the general public."
+      }
+     ]
+    }
+   ],
+   "the_read": "If a Senator knows a major railway expansion will be signed into law and ethically buys rail iron stock, then the general public knows of this impending law.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT140.S1.Q25",
+     "qnum": 25,
+     "question_type": "Principle Conform",
+     "correct_answer": "D"
+    }
+   ]
+  }
+ ]
+}

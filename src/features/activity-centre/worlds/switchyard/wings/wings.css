@@ -1,0 +1,125 @@
+/*
+ * The yard's two wings. They share the Switchyard's night palette (they are the
+ * same yard, seen from a different siding), so this file adds only the furniture
+ * the main stage does not have: empty track slots, engraved levers, and the
+ * two-up choice plates.
+ */
+
+.sy-wing {
+  overflow: hidden;
+}
+
+/* ---------- Sorting Yard ---------- */
+
+/* An empty track slot: the space a capsule has not arrived in yet. */
+.sy-slot {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  border: 1px dashed hsl(var(--sy-plate-edge));
+  background: hsl(var(--sy-field) / 0.4);
+  transition:
+    background-color 240ms ease,
+    border-color 240ms ease;
+}
+
+.sy-slot[data-filled="true"] {
+  border-style: solid;
+  border-color: hsl(var(--sy-rail-live));
+  background: linear-gradient(
+    180deg,
+    hsl(var(--sy-plate) / 0.96),
+    hsl(var(--sy-field) / 0.96)
+  );
+  box-shadow:
+    inset 0 1px 0 hsl(var(--sy-ink) / 0.06),
+    0 8px 20px hsl(var(--sy-field-deep) / 0.7);
+}
+
+/* ---------- Trigger Gallery ---------- */
+
+/* An engraved lever: the plate it is mounted on, and the arm itself. */
+.sy-lever {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--sy-plate) / 0.95),
+    hsl(var(--sy-field) / 0.95)
+  );
+  border: 1px solid hsl(var(--sy-plate-edge));
+  box-shadow: inset 0 1px 0 hsl(var(--sy-ink) / 0.05);
+  padding-left: 34px;
+  transition:
+    border-color 200ms ease,
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sy-lever:hover {
+  border-color: hsl(var(--sy-rail-live));
+}
+
+.sy-lever:hover .sy-lever-arm {
+  transform: rotate(18deg);
+}
+
+.sy-lever-arm {
+  position: absolute;
+  left: 15px;
+  top: 18px;
+  width: 2px;
+  height: 26px;
+  border-radius: 1px;
+  background: hsl(var(--sy-rail-live));
+  transform-origin: bottom center;
+  transition: transform 260ms cubic-bezier(0.7, 0, 0.18, 1);
+}
+
+.sy-lever-arm::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: hsl(var(--sy-ink-dim));
+}
+
+/* ---------- The two-up call ---------- */
+
+.sy-choice {
+  background: hsl(var(--sy-plate) / 0.6);
+  border: 1px solid hsl(var(--sy-plate-edge));
+  color: hsl(var(--sy-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.sy-choice:hover:not(:disabled) {
+  border-color: hsl(var(--sy-rail-live));
+}
+
+/* Once called, both plates label themselves: the point is seeing which was
+   which, not only whether the student was right. */
+.sy-choice[data-truth="necessary"] {
+  border-color: hsl(var(--sy-signal));
+  box-shadow: inset 2px 0 0 hsl(var(--sy-signal));
+}
+
+.sy-choice[data-truth="sufficient"] {
+  opacity: 0.55;
+}
+
+.sy-choice[data-picked="true"] {
+  background: hsl(var(--sy-plate));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sy-wing *,
+  .sy-wing *::before,
+  .sy-wing *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}

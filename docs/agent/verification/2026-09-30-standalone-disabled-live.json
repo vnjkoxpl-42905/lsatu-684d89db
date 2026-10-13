@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-01T00:49:55.620Z",
+  "readOnly": true,
+  "ordinaryJwt": true,
+  "configurationChanged": false,
+  "recordsWritten": false,
+  "scope": "disabled-contract-only; no existing foreign section fixture, mutating RPC, live timer or adoption claim",
+  "permissionReadOutcomes": {
+    "studentPrivateConfiguration": {
+      "errorCode": null,
+      "rowCount": 0
+    },
+    "adminPrivateConfiguration": {
+      "errorCode": null,
+      "rowCount": 0
+    },
+    "anonymousSource": {
+      "errorCode": null,
+      "rowCount": 0
+    }
+  },
+  "checks": {
+    "studentDisabledCapability": true,
+    "studentDeclaredSource": true,
+    "studentEmptyOwnedRead_timed_section_sittings_v1": true,
+    "studentEmptyOwnedRead_timed_section_receipts_v1": true,
+    "studentEmptyOwnedRead_timed_section_source_bindings_v1": true,
+    "studentPrivateConfigurationNotExposed": true,
+    "studentUnavailableSittingDenied": true,
+    "adminDisabledCapability": true,
+    "adminDeclaredSource": true,
+    "adminEmptyOwnedRead_timed_section_sittings_v1": true,
+    "adminEmptyOwnedRead_timed_section_receipts_v1": true,
+    "adminEmptyOwnedRead_timed_section_source_bindings_v1": true,
+    "adminPrivateConfigurationNotExposed": true,
+    "adminUnavailableSittingDenied": true,
+    "anonymousCapabilityDenied": true,
+    "anonymousSourceNoRowsExposed": true
+  }
+}

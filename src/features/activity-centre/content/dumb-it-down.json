@@ -1,0 +1,247 @@
+{
+  "slug": "dumb-it-down",
+  "title": "Dumb it Down",
+  "subtitle": "Compress the paragraph to its big ideas, in plain words",
+  "item_format": "free-text",
+  "instructions": {
+    "coach": {
+      "drill": "a paragraph-compression drill: the student restates a dense academic paragraph in plain language, keeping every big idea",
+      "rubric": [
+        "The credited answer is a plain-language summary carrying all of the paragraph's big ideas. The author's note lists them; check the response against that list.",
+        "Judge coverage and accuracy, never elegance. A blunt, informal summary that carries every big idea is fully correct.",
+        "Technical vocabulary does not need to be preserved. A student who explains a term in their own words has done the exercise correctly.",
+        "Where the paragraph sets a common view against what is actually the case, or sets two camps against each other, both sides and who holds them must survive into the summary."
+      ],
+      "partial_rule": "Mark 'partial' when the summary is accurate but too narrow, carrying some big ideas and missing others, which is the drill's signature miss. Mark 'incorrect' when the response only names the topic without saying what the paragraph claims about it, or misstates the paragraph's point."
+    },
+    "tagline": "Understand the hard words functionally. Do not preserve them.",
+    "task": "Read the paragraph and tell me what it says in plain language. Keep every big idea and drop everything else.",
+    "rules": [
+      "Your summary has to carry the big ideas. If one goes missing, the summary is too narrow no matter how well written it is.",
+      "Say it in words you would use out loud. Technical vocabulary is there to be understood, not repeated.",
+      "If the paragraph sets up a contrast between what people think and what is actually the case, both halves belong in your answer.",
+      "Where two camps disagree, keep who thinks what. Losing the attribution loses the paragraph.",
+      "Naming the topic is not summarizing the paragraph."
+    ],
+    "answer_label": "Your plain-language version",
+    "answer_placeholder": "Say what the paragraph says, in plain words…"
+  },
+  "items": [
+    {
+      "order": 1,
+      "prompt": "Lighthouse keepers are often remembered as solitary romantics who chose isolation for its own sake. In practice, most keepers were practical tradespeople managing an industrial workplace. A single station required constant fuel measurement, lens polishing, logbook entries, and equipment repair on a strict schedule set by the lighthouse authority. Keepers who missed a lighting time or let a lens cloud over faced fines and dismissal. The job attracted people who wanted steady government wages and housing, not poets seeking solitude. The isolation was a cost of the work, not its attraction.",
+      "credited_answers": [
+        "Lighthouse keepers were not romantic loners but practical workers running a demanding industrial job, and the isolation was a downside of the work rather than the reason they chose it."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) popular image: solitary romantics · (2) reality: tradespeople in a regulated industrial job · (3) isolation was a cost, not the appeal. Named traps: Too narrow: \"Keepers had to polish lenses and keep logbooks.\" Topic-only: \"Lighthouse keeping was a hard job.\"",
+      "category": "Tier 1: One clear contrast, plain vocabulary"
+    },
+    {
+      "order": 2,
+      "prompt": "Municipal fountains in nineteenth-century cities are commonly described as decorative luxuries commissioned by vain city councils. That description misses their sanitary purpose. Before household plumbing became widespread, public fountains were often the only reliable source of clean drinking water in crowded districts, and their placement closely tracked outbreaks of waterborne disease. Councils built them where wells had been contaminated, and engineers designed the basins to keep animals and washing away from the drinking spouts. The ornament was real, but it decorated a piece of public health infrastructure.",
+      "credited_answers": [
+        "Nineteenth-century public fountains were not just decoration; they were public health infrastructure that supplied clean drinking water to districts where wells were contaminated."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) common view: decorative vanity projects · (2) actual function: clean water / disease prevention · (3) design and placement served the sanitary purpose. Named traps: Too narrow: \"Fountain basins kept animals away from the spouts.\" Topic-only: \"Cities built many fountains in the 1800s.\"",
+      "category": "Tier 1: One clear contrast, plain vocabulary"
+    },
+    {
+      "order": 3,
+      "prompt": "The switchboard operators who connected early telephone calls are sometimes dismissed as unskilled labor eliminated by obvious automation. The record suggests otherwise. Operators memorized hundreds of line assignments, diagnosed faults by ear, and managed emergency traffic during storms and fires when call volume spiked beyond anything the equipment was designed for. Telephone companies resisted automatic exchanges for decades partly because operators absorbed failures the machinery could not. Automation succeeded only after engineers redesigned the network around the judgment calls operators had quietly been making all along.",
+      "credited_answers": [
+        "Early switchboard operators were skilled workers whose judgment held the phone network together, and automation only replaced them once engineers rebuilt the system around the work they had been doing."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) dismissive view: unskilled, obviously automatable · (2) reality: skilled diagnosis and emergency management · (3) automation required redesigning around their judgment. Named traps: Too narrow: \"Operators memorized hundreds of line assignments.\" Topic-only: \"Telephones used to need human operators.\"",
+      "category": "Tier 1: One clear contrast, plain vocabulary"
+    },
+    {
+      "order": 4,
+      "prompt": "Hand-copied recipe books passed between households are easy to read as quaint domestic keepsakes. Historians of food increasingly treat them as working technical documents. Copyists corrected quantities that failed, noted substitutions for scarce ingredients, and recorded which preparations preserved food safely through winter. Because the books moved between kitchens with the people who used them, their marginal notes preserve a record of trial, error, and adaptation that printed cookbooks of the period, written for idealized kitchens, deliberately smoothed over.",
+      "credited_answers": [
+        "Hand-copied recipe books were not just keepsakes but working technical records whose corrections and notes captured real kitchen experimentation that printed cookbooks left out."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) quaint-keepsake view · (2) reality: corrected, tested technical documents · (3) they preserve trial-and-error evidence printed books smoothed over. Named traps: Too narrow: \"People wrote substitutions in the margins.\" Topic-only: \"Old recipe books are historically interesting.\"",
+      "category": "Tier 1: One clear contrast, plain vocabulary"
+    },
+    {
+      "order": 5,
+      "prompt": "The physician credited with early anesthesia records is often celebrated simply for using ether during surgery. Her more lasting contribution was procedural. She insisted that every administration be logged with the patient's weight, the dose, the time to unconsciousness, and the time to waking, and she refused to call any outcome a success until the numbers were recorded. Colleagues found the bookkeeping tedious, yet those logs made dosage predictable, turned anesthesia from a gamble into a calculable procedure, and became the model for the clinical record-keeping that modern surgical safety depends on.",
+      "credited_answers": [
+        "Her real contribution was not just using ether but insisting on systematic dose records, which turned anesthesia into a predictable procedure and modeled modern clinical record-keeping."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) remembered for: using ether · (2) actual leap: mandatory quantified logging · (3) consequence: predictable dosing and the template for clinical records. Named traps: Too narrow: \"She logged patients' weights and doses.\" Topic-only: \"She was an early anesthesia pioneer.\"",
+      "category": "Tier 2: A figure's conceptual leap, mild jargon"
+    },
+    {
+      "order": 6,
+      "prompt": "The cartographer who first mapped the deep Atlantic seafloor is usually mentioned for the maps themselves. Her conceptual advance was treating the ocean floor as terrain at all. Contemporaries assumed the deep sea was a featureless plain and plotted soundings as isolated numbers. She interpolated between soundings the way land surveyors did between hilltops, drew ridges and valleys where no one had authorized them, and in doing so revealed a continuous mountain range running down the ocean's center. The maps mattered because the assumption behind them changed what the numbers could mean.",
+      "credited_answers": [
+        "Her breakthrough was treating the seafloor as real terrain rather than a featureless plain, which let scattered depth measurements reveal a continuous mid-ocean mountain range."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) known for: the maps · (2) conceptual leap: seafloor as terrain, interpolating like a land surveyor · (3) result: the mid-ocean ridge became visible. Named traps: Too narrow: \"She drew ridges between soundings.\" Topic-only: \"She made important maps of the Atlantic.\"",
+      "category": "Tier 2: A figure's conceptual leap, mild jargon"
+    },
+    {
+      "order": 7,
+      "prompt": "The economist who reorganized a national postal system is remembered for cutting delivery times, but the deeper idea was about pricing. Before the reform, postage was charged by distance and collected from the recipient, which made every letter a negotiation and left the system drowning in refused mail. He proposed a single low prepaid rate for any destination in the country, reasoning that the cost of handling a letter lay in sorting and delivery labor, not in miles traveled. Prepayment converted mail from a per-transaction haggle into cheap standardized infrastructure, and volume grew enough to pay for the reform many times over.",
+      "credited_answers": [
+        "His key insight was that mail should be prepaid at one flat rate because handling, not distance, drove the cost, which turned the post into cheap standardized infrastructure and massively grew volume."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) remembered for: faster delivery · (2) real idea: flat prepaid pricing based on handling cost · (3) consequence: standardization and volume growth. Named traps: Too narrow: \"Recipients used to refuse their mail.\" Topic-only: \"He reformed the postal system.\"",
+      "category": "Tier 2: A figure's conceptual leap, mild jargon"
+    },
+    {
+      "order": 8,
+      "prompt": "The programmer who wrote an early machine translation demonstration is often cited for the demonstration's failure. Her working notes point somewhere more interesting. She concluded that translation failed not because dictionaries were too small but because meaning depends on context that sentences do not contain, and she proposed that any successful system would need to store and consult structured knowledge about the world. That diagnosis, largely ignored at the time, anticipated the direction the field eventually took decades later, when translation systems began to succeed by modeling context rather than by enlarging word lists.",
+      "credited_answers": [
+        "Her lasting contribution was diagnosing that machine translation fails without contextual world knowledge, not because dictionaries are too small, a conclusion the field only later proved right."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) cited for: a failed demo · (2) diagnosis: meaning needs context beyond the sentence · (3) anticipation: the field later succeeded by modeling context. Named traps: Too narrow: \"Her demonstration did not work.\" Topic-only: \"Early machine translation was difficult.\"",
+      "category": "Tier 2: A figure's conceptual leap, mild jargon"
+    },
+    {
+      "order": 9,
+      "prompt": "Some urban planners argue that widening congested roads is self-defeating because added capacity attracts new drivers until congestion returns to its old level. Others respond that this induced traffic is not waste but demand that was always there, suppressed by gridlock, and that the new trips represent real economic activity. The disagreement is therefore not about whether widened roads fill up. Both sides accept that they do. It is about whether the filling should be counted as a failure of congestion relief or as a success in serving trips the old road was silently rationing.",
+      "credited_answers": [
+        "Both camps agree widened roads fill back up; they disagree about whether that returning traffic proves widening fails or shows it is serving real demand the congestion had been suppressing."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) camp one: induced traffic makes widening self-defeating · (2) camp two: the new trips are real suppressed demand · (3) shared ground: roads do fill up; the dispute is how to count it. Named traps: Too narrow: \"New lanes attract more drivers.\" Topic-only: \"Planners disagree about road widening.\" (Misses that the disagreement is about interpretation, not the facts.)",
+      "category": "Tier 3: Two camps, and the summary must keep who-thinks-what"
+    },
+    {
+      "order": 10,
+      "prompt": "Conservators disagree about restoring faded murals. One school holds that every repainted stroke, however faithful, replaces the artist's hand with the restorer's and should be refused on principle; better a ghost of the original than a confident forgery. The opposing school answers that murals were made to be legible public statements, and that leaving one illegible betrays the work's purpose more deeply than careful inpainting ever could. Underneath the technical debate sits a disagreement about what the object actually is: a physical relic of the artist's touch, or a public image whose meaning requires visibility.",
+      "credited_answers": [
+        "Mural restorers split between refusing repainting to preserve the artist's actual hand and repainting to preserve the mural's legible public message, a dispute over whether the object is a relic or an image."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) camp one: never repaint, the touch is the work · (2) camp two: repaint, legibility is the work · (3) the real disagreement: what kind of object a mural is. Named traps: Too narrow: \"Some restorers use inpainting on faded murals.\" Topic-only: \"Experts disagree about restoration.\"",
+      "category": "Tier 3: Two camps, and the summary must keep who-thinks-what"
+    },
+    {
+      "order": 11,
+      "prompt": "When excavations uncover large storehouses beside ancient temples, one group of archaeologists reads them as evidence of centralized command economies in which priests collected and rationed the harvest. Skeptics counter that the same buildings are equally consistent with voluntary festival provisioning, insurance stockpiles against famine, or market warehousing, and that only the storerooms' scale has been demonstrated, not their governance. The skeptics do not deny that temples stored grain. Their claim is that storage capacity by itself cannot distinguish between an economy run by decree and one that merely gathered in the same buildings.",
+      "credited_answers": [
+        "Everyone agrees ancient temples stored large amounts of grain; the dispute is whether big storehouses prove a centrally commanded economy or are equally consistent with voluntary and market uses."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) camp one: storehouses show priestly command economies · (2) camp two: capacity alone cannot show governance · (3) shared ground: the storage itself is real. Named traps: Too narrow: \"Archaeologists found storerooms next to temples.\" Topic-only: \"Scholars debate ancient economies.\"",
+      "category": "Tier 3: Two camps, and the summary must keep who-thinks-what"
+    },
+    {
+      "order": 12,
+      "prompt": "Among linguists who study dying languages, documentation specialists argue that scarce funding should record elderly fluent speakers before their knowledge disappears, since a recorded language can in principle be revived later, while an unrecorded one cannot. Revitalization specialists reply that languages live only in daily use, that archives full of unspoken recordings are cemeteries rather than seed banks, and that the same money spent on children's immersion programs keeps the language alive without needing revival at all. Each side accuses the other of planning for the wrong future: one for a future where the language has died, the other for a future where it never does.",
+      "credited_answers": [
+        "Documentation linguists want scarce funds spent recording elderly speakers so the language could someday be revived, while revitalization linguists want the money spent keeping children speaking it now, each side planning for a different future."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) camp one: record before knowledge dies; archives enable revival · (2) camp two: fund immersion; use is life, archives are cemeteries · (3) the frame: they disagree about which future to plan for. Named traps: Too narrow: \"Linguists record elderly native speakers.\" Topic-only: \"Experts disagree about saving endangered languages.\"",
+      "category": "Tier 3: Two camps, and the summary must keep who-thinks-what"
+    },
+    {
+      "order": 13,
+      "prompt": "Estimates of historical famine mortality long depended on chronicles and tax rolls, sources that survive unevenly and that officials had reasons to distort. Demographers have begun instead to read the famines out of later census structure: a birth cohort gutted by starvation and delayed marriages leaves a permanent notch that moves up the age pyramid for a century, and its depth can be measured decades after the event by anyone with reliable census tables. The method does not date famines more precisely than the chronicles do, but it converts their severity from a matter of testimony into a matter of measurement.",
+      "credited_answers": [
+        "Demographers are shifting famine studies from trusting distorted chronicles to measuring the lasting notches famines leave in later census age structures, turning severity from testimony into measurement."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) old method: chronicles and tax rolls, uneven and distorted · (2) new method: cohort notches in census pyramids · (3) the shift's meaning: severity becomes measurable, though dating does not improve. Named traps: Too narrow: \"Famines leave notches in age pyramids.\" Topic-only: \"Historians study old famines.\"",
+      "category": "Tier 4: The main point is a shift in method or framing, technical vocabulary"
+    },
+    {
+      "order": 14,
+      "prompt": "Attribution of unsigned paintings once rested on connoisseurship, the trained eye of specialists who judged brushwork and composition and whose verdicts were difficult to challenge because the evidence was, in the end, their own perception. Laboratories have altered the terrain. Pigment chemistry can rule out dates, canvas weave matching can tie pictures to a workshop's bolt of cloth, and imaging reveals underdrawings that copyists rarely reproduce. The techniques rarely name a painter outright. What they do is redistribute authority: a connoisseur's attribution must now survive material tests that anyone can repeat, and the eye has become one instrument among several rather than the court of final appeal.",
+      "credited_answers": [
+        "Scientific analysis has shifted painting attribution from resting on connoisseurs' unchallengeable trained eyes to requiring verdicts that survive repeatable material tests, demoting the eye to one instrument among several."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) old regime: the connoisseur's perception as final authority · (2) new tools: pigment dating, weave matching, imaging · (3) the shift: authority redistributed to repeatable tests; the eye demoted, not replaced. Named traps: Too narrow: \"Labs can match canvas weave to a workshop.\" Topic-only: \"Science helps identify paintings.\"",
+      "category": "Tier 4: The main point is a shift in method or framing, technical vocabulary"
+    },
+    {
+      "order": 15,
+      "prompt": "Wildlife censuses once counted what observers could see: animals flushed from transects, nests spotted from aircraft, tracks crossing survey lines. Sampling environmental DNA has begun to invert the logic. A liter of stream water carries genetic traces of everything that shed cells upstream, so presence is now inferred from molecules rather than encounters, and absence of a species becomes a statement about detection thresholds rather than about empty habitat. The change forces a redefinition of the census itself: fieldworkers no longer ask how many animals they found, but how much signal a landscape produces and what fraction of it their methods can recover.",
+      "credited_answers": [
+        "Environmental DNA is changing wildlife censuses from counting animals observers encounter to inferring presence from genetic traces in water, redefining surveys as questions about recoverable signal rather than sightings."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) old method: visual encounter counts · (2) new method: molecular traces in environmental samples · (3) the redefinition: from \"how many did we find\" to \"how much signal can we recover\"; absence becomes a threshold claim. Named traps: Too narrow: \"Stream water contains animal DNA.\" Topic-only: \"There are new ways to count wildlife.\"",
+      "category": "Tier 4: The main point is a shift in method or framing, technical vocabulary"
+    },
+    {
+      "order": 16,
+      "prompt": "The dating of early metalworking sites long leaned on typology: arrange the recovered tools by shape, assume simple forms precede refined ones, and read the sequence as time. Radiometric methods embarrassed that assumption at site after site, showing refined and crude forms in use simultaneously, sometimes in the same workshop. The response has not been to abandon typology but to reassign its job. Tool shapes are now read as evidence of workshop tradition, trade connection, and intended market, while the calendar is left to laboratory dates. The shapes, in other words, stopped telling time and started telling everything else.",
+      "credited_answers": [
+        "Radiometric dating showed that tool shapes do not track time, so archaeologists reassigned typology from dating sites to revealing workshop traditions, trade, and markets, leaving chronology to the lab."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) old assumption: simple-to-refined shape sequence equals time · (2) the embarrassment: lab dates showed forms coexisting · (3) the reassignment: shapes now evidence tradition/trade/market, not chronology. Named traps: Too narrow: \"Crude and refined tools were used at the same time.\" Topic-only: \"Archaeologists date metalworking sites.\"",
+      "category": "Tier 4: The main point is a shift in method or framing, technical vocabulary"
+    },
+    {
+      "order": 17,
+      "prompt": "Courts assessing eyewitness identifications historically asked whether the witness was confident, attentive, and honest, treating memory as a recording whose quality those virtues guaranteed. Decades of controlled experiments reframed the question by showing that identification accuracy depends heavily on conditions no witness controls: lighting, distance, stress, the composition of the lineup, and the feedback given afterward. The experiments do not show that eyewitnesses are generally wrong, and confident witnesses are still right more often than hesitant ones. What the research undermines is the inference from sincerity to accuracy, and courts have slowly begun to instruct juries on viewing conditions rather than character.",
+      "credited_answers": [
+        "Research reframed eyewitness reliability as a matter of viewing and lineup conditions rather than witness character, and while witnesses are not generally wrong, sincerity no longer counts as proof of accuracy."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) old frame: confidence and honesty guarantee memory · (2) reframe: accuracy tracks conditions outside the witness's control · (3) retained concession: witnesses are often right; what falls is the sincerity-to-accuracy inference. Named traps: Too narrow: \"Lineup composition affects identifications.\" Topic-only: \"Eyewitness testimony can be unreliable.\" (Overshoots by dropping the concession.)",
+      "category": "Tier 5: Shift plus a retained concession the summary must keep"
+    },
+    {
+      "order": 18,
+      "prompt": "Nutrition guidance once ranked dietary fats by their chemistry, condemning saturated varieties wholesale and promoting substitutes with more favorable laboratory profiles. Long-term population studies complicated the ranking by showing that health outcomes track what replaces a discarded fat: swapping it for refined starches yields no benefit, while swapping it for certain plant oils does. The chemistry was not wrong, and some substitutions really are improvements. The revision is in the unit of advice. Foods and their replacements, not molecules in isolation, have become the thing guidance is written about, because a nutrient's effect proved inseparable from what fills its place at the table.",
+      "credited_answers": [
+        "Nutrition advice shifted from ranking fat molecules to evaluating whole substitutions, because outcomes depend on what replaces a discarded fat, even though the underlying chemistry and some swaps remain valid."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) old unit: molecule-level rankings · (2) complication: outcomes track the replacement, not the removal · (3) retained concession: chemistry holds and some substitutions genuinely help; the change is the unit of advice. Named traps: Too narrow: \"Replacing fat with refined starch does not help.\" Topic-only: \"Nutrition science keeps changing its mind.\" (The cynical overshoot; the paragraph says the opposite.)",
+      "category": "Tier 5: Shift plus a retained concession the summary must keep"
+    },
+    {
+      "order": 19,
+      "prompt": "Flood control on large rivers was for a century an engineering contest: raise the levees, straighten the channel, move the water through faster. Repeated levee failures shifted the field toward a different accounting, in which the cheapest place to put floodwater is often a farm field purchased for occasional inundation rather than a wall built to exclude the water entirely. Engineered defenses still protect cities, and no one proposes removing them. The change is in what counts as infrastructure: acquired floodplain, wetland easements, and setback levees now appear in project budgets alongside concrete, because the failures showed that exclusion alone was purchasing risk at compound interest.",
+      "credited_answers": [
+        "After repeated levee failures, flood control expanded from pure exclusion engineering to budgeting land that can safely flood as infrastructure, while hard defenses still protect cities."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) old contest: higher levees, faster channels · (2) shift: purchased floodplain and setbacks count as infrastructure · (3) retained concession: engineered defenses remain; exclusion alone compounded risk. Named traps: Too narrow: \"Some farm fields are bought to hold floodwater.\" Topic-only: \"Levees sometimes fail.\"",
+      "category": "Tier 5: Shift plus a retained concession the summary must keep"
+    },
+    {
+      "order": 20,
+      "prompt": "Histories of literacy long measured it by signatures: count who could sign a parish register, and map reading across a society. Scholars now emphasize that signing was taught after reading and separately from it, so signature counts systematically undercount readers, capturing mostly those schooled long enough to write, and excluding the many taught to read scripture at home who never held a pen. Signature evidence has not been discarded; nothing else survives at comparable scale, and its trends over time remain informative. What changed is the claim it supports: a floor under past literacy rather than an estimate of it.",
+      "credited_answers": [
+        "Because writing was taught after reading, signature counts undercount past readers, so historians now treat them as a floor under literacy rather than an estimate, while still relying on their trends."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) old measure: signatures as literacy · (2) flaw: reading preceded writing, so readers are missed · (3) retained concession: the evidence survives at unmatched scale and still shows trends; its claim is downgraded to a floor. Named traps: Too narrow: \"Many people could read but not sign.\" Topic-only: \"Measuring historical literacy is hard.\"",
+      "category": "Tier 5: Shift plus a retained concession the summary must keep"
+    },
+    {
+      "order": 21,
+      "prompt": "Early quantitative studies of scientific careers measured productivity by publication counts and found that a small fraction of researchers produced most of the papers, a result read for decades as evidence of rare individual talent. Later work complicated both the measure and the reading. Counting papers weights fields unequally, since publication rates are set by disciplinary custom rather than effort, and the concentration itself proved to be manufactured partly by institutions: early access to equipment, students, and funding compounds, so that small initial differences in opportunity grow into large final differences in output. Talent has not been dismissed as a factor. The revision is subtler: concentration of output is now treated as a joint product of ability and cumulative institutional advantage, and the measure that revealed it is no longer trusted to compare across fields.",
+      "credited_answers": [
+        "The finding that a few scientists produce most papers is now explained as talent compounded by accumulating institutional advantage rather than rare ability alone, and raw publication counts are no longer trusted across fields."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) original finding and reading: concentrated output proves rare talent · (2) first correction: the measure is field-biased · (3) second correction: institutions compound small early advantages · (4) retained role for talent in a joint explanation. Named traps: Too narrow: \"Some fields publish more papers than others.\" Topic-only: \"A few scientists write most papers.\" (States the finding while missing the reinterpretation, which is the point.)",
+      "category": "Tier 6: Double contrast, abstract subject, maximum load"
+    },
+    {
+      "order": 22,
+      "prompt": "Classic accounts of trade before state coinage assumed barter, with money arising to solve the awkwardness of matching wants. Records from early cities support a different sequence: temple and palace bookkeepers denominated debts in standard quantities of grain and silver long before coins circulated, and most exchange took the form of credit entries against future harvests. Coinage, when it arrived, served less to enable trade than to let rulers pay soldiers and collect taxes in a medium they controlled. Barter was real, but it flourished mainly between strangers and at frontiers, where no ledger bound the parties. On this account money's origin is administrative rather than commercial, and the barter story survives as a special case rather than a beginning.",
+      "credited_answers": [
+        "Evidence from early cities suggests money began as administrative accounting for debts, with coins serving state payment and taxation, while barter was a frontier special case rather than the origin of trade."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) classic story: barter first, money as its fix · (2) documented sequence: ledger credit in standard units preceded coins · (3) coinage's actual role: state payment and taxation · (4) barter retained as a real but special case among strangers. Named traps: Too narrow: \"Bookkeepers recorded debts in grain and silver.\" Topic-only: \"Money has a long history.\"",
+      "category": "Tier 6: Double contrast, abstract subject, maximum load"
+    },
+    {
+      "order": 23,
+      "prompt": "Sleep research first treated the sleeping brain as idle, then, after recordings revealed intense nocturnal activity, as busy with a single master task, with memory consolidation the leading candidate. Both frames now look too simple. The sleeping brain runs distinct programs in different stages, and interventions that disrupt one stage impair some functions while leaving others intact: slow-wave disruption degrades factual recall but spares motor learning, while dream-stage suppression does something closer to the reverse. Consolidation has not been dethroned as one genuine function among several. What has been abandoned is the search for the purpose of sleep, in favor of mapping which stage serves which function, on the view that sleep is a schedule of maintenance operations rather than a single process with a single point.",
+      "credited_answers": [
+        "Sleep science has moved from asking what sleep is for to mapping which sleep stage serves which function, treating sleep as a schedule of distinct maintenance programs, with memory consolidation kept as one function among several."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) frame one: idle brain · (2) frame two: one master task (consolidation) · (3) current view: stage-specific functions shown by selective disruption · (4) retained: consolidation is real but not the single purpose; the single-purpose question itself is abandoned. Named traps: Too narrow: \"Disrupting slow-wave sleep hurts factual recall.\" Topic-only: \"Scientists study why we sleep.\"",
+      "category": "Tier 6: Double contrast, abstract subject, maximum load"
+    },
+    {
+      "order": 24,
+      "prompt": "Antitrust doctrine spent half a century anchored to a single question, whether conduct raised prices for consumers, a standard prized for making enforcement predictable and economic rather than political. Critics now press two distinct objections that are often conflated. The first accepts the consumer-price frame and argues the measurements were done badly, since quality degradation, data extraction, and forgone innovation are price-like harms the cases ignored. The second rejects the frame itself, holding that concentrated private power injures suppliers, workers, and the openness of markets in ways no consumer metric captures. Defenders answer that the first critique is absorbable and the second is a mandate for judges to weigh incommensurable values without a scale. The live dispute is therefore not whether the old standard missed harms. It is whether the remedy is better measurement inside the frame or replacement of the frame, at the cost of the predictability that made the standard attractive.",
+      "credited_answers": [
+        "Everyone now grants the consumer-price standard missed real harms; the fight is between fixing its measurements within the frame and replacing the frame to reach power-based harms, at the price of the predictability that justified it."
+      ],
+      "explanation": "The big ideas your summary has to carry: (1) old anchor: consumer prices, prized for predictability · (2) critique one: right frame, bad measurement (quality, data, innovation) · (3) critique two: wrong frame, power harms beyond consumers · (4) defenders' reply and the real dispute: repair vs replace, with predictability as the stake. Named traps: Too narrow: \"Antitrust cases ignored data extraction.\" Topic-only: \"People disagree about antitrust law.\" (Also trap: presenting the two critiques as one, which the paragraph explicitly warns against conflating.)",
+      "category": "Tier 6: Double contrast, abstract subject, maximum load"
+    }
+  ]
+}

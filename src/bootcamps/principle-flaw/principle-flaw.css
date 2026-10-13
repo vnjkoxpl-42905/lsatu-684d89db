@@ -1,0 +1,113 @@
+/**
+ * Scoped CSS custom properties for the Principle Flaw bootcamp.
+ * Consumed via the .pf-bootcamp wrapper.
+ */
+.pf-bootcamp {
+  /* Surface palette */
+  --pf-bg: #030303;
+  --pf-surface: #18181b;       /* zinc-900 */
+  --pf-surface-soft: rgba(24, 24, 27, 0.4);
+  --pf-surface-deep: #09090b;  /* zinc-950 */
+  --pf-border: rgba(255, 255, 255, 0.05);
+  --pf-border-strong: rgba(255, 255, 255, 0.1);
+
+  /* Text */
+  --pf-text: #f4f4f5;          /* zinc-100 */
+  --pf-text-muted: #a1a1aa;    /* zinc-400 */
+  --pf-text-faint: #71717a;    /* zinc-500 */
+  --pf-text-dim: #52525b;      /* zinc-600 */
+
+  /* Accents — emerald is the brand pulse for this bootcamp */
+  --pf-accent: #10b981;        /* emerald-500 */
+  --pf-accent-soft: rgba(16, 185, 129, 0.1);
+  --pf-accent-glow: rgba(16, 185, 129, 0.05);
+
+  /* Role colors for the four-phase grid (Read / Do / Review / Bring) */
+  --pf-role-read: #10b981;     /* emerald-500 */
+  --pf-role-do: #3b82f6;       /* blue-500 */
+  --pf-role-review: #818cf8;   /* indigo-400 */
+  --pf-role-bring: #f43f5e;    /* rose-500 */
+
+  /* Shadows */
+  --pf-shadow-soft: 0 20px 50px rgba(255, 255, 255, 0.05);
+  --pf-shadow-deep: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+
+  /* Easing curves — stronger than CSS defaults */
+  --pf-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --pf-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  /* Nav chrome (shell frame tokens, used via inline styles in PrincipleFlawApp) */
+  --pf-nav-bg: #030303;
+  --pf-nav-border: rgba(255, 255, 255, 0.06);
+  --pf-nav-active-bg: #f4f4f5;    /* zinc-100: white pill on dark sidebar */
+  --pf-nav-active-text: #09090b;  /* zinc-950 */
+  --pf-nav-hover-bg: rgba(24, 24, 27, 0.5); /* zinc-900/50 */
+}
+
+/* ── Light mode ─────────────────────────────────────────────────────── */
+html.light .pf-bootcamp {
+  /* Surfaces */
+  --pf-bg:            #f8fafc;  /* slate-50 */
+  --pf-surface:       #ffffff;
+  --pf-surface-soft:  rgba(255, 255, 255, 0.9);
+  --pf-surface-deep:  #f1f5f9;  /* slate-100 */
+  --pf-border:        rgba(15, 23, 42, 0.07);
+  --pf-border-strong: rgba(15, 23, 42, 0.13);
+
+  /* Text */
+  --pf-text:          #09090b;  /* zinc-950 */
+  --pf-text-muted:    #52525b;  /* zinc-600 */
+  --pf-text-faint:    #71717a;  /* zinc-500 */
+  --pf-text-dim:      #a1a1aa;  /* zinc-400 */
+
+  /* Accent — deeper emerald for legibility on white */
+  --pf-accent:        #059669;  /* emerald-600 */
+  --pf-accent-soft:   rgba(5, 150, 105, 0.08);
+  --pf-accent-glow:   rgba(5, 150, 105, 0.04);
+
+  /* Shadows — soft dark shadow on light surfaces */
+  --pf-shadow-soft: 0 20px 50px rgba(0, 0, 0, 0.05);
+  --pf-shadow-deep: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+
+  /* Nav chrome — inverted vs dark */
+  --pf-nav-bg:          #ffffff;
+  --pf-nav-border:      rgba(15, 23, 42, 0.08);
+  --pf-nav-active-bg:   #18181b;  /* zinc-900: dark pill on light sidebar */
+  --pf-nav-active-text: #fafafa;  /* zinc-50 */
+  --pf-nav-hover-bg:    rgba(15, 23, 42, 0.05);
+}
+
+/* ── Light-mode Tailwind class overrides ────────────────────────────── */
+
+/* Text: near-white zinc → near-black */
+html.light .pf-bootcamp .text-zinc-100,
+html.light .pf-bootcamp .text-zinc-200,
+html.light .pf-bootcamp .text-zinc-300 { color: #09090b; }
+
+html.light .pf-bootcamp .text-zinc-400 { color: #52525b; }
+
+html.light .pf-bootcamp .text-zinc-500,
+html.light .pf-bootcamp .text-zinc-600 { color: #71717a; }
+
+html.light .pf-bootcamp .text-zinc-700 { color: #a1a1aa; }
+
+/* Dark surfaces → off-white */
+html.light .pf-bootcamp [class*="bg-zinc-900"],
+html.light .pf-bootcamp [class*="bg-zinc-950"],
+html.light .pf-bootcamp [class*="bg-zinc-800"] {
+  background-color: rgba(241, 245, 249, 0.7);
+}
+
+/* Dark borders → subtle separator */
+html.light .pf-bootcamp [class*="border-zinc-900"],
+html.light .pf-bootcamp [class*="border-zinc-800"] {
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+/* White-alpha borders → dark-alpha */
+html.light .pf-bootcamp [class*="border-white"] {
+  border-color: rgba(15, 23, 42, 0.07);
+}
+
+/* Nav button hover text — keep readable on light bg */
+html.light .pf-bootcamp aside button:not([aria-current="page"]):hover { color: #09090b; }
