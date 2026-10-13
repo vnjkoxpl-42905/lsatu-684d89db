@@ -1,0 +1,416 @@
+{
+  "slug": "rebuttal-rephrase",
+  "title": "Rebuttal Rephrase",
+  "subtitle": "Say what the author actually believes, at the author's exact strength",
+  "item_format": "free-text",
+  "instructions": {
+    "coach": {
+      "drill": "a rebuttal-rephrasing drill: the argument's conclusion is a referential rejection of somebody else's claim, and the student must restate it in content terms",
+      "rubric": [
+        "The credited answer is the MINIMAL negation of the attributed claim, stated in content terms, preserving the author's exact level of certainty.",
+        "Minimal means smallest: the negation of 'can never' is 'can sometimes', never 'can always'. The negation of 'no' is 'at least one', never 'many'. The negation of 'must' is 'not necessarily', never 'definitely not'.",
+        "Every qualifier in the original claim must survive into the answer. If the claim said 'exclusively' or 'in every filing' or named a comparison, an answer that drops it has changed the claim.",
+        "Where the author concedes one claim and rejects another, a correct answer carries both moves. Contradicting something the author granted is not correct."
+      ],
+      "partial_rule": "Mark 'partial' when the student has the right claim but overshoots to the polar opposite, or drops a scope qualifier, or leaves the referential phrase unresolved ('these researchers are mistaken' with no content substituted). Mark 'incorrect' when they answer with the evidence rather than the conclusion, restate the attributed claim as if the author endorsed it, or address a different claim entirely."
+    },
+    "tagline": "They're wrong is the conclusion. It is not yet an answer.",
+    "task": "Two steps. First find the conclusion of the argument. Then rephrase it, replacing the referential language with the claim it actually points at.",
+    "rules": [
+      "Every one of these arguments has the same anatomy: somebody else's claim, then the author rejecting it. The rejection is the conclusion, and on its own it says nothing.",
+      "The credited answer is the smallest negation of the attributed claim, stated in content terms.",
+      "Preserve the author's level of certainty. The negation of can never is can sometimes, not can always.",
+      "Keep every qualifier. If the claim said exclusively, your answer still says exclusively.",
+      "Do not answer with the evidence. The evidence supports the conclusion; it is not the conclusion."
+    ],
+    "worked_example": {
+      "statement": "People think gum is food, but they're wrong.",
+      "credited_answers": [
+        "Gum is not food."
+      ],
+      "explanation": "The explicit conclusion is they're wrong. That is the sentence you locate. What we want to hear is what it means: gum is not food. Every item in this activity is that move on harder material."
+    },
+    "answer_label": "Your rephrase",
+    "answer_placeholder": "Say what the author believes, at the author's exact strength…"
+  },
+  "items": [
+    {
+      "order": 1,
+      "prompt": "Although some luthiers maintain that a violin top cannot be regraduated without dulling its tone, this is not so.",
+      "credited_answers": [
+        "A violin top can be regraduated without dulling its tone."
+      ],
+      "explanation": "Overshoot to refuse: \"regraduation improves tone.\" Attribution \"some luthiers maintain\" \"cannot\" \"this is not so.\" Note: the flip is *can*, and it stops there. The author has not said regraduation is good.",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 2,
+      "prompt": "That is mistaken. Curators have argued that a panel painting cannot be moved safely once its cradle is removed.",
+      "credited_answers": [
+        "A panel painting can be moved safely after its cradle is removed."
+      ],
+      "explanation": "Rejection before the attribution. Note: order is reversed on the page and the task does not change. Find the attributed claim first, wherever it sits.",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 3,
+      "prompt": "A number of coaches hold that it is impossible to correct a swimmer's catch after adolescence. They are wrong.",
+      "credited_answers": [
+        "It is possible to correct a swimmer's catch after adolescence."
+      ],
+      "explanation": "Overshoot: \"the catch is easiest to correct after adolescence.\" \"impossible\" \"they are wrong.\"",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 4,
+      "prompt": "The standard account says that no medieval scriptorium employed women as copyists. The account does not hold.",
+      "credited_answers": [
+        "At least one medieval scriptorium employed women as copyists."
+      ],
+      "explanation": "Overshoot: \"many scriptoria employed women.\" Note: the negation of *no* is *at least one*. Not \"many,\" not \"most,\" not \"commonly.\" This is the single most common overshoot in the level.",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 5,
+      "prompt": "Some agronomists maintain that saline soils cannot support a cereal crop, a position that cannot be sustained.",
+      "credited_answers": [
+        "Saline soils can support a cereal crop."
+      ],
+      "explanation": "Rejection embedded in the same sentence as an apposition. Note: no pivot word at all. The rejection arrives as a relative clause.",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 6,
+      "prompt": "It is widely assumed that a building of this period could not have carried a glazed clerestory. The assumption is false.",
+      "credited_answers": [
+        "A building of this period could have carried a glazed clerestory."
+      ],
+      "explanation": "Overshoot: \"buildings of this period did carry glazed clerestories.\" Note: *could have* is a possibility claim. Negating it yields possibility, not fact.",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 7,
+      "prompt": "Several reviewers insist that a chamber work cannot be scored for these four instruments without imbalance. Not so.",
+      "credited_answers": [
+        "A chamber work can be scored for these four instruments without imbalance."
+      ],
+      "explanation": "Scope note: \"without imbalance\" must survive. \"A chamber work can be scored for these four instruments\" is a scope drop, and a much weaker claim.",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 8,
+      "prompt": "Some archivists contend that a nitrate negative cannot be duplicated once decay has begun. This claim is incorrect.",
+      "credited_answers": [
+        "A nitrate negative can be duplicated after decay has begun."
+      ],
+      "explanation": "Scope note: \"once decay has begun\" is the whole point of the dispute. Dropping it concedes nothing and claims nothing.",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 9,
+      "prompt": "The prevailing view holds that no untrained listener can distinguish the two dialects. That view fails.",
+      "credited_answers": [
+        "At least one untrained listener can distinguish the two dialects."
+      ],
+      "explanation": "Overshoot: \"untrained listeners can distinguish the two dialects\" (reads as a general capacity). \"no\" plus \"can.\"",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 10,
+      "prompt": "Engineers on the review panel argued that a timber floor of this span cannot carry the intended load. Their argument does not survive scrutiny.",
+      "credited_answers": [
+        "A timber floor of this span can carry the intended load."
+      ],
+      "explanation": "Note: \"does not survive scrutiny\" is a rejection dressed as an assessment. It behaves exactly like \"this is not so.\"",
+      "category": "Level 1: Bare flip"
+    },
+    {
+      "order": 11,
+      "prompt": "Some conservators claim that infrared reflectography can never recover an underdrawing beneath a lead-white ground. Reflectography at 2.2 microns recovered the full underdrawing on the Ghent panel, whose ground is lead white. These conservators are mistaken.",
+      "credited_answers": [
+        "Infrared reflectography can sometimes recover an underdrawing beneath a lead-white ground."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: it can do so at 2.2 microns. Overshoot: \"can always recover.\" Premise trap: \"reflectography recovered the underdrawing on the Ghent panel\" is the evidence, not the conclusion. \"never\" → \"sometimes.\"",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 12,
+      "prompt": "It is often said that every surviving copy of the broadside was printed from the same forme. Two copies show a turned letter in the fourth line that the others do not. The claim is wrong.",
+      "credited_answers": [
+        "Not every surviving copy was printed from the same forme."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: at least two were printed from a different setting. Overshoot: \"no two copies came from the same forme.\" Note: the negation of *every* is *not every*, which is compatible with almost all of them matching.",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 13,
+      "prompt": "A number of hydrologists maintain that a losing stream never recharges the aquifer beneath it. Tracer dye released above the reach appeared in two monitoring wells within a week. That position cannot stand.",
+      "credited_answers": [
+        "A losing stream can sometimes recharge the aquifer beneath it."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: it can do so within a week over this reach. Premise trap: the dye result. Overshoot: \"a losing stream always recharges the aquifer.\"",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 14,
+      "prompt": "The committee's report states that all applicants rejected at the first stage lacked the required certification. Three of last year's first-stage rejections held current certification. The report is in error.",
+      "credited_answers": [
+        "Not all applicants rejected at the first stage lacked the certification."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: at least three held it. Overshoot: \"the rejected applicants held the certification\" (reads as all of them). Note: *all* negates to *not all*, which the three cases establish exactly.",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 15,
+      "prompt": "Some ethnomusicologists argue that a work notated in this system can never be performed at its original tempo. The treatise gives a pendulum length for the opening movement. This inference is unwarranted.",
+      "credited_answers": [
+        "A work notated in this system can sometimes be performed at its original tempo."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: at least where a pendulum length survives, as it does for the opening movement. Premise trap: the pendulum length itself. \"never\" → \"sometimes.\"",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 16,
+      "prompt": "It is a common assumption that a kiln of this type always fires unevenly across the chamber. Pyrometric cones placed at four heights in the Aswan kiln fell within one cone of each other. The assumption is unsound.",
+      "credited_answers": [
+        "A kiln of this type does not always fire unevenly across the chamber."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: at least one fired within one cone across four heights. Overshoot: \"a kiln of this type fires evenly.\" \"always\" → \"not always.\"",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 17,
+      "prompt": "Several economists have written that a currency board never survives a terms-of-trade shock of this magnitude. Two boards in the region held through shocks larger than the one under discussion. They are wrong about this.",
+      "credited_answers": [
+        "A currency board can sometimes survive a terms-of-trade shock of this magnitude."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: at least two have survived larger ones. Premise trap: the two boards. Note: \"wrong about this\" is narrow. The author rejects one claim, not the economists generally.",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 18,
+      "prompt": "The catalogue asserts that none of the workshop's signed pieces postdate the master's death. One signed piece bears a hallmark introduced two years after. The catalogue is incorrect on this point.",
+      "credited_answers": [
+        "At least one signed piece postdates the master's death."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: at least one bears a hallmark introduced two years after. Overshoot: \"the signed pieces postdate the master's death.\" \"none\" → \"at least one.\"",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 19,
+      "prompt": "Some clinicians hold that a patient with this deficiency can never tolerate the standard dose. In the cohort described, four patients completed the full course without adverse events. That conclusion does not follow.",
+      "credited_answers": [
+        "A patient with this deficiency can sometimes tolerate the standard dose."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: at least four completed the full course without adverse events. Premise trap: the cohort result. Overshoot: \"patients with this deficiency tolerate the standard dose.\"",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 20,
+      "prompt": "It is frequently claimed that every dialect in the valley lost the final vowel by the tenth century. The northern recordings preserve it in unstressed position. The claim is false.",
+      "credited_answers": [
+        "Not every dialect in the valley lost the final vowel by the tenth century."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: the northern dialects preserve it in unstressed position. Scope note: \"in unstressed position\" is a real limit. An answer saying the northern dialects kept the final vowel outright overstates the evidence.",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 21,
+      "prompt": "Reviewers of the first edition wrote that the author never cites a source outside the two archives. The appendix quotes a letter held in a private collection. Those reviewers were mistaken.",
+      "credited_answers": [
+        "The author sometimes cites a source outside the two archives."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: at least once, a letter in a private collection. Overshoot: \"the author cites widely outside the two archives.\"",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 22,
+      "prompt": "A standard textbook claims that all reactions of this class require a metal catalyst. The Hoffman preparation runs to completion in its absence. This is not correct.",
+      "credited_answers": [
+        "Not all reactions of this class require a metal catalyst."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: the Hoffman preparation does not. Overshoot: \"reactions of this class do not require a metal catalyst.\" Note: watch the difference between *not all require* and *none require*. Only the first is earned.",
+      "category": "Level 2: Quantifier negation with evidence present"
+    },
+    {
+      "order": 23,
+      "prompt": "It is erroneous to infer that any kiln site yielding wasters must have been a production centre rather than a dump.",
+      "credited_answers": [
+        "A kiln site yielding wasters was not necessarily a production centre rather than a dump."
+      ],
+      "explanation": "Scope note: \"rather than a dump\" is the contrast the claim was built on; an answer that says only \"was not necessarily a production centre\" has dropped half of it. Negate the necessity, not the fact. The author is not saying no such site was a production centre. Rejection wraps the claim.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 24,
+      "prompt": "There is no warrant for the conclusion that every manuscript in this hand must have been copied in the same scriptorium.",
+      "credited_answers": [
+        "Manuscripts in this hand were not necessarily all copied in the same scriptorium."
+      ],
+      "explanation": "Overshoot: \"manuscripts in this hand were copied in different scriptoria.\" Note: two strength words stacked, *every* and *must*. The minimal negation loosens the necessity and leaves the rest alone.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 25,
+      "prompt": "The inference that any sediment core showing this ash layer must record the same eruption is unfounded.",
+      "credited_answers": [
+        "A sediment core showing this ash layer does not necessarily record that eruption."
+      ],
+      "explanation": "Overshoot: \"cores showing this layer record different eruptions.\" Rejection trails the wrapped claim.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 26,
+      "prompt": "One cannot conclude from the residue alone that these vessels must have been reserved exclusively for ritual use.",
+      "credited_answers": [
+        "These vessels were not necessarily reserved exclusively for ritual use."
+      ],
+      "explanation": "Scope note: \"exclusively\" must survive. \"These vessels were not reserved for ritual use\" is a different and much stronger claim the author never makes. Note: \"from the residue alone\" also limits the rejection; the author objects to the inference from that one evidence type.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 27,
+      "prompt": "It does not follow that a firm reporting under the older standard must have understated its liabilities in every filing.",
+      "credited_answers": [
+        "A firm reporting under the older standard did not necessarily understate its liabilities in every filing."
+      ],
+      "explanation": "Scope note: \"in every filing\" survives. Dropping it produces \"did not understate its liabilities,\" which is far stronger than the author's point. Two qualifiers to thread: *must* and *every*.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 28,
+      "prompt": "The claim that any settlement abandoned in this period must have been abandoned because of the drought cannot be sustained.",
+      "credited_answers": [
+        "A settlement abandoned in this period was not necessarily abandoned because of the drought."
+      ],
+      "explanation": "Overshoot: \"the drought did not cause these abandonments.\" Note: the author objects to the *necessity* of the causal claim, leaving the drought available as one cause among others.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 29,
+      "prompt": "There is no basis for holding that a signature in this ink must postdate the workshop's move to Antwerp.",
+      "credited_answers": [
+        "A signature in this ink does not necessarily postdate the move to Antwerp."
+      ],
+      "explanation": "Overshoot: \"signatures in this ink predate the move.\"",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 30,
+      "prompt": "It is a mistake to suppose that a species found only in these two valleys must have originated in one of them.",
+      "credited_answers": [
+        "A species found only in these two valleys did not necessarily originate in either."
+      ],
+      "explanation": "Scope note: \"found only in these two valleys\" is the setup and stays intact; the necessity is what falls. Note: \"one of them\" negates to \"either,\" which students routinely render as \"neither,\" an overshoot.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 31,
+      "prompt": "That a tremor recorded at this depth must be volcanic rather than tectonic is an inference the data do not support.",
+      "credited_answers": [
+        "A tremor recorded at this depth is not necessarily volcanic rather than tectonic."
+      ],
+      "explanation": "Scope note: the internal contrast \"rather than tectonic\" survives whole. Rejection is the sentence's predicate, with the claim as its subject.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 32,
+      "prompt": "We should not accept that any endorsement collected under the older rule must be treated as valid for the full term.",
+      "credited_answers": [
+        "An endorsement collected under the older rule need not be treated as valid for the full term."
+      ],
+      "explanation": "Scope note: \"for the full term\" survives; without it the claim becomes \"need not be treated as valid,\" which is a different objection.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 33,
+      "prompt": "The suggestion that every panel with this ground preparation must come from the same workshop does not withstand examination.",
+      "credited_answers": [
+        "Panels with this ground preparation do not all necessarily come from the same workshop."
+      ],
+      "explanation": "Overshoot: \"these panels come from different workshops.\"",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 34,
+      "prompt": "It is erroneous to infer that a text surviving in a single witness must be less reliable than one surviving in many.",
+      "credited_answers": [
+        "A text surviving in a single witness is not necessarily less reliable than one surviving in many."
+      ],
+      "explanation": "Scope note: the comparison is the claim. An answer saying \"a single-witness text is reliable\" both drops the comparison and overshoots the necessity.",
+      "category": "Level 3: Nested modality and scope"
+    },
+    {
+      "order": 35,
+      "prompt": "Some economists argue that the deposit scheme raised recycling rates and that it did so at no cost to low-income households. The rates did rise. But the scheme's unredeemed deposits fall disproportionately on households that cannot easily return containers, so the second half of that claim is wrong.",
+      "credited_answers": [
+        "The deposit scheme raised recycling rates, but it did so at some cost to low-income households."
+      ],
+      "explanation": "Note: two moves, and only one of them is a rejection. The author concedes the first conjunct outright. An answer that rejects both (\"the scheme did not raise recycling rates\") contradicts a claim the author granted.",
+      "category": "Level 4: Compound rebuttals"
+    },
+    {
+      "order": 36,
+      "prompt": "Critics of the attribution say the underdrawing is inconsistent with the master's practice and that the panel must therefore be a workshop product. The underdrawing is indeed unusual for him. It does not follow that the panel is a workshop product, since he is documented as varying his preparation on commissions of this scale.",
+      "credited_answers": [
+        "The underdrawing is unusual for the master, but the panel is not necessarily a workshop product."
+      ],
+      "explanation": "Concession preserved. Overshoot: \"the underdrawing is consistent with his practice\" (contradicts the concession) or \"the panel is by the master\" (stronger than the author's point).",
+      "category": "Level 4: Compound rebuttals"
+    },
+    {
+      "order": 37,
+      "prompt": "A common view holds that the treaty text was drafted in Latin and that the vernacular version is a later translation. The Latin is certainly the older of the two surviving copies. But the vernacular carries two clauses absent from the Latin, which a translator would have had no source for.",
+      "credited_answers": [
+        "The Latin copy is older, but the vernacular version is not simply a later translation of it."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: the vernacular carries clauses a translator working from the Latin could not have supplied. Note: the author rejects the second claim while granting the first, and the granted claim is *not* the same as the rejected one. Read the conjunction carefully.",
+      "category": "Level 4: Compound rebuttals"
+    },
+    {
+      "order": 38,
+      "prompt": "The report concludes that the outage began at the substation and that the maintenance crew's error caused it. The substation was the origin. But the relay had already failed its last two tests, and a relay in that condition trips under load regardless of what a crew does.",
+      "credited_answers": [
+        "The outage began at the substation, but the maintenance crew's error did not necessarily cause it."
+      ],
+      "explanation": "Scope note: \"not necessarily\" rather than \"did not.\" The author's evidence establishes an alternative sufficient cause, not the crew's innocence. Overshoot: \"the crew made no error.\"",
+      "category": "Level 4: Compound rebuttals"
+    },
+    {
+      "order": 39,
+      "prompt": "Some historians maintain that the guild's decline was caused by the new tariff and that no internal factor contributed. The tariff plainly hurt them. Yet the guild had lost a third of its masters to the city companies before the tariff passed.",
+      "credited_answers": [
+        "The tariff hurt the guild, but internal factors also contributed to its decline."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: it had already lost a third of its masters before the tariff passed. Note: the negation of \"no internal factor contributed\" is \"at least one did,\" not \"internal factors caused the decline.\"",
+      "category": "Level 4: Compound rebuttals"
+    },
+    {
+      "order": 40,
+      "prompt": "It is argued that the drug shortens recovery and that it should therefore be first-line therapy. Recovery was shorter in the treatment arm. But the trial excluded patients with the comorbidity that two-thirds of the eligible population has, so the recommendation outruns the evidence.",
+      "credited_answers": [
+        "The drug shortens recovery in the population studied, but that does not establish it as first-line therapy."
+      ],
+      "explanation": "Scope note: \"in the population studied\" is the qualification the author's objection turns on. Overshoot: \"the drug does not shorten recovery.\"",
+      "category": "Level 4: Compound rebuttals"
+    },
+    {
+      "order": 41,
+      "prompt": "Commentators claim the exhibition failed because the catalogue was late and that the venue was never a factor. The catalogue was late. But attendance at the same show in a comparable city, with the same delay, ran three times higher.",
+      "credited_answers": [
+        "The catalogue was late, but the venue was a factor in the exhibition's performance."
+      ],
+      "explanation": "An even more precise answer folds in the evidence: attendance ran three times higher for the same show, with the same delay, in a comparable city. Note: the author does not say the catalogue was irrelevant. Only the second claim is rejected.",
+      "category": "Level 4: Compound rebuttals"
+    },
+    {
+      "order": 42,
+      "prompt": "One school holds that the inscription is a forgery, on the grounds that its letterforms are too regular for the period and that no genuine inscription of the period is cut this deep. The letterforms are regular. But three securely dated inscriptions are cut deeper still, so the second ground fails and the first cannot carry the case alone.",
+      "credited_answers": [
+        "The letterforms are regular, but the depth of the cut is no evidence of forgery, and regularity alone does not establish that the inscription is a forgery."
+      ],
+      "explanation": "Note: the hardest item in the bank. Three moves: a concession, a rejected sub-claim, and a judgment about what the surviving ground can support. An answer that says \"the inscription is genuine\" overshoots all three; the author says the case for forgery fails, which is not the same as establishing authenticity.",
+      "category": "Level 4: Compound rebuttals"
+    }
+  ]
+}
