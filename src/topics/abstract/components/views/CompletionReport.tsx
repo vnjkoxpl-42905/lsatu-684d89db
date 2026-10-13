@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useApp } from "../../store/AppContext";
 import { LESSONS, FLASHCARDS } from "../../data/mockData";
-import { TRANSLATOR_QUIZ_ITEMS } from "../../data/translatorItems";
+import { ANSWER_CHOICE_ITEMS } from "../../data/answerChoiceDrill";
 import { GAUNTLET_QUIZ_ITEMS } from "../../data/abstractChoices";
 import { CheckCircle2, ArrowRight, BookOpen, Target, Brain, Flag, Timer, Layers, FileText } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -29,7 +29,7 @@ const TYPE_LABEL: Record<DrillType, string> = {
 // Compute the most-fallen-into trap from the student's wrong drill attempts.
 // Returns null when there isn't enough data to make an honest claim.
 function pickWeakestTrap(attempts: DrillAttempt[]): { tag: string; count: number } | null {
-  const wrong = attempts.filter((a) => !a.correct && a.trapTag);
+  const wrong = attempts.filter((a) => !a.correct && a.trapTag && a.trapTag !== "self_check_unverified");
   if (wrong.length < 2) return null;
   const counts = new Map<string, number>();
   for (const a of wrong) {
@@ -109,6 +109,7 @@ export default function CompletionReport() {
       Confident: { correct: 0, total: 0 },
     };
     for (const a of bootcampState.drillAttempts) {
+      if (a.trapTag === "self_check_unverified") continue;
       const b = buckets[a.confidence];
       if (!b) continue;
       b.total += 1;
@@ -120,7 +121,7 @@ export default function CompletionReport() {
   const trapFrequency = useMemo(() => {
     const counts = new Map<string, number>();
     for (const a of bootcampState.drillAttempts) {
-      if (a.correct || !a.trapTag) continue;
+      if (a.correct || !a.trapTag || a.trapTag === "self_check_unverified") continue;
       counts.set(a.trapTag, (counts.get(a.trapTag) ?? 0) + 1);
     }
     return Array.from(counts.entries())
@@ -129,7 +130,7 @@ export default function CompletionReport() {
   }, [bootcampState.drillAttempts]);
 
   const gauntletIds = new Set(GAUNTLET_QUIZ_ITEMS.map((c) => c.id));
-  const translatorIds = new Set(TRANSLATOR_QUIZ_ITEMS.map((i) => i.stemNumber));
+  const translatorIds = new Set(ANSWER_CHOICE_ITEMS.map((i) => i.stemNumber));
   const gauntletDone = new Set(
     bootcampState.gauntletAttempts.map((a) => a.choiceId).filter((id) => gauntletIds.has(id)),
   ).size;
@@ -208,7 +209,7 @@ export default function CompletionReport() {
         </h2>
         <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5 text-brutal-ink">
           <MetricCard label="Total practice" icon={Timer} value={totalTimeMinutes > 0 ? `${totalTimeMinutes} min` : "··"} hint="Sum of drill response time" />
-          <MetricCard label="Break It Down quiz" icon={FileText} value={`${translatorDone}/${TRANSLATOR_QUIZ_ITEMS.length}`} hint="Answer choices decoded" />
+          <MetricCard label="Break It Down drill" icon={FileText} value={`${translatorDone}/${ANSWER_CHOICE_ITEMS.length}`} hint="Answer choices practiced" />
           <MetricCard label="Put It Together quiz" icon={Layers} value={`${gauntletDone}/${GAUNTLET_QUIZ_ITEMS.length}`} hint="Answer choices decoded" />
           <MetricCard label="Mastered cards" icon={Brain} value={`${mastered}/${FLASHCARDS.length}`} hint="Rated easy twice or more" />
         </dl>

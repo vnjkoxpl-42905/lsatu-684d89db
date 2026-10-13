@@ -242,6 +242,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         if (cancelled) return;
         const drillsStats: BootcampState["drillsStats"] = {};
         for (const row of drills) {
+          if (row.trap_tag === "self_check_unverified") continue;
           const key = row.drill_type as DrillType;
           const prior = drillsStats[key] ?? { correct: 0, total: 0 };
           drillsStats[key] = {
@@ -359,7 +360,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             ...prev.drillAttempts,
             { drillId, drillType, selectedIndex, correct, confidence, trapTag, timeMs, completedAt },
           ],
-          drillsStats: {
+          drillsStats: trapTag === "self_check_unverified" ? prev.drillsStats : {
             ...prev.drillsStats,
             [drillType]: {
               correct: stats.correct + (correct ? 1 : 0),
@@ -698,9 +699,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
           aced: false,
           masteryLevel: "none",
         };
-        const quizPerfect = existing.quizTotal > 0 && existing.quizScore === existing.quizTotal;
+        const quizPerfect = Boolean(mod.quizSource) && existing.quizTotal > 0 && existing.quizScore === existing.quizTotal;
         const drillStats = mod.drillIds.map((id) =>
-          prev.drillAttempts.filter((a) => a.drillId === id),
+          prev.drillAttempts.filter((a) => a.drillId === id).sort((a, b) => a.completedAt.localeCompare(b.completedAt)),
         );
         const lastAttemptCorrect = drillStats.every(
           (attempts) => attempts.length > 0 && attempts[attempts.length - 1].correct,
@@ -761,7 +762,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const isModuleComplete = useCallback(
-    (moduleId: ModuleId): boolean => Boolean(bootcampState.moduleProgress[moduleId]?.drillComplete),
+    (moduleId: ModuleId): boolean => {
+      const row = bootcampState.moduleProgress[moduleId];
+      return Boolean(row?.drillComplete) && (moduleId !== "m3" || row.drillTotal === 15);
+    },
     [bootcampState.moduleProgress],
   );
 

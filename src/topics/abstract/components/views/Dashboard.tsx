@@ -95,10 +95,10 @@ export default function Dashboard() {
             const noteDone = Boolean(row?.noteComplete);
             const quizPassed =
               row?.quizTotal > 0 && row.quizScore / row.quizTotal >= m.quizPassThreshold;
-            const drillDone = Boolean(row?.drillComplete);
+            const drillDone = Boolean(row?.drillComplete) && (m.id !== "m3" || row.drillTotal === 15);
             const unlocked = isModuleUnlocked(m.id);
             const aced = bootcampState.aceBadges.includes(m.id);
-            const mastery: MasteryLevel = row?.masteryLevel ?? "none";
+            const mastery: MasteryLevel = m.id === "m3" && (!drillDone || !row?.drillCorrect) ? "none" : row?.masteryLevel ?? "none";
             const medalColor =
               mastery === "mastered"
                 ? "text-brutal-yellow"
@@ -107,7 +107,7 @@ export default function Dashboard() {
                   : mastery === "practicing"
                     ? "text-brutal-pink"
                     : "text-brutal-ink-trace";
-            const pct = (noteDone ? 33 : 0) + (quizPassed ? 33 : 0) + (drillDone ? 34 : 0);
+            const pct = m.quizSource ? (noteDone ? 33 : 0) + (quizPassed ? 33 : 0) + (drillDone ? 34 : 0) : (noteDone ? 50 : 0) + (drillDone ? 50 : 0);
             return (
               <li key={m.id}>
                 <button

@@ -4,7 +4,7 @@
 // surfaces and the weights stay easy to tune.
 
 import { LESSONS, DRILLS, FLASHCARDS } from "../data/mockData";
-import { TRANSLATOR_QUIZ_ITEMS } from "../data/translatorItems";
+import { ANSWER_CHOICE_ITEMS } from "../data/answerChoiceDrill";
 import { GAUNTLET_QUIZ_ITEMS } from "../data/abstractChoices";
 import type { BootcampState } from "../types";
 
@@ -37,7 +37,7 @@ export function computeProgress(state: BootcampState): ProgressBreakdown {
   const lessonsDone = state.completedLessons.length;
 
   // Only the answer choices a student can actually reach count toward progress.
-  const translatorIds = new Set(TRANSLATOR_QUIZ_ITEMS.map((i) => i.stemNumber));
+  const translatorIds = new Set(ANSWER_CHOICE_ITEMS.map((i) => i.stemNumber));
   const translatorTotal = translatorIds.size;
   const translatorDone = new Set(
     state.translatorAttempts.map((a) => a.stemNumber).filter((n) => translatorIds.has(n)),
@@ -50,7 +50,8 @@ export function computeProgress(state: BootcampState): ProgressBreakdown {
   ).size;
 
   const drillsTotal = DRILLS.length;
-  const drillsDone = Math.min(state.completedDrills.length, drillsTotal);
+  const drillIds = new Set(DRILLS.map((item) => item.id));
+  const drillsDone = state.completedDrills.filter((id) => drillIds.has(id)).length;
 
   const flashcardsTotal = FLASHCARDS.length;
   const flashcardsDone = Object.values(state.cards).filter((c) => c.status === "mastered").length;

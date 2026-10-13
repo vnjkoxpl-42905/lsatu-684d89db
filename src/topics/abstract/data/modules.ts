@@ -1,4 +1,4 @@
-import { BREAKDOWN_DRILL_IDS } from "./breakdownDrill";
+import { ANSWER_CHOICE_ITEMS } from "./answerChoiceDrill";
 
 // 7-module bootcamp definition. Modules are taken in order but nothing is
 // locked: a student (or teacher previewing) can open any module or part.
@@ -27,12 +27,12 @@ export interface ModuleRecord {
   name: string;
   subtitle: string;
   noteLessonId: string;
-  quizSource: QuizSource;
+  quizSource: QuizSource | null;
   quizPassThreshold: number;
   drillIds: string[];
   // "breakdown" modules run the step-by-step breakdown drill
   // (data/breakdownDrill.ts) instead of multiple-choice questions.
-  drillKind?: "questions" | "breakdown";
+  drillKind?: "questions" | "breakdown" | "answer-choice";
 }
 
 export const MODULES: ModuleRecord[] = [
@@ -62,10 +62,10 @@ export const MODULES: ModuleRecord[] = [
     name: "Break It Down",
     subtitle: "Turn an abstract answer choice into plain English, then into the stimulus.",
     noteLessonId: "deabstractifying_method",
-    quizSource: "translatorItems",
+    quizSource: null,
     quizPassThreshold: 0.6,
-    drillIds: BREAKDOWN_DRILL_IDS,
-    drillKind: "breakdown",
+    drillIds: ANSWER_CHOICE_ITEMS.map((item) => item.id),
+    drillKind: "answer-choice",
   },
   {
     id: "m4",

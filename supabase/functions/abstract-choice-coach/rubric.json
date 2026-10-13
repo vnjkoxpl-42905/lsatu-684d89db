@@ -1,0 +1,237 @@
+[
+  {
+    "id": "choice_1",
+    "stemText": "It is used to illustrate the general principle that the argument presupposes",
+    "correctKeywords": [
+      "illustrate",
+      "general principle",
+      "presupposes"
+    ],
+    "idealTranslation": "The statement gives an example of a general rule that the argument requires.",
+    "requirements": [
+      "The statement is an example.",
+      "The example illustrates a general principle.",
+      "The argument requires that principle."
+    ]
+  },
+  {
+    "id": "choice_2",
+    "stemText": "It is an illustration of a premise that is used to support the argument’s conclusion",
+    "correctKeywords": [
+      "illustration",
+      "premise",
+      "support",
+      "conclusion"
+    ],
+    "idealTranslation": "The statement is an example of a reason used to support the conclusion.",
+    "requirements": [
+      "The statement is an example of a premise.",
+      "That premise supports the argument’s conclusion."
+    ]
+  },
+  {
+    "id": "choice_3",
+    "stemText": "It is used to counter a consideration that might be taken to undermine the argument’s conclusion",
+    "correctKeywords": [
+      "counter",
+      "consideration",
+      "might",
+      "undermine",
+      "conclusion"
+    ],
+    "idealTranslation": "The statement answers a possible objection to the conclusion.",
+    "requirements": [
+      "The statement counters a real or possible objection.",
+      "That objection could undermine the argument’s conclusion."
+    ]
+  },
+  {
+    "id": "choice_4",
+    "stemText": "It makes an observation that, according to the argument, is insufficient to justify the claim that the argument concludes is false",
+    "correctKeywords": [
+      "observation",
+      "insufficient",
+      "justify",
+      "claim",
+      "false"
+    ],
+    "idealTranslation": "The statement gives an observation that the author says is not enough to support a claim the author rejects.",
+    "requirements": [
+      "The statement makes an observation used to support a claim.",
+      "The author says that observation is not enough to justify the claim.",
+      "The argument concludes that claim is false."
+    ]
+  },
+  {
+    "id": "choice_5",
+    "stemText": "It describes a phenomenon for which the argument’s conclusion is offered as an explanation",
+    "correctKeywords": [
+      "phenomenon",
+      "conclusion",
+      "explanation"
+    ],
+    "idealTranslation": "The statement describes an effect, and the conclusion proposes its cause.",
+    "requirements": [
+      "The statement describes a phenomenon or effect.",
+      "The conclusion is offered as the cause of that phenomenon."
+    ]
+  },
+  {
+    "id": "choice_6",
+    "stemText": "It is a general principle whose validity the argument questions",
+    "correctKeywords": [
+      "general principle",
+      "validity",
+      "questions"
+    ],
+    "idealTranslation": "The statement is a general rule that the author challenges.",
+    "requirements": [
+      "The statement is a general principle.",
+      "The argument questions the truth or validity of that principle."
+    ]
+  },
+  {
+    "id": "choice_7",
+    "stemText": "It denies a claim that the argument takes to be assumed in the reasoning it rejects",
+    "correctKeywords": [
+      "denies",
+      "claim",
+      "assumed",
+      "reasoning",
+      "rejects"
+    ],
+    "idealTranslation": "The statement rejects an assumption behind another argument that the author opposes.",
+    "requirements": [
+      "The argument rejects someone else’s reasoning.",
+      "The author takes that reasoning to assume a claim.",
+      "The target statement denies that assumed claim."
+    ]
+  },
+  {
+    "id": "choice_8",
+    "stemText": "It is a claim for which no justification is provided but that is required to establish the argument’s main conclusion",
+    "correctKeywords": [
+      "claim",
+      "no justification",
+      "required",
+      "establish",
+      "main conclusion"
+    ],
+    "idealTranslation": "The statement is an unsupported premise that the argument needs to reach its main conclusion.",
+    "requirements": [
+      "The statement is a claim with no justification supplied in the argument.",
+      "It supports the main conclusion.",
+      "It is required for this argument to establish its main conclusion; being required does not mean it is enough by itself."
+    ]
+  },
+  {
+    "id": "choice_9",
+    "stemText": "It is a claim for which justification is provided and that, if true, establishes the truth of the argument’s main conclusion",
+    "correctKeywords": [
+      "claim",
+      "justification",
+      "if true",
+      "establishes",
+      "main conclusion"
+    ],
+    "idealTranslation": "The statement is a supported intermediate conclusion that, if true, guarantees the main conclusion in the argument.",
+    "requirements": [
+      "The statement receives justification.",
+      "It supports the main conclusion and is an intermediate conclusion.",
+      "If true, it establishes the main conclusion in the context of the argument, rather than merely making it more likely."
+    ]
+  },
+  {
+    "id": "choice_10",
+    "stemText": "It is what the author’s argument purports to explain",
+    "correctKeywords": [
+      "purports",
+      "explain"
+    ],
+    "idealTranslation": "The statement is the effect or phenomenon whose cause the argument tries to identify.",
+    "requirements": [
+      "The statement is the effect or phenomenon being explained.",
+      "The author’s argument claims or attempts to explain its cause; success is not asserted."
+    ]
+  },
+  {
+    "id": "choice_11",
+    "stemText": "It is a hypothesis that the argument attempts to undermine by calling into question the sufficiency of the evidence",
+    "correctKeywords": [
+      "hypothesis",
+      "attempts",
+      "undermine",
+      "sufficiency",
+      "evidence"
+    ],
+    "idealTranslation": "The statement proposes a possible cause, and the author challenges it by saying the supporting evidence is not enough.",
+    "requirements": [
+      "The statement is a hypothesis, a possible causal explanation.",
+      "The author attempts to undermine that hypothesis.",
+      "The challenge specifically concerns whether the evidence is sufficient to support the hypothesis."
+    ]
+  },
+  {
+    "id": "choice_12",
+    "stemText": "It is the conclusion of the argument as a whole but is not the only explicitly stated conclusion in the argument",
+    "correctKeywords": [
+      "conclusion",
+      "as a whole",
+      "not the only",
+      "explicitly stated"
+    ],
+    "idealTranslation": "The statement is the main conclusion, and the argument also states an intermediate conclusion.",
+    "requirements": [
+      "The statement is the main conclusion of the whole argument.",
+      "At least one other conclusion is explicitly stated in the argument."
+    ]
+  },
+  {
+    "id": "choice_13",
+    "stemText": "It is a statement that the argument is intended to support but is not the conclusion of the argument as a whole",
+    "correctKeywords": [
+      "intended",
+      "support",
+      "not the conclusion",
+      "as a whole"
+    ],
+    "idealTranslation": "The statement is a supported intermediate conclusion rather than the main conclusion.",
+    "requirements": [
+      "The statement is supported by the argument.",
+      "It is an intermediate conclusion rather than the main conclusion."
+    ]
+  },
+  {
+    "id": "choice_14",
+    "stemText": "It is a statement for which some evidence is provided and that itself is offered as support for the conclusion of the argument as a whole",
+    "correctKeywords": [
+      "evidence",
+      "provided",
+      "support",
+      "conclusion",
+      "as a whole"
+    ],
+    "idealTranslation": "The statement receives evidence and then provides support for the main conclusion.",
+    "requirements": [
+      "The statement receives some evidence.",
+      "The statement itself is offered to support the main conclusion."
+    ]
+  },
+  {
+    "id": "choice_15",
+    "stemText": "It is the conclusion of the argument as a whole and is supported by another statement for which support is offered",
+    "correctKeywords": [
+      "conclusion",
+      "as a whole",
+      "supported",
+      "support",
+      "offered"
+    ],
+    "idealTranslation": "The statement is the main conclusion, supported by an intermediate conclusion that itself receives support.",
+    "requirements": [
+      "The statement is the main conclusion.",
+      "Another statement supports it.",
+      "That supporting statement itself receives support and is an intermediate conclusion."
+    ]
+  }
+]

@@ -197,6 +197,57 @@ export function WhyHardNote() {
         puts it all together.
       </p>
       <Panel tone="yellow">An abstract choice is a description. Your job is to find what it describes.</Panel>
+
+      <h3>Answer Choice Traps</h3>
+      <p>
+        For the hardest LR and RC questions, read each answer choice carefully. Look for suspicious keywords,
+        concepts and connections that seem out of place. These three types show why that habit matters.
+      </p>
+
+      <h3>Type 1. Half right, half wrong</h3>
+      <p>
+        A choice can be only partially correct. The first half may match, while the second half adds something
+        outside the scope of the argument. Read the whole answer word by word. One correct part doesn't make
+        the rest correct.
+      </p>
+
+      <h3>Type 2. Describing something that did not happen</h3>
+      <p>
+        Role, Method and Flaw answers describe a feature of the stimulus's argument. A choice that describes
+        something the author never does can be eliminated. Read it, think about what it means, isolate any
+        suspicious words and ask: <strong>does the author do this in the argument?</strong>
+      </p>
+      <p>
+        Keep the question type in mind. Strengthen and Weaken answers can introduce information that isn't in
+        the stimulus. For those questions, being new information doesn't make an answer wrong.
+      </p>
+
+      <section className="border-4 border-brutal-ink bg-brutal-yellow/30 p-5 md:p-6 my-8" aria-labelledby="abstract-trap-type-three">
+        <h3 id="abstract-trap-type-three" className="mt-0">Type 3. Vague or abstract answer choices</h3>
+        <p>
+          The correct answer can be vaguely worded. That makes it harder to recognize what the choice is
+          referring to, but vagueness alone isn't a reason to eliminate it.
+        </p>
+        <p>
+          Extract the keywords and think about what they mean on the LSAT. A noun names a concept you need to
+          find in the stimulus. A verb names something the author needs to do. An adjective or adverb needs
+          to describe the argument's tone or strength correctly.
+        </p>
+        <p>
+          Then read the choice again and match what it describes to the stimulus's structure. Go back and
+          forth as often as you need. This skill gets easier with practice, but rushing past the keywords
+          gives you less practice at the very thing you need to learn.
+        </p>
+        <p>
+          Module 3 gives you the seven steps on their own page before the drill. You'll use them to slow
+          down, pull out the keywords and say what each choice means.
+        </p>
+        <p className="mb-0 font-semibold">
+          Watch for an almost perfect answer with one word that makes it wrong, sitting beside a correct
+          answer that's more vaguely worded. Check the word against the stimulus. The more specific-sounding
+          answer doesn't win just because it's easier to picture.
+        </p>
+      </section>
     </div>
   );
 }
@@ -637,8 +688,9 @@ export function BreakItDownNote() {
         </div>
       </div>
       <p>
-        The drill for this module has you do both directions: abstract choices into concrete arguments, and
-        concrete arguments into abstract choices.
+        The drill for this module gives you 15 abstract answer choices. For each one, tap the keywords, then
+        write what the choice means in plain English. After you check your meaning, you'll see the seven steps
+        applied to that choice and its full breakdown.
       </p>
 
       <h3>What breaking it down is not</h3>

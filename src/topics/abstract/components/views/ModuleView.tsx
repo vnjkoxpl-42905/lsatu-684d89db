@@ -38,17 +38,19 @@ import { TRANSLATOR_QUIZ_ITEMS } from "../../data/translatorItems";
 import { MATCHING_ITEMS } from "../../data/matchingItems";
 import { GAUNTLET_QUIZ_ITEMS } from "../../data/abstractChoices";
 import BreakdownDrill from "./BreakdownDrill";
+import AnswerChoiceDrill, { AnswerChoiceSteps } from "./AnswerChoiceDrill";
 import { WHY_HARD_ITEMS } from "../../data/whyHardItems";
 import { TERM_QUIZ_ITEMS } from "../../data/termQuizItems";
 import { METHOD_QUIZ_ITEMS } from "../../data/methodQuizItems";
 import { TRAP_ITEMS, TRAP_OPTION_TEXT } from "../../data/trapItems";
 import type { DrillItem, DrillType } from "../../types";
 
-type Stage = "overview" | "note" | "quiz" | "drill" | "complete";
+type Stage = "overview" | "note" | "steps" | "quiz" | "drill" | "complete";
 
 export default function ModuleView() {
   const { currentModuleId, setCurrentView, isModuleUnlocked } = useApp();
   const [stage, setStage] = useState<Stage>("overview");
+  useEffect(() => { setStage("overview"); }, [currentModuleId]);
 
   if (!currentModuleId) {
     return (
@@ -112,7 +114,7 @@ export default function ModuleView() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
-            <ModuleOverview moduleId={currentModuleId} onPick={setStage} />
+            <ModuleOverview moduleId={currentModuleId} onPick={(next) => setStage(next === "drill" && mod.drillKind === "answer-choice" ? "steps" : next)} />
           </motion.div>
         )}
         {stage === "note" && (
@@ -126,8 +128,13 @@ export default function ModuleView() {
             <ModuleNote
               moduleId={currentModuleId}
               onDone={() => setStage("overview")}
-              onStartQuiz={() => setStage("quiz")}
+              onStartQuiz={() => setStage(mod.quizSource ? "quiz" : "steps")}
             />
+          </motion.div>
+        )}
+        {stage === "steps" && (
+          <motion.div key="steps" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <AnswerChoiceSteps onStart={() => setStage("drill")} />
           </motion.div>
         )}
         {stage === "quiz" && (
@@ -182,8 +189,8 @@ function ModuleOverview({
   const row = bootcampState.moduleProgress[moduleId];
   const noteDone = Boolean(row?.noteComplete);
   const quizDone = row?.quizTotal > 0 && row.quizScore / row.quizTotal >= mod.quizPassThreshold;
-  const drillDone = Boolean(row?.drillComplete);
-  const mastery: MasteryLevel = row?.masteryLevel ?? "none";
+  const drillDone = Boolean(row?.drillComplete) && (moduleId !== "m3" || row.drillTotal === 15);
+  const mastery: MasteryLevel = moduleId === "m3" ? computeMastery(row) : row?.masteryLevel ?? "none";
 
   return (
     <>
@@ -212,7 +219,7 @@ function ModuleOverview({
           onOpen={() => onPick("note")}
           ctaLabel={noteDone ? "Re-read" : "Start"}
         />
-        <PartRow
+        {mod.quizSource && <PartRow
           icon={ListChecks}
           label="Quiz"
           meta={
@@ -225,12 +232,14 @@ function ModuleOverview({
           accent="yellow"
           onOpen={() => onPick("quiz")}
           ctaLabel={quizDone ? "Retake" : "Start"}
-        />
+        />}
         <PartRow
           icon={Target}
           label="Drill"
           meta={
-            mod.drillKind === "breakdown"
+            mod.drillKind === "answer-choice"
+              ? `${mod.drillIds.length} answer choices`
+              : mod.drillKind === "breakdown"
               ? `${mod.drillIds.length} breakdown items`
               : `${mod.drillIds.length} practice questions`
           }
@@ -460,10 +469,10 @@ function ModuleNote({
               onClick={onStartQuiz}
               className="brutal-btn bg-brutal-green inline-flex items-center gap-2"
             >
-              Start quiz <ArrowRight className="w-4 h-4" />
+              {mod.quizSource ? "Start quiz" : "Read the seven steps"} <ArrowRight className="w-4 h-4" />
             </button>
             <span className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft">
-              Quiz unlocked
+              {mod.quizSource ? "Quiz unlocked" : "Then practice the answer choices"}
             </span>
           </motion.div>
         )}
@@ -1503,6 +1512,9 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
     startedRef.current = Date.now();
   }, [index]);
 
+  if (mod.drillKind === "answer-choice") {
+    return <AnswerChoiceDrill onDone={onDone} />;
+  }
   if (mod.drillKind === "breakdown") {
     return <BreakdownDrill onDone={onDone} />;
   }
@@ -1615,7 +1627,7 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
   const mod = getModule(moduleId)!;
   const row = bootcampState.moduleProgress[moduleId];
   const aced = bootcampState.aceBadges.includes(moduleId);
-  const mastery: MasteryLevel = row?.masteryLevel ?? computeMastery(row);
+  const mastery: MasteryLevel = moduleId === "m3" ? computeMastery(row) : row?.masteryLevel ?? computeMastery(row);
   const nextModule = MODULES[MODULES.findIndex((m) => m.id === moduleId) + 1];
   const prefersReducedMotion = useReducedMotion();
 
@@ -1662,14 +1674,14 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
       )}
 
       <div className="mt-6 inline-flex flex-wrap items-center gap-3 justify-center">
-        {row && row.quizTotal > 0 && (
+        {mod.quizSource && row && row.quizTotal > 0 && (
           <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-black uppercase tracking-wider">
             Quiz {row.quizScore} / {row.quizTotal}
           </span>
         )}
         {row && row.drillTotal && (
           <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-black uppercase tracking-wider">
-            Drill {row.drillCorrect ?? 0} / {row.drillTotal}
+            {moduleId === "m3" ? "Coach confirmed" : "Drill"} {row.drillCorrect ?? 0} / {row.drillTotal}
           </span>
         )}
       </div>

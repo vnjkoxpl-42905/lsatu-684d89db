@@ -139,13 +139,13 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
           const noteDone = Boolean(row?.noteComplete);
           const quizPassed =
             row?.quizTotal > 0 && row.quizScore / row.quizTotal >= m.quizPassThreshold;
-          const drillDone = Boolean(row?.drillComplete);
-          const pct = modulePct(noteDone, quizPassed, drillDone);
+          const drillDone = Boolean(row?.drillComplete) && (m.id !== "m3" || row.drillTotal === 15);
+          const pct = m.quizSource ? modulePct(noteDone, quizPassed, drillDone) : (noteDone ? 50 : 0) + (drillDone ? 50 : 0);
           const unlocked = isModuleUnlocked(m.id);
           const done = isModuleComplete(m.id);
           const active = currentView === "module" && currentModuleId === m.id;
           const aced = bootcampState.aceBadges.includes(m.id);
-          const mastery: MasteryLevel = row?.masteryLevel ?? "none";
+          const mastery: MasteryLevel = m.id === "m3" && (!drillDone || !row?.drillCorrect) ? "none" : row?.masteryLevel ?? "none";
           const medalColor =
             mastery === "mastered"
               ? "text-brutal-yellow"
