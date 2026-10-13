@@ -13,7 +13,7 @@ Recovered Claude chat: `bf955c16-f999-4fd3-bce9-90b0cab25ac4`, Spreeder website 
 
 ## Evidence
 
-- Final affected test slice: **132 tests in 17 files passed**. Full application TypeScript check passed. Production build and postbuild content guard passed. Existing large-chunk and unrelated Tailwind warnings remain.
+- Final affected test slice: **252 tests in 24 files passed**, including assignment-only Classroom, Home and Sidebar coverage and the latest merged Activity Centre tests. Full application TypeScript check passed. Production build and postbuild content guard passed. Standalone: 42 tests in 9 files, TypeScript check and production build passed. Existing large-chunk and unrelated Tailwind warnings remain.
 - [30 live authorization assertions](security-receipt.md), [probe SQL](security-probes.sql): anonymous/unassigned/wrong account denial, duplicate grant, private data isolation, future unlock, revocation and forged metadata. Every probe write rolled back.
 - [16 live tag assertions](tag-security-receipt.md), [probe SQL](tag-security-probes.sql): duplicate rename refusal, validation, color updates and atomic metadata propagation. Every probe write rolled back.
 - [Responsive matrix](responsive-matrix.json): actual browser CSS widths 375, 640, 1036 and 1440; reader, preferences, library and Profile have no horizontal page overflow. Browser overrides restored.
