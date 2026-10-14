@@ -58,9 +58,9 @@ it('waits for account hydration and remounts cleanly for a different account', (
   expect(document.querySelector('.opening-course-content')).toBeNull();
   expect(save).not.toHaveBeenCalled();
   rerender(<MemoryRouter><OpeningCourseScreen view="meaning" url={url} storageScope="account-a" progressStore={{ ready: true, steps: {}, save }}/></MemoryRouter>);
-  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you sign up.' }));
   rerender(<MemoryRouter><OpeningCourseScreen view="meaning" url={url} storageScope="account-b" progressStore={{ ready: true, steps: {}, save }}/></MemoryRouter>);
-  expect(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' })).toHaveAttribute('aria-pressed', 'false');
+  expect(screen.getByRole('button', { name: 'No, it tells you what follows if you sign up.' })).toHaveAttribute('aria-pressed', 'false');
 });
 
 it('marks a lesson read only after its quiz and an explicit completion action', () => {

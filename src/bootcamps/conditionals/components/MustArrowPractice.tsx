@@ -57,7 +57,7 @@ const questions = [
       'If → The library extends your loan',
     ],
     feedback: [
-      'That follows the rule order but reverses the requirement. Renewing online is enough to prove that the library extends your loan, even though renewing appears last.',
+      'That follows the word order but puts the sides the wrong way round. Renewing online is enough to prove that the library extends your loan, even though renewing appears last.',
       'Renewing online is the sufficient condition. If introduces it at the end of this rule, so it still belongs on the left of the arrow.',
       'If is an indicator, not a complete condition. Put the idea it introduces on the left: you renew online.',
     ],

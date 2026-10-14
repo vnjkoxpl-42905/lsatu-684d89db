@@ -49,7 +49,7 @@ it('gates feedback, explains reversal and retry, and keeps original-only practic
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
   expect(screen.getByRole('status')).toBeEmptyDOMElement();
   build('trains', 'qualifies');
-  expect(screen.getByText('Right.')).toBeVisible();
+  expect(screen.getByText('Correct.')).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Next' }));
   expect(screen.getByText('All dancers stretch.')).toBeVisible();
   expect(screen.getByRole('status')).toBeEmptyDOMElement();
@@ -77,7 +77,7 @@ it('retains legacy contrapositive acceptance and browser progress by default', (
   localStorage.setItem('lsatu.conditional-refresher.v1', JSON.stringify({ diagram: { done: 4, correct: 3 }, flash: { f5: 'got' } }));
   render(<DiagramDrills items={[DIAGRAM_ITEMS[0]]} />);
   build('Not qualifies', 'Not trains');
-  expect(screen.getByText('Right.')).toBeVisible();
+  expect(screen.getByText('Correct.')).toBeVisible();
   expect(screen.getByText('Contrapositive:')).toBeVisible();
   expect(JSON.parse(localStorage.getItem('lsatu.conditional-refresher.v1')!)).toEqual({ diagram: { done: 5, correct: 4 }, flash: { f5: 'got' } });
 });

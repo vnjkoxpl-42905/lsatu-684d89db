@@ -28,7 +28,7 @@ function SituationChart() {
     return () => observer.disconnect();
   }, []);
   return <table ref={ref} className="fs-chart" data-in-view={inView}>
-    <caption className="fs-chart-rule"><span>The rule</span>If the pool is open, then a lifeguard is on duty.</caption>
+    <caption className="fs-chart-rule"><span>The rule</span>If the pool is open, then a lifeguard must be on duty.</caption>
     <thead><tr><th scope="col">Situation</th><th scope="col">What follows?</th><th scope="col">The pool rule</th></tr></thead>
     <tbody>
       {situations.map((row, index) => <tr key={row.key} data-settled={row.settled} style={{ animationDelay: `${index * 0.14}s` }}>
@@ -45,7 +45,7 @@ const quiz: QuizItem[] = [
     rule: 'If a library book is overdue, the borrower gets a reminder text.',
     question: 'Sam’s book is overdue. What follows?',
     options: [
-      { text: 'Nothing. Sam may or may not get a text.', reason: 'An overdue book is the sufficient condition, so the rule applies. Sam gets the text.' },
+      { text: 'Nothing. Sam may or may not get a text.', reason: 'An overdue book is the sufficient condition. When it’s present, the rule does settle something.' },
       { text: 'Sam gets a reminder text.' },
       { text: 'Sam returns the book soon.', reason: 'The rule says nothing about returning the book.' },
     ],
@@ -61,14 +61,14 @@ const quiz: QuizItem[] = [
       { text: 'Nothing. Her book may or may not be overdue.' },
     ],
     correct: 2,
-    answer: 'A reminder text is the necessary condition, so it tells you nothing about Lena’s book.',
+    answer: 'A reminder text is the necessary condition, so the rule doesn’t settle whether Lena’s book is overdue.',
   },
   {
     rule: 'If a library book is overdue, the borrower gets a reminder text.',
     question: 'Omar got no reminder text. What follows about his book?',
     options: [
       { text: 'His book is not overdue.' },
-      { text: 'Nothing. His book may or may not be overdue.', reason: 'An overdue book would have brought a text. No text rules that out.' },
+      { text: 'Nothing. His book may or may not be overdue.', reason: 'The necessary condition is absent here, and that does settle something.' },
       { text: 'His book is overdue.', reason: 'An overdue book would have brought a text, and Omar got none.' },
     ],
     correct: 0,
@@ -83,7 +83,7 @@ const quiz: QuizItem[] = [
       { text: 'She gets no reminder text.', reason: 'She could still get a text for another reason.' },
     ],
     correct: 1,
-    answer: 'The rule only speaks when a book is overdue, so it says nothing about Priya.',
+    answer: 'Priya’s book isn’t overdue, so the rule doesn’t settle whether she gets a text.',
   },
 ];
 
@@ -93,21 +93,21 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 export function FourSituationsNote() {
   return <>
-    <Section title="All a rule gives you">
-      <p className="ct-definition"><strong>A conditional tells you two things: the original rule and its contrapositive. That is all it tells you.</strong></p>
-      <p>Take this rule: <strong>If the pool is open, then a lifeguard is on duty.</strong></p>
-      <p>The original: if the pool is open, a lifeguard must be on duty. The contrapositive: <strong>if no lifeguard is on duty, the pool can’t be open.</strong> The rule says nothing else.</p>
+    <Section title="When a rule settles something">
+      <p className="ct-definition"><strong>A rule settles something in two situations: when the sufficient condition is present, and when the necessary condition is absent.</strong></p>
+      <p>Take this rule: <strong>If the pool is open, then a lifeguard must be on duty.</strong></p>
+      <p>The pool is open? Then a lifeguard must be on duty. That’s the original rule. No lifeguard on duty? Then <strong>the pool can’t be open.</strong> That’s the contrapositive. In the other two situations, the rule settles nothing.</p>
     </Section>
     <Section title="Don’t fall for the necessary condition">
-      <p>The LSAT will give you a rule, then tell you the necessary condition is present. A lifeguard is on duty! You’ll want to conclude the pool is open. Don’t. The lifeguard could be there for a training session with the pool closed.</p>
-      <p>When the necessary condition is present, <PulseWord>the rule tells you nothing.</PulseWord> Set it aside.</p>
+      <p>The LSAT will give you a rule, then tell you the necessary condition is present. A lifeguard is on duty. You’ll want to conclude the pool is open. Don’t. The lifeguard could be there for a training session with the pool closed.</p>
+      <p>When the necessary condition is present, <PulseWord>the rule settles nothing.</PulseWord> The pool could be open or closed.</p>
     </Section>
     <Section title="Four situations">
-      <p>Any fact about a rule puts you in one of four situations. Two of them settle something. Two settle nothing.</p>
+      <p>Any fact about the rule puts you in one of four situations.</p>
       <SituationChart/>
     </Section>
     <Section title="Ask where the fact lands">
-      <p>When a rule comes with a fact, check which side the fact is about. Sufficient present or necessary absent, and the rule settles something. Sufficient absent or necessary present, and it settles nothing, so look for help somewhere else in the argument.</p>
+      <p>When a rule comes with a fact, check which side the fact is about before you conclude anything. If the fact lands in one of the two situations that settle nothing, look for help somewhere else in the argument.</p>
     </Section>
   </>;
 }

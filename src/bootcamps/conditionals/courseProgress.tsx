@@ -10,6 +10,8 @@ export interface CourseProgressStore {
 }
 
 const CourseProgressContext = createContext<CourseProgressStore | null>(null);
+/** Account scope for legacy device copies read by individual drills. */
+const CourseStorageScopeContext = createContext<string>('preview');
 const LessonContext = createContext<string | null>(null);
 
 export function CourseLessonProvider({ stepId, children }: { stepId: string; children: ReactNode }) {
@@ -32,8 +34,13 @@ export function useLessonInteraction<T>(key: string, initial: T): [T, (next: Set
   return [value, change];
 }
 
-export function CourseProgressProvider({ store, children }: { store: CourseProgressStore; children: ReactNode }) {
-  return <CourseProgressContext.Provider value={store}>{children}</CourseProgressContext.Provider>;
+export function CourseProgressProvider({ store, scope = 'preview', children }: { store: CourseProgressStore; scope?: string; children: ReactNode }) {
+  return <CourseStorageScopeContext.Provider value={scope}><CourseProgressContext.Provider value={store}>{children}</CourseProgressContext.Provider></CourseStorageScopeContext.Provider>;
+}
+
+/** The storage scope for device copies of drill work. Never shared between accounts. */
+export function useCourseStorageScope() {
+  return useContext(CourseStorageScopeContext);
 }
 
 export function useCourseProgress() {

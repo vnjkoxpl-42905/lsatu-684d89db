@@ -5,6 +5,10 @@ afterEach(() => { cleanup(); vi.useRealTimers(); });
 it('lets the learner advance the walkthrough and never advances on its own', () => {
   vi.useFakeTimers();
   render(<DrillDemo drillId="source-rephrase"/>);
+  expect(screen.getByRole('button', {name: /Rewrite the rule/})).not.toHaveAttribute('aria-current');
+  vi.advanceTimersByTime(20000);
+  expect(screen.queryByText('Step 1.', {exact: true})).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', {name: /Step 1. Click here/}));
   expect(screen.getByRole('button', {name: /Rewrite the rule/})).toHaveAttribute('aria-current', 'step');
   vi.advanceTimersByTime(20000);
   expect(screen.getByRole('button', {name: /Rewrite the rule/})).toHaveAttribute('aria-current', 'step');

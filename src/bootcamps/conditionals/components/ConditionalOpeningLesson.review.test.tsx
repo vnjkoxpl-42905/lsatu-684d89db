@@ -121,7 +121,7 @@ it.each(['group-1', 'group-2'])('keeps %s group choices stable while learners ch
   expect(complete).not.toHaveBeenCalled();
 });
 
-it.each(['group-1', 'group-2'])('varies %s diagram choices and explains the promise each reversed arrow adds', id => {
+it.each(['group-1', 'group-2'])('varies %s diagram choices and explains what each wrong-direction arrow adds', id => {
   const { complete } = mount(id);
   const lab = screen.getByText('Build the diagram').closest<HTMLElement>('.co-lab')!;
   showPageFor(lab);
@@ -133,7 +133,7 @@ it.each(['group-1', 'group-2'])('varies %s diagram choices and explains the prom
     correctPositions.add(order.indexOf(item.left));
     fireEvent.click(within(lab).getByRole('button', { name: item.right }));
     fireEvent.click(within(lab).getByRole('button', { name: 'Check my diagram' }));
-    expect(within(lab).getByText(item.reversedPromise)).toBeTruthy();
+    expect(within(lab).getByText(item.wrongDirection)).toBeTruthy();
     expect(choiceOrder(lab)).toEqual(order);
     if (index < diagramExamples[id].length - 1) fireEvent.click(within(lab).getByRole('button', { name: 'Next example' }));
   }
@@ -163,14 +163,14 @@ it('teaches inquiry and single-occasion wording before testing a recurring rule'
   expect(within(ifSection).getByText(/You treated the question as if it supplied its own answer/)).toBeTruthy();
   showPageFor(ifSection);
   fireEvent.click(within(ifSection).getByRole('button', { name: 'The archivist asked whether the drawer was locked.' }));
-  expect(within(ifSection).getByText(/This keeps the inquiry/)).toBeTruthy();
+  expect(within(ifSection).getByText(/Asked if means asked whether here/)).toBeTruthy();
 
   showPageFor(whenSection);
   fireEvent.click(within(whenSection).getByRole('button', { name: 'When I checked the gallery, a lamp was on.' }));
-  expect(within(whenSection).getByText(/You treated one reported visit as a promise about every visit/)).toBeTruthy();
+  expect(within(whenSection).getByText(/You treated one reported visit as a rule about every visit/)).toBeTruthy();
   showPageFor(whenSection);
   fireEvent.click(within(whenSection).getByRole('button', { name: 'Whenever the alarm sounds, the staff evacuate.' }));
-  expect(within(whenSection).getByText(/Whenever states the recurring connection here/)).toBeTruthy();
+  expect(within(whenSection).getByText(/Whenever states a rule/)).toBeTruthy();
   expect(complete).not.toHaveBeenCalled();
 });
 
@@ -210,13 +210,13 @@ it('pauses on both directions of a “Put yourself in it” check instead of sup
   showPageFor(section);
   const pauses = within(section).getAllByRole('button', { name: 'Show the reasoning' });
   expect(pauses).toHaveLength(2);
-  expect(within(section).queryByText(/I get a bicycle. The rule covers the case in which I win/)).toBeNull();
-  expect(within(section).queryByText(/I could get a bicycle without winning/)).toBeNull();
+  expect(within(section).queryByText(/I get a T-shirt. The rule covers the case in which I sign up/)).toBeNull();
+  expect(within(section).queryByText(/I could get a T-shirt without signing up/)).toBeNull();
   fireEvent.click(pauses[0]);
-  expect(within(section).getByText(/I get a bicycle. The rule covers the case in which I win/)).toBeTruthy();
-  expect(within(section).queryByText(/I could get a bicycle without winning/)).toBeNull();
+  expect(within(section).getByText(/I get a T-shirt. The rule covers the case in which I sign up/)).toBeTruthy();
+  expect(within(section).queryByText(/I could get a T-shirt without signing up/)).toBeNull();
   fireEvent.click(pauses[1]);
-  expect(within(section).getByText(/I could get a bicycle without winning/)).toBeTruthy();
+  expect(within(section).getByText(/I could get a T-shirt without signing up/)).toBeTruthy();
   expect(complete).not.toHaveBeenCalled();
 });
 
@@ -254,7 +254,7 @@ it('makes the invitation check distinguish the stated requirement from its tempt
   const check = screen.getByRole('heading', { hidden: true, name: 'Every finalist receives an invitation. Which requirement does this rule prove?' }).closest<HTMLElement>('.co-check')!;
   showPageFor(check);
   fireEvent.click(within(check).getByRole('button', { name: 'Being a finalist is necessary for receiving an invitation.' }));
-  expect(within(check).getByText(/You reversed the requirement/)).toBeTruthy();
+  expect(within(check).getByText(/You put the requirement on the wrong side/)).toBeTruthy();
   expect(within(check).getByText(/allows someone who isn't a finalist to receive an invitation too/)).toBeTruthy();
   fireEvent.click(within(check).getByRole('button', { name: 'Receiving an invitation is necessary for being a finalist.' }));
   expect(within(check).getByText(/receiving one required for finalist status/)).toBeTruthy();

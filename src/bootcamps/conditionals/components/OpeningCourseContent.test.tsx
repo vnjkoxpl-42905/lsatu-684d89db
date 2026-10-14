@@ -256,14 +256,15 @@ it('teaches only after with the Group 2 words before the drills test it', () => 
   expect(screen.getByText(/The signature is what filling requires/)).toBeInTheDocument();
 });
 
-it('opens with one raffle question, then tests fresh cases with reasoned feedback', () => {
+it('opens with one meaning-page question, then tests fresh cases with reasoned feedback', () => {
   render(<OpeningCourseContent id="foundation-practice"/>);
   // The seven rule-vs-fact questions now open the drill.
-  expect(screen.getAllByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toHaveLength(1);
+  expect(screen.getAllByRole('heading', { name: 'Does the rule itself tell us that you actually sign up for the fun run?' })).toHaveLength(1);
+  expect(document.body.textContent).not.toMatch(/raffle|bicycle|promise/i);
   for (const repeated of ["You don't win the raffle. Could you still get a bicycle?", 'You win the raffle. Do we need another fact to prove that you get a bicycle?', 'Under our rule, what has to follow if you win?']) {
     expect(screen.queryByRole('heading', { name: repeated })).toBeNull();
   }
-  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you sign up.' }));
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   const correct = [2, 0, 0, 2];
@@ -291,7 +292,7 @@ it('opens with one raffle question, then tests fresh cases with reasoned feedbac
   }
 });
 
-it('keeps the must-arrow note to roles, the raffle diagram and a moved if-clause', () => {
+it('keeps the must-arrow note to roles, the law-school diagram and a moved if-clause', () => {
   render(<OpeningCourseContent id="must-arrow"/>);
   expect(screen.queryByRole('button', { name: 'Find the indicator' })).not.toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Place the conditions. Then read the arrow.' })).toBeVisible();
@@ -306,6 +307,10 @@ it('keeps the must-arrow note to roles, the raffle diagram and a moved if-clause
   expect(screen.getByRole('heading', { name: 'Question 1 of 4', level: 4 })).toBeVisible();
   const recap = document.querySelector('.ma-order');
   expect(recap?.textContent).not.toContain('You renew online');
+  expect(recap?.textContent).toContain('You are a student if you are enrolled in law school.');
+  // The sentence-order comparison comes before the practice that tests it.
+  expect(recap!.compareDocumentPosition(document.querySelector('.ma-placement')!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(note.textContent).not.toMatch(/raffle|bicycle|promise|reverse/i);
   cleanup();
   render(<OpeningCourseContent id="necessary-words"/>);
   expect(screen.getByRole('heading', { name: 'A person borrows a locker only if they have a key. Which condition goes on the right?' })).toBeInTheDocument();
@@ -320,7 +325,7 @@ it('teaches meaning checks, modal strength and symbol definitions before workshe
     'Check 2: keep every qualification',
     'Check 3: only and the only point to different groups',
     'Can, should and must keep their meaning',
-    'Short symbols stand for complete conditions',
+    'Short labels stand for complete conditions',
     'Check 4: try the rule from the inside',
   ]);
   expect(screen.getByText(/Borrowing a locker/)).toBeInTheDocument();
@@ -453,7 +458,7 @@ it('shows a rule that already has a not, and its double negative turning positiv
 
 it('follows the contrapositive with the four-situation chart: two rows settle something, two settle nothing', () => {
   render(<OpeningCourseContent id="four-situations"/>);
-  const names = ['All a rule gives you', 'Don’t fall for the necessary condition', 'Four situations', 'Ask where the fact lands'];
+  const names = ['When a rule settles something', 'Don’t fall for the necessary condition', 'Four situations', 'Ask where the fact lands'];
   for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
   const full = document.body.textContent ?? '';
   const text = full.slice(0, full.indexOf('Pop Quiz'));
@@ -464,6 +469,9 @@ it('follows the contrapositive with the four-situation chart: two rows settle so
   expect(rows.map(row => within(row).getByRole('rowheader').textContent)).toEqual(['Sufficient present', 'Necessary absent', 'Sufficient absent', 'Necessary present']);
   expect(rows.slice(2).every(row => row.textContent?.includes('Nothing!'))).toBe(true);
   expect(text).not.toMatch(/raffle|breathing|air is present|promise|depends on|door|[—–~]/i);
+  // Never claim a closed list of what a rule tells you, and never tell students to ignore or set aside a rule.
+  expect(text).not.toMatch(/that is all|all it tells you|says nothing else|set it aside|ignore/i);
+  expect(text).toContain('If the pool is open, then a lifeguard must be on duty.');
   expect(screen.getByRole('heading', { name: 'Pop Quiz' })).toBeVisible();
 });
 
@@ -476,4 +484,42 @@ it('quizzes all four situations on a fresh rule and explains a wrong tap', () =>
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   fireEvent.click(screen.getByRole('button', { name: 'Her book is overdue.' }));
   expect(screen.getByRole('status')).toHaveTextContent(/hold that is ready/);
+});
+
+// Copy rules from wiki/COPY-CORRECTIONS.md, checked on every lesson page in the course path.
+it.each(['meaning', 'sufficient', 'necessary', 'must-arrow', 'sufficient-words', 'necessary-words', 'whole-meaning', 'contrapositive', 'four-situations', 'foundation-practice'])('keeps retired examples and rejected wording off the %s page', id => {
+  const { container } = render(<OpeningCourseContent id={id}/>);
+  container.querySelectorAll('details').forEach(details => details.setAttribute('open', ''));
+  const text = container.textContent ?? '';
+  expect(text).not.toMatch(/raffle|bicycle|coffee|breathing|elevator|\bcoat\b|promis|nothing to stand on|the one other thing|Logic Games|concept lesson|ignore the conditional|[—–~]/i);
+  expect(text).not.toMatch(/\breverse[sd]?\b|\btrigger|\bpatterns?\b|\bstatement \d/i);
+  // "Depends on" stays only as an indicator inside a quoted rule on the necessary-words page.
+  if (id !== 'necessary-words') expect(text).not.toMatch(/depends on/i);
+  // The careful door metaphor is approved for the necessary page only.
+  if (id !== 'necessary') expect(text).not.toMatch(/\bdoor\b/i);
+});
+
+it('writes every lesson Pop Quiz and practice explanation without obligation metaphors', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { resolve } = await import('node:path');
+  for (const file of ['OpeningCourseContent.tsx', 'NecessaryNote.tsx', 'FourSituations.tsx', 'SufficientQuiz.tsx', 'MustArrowPractice.tsx', 'ContrapositiveVisuals.tsx']) {
+    const source = readFileSync(resolve(__dirname, file), 'utf8');
+    expect(source, file).not.toMatch(/promis|raffle|bicycle|\breverses\b|'Right\.'|"Right\."/i);
+  }
+});
+
+it('varies where the correct answer sits in each lesson Pop Quiz', () => {
+  for (const id of ['sufficient', 'necessary', 'four-situations']) {
+    const { container } = render(<OpeningCourseContent id={id}/>);
+    const quiz = container.querySelector<HTMLElement>('.ct-drill')!;
+    const positions: number[] = [];
+    for (let step = 0; step < 4; step++) {
+      const options = within(quiz).getAllByRole('button').filter(button => button.classList.contains('ct-drill-option'));
+      const index = options.findIndex(option => { fireEvent.click(option); return option.getAttribute('data-state') === 'right'; });
+      positions.push(index);
+      if (step < 3) fireEvent.click(within(quiz).getByRole('button', { name: 'Next question' }));
+    }
+    expect(new Set(positions).size, id).toBeGreaterThan(1);
+    cleanup();
+  }
 });

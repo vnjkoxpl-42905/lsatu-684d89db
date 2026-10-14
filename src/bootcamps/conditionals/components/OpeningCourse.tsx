@@ -132,7 +132,7 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
   const device = useDeviceCourseProgress(storageScope);
   const store = progressStore ?? device;
   if (store.ready === false) return <p role="status">Loading your saved course work...</p>;
-  return <CourseProgressProvider store={store}><CourseScreen key={storageScope ?? 'preview'} view={view} run={run} url={url} steps={steps} recordedPractice={recordedPractice} storageScope={storageScope}/></CourseProgressProvider>;
+  return <CourseProgressProvider store={store} scope={storageScope}><CourseScreen key={storageScope ?? 'preview'} view={view} run={run} url={url} steps={steps} recordedPractice={recordedPractice} storageScope={storageScope}/></CourseProgressProvider>;
 }
 
 function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }: {
