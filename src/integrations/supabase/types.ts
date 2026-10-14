@@ -7027,6 +7027,7 @@ export type Database = {
         Args: { exclude_ids?: string[] }
         Returns: string[]
       }
+      activity_ai_answer_key_valid_v1: { Args: { key: Json }; Returns: boolean }
       activity_ai_reply_v1: {
         Args: {
           p_code: string
