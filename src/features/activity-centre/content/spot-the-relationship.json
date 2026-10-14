@@ -422,7 +422,7 @@
       "credited_answers": [
         "conditional, \"requires\""
       ],
-      "explanation": "1 relationship in this sentence. *Requires* identifies added lecithin as necessary for a stable emulsion. *Requires* names what a stable emulsion needs. It is the most-missed conditional word in this set.",
+      "explanation": "1 relationship in this sentence. *Requires* names what a stable emulsion needs. It is the most-missed conditional word in this set.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -448,7 +448,7 @@
       "credited_answers": [
         "causal, \"stabilizes\""
       ],
-      "explanation": "1 relationship in this sentence. *Stabilizes* says adding lecithin brings about emulsion stability. Same ingredients as the last sentence, and now the lecithin does something. *Stabilizes* is the causal verb.",
+      "explanation": "1 relationship in this sentence. Same ingredients as the last sentence, and now the lecithin does something. *Stabilizes* is the causal verb.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -474,7 +474,7 @@
       "credited_answers": [
         "conditional, \"contingent on\""
       ],
-      "explanation": "1 relationship in this sentence. *Contingent on* makes the matching pledge necessary for the grant. *Contingent on* names what the grant needs. It does not say the pledge brings the grant about.",
+      "explanation": "1 relationship in this sentence. *Contingent on* names what the grant needs. It does not say the pledge brings the grant about.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -552,7 +552,7 @@
       "credited_answers": [
         "causal, \"sank\""
       ],
-      "explanation": "1 relationship in this sentence. Same subject as the last sentence, now as a cause. An informal verb like *sank* still carries the causal claim.",
+      "explanation": "1 relationship in this sentence. *Sank* figuratively states that the custody break caused certification to fail. Same subject as the last sentence, now as a cause. An informal verb like *sank* still carries the causal claim.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -715,7 +715,7 @@
       "credited_answers": [
         "causal, \"because\""
       ],
-      "explanation": "1 relationship in this sentence. The word that does double duty. Here it names a cause. In an argument the same word often marks support for a conclusion, so check what *because* is doing each time.",
+      "explanation": "1 relationship in this sentence. *Because* identifies the open sluice as the cause of flooding. The word that does double duty. Here it names a cause. In an argument the same word often marks support for a conclusion, so check what *because* is doing each time.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -777,7 +777,7 @@
       "credited_answers": [
         "comparative, \"more evenly than\"; causal, \"since\" and \"draws\""
       ],
-      "explanation": "2 relationships in this sentence. *More evenly than* compares how evenly the two kilns fire. *Since* presents the flue's efficient draw as the cause of the northern kiln's advantage. *More evenly than* compares the two kilns. *Since* introduces the reason for the difference: the northern kiln's flue draws efficiently. That makes the second clause causal. *Efficiently* describes how the flue works without comparing it with a second flue.",
+      "explanation": "2 relationships in this sentence. *More evenly than* compares the two kilns. *Since* introduces the reason for the difference: the northern kiln's flue draws efficiently. That makes the second clause causal. *Efficiently* describes how the flue works without comparing it with a second flue.",
       "category": "Rung 3: Compound sentences",
       "answer_key": {
         "relationships": [
@@ -901,7 +901,7 @@
       "credited_answers": [
         "comparative, \"heavier\" and \"farther than\"; causal, \"which is why\""
       ],
-      "explanation": "2 relationships in this sentence. *Heavier* contrasts the bells' weights, while *farther than* compares how far their sound carries. *Which is why* identifies the sound-range advantage as the reason for the mould choice. *Heavier* contrasts one bell with the light one, and *farther than* compares how far their sound carries. *Which is why* gives the reason the foundry chose the larger mould. There are several comparisons here, but only two types: comparative and causal.",
+      "explanation": "2 relationships in this sentence. *Heavier* contrasts one bell with the light one, and *farther than* compares how far their sound carries. *Which is why* gives the reason the foundry chose the larger mould. There are several comparisons here, but only two types: comparative and causal.",
       "category": "Rung 3: Compound sentences",
       "answer_key": {
         "relationships": [
@@ -1024,7 +1024,7 @@
       "credited_answers": [
         "comparative, \"harder than\"; causal, \"so\"; conditional, \"only if\""
       ],
-      "explanation": "3 relationships in this sentence. *Harder ... than* compares stone from the two quarries. *So* presents the greater hardness as the reason for the masons' choice. *Only if* makes freedom from iron staining necessary for that use. *Harder ... than* compares stone from the eastern and western quarries. *So* connects that difference to the masons' choice: the stone's hardness is the reason they reserve it for thresholds. *Only if* adds a requirement for that use: the block must be free of iron staining. Being stain-free alone doesn't guarantee they will use it.",
+      "explanation": "3 relationships in this sentence. *Harder ... than* compares stone from the eastern and western quarries. *So* connects that difference to the masons' choice: the stone's hardness is the reason they reserve it for thresholds. *Only if* adds a requirement for that use: the block must be free of iron staining. Being stain-free alone doesn't guarantee they will use it.",
       "category": "Rung 3: Compound sentences",
       "answer_key": {
         "relationships": [
@@ -1206,7 +1206,7 @@
       "credited_answers": [
         "conditional, \"Only where\"; comparative, \"denser than\"; causal, \"because\" and \"dries\""
       ],
-      "explanation": "3 relationships in this sentence. *Only where* makes canopy density above sixty percent necessary for survival. *Denser than* compares canopy density with a numerical benchmark. *Dries* identifies direct sun's effect on litter, and *because* offers that effect as the explanation. *Only where* makes dense canopy a requirement for seedling survival. *Denser than* measures that canopy against sixty percent, so a number can be the second term of a comparison. *Because* and *dries* explain the cause: direct sun dries the litter layer. Finding a dense canopy alone doesn't prove the seedlings survive.",
+      "explanation": "3 relationships in this sentence. *Only where* makes dense canopy a requirement for seedling survival. *Denser than* measures that canopy against sixty percent, so a number can be the second term of a comparison. *Because* and *dries* explain the cause: direct sun dries the litter layer. Finding a dense canopy alone doesn't prove the seedlings survive.",
       "category": "Rung 3: Compound sentences",
       "answer_key": {
         "relationships": [
@@ -1250,7 +1250,7 @@
       "credited_answers": [
         "conditional, \"Only when\"; comparative, \"closer to … than to\"; causal, \"since\" and \"elevates\""
       ],
-      "explanation": "3 relationships in this sentence. *Only when* makes the specified relative proximity necessary for acceptance. *Closer to ... than to* compares the sample value's distances from two named ranges. *Elevates* attributes the ratio increase to maize agriculture, and *since* introduces this explanation. *Only when* gives a requirement for accepting the attribution. *Closer to ... than to* compares the sample's distance from two ranges, C3 and C4. *Since* and *elevates* explain what maize agriculture does to the ratio. You don't need to define every scientific term to see the requirement, comparison and cause.",
+      "explanation": "3 relationships in this sentence. *Only when* gives a requirement for accepting the attribution. *Closer to ... than to* compares the sample's distance from two ranges, C3 and C4. *Since* and *elevates* explain what maize agriculture does to the ratio. You don't need to define every scientific term to see the requirement, comparison and cause.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [
@@ -1300,7 +1300,7 @@
       "credited_answers": [
         "causal, \"passivates\" and \"so\"; comparative, \"thicker than\"; conditional, \"provided\""
       ],
-      "explanation": "3 relationships in this sentence. *Passivates* states anodization's effect, and *so* links that effect to pitting resistance. *Thicker ... than* compares the coupon's oxide layer with the control's. *Provided* gives a condition under which the stated pitting resistance holds. *Passivates* names what anodization does to the surface, and *so* connects that effect to resistance to pitting. *Thicker ... than* compares the coupon's oxide layer with the control's. *Provided* supplies the condition for the stated result: the electrolyte must be chloride-free. The sentence opens with a cause and adds its condition at the end.",
+      "explanation": "3 relationships in this sentence. *Passivates* names what anodization does to the surface, and *so* connects that effect to resistance to pitting. *Thicker ... than* compares the coupon's oxide layer with the control's. *Provided* supplies the condition for the stated result: the electrolyte must be chloride-free. The sentence opens with a cause and adds its condition at the end.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [
@@ -1568,7 +1568,7 @@
       "credited_answers": [
         "causal, \"raises\" and \"so\"; comparative, \"higher than\"; conditional, \"unless\""
       ],
-      "explanation": "3 relationships in this sentence. *Raises* states rebound's effect on the shoreline, and *so* connects that effect to the terraces' relative heights. *Higher than* compares the elevations of two terraces formed at different times. *Unless* makes offsetting subsidence an exception to the stated height result. *Raises* says rebound causes the shoreline to rise, and *so* connects that rise to the terraces' relative heights. *Higher than* compares a terrace formed after deglaciation with one formed before. *Unless* qualifies the result: if local subsidence offsets the uplift, that height difference is no longer guaranteed. *After* and *before* mark times, not extra conditional rules.",
+      "explanation": "3 relationships in this sentence. *Raises* says rebound causes the shoreline to rise, and *so* connects that rise to the terraces' relative heights. *Higher than* compares a terrace formed after deglaciation with one formed before. *Unless* qualifies the result: if local subsidence offsets the uplift, that height difference is no longer guaranteed. *After* and *before* mark times, not extra conditional rules.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [
@@ -1612,7 +1612,7 @@
       "credited_answers": [
         "conditional, \"only when\"; comparative, \"above\" and \"higher still\"; causal, \"drives\""
       ],
-      "explanation": "3 relationships in this sentence. *Only when* makes above-threshold pressure necessary for fouling. *Above* compares pressure with its threshold, while *higher still* compares later pressure with its preceding elevated level. *Drives* says fouling itself causes pressure to rise further. *Only when* makes pressure above the critical pressure threshold necessary for fouling. *Above* compares pressure with a pressure threshold. *Drives* says fouling then causes pressure to rise, and *higher still* compares that later pressure with its already elevated level. This is a feedback loop: fouling increases the pressure involved in its own required condition. A pressure measurement must be compared with pressure, not with flux.",
+      "explanation": "3 relationships in this sentence. *Only when* makes pressure above the critical pressure threshold necessary for fouling. *Above* compares pressure with a pressure threshold. *Drives* says fouling then causes pressure to rise, and *higher still* compares that later pressure with its already elevated level. This is a feedback loop: fouling increases the pressure involved in its own required condition. A pressure measurement must be compared with pressure, not with flux.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [
@@ -1656,7 +1656,7 @@
       "credited_answers": [
         "conditional, \"Only if\"; comparative, \"more … than\"; causal, \"because\" and \"produces\""
       ],
-      "explanation": "3 relationships in this sentence. *Only if* makes calibration against the specified curve necessary for trusting the offset. *More ... than* compares the regional suitability of the two curves. *Produces* attributes hemispheric differences to atmospheric mixing, and *because* uses this as the explanation. *Only if* gives a requirement for trusting the offset: calibration against a more regionally appropriate curve. *More ... than* compares that curve with the global one. *Because* and *produces* give the causal reason, atmospheric mixing creating hemispheric differences. Read past the long comparison to find what the requirement applies to: trusting the offset.",
+      "explanation": "3 relationships in this sentence. *Only if* gives a requirement for trusting the offset: calibration against a more regionally appropriate curve. *More ... than* compares that curve with the global one. *Because* and *produces* give the causal reason, atmospheric mixing creating hemispheric differences. Read past the long comparison to find what the requirement applies to: trusting the offset.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [
