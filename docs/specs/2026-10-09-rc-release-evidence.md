@@ -44,6 +44,20 @@ Current signed-in production teacher setup and PT140 S4 Q17 finder selection fit
 
 Physical-device/cross-device persistence, actual screen-reader speech and actual200% browser zoom remain separately open. Current desktop emulation cannot certify those. The broader scoring-authority audit and repository-wide baseline failures remain separate.
 
+### Published repair and final production verification
+
+Safe-push passed typecheck and pushed `748a491d19a4c132fac6c76e71ef589f54b0521e`. Lovable read-only metadata confirmed that exact synced commit before free Publish changes. The dialog reported Your website was updated, and fresh production loaded `index-BxnJINCm.js`. Receipt: `output/playwright/rc-acceptance-2026-10-14/answer-recovery-publication.png`. No Lovable AI or credit-spending action was used.
+
+Production session `6ef06c88-316b-4fb5-b57c-8480f7b6aa04` used passage16, per_passage and untimed mode. Two ordinary choices survived two reloads and clock Retry with zero attempts or credited-answer reveal (`backend-production-unconfirmed.json`, `production-two-drafts-reloaded.png`). After all six A choices and explicit Check passage, the first answer POST succeeded on the server; its acknowledgement was discarded. Reload and duplicate Retry restored and saved all six choices. Explicit Check passage and Finish reached completed results with zero unanswered. The original first-attempt ID `10de5726-05e7-4823-8ea9-a1f9535261a6` was retained; there are exactly six first attempts for IDs1601–1606, without duplicates. Screenshots: `production-all-drafts-recovered.png`, `production-answer-recovery-results.png`.
+
+Read-only receipt `backend-answer-recovery-final.json` at `2026-10-14T13:51:43.400Z` confirms25 sessions,208 attempts,4 annotations. All five protected source-session hashes match the earlier checkpoint. The temporary in-app teacher login was cleared locally to restore the dedicated tester, without global teacher sign-out or removal of recovery/record data.
+
+Final full suite:40 failed,6778 passed,1 skipped across6819 tests; no RC file failed. Every failure identity existed in the earlier full-suite receipt.38 match the independently reproduced upstream baseline; two are the previously variable conditional failures. Receipt: `C:/Users/Joshu/AppData/Local/Temp/rc-answer-recovery-full-suite.json`. Final focused435/435 receipt: `C:/Users/Joshu/AppData/Local/Temp/rc-fault-repair-final-tests.json`. No whole-suite success is claimed.
+
+Final production at-end smoke used `fe1092cf-b706-4e0d-a707-bbfd80e423f0`, passage16, end_of_set and a60-second per-passage practice budget. Pause/reload retained00:32 and pending choices; clock Retry and Resume recovered. All six A choices stayed hidden through practice-budget overrun+1:22, with no silent submission. Five navigated choices had already saved before Submit, as intended for at-end persistence; correctness remained hidden. Explicit duplicate Submit reached completed results with exactly six first attempts and zero unanswered. Screenshots: `production-at-end-overrun.png`, `production-at-end-final-results.png`; receipts: `backend-at-end-{before-submit,final}.json` under the same artifact directory.
+
+The final receipt at `2026-10-14T13:58:59.116Z` supersedes the earlier counts:26 sessions,214 attempts,4 annotations. All five protected source-session hashes remain unchanged. All seven sessions created during this acceptance run are completed and preserved; no records were deleted. The desktop checklist in ticket08 is now evidenced, with actual-device/speech/browser-zoom and exact historical clipping conditions explicitly open rather than falsely certified.
+
 ## Acceptance continuation, 2026-10-14
 
 This checkpoint supersedes older browser-pending rows only for the scenarios named here. Ticket 08 remains open for the explicitly listed device, accessibility and fault-control limits. Scoring authority is separate; no answer keys, source passages, historical grading or backend functions were changed by this acceptance work.
