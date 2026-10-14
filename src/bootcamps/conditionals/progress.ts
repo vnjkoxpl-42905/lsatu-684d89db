@@ -1,5 +1,6 @@
 import type { ConditionalDifficulty, ConditionalUnit } from './content/types';
 import { getCurriculumDifficulty, getCurriculumUnits } from './curriculumPath';
+import { conditionalOpeningEditionKey, isConditionalLessonEditionKey, openingQuestionRevisions } from './openingRevision';
 
 export interface AnswerDraft {
   working: string;
@@ -30,8 +31,18 @@ export interface ConditionalRun {
   timerEnabled: boolean;
   timerStartedAt?: string | null;
 }
+/** One opening-course lesson or drill. `state` is the drill's own resumable snapshot. */
+export interface CourseStepProgress {
+  status: 'started' | 'done';
+  done?: number;
+  total?: number;
+  state?: unknown;
+  updatedAt: string;
+}
 export interface ConditionalProgress {
   id: 'conditionals-v1';
+  /** Optional so records saved before 2026-10-11 stay valid. */
+  course?: Record<string, CourseStepProgress>;
   lessons: Record<string, string>;
   runs: Record<string, ConditionalRun>;
   attempts: ConditionalAttempt[];
@@ -41,14 +52,65 @@ export interface ConditionalProgress {
 }
 export const emptyDraft = (): AnswerDraft => ({ working: '', hint: false, revealed: false, choice: null, checked: false });
 export const emptyProgress = (): ConditionalProgress => ({ id: 'conditionals-v1', lessons: {}, runs: {}, attempts: [], journal: '', settings: { showMethod: true }, updated_at: new Date().toISOString() });
+export function markConditionalLessonRead(progress: ConditionalProgress, unitId: string, readAt = new Date().toISOString()): ConditionalProgress {
+  const editionKey = conditionalOpeningEditionKey(unitId);
+  return { ...progress, lessons: { ...progress.lessons, [unitId]: readAt, ...(editionKey ? { [editionKey]: readAt } : {}) } };
+}
+export function recordCourseStep(progress: ConditionalProgress, stepId: string, patch: Partial<Omit<CourseStepProgress, 'updatedAt'>>, at = new Date().toISOString()): ConditionalProgress {
+  const prior = progress.course?.[stepId];
+  // Finishing is permanent: revisiting or resetting a drill never un-completes it.
+  const status = prior?.status === 'done' ? 'done' : patch.status ?? prior?.status ?? 'started';
+  return { ...progress, course: { ...progress.course, [stepId]: { ...prior, ...patch, status, updatedAt: at } } };
+}
+function cleanCourse(course: unknown): Record<string, CourseStepProgress> | undefined {
+  if (course === undefined) return undefined;
+  if (!course || typeof course !== 'object') return {};
+  const entries = Object.entries(course as Record<string, Partial<CourseStepProgress>>).filter(([, step]) =>
+    !!step && (step.status === 'started' || step.status === 'done') && typeof step.updatedAt === 'string'
+    && (step.done === undefined || Number.isInteger(step.done)) && (step.total === undefined || Number.isInteger(step.total)));
+  return Object.fromEntries(entries) as Record<string, CourseStepProgress>;
+}
+export function reviewedConditionalLessonCount(lessons: Record<string, string>): number {
+  return Object.keys(lessons).filter(id => !isConditionalLessonEditionKey(id)).length;
+}
 export function newRun(questionIds: string[]): ConditionalRun {
   return { id: crypto.randomUUID(), questionIds, index: 0, drafts: {}, finished: false, elapsed: 0, timerEnabled: false };
+}
+function hasCheckedQuestion(run: ConditionalRun, questionId: string, attempts: ConditionalAttempt[]): boolean {
+  return !!run.drafts[questionId]?.checked || attempts.some(attempt => attempt.questionId === questionId && attempt.id.startsWith(`${run.id}:`));
+}
+export function nextUncheckedQuestionIndex(run: ConditionalRun, attempts: ConditionalAttempt[], after = -1): number {
+  const pending = (id: string) => !hasCheckedQuestion(run, id, attempts);
+  const next = run.questionIds.findIndex((id, index) => index > after && pending(id));
+  return next >= 0 ? next : run.questionIds.findIndex(pending);
+}
+export function reconcileConditionalRun(run: ConditionalRun, questions: { id: string; unitId: string; difficulty: ConditionalDifficulty }[], attempts: ConditionalAttempt[]): ConditionalRun {
+  const savedIds = new Set(run.questionIds);
+  const removedIds = new Set<string>();
+  const addedIds: string[] = [];
+  for (const revision of openingQuestionRevisions) {
+    if (![...revision.previousIds, ...revision.addedIds].some(id => savedIds.has(id))) continue;
+    const allowedIds = new Set(questions.filter(question => question.unitId === revision.unitId && question.difficulty === revision.difficulty).map(question => question.id));
+    for (const [retiredId, replacementId] of Object.entries(revision.replacements)) {
+      if (savedIds.has(retiredId) && allowedIds.has(replacementId)) removedIds.add(retiredId);
+    }
+    for (const id of revision.addedIds) if (allowedIds.has(id) && !savedIds.has(id)) addedIds.push(id);
+  }
+  if (!removedIds.size && !addedIds.length) return run;
+  const questionIds = [...run.questionIds.filter(id => !removedIds.has(id)), ...addedIds];
+  const currentId = run.questionIds[run.index];
+  const currentIndex = questionIds.indexOf(currentId);
+  const keepCurrent = !run.finished && currentIndex >= 0 && questions.some(question => question.id === currentId);
+  const updated = { ...run, questionIds };
+  const pendingIndex = nextUncheckedQuestionIndex(updated, attempts);
+  const index = keepCurrent ? currentIndex : pendingIndex >= 0 ? pendingIndex : questionIds.length;
+  return { ...updated, index, finished: !keepCurrent && pendingIndex < 0 };
 }
 export function attemptSummary(attempts: ConditionalAttempt[]) {
   return { total: attempts.length, correct: attempts.filter(a => a.correct).length, assisted: attempts.filter(a => a.hint || a.explanationBeforeCheck).length };
 }
 export function parseConditionalProgress(value: unknown): ConditionalProgress {
-  const bad = () => { throw new Error('Your stored conditional progress has an unsupported format. Your record has been preserved; ask Joshua to review it.'); };
+  const bad = () => { throw new Error('Your stored conditional progress has an unsupported format. Your record has been kept; ask Joshua to review it.'); };
   if (!value || typeof value !== 'object') return bad();
   const record = value as ConditionalProgress;
   if (record.id !== 'conditionals-v1' || !record.lessons || typeof record.lessons !== 'object' || !record.runs || typeof record.runs !== 'object' || !Array.isArray(record.attempts) || typeof record.journal !== 'string' || typeof record.settings?.showMethod !== 'boolean' || !Number.isFinite(Date.parse(record.updated_at))) return bad();
@@ -58,7 +120,8 @@ export function parseConditionalProgress(value: unknown): ConditionalProgress {
     for (const draft of Object.values(run.drafts)) if (!draft || typeof draft.working !== 'string' || typeof draft.hint !== 'boolean' || typeof draft.revealed !== 'boolean' || typeof draft.checked !== 'boolean' || (draft.choice !== null && (!Number.isInteger(draft.choice) || draft.choice < 0))) return bad();
   }
   for (const attempt of record.attempts) if (!attempt || typeof attempt.id !== 'string' || typeof attempt.questionId !== 'string' || typeof attempt.unitId !== 'string' || !['beginner', 'medium', 'advanced'].includes(attempt.difficulty) || typeof attempt.correct !== 'boolean' || typeof attempt.hint !== 'boolean' || typeof attempt.explanationBeforeCheck !== 'boolean' || typeof attempt.working !== 'string' || !Number.isFinite(Date.parse(attempt.checkedAt)) || (attempt.choice !== null && (!Number.isInteger(attempt.choice) || attempt.choice < 0))) return bad();
-  return record;
+  const course = cleanCourse(record.course);
+  return course === undefined ? record : { ...record, course };
 }
 export function elapsedSeconds(run: ConditionalRun, now = Date.now()): number {
   return run.elapsed + (run.timerStartedAt ? Math.max(0, Math.floor((now - Date.parse(run.timerStartedAt)) / 1000)) : 0);
@@ -70,8 +133,7 @@ export function recommendNext(progress: ConditionalProgress, units: ConditionalU
     if (!progress.lessons[unit.id]) return { mode: 'learn' as const, unitId: unit.id, label: `Learn: ${unit.title}`, difficulty, phase };
     if (!progress.attempts.some(attempt => attempt.questionId === unit.guidedExample.id)) return { mode: 'learn' as const, unitId: unit.id, label: `Guided example: ${unit.title}`, difficulty, phase };
     if (unit.drills[difficulty].some(question => !progress.attempts.some(attempt => attempt.questionId === question.id && attempt.difficulty === difficulty))) {
-      const level = { beginner: 1, medium: 2, advanced: 3 }[difficulty];
-      return { mode: 'practice' as const, unitId: unit.id, label: `Level ${level} activity: ${unit.title}`, difficulty, phase };
+      return { mode: 'practice' as const, unitId: unit.id, label: `Skill drill: ${unit.title}`, difficulty, phase };
     }
   }
   return null;

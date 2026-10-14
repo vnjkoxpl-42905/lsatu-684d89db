@@ -1,7 +1,9 @@
 import { Lock } from "lucide-react";
+import { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { DestinationHeadingContext } from "@/contexts/DestinationHeadingContext";
 
 /**
  * What a student sees when a route's feature flag is false.
@@ -25,6 +27,7 @@ export default function LockedModule({ staffOnly = false }: { staffOnly?: boolea
   const canReachClassroom = permissions.has_classroom_access || permissions.is_admin;
   const canMessage = permissions.has_chat_access || permissions.is_admin;
   const canReachAttempts = pathname.startsWith("/practice/exams") && pathname !== "/practice/exams/attempts";
+  const withinDestination = useContext(DestinationHeadingContext);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-6 py-16">
@@ -33,9 +36,9 @@ export default function LockedModule({ staffOnly = false }: { staffOnly?: boolea
           <Lock className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
         </div>
 
-        <h1 className="mb-2 text-xl font-semibold tracking-tight text-foreground">
-          Not open yet
-        </h1>
+        {withinDestination
+          ? <h2 className="mb-2 text-xl font-semibold tracking-tight text-foreground">Not open yet</h2>
+          : <h1 className="mb-2 text-xl font-semibold tracking-tight text-foreground">Not open yet</h1>}
         <p className="text-sm leading-relaxed text-muted-foreground">
           {staffOnly
             ? "This section is available to Joshua and administrators only."

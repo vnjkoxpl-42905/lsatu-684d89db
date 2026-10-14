@@ -46,10 +46,10 @@ export function useConditionalProgress(userId: string) {
           : supabase.from('bootcamp_kv').insert({ user_id: userId, table_name: TABLE, record_id: RECORD, data: snapshot as never });
         const { data: acknowledgement, error: saveError } = await writer.select('record_id,updated_at').abortSignal(controller.current.signal).maybeSingle();
         if (saveError) {
-          if (saveError.code === '23505') throw new Error('Another window saved this course first. Your draft is preserved on this device; ask Joshua to reconcile the two versions.');
+          if (saveError.code === '23505') throw new Error('Another window saved this course first. Your draft is kept on this device; ask Joshua to reconcile the two versions.');
           throw saveError;
         }
-        if (acknowledgement?.record_id !== RECORD || !acknowledgement.updated_at) throw new Error('Your saved work changed in another window. This draft is preserved on this device. Reload to reconcile before continuing; it will not overwrite the other window.');
+        if (acknowledgement?.record_id !== RECORD || !acknowledgement.updated_at) throw new Error('Your saved work changed in another window. This draft is kept on this device. Reload to reconcile before continuing; it will not overwrite the other window.');
         if (actor !== generation.current) return;
         const acknowledgedBase = cloudRevision.current;
         cloudRevision.current = acknowledgement.updated_at;
@@ -104,7 +104,7 @@ export function useConditionalProgress(userId: string) {
         const local = rawLocal != null ? parseConditionalProgress(rawLocal) : null;
         const dirty = local && (!saved || Date.parse(local.updated_at) > Date.parse(saved.updated_at));
         const draftBase = await persistence.get<{ revision: string | null }>('conditional_draft_base', RECORD);
-        if (dirty && draftBase && draftBase.revision !== (data?.updated_at ?? null)) throw new Error('This device has unfinished work based on an older account version. Both versions are preserved. Ask Joshua to reconcile them before continuing.');
+        if (dirty && draftBase && draftBase.revision !== (data?.updated_at ?? null)) throw new Error('This device has unfinished work based on an older account version. Both versions are kept. Ask Joshua to reconcile them before continuing.');
         const value = dirty ? local : saved ?? emptyProgress();
         if (actor !== generation.current) return;
         current.current = value;
@@ -150,7 +150,7 @@ export function useConditionalProgress(userId: string) {
       await localStore(userId).set('conditional_draft_state', RECORD, value);
       await localStore(userId).set('conditional_draft_base', RECORD, { revision: baseRevision });
     }).catch(() => {
-      if (actor === generation.current) { setStatus('error'); setError('Could not preserve this draft on your device. Keep this page open and retry saving.'); }
+      if (actor === generation.current) { setStatus('error'); setError('Could not keep this draft on your device. Keep this page open and retry saving.'); }
     });
   }, [userId, loadedActor]);
   return { progress: loadedActor === userId ? progress : null, savedProgress: loadedActor === userId ? savedProgress : null, update, status: loadedActor === userId ? status : 'loading' as const, error: loadedActor === userId ? error : '', retry: flush };

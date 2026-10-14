@@ -5,7 +5,7 @@ import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useClassroomItems } from '@/hooks/useClassroomItems';
 import { BookOpen, Loader2, Lock } from 'lucide-react';
 import { BUILD_SHA, BUILD_TIME } from '@/lib/buildInfo';
-import { BOOTCAMPS, classroomItemMatchesBootcamp } from '@/lib/bootcamps';
+import { BOOTCAMPS, classroomItemMatchesBootcamp, isQuickDrill } from '@/lib/bootcamps';
 
 export default function BootcampsPage() {
   const navigate = useNavigate();
@@ -46,11 +46,9 @@ export default function BootcampsPage() {
     // No header of its own: the classroom rail owns the way back, sign out and
     // the theme toggle. Drawing them again put a second set on top of the frame.
     <div className="bg-background">
-      <main className="max-w-7xl mx-auto space-y-6">
+      <section aria-labelledby="bootcamps-heading" className="max-w-7xl mx-auto space-y-6">
         <div>
-          {/* Matches Schedule and Analytics: these three are siblings in one
-              stage now, so they carry the same heading weight. */}
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Bootcamps</h1>
+          <h2 id="bootcamps-heading" className="text-3xl font-semibold tracking-tight text-foreground">Bootcamps</h2>
           <p className="text-sm text-muted-foreground mt-1.5">
             {is_admin
               ? 'All bootcamps. Students only see bootcamps you assign from the Teacher Workspace.'
@@ -84,8 +82,14 @@ export default function BootcampsPage() {
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            {visible.map((bc) => (
+          <div className="space-y-8">
+          {([
+            ['Bootcamps', visible.filter((b) => !isQuickDrill(b))],
+            ['Quick Drills', visible.filter(isQuickDrill)],
+          ] as const).filter(([, list]) => list.length > 0).map(([heading, list]) => (
+          <div key={heading} className="space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{heading}</h3>
+            {list.map((bc) => (
               <div
                 key={bc.id}
                 className="rounded-xl bg-card border border-border shadow-sm p-6 flex flex-col sm:flex-row gap-6 items-start"
@@ -122,7 +126,7 @@ export default function BootcampsPage() {
                       onClick={() => navigate(bc.route)}
                       className="inline-flex items-center gap-1.5 rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
                     >
-                      Launch Bootcamp
+                      {isQuickDrill(bc) ? 'Start drill' : 'Launch Bootcamp'}
                       <span className="ml-1">→</span>
                     </button>
                   </div>
@@ -130,8 +134,10 @@ export default function BootcampsPage() {
               </div>
             ))}
           </div>
+          ))}
+          </div>
         )}
-      </main>
+      </section>
     </div>
   );
 }

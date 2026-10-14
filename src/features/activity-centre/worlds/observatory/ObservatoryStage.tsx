@@ -55,13 +55,81 @@ interface Box {
   height: number;
 }
 
+/**
+ * One line of the statement as it actually set: where its letters start, and
+ * how much clear space sits between it and the line above. Every mark drawn
+ * for a word on this line has to fit inside that space, or it is drawn through
+ * the words of the line above.
+ */
+interface Line {
+  top: number;
+  room: number;
+}
+
+interface Layout {
+  /** The glyph box of each word, field-relative. */
+  boxes: Map<number, Box>;
+  /** Which line each word set on. */
+  lineOf: Map<number, number>;
+  lines: Line[];
+}
+
+/** Clear space assumed above the first line, which has the header above it. */
+const FIRST_LINE_ROOM = 22;
+
+/**
+ * The box of the word's letters rather than of its span. The span's box
+ * includes the line's half-leading and the star-point padding, so a figure
+ * placed from it started inside the line above.
+ */
+function glyphRect(el: HTMLElement): DOMRect {
+  const text = el.firstChild;
+  if (text && text.nodeType === Node.TEXT_NODE && typeof document.createRange === "function") {
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    if (typeof range.getBoundingClientRect === "function") {
+      const r = range.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) return r;
+    }
+  }
+  return el.getBoundingClientRect();
+}
+
+export function layoutOf(boxes: Map<number, Box>): Layout {
+  const lineOf = new Map<number, number>();
+  const lines: { top: number; bottom: number }[] = [];
+  const ordered = [...boxes.entries()].sort((a, b) => a[0] - b[0]);
+  for (const [i, b] of ordered) {
+    const last = lines[lines.length - 1];
+    // Words on one line share a top to within a pixel or two; a new line
+    // starts well below the last one's top.
+    if (!last || b.top > last.top + b.height / 2) {
+      lines.push({ top: b.top, bottom: b.top + b.height });
+    } else {
+      last.top = Math.min(last.top, b.top);
+      last.bottom = Math.max(last.bottom, b.top + b.height);
+    }
+    lineOf.set(i, lines.length - 1);
+  }
+  return {
+    boxes,
+    lineOf,
+    lines: lines.map((l, n) => ({
+      top: l.top,
+      room: n === 0 ? FIRST_LINE_ROOM : Math.max(0, l.top - lines[n - 1].bottom),
+    })),
+  };
+}
+
+const EMPTY_LAYOUT: Layout = { boxes: new Map(), lineOf: new Map(), lines: [] };
+
 export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryStageProps) {
   const still = useReducedMotion() ?? false;
   const drawn = phase === "drawn";
 
   const fieldRef = useRef<HTMLDivElement>(null);
   const wordRefs = useRef(new Map<number, HTMLElement>());
-  const [boxes, setBoxes] = useState<Map<number, Box>>(new Map());
+  const [layout, setLayout] = useState<Layout>(EMPTY_LAYOUT);
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   // Words are laid out by text flow, so the only way to draw between them is to
@@ -74,7 +142,7 @@ export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryS
     const base = field.getBoundingClientRect();
     const next = new Map<number, Box>();
     for (const [i, el] of wordRefs.current) {
-      const r = el.getBoundingClientRect();
+      const r = glyphRect(el);
       next.set(i, {
         left: r.left - base.left,
         top: r.top - base.top,
@@ -82,7 +150,7 @@ export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryS
         height: r.height,
       });
     }
-    setBoxes(next);
+    setLayout(layoutOf(next));
     setSize({ width: base.width, height: base.height });
   }, []);
 
@@ -141,7 +209,10 @@ export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryS
         data-arriving={!drawn ? "true" : "false"}
         data-testid="ob-field"
       >
-        <p className="observatory-type text-xl leading-loose md:text-2xl">
+        {/* The leading is restated at md: Tailwind's text-2xl carries its own
+            32px line height, which silently replaced leading-loose and left 6px
+            between lines, too little for any figure to sit in. */}
+        <p className="observatory-type text-xl leading-[2.4] md:text-2xl md:leading-[2.4]">
           {words.map((w) => (
             <span
               key={w.i}
@@ -176,12 +247,12 @@ export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryS
                   key={`${r.kind}-${n}`}
                   kind={r.kind}
                   indicators={r.indicators}
-                  points={anchorPoints(r.anchors, words, boxes)}
+                  segments={segmentsFor(r.anchors, words, layout)}
                   still={still}
                 />
               ))}
             {ghostKinds.map((kind) => (
-              <Ghost key={kind} kind={kind} width={size.width} height={size.height} />
+              <Ghost key={kind} kind={kind} width={size.width} line={layout.lines[0]} />
             ))}
           </svg>
         ) : null}
@@ -209,23 +280,48 @@ export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryS
   );
 }
 
-/** Screen points for a relation's anchors, in the order they appear. */
-function anchorPoints(
+/**
+ * One stretch of a figure: the anchors of one relation that set on the same
+ * line. A relation whose indicators wrap onto two lines gets one stretch per
+ * line rather than a chord cut diagonally through the text between them.
+ */
+interface Segment {
+  x1: number;
+  x2: number;
+  /** Where the letters of this line start. Marks sit above this. */
+  top: number;
+  /** Clear space above the line. Marks never rise further than this. */
+  room: number;
+  /** How many anchor words this stretch spans. */
+  count: number;
+}
+
+export function segmentsFor(
   anchors: { start: number; end: number }[],
   words: ReturnType<typeof splitWords>,
-  boxes: Map<number, Box>,
-) {
-  const points: { x: number; y: number }[] = [];
+  layout: Layout,
+): Segment[] {
+  const byLine = new Map<number, Segment>();
+  const seen = new Set<number>();
   for (const a of anchors) {
-    const hit = words.filter((w) => w.start < a.end && a.start < w.end);
-    const rects = hit.map((w) => boxes.get(w.i)).filter(Boolean) as Box[];
-    if (!rects.length) continue;
-    const left = Math.min(...rects.map((r) => r.left));
-    const right = Math.max(...rects.map((r) => r.left + r.width));
-    const top = Math.min(...rects.map((r) => r.top));
-    points.push({ x: (left + right) / 2, y: top });
+    for (const w of words) {
+      if (!(w.start < a.end && a.start < w.end) || seen.has(w.i)) continue;
+      seen.add(w.i);
+      const box = layout.boxes.get(w.i);
+      const n = layout.lineOf.get(w.i);
+      if (!box || n === undefined) continue;
+      const line = layout.lines[n];
+      const seg = byLine.get(n);
+      if (!seg) {
+        byLine.set(n, { x1: box.left, x2: box.left + box.width, top: line.top, room: line.room, count: 1 });
+      } else {
+        seg.x1 = Math.min(seg.x1, box.left);
+        seg.x2 = Math.max(seg.x2, box.left + box.width);
+        seg.count += 1;
+      }
+    }
   }
-  return points;
+  return [...byLine.entries()].sort((a, b) => a[0] - b[0]).map(([, seg]) => seg);
 }
 
 /**
@@ -239,61 +335,81 @@ function anchorPoints(
 function Figure({
   kind,
   indicators,
-  points,
+  segments,
   still,
 }: {
   kind: RelationKind;
   indicators: string[];
-  points: { x: number; y: number }[];
+  segments: Segment[];
   still: boolean;
 }) {
-  if (!points.length) return null;
+  if (!segments.length) return null;
 
-  // A relation anchored to one word arcs above it to the rest of the clause;
-  // one anchored to two or more spans between its own ends.
-  const from = points[0];
-  const to = points[points.length - 1];
-  const single = points.length < 2;
-
-  const y = Math.min(from.y, to.y) - 14;
-  const d = single
-    ? `M ${from.x - 26} ${y} Q ${from.x} ${y - 12} ${from.x + 26} ${y}`
-    : `M ${from.x} ${y} Q ${(from.x + to.x) / 2} ${y - 16} ${to.x} ${y}`;
+  // Each stretch arcs over its own words, inside the clear space above its
+  // line: the base sits just over the letters and the peak never rises past
+  // the gap, so nothing is ever drawn through the line above.
+  const shapes = segments.map((seg) => {
+    const base = seg.top - 3;
+    const lift = Math.max(3, Math.min(10, seg.room - 9));
+    const d = `M ${seg.x1} ${base} Q ${(seg.x1 + seg.x2) / 2} ${base - 2 * lift} ${seg.x2} ${base}`;
+    return { seg, base, d, len: Math.ceil(seg.x2 - seg.x1 + 4 * lift + 24) };
+  });
 
   const direction = kind === "conditional" ? directionOf(indicators[0]) : null;
-  const headAt = direction === "necessary" ? from : to;
+  const first = shapes[0];
+  const last = shapes[shapes.length - 1];
+  const head =
+    direction === "necessary" ? { x: first.seg.x1, y: first.base } : { x: last.seg.x2, y: last.base };
   const showHead = kind === "causal" || (kind === "conditional" && direction !== null);
-  const LEN = 260;
 
   return (
     <g data-testid={`ob-figure-${kind}`} data-kind={kind}>
-      <path
-        className="ob-figure"
-        data-kind={kind}
-        data-draw={still ? undefined : "true"}
-        d={d}
-        style={
-          still
-            ? undefined
-            : ({ strokeDasharray: LEN, ["--ob-len" as string]: LEN } as React.CSSProperties)
-        }
-      />
-      {/* Causal is doubled: a second shaft just under the first, so the push is
-          visible in the line's weight rather than in a colour. */}
-      {kind === "causal" ? (
-        <path className="ob-figure" data-kind="causal" d={d} transform="translate(0,3)" opacity={0.6} />
-      ) : null}
-      {/* Comparative gets the beam under its two ends, tipped toward one side. */}
-      {kind === "comparative" && !single ? (
-        <g className="ob-beam" data-tipped="true" data-testid="ob-beam">
-          <line className="ob-figure" data-kind="comparative" x1={from.x} y1={y + 6} x2={to.x} y2={y + 6} />
-        </g>
-      ) : null}
+      {shapes.map(({ d, len }, n) => (
+        <path
+          key={n}
+          className="ob-figure"
+          data-kind={kind}
+          data-draw={still ? undefined : "true"}
+          d={d}
+          style={
+            still
+              ? undefined
+              : ({ strokeDasharray: len, ["--ob-len" as string]: len } as React.CSSProperties)
+          }
+        />
+      ))}
+      {/* Causal is doubled: a second shaft just above the first, so the push is
+          visible in the line's weight rather than in a colour. Above, not
+          below: below is where the letters are. */}
+      {kind === "causal"
+        ? shapes.map(({ d }, n) => (
+            <path
+              key={`echo-${n}`}
+              className="ob-figure"
+              data-kind="causal"
+              d={d}
+              transform="translate(0,-3)"
+              opacity={0.6}
+            />
+          ))
+        : null}
+      {/* Comparative gets a level beam under each stretch that spans two terms.
+          Level, because the figure does not know which term is greater, and an
+          "as strong as" has no greater term at all. */}
+      {kind === "comparative"
+        ? shapes
+            .filter(({ seg }) => seg.count > 1)
+            .map(({ seg, base }, n) => (
+              <g key={`beam-${n}`} className="ob-beam" data-testid="ob-beam">
+                <line className="ob-figure" data-kind="comparative" x1={seg.x1} y1={base} x2={seg.x2} y2={base} />
+              </g>
+            ))
+        : null}
       {showHead ? (
         <polygon
           className="ob-arrowhead"
           data-testid={`ob-head-${kind}`}
-          points={`${headAt.x},${y - 1} ${headAt.x - 4},${y - 8} ${headAt.x + 4},${y - 8}`}
+          points={`${head.x},${head.y} ${head.x - 4},${head.y - 7} ${head.x + 4},${head.y - 7}`}
         />
       ) : null}
     </g>
@@ -301,14 +417,17 @@ function Figure({
 }
 
 /** A relationship the student named that is not in the statement. */
-function Ghost({ kind, width, height }: { kind: RelationKind; width: number; height: number }) {
+function Ghost({ kind, width, line }: { kind: RelationKind; width: number; line?: Line }) {
+  // Over the first line, inside the space above it, so the dissolving shape
+  // never sits on the words the student is reading.
+  const base = (line?.top ?? FIRST_LINE_ROOM) - 4;
   return (
     <path
       className="ob-figure"
       data-kind={kind}
       data-ghost="true"
       data-testid={`ob-ghost-${kind}`}
-      d={`M ${width * 0.2} ${height * 0.3} Q ${width * 0.5} ${height * 0.1} ${width * 0.8} ${height * 0.3}`}
+      d={`M ${width * 0.2} ${base} Q ${width * 0.5} ${base - 26} ${width * 0.8} ${base}`}
     />
   );
 }
@@ -323,6 +442,7 @@ function Seals({ seals }: { seals?: SealState }) {
           className="ob-seal observatory-mono rounded-sm px-3 py-1.5 text-xs"
           data-kind={k}
           data-lit={seals?.[k] ? "true" : undefined}
+          aria-label={`${SEAL_LABEL[k]}: ${seals?.[k] ? "answered correctly" : "not yet answered correctly"}`}
           data-testid={`ob-seal-${k}`}
         >
           {SEAL_LABEL[k]}

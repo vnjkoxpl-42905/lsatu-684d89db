@@ -3,7 +3,10 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-libra
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { permissions } = vi.hoisted(() => ({ permissions: {} as Record<string, boolean> }));
+const { permissions, readingCenter, railPrefs } = vi.hoisted(() => ({
+  permissions: {} as Record<string, boolean>, readingCenter: { allowed: false, isPending: false },
+  railPrefs: { order: { classroom: [] as string[] }, hidden: [] as string[] },
+}));
 
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "student", email: "s@example.com" }, authReady: true, signOut: vi.fn() }) }));
 vi.mock("@/contexts/ThemeContext", () => ({ useTheme: () => ({ theme: "light", setTheme: vi.fn() }) }));
@@ -11,7 +14,8 @@ vi.mock("@/integrations/supabase/client", () => ({
   supabase: { from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: { display_name: "Sam" } }) }) }) }) },
 }));
 vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
-vi.mock("@/hooks/useRailPrefs", () => ({ useRailPrefs: () => ({ prefs: { order: {}, hidden: [] } }) }));
+vi.mock("@/hooks/useRailPrefs", () => ({ useRailPrefs: () => ({ prefs: railPrefs }) }));
+vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => readingCenter }));
 vi.mock("@/hooks/useUnreadMessageCount", () => ({ useUnreadMessageCount: () => 0 }));
 vi.mock("@/hooks/useNotifications", () => ({ useNotifications: () => ({ notifications: [], markSignupNotificationsRead: vi.fn() }) }));
 vi.mock("@/hooks/useClassroomItems", () => ({ useClassroomItems: () => ({ items: [], loading: false }) }));
@@ -54,11 +58,53 @@ const railButton = (name: RegExp) => Array.from(rail().querySelectorAll("button"
 
 beforeEach(() => {
   Object.assign(permissions, NONE, { has_chat_access: true, has_schedule_access: true });
+  readingCenter.allowed = false; readingCenter.isPending = false;
+  railPrefs.order.classroom = []; railPrefs.hidden = [];
   window.matchMedia = window.matchMedia ?? ((() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) as never);
 });
 afterEach(cleanup);
 
 describe("classroom rail access", () => {
+  it('places an assigned Reading Center directly after My Work with no broad Classroom flag', async () => {
+    readingCenter.allowed = true;
+    await renderShell('/classroom');
+    const myWork = railButton(/^My Work/);
+    expect(myWork).not.toHaveTextContent('(locked)');
+    expect(myWork.nextElementSibling).toHaveTextContent('Reading Center');
+    fireEvent.click(myWork);
+    expect(screen.getByTestId('where')).toHaveTextContent('/my-work/to-do');
+    fireEvent.click(railButton(/^Reading Center$/));
+    expect(screen.getByTestId('where')).toHaveTextContent('/reading-center');
+  });
+  it('restores only hidden My Work for an assigned tool while retaining other custom navigation', async () => {
+    railPrefs.order.classroom = ['progress', 'home', 'practice', 'my-work'];
+    railPrefs.hidden = ['my-work', 'review']; readingCenter.allowed = true;
+    await renderShell('/classroom');
+    const group = railButton(/^My Work/).parentElement!;
+    const labels = Array.from(group.querySelectorAll('button')).map((button) => button.textContent);
+    expect(labels[0]).toMatch(/^Progress/);
+    expect(railButton(/^Review/)).toBeUndefined();
+    expect(railButton(/^My Work/).nextElementSibling).toHaveTextContent('Reading Center');
+    expect(railPrefs.hidden).toEqual(['my-work', 'review']);
+  });
+  it('preserves hidden My Work when the tool is unassigned or revoked', async () => {
+    railPrefs.hidden = ['my-work']; await renderShell('/classroom');
+    expect(railButton(/^My Work/)).toBeUndefined();
+    expect(railButton(/^Reading Center$/)).toBeUndefined();
+  });
+  it('does not infer a Reading Center launcher from broad Classroom or admin access', async () => {
+    permissions.has_classroom_access = true; await renderShell('/classroom');
+    expect(railButton(/^Reading Center$/)).toBeUndefined();
+    cleanup(); permissions.is_admin = true; readingCenter.allowed = true;
+    await renderShell('/teacher/students');
+    expect(railButton(/^Reading Center$/)).toBeUndefined();
+    expect(railButton(/^Teacher Workspace/)).toBeInTheDocument();
+  });
+  it('holds the Reading Center link while assignment access is unknown', async () => {
+    readingCenter.isPending = true; await renderShell('/classroom');
+    expect(railButton(/^Reading Center$/)).toBeUndefined();
+    expect(railButton(/^My Work/)).not.toHaveTextContent('(locked)');
+  });
   it("keeps a fully locked destination reachable so its page can explain the lock", async () => {
     await renderShell("/classroom");
     const progress = railButton(/^Progress/);
@@ -89,6 +135,19 @@ describe("classroom rail access", () => {
     await renderShell("/progress/history");
     expect(railButton(/^Progress/)).toHaveAttribute("aria-current", "page");
     expect(railButton(/^Review/)).not.toHaveAttribute("aria-current");
+  });
+
+  it("keeps the student Schedule destination out of the teacher rail", async () => {
+    permissions.is_admin = true;
+    await renderShell("/teacher/students");
+    expect(railButton(/^Schedule/)).toBeUndefined();
+    expect(railButton(/^Students/)).toBeInTheDocument();
+  });
+
+  it("keeps Schedule in the student rail", async () => {
+    await renderShell("/classroom");
+    fireEvent.click(railButton(/^Schedule/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/schedule");
   });
 
   it("keeps a locked shortcut focusable with its explanation, but inert", async () => {

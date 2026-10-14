@@ -30,7 +30,7 @@ export function BootcampCardPreview({
     // sans, offset shadow. Mirrors the Abstract bootcamp shell.
     return (
       <div
-        className={base + ' rounded-none border-2 flex-col'}
+        className={base + ' @container rounded-none border-2 flex-col'}
         style={{ background: theme.bg, borderColor: theme.ink, color: theme.ink }}
         aria-hidden
       >
@@ -45,6 +45,21 @@ export function BootcampCardPreview({
           <h3 className="font-sans text-2xl font-black uppercase leading-[0.95] tracking-tight">
             {title}
           </h3>
+          {bootcamp.outline && (
+            <ol className="my-3 hidden min-h-0 flex-1 list-none flex-col justify-center gap-1 overflow-hidden p-0 @[340px]:flex">
+              {bootcamp.outline.map((name, i) => (
+                <li key={name} className="flex items-center gap-2 font-sans text-[11px] font-bold">
+                  <span
+                    className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[9px] font-black"
+                    style={{ background: theme.ink, color: theme.bg }}
+                  >
+                    {i + 1}
+                  </span>
+                  {name}
+                </li>
+              ))}
+            </ol>
+          )}
           <p className="line-clamp-2 text-[11px] font-medium" style={{ color: theme.inkSoft }}>
             {description}
           </p>
