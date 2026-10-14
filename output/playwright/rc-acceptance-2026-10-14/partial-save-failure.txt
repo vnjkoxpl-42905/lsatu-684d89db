@@ -1,0 +1,7 @@
+- region "Notifications (F8)":
+  - list
+- region "Notifications alt+T"
+- banner:
+  - generic: Welcome, josh
+- main:
+  - paragraph: Loading your saved answers…
