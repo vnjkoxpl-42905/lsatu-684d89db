@@ -1,0 +1,2306 @@
+[
+  {
+    "title": "Answer a Question (passage pair)",
+    "slug": "answer-a-question-passage-pair",
+    "section": "RC",
+    "category": "Patterns",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "These two passages from test 3 and 7 both lend themselves to an _Answer a Question_ framework.\n\nSometimes in such passages, the author poses an actual question. The unusual sight of a question mark in an RC passage is a big wake up call that allows us to think, \"Oh, snap! If the author is asking a question, then trying to answer that question is probably her main purpose.\"\n\nOther times, it's a little more subtle. We pick up on clues like\n- scientists are perplexed\n- what's puzzling / what's surprising\n- still don't have a satisfactory explanation for\n\nThere we should exert a little more effort into pausing and making our brain explicitly name what question we're trying to answer.\n\nWe should then _Read with an Appetite_ for that answer. It's not always obvious when it occurs, but if we're listening for it, we should see it.",
+      "right_md": "## Try these two passages, **untimed**\nworking on reading through the _Answer Question_ framework\n\nWhen you encounter the spot where the passage seems to be setting up a question, pause and say the question back to your brain.\n\nContinue to read the passage yearning for an answer to that question.\n\nWhen you're done reading the passage, you should be able to articulate the Question and the Answer.\n\nWe've removed a couple questions from each set that test minor details, so the questions that remain are mainly focused on our understanding of the Question and the Answer."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 3"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Answer a Question + Author's Intent (set 1)",
+    "slug": "answer-a-question-author-s-intent-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "From three **Answer a Question** passages from 61 and 69, this set has four questions that test our understanding of the author's meaning and intent.\n\n- Author's Attitude\n- Local Purpose\n- Meaning in Context",
+      "right_md": "## Attempt the problems **untimed** .\n\nYou've probably read these passage before, so do what you gotta do to remind yourself of their contents.\n\n- On **Attitude** , beware strong answers. Find at least one attitudinal marker in the passage to support your answer.\n\n- On **Local Purpose** questions (in order to / serves to / primarily to), expect the correct answer to sound a lot like language from the previous sentence. The correct answer is all about the local Big Idea that this specific detail is supporting.\n\n- On **Meaning In Context** , try to think of your own word or phrase that would fit into the same blank (and test answers by substituting them into place in the passage). If it's asking what a word/phrase _refers_ to, then it's really testing us on understanding how the author was using some word/phrase in order to callback to some earlier detail, so we just want to track down that earlier moment."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 2"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Answer a Question + Beyond Passage (set 1)",
+    "slug": "answer-a-question-beyond-passage-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 15,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "Try this pair of **Answer a Question** passages from tests 61 and 69, along with four _Beyond the Passage_ questions:\n\n- Two **Analogy** questions\n- Two **Strengthen** questions",
+      "right_md": "## Try these questions **untimed.**\n\n- On **Strengthen / Weaken** , pay attention to whether the question stem wants you to impact an argument (in which case you need to think about conclusion vs. evidence) or to just impact a claim (in which case you can often just think about that one claim). Some rare cases, hint-hint, will actually ask you to Explain some curious fact from the passage.\n\n- On **Analogy** , try to use your skillset from Parallel questions in LR to extract some general qualities or relationships from the passage. Beware of trap answers that have too obvious a topic similarity. Be willing to adjust your understanding of what qualities or relationships the correct answer is matching up with (often, our initial abstract prediction is different from what the correct answer is dealing with)."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 3"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Answer a Question + Big Picture (set 1)",
+    "slug": "answer-a-question-big-picture-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set has three **Answer Question** passages along with their Big Picture question.\n\nThese passages are built around an author trying to solve a causal mystery. Something weird or confusing is happening / has happened, and the author (and possibly other characters in the passage) are trying to figure out why.\n\nAny time an LSAT author poses a question within a passage, that question is usually super clutch when it comes to the big picture.\n\nWe want to process it, internalize it, and read with an appetite for answers to it.",
+      "right_md": "## **Read through these passages,**\n## practicing identifying and implementing an\n## _Answer a Question_ framework.\n\nThese passages will tend to begin with some backstory in order to then reach a point where the author is curious about something funky. She may even literally pose a rhetorical question to the reader.\n\nYou have two main framework boxes to fill in.\n\n- What is the Curious Question being asked? What puzzling thing is the author trying to explain?\n- What is the Author's answer to that question? What is her explanation for the puzzling thing?\n\nIf other voices in the passage also offer a potential answer, we would hope to retain those other possible explanations/answers too, but our primary concerns are just filling in box 1 and box 2."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 2"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Answer a Question + Big Picture",
+    "slug": "answer-a-question-big-picture",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 25,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "**Answer a Question** __ passages are essentially the Reading Comp version of the _Explain Curious Fact_ pattern in Logical Reasoning.\n\nThese passages are built around an author trying to solve a causal mystery or answer an otherwise tricky question. Something weird or confusing or new or different is happening, or happened, and the author (and possibly other characters in the passage) are trying to figure out why.\n\nAny time an LSAT author poses a question within the passage, that question is usually integral to the big picture and we need to read with an appetite to figure out how the author ultimately chooses to answer that question.",
+      "right_md": "## **Try these questions untimed,**\npracticing using an _Answer a Question_ framework.\n\nThese passages will tend to begin with some backstory in order to then reach a point where the author is curious about something funky. She may even literally pose a rhetorical question to the reader.\n\nYou have two main framework boxes to fill in.\n\n- What is the Curious Question being asked? What puzzling thing is the author trying to explain?\n- What is the Author's answer to that question? What is her explanation for the puzzling thing?\n\nIf other voices in the passage also offer a potential answer, we would hope to retain those other possible explanations/answers too, but our primary concerns are just filling in box 1 and box 2."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 14"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Answer a Question + Must Be True (set 1)",
+    "slug": "answer-a-question-must-be-true-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two _Answer a Question_ passages from test 69, as well as three questions with a **Must Be True** degree.\n\nUsually, Must Be True is the exclusive province of **Locate Detail** and **Five Questions** . It's signified by keywords like _according to the passage, the passage indicates, the author states / says / mentions_\n\nBut occasionally we see an **Inference** question have a Must Be True degree. Instead of asking what is \"most supported / suggested / most reasonably inferred\", it asks w_hat can be inferred_ from the passage. This doesn't seem to really make a difference in our approach, but our correct answer should feel like something can pretty much prove using ideas from the passage, even though it won't sound like a reiteration of what was said in the passage.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nRead the entire passage if you want to reinforce the _Answer a Question_ framework, or just go immediately to whichever part of the passage the question stem keywords are referring you to.\n\nPractice the skill of finding keywords in the question stem, or in an answer choice, and doing a quick visual scan or Ctrl / Command + F search in order to locate where those words appear in the passage."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 14"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Answer a Question + What's Implied (set 1)",
+    "slug": "answer-a-question-what-s-implied-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 13,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two _Answer a Question_ passages from tests 61 and 69, as well as six accompanying **What's Implied** question tasks.\n\nThese tend to be harder, because the correct answer is usually a gisty re-wording or a technical implication of one or more sentences from the passage.\n\nMost Supported means that question stem is expressed in \"squishy\" terms, indicating that our answer might not be fully derivable from the passage, but it's more derivable than any other answer:\n- most supported\n- most reasonably inferred\n- most likely to agree\n- suggests\n\nWhile we typically only think of _Implied_ question types (i.e. Inference, Opinion, Attitude) as having a most supported vibe, sometimes we see a Five Questions with a Most Supported degree, even though Five Questions is within the _Stated_ family of question types.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nYou've read them before, so you might be able to just dive in where needed, but since Most Supported questions often pull support from unexpected sentences or feel like a holistic implication of someone's view, it's safer to have just read the whole passage.\n\n- When looking for an answer, be very cautious about overly Strong / Specific / Comparative wording in the answer choices.\n\n- Gravitate towards stuff that sounds more weakly worded, where the burden of proof is one example, or where you feel like you don't need support beyond the passage to verify an answer is true.\n\n- Don't settle on an answer until you've matched it up with some Support Sentence(s) in the passage that you think you could use, if you had to defend your answer in court."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 3"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Author's Intent - (First Taste)",
+    "slug": "author-s-intent-first-taste",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 8,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set has four **Local Purpose** /**Paragraph Purpose / Meaning in Context** problems.\n\nLocal Purpose and Meaning in Context have something in the question stem that causes us to zoom in on one specific sentence, but what is really being tested is the penumbra of meaning in the adjacent sentences. Correct answers usually sound like one of the adjoining **bookend** sentences, most commonly they reinforce something in the preceding claim or two.\n\nParagraph Purpose questions sometimes use abstract descriptions, to explain how a given paragraph connects to a previous paragraph or to subsequent paragraphs. Or they use topic-specific language that usually resembles the opening sentence of the paragraph.",
+      "right_md": "## Try these four questions **untimed** .\n\nLocal Purpose and Meaning in Context usually highlight a specific sentence for us, but the correct answer is really reinforcing one of the adjacent \"bookend\" sentences.\n\nIn the passage, we'll read a pair of sentences like this:\n_Things like X are often Y. For example, one time this thing A was B._\n\nA **Local Purpose** question will ask,\n_The author mentions A in the third paragraph primarily to ..._\n\nTrap answers will be about A and B.\nThe correct answer will sound like, \"to illustrate the idea that X is often Y\".\n\n**Meaning in Context** will sometimes be asking what a certain term referred to, which means it's testing our ability to see callback language and recognize what moment in the passage is being referenced.\n\nMore often it tests us on the contextual meaning a word or phrase. For this variety, we can simply try replacing the actual word/phrase used with each answer choice. We want to cautious about picking answers that reward our immediate reaction to the word in the question stem. What's our usual definition for that word?  We call that the _Dictionary Trap_ , since it's baiting people with their automatic reaction to this word. The correct answer reflects the contextual usage, which is usually an atypical meaning for a typical word.\n\n**Paragraph Purpose** varies between testing how a paragraph structurally relates to other paragraphs and testing the specific main point of that paragraph. In both cases, the first sentence of the paragraph is usually the best place to look.\n\n- is there a broad **framing idea** in the first sentence, which the the rest of the paragraph fleshes out?\n\n- is there a **Rhetorical Signpost** like \"but, however, furthermore, also\" in the first sentence that highlights how this paragraph connects to the previous one?"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 4"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Beyond the Passage: Set 1",
+    "slug": "beyond-the-passage-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 25,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set has 6 questions from tests 73 and 71, featuring question types like **Analogy** , **Application** , **Strengthen/Weaken** , and **Add to Passage** .",
+      "right_md": "## Try these six questions **untimed** .\n\nMost of the passages should be familiar, but a re-read would probably help.\n\n- For **Analogy** , use the same skills we use on Parallel questions in LR: whatever it is they're asking about, we need to drop the topic and just describe its abstract features. What sort of general situation is going on (e.g. a potential solution backfired); what sort of relationships do things have to each other (e.g. X was influenced by Y, but is now being challenged by Y)?\n\n- For **Application** , identify 1 or 2 descriptive qualities of the thing we're being asked about and look for an answer that reinforces them.\n\n- For **Strengthen/Weaken** , use your normal LR process, but note that often we're being instructed to Str/Weak a claim not an argument (so in the former case we don't need to necessarily find evidence and think about assumptions).\n\n- For **Add to Passage** , avoid answers that seem to _Backtrack from Main Point_ or that seem to _Open Up a New Paragraph_ ."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 4"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Challenge Position - Author's Intent",
+    "slug": "challenge-position-author-s-intent",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "From three **Challenge Position** passages from tests 37, 40, and 52, this set has nine questions that test our understanding of the author's meaning and intent.\n\n- Author's Attitude\n- Local Purpose\n- Meaning in Context\n- Paragraph Purpose",
+      "right_md": "## Attempt the problems **untimed** .\n\nYou've probably read these passage before, so do what you gotta do to remind yourself of their contents.\n\n- On **Attitude** , beware strong answers. Find at least one attitudinal marker in the passage to support your answer.\n\n- On **Local Purpose** questions (in order to / serves to / primarily to), expect the correct answer to sound a lot like language from the previous sentence. The correct answer is all about the local Big Idea that this specific detail is supporting.\n\n- On **Meaning In Context** , try to think of your own word or phrase that would fit into the same blank (and test answers by substituting them into place in the passage). If it's asking what a word/phrase _refers_ to, then it's really testing us on understanding how the author was using some word/phrase in order to callback to some earlier detail, so we just want to track down that earlier moment.\n\n- On **Paragraph Purpose** , pay close attention to the first sentence of the paragraph (unless they're asking about the very first paragraph). Is there a rhetorical word in the beginning of the paragraph, like \"but / moreover / also / however / for example\", that illustrates how the paragraph connects structurally to the previous paragraph?"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 15"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Challenge Position (Author Enters Late)",
+    "slug": "challenge-position-author-enters-late",
+    "section": "RC",
+    "category": "Patterns",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "These three passages, from tests A and 3, involve _Challenge Position_ passages.\n\nTypically, _Challenge Position_ is among the easier frameworks to spot, because the passage usually begins with these signature ingredients:\n- Attribution (to a specific person, to a group, or to a 'common/prevailing view')\n- Pivot (but, yet, however, recently)\n- Author's Pushback\n\nThe **Attribution** language might sound like:\n- Most legal theorists\n- According to many psychologists\n- It is usually assumed (common view)\n\nThen the typical **Pivot** language is something like:\n- but\n- yet\n- however\n- nevertheless\n\nAnd then we start to hear the author's resistance to the original view.\n\nBut in these three _Challenge Position_ passages, we don't get that pushback in the first paragraph. We might have to wait 2 or 3 paragraph before the author's voice and pushback enter the passage.",
+      "right_md": "## Read these 3 passages and attempt the\n## 13 accompanying questions, **untimed** , for accuracy.\n\nSince the author's challenge doesn't begin until at least halfway through the passage, the passage will start off feeling more like _Highlight Noteworthy_ . It might feel like it's just presentational, and the author has no opinion or agenda of her own.\n\nPretend you're reading this on test day, and you're starting to think you should be reading this passage with that framework, so that you can practice having a \"Flexible Moment\" when you see the author's pushback arise.\n\nIn realtime, we would need to pause for a second there and process, \"Oh?! Maybe there _is_ an opinionated author here. Okay, let me make sure the #1 thing I can understand from this passage is the Position the author is undermining and what her critique is, what her Alternative Position is, or both."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 18"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Challenge Position + Beyond the Passage (set 2)",
+    "slug": "challenge-position-beyond-the-passage-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 8,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two **Challenge Position** passages from 51 and 52, as well as three _Beyond the Passage_ questions, each of some \"exotic\"\" question type (Evaluate, Application, and Add to Passage).",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nYou've probably read these passages multiple times before, so read enough to jog your memory, and read more if you need to in order to carefully think through some tricky tasks."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 8"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Challenge Position + Big Picture (set 2)",
+    "slug": "challenge-position-big-picture-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 22,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set has three _Challenge Position_ passages from tests 29, 51, and 52, as well as their six accompanying **Big Picture** questions.\n\n**(3) Main Point questions**\n(remember to find an answer where the subject noun of the main clause is the _Central Topic_ and the telling part of the main clause sounds like the main priority of whatever_Framework_ you used to organize the passage)\n\n**(2) Organization questions**\nWe're ultimately just trying to find an answer where every ingredient matches up, and it takes us on a journey from the beginning to the ending of the passage. The short-cut we can often use to get rid of some answers quickly is by checking their last ingredient 1st. If the last ingredient doesn't match the ending of the passage, then the rest of the answer probably isn't worth reading.\n\n**(1) Primary Purpose**\nThis type of question mainly wants us to answer in terms of what Framework we used, but of course LSAT isn't limited to using the 5-7 frameworks that we use",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nWe've already warned you that you can use a Challenge Position framework (but when an author is criticizing we can often also hear the possibility for Problem / Solution).\n\nSo pay a lot of attention to where we see an attribution to a different point of view early on, and encode that as the Position. Then, look for a pivot into the Author's voice with something like a But / Yet / However."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 8"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Challenge Position + What's Implied",
+    "slug": "challenge-position-what-s-implied",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two _Challenge Position_ passages from tests 18 and 56, as well as seven accompanying **Implied** question tasks, such as **Opinion, Inference,** and **Attitude.**\n\nThese tend to be harder, because the correct answer is a gisty re-wording or a technical implication of one or more sentences from the passage. The degree of the question stem is what's \"most supported / most likely / most suggested\".\n\nMost Supported means that question stem is expressed in \"squishy\" terms, indicating that our answer might not be fully derivable from the passage, but it's more derivable than any other answer:\n- most supported\n- most reasonably inferred\n- most likely to agree\n- suggests",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\n- When looking for an answer, be very cautious about overly Strong / Specific / Comparative wording in the answer choices.\n\n- Gravitate towards stuff that sounds more weakly worded, where the burden of proof is one example, or where you feel like you don't need support beyond the passage to verify an answer is true.\n\n- Don't settle on an answer until you've matched it up with some Support Sentence(s) in the passage that you think you could use, if you had to defend your answer in court."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 15"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Comparative Passages - Relationship (set 1)",
+    "slug": "comparative-passages-relationship-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This is a pair of **comparative** passages, from tests 52 and 54, along with four questions that involve the **Relationship** between the two passages.\n\nRelationship questions ask us to compare the passages to each other, so it's usually difficult to make much headway on them unless you've already read both passages.\n\nWhen we're reading Comparative Passages, our reading goal during the 2nd passage we read is to think primarily about how this 2nd passage relates to the 1st, in terms of both overlaps and distinctions.",
+      "right_md": "## Try the following, **untimed.**\n\nFor each of these three passages, read Passage A.\n\nThen, as you're starting to read Passage B (and throughout your reading of Passage B), pause to start trying to make connections about how the two passages related.\n\nHow were they similar or different when it comes to\n- Topic\n- Tone / Attitude / Voice / Audience\n- Purpose / Framework\n- Scope (specific vs. general)\n- Evidence cited\n- Complementary or Adversarial?"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 16"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Comparative Passages +  Overlap / Disconnect (set 1)",
+    "slug": "comparative-passages-overlap-disconnect-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 15,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This is a pair of comparative passages, from test 63 and 66, as well as all the **Overlap / Disconnect** questions that came in that set (8 total).\n\nOne cool thing about these questions is that it's usually really easy to get rid of a couple answer choices if you've only read one of the passages\n\nSome students make it their default approach to Comparative Reading that they'll read _only one_ passage, work on the _Just One_ and _Overlap / Disconnect_ questions to the extent that they can (picking an answer or just eliminating some wrong answers), and _then_ read the other passage.\n\nOther students hate that approach, but should still develop the skillset for cases in which they run out of time and only have about 5 minutes to work on a Comparative set. In those cases, we usually get the most value out of our 5 minutes by just reading one passage and then making eliminations and guesses on the questions that aren't testing _Relationships_ .",
+      "right_md": "- For each of these passages, pick either Passage A or Passage B to read first (but **don't read both** ).\n\n- Once you've read only one of the passages, see what answers you can eliminate on all the questions attached to that passage.\n\n- Indicate which answer you'd pick if you had to guess at that point (but don't confirm your answer).\n\n- Once you've selected your guess on all the problems, read the other passage and then revisit all the questions to pick/confirm your final answer."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 18"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Comparative Passages + Overlap / Disconnect (set 2)",
+    "slug": "comparative-passages-overlap-disconnect-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 15,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This is a trio of comparative passages, from tests 68, 69, and 70, as well as all the **Overlap / Disconnect** questions that came in that set (8 total).\n\nOne cool thing about these questions is that it's usually really easy to get rid of a couple answer choices if you've only read one of the passages\n\nSome students make it their default approach to Comparative Reading that they'll read _only one_ passage, work on the _Only One_ and _Overlap / Disconnect_ questions to the extent that they can (picking an answer or just eliminating some wrong answers), and _then_ read the other passage.\n\nOther students hate that approach, but should still develop the skillset for cases in which they run out of time and only have about 5 minutes to work on a Comparative set. In those cases, we usually get the most value out of our 5 minutes by just reading one passage and then making eliminations and guesses on the questions that aren't testing _Relationships_ .",
+      "right_md": "- For each of these passages, pick either Passage A or Passage B to read first (but **don't read both** ).\n\n- Once you've read only one of the passages, see what answers you can eliminate on all the questions attached to that passage.\n\n- Indicate which answer you'd pick if you had to guess at that point (but don't confirm your answer).\n\n- Once you've selected your guess on all the problems, read the other passage and then revisit all the questions to pick/confirm your final answer."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 8"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Comparative Passages + Relationship (set 2)",
+    "slug": "comparative-passages-relationship-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This is a trio of **comparative** passages, from tests 67 - 69, as well as any **Relationship** questions that come with them (7 total).\n\nRelationship questions ask us to compare the passages to each other, so it's usually difficult to make much headway on them unless you've already read both passages.\n\nWhen we're reading Comparative Passages, our reading goal during the 2nd passage we read is to think primarily about how this 2nd passage relates to the 1st, in terms of both overlaps and distinctions.",
+      "right_md": "## Try the following, **untimed.**\n\nFor each of these three passages, read Passage A.\n\nThen, as you're starting to read Passage B (and throughout your reading of Passage B), pause to start trying to make connections about how the two passages related.\n\nHow were they similar or different when it comes to\n- Topic\n- Tone / Attitude / Voice / Audience\n- Purpose / Framework\n- Scope (specific vs. general)\n- Evidence cited\n- Complementary or Adversarial?"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 8"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Comparative Passages + Relationship (set 3)",
+    "slug": "comparative-passages-relationship-set-3",
+    "section": "RC",
+    "category": "Pacing",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This contains two comparative passage sets, from tests 55 and 64, as well as eight **Relationship** questions.\n\nYou have 6.5 minutes to read a comparative dual-passage and then answer four questions about their relationship. And then do the same thing again for the second passage in this question set.\n\n13 minutes is a bit of a rush, we know. But it's to force you into being a high-functioning but somewhat sloppy version of your best self.",
+      "right_md": "## Set a **13 minute** timer.\n## Try to select an answer for all eight questions\n\nGiven that you know you're only going to be tested on the relationship between the two passages, don't worry about specific details in Passage A. Focus on its tone / its purpose / its main point.\n\nAnd as you read B, you should be stopping after every sentence to think about whether / how this connects with A. It usually only takes a few sentences to discover ways in which the two passages are similar or different:\n\n- Topic?\n- Author's tone / audience?\n- Purpose of passage?\n- Main point of passage?\n- Complementary or Adversarial points of view?\n\nRead each passage and select an answer to all the questions in the 13 minutes, to force yourself to operate in that brisk rhythm, but feel free to do some untimed extra analysis before you confirm answers or before you see explanations."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 17"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Comparative Passages + Relationships (set 5)",
+    "slug": "comparative-passages-relationships-set-5",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 22,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "Try these two **comparative** passages from tests 128 and 131, along with 7 accompanying **Relationship** questions.\n\nRelationship questions ask us to compare the passages to each other, so it's usually difficult to make much headway on them unless you've already read both passages.\n\nWhen we're reading Comparative Passages, our reading goal during the 2nd passage we read is to think primarily about how this 2nd passage relates to the 1st, in terms of both overlaps and distinctions.",
+      "right_md": "## Try the following, **untimed.**\n\nFor each of these two passages, read Passage A.\n\nThen, as you're starting to read Passage B (and throughout your reading of Passage B), pause to start trying to make connections about how the two passages related.\n\nHow were they similar or different when it comes to\n- Topic\n- Tone / Attitude / Voice / Audience\n- Purpose / Framework\n- Scope (specific vs. general)\n- Evidence cited\n- Complementary or Adversarial?"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 18"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Comparative Passages:  TED Talks",
+    "slug": "comparative-passages-ted-talks",
+    "section": "RC",
+    "category": "Pacing",
+    "estimated_minutes": 23,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This is a pair of **Comparative** passage sets from tests 54 and 58, each of which has a very informative, presentational tone (hence our _TED Talk_ reference).\n\nInstead of tracking very big picture relationships in terms of authors who agree / disagree, these passages can force us to worry about overlapping or diverging details.",
+      "right_md": "## Pick an appropriate **time limit** .\n\nStandard time, RC is a strength: 16 minutes\nStandard time, RC is a weakness: 20 minutes\n\nForce yourself to move briskly enough that you select an answer to all 14 questions in the time limit. Think of yourself not as a surgeon or air traffic controller that **has .. to .. get .. this .. right** .\n\nThink of yourself more like a Wall Street day-trader, or someone who only has 15 minutes to snake through Trader Joe's and pick up food for a party that night.\n\nYou're okay with some mistakes. You're just trying to make some good, quick, mostly-informed decisions. When a decision is sucking up too much time or energy, you have to cut bait and move on.\n\nWhen the time runs out, feel free to take an untimed 2nd look at questions before you confirm your answer, or just _Submit Set_ and hop immediately into review mode."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 15"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Comparative Passages: One-Passage Guesses",
+    "slug": "comparative-passages-one-passage-guesses",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This is a trio of comparative passages, from tests 52, 53, and 54, as well as any questions that are testing **Just One** **** (only one passage is asked about), or **Overlap/Disconnect** in which the question is asking something that is true in both passages or different in both passages.\n\nA question that's testing **Just One** passage only needs you to read that passage, obvi. So if we're short on time, get to a comparative passage, and see a Just One type of question, that would theoretically be the quickest one we could work on. We just read whichever short passage it refers to and then try the question.\n\n**Just One** 's are easy to spot because the question stem has **just one** letter. It will have **A** or **B** in it, but not both.\n\nMost **Overlap** and**Disconnect** questions have **zero** letters in the question stem. They sound like:\n\n\"The authors of the passages would most likely agree/disagree with which of the following\"\n\nBut some Disconnect ones have **both** letters in the passage:\n\n\"Passage A, unlike Passage B, mentions which of the following?\"\n\nThe cool thing about **Overlap / Disconnect** questions is that _if you've only read one of the two passages_ , you'll still be able to eliminate at least a couple answers.\n\nSome students make it their default approach to Comparative Reading that they'll read _only one_ passage, work on the _Just One_ and _Overlap / Disconnect_ questions to the extent that they can (usually that just means eliminating a couple obviously wrong answers), and _then_ read the other passage.\n\nOther students hate that approach, but should still develop the skillset for emergency purpose. In cases in which we run out of time and only have about 5 minutes to work on a Comparative set, we'd usually get the most value out of reading one of the two passages and then making eliminations and guesses on the questions that aren't testing _Relationships_ .",
+      "right_md": "## Try these questions **untimed.**\n## **Experiment** with this \"only read one psg.\" process.\n\nFor all three passage sets, **just read passage B** and then go through the questions, eliminating any you know are wrong and then guessing one of the remaining answers (don't hit confirm).\n\nOnce you've finished getting guesses to all 13 questions, you have three options:\n\n- take a 2nd untimed look at all the questions (read the other passage in the set, if you want to) and try to confirm your final, untimed answer. If you decide to go this route, make sure you initially record your 13 guesses so that you can look at them later. This activity is more about focusing your thinking on the \"I've only read one passage\" mindset and judging the results it produces.\n\n- confirm all the guesses you currently have picked (without doing any more reading or thinking) and see how you did. Did you (1) successfully eliminate some of the wrong answers? (2) happen to get lucky with what you guessed to be the correct answer?\n\n- if you don't want to confirm a low percentage guess but you also don't want to spend the time to try the untimed 2nd pass, then just use the \"Check Answer\" button to the left of the highlighters,\n\nThat way you can see the right answer without entering your guess on your 'permanent record'."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 16"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Comparative Passages: Read B First",
+    "slug": "comparative-passages-read-b-first",
+    "section": "RC",
+    "category": "Patterns",
+    "estimated_minutes": 15,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "After we've read just one of the two **Comparative** passages, we can answer any questions that are solely about that passage (we tag those, _Just One_ ).\n\nIn this trio of passages, two of them have a question that is just about passage B, so for all three passages, read passage B first (and don't read A).\n\nMany other question types are asking a question that will be supported by A and supported by B (we call these _Overlap_ ), so if we've only read passage B then we can still eliminate answers that aren't supported by B. We'll rarely get all the way to a correct answer that way, but it's common to already be down to a 50/50 guess.",
+      "right_md": "- For all three passages, **read B first** .****\n\n- Then make eliminations on every question and select the answer you'd pick if you were just guessing from what was left. Don't hit CONFIRM.\n\n- Now, go back and read passage A and then revisit your remaining answers on each question. Do this all **untimed** ."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 10"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Defined Targets (set 1)",
+    "slug": "defined-targets-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 20,
+    "question_count": 8,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "When the keywords in a question stem give us a very narrow part of the passage to consult, we say the question has a **Defined Target** .\n\nThese questions are super conducive to a _Research-First_ approach. By finding the applicable text (which we call the _Support Window_ ) and reminding ourselves what was said there, we can analyze the answer choices with a clearer sense of what can / can't work.",
+      "right_md": "## Try these 8 questions, untimed\n(taken from two passages from test 4 and 29)\n\nUse the keywords in the question stem to home in on exactly what sentence or cluster of sentences is being tested.\n\nIn the case of questions testing _What's Stated_ , you should be able to have a rock solid sense of what the correct answer should be saying. Naturally, the correct answer will probably not regurgitate verbatim wording, but it should paraphrase the answer you found in the passage.\n\nIn the case of questions testing _What's Implied_ , you want to just think, \"Okay, I know the answer is going to sound different from anything that I just read, but it should be a reasonable takeaway from what I just read\".\n\nBe very skeptical of answer choices pulling in language from the passage that was Out of the Support Window."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": 8
+    },
+    "weeks": [
+      "Week 9"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Defined Targets (set 2)",
+    "slug": "defined-targets-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 20,
+    "question_count": 7,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "When the keywords in a question stem give us a very narrow part of the passage to consult, or the task assigned to us has one very specific answer to it, we say the question has a **Defined Target** .\n\nThese questions are super conducive to a _Research-First_ approach. By finding the applicable text (which we call the _Support Window_ ) and reminding ourselves what was said there, we can analyze the answer choices with a clearer sense of what can / can't work.",
+      "right_md": "## Try these 7 questions, untimed\n(taken from two passages from test 10 and 28)\n\nUse the keywords in the question stem to home in on exactly what sentence or cluster of sentences is being tested.\n\nIn the case of questions testing _What's Stated_ , you should be able to have a rock solid sense of what the correct answer should be saying. Naturally, the correct answer will probably not regurgitate verbatim wording, but it should paraphrase the answer you found in the passage.\n\nIn the case of questions testing _What's Implied_ , you want to just think, \"Okay, I know the answer is going to sound different from anything that I just read, but it should be a reasonable takeaway from what I just read\".\n\nBe very skeptical of answer choices pulling in language from the passage that was Out of the Support Window."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": 7
+    },
+    "weeks": [
+      "Week 17"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Dissenting Opinions",
+    "slug": "dissenting-opinions",
+    "section": "RC",
+    "category": "Pacing",
+    "estimated_minutes": 25,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "Try these two **Law** passages, stuffed with so much star power\nyou'll feel like you're watching a red carpet gala:\n\n⭐️ Ronald Dworkin\n⭐️ Denise Meyerson\n⭐️ Critical Legal Studies\n⭐️ Logical Positivism\n\nI hope you brought your pinhole camera.\nDo **not** look directly at something as scintillating as these luminaries.",
+      "right_md": "## Set an appropriate time limit.\n\n- If RC is a strength, then give yourself **18 minutes** for this pair.\n- If RC is more of a weakness, give yourself **22 minutes** for this pair.\n\nEither way, keep your eye on the clock and have a guess for all 13 Q's (even if it's a blind guess).\n\nThe time limit is supposed to force us into experimenting with new behaviors:\n\n- when you have high confidence about an answer choice, pick it and move on without worrying about reading all the other answers you haven't seen yet. (high confidence comes when we find an answer choice that matches the _meaning_ of a line in the passage, but an exact _language_ match usually means a trap answer. but _doesn't_ match up with language in the passage, but we can tell LSAT has put some work into disguising it with synonyms or different syntax.\n\n- if you get four or five words into an answer choice and already see something you don't like, get out of there. we need to conserve time and mental energy by not processing the full sentence of every answer choice. find _earlier_ reasons to disqualify an answer.\n\n- get the passage read in 2.5 minutes or less. be content to simply determine the topic and framework, find the ideas that fill your framework boxes, and don't worry about grabbing too much else. Read the first paragraph carefully, and read the 1st sentence of other paragraphs carefully, and read any _pivot_ sentences (**but, yet, however** ) carefully. Let the rest of it breeze by.\n\n- skip the worst problem in each passage set. we will tend to overspend time on that even though we have a lower average accuracy on that problem, so it's a bad value."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 16"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Document Your Thinking (round 1)",
+    "slug": "document-your-thinking-round-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "There are three big skills we're practicing in Reading Comp:\n\n- **Better _Big Picture_ reading** -- are we able to locate the 1, 2, or possibly 3 sentences that best express the passage's main point? (This will be heavily connected to picking a good Framework for the passage and thinking about what the big ideas are in that Framework)\n\n- **Better _Question Stem Pre-Gaming_** -- are we able to locate the _Support Window_ or even the specific answer to a question stem that either has keywords or asks a question we could answer in our own words, using our Big Picture understanding of the passage.\n\n- **Better _Answer Choice Analysis_** -- can we seek out the vulnerabilities in each answer choice (usually wording that is overly Strong/Specific, wording that makes an Unknown Comparison, or unmentioned wording that is Out of Scope)?\n\nThis drill is all about documenting our thought process at each stage so that if we get a question wrong or struggle to get it correct, we can be more precise with where we needed to improve our reading or thinking.",
+      "right_md": "- Pop open the Notepad panel and cover up the answer choices to the first question.\n- Read the passage\n- As you're reading, or once you're done reading, highlight up to 3 sentences (and only those 3) as your understanding of where the most important Big Picture sentences are.\n\nFor each question you then attempt,\n- Start with the answer choices covered up by the Notepad\n- Assuming that there's any way to anticipate an answer or to anticipate where in the passage the answer's supporting lines will come from, read what you need from the passage until you can make a prediction. Your prediction could be your own gist-y summary, it could be retrieving a specific fact from the passage, or it could be narrowing things down to a few lines or details within a certain paragraph.\n- Once you've recorded your prediction, minimize Notepad and select an answer (but don't hit confirm).\n- Once you've selected an answer, open Notepad again and type up your reason for getting rid of each wrong answer choice. If there's a dealbreaker word or phrase, just write that. If there's no poisonous wording, write some other reason (like _Wrong Emphasis, Weaker than Correct Answer_ , etc.)\n- When you're done writing your reasons for getting rid of each wrong answer, hit CONFIRM and compare the explanation to your notes.\n\nWas your prediction as good as it good have been? If not, what thinking or reading steps could have made it better?\n\nWere your reasons for eliminating each answer good? Is there a more efficient or portable way to eliminate an answer than the one you wrote down?"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 10"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Highlight Noteworthy (How is This Thing Different?)",
+    "slug": "highlight-noteworthy-how-is-this-thing-different",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 25,
+    "question_count": 12,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "We often speak of **Highlight Noteworthy** as the \"worst framework / our last resort\", because it's the least helpful when it comes to telling our brain what 2 or 3 big ideas we need to come away from the passage with.\n\nIn part, that's because Highlight Noteworthy is sort of just the framework we use when no others seem to apply, and so it gets left with a less self-similar group of passages.\n\nBut generally, Highlight Noteworthy passages are concerned with the question of, \"How is X different or impactful?\"\n\nTons of _Humanities_ passages are Highlight Noteworthy profiles of artists, and the main point revolves around understanding how the artist's goals or aesthetic differed from the art that their peers or their predecessors were doing.\n\nHighlight Noteworthy passages from _Science_ often have more of an Old / New vibe, and the main point revolves around understanding how this scientist who made, or is making, a breakthrough had an idea that was different from what their peers or predecessors were thinking.\n\nWhen we see Highlight Noteworthy passages from _Society_ , we are often chronicling an event or a time period or a social group, and the main point of the passage revolves around how that group/event/period differs from what came before or how it impacted what came later.",
+      "right_md": "## Try these 12 questions, **untimed**\n(taken from 3 passages, from tests A, C, and 4)\n\nFocus on clarifying for yourself a contrast between Before / After, or between This Thing / Other Things.\n\nThink about what language cues help us realize, \"Oh, snap! This sentence is telling me a crucial distinction about our noteworthy topic. Let me pause and really process this sentence.\""
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": 12
+    },
+    "weeks": [
+      "Week 5"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Highlight Noteworthy + Author's Intent",
+    "slug": "highlight-noteworthy-author-s-intent",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "From two **Highlight Noteworthy** passages from June 2007 and test 73, this set has six questions that test our understanding of the author's meaning and intent.\n\n- Author's Attitude\n- Local Purpose\n- Meaning in Context\n- Author's Opinion",
+      "right_md": "## Attempt the problems **untimed** .\n\nYou've probably read these passage before, so do what you gotta do to remind yourself of their contents. You may have seen some of these questions before, but coming back to questions (especially from a different angle) has good retention value.\n\n- On **Attitude** , beware strong answers. Find at least one attitudinal marker in the passage to support your answer.\n\n- On **Local Purpose** questions (in order to / serves to / primarily to), expect the correct answer to sound a lot like language from the previous sentence. The correct answer is all about the local Big Idea that this specific detail is supporting.\n\n- On **Meaning In Context** , try to think of your own word or phrase that would fit into the same blank (and test answers by substituting them into place in the passage).\n\n- On **Opinion** (most likely to agree), just find the most supportable answer. Sometimes the correct answer will seem like a small thought that we know the author would agree with because we can derive it from some line in the passage. At the other extreme, correct answers can be broad, gist-y, and not fully supported, but reasonable, and more supported than anything else."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 5"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Highlight Noteworthy + Beyond Passage",
+    "slug": "highlight-noteworthy-beyond-passage",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 15,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "Try this pair of **Highlight Noteworthy** passages from tests 71 and 73, along with their three Beyond the Passage questions.",
+      "right_md": "There is one Strengthen/Weaken and two Application questions.\n\n- On **Strengthen / Weaken** , pay attention to whether the question stem wants you to impact an argument (in which case you need to think about conclusion vs. evidence) or to just impact a claim (in which case you can often just think about that one claim). Some rare cases, hint-hint, will actually ask you to Explain some curious fact from the passage.\n\n- On **Application** , make sure you find the support window of text that the question stem is referencing and re-acquaint yourself with what's there. We need to find some answer that we can match up to the text in that support window."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 6"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Highlight Noteworthy + Big Picture",
+    "slug": "highlight-noteworthy-big-picture",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 12,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "Try this trio of **Highlight Noteworthy** passages from June 2007,\ntest 65, and test 73, along with four big picture questions.",
+      "right_md": "## Try these passages and questions **untimed** .\n\nMost _Humanities_ passages have a **Highlight Noteworthy** type of feel, and these are both Humanities passages.\n\nThe big ideas become \"what is the topic? why is it noteworthy?\"\n\nThe first one is easy to find because it's usually in the first sentence. But even if not, we ultimately figure out the central topic of any passage.\n\nThe sneakier thing to locate are the Big Ideas about why the author thinks this subject is noteworthy. Look for things such as\n- evolution / backstory of their style\n- the telltale qualities of their style\n- how they're distinctive / impactful in relation to other things within the same genre or medium."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 5"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Highlight Noteworthy + Locate Detail",
+    "slug": "highlight-noteworthy-locate-detail",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 15,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains three _Highlight Noteworthy_ passages from tests 65 and June 2007, as well as four **Locate Detail** questions.\n\nThese are the most common question stem keywords for Locate Detail questions:  _according to the passage, indicates, states, mentions, information sufficient to answer_\n\nIf there are _Searchable Keywords_ in the question stem, you should be able to find your answer in the passage before you go hunting for it in the answer choices. If it's a more open-ended question stem, then you might want to practice finding keywords in each answer that you can **Ctrl / Cmnd + F** in the passage.\n\nThese tend to be the easiest questions available in RC, because they're asking for stuff we can actually find in the passage. When we get an EXCEPT version of these, though, it will usually be more time consuming because we have to hunt down four things in the passage.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nRead the entire passage if you want to reinforce the _Highlight Noteworthy_ framework, or just go immediately to whichever part of the passage the question stem keywords are referring you to. Locate Detail questions usually aren't rewarding our understanding of the big picture, so we can potentially answer them by just reading the text that surrounds the detail.\n\n**Locate Detail** questions would potentially be the most realistic problems for us to get right if we only had 5 mins to deal with our last RC passage of the section. So practice the skill of quickly scanning visually or searching using Ctrl/ Command + F, like we can on LSAT Flex."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 5"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Highlight Noteworthy: What's Implied",
+    "slug": "highlight-noteworthy-what-s-implied",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 12,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains three _Highlight Noteworthy_ passages from June 2007, 71, and 73, as well as five accompanying **Opinion** and **Inference** questions. Questions testing _what's implied_ tend to be harder, because the question stem has a _Most Supported_ degree.\n\nMost Supported means that question stem is expressed in \"squishy\" terms, indicating that our answer might not be fully derivable from the passage, but it's more derivable than any other answer. These are the keywords that indicate we're being tested on the most supported implication:\n- most supported\n- most reasonably inferred\n- most likely to agree\n- suggests",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nYou've read them before, so you might be able to just dive in where needed, but since Most Supported questions often pull support from unexpected sentences or feel like a holistic implication of someone's view, it's safer to have just read the whole passage.\n\n- When looking for an answer, be very cautious about overly Strong / Specific / Comparative wording in the answer choices.\n\n- Gravitate towards stuff that sounds more weakly worded, where the burden of proof is one example, or where you feel like you don't need support beyond the passage to verify an answer is true.\n\n- Don't settle on an answer until you've matched it up with some Support Sentence(s) in the passage that you think you could use, if you had to defend your answer in court."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 6"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Humanities + Author's Intent (set 2)",
+    "slug": "humanities-author-s-intent-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 15,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "From three **Humanities** passages from 55, 60, and 63, this set has eight questions that test our understanding of the author's meaning and intent.\n\n- On **Attitude** , beware strong answers. Find at least one attitudinal marker in the passage to support your answer.\n\n- On **Local Purpose** questions (in order to / serves to / primarily to), expect the correct answer to sound a lot like language from the previous sentence. The correct answer is all about the local Big Idea that this specific detail is supporting.\n\n- On **Meaning In Context** , try to think of your own word or phrase that would fit into the same blank (and test answers by substituting them into place in the passage). If it's asking what a word/phrase _refers_ to, then it's really testing us on understanding how the author was using some word/phrase in order to callback to some earlier detail, so we just want to track down that earlier moment.",
+      "right_md": "## Try the following questions, **untimed.**\n\nBig picture recap (if you want to remember the Cliffs Notes® version of these passages):\n\n**\"Talk Story\"** -- a _Challenge Position_ passage, where the author is clarifying a misconception critics have about some artist or defending that artist against some common criticism. In this one, critics had the misconception that Kingston's works came out of nowhere, and the author is correcting the record, saying, \"No, they came from the talk-story tradition\". The passage also highlights noteworthy things about the talk-story tradition, and thus about Kingston.\n\n**\"Kate Chopin\"** -- a _Highlight Noteworthy_ passage that has a chronological organizational arc (pretty common). The only big picture sentence we have is the opening claim of the passage: \"Her literary development went through several phases\". The passage unpacks that with multi-prong support.\n\n**\"Chicano Theater\"** -- a _Highlight Noteworthy_ passage with an initial misdirect. Is this passage about Cesar Chavez? The first paragraph makes it seem like it will be, but then we use him to segue into the actual focus, Valdez and his farm-worker theater. We stay in zoomed-in chronological detail until the final sentence of the paragraph. That's when we hear our Big Idea wrapping up the overall significance we were supposed to take from this story:  Valdez made a crucial contribution to Teatro Campesino, which was a distinct genre that blended _actos_ and _carpas_ ."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 7"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Humanities + Big Picture (set 2)",
+    "slug": "humanities-big-picture-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains three **Humanities** passages from tests 55, 60, and 63, as well as four accompanying Big Picture questions.\n\nGiven that it's **Humanities** , what frameworks are most likely?",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nSince it's Humanities, you start off with a predisposition towards _Highlight Noteworthy_ frameworks. That means:\n\n- pretty straightforward, linear, descriptive trajectory\n- less likely to find big ideas connected to Pivot language\n- big ideas: why this is noteworthy, how it's distinctive, what are its signature qualities, what is its origin story / epilogue\n- themes that get reinforced multiple times are big ideas\n- claims that get unpacked with multi-pronged support are big ideas\n\nThe 2nd most common framework is _Challenge Position_ . That usually means:\n\n- There's some frequent criticism or misconception of an artist that our author is not happy about, so he writes a passage trying to 'correct the record'."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 7"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Humanities + What's Implied (set 2)",
+    "slug": "humanities-what-s-implied-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 15,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains three _Humanities_ passages from tests 55, 60, and 63, as well as eight accompanying **Implied / Most Supported** question tasks. These tend to be harder, because the correct answer is a gisty re-wording or a technical implication of one or more sentences from the passage.\n\nMost Supported means that question stem is expressed in \"squishy\" terms, indicating that our answer might not be fully derivable from the passage, but it's more derivable than any other answer:\n- most supported\n- most reasonably inferred\n- most likely to agree\n- suggests",
+      "right_md": "## Try the following questions, **untimed.**\n\nBig picture recap (if you want to remember the Cliffs Notes® version of these passages):\n\n**\"Talk Story\"** -- a _Challenge Position_ passage, where the author is clarifying a misconception critics have about some artist or defending that artist against some common criticism. In this one, critics had the misconception that Kingston's works came out of nowhere, and the author is correcting the record, saying, \"No, they came from the talk-story tradition\". The passage also highlights noteworthy things about the talk-story tradition, and thus about Kingston.\n\n**\"Kate Chopin\"** -- a _Highlight Noteworthy_ passage that has a chronological organizational arc (pretty common). The only big picture sentence we have is the opening claim of the passage: \"Her literary development went through several phases\". The passage unpacks that with multi-prong support.\n\n**\"Chicano Theater\"** -- a _Highlight Noteworthy_ passage with an initial misdirect. Is this passage about Cesar Chavez? The first paragraph makes it seem like it will be, but then we use him to segue into the actual focus, Valdez and his farm-worker theater. We stay in zoomed-in chronological detail until the final sentence of the paragraph. That's when we hear our Big Idea wrapping up the overall significance we were supposed to take from this story:  Valdez made a crucial contribution to Teatro Campesino, which was a distinct genre that blended _actos_ and _carpas_ ."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 7"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Humanities Pair  (Set 1)",
+    "slug": "humanities-pair-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 30,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "## Try this pair of level 1 **Humanities** passages from tests 51 and 53, along with the 13 accompanying questions.\n\nThe two most common frameworks in Humanities passages are _Highlight Noteworthy_ and _Challenge Position_ .\n\n- A Challenge Position passage usually defends an artist against criticism or clarifies a misconception about them.\n\n- A Highlight Noteworthy passage feels more like a straightforward linear description of something. It's harder to find obvious markers for the Big Ideas, but we're listening for stuff like\n\"What makes this artist different or innovative or important?\"\n\"What are the important qualities of their style?\"\n\"What was their background or evolution\"",
+      "right_md": "## **Goals**\n\n- Try to decide on the central topic and framework by the end of the first paragraph.\n\n- Once you do, make a space in your brain for 2 big ideas: e.g. the Position and the Author's Challenge, or the Topic and What's Noteworthy About it.\n\n- As you read, periodically remind yourself of those big ideas.\n\n- When you're done reading and look away from the passage, you should be able to say those 2 big ideas in your own words. It's not a magic trick. You just have to keep checkin' yourself: you're either Hunting for one of those big ideas, or you've already learned them and you're Reinforcing them and relating every new thing you read back to those big ideas."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 2"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Impolite Society",
+    "slug": "impolite-society",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 22,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "## Try this twofer of tough **Society** passages.\n\nIs the Bill & Melinda Gates Foundation a wonderful thing or an inadequate, self-serving attempt to do good in the world?\n\nDo you really know what you want in this world, or have you been brainwashed into constant consumerism via Madison Avenue?\n\nStay tuned ... for this question set.",
+      "right_md": "## Set a **20 minute** time limit.\n\nAttempt the passages and hit submit set when the time runs out. Mark an answer on every problem. The more you treat that time limit like the only chance you get to mark answers, the more you'll start practicing behaviors that model test day.\n\nStrive for a lean, mean efficient understanding of the big picture in 2.5 - 3 minutes, and then you'll have 45 - 70 seconds for each question. That isn't a ton of time, so you'll have to make some quick eliminations, do one more cycle of analysis for your remaining answer choices, and then pick something and move on.\n\nIn order to have 20 minutes available for these two level 5 passages, we would have needed to get through the two easier passages in our RC section at about 7.5 mins each. Pretend that your body has just successfully done that, and now your soul is going to teleport into that body and join \"yourself\" already in progress for the backend of this reading comp section.\n\nOk, soul, parachute into the body of someone who just jogged through the first two RC passage sets in 15 minutes."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 25"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Law (level 1 pair)",
+    "slug": "law-level-1-pair",
+    "section": "RC",
+    "category": "Pacing",
+    "estimated_minutes": 25,
+    "question_count": null,
+    "difficulty_min": 1,
+    "difficulty_max": 2,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This is a pair of **level 1** Law passages from tests 54 and 57.\n\n**Law** passages commonly discuss a changing field of law, so frameworks like _Old/New_ or _Problem/Solution_ often work well.\n\nIf there are multiple points of view being platformed, then _Challenge Position_ or _Present Debate_ work well.",
+      "right_md": "## Pick your time limit.\n\n- Newer / get through 3 passages on average:  **17 mins**\n- Experienced / get through 4 passages usually: **13 mins**\n\nMake sure you enter a guess to all 10 Q's within your timeframe.\n\nWhen we practice under timed conditions, the goal is to get used to moving uncomfortably fast.\n\n**Do** :  Move uncomfortably fast so that you don't run out of time\n**Don't** :  Move at whatever speed feels comfortable and run out of time before you can attempt some of the questions.\n\nHit SUBMIT SET when the timer runs out. If you got one wrong, try to figure out the correct answer before you hit SHOW ANSWER."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "count": null
+    },
+    "weeks": [
+      "Week 7"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Law + Comparative Passages",
+    "slug": "law-comparative-passages",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 40,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "## Try this pair of **Law** passages.\nThey also happen to both be in **Comparative** Passage format.\n\nOn Comparative Passage sets, as we read our 2nd passage, we want to be relating it back to the 1st passage, finding ways in which they're similar or different:\n\n- Topic\n- Tone / Attitude\n- Wide vs. Narrow Scope\n- Purpose / Method\n- Conclusions / Evidence\n- Complementary / Adversarial\n\nLaw passages, in general, highlight problems or ambiguities in the law, frequently presenting a debate or a problem without offering a clear remedy.",
+      "right_md": "## **Goals**\n\nBecause we care most about the relationship between passages, we can potentially care less about thinking of frameworks for each individual passage.\n\nAfter we've read one of the two passages, if we want, we can flip through the question and see what selections or eliminations are possible (before being \"tainted\"\" by the second one).\n\nIf we've read passage A and a question is only asking about Passage A, we can answer it.\n\nAnd if a question is asking something like, \"Which of the following is a central purpose of **each** passage?\", then we can eliminate all the answers that don't apply to the passage we've read."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 8"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Legal Problems - Big Picture",
+    "slug": "legal-problems-big-picture",
+    "section": "RC",
+    "category": "Patterns",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This is a trio of **Law** passages from tests 39, 40, and 51, all of which lend themselves to a _Problem / Solution_ framework.\n\nLaw passages commonly discuss a changing field of law, or they talk about a complex legal problem with no clear solutions.\n\nFrameworks like _Old/New_ or _Problem/Solution_ often work well.\n\nIn most _Problem / Solution_ passages, there is some sort of solution offered or implicitly endorsed by the author. But in many, there are no solutions offered, or solutions are discussed but the author seems to deem them inadequate.",
+      "right_md": "## Try these questions, **untimed.**\n\nPay attention to seeing the early cues that the author is describing a thorny situation or a difficult question to answer.\n\nKeep track of whether any solutions are offered and embraced or rejected by the author.\n\nIf not, then encode the main point as something that feels like, \"Problem X is a son-of-a-gun!\""
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 23"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Locate Detail + Inference (Mash-Up)",
+    "slug": "locate-detail-inference-mash-up",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 13,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains three **Old / New** passages from tests 24, 58, and 62, as well as four **Locate Detail** questions and three **Inference** questions.\n\n_Locate Detail_ questions are asking us about **what's stated** . They use keywords like\n- according to the passage\n- what does the passage indicate / say / mention / state\n\nThese tend to be the most literal and direct questions available in RC, because they're asking for stuff we can actually find in the passage. They usually have Clue Words in the Question Stem stem as well, so we can know where to look.\n\n_Inference Be True_ question is asking us about **what's implied** . They use keywords like\n- inferred / suggests / implies / most supported\n\nThese tend to be some of the hardest questions in RC, because the answer won't sound like something you already read, but it will be a claim that can be defended by using text from the passage.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nWe've already warned you that you can use an Old / New framework, so pay a lot of attention to where those Old / New foreshadowing clues are in the first paragraph.\n\nOnce you know what the Old is, start making those mental containers for Old and New. The Old one is filled, you just need to reinforce it in your memory periodically.\n\nThe New one is what you're reading with an appetite to fill. Pause as needed to cement your understanding of the Old and the New. This has to be in your words, not the passages, as much as possible (some science-y terms we might not have more casual, personal language for)."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 25"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Managing Multiple Solutions",
+    "slug": "managing-multiple-solutions",
+    "section": "RC",
+    "category": "Patterns",
+    "estimated_minutes": 30,
+    "question_count": 14,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "The goal of reading via a Framework is that you only have 2 or 3 things you're responsible for remembering:\n- the Problem, and the author's proposed Solution\n- Side A of debate, Side B, and the author's take (if present)\n- the Old, the New, and the author's feelings about New (if present)\n- the Position the author challenges, and the author's critique / replacement idea\n\nBut some passages, such as these from tests **10 / 13 / 43** , stretch us into remembering 4 or 5 things.\n\nThe passage might contain 3 or 4 hypotheses for the same underlying question. We need to remember what each of those hypotheses were, as well as understand whether the author favors any of them more than the other.\n\nThis question set contains 3 passages, all of which pose that sort of challenge of trying to remember 3 or 4 different answers to the same question, or solutions to the same problem. We need to practice remembering how they're similar vs. different, and reading for whether the author favors one over the others.",
+      "right_md": "## Try these 14 questions, **untimed**\n\nAs you're reading the passages, work on encoding a functional, low-resolution understanding of the multiple solutions being presented.\n\nAsk yourself questions like, \"How is this 2nd one similar to the 1st one? How is it different?\"\n\nUsually, the easiest way to distinguish things is to label them with some oppositional pairing, like \"Brad is the twin _with the chipped tooth_ , and Dirk is the twin _without the chipped tooth_ .\"\n\n\"The subjectivists thought that inner experience _is_ scientific data, whereas the objectivists thought that inner experiences _is not_ scientific data.\"\n\nWe removed some questions from each passage set, if they weren't directly involved with our goal.\n\nSo the remaining questions (which are most of them) deal with these issues:\n- understanding the overall Problem these solutions are trying to solve\n- picking an answer that aligns with or conflicts with one of the Solutions\n- identifying how one Solution differs from, or is similar to, another\n- understanding our Author's assessment about which solution is best (if any)"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": 14
+    },
+    "weeks": [
+      "Week 24"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Oh, the Humanities!",
+    "slug": "oh-the-humanities",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 35,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "It's no accident that we invoked the famous quote from the fiery crash of the Hindenburg blimp. Each of these level 5 **Humanities** passages brought down many students' RC scores on tests 59 and 79.\n\nSo buckle up for a challenge, mostly on the backend of trying to get all the questions correct.\n\nThe most common frameworks for Humanities passages are _Highlight Noteworthy_ (a descriptive essay emphasizing the essence, motivation, or importance of an artist's style) and _Challenge Position_ (an essay that defends an artist against criticism or clarifies a misconception people have about them).",
+      "right_md": "## Try these two passages, **untimed**\nseeing if you can figure out all the correct answers\n\nIn both passages, students often struggle to fully understand the aesthetic concerns or design properties of the artists being profiled, and some of the questions in these passage sets are just downright tricky.\n\nIn order to get them all right, you'll probably have to select a few answers you don't really like, but you will be reassuring yourself, \"This answer seems weird, ... but I guess I'd have to say that this answer is the _best available_ option\"."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 23"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Old / New  - Author's Intent (set 2)",
+    "slug": "old-new-author-s-intent-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 12,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "From three **Old / New** passages, (50, 58, 62), this set has five questions that test our understanding of the author's meaning and intent.\n- Author's Attitude\n- Local Purpose\n- Meaning in Context",
+      "right_md": "## **Attempt the problems untimed**\n## focusing on accuracy and understanding\n\nYou've probably read these passages before, so do what you gotta do to remind yourself of their contents.\n\n- On **Attitude** , beware strong answers. Find at least one attitudinal marker in the passage to support your answer.\n\n- On **Local Purpose** questions (in order to / serves to / primarily to), expect the correct answer to sound a lot like language from the previous sentence. The correct answer is all about the local Big Idea that this specific detail is supporting.\n\n- On **Meaning In Context** , try to think of your own word or phrase that would fit into the same blank (and test answers by substituting them into place in the passage)."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 23"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Old / New - Big Picture (set 1)",
+    "slug": "old-new-big-picture-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 12,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains an Old / New passage from test 71, as well as three accompanying **Big Picture** questions .\n\nThe goal here is to practice Big Picture reading on an Old / New passage and then see how that gets tested / rewarded in questions about the Main Point, Primary Purpose, or Purpose of Paragraphs.",
+      "right_md": "## Attempt the questions **untimed** .\n\nWe've already warned you that you can use an Old / New framework, so pay a lot of attention to where those Old / New foreshadowing clues are in the first paragraph.\n\nOnce you know what the Old idea is, start making some mental containers for Old and New. The Old one is filled by that first paragraph; you just need to reinforce it in your memory periodically. The New one is what you're reading with an appetite to fill. Pause as needed to cement your understanding of the Old vs. the New. This has to be in your words, not the passage's, to the extent that it's possible to use your words (some science-y terms we might not have more casual, personal language for)."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 23"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Old / New + Author's Intent (set 1)",
+    "slug": "old-new-author-s-intent-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 22,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set has four **Local Purpose** / **Meaning in Context** problems, pulled from passages 39, 52, 58, 62 (which you may have already read in a previous assignment).\n\nLocal Purpose and Meaning in Context have something in the question stem that causes us to zoom in on one specific sentence, but what is really being tested is the penumbra of meaning in the adjacent sentences. What bigger point did the author intend to support with this detail, or what meaning or referent was the author intending when she used this word/phrase?\n\nCorrect answers usually sound like one of the adjoining **bookend** sentences, most commonly they reinforce something in the preceding claim or two.",
+      "right_md": "## Try these four questions **untimed** .\n\n**Local Purpose** and**Meaning in Context** usually highlight a specific sentence for us, but the correct answer is really reinforcing one of the adjacent \"bookend\" sentences.\n\nIn the passage, we'll read a pair of sentences like this:\n_Things like X are often Y. For example, one time this thing A was B._\n\nA **Local Purpose** question will ask,\n_The author mentions A in the third paragraph primarily to ..._\n\nTrap answers will be about A and B.\nThe correct answer will sound like, \"to illustrate the idea that X is often Y\"."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 23"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Old / New + Big Picture (set 2)",
+    "slug": "old-new-big-picture-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 12,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains three **Old / New** passages from tests 58, 62, and 70, as well as some accompanying Big Picture questions (7 total Q's).\n\nThe goal here is to practice Big Picture reading on an Old / New passage and then see how that gets tested / rewarded in questions about the Main Point, Primary Purpose, or Paragraph Purpose.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nWe've already warned you that you can use an **Old / New** framework, so pay a lot of attention to where those Old / New foreshadowing clues are in the first paragraph.\n\nOnce you know what the Old is, start making those mental containers for Old and New.\n\nThe Old one is filled, you just need to reinforce it in your memory periodically. The New one is what you're reading with an appetite to fill.\n\nPause as needed to cement your understanding of the Old and the New. This has to be in your words, not the passages, as much as possible (some science-y terms we might not have more casual, personal language for)."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 23"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Problem / Solution + Big Picture (set 1)",
+    "slug": "problem-solution-big-picture-set-1",
+    "section": "RC",
+    "category": "Patterns",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two **Problem / Solution** passages from tests 51 and 55, as well as some accompanying Big Picture questions (5 total Q's).\n\nSometimes a _Problem / Solution_ passage doesn't really provide a Solution. We're sort of reading with the expectation that one may come but the final gist is just sort of a pessimistic / concerned one.\n\nHere are two examples, to get you acquainted with this variation and to let you practice Big Picture reading and questions.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nWe've already warned you that you can use a **Problem / Solution** framework, but another way to talk about these passages would be there's a Goal, and there are some Methods, and the author doesn't think those Methods are working.\n\nSo it may feel a little like _Challenge a Position_ passage as well. If the author's main point is that \"these methods don't work\"."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 22"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Problem / Solution + Big Picture (set 2)",
+    "slug": "problem-solution-big-picture-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two **Problem** / **Solution** passages from test 135, as well as some accompanying Big Picture questions (3 total Q's).\n\nThe goal here is to practice Big Picture reading on a Problem / Solution passage and then see how that gets tested / rewarded in questions about the Main Point or Organization of the passage. If you've done these before but it's a little foggy, move swiftly through the exercise focusing mainly on Big Picture reading and answer choices.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nWe've already warned you that you can use a Problem / Solution framework, so pay a lot of attention to where the foreshadowing clues start in the first paragraph. What language in those early sentences sounds like it's describing something concerning or problematic?\n\nOnce you encode your understanding of the Problem, then read with an appetite to listen for possible Solutions.\n\nIf no Solution ever comes, then just solidify your understanding of the Problem.\n\nWhenever you feel your comprehension of the passage slipping, pause and remind yourself of the Problem and the Solution (if you've been offered any)."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 21"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Problem / Solution + What's Implied (set 1)",
+    "slug": "problem-solution-what-s-implied-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two **Problem / Solution** passages from tests 51 and 55, as well as some accompanying What's Implied questions (5 total Q's).\n\nWhat's Implied questions are primarily **Inference** and **Opinion** , and they almost always have a Most Supported degree. Most Supported means that question stem is expressed in \"squishy\" terms, indicating that our answer might not be fully derivable from the passage, but it's more derivable than any other answer:\n\n- most supported\n- most reasonably inferred\n- most likely to agree\n- suggests",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nIf there are keywords in the question stem that make it seem like the passage is testing a particular sentence or two (potentially an entire paragraph), then you should probably re-read that part of the passage to remind your brain that _this_ is the available supporting text.\n\nSome of us call those available lines the Support Window.\n\nUsually, the correct answer on Implied questions doesn't directly resemble any sentence from the passage. They purposefully use synonyms / code words, inverted syntax, or other means to replicate the _meaning_ of something we learned from the passage without replicating the _sound._\n\n_Trap Answers_ are famous for saying something **Too Strong / Specific** , introducing an **Unknown Comparison** , or bringing in some unmentioned concept that is **Out of Scope** .\n\nSome of them will actively go _against_ something that was said in the passage. Meanwhile, they attract us to these answers using some verbatim phrase from the passage (usually from outside the Support Window). The wrong answers use wording from the passage to create a meaning that wasn't in the passage. The correct answers use wording that wasn't in the passage to create a meaning that was in the passage."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 22"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Science (set1)",
+    "slug": "science-set1",
+    "section": "RC",
+    "category": "Pacing",
+    "estimated_minutes": 33,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "## Try this pair of **Science** passages.\n\nWhile no outside knowledge is expected for any of these, we do benefit from a general comfort level with concepts from evolutionary science, astronomy, chemistry, biology, and geology.\n\nThe most common frameworks in Science is Old/New, though one could also often call it Problem/Solution or Answer a Question.\n\nEssentially, Science passages tend to begin with our old way of doing something, our old understanding, or a riddle we still haven't been able to solve. Then, new research is presented for a couple paragraphs, and the author typically gives you her assessment of where we're now at, based on this new research, in the final paragraph.\n\nThis pair of passages evinces all three of those flavors, with a sporadic note of Challenge Position as well (this has become a wine tasting menu).",
+      "right_md": "## Set an **18 minute** countdown timer\n## (1.5x = 24    2x = 36)\n\n- Force yourself to get through all 13 Q's in this pair of passages in the allotted time.\n\nIt will definitely feel uncomfortably quick, but that's how we train our brain to learn to \"catch up\"\" to the desired speed. You can't learn to juggle at half-speed. You just have to fail a bunch at full speed until your brain learns how to catch up with the desired speed of actions.\n\n- When the timer runs out, take 2 - 10 mins to pause and get some body awareness (whether that's going to the bathroom, doing some push-ups, doing some yoga stretching or balancing).\n\n- Then take a fresh, untimed 2nd pass through the questions by clicking on the first question in your Results page, and see which answer your untimed brain would select, before you finally check to see the correct answer / explanation."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 20"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Science + Author's Intent (set 2)",
+    "slug": "science-author-s-intent-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 14,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "From three **Science** passages from 39, 40, 51, this set has six questions that test our understanding of the author's meaning and intent.\n\n- Author's Attitude\n- Local Purpose\n- Meaning in Context",
+      "right_md": "## Attempt the problems **untimed** .\n\nIf you've read any of these passage before, do what you gotta do to remind yourself of their contents.\n\n- On **Attitude** , beware strong answers. Find at least one attitudinal marker in the passage to support your answer.\n\n- On **Local Purpose** questions (in order to / serves to / primarily to), expect the correct answer to sound a lot like language from the previous sentence. The correct answer is all about the local Big Idea that this specific detail is supporting.\n\n- On **Meaning In Context** , try to think of your own word or phrase that would fit into the same blank (and test answers by substituting them into place in the passage)."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 13"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Science + Beyond Passage (set 2)",
+    "slug": "science-beyond-passage-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "Try this pair of **Science** passages from tests 40, 51, and 53, along with four _Beyond the Passage_ questions:\n\n- One **Analogy** question\n- One **Application** question\n- Two **Strengthen** questions",
+      "right_md": "## Try these four questions **untimed** .\n\nMost of the passages should be familiar, but a re-read would probably help.\n\n- For Analogy, use the same skills we use on Parallel questions in LR: whatever it is they're asking about, we need to drop the topic and just describe its abstract features. What sort of general situation is going on (e.g. a potential solution backfired); what sort of relationships do things have to each other (e.g. X was influenced by Y, but is now being challenged by Y)?\n\n- For Application, identify 1 or 2 descriptive qualities of the thing we're being asked about and look for an answer that reinforces them.\n\n- For Strengthen/Weaken, use your normal LR process, but note that often we're being instructed to Str/Weak a claim not an argument (so in the former case we don't need to necessarily find evidence and think about assumptions)."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 13"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Science + Old/New",
+    "slug": "science-old-new",
+    "section": "RC",
+    "category": "Patterns",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "These two passages, from Test A and C2, are both from the world of Science and tell an Old / New story about a scientist who made an impactful discovery.\n\nWhen Science passages are about **recent** research, we look for the author's take in the final paragraph, in order to understand how tenuous or excited we should feel about this New research.\n\nSince the field of science is built on skepticism and trying to falsify hypotheses, we often see that authors are hesitant about embracing a New idea too quickly. They'll often leave us with the feeling like, \"A lot of questions remain about how correct this new stuff is, but it's intriguing\".\n\nMeanwhile, both of these passages are talking about scientific discoveries of the past that are now accepted, \"settled science\", but as they tell us the story of the scientists' discoveries, we get to see that scientific skepticism play out within the story.",
+      "right_md": "## **Choose Your Challenge**\n\n- **Untimed** - focus on understanding and accuracy\n- **Timed (Normal)** - give yourself 20 minutes to try the pair of passages (if you have standard time, or scale up 1.5x or 2x if you have accommodation)\n- **Timed (Brutal)** -**** give yourself 16 minutes for the pair (if you want to role play getting to some tough science passages without much time and trying to prioritize which questions you attempt so that you can get as many points as possible within 16 mins)\n\nAs you're reading the passage, make sure you're doing what it takes to internalize the big ideas:\n- What was the OLD understanding scientists had?\n- What is the NEW idea the scientist is proposing?\n- Why are other scientists initially skeptical?\n- How does that skepticism ultimately get overcome?"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 12"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Science + Stated/Implied (set 2)",
+    "slug": "science-stated-implied-set-2",
+    "section": "RC",
+    "category": "Patterns",
+    "estimated_minutes": 11,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains 3 **Science** passages, each of which has a What's Stated question and a What's Implied question attached to it.\n\nFor a lot of us, understanding the _Big Picture_ of a Science passage might still be doable, but dealing with all the messy scientific details sometimes feels more challenging than in other passages.",
+      "right_md": "## Try these six questions, **untimed**\n\nPay attention to the difference in wording among the questions stems:\n- **Stated** (according to the passage, information sufficient to answer which question, indicates, says, mentions, can be inferred)\n\n- **Implied** (most supported, suggests, most likely to agree, most reasonably inferred)\n\nAnd pay attention to the difference in _Support Window_\n- the whole passage is up for grabs\n- a certain paragraph is being tested\n- the keywords send us to 1 or 2 specific lines"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 13"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Science: Crop Crap",
+    "slug": "science-crop-crap",
+    "section": "RC",
+    "category": "Pacing",
+    "estimated_minutes": 22,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "As the inelegant name of this activity suggests, this is a pair of **Science** passages about crops.\n\nYou're welcome, you're welcome! Look, we had no choice. You guys have been blowing up our inbox requesting this. It feels good to finally deliver.\n\nYou're doing this as a timed set.\n\nIn other words, there's a small plot of land to harvest before the hurricane rolls in. You have 15-20 minutes. Grab the most get-able fruit while there's time!",
+      "right_md": "- Set a timer for **18 minutes.**\n- Attempt these two passages.\n- Select an answer to all 15 questions within the time limit, even if some of them are \"flag-and-skip\" answers.\n\nOnce the timer goes off, and you go through answers / explanations, make sure you take 5 extra seconds as you're leaving each problem to mentally or vocally articulate a takeaway. Encode something in your subconscious:\n\n- something you did right\n- a question you wished you had asked yourself\n- a detail you wished you'd noticed\n- a spot in the passage you wished you'd researched"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 20"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Society (set 1)",
+    "slug": "society-set-1",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 30,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "## Try this pair of **Society** passages.\n\n**Society** passages usually deal with ancient cultures, Native Americans, minority / immigrant cultures, or economics.\n\n_Problem/Solution_ and _Challenge/Position_ are pretty common frameworks. Authors often profile some school of thought, some notable thinker, or some trend within a given discipline and point out faults.\n\nOne of these will do that, and the other one will lend itself better to an _Answer a Question_ framework.\n\nAnd one of these is a Standard passage and the other is a Comparative dual-passage.",
+      "right_md": "- Set a **18 minute** countdown timer.\n(1.5x = 27 mins, 2x = 36 mins)\n\n- Force yourself to get through all 12 Q's in this pair of passages in the allotted time.\n\n- Select your answer, but don't hit Confirm.\n\n- When the timer runs out, take 1 - 5 mins to shake out your body / zone out a bit, and then come back and revisit your answers to all these questions, untimed.\n\n- Once you've decided on your best guess, hit confirm and compare your thinking to the answer/explanation."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 18"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Society + Big Picture (set 2)",
+    "slug": "society-big-picture-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set has three **Society** passages, from tests 55, 56, and 57, along with their **Big Picture** questions.\n\nThere are two Main Point, two Paragraph Purpose, one Primary Purpose, and one Organization.",
+      "right_md": "## Try these six questions, **untimed**\n\n**(2) Main Point questions**\n(remember to find an answer where the subject noun of the main clause is the _Central Topic_ and the telling part of the main clause sounds like the main priority of whatever_Framework_ you used to organize the passage)\n\n**(2) Paragraph Purpose**\nThe first sentence of the paragraph often contains some language that indicates the rhetorical purpose of a paragraph. If it starts with \"furthermore / moreover\" we can start thinking, \"It's expanding on the main point\". If it starts with, \"Proponents of the theory hold that\", then we can start thinking, \"This paragraph presents the proponents' view\". Answer choices are usually written in a way that alludes to some of the content within that paragraph, but other times the answer choices are written in a very abstract way, where the paragraph we're examining is being related to other ones.\n\n**(1) Organization question**\nWe're ultimately just trying to find an answer where every ingredient matches up, and it takes us on a journey from the beginning to the ending of the passage. The short-cut we can often use to get rid of some answers quickly is by checking their last ingredient 1st. If the last ingredient doesn't match the ending of the passage, then the rest of the answer probably isn't worth reading.\n\n**(1) Primary Purpose**\nThis type of question mainly wants us to answer in terms of what Framework we used, but of course LSAT isn't limited to using the 5-7 frameworks that we used."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 13"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Society + What's Implied (set 2)",
+    "slug": "society-what-s-implied-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 12,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two **Society** passages, one _Challenge Position_ and one _Problem / Solution_ , from tests 56 and 57, as well as five accompanying **Implied / Most Supported** question tasks: **Inference** and**Opinion.**\n\nThese question tasks tend to be harder, because the correct answer can be a true claim we can technically derive from some random sentence or two in the passage, or it can be a gist-y re-wording of a point of view.\n\nMost Supported means that question stem is expressed in \"squishy\" terms, indicating that our answer might not be fully derivable from the passage, but it's more derivable than any other answer:\n- most supported\n- most reasonably inferred\n- most likely to agree\n- suggests",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nYou might be able to just dive in where needed, but since Most Supported questions often pull support from unexpected sentences or feel like a holistic implication of someone's view, it's safer to have just read the whole passage.\n\n- When looking for an answer, be very cautious about overly Strong / Specific / Comparative wording in the answer choices.\n\n- Gravitate towards stuff that sounds more weakly worded, where the burden of proof is one example, or where you feel like you don't need support beyond the passage to verify an answer is true.\n\n- Don't settle on an answer until you've matched it up with some Support Sentence(s) in the passage that you think you could use, if you had to defend your answer in court."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 13"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example - Big Picture (set 2)",
+    "slug": "theme-example-big-picture-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 12,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains three **Theme / Example** passages from tests 50, 61, and 66, as well as some accompanying Big Picture questions (5 total Q's).\n\nThe goal here is to practice Big Picture reading on an _Theme / Example_ passage and then see how that gets tested / rewarded in questions about the Main Point, Primary Purpose, or Organization.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nWe've already warned you that you can use an _Theme / Example_ framework, so pay a lot of attention to where those foreshadowing clues are in the first paragraph.\n\nOnce you know what the General Claim is (the \"theme\"), try to keep relating the Examples back to that big idea."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 11"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example (pair of passages)",
+    "slug": "theme-example-pair-of-passages",
+    "section": "RC",
+    "category": "Patterns",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "Both of these passages from the June 2007 test lend themselves to a **Theme / Example** framework.\n\nPassages with this framework give us a warm up paragraph or two before focusing on a certain claim, which will ultimately be the Main Thesis, the predominant Theme. The passage then shifts into supporting this Thesis/Theme with multiple examples or one extended example.\n\nWhen we see wording that shows we're moving into an example, such as\n- _for example_\n- _a case in point_\n- _one situation typifies this_\nwe want to slam on the brakes and re-read the previous claim.\n\nSeeing that an author is about to flesh out a claim tells us that the claim was Big Idea, worth reading multiple times for maximum comprehension / retention.",
+      "right_md": "## Try 9 questions from these two passages, **untimed**\nworking on reading through the Theme / Example framework\n\nWhen you encounter the spot where the passage switches into a specific example, pause and re-read the previous sentence. THAT sentence is your main theme, your main point.\n\nWhen you do the Main Point question, remind yourself of that Theme sentence.\n\nAs you read through the examples, keep reminding yourself of the overall Theme they are trying to illustrate."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 13"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example + Application & Analogy",
+    "slug": "theme-example-application-analogy",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 12,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two **Theme / Example** passages from tests 50, 53, 56, and 61, as well as some accompanying **Application** and **Analogy** questions (5 total Q's).",
+      "right_md": "## Attempt the five attached questions, **untimed** .\n\nYou can probably go straight to the paragraph being tested, since you've seen these passages before and since the question is only pulling supporting ideas from one paragraph.\n\nFocus on extracting the right general qualities, so you know what to look for in the answers.\n\n- Open up the NOTES panel (bottom left)\n- Move and re-size it so that it covers up the answer choices.\n\nDon't peek at them until you've typed what general qualities or relationships you're looking for in the correct answer. Once you see the eventual correct answer, reflect on whether you had the right idea with your prediction."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 12"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example + Attitude & Opinion",
+    "slug": "theme-example-attitude-opinion",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 12,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains 4 questions, taken from a pair of **Theme / Example** passages, all of which are either Author's Opinion questions or testing the Author's Attitude.",
+      "right_md": "## Read and attempt the questions, **untimed** .\n\nAs you're reading, focus on seeing the **Framework Clues** for _Theme / Example._\n\nWhat is the broad thesis said early on? How does the passage transition into examples? What supporting example(s) does the passage use to unpack that thesis?\n\nFocus on getting better with anticipating answers.\n\n- Open up the NOTES panel (bottom left)\n- Move and re-size it so that it covers up the answer choices.\n\nDon't peek at the answers until you've typed your prediction (if you're stumped, just type that). Once you see the eventual correct answer, reflect on whether you had the right idea with your prediction. If you had no prediction or your prediction seems way off of what the correct answer says, reflect on whether you could have read the passage better or thought about the question stem better in order to put yourself into a position of having a prediction more in line with the correct answer.\n\nAnd don't worry if sometimes the real answer is, \"Nope, there's no way any normal person would predict the line that answer is referencing.\""
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 12"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example + Author's Intent (set 2)",
+    "slug": "theme-example-author-s-intent-set-2",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 20,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains three _Theme / Example_ passages from tests 50, 53, 61, and 66, as well as some accompanying **Local Purpose** and **Meaning in Context** questions (5 total Q's).\n\nYou may have already seen these passages, and because these questions are testing local meaning, you'll probably be fine with just re-reading the paragraph being tested.",
+      "right_md": "## Attempt the five attached questions, **untimed** .\n\nYou can probably go straight to the paragraph being tested, since you've seen these passages before and since the question is only testing local meaning.\n\nFocus on making predictions of what you think a correct answer could say. Open up the NOTES panel and re-size it so that it covers up the answer choices. Don't peek at them until you've written your own prediction.\n\nFor most **Local Purpose** and **Meaning in Context** answers, the correct answer is really touching on wording that gets used _just before_ the word or detail the question is asking about.\n\nOnce you see the eventual correct answer, reflect on whether you had the right idea with your prediction. And connect the correct answer to language in the text that appears shortly before the word or detail that the question stem is asking about."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 11"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example + Author's Intent",
+    "slug": "theme-example-author-s-intent",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "From two **Theme / Example** passages from June 2007, this set has three questions that test our understanding of the author's meaning and intent.\n\n- Local Purpose\n- Meaning in Context\n- Attitude",
+      "right_md": "## Attempt the problems **untimed** .\n\nYou've probably read these passage before, so do what you gotta do to remind yourself of their contents. You may have seen some of these questions before, but coming back to questions (especially from a different angle) has good retention value.\n\n- On **Local Purpose** questions (in order to / serves to / primarily to), expect the correct answer to sound a lot like language from the previous sentence. The correct answer is all about the local Big Idea that this specific detail is supporting.\n\n- On **Meaning In Context** , try to think of your own word or phrase that would fit into the same blank (and test answers by substituting them into place in the passage).\n\nOr, if they're asking you not what it means in that sentence but what it's referring to in the passage, do your due diligence of hunting down the antecedent -- when they ask \"what does X refer to\", it might be referring to something way back in the passage. This is measuring our ability to understand callbacks to earlier in the passage."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 3"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example + Beyond the Passage",
+    "slug": "theme-example-beyond-the-passage",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 8,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains a **Theme / Example** **** passage from test 9 as well as two \"exotic\" question types (Application and Analogy).",
+      "right_md": "## Attempt the questions **untimed.**\n\nWe've already warned you that you can use a Theme / Example framework, so look for those framework clues in the first paragraph.\n\nWhere do we see them describing some General phenomenon (the theme), and when does it pivot into zooming in on some illustrative Example?"
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 22"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example + Big Picture",
+    "slug": "theme-example-big-picture",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains 2 passages that lend themselves to an **Theme / Example** __ framework, and 3 accompanying Big Picture questions (two Main Point and one Organization).\n\nWhen a passage has an _Theme / Example_ feel to it, there is some **General Idea** that gets illustrated by zooming in on one or more examples of that idea.\n\nAs you read these passages, look for a turning point in the first or second paragraph where we go from broader thoughts to zooming into some specific examples or supporting ideas. When you see that turn, usually signified by wording like _for example / to see this / a case in point_ , slam on the breaks and re-read the general claim in the previous sentence.\n\nThat general claim is the Big Idea you're trying to retain above all else.",
+      "right_md": "## Try these questions **untimed** .\n\n- As you're reading the passages, focus on sensing and implementing the _Theme / Example_ framework.\n\n- Try to highlight the Big Claim that gets supported by example(s).\n\n- When you're picking your answer on Main Point, see if the answer you like is reinforcing language from that Big Claim."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 3"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example + Five Questions",
+    "slug": "theme-example-five-questions",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two _Theme / Example_ passages from tests 128 and 145, as well as their accompanying **Five Questions** questions (2 total). The framework doesn't actually matter to you for this activity, though, because this is not a big picture question type. It's a super narrow detail hunt.\n\n**Five Questions** questions are stupidly named by us, because you have to say the word questions twice. They sound like this:\n\n_The passage provides information sufficient to answer which of the following questions?_\n\nEach answer choice poses a question. If we can find the answer to that question in the passage, then we pick that answer!\n\nThese are total scavenger hunts. The correct answer usually is not addressing any _important_ part of the passage or _meaningful_ detail. The five answers will use keywords from the passage to make them sound plausible.If we want to re-read the sentences where these keywords were used, we have to go hunting through potentially five different areas of the passage.",
+      "right_md": "## Attempt the two questions, **untimed** .\n\nFive Questions involves reverse engineering, from each answer choice, what part of the passage they're even talking about.\n\nTry to play around with using the search bar to assist you with searching. Look for some searchable keyword within each answer choice that could bring you to the relevant sentence of the passage. There, you can assess whether or not you really have the means to answer the question posed in that answer choice.\n\nIf you'd rather practice your big picture reading on _Theme / Example,_ then read the whole passage. But otherwise, practice your scan/search skills by diving immediately into researching each answer choice, without reading the passage first."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 12"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example + Locate Detail",
+    "slug": "theme-example-locate-detail",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains two _Theme / Example_ passages from the June 2007 test, as well as four **Locate Detail** questions.\n\nThese are the most common question stem keywords for Locate Detail questions:\n_according to the passage_\n_the passage indicates_\n_the author states / mentions / says / offers_\n\nThese tend to be the easiest questions available in RC, because they're asking for stuff we can actually find in the passage. They usually have Searchable Keywords in the question stem as well, so we can know where to look.\n\nWhen we get an EXCEPT version of these, though, it will usually be more time consuming because we have to hunt down four things in the passage.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nRead the entire passage if you want to reinforce the _Theme / Example_ framework, or just go immediately to whichever part of the passage the question stem keywords are referring you to.\n\n**Locate Detail** questions with good keywords (and thus a _Defined Target_ ) would potentially be the most realistic problems for us to get right if we only had 5 mins to deal with our last RC passage of the section. So practice the skill of quickly scanning visually or searching using Ctrl/ Command + F, like we can on LSAT Flex."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 4"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "Theme / Example + What's Implied",
+    "slug": "theme-example-what-s-implied",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 5,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains a _Theme / Example_ passage from June 2007, as well as three accompanying **What's Implied / Most Supported** question tasks, like **Inference** , **Opinion** , and **Attitude** . These tend to be harder, because the correct answer is a gisty re-wording or a technical implication of one or more sentences from the passage.\n\nMost Supported means that question stem is expressed in \"squishy\" terms, indicating that our answer might not be fully derivable from the passage, but it's more derivable than any other answer:\n- most supported\n- most reasonably inferred\n- most likely to agree\n- suggests",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nYou've read them before, so you might be able to just dive in where needed, but since Most Supported questions often pull support from unexpected sentences or feel like a holistic implication of someone's view, it's safer to have just read the whole passage.\n\n- When looking for an answer, be very cautious about overly Strong / Specific / Comparative wording in the answer choices.\n\n- Gravitate towards stuff that sounds more weakly worded, where the burden of proof is one example, or where you feel like you don't need support beyond the passage to verify an answer is true.\n\n- Don't settle on an answer until you've matched it up with some Support Sentence(s) in the passage that you think you could use, if you had to defend your answer in court."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 4"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  },
+  {
+    "title": "What's Stated (Locate Detail + Five Questions)",
+    "slug": "what-s-stated-locate-detail-five-questions",
+    "section": "RC",
+    "category": "Process",
+    "estimated_minutes": 10,
+    "question_count": null,
+    "difficulty_min": null,
+    "difficulty_max": null,
+    "question_types": [],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "This set contains three__ passages from test 55 and 56, as well as six **What's Stated** questions.\n\nMost such questions are **Locate Detail** :\n_according to the passage, the passage indicates, the author states / says / mentions_\n\nThere's one we call **Five Questions** , because each answer choice is a question, and whichever one we can find an answer to in the passage is the correct choice.\n\nWhen we're being tested on what was / wasn't stated in the passage, our ability to get correct answers comes down mainly to doing our due diligence. We shouldn't pick an answer until we can point to where in the passage that answer is stated.\n\nNaturally, we won't see the same **wording** necessarily stated. We'll get the same **meaning** . But we should still feel like our Support Line from the passage means the same thing as the answer we're picking.",
+      "right_md": "## Attempt the passages and questions **untimed** .\n\nYou can read the passage first, if you want to practice your big picture reading and get a feel for the lay of the land in each passage.\n\nOr you can skip reading the passage, and just find the line(s) being tested based on the keywords in the question stem. That's good practice for \"emergency situations\", when you only have 4-5 minutes for your last passage in an RC section, and you're determined to get at least a couple correct answers.\n\nPractice the skill of finding keywords in the question stem, or in an answer choice, and doing a quick visual scan or Ctrl / Command + F search in order to locate where those words appear in the passage."
+    },
+    "bank_filter": {
+      "qtypes": [],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "count": null
+    },
+    "weeks": [
+      "Week 11"
+    ],
+    "source_file": "lsatlab-studyplan",
+    "is_published": false,
+    "needs_rc_bank": true
+  }
+]

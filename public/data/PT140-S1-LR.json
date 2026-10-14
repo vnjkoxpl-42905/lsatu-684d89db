@@ -1,0 +1,610 @@
+[
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Several years ago, most of one country’s large banks failed and were taken over by a government agency. The agency is now selling these banks, aiming to strengthen the banking system in the process. But the banking system will not be strengthened if the former owners of these banks buy them back. So the agency is unlikely to achieve its goal, since _______.",
+    "questionStem": "The conclusion of the argument is properly drawn if which one of the following completes the passage?",
+    "answerChoices": {
+      "A": "the agency may be unable to sell some of the banks",
+      "B": "a single company could buy more than one of the banks",
+      "C": "the country’s overall economy is not much stronger than it was when the large banks failed",
+      "D": "the banks sold by the agency will be financially weaker than the country’s other banks for some time",
+      "E": "all of the bidders for the banks are their former owners"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Accountant: The newspaper industry habitually cites the rising cost of newsprint to explain falling profits. But when corrected for inflation, the cost of newsprint is no more than it was ten years ago. Far from being victims of high costs, newspapers have been benefiting from cheap newsprint for decades. The real threats to their profitability are falling circulation and falling advertising.",
+    "questionStem": "The accountant’s argument proceeds by",
+    "answerChoices": {
+      "A": "reinterpreting a popular analogy in order to use that analogy to support an alternative conclusion",
+      "B": "using economic data to raise doubts about the current effectiveness of a historically accepted approach",
+      "C": "criticizing a newly developed method by demonstrating that a conventional method shows better results",
+      "D": "challenging an explanation that has been given for a phenomenon in order to introduce a different explanation",
+      "E": "calling into question a justification for a practice by showing how the same justification can be used to support a clearly undesirable practice"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Plausibility",
+      "Implied Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Peter: Recent evidence suggests that moderate alcohol consumption has certain beneficial effects on health. In particular, alcohol creates an inhospitable environment in the human body for certain bacteria that can cause illness. Thus, alcohol consumption is, on balance, beneficial.",
+    "questionStem": "Which one of the following most accurately expresses a flaw in the reasoning in Peter’s argument?",
+    "answerChoices": {
+      "A": "It takes for granted that people choose to consume alcohol because they believe it is beneficial to their health.",
+      "B": "It draws a comparison based on popular belief rather than on scientific opinion.",
+      "C": "It fails to consider methods of achieving the same beneficial effects that do not involve alcohol.",
+      "D": "It draws a conclusion about alcohol consumption in general from a premise about moderate alcohol consumption.",
+      "E": "It fails to consider that alcohol may have no effect on many bacteria that cause illness in human beings."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Sampling",
+      "Medical",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Consultant: Children taught using innovative new educational methods learn to think more creatively than children taught using rote methods such as drills, but they are less adept at memorizing large amounts of information. Most jobs at Grodex Corporation require the ability to think creatively but do not require a strong ability to memorize. So Grodex should probably conduct its employee-training seminars using the innovative methods, because _______.",
+    "questionStem": "Which one of the following most logically completes the consultant’s argument?",
+    "answerChoices": {
+      "A": "most of the employees at Grodex began in high school to learn the creative thinking skills that they later used on the job",
+      "B": "corporations that conduct training seminars for employees using innovative educational methods are generally more successful than are corporations that do not conduct training seminars",
+      "C": "less than half of the employees at Grodex regularly attend the company’s training seminars",
+      "D": "the effects of teaching methods in the education of adults are generally very similar to the effects of those methods in the education of children",
+      "E": "knowing how to think creatively helps people to compensate for deficiencies in memorization skills"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Logical Completion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Essayist: If Earth’s population continues to grow geometrically, then in a few centuries there will be ten people for every square meter (approximately one person per square foot) of Earth’s surface. Some people have claimed that this will probably not be a problem, since humans will have learned by then how to colonize other planets. This would, however, be a temporary solution at best: if the population continues to double every 30 years, and if in the year 2500 half of Earth’s population emigrated to Mars, then by the year 2530 Earth would be just as crowded as it had been before the emigration.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the essayist’s argument?",
+    "answerChoices": {
+      "A": "If Earth’s population continues to grow geometrically, then in a few centuries the population density of Earth’s surface will be ten people per square meter.",
+      "B": "Due to the continuing geometric growth of Earth’s population, the problem of overpopulation of Earth will probably persist.",
+      "C": "If Earth’s population continues to double every 30 years, and if at some point half of the population of Earth emigrated elsewhere, then after 30 years Earth would be just as crowded as it had been before the emigration.",
+      "D": "The population of Earth’s surface will probably continue to grow geometrically even if temporary solutions to population growth, such as colonizing other planets, are adopted.",
+      "E": "Learning how to colonize other planets would, at best, be a temporary solution to the overcrowding of Earth."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A recent taste test reveals that most people like low-fat chocolate ice cream as much as its full-fat counterpart. Previous tests with vanilla ice cream found that people tended to dislike low-fat versions, complaining of a harsher taste. Chemists point out that chocolate is a very complex flavor, requiring around 500 distinct chemical compounds to produce it. Hence, this complexity probably masks any difference in taste due to the lack of fat.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Most people prefer full-fat chocolate ice cream to full-fat vanilla ice cream.",
+      "B": "The subjects of the previous tests were not informed of the difference in fat content.",
+      "C": "The more distinct compounds required to produce a flavor, the better people like it.",
+      "D": "Vanilla is known to be a significantly less complex flavor than chocolate.",
+      "E": "Most people are aware of the chemical complexities of different flavors."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Assumes Difference",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Ethicist: Robert Gillette has argued that because a thorough knowledge of genetics would enable us to cure the over 3,000 inherited disorders that affect humanity, deciphering the human genetic code will certainly benefit humanity despite its enormous cost. Gillette’s argument is not persuasive, however, because he fails to consider that such knowledge might ultimately harm human beings more than it would benefit them.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the ethicist’s argument?",
+    "answerChoices": {
+      "A": "Gillette’s argument wrongly assumes that deciphering the genetic code will lead to cures for genetic disorders.",
+      "B": "Deciphering the genetic code might ultimately harm human beings more than benefit them.",
+      "C": "Because of its possible negative consequences, genetic research should not be conducted.",
+      "D": "Gillette’s claim that a thorough knowledge of genetics would enable us to cure over 3,000 disorders is overstated.",
+      "E": "Gillette’s argument is unconvincing because it ignores certain possible consequences of genetic research."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Net Effect",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Many uses have been claimed for hypnosis, from combating drug addiction to overcoming common phobias. A recent experimental study helps illuminate the supposed connection between hypnosis and increased power of recall. A number of subjects listened to a long, unfamiliar piece of instrumental music. Under subsequent hypnosis, half the subjects were asked to recall salient passages from the musical piece and half were asked to describe scenes from “the film they had just viewed,” despite their not having just seen a film. The study found that the subjects in the second group were equally confident and detailed in their movie recollections as the subjects in the first group were in their music recollections.",
+    "questionStem": "Which one of the following statements is most supported by the information above?",
+    "answerChoices": {
+      "A": "Many of the claims made on behalf of hypnosis are overstated.",
+      "B": "Hypnosis cannot significantly increase a person’s power of recall.",
+      "C": "Recalling events under hypnosis inevitably results in false memories.",
+      "D": "What people recall under hypnosis depends to at least some extent on suggestion.",
+      "E": "Visual memory is enhanced more by hypnosis than is auditory memory."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Records from 1850 to 1900 show that in a certain region, babies’ birth weights each year varied with the success of the previous year’s crops: the more successful the crops, the higher the birth weights. This indicates that the health of a newborn depends to a large extent on the amount of food available to the mother during her pregnancy.",
+    "questionStem": "The argument proceeds by",
+    "answerChoices": {
+      "A": "inferring from a claimed correlation between two phenomena that two other phenomena are causally connected to one another",
+      "B": "inferring from the claim that two phenomena have fluctuated together that one of those phenomena must be the sole cause of the other",
+      "C": "inferring from records concerning a past correlation between two phenomena that that correlation still exists",
+      "D": "inferring from records concerning two phenomena the existence of a common cause of the phenomena and then presenting a hypothesis about that common cause",
+      "E": "inferring the existence of one causal connection from that of another and then providing an explanation for the existence of the two causal connections"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Vincent: No scientific discipline can study something that cannot be measured, and since happiness is an entirely subjective experience, it cannot be measured. Yolanda: Just as optometry relies on patients’ reports of what they see, happiness research relies on subjects’ reports of how they feel. Surely optometry is a scientific discipline.",
+    "questionStem": "Vincent’s and Yolanda’s statements provide the most support for concluding that they disagree over which one of the following?",
+    "answerChoices": {
+      "A": "Happiness is an entirely subjective experience.",
+      "B": "Optometry is a scientific discipline.",
+      "C": "A scientific discipline can rely on subjective reports.",
+      "D": "Happiness research is as much a scientific discipline as optometry is.",
+      "E": "Experiences that cannot be measured are entirely subjective experiences."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Although large cities are generally more polluted than the countryside, increasing urbanization may actually reduce the total amount of pollution generated nationwide. Residents of large cities usually rely more on mass transportation and live in smaller, more energy-efficient dwellings than do people in rural areas. Thus, a given number of people will produce less pollution if concentrated in a large city than if dispersed among many small towns.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that increasing urbanization may actually reduce the total amount of pollution generated nationwide?",
+    "answerChoices": {
+      "A": "It is used to support the conclusion that people should live in large cities.",
+      "B": "It is a statement offered to call into question the claim that large cities are generally more polluted than the countryside.",
+      "C": "It is a statement serving merely to introduce the topic to be addressed in the argument and plays no logical role.",
+      "D": "It is a premise offered in support of the conclusion that large cities are generally more polluted than the countryside.",
+      "E": "It is a claim that the rest of the argument is designed to establish."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Intermediate Conclusions",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Climatologist: Over the coming century, winter temperatures are likely to increase in the Rocky Mountains due to global warming. This will cause a greater proportion of precipitation to fall as rain instead of snow. Therefore, the mountain snowpack will probably melt more rapidly and earlier in the season, leading to greater spring flooding and less storable water to meet summer demands.",
+    "questionStem": "Which one of the following, if true, most strengthens the climatologist’s argument?",
+    "answerChoices": {
+      "A": "Global warming will probably cause a substantial increase in the average amount of annual precipitation in the Rocky Mountains over the coming century.",
+      "B": "In other mountainous regions after relatively mild winters, the melting of snowpacks has led to greater spring flooding and less storable water, on average, than in those mountainous regions after colder winters.",
+      "C": "On average, in areas of the Rocky Mountains in which winters are relatively mild, there is less storable water to meet summer demands than there is in areas of the Rocky Mountains that experience colder winters.",
+      "D": "On average, in the regions of the world with the mildest winters, there is more spring flooding and less storable water than in regions of the world with much colder winters.",
+      "E": "The larger a mountain snowpack is, the greater the amount of spring flooding it is likely to be responsible for producing."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Causal Chains",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Animal feed should not include genetically modified plants. A study found that laboratory rats fed genetically modified potatoes for 30 days tended to develop intestinal deformities and a weakened immune system, whereas rats fed a normal diet of foods that were not genetically modified did not develop these problems.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Potatoes are not normally a part of the diet of laboratory rats.",
+      "B": "The rats tended to eat more of the genetically modified potatoes at the beginning of the 30 days than they did toward the end of the 30 days.",
+      "C": "Intestinal deformities at birth are not uncommon among rats bred in laboratory conditions.",
+      "D": "Genetically modified potatoes have the same nutritional value to rats as do potatoes that are not genetically modified.",
+      "E": "The researchers conducting the study were unable to explain how the genetic modifications of the potatoes would have caused the intestinal deformities or a weakened immune system in the rats."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Some philosophers explain visual perception by suggesting that when we visually perceive an object, a mental image of that object forms in our mind. However, this hypothesis cannot be correct, since it would require an inner self visually perceiving the newly formed mental image; this would in turn require that the inner self have a mental image of that mental image, and so on. But such an infinite regress is absurd.",
+    "questionStem": "Which one of the following arguments is most similar in its pattern of reasoning to the argument above?",
+    "answerChoices": {
+      "A": "According to some linguists, many of the world’s languages can be traced back to a common source known as Indo-European. However, Indo-European cannot be the earliest language, for if it were, then there would be no language from which it was derived. But this is highly unlikely, given the overwhelming evidence that humans spoke long before the advent of Indo-European.",
+      "B": "The claim that any scientific theory is adequate as long as it agrees with all the empirical data cannot be correct. For there are an infinite number of theories all of which account equally well for the empirical data, and they cannot all be true at the same time.",
+      "C": "Some historians claim that no theory is ever genuinely new; no matter how clever a theory is, there is always a precedent theory that contains its gist. But if this were true, then every theory would have a precedent theory containing its gist, and this precedent theory would also have a precedent theory, and so on, without end. Since this is clearly impossible, the historians’ claim must be false.",
+      "D": "Some engineers define a structure’s foundation as that part of the structure that supports the rest of the structure. This definition is unfortunate, however, because it evokes the suggestion that the foundation itself does not have any support, which, of course, is absurd.",
+      "E": "Some people claim that the first library was the library of Alexandria, which for many centuries contained the largest collection of books in the world. However, Alexandria’s collection was itself put together from smaller collections, small libraries in themselves. It follows that the library of Alexandria was not the first in the world."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Greatly exceeding the recommended daily intake of vitamins A and D is dangerous, for they can be toxic at high levels. For some vitamin-fortified foods, each serving, as defined by the manufacturer, has 100 percent of the recommended daily intake of these vitamins. But many people overestimate what counts as a standard serving of vitamin-fortified foods such as cereal, consuming two to three times what the manufacturers define as standard servings.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Few people who consume vitamin-fortified foods are aware of the recommended daily intake of vitamins A and D.",
+      "B": "Some people who consume vitamin-fortified foods exceed the recommended daily intake of vitamins A and D.",
+      "C": "Some people mistakenly believe it is healthy to consume more than the recommended daily intake of vitamins A and D.",
+      "D": "Most people who eat vitamin-fortified foods should not take any vitamin supplements.",
+      "E": "Manufacturers are unaware that many people consume vitamin-fortified foods in amounts greater than the standard serving sizes."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "At the end of 1997 several nations stated that their oil reserves had not changed since the end of 1996. But oil reserves gradually drop as old oil fields are drained and rise suddenly as new oil fields are discovered. Therefore, oil reserves are unlikely to remain unchanged from one year to the next. So most of the nations stating that their oil reserves were unchanged are probably incorrect.",
+    "questionStem": "Which one of the following is an assumption the argument requires?",
+    "answerChoices": {
+      "A": "For any nation with oil reserves, it is more likely that the nation was mistaken in its statements about changes in its oil reserves than that the nation’s oil reserves remained unchanged.",
+      "B": "It is likely that in 1997, in most of the nations that stated that their oil reserves were unchanged, old oil fields were drained or new oil fields were discovered, or both.",
+      "C": "During the course of 1997, the oil reserves of at least one nation not only gradually dropped but also rose suddenly.",
+      "D": "If a nation incorrectly stated at the end of 1997 that its oil reserves had not changed since the end of 1996, then during 1997 that nation drained its old oil fields and discovered new ones.",
+      "E": "If a nation’s oil reserves change from one year to the next, then that nation is obligated to report the change correctly."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Intermediate Conclusions",
+      "Math-y Stuff",
+      "New Concept in Conclusion",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "If a motor is sound-insulated, then it is quiet enough to use in home appliances. If a motor is quiet enough to use in home appliances, then it can be used in institutional settings. None of the motors manufactured by EM Industries are quiet enough to use in home appliances.",
+    "questionStem": "If the statements above are true, which one of the following must be true?",
+    "answerChoices": {
+      "A": "If a motor can be used in institutional settings, then it is sound-insulated.",
+      "B": "None of the motors manufactured by EM Industries are sound-insulated.",
+      "C": "At least some of the motors manufactured by EM Industries can be used in institutional settings.",
+      "D": "If a motor is quiet enough to use in home appliances, then it is sound-insulated.",
+      "E": "None of the motors manufactured by EM Industries can be used in institutional settings."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Mayor: A huge protest against plans to build a chemical plant in this town was held yesterday. The protesters claim that the factory could cause health problems. But this worry can be dismissed. Most of the protesters were there only because they were paid to show up by property developers who are concerned that the factory would lower the value of nearby land that they own.",
+    "questionStem": "Which one of the following most accurately expresses a flaw in reasoning in the mayor’s argument?",
+    "answerChoices": {
+      "A": "The argument mischaracterizes an opposing view and then attacks this mischaracterized view.",
+      "B": "The argument attempts to persuade by inducing fear of the consequences of rejecting its conclusion.",
+      "C": "The argument rejects a claim simply because of the motivation that some people have for making it.",
+      "D": "The argument generalizes on the basis of a few unrepresentative cases.",
+      "E": "The argument mistakes a claim that a result is possible for a claim that the result is inevitable."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "One should not intentionally misrepresent another person’s beliefs unless one’s purpose in doing so is to act in the interest of that other person.",
+    "questionStem": "Which one of the following actions most clearly violates the principle stated?",
+    "answerChoices": {
+      "A": "Ann told someone that Bruce thought the Apollo missions to the moon were elaborate hoaxes, even though she knew he did not think this; she did so merely to make him look ridiculous.",
+      "B": "Claude told someone that Thelma believed in extraterrestrial beings, even though he knew she believed no such thing; he did so solely to keep this other person from bothering her.",
+      "C": "In Maria’s absence John had told people that Maria believed that university education should be free of charge. He knew that Maria would not want him telling people this, but he wanted these people to think highly of Maria.",
+      "D": "Harvey told Josephine that he thought Josephine would someday be famous. Harvey did not really think that Josephine would ever be famous, but he said she would because he thought she would like him as a result.",
+      "E": "Wanda told people that George thought Egypt is in Asia. Wanda herself knew that Egypt is in Africa, but she told people that George thought it was in Asia because she wanted people to know that George knew little about geography."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Adjusted for inflation, the income earned from wool sales by a certain family of Australian sheep farmers grew substantially during the period from 1840 to 1860. This is because the price for wool sold on the international market was higher than the price paid on domestic markets and the percentage and amount of its wool that this family sold internationally increased dramatically during that period. But even though the family generated more income from selling their wool, they failed to enjoy a commensurate increase in prosperity.",
+    "questionStem": "Which one of the following would, if true, help most to resolve the apparent paradox described above?",
+    "answerChoices": {
+      "A": "At the end of the 1800s, prices in general in Australia rose more rapidly than did the wholesale price of wool sold domestically.",
+      "B": "The prices of wool sold to domestic markets by Australian sheep farmers decreased dramatically during the period in question.",
+      "C": "The international and domestic prices for mutton, sheepskins, and certain other products produced by all Australian sheep farmers fell sharply during the period in question.",
+      "D": "Competition in wool sales increased during the period in question, leaving Australian wool producers in a less favorable position than previously.",
+      "E": "Among Australian sheep farmers, the percentage who made their living exclusively from international wool sales increased significantly during the period in question."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Lawyer: If you take something that you have good reason to think is someone else’s property, that is stealing, and stealing is wrong. However, Meyers had no good reason to think that the compost in the public garden was anyone else’s property, so it was not wrong for Meyers to take it.",
+    "questionStem": "The reasoning in the lawyer’s argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "confuses a factual claim with a moral judgment",
+      "B": "takes for granted that Meyers would not have taken the compost if he had good reason to believe that it was someone else’s property",
+      "C": "takes a condition that by itself is enough to make an action wrong to also be necessary in order for the action to be wrong",
+      "D": "fails to consider the possibility that the compost was Meyers’ property",
+      "E": "concludes that something is certainly someone else’s property when there is merely good, but not conclusive, reason to think that it is someone else’s property"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "From time to time there is a public outcry against predatory pricing-where a company deliberately sells its products at prices low enough to drive its competitors out of business. But this practice clearly should be acceptable, because even after its competitors go out of business, the mere threat of renewed competition will prevent the company from raising its prices to unreasonable levels.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Any company that is successful will inevitably induce competitors to enter the market.",
+      "B": "It is unlikely that several competing companies will engage in predatory pricing simultaneously.",
+      "C": "Only the largest and wealthiest companies can engage in predatory pricing for a sustained period of time.",
+      "D": "It is only competition or the threat of competition that keeps companies from raising prices.",
+      "E": "Any pricing practice that does not result in unreasonable prices should be acceptable."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "If the prosecutor wanted to charge Frank with embezzlement, then Frank would already have been indicted. But Frank has not been indicted. So clearly Frank is not an embezzler.",
+    "questionStem": "The flawed pattern of reasoning exhibited by which one of the following is most similar to that exhibited by the argument above?",
+    "answerChoices": {
+      "A": "If Rosita knew that her 9:00 appointment would cancel, she would not come in to work until 10:00. She did not come in until 10:00. So she must have known her 9:00 appointment would cancel.",
+      "B": "If Barry had won the lottery, he would stay home to celebrate. But Barry did not win the lottery, so he will be in to work today.",
+      "C": "If Makoto believed that he left the oven on, he would rush home. But Makoto is still at work. So obviously he did not leave the oven on.",
+      "D": "If Tamara believed she was getting a promotion, she would come in to work early. She did come in early. So apparently she is getting a promotion.",
+      "E": "If Lucy believed she was going to be fired, she would not come in to work today. She is going to be fired, so clearly she will not be coming in today."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Pediatrician: Swollen tonsils give rise to breathing problems during sleep, and the surgical removal of children’s swollen tonsils has been shown to alleviate sleep disturbances. So removing children’s tonsils before swelling even occurs will ensure that the children do not experience any breathing problems during sleep.",
+    "questionStem": "The pediatrician’s argument is most vulnerable to the criticism that it",
+    "answerChoices": {
+      "A": "relies on an inappropriate appeal to authority",
+      "B": "relies on an assumption that is tantamount to assuming that the conclusion is true",
+      "C": "infers from the fact that an action has a certain effect that the action is intended to produce that effect",
+      "D": "fails to consider the possibility that there may be other medical reasons for surgically removing a child’s tonsils",
+      "E": "fails to consider the possibility that some breathing problems during sleep may be caused by something other than swollen tonsils"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "It is unethical for government officials to use their knowledge of impending policies to financially benefit themselves if that knowledge is not available to the general public.",
+    "questionStem": "Which one of the following actions would be unethical according to the principle stated above?",
+    "answerChoices": {
+      "A": "A company whose former manager is now an official with the Department of Natural Resources was one of several bidders for an extremely lucrative contract with the department; the names of the bidders were not disclosed to the public.",
+      "B": "A retired high-ranking military officer now owns a company that contracts with the Department of Defense. He uses his contacts with department officials to help his company obtain contracts.",
+      "C": "After a tax reform law was enacted, an official with the government’s revenue agency obtained a 20 percent reduction in personal income tax by setting up tax shelters that were allowed by the new law.",
+      "D": "A Finance Department official, one of the few people who knew of a plan to tax luxury cars, bought a luxury car just before the plan was announced to the public in order to avoid paying the tax.",
+      "E": "An official with a government agency that regulates securities sold her stock in Acme just after she announced to the public that her agency was investigating Acme for improper accounting."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  }
+]
