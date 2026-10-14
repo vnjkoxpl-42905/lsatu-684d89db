@@ -38,7 +38,7 @@ const run = async (text, attempt = 1) => { const rid = randomUUID(); const b = a
 
 // 1. The payload carries the complete key, including required parts.
 let { rid, b } = await run('comparative, "stronger"');
-eq(b.status, 'reserved'); eq(b.payload.answerKey, key('stronger than')); eq(b.payload.coach.grading_rubric, ['Grade each pair.']);
+eq(b.status, 'reserved'); const { context_benchmark: _cb, ...shown } = key('stronger than'); eq(b.payload.answerKey, shown, 'reply strips only null fields'); eq((await db.query('select canonical_payload->\'answerKey\' k from activity_ai_receipts_v1 where id=$1', [rid])).rows[0].k, key('stronger than')); eq(b.payload.coach.grading_rubric, ['Grade each pair.']);
 // 2. Key-only change between dispatch and finish: finish refuses to complete.
 eq((await dispatch(rid, b.claimId)).status, 'dispatched');
 await setItem(key('stronger … than'));
