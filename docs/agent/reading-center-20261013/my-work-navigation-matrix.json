@@ -1,0 +1,92 @@
+[
+  {
+    "scrollWidth": 300,
+    "width": 300,
+    "navNames": [
+      "Home",
+      "My Work",
+      "Reading Center",
+      "Practice",
+      "Review",
+      "Progress",
+      "Library",
+      "Schedule",
+      "Messages4 unread messages",
+      "Find a question"
+    ],
+    "readingCenterAfterMyWork": true,
+    "onlyReadingCenter": true
+  },
+  {
+    "scrollWidth": 375,
+    "width": 375,
+    "navNames": [
+      "Home",
+      "My Work",
+      "Reading Center",
+      "Practice",
+      "Review",
+      "Progress",
+      "Library",
+      "Schedule",
+      "Messages",
+      "Find a question"
+    ],
+    "readingCenterAfterMyWork": true,
+    "onlyReadingCenter": true
+  },
+  {
+    "scrollWidth": 640,
+    "width": 640,
+    "navNames": [
+      "Home",
+      "My Work",
+      "Reading Center",
+      "Practice",
+      "Review",
+      "Progress",
+      "Library",
+      "Schedule",
+      "Messages4 unread messages",
+      "Find a question"
+    ],
+    "readingCenterAfterMyWork": true,
+    "onlyReadingCenter": true
+  },
+  {
+    "scrollWidth": 1036,
+    "width": 1036,
+    "navNames": [
+      "Home",
+      "My Work",
+      "Reading Center",
+      "Practice",
+      "Review",
+      "Progress",
+      "Library",
+      "Schedule",
+      "Messages4 unread messages",
+      "Find a question"
+    ],
+    "readingCenterAfterMyWork": true,
+    "onlyReadingCenter": true
+  },
+  {
+    "scrollWidth": 1440,
+    "width": 1440,
+    "navNames": [
+      "Home",
+      "My Work",
+      "Reading Center",
+      "Practice",
+      "Review",
+      "Progress",
+      "Library",
+      "Schedule",
+      "Messages4 unread messages",
+      "Find a question"
+    ],
+    "readingCenterAfterMyWork": true,
+    "onlyReadingCenter": true
+  }
+]
