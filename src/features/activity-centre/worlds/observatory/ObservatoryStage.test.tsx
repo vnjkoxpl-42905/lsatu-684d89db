@@ -234,6 +234,30 @@ describe("the verdict decides what is drawn", () => {
   });
 });
 
+describe("earned relationship dials", () => {
+  const world = WORLD_BINDINGS.find((w) => w.slug === "spot-the-relationship")!;
+  it("keeps an unearned type dark and restores earned types on the next question", () => {
+    const { getByTestId, rerender } = render(world.render({
+      item: drill.items[1], answered: false, completedItems: [],
+    })!);
+    expect(getByTestId("ob-seal-conditional")).not.toHaveAttribute("data-lit");
+    rerender(world.render({ item: drill.items[1], answered: true, verdict: "partial" })!);
+    expect(getByTestId("ob-seal-conditional")).not.toHaveAttribute("data-lit");
+    rerender(world.render({ item: drill.items[1], answered: true, verdict: "correct" })!);
+    expect(getByTestId("ob-seal-conditional")).toHaveAttribute("data-lit", "true");
+    rerender(world.render({ item: drill.items[8], answered: false, completedItems: [drill.items[1], drill.items[4]] })!);
+    expect(getByTestId("ob-seal-conditional")).toHaveAttribute("data-lit", "true");
+    expect(getByTestId("ob-seal-causal")).toHaveAttribute("data-lit", "true");
+    expect(getByTestId("ob-seal-comparative")).not.toHaveAttribute("data-lit");
+  });
+  it("lights all types earned by a correct mixed answer", () => {
+    const { getByTestId } = render(world.render({ item: drill.items[28], answered: true, verdict: "correct" })!);
+    for (const kind of ["conditional", "causal", "comparative"]) {
+      expect(getByTestId(`ob-seal-${kind}`)).toHaveAttribute("data-lit", "true");
+    }
+  });
+});
+
 describe("the entrance", () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());

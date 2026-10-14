@@ -75,4 +75,3 @@
 /* Feedback uses a divider inside the single independent-writing exercise surface. */
 :root:not(.light) .oc-workspace .omd-runner [data-mixed-item] .co-feedback { background:transparent; color:var(--omd-ink); }
 @media(prefers-reduced-motion:reduce) { .omd-runner { scroll-behavior:auto; } }
-
