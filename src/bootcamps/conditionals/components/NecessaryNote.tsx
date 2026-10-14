@@ -88,10 +88,10 @@ const quiz: QuizItem[] = [
     rule: 'You must show a passport to board the flight.',
     question: 'Which idea is required?',
     options: [
-      { text: 'Board the flight', tone: 'amber', reason: 'Boarding is what needs the passport.' },
       { text: 'Show a passport', tone: 'teal' },
+      { text: 'Board the flight', tone: 'amber', reason: 'Boarding is what needs the passport.' },
     ],
-    correct: 1,
+    correct: 0,
     answer: 'If you board the flight, then you showed a passport.',
   },
   {

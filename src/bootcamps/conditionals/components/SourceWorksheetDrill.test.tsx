@@ -25,7 +25,7 @@ it('keeps intro identification faithful: indicators first, then the learner high
   click('if');
   fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '1' } });
   click('Check this step');
-  expect(screen.getByRole('heading', { name: 'That step works.' })).toHaveFocus();
+  expect(screen.getByRole('heading', { name: 'Correct.' })).toHaveFocus();
   click('Continue');
   expect(screen.queryByLabelText(/Which group/)).toBeNull();
   expect(screen.queryByText('the product is registered within 30 days', { exact: true })).toBeNull();
@@ -59,7 +59,7 @@ it('requires the whole indicator phrase and correct group before advancing, with
   click('Check this step');
   expect(screen.getByText(/Indicators:/)).toBeVisible();
   click('Continue');
-  expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Highlight both conditions' })).toBeVisible();
 });
 
 it('carries indicator work from the folded drill into Drill 2 without marking the rule reviewed', () => {
@@ -72,7 +72,7 @@ it('carries indicator work from the folded drill into Drill 2 without marking th
   run('source-intro-identify');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   fireEvent.change(screen.getByLabelText('Go to question'), { target: { value: 15 } });
-  expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Highlight both conditions' })).toBeVisible();
   expect(JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-indicators')!).answers['source-indicators-01'].review).toBe('matched');
 });
 
@@ -84,15 +84,18 @@ it('gives a placement hint without showing the diagram until the placement is ri
   click('Continue');
   const left = screen.getByRole('group', { name: 'Left: sufficient condition' });
   const right = screen.getByRole('group', { name: 'Right: necessary condition' });
-  fireEvent.click(within(left).getByRole('button', { name: 'those employees complete training' }));
+  // The explanation names the sides, so it waits until the diagram step.
+  expect(screen.queryByText(/qualification goes on the left/)).toBeNull();
+  fireEvent.click(within(left).getByRole('button', { name: 'employees complete training' }));
   fireEvent.click(within(right).getByRole('button', { name: 'employees qualify for promotion' }));
   click('Check this step');
   expect(screen.getByText('Which condition is enough to prove the other? That one goes on the left.')).toBeVisible();
-  expect(screen.queryByText('employees qualify for promotion → those employees complete training')).toBeNull();
+  expect(screen.queryByText('employees qualify for promotion → employees complete training')).toBeNull();
   fireEvent.click(within(left).getByRole('button', { name: 'employees qualify for promotion' }));
-  fireEvent.click(within(right).getByRole('button', { name: 'those employees complete training' }));
+  fireEvent.click(within(right).getByRole('button', { name: 'employees complete training' }));
   click('Check this step');
-  expect(screen.getByText('employees qualify for promotion → those employees complete training')).toBeVisible();
+  expect(screen.getByText('employees qualify for promotion → employees complete training')).toBeVisible();
+  expect(screen.getByText(/qualification goes on the left/)).toBeVisible();
 });
 
 it('keeps every source task reachable and future operations gated', () => {
@@ -103,7 +106,7 @@ it('keeps every source task reachable and future operations gated', () => {
     fireEvent.change(navigator, { target: { value: set.items.length - 1 } });
     expect(screen.getByText(`Question ${set.items.length} of ${set.items.length}`)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Bring it together' })).toBeDisabled();
-    if (set.taskKind !== 'contrapositive') expect(screen.queryByRole('button', { name: 'Reverse and negate' })).toBeNull();
+    if (set.taskKind !== 'contrapositive') expect(screen.queryByRole('button', { name: 'Flip and negate' })).toBeNull();
     view.unmount();
   }
 });
@@ -111,7 +114,7 @@ it('keeps every source task reachable and future operations gated', () => {
 it('compares the diagram and checks the contrapositive as each is built, and holds the written readbacks to the end', () => {
   run('source-full-translation');
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
-  expect(screen.queryByText('that intern is offered a full-time position', { exact: true })).toBeNull();
+  expect(screen.queryByText('the person is offered a full-time position', { exact: true })).toBeNull();
   click('All');
   fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
   click('Check this step');
@@ -132,7 +135,7 @@ it('compares the diagram and checks the contrapositive as each is built, and hol
   fireEvent.click(within(screen.getByRole('group', { name: /Click the first and last word/ })).getAllByRole('button')[0]);
   mark(1, 5);
   click('Check this step');
-  expect(screen.getByRole('heading', { name: 'That step works.' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Correct.' })).toBeVisible();
   click('Continue');
   write('First condition’s symbol', 'I');
   write('Second condition’s symbol', 'I');
@@ -150,7 +153,10 @@ it('compares the diagram and checks the contrapositive as each is built, and hol
   fireEvent.click(within(left()).getByRole('button', { name: 'I' }));
   fireEvent.click(within(right()).getByRole('button', { name: 'O' }));
   click('Check this step');
-  expect(screen.getByText(ours.diagram)).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Correct.' })).toBeVisible();
+  // Our wording waits until the learner has written their own readbacks.
+  expect(screen.queryByText(ours.diagram)).toBeNull();
+  expect(screen.queryByText(ours.explanation)).toBeNull();
   click('Continue');
   const contraLeft = () => screen.getByRole('group', { name: 'Left side' });
   const contraRight = () => screen.getByRole('group', { name: 'Right side' });
@@ -165,10 +171,11 @@ it('compares the diagram and checks the contrapositive as each is built, and hol
   fireEvent.click(within(contraRight()).getByRole('button', { name: 'NOT I' }));
   fireEvent.click(screen.getByLabelText('NOT on the right side'));
   click('Check this step');
-  expect(screen.getByText('The order is right. Now negate each whole side once.')).toBeVisible();
+  expect(screen.getByText('The order is correct. Now negate each whole side once.')).toBeVisible();
   fireEvent.click(screen.getByLabelText('NOT on the right side'));
   click('Check this step');
-  expect(screen.getByText(ours.contrapositive)).toBeVisible();
+  expect(screen.getByText('Both sides flipped, and both were negated.')).toBeVisible();
+  expect(screen.queryByText(ours.contrapositive)).toBeNull();
   expect(screen.queryByText(ours.contrapositiveWords)).toBeNull();
   click('Continue');
   write('Write this rule as an if/then sentence.', 'If an intern completes the program, then they are offered a full-time position.');
@@ -178,6 +185,9 @@ it('compares the diagram and checks the contrapositive as each is built, and hol
   click('Save and continue');
   expect(screen.getByText('Compare with our version')).toBeVisible();
   expect(screen.getByText('I → O', { exact: true })).toBeVisible();
+  expect(screen.getByText(ours.diagram)).toBeVisible();
+  expect(screen.getByText(ours.contrapositive)).toBeVisible();
+  expect(screen.getByText(ours.contrapositiveWords)).toBeVisible();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   click('Needs another look');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
@@ -221,3 +231,51 @@ it('recovers malformed saved state and links the landing to its run route', () =
   expect(screen.getByRole('link', { name: 'Start practice' })).toHaveAttribute('href', '/?page=source-rephrase&run=1');
 });
 
+
+it('starts the clicked words and highlights over when a rule is reworded, and keeps written drafts', () => {
+  const set = sourceWorksheetDrills.find(s => s.id === 'source-independent')!;
+  const item = set.items.find(i => i.id === 'source-independent-06')!;
+  const oldPrint = JSON.stringify(["Where there's beer, there's fun.", 'there is beer at a place', 'there is fun at that place', item.indicators, 'old']);
+  localStorage.setItem('conditional-worksheet-v1:source-independent', JSON.stringify({ current: 5, answers: { [item.id]: {
+    groups: { '0': '1' }, fingerprint: oldPrint, words: [0, 9], spans: [[1, 2], [3, 40]], left: '1', right: '2', contraLeft: '2', contraRight: '1',
+    negateLeft: true, negateRight: true, writing: 'My old readback.', contraWriting: '', stage: 7,
+    passed: ['indicators', 'conditions', 'symbols', 'diagram', 'contra', 'readback', 'contra-readback'], revealed: true, review: 'matched',
+  } } }));
+  run('source-independent');
+  expect(screen.getByText("Where there's smoke, there's fire.", { selector: 'blockquote' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Find the indicators' })).toBeVisible();
+  const words = within(screen.getByRole('group', { name: /Click the indicator/ })).getAllByRole('button');
+  expect(words.filter(b => b.getAttribute('aria-pressed') === 'true')).toHaveLength(0);
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  const saved = JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-independent')!).answers[item.id];
+  expect(saved.writing).toBe('My old readback.');
+  expect(saved.spans).toEqual([]);
+  expect(saved.words).toEqual([]);
+});
+
+it('accepts an optional conditional word without requiring it, and never lists it as a keyed indicator', () => {
+  run('source-rephrase');
+  fireEvent.change(screen.getByLabelText('Go to question'), { target: { value: 10 } });
+  write('Write this rule as an if/then sentence.', 'If an agreement is legally binding, then it is in writing.');
+  click('Save and continue');
+  click('Every');
+  click('must');
+  const [every, must] = screen.getAllByLabelText(/Which group/);
+  fireEvent.change(every, { target: { value: '1' } });
+  fireEvent.change(must, { target: { value: '2' } });
+  click('Check this step');
+  expect(screen.getByRole('heading', { name: 'Correct.' })).toBeVisible();
+  expect(screen.getByText('must (Group 2).', { exact: false })).toBeVisible();
+  expect(screen.queryByText(/Every \(Group 1\)/)).toBeNull();
+});
+
+it('waits for the student to start the walkthrough, then plays one step per click', () => {
+  render(<SourceWorksheetDrill setId="source-intro-identify"/>);
+  const demo = screen.getByRole('region', { name: 'How this drill works' });
+  expect(within(demo).queryByText(/Click each word of the indicator/)).toBeNull();
+  fireEvent.click(within(demo).getByRole('button', { name: 'Step 1. Click here to find the indicators.' }));
+  expect(within(demo).getByText(/Click each word of the indicator/)).toBeVisible();
+  fireEvent.click(within(demo).getByRole('button', { name: 'Step 2. Click here to highlight both conditions.' }));
+  expect(within(demo).getByText('Both conditions marked')).toBeVisible();
+  expect(within(demo).getByRole('button', { name: 'Start again from Step 1' })).toBeVisible();
+});

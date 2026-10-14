@@ -4,6 +4,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { OpeningMixedDrill, openingDiagramItems } from './OpeningMixedDrill';
 import { completeConditionItems, equivalenceItems, transferItems, confirmationItemsByError, obligationConfirmationItem } from '../content/mixedDrillItems';
 import { mixedFamilyItems } from './MixedFamilyPractice';
+import { CourseProgressProvider, type CourseProgressStore } from '../courseProgress';
 
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 const active = () => within(document.querySelector<HTMLElement>('[data-mixed-question]:not([hidden])')!);
@@ -213,11 +214,12 @@ it('builds diagrams from full condition labels and gives only a hint for a rever
   expect(diagram).toHaveAttribute('data-result', 'wrong');
   const feedback = diagram.querySelector('.cir-feedback')!;
   expect(feedback.querySelector('p')).toHaveTextContent('Check which condition is enough to prove the other.');
-  expect(feedback.textContent).not.toMatch(/Training is enough|If Mia trains/);
+  expect(feedback.textContent).not.toMatch(/Training is enough|If Mia trains|Conditional:/);
+  expect(diagram.querySelector('.cir-feedback')!.querySelectorAll('p')).toHaveLength(1);
   fireEvent.click(active().getByRole('button', { name: 'Try again' }));
   solve(3);
   expect(diagram).toHaveAttribute('data-result', 'right');
-  expect(diagram.querySelector('.cir-feedback p')).toHaveTextContent('Right. Read it back: If Mia trains, she qualifies.');
+  expect(diagram.querySelector('.cir-feedback p')).toHaveTextContent('Correct. Read it back: If Mia trains, she qualifies.');
   expect(diagram.querySelector('.cir-feedback')).toHaveTextContent(/Training is enough under this rule/);
 });
 
@@ -226,4 +228,16 @@ it('maps the shared one-word diagram labels to full condition labels', () => {
     ['Mia trains', 'Mia qualifies'], ['Person is a dancer', 'Person stretches'], ['Student is admitted', 'Student is a senior'],
     ['Person votes', 'Person is a member'], ['Bridge opens', 'Bridge has been inspected'], ['There is funding', 'There is approval'], ['Person is a hiker', 'Person brings a map'],
   ]);
+});
+
+it('opens the saved run when the account finishes loading after the drill appears, until the student acts', () => {
+  const ignoreWhileLoading: CourseProgressStore = { steps: {}, save: () => undefined };
+  const view = render(<CourseProgressProvider store={ignoreWhileLoading}><OpeningMixedDrill stepId="mixed-practice"/></CourseProgressProvider>);
+  expect(screen.getByRole('button', { name: 'Begin practice' })).toBeVisible();
+  const questionIds = [...completeConditionItems.map(item => item.id), ...openingDiagramItems.map(item => item.id), ...mixedFamilyItems.map((_, i) => `mixed-independent-${i + 1}`), ...equivalenceItems.map(item => item.id), ...transferItems.map(item => item.id)];
+  const state = { questionIds, current: 1, visited: [questionIds[0], questionIds[1]], results: { [questionIds[0]]: { firstCorrect: true, correct: true, errors: [] } }, finished: false, introducedStages: [0] };
+  const loaded: CourseProgressStore = { steps: { 'mixed-practice': { status: 'started', updatedAt: 'then', state } }, save: () => undefined };
+  view.rerender(<CourseProgressProvider store={loaded}><OpeningMixedDrill stepId="mixed-practice"/></CourseProgressProvider>);
+  expect(screen.getByText('Question 2 of 24')).toBeVisible();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
 });

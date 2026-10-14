@@ -34,7 +34,7 @@ const items: QuizItem[] = [
     options: [
       { text: 'No email.', reason: 'The rule never says only invited applicants get emails.' },
       { text: 'Nothing. They might or might not get one.' },
-      { text: 'They get one anyway.', reason: 'The rule does not promise that either.' },
+      { text: 'They get one anyway.', reason: 'The rule doesn’t say that either. It only covers invited applicants.' },
     ],
     correct: 1,
     answer: 'If an applicant is not invited, the rule says nothing about an email.',

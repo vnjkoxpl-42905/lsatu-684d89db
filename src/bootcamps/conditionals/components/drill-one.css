@@ -166,3 +166,10 @@
 .d1-screen.oc-course-screen .d1-entry-title h1 { font-size:clamp(3.4rem,6.2vw,5.8rem); line-height:.98; letter-spacing:-.05em; max-width:9ch; }
 @media(max-width:800px) { .d1-screen.oc-course-screen .d1-entry-title h1 { font-size:clamp(3rem,10vw,4.2rem); } }
 @media(max-width:480px) { .d1-screen.oc-course-screen .d1-entry-title h1 { font-size:clamp(2.6rem,12vw,3.3rem); white-space:normal; } }
+/* Start over: a plain link-style control on the results page, then a confirm step before anything is cleared. */
+.d1-restart { margin:28px auto 0; max-width:620px; }
+.d1-restart-confirm { text-align:left; padding:20px 22px; border:1px solid var(--d1-line); border-left:4px solid #b4703f; border-radius:8px; background:#fbf8f1; }
+.d1-experience .d1-restart-confirm h3 { font:400 1.35rem/1.3 Georgia,serif; margin:0 0 8px; color:var(--d1-ink); }
+.d1-restart-confirm h3:focus { outline:none; }
+.d1-restart-confirm p { margin:0 0 16px; line-height:1.6; }
+.d1-restart-actions { display:flex; flex-wrap:wrap; align-items:center; gap:18px; }

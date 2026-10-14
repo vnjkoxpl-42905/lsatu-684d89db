@@ -9,7 +9,7 @@ export type OpeningCourseStep = {
 
 // Reading destinations are not legacy completion IDs. Visiting one records no completion.
 export const OPENING_COURSE_PATH: OpeningCourseStep[] = [
-  { id: 'meaning', type: 'note', title: 'What conditionals are', description: 'Separate a rule from a fact, and see what a conditional actually promises.', unitId: 'orientation' },
+  { id: 'meaning', type: 'note', title: 'What conditionals are', description: 'Separate a rule from a fact, and see what a conditional actually tells you.', unitId: 'orientation' },
   { id: 'sufficient', type: 'note', title: 'The Sufficient Condition', description: 'When one condition guarantees another.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'necessary', type: 'note', title: 'The Necessary Condition', description: 'What the sufficient condition requires.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'must-arrow', type: 'note', title: 'Must arrow', description: 'What the arrow says, where to start reading it, and what it is for.', unitId: 'orientation' },

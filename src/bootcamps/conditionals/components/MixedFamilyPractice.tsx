@@ -24,7 +24,7 @@ type MixedItem = {
 export const mixedFamilyItems: MixedItem[] = [
   {
     sentence: 'The match moves indoors if the forecast shows lightning.', word: 'if', family: 'sufficient',
-    targetPrompt: 'What does the forecast have to show for the match to move indoors under this rule?', targetFeedback: 'You identified the forecast showing lightning.',
+    targetPrompt: 'What does the rule say is enough to move the match indoors?', targetFeedback: 'You identified the forecast showing lightning.',
     target: 'the forecast shows lightning', partial: 'the forecast', other: 'the match moves indoors',
     left: 'Forecast shows lightning', right: 'Match moves indoors',
     partialFeedback: "The forecast alone isn't something that can be true or false. Ask: if what? Keep the whole clause.",
@@ -40,7 +40,7 @@ export const mixedFamilyItems: MixedItem[] = [
     left: 'Joins choir trip', right: 'Parent signs consent form',
     partialFeedback: 'A parent alone drops what the parent has to do. Ask: only if what? Keep the whole clause.',
     otherFeedback: 'Joining the trip is the condition that carries the requirement. Look at the clause after only if to find what joining needs.',
-    reversed: "Your arrow promises a place on the trip to every student with a signed form. A student with a signed form who is ill on the day fits the rule, so the signature isn't enough.",
+    reversed: "Your arrow gives a place on the trip to every student with a signed form. A student with a signed form who is ill on the day fits the rule, so the signature isn't enough.",
     why: 'Only if names a requirement. Any student on the trip has a signed form. A signed form leaves the trip open.',
     readback: 'If a student joins the choir trip, a parent has signed the consent form.',
   },
@@ -68,7 +68,7 @@ export const mixedFamilyItems: MixedItem[] = [
   },
   {
     sentence: 'The only phones placed in the same-day repair queue are phones that arrived with a cracked screen.', word: 'the only', family: 'sufficient',
-    targetPrompt: 'Which phones does the rule say arrived with a cracked screen?', targetFeedback: 'The rule covers phones in the same-day repair queue.',
+    targetPrompt: 'Which phones does the rule cover?', targetFeedback: 'The rule covers phones in the same-day repair queue.',
     target: 'phones placed in the same-day repair queue', partial: 'phones', other: 'phones that arrived with a cracked screen',
     left: 'Phone in same-day repair queue', right: 'Arrived with cracked screen',
     partialFeedback: 'Phones alone would make a claim about every phone in the shop. Ask: the only what? Keep every word that limits the group.',
@@ -78,15 +78,15 @@ export const mixedFamilyItems: MixedItem[] = [
     readback: 'If a phone is placed in the same-day repair queue, it arrived with a cracked screen.',
   },
   {
-    sentence: 'Only stalls with a permit sell food at the festival.', word: 'only', family: 'necessary',
-    targetPrompt: 'Which stalls does the rule allow to sell food at the festival?', targetFeedback: 'Every stall selling food at the festival has a permit.',
-    target: 'stalls with a permit', partial: 'stalls', other: 'sell food at the festival',
-    left: 'Stall sells food at festival', right: 'Stall has permit',
-    partialFeedback: 'Stalls alone loses the restriction. Ask: only what? Keep every word that limits which stalls.',
-    otherFeedback: 'Selling food is what the restriction limits, not the stalls it allows. Ask: only what? The answer names which stalls sell food under this rule.',
-    reversed: 'Your arrow says every stall with a permit sells food. A permitted stall selling only crafts fits the rule.',
-    why: "Only limits food sellers to permitted stalls. A stall selling food has a permit. A permit doesn't tell you what the stall sells.",
-    readback: 'If a stall sells food at the festival, it has a permit.',
+    sentence: 'Only stalls with a health permit sell food at the festival.', word: 'only', family: 'necessary',
+    targetPrompt: 'What must a stall have if it sells food at the festival?', targetFeedback: 'You kept health. The rule requires a health permit, not just any permit.',
+    target: 'a health permit', partial: 'a permit', other: 'sell food at the festival',
+    left: 'Stall sells food at festival', right: 'Stall has health permit',
+    partialFeedback: 'A permit drops a word that limits the requirement. Would a parking permit do under this rule? Ask: only what? Keep every word after only.',
+    otherFeedback: 'Selling food is what needs something, so it is not the requirement. Ask: only what? The answer names what a food stall must have.',
+    reversed: 'Your arrow says every stall with a health permit sells food. A stall with a health permit that sells only crafts fits the rule.',
+    why: "Only limits food sellers to stalls with a health permit. A stall selling food has one. A health permit doesn't tell you what the stall sells.",
+    readback: 'If a stall sells food at the festival, it has a health permit.',
   },
 ];
 

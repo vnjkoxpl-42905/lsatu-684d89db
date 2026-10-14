@@ -139,7 +139,7 @@ function SortDrills() {
           {picked && (
             <>
               <p className="cir-feedback">
-                {picked === item.group ? "Right." : "Not quite."} <strong>{item.word}</strong> is {GROUP_LABEL[item.group]}.
+                {picked === item.group ? "Correct." : "Not quite."} <strong>{item.word}</strong> is {GROUP_LABEL[item.group]}.
               </p>
               <div className="cir-actions"><button type="button" className="cir-btn" onClick={next}>Next</button></div>
             </>
@@ -339,9 +339,9 @@ export function DiagramDrills({
 
       <div className={checked !== null ? "cir-feedback" : undefined} role="status" aria-atomic="true">
         {checked !== null && <>
-          {!embedded && <p>{checked ? "Right." : "Not quite."}</p>}
+          {!embedded && <p>{checked ? "Correct." : "Not quite."}</p>}
           {feedbackForResult && <p>{feedbackForResult({ left: norm(left.join(' ')), right: norm(right.join(' ')), correct: checked })}</p>}
-          <p>Conditional: <Diagram left={item.left} right={item.right} /></p>
+          {(checked === true || !embedded) && <p>Conditional: <Diagram left={item.left} right={item.right} /></p>}
           {explanations[item.id] && <p>{explanations[item.id]}</p>}
           {allowContrapositive && <p>Contrapositive: <Diagram left={contra.left} right={contra.right} /></p>}
         </>}

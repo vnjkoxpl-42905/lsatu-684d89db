@@ -7,10 +7,10 @@ import { useCourseStep } from '../courseProgress';
 import './opening-mixed-drill.css';
 
 const stages = [
-  { title: 'What does the rule cover?', purpose: 'Keep the restriction that tells you which cases the rule covers.', example: 'Every guest wearing a gold badge receives a voucher.', explanation: 'The rule covers guests wearing a gold badge. Leaving out wearing a gold badge would make a claim about all guests.', instruction: 'Choose the description that keeps the restriction in each rule.' },
+  { title: 'What does the rule cover?', purpose: 'Keep the restriction that tells you which cases the rule covers.', example: 'Every camper arriving after dark receives a lantern.', explanation: 'The rule covers campers arriving after dark. Leaving out arriving after dark would make a claim about all campers.', instruction: 'Choose the description that keeps the restriction in each rule.' },
   { title: 'Build the diagram', purpose: 'If the condition on the left is true, what must follow on the right?', example: 'If a parcel has a blue sticker, it has been inspected.', explanation: 'A blue sticker is enough to prove inspection. Inspection is required for a blue-sticker parcel. An inspected parcel could still have no blue sticker.', instruction: 'Choose a side of the arrow, then choose the condition that belongs there. Read the diagram in English before checking.' },
   { title: 'Translate the rule yourself', purpose: 'Write your own diagram before looking at supplied conditions.', example: 'Only members use the studio.', explanation: 'First decide what the rule says you need in order to use the studio. Write both conditions and an arrow, then read your diagram as an if/then sentence.', instruction: 'Write your diagram and English version. Compare with the choices only after making that attempt.' },
-  { title: 'Does the meaning change?', purpose: 'Different wording can keep a rule or change what it promises.', example: 'Every parcel in Locker 4 has been scanned.', explanation: 'This tells you something about parcels in Locker 4. It leaves scanned parcels elsewhere possible. Use that distinction when comparing another way of wording a rule.', instruction: 'Compare what each rule requires. Try a possible case that fits one but would break the other.' },
+  { title: 'Does the meaning change?', purpose: 'Different wording can keep a rule or change what it says.', example: 'Every parcel in Locker 4 has been scanned.', explanation: 'This tells you something about parcels in Locker 4. It leaves scanned parcels elsewhere possible. Use that distinction when comparing another way of wording a rule.', instruction: 'Compare what each rule requires. Try a possible case that fits one but would break the other.' },
   { title: 'Try unfamiliar cases', purpose: 'Use the same reasoning with new wording.', example: 'Visitors must wear a badge.', explanation: 'This gives visitors an obligation. It does not tell you whether a visitor actually wore a badge. Permission, requirements and completed actions need different labels.', instruction: 'Read what is stated and choose only what it proves. Keep qualifications and the strength of the claim.' },
   { title: 'Try the distinction in a new case', purpose: 'Now use the distinctions you revised with different rules.', example: '', explanation: 'The next questions revisit mistakes from this practice with fresh examples.', instruction: 'Make a new attempt before checking. An answer you reach after feedback is useful practice, but it is different from getting a fresh case right on the first check.' },
 ];
@@ -86,7 +86,7 @@ function DrillQuestion({ question, onCheck }: { question: Question; onCheck: Che
   if (question.kind === 'independent') return <MixedItemCheck item={question.item} index={question.itemIndex} embedded onChecked={() => undefined} onResult={result => {
     if (!result) return onCheck(null);
     const errors: MixedDrillError[] = [];
-    if (!result.targetCorrect) errors.push(result.targetIncomplete ? 'qualification' : 'direction');
+    if (!result.targetCorrect) errors.push(result.targetIncomplete ? 'qualification' : question.item.family === 'necessary' ? 'requirement' : 'direction');
     if (!result.sideCorrect) errors.push(question.item.family === 'necessary' ? 'requirement' : 'direction');
     onCheck(result.targetCorrect && result.sideCorrect, errors);
   }}/>;
@@ -99,7 +99,7 @@ function DiagramQuestion({ item, onCheck }: { item: DiagramItem; onCheck: Check 
   const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
   return <div className="cir-root omd-diagram" data-result={solved === null ? undefined : solved ? 'right' : 'wrong'}><p>Build the original diagram, then read it as an if/then sentence before checking.</p>
     <DiagramDrills items={[item]} embedded persistProgress={false} allowContrapositive={false} allowNegation={false} shuffleItems={false} explanations={solved ? diagramFollowUps : {}} feedbackForResult={result => {
-      if (result.correct) return `Right. Read it back: ${diagramReadbacks[item.id]?.readback ?? `If ${item.left.toLowerCase()}, then ${item.right.toLowerCase()}.`}`;
+      if (result.correct) return `Correct. Read it back: ${diagramReadbacks[item.id]?.readback ?? `If ${item.left.toLowerCase()}, then ${item.right.toLowerCase()}.`}`;
       const reversed = same(result.left, item.right) && same(result.right, item.left);
       if (reversed) return 'Check which condition is enough to prove the other.';
       return 'Use each condition once, one on each side. Extra or repeated words change the diagram. Check which condition is enough to prove the other.';
@@ -143,15 +143,29 @@ function restoreMixed(state: unknown): MixedState | null {
 export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
   const course = useCourseStep(stepId);
   const saveStep = course?.record;
-  const [restored] = useState(() => restoreMixed(course?.saved?.state));
+  const savedState = course?.saved?.state;
+  const [restored] = useState(() => restoreMixed(savedState));
   const [questions, setQuestions] = useState<Question[]>(restored?.questions ?? baselineQuestions);
   const [current, setCurrent] = useState(restored?.current ?? 0);
   const [visited, setVisited] = useState(restored?.visited ?? [baselineQuestions[0].id]);
   const [results, setResults] = useState<Record<string, Result>>(restored?.results ?? {});
   const [finished, setFinished] = useState(restored?.finished ?? false);
   const [introducedStages, setIntroducedStages] = useState<number[]>(restored?.introducedStages ?? []);
+  // The account can finish loading after the drill opens. Until the student does
+  // something here, take the saved run instead of starting them from the beginning.
+  const touched = useRef(false);
+  const written = useRef<unknown>(savedState);
   useEffect(() => {
-    saveStep?.({ state: { questionIds: questions.map(question => question.id), current, visited, results, finished, introducedStages }, done: baselineQuestions.filter(question => results[question.id]).length, total: baselineQuestions.length, ...(finished ? { status: 'done' as const } : {}) });
+    if (touched.current || !savedState || savedState === written.current) return;
+    written.current = savedState;
+    const late = restoreMixed(savedState);
+    if (!late) return;
+    setQuestions(late.questions); setCurrent(late.current); setVisited(late.visited); setResults(late.results); setFinished(late.finished); setIntroducedStages(late.introducedStages);
+  }, [savedState]);
+  useEffect(() => {
+    const state = { questionIds: questions.map(question => question.id), current, visited, results, finished, introducedStages };
+    written.current = state;
+    saveStep?.({ state, done: baselineQuestions.filter(question => results[question.id]).length, total: baselineQuestions.length, ...(finished ? { status: 'done' as const } : {}) });
   }, [saveStep, questions, current, visited, results, finished, introducedStages]);
   const heading = useRef<HTMLHeadingElement>(null);
   const runner = useRef<HTMLElement>(null);
@@ -167,6 +181,7 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
   }, [current, finished, showIntroduction]);
 
   const record = useCallback((id: string, correct: boolean | null, errors: MixedDrillError[] = []) => {
+    touched.current = true;
     setResults(previous => {
       const old = previous[id];
       if (correct === null) return old ? { ...previous, [id]: { ...old, correct: false } } : previous;
@@ -174,11 +189,13 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
     });
   }, []);
   function move(index: number) {
+    touched.current = true;
     setCurrent(index);
     setVisited(previous => previous.includes(questions[index].id) ? previous : [...previous, questions[index].id]);
   }
   const pendingConfirmations = questions.length === baselineQuestions.length ? confirmationQuestions(results) : [];
   function next() {
+    touched.current = true;
     if (current + 1 < questions.length) return move(current + 1);
     if (questions.length === baselineQuestions.length) {
       const confirmations = pendingConfirmations;
@@ -200,7 +217,7 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
       <p>You answered {firstCorrect} of {baselineQuestions.length} correctly on your first try. You corrected {corrected} after checking the explanation.</p>
       <p>This result covers your answer choices and the diagrams you built with the supplied words. Your written translations are for you to compare with the examples.</p>
       {!!confirmations.length && <><h3>How the new sentences went</h3><ul>{confirmations.map(item => <li key={item.id}>{item.id === obligationConfirmationItem.id ? 'What is required and what actually happened' : item.kind === 'choice' && errorLabels[item.item.skill]}: {results[item.id]?.firstCorrect ? 'you answered the new question correctly on your first try' : 'you corrected the new question after checking the explanation. Give this another try with a different sentence'}.</li>)}</ul></>}
-      <p>When you return to a sentence, read your diagram back in English. Keep every restriction, and ask whether your arrow promises more than the rule does.</p>
+      <p>When you return to a sentence, read your diagram back in English. Keep every restriction, and ask whether your arrow says more than the rule does.</p>
       <button type="button" className="omd-primary" onClick={() => { setFinished(false); move(0); }}>Review my answers</button>
     </div>
     <div className="omd-introduction" hidden={!showIntroduction}>
@@ -208,7 +225,7 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
       <p>{stage.purpose}</p>
       {stage.example && <blockquote>{stage.example}</blockquote>}
       <p>{stage.explanation}</p><p>{stage.instruction}</p>
-      <button type="button" className="omd-primary" onClick={() => setIntroducedStages(previous => [...previous, question.stage])}>{question.stage === 0 ? 'Begin practice' : 'Continue'}</button>
+      <button type="button" className="omd-primary" onClick={() => { touched.current = true; setIntroducedStages(previous => [...previous, question.stage]); }}>{question.stage === 0 ? 'Begin practice' : 'Continue'}</button>
     </div>
     <div hidden={finished || showIntroduction}>
     <div className="omd-progress-heading"><p>{question.stage < 5 ? `Stage ${question.stage + 1} of 5` : `${baselineQuestions.length} main questions completed`}</p><p>{question.stage < 5 ? `Question ${current + 1} of ${baselineQuestions.length}` : `Fresh check ${current - baselineQuestions.length + 1} of ${questions.length - baselineQuestions.length}`}</p></div>
