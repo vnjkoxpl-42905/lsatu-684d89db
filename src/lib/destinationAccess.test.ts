@@ -47,6 +47,7 @@ describe("destination route matrix", () => {
     for (const tab of config.tabs) {
       const gate = routeGate(destination as Destination, tab.path.slice(config.path.length + 1));
       if (tab.admin) expect(gate).toBe("ProtectedRoute requireAdmin");
+      else if (tab.readingCenterEligible) expect(gate).toBe('MyWorkGate');
       else if (tab.path === "/practice/exams") expect(gate).toBe("TestingCentreGate");
       else if (tab.allowSignedIn) expect(gate).toBe("ProtectedRoute allowSignedIn");
       else if (tab.flags!.length === 1) expect(gate).toBe(`ProtectedRoute flag="${tab.flags![0]}"`);
@@ -62,6 +63,20 @@ describe("destination route matrix", () => {
 });
 
 describe("tab access", () => {
+  it('opens only the two filtered work tabs for a verified Reading Center assignment', () => {
+    const assigned = { ...NONE, readingCenterAssigned: true };
+    expect(tabAccess(DESTINATIONS['my-work'].tabs[0], assigned)).toBe('open');
+    expect(tabAccess(DESTINATIONS['my-work'].tabs[1], assigned)).toBe('open');
+    expect(tabAccess(DESTINATIONS['my-work'].tabs[2], assigned)).toBe('locked');
+    expect(destinationLock('my-work', assigned)).toBe('partial');
+    expect(railItemLocked('my-work', assigned)).toBe(false);
+    expect(destinationLock('library', assigned)).toBe('locked');
+  });
+  it('does not draw a My Work lock before the assignment check resolves', () => {
+    expect(destinationLock('my-work', { ...NONE, readingCenterChecking: true })).toBe('checking');
+    expect(railItemLocked('my-work', { ...NONE, readingCenterChecking: true })).toBe(false);
+    expect(tabAccess(DESTINATIONS['my-work'].tabs[2], { ...NONE, readingCenterChecking: true })).toBe('locked');
+  });
   it("never reports a lock while permissions are unresolved", () => {
     for (const config of Object.values(DESTINATIONS)) {
       for (const tab of config.tabs) expect(tabAccess(tab, LOADING)).toBe("checking");

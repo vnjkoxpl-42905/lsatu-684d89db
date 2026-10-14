@@ -43,6 +43,8 @@ export interface HomeRow {
   overdue: boolean;
   /** Saved work evidence, not a click or page view. */
   workStatus?: 'assigned' | 'in_progress';
+  /** Verified whole-tool grant, independent of general Classroom permission. */
+  readingCenterAssigned?: boolean;
   /** Existing feed deadline, retained for the Continue action. */
   dueAt?: string | null;
   /** Work the student can close out by hand; reading matter cannot. */
@@ -441,7 +443,7 @@ export function pickContinueWork(rows: HomeRow[], access: HomeAccess, _isAdmin: 
   return rows.filter((row) =>
     !["recap", "note"].includes(row.kind) &&
     !row.key.startsWith("report:") &&
-    (row.kind !== "activity" || access.activities) &&
+    (row.kind !== "activity" || access.activities || row.readingCenterAssigned === true) &&
     (row.tone !== "drill" || access.drill)
   ).sort((a, b) => deadline(a) - deadline(b))[0] ?? null;
 }
