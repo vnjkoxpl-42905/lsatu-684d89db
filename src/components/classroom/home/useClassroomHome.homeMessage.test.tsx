@@ -16,7 +16,7 @@ import { renderHook, waitFor, act } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const workState = vi.hoisted(() => ({ uncertain: false, classroom: true, activity: false }));
+const workState = vi.hoisted(() => ({ uncertain: false, classroom: true, activity: false, readingCenter: false, readingCenterAllowed: false }));
 const USER_ID = "user-1";
 const CONVO_ID = "conv-1";
 const MSG_CREATED_AT = "2026-08-23T12:00:00.000Z";
@@ -35,6 +35,9 @@ vi.mock("@/hooks/useUserPermissions", () => ({
     has_drill_access: false,
   }),
 }));
+vi.mock('@/hooks/useReadingCenterAccess', () => ({
+  useReadingCenterAccess: () => ({ allowed: workState.readingCenterAllowed }),
+}));
 vi.mock("@/components/classroom/shell/ClassroomLayout", () => ({
   useClassroomLayout: () => ({ displayName: "Ada" }),
 }));
@@ -44,6 +47,9 @@ vi.mock("@/lib/completeAssignedWork", () => ({
 vi.mock("@/hooks/useAssignedTodoFeed", () => ({
   useAssignedTodoFeed: () => ({ rows: workState.uncertain ? [
     { key: 'guided', refId: 'issued', kind: 'guided', title: 'Reasoning drill', sourceTable: 'guided_drill_assignments', subtitle: '5 questions', createdAt: '2026-09-30T00:00:00Z', dueAt: null, route: '/guided/issued', status: 'assigned', progressUnverified: true },
+  ] : workState.readingCenter ? [
+    { key: 'reading-center-issued', refId: 'library', kind: 'activity', sourceTable: 'reading_center', title: 'Reading Center', subtitle: '', createdAt: '2026-10-13T00:00:00Z', dueAt: null, route: '/reading-center', status: 'assigned' },
+    { key: 'ordinary-activity', refId: 'activity-issued', kind: 'activity', sourceTable: 'activity_assignments', title: 'Ordinary activity', subtitle: '', createdAt: '2026-10-13T00:00:00Z', dueAt: null, route: '/activities/activity-issued', status: 'assigned' },
   ] : workState.activity ? [
     { key: 'activity-issued', refId: 'activity-issued', kind: 'activity', title: 'Assigned reasoning activity', subtitle: '', createdAt: '2026-09-30T00:00:00Z', dueAt: null, route: '/activities/activity-issued', status: 'assigned' },
   ] : [], loading: false, failed: workState.uncertain, evidenceWarnings: workState.uncertain ? ['saved guided sittings'] : [], retry: vi.fn() }),
@@ -110,11 +116,28 @@ beforeEach(() => {
   workState.uncertain = false;
   workState.classroom = true;
   workState.activity = false;
+  workState.readingCenter = false;
+  workState.readingCenterAllowed = false;
   thread = { unread: true, home_cleared_at: null, created_at: MSG_CREATED_AT };
   clearConversationFromHome.mockClear();
 });
 
 describe("Home message card visibility", () => {
+  it('shows assigned Reading Center with Classroom off without opening ordinary activities', async () => {
+    workState.classroom = false; workState.readingCenter = true; workState.readingCenterAllowed = true;
+    const { result } = renderHook(() => useClassroomHome(), { wrapper });
+    await waitFor(() => expect(result.current.model.rows.some((row) => row.title === 'Reading Center')).toBe(true));
+    expect(result.current.model.continueRow?.route).toBe('/reading-center');
+    expect(result.current.model.rows.some((row) => row.key === 'ordinary-activity')).toBe(false);
+    expect(result.current.model.access.activities).toBe(false);
+  });
+  it('hides scheduled or revoked Reading Center even when Classroom is fully open', async () => {
+    workState.classroom = true; workState.readingCenter = true; workState.readingCenterAllowed = false;
+    const { result } = renderHook(() => useClassroomHome(), { wrapper });
+    await waitFor(() => expect(result.current.model.rows.some((row) => row.key === 'ordinary-activity')).toBe(true));
+    expect(result.current.model.rows.some((row) => row.title === 'Reading Center')).toBe(false);
+    expect(result.current.model.continueRow?.route).not.toBe('/reading-center');
+  });
   it('shows assigned activities with Classroom on and the retired category flag off', async () => {
     workState.activity = true;
     const { result } = renderHook(() => useClassroomHome(), { wrapper });

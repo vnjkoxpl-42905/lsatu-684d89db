@@ -1,0 +1,133 @@
+- generic [active]:
+  - generic:
+    - list
+    - region "Notifications alt+T"
+    - generic [aria-hidden]:
+      - status: "Flag: Pending until this answer is recorded"
+    - generic [aria-hidden]:
+      - banner:
+        - generic:
+          - generic:
+            - navigation:
+              - button: Reading Comprehension
+              - generic [aria-hidden]: /
+              - generic: The Official LSAT PrepTest 144
+              - generic [aria-hidden]: /
+              - generic: Section 1 · Passage 4 · Question 20 · Drill 1 of 8
+            - group:
+              - button
+              - button: Resume Drill
+              - button: Complete Drill
+        - generic: Welcome, josh
+      - main:
+        - generic:
+          - generic [aria-hidden]:
+            - generic:
+              - generic:
+                - button: Directions
+                - button: Passage only
+                - textbox:
+                  - /placeholder: Find Text, Type Here
+                - generic:
+                  - generic:
+                    - button
+                    - button
+                    - button
+                    - button
+                    - button
+                  - button:
+                    - generic [aria-hidden]: A
+                    - generic [aria-hidden]: a
+                  - generic:
+                    - generic:
+                      - timer: "Time Elapsed: 00:55"
+                  - generic:
+                    - button
+                    - button
+            - generic:
+              - generic:
+                - generic:
+                  - heading [level=1]: Karl Popper
+                  - generic:
+                    - generic:
+                      - paragraph:
+                        - strong: Passage A
+                      - paragraph: "Karl Popper’s main contribution to the philosophy of science concerns the power of negative evidence. The fundamental point is simple: No number of white swans, for example, can ever prove that all swans are white, but a single black swan disproves the hypothesis. Popper gives this logical asymmetry between positive and negative evidence hyperbolic application, maintaining that positive evidence has no value as evidence and that negative evidence is tantamount to disproof. Moreover, Popper takes the search for negative evidence to be at the heart of scientific research; that is, for Popper, scientific research involves not only generating bold theories, but also searching for evidence that would disprove them. Indeed, for him, a theory counts as scientific only if it makes predictions that are testable in this way."
+                      - paragraph: However, Popper’s use of the logical asymmetry does not adequately capture the actual situation scientists face. If a theory deductively entails a false prediction, then the theory must be false as well. But a scientific theory rarely entails predictions on its own. When scientists actually derive a theory’s predictions, they almost always need diverse additional “auxiliary” premises, which appeal to other theories, to the correct functioning of instrumentation, to the absence of disturbing forces, etc. When a prediction fails, logic indicates that at least one of the premises must be false, but it does not indicate which one. When an experiment does not work out as predicted, there is usually more than one possible explanation. Positive evidence is never conclusive. But negative evidence rarely is either.
+                      - paragraph:
+                        - strong: Passage B
+                      - paragraph: When the planet Uranus was discovered, astronomers attempted to predict its orbit. They based their predictions on Newton’s laws and auxiliary assumptions about the mass of the sun and the masses, orbits, and velocities of other planets. One of the auxiliary assumptions was that no planets existed in the vicinity of Uranus. When the astronomers made their observations, they found that the orbit they had predicted for Uranus was incorrect. One possible explanation for the failure of their prediction was that Newton’s laws were incorrect. Another was that there was an error in the auxiliary assumptions. The astronomers changed their assumptions about the existence of other planets, concluding that there must be another planet close enough to Uranus to produce the observed orbit. Not long afterward, scientists discovered the planet Neptune in the precise place it would have to be to bring their calculations into alignment with their observations.
+                      - paragraph: Later astronomers, again using Newton’s laws, predicted the orbit of Mercury. Once again, the predictions were not borne out. They hypothesized the existence of another planet in the vicinity, which they called Vulcan. However, Vulcan was never found, and some scientists began to think that perhaps Newton’s laws were in error. Finally, when Einstein’s general theory of relativity was introduced, astronomers discovered that calculations based on that theory and the old auxiliary assumptions predicted the observed orbit of Mercury, leading to the rejection of Newton’s theory of gravity and to increased confidence in Einstein’s theory.
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic: "20."
+                      - generic:
+                        - generic:
+                          - paragraph: Which one of the following is a central topic of both passages?
+                    - button [disabled] [pressed]
+                  - list:
+                    - listitem:
+                      - button [disabled]: A
+                      - generic:
+                        - generic:
+                          - paragraph: the logical asymmetry of positive and negative evidence
+                      - button [disabled]
+                    - listitem:
+                      - button [disabled]: B
+                      - generic:
+                        - generic:
+                          - paragraph: the role of auxiliary assumptions in predicting planetary orbits
+                      - button [disabled]
+                    - listitem:
+                      - button [disabled]: C
+                      - generic:
+                        - generic:
+                          - paragraph: the role of negative evidence in scientific research
+                      - button [disabled]
+                    - listitem:
+                      - button [disabled]: D
+                      - generic:
+                        - generic:
+                          - paragraph: the proper technique for confirming a scientific theory
+                      - button [disabled]
+                    - listitem:
+                      - button [disabled]: E
+                      - generic:
+                        - generic:
+                          - paragraph: the irrelevance of experimentation for disproving a scientific theory
+                      - button [disabled]
+            - alert: That answer did not save. The clock and questions are paused.
+            - generic:
+              - generic:
+                - button [disabled]: Save and exit
+                - button [disabled]: Question details
+                - generic:
+                  - generic:
+                    - group:
+                      - generic: Question overview
+                    - generic:
+                      - button: "1"
+                      - button: "2"
+                      - button: "3"
+                      - button: "4"
+                      - button: "5"
+                      - button: "6"
+                      - button: "7"
+                      - button: "8"
+                    - generic:
+                      - button [disabled]
+                      - button
+                - generic:
+                  - button [disabled]: Submit
+        - dialog:
+          - generic:
+            - heading [level=2]: Drill Paused
+            - paragraph: The timer is paused. Click Resume to continue your drill.
+            - button: Resume
+  - alertdialog [ref=f2e312]:
+    - generic [ref=f2e313]:
+      - heading "Saving paused this section" [level=2] [ref=f2e314]
+      - paragraph [ref=f2e315]: That answer did not save. Your clock and questions are paused. Your current choices remain on this page. Retry the account save to continue.
+    - generic [ref=f2e316]:
+      - button "Trying to save…" [disabled]

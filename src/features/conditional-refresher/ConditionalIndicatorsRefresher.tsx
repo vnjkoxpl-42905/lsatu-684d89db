@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  DIAGRAM_ITEMS, FLASHCARDS, GROUPS, GROUP_LABEL, INDICATOR_POOL, UNLESS_LETTERS,
-  contrapositiveOf, negateToken, unlessAnswer, unlessStatement,
-  type DiagramItem, type GroupId, type UnlessPattern, type UnlessRound,
+  DIAGRAM_ITEMS, FLASHCARDS, GROUPS, GROUP_LABEL, INDICATOR_POOL,
+  negateToken, type DiagramItem, type GroupId,
 } from "./content";
 import { Diagram, Side, Tok } from "./Notation";
+import UnlessDrill from "@/features/quick-drills/unless-drill/UnlessDrill";
 import "./conditional-refresher.css";
 
 const TABS = ["Cheat Sheet", "Sort Drills", "Flashcards", "Diagram Drills", "Unless Drill"] as const;
@@ -16,7 +16,6 @@ interface Saved {
   sort?: { done: number; correct: number };
   flash?: Record<string, "again" | "needs" | "got">;
   diagram?: { done: number; correct: number };
-  unless?: { rounds: number };
 }
 
 function readSaved(): Saved {
@@ -228,17 +227,42 @@ function itemContrapositive(item: DiagramItem): { left: string; right: string } 
 
 const norm = (s: string) => s.trim().replace(/\s+/g, " ").toLowerCase();
 
-function DiagramDrills() {
-  const [queue, setQueue] = useState(() => shuffle(DIAGRAM_ITEMS));
+export interface DiagramDrillsProps {
+  items?: DiagramItem[];
+  persistProgress?: boolean;
+  allowContrapositive?: boolean;
+  allowNegation?: boolean;
+  shuffleItems?: boolean;
+  explanations?: Record<string, string>;
+  embedded?: boolean;
+  onResult?: (result: { itemId: string; left: string; right: string; correct: boolean } | null) => void;
+  feedbackForResult?: (result: { left: string; right: string; correct: boolean }) => string;
+}
+
+export function DiagramDrills({
+  items = DIAGRAM_ITEMS,
+  persistProgress = true,
+  allowContrapositive = true,
+  allowNegation = true,
+  shuffleItems = true,
+  explanations = {},
+  embedded = false,
+  onResult,
+  feedbackForResult,
+}: DiagramDrillsProps = {}) {
+  const [queue, setQueue] = useState(() => shuffleItems ? shuffle(items) : [...items]);
   const [index, setIndex] = useState(0);
   const [side, setSide] = useState<"left" | "right">("left");
   const [left, setLeft] = useState<string[]>([]);
   const [right, setRight] = useState<string[]>([]);
   const [checked, setChecked] = useState<null | boolean>(null);
+  const retryButton = useRef<HTMLButtonElement>(null);
+  const leftButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => { if (checked !== null) retryButton.current?.focus(); }, [checked]);
   const item = queue[index];
   const done = index >= queue.length;
 
-  const reset = useCallback(() => { setLeft([]); setRight([]); setSide("left"); setChecked(null); }, []);
+  const reset = useCallback(() => { leftButton.current?.focus(); setLeft([]); setRight([]); setSide("left"); setChecked(null); onResult?.(null); }, [onResult]);
   const push = (token: string) => {
     if (checked !== null) return;
     (side === "left" ? setLeft : setRight)(v => [...v, token]);
@@ -250,10 +274,13 @@ function DiagramDrills() {
     const target = { left: norm(item.left), right: norm(item.right) };
     const contra = itemContrapositive(item);
     const ok = (mine.left === target.left && mine.right === target.right)
-      || (mine.left === norm(contra.left) && mine.right === norm(contra.right));
+      || (allowContrapositive && mine.left === norm(contra.left) && mine.right === norm(contra.right));
     setChecked(ok);
-    const saved = readSaved().diagram ?? { done: 0, correct: 0 };
-    writeSaved({ diagram: { done: saved.done + 1, correct: saved.correct + (ok ? 1 : 0) } });
+    onResult?.({ itemId: item.id, left: mine.left, right: mine.right, correct: ok });
+    if (persistProgress) {
+      const saved = readSaved().diagram ?? { done: 0, correct: 0 };
+      writeSaved({ diagram: { done: saved.done + 1, correct: saved.correct + (ok ? 1 : 0) } });
+    }
   };
 
   if (done) {
@@ -261,7 +288,7 @@ function DiagramDrills() {
       <section className="cir-card">
         <p className="cir-prompt">All diagram drills done.</p>
         <div className="cir-actions">
-          <button type="button" className="cir-btn" onClick={() => { setQueue(shuffle(DIAGRAM_ITEMS)); setIndex(0); reset(); }}>Shuffle again</button>
+          <button type="button" className="cir-btn" onClick={() => { setQueue(shuffleItems ? shuffle(items) : [...items]); setIndex(0); reset(); }}>{shuffleItems ? "Shuffle again" : "Practice again"}</button>
         </div>
       </section>
     );
@@ -270,8 +297,8 @@ function DiagramDrills() {
   const contra = itemContrapositive(item);
   return (
     <section className="cir-card">
-      <div className="cir-bar"><span style={{ width: `${Math.round((index / queue.length) * 100)}%` }} /></div>
-      <p className="cir-meta">Diagram it. Contrapositives count.</p>
+      {!embedded && <><div className="cir-bar"><span style={{ width: `${Math.round((index / queue.length) * 100)}%` }} /></div>
+      <p className="cir-meta">Statement {index + 1} of {queue.length}. {allowContrapositive ? "Diagram it. Contrapositives count." : "Build the original diagram."}</p></>}
       <p className="cir-prompt">{item.prompt}</p>
 
       <div className="cir-build">
@@ -285,13 +312,13 @@ function DiagramDrills() {
       </div>
 
       <div className="cir-side-toggle">
-        <button type="button" className={`cir-btn ${side === "left" ? "" : "ghost"}`} onClick={() => setSide("left")}>Building left</button>
-        <button type="button" className={`cir-btn ${side === "right" ? "" : "ghost"}`} onClick={() => setSide("right")}>Building right</button>
+        <button ref={leftButton} type="button" aria-pressed={side === "left"} className={`cir-btn ${side === "left" ? "" : "ghost"}`} onClick={() => setSide("left")}>{embedded ? 'Choose the left condition' : 'Building left'}</button>
+        <button type="button" aria-pressed={side === "right"} className={`cir-btn ${side === "right" ? "" : "ghost"}`} onClick={() => setSide("right")}>{embedded ? 'Choose the right condition' : 'Building right'}</button>
       </div>
 
       <div className="cir-palette">
-        {item.names.flatMap(name => [name, `/${name}`]).map(token => (
-          <button key={token} type="button" className="cir-token" onClick={() => push(token)}><Tok text={token} /></button>
+        {item.names.flatMap(name => allowNegation ? [name, `/${name}`] : [name]).map(token => (
+          <button key={token} type="button" className="cir-token" aria-label={token.startsWith("/") ? `Not ${token.slice(1)}` : token} disabled={checked !== null} onClick={() => push(token)}><Tok text={token} /></button>
         ))}
         {(item.connectors ?? []).map(c => (
           <button key={c} type="button" className="cir-token" onClick={() => push(c)}>{c}</button>
@@ -301,179 +328,24 @@ function DiagramDrills() {
 
       <div className="cir-actions">
         {checked === null ? (
-          <button type="button" className="cir-btn" disabled={!left.length || !right.length} onClick={check}>Check</button>
+          <button type="button" className="cir-btn" disabled={!left.length || !right.length} onClick={check}>{embedded ? 'Check answer' : 'Check'}</button>
         ) : (
-          <button type="button" className="cir-btn" onClick={() => { setIndex(i => i + 1); reset(); }}>Next</button>
+          <>
+            <button ref={retryButton} type="button" className="cir-btn ghost" onClick={reset}>Try again</button>
+            {!embedded && <button type="button" className="cir-btn" onClick={() => { setIndex(i => i + 1); reset(); }}>Next</button>}
+          </>
         )}
       </div>
 
-      {checked !== null && (
-        <div className="cir-feedback">
-          <p>{checked ? "Right." : "Not quite."}</p>
+      <div className={checked !== null ? "cir-feedback" : undefined} role="status" aria-atomic="true">
+        {checked !== null && <>
+          {!embedded && <p>{checked ? "Right." : "Not quite."}</p>}
+          {feedbackForResult && <p>{feedbackForResult({ left: norm(left.join(' ')), right: norm(right.join(' ')), correct: checked })}</p>}
           <p>Conditional: <Diagram left={item.left} right={item.right} /></p>
-          <p>Contrapositive: <Diagram left={contra.left} right={contra.right} /></p>
-        </div>
-      )}
-    </section>
-  );
-}
-
-/* ------------------------------ Unless drill ------------------------------- */
-
-const WINDOW_MS = 5000;
-
-interface UnlessResult extends UnlessRound {
-  statement: string;
-  chosenLeft: string | null;
-  chosenRight: string | null;
-  seconds: number;
-}
-
-function buildRound(): UnlessRound[] {
-  const patterns = shuffle<UnlessPattern>([1, 2, 3, 4]).slice(0, 3);
-  const letters = shuffle(UNLESS_LETTERS);
-  return shuffle(patterns).map((pattern, i) => ({
-    pattern,
-    x: letters[(i * 2) % letters.length],
-    y: letters[(i * 2 + 1) % letters.length],
-  }));
-}
-
-function UnlessDrill() {
-  const [phase, setPhase] = useState<"idle" | "running" | "stop" | "summary">("idle");
-  const [rounds, setRounds] = useState<UnlessRound[]>([]);
-  const [index, setIndex] = useState(0);
-  const [elapsed, setElapsed] = useState(0);
-  const [picked, setPicked] = useState<{ left: string | null; right: string | null }>({ left: null, right: null });
-  const [results, setResults] = useState<UnlessResult[]>([]);
-  const startedAt = useRef(0);
-  const pickRef = useRef(picked);
-  pickRef.current = picked;
-
-  const commit = useCallback((seconds: number) => {
-    setRounds(current => {
-      const round = current[index];
-      if (round) {
-        setResults(r => [...r, {
-          ...round, statement: unlessStatement(round),
-          chosenLeft: pickRef.current.left, chosenRight: pickRef.current.right, seconds,
-        }]);
-      }
-      return current;
-    });
-  }, [index]);
-
-  useEffect(() => {
-    if (phase !== "running") return;
-    startedAt.current = Date.now();
-    setElapsed(0);
-    const tick = window.setInterval(() => {
-      const ms = Date.now() - startedAt.current;
-      if (ms >= WINDOW_MS) {
-        window.clearInterval(tick);
-        setElapsed(WINDOW_MS);
-        commit(WINDOW_MS / 1000);
-        setPhase("stop");
-      } else setElapsed(ms);
-    }, 50);
-    return () => window.clearInterval(tick);
-  }, [phase, index, commit]);
-
-  useEffect(() => {
-    if (phase !== "stop") return;
-    const t = window.setTimeout(() => {
-      setPicked({ left: null, right: null });
-      if (index + 1 >= rounds.length) setPhase("summary");
-      else { setIndex(i => i + 1); setPhase("running"); }
-    }, 900);
-    return () => window.clearTimeout(t);
-  }, [phase, index, rounds.length]);
-
-  const start = () => {
-    setRounds(buildRound());
-    setResults([]);
-    setIndex(0);
-    setPicked({ left: null, right: null });
-    setPhase("running");
-    const saved = readSaved().unless ?? { rounds: 0 };
-    writeSaved({ unless: { rounds: saved.rounds + 1 } });
-  };
-
-  if (phase === "idle") {
-    return (
-      <section className="cir-card">
-        <p className="cir-prompt">Three unless statements. Five seconds each, no stopping.</p>
-        <p className="cir-feedback">The arrow is fixed. You only choose which idea goes left and which goes right. Feedback comes after all three.</p>
-        <div className="cir-actions"><button type="button" className="cir-btn" onClick={start}>Start round</button></div>
-      </section>
-    );
-  }
-
-  if (phase === "summary") {
-    return (
-      <section className="cir-card">
-        <p className="cir-prompt">Round review</p>
-        {results.map((r, i) => {
-          const answer = unlessAnswer(r);
-          const contra = contrapositiveOf(answer.left, answer.right);
-          const ok = (r.chosenLeft === answer.left && r.chosenRight === answer.right)
-            || (r.chosenLeft === contra.left && r.chosenRight === contra.right);
-          return (
-            <div className="cir-summary-row" key={i}>
-              <span>Statement {i + 1} · {r.seconds.toFixed(1)}s · {ok ? "correct" : "not correct"}</span>
-              <p style={{ margin: 0 }}>Received: <UnlessText round={r} /></p>
-              <p style={{ margin: 0 }}>Your diagram: {r.chosenLeft && r.chosenRight
-                ? <Diagram left={r.chosenLeft} right={r.chosenRight} />
-                : <em>no answer</em>}</p>
-              <p style={{ margin: 0 }}>Correct: <Diagram left={answer.left} right={answer.right} /></p>
-              <p style={{ margin: 0 }}>Contrapositive: <Diagram left={contra.left} right={contra.right} /></p>
-            </div>
-          );
-        })}
-        <div className="cir-actions"><button type="button" className="cir-btn" onClick={start}>New round</button></div>
-      </section>
-    );
-  }
-
-  const round = rounds[index];
-  const options = [round.x, round.y, `/${round.x}`, `/${round.y}`];
-  const seconds = Math.min(elapsed, WINDOW_MS) / 1000;
-
-  return (
-    <section className="cir-card">
-      <p className="cir-meta">Statement {index + 1} of {rounds.length}</p>
-      <p className="cir-timer">
-        {phase === "stop" ? "STOP" : seconds.toFixed(1)}
-        <small>{phase === "stop" ? "next statement" : "GO"}</small>
-      </p>
-      <p className="cir-statement"><UnlessText round={round} /></p>
-      <div className="cir-build">
-        <div className="cir-slot">{picked.left ? <Tok text={picked.left} /> : <span className="cir-stack-join">left</span>}</div>
-        <span className="cir-arrow">&rarr;</span>
-        <div className="cir-slot">{picked.right ? <Tok text={picked.right} /> : <span className="cir-stack-join">right</span>}</div>
-      </div>
-      <div className="cir-palette">
-        {options.map(o => (
-          <button key={`l-${o}`} type="button" className="cir-token" disabled={phase !== "running"}
-            onClick={() => setPicked(p => ({ ...p, left: o }))}>Left: <Tok text={o} /></button>
-        ))}
-      </div>
-      <div className="cir-palette">
-        {options.map(o => (
-          <button key={`r-${o}`} type="button" className="cir-token" disabled={phase !== "running"}
-            onClick={() => setPicked(p => ({ ...p, right: o }))}>Right: <Tok text={o} /></button>
-        ))}
+          {explanations[item.id] && <p>{explanations[item.id]}</p>}
+          {allowContrapositive && <p>Contrapositive: <Diagram left={contra.left} right={contra.right} /></p>}
+        </>}
       </div>
     </section>
-  );
-}
-
-function UnlessText({ round }: { round: UnlessRound }) {
-  const text = unlessStatement(round);
-  const parts = useMemo(() => text.split(/(\/?[A-Z])/).filter(Boolean), [text]);
-  return (
-    <span>
-      {parts.map((p, i) => (/^\/?[A-Z]$/.test(p) ? <Tok key={i} text={p} /> : <span key={i}>{p}</span>))}
-    </span>
   );
 }

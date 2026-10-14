@@ -210,20 +210,50 @@ export interface UnlessRound {
 /** Statement text pieces; "/" marks the slashed letter. */
 export function unlessStatement({ pattern, x, y }: UnlessRound): string {
   switch (pattern) {
-    case 1: return `/${x} unless ${y}`;
-    case 2: return `Unless ${y}, ${x}`;
-    case 3: return `Unless /${y}, /${x}`;
-    case 4: return `${x} unless /${y}`;
+    case 1: return `/${x}, unless ${y}.`;
+    case 2: return `Unless ${y}, ${x}.`;
+    case 3: return `Unless /${y}, /${x}.`;
+    case 4: return `${x}, unless /${y}.`;
   }
 }
 
-export function unlessAnswer({ pattern, x, y }: UnlessRound): { left: string; right: string } {
+/**
+ * The two complete ideas as they appear in the statement: `after` is the idea
+ * that follows "unless" (with any slash it carries), `other` is the rest.
+ */
+export function unlessParts({ pattern, x, y }: UnlessRound): { after: string; other: string } {
   switch (pattern) {
-    case 1: return { left: x, right: y };
-    case 2: return { left: `/${x}`, right: y };
-    case 3: return { left: x, right: `/${y}` };
-    case 4: return { left: `/${x}`, right: `/${y}` };
+    case 1: return { after: y, other: `/${x}` };
+    case 2: return { after: y, other: x };
+    case 3: return { after: `/${y}`, other: `/${x}` };
+    case 4: return { after: `/${y}`, other: x };
   }
+}
+
+/**
+ * Joshua's answer key: choose either idea, negate it and put it on the left;
+ * the other idea goes on the right exactly as written. The key chooses the
+ * idea that is not the unless idea; choosing the unless idea gives the contrapositive.
+ * (/A, unless B. -> A -> B; Unless B, A. -> /A -> B; Unless /B, /A. -> A -> /B; A, unless /B. -> /A -> /B)
+ */
+export function unlessAnswer(round: UnlessRound): { left: string; right: string } {
+  const { after, other } = unlessParts(round);
+  return { left: negateToken(other), right: after };
+}
+
+export type UnlessVerdict = "correct" | "no-answer" | "kept-both" | "reversed" | "changed-unless" | "other";
+
+/** Grades a placement. The diagram and its contrapositive both count. */
+export function gradeUnless(round: UnlessRound, left: string | null, right: string | null): UnlessVerdict {
+  if (!left || !right) return "no-answer";
+  const { after, other } = unlessParts(round);
+  const is = (l: string, r: string) => left === l && right === r;
+  const either = (l: string, r: string) => is(l, r) || is(negateToken(r), negateToken(l));
+  if (either(negateToken(other), after)) return "correct";
+  if (either(other, after)) return "kept-both";
+  if (either(after, negateToken(other))) return "reversed";
+  if (either(negateToken(other), negateToken(after))) return "changed-unless";
+  return "other";
 }
 
 export function negateToken(token: string): string {

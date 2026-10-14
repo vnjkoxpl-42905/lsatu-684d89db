@@ -1,0 +1,52 @@
+#root .ma-example { --co-ink: oklch(25% .04 252); --co-teal: oklch(43% .08 180); --co-polish-line: oklch(82% .02 82); --ma-muted: oklch(46% .03 252); color: var(--co-ink); }
+#root .ma-lesson .cr-step-body { display: grid; gap: clamp(1.5rem, 2.5vw, 2rem); }
+#root .ma-lesson p { font-size: clamp(1.125rem, 1rem + .3vw, 1.3rem); line-height: 1.7; margin: 0; }
+#root .ma-lesson h3 { font-size: clamp(1.5rem, 1.2rem + .6vw, 1.85rem); line-height: 1.3; margin: 0 0 1rem; }
+#root .ma-lesson .ma-lead { font-size: clamp(1.25rem, 1.1rem + .4vw, 1.5rem); max-width: 48ch; }
+#root .ma-example { margin: 0; padding: clamp(1rem, 3vw, 2.4rem); border: 1px solid var(--co-polish-line); border-radius: 1.25rem; background: linear-gradient(145deg, oklch(99% .008 82), oklch(95% .02 82)); box-shadow: 0 20px 40px -30px oklch(25% .035 252 / .5), inset 0 1px 0 oklch(100% 0 0); }
+#root .ma-example .ma-read-instruction { margin: 0; padding: 0 0 1.75rem; border-bottom: 1px solid var(--co-polish-line); font-size: 1.125rem; line-height: 1.65; }
+/* Shared rows keep both conditions and the arrow aligned regardless of wrapping. */
+#root .ma-relationship { display: grid; grid-template-columns: minmax(0, 1fr) minmax(2.5rem, .25fr) minmax(0, 1fr); column-gap: clamp(.6rem, 2vw, 1.4rem); row-gap: 1.25rem; padding: 1.75rem 0 .25rem; }
+#root .ma-condition { display: contents; }
+#root .ma-condition:first-child > * { grid-column: 1; }
+#root .ma-condition:last-child > * { grid-column: 3; }
+#root .ma-condition > :nth-child(1) { grid-row: 1; }
+#root .ma-condition > :nth-child(2) { grid-row: 2; }
+#root .ma-condition > :nth-child(3) { grid-row: 3; }
+#root .ma-relationship .ma-side { display: grid; gap: .35rem; align-content: start; font-size: clamp(1rem, 1rem + .2vw, 1.2rem); line-height: 1.4; font-weight: 750; color: var(--co-ink); }
+#root .ma-side small { display: block; font-size: .8rem; font-weight: 550; letter-spacing: .06em; text-transform: uppercase; color: var(--ma-muted); }
+#root .ma-condition > strong { display: flex; align-items: center; min-height: 9rem; padding: clamp(.85rem, 2vw, 1.6rem); border: 1px solid oklch(44% .045 252); border-radius: .85rem; background: linear-gradient(140deg, oklch(32% .045 252), oklch(23% .035 252)); color: oklch(98% .008 82); box-shadow: 0 6px 0 oklch(18% .035 252 / .14), 0 14px 22px -18px oklch(20% .04 252); font-family: Georgia, serif; font-weight: 400; font-size: clamp(1.2rem, 1rem + .7vw, 1.75rem); line-height: 1.4; }
+#root .ma-condition:last-child > strong { background: linear-gradient(135deg, oklch(94% .05 82), oklch(87% .07 82)); color: oklch(25% .04 252); border-color: oklch(72% .08 82); box-shadow: 0 6px 0 oklch(67% .08 82 / .16), 0 14px 22px -18px oklch(35% .07 82); }
+#root .ma-relationship .ma-meaning { color: var(--ma-muted); font-size: 1rem; line-height: 1.5; padding-top: .4rem; }
+#root .ma-arrow { display: grid; grid-column: 2; grid-row: 2; align-self: center; gap: .4rem; justify-items: center; color: var(--co-teal); }
+#root .ma-arrow span { font-size: .9rem; font-weight: 700; }
+#root .ma-arrow svg { display: block; width: 100%; height: auto; overflow: visible; animation: ma-follow-arrow 2.4s ease-in-out 3; }
+#root .ma-lesson summary { font-size: 1.125rem; cursor: pointer; padding: 1rem 0; }
+#root .ma-reverse-body { display: grid; gap: 1.25rem; padding: 1rem 0 .5rem; }
+#root .ma-lesson .ma-takeaway { padding: 1.4rem 1.5rem; background: var(--co-polish-fill); border-left: 3px solid var(--co-teal); border-radius: 0 .65rem .65rem 0; }
+#root .ma-placement, #root .ma-order { border-top: 1px solid var(--co-polish-line); padding-top: clamp(1.75rem, 4vw, 2.75rem); }
+#root .ma-order { display: grid; gap: 1.25rem; }
+#root .ma-order h3 { margin-bottom: 0; }
+#root .ma-order .cr-language-pair { margin: 0; }
+#root .ma-placement .ma-compact-note { font-size: 1.05rem; color: var(--co-polish-muted); margin-top: 1rem; }
+@keyframes ma-follow-arrow { 0%, 100% { transform: translateX(-2px); } 55% { transform: translateX(4px); } }
+@media (max-width: 600px) {
+  #root .ma-lesson { padding-inline: 1rem; }
+  #root .ma-example { padding: 1rem .75rem; }
+  #root .ma-relationship { grid-template-columns: minmax(0, 1fr) 2.1rem minmax(0, 1fr); column-gap: .5rem; row-gap: 1rem; }
+  #root .ma-condition > strong { font-size: 1.125rem; padding: .8rem .65rem; min-height: 9rem; }
+  #root .ma-relationship .ma-side { font-size: 1rem; }
+  #root .ma-relationship .ma-meaning { font-size: .9rem; }
+  #root .ma-side small { font-size: .72rem; }
+  #root .ma-arrow span { font-size: .75rem; }
+}
+@media (prefers-reduced-motion: reduce) { #root .ma-arrow svg { animation: none; } }
+
+#root .ma-where, #root .ma-purpose { display: grid; gap: 1.1rem; border-top: 1px solid var(--co-polish-line); padding-top: clamp(1.5rem, 3.5vw, 2.25rem); }
+#root .ma-where h3, #root .ma-purpose h3 { margin-bottom: 0; }
+#root .ma-purpose ul { margin: 0; padding-left: 1.4rem; display: grid; gap: .5rem; font-size: clamp(1.125rem, 1rem + .3vw, 1.3rem); line-height: 1.6; }
+#root .ma-purpose ul { list-style: disc; }
+#root .ct-moves { list-style: decimal; margin: 0 0 1.5rem; padding-left: 1.6rem; display: grid; gap: .6rem; font-size: clamp(1.125rem, 1rem + .3vw, 1.3rem); line-height: 1.6; }
+#root .ct-compare td:nth-child(2) { white-space: nowrap; }
+#root .ct-list { list-style: disc; margin: 0 0 1.5rem; padding-left: 1.6rem; display: grid; gap: .5rem; font-size: clamp(1.125rem, 1rem + .3vw, 1.3rem); line-height: 1.6; }
+#root .ma-lesson .ct-definition, #root .co-section p.ct-definition { padding: 1.1rem 1.4rem; background: var(--co-polish-fill, oklch(96% .02 82)); border-left: 3px solid var(--co-teal, oklch(43% .08 180)); border-radius: 0 .65rem .65rem 0; margin: 1.25rem 0; font-size: clamp(1.2rem, 1.1rem + .4vw, 1.4rem); }

@@ -11,6 +11,7 @@ const { auth, permissions, assignment } = vi.hoisted(() => ({
 }));
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => auth }));
 vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
+vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => ({ allowed: false, isPending: false }) }));
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: { from: () => {
@@ -124,6 +125,9 @@ describe("destination routes across auth and permission states", () => {
     expect(screen.queryByText("admissions content")).toBeNull();
     expect(screen.getByText("Not open yet")).toBeInTheDocument();
     expect(screen.getByText("This section is available to Joshua and administrators only.")).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole("heading", { level: 1, name: "Library" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Not open yet" })).toBeInTheDocument();
     expect(screen.queryByText(/isn.t in your plan/)).toBeNull();
   });
 

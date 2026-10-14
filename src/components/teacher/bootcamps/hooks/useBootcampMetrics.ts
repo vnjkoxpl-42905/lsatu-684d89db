@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { BootcampTopicDef } from "../topicRegistry";
+import { isUngradedAttempt } from "@/topics/abstract/lib/grading-status";
 
 // All admin-side read hooks. Errors surface via toast and the React Query
 // `error` field so callers can render an error state instead of silent zeros.
@@ -23,6 +24,7 @@ interface NormalizedAttempt {
   correct: boolean;
   mode: string;
   ts: string | null;
+  graded: boolean;
 }
 
 // Reads a topic's drill attempts from the correct table. Default is the shared
@@ -38,7 +40,7 @@ async function fetchTopicAttempts(
   if (topic.attemptsSource?.table === "abstract_drill_attempts") {
     let q = supabase
       .from("abstract_drill_attempts")
-      .select("user_id, correct, drill_type, completed_at")
+      .select("user_id, correct, drill_type, completed_at, trap_tag")
       .in("drill_type", modes);
     if (opts?.userId) q = q.eq("user_id", opts.userId);
     const { data, error } = await q;
@@ -48,6 +50,7 @@ async function fetchTopicAttempts(
       correct: !!r.correct,
       mode: r.drill_type,
       ts: r.completed_at,
+      graded: !isUngradedAttempt(r.trap_tag ?? undefined),
     }));
   }
 
@@ -63,6 +66,7 @@ async function fetchTopicAttempts(
     correct: !!r.correct,
     mode: r.mode,
     ts: r.timestamp_iso,
+    graded: true,
   }));
 }
 
@@ -80,7 +84,7 @@ export interface TopicAggregate {
   studentsEnrolled: number;
   studentsActive: number;
   avgChapterCompletionPct: number;
-  avgDrillAccuracyPct: number;
+  avgDrillAccuracyPct: number | null;
   flashcardsReviewed: number;
   flashcardTotal: number;
 }
@@ -153,8 +157,11 @@ export function useTopicAggregate(topics: BootcampTopicDef[]) {
             recentlyActive.add(f.user_id);
           }
         }
-        // Attempts have no timestamp column on the select above; fall back to
-        // chapter last_viewed_at for recency on the read side. Cheap enough.
+        for (const attempt of attempts) {
+          if (attempt.user_id && attempt.ts && attempt.ts > fourteenDaysAgo) {
+            recentlyActive.add(attempt.user_id);
+          }
+        }
         const chapterRecentRes = await supabase
           .from("chapter_progress")
           .select("user_id, last_viewed_at")
@@ -168,11 +175,12 @@ export function useTopicAggregate(topics: BootcampTopicDef[]) {
           if (c.user_id) recentlyActive.add(c.user_id);
         }
 
-        const correctCount = attempts.filter((a) => a.correct).length;
+        const gradedAttempts = attempts.filter((a) => a.graded);
+        const correctCount = gradedAttempts.filter((a) => a.correct).length;
         const avgDrillAccuracyPct =
-          attempts.length === 0
-            ? 0
-            : Math.round((correctCount / attempts.length) * 100);
+          gradedAttempts.length === 0
+            ? null
+            : Math.round((correctCount / gradedAttempts.length) * 100);
 
         // Average chapter completion = average over enrolled students of
         // (distinct sections viewed / total sections). Students with zero
@@ -311,7 +319,7 @@ export function useBootcampStudents(topic: BootcampTopicDef | undefined) {
 
       for (const a of attempts) {
         bump(a.user_id, a.ts);
-        if (a.user_id) {
+        if (a.user_id && a.graded) {
           perStudent[a.user_id].attempts.push({
             correct: a.correct,
             ts: a.ts,
@@ -375,7 +383,7 @@ export function useDrillBreakdown(topic: BootcampTopicDef | undefined) {
         throw error;
       }
       return topic.drills.map((d) => {
-        const rows = data.filter((r) => r.mode === d.attemptMode);
+        const rows = data.filter((r) => r.mode === d.attemptMode && r.graded);
         const correct = rows.filter((r) => r.correct).length;
         return {
           attemptMode: d.attemptMode,
@@ -452,7 +460,7 @@ export function useStudentTopicDetail(
       }));
 
       const drillStats: DrillBreakdownRow[] = topic.drills.map((d) => {
-        const rows = attempts.filter((r) => r.mode === d.attemptMode);
+        const rows = attempts.filter((r) => r.mode === d.attemptMode && r.graded);
         const correct = rows.filter((r) => r.correct).length;
         return {
           attemptMode: d.attemptMode,

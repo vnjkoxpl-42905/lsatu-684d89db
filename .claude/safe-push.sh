@@ -9,15 +9,6 @@ cd "$(git rev-parse --show-toplevel)"
 # type error (e.g. a missing import that crashes at runtime) would otherwise ship to
 # main and auto-deploy. Block the push on any compile error. Set SKIP_TYPECHECK=1 to
 # bypass for an emergency push.
-if [ "${SKIP_TYPECHECK:-0}" != "1" ]; then
-  echo "[safe-push] Typechecking (npm run typecheck)..."
-  if ! npm run --silent typecheck; then
-    echo "[safe-push] Typecheck FAILED. Fix the errors above or push with SKIP_TYPECHECK=1." >&2
-    exit 1
-  fi
-  echo "[safe-push] Typecheck passed."
-fi
-
 git fetch origin main --quiet
 
 LOCAL=$(git rev-parse HEAD)
@@ -31,6 +22,16 @@ elif [ "$REMOTE" = "$BASE" ]; then
 else
   echo "[safe-push] origin/main has diverged (Lovable likely committed). Merging."
   git merge origin/main --no-edit
+fi
+
+# Check the merged checkout that will actually be published.
+if [ "${SKIP_TYPECHECK:-0}" != "1" ]; then
+  echo "[safe-push] Typechecking (npm run typecheck)..."
+  if ! npm run --silent typecheck; then
+    echo "[safe-push] Typecheck FAILED. Fix the errors above or push with SKIP_TYPECHECK=1." >&2
+    exit 1
+  fi
+  echo "[safe-push] Typecheck passed."
 fi
 
 # Push the checkout that passed the gate, including an isolated detached worktree.

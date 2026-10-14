@@ -441,7 +441,8 @@ function RcPlayerRunner() {
   const [findCount, setFindCount] = React.useState(0);
   const [highlightMode, setHighlightMode] = React.useState<RcHighlightMode>('none');
   const [modal, setModal] = React.useState<'details' | 'submit' | null>(null);
-  const [scrollTops, setScrollTops] = React.useState<Map<number, number>>(new Map());
+  // Full-width reflow may clamp scrollTop. Keep the split position separately.
+  const [scrollTops, setScrollTops] = React.useState<Map<string, number>>(new Map());
   const [reattemptPicks, setReattemptPicks] = React.useState<Map<number, RcLetter>>(new Map());
   const [skippedReattempt, setSkippedReattempt] = React.useState<Set<number>>(new Set());
   /**
@@ -1207,9 +1208,13 @@ function RcPlayerRunner() {
               findQuery={findQuery}
               findIndex={findIndex}
               onFindCount={setFindCount}
-              scrollTop={scrollTops.get(item.passage.passageId) ?? 0}
+              scrollTop={
+                scrollTops.get(`${item.passage.passageId}:${passageOnly}`) ??
+                scrollTops.get(`${item.passage.passageId}:${!passageOnly}`) ??
+                0
+              }
               onScroll={(top) =>
-                setScrollTops((prev) => new Map(prev).set(item.passage.passageId, top))
+                setScrollTops((prev) => new Map(prev).set(`${item.passage.passageId}:${passageOnly}`, top))
               }
               textStyle={type.passage}
               passageOnly={passageOnly}

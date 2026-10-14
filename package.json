@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:conditional": "node scripts/verification/start-conditional-preview.mjs",
     "prebuild": "vite-node scripts/conditionals/import-content.ts --check && node scripts/build-question-bank.mjs && node scripts/build-rc-search-index.mjs && node scripts/build-finder-address-index.mjs && node scripts/verify-rc-search-index.mjs",
     "content:conditionals": "vite-node scripts/conditionals/import-content.ts",
     "build": "node --max-old-space-size=4096 ./node_modules/vite/bin/vite.js build",
@@ -15,6 +16,7 @@
     "content:pull": "vite-node scripts/content-push.ts -- --pull --apply",
     "assign": "vite-node scripts/assign.ts --",
     "student-work": "vite-node scripts/student-work.ts --",
+    "reading-center:import": "vite-node scripts/reading-center-import.ts --",
     "booking:link": "vite-node scripts/booking-link.ts --",
     "lint": "eslint .",
     "lint:changed": "bash scripts/lint-changed.sh",
@@ -102,6 +104,7 @@
     "html2canvas": "^1.4.1",
     "idb": "^8.0.0",
     "input-otp": "^1.4.2",
+    "ionicons": "^7.4.0",
     "jspdf": "^4.2.1",
     "jszip": "^3.10.1",
     "lucide-react": "^0.462.0",

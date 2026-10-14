@@ -13,6 +13,8 @@ let finishPlanRead: ((result: { data: null; error: Error }) => void) | undefined
 vi.mock('@/contexts/AuthContext', () => ({
   useAuth: () => ({ user: { id: 'student-1' } }),
 }));
+vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: false, is_admin: false, has_classroom_access: true }) }));
+vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => ({ allowed: false, isPending: false }) }));
 vi.mock('@/hooks/useStudentAssignments', () => ({
   useStudentAssignments: () => ({ assignments: [], loading: false, error: null, refresh: async () => undefined }),
   useStudentTAAssignments: () => ({ assignments: [], loading: false, error: null, refresh: async () => undefined }),

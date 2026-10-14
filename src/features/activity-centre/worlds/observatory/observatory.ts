@@ -13,10 +13,10 @@
 //   a quote carrying a trailing period ("lags."), a split comparative
 //   ("more … than"), and a separated pair ("stronger than" appearing as
 //   "stronger ... than").
-// - The authored relationship count agrees with the parsed group count on 47 of
-//   48. Item 40 declares four and lists three; that is an authoring
-//   inconsistency, flagged rather than papered over, and the parse follows the
-//   credited answer because that is what the student is graded against.
+// - The authored relationship count agrees with the parsed group count on all
+//   48. Item 40 once declared four and listed three; the content was fixed, and
+//   the parse still follows the credited answer, because that is what the
+//   student is graded against.
 //
 // What this module does NOT do is decide which words are jargon. The Rung 4
 // dimming is still an open question on the drill's README and would need a
@@ -37,6 +37,8 @@ export interface Relation {
    * never given a position.
    */
   anchors: { text: string; start: number; end: number }[];
+  /** Separated phrases ("stronger ... than") where every half must be quoted. */
+  requiredParts?: string[][];
 }
 
 export interface Signal {
@@ -128,6 +130,10 @@ export function parseSignal(item: ActivityItem): Signal | null {
     relations.push({ kind, indicators, anchors });
   }
   if (!relations.length) return null;
+  for (const r of relations) {
+    const keyed = item.answer_key?.relationships?.find((k) => normalizeKind(k.type) === r.kind);
+    if (keyed?.required_parts?.length) r.requiredParts = keyed.required_parts;
+  }
 
   const declared = item.explanation?.match(/(\d+)\s+relationship/)?.[1];
 
@@ -203,11 +209,37 @@ export interface Reading {
   drawn: RelationKind[];
 }
 
+/**
+ * The words a student uses to name each type. The drill's own dial says
+ * "Comparison", so that has to count; so do the textbook names a student brings
+ * from elsewhere ("necessary condition", "if-then", "cause and effect").
+ */
 const KIND_WORDS: [RegExp, RelationKind][] = [
-  [/\bconditional(?:ly)?\b/i, "conditional"],
-  [/\bcausal(?:ity|ly)?\b|\bcause[sd]?\b/i, "causal"],
-  [/\bcomparat(?:ive|ison)\b|\bcompar(?:e|ing|ed)\b/i, "comparative"],
+  [
+    /\bconditional(?:s|ly)?\b|\b(?:necessary|sufficient)\s+condition\b|\bif\s*[-/]?\s*then\b|\brequirement\b/gi,
+    "conditional",
+  ],
+  [/\bcausal(?:ity|ly)?\b|\bcausation\b|\bcause[sd]?\b/gi, "causal"],
+  [/\bcomparat(?:ive|ively)\b|\bcomparisons?\b|\bcompar(?:e|es|ing|ed)\b/gi, "comparative"],
 ];
+
+/**
+ * "Conditional, requires (not causal)" rules causal OUT. Counting that as a
+ * claim of causation drew a ghost for the exact mistake the student had just
+ * avoided, so a type word sitting right after a negation is not a claim.
+ */
+const NEGATED_BEFORE = /\b(?:not|no|never|isn't|isnt|is\s+not|rather\s+than|instead\s+of|neither|nor)\s+(?:a\s+|an\s+|the\s+)?$/i;
+
+function namedKinds(response: string): Set<RelationKind> {
+  const named = new Set<RelationKind>();
+  for (const [re, kind] of KIND_WORDS) {
+    for (const m of response.matchAll(re)) {
+      const before = response.slice(Math.max(0, (m.index ?? 0) - 24), m.index);
+      if (!NEGATED_BEFORE.test(before)) named.add(kind);
+    }
+  }
+  return named;
+}
 
 /**
  * Read a free-text answer in the drill's game format ("conditional, only if").
@@ -217,28 +249,137 @@ const KIND_WORDS: [RegExp, RelationKind][] = [
  * world should be able to show a figure drawn from the wrong anchor words.
  */
 export function readAnswer(signal: Signal, response: string): Reading {
-  const named = new Set<RelationKind>();
-  for (const [re, kind] of KIND_WORDS) if (re.test(response)) named.add(kind);
+  const named = namedKinds(response);
 
   const real = new Set(signal.relations.map((r) => r.kind));
 
   const found = [...named].filter((k) => real.has(k));
   const invented = [...named].filter((k) => !real.has(k));
-  const missed = [...real].filter((k) => !named.has(k));
+  const drawn = matchedKinds(signal, response);
+  const missed = [...real].filter((k) => !drawn.includes(k));
 
   // Did they quote an actual indicator for each type they got right?
-  const quotedIndicators =
-    found.length > 0 &&
-    found.every((kind) =>
-      signal.relations
-        .filter((r) => r.kind === kind)
-        .some((r) =>
-          r.indicators.some((ind) => {
-            const bare = ind.replace(/[.,]+$/, "").split(/…|\.\.\./)[0].trim();
-            return bare.length > 1 && new RegExp(`\\b${escape(bare)}\\b`, "i").test(response);
-          }),
-        ),
-    );
+  const quotedIndicators = found.length > 0 && found.every((kind) => drawn.includes(kind));
 
-  return { found, invented, missed, quotedIndicators, drawn: found };
+  return { found, invented, missed, quotedIndicators, drawn };
+}
+
+/* ------------------------------------------------------------------ *
+ * Instant grading
+ * ------------------------------------------------------------------ */
+
+/** Lowercase, straight quotes gone, "only-if" read as "only if". */
+function normalize(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[‘’“”"'`]/g, " ")
+    .replace(/[-_/]/g, " ")
+    .replace(/\s+/g, " ");
+}
+
+/**
+ * Words that turn a short indicator into a different one. "Only if" is not
+ * "if", and a student who writes "only if" on an item keyed "if" has named the
+ * wrong condition, so a bare "if" match inside "only if" proves nothing.
+ */
+const LONGER_FORM = /\b(?:only|even|as|not)\s+$/;
+
+function quotes(indicator: string, answer: string): boolean {
+  const parts = normalize(indicator.replace(/[.,]+$/, ""))
+    .split(/…|\.\.\./)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (!parts.length) return false;
+  return parts.every((part) => {
+    const re = new RegExp(`\\b${escape(part)}\\b`, "g");
+    for (const m of answer.matchAll(re)) {
+      if (!LONGER_FORM.test(answer.slice(0, m.index))) return true;
+    }
+    return false;
+  });
+}
+
+/**
+ * True when an answer is the credited answer in substance: it names exactly the
+ * types the sentence carries, none it does not, and quotes at least one
+ * credited indicator for every relationship.
+ *
+ * This only ever says yes. False is not a verdict of wrong; it means the answer
+ * needs judgment, and the Coach takes it. That is what makes it safe to trust:
+ * it confirms the answer key rather than reasoning about the student.
+ */
+function answerPairs(response: string) {
+  // Confirm each type/indicator pair locally. A bag of words cannot distinguish
+  // "causal, since; comparative, more evenly than" from the swapped labels.
+  // Unstructured prose stays with the Coach rather than being guessed correct.
+  return response.split(/[;\n]+|,\s*(?=(?:conditional|causal|causation|comparative|comparison|necessary condition|sufficient condition)\b)/i).filter((part) => part.trim()).map((part) => ({
+    named: namedKinds(part),
+    answer: normalize(part),
+  }));
+}
+
+function matchedKinds(signal: Signal, response: string): RelationKind[] {
+  const pairs = answerPairs(response);
+  return signal.relations.filter((r) => {
+    const claimed = pairs.filter((pair) => pair.named.has(r.kind));
+    return claimed.length > 0 && claimed.every((pair) =>
+      pair.named.size === 1 && confidentPair(r, pair.answer),
+    );
+  }).map((r) => r.kind);
+}
+
+/**
+ * The structured key and the credited answer must say the same thing. If an
+ * edit ever lets them drift, nothing is marked instantly and the Coach (which
+ * reads the key) decides, so there are never two divergent instant keys.
+ */
+export function keyAgreesWithCredited(item: ActivityItem): boolean {
+  const key = item.answer_key;
+  if (!key) return true;
+  const signal = parseSignal(item);
+  if (!signal || !Array.isArray(key.relationships) || key.relationships.length !== signal.relations.length) return false;
+  return key.relationships.every((k, i) => {
+    const r = signal.relations[i];
+    return normalizeKind(k.type) === r.kind && Array.isArray(k.indicators)
+      && k.indicators.length === r.indicators.length && k.indicators.every((x, j) => x === r.indicators[j]);
+  });
+}
+
+function indicatorQuoted(r: Relation, answer: string): boolean {
+  if (!r.requiredParts?.length) return r.indicators.some((indicator) => quotes(indicator, answer));
+  // A split comparative counts only with both halves, quoted together or apart.
+  return r.requiredParts.some((parts) => parts.every((part) => quotes(part, answer)));
+}
+
+const PAIR_LABEL: Record<RelationKind, RegExp> = {
+  conditional: /^(?:a\s+|an\s+)?(?:conditional(?:s|ly)?|(?:necessary|sufficient)\s+condition|if\s+then(?:\s+rule)?|requirement)\b[\s,:().]*/i,
+  causal: /^(?:a\s+|an\s+)?(?:causal(?:ity|ly)?|causation|cause(?:\s+and\s+effect)?)\b[\s,:().]*/i,
+  comparative: /^(?:a\s+|an\s+)?(?:comparative(?:ly)?|comparisons?|compar(?:e|es|ing|ed))\b[\s,:().]*/i,
+};
+
+/** Instant credit is for positive type/indicator pairs, not prose that merely
+ * contains the key. Any unexplained words or extra indicators need the Coach. */
+function confidentPair(r: Relation, answer: string): boolean {
+  const cleaned = answer.replace(/\(\s*(?:not|no|never)\s+(?:a\s+|an\s+|the\s+)?(?:conditional|causal|comparative|comparison)\s*\)/gi, " ").trim();
+  const label = PAIR_LABEL[r.kind];
+  if (!label.test(cleaned) || !indicatorQuoted(r, cleaned)) return false;
+  let remainder = cleaned.replace(label, "");
+  const parts = [...r.indicators.flatMap((indicator) => normalize(indicator.replace(/[.,]+$/, "")).split(/…|\.\.\./)),
+    ...(r.requiredParts ?? []).flat()].map((part) => part.trim()).filter(Boolean).sort((a, b) => b.length - a.length);
+  for (const part of parts) remainder = remainder.replace(new RegExp(`\\b${escape(part)}\\b`, "gi"), " ");
+  return remainder.replace(/\band\b/g, " ").replace(/[\s,:.'"`…()[\]{}]/g, "") === "";
+}
+
+export function matchesCredited(item: ActivityItem, response: string): boolean {
+  const signal = parseSignal(item);
+  if (!signal || !response.trim()) return false;
+  if (!keyAgreesWithCredited(item)) return false;
+  const named = namedKinds(response);
+  const real = new Set(signal.relations.map((r) => r.kind));
+  if (named.size !== real.size || [...named].some((k) => !real.has(k))) return false;
+  if (!answerPairs(response).every((pair) => pair.named.size === 1 && signal.relations.some((r) =>
+    pair.named.has(r.kind) && confidentPair(r, pair.answer),
+  ))) return false;
+  const matched = matchedKinds(signal, response);
+  return signal.relations.every((r) => matched.includes(r.kind));
 }

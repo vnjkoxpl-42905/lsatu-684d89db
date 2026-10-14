@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
+import { isReadingCenterAssignment, READING_CENTER_PATH } from '@/lib/readingCenterAccess';
 
 interface CreateClassroomItemInput {
   studentId: string;
@@ -170,6 +171,7 @@ function openableAssignmentId(item: ClassroomItem): string | null {
  * Returns the path to navigate to, or null if the item is not actionable.
  */
 export function resolveItemRoute(item: ClassroomItem): string | null {
+  if (isReadingCenterAssignment(item)) return READING_CENTER_PATH;
   switch (item.type) {
     case 'drill':
       if (item.source_table === 'guided_drill_assignments' && item.source_id) {

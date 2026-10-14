@@ -1,0 +1,98 @@
+- generic [ref=f4e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=f4e16]:
+    - banner [ref=f4e17]:
+      - generic [ref=f4e19]:
+        - navigation "Breadcrumb" [ref=f4e20]:
+          - button "Reading Comprehension" [ref=f4e21] [cursor=pointer]
+          - generic [aria-hidden] [ref=f4e22]: /
+          - generic [ref=f4e23]: The Official LSAT PrepTest 144
+          - generic [aria-hidden] [ref=f4e24]: /
+          - generic [ref=f4e25]: Section 1 · Passage 4 · Question 21 · Drill 2 of 8
+        - group "Session actions" [ref=f4e26]:
+          - button "Get help from Joshua" [ref=f4e27] [cursor=pointer]
+          - button "Pause Drill" [ref=f4e31] [cursor=pointer]
+          - button "Complete Drill" [ref=f4e32] [cursor=pointer]
+      - generic [ref=f4e33]: Welcome, josh
+    - main [ref=f4e35]:
+      - generic [ref=f4e37]:
+        - generic [ref=f4e39]:
+          - button "Directions" [ref=f4e40] [cursor=pointer]
+          - button "Passage only" [ref=f4e41] [cursor=pointer]
+          - textbox "Find text in passage" [ref=f4e42]:
+            - /placeholder: Find Text, Type Here
+          - generic [ref=f4e43]:
+            - generic [ref=f4e44]:
+              - button "Underline" [ref=f4e45] [cursor=pointer]
+              - button "Yellow highlighter" [ref=f4e48] [cursor=pointer]
+              - button "Pink highlighter" [ref=f4e55] [cursor=pointer]
+              - button "Orange highlighter" [ref=f4e62] [cursor=pointer]
+              - button "Eraser" [ref=f4e69] [cursor=pointer]
+            - button "Text size" [ref=f4e75] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f4e76]: A
+              - generic [aria-hidden] [ref=f4e77]: a
+            - timer [ref=f4e81]: "Time Elapsed: 06:31"
+            - generic [ref=f4e83]:
+              - button "Bookmark question" [ref=f4e84] [cursor=pointer]
+              - button "Bookmarks and study marks" [ref=f4e87] [cursor=pointer]
+        - generic [ref=f4e91]:
+          - generic [ref=f4e92]:
+            - heading "Karl Popper" [level=1] [ref=f4e93]
+            - generic [ref=f4e95]:
+              - paragraph [ref=f4e96]:
+                - strong [ref=f4e97]: Passage A
+              - paragraph [ref=f4e98]: "Karl Popper’s main contribution to the philosophy of science concerns the power of negative evidence. The fundamental point is simple: No number of white swans, for example, can ever prove that all swans are white, but a single black swan disproves the hypothesis. Popper gives this logical asymmetry between positive and negative evidence hyperbolic application, maintaining that positive evidence has no value as evidence and that negative evidence is tantamount to disproof. Moreover, Popper takes the search for negative evidence to be at the heart of scientific research; that is, for Popper, scientific research involves not only generating bold theories, but also searching for evidence that would disprove them. Indeed, for him, a theory counts as scientific only if it makes predictions that are testable in this way."
+              - paragraph [ref=f4e99]: However, Popper’s use of the logical asymmetry does not adequately capture the actual situation scientists face. If a theory deductively entails a false prediction, then the theory must be false as well. But a scientific theory rarely entails predictions on its own. When scientists actually derive a theory’s predictions, they almost always need diverse additional “auxiliary” premises, which appeal to other theories, to the correct functioning of instrumentation, to the absence of disturbing forces, etc. When a prediction fails, logic indicates that at least one of the premises must be false, but it does not indicate which one. When an experiment does not work out as predicted, there is usually more than one possible explanation. Positive evidence is never conclusive. But negative evidence rarely is either.
+              - paragraph [ref=f4e100]:
+                - strong [ref=f4e101]: Passage B
+              - paragraph [ref=f4e102]: When the planet Uranus was discovered, astronomers attempted to predict its orbit. They based their predictions on Newton’s laws and auxiliary assumptions about the mass of the sun and the masses, orbits, and velocities of other planets. One of the auxiliary assumptions was that no planets existed in the vicinity of Uranus. When the astronomers made their observations, they found that the orbit they had predicted for Uranus was incorrect. One possible explanation for the failure of their prediction was that Newton’s laws were incorrect. Another was that there was an error in the auxiliary assumptions. The astronomers changed their assumptions about the existence of other planets, concluding that there must be another planet close enough to Uranus to produce the observed orbit. Not long afterward, scientists discovered the planet Neptune in the precise place it would have to be to bring their calculations into alignment with their observations.
+              - paragraph [ref=f4e103]: Later astronomers, again using Newton’s laws, predicted the orbit of Mercury. Once again, the predictions were not borne out. They hypothesized the existence of another planet in the vicinity, which they called Vulcan. However, Vulcan was never found, and some scientists began to think that perhaps Newton’s laws were in error. Finally, when Einstein’s general theory of relativity was introduced, astronomers discovered that calculations based on that theory and the old auxiliary assumptions predicted the observed orbit of Mercury, leading to the rejection of Newton’s theory of gravity and to increased confidence in Einstein’s theory.
+          - generic [ref=f4e104]:
+            - generic [ref=f4e105]:
+              - generic [ref=f4e106]:
+                - generic [ref=f4e107]: "21."
+                - paragraph [ref=f4e110]: Which one of the following is mentioned in passage A and illustrated in passage B?
+              - button "Flag question" [ref=f4e111] [cursor=pointer]
+            - list [ref=f4e114]:
+              - listitem [ref=f4e115]:
+                - button "Choice A" [ref=f4e116] [cursor=pointer]: A
+                - paragraph [ref=f4e119] [cursor=pointer]: repudiating an experimental result
+                - button "Cross out choice A" [ref=f4e120] [cursor=pointer]
+              - listitem [ref=f4e124]:
+                - button "Choice B" [ref=f4e125] [cursor=pointer]: B
+                - paragraph [ref=f4e128] [cursor=pointer]: revising a theory
+                - button "Cross out choice B" [ref=f4e129] [cursor=pointer]
+              - listitem [ref=f4e133]:
+                - button "Choice C" [ref=f4e134] [cursor=pointer]: C
+                - paragraph [ref=f4e137] [cursor=pointer]: disproving a theory
+                - button "Cross out choice C" [ref=f4e138] [cursor=pointer]
+              - listitem [ref=f4e142]:
+                - button "Choice D" [ref=f4e143] [cursor=pointer]: D
+                - paragraph [ref=f4e146] [cursor=pointer]: predicting a planet's orbit
+                - button "Cross out choice D" [ref=f4e147] [cursor=pointer]
+              - listitem [ref=f4e151]:
+                - button "Choice E" [ref=f4e152] [cursor=pointer]: E
+                - paragraph [ref=f4e155] [cursor=pointer]: theories that are not testable by experiment
+                - button "Cross out choice E" [ref=f4e156] [cursor=pointer]
+            - button "More below" [ref=f4e160] [cursor=pointer]
+        - generic [ref=f4e162]:
+          - button "Save and exit" [ref=f4e163] [cursor=pointer]
+          - button "Question details" [ref=f4e164] [cursor=pointer]
+          - generic [ref=f4e166]:
+            - group [ref=f4e167]:
+              - generic "Question overview" [ref=f4e168] [cursor=pointer]
+            - generic [ref=f4e169]:
+              - button "PT 144 · Section 1 · Passage 4 · Question 20 · Drill 1, answered, flagged" [ref=f4e170] [cursor=pointer]: "1"
+              - button "PT 144 · Section 1 · Passage 4 · Question 21 · Drill 2, unanswered" [ref=f4e172] [cursor=pointer]: "2"
+              - button "PT 144 · Section 1 · Passage 4 · Question 22 · Drill 3, unanswered" [ref=f4e173] [cursor=pointer]: "3"
+              - button "PT 144 · Section 1 · Passage 4 · Question 23 · Drill 4, unanswered" [ref=f4e174] [cursor=pointer]: "4"
+              - button "PT 144 · Section 1 · Passage 4 · Question 24 · Drill 5, unanswered" [ref=f4e175] [cursor=pointer]: "5"
+              - button "PT 144 · Section 1 · Passage 4 · Question 25 · Drill 6, unanswered" [ref=f4e176] [cursor=pointer]: "6"
+              - button "PT 144 · Section 1 · Passage 4 · Question 26 · Drill 7, unanswered" [ref=f4e177] [cursor=pointer]: "7"
+              - button "PT 144 · Section 1 · Passage 4 · Question 27 · Drill 8, unanswered" [ref=f4e178] [cursor=pointer]: "8"
+            - generic [ref=f4e179]:
+              - button "Previous question" [ref=f4e180] [cursor=pointer]
+              - button "Next question" [ref=f4e183] [cursor=pointer]
+          - button "Submit" [ref=f4e187] [cursor=pointer]

@@ -1,0 +1,27 @@
+.cr-contrapositive-pair {
+  margin: 2rem 0;
+  padding: clamp(1.1rem, 3vw, 2rem);
+  border: 1px solid currentColor;
+  border-radius: 16px;
+}
+
+.cr-contrapositive-pair figcaption {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.cr-contrapositive-pair > p {
+  margin: 1.5rem 0 .5rem;
+}
+
+.cr-contrapositive-pair .cr-diagram {
+  margin: 0;
+  padding: 1.25rem 0;
+}
+
+.cr-contrapositive-pair .cr-diagram strong {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
