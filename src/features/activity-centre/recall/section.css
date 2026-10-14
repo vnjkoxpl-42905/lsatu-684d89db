@@ -1,0 +1,892 @@
+/* Read, Recall, Colour, section mode.
+ *
+ * The v1 runner sits on a dark field because it shows one chunk at a time and
+ * nothing during recall: there is barely anything on screen to light. A section
+ * is the opposite surface. The whole stimulus is present for the whole
+ * stimulus, it is the only thing on screen, and she is reading it closely for
+ * twenty minutes. That is a document, and a document belongs on paper.
+ *
+ * So this screen wears the real section's clothes. `OfficialDrillFrame` already
+ * mirrors LawHub -- indigo field, white header rail, one centred white card,
+ * Fraunces at 19px -- and that is the surface she will sit on test day. Every
+ * value below is taken from it rather than invented, and the answering half is
+ * removed rather than restyled. No new dialect: this is the drill room.
+ *
+ * Everything after the frame exists to keep the text in exactly the same place
+ * while its state changes.
+ */
+
+.ac-section {
+  --sec-field: #1a1635;
+  --sec-paper: #ffffff;
+  --sec-ink: #111827;
+  --sec-rule: #cbd5e1;
+  --sec-chrome: #334155;
+  --sec-warn: #b45309;
+  --sec-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background: var(--sec-field);
+  font-family: var(--sec-sans);
+}
+
+/* ---- the white rail ---------------------------------------------------- */
+
+/* One column per child, and the count has to be kept: declared short once, the
+   exit wrapped onto a second row and the rail grew the header from 46px to 96px
+   on the drill's only screen. Six now -- position, rail, clock, the recording
+   mark, Pause, the way out. */
+.ac-section-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto auto;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: var(--sec-paper);
+  color: var(--sec-chrome);
+  font-size: 0.8125rem;
+}
+
+/* Where she is in the section. The clock sits beside it; see
+   `.ac-section-clock` for why it counts up rather than down. */
+.ac-section-where {
+  font-variant-numeric: tabular-nums;
+}
+
+.ac-section-where b {
+  font-weight: 600;
+  color: var(--sec-ink);
+}
+
+.ac-section-rail {
+  height: 2px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #e2e8f0;
+}
+
+.ac-section-rail-fill {
+  display: block;
+  height: 100%;
+  transform-origin: left center;
+  background: var(--sec-chrome);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Assignment-gated and full screen. Without a way out the only exit is the
+   browser's back button, which is a trap rather than a design. */
+.ac-section-exit {
+  border: none;
+  border-radius: 9999px;
+  background: none;
+  padding: 0.25rem 0.75rem;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ac-section-exit:hover {
+  background: #f1f5f9;
+  color: var(--sec-ink);
+}
+
+/* Stepping away, which is the thing that was missing.
+ *
+ * Same weight as Leave and next to it, because they answer the same question
+ * and she should meet them together -- the whole failure this fixes is a
+ * student who wanted this one and could only find that one. Deliberately far
+ * from the paper: pausing is chrome, not a step in the drill, and nothing that
+ * stops the clock may sit where a hand aiming for Space could land on it. */
+.ac-section-pause {
+  border: 1px solid var(--sec-chrome);
+  border-radius: 9999px;
+  background: none;
+  padding: 0.25rem 0.75rem;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ac-section-pause:hover {
+  background: #f1f5f9;
+  color: var(--sec-ink);
+}
+
+/* ---- the paper --------------------------------------------------------- */
+
+.ac-section-field {
+  display: flex;
+  flex: 1;
+  padding: 1rem;
+}
+
+/* The floor is a floor, not a promise the viewport can keep.
+ *
+ * `min-height: 700px` was written for a desktop and is taller than a 13-inch
+ * laptop has room for. At a 664px viewport the card ran to 778px and pushed the
+ * footer -- the instruction, the presence bar and the microphone error, which
+ * are the only words on the screen telling her what to do and whether she is
+ * being heard -- 55px below the fold. She would never see "Nothing is reaching
+ * the microphone" on that machine.
+ *
+ * The `max-width: 640px` rule below did zero the floor, but it is a WIDTH
+ * query, and the laptop that fails this is 1440 wide. Height is what was short,
+ * so height is what the cap is written against.
+ *
+ * `min()` rather than a smaller constant, so the same bug cannot return at
+ * 600px: the card asks for 700 and takes whatever the viewport can actually
+ * spare, less the header and the field's own padding. On anything taller than
+ * about 800px nothing changes at all. */
+.ac-section-paper {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  min-height: min(700px, calc(100vh - 7rem));
+  margin: 0 auto;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  background: var(--sec-paper);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.35);
+}
+
+/* The stimulus is the only thing in the card, so its column is centred
+   horizontally -- but it hangs from the top, exactly as it does in the column it
+   used to share with a question.
+ *
+ * Centring it vertically was the first cut and it was wrong: stimuli run from
+ * two lines to nine, so a centred block starts at a different height on every
+ * one of the 23 and the whole page appears to jump between them. The spec bans
+ * reflow inside a stimulus; this is the same failure one level up. */
+.ac-section-body {
+  display: flex;
+  flex: 1;
+  /* A flex item will not shrink below its content unless it is told it may. The
+     stimulus is the part that can be scrolled past; the footer is not, so the
+     reading area is what gives way when the card is short. */
+  min-height: 0;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 4rem 1.5rem 3rem;
+}
+
+.ac-section-stimulus {
+  max-width: 52ch;
+  color: var(--sec-ink);
+  font-family: Fraunces, ui-serif, Georgia, serif;
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.7;
+  /* Fraunces is a variable font with an optical-size axis. Left on `auto` the
+     browser picks the cut from the rendered size; pin it to the text-optimised
+     end so the hairlines stay put. Grayscale smoothing thins them too. */
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 14;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.ac-section-stimulus ::selection {
+  background: #dbeafe;
+  color: var(--sec-ink);
+}
+
+/* One inline run per chunk. Inline rather than block so a chunk that is part of
+   a sentence still reads as that sentence: the cuts guide her eye, and nothing
+   more. There are no per-chunk states any more -- no current, done or upcoming
+   marker -- because the app does not track which chunk she is on
+   (docs/adr/0013-she-chunks-freely-and-the-app-does-not-track-it.md). */
+.ac-section-chunk {
+  color: var(--sec-ink);
+}
+
+/* ---- the card's footer ------------------------------------------------- */
+
+/* Pinned inside the card, and never the thing that gives way. Whatever else the
+   card has to do with the height it is given, these words stay on screen. */
+.ac-section-foot {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 0.8125rem;
+}
+
+.ac-section-instruction {
+  margin: 0;
+  color: var(--sec-ink);
+  font-weight: 500;
+}
+
+/* The footer's right-hand slot holds the fault and the key hint together, so
+   neither has to take the other's place. Wraps rather than crushes, because the
+   microphone warning is a whole sentence and the card is not always wide. */
+.ac-section-foot-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ac-section-hint {
+  margin: 0;
+  color: #64748b;
+}
+
+.ac-section-hint kbd {
+  border: 1px solid var(--sec-rule);
+  border-bottom-width: 2px;
+  border-radius: 0.25rem;
+  background: var(--sec-paper);
+  padding: 0.125rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: var(--sec-chrome);
+}
+
+/* Silence and a dead microphone look identical from her side, so a fault has to
+   say so rather than let her talk into nothing for twenty minutes. */
+.ac-section-error {
+  margin: 0;
+  color: var(--sec-warn);
+  font-weight: 500;
+}
+
+/* Forty-four pixels of pointer target, without forty-four pixels of rail.
+ *
+ * Pause and Leave measure 62x30 and 59x29 on a desktop and 54x30 and 51x29 on
+ * a phone, where the header rule takes their padding down again. PRODUCT.md
+ * binds 44x44 by being that size, and both are wide enough already; only the
+ * height is short.
+ *
+ * Given as an overlay rather than a `min-height`, because the rail is a grid
+ * row and growing the controls grows the header: it went from 46px to 96px once
+ * before, on the drill's only screen, and every other rule in this file is
+ * fighting for the reading area on a 13-inch laptop. The overlay is centred on
+ * the control, so it costs no layout and no pixels of paper. */
+.ac-section-pause,
+.ac-section-exit {
+  position: relative;
+}
+
+.ac-section-pause::after,
+.ac-section-exit::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+/* The focus ring is graphite everywhere in the drill room, never an accent.
+ *
+ * It used to be graphite at 35 per cent, which computes to 2.17:1 on the paper
+ * and the rail and 1.00:1 on the indigo field, where the walkthrough's Hide
+ * button lives: an invisible ring on the one control a keyboard user has to
+ * find. WCAG 1.4.11 wants 3:1. Measured in the browser, solid ink is 17.74:1
+ * on the paper and paper is 17.35:1 on the field, so both ends clear it with
+ * room to spare. Two pixels rather than
+ * three because a solid ring reads heavier than a translucent one at the same
+ * width. */
+.ac-section :focus-visible {
+  outline: 2px solid var(--sec-ink);
+  outline-offset: 2px;
+}
+
+/* The children that sit on the indigo rather than on paper. */
+.ac-section-coach :focus-visible,
+.ac-section-ready :focus-visible {
+  outline-color: var(--sec-paper);
+}
+
+@media (max-width: 640px) {
+  .ac-section-head {
+    gap: 0.75rem;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .ac-section-pause,
+  .ac-section-exit {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .ac-section-paper {
+    min-height: 0;
+  }
+
+  .ac-section-body {
+    padding: 2rem 1.25rem;
+  }
+}
+
+/* A 13-inch laptop, once the browser has taken its chrome. The reading area's
+   4rem of head room is the first thing worth spending when the card is this
+   short, and spending it here keeps the stimulus off the footer. */
+@media (max-height: 800px) {
+  .ac-section-body {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-section-chunk,
+  .ac-section-rail-fill,
+  .ac-section-exit {
+    transition: none;
+  }
+}
+
+/* Elapsed time, in the rail beside the position line.
+ *
+ * Counting up, never down. The drill is timed and she has to be able to pace a
+ * 25-minute section, but a number falling towards zero in the corner of her eye
+ * produces exactly the rushed reading this drill treats. The goal sits after it
+ * in lighter type so the elapsed figure is the one that reads first.
+ */
+.ac-section-clock {
+  font-family: var(--sec-sans);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--sec-chrome);
+  white-space: nowrap;
+}
+
+.ac-section-clock i {
+  font-style: normal;
+  opacity: 0.55;
+}
+
+/* "Recording", in the rail, for the whole run.
+ *
+ * The one thing she asked to be able to see mid-section: that it is on. A
+ * word and a dot, in the chrome rather than on the paper, so it is always in
+ * the corner of her eye and never near the text. The word carries the meaning;
+ * the red is on top of it. */
+.ac-section-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--sec-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sec-ink);
+  white-space: nowrap;
+}
+.ac-section-rec--off {
+  width: 0;
+}
+
+/* Paused, in the slot the recording mark had, and in the colour the rest of
+   this screen uses for "something is not running". It does not pulse: the dot
+   pulses to say the file is being written to, and during a break it is not. */
+.ac-section-rec--paused {
+  color: var(--sec-warn);
+}
+
+.ac-section-rec--paused i {
+  background: var(--sec-warn);
+  animation: none;
+}
+.ac-section-rec i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: oklch(0.58 0.2 27);
+  animation: ac-section-rec-pulse 1.6s ease-in-out infinite;
+}
+@keyframes ac-section-rec-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ac-section-rec i {
+    animation: none;
+  }
+}
+
+/* Presence, not a level meter.
+ *
+ * The one moving thing on a screen she talks at for twenty-one minutes. It
+ * answers "is anything reaching it" and deliberately not "how am I doing":
+ * no target, no colour change, no number, because nothing in this room is
+ * allowed to read as a verdict before the section ends. Graphite, low
+ * contrast, and beside the instruction rather than anywhere near the text.
+ */
+.ac-section-level {
+  display: inline-block;
+  width: 34px;
+  height: 3px;
+  margin-left: 0.625rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #e2e8f0;
+  vertical-align: middle;
+}
+
+.ac-section-level-fill {
+  display: block;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--sec-chrome);
+}
+
+/* ---- leaving ------------------------------------------------------------ */
+
+/* A half-finished section writes nothing by design, so the button that ends one
+   is the most expensive control in the product. It asks first, over the run
+   rather than instead of it: the stimulus stays behind the scrim, because she
+   may well be here by accident and the way back is to see where she was. */
+.ac-section-confirm {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgb(10 8 24 / 0.62);
+  inset: 0;
+}
+
+.ac-section-confirm-card {
+  width: 100%;
+  max-width: 26rem;
+  border-radius: 0.5rem;
+  background: var(--sec-paper);
+  padding: 1.5rem;
+  box-shadow: 0 18px 48px rgb(0 0 0 / 0.45);
+}
+
+.ac-section-confirm-title {
+  margin: 0;
+  color: var(--sec-ink);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.ac-section-confirm-body {
+  margin: 0.5rem 0 0;
+  color: #475569;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.ac-section-confirm-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.ac-section-confirm-stay,
+.ac-section-confirm-go {
+  border-radius: 0.375rem;
+  padding: 0.4375rem 0.875rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+/* Staying is the default and looks like it. */
+.ac-section-confirm-stay {
+  border: 1px solid transparent;
+  background: var(--sec-ink);
+  color: var(--sec-paper);
+  font-weight: 500;
+}
+
+.ac-section-confirm-go {
+  border: 1px solid var(--sec-rule);
+  background: none;
+  color: #475569;
+}
+
+.ac-section-confirm-go:hover {
+  border-color: #cbd5e1;
+  color: var(--sec-warn);
+}
+
+/* ---- the ready beat ----------------------------------------------------- */
+
+/* Three seconds between pressing Start and the first stimulus.
+ *
+ * The microphone opens on mount and the clock starts with it, so without this
+ * the first thing a 25-minute recorded take captures is a student still
+ * settling. It also puts the one instruction she needs -- Space, twice per
+ * stimulus -- on screen at the moment it becomes true. */
+.ac-section-ready {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.ac-section-ready-title {
+  margin: 0;
+  color: var(--sec-ink);
+  font-family: Fraunces, ui-serif, Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 14;
+}
+
+.ac-section-ready-body {
+  max-width: 34ch;
+  margin: 0;
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.ac-section-ready-count {
+  /* Was #94a3b8: 2.56:1 at 13px, which is a countdown she cannot read. */
+  color: var(--sec-chrome);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A break wears the ready beat's clothes on purpose. It is the same kind of
+   moment -- the section open, the clock not running, one thing to press -- and
+   a second full-card layout for it would be a second thing to keep true. */
+.ac-section-ready--paused .ac-section-ready-title {
+  color: var(--sec-warn);
+}
+
+/* The refused microphone reads as a fault rather than as a beat, so the heading
+   takes the warning colour the footer uses for the same class of thing. */
+.ac-section-ready[data-mic="refused"] .ac-section-ready-title {
+  color: var(--sec-warn);
+}
+
+/* Two ways forward, neither of which existed. Asking again leads, because it is
+   the one that keeps the section. */
+.ac-section-ready-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ac-section-ready-retry,
+.ac-section-ready-leave {
+  border-radius: 9999px;
+  padding: 0.4rem 1.1rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ac-section-ready-retry {
+  border: 1px solid var(--sec-ink);
+  background: var(--sec-ink);
+  color: var(--sec-paper);
+}
+
+.ac-section-ready-retry:hover {
+  background: var(--sec-chrome);
+  border-color: var(--sec-chrome);
+}
+
+.ac-section-ready-leave {
+  border: 1px solid var(--sec-rule);
+  background: none;
+  color: var(--sec-chrome);
+}
+
+.ac-section-ready-leave:hover {
+  background: #f1f5f9;
+  color: var(--sec-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-section-level-fill {
+    transition: none;
+  }
+}
+
+
+/* ---- leaving the drill room -------------------------------------------- */
+
+/* The one composed moment in the drill.
+ *
+ * The runner is a cold indigo mirror of the real section; the Report Card is a
+ * violet-cast white on a violet ground. The jump between them was abrupt
+ * because there was nothing between them: the field cut to the card in one
+ * frame, at the end of twenty-five unbroken minutes, which is the moment she is
+ * most likely to remember and the moment that felt most like a page reload.
+ *
+ * So the field lifts rather than cuts. The paper card holds its position and
+ * fades with it, the indigo warms to the ground the Report Card sits on, and
+ * the handover happens underneath. Nothing waits on it: the save, the upload
+ * and the grading request all run through these nine hundred milliseconds, and
+ * the transition is over long before any of them are.
+ */
+.ac-section.is-finishing {
+  /* The ground the card lands on, by value rather than by eye.
+     `.rc-ground` (report-card.css) is what the report phase paints, one step
+     darker than the card's own `--rc-page` so the card still reads as a card.
+     Neither is in scope here, so the value is copied and kept beside the name
+     it copies: a change to one is a change to look for in the other.
+     It used to warm to the Activity Centre's cream, rgb(244,239,231), which is
+     a colour nothing downstream of this moment paints. The field warmed to one
+     ground and the card arrived on another, which is the visible step this
+     transition exists to remove. */
+  background: oklch(0.925 0.014 312);
+  transition: background 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ac-section.is-finishing .ac-section-head {
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.ac-section.is-finishing .ac-section-paper {
+  border-color: transparent;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
+  transition:
+    box-shadow 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 900ms ease;
+}
+
+/* What she reads while it happens. It arrives after the field has started to
+   warm, so the sentence appears on paper rather than on the drill room. */
+.ac-section-finished {
+  margin: 0;
+  animation: ac-section-finished-in 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
+  color: var(--sec-ink);
+  font-family: Fraunces, ui-serif, Georgia, serif;
+  font-size: 22px;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 14;
+  text-align: center;
+}
+
+.ac-section-finished span {
+  display: block;
+  margin-top: 0.75rem;
+  /* #64748b is 4.76:1 on white and 4.17:1 on the warmed handover ground this
+     sentence actually lands on, which is under AA. The chrome ink clears it:
+     8.28:1 on the ground the handover warms to now, measured in the browser. */
+  color: var(--sec-chrome);
+  font-family: var(--sec-sans);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+@keyframes ac-section-finished-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-section.is-finishing,
+  .ac-section.is-finishing .ac-section-head,
+  .ac-section.is-finishing .ac-section-paper {
+    transition: none;
+  }
+
+  .ac-section-finished {
+    animation: none;
+  }
+}
+
+
+/* The other half of the handover, on the surface that arrives.
+ *
+ * Applied by the Report Card's own container so the card rises onto the ground
+ * the drill room just warmed to, instead of appearing on it. Slower than a
+ * normal entrance and with no scale: this is the end of twenty-five minutes of
+ * concentration, not a notification.
+ */
+.ac-section-handover {
+  animation: ac-section-handover-in 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ac-section-handover-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-section-handover {
+    animation: none;
+  }
+}
+
+/* Advancing without a keyboard.
+
+   The drill is one key and no mouse, and on a laptop it stays exactly that:
+   this control is not rendered where a keyboard exists. It appears only on a
+   coarse pointer, where Space cannot be pressed at all and its absence would
+   otherwise leave her reading stimulus 1 with no way to reach stimulus 2.
+
+   It is drawn as chrome rather than as a call to action. Nothing in the footer
+   may read as a score or a verdict, and a large filled button in the corner of
+   a drill that judges nothing would read as both. */
+.ac-section-advance {
+  border: 1px solid var(--sec-rule);
+  border-bottom-width: 2px;
+  border-radius: 0.375rem;
+  background: var(--sec-paper);
+  color: var(--sec-chrome);
+  padding: 0.5rem 0.875rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  /* A 25-minute run means many presses. Anything under this is a mis-tap. */
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.ac-section-advance:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* ------------------------------------------------------------------ *
+ * The first-run walkthrough.
+ *
+ * Beside the paper, in the field's own colour so it reads as chrome rather
+ * than as part of the reading. It is never allowed to narrow the paper below
+ * what a stimulus needs, so it collapses under the card on a small screen and
+ * disappears entirely on a phone, where the loop is one column already.
+ * ------------------------------------------------------------------ */
+.ac-section-coach {
+  flex: 0 0 19rem;
+  align-self: flex-start;
+  margin-left: 1rem;
+  padding: 1rem 1.1rem 1.15rem;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 0.5rem;
+  background: rgb(255 255 255 / 0.07);
+  color: rgb(255 255 255 / 0.92);
+}
+
+.ac-section-coach-step {
+  margin: 0 0 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.ac-section-coach-title {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.ac-section-coach-body {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgb(255 255 255 / 0.82);
+}
+
+/* The method, on the one card that states it. A list rather than a paragraph:
+   four definitions run together is the thing she skips. The label carries the
+   weight, the definition sits at body weight beside it. */
+.ac-section-coach-steps {
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.82);
+}
+
+.ac-section-coach-steps strong {
+  font-weight: 600;
+  color: rgb(255 255 255 / 0.95);
+}
+
+.ac-section-coach-next {
+  margin: 0.85rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.78);
+}
+
+.ac-section-coach-next span {
+  margin-right: 0.35rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  color: rgb(255 255 255 / 0.55);
+}
+
+.ac-section-coach-hide {
+  margin-top: 0.9rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid rgb(255 255 255 / 0.25);
+  border-radius: 0.3rem;
+  background: transparent;
+  color: rgb(255 255 255 / 0.75);
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.ac-section-coach-hide:hover {
+  background: rgb(255 255 255 / 0.1);
+}
+
+@media (max-width: 1100px) {
+  .ac-section-field {
+    flex-wrap: wrap;
+  }
+
+  .ac-section-coach {
+    flex: 1 1 100%;
+    margin: 1rem 0 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .ac-section-coach {
+    padding: 0.85rem 0.9rem 1rem;
+  }
+}

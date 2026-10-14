@@ -1,0 +1,821 @@
+/* Brutalist tokens and utilities for the Abstract bootcamp.
+ *
+ * Scoped under `.topic-abstract` so the cream paper background, hard
+ * borders, and color blocks live only inside /topics/abstract and do
+ * not leak into other LSATU surfaces (which remain dark mode).
+ *
+ * Architecture exception per _BUILD_SPEC_v2.0.md: drill mode is dark by
+ * default; Abstract is light brutalist.
+ */
+
+.topic-abstract {
+  /* Neo-brutalist palette in OKLCH. Every neutral is tinted toward a warm
+   * 80deg hue, never pure black or pure white, per the project-wide
+   * tinted-neutral rule. Accent colors keep their saturated brutalist
+   * character but tighten chroma at the lightness extremes. */
+  /* 2026-10-13: Amber Slate palette, from the 21st.dev theme of that
+   * name (picked by Joshua). Slate-grey page, white cards, charcoal ink,
+   * burnt-orange accent, steel-blue highlight. Token names keep their old
+   * "brutal" names so the components need no rewrite:
+   * yellow = steel-blue highlight, ink = charcoal, paper = white.
+   * --brutal-accent-strong darkens the theme orange (#df6035, 3.6:1 on
+   * white) to #c24a22 (4.9:1) wherever white text sits on it. */
+  --brutal-yellow: #d6e4f0;
+  --brutal-cyan: #e3e9ee;
+  --brutal-pink: #fbe4da;
+  --brutal-green: #d5eedd;
+  --brutal-red: #f6d6d0;
+  --brutal-bg: #e8ebed;
+  --brutal-paper: #ffffff;
+  --brutal-ink: #333333;
+  --brutal-ink-soft: #5a636b;
+  --brutal-ink-faint: #7a838b;
+  --brutal-ink-trace: #cccccc;
+  --brutal-accent: #df6035;
+  --brutal-accent-strong: #c24a22;
+  --brutal-highlight-edge: #9fb6cc;
+  --brutal-radius: 8px;
+  --brutal-line: #cccccc;
+  --brutal-soft-shadow: 0 1px 2px rgb(51 51 51 / 0.06), 0 2px 8px rgb(51 51 51 / 0.06);
+  --brutal-soft-shadow-lg: 0 10px 28px rgb(51 51 51 / 0.10);
+
+  /* Source-compat aliases so the new-bootcamp inline styles
+   * (style={{ backgroundColor: 'var(--color-brutal-yellow)' }}) keep
+   * compiling without a rewrite. */
+  --color-brutal-yellow: var(--brutal-yellow);
+  --color-brutal-cyan: var(--brutal-cyan);
+  --color-brutal-pink: var(--brutal-pink);
+  --color-brutal-green: var(--brutal-green);
+  --color-brutal-red: var(--brutal-red);
+  --color-brutal-bg: var(--brutal-bg);
+  --color-brutal-ink: var(--brutal-ink);
+
+  background-color: var(--brutal-bg);
+  color: var(--brutal-ink);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.topic-abstract h1,
+.topic-abstract h2,
+.topic-abstract h3,
+.topic-abstract h4,
+.topic-abstract h5,
+.topic-abstract h6 {
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.topic-abstract ::selection {
+  background: var(--brutal-ink);
+  color: var(--brutal-yellow);
+}
+
+/* Visible focus ring on every interactive element. WCAG 2.4.7. Brutalist
+ * idiom: a thick yellow ring with offset, framed by the ink color so it
+ * reads on any background. */
+.topic-abstract :focus {
+  outline: none;
+}
+
+.topic-abstract :focus-visible {
+  outline: 3px solid var(--brutal-yellow);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--brutal-ink);
+}
+
+/* Utility replacements for the new-bootcamp Tailwind 4 @utility blocks.
+ * Source uses bare class names like brutal-shadow, brutal-shadow-sm, etc.
+ * Tailwind passes unknown classes through; we match them via descendant
+ * selectors so they only apply inside .topic-abstract. Shadows now read
+ * from --brutal-ink so the tinted-neutral rule holds end-to-end. */
+.topic-abstract .brutal-shadow {
+  box-shadow: 4px 4px 0px 0px var(--brutal-ink);
+}
+
+.topic-abstract .brutal-shadow-lg {
+  box-shadow: 8px 8px 0px 0px var(--brutal-ink);
+}
+
+.topic-abstract .brutal-shadow-sm {
+  box-shadow: 2px 2px 0px 0px var(--brutal-ink);
+}
+
+.topic-abstract .brutal-shadow-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px var(--brutal-ink);
+}
+
+.topic-abstract .brutal-shadow-active:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px var(--brutal-ink);
+}
+
+.topic-abstract .brutal-grid {
+  background-image:
+    linear-gradient(to right, oklch(0.14 0.012 80 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.14 0.012 80 / 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.topic-abstract .brutal-dotted {
+  background-image: radial-gradient(oklch(0.14 0.012 80 / 0.1) 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+
+.topic-abstract .custom-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.topic-abstract .custom-scrollbar::-webkit-scrollbar-track {
+  background-color: var(--brutal-bg);
+  border-left: 2px solid var(--brutal-ink);
+}
+
+.topic-abstract .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--brutal-ink);
+  border: 2px solid var(--brutal-bg);
+}
+
+/* Honor prefers-reduced-motion at the scope level. Any descendant motion
+ * with a transition or framer-motion variant collapses to near-instant. */
+@media (prefers-reduced-motion: reduce) {
+  .topic-abstract *,
+  .topic-abstract *::before,
+  .topic-abstract *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visually-hidden helper for skip links and screen-reader-only labels. */
+.topic-abstract .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.topic-abstract .skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 12px 16px;
+  background: var(--brutal-yellow);
+  color: var(--brutal-ink);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 4px solid var(--brutal-ink);
+  transform: translateY(-110%);
+  transition: transform 150ms ease-out;
+  z-index: 100;
+}
+
+.topic-abstract .skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Brutal button utility used by ModuleView. Min 44px touch target,
+ * uppercase, hard border, brutal shadow on press. */
+.topic-abstract .brutal-btn {
+  min-height: 44px;
+  padding: 0.625rem 1.25rem;
+  border: 3px solid var(--brutal-ink);
+  font-weight: 900;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-color: var(--brutal-paper);
+  box-shadow: 4px 4px 0 0 var(--brutal-ink);
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.topic-abstract .brutal-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 0 var(--brutal-ink);
+}
+
+.topic-abstract .brutal-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 var(--brutal-ink);
+}
+
+.topic-abstract .brutal-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Step 6 typography + focus polish.
+ *
+ * Visible 3px brutal-yellow outline on every interactive element when
+ * focused via keyboard. Uses :focus-visible so mouse clicks do not
+ * trigger the ring; only keyboard navigation does.
+ *
+ * Locked rows lose the brutal-shadow per spec: applied where the
+ * .brutal-locked utility is used on a tile.
+ */
+.topic-abstract :focus-visible {
+  outline: 3px solid var(--brutal-yellow);
+  outline-offset: 2px;
+}
+
+.topic-abstract .brutal-locked {
+  box-shadow: none !important;
+}
+
+/* Body text rhythm: 16px / 1.6 inside .brutal-prose blocks. Card headers
+ * stay at the size set by the component; this only affects opt-in prose
+ * containers so legacy LessonReader headlines are untouched. */
+.topic-abstract .brutal-prose {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.topic-abstract .brutal-prose p + p {
+  margin-top: 16px;
+}
+
+/* Step 2: cased body typography inside LessonBody.
+ *
+ * Applied via .lesson-cased wrapper class. Strips uppercase + italic +
+ * font-black from headline-sized text and paragraphs so the prose reads
+ * cleanly in regular weight at 1.7 line-height. Small labels (text-xs,
+ * text-[10px]) keep their uppercase character: that is the ONLY place
+ * uppercase belongs.
+ *
+ * Brutalist character continues to come from borders, shadows, and the
+ * yellow/cyan/pink color blocks inside callouts. Type alone stops
+ * shouting.
+ */
+
+.topic-abstract .lesson-cased h1,
+.topic-abstract .lesson-cased h2,
+.topic-abstract .lesson-cased h3,
+.topic-abstract .lesson-cased h4 {
+  text-transform: none;
+  font-style: normal;
+  letter-spacing: -0.01em;
+}
+
+.topic-abstract .lesson-cased h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: 1.15;
+  font-weight: 900;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.topic-abstract .lesson-cased h2,
+.topic-abstract .lesson-cased h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  line-height: 1.25;
+  font-weight: 900;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.topic-abstract .lesson-cased h4 {
+  font-size: 1rem;
+  line-height: 1.3;
+  font-weight: 900;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.topic-abstract .lesson-cased p {
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+  text-transform: none;
+  font-style: normal;
+  letter-spacing: 0;
+}
+
+@media (min-width: 768px) {
+  .topic-abstract .lesson-cased p {
+    font-size: 1.125rem;
+  }
+}
+
+/* Demote any inline text that is shouting in the legacy lesson markup:
+ * any element sized above text-base AND wearing uppercase or italic
+ * loses those treatments. text-xs and text-[10px] labels keep theirs. */
+.topic-abstract .lesson-cased .text-lg,
+.topic-abstract .lesson-cased .text-xl,
+.topic-abstract .lesson-cased .text-2xl,
+.topic-abstract .lesson-cased .text-3xl,
+.topic-abstract .lesson-cased .text-4xl,
+.topic-abstract .lesson-cased .text-5xl,
+.topic-abstract .lesson-cased .text-6xl {
+  text-transform: none;
+  font-style: normal;
+}
+
+/* Body paragraphs in legacy LessonReader markup are typically tagged
+ * font-bold; demote to normal weight here. font-black remains on
+ * actual headers (sized above text-base) where the cn() chain still
+ * applies black. */
+.topic-abstract .lesson-cased p.font-bold,
+.topic-abstract .lesson-cased p .font-bold {
+  font-weight: 400;
+}
+
+/* Strong + em inside paragraphs keep their semantics in cased form. */
+.topic-abstract .lesson-cased p strong {
+  font-weight: 700;
+}
+
+.topic-abstract .lesson-cased p em {
+  font-style: italic;
+  font-weight: inherit;
+}
+
+.topic-abstract .lesson-cased ul,
+.topic-abstract .lesson-cased ol {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.topic-abstract .lesson-cased li {
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+/* ── Intro to LR look (2026-10-13) ────────────────────────────────────
+ * Joshua asked for Abstract to match Intro to LR instead of the yellow
+ * neo-brutalist style. Rather than rewrite ~1,500 class names, this layer
+ * re-skins them inside .topic-abstract: hairline borders, soft shadows,
+ * 2px radius, calmer type. Specificity (.topic-abstract .x) beats the
+ * single-class Tailwind utilities it overrides. */
+.topic-abstract .border-4,
+.topic-abstract .border-2,
+.topic-abstract .border-\[3px\] { border-width: 1px; }
+.topic-abstract .border-b-4, .topic-abstract .border-b-2 { border-bottom-width: 1px; }
+.topic-abstract .border-t-4, .topic-abstract .border-t-2 { border-top-width: 1px; }
+.topic-abstract .border-r-4, .topic-abstract .border-r-2 { border-right-width: 1px; }
+.topic-abstract .border-l-4, .topic-abstract .border-l-2 { border-left-width: 1px; }
+.topic-abstract .border-brutal-ink { border-color: var(--brutal-line); }
+
+.topic-abstract .brutal-shadow,
+.topic-abstract .brutal-shadow-sm,
+.topic-abstract .brutal-btn { box-shadow: var(--brutal-soft-shadow); }
+.topic-abstract .brutal-shadow-lg { box-shadow: var(--brutal-soft-shadow-lg); }
+.topic-abstract .brutal-shadow-hover:hover,
+.topic-abstract .brutal-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--brutal-soft-shadow-lg);
+}
+.topic-abstract .brutal-shadow-active:active,
+.topic-abstract .brutal-btn:active:not(:disabled) {
+  transform: none;
+  box-shadow: var(--brutal-soft-shadow);
+}
+.topic-abstract .brutal-btn {
+  border: 1px solid var(--brutal-line);
+  font-weight: 600;
+  border-radius: var(--brutal-radius);
+}
+.topic-abstract .brutal-grid,
+.topic-abstract .brutal-dotted { background-image: none; }
+
+.topic-abstract .border-brutal-ink,
+.topic-abstract .brutal-btn,
+.topic-abstract .brutal-shadow,
+.topic-abstract .brutal-shadow-lg { border-radius: var(--brutal-radius); }
+
+/* Type: no shouting. Black weight drops to bold, italics come off
+ * headline-sized text, uppercase stays only on small labels. */
+.topic-abstract .font-black { font-weight: 700; }
+.topic-abstract .text-lg.uppercase,
+.topic-abstract .text-xl.uppercase,
+.topic-abstract .text-2xl.uppercase,
+.topic-abstract .text-3xl.uppercase,
+.topic-abstract .text-4xl.uppercase,
+.topic-abstract .text-5xl.uppercase,
+.topic-abstract .text-6xl.uppercase,
+.topic-abstract h1.uppercase,
+.topic-abstract h2.uppercase,
+.topic-abstract h3.uppercase { text-transform: none; }
+.topic-abstract h1.italic, .topic-abstract h2.italic, .topic-abstract h3.italic,
+.topic-abstract .text-2xl.italic, .topic-abstract .text-3xl.italic,
+.topic-abstract .text-4xl.italic, .topic-abstract .text-5xl.italic { font-style: normal; }
+.topic-abstract .uppercase { letter-spacing: 0.06em; }
+
+.topic-abstract ::selection { background: var(--brutal-yellow); color: var(--brutal-ink); }
+.topic-abstract :focus-visible {
+  outline: 2px solid var(--brutal-accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.topic-abstract .custom-scrollbar::-webkit-scrollbar-track { border-left: 1px solid var(--brutal-line); }
+.topic-abstract .custom-scrollbar::-webkit-scrollbar-thumb { background-color: var(--brutal-ink-trace); }
+
+/* Capitals only on tiny labels (text-xs and the bracketed 9-11px sizes). */
+.topic-abstract .uppercase:not(.text-xs):not([class*="text-[9"]):not([class*="text-[10"]):not([class*="text-[11"]) {
+  text-transform: none;
+  letter-spacing: -0.005em;
+}
+
+/* Highlight blocks get a steel-blue edge so they read as "active". */
+.topic-abstract .bg-brutal-yellow.border-brutal-ink { border-color: var(--brutal-highlight-edge); }
+
+/* Solid charcoal fills with white text are the primary actions and
+ * selected states; Amber Slate paints those burnt orange. */
+.topic-abstract .bg-brutal-ink.text-brutal-paper {
+  background-color: var(--brutal-accent-strong);
+  border-color: var(--brutal-accent-strong);
+}
+
+/* Abstract source exercise. Response rail adapted from 21st.dev Timeline-02
+ * (ruixen.ui, demo 5534); source prose and its original HTML stay untouched. */
+.topic-abstract .abstract-choice-exercise {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-bottom: 24px;
+}
+.topic-abstract .choice-exercise-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+}
+.topic-abstract .choice-exercise-counter {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brutal-ink-soft);
+}
+.topic-abstract .choice-exercise-progress {
+  flex: 1;
+  min-width: 80px;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--brutal-line);
+}
+.topic-abstract .choice-exercise-progress > div {
+  height: 100%;
+  background: var(--brutal-accent-strong);
+  border-radius: inherit;
+  transition: width 200ms ease;
+}
+.topic-abstract .choice-question-card {
+  overflow: hidden;
+  border: 1px solid var(--brutal-highlight-edge);
+  border-radius: var(--brutal-radius);
+  background: var(--brutal-paper);
+  box-shadow: var(--brutal-soft-shadow-lg);
+}
+.topic-abstract .choice-question-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  background: var(--brutal-yellow);
+  border-bottom: 1px solid var(--brutal-highlight-edge);
+}
+.topic-abstract .choice-question-eyebrow h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.topic-abstract .choice-question-eyebrow > span {
+  flex-shrink: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--brutal-accent-strong);
+  line-height: 1;
+}
+.topic-abstract .choice-question-text {
+  margin: 0;
+  padding: 28px 30px 32px;
+  border-left: 5px solid var(--brutal-accent-strong);
+  font-size: clamp(21px, 2.5vw, 28px);
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.55;
+  letter-spacing: -0.015em;
+  overflow-wrap: break-word;
+}
+.topic-abstract .choice-response-timeline { position: relative; }
+.topic-abstract .choice-response-rail {
+  position: absolute;
+  top: 20px;
+  bottom: 36px;
+  left: 18px;
+  width: 2px;
+  background: var(--brutal-highlight-edge);
+}
+.topic-abstract .choice-response-step {
+  position: relative;
+  padding-left: 56px;
+  margin-bottom: 24px;
+}
+.topic-abstract .choice-response-step:last-child { margin-bottom: 0; }
+.topic-abstract .choice-response-node {
+  position: absolute;
+  left: 0;
+  top: 22px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--brutal-accent-strong);
+  color: var(--brutal-paper);
+  font-size: 16px;
+  font-weight: 800;
+  box-shadow: 0 0 0 6px var(--brutal-bg);
+}
+.topic-abstract .choice-response-card {
+  border: 1px solid var(--brutal-line);
+  border-radius: var(--brutal-radius);
+  background: var(--brutal-paper);
+  color: var(--brutal-ink);
+  box-shadow: var(--brutal-soft-shadow);
+}
+.topic-abstract .choice-response-content { padding: 24px; }
+.topic-abstract .choice-response-label {
+  display: block;
+  margin-bottom: 18px;
+  font-size: 19px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.topic-abstract .choice-response-input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--brutal-line);
+  border-radius: var(--brutal-radius);
+  background: var(--brutal-bg);
+  color: var(--brutal-ink);
+  font: inherit;
+  font-size: 17px;
+  line-height: 1.7;
+  resize: vertical;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.topic-abstract .choice-response-input:focus-visible {
+  outline: none;
+  border-color: var(--brutal-accent-strong);
+  box-shadow: 0 0 0 3px var(--brutal-pink);
+}
+.topic-abstract .choice-response-input:disabled { opacity: 0.8; }
+.topic-abstract .choice-reveal-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  gap: 12px;
+  padding: 16px 24px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.topic-abstract .choice-breakdown-card {
+  background: var(--brutal-paper);
+  border: 1px solid var(--brutal-line);
+  border-radius: var(--brutal-radius);
+  box-shadow: var(--brutal-soft-shadow-lg);
+  overflow: hidden;
+}
+.topic-abstract .choice-breakdown-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 30px;
+  border-bottom: 1px solid var(--brutal-line);
+  background: var(--brutal-cyan);
+}
+.topic-abstract .choice-breakdown-heading > svg {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  color: var(--brutal-accent-strong);
+}
+.topic-abstract .choice-breakdown-heading h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+.topic-abstract .choice-breakdown-prose {
+  max-width: 68ch;
+  padding: 10px 30px 28px;
+  font-size: 18px;
+  line-height: 1.85;
+  overflow-wrap: break-word;
+}
+.topic-abstract .choice-breakdown-prose > p { margin: 24px 0; }
+.topic-abstract .choice-breakdown-prose .definition {
+  margin: 24px 0;
+  padding: 20px 22px;
+  background: var(--brutal-yellow);
+  border: 1px solid var(--brutal-highlight-edge);
+  border-left-width: 4px;
+  border-radius: var(--brutal-radius);
+}
+.topic-abstract .choice-breakdown-prose .definition > strong:first-child {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 20px;
+  line-height: 1.5;
+}
+.topic-abstract .choice-breakdown-prose .example {
+  margin: 30px 0;
+  padding: 24px;
+  background: var(--brutal-bg);
+  border: 1px solid var(--brutal-line);
+  border-left: 4px solid var(--brutal-accent-strong);
+  border-radius: var(--brutal-radius);
+  font-style: italic;
+  line-height: 1.8;
+}
+.topic-abstract .choice-breakdown-prose .underlined {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--brutal-accent-strong);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  background: var(--brutal-yellow);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.topic-abstract .choice-completion-note {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--brutal-ink-soft);
+  font-size: 15px;
+  line-height: 1.7;
+}
+@media (max-width: 639px) {
+  .topic-abstract .abstract-choice-exercise { gap: 24px; }
+  .topic-abstract .choice-question-eyebrow { padding: 16px 18px; }
+  .topic-abstract .choice-question-text { padding: 24px 20px; }
+  .topic-abstract .choice-response-step { padding-left: 44px; }
+  .topic-abstract .choice-response-node { width: 30px; height: 30px; font-size: 14px; }
+  .topic-abstract .choice-response-rail { left: 14px; }
+  .topic-abstract .choice-response-content { padding: 18px; }
+  .topic-abstract .choice-response-label { font-size: 17px; }
+  .topic-abstract .choice-response-input { padding: 12px; font-size: 16px; }
+  .topic-abstract .choice-breakdown-heading { padding: 20px; }
+  .topic-abstract .choice-breakdown-heading h2 { font-size: 23px; }
+  .topic-abstract .choice-breakdown-prose { padding: 4px 20px 20px; font-size: 17px; }
+  .topic-abstract .choice-breakdown-prose .definition { padding: 18px; }
+  .topic-abstract .choice-breakdown-prose .example { padding: 20px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .topic-abstract .choice-exercise-progress > div,
+  .topic-abstract .choice-response-input { transition: none; }
+}
+
+/* Reading benchmark: the existing conditional ContrapositiveNote and its
+ * opening/contrapositive styles. Only reading hierarchy transfers here;
+ * source wording and original emphasis remain unchanged. */
+.topic-abstract .choice-exercise-status {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 14px;
+  color: var(--brutal-ink-soft);
+}
+.topic-abstract .choice-question-eyebrow {
+  background: linear-gradient(120deg, #0f2a38, #1d4b63);
+  color: #fffdf7;
+  border-bottom: none;
+}
+.topic-abstract .choice-question-eyebrow > span { color: #f0c57d; }
+.topic-abstract .choice-question-text {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(23px, 2.5vw, 30px);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+.topic-abstract .choice-response-label {
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.8;
+}
+.topic-abstract .choice-response-label strong { font-weight: 750; }
+.topic-abstract .choice-response-label[data-tone="requirements"] strong { color: #136b66; }
+.topic-abstract .choice-response-label[data-tone="example"] strong { color: #a0541c; }
+.topic-abstract .choice-breakdown-heading h2 {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+.topic-abstract .choice-breakdown-prose {
+  padding: 12px 36px 34px;
+  font-size: 19px;
+  line-height: 1.8;
+}
+.topic-abstract .choice-breakdown-prose > p { margin: 28px 0; }
+.topic-abstract .choice-breakdown-prose .definition {
+  padding: 30px;
+  background: linear-gradient(120deg, #0f2a38, #1d4b63);
+  color: #fffdf7;
+  border: none;
+  box-shadow: 0 12px 28px rgb(15 42 56 / 0.12);
+}
+.topic-abstract .choice-breakdown-prose .definition > strong:first-child {
+  color: #8ce2d0;
+  font-size: 22px;
+}
+.topic-abstract .choice-breakdown-prose .example { padding: 30px; margin: 36px 0; }
+.topic-abstract .source-review-summary {
+  padding: 30px;
+  border: 1px solid var(--brutal-highlight-edge);
+  border-radius: var(--brutal-radius);
+  background: var(--brutal-paper);
+}
+.topic-abstract .source-review-summary h1 { font: 400 30px/1.3 Georgia, serif; }
+@media (max-width: 639px) {
+  .topic-abstract .choice-response-label { font-size: 17px; }
+  .topic-abstract .choice-breakdown-prose { padding: 6px 20px 24px; font-size: 18px; }
+  .topic-abstract .choice-breakdown-prose .definition,
+  .topic-abstract .choice-breakdown-prose .example { padding: 22px 20px; }
+  .topic-abstract .source-review-summary { padding: 22px; }
+}
+
+/* Applied lessons only: retain the Contrapositive reading hierarchy despite
+ * the legacy note shell's forced font and size rules. */
+.topic-abstract .advanced-choice-lesson h2 {
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 30px !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  color: #0f2a38 !important;
+  margin: 42px 0 22px !important;
+}
+.topic-abstract .advanced-choice-lesson .choice-breakdown-prose,
+.topic-abstract .advanced-choice-lesson p,
+.topic-abstract .advanced-choice-lesson blockquote,
+.topic-abstract .advanced-choice-lesson li {
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  line-height: 1.8 !important;
+  letter-spacing: normal !important;
+}
+.topic-abstract .advanced-choice-lesson .choice-breakdown-prose > p {
+  margin: 26px 0 !important;
+}
+.topic-abstract .advanced-choice-lesson strong {
+  font-weight: 750 !important;
+  color: #136b66;
+}
+.topic-abstract .advanced-choice-lesson .example {
+  border-left: 4px solid #a0541c !important;
+  border-radius: 0 8px 8px 0;
+  background: #fbf4e8 !important;
+  padding: 24px !important;
+}
+.topic-abstract .advanced-choice-lesson blockquote {
+  border-left-color: #136b66 !important;
+  background: #edf6f3 !important;
+}
+.topic-abstract .advanced-choice-lesson table th {
+  font-size: 17px !important;
+  line-height: 1.6 !important;
+  font-weight: 700 !important;
+  background: #0f2a38 !important;
+  color: #fffdf7 !important;
+}
+.topic-abstract .advanced-choice-lesson table td {
+  font-size: 17px !important;
+  line-height: 1.7 !important;
+  vertical-align: top;
+}
+.topic-abstract .advanced-choice-lesson table td:first-child {
+  font-weight: 650;
+  color: #136b66;
+}
+.topic-abstract .advanced-choice-lesson .definition p {
+  margin: 0 !important;
+  color: #fffdf7 !important;
+}
+.topic-abstract .advanced-choice-lesson .definition strong {
+  color: #8ce2d0 !important;
+}
+@media (max-width: 639px) {
+  .topic-abstract .advanced-choice-lesson .example {
+    padding: 20px !important;
+  }
+}
