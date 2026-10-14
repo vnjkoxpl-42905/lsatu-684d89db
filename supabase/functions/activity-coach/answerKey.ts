@@ -44,7 +44,10 @@ export function readAnswerKey(raw: unknown): AnswerKey | null {
   });
   if (!Array.isArray(k.traps) || !k.traps.every((t) => text(t))) bad();
   if (k.context_benchmark !== null && k.context_benchmark !== undefined && !text(k.context_benchmark)) bad();
-  return { relationships, traps: k.traps as string[], context_benchmark: (k.context_benchmark as string) ?? null };
+  void relationships;
+  // Pass the trusted key through verbatim so the model sees exactly what the
+  // receipt hashed.
+  return raw as AnswerKey;
 }
 
 /** Upgraded rules win; returns null when absent; throws when present but malformed. */
