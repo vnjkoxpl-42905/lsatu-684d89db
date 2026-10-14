@@ -3,7 +3,8 @@ import { expect, it, vi } from "vitest";
 import { ModuleDrill } from "./ModuleView";
 const save = vi.hoisted(() => vi.fn());
 const finish = vi.hoisted(() => vi.fn());
-vi.mock("../../store/AppContext", () => ({ useApp: () => ({markDrillComplete:save,markModuleDrillComplete:finish,addXp:vi.fn()}) }));
+vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: null }) }));
+vi.mock("../../store/AppContext", () => ({ useApp: () => ({markDrillComplete:save,markModuleDrillComplete:finish,addXp:vi.fn(), loading:false, progressOwnerId:null, bootcampState:{drillAttempts:[],moduleProgress:{}}}) }));
 it("shows the complete original five-choice question, persists the keyed attempt, and prevents advancement on save failure", async () => {
   save.mockResolvedValueOnce({ok:false}).mockResolvedValue({ok:true}); finish.mockResolvedValue({ok:true});
   const onDone = vi.fn();
