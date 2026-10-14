@@ -8,9 +8,16 @@ export interface CourseProgressStore {
 }
 
 const CourseProgressContext = createContext<CourseProgressStore | null>(null);
+/** Whose device copy a drill reads and writes: the signed-in user's id, or 'preview' for the dev preview. */
+const CourseStorageScopeContext = createContext<string>('preview');
 
-export function CourseProgressProvider({ store, children }: { store: CourseProgressStore; children: ReactNode }) {
-  return <CourseProgressContext.Provider value={store}>{children}</CourseProgressContext.Provider>;
+export function CourseProgressProvider({ store, scope = 'preview', children }: { store: CourseProgressStore; scope?: string; children: ReactNode }) {
+  return <CourseStorageScopeContext.Provider value={scope}><CourseProgressContext.Provider value={store}>{children}</CourseProgressContext.Provider></CourseStorageScopeContext.Provider>;
+}
+
+/** The storage scope for device copies of drill work. Never shared between accounts. */
+export function useCourseStorageScope() {
+  return useContext(CourseStorageScopeContext);
 }
 
 export function useCourseProgress() {

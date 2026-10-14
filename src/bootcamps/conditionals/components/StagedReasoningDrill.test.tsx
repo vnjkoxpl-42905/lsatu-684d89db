@@ -194,3 +194,49 @@ it('keeps the student\'s own work when the account copy arrives after they have 
   expect(screen.getByRole('heading', { name: 'Which indicator introduces the sufficient condition?' })).toBeVisible();
   expect(optionButtons()[1]).toHaveAttribute('aria-pressed', 'true');
 });
+
+it('never reads another account\'s device copy, and keeps each account and the preview on its own key', () => {
+  const signatures = sufficientStagedItems.map(item => signatureOf(item));
+  const theirs = { index: 2, step: 0, answers: { '0:0': { choice: 0, writing: '', checked: true, accepted: true } }, signatures };
+  localStorage.setItem('conditional-staged-v1:sufficient', JSON.stringify(theirs));
+  localStorage.setItem('conditional-staged-v1:student-a:sufficient', JSON.stringify(theirs));
+  const writes: unknown[] = [];
+  const save: CourseProgressStore['save'] = (_, patch) => { writes.push(patch.state); };
+  render(<MemoryRouter><CourseProgressProvider store={{ steps: {}, save }} scope="student-b"><StagedReasoningDrill mode="sufficient"/></CourseProgressProvider></MemoryRouter>);
+  // Student B starts empty: neither the preview copy nor student A's copy is restored.
+  expect(screen.getByText('01')).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Which indicator introduces the sufficient condition?' })).toBeVisible();
+  expect(optionButtons().every(button => button.getAttribute('aria-pressed') === 'false')).toBe(true);
+  expect(writes.every(state => Object.keys((state as { answers: object }).answers).length === 0)).toBe(true);
+  // Nothing of B's is written into A's or the preview key, and both stay intact.
+  expect(JSON.parse(localStorage.getItem('conditional-staged-v1:student-a:sufficient')!)).toEqual(theirs);
+  expect(JSON.parse(localStorage.getItem('conditional-staged-v1:sufficient')!)).toEqual(theirs);
+  expect(JSON.parse(localStorage.getItem('conditional-staged-v1:student-b:sufficient')!).answers).toEqual({});
+});
+
+it('restores a signed-in student\'s own device copy from their scoped key', () => {
+  const signatures = sufficientStagedItems.map(item => signatureOf(item));
+  localStorage.setItem('conditional-staged-v1:student-a:sufficient', JSON.stringify({ index: 0, step: 1, answers: { '0:0': { choice: 0, writing: '', checked: true, accepted: true } }, signatures }));
+  render(<MemoryRouter><CourseProgressProvider store={{ steps: {}, save: () => undefined }} scope="student-a"><StagedReasoningDrill mode="sufficient"/></CourseProgressProvider></MemoryRouter>);
+  expect(screen.getByRole('heading', { name: /What complete condition does “if” identify/ })).toBeVisible();
+});
+
+it('keeps every archived record instead of evicting older ones', () => {
+  const older = Array.from({ length: 5 }, (_, i) => ({ fingerprint: `v2:older-${i}`, answers: {} }));
+  localStorage.setItem('conditional-staged-v1:sufficient', JSON.stringify({ index: 0, step: 0, answers: { '0:0': { choice: 0, writing: '', checked: true, accepted: true } }, fingerprint: 'v2:old', archived: older }));
+  mount('sufficient');
+  const stored = JSON.parse(localStorage.getItem('conditional-staged-v1:sufficient')!);
+  expect(stored.archived).toHaveLength(6);
+  expect(stored.archived.slice(0, 5)).toEqual(older);
+});
+
+it('explains only the original rule before asking for the contrapositive', () => {
+  referencePracticeItems.forEach((item, i) => {
+    const original = contrapositiveStagedItems[i].stages[0];
+    expect(original.name).toBe('Original rule');
+    expect(original.explanation).toBe(item.why);
+    // No contrapositive deduction: nothing about what the missing right side proves.
+    expect(item.why).not.toMatch(/rules out|cannot be one|can't be|so it has cleared|proving|contrapositive|outside that room|is red, /i);
+    expect(item.why).not.toMatch(/[—–]/);
+  });
+});

@@ -79,3 +79,12 @@ it('covers the rewritten rules in Drill 7 and Drill 5', () => {
   expect(checkConditionSpans('A good soup requires salt.', [[0, 2], [4, 4]]).correct).toBe(true);
   expect(checkConditionSpans('A good soup requires salt.', [[0, 2], [3, 4]]).correct).toBe(false);
 });
+
+it('keeps timing in every accepted wording of a condition that carries it', () => {
+  const virus = 'The body of anyone infected by virus X will, after a week, produce antibodies to fight the virus.';
+  expect(roleOfSpan(virus, [12, 17])).toBeNull();
+  expect(roleOfSpan(virus, [8, 17])).toBe('necessary');
+  const teamwork = 'All successful projects require effective teamwork to have taken place.';
+  expect(roleOfSpan(teamwork, [4, 5])).toBeNull();
+  expect(roleOfSpan(teamwork, [4, 9])).toBe('necessary');
+});

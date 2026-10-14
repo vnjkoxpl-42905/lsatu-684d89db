@@ -96,19 +96,31 @@ const targetOptions = (item: MixedItem, index: number) => {
 };
 const sideOptions = (item: MixedItem, index: number) => index % 2 === 0 ? [item.right, item.left] : [item.left, item.right];
 
-export function MixedItemCheck({ item, index, onChecked, onResult, embedded = false }: { item: MixedItem; index: number; onChecked: (checked: boolean) => void; onResult?: (result: { targetCorrect: boolean; targetIncomplete: boolean; sideCorrect: boolean } | null) => void; embedded?: boolean }) {
-  const [draftDiagram, setDraftDiagram] = useState('');
-  const [draftReadback, setDraftReadback] = useState('');
-  const [comparing, setComparing] = useState(false);
+/** Everything the student has written and chosen for one sentence, so a reload can show it again. */
+export type MixedItemDraft = { diagram: string; readback: string; comparing: boolean; target: string | null; left: string | null; checked: boolean };
+
+export function MixedItemCheck({ item, index, onChecked, onResult, embedded = false, initialDraft, onDraft }: { item: MixedItem; index: number; onChecked: (checked: boolean) => void; onResult?: (result: { targetCorrect: boolean; targetIncomplete: boolean; sideCorrect: boolean } | null) => void; embedded?: boolean; initialDraft?: MixedItemDraft; onDraft?: (draft: MixedItemDraft) => void }) {
+  const [draftDiagram, setDraftDiagram] = useState(initialDraft?.diagram ?? '');
+  const [draftReadback, setDraftReadback] = useState(initialDraft?.readback ?? '');
+  const [comparing, setComparing] = useState(initialDraft?.comparing ?? false);
   const draftQuestion = useId();
   const readbackQuestion = useId();
   const draftInput = useRef<HTMLTextAreaElement>(null);
-  const [target, setTarget] = useState<string | null>(null);
-  const [left, setLeft] = useState<string | null>(null);
-  const [checked, setChecked] = useState(false);
+  const [target, setTarget] = useState<string | null>(initialDraft?.target ?? null);
+  const [left, setLeft] = useState<string | null>(initialDraft?.left ?? null);
+  const [checked, setChecked] = useState(initialDraft?.checked ?? false);
   const targetQuestion = useId();
   const comparisonHeading = useRef<HTMLHeadingElement>(null);
-  useEffect(() => { if (comparing) comparisonHeading.current?.focus(); }, [comparing]);
+  // Opening with a restored comparison is not a new step, so it does not move focus.
+  const mounted = useRef(false);
+  useEffect(() => { if (mounted.current && comparing) comparisonHeading.current?.focus(); mounted.current = true; }, [comparing]);
+  const draftChanged = useRef(onDraft);
+  draftChanged.current = onDraft;
+  const firstDraft = useRef(true);
+  useEffect(() => {
+    if (firstDraft.current) { firstDraft.current = false; return; }
+    draftChanged.current?.({ diagram: draftDiagram, readback: draftReadback, comparing, target, left, checked });
+  }, [draftDiagram, draftReadback, comparing, target, left, checked]);
   const sideQuestion = useId();
   const change = (update: () => void) => { update(); setChecked(false); onChecked(false); onResult?.(null); };
   const reset = () => { draftInput.current?.focus(); setComparing(false); setTarget(null); setLeft(null); setChecked(false); onChecked(false); onResult?.(null); };

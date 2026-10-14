@@ -86,7 +86,7 @@ const SPANS: Record<string, [sufficient: string, necessary: string]> = {
   'All Martian gullies are poleward of 30° latitude.': ['Martian gullies', 'poleward of 30° latitude'],
   'When a mix of fresh and dried grass clippings is worked into garden soil, that soil holds water longer.': ['a mix of fresh and dried grass clippings is worked into garden soil', 'that soil holds water longer'],
   'When the sky is clear, the atmospheric pressure is high.': ['the sky is clear', 'the atmospheric pressure is high'],
-  'The body of anyone infected by virus X will, after a week, produce antibodies to fight the virus.': ['infected by virus X', 'after a week, produce antibodies to fight the virus | produce antibodies to fight the virus'],
+  'The body of anyone infected by virus X will, after a week, produce antibodies to fight the virus.': ['infected by virus X', 'after a week, produce antibodies to fight the virus'],
   'Economic conditions improved only when the policy of free trade had been implemented.': ['Economic conditions improved', 'the policy of free trade had been implemented'],
   'Where a moral duty exists, it supersedes any legal duty and any other kind of duty.': ['a moral duty exists', 'it supersedes any legal duty and any other kind of duty'],
   // Drill 5 rules, highlighted in Revisit Drill 5.
@@ -96,7 +96,7 @@ const SPANS: Record<string, [sufficient: string, necessary: string]> = {
   'The only key to unlocking the shed is the blue key.': ['key to unlocking the shed', 'the blue key | is the blue key'],
   'Success in chess requires strategic thinking.': ['Success in chess', 'strategic thinking'],
   'Any artist who uses oil paints must clean their brushes thoroughly.': ['artist who uses oil paints', 'clean their brushes thoroughly'],
-  'All successful projects require effective teamwork to have taken place.': ['successful projects', 'effective teamwork to have taken place | effective teamwork'],
+  'All successful projects require effective teamwork to have taken place.': ['successful projects', 'effective teamwork to have taken place'],
   'Only those with a degree in architecture can apply for this position.': ['apply for this position', 'a degree in architecture | with a degree in architecture'],
   'Whenever the sun sets, the streetlights turn on.': ['the sun sets', 'the streetlights turn on'],
   'The only path to wisdom is through experience.': ['path to wisdom | wisdom', 'experience | through experience'],

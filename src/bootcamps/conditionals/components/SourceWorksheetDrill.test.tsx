@@ -222,6 +222,10 @@ it('restores a partially written stage and invalidates stale source checks witho
   run('source-rephrase');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   expect(screen.getByRole('textbox')).toHaveValue('My earlier wording.');
+  // An unreadable fingerprint cannot prove the graded wording is unchanged, so the whole attempt is archived first.
+  const archived = JSON.parse(localStorage.getItem(key)!).answers[item.id].previous;
+  expect(archived).toHaveLength(1);
+  expect(archived[0]).toMatchObject({ fingerprint: 'old content', review: 'matched', writing: 'My earlier wording.' });
 });
 
 it('recovers malformed saved state and links the landing to its run route', () => {
@@ -251,6 +255,85 @@ it('starts the clicked words and highlights over when a rule is reworded, and ke
   expect(saved.writing).toBe('My old readback.');
   expect(saved.spans).toEqual([]);
   expect(saved.words).toEqual([]);
+  // The completed attempt is archived whole before anything is reset.
+  expect(saved.previous).toHaveLength(1);
+  expect(saved.previous[0]).toMatchObject({ fingerprint: oldPrint, review: 'matched', spans: [[1, 2], [3, 40]], words: [0, 9], left: '1', right: '2' });
+  expect(saved.previous[0].passed).toHaveLength(7);
+});
+
+const fullPass = { left: '1', right: '2', contraLeft: '2', contraRight: '1', negateLeft: true, negateRight: true, writing: 'Mine.', contraWriting: 'Mine too.',
+  conditionOne: 'x', conditionTwo: 'y', symbolOne: 'A', symbolTwo: 'B', stage: 7, passed: ['indicators', 'conditions', 'symbols', 'diagram', 'contra', 'readback', 'contra-readback'], revealed: true, review: 'matched' };
+
+it('keeps every passed step when only explanatory copy changed under a legacy fingerprint', () => {
+  const item = sourceWorksheetDrills.find(s => s.id === 'source-independent')!.items[0];
+  // Old format: [statement, sufficient, necessary, indicators, contrapositiveWords]. Only the copy differs from today.
+  const legacy = JSON.stringify([item.statement, 'older sufficient label', 'older necessary label', item.indicators, 'If you do not see it, it did not happen.']);
+  localStorage.setItem('conditional-worksheet-v1:source-independent', JSON.stringify({ current: 0, answers: { [item.id]: { ...fullPass, groups: { '0': '1' }, fingerprint: legacy, words: [0], spans: [[1, 2], [3, 4]] } } }));
+  run('source-independent');
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
+  expect(screen.getByRole('heading', { name: 'Bring it together' })).toBeVisible();
+  const saved = JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-independent')!).answers[item.id];
+  expect(saved.passed).toHaveLength(7);
+  expect(saved.review).toBe('matched');
+  expect(saved.spans).toEqual([[1, 2], [3, 4]]);
+  expect(saved.fingerprint.startsWith('v2:')).toBe(true);
+  expect(saved.previous).toBeUndefined();
+});
+
+it('archives and resets when the keyed indicators change, keeping the clicked words on the same rule', () => {
+  const item = sourceWorksheetDrills.find(s => s.id === 'source-independent')!.items[0];
+  const print = `v2:${JSON.stringify([item.statement, [{ text: 'whenever', group: 1 }]])}`;
+  localStorage.setItem('conditional-worksheet-v1:source-independent', JSON.stringify({ current: 0, answers: { [item.id]: { ...fullPass, groups: { '0': '1' }, fingerprint: print, words: [0], spans: [[1, 2], [3, 4]] } } }));
+  run('source-independent');
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  expect(screen.getByRole('heading', { name: 'Find the indicators' })).toBeVisible();
+  const saved = JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-independent')!).answers[item.id];
+  expect(saved.passed).toEqual([]);
+  expect(saved.words).toEqual([0]);
+  expect(saved.writing).toBe('Mine.');
+  expect(saved.previous).toHaveLength(1);
+  expect(saved.previous[0]).toMatchObject({ fingerprint: print, review: 'matched' });
+  expect(saved.previous[0].passed).toHaveLength(7);
+});
+
+it('defines each letter by the complete condition, modality included, and carries it into the contrapositive', () => {
+  run('source-rephrase-contrapositive');
+  fireEvent.change(screen.getByLabelText('Go to question'), { target: { value: 5 } });
+  expect(screen.getByText('Any artist who uses oil paints must clean their brushes thoroughly.', { selector: 'blockquote' })).toBeVisible();
+  click('Any');
+  click('must');
+  const [any, must] = screen.getAllByLabelText(/Which group/);
+  fireEvent.change(any, { target: { value: '1' } });
+  fireEvent.change(must, { target: { value: '2' } });
+  click('Check this step');
+  click('Continue');
+  mark(1, 5);
+  mark(7, 10);
+  click('Check this step');
+  click('Continue');
+  // The highlight leaves out "must", but the letter stands for the duty, not the act of cleaning.
+  expect(screen.getByText('the person is required to clean their brushes thoroughly', { selector: 'strong' })).toBeVisible();
+  expect(screen.getByText('You highlighted: “clean their brushes thoroughly”')).toBeVisible();
+  write('First condition’s symbol', 'A');
+  write('Second condition’s symbol', 'C');
+  click('Save and continue');
+  expect(screen.getByText('= the person is required to clean their brushes thoroughly', { exact: false })).toBeVisible();
+  fireEvent.click(within(screen.getByRole('group', { name: 'Left: sufficient condition' })).getByRole('button', { name: 'A' }));
+  fireEvent.click(within(screen.getByRole('group', { name: 'Right: necessary condition' })).getByRole('button', { name: 'C' }));
+  click('Check this step');
+  click('Continue');
+  expect(screen.getByText(/NOT denies the whole condition/)).toBeVisible();
+  fireEvent.click(within(screen.getByRole('group', { name: 'Left side' })).getByRole('button', { name: 'C' }));
+  fireEvent.click(within(screen.getByRole('group', { name: 'Right side' })).getByRole('button', { name: 'A' }));
+  fireEvent.click(screen.getByLabelText('NOT on the left side'));
+  fireEvent.click(screen.getByLabelText('NOT on the right side'));
+  click('Check this step');
+  click('Continue');
+  write('Write this rule as an if/then sentence.', 'If someone is an oil painter, they are required to clean their brushes.');
+  click('Save and continue');
+  expect(screen.getByText('NOT C → NOT A')).toBeVisible();
+  expect(screen.getByText('= NOT (the person is required to clean their brushes thoroughly)', { exact: false })).toBeVisible();
+  expect(screen.getByText('= NOT (the person is an artist who uses oil paints)', { exact: false })).toBeVisible();
 });
 
 it('accepts an optional conditional word without requiring it, and never lists it as a keyed indicator', () => {

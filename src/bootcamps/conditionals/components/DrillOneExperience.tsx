@@ -17,7 +17,7 @@ export type DrillOneQuestion = {
 
 type Answer = { selected: number | null; checked: boolean; first: number | null };
 /** A finished or abandoned run kept in the saved record when the student starts over. */
-type PastRun = { order: number; answers: Answer[]; seenResults: boolean; endedAt: string };
+export type PastRun = { order: number; answers: Answer[]; seenResults: boolean; endedAt: string };
 const blank = (count: number): Answer[] => Array.from({ length: count }, () => ({ selected: null, checked: false, first: null }));
 
 /** A decorative paper sculpture. No condition or inference is encoded in its shape. */
@@ -47,7 +47,19 @@ export function DrillOneEntry({ startUrl, lessonsUrl }: { startUrl: string; less
  * ignored rather than mis-mapped.
  */
 function pastRuns(value: unknown): PastRun[] {
-  return Array.isArray(value) ? value.filter((run): run is PastRun => !!run && typeof run === 'object' && Array.isArray((run as PastRun).answers)).slice(-3) : [];
+  return Array.isArray(value) ? keepRuns(value.filter((run): run is PastRun => !!run && typeof run === 'object' && Array.isArray((run as PastRun).answers))) : [];
+}
+/** Abandoned runs kept besides every completed one. */
+const ABANDONED_RUNS_KEPT = 10;
+const completedRun = (run: PastRun) => run.seenResults || run.answers.every(answer => answer?.first !== null && answer?.first !== undefined);
+/**
+ * A completed run is never evicted. Only runs abandoned partway through are
+ * capped, keeping the most recent ones, and the original order is kept.
+ */
+export function keepRuns(runs: PastRun[]): PastRun[] {
+  const abandoned = runs.filter(run => !completedRun(run));
+  const dropped = new Set(abandoned.slice(0, Math.max(0, abandoned.length - ABANDONED_RUNS_KEPT)));
+  return runs.filter(run => !dropped.has(run));
 }
 function restoreDrillOne(state: unknown, count: number, order: number, legacyOrder?: Record<number, number[]>): { current: number; answers: Answer[]; finished: boolean; seenResults: boolean; history: PastRun[] } | null {
   const data = state as { order?: unknown; current?: unknown; answers?: unknown; finished?: unknown; seenResults?: unknown; history?: unknown } | undefined;
@@ -136,7 +148,7 @@ export function DrillOneExperience({ questions, order = 1, legacyOrder }: { ques
   /** Clears this drill's answers for a fresh attempt. The finished run stays in the saved record, and the course keeps the drill marked done. */
   function startOver() {
     touched.current = true;
-    if (answers.some(item => item.first !== null)) setHistory(previous => [...previous, { order, answers, seenResults, endedAt: new Date().toISOString() }].slice(-3));
+    if (answers.some(item => item.first !== null)) setHistory(previous => keepRuns([...previous, { order, answers, seenResults, endedAt: new Date().toISOString() }]));
     setAnswers(blank(questions.length)); setSeenResults(false); setConfirmingRestart(false);
     go(0);
   }

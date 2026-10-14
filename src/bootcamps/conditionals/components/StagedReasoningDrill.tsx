@@ -3,7 +3,7 @@ import type React from 'react';
 import { Check, X } from 'lucide-react';
 import { referencePracticeItems } from './ConditionalReferenceSequence';
 import { OpeningMixedDrill } from './OpeningMixedDrill';
-import { useCourseStep } from '../courseProgress';
+import { useCourseStep, useCourseStorageScope } from '../courseProgress';
 import { Neg } from './ContrapositiveVisuals';
 import './staged-reasoning-drill.css';
 
@@ -127,9 +127,21 @@ export const contrapositiveStagedItems: Item[] = referencePracticeItems.map((ite
   ] };
 });
 
-export function StagedReasoningDrill({ mode }: { mode: 'sufficient' | 'contrapositive' | 'mixed' }) {
+/**
+ * The device copy belongs to one account. The dev preview keeps the original
+ * unscoped key; a signed-in student only ever reads and writes the key carrying
+ * their own user id, so a record left on a shared device by someone else is never
+ * read into, or copied to, another account.
+ */
+export function stagedStorageKey(scope: string, mode: 'sufficient' | 'contrapositive') {
+  return scope === 'preview' ? `conditional-staged-v1:${mode}` : `conditional-staged-v1:${scope}:${mode}`;
+}
+
+export function StagedReasoningDrill({ mode, storageScope }: { mode: 'sufficient' | 'contrapositive' | 'mixed'; storageScope?: string }) {
+  const courseScope = useCourseStorageScope();
+  const scope = storageScope ?? courseScope;
   if (mode === 'mixed') return <div className="sr-mixed"><OpeningMixedDrill stepId="mixed-practice"/></div>;
-  return <StagedRun key={mode} stepId={`${mode}-practice`} storageKey={`conditional-staged-v1:${mode}`} items={mode === 'sufficient' ? sufficientStagedItems : contrapositiveStagedItems}/>;
+  return <StagedRun key={`${scope}-${mode}`} stepId={`${mode}-practice`} storageKey={stagedStorageKey(scope, mode)} items={mode === 'sufficient' ? sufficientStagedItems : contrapositiveStagedItems}/>;
 }
 
 /**
@@ -185,14 +197,14 @@ function savedSignatures(data: { signatures?: unknown; fingerprint?: unknown }, 
 /**
  * Answers are keyed by question and step position. An answer is kept only when
  * its question is still the same question. Anything that cannot be kept stays in
- * the saved record under `archived` (latest three) rather than being deleted.
+ * the saved record under `archived` rather than being deleted. Nothing is evicted.
  */
 function restore(storageKey: string, items: Item[], accountState?: unknown): Restored {
   const fallback: Restored = { index: 0, step: 0, answers: {}, archived: [] };
   try {
     const data = (accountState ?? JSON.parse(localStorage.getItem(storageKey) ?? 'null'));
     if (!data || typeof data !== 'object') return fallback;
-    let archived: Archived[] = Array.isArray(data.archived) ? data.archived.slice(-3) : [];
+    let archived: Archived[] = Array.isArray(data.archived) ? data.archived : [];
     if (!data.answers || typeof data.answers !== 'object') return { ...fallback, archived };
     const saved = savedSignatures(data, items);
     const current = signatures(items);
@@ -209,7 +221,7 @@ function restore(storageKey: string, items: Item[], accountState?: unknown): Res
       const checked = a.checked;
       answers[key] = { ...a, checked, accepted: checked && a.accepted && (stage.options ? a.choice === stage.correct : !!a.writing.trim()) };
     }
-    if (dropped) archived = [...archived, { fingerprint: data.fingerprint, ...(saved ? { signatures: saved } : {}), index: data.index, step: data.step, answers: data.answers }].slice(-3);
+    if (dropped) archived = [...archived, { fingerprint: data.fingerprint, ...(saved ? { signatures: saved } : {}), index: data.index, step: data.step, answers: data.answers }];
     if (!saved) return { ...fallback, archived };
     const index = Number.isInteger(data.index) && data.index >= 0 && data.index < items.length ? data.index : 0;
     const step = Number.isInteger(data.step) && data.step >= 0 && data.step < items[index].stages.length ? data.step : 0;

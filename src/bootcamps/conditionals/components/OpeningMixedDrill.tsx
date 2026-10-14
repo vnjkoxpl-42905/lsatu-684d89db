@@ -1,8 +1,8 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { DiagramDrills } from '@/features/conditional-refresher/ConditionalIndicatorsRefresher';
+import { DiagramDrills, type DiagramDraft } from '@/features/conditional-refresher/ConditionalIndicatorsRefresher';
 import { openingActivityExplanations, openingActivityItems } from '../content/openingActivityItems';
 import { completeConditionItems, confirmationItemsByError, equivalenceItems, obligationConfirmationItem, transferItems, type MixedDrillChoiceItem, type MixedDrillError } from '../content/mixedDrillItems';
-import { MixedItemCheck, mixedFamilyItems } from './MixedFamilyPractice';
+import { MixedItemCheck, mixedFamilyItems, type MixedItemDraft } from './MixedFamilyPractice';
 import { useCourseStep } from '../courseProgress';
 import './opening-mixed-drill.css';
 
@@ -58,6 +58,31 @@ const errorLabels: Record<MixedDrillError, string> = {
 };
 type Result = { firstCorrect: boolean; correct: boolean; errors: MixedDrillError[] };
 type Check = (correct: boolean | null, errors?: MixedDrillError[]) => void;
+/** What the student chose, built or wrote for one question, saved so a reload shows their work. */
+type ChoiceDraft = { picked: number | null; checked: boolean };
+type Response = ChoiceDraft | DiagramDraft | MixedItemDraft;
+type SaveDraft = (draft: Response) => void;
+
+const isText = (value: unknown): value is string => typeof value === 'string';
+const isTextOrNull = (value: unknown) => value === null || isText(value);
+/** Reads a saved response back for its question, or nothing when it does not fit that question. */
+function readResponse(question: Question, raw: unknown): Response | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const data = raw as Record<string, unknown>;
+  if (question.kind === 'choice') {
+    const picked = data.picked;
+    if (!(picked === null || (Number.isInteger(picked) && (picked as number) >= 0 && (picked as number) < question.item.options.length)) || typeof data.checked !== 'boolean') return undefined;
+    return { picked: picked as number | null, checked: data.checked && picked !== null };
+  }
+  if (question.kind === 'diagram') {
+    if (!Array.isArray(data.left) || !Array.isArray(data.right) || !data.left.every(isText) || !data.right.every(isText)) return undefined;
+    const checked = data.checked === true || data.checked === false ? data.checked : null;
+    return { left: data.left, right: data.right, side: data.side === 'right' ? 'right' : 'left', checked: checked !== null && data.left.length > 0 && data.right.length > 0 ? checked : null };
+  }
+  if (!isText(data.diagram) || !isText(data.readback) || !isTextOrNull(data.target) || !isTextOrNull(data.left)) return undefined;
+  const comparing = data.comparing === true;
+  return { diagram: data.diagram, readback: data.readback, comparing, target: data.target as string | null, left: data.left as string | null, checked: comparing && data.checked === true && data.target !== null && data.left !== null };
+}
 
 function confirmationQuestions(results: Record<string, Result>): Question[] {
   const errors = [...new Set(baselineQuestions.flatMap(item => results[item.id]?.errors ?? []))];
@@ -67,10 +92,14 @@ function confirmationQuestions(results: Record<string, Result>): Question[] {
   });
 }
 
-function ChoiceQuestion({ item, onCheck }: { item: MixedDrillChoiceItem; onCheck: Check }) {
-  const [picked, setPicked] = useState<number | null>(null);
+function ChoiceQuestion({ item, onCheck, draft, onDraft }: { item: MixedDrillChoiceItem; onCheck: Check; draft?: ChoiceDraft; onDraft?: SaveDraft }) {
+  const [picked, setPicked] = useState<number | null>(draft?.picked ?? null);
   const firstAnswer = useRef<HTMLButtonElement>(null);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(draft?.checked ?? false);
+  const draftChanged = useRef(onDraft);
+  draftChanged.current = onDraft;
+  const firstDraft = useRef(true);
+  useEffect(() => { if (firstDraft.current) { firstDraft.current = false; return; } draftChanged.current?.({ picked, checked }); }, [picked, checked]);
   return <div className="omd-question">
     <blockquote>{item.sentence}</blockquote><h3>{item.prompt}</h3>
     <div className="omd-options" role="group" aria-label="Answer choices">{item.options.map((option, index) => <button ref={index === 0 ? firstAnswer : undefined} type="button" key={option} aria-pressed={picked === index} onClick={() => { setPicked(index); setChecked(false); onCheck(null); }}>{option}</button>)}</div>
@@ -81,24 +110,24 @@ function ChoiceQuestion({ item, onCheck }: { item: MixedDrillChoiceItem; onCheck
   </div>;
 }
 
-function DrillQuestion({ question, onCheck }: { question: Question; onCheck: Check }) {
-  if (question.kind === 'choice') return <ChoiceQuestion item={question.item} onCheck={onCheck}/>;
-  if (question.kind === 'independent') return <MixedItemCheck item={question.item} index={question.itemIndex} embedded onChecked={() => undefined} onResult={result => {
+function DrillQuestion({ question, onCheck, draft, onDraft }: { question: Question; onCheck: Check; draft?: Response; onDraft?: SaveDraft }) {
+  if (question.kind === 'choice') return <ChoiceQuestion item={question.item} onCheck={onCheck} draft={draft as ChoiceDraft | undefined} onDraft={onDraft}/>;
+  if (question.kind === 'independent') return <MixedItemCheck item={question.item} index={question.itemIndex} embedded initialDraft={draft as MixedItemDraft | undefined} onDraft={onDraft} onChecked={() => undefined} onResult={result => {
     if (!result) return onCheck(null);
     const errors: MixedDrillError[] = [];
     if (!result.targetCorrect) errors.push(result.targetIncomplete ? 'qualification' : question.item.family === 'necessary' ? 'requirement' : 'direction');
     if (!result.sideCorrect) errors.push(question.item.family === 'necessary' ? 'requirement' : 'direction');
     onCheck(result.targetCorrect && result.sideCorrect, errors);
   }}/>;
-  return <DiagramQuestion item={question.item} onCheck={onCheck}/>;
+  return <DiagramQuestion item={question.item} onCheck={onCheck} draft={draft as DiagramDraft | undefined} onDraft={onDraft}/>;
 }
 
 /** Hint only on a wrong diagram; the full diagram and explanation appear once it is right. */
-function DiagramQuestion({ item, onCheck }: { item: DiagramItem; onCheck: Check }) {
-  const [solved, setSolved] = useState<boolean | null>(null);
+function DiagramQuestion({ item, onCheck, draft, onDraft }: { item: DiagramItem; onCheck: Check; draft?: DiagramDraft; onDraft?: SaveDraft }) {
+  const [solved, setSolved] = useState<boolean | null>(draft?.checked ?? null);
   const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
   return <div className="cir-root omd-diagram" data-result={solved === null ? undefined : solved ? 'right' : 'wrong'}><p>Build the original diagram, then read it as an if/then sentence before checking.</p>
-    <DiagramDrills items={[item]} embedded persistProgress={false} allowContrapositive={false} allowNegation={false} shuffleItems={false} explanations={solved ? diagramFollowUps : {}} feedbackForResult={result => {
+    <DiagramDrills items={[item]} embedded persistProgress={false} allowContrapositive={false} allowNegation={false} shuffleItems={false} explanations={solved ? diagramFollowUps : {}} initialDraft={draft} onDraft={onDraft} feedbackForResult={result => {
       if (result.correct) return `Correct. Read it back: ${diagramReadbacks[item.id]?.readback ?? `If ${item.left.toLowerCase()}, then ${item.right.toLowerCase()}.`}`;
       const reversed = same(result.left, item.right) && same(result.right, item.left);
       if (reversed) return 'Check which condition is enough to prove the other.';
@@ -112,18 +141,24 @@ function DiagramQuestion({ item, onCheck }: { item: DiagramItem; onCheck: Check 
   </div>;
 }
 
-const RetainedQuestion = memo(function RetainedQuestion({ question, record }: {
+const RetainedQuestion = memo(function RetainedQuestion({ question, record, draft, saveDraft }: {
   question: Question;
   record: (id: string, correct: boolean | null, errors?: MixedDrillError[]) => void;
+  draft?: Response;
+  saveDraft: (id: string, draft: Response) => void;
 }) {
-  return <DrillQuestion question={question} onCheck={(correct, errors) => record(question.id, correct, errors)}/>;
+  return <DrillQuestion question={question} draft={draft} onDraft={next => saveDraft(question.id, next)} onCheck={(correct, errors) => record(question.id, correct, errors)}/>;
 });
 
 const confirmationPool: MixedDrillChoiceItem[] = [...Object.values(confirmationItemsByError).flat(), obligationConfirmationItem];
-type MixedState = { questions: Question[]; current: number; visited: string[]; results: Record<string, Result>; finished: boolean; introducedStages: number[] };
-/** Rebuilds a saved run. Anything that no longer matches the current question set starts fresh. */
+type MixedState = { questions: Question[]; current: number; visited: string[]; results: Record<string, Result>; responses: Record<string, Response>; finished: boolean; introducedStages: number[] };
+/**
+ * Rebuilds a saved run. Anything that no longer matches the current question set
+ * starts fresh. Runs saved before responses were stored still open, with their
+ * results and no restored work.
+ */
 function restoreMixed(state: unknown): MixedState | null {
-  const data = state as { questionIds?: unknown; current?: unknown; visited?: unknown; results?: unknown; finished?: unknown; introducedStages?: unknown } | undefined;
+  const data = state as { questionIds?: unknown; current?: unknown; visited?: unknown; results?: unknown; responses?: unknown; finished?: unknown; introducedStages?: unknown } | undefined;
   if (!data || !Array.isArray(data.questionIds) || !data.results || typeof data.results !== 'object') return null;
   const ids = data.questionIds as unknown[];
   if (ids.length < baselineQuestions.length || baselineQuestions.some((question, index) => ids[index] !== question.id)) return null;
@@ -137,7 +172,12 @@ function restoreMixed(state: unknown): MixedState | null {
   const current = Number.isInteger(data.current) && (data.current as number) >= 0 && (data.current as number) < questions.length ? data.current as number : 0;
   const visited = Array.isArray(data.visited) ? (data.visited as unknown[]).filter((id): id is string => questions.some(question => question.id === id)) : [];
   const introducedStages = Array.isArray(data.introducedStages) ? (data.introducedStages as unknown[]).filter((value): value is number => Number.isInteger(value)) : [];
-  return { questions, current, visited: visited.length ? visited : [questions[current].id], results, finished: data.finished === true, introducedStages };
+  const responses: Record<string, Response> = {};
+  if (data.responses && typeof data.responses === 'object') for (const question of questions) {
+    const response = readResponse(question, (data.responses as Record<string, unknown>)[question.id]);
+    if (response) responses[question.id] = response;
+  }
+  return { questions, current, visited: visited.length ? visited : [questions[current].id], results, responses, finished: data.finished === true, introducedStages };
 }
 
 export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
@@ -149,6 +189,9 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
   const [current, setCurrent] = useState(restored?.current ?? 0);
   const [visited, setVisited] = useState(restored?.visited ?? [baselineQuestions[0].id]);
   const [results, setResults] = useState<Record<string, Result>>(restored?.results ?? {});
+  const [responses, setResponses] = useState<Record<string, Response>>(restored?.responses ?? {});
+  // Bumped when a late account copy replaces the run, so each question reopens with its saved work.
+  const [generation, setGeneration] = useState(0);
   const [finished, setFinished] = useState(restored?.finished ?? false);
   const [introducedStages, setIntroducedStages] = useState<number[]>(restored?.introducedStages ?? []);
   // The account can finish loading after the drill opens. Until the student does
@@ -160,13 +203,13 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
     written.current = savedState;
     const late = restoreMixed(savedState);
     if (!late) return;
-    setQuestions(late.questions); setCurrent(late.current); setVisited(late.visited); setResults(late.results); setFinished(late.finished); setIntroducedStages(late.introducedStages);
+    setQuestions(late.questions); setCurrent(late.current); setVisited(late.visited); setResults(late.results); setResponses(late.responses); setFinished(late.finished); setIntroducedStages(late.introducedStages); setGeneration(value => value + 1);
   }, [savedState]);
   useEffect(() => {
-    const state = { questionIds: questions.map(question => question.id), current, visited, results, finished, introducedStages };
+    const state = { questionIds: questions.map(question => question.id), current, visited, results, responses, finished, introducedStages };
     written.current = state;
     saveStep?.({ state, done: baselineQuestions.filter(question => results[question.id]).length, total: baselineQuestions.length, ...(finished ? { status: 'done' as const } : {}) });
-  }, [saveStep, questions, current, visited, results, finished, introducedStages]);
+  }, [saveStep, questions, current, visited, results, responses, finished, introducedStages]);
   const heading = useRef<HTMLHeadingElement>(null);
   const runner = useRef<HTMLElement>(null);
   const question = questions[current];
@@ -187,6 +230,10 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
       if (correct === null) return old ? { ...previous, [id]: { ...old, correct: false } } : previous;
       return { ...previous, [id]: old ? { ...old, correct, errors: [...new Set([...old.errors, ...errors])] } : { firstCorrect: correct, correct, errors } };
     });
+  }, []);
+  const saveDraft = useCallback((id: string, draft: Response) => {
+    touched.current = true;
+    setResponses(previous => ({ ...previous, [id]: draft }));
   }, []);
   function move(index: number) {
     touched.current = true;
@@ -232,7 +279,7 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
     <div className="omd-progress" role="progressbar" aria-label={question.stage < 5 ? 'Main questions completed' : 'Fresh checks completed'} aria-valuemin={0} aria-valuemax={question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length} aria-valuenow={questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length}><span style={{ width: `${questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length / (question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length) * 100}%` }}/></div>
     <h2 ref={!finished && !showIntroduction ? heading : undefined} tabIndex={-1}>{stage.title}</h2><p className="omd-purpose">{stage.purpose}</p>
     </div>
-    {questions.filter(item => visited.includes(item.id)).map(item => <div key={item.id} hidden={finished || showIntroduction || item.id !== question.id} data-mixed-question={item.id}><RetainedQuestion question={item} record={record}/></div>)}
+    {questions.filter(item => visited.includes(item.id)).map(item => <div key={`${generation}-${item.id}`} hidden={finished || showIntroduction || item.id !== question.id} data-mixed-question={item.id}><RetainedQuestion question={item} record={record} draft={responses[item.id]} saveDraft={saveDraft}/></div>)}
     {!finished && !showIntroduction && <nav className="omd-navigation" aria-label="Practice questions"><button type="button" disabled={current === 0} onClick={() => move(current - 1)}>Previous question</button><button type="button" className="omd-primary" disabled={!results[question.id]?.correct} onClick={next}>{current === questions.length - 1 ? (question.stage === 5 ? 'Finish practice' : pendingConfirmations.length ? 'Try a fresh case' : 'Review practice') : 'Next question'}</button></nav>}
   </section>;
 }

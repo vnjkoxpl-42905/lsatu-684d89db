@@ -73,3 +73,5 @@
 .sw-symbol-slot button span{font-family:Georgia,serif;font-size:24px;font-weight:700}
 .sw-choice-slot button[aria-pressed=true]{color:#173544}
 .dark .sw-choice-slot button[aria-pressed=true]{color:#edf3ed}
+.sw-highlighted{display:block;font-size:14px;color:var(--sw-soft);margin:4px 0 8px}
+.sw-negated-meanings{margin:10px 0 0;padding-left:20px;font-size:16px;line-height:1.6;list-style:disc;overflow-wrap:anywhere}

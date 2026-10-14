@@ -189,3 +189,20 @@ it('opens the saved run when the account finishes loading after the drill appear
   expect(screen.getByText('Question 2 of 2')).toBeVisible();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
 });
+
+it('never evicts a completed run when the student starts over again and again', () => {
+  const done = (i: number) => ({ order: 1, seenResults: true, endedAt: `run-${i}`, answers: [{ selected: 0, checked: true, first: 0 }, { selected: 1, checked: true, first: 1 }] });
+  const abandoned = (i: number) => ({ order: 1, seenResults: false, endedAt: `left-${i}`, answers: [{ selected: 0, checked: true, first: 0 }, { selected: null, checked: false, first: null }] });
+  const priorHistory = [...Array.from({ length: 5 }, (_, i) => done(i)), ...Array.from({ length: 12 }, (_, i) => abandoned(i))];
+  const finishedRun = { order: 1, current: 1, finished: true, seenResults: true, history: priorHistory, answers: [{ selected: 0, checked: true, first: 0 }, { selected: 1, checked: true, first: 1 }] };
+  const { store, read } = storeWith(finishedRun);
+  render(<CourseProgressProvider store={store}><DrillOneExperience questions={twoQuestions}/></CourseProgressProvider>);
+  fireEvent.click(screen.getByRole('button', { name: 'Start over' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Yes, start over' }));
+  const history = (read().state as { history: { endedAt: string; seenResults: boolean }[] }).history;
+  // All five earlier completed runs plus the one just finished are kept.
+  expect(history.filter(run => run.seenResults)).toHaveLength(6);
+  expect(history.filter(run => run.seenResults).slice(0, 5).map(run => run.endedAt)).toEqual(['run-0', 'run-1', 'run-2', 'run-3', 'run-4']);
+  // Only abandoned runs are capped, keeping the latest ten.
+  expect(history.filter(run => !run.seenResults).map(run => run.endedAt)).toEqual(Array.from({ length: 10 }, (_, i) => `left-${i + 2}`));
+});
