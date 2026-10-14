@@ -21,6 +21,9 @@ import {
 import confetti from "canvas-confetti";
 import { computeMastery } from "../../lib/mastery";
 import { sourceExerciseIds } from "../../lib/grading-status";
+import { restoreDrillPosition } from "../../lib/drill-resume";
+import { emptyQuizSession, loadQuizSession, quizSessionKey, saveQuizSession } from "../../lib/quiz-session";
+import { useAuth } from "@/contexts/AuthContext";
 import type { MasteryLevel } from "../../types";
 import { useApp } from "../../store/AppContext";
 import { cn } from "../../lib/utils";
@@ -492,7 +495,10 @@ function ModuleNote({
 type QuizVerdict = "correct" | "partial" | "incorrect";
 
 function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
-  const { recordQuizScore, addXp } = useApp();
+  const { recordQuizScore, addXp, loading, progressOwnerId } = useApp();
+  const { user } = useAuth();
+  const owner = user?.id ?? null;
+  const sessionKey = quizSessionKey(owner, moduleId);
   const mod = getModule(moduleId)!;
   const items = useMemo(() => loadQuizItems(mod.quizSource), [mod.quizSource]);
   const [index, setIndex] = useState(0);
@@ -500,6 +506,20 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
   const [streak, setStreak] = useState(0);
   const [streakHigh, setStreakHigh] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [restoredAnswer, setRestoredAnswer] = useState(false);
+  const [storageError, setStorageError] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const initialized = useRef<string | null>(null);
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    if (loading || progressOwnerId !== owner || initialized.current === sessionKey) return;
+    const saved = loadQuizSession(sessionKey, items.length);
+    setIndex(saved.index); setScore(saved.score); setStreak(saved.streak); setStreakHigh(saved.streakHigh);
+    setRestoredAnswer(saved.answered); setFinished(false);
+    initialized.current = sessionKey; setReady(true);
+  }, [loading, progressOwnerId, owner, sessionKey, items.length]);
+
+  if (loading || progressOwnerId !== owner || !ready || initialized.current !== sessionKey) return <p role="status">Loading your saved quiz...</p>;
 
   if (finished) {
     const passed = items.length > 0 && score / items.length >= mod.quizPassThreshold;
@@ -539,6 +559,10 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
           ? "correct"
           : "incorrect"
         : verdictOrCorrect;
+    const nextScore = score + (verdict === "correct" ? 1 : verdict === "partial" ? 0.5 : 0);
+    const nextStreak = verdict === "correct" ? streak + 1 : 0;
+    const nextHigh = Math.max(streakHigh, nextStreak);
+    setStorageError(!saveQuizSession(sessionKey, { index, score: nextScore, streak: nextStreak, streakHigh: nextHigh, answered: true }));
     if (verdict === "correct") {
       setScore((s) => s + 1);
       setStreak((s) => {
@@ -555,11 +579,16 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
     }
   };
 
-  const onNext = () => {
+  const onNext = async () => {
     if (index + 1 >= items.length) {
+      const result = await recordQuizScore(moduleId, Math.round(score), items.length, streakHigh);
+      if (!result.ok) { setSaveError(true); return; }
+      setSaveError(false);
       setFinished(true);
-      void recordQuizScore(moduleId, Math.round(score), items.length, streakHigh);
+      setStorageError(!saveQuizSession(sessionKey, emptyQuizSession()));
     } else {
+      setStorageError(!saveQuizSession(sessionKey, { index: index + 1, score, streak, streakHigh, answered: false }));
+      setRestoredAnswer(false);
       setIndex((i) => i + 1);
     }
   };
@@ -588,13 +617,15 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
           </p>
         )}
       </div>
-      <QuizItemRenderer
+      <p className="text-sm mb-3" role={storageError ? "alert" : undefined}>{storageError ? "Your quiz place could not be saved on this browser. Keep this page open." : "Your quiz place and score are saved as you answer."}</p>
+      {saveError && <p role="alert">Your quiz result could not be saved. Try Continue again.</p>}
+      {restoredAnswer ? <div className="bg-brutal-paper border-2 border-brutal-ink p-6"><p className="font-bold mb-4">Your answer to this item is saved and included in your score.</p><button className="brutal-btn" onClick={() => void onNext()}>Continue</button></div> : <QuizItemRenderer
         key={index}
         source={mod.quizSource}
         item={items[index]}
         onAnswer={onAnswer}
         onNext={onNext}
-      />
+      />}
     </div>
   );
 }
@@ -1503,7 +1534,9 @@ function DecodingGauntletRenderer({
 // ============ Drill ============
 
 export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
-  const { markDrillComplete, markModuleDrillComplete, addXp } = useApp();
+  const { markDrillComplete, markModuleDrillComplete, addXp, bootcampState, loading, progressOwnerId } = useApp();
+  const { user } = useAuth();
+  const owner = user?.id ?? null;
   const mod = getModule(moduleId)!;
   const drills = useMemo(
     () => mod.drillIds.map((id) => DRILLS.find((d) => d.id === id)).filter(Boolean) as DrillItem[],
@@ -1511,9 +1544,19 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
   );
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
-  const [, setCorrectCount] = useState(0);
+  const initializedOwner = useRef<string | null | undefined>(undefined);
+  const [ready, setReady] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  useEffect(() => {
+    if (loading || progressOwnerId !== owner || initializedOwner.current === owner) return;
+    const restored = restoreDrillPosition(drills.map((d) => d.id), bootcampState.drillAttempts, Boolean(bootcampState.moduleProgress[moduleId]?.drillComplete));
+    setIndex(restored.index);
+    setPicked(restored.picked);
+    setSaveError(null);
+    initializedOwner.current = owner;
+    setReady(true);
+  }, [loading, progressOwnerId, owner, drills, bootcampState, moduleId]);
   // Time per question: restart the clock whenever a new question shows.
   const startedRef = useRef(Date.now());
   useEffect(() => {
@@ -1526,6 +1569,7 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
   if (mod.drillKind === "breakdown") {
     return <BreakdownDrill onDone={onDone} />;
   }
+  if (loading || progressOwnerId !== owner || !ready || initializedOwner.current !== owner) return <p role="status">Loading your saved practice...</p>;
 
   if (drills.length === 0) {
     return (
@@ -1543,10 +1587,6 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
     setSaveError(null);
     setPicked(i);
     const correct = i === current.correctOptionIndex;
-    if (correct) {
-      setCorrectCount((c) => c + 1);
-      addXp(5);
-    }
     const result = await markDrillComplete(
       current.id,
       current.type as DrillType,
@@ -1558,6 +1598,7 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
     );
     setSaving(false);
     if (!result.ok) setSaveError("Your answer could not be saved. Choose it again to retry.");
+    else if (correct) addXp(5);
   };
 
   const nextItem = async () => {
