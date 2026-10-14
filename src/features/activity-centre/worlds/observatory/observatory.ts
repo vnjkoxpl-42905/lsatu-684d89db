@@ -37,6 +37,8 @@ export interface Relation {
    * never given a position.
    */
   anchors: { text: string; start: number; end: number }[];
+  /** Separated phrases ("stronger ... than") where every half must be quoted. */
+  requiredParts?: string[][];
 }
 
 export interface Signal {
@@ -128,6 +130,10 @@ export function parseSignal(item: ActivityItem): Signal | null {
     relations.push({ kind, indicators, anchors });
   }
   if (!relations.length) return null;
+  for (const r of relations) {
+    const keyed = item.answer_key?.relationships?.find((k) => normalizeKind(k.type) === r.kind);
+    if (keyed?.required_parts?.length) r.requiredParts = keyed.required_parts;
+  }
 
   const declared = item.explanation?.match(/(\d+)\s+relationship/)?.[1];
 
@@ -317,19 +323,45 @@ function matchedKinds(signal: Signal, response: string): RelationKind[] {
   return signal.relations.filter((r) => {
     const claimed = pairs.filter((pair) => pair.named.has(r.kind));
     return claimed.length > 0 && claimed.every((pair) =>
-      pair.named.size === 1 && r.indicators.some((indicator) => quotes(indicator, pair.answer)),
+      pair.named.size === 1 && indicatorQuoted(r, pair.answer),
     );
   }).map((r) => r.kind);
+}
+
+/**
+ * The structured key and the credited answer must say the same thing. If an
+ * edit ever lets them drift, nothing is marked instantly and the Coach (which
+ * reads the key) decides, so there are never two divergent instant keys.
+ */
+export function keyAgreesWithCredited(item: ActivityItem): boolean {
+  const key = item.answer_key;
+  if (!key) return true;
+  const signal = parseSignal(item);
+  if (!signal || !Array.isArray(key.relationships) || key.relationships.length !== signal.relations.length) return false;
+  return key.relationships.every((k, i) => {
+    const r = signal.relations[i];
+    return normalizeKind(k.type) === r.kind && Array.isArray(k.indicators)
+      && k.indicators.length === r.indicators.length && k.indicators.every((x, j) => x === r.indicators[j]);
+  });
+}
+
+function indicatorQuoted(r: Relation, answer: string): boolean {
+  const contiguous = r.indicators.some((indicator) => quotes(indicator, answer));
+  if (!r.requiredParts?.length) return contiguous;
+  // A split comparative counts only with both halves, quoted together or apart.
+  return r.requiredParts.some((parts) => parts.every((part) => quotes(part, answer)))
+    && (contiguous || r.requiredParts.some((parts) => parts.every((part) => quotes(part, answer))));
 }
 
 export function matchesCredited(item: ActivityItem, response: string): boolean {
   const signal = parseSignal(item);
   if (!signal || !response.trim()) return false;
+  if (!keyAgreesWithCredited(item)) return false;
   const named = namedKinds(response);
   const real = new Set(signal.relations.map((r) => r.kind));
   if (named.size !== real.size || [...named].some((k) => !real.has(k))) return false;
   if (!answerPairs(response).every((pair) => pair.named.size === 1 && signal.relations.some((r) =>
-    pair.named.has(r.kind) && r.indicators.some((indicator) => quotes(indicator, pair.answer)),
+    pair.named.has(r.kind) && indicatorQuoted(r, pair.answer),
   ))) return false;
   const matched = matchedKinds(signal, response);
   return signal.relations.every((r) => matched.includes(r.kind));
