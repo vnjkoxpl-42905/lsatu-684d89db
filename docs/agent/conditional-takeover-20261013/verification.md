@@ -37,3 +37,9 @@ Responsive browser sweep: **150 screen checks passed**, covering all 21 course s
 This work updates the review branch for PR #211. No merge, student assignment, backend migration, Edge Function deployment, Lovable credit spend, or production publication is included. The Vite-generated MCP stub is excluded and restored to the tracked implementation before committing. Signed-in production persistence has not been independently accepted; account isolation, hydration and save behavior were checked by regression tests, and local browser runs used the isolated preview.
 
 No new teaching media was generated. This repair does not certify Intro to LR parity against the unavailable historical quality references.
+
+## Later Claude reconciliation, 2026-10-13
+
+The newer Claude continuation produced `877273c8` and `54c7fecb` independently from the same earlier base. Its push was rejected, and its 24-file merge stopped before validation. Both histories were reconciled in `68cb0c3b`, retaining the verified safeguards and selected teaching/history improvements. Current main was integrated in `e3ec391c`.
+
+[Comparison, actual review outcomes and final evidence](reconciliation.md): 421 tests across 35 files passed; typecheck and production build/content guards passed after main integration; 150 full responsive checks plus 30 post-integration representative checks passed. Additional browser replays covered four worksheet items and all 22 staged questions. These fresh results qualify the combined version; the earlier 243-question run remains parent-commit evidence. No production publication or signed-in cloud acceptance is claimed.

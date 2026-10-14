@@ -36,10 +36,13 @@ Both runs requested Codex with `gpt-6-astra`, high effort. The artifacts did not
 ## Verification of the combined version
 
 - Final combined regression run: **35 files, 421 tests passed**. Earlier stale-copy assertions and one invalid legacy fixture were repaired without weakening the underlying behavior checks.
-- App typecheck passed. Production build/content guards passed; final integration checks are recorded after bringing the review branch up to date with main.
+- App typecheck and production build/content guards passed again after current main was integrated (`e3ec391c`). Main's unrelated commits are not attributed to either conditional revision.
 - New full responsive browser sweep: **150 checks passed** at 375/640/900/1440 pixels, plus default-token samples, with no document overflow or clipped controls.
 - Browser replay of two forward-production and two contrapositive worksheet items passed wrong-answer hints/Show me, saved drafts after reload, symbol/diagram operations, writing and final self-review. This is additional coverage; the earlier parent run completed all 12 drills and 243 main questions.
+- Both staged sets completed through browser controls again: **13 sufficient and nine contrapositive questions**, including written comparisons, two wrong-answer hints, reload, results/review and course Done.
+- After main integration, **30 representative screen checks passed** at the same four widths/default tokens. Representative screenshots were inspected. Initial browser network interruption and outdated replay assumptions were corrected before the successful checks; they are not counted as product failures or passing runs.
 - Source originals, all 133 IDs, source paths and hashes match the verified parent exactly.
 - Independent source review found an additional migration defect: old incomplete modal highlights could keep their passed status after the grading key tightened. Restore now rechecks those highlights, archives the old attempt and clears dependent passed stages while retaining earlier work and drafts. Its regression passed.
+- The independent reviewer confirmed that finding closed in the final integrated code. Reconciliation commit: `68cb0c3b`. The partial Claude merge and both original checkouts remain preserved.
 
 Signed-in production persistence, publication and physical-device acceptance remain separate. No production merge, deployment, assignment, paid provider call or new media was performed. Teaching copy remains provisional for Joshua's editorial review.
