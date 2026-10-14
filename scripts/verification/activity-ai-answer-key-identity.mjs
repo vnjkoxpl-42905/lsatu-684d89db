@@ -27,7 +27,7 @@ await setItem(key('stronger than'));
 for (const f of ['supabase/migrations/20261001120000_activity_ai_admission_v1.sql', 'drizzle/migrations/0028_activity_ai_source_answer_key.sql', 'drizzle/migrations/0029_activity_ai_answer_key_identity.sql'])
   await db.exec(await readFile(new URL('../../' + f, import.meta.url), 'utf8'));
 await db.exec('update activity_ai_configuration_v1 set enabled=true,actor_concurrency=10');
-const call = async (name, keys, values) => {
+const call = async (name, n, values) => { const keys = values;
   await db.exec('set role service_role');
   try { return (await db.query(`select ${name}(${keys.map((_, i) => '$' + (i + 1)).join(',')}) value`, values)).rows[0].value; } finally { await db.exec('reset role'); }
 };
