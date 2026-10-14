@@ -1,0 +1,315 @@
+- generic:
+  - generic:
+    - list
+    - region "Notifications alt+T"
+    - generic [aria-hidden]:
+      - generic:
+        - navigation:
+          - generic:
+            - link:
+              - /url: /
+              - text: LSAT
+              - emphasis: U
+            - button: Sign in
+        - main:
+          - generic:
+            - generic: Practice · Review · Coaching
+            - generic: lsatprep.study
+            - generic:
+              - generic: For aspiring attorneys
+              - heading [level=1]:
+                - generic: Master the LSAT. Own your future.
+                - generic [aria-hidden]:
+                  - generic:
+                    - generic: M
+                    - generic: a
+                    - generic: s
+                    - generic: t
+                    - generic: e
+                    - generic: r
+                  - generic:
+                    - generic: t
+                    - generic: h
+                    - generic: e
+                  - generic:
+                    - generic: L
+                    - generic: S
+                    - generic: A
+                    - generic: T
+                    - generic: .
+                  - generic:
+                    - generic:
+                      - generic: O
+                      - generic: w
+                      - generic: "n"
+                    - generic:
+                      - generic: "y"
+                      - generic: o
+                      - generic: u
+                      - generic: r
+                    - generic:
+                      - generic: f
+                      - generic: u
+                      - generic: t
+                      - generic: u
+                      - generic: r
+                      - generic: e
+                      - generic: .
+              - paragraph: The discipline is ancient. The training is new.
+              - generic:
+                - button: Enter LSAT University
+                - button: Or create an account
+                - paragraph: Email or Google · No credit card to start
+            - generic [aria-hidden]:
+              - generic: Descend
+          - region:
+            - generic:
+              - generic:
+                - text: The twelve moves
+                - heading [level=2]: Every question is one of twelve moves. Learn to see the move.
+                - paragraph: Twelve question types cover everything Logical Reasoning can throw at you. We drill them until you recognize the move before you finish the stem.
+                - generic [aria-hidden]:
+                  - generic: Reading — / XII
+              - list:
+                - listitem:
+                  - generic [aria-hidden]: I
+                  - generic: Necessary Assumption
+                  - generic: the unstated bridge
+                - listitem:
+                  - generic [aria-hidden]: II
+                  - generic: Sufficient Assumption
+                  - generic: the missing guarantee
+                - listitem:
+                  - generic [aria-hidden]: III
+                  - generic: Strengthen
+                  - generic: reinforce the gap
+                - listitem:
+                  - generic [aria-hidden]: IV
+                  - generic: Weaken
+                  - generic: attack the gap
+                - listitem:
+                  - generic [aria-hidden]: V
+                  - generic: Flaw in the Reasoning
+                  - generic: name the break
+                - listitem:
+                  - generic [aria-hidden]: VI
+                  - generic: Main Conclusion
+                  - generic: find the point
+                - listitem:
+                  - generic [aria-hidden]: VII
+                  - generic: Method of Reasoning
+                  - generic: describe the moves
+                - listitem:
+                  - generic [aria-hidden]: VIII
+                  - generic: Role in Argument
+                  - generic: place the statement
+                - listitem:
+                  - generic [aria-hidden]: IX
+                  - generic: Principle
+                  - generic: match the rule
+                - listitem:
+                  - generic [aria-hidden]: X
+                  - generic: Parallel Reasoning
+                  - generic: match the shape
+                - listitem:
+                  - generic [aria-hidden]: XI
+                  - generic: Inference
+                  - generic: what must be true
+                - listitem:
+                  - generic [aria-hidden]: XII
+                  - generic: Resolve the Paradox
+                  - generic: reconcile the facts
+          - region:
+            - generic:
+              - text: The method
+              - heading [level=2]: Thought, taking form.
+              - paragraph: You are not memorizing tricks. You are training a way of seeing arguments, until the structure appears the moment you start to read.
+            - generic:
+              - generic [aria-hidden]: SPEC · POINT CLOUD
+              - generic [aria-hidden]: SURFACE · SAMPLED
+            - generic [aria-hidden]:
+              - generic: Fig. 01 · assembly rides your scroll · the cloud answers your cursor
+          - region:
+            - generic:
+              - generic:
+                - text: The canon
+                - heading [level=2]: An argument has proportions.
+                - paragraph: "A premise carries a conclusion the way a plinth carries a figure: with a measurable relationship between them. Once you can see that geometry, you can see where it breaks. That is the whole test."
+                - generic: GIVEN · DRAWN · MEASURED
+              - generic:
+                - img [aria-hidden]:
+                  - generic: premise
+                  - generic: conclusion
+                  - generic: "1 : 1.618"
+                  - generic: inference
+          - region:
+            - generic:
+              - generic:
+                - text: DISCIPLINE I
+                - heading [level=3]: Smart LR Drill
+                - paragraph: The drill reads your misses and serves the question that moves your score next. No busywork, no random sets.
+                - generic: INPUT · your misses / OUTPUT · your next question
+              - generic:
+                - figure:
+                  - img [aria-hidden]:
+                    - generic: your misses
+                    - generic: next
+                  - generic: Adaptive selection
+          - region:
+            - generic:
+              - generic:
+                - text: DISCIPLINE II
+                - heading [level=3]: Wrong Answer Journal
+                - paragraph: "Every miss becomes a worked example: why the trap worked, what the right read was, and the pattern to catch next time."
+                - generic: THE TRAP · THE RIGHT READ · THE PATTERN
+              - generic:
+                - figure:
+                  - img [aria-hidden]:
+                    - generic: the trap
+                    - generic: the right read
+                  - generic: One miss · one lesson
+          - region:
+            - generic:
+              - generic:
+                - text: DISCIPLINE III
+                - heading [level=3]: Guided bootcamps
+                - paragraph: Structured, voice-led courses that build one reasoning skill at a time, starting where the points are.
+                - generic: MAIN CONCLUSION FIRST · THEN THE WHOLE FAMILY
+              - generic:
+                - figure:
+                  - img [aria-hidden]:
+                    - generic: enter
+                  - generic: One skill at a time
+          - region:
+            - generic:
+              - generic:
+                - text: DISCIPLINE IV
+                - heading [level=3]: A schedule that adapts
+                - paragraph: A week-by-week plan built around your test date and your data, so the next right thing to do is always obvious.
+                - generic: YOUR TEST DATE · YOUR DATA · YOUR WEEK
+              - generic:
+                - figure:
+                  - img [aria-hidden]:
+                    - generic: week one
+                    - generic: test day
+                  - generic: Tuned to your test date
+          - region:
+            - generic:
+              - text: Weighed daily
+              - blockquote:
+                - generic: Judgment is a habit. We train it every day.
+                - generic [aria-hidden]:
+                  - generic: Judgment
+                  - generic: is
+                  - generic: a
+                  - generic:
+                    - strong: habit.
+                  - generic: We
+                  - generic: train
+                  - generic: it
+                  - generic: every
+                  - generic: day.
+          - generic [aria-hidden]:
+            - generic:
+              - generic:
+                - generic:
+                  - emphasis: Reason
+                  - generic: ·
+                - generic:
+                  - emphasis: Evidence
+                  - generic: ·
+                - generic:
+                  - emphasis: Structure
+                  - generic: ·
+                - generic:
+                  - emphasis: Judgment
+                  - generic: ·
+                - generic:
+                  - emphasis: Practice
+                  - generic: ·
+                - generic:
+                  - emphasis: Review
+                  - generic: ·
+              - generic:
+                - generic:
+                  - emphasis: Reason
+                  - generic: ·
+                - generic:
+                  - emphasis: Evidence
+                  - generic: ·
+                - generic:
+                  - emphasis: Structure
+                  - generic: ·
+                - generic:
+                  - emphasis: Judgment
+                  - generic: ·
+                - generic:
+                  - emphasis: Practice
+                  - generic: ·
+                - generic:
+                  - emphasis: Review
+                  - generic: ·
+          - region:
+            - generic:
+              - text: A statement of intent
+              - paragraph:
+                - text: "“LSAT U is the prep we wish every aspiring attorney had: practice, review, and"
+                - strong: real progress
+                - text: in one place, all pointed at the score you actually want.”
+              - button: Begin training
+          - region:
+            - generic:
+              - generic: The Academy is open
+              - heading [level=2]: Sit down. Begin.
+              - button: Enter LSAT University
+        - contentinfo:
+          - generic:
+            - generic: LSAT U · A training environment for aspiring attorneys.
+            - generic: © 2026 · lsatprep.study
+      - navigation:
+        - button:
+          - generic [aria-hidden]: I
+        - button:
+          - generic [aria-hidden]: II
+        - button:
+          - generic [aria-hidden]: III
+        - button:
+          - generic [aria-hidden]: IV
+        - button:
+          - generic [aria-hidden]: V
+        - button:
+          - generic [aria-hidden]: VI
+        - button:
+          - generic [aria-hidden]: VII
+  - dialog [ref=e424]:
+    - heading "LSAT U Access" [level=2] [ref=e426]
+    - paragraph [ref=e427]: Sign in or create your LSAT U account.
+    - button "Close" [ref=e428] [cursor=pointer]
+    - generic [ref=e432]:
+      - generic [ref=e433]:
+        - heading [level=2] [ref=e434]:
+          - text: LSAT
+          - emphasis [ref=e435]: U
+        - paragraph [ref=e436]: Sign in to continue.
+      - generic [ref=e437]:
+        - button "Sign In" [pressed] [ref=e438] [cursor=pointer]
+        - button "Sign Up" [ref=e441] [cursor=pointer]
+      - generic [ref=e443]:
+        - generic [ref=e444]:
+          - generic [ref=e445]: Email
+          - textbox "Email" [active] [ref=e450]:
+            - /placeholder: name@example.com
+        - generic [ref=e451]:
+          - generic [ref=e452]:
+            - generic [ref=e453]: Password
+            - button "Forgot?" [ref=e454] [cursor=pointer]
+          - generic [ref=e455]:
+            - textbox "Password" [ref=e459]:
+              - /placeholder: ••••••••••••
+            - button "Show password" [ref=e460] [cursor=pointer]
+        - generic [ref=e464] [cursor=pointer]:
+          - checkbox "Remember my email" [ref=e465]
+          - generic [ref=e466]: Remember my email
+        - button "Sign In" [ref=e469] [cursor=pointer]
+      - generic [ref=e475]: or
+      - button "Continue with Google" [ref=e479] [cursor=pointer]

@@ -1,0 +1,328 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - region "Notifications (F8)":
+      - list
+    - region "Notifications alt+T"
+    - generic [ref=f1e3]:
+      - complementary [ref=f1e4]:
+        - generic [ref=f1e6]:
+          - button "LS LSAT U" [ref=f1e7] [cursor=pointer]:
+            - generic [ref=f1e8]: LS
+            - generic [ref=f1e9]: LSAT U
+          - navigation "Classroom navigation" [ref=f1e10]:
+            - generic [ref=f1e11]:
+              - generic [ref=f1e12]: Classroom
+              - button "Home" [ref=f1e13] [cursor=pointer]
+              - button "My Work" [ref=f1e14] [cursor=pointer]
+              - button "Reading Center" [ref=f1e15] [cursor=pointer]
+              - button "Practice" [ref=f1e16] [cursor=pointer]
+              - button "Review" [ref=f1e17] [cursor=pointer]
+              - button "Progress" [ref=f1e18] [cursor=pointer]
+              - button "Library" [ref=f1e19] [cursor=pointer]
+              - button "Schedule" [ref=f1e20] [cursor=pointer]
+            - generic [ref=f1e21]:
+              - generic [ref=f1e22]: Quick access
+              - button "Messages 4 unread messages" [ref=f1e23] [cursor=pointer]:
+                - text: Messages
+                - generic [ref=f1e24]:
+                  - text: "4"
+                  - generic [ref=f1e25]: unread messages
+              - button "Find a question" [ref=f1e26] [cursor=pointer]
+          - generic [ref=f1e27]:
+            - button "josh Student" [ref=f1e28] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f1e29]: J
+              - generic [ref=f1e30]:
+                - generic [ref=f1e31]: josh
+                - generic [ref=f1e32]: Student
+            - button "Log Out" [ref=f1e36] [cursor=pointer]
+      - main [ref=f1e37]:
+        - generic [ref=f1e39]:
+          - generic [ref=f1e41]:
+            - heading "Practice" [level=1] [ref=f1e42]
+            - paragraph [ref=f1e43]: Choose deliberate practice or a timed exam.
+          - navigation "Practice sections" [ref=f1e44]:
+            - link "Drills" [ref=f1e45] [cursor=pointer]:
+              - /url: /practice/drills
+            - link "Practice Exams" [ref=f1e46] [cursor=pointer]:
+              - /url: /practice/exams
+          - generic [ref=f1e49]:
+            - navigation "Drills" [ref=f1e50]:
+              - button "Create" [ref=f1e51] [cursor=pointer]
+              - button "In progress" [ref=f1e52] [cursor=pointer]
+              - button "Completed" [ref=f1e53] [cursor=pointer]
+              - button "Saved sets" [ref=f1e54] [cursor=pointer]
+            - generic [ref=f1e55]:
+              - button "Open a question" [expanded] [ref=f1e57] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f1e61]: Open a question
+              - group "Drill section" [ref=f1e63]:
+                - button "Logical Reasoning" [ref=f1e64] [cursor=pointer]: LR
+                - button "Reading Comprehension" [pressed] [ref=f1e65] [cursor=pointer]: RC
+            - region [ref=f1e67]:
+              - generic [ref=f1e68]:
+                - heading "Create an RC drill" [level=2] [ref=f1e69]
+                - paragraph [ref=f1e70]: Choose passages, timing, and when to check your answers.
+              - button "Create RC drill" [ref=f1e71] [cursor=pointer]
+            - generic [ref=f1e72]:
+              - region "Practice and insight workspace" [ref=f1e73]:
+                - generic [ref=f1e74]:
+                  - generic [ref=f1e75]:
+                    - heading "Your reading drills" [level=2] [ref=f1e76]
+                    - generic [ref=f1e77]:
+                      - generic [ref=f1e78]:
+                        - generic [ref=f1e79]: 1 passage · timed · at the end
+                        - generic [ref=f1e80]: completed
+                        - generic [ref=f1e81]: 1 / 6
+                        - generic [ref=f1e82]:
+                          - button "Results" [ref=f1e83] [cursor=pointer]
+                          - button "Delete" [ref=f1e84] [cursor=pointer]
+                      - generic [ref=f1e85]:
+                        - generic [ref=f1e86]: 1 passage · timed · after each passage
+                        - generic [ref=f1e87]: completed
+                        - generic [ref=f1e88]: 0 / 6
+                        - generic [ref=f1e89]:
+                          - button "Results" [ref=f1e90] [cursor=pointer]
+                          - button "Delete" [ref=f1e91] [cursor=pointer]
+                      - generic [ref=f1e92]:
+                        - generic [ref=f1e93]: 1 passage · untimed · after each question
+                        - generic [ref=f1e94]: completed
+                        - generic [ref=f1e95]: 1 / 5
+                        - generic [ref=f1e96]:
+                          - button "Results" [ref=f1e97] [cursor=pointer]
+                          - button "Delete" [ref=f1e98] [cursor=pointer]
+                      - generic [ref=f1e99]:
+                        - generic [ref=f1e100]: 1 passage · untimed · after each passage
+                        - generic [ref=f1e101]: completed
+                        - generic [ref=f1e102]: 3 / 6
+                        - generic [ref=f1e103]:
+                          - button "Results" [ref=f1e104] [cursor=pointer]
+                          - button "Delete" [ref=f1e105] [cursor=pointer]
+                      - generic [ref=f1e106]:
+                        - generic [ref=f1e107]: 1 passage · untimed · after each passage
+                        - generic [ref=f1e108]: completed
+                        - generic [ref=f1e109]: 0 / 8
+                        - generic [ref=f1e110]:
+                          - button "Results" [ref=f1e111] [cursor=pointer]
+                          - button "Delete" [ref=f1e112] [cursor=pointer]
+                      - generic [ref=f1e113]:
+                        - generic [ref=f1e114]: 1 passage · untimed · after each passage
+                        - generic [ref=f1e115]: in progress
+                        - generic [ref=f1e116]:
+                          - button "Resume" [ref=f1e117] [cursor=pointer]
+                          - button "Delete" [ref=f1e118] [cursor=pointer]
+                      - generic [ref=f1e119]:
+                        - generic [ref=f1e120]: 4 passages · timed · Feedback timing not recorded
+                        - generic [ref=f1e121]: completed
+                        - generic [ref=f1e122]: 1 / 26
+                        - generic [ref=f1e123]:
+                          - button "Results" [ref=f1e124] [cursor=pointer]
+                          - button "Delete" [disabled] [ref=f1e125] [cursor=pointer]
+                      - generic [ref=f1e126]:
+                        - generic [ref=f1e127]: 4 passages · timed · at the end
+                        - generic [ref=f1e128]: completed
+                        - generic [ref=f1e129]: 1 / 27
+                        - generic [ref=f1e130]:
+                          - button "Results" [ref=f1e131] [cursor=pointer]
+                          - button "Delete" [disabled] [ref=f1e132] [cursor=pointer]
+                      - generic [ref=f1e133]:
+                        - generic [ref=f1e134]: 4 passages · timed · at the end
+                        - generic [ref=f1e135]: completed
+                        - generic [ref=f1e136]: 1 / 27
+                        - generic [ref=f1e137]:
+                          - button "Results" [ref=f1e138] [cursor=pointer]
+                          - button "Delete" [disabled] [ref=f1e139] [cursor=pointer]
+                      - generic [ref=f1e140]:
+                        - generic [ref=f1e141]: 4 passages · timed · Feedback timing not recorded
+                        - generic [ref=f1e142]: completed
+                        - generic [ref=f1e143]: 1 / 27
+                        - generic [ref=f1e144]:
+                          - button "Results" [ref=f1e145] [cursor=pointer]
+                          - button "Delete" [disabled] [ref=f1e146] [cursor=pointer]
+                      - generic [ref=f1e147]:
+                        - generic [ref=f1e148]: 4 passages · timed · at the end
+                        - generic [ref=f1e149]: completed
+                        - generic [ref=f1e150]: 0 / 27
+                        - generic [ref=f1e151]:
+                          - button "Results" [ref=f1e152] [cursor=pointer]
+                          - button "Delete" [disabled] [ref=f1e153] [cursor=pointer]
+                      - generic [ref=f1e154]:
+                        - generic [ref=f1e155]: 4 passages · timed · at the end
+                        - generic [ref=f1e156]: in progress
+                        - generic [ref=f1e157]:
+                          - button "Resume" [ref=f1e158] [cursor=pointer]
+                          - button "Delete" [ref=f1e159] [cursor=pointer]
+                      - generic [ref=f1e160]:
+                        - generic [ref=f1e161]: 2 passages · timed · at the end
+                        - generic [ref=f1e162]: in progress
+                        - generic [ref=f1e163]:
+                          - button "Resume" [ref=f1e164] [cursor=pointer]
+                          - button "Delete" [ref=f1e165] [cursor=pointer]
+                      - generic [ref=f1e166]:
+                        - generic [ref=f1e167]: 4 passages · timed · at the end
+                        - generic [ref=f1e168]: in progress
+                        - generic [ref=f1e169]:
+                          - button "Resume" [ref=f1e170] [cursor=pointer]
+                          - button "Delete" [ref=f1e171] [cursor=pointer]
+                      - generic [ref=f1e172]:
+                        - generic [ref=f1e173]: 1 passage · untimed · after each passage
+                        - generic [ref=f1e174]: in progress
+                        - generic [ref=f1e175]:
+                          - button "Resume" [ref=f1e176] [cursor=pointer]
+                          - button "Delete" [ref=f1e177] [cursor=pointer]
+                      - generic [ref=f1e178]:
+                        - generic [ref=f1e179]: 1 passage · untimed · after each passage
+                        - generic [ref=f1e180]: in progress
+                        - generic [ref=f1e181]:
+                          - button "Resume" [ref=f1e182] [cursor=pointer]
+                          - button "Delete" [ref=f1e183] [cursor=pointer]
+                      - generic [ref=f1e184]:
+                        - generic [ref=f1e185]: 1 passage · untimed · after each passage
+                        - generic [ref=f1e186]: in progress
+                        - generic [ref=f1e187]:
+                          - button "Resume" [ref=f1e188] [cursor=pointer]
+                          - button "Delete" [ref=f1e189] [cursor=pointer]
+                      - generic [ref=f1e190]:
+                        - generic [ref=f1e191]: 1 passage · untimed · after each passage
+                        - generic [ref=f1e192]: in progress
+                        - generic [ref=f1e193]:
+                          - button "Resume" [ref=f1e194] [cursor=pointer]
+                          - button "Delete" [ref=f1e195] [cursor=pointer]
+                      - generic [ref=f1e196]:
+                        - generic [ref=f1e197]: 1 passage · untimed · after each passage
+                        - generic [ref=f1e198]: in progress
+                        - generic [ref=f1e199]:
+                          - button "Resume" [ref=f1e200] [cursor=pointer]
+                          - button "Delete" [ref=f1e201] [cursor=pointer]
+                  - generic [ref=f1e202]:
+                    - button "Analytics" [ref=f1e203] [cursor=pointer]
+                    - button "Journal" [ref=f1e206] [cursor=pointer]
+              - group [ref=f1e209]:
+                - generic "Assigned work View homework from My Work" [ref=f1e210] [cursor=pointer]:
+                  - text: Assigned work
+                  - generic [ref=f1e211]: View homework from My Work
+    - button "Get help from Joshua" [ref=f1e212] [cursor=pointer]
+  - dialog "Find a question" [ref=f1e218]:
+    - generic [ref=f1e219]:
+      - heading "Question Finder" [level=2] [ref=f1e220]
+      - button "Close the question finder" [ref=f1e221] [cursor=pointer]
+    - generic [ref=f1e225]:
+      - group "Which bank to search" [ref=f1e226]:
+        - button "All" [ref=f1e227] [cursor=pointer]
+        - button "LR" [ref=f1e228] [cursor=pointer]
+        - button "RC" [pressed] [ref=f1e229] [cursor=pointer]
+      - generic [ref=f1e230]:
+        - generic [ref=f1e231]:
+          - generic [ref=f1e232]: Test
+          - combobox "Test" [ref=f1e233] [cursor=pointer]:
+            - option "PrepTest" [selected]
+            - option "PT 159"
+            - option "PT 158"
+            - option "PT 157"
+            - option "PT 156"
+            - option "PT 155"
+            - option "PT 154"
+            - option "PT 153"
+            - option "PT 152"
+            - option "PT 151"
+            - option "PT 150"
+            - option "PT 149"
+            - option "PT 148"
+            - option "PT 147"
+            - option "PT 146"
+            - option "PT 145"
+            - option "PT 144"
+            - option "PT 143"
+            - option "PT 142"
+            - option "PT 141"
+            - option "PT 140"
+            - option "PT 139"
+            - option "PT 138"
+            - option "PT 137"
+            - option "PT 136"
+            - option "PT 135"
+            - option "PT 134"
+            - option "PT 133"
+            - option "PT 132"
+            - option "PT 131"
+            - option "PT 130"
+            - option "PT 129"
+            - option "PT 128"
+            - option "PT 127"
+            - option "PT 126"
+            - option "PT 125"
+            - option "PT 124"
+            - option "PT 123"
+            - option "PT 122"
+            - option "PT 121"
+            - option "PT 120"
+            - option "PT 119"
+            - option "PT 118"
+            - option "PT 117"
+            - option "PT 116"
+            - option "PT 115"
+            - option "PT 114"
+            - option "PT 113"
+            - option "PT 112"
+            - option "PT 111"
+            - option "PT 110"
+            - option "PT 109"
+            - option "PT 108"
+            - option "PT 107"
+            - option "PT 106"
+            - option "PT 105"
+            - option "PT 104"
+            - option "PT 103"
+            - option "PT 102"
+            - option "PT 101"
+        - generic [ref=f1e234]:
+          - generic [ref=f1e235]: Section
+          - combobox "Section" [disabled] [ref=f1e236]:
+            - option "Pick a test" [selected]
+        - generic [ref=f1e237]:
+          - generic [ref=f1e238]: Question
+          - combobox "Question" [disabled] [ref=f1e239]:
+            - generic: Pick a section
+        - button "Open question" [disabled] [ref=f1e242]
+      - textbox "Search question text, or type a question address" [active] [ref=f1e247]:
+        - /placeholder: Search question text, or type PT90 S1 Q12
+    - generic [ref=f1e248]:
+      - generic [ref=f1e249]:
+        - generic [ref=f1e250]: Type a phrase you remember, or an address like
+        - code [ref=f1e251]: PT90 S1 Q12
+      - generic [ref=f1e252]:
+        - paragraph [ref=f1e253]:
+          - text: Reading Comprehension
+          - generic [ref=f1e254]: select to retain this address
+        - button "PT 101 · S1 · P1 Risk Communication 6 questions" [ref=f1e256] [cursor=pointer]:
+          - generic [ref=f1e257]: PT 101 · S1 · P1
+          - generic [ref=f1e258]: Risk Communication
+          - generic [ref=f1e260]: 6 questions
+        - button "PT 101 · S1 · P2 Pico Workers 7 questions" [ref=f1e264] [cursor=pointer]:
+          - generic [ref=f1e265]: PT 101 · S1 · P2
+          - generic [ref=f1e266]: Pico Workers
+          - generic [ref=f1e268]: 7 questions
+        - button "PT 101 · S1 · P3 Outcomes Analysis 7 questions" [ref=f1e272] [cursor=pointer]:
+          - generic [ref=f1e273]: PT 101 · S1 · P3
+          - generic [ref=f1e274]: Outcomes Analysis
+          - generic [ref=f1e276]: 7 questions
+        - button "PT 101 · S1 · P4 Fake Artwork 7 questions" [ref=f1e280] [cursor=pointer]:
+          - generic [ref=f1e281]: PT 101 · S1 · P4
+          - generic [ref=f1e282]: Fake Artwork
+          - generic [ref=f1e284]: 7 questions
+        - button "PT 101 · S4 · P1 P.D. James 8 questions" [ref=f1e288] [cursor=pointer]:
+          - generic [ref=f1e289]: PT 101 · S4 · P1
+          - generic [ref=f1e290]: P.D. James
+          - generic [ref=f1e292]: 8 questions
+        - button "PT 101 · S4 · P2 Native American Burials 6 questions" [ref=f1e296] [cursor=pointer]:
+          - generic [ref=f1e297]: PT 101 · S4 · P2
+          - generic [ref=f1e298]: Native American Burials
+          - generic [ref=f1e300]: 6 questions
+    - button "Build a set" [ref=f1e305] [cursor=pointer]
+    - generic [aria-hidden] [ref=f1e314]:
+      - generic [ref=f1e315]:
+        - generic [ref=f1e316]: ↑
+        - generic [ref=f1e317]: ↓
+        - text: move
+      - generic [ref=f1e318]: select
+      - generic [ref=f1e323]:
+        - generic [ref=f1e324]: esc
+        - text: close

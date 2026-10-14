@@ -1,0 +1,315 @@
+- generic:
+  - generic:
+    - list
+    - region "Notifications alt+T"
+    - generic [aria-hidden]:
+      - complementary:
+        - generic:
+          - generic:
+            - button:
+              - generic: LS
+              - generic: LSAT U
+            - navigation:
+              - generic:
+                - generic: Classroom
+                - button: Home
+                - button: My Work
+                - button: Reading Center
+                - button: Practice
+                - button: Review
+                - button: Progress
+                - button: Library
+                - button: Schedule
+              - generic:
+                - generic: Quick access
+                - button:
+                  - text: Messages
+                  - generic:
+                    - text: "4"
+                    - generic: unread messages
+                - button: Find a question
+            - generic:
+              - button:
+                - generic [aria-hidden]: J
+                - generic:
+                  - generic: josh
+                  - generic: Student
+              - button: Log Out
+      - main:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - heading [level=1]: Practice
+                - paragraph: Choose deliberate practice or a timed exam.
+            - navigation:
+              - link:
+                - /url: /practice/drills
+                - text: Drills
+              - link:
+                - /url: /practice/exams
+                - text: Practice Exams
+            - generic:
+              - generic:
+                - generic:
+                  - navigation:
+                    - button: Create
+                    - button: In progress
+                    - button: Completed
+                    - button: Saved sets
+                  - generic:
+                    - generic:
+                      - button [expanded]:
+                        - generic [aria-hidden]: Open a question
+                    - generic:
+                      - group:
+                        - button: LR
+                        - button [pressed]: RC
+                  - region:
+                    - generic:
+                      - heading [level=2]: Create an RC drill
+                      - paragraph: Choose passages, timing, and when to check your answers.
+                    - button: Create RC drill
+                  - generic:
+                    - region:
+                      - generic:
+                        - generic:
+                          - heading [level=2]: Your reading drills
+                          - generic:
+                            - generic:
+                              - generic: 1 passage · timed · at the end
+                              - generic: completed
+                              - generic: 1 / 6
+                              - generic:
+                                - button: Results
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · timed · after each passage
+                              - generic: completed
+                              - generic: 0 / 6
+                              - generic:
+                                - button: Results
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · untimed · after each question
+                              - generic: completed
+                              - generic: 1 / 5
+                              - generic:
+                                - button: Results
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · untimed · after each passage
+                              - generic: completed
+                              - generic: 3 / 6
+                              - generic:
+                                - button: Results
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · untimed · after each passage
+                              - generic: completed
+                              - generic: 0 / 8
+                              - generic:
+                                - button: Results
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · untimed · after each passage
+                              - generic: in progress
+                              - generic:
+                                - button: Resume
+                                - button: Delete
+                            - generic:
+                              - generic: 4 passages · timed · Feedback timing not recorded
+                              - generic: completed
+                              - generic: 1 / 26
+                              - generic:
+                                - button: Results
+                                - button [disabled]: Delete
+                            - generic:
+                              - generic: 4 passages · timed · at the end
+                              - generic: completed
+                              - generic: 1 / 27
+                              - generic:
+                                - button: Results
+                                - button [disabled]: Delete
+                            - generic:
+                              - generic: 4 passages · timed · at the end
+                              - generic: completed
+                              - generic: 1 / 27
+                              - generic:
+                                - button: Results
+                                - button [disabled]: Delete
+                            - generic:
+                              - generic: 4 passages · timed · Feedback timing not recorded
+                              - generic: completed
+                              - generic: 1 / 27
+                              - generic:
+                                - button: Results
+                                - button [disabled]: Delete
+                            - generic:
+                              - generic: 4 passages · timed · at the end
+                              - generic: completed
+                              - generic: 0 / 27
+                              - generic:
+                                - button: Results
+                                - button [disabled]: Delete
+                            - generic:
+                              - generic: 4 passages · timed · at the end
+                              - generic: in progress
+                              - generic:
+                                - button: Resume
+                                - button: Delete
+                            - generic:
+                              - generic: 2 passages · timed · at the end
+                              - generic: in progress
+                              - generic:
+                                - button: Resume
+                                - button: Delete
+                            - generic:
+                              - generic: 4 passages · timed · at the end
+                              - generic: in progress
+                              - generic:
+                                - button: Resume
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · untimed · after each passage
+                              - generic: in progress
+                              - generic:
+                                - button: Resume
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · untimed · after each passage
+                              - generic: in progress
+                              - generic:
+                                - button: Resume
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · untimed · after each passage
+                              - generic: in progress
+                              - generic:
+                                - button: Resume
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · untimed · after each passage
+                              - generic: in progress
+                              - generic:
+                                - button: Resume
+                                - button: Delete
+                            - generic:
+                              - generic: 1 passage · untimed · after each passage
+                              - generic: in progress
+                              - generic:
+                                - button: Resume
+                                - button: Delete
+                        - generic:
+                          - button: Analytics
+                          - button: Journal
+                    - group:
+                      - generic:
+                        - text: Assigned work
+                        - generic: View homework from My Work
+    - button [aria-hidden]
+  - generic:
+    - dialog:
+      - generic:
+        - heading [level=2]: Question Finder
+        - button
+      - generic:
+        - group:
+          - button: All
+          - button: LR
+          - button [pressed]: RC
+        - generic:
+          - generic:
+            - generic: Test
+            - combobox
+          - generic:
+            - generic: Section
+            - combobox
+          - generic:
+            - generic: Question
+            - combobox [expanded]:
+              - generic: Question
+          - button [disabled]: Open question
+        - generic:
+          - textbox:
+            - /placeholder: Search question text, or type PT90 S1 Q12
+            - text: PT140 S4
+          - generic: PT 140 · S4
+          - button
+      - generic:
+        - generic:
+          - paragraph:
+            - text: Reading Comprehension
+            - generic: select to retain this address
+          - button:
+            - generic: PT 140 · S4 · P1
+            - generic: Sam Gilliam
+            - generic: 6 questions
+          - button:
+            - generic: PT 140 · S4 · P2
+            - generic: Online Game Currencies
+            - generic: 7 questions
+          - button:
+            - generic: PT 140 · S4 · P3
+            - generic: The Origins of Superior Performance
+            - generic: 6 questions
+          - button:
+            - generic: PT 140 · S4 · P4
+            - generic: Explaining Mirror Images
+            - generic: 8 questions
+      - generic:
+        - button:
+          - generic: Build a set
+      - generic [aria-hidden]:
+        - generic:
+          - generic: ↑
+          - generic: ↓
+          - text: move
+        - generic: select
+        - generic:
+          - generic: esc
+          - text: clear
+  - listbox [ref=f1e362]:
+    - group "Passage 1 · Questions 1–6 Sam Gilliam" [ref=f1e363]:
+      - generic [ref=f1e364]:
+        - generic [ref=f1e365]: Passage 1 · Questions 1–6
+        - generic [ref=f1e366]: Sam Gilliam
+      - option "Question 1" [active] [ref=f1e367]
+      - option "Question 2" [ref=f1e370]
+      - option "Question 3" [ref=f1e373]
+      - option "Question 4" [ref=f1e376]
+      - option "Question 5" [ref=f1e379]
+      - option "Question 6" [ref=f1e382]
+    - group "Passage 2 · Questions 7–13 Online Game Currencies" [ref=f1e386]:
+      - generic [ref=f1e387]:
+        - generic [ref=f1e388]: Passage 2 · Questions 7–13
+        - generic [ref=f1e389]: Online Game Currencies
+      - option "Question 7" [ref=f1e390]
+      - option "Question 8" [ref=f1e393]
+      - option "Question 9" [ref=f1e396]
+      - option "Question 10" [ref=f1e399]
+      - option "Question 11" [ref=f1e402]
+      - option "Question 12" [ref=f1e405]
+      - option "Question 13" [ref=f1e408]
+    - group "Passage 3 · Questions 14–19 The Origins of Superior Performance" [ref=f1e412]:
+      - generic [ref=f1e413]:
+        - generic [ref=f1e414]: Passage 3 · Questions 14–19
+        - generic [ref=f1e415]: The Origins of Superior Performance
+      - option "Question 14" [ref=f1e416]
+      - option "Question 15" [ref=f1e419]
+      - option "Question 16" [ref=f1e422]
+      - option "Question 17" [ref=f1e425]
+      - option "Question 18" [ref=f1e428]
+      - option "Question 19" [ref=f1e431]
+    - group "Passage 4 · Questions 20–27 Explaining Mirror Images" [ref=f1e435]:
+      - generic [ref=f1e436]:
+        - generic [ref=f1e437]: Passage 4 · Questions 20–27
+        - generic [ref=f1e438]: Explaining Mirror Images
+      - option "Question 20" [ref=f1e439]
+      - option "Question 21" [ref=f1e442]
+      - option "Question 22" [ref=f1e445]
+      - option "Question 23" [ref=f1e448]
+      - option "Question 24" [ref=f1e451]
+      - option "Question 25" [ref=f1e454]
+      - option "Question 26" [ref=f1e457]
+      - option "Question 27" [ref=f1e460]
