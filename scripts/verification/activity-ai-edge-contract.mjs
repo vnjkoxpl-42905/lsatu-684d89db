@@ -7,7 +7,8 @@ const { PGlite } = await import(pathToFileURL(process.env.PGLITE_MODULE ?? 'C:/U
 const compile = source => ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 } }).outputText;
 const dataUrl = source => 'data:text/javascript;base64,' + Buffer.from(source).toString('base64');
 const responseUrl = dataUrl(compile(await readFile(new URL('../../supabase/functions/activity-coach/response.ts', import.meta.url), 'utf8')));
-const code = compile(await readFile(new URL('../../supabase/functions/activity-coach/grading.ts', import.meta.url), 'utf8')).replace('./response.ts', responseUrl);
+const answerKeyUrl = dataUrl(compile(await readFile(new URL('../../supabase/functions/activity-coach/answerKey.ts', import.meta.url), 'utf8')));
+const code = compile(await readFile(new URL('../../supabase/functions/activity-coach/grading.ts', import.meta.url), 'utf8')).replace('./response.ts', responseUrl).replace('./answerKey.ts', answerKeyUrl);
 const { gradeCoachRequest } = await import(dataUrl(code));
 const db = new PGlite(); let checks = 0, paidCalls = 0;
 const eq = (a, b) => { assert.deepEqual(a, b); checks++; };

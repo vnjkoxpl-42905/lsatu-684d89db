@@ -46,6 +46,7 @@ import {
   routeWithReturnTo,
 } from "@/hooks/useAssignedTodoFeed";
 import { useDialogOverlay } from "@/components/classroom/shell/useDialogOverlay";
+import AssignedReadingCenterLink from '@/components/classroom/AssignedReadingCenterLink';
 import "@/components/classroom/classroom.css";
 
 type ClassroomSection = "notes" | "work" | "flagged" | "journal";
@@ -338,6 +339,7 @@ function ClassroomSidebar({
 
           <div className="classroom-nav-group classroom-nav-shortcuts">
             <b>Quick access</b>
+            <AssignedReadingCenterLink onNavigate={onNavigate} />
             {/* aria-disabled rather than disabled: a disabled button drops out
                 of the tab order, so a keyboard student never reaches the
                 explanation of why it is locked. */}

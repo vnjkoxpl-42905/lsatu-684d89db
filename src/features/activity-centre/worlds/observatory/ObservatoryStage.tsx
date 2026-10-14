@@ -442,6 +442,7 @@ function Seals({ seals }: { seals?: SealState }) {
           className="ob-seal observatory-mono rounded-sm px-3 py-1.5 text-xs"
           data-kind={k}
           data-lit={seals?.[k] ? "true" : undefined}
+          aria-label={`${SEAL_LABEL[k]}: ${seals?.[k] ? "answered correctly" : "not yet answered correctly"}`}
           data-testid={`ob-seal-${k}`}
         >
           {SEAL_LABEL[k]}
