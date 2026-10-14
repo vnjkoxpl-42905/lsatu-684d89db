@@ -11,6 +11,7 @@ const { auth, permissions, assignment } = vi.hoisted(() => ({
 }));
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => auth }));
 vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
+vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => ({ allowed: false, isPending: false }) }));
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: { from: () => {

@@ -44,6 +44,21 @@ Lovable's concurrent grading task then saved `13af89c9` to `lovable-sync-1791933
 
 The merged release `5d6e59410c0355ff4758165777430e974a58a560` passed the guarded TypeScript push and a fresh production build/content guard. Independent merge review found no high-priority issue; 119 additional ActivityRunner, Observatory and grading regression tests in 6 files passed. Lovable confirmed this exact SHA before free deployment `1ec3b668-7a31-4f13-bdd4-3ec5be5fe82b` was started.
 
-## Scope
+## My Work and sidebar correction, 2026-10-13
+
+Joshua clarified that student visibility must follow an admin assignment and that the sidebar launcher belongs high up beside My Work. The student launcher now sits immediately after My Work, with its Quick access copy removed. It is hidden for admins, who manage assignments and preview through Teacher Workspace. Customized navigation preferences remain stored unchanged; My Work is temporarily shown while the assigned tool is available.
+
+My Work's To do/Completed routes and tabs now accept a verified Reading Center grant without broad Classroom access. That narrow view shows only the exact Reading Center assignment and suppresses weekly plans/ordinary coursework. Notes retains its own permission gate. Rows also disappear when the live grant check fails or is withdrawn, even when broad Classroom access exists.
+
+- 121 focused tests across 8 files, TypeScript, production build/content guard and independent review passed.
+- Actual QA browser with Classroom access temporarily off and its existing grant active: sidebar Home/My Work/Reading Center order, one Reading Center row, To do/Completed open, Notes locked, no weekly plan or ordinary assignment rows.
+- [Five-width navigation matrix](my-work-navigation-matrix.json): 300/375/640/1036/1440 pixels, correct visible sidebar order and one tool row, no horizontal page overflow. Overrides cleared.
+- [Assigned-only screenshot](my-work-assigned-only-local.png); [withdrawn screenshot](my-work-unassigned-local.png). When the QA grant visibility was temporarily withdrawn, its launcher disappeared, My Work locked and the direct reader URL showed Not open yet.
+- The same original QA grant ID and in_progress status were restored through authenticated admin API; its original visible=true and Classroom flag=true values were read back. The direct database-owner attempt to restore visibility was rejected by the admin guard. No role defaults, real student assignments, saved reading work or assignment IDs changed; no notifications sent. [Scoped QA restore script](restore-qa-assignment.mjs) keeps credentials/token in process memory.
+- Local admin browser has no student Reading Center shortcut and retains Teacher Workspace's assignment page, which confirms the QA grant. The restored QA My Work list also retains all its original ordinary assignments.
+
+Publication readback for this correction follows after release.
+
+## Scope retained from the original release
 
 AI Summary/Generate remain excluded by Joshua's earlier decision. Import supports text, Markdown and HTML up to 5 MB; PDF/DOCX parsing, Wordela integration and the original Spreeder commercial catalogue are outside this feature. No Edge Function deployment or Lovable AI credit spending was used.

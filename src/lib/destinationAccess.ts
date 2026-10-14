@@ -21,6 +21,8 @@ export interface DestinationTab {
   routeDeterminesAccess?: boolean;
   /** The route is `ProtectedRoute requireAdmin`. */
   admin?: boolean;
+  /** A verified Reading Center grant opens its filtered assignment list. */
+  readingCenterEligible?: boolean;
 }
 
 export interface DestinationConfig {
@@ -36,8 +38,8 @@ export const DESTINATIONS: Record<Destination, DestinationConfig> = {
     introduction: "Assignments and notes from your work with Joshua.",
     path: "/my-work",
     tabs: [
-      { label: "To do", path: "/my-work/to-do", flags: ["has_classroom_access"] },
-      { label: "Completed", path: "/my-work/completed", flags: ["has_classroom_access"] },
+      { label: "To do", path: "/my-work/to-do", flags: ["has_classroom_access"], readingCenterEligible: true },
+      { label: "Completed", path: "/my-work/completed", flags: ["has_classroom_access"], readingCenterEligible: true },
       { label: "Notes & recaps", path: "/my-work/notes", flags: ["has_classroom_access"] },
     ],
   },
@@ -95,7 +97,10 @@ export const EXAM_TABS: DestinationTab[] = [
   { label: "Attempts", path: "/practice/exams/attempts", allowSignedIn: true },
 ];
 
-type AccessView = Pick<UserPermissions, "loading" | "is_admin"> & Partial<Record<PermissionFlag, boolean>>;
+type AccessView = Pick<UserPermissions, "loading" | "is_admin"> & Partial<Record<PermissionFlag, boolean>> & {
+  readingCenterAssigned?: boolean;
+  readingCenterChecking?: boolean;
+};
 
 /** Navigation state only: `checking` is unknown; `open` means the link is reachable.
  * Assignment-aware content access is resolved exclusively by its route gate. */
@@ -105,9 +110,14 @@ export function tabAccess(tab: DestinationTab, permissions: AccessView): TabAcce
   if (permissions.loading) return "checking";
   if (tab.admin) return permissions.is_admin ? "open" : "locked";
   if (permissions.is_admin || tab.allowSignedIn) return "open";
+  if (tab.flags?.some((flag) => permissions[flag])) return 'open';
+  if (tab.readingCenterEligible) {
+    if (permissions.readingCenterAssigned) return 'open';
+    if (permissions.readingCenterChecking) return 'checking';
+  }
   // AssignmentGate queries ownership only when Classroom access is enabled.
   if (tab.routeDeterminesAccess) return permissions.has_practice_access || permissions.has_classroom_access ? "open" : "locked";
-  return tab.flags?.some((flag) => permissions[flag]) ? "open" : "locked";
+  return "locked";
 }
 
 /**
@@ -133,6 +143,7 @@ export function destinationLock(destination: Destination, permissions: AccessVie
   if (permissions.loading) return "checking";
   // Admissions is staff-only by design, so it never counts against a student.
   const states = DESTINATIONS[destination].tabs.filter((tab) => !tab.admin).map((tab) => tabAccess(tab, permissions));
+  if (states.includes('checking') && !states.includes('open')) return 'checking';
   if (states.every((state) => state === "locked")) return "locked";
   return states.some((state) => state === "locked") ? "partial" : "open";
 }
