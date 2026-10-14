@@ -74,12 +74,12 @@ it('exposes only the permitted content and flashcard families', () => {
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
   expect(document.querySelector('.opening-course-content')).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={steps} url={url}/></MemoryRouter>);
-  // The mixed word deck is the only indicator set, and it is always there.
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
-  expect(screen.queryByRole('heading', { name: /Group [12] words/ })).toBeNull();
+  expect(screen.getByRole('heading', { name: 'Group 1 words' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Group 2 words' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Mixed indicator review' })).toBeNull();
   const both = OPENING_COURSE_PATH.filter(step => step.unitId === 'group-1' || step.unitId === 'group-2');
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={both} url={url}/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Mixed indicator review' })).toBeVisible();
   expect(screen.queryByRole('heading', { name: 'Sufficient and necessary' })).toBeNull();
 });
 
@@ -129,4 +129,17 @@ it('focuses the destination after drawer navigation and restores the trigger aft
   fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
   await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
   await waitFor(() => expect(screen.getByRole('button', { name: 'Course menu' })).toHaveFocus());
+});
+
+it('focuses the new heading when entering a deck or returning to the sets on the same tools route', async () => {
+  render(<MemoryRouter initialEntries={['/course/tools']}><CourseNavigationHarness/></MemoryRouter>);
+  await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Flashcards' })).toHaveFocus());
+  const openDeck = screen.getAllByRole('link', { name: 'Go to flashcards' })[0];
+  openDeck.focus();
+  fireEvent.click(openDeck);
+  await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Sufficient and necessary' })).toHaveFocus());
+  const returnToSets = screen.getByRole('link', { name: 'All flashcard sets' });
+  returnToSets.focus();
+  fireEvent.click(returnToSets);
+  await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Flashcards' })).toHaveFocus());
 });

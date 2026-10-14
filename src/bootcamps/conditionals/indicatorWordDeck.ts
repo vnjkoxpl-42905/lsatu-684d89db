@@ -55,12 +55,13 @@ export function shuffleSpread(cards: IndicatorWordCard[], rng: () => number = Ma
   return order;
 }
 
-export function newRound(previous?: DeckState, rng: () => number = Math.random): DeckState {
+export function newRound(previous?: DeckState, rng: () => number = Math.random, group?: IndicatorGroup): DeckState {
+  const cards = group ? indicatorWordCards.filter(card => card.group === group) : indicatorWordCards;
   return {
     v: 1, round: previous ? previous.round + 1 : 1,
-    queue: shuffleSpread(indicatorWordCards, rng).map(card => ({ id: card.id, retry: false })),
+    queue: (group ? shuffled(cards, rng) : shuffleSpread(cards, rng)).map(card => ({ id: card.id, retry: false })),
     index: 0, picked: null, results: {},
-    earlier: previous ? [...previous.earlier, { right: summarize(previous).right, total: indicatorWordCards.length }] : [],
+    earlier: previous ? [...previous.earlier, { right: summarize(previous).right, total: summarize(previous).firstTotal }] : [],
   };
 }
 
@@ -91,18 +92,19 @@ export function summarize(state: DeckState) {
 }
 
 /** Accepts only a state that still matches the deck; anything else starts a fresh round rather than resuming into a broken one. */
-export function readDeckState(raw: unknown): DeckState | null {
+export function readDeckState(raw: unknown, group?: IndicatorGroup): DeckState | null {
+  const allowed = new Set(indicatorWordCards.filter(card => !group || card.group === group).map(card => card.id));
   const value = raw as Partial<DeckState> | null;
   if (!value || typeof value !== 'object' || value.v !== 1 || !Number.isInteger(value.round) || !Number.isInteger(value.index)) return null;
-  if (!Array.isArray(value.queue) || !value.queue.every(entry => entry && typeof entry.id === 'string' && byId.has(entry.id) && typeof entry.retry === 'boolean')) return null;
+  if (!Array.isArray(value.queue) || !value.queue.every(entry => entry && typeof entry.id === 'string' && allowed.has(entry.id) && typeof entry.retry === 'boolean')) return null;
   const firstPass = value.queue.filter(entry => !entry.retry);
-  if (firstPass.length !== indicatorWordCards.length || new Set(firstPass.map(entry => entry.id)).size !== indicatorWordCards.length) return null;
+  if (firstPass.length !== allowed.size || new Set(firstPass.map(entry => entry.id)).size !== allowed.size) return null;
   if (value.index! < 0 || value.index! > value.queue.length) return null;
   if (value.picked !== null && value.picked !== 1 && value.picked !== 2) return null;
   if (value.picked !== null && value.index === value.queue.length) return null;
   if (!value.results || typeof value.results !== 'object') return null;
   const outcome = (v: unknown) => v === undefined || v === 'right' || v === 'wrong';
-  if (!Object.entries(value.results).every(([id, r]) => byId.has(id) && !!r && outcome(r.first) && outcome(r.second))) return null;
+  if (!Object.entries(value.results).every(([id, r]) => allowed.has(id) && !!r && outcome(r.first) && outcome(r.second))) return null;
   const earlier = Array.isArray(value.earlier) ? value.earlier.filter(r => r && Number.isInteger(r.right) && Number.isInteger(r.total)) : [];
   return { v: 1, round: value.round!, queue: value.queue, index: value.index!, picked: value.picked ?? null, results: value.results, earlier };
 }

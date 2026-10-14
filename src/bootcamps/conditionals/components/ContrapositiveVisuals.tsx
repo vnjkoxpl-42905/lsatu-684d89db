@@ -280,6 +280,13 @@ function choicesFor(rule: RuleCase): Choice[] {
 
 /** Four rules, one at a time: which of three diagrams is the contrapositive? */
 export function RuleDrill() {
+  const prompt = useRef<HTMLParagraphElement>(null);
+  const focusAfterNavigation = useRef(false);
+  useEffect(() => {
+    if (!focusAfterNavigation.current) return;
+    focusAfterNavigation.current = false;
+    prompt.current?.focus();
+  });
   const [state, setState] = useLessonInteraction('quiz:contrapositive', { step: 0, wrong: [] as number[], solved: null as number | null, complete: false, attempts: 0, assisted: false });
   const { step, wrong, solved, attempts } = state;
   const setWrong = (update: (previous: number[]) => number[]) => setState({ ...state, wrong: update(wrong), attempts: attempts + 1 });
@@ -291,18 +298,18 @@ export function RuleDrill() {
   const message = solved !== null
     ? rule.why.contrapositive
     : lastTried ? `Not that one. ${rule.why[lastTried.kind as 'reverse' | 'inverse']}` : 'Pick the diagram that says the same thing as the rule.';
-  const next = () => setState({ ...state, step: step + 1, wrong: [], solved: null, attempts: 0 });
-  const restart = () => setState({ step: 0, wrong: [], solved: null, complete: false, attempts: 0, assisted: false });
+  const next = () => { focusAfterNavigation.current = true; setState({ ...state, step: step + 1, wrong: [], solved: null, attempts: 0 }); };
+  const restart = () => { focusAfterNavigation.current = true; setState({ step: 0, wrong: [], solved: null, complete: false, attempts: 0, assisted: false }); };
   return <div className="ct-drill" data-step={step}>
     <div className="ct-drill-top">
       <p className="ct-picker-kicker">Your turn</p>
       <p className="ct-drill-count">Rule {step + 1} of {ruleCases.length}<span className="ct-drill-dots" aria-hidden="true">{ruleCases.map((item, index) => <i key={item.tag} data-state={index < step ? 'done' : index === step ? 'now' : 'todo'}/>)}</span></p>
     </div>
-    <p className="ct-drill-sentence">{rule.sentence}</p>
+    <p className="ct-drill-sentence" id={`ct-drill-rule-${step}`}>{rule.sentence}</p>
     <div className="ct-drill-original" role="img" aria-label={`The rule: ${spoken(rule.left)} implies ${spoken(rule.right)}`}>
       <Pill text={rule.left.short} tone="amber" negated={rule.left.negated}/><span className="ct-drill-arrow" aria-hidden="true">→</span><Pill text={rule.right.short} tone="teal" negated={rule.right.negated}/>
     </div>
-    <p className="ct-picker-question" id={`ct-drill-q-${step}`}>Which one is the contrapositive?</p>
+    <p ref={prompt} tabIndex={-1} className="ct-picker-question" id={`ct-drill-q-${step}`} aria-describedby={`ct-drill-rule-${step}`}>Which one is the contrapositive?</p>
     <div className="ct-drill-options" role="group" aria-labelledby={`ct-drill-q-${step}`}>
       {choices.map((choice, index) => {
         const state = solved === index ? 'right' : wrong.includes(index) ? 'wrong' : 'open';

@@ -7,6 +7,7 @@ import { emptyProgress, recordCourseStep, type ConditionalProgress } from '../pr
 import { QuickQuiz, type QuizItem } from './SufficientQuiz';
 import { ReferenceQuestion } from './ConditionalReferenceSequence';
 import { OpeningCourseScreen } from './OpeningCourse';
+import { RuleDrill } from './ContrapositiveVisuals';
 
 afterEach(() => { cleanup(); localStorage.clear(); vi.restoreAllMocks(); });
 const url = (id: string) => `/course/${id}`;
@@ -18,6 +19,55 @@ function QuizHarness({ quiz = items }: { quiz?: QuizItem[] }) {
   const store = useDeviceCourseProgress('lesson-test');
   return <CourseProgressProvider store={store}><CourseLessonProvider stepId="test"><QuickQuiz items={quiz} idPrefix="test"/><ReferenceQuestion prompt="Sibling exercise" options={['Yes', 'No']} correct={0} feedback={['Correct reasoning', 'Try another case']}/></CourseLessonProvider></CourseProgressProvider>;
 }
+
+it('focuses each new quick-quiz prompt after Next and restart without taking focus on initial rendering', () => {
+  const arrival = document.createElement('button');
+  document.body.append(arrival);
+  arrival.focus();
+  render(<QuizHarness/>);
+  expect(arrival).toHaveFocus();
+  fireEvent.click(screen.getByRole('button', { name: 'Red parcel' }));
+  const next = screen.getByRole('button', { name: 'Next question' });
+  next.focus();
+  fireEvent.click(next);
+  expect(screen.getByText('What is required?')).toHaveFocus();
+  expect(screen.getByText('What is required?')).toHaveAccessibleDescription('All red parcels are tracked.');
+  fireEvent.click(screen.getByRole('button', { name: 'Tracked parcel' }));
+  const restart = screen.getByRole('button', { name: 'Try them again' });
+  restart.focus();
+  fireEvent.click(restart);
+  expect(screen.getByText('What is enough?')).toHaveFocus();
+  arrival.remove();
+});
+
+it('focuses the prompt when restarting a one-question quick quiz', () => {
+  render(<QuizHarness quiz={items.slice(0, 1)}/>);
+  fireEvent.click(screen.getByRole('button', { name: 'Red parcel' }));
+  const restart = screen.getByRole('button', { name: 'Try them again' });
+  restart.focus();
+  fireEvent.click(restart);
+  expect(screen.getByText('What is enough?')).toHaveFocus();
+  expect(screen.getByText('What is enough?')).toHaveAccessibleDescription('All red parcels are tracked.');
+});
+
+it('focuses each new contrapositive rule and its description after Next and restart', () => {
+  const arrival = document.createElement('button');
+  document.body.append(arrival);
+  arrival.focus();
+  render(<RuleDrill/>);
+  expect(arrival).toHaveFocus();
+  const prompt = screen.getByText('Which one is the contrapositive?');
+  for (const [step, correct] of [2, 0, 1, 2].entries()) {
+    fireEvent.click(within(screen.getByRole('group', { name: 'Which one is the contrapositive?' })).getAllByRole('button')[correct]);
+    const move = screen.getByRole('button', { name: step === 3 ? 'Try them again' : 'Next rule' });
+    move.focus();
+    fireEvent.click(move);
+    expect(prompt).toHaveFocus();
+    expect(prompt).toHaveAccessibleDescription(document.querySelector('.ct-drill-sentence')!.textContent!);
+  }
+  expect(screen.getByText('Rule 1 of 4')).toBeVisible();
+  arrival.remove();
+});
 
 it('keeps wrong attempts, hints, question position and sibling answers on reload without role-color leakage', () => {
   const first = render(<QuizHarness/>);

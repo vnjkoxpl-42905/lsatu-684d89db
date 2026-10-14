@@ -130,16 +130,20 @@ const RetainedQuestion = memo(function RetainedQuestion({ question, record, init
 const confirmationPool: MixedDrillChoiceItem[] = [...Object.values(confirmationItemsByError).flat(), obligationConfirmationItem];
 const questionFingerprint = JSON.stringify(baselineQuestions);
 type MixedState = { archived: unknown[]; attempts: Record<string, Attempt>; questions: Question[]; current: number; visited: string[]; results: Record<string, Result>; finished: boolean; introducedStages: number[] };
+const freshMixed = (archived: unknown[]): MixedState => ({ archived, attempts: {}, questions: baselineQuestions, current: 0, visited: [baselineQuestions[0].id], results: {}, finished: false, introducedStages: [] });
 /** Rebuilds a saved run. Anything that no longer matches the current question set starts fresh. */
 function restoreMixed(state: unknown): MixedState | null {
   const data = state as { archived?: unknown[]; fingerprint?: unknown; attempts?: Record<string, Attempt>; questionIds?: unknown; current?: unknown; visited?: unknown; results?: unknown; finished?: unknown; introducedStages?: unknown } | undefined;
-  if (!data || !Array.isArray(data.questionIds) || !data.results || typeof data.results !== 'object') return null;
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
+  const priorArchives = Array.isArray(data.archived) ? data.archived : [];
+  const previousRun = { ...data, archived: undefined };
+  if (!Array.isArray(data.questionIds) || !data.results || typeof data.results !== 'object') return freshMixed([...priorArchives, previousRun]);
   const currentContent = data.fingerprint === questionFingerprint;
-  const archived = [...(Array.isArray(data.archived) ? data.archived : []), ...(!currentContent ? [{ ...data, archived: undefined }] : [])].slice(-3);
   const ids = data.questionIds as unknown[];
-  if (ids.length < baselineQuestions.length || baselineQuestions.some((question, index) => ids[index] !== question.id)) return null;
+  if (ids.length < baselineQuestions.length || baselineQuestions.some((question, index) => ids[index] !== question.id)) return freshMixed([...priorArchives, previousRun]);
   const extra = ids.slice(baselineQuestions.length).map(id => confirmationPool.find(item => item.id === id));
-  if (extra.some(item => !item)) return null;
+  if (extra.some(item => !item)) return freshMixed([...priorArchives, previousRun]);
+  const archived = [...priorArchives, ...(!currentContent ? [previousRun] : [])];
   const questions: Question[] = [...baselineQuestions, ...extra.map(item => ({ id: item!.id, stage: 5, kind: 'choice' as const, item: item! }))];
   const attempts: Record<string, Attempt> = {};
   if (currentContent && data.attempts && typeof data.attempts === 'object') for (const question of questions) {
