@@ -57,7 +57,9 @@ My Work's To do/Completed routes and tabs now accept a verified Reading Center g
 - The same original QA grant ID and in_progress status were restored through authenticated admin API; its original visible=true and Classroom flag=true values were read back. The direct database-owner attempt to restore visibility was rejected by the admin guard. No role defaults, real student assignments, saved reading work or assignment IDs changed; no notifications sent. [Scoped QA restore script](restore-qa-assignment.mjs) keeps credentials/token in process memory.
 - Local admin browser has no student Reading Center shortcut and retains Teacher Workspace's assignment page, which confirms the QA grant. The restored QA My Work list also retains all its original ordinary assignments.
 
-Publication readback for this correction follows after release.
+Published correction commit `c50cfb21` in checked merged release `1190cb2601e29f1449a5e0affc05e9ed62064008`, after preserving incoming Activity/Abstract work. The combined release passed 91 additional tests in 7 changed files, renewed TypeScript/build/content guards and independent review; the merge did not change any Reading Center/navigation/access file. Lovable confirmed the exact SHA before free deployment `b8444b88-80c4-413e-be23-09aa8f802ecc`.
+
+Live entry changed from `/assets/index-C8F-Wb_V.js` to `/assets/index-DByF-8o8.js`, which contains the new "Checking assigned work access" marker. Entry SHA-256: `4d25545a0235f6e6824da0e820ebcd28629930c31b52d8ba06548f19e97ddce0`. Signed-in production QA My Work displays Reading Center directly below My Work in the sidebar and as its first To do item; clicking the item opens the integrated library. [Live My Work screenshot](my-work-production.png). The live admin assignment page still confirms the exact QA grant and its Classroom sidebar has no automatic student Reading Center shortcut. No extra test assignment or notification was created.
 
 ## Scope retained from the original release
 
