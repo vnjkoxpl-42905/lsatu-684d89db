@@ -20,19 +20,38 @@ it('links to flashcard practice without embedding a deck in either definition le
   expect(screen.getByRole('link', { name: 'Go to flashcards' })).toHaveAttribute('href', `${url('tools')}&deck=group-2&from=necessary`);
   expect(screen.queryByText('Which group?')).toBeNull();
 });
-it('lists one mixed word deck beside the concept cards, and old group links open it', () => {
+it('lists dedicated groups and optional mixed review beside the concept cards', () => {
   render(<MemoryRouter initialEntries={[url('tools')]}><Harness/></MemoryRouter>);
   expect(screen.getByRole('heading', { name: 'Sufficient and necessary' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
-  expect(screen.queryByRole('heading', { name: /Group [12] words/ })).toBeNull();
+  expect(screen.getByRole('heading', { name: 'Mixed indicator review' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Group 1 words' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Group 2 words' })).toBeVisible();
   cleanup();
   for (const deck of ['indicators', 'group-1', 'group-2']) {
     render(<MemoryRouter initialEntries={[`${url('tools')}&deck=${deck}`]}><Harness/></MemoryRouter>);
+    expect(screen.getByText(`Card 1 of ${deck === 'group-1' ? 13 : deck === 'group-2' ? 7 : 20}`)).toBeVisible();
     expect(screen.getByText('Which group?')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Group 1' })).toBeVisible();
     expect(screen.getByRole('button', { name: 'Group 2' })).toBeVisible();
     cleanup();
   }
+});
+
+it.each(['group-2', 'indicators'])('blocks direct access to %s for work assigned only Group 1', deck => {
+  const steps = OPENING_COURSE_PATH.filter(step => step.unitId === 'group-1');
+  render(<MemoryRouter initialEntries={[`${url('tools')}&deck=${deck}`]}><OpeningCourseScreen view="tools" steps={steps} url={url}/></MemoryRouter>);
+  expect(screen.getByRole('heading', { name: 'Group 1 words' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Group 2 words' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Mixed indicator review' })).toBeNull();
+  expect(screen.queryByText('Which group?')).toBeNull();
+});
+
+it.each([['sufficient', 'Group 1 words', 13], ['necessary', 'Group 2 words', 7]] as const)('opens the dedicated cards from %s and retains its source return link', (lesson, title, total) => {
+  render(<MemoryRouter initialEntries={[url(lesson)]}><Harness/></MemoryRouter>);
+  fireEvent.click(screen.getByRole('link', { name: 'Go to flashcards' }));
+  expect(screen.getByRole('heading', { level: 1, name: title })).toBeVisible();
+  expect(screen.getByText(`Card 1 of ${total}`)).toBeVisible();
+  expect(screen.getByRole('link', { name: `Back to ${lesson} condition` })).toHaveAttribute('href', url(lesson));
 });
 it('does not expose flashcard sets when the work does not include their units', () => {
   render(<MemoryRouter initialEntries={[`${url('tools')}&deck=foundation`]}><OpeningCourseScreen view="tools" steps={[]} url={url}/></MemoryRouter>);
@@ -44,6 +63,12 @@ it('does not link an orientation-only learner to an unavailable indicator deck',
   const steps = OPENING_COURSE_PATH.filter(step => step.unitId === 'orientation' || step.alsoAvailableIn?.includes('orientation'));
   render(<MemoryRouter><OpeningCourseScreen view="necessary" steps={steps} url={url}/></MemoryRouter>);
   expect(screen.getByRole('heading', { level: 1, name: 'The Necessary Condition' })).toBeVisible();
+  expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
+});
+
+it.each([['necessary', 'group-1'], ['sufficient', 'group-2']] as const)('does not link %s to its unavailable dedicated group', (lesson, assigned) => {
+  const steps = OPENING_COURSE_PATH.filter(step => step.unitId === assigned || step.id === lesson);
+  render(<MemoryRouter><OpeningCourseScreen view={lesson} steps={steps} url={url}/></MemoryRouter>);
   expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
 });
 it('turns a key-term card with one tap and moves on', () => {

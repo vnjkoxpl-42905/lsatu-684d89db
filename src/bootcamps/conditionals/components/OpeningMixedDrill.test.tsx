@@ -269,3 +269,25 @@ it('checks both whole-rule equivalence and obligation when both distinctions nee
   next();
   expect(active().getByText(obligationConfirmationItem.sentence)).toBeVisible();
 }, 30000);
+
+it.each(['copy revision', 'shortened bank', 'changed identity', 'retired follow-up'])('preserves all earlier work across a %s', change => {
+  const save = vi.fn();
+  const mount = (steps: CourseProgressStore['steps']) => render(<CourseProgressProvider store={{ steps, save }}><OpeningMixedDrill stepId="mixed-practice"/></CourseProgressProvider>);
+  mount({});
+  const initial = save.mock.calls.at(-1)![1].state as { questionIds: string[]; fingerprint: string };
+  cleanup();
+  const earlier = Array.from({ length: 4 }, (_, index) => ({ finished: true, fingerprint: `edition-${index}`, attempts: { old: { draftReadback: `Earlier sentence ${index}` } }, results: { old: { firstCorrect: false, correct: true } } }));
+  const questionIds = change === 'shortened bank' ? initial.questionIds.slice(0, -1)
+    : change === 'changed identity' ? ['retired-question', ...initial.questionIds.slice(1)]
+    : change === 'retired follow-up' ? [...initial.questionIds, 'retired-fresh-check'] : initial.questionIds;
+  const previous = { ...initial, fingerprint: change === 'copy revision' ? 'old-content' : initial.fingerprint, questionIds, archived: earlier, finished: true, attempts: { old: { draftReadback: 'My last written attempt' } }, results: { old: { firstCorrect: false, correct: true, errors: [] } } };
+  mount({ 'mixed-practice': { status: 'done', updatedAt: '2026-10-13', state: previous } });
+  const restored = save.mock.calls.at(-1)![1];
+  expect(restored.state.archived).toHaveLength(5);
+  expect(restored.state.archived.slice(0, 4)).toEqual(earlier);
+  expect(restored.state.archived[4]).toMatchObject({ attempts: previous.attempts, results: previous.results, finished: true });
+  expect(restored.state.finished).toBe(false);
+  expect(restored.done).toBe(0);
+  expect(screen.getByRole('button', { name: 'Begin practice' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Your practice results' })).not.toBeInTheDocument();
+});

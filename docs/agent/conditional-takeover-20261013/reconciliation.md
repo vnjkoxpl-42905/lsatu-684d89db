@@ -46,3 +46,9 @@ Both runs requested Codex with `gpt-6-astra`, high effort. The artifacts did not
 - The independent reviewer confirmed that finding closed in the final integrated code. Reconciliation commit: `68cb0c3b`. The partial Claude merge and both original checkouts remain preserved.
 
 Signed-in production persistence, publication and physical-device acceptance remain separate. No production merge, deployment, assignment, paid provider call or new media was performed. Teaching copy remains provisional for Joshua's editorial review.
+
+## Final quality pass (2026-10-14)
+
+Joshua requested an internal rubric and the strongest finished combination. [The rubric](quality-rubric.md) records six local gates and separates unverified release acceptance. This pass preserves the reconciliation and adds unlimited mixed-run archive retention across bank changes, dedicated Group 1/2 flashcard decks with isolated saved progress and assignment gates, and keyboard focus on new quiz/card prompts. The optional mixed indicator deck retains its existing saved record and requires both assigned groups. Authored cards and original worksheet sources remain unchanged.
+
+Final evidence: **440 tests / 35 files passed**, typecheck and production build/content guard passed, 52 responsive samples passed at 320/375/640/900/1440 pixels, and actual Enter/reload checks passed for quiz navigation and both dedicated decks. Independent read-only review found no further actionable issue in saved history, deck boundaries or assignment gates. Signed-in production acceptance, physical-device/screen-reader acceptance, editorial approval and publication remain separate.

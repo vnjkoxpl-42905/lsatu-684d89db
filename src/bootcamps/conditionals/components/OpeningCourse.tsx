@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, Bookmark, Check, Dumbbell, Menu, Sparkles } from 'lucide-react';
 import { CourseLessonProvider, CourseProgressProvider, useCourseProgress, useDeviceCourseProgress, type CourseProgressStore } from '../courseProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
@@ -138,26 +138,28 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
 function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }: {
   view: string; run: boolean; url: OpeningCourseUrl; steps: OpeningCourseStep[]; recordedPractice?: ReactNode; storageScope?: string;
 }) {
+  const { search } = useLocation();
   const current = steps.find(step => step.id === view);
   const [visited, setVisited] = useState<string[]>([]);
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (current && (current.type === 'note' || run)) setVisited(prior => prior.includes(view) ? prior : [...prior, view]);
     root.current?.querySelectorAll<HTMLVideoElement>('.oc-course-body[hidden] video').forEach(video => { if (!video.paused) video.pause(); });
-    requestAnimationFrame(() => {
+    const focusFrame = requestAnimationFrame(() => {
       const heading = root.current?.querySelector<HTMLElement>('[data-course-heading] h1');
       if (heading) heading.tabIndex = -1;
       heading?.focus({ preventScroll: true });
       const arrival = root.current?.querySelector<HTMLElement>(current?.type === 'drill' && run ? '.oc-drill-run-header' : '[data-course-heading]');
       arrival?.scrollIntoView?.({ block: 'start', behavior: 'instant' });
     });
-  }, [view, run, current]);
+    return () => cancelAnimationFrame(focusFrame);
+  }, [view, run, current, search]);
   const index = steps.findIndex(step => step.id === view);
   const prior = steps[index - 1];
   const next = steps[index + 1];
   const list = view === 'labs' || view === 'practice' ? steps.filter(step => step.type === 'drill') : steps;
   const isIndex = ['lessons', 'labs', 'practice'].includes(view);
-  const indicatorFlashcardsAllowed = steps.some(step => step.unitId === 'group-1' || step.unitId === 'group-2');
+  const flashcardsFor = (id: string) => steps.some(step => step.unitId === (id === 'necessary' || id === 'necessary-words' ? 'group-2' : 'group-1'));
   return <div ref={root} className={`oc-course-screen${view === 'foundation-practice' ? ' d1-screen' : ''}`}>
     {isIndex && <div className="oc-course-index">
       <div data-course-heading><PageHeader noBloom eyebrow={view === 'lessons' ? 'Introduction' : 'Practice'} title={view === 'lessons' ? 'Conditional reasoning.' : view === 'labs' ? 'Make the move yourself.' : 'Practice the reasoning.'}/></div>
@@ -175,7 +177,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
       </header> : <header><p className="oc-label">Practice</p><h1>{current.title}</h1></header>}</div>
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions</Link>}
     </div>}
-    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={indicatorFlashcardsAllowed ? url : null}><CourseLessonProvider stepId={step.id}>{getSourceWorksheetDrill(step.id) ? <SourceWorksheetDrill setId={step.id} run startUrl={url(step.id, true)} storageScope={storageScope}/> : <OpeningCourseContent id={step.id}/>}</CourseLessonProvider></CourseFlashcardUrl.Provider></div>)}</div>
+    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={flashcardsFor(step.id) ? url : null}><CourseLessonProvider stepId={step.id}>{getSourceWorksheetDrill(step.id) ? <SourceWorksheetDrill setId={step.id} run startUrl={url(step.id, true)} storageScope={storageScope}/> : <OpeningCourseContent id={step.id}/>}</CourseLessonProvider></CourseFlashcardUrl.Provider></div>)}</div>
     {current?.type === 'note' && <LessonCompletion key={current.id} stepId={current.id}/>}
     {current && (current.type === 'note' || run) && <nav className="oc-course-turn" aria-label="Course navigation">{prior ? <Link to={url(prior.id)}><span>Previous {prior.type === 'note' ? 'lesson' : 'drill'}</span><strong>{prior.title}</strong></Link> : <Link to={url('lessons')}>All lessons</Link>}{next ? <Link to={url(next.id)}><span>Next {next.type === 'note' ? 'lesson' : 'drill'}</span><strong>{next.title}<ArrowRight size={18}/></strong></Link> : <Link to={url('lessons')}>Return to lessons<ArrowRight size={18}/></Link>}</nav>}
     {!isIndex && view !== 'tools' && !current && <div className="oc-course-note"><h1>This lesson is not available here.</h1><Link to={url('lessons')}>Return to lessons</Link></div>}

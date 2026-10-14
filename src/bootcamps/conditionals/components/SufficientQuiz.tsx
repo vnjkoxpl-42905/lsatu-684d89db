@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLessonInteraction } from '../courseProgress';
 import { Check, RotateCcw, X } from 'lucide-react';
 import { Pill } from './ContrapositiveVisuals';
@@ -60,6 +60,13 @@ export function SufficientQuiz() {
 
 /** One question at a time, one tap each. A wrong tap says "Not that one." and why; the right tap gives the answer as a plain sentence. */
 export function QuickQuiz({ items, idPrefix }: { items: QuizItem[]; idPrefix: string }) {
+  const prompt = useRef<HTMLParagraphElement>(null);
+  const focusAfterNavigation = useRef(false);
+  useEffect(() => {
+    if (!focusAfterNavigation.current) return;
+    focusAfterNavigation.current = false;
+    prompt.current?.focus();
+  });
   const signature = JSON.stringify(items);
   const empty = () => ({ signature, step: 0, complete: false, answers: items.map(() => ({ wrong: [] as number[], solved: null as number | null, attempts: 0, assisted: false })) });
   const [saved, save] = useLessonInteraction(`quiz:${idPrefix}`, empty());
@@ -76,15 +83,15 @@ export function QuickQuiz({ items, idPrefix }: { items: QuizItem[]; idPrefix: st
   const last = step === items.length - 1;
   const lastWrong = wrong.length ? item.options[wrong[wrong.length - 1]] : null;
   const message = solved !== null ? item.answer : lastWrong ? `Not that one. ${lastWrong.reason}` : 'Pick the answer the rule supports.';
-  const next = () => save({ ...state, step: step + 1 });
-  const restart = () => save(empty());
+  const next = () => { focusAfterNavigation.current = true; save({ ...state, step: step + 1 }); };
+  const restart = () => { focusAfterNavigation.current = true; save(empty()); };
   return <div className="ct-drill" data-step={step}>
     <div className="ct-drill-top">
       <p className="ct-picker-kicker">Your turn</p>
       <p className="ct-drill-count">Question {step + 1} of {items.length}<span className="ct-drill-dots" aria-hidden="true">{items.map((entry, index) => <i key={index} data-state={index < step ? 'done' : index === step ? 'now' : 'todo'}/>)}</span></p>
     </div>
-    <p className="ct-drill-sentence">{item.rule}</p>
-    <p className="ct-picker-question" id={`${idPrefix}-q-${step}`}>{item.question}</p>
+    <p className="ct-drill-sentence" id={`${idPrefix}-rule-${step}`}>{item.rule}</p>
+    <p ref={prompt} tabIndex={-1} className="ct-picker-question" id={`${idPrefix}-q-${step}`} aria-describedby={`${idPrefix}-rule-${step}`}>{item.question}</p>
     <div className="ct-drill-options" role="group" aria-labelledby={`${idPrefix}-q-${step}`}>
       {item.options.map((option, index) => {
         const state = solved === index ? 'right' : wrong.includes(index) ? 'wrong' : 'open';

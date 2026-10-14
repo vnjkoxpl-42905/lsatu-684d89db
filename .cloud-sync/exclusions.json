@@ -332,6 +332,14 @@
     "reason": "excluded file"
   },
   {
+    "path": ".playwright-cli/console-2026-10-14T04-03-53-635Z.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".playwright-cli/console-2026-10-14T04-18-21-089Z.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "dist",
     "reason": "excluded directory"
   },
@@ -373,6 +381,54 @@
   },
   {
     "path": "output/playwright/conditional-reconcile/preview.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-browser-open.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-build.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-decks-final.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-decks.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-final-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-focus-final.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-focus.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-mixed-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-preview.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-push.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-typecheck.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "output/playwright/conditional-reconcile/quality-visual.log",
     "reason": "excluded file"
   },
   {
