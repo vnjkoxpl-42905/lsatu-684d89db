@@ -1,4 +1,6 @@
 /** Where each condition sits inside a rule, for the "highlight both conditions" step.
+ * A wording never includes an indicator, except where the indicator sits inside the only contiguous wording of a
+ * condition ("Security checks are always conducted"); there the shorter, indicator-free wording is accepted too.
  * Keyed by the learner-facing statement. Each entry lists accepted wordings (separated by " | ") for the
  * sufficient and the necessary condition, as they appear in the rule. Indicators stay out of every span.
  * The first wording in each list is the one shown on "Show me".
@@ -13,18 +15,18 @@ const SPANS: Record<string, [sufficient: string, necessary: string]> = {
   'Only after the agreement is signed will the project commence.': ['the project commence', 'the agreement is signed'],
   'Members who pay their dues can attend the meeting.': ['Members who pay their dues', 'attend the meeting'],
   'If the alarm sounds, the building should be evacuated immediately.': ['the alarm sounds', 'the building should be evacuated immediately'],
-  'Passengers must present a ticket to be allowed to board the train.': ['be allowed to board the train', 'Passengers must present a ticket | present a ticket'],
+  'Passengers must present a ticket to be allowed to board the train.': ['be allowed to board the train', 'present a ticket'],
   'A refund is issued only if the item is returned unopened.': ['A refund is issued', 'the item is returned unopened'],
   'The team goes to the finals if they win the semifinals.': ['they win the semifinals', 'The team goes to the finals'],
   'Every applicant who passes the test will receive an interview call.': ['applicant who passes the test', 'receive an interview call'],
-  'You must be over 18 to vote in the club election.': ['vote in the club election', 'You must be over 18 | be over 18'],
+  'You must be over 18 to vote in the club election.': ['vote in the club election', 'be over 18'],
   'If you plant trees, you will support the environment.': ['you plant trees', 'you will support the environment | support the environment'],
   'Only if employees complete training do they qualify for promotion.': ['they qualify for promotion | qualify for promotion', 'employees complete training'],
   'Any student who misses a lesson receives notes.': ['student who misses a lesson', 'receives notes'],
   'Houseguests can enter the backyard only when the gate is unlocked.': ['Houseguests can enter the backyard', 'the gate is unlocked'],
   'The only foods that spoil quickly are those without preservatives.': ['foods that spoil quickly', 'those without preservatives'],
   'Servers restart where maintenance is complete.': ['maintenance is complete', 'Servers restart'],
-  'Drivers must wear seatbelts to avoid fines.': ['avoid fines', 'Drivers must wear seatbelts | wear seatbelts'],
+  'Drivers must wear seatbelts to avoid fines.': ['avoid fines', 'wear seatbelts'],
   'Workers evacuate if the alarm sounds.': ['the alarm sounds', 'Workers evacuate'],
   'Granting a loan requires collateral to be provided.': ['Granting a loan', 'collateral to be provided'],
   'All applications submitted on time will be reviewed.': ['applications submitted on time', 'be reviewed'],
@@ -38,7 +40,7 @@ const SPANS: Record<string, [sufficient: string, necessary: string]> = {
   'Every participant who finishes the marathon receives a medal.': ['participant who finishes the marathon', 'receives a medal'],
   'Any device left unattended will power down automatically.': ['device left unattended', 'power down automatically'],
   'Minutes are recorded whenever the committee meets.': ['the committee meets', 'Minutes are recorded'],
-  'To qualify for bonuses, employees must exceed sales targets.': ['qualify for bonuses', 'employees must exceed sales targets | exceed sales targets'],
+  'To qualify for bonuses, employees must exceed sales targets.': ['qualify for bonuses', 'exceed sales targets'],
   'Expenditures can occur only if managers approve budgets first.': ['Expenditures can occur', 'managers approve budgets first'],
   'Halting operations temporarily requires system maintenance to be performed.': ['Halting operations temporarily', 'system maintenance to be performed'],
   'Access is granted only when user credentials are verified.': ['Access is granted', 'user credentials are verified'],
@@ -54,21 +56,21 @@ const SPANS: Record<string, [sufficient: string, necessary: string]> = {
   'Critical software patches are always applied before servers restart.': ['servers restart', 'Critical software patches are always applied | applied'],
   'Your burrito will thaw if you leave it on the counter.': ['you leave it on the counter', 'Your burrito will thaw | burrito will thaw'],
   'Each and every member of the Q continuum is omnipotent.': ['member of the Q continuum', 'is omnipotent | omnipotent'],
-  'You will run quickly if there is a bear behind you.': ['there is a bear behind you', 'You will run quickly'],
+  'You will run quickly if there is a bear behind you.': ['there is a bear behind you', 'You will run quickly | run quickly'],
   'Your disposable income will increase whenever you reduce your expenses.': ['you reduce your expenses', 'Your disposable income will increase'],
   'If you study, you will beat the LSAT.': ['you study', 'you will beat the LSAT | beat the LSAT'],
-  'Where there\'s beer, there\'s fun.': ['there\'s beer', 'there\'s fun'],
+  'Where there\'s smoke, there\'s fire.': ['there\'s smoke', 'there\'s fire'],
   'The sun will rise, if you pay your taxes.': ['you pay your taxes', 'The sun will rise'],
   'Whenever it rains, it pours.': ['it rains', 'it pours'],
   'All the King\'s men swore an oath of allegiance.': ['the King\'s men', 'swore an oath of allegiance'],
-  'The only monkeys are the ones that live in trees.': ['monkeys', 'the ones that live in trees'],
-  'You will become a magician if you drink coffee.': ['you drink coffee', 'You will become a magician'],
+  'The only monkeys are the ones that live in trees.': ['monkeys', 'the ones that live in trees | live in trees'],
+  'You will become a magician if you eat a carrot.': ['you eat a carrot', 'You will become a magician | become a magician'],
   'Every lawyer can read.': ['lawyer', 'can read'],
   'Any computer can do addition.': ['computer', 'can do addition | do addition'],
   'All beavers love to eat maple trees.': ['beavers', 'love to eat maple trees'],
-  'We must eat to live.': ['to live | live', 'We must eat | eat'],
+  'We must eat to live.': ['to live | live', 'eat'],
   'Only a GPS will reveal where you are.': ['reveal where you are', 'a GPS'],
-  'A good party requires alcohol.': ['A good party', 'alcohol'],
+  'A good soup requires salt.': ['A good soup', 'salt'],
   'Expertise requires practice.': ['Expertise', 'practice'],
   'Only fish swim.': ['swim', 'fish'],
   'Ripe mangoes are always soft to the touch.': ['Ripe mangoes', 'soft to the touch'],
@@ -84,9 +86,35 @@ const SPANS: Record<string, [sufficient: string, necessary: string]> = {
   'All Martian gullies are poleward of 30° latitude.': ['Martian gullies', 'poleward of 30° latitude'],
   'When a mix of fresh and dried grass clippings is worked into garden soil, that soil holds water longer.': ['a mix of fresh and dried grass clippings is worked into garden soil', 'that soil holds water longer'],
   'When the sky is clear, the atmospheric pressure is high.': ['the sky is clear', 'the atmospheric pressure is high'],
-  'The body of anyone infected by virus X will, after a week, produce antibodies to fight the virus.': ['The body of anyone infected by virus X | anyone infected by virus X', 'produce antibodies to fight the virus'],
+  'The body of anyone infected by virus X will, after a week, produce antibodies to fight the virus.': ['infected by virus X', 'after a week, produce antibodies to fight the virus'],
   'Economic conditions improved only when the policy of free trade had been implemented.': ['Economic conditions improved', 'the policy of free trade had been implemented'],
   'Where a moral duty exists, it supersedes any legal duty and any other kind of duty.': ['a moral duty exists', 'it supersedes any legal duty and any other kind of duty'],
+  // Drill 5 rules, highlighted in Revisit Drill 5.
+  'All runners in a marathon must hydrate before that marathon.': ['runners in a marathon', 'hydrate before that marathon'],
+  'Whenever sunlight hits the solar panels, they generate electricity.': ['sunlight hits the solar panels', 'they generate electricity | generate electricity'],
+  'Only those who conserve water will receive the rebate.': ['receive the rebate', 'conserve water | who conserve water'],
+  'The only key to unlocking the shed is the blue key.': ['key to unlocking the shed', 'the blue key | is the blue key'],
+  'Success in chess requires strategic thinking.': ['Success in chess', 'strategic thinking'],
+  'Any artist who uses oil paints must clean their brushes thoroughly.': ['artist who uses oil paints', 'clean their brushes thoroughly'],
+  'All successful projects require effective teamwork to have taken place.': ['successful projects', 'effective teamwork to have taken place'],
+  'Only those with a degree in architecture can apply for this position.': ['apply for this position', 'a degree in architecture | with a degree in architecture'],
+  'Whenever the sun sets, the streetlights turn on.': ['the sun sets', 'the streetlights turn on'],
+  'The only path to wisdom is through experience.': ['path to wisdom | wisdom', 'experience | through experience'],
+  'Every agreement must be in writing to be legally binding.': ['be legally binding | legally binding', 'be in writing | in writing'],
+  'You achieve your goals only if you remain committed.': ['You achieve your goals', 'you remain committed'],
+  'Anyone studying physics will encounter complex mathematical concepts.': ['studying physics', 'encounter complex mathematical concepts'],
+  'When artists are inspired, they create their most celebrated pieces.': ['artists are inspired', 'they create their most celebrated pieces | create their most celebrated pieces'],
+  'A plant thrives only when sunlight that reaches its leaves is adequate.': ['A plant thrives', 'sunlight that reaches its leaves is adequate'],
+  'Only those submissions whose applicant identity has been confirmed by the registrar are reviewed.': ['are reviewed', 'submissions whose applicant identity has been confirmed by the registrar | whose applicant identity has been confirmed by the registrar | applicant identity has been confirmed by the registrar'],
+  'A license is renewed only where a payment record that matches the license identifier exists.': ['A license is renewed', 'a payment record that matches the license identifier exists'],
+  'Certification occurs only when an evaluator whose authorization is currently active signs the form.': ['Certification occurs', 'an evaluator whose authorization is currently active signs the form'],
+  'Requests are processed only if the request file that the portal assigns to the requester is present.': ['Requests are processed', 'the request file that the portal assigns to the requester is present'],
+  'Every device that bears a failed seal must be recalibrated under the maintenance policy.': ['device that bears a failed seal', 'be recalibrated under the maintenance policy | recalibrated under the maintenance policy'],
+  'If a person’s registration is verified by the registrar, admission is granted.': ['a person’s registration is verified by the registrar', 'admission is granted'],
+  'The only entries accepted are those the clerk records in the registry.': ['entries accepted', 'the clerk records in the registry | those the clerk records in the registry'],
+  'Where verification that the training requirement is met appears in the file, access is granted.': ['verification that the training requirement is met appears in the file', 'access is granted'],
+  'Whenever a complaint that meets the policy threshold is filed with the office, an investigation begins.': ['a complaint that meets the policy threshold is filed with the office', 'an investigation begins'],
+  'All permits that the agency issues always include an audit trail that matches the transaction record.': ['permits that the agency issues', 'include an audit trail that matches the transaction record'],
 };
 
 export type ConditionRole = 'sufficient' | 'necessary';
@@ -95,7 +123,8 @@ export type SpanCheck = { correct: boolean; roles: (ConditionRole | null)[]; hin
 const norm = (word: string) => word.replace(/’/g, "'").replace(/[^\p{L}\p{N}'-]/gu, '').toLowerCase();
 const words = (text: string) => text.split(/\s+/).map(norm).filter(Boolean);
 // A dropped article, modal or "to" at the edges is not a miss: the learner still found the condition.
-const LEADING = new Set(['a', 'an', 'the', 'to', 'will', 'can', 'must', 'should', 'is', 'are']);
+// Never "must": it is an indicator, and an indicator stays out of the highlight.
+const LEADING = new Set(['a', 'an', 'the', 'to', 'will', 'can', 'should', 'is', 'are']);
 function core(list: string[]) {
   let start = 0;
   while (start < list.length - 1 && LEADING.has(list[start])) start += 1;

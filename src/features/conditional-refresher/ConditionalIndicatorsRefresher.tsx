@@ -139,7 +139,7 @@ function SortDrills() {
           {picked && (
             <>
               <p className="cir-feedback">
-                {picked === item.group ? "Right." : "Not quite."} <strong>{item.word}</strong> is {GROUP_LABEL[item.group]}.
+                {picked === item.group ? "Correct." : "Not quite."} <strong>{item.word}</strong> is {GROUP_LABEL[item.group]}.
               </p>
               <div className="cir-actions"><button type="button" className="cir-btn" onClick={next}>Next</button></div>
             </>
@@ -237,7 +237,12 @@ export interface DiagramDrillsProps {
   embedded?: boolean;
   onResult?: (result: { itemId: string; left: string; right: string; correct: boolean } | null) => void;
   feedbackForResult?: (result: { left: string; right: string; correct: boolean }) => string;
+  /** Embedded single-item use: the student's saved diagram to open with. */
+  initialDraft?: DiagramDraft;
+  /** Called whenever the diagram being built or its check changes. */
+  onDraft?: (draft: DiagramDraft) => void;
 }
+export type DiagramDraft = { left: string[]; right: string[]; side: "left" | "right"; checked: boolean | null };
 
 export function DiagramDrills({
   items = DIAGRAM_ITEMS,
@@ -249,16 +254,24 @@ export function DiagramDrills({
   embedded = false,
   onResult,
   feedbackForResult,
+  initialDraft,
+  onDraft,
 }: DiagramDrillsProps = {}) {
   const [queue, setQueue] = useState(() => shuffleItems ? shuffle(items) : [...items]);
   const [index, setIndex] = useState(0);
-  const [side, setSide] = useState<"left" | "right">("left");
-  const [left, setLeft] = useState<string[]>([]);
-  const [right, setRight] = useState<string[]>([]);
-  const [checked, setChecked] = useState<null | boolean>(null);
+  const [side, setSide] = useState<"left" | "right">(initialDraft?.side ?? "left");
+  const [left, setLeft] = useState<string[]>(initialDraft?.left ?? []);
+  const [right, setRight] = useState<string[]>(initialDraft?.right ?? []);
+  const [checked, setChecked] = useState<null | boolean>(initialDraft?.checked ?? null);
   const retryButton = useRef<HTMLButtonElement>(null);
   const leftButton = useRef<HTMLButtonElement>(null);
-  useEffect(() => { if (checked !== null) retryButton.current?.focus(); }, [checked]);
+  // A restored check is not a new check, so opening with one does not move focus.
+  const mounted = useRef(false);
+  useEffect(() => { if (mounted.current && checked !== null) retryButton.current?.focus(); mounted.current = true; }, [checked]);
+  const draftChanged = useRef(onDraft);
+  draftChanged.current = onDraft;
+  const firstDraft = useRef(true);
+  useEffect(() => { if (firstDraft.current) { firstDraft.current = false; return; } draftChanged.current?.({ left, right, side, checked }); }, [left, right, side, checked]);
   const item = queue[index];
   const done = index >= queue.length;
 
@@ -339,7 +352,7 @@ export function DiagramDrills({
 
       <div className={checked !== null ? "cir-feedback" : undefined} role="status" aria-atomic="true">
         {checked !== null && <>
-          {!embedded && <p>{checked ? "Right." : "Not quite."}</p>}
+          {!embedded && <p>{checked ? "Correct." : "Not quite."}</p>}
           {feedbackForResult && <p>{feedbackForResult({ left: norm(left.join(' ')), right: norm(right.join(' ')), correct: checked })}</p>}
           {(checked === true || !embedded) && <p>Conditional: <Diagram left={item.left} right={item.right} /></p>}
           {explanations[item.id] && <p>{explanations[item.id]}</p>}

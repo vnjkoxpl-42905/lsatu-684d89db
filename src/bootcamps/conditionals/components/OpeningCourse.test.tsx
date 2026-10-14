@@ -50,20 +50,20 @@ it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an o
 it('separates a drill landing from its attempt surface', () => {
   const { rerender } = render(<MemoryRouter><OpeningCourseScreen view="foundation-practice" url={url}/></MemoryRouter>);
   expect(screen.getByRole('link', { name: 'Start practice' })).toHaveAttribute('href', '/course/foundation-practice?run=1');
-  expect(screen.queryByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Does the rule itself tell us that you actually sign up for the fun run?' })).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="foundation-practice" run url={url}/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Does the rule itself tell us that you actually sign up for the fun run?' })).toBeVisible();
 });
 
 it('retains a corrected answer when returning from another dedicated lesson', () => {
   const { rerender } = render(<MemoryRouter><OpeningCourseScreen view="meaning" url={url}/></MemoryRouter>);
-  fireEvent.click(screen.getByRole('button', { name: 'Yes, it says you win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Yes, it says you sign up.' }));
   expect(screen.getByText('Not quite.')).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you sign up.' }));
   rerender(<MemoryRouter><OpeningCourseScreen view="sufficient" url={url}/></MemoryRouter>);
-  expect(screen.queryByRole('button', { name: 'No, it tells you what follows if you win.' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'No, it tells you what follows if you sign up.' })).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="meaning" url={url}/></MemoryRouter>);
-  expect(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' })).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByRole('button', { name: 'No, it tells you what follows if you sign up.' })).toHaveAttribute('aria-pressed', 'true');
   expect(screen.getByText('Correct.')).toBeVisible();
 });
 

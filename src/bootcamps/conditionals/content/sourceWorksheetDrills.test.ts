@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkIndicatorSelection, getSourceWorksheetDrill, sourceWorksheetDrills } from './sourceWorksheetDrills';
+import { checkIndicatorSelection, getSourceWorksheetDrill, keyedIndicators, sourceWorksheetDrills } from './sourceWorksheetDrills';
 
 describe('reviewed worksheet source bank', () => {
   const items = sourceWorksheetDrills.flatMap((set) => set.items);
@@ -72,10 +72,11 @@ describe('reviewed worksheet source bank', () => {
     }
     const rephrase = getSourceWorksheetDrill('source-rephrase')!.items;
     expect(rephrase[3].indicators).toEqual([{ text: 'The only', group: 1 }]);
-    // "Every" does not mark the sufficient side here (legally binding does), so only "must" is keyed.
-    expect(rephrase[10].indicators).toEqual([{ text: 'must', group: 2 }]);
-    expect(rephrase[10].sufficient).toBe('an agreement is legally binding');
-    expect(rephrase[6].necessary).toBe('that project involves effective teamwork');
+    // "Every" does not mark the sufficient side here (legally binding does). A learner may select it, but only "must" is required.
+    expect(rephrase[10].indicators).toEqual([{ text: 'Every', group: 1, optional: true }, { text: 'must', group: 2 }]);
+    expect(keyedIndicators(rephrase[10])).toEqual([{ text: 'must', group: 2 }]);
+    expect(rephrase[10].sufficient).toBe('the agreement is legally binding');
+    expect(rephrase[6].necessary).toBe('effective teamwork took place on the project');
     expect(rephrase[19].necessary).toContain('is required to be recalibrated under the maintenance policy');
     expect(rephrase[19].contrapositiveWords).toContain('is not required to be recalibrated');
     expect(rephrase[19].statement).not.toBe(rephrase[19].originalStatement);
@@ -84,7 +85,7 @@ describe('reviewed worksheet source bank', () => {
 
   it('reads simple and negative contrapositives naturally without losing scope', () => {
     const full = getSourceWorksheetDrill('source-full-translation')!.items;
-    expect(full[0].contrapositiveWords).toBe('If that intern is not offered a full-time position, then that person is not an intern who completes the program.');
+    expect(full[0].contrapositiveWords).toBe('If a person is not offered a full-time position, then that person is not an intern who completes the program.');
     expect(full[12].contrapositiveWords).toBe('If alarms deactivate on their own, then the emergency protocol initiates within one minute.');
     expect(full[15].contrapositiveWords).toContain('not verified by both authorities');
     const independent = getSourceWorksheetDrill('source-independent')!.items;
@@ -96,10 +97,10 @@ describe('reviewed worksheet source bank', () => {
 
   it('binds both sides of each contrapositive to the same case', () => {
     const location = getSourceWorksheetDrill('source-intro-identify')!.items.find((item) => item.id === 'source-indicators-12')!;
-    expect(location.contrapositiveWords).toBe('If pathways do not lead to that location, then the park is not accessible at that location.');
+    expect(location.contrapositiveWords).toBe('If pathways do not lead to a location, then the park is not accessible at that location.');
     const independent = getSourceWorksheetDrill('source-independent')!.items;
     expect(independent[25].contrapositiveWords).toBe('If a place does not have a good legal system, then that place does not have independent judges.');
-    expect(independent[27].contrapositiveWords).toBe('If it is not pleasure, then it is not good under the stated theory.');
+    expect(independent[27].contrapositiveWords).toBe('If something is not pleasure, then it is not good under the stated theory.');
   });
 
   it('restores later contrapositive operations without duplicating canonical source items', () => {
@@ -162,5 +163,51 @@ describe('indicator check', () => {
     expect(check(training, ['employees', '1']).hint).toBe('“employees” is not an indicator in this rule.');
     const errors = find('source-intro-identify', 'source-indicators-11');
     expect(check(errors, ['must', '2']).hint).toBe('One indicator is still unselected. Read the whole rule again.');
+  });
+});
+
+describe('learner-facing wording', () => {
+  const items = sourceWorksheetDrills.flatMap((set) => set.items);
+  const shown = (item: (typeof items)[number]) => [item.statement, item.sufficient, item.necessary, item.diagram, item.contrapositive, item.ifThen, item.contrapositiveWords, item.explanation];
+  const sets = [...sourceWorksheetDrills, getSourceWorksheetDrill('source-intro-diagrams-contrapositive')!, getSourceWorksheetDrill('source-rephrase-contrapositive')!];
+
+  it('never opens a condition or a readback with a word that points back to something not yet said', () => {
+    // "it" stays allowed for weather ("it rains") and "it is not true that".
+    const dangling = /^(?:NOT \()?(?:that|those|these|their|its|they|this)\b/i;
+    for (const item of items) {
+      for (const text of [item.sufficient, item.necessary]) expect(text, item.id).not.toMatch(dangling);
+      for (const text of [item.ifThen, item.contrapositiveWords]) expect(text.replace(/^If /, ''), item.id).not.toMatch(/^(?:that|those|these|their|its|they|this)\b/i);
+      expect(item.necessary, item.id).not.toMatch(/^it (?!rains|pours)/);
+    }
+  });
+
+  it('keeps the modal words of the rule in its readbacks', () => {
+    for (const item of items) {
+      if (/\bmust\b/i.test(item.statement) && /required to/.test(item.necessary)) {
+        expect(item.ifThen, item.id).toContain('required to');
+        expect(item.contrapositiveWords, item.id).toContain('not required to');
+      }
+      for (const modal of ['can', 'should']) {
+        if (new RegExp(`\\b${modal}\\b`, 'i').test(item.statement)) expect(`${item.ifThen} ${item.contrapositiveWords}`, item.id).toMatch(new RegExp(`\\b${modal}`, 'i'));
+      }
+    }
+  });
+
+  it('uses none of the retired words or examples', () => {
+    const banned = /\b(?:trigger|promise[sd]?|depends on|revers\w*|raffle|coffee|door|beer|alcohol|logic games?|statements?)\b|[–—]/i;
+    for (const item of items) for (const text of shown(item)) expect(text, item.id).not.toMatch(banned);
+    for (const set of sets) expect(`${set.title} ${set.instructions}`, set.id).not.toMatch(banned);
+  });
+
+  it('keys every indicator in the rule with the taught group', () => {
+    const groups: Record<string, number> = { if: 1, when: 1, whenever: 1, where: 1, all: 1, every: 1, any: 1, anyone: 1, 'the only': 1, who: 1, 'only if': 2, 'only when': 2, 'only where': 2, 'only after': 2, only: 2, 'only those': 2, must: 2, always: 2, requires: 2, require: 2 };
+    for (const item of items) {
+      expect(item.indicators.length, item.id).toBeGreaterThan(0);
+      for (const indicator of item.indicators) {
+        const text = indicator.text.toLowerCase();
+        expect(groups[text], `${item.id} ${text}`).toBe(indicator.group);
+        expect(` ${item.statement.toLowerCase()} `, item.id).toContain(` ${text}`);
+      }
+    }
   });
 });

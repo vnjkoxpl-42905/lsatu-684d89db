@@ -79,7 +79,7 @@ it('explains every distractor using the specific reasoning error', () => {
       ['This folder is marked complete and contains a signed form.', 'That treats both sides as facts.'],
     ],
     [
-      ['The library extends your loan → You renew online', 'That follows the rule order but reverses the requirement.'],
+      ['The library extends your loan → You renew online', 'That follows the word order but puts the sides the wrong way round.'],
       ['If → The library extends your loan', 'If is an indicator, not a complete condition.'],
     ],
   ];

@@ -1,7 +1,7 @@
 import { ContrapositiveLecture, DoubleNegativeDemo, FlipAndNegateDemo, Neg, PopQuizTitle, PulseWord, PunchWord, RuleDrill, ThreeMoves } from './ContrapositiveVisuals';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
-import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
+import { conditionalReferenceContent, meaningRule, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
 import { StagedReasoningDrill } from './StagedReasoningDrill';
 import { FourSituationsNote, FourSituationsQuiz } from './FourSituations';
 import { NecessaryNote } from './NecessaryNote';
@@ -87,7 +87,7 @@ function OnlyAfter() {
 function CompleteConditionNote() {
   return <NoteSection title="Keep the whole phrase before you place it">
     <blockquote><strong>The only people admitted</strong> are members.</blockquote>
-    <p>The only what? People admitted. An admitted person must be a member, so <strong>Person admitted → Person is a member</strong>. Keep the whole phrase together; the rule does not promise admission to every member.</p>
+    <p>The only what? People admitted. An admitted person must be a member, so <strong>Person admitted → Person is a member</strong>. Keep the whole phrase together. The rule doesn't say every member gets in.</p>
     <ReferenceQuestion prompt="The only notebooks kept on this shelf are hardback. Which condition is sufficient?" options={['Notebook is hardback', 'Notebook is kept on this shelf', 'Notebook']} correct={1} feedback={['Being hardback does not guarantee a place on this shelf. The rule tells us about the notebooks kept here.', 'A notebook kept on this shelf must be hardback. Kept on this shelf is the complete sufficient condition.', 'Notebook alone would cover every notebook. Keep the restriction: kept on this shelf.']}/>
     <p>In the next drill, find the indicator, select the complete condition, place it beside the arrow and check that your diagram keeps the rule's meaning.</p>
   </NoteSection>;
@@ -189,26 +189,26 @@ function MustArrowNote() {
       </section>
       <section className="ma-purpose" aria-label="What the arrow is for">
         <h3>What the arrow is for</h3>
-        <p>A rule can take a full sentence to say. The arrow shows what it promises in one line, so you can test a fact against it without rereading the sentence.</p>
+        <p>A rule can take a full sentence to say. The arrow shows it in one line, so you can test a fact against it without rereading the sentence.</p>
         <ul>
           <li>You learn the <strong>left</strong> side is true. The right side must be true too.</li>
           <li>You learn the <strong>right</strong> side is true. The left side stays open.</li>
         </ul>
         <p>This matters on the LSAT because arguments turn on which way a rule runs. A conclusion that follows the arrow is supported. A conclusion that runs against it needs something the rule never gave you.</p>
       </section>
+      <section className="ma-order" aria-label="Two ways to say the same thing">
+        <h3>Two ways to say the same thing</h3>
+        <div className="cr-language-pair"><p><strong>If</strong> you are enrolled in law school, you are a student.</p><p>You are a student <strong>if</strong> you are enrolled in law school.</p></div>
+        <p>Both mean: <strong>You are enrolled in law school → You are a student.</strong> Enrollment is sufficient, so it goes left, even when it comes last in the sentence.</p>
+      </section>
       <section className="ma-placement" aria-label="Place and read the conditions">
         <h3>Place the conditions. Then read the arrow.</h3>
         <p>Choose what belongs on each side, then use the same direction with a new rule.</p>
-        <p className="ma-compact-note">Put the <strong>condition</strong> beside the arrow, not the indicator word. For example, write “you win the raffle,” not “if.”</p>
+        <p className="ma-compact-note">Put the <strong>condition</strong> beside the arrow, not the indicator word. For example, write “you are enrolled in law school,” not “if.”</p>
         <MustArrowPractice />
       </section>
-      <section className="ma-order" aria-label="Two ways to say the same thing">
-        <h3>Two ways to say the same thing</h3>
-        <div className="cr-language-pair"><p><strong>If</strong> you win the raffle, you get a bicycle.</p><p>You get a bicycle <strong>if</strong> you win the raffle.</p></div>
-        <p>Both mean: <strong>You win the raffle → You get a bicycle.</strong> Winning is sufficient, so it goes left, even when it comes last in the rule.</p>
-      </section>
       <p className="ma-takeaway"><strong>The arrow guarantees the right side when the left side is true.</strong> Being a student alone does not prove that you are enrolled in law school.</p>
-      <details className="cr-extension ma-reverse"><summary>Why can't we reverse it?</summary><div className="ma-reverse-body"><p>A person could be a history student who is not enrolled in law school. That possibility fits our rule.</p><p>The arrow states a rule. By itself, it does not tell us that either condition is true, or that one causes the other.</p></div></details>
+      <details className="cr-extension ma-reverse"><summary>Why can't you read it from right to left?</summary><div className="ma-reverse-body"><p>A person could be a history student who is not enrolled in law school. That possibility fits our rule.</p><p>The arrow states a rule. By itself, it does not tell us that either condition is true, or that one causes the other.</p></div></details>
     </div>
   </section>;
 }
@@ -221,14 +221,14 @@ function WholeMeaningNote() {
     <NoteSection title="Check a translation four ways">
       <p>A diagram can point the right way and still say the wrong thing. Each check below catches a different slip in the same translation process.</p>
       <ol>
-        <li><strong>Target:</strong> did you find the whole idea the indicator refers to, wherever it sits?</li>
+        <li><strong>Group:</strong> did you find the whole idea the indicator points to, wherever it sits?</li>
         <li><strong>Qualification:</strong> did your short label keep every restriction?</li>
         <li><strong>Direction:</strong> did a similar-looking indicator trick you into the wrong side?</li>
-        <li><strong>Imagined case:</strong> does your arrow promise something the rule leaves open?</li>
+        <li><strong>Imagined case:</strong> does your arrow claim something the rule leaves open?</li>
       </ol>
     </NoteSection>
     <NoteSection title="Check 1: find the whole group, wherever it sits">
-      <p>An indicator's <strong>target</strong> is the complete word or phrase it refers to. In “All guests wearing blue badges receive vouchers,” all refers to guests wearing blue badges, not guests alone.</p>
+      <p>An indicator points to a complete group, not a single word. In “All guests wearing blue badges receive vouchers,” all points to guests wearing blue badges, not guests alone.</p>
       <p>The group often comes after its indicator. But often isn't always. Try these rules in order.</p>
       {targetExamples.map(item => <TargetReader item={item} key={item.label}/>)}
       <div className="cr-language-pair"><p>[Having a key] is <strong>required</strong> for borrowing a locker.</p><p>Borrowing a locker <strong>requires</strong> [having a key].</p><span>Having a key is the requirement in both sentences.</span></div>
@@ -251,12 +251,12 @@ function WholeMeaningNote() {
       <p>The rule tells us what the editor <strong>should do</strong>. It does not prove that the correction happens. A diagram must keep the obligation instead of turning it into a fact.</p>
       <p>Keep time limits too. <strong>“Before noon”</strong> is not the same as “at some point.” When two ideas form one condition, keep both: <strong>“signed and dated”</strong> is the complete requirement.</p>
     </NoteSection>
-    <NoteSection title="Short symbols stand for complete conditions">
-      <p>You choose the letters. Write what each one means so a short diagram keeps the whole rule.</p>
+    <NoteSection title="Short labels stand for complete conditions">
+      <p>You choose the short labels. Know what each one means so a short diagram keeps the whole rule.</p>
       <blockquote>All registered guests receive a wristband.</blockquote>
-      <p><strong>R</strong> = guest is registered. <strong>W</strong> = guest receives a wristband.</p>
-      <RuleDiagram left="R" right="W"/>
-      <p>Read it back: <strong>If a guest is registered, the guest receives a wristband.</strong> R does not mean “guest” alone. Its definition keeps “registered.”</p>
+      <p><strong>Registered</strong> means the guest is registered. <strong>Wristband</strong> means the guest receives a wristband.</p>
+      <RuleDiagram left="Registered" right="Wristband"/>
+      <p>Read it back: <strong>If a guest is registered, the guest receives a wristband.</strong> A label like “Guest” would drop the word that matters. “Registered” keeps it.</p>
     </NoteSection>
     <NoteSection title="Check 4: try the rule from the inside">{insideCheck.slice(0, -1)}</NoteSection>
   </>;
@@ -279,14 +279,14 @@ const freshCases = [
 const foundationConceptQuestions: DrillOneQuestion[] = [
   { contextLabel: 'Concept', rule: 'Sufficient and necessary conditions', prompt: 'What is a necessary condition?', options: ['A requirement that must be met, but might not be enough on its own.', 'Something that always guarantees the other condition.', 'Something that usually happens afterward.'], correct: 0, feedback: ['Necessary means required. Meeting the requirement does not, by itself, prove that the other condition is true.', 'That describes sufficiency. A requirement can also be sufficient, but being necessary alone does not prove that.', 'Necessity is a requirement, not a prediction about timing. It must hold whenever the condition that requires it holds.'] },
   { contextLabel: 'Concept', rule: 'Sufficient and necessary conditions', prompt: 'What is a sufficient condition?', options: ['The only possible way for another condition to be true.', 'Something that makes another condition more likely.', 'Something that guarantees another condition when it is true.'], correct: 2, feedback: ['The only possible way describes a necessary condition: it would be required. Sufficient means enough, without claiming it is the only way.', 'A conditional guarantee is stronger than likelihood. The other condition must be true whenever the sufficient condition is true.', 'Sufficient means enough. Once it is true, the rule guarantees the necessary condition.'] },
-  { contextLabel: 'Diagram', rule: 'A → B', prompt: 'Which condition belongs on the left side of this arrow?', options: ['The necessary condition.', 'The sufficient condition.', 'Whichever condition appears first in the rule.'], correct: 1, feedback: ['The necessary condition is the one on the right: what must be true. Which role does the condition on the left play?', 'A is the sufficient condition. If A is true, B must be true.', 'Sentence position can change. Place the sufficient condition on the left even if it appears last in the rule.'] },
-  { contextLabel: 'Diagram', rule: 'A → B', prompt: 'What does the condition on the right side represent?', options: ['A fact that has already happened.', 'A condition that guarantees A.', 'A requirement that must hold whenever A holds.'], correct: 2, feedback: ['The arrow alone does not tell us that B is actually true. It tells us B must be true if A is true.', 'This reverses the arrow. A guarantees B; the rule does not say B guarantees A.', 'B is necessary for A. A cannot be true while B is false.'] },
-  { contextLabel: 'Diagram', rule: 'A → B', prompt: 'How do you read this arrow?', options: ['If A is true, B must be true.', 'If B is true, A must be true.', 'A happens first and causes B to happen.'], correct: 0, feedback: ['Read from left to right. The truth of A guarantees the truth of B.', 'That reads against the arrow. B might be true without A being true.', 'The arrow gives a guarantee, not a timeline or a cause. A and B may be true at the same time.'], conditions: ['A', 'B'] },
+  { contextLabel: 'Diagram', rule: 'The ferry is sailing → The captain is on board', prompt: 'Which condition belongs on the left side of this arrow?', options: ['The necessary condition.', 'The sufficient condition.', 'Whichever condition appears first in the rule.'], correct: 1, feedback: ['The necessary condition is the one on the right: what must be true. Which role does the condition on the left play?', 'The ferry sailing is the sufficient condition. If the ferry is sailing, the captain must be on board.', 'Sentence position can change. Place the sufficient condition on the left even if it appears last in the rule.'], conditions: ['The ferry is sailing', 'The captain is on board'] },
+  { contextLabel: 'Diagram', rule: 'The ferry is sailing → The captain is on board', prompt: 'What does the condition on the right side represent?', options: ['A fact that has already happened.', 'A condition that guarantees the ferry is sailing.', 'A requirement that must hold whenever the ferry is sailing.'], correct: 2, feedback: ['The arrow alone does not tell us the captain is actually on board. It tells us the captain must be on board if the ferry is sailing.', 'That reads the arrow from right to left. A sailing ferry guarantees the captain is on board. A captain on board does not guarantee the ferry is sailing.', 'The captain being on board is necessary for the ferry to sail. The ferry cannot be sailing while the captain is ashore.'], conditions: ['The ferry is sailing', 'The captain is on board'] },
+  { contextLabel: 'Diagram', rule: 'The ferry is sailing → The captain is on board', prompt: 'How do you read this arrow?', options: ['If the ferry is sailing, the captain must be on board.', 'If the captain is on board, the ferry must be sailing.', 'The ferry sails first, and that causes the captain to come on board.'], correct: 0, feedback: ['Read from left to right. A sailing ferry guarantees a captain on board.', 'That reads against the arrow. The captain could be on board while the ferry sits in the harbour.', 'The arrow gives a guarantee, not a timeline or a cause. Both can be true at the same time.'], conditions: ['The ferry is sailing', 'The captain is on board'] },
   { rule: 'If a painting is in the permanent collection, it has an inventory number.', prompt: 'The sufficient condition is the one that is enough: when it is true, the other condition must be true. It does not have to cause the other condition or happen first. Which complete condition is sufficient here?', options: ['The painting has an inventory number.', 'The painting is in the permanent collection.', 'The word “if.”'], correct: 1, feedback: ['An inventory number is what the rule says a painting must have. That makes it the necessary condition. Look for the condition that is enough to prove it.', 'Being in the permanent collection is enough to prove an inventory number. Sufficient describes that logical role, not a cause or an earlier event.', 'If is an indicator, not a condition. Look for the complete idea it introduces.'], conditions: ['Painting is in the permanent collection', 'Painting has an inventory number'] },
   { rule: 'If a book is on the reserved shelf, it has a reservation card.', prompt: 'The necessary condition is what must be true when the sufficient condition holds. Which condition is necessary here?', options: ['The book has a reservation card.', 'The book is on the reserved shelf.', 'Someone places the book on the shelf later.'], correct: 0, feedback: ['The reservation card is necessary. A book on that shelf must have one. Necessary here does not mean an event that happens later.', 'Being on the reserved shelf is what if introduces, so it is the condition that is enough. Look for what the rule says a book on that shelf must have.', 'The rule says nothing about a later action. Look for what the rule says every book on the reserved shelf already has.'], conditions: ['Book is on the reserved shelf', 'Book has a reservation card'] },
   { rule: 'If a parcel is marked fragile, it is packed with padding.', prompt: 'Which complete condition goes on the left?', options: ['If.', 'The parcel is packed with padding.', 'The parcel is marked fragile.'], correct: 2, feedback: ['If helps identify the condition, but is not itself a condition. Write the complete idea it introduces.', 'Padding is required for a parcel marked fragile, so it goes on the right.', 'Being marked fragile guarantees padding under this rule. That complete condition goes on the left.'], conditions: ['Parcel is marked fragile', 'Parcel is packed with padding'] },
   { rule: 'If an application is approved, it has a reference number.', prompt: 'Which complete condition goes on the right?', options: ['The application is approved.', 'The application has a reference number.', 'The word “if.”'], correct: 1, feedback: ['Approval is what if introduces. That makes it the condition that is enough, and the right side holds what it requires.', 'Having a reference number is required for an approved application. It goes on the right.', 'If is an indicator, not a condition. Put a complete idea beside the arrow.'], conditions: ['Application is approved', 'Application has a reference number'] },
-  { rule: 'A visitor receives a badge if the visitor signs in.', prompt: 'Which diagram keeps this rule?', options: ['Visitor receives a badge → Visitor signs in', 'Visitor signs in → Visitor receives a badge', 'Both directions are guaranteed.'], correct: 1, feedback: ['This reverses the guarantee. The rule gives a badge to someone who signs in, not a sign-in to everyone with a badge.', 'If introduces signing in, even at the end of the rule. Signing in is sufficient and goes left.', 'The rule guarantees only one direction. It does not exclude a visitor who receives a badge another way.'], conditions: ['Visitor signs in', 'Visitor receives a badge'] },
+  { rule: 'A visitor receives a badge if the visitor signs in.', prompt: 'Which diagram keeps this rule?', options: ['Visitor receives a badge → Visitor signs in', 'Visitor signs in → Visitor receives a badge', 'Both directions are guaranteed.'], correct: 1, feedback: ['This flips the guarantee. The rule gives a badge to someone who signs in, not a sign-in to everyone with a badge.', 'If introduces signing in, even at the end of the rule. Signing in is sufficient and goes left.', 'The rule guarantees only one direction. It does not exclude a visitor who receives a badge another way.'], conditions: ['Visitor signs in', 'Visitor receives a badge'] },
   { rule: 'If a member books a room, the member must have an active account.', prompt: 'Which word identifies the sufficient condition here?', options: ['If.', 'Must.', 'Both words identify the sufficient condition.'], correct: 0, feedback: ['If introduces the sufficient condition: the member books a room. Must expresses the requirement that follows from it.', 'Must tells us what is required: having an active account. Look for the word that introduces the condition that is enough.', 'The two words have different jobs. Only one of them introduces what is enough; the other marks what is required.'], conditions: ['Member books a room', 'Member has an active account'] },
   { rule: 'Every volunteer wearing a green badge must have completed training.', prompt: 'Which word acts as the sufficient-condition indicator?', options: ['Must.', 'Wearing.', 'Every.'], correct: 2, feedback: ['Must marks what is required: completed training. Look for the word that introduces the group the rule covers.', 'Wearing is part of the condition itself: it describes which volunteers the rule covers. An indicator is the word that tells you the rule applies to that whole group.', 'Every covers all volunteers wearing a green badge. That qualified group is sufficient to prove the training that must have been completed.'], conditions: ['Volunteer wears a green badge', 'Volunteer has completed training'] },
   { rule: 'Every parcel weighing more than ten kilograms has a handling label.', prompt: 'Which complete condition belongs on the left?', options: ['The item is a parcel.', 'The item is a parcel weighing more than ten kilograms.', 'The item has a handling label.'], correct: 1, feedback: ['Parcel alone drops the weight restriction. The rule does not give every parcel a handling label.', 'Keep the weight restriction. The rule guarantees a handling label for every parcel weighing more than ten kilograms.', 'Having a handling label is the required condition, so it goes on the right.'], conditions: ['Parcel weighs more than ten kilograms', 'Parcel has a handling label'] },
@@ -309,7 +309,7 @@ function foundationLegacyOrder(conceptCount: number, ruleCount: number): Record<
 
 function FoundationPractice() {
   const anchor = sections(reference(1).props.children).find(child => child.type === ReferenceQuestion);
-  if (!anchor) throw new Error('Missing approved raffle retrieval question');
+  if (!anchor) throw new Error('Missing the meaning-page retrieval question');
   const fresh = sections(Fundamentals().props.children).find(section => section.props.title === 'Enough does not mean the only way');
   if (!fresh) throw new Error('Missing approved fresh sufficient-condition check');
   const freshContent = Children.toArray(fresh.props.children);
@@ -317,13 +317,13 @@ function FoundationPractice() {
   if (!isValidElement<DrillOneQuestion>(freshCheck)) throw new Error('Missing approved delivery question');
   const anchorQuestion = anchor as ReactElement<DrillOneQuestion>;
   const questions: DrillOneQuestion[] = [
-    { ...anchorQuestion.props, rule: 'If you win the raffle, you get a bicycle.' },
+    { ...anchorQuestion.props, rule: meaningRule },
     ...freshCases.flatMap(item => item.questions.map(question => ({ ...question, rule: item.rule }))),
     { ...freshCheck.props, rule: 'Every delivery marked collected has a pickup receipt.', prompt: 'What is sufficient here?' },
     { rule: 'If a car is parked in the staff lot, it has a permit sticker.', prompt: 'Someone claims that a permit sticker proves the car is parked in the staff lot. Which possible case fits our rule but disproves that claim?', options: ['The car is parked in the staff lot and has a sticker.', 'The car has a sticker but is parked on the street.', 'The car is parked in the staff lot without a sticker.'], correct: 1, feedback: ['This car fits both the rule and the claim, so it cannot disprove the claim. We need a car that keeps the rule true while the claim gets it wrong.', 'The rule tells you every car in the staff lot has a sticker. It says nothing about where cars with stickers park. A car with a sticker on the street fits the rule, and it shows the sticker does not prove the staff lot.', 'A car in the staff lot without a sticker breaks the rule. We need a case that keeps the rule true.'] },
   ];
   const conditions: Array<[string, string]> = [
-    ['You win the raffle', 'You get a bicycle'],
+    ['You sign up for the fun run', 'You get a T-shirt'],
     ['It rains on Saturday', 'The market moves into the town hall'],
     ['It rains on Saturday', 'The market moves into the town hall'],
     ['A student goes on the museum trip', 'That student has a signed permission slip'],

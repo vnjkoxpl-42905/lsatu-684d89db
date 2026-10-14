@@ -20,7 +20,8 @@ it('retains an atomic feedback region and moves focus through check and retry', 
   const retry = screen.getByRole('button', { name: 'Try again' });
   expect(retry).toHaveFocus();
   expect(screen.getByRole('status')).toBe(status);
-  expect(status).toHaveTextContent('Conditional:');
+  // An embedded wrong answer never shows the answer diagram; the host supplies the hint.
+  expect(status).not.toHaveTextContent('Conditional:');
   fireEvent.click(retry);
   expect(screen.getByRole('button', { name: 'Choose the left condition' })).toHaveFocus();
   expect(screen.getByRole('status')).toBe(status);

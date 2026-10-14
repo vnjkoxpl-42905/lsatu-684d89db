@@ -24,7 +24,7 @@ type MixedItem = {
 export const mixedFamilyItems: MixedItem[] = [
   {
     sentence: 'The match moves indoors if the forecast shows lightning.', word: 'if', family: 'sufficient',
-    targetPrompt: 'What does the forecast have to show for the match to move indoors under this rule?', targetFeedback: 'You identified the forecast showing lightning.',
+    targetPrompt: 'What does the rule say is enough to move the match indoors?', targetFeedback: 'You identified the forecast showing lightning.',
     target: 'the forecast shows lightning', partial: 'the forecast', other: 'the match moves indoors',
     left: 'Forecast shows lightning', right: 'Match moves indoors',
     partialFeedback: "The forecast alone isn't something that can be true or false. Ask: if what? Keep the whole clause.",
@@ -78,15 +78,15 @@ export const mixedFamilyItems: MixedItem[] = [
     readback: 'If a phone is placed in the same-day repair queue, it arrived with a cracked screen.',
   },
   {
-    sentence: 'Only stalls with a permit sell food at the festival.', word: 'only', family: 'necessary',
-    targetPrompt: 'What must a stall have if it sells food at the festival?', targetFeedback: 'Every stall selling food at the festival has a permit.',
-    target: 'a permit', partial: 'a stall', other: 'sell food at the festival',
-    left: 'Stall sells food at festival', right: 'Stall has permit',
-    partialFeedback: 'A stall alone names who the rule is about, not what it must have. Ask: only what? Only stalls with a permit, so the requirement is the permit.',
+    sentence: 'Only stalls with a health permit sell food at the festival.', word: 'only', family: 'necessary',
+    targetPrompt: 'What must a stall have if it sells food at the festival?', targetFeedback: 'You kept health. The rule requires a health permit, not just any permit.',
+    target: 'a health permit', partial: 'a permit', other: 'sell food at the festival',
+    left: 'Stall sells food at festival', right: 'Stall has health permit',
+    partialFeedback: 'A permit drops a word that limits the requirement. Would a parking permit do under this rule? Ask: only what? Keep every word after only.',
     otherFeedback: 'Selling food is what needs something, so it is not the requirement. Ask: only what? The answer names what a food stall must have.',
-    reversed: 'Your arrow says every stall with a permit sells food. A permitted stall selling only crafts fits the rule.',
-    why: "Only limits food sellers to permitted stalls. A stall selling food has a permit. A permit doesn't tell you what the stall sells.",
-    readback: 'If a stall sells food at the festival, it has a permit.',
+    reversed: 'Your arrow says every stall with a health permit sells food. A stall with a health permit that sells only crafts fits the rule.',
+    why: "Only limits food sellers to stalls with a health permit. A stall selling food has one. A health permit doesn't tell you what the stall sells.",
+    readback: 'If a stall sells food at the festival, it has a health permit.',
   },
 ];
 
@@ -96,19 +96,31 @@ const targetOptions = (item: MixedItem, index: number) => {
 };
 const sideOptions = (item: MixedItem, index: number) => index % 2 === 0 ? [item.right, item.left] : [item.left, item.right];
 
-export function MixedItemCheck({ item, index, onChecked, onResult, embedded = false }: { item: MixedItem; index: number; onChecked: (checked: boolean) => void; onResult?: (result: { targetCorrect: boolean; targetIncomplete: boolean; sideCorrect: boolean } | null) => void; embedded?: boolean }) {
-  const [draftDiagram, setDraftDiagram] = useState('');
-  const [draftReadback, setDraftReadback] = useState('');
-  const [comparing, setComparing] = useState(false);
+/** Everything the student has written and chosen for one sentence, so a reload can show it again. */
+export type MixedItemDraft = { diagram: string; readback: string; comparing: boolean; target: string | null; left: string | null; checked: boolean };
+
+export function MixedItemCheck({ item, index, onChecked, onResult, embedded = false, initialDraft, onDraft }: { item: MixedItem; index: number; onChecked: (checked: boolean) => void; onResult?: (result: { targetCorrect: boolean; targetIncomplete: boolean; sideCorrect: boolean } | null) => void; embedded?: boolean; initialDraft?: MixedItemDraft; onDraft?: (draft: MixedItemDraft) => void }) {
+  const [draftDiagram, setDraftDiagram] = useState(initialDraft?.diagram ?? '');
+  const [draftReadback, setDraftReadback] = useState(initialDraft?.readback ?? '');
+  const [comparing, setComparing] = useState(initialDraft?.comparing ?? false);
   const draftQuestion = useId();
   const readbackQuestion = useId();
   const draftInput = useRef<HTMLTextAreaElement>(null);
-  const [target, setTarget] = useState<string | null>(null);
-  const [left, setLeft] = useState<string | null>(null);
-  const [checked, setChecked] = useState(false);
+  const [target, setTarget] = useState<string | null>(initialDraft?.target ?? null);
+  const [left, setLeft] = useState<string | null>(initialDraft?.left ?? null);
+  const [checked, setChecked] = useState(initialDraft?.checked ?? false);
   const targetQuestion = useId();
   const comparisonHeading = useRef<HTMLHeadingElement>(null);
-  useEffect(() => { if (comparing) comparisonHeading.current?.focus(); }, [comparing]);
+  // Opening with a restored comparison is not a new step, so it does not move focus.
+  const mounted = useRef(false);
+  useEffect(() => { if (mounted.current && comparing) comparisonHeading.current?.focus(); mounted.current = true; }, [comparing]);
+  const draftChanged = useRef(onDraft);
+  draftChanged.current = onDraft;
+  const firstDraft = useRef(true);
+  useEffect(() => {
+    if (firstDraft.current) { firstDraft.current = false; return; }
+    draftChanged.current?.({ diagram: draftDiagram, readback: draftReadback, comparing, target, left, checked });
+  }, [draftDiagram, draftReadback, comparing, target, left, checked]);
   const sideQuestion = useId();
   const change = (update: () => void) => { update(); setChecked(false); onChecked(false); onResult?.(null); };
   const reset = () => { draftInput.current?.focus(); setComparing(false); setTarget(null); setLeft(null); setChecked(false); onChecked(false); onResult?.(null); };

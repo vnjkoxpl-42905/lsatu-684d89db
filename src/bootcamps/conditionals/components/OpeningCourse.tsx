@@ -130,7 +130,7 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
   view?: string; run?: boolean; url: OpeningCourseUrl; steps?: OpeningCourseStep[]; recordedPractice?: ReactNode; storageScope?: string; progressStore?: CourseProgressStore;
 }) {
   const device = useDeviceCourseProgress(storageScope);
-  return <CourseProgressProvider store={progressStore ?? device}><CourseScreen view={view} run={run} url={url} steps={steps} recordedPractice={recordedPractice} storageScope={storageScope}/></CourseProgressProvider>;
+  return <CourseProgressProvider store={progressStore ?? device} scope={storageScope}><CourseScreen view={view} run={run} url={url} steps={steps} recordedPractice={recordedPractice} storageScope={storageScope}/></CourseProgressProvider>;
 }
 
 function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }: {

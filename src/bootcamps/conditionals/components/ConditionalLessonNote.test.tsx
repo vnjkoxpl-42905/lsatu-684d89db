@@ -86,7 +86,7 @@ it('distinguishes a chain rule from the new facts proved by adding a case', () =
 
 it('uses the same original order scenario for sufficient and necessary roles', () => {
   mount('sufficient-necessary');
-  expect(screen.getByText(/Winning the raffle is enough/)).toBeTruthy();
+  expect(screen.getByText(/Signing up for the fun run is enough/)).toBeTruthy();
   expect(screen.getByText(/Getting one is the required result/)).toBeTruthy();
   expect(screen.queryByText(/dogs|mammals/)).toBeNull();
   const overview = screen.getByText('Winning is sufficient. Getting a bicycle is necessary.', { selector: 'title' }).closest('svg');

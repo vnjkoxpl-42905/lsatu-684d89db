@@ -16,7 +16,7 @@ it('provides 24 baseline questions while keeping fresh confirmations separate an
     expect(item.feedback).toHaveLength(item.options.length);
     expect(new Set(item.options).size).toBe(item.options.length);
     for (const explanation of item.feedback) expect(explanation.trim().length).toBeGreaterThan(40);
-    expect(item.sentence + item.prompt + item.options.join(' ') + item.feedback.join(' ')).not.toMatch(/[—–]|contrapositive|unless/i);
+    expect(item.sentence + item.prompt + item.options.join(' ') + item.feedback.join(' ')).not.toMatch(/[—–]|contrapositive|unless|revers|promise|depends on|trigger/i);
   }
 });
 
@@ -42,7 +42,7 @@ it('does not turn a satisfied permission requirement into granted permission or 
   expect(obligation.feedback[obligation.correct]).toMatch(/has not attended.*obligation/);
 });
 
-it('keeps the four reviewed envelope comparisons and identifies the if version as the reverse', () => {
+it('keeps the four reviewed envelope comparisons and identifies the if version as a different rule', () => {
   const same = equivalenceItems.map(item => item.options[item.correct] === 'Same rule');
   expect(same).toEqual([true, false, true, true]);
   expect(equivalenceItems[1].sentence).toMatch(/tray if it is stamped/);

@@ -16,6 +16,9 @@ export type DrillOneQuestion = {
 };
 
 type Answer = { selected: number | null; checked: boolean; first: number | null };
+/** A finished or abandoned run kept in the saved record when the student starts over. */
+export type PastRun = { order: number; answers: Answer[]; seenResults: boolean; endedAt: string };
+const blank = (count: number): Answer[] => Array.from({ length: count }, () => ({ selected: null, checked: false, first: null }));
 
 /** A decorative paper sculpture. No condition or inference is encoded in its shape. */
 function FoldedPaper() {
@@ -43,28 +46,60 @@ export function DrillOneEntry({ startUrl, lessonsUrl }: { startUrl: string; less
  * index) instead of being read against the wrong questions; anything else is
  * ignored rather than mis-mapped.
  */
-function restoreDrillOne(state: unknown, count: number, order: number, legacyOrder?: Record<number, number[]>): { current: number; answers: Answer[]; finished: boolean; seenResults: boolean } | null {
-  const data = state as { order?: unknown; current?: unknown; answers?: unknown; finished?: unknown; seenResults?: unknown } | undefined;
+function pastRuns(value: unknown): PastRun[] {
+  return Array.isArray(value) ? keepRuns(value.filter((run): run is PastRun => !!run && typeof run === 'object' && Array.isArray((run as PastRun).answers))) : [];
+}
+/** Abandoned runs kept besides every completed one. */
+const ABANDONED_RUNS_KEPT = 10;
+const completedRun = (run: PastRun) => run.seenResults || run.answers.every(answer => answer?.first !== null && answer?.first !== undefined);
+/**
+ * A completed run is never evicted. Only runs abandoned partway through are
+ * capped, keeping the most recent ones, and the original order is kept.
+ */
+export function keepRuns(runs: PastRun[]): PastRun[] {
+  const abandoned = runs.filter(run => !completedRun(run));
+  const dropped = new Set(abandoned.slice(0, Math.max(0, abandoned.length - ABANDONED_RUNS_KEPT)));
+  return runs.filter(run => !dropped.has(run));
+}
+function restoreDrillOne(state: unknown, count: number, order: number, legacyOrder?: Record<number, number[]>): { current: number; answers: Answer[]; finished: boolean; seenResults: boolean; history: PastRun[] } | null {
+  const data = state as { order?: unknown; current?: unknown; answers?: unknown; finished?: unknown; seenResults?: unknown; history?: unknown } | undefined;
   if (!data || !Array.isArray(data.answers) || data.answers.length !== count) return null;
+  const history = pastRuns(data.history);
   const index = (value: unknown) => value === null || (Number.isInteger(value) && (value as number) >= 0);
   if (!data.answers.every(a => a && typeof a === 'object' && index(a.selected) && index(a.first) && typeof a.checked === 'boolean')) return null;
   const savedOrder = Number.isInteger(data.order) ? data.order as number : 1;
   const saved = data.answers as Answer[];
   const savedCurrent = Number.isInteger(data.current) && (data.current as number) >= 0 && (data.current as number) < count ? data.current as number : 0;
-  if (savedOrder === order) return { current: savedCurrent, answers: saved, finished: data.finished === true, seenResults: data.seenResults === true };
+  if (savedOrder === order) return { current: savedCurrent, answers: saved, finished: data.finished === true, seenResults: data.seenResults === true, history };
   const map = legacyOrder?.[savedOrder];
   if (!map || map.length !== count || new Set(map).size !== count || map.some(position => !Number.isInteger(position) || position < 0 || position >= count)) return null;
-  return { current: Math.max(0, map.indexOf(savedCurrent)), answers: map.map(position => saved[position]), finished: data.finished === true, seenResults: data.seenResults === true };
+  return { current: Math.max(0, map.indexOf(savedCurrent)), answers: map.map(position => saved[position]), finished: data.finished === true, seenResults: data.seenResults === true, history };
 }
 
 export function DrillOneExperience({ questions, order = 1, legacyOrder }: { questions: DrillOneQuestion[]; order?: number; legacyOrder?: Record<number, number[]> }) {
   const course = useCourseStep('foundation-practice');
   const record = course?.record;
-  const [restored] = useState(() => restoreDrillOne(course?.saved?.state, questions.length, order, legacyOrder));
+  const savedState = course?.saved?.state;
+  const [restored] = useState(() => restoreDrillOne(savedState, questions.length, order, legacyOrder));
   const [current, setCurrent] = useState(restored?.current ?? 0);
-  const [answers, setAnswers] = useState<Answer[]>(() => restored?.answers ?? questions.map(() => ({ selected: null, checked: false, first: null })));
+  const [answers, setAnswers] = useState<Answer[]>(() => restored?.answers ?? blank(questions.length));
   const [finished, setFinished] = useState(restored?.finished ?? false);
   const [seenResults, setSeenResults] = useState(restored?.seenResults ?? false);
+  const [history, setHistory] = useState<PastRun[]>(restored?.history ?? []);
+  const [confirmingRestart, setConfirmingRestart] = useState(false);
+  const restartButton = useRef<HTMLButtonElement>(null);
+  const confirmHeading = useRef<HTMLHeadingElement>(null);
+  // The account can finish loading after the drill opens. Until the student does
+  // something here, take the saved run instead of starting them from question 1.
+  const touched = useRef(false);
+  const written = useRef<unknown>(savedState);
+  useEffect(() => {
+    if (touched.current || !savedState || savedState === written.current) return;
+    written.current = savedState;
+    const late = restoreDrillOne(savedState, questions.length, order, legacyOrder);
+    if (!late) return;
+    setCurrent(late.current); setAnswers(late.answers); setFinished(late.finished); setSeenResults(late.seenResults); setHistory(late.history);
+  }, [savedState, questions.length, order, legacyOrder]);
   const [focusOnArrival, setFocusOnArrival] = useState(false);
   const [focusAnswer, setFocusAnswer] = useState<'feedback' | 'option' | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -79,8 +114,11 @@ export function DrillOneExperience({ questions, order = 1, legacyOrder }: { ques
   const completion = Math.round(answered / questions.length * 100);
   const correctFirst = answers.filter((item, index) => item.first === questions[index].correct).length;
   useEffect(() => {
-    record?.({ state: { order, current, answers, finished, seenResults }, done: answers.filter(item => item.first !== null).length, total: questions.length, ...(seenResults ? { status: 'done' as const } : {}) });
-  }, [record, order, current, answers, finished, seenResults, questions.length]);
+    const state = { order, current, answers, finished, seenResults, ...(history.length ? { history } : {}) };
+    written.current = state;
+    record?.({ state, done: answers.filter(item => item.first !== null).length, total: questions.length, ...(seenResults ? { status: 'done' as const } : {}) });
+  }, [record, order, current, answers, finished, seenResults, history, questions.length]);
+  useEffect(() => { if (confirmingRestart) confirmHeading.current?.focus({ preventScroll: true }); }, [confirmingRestart]);
   const missed = answers.flatMap((item, index) => item.first !== null && item.first !== questions[index].correct ? [index] : []);
 
   useEffect(() => {
@@ -97,15 +135,24 @@ export function DrillOneExperience({ questions, order = 1, legacyOrder }: { ques
   }, [focusAnswer]);
 
   function updateAnswer(update: Partial<Answer>) {
+    touched.current = true;
     setAnswers(previous => previous.map((item, index) => index === current ? { ...item, ...update } : item));
   }
-  function go(index: number) { setCurrent(index); setFinished(false); setFocusOnArrival(true); }
+  function go(index: number) { touched.current = true; setCurrent(index); setFinished(false); setFocusOnArrival(true); }
   function checkAnswer() {
     if (answer.selected === null) return;
     updateAnswer({ checked: true, first: answer.first ?? answer.selected });
     setFocusAnswer('feedback');
   }
-  function showResults() { setSeenResults(true); setFinished(true); setFocusOnArrival(true); }
+  function showResults() { touched.current = true; setSeenResults(true); setFinished(true); setFocusOnArrival(true); }
+  /** Clears this drill's answers for a fresh attempt. The finished run stays in the saved record, and the course keeps the drill marked done. */
+  function startOver() {
+    touched.current = true;
+    if (answers.some(item => item.first !== null)) setHistory(previous => keepRuns([...previous, { order, answers, seenResults, endedAt: new Date().toISOString() }]));
+    setAnswers(blank(questions.length)); setSeenResults(false); setConfirmingRestart(false);
+    go(0);
+  }
+  function cancelRestart() { setConfirmingRestart(false); requestAnimationFrame(() => restartButton.current?.focus()); }
   function tryAgain() {
     updateAnswer({ selected: null, checked: false });
     setFocusAnswer('option');
@@ -123,6 +170,11 @@ export function DrillOneExperience({ questions, order = 1, legacyOrder }: { ques
       <p className="d1-result"><strong>{correctFirst}</strong> of {questions.length} correct on your first attempt.</p>
       <p className="d1-completion-copy">{missed.length ? 'Return to the questions you missed and compare the explanation with your original reasoning.' : 'Every first answer was correct. You can review any question before moving on.'}</p>
       <div className="d1-review-list" aria-label="Review questions">{questions.map((item, index) => <button type="button" key={index} onClick={() => go(index)}><span>Question {index + 1}</span><span>{answers[index].first === item.correct ? 'Correct first attempt' : 'Review reasoning'}<ArrowRight size={16}/></span></button>)}</div>
+      <div className="d1-restart">{confirmingRestart ? <div className="d1-restart-confirm" role="group" aria-labelledby={`${id}-restart`}>
+        <h3 id={`${id}-restart`} ref={confirmHeading} tabIndex={-1}>Start Spot the condition again?</h3>
+        <p>This clears your answers to all {questions.length} questions so you can try them fresh. The drill stays marked as done.</p>
+        <div className="d1-restart-actions"><button type="button" className="d1-primary" onClick={startOver}>Yes, start over</button><button type="button" className="d1-retry" onClick={cancelRestart}>Keep my answers</button></div>
+      </div> : <button ref={restartButton} type="button" className="d1-retry" onClick={() => setConfirmingRestart(true)}><RotateCcw size={15}/>Start over</button>}</div>
     </div> : <div key={current} className="d1-question-scene" data-practice-task={current + 1}>
       <div className="d1-rule-panel">
         <div className="d1-rule-top"><span className="d1-eyebrow">{question.contextLabel ?? 'Given rule'}</span><span className="d1-rule-number" aria-hidden="true">{String(current + 1).padStart(2, '0')}</span></div>

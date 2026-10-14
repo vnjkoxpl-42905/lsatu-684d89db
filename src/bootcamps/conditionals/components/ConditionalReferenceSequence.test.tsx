@@ -43,7 +43,7 @@ it('lets learners inspect every family indicator in source order while keeping t
   const { step } = mount();
   const families = [
     { number: 3, names: ['if', 'when / whenever', 'any / anytime', 'all', 'every / every time', 'in order to', 'people who', 'each'], role: 'Borrows a locker' },
-    { number: 5, names: ['then', 'must', 'necessary', 'required', 'only / only if', 'depends', 'need / need to', 'have to', 'essential', 'precondition'], role: 'Has a key' },
+    { number: 5, names: ['must', 'necessary', 'required', 'only / only if', 'depends', 'need / need to', 'have to', 'essential', 'precondition'], role: 'Has a key' },
   ];
   for (const family of families) {
     const lab = step(family.number).querySelector<HTMLElement>('.cr-family')!;
@@ -203,7 +203,7 @@ it('tests a “Put yourself in it” check in both directions without treating t
   expect(checks[1].querySelector('.cr-correct')).toBeNull();
   fireEvent.click(within(checks[1]).getByRole('button', { name: 'No, I could wear one without riding.' }));
   expect(checks[1].querySelector('.cr-correct')).toBeTruthy();
-  expect(within(checks[1]).getByRole('status').textContent).toMatch(/waiting beside a bike.*promise/i);
+  expect(within(checks[1]).getByRole('status').textContent).toMatch(/waiting beside a bike.*never says/i);
 });
 
 it('requires both independent diagrams before giving nine fresh practice keys and resets each attempt', () => {
@@ -211,7 +211,7 @@ it('requires both independent diagrams before giving nine fresh practice keys an
   const expected = [
     ['RT → PT', '~PT → ~RT'], ['SF → RC', '~RC → ~SF'], ['A → C', '~C → ~A'],
     ['D → B', '~B → ~D'], ['E → P', '~P → ~E'], ['M → V', '~V → ~M'],
-    ['~C → H', '~H → C'], ['A → ~R', 'R → ~A'], ['~R → ~L', 'L → R'],
+    ['~C → H', '~H → C'], ['A → ~R', 'R → ~A'], ['~S → ~R', 'R → S'],
   ];
   const items = [...step(13).querySelectorAll<HTMLElement>('[data-reference-practice]')];
   expect(items).toHaveLength(9);
@@ -261,7 +261,7 @@ it('covers both source word families in their assigned teaching sections without
     /\bpeople who\b/i, /\beach\b/i,
   ]) expect(familyWords(3), `sufficient family is missing ${expression}`).toMatch(expression);
   for (const expression of [
-    /\bthen\b/i, /\bmust\b/i, /\bnecessary\b/i, /\brequired\b/i, /\bonly\b/i,
+    /\bmust\b/i, /\bnecessary\b/i, /\brequired\b/i, /\bonly\b/i,
     /\bonly if\b/i, /\bdepends\b/i, /\bneed\b/i, /\bneed to\b/i,
     /\bhave to\b/i, /\bessential\b/i, /\bprecondition\b/i,
   ]) expect(familyWords(5), `necessary family is missing ${expression}`).toMatch(expression);

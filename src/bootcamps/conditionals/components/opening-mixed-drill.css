@@ -76,5 +76,3 @@
 :root:not(.light) .oc-workspace .omd-runner [data-mixed-item] .co-feedback { background:transparent; color:var(--omd-ink); }
 @media(prefers-reduced-motion:reduce) { .omd-runner { scroll-behavior:auto; } }
 
-/* A wrong diagram gets a hint only. The shared engine always prints the answer diagram, so hide it until the diagram is right. */
-.omd-diagram[data-result=wrong] .cir-feedback>p:not(:first-child) { display:none; }
