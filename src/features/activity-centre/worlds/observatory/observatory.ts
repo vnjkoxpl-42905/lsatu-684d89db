@@ -346,11 +346,9 @@ export function keyAgreesWithCredited(item: ActivityItem): boolean {
 }
 
 function indicatorQuoted(r: Relation, answer: string): boolean {
-  const contiguous = r.indicators.some((indicator) => quotes(indicator, answer));
-  if (!r.requiredParts?.length) return contiguous;
+  if (!r.requiredParts?.length) return r.indicators.some((indicator) => quotes(indicator, answer));
   // A split comparative counts only with both halves, quoted together or apart.
-  return r.requiredParts.some((parts) => parts.every((part) => quotes(part, answer)))
-    && (contiguous || r.requiredParts.some((parts) => parts.every((part) => quotes(part, answer))));
+  return r.requiredParts.some((parts) => parts.every((part) => quotes(part, answer)));
 }
 
 export function matchesCredited(item: ActivityItem, response: string): boolean {
