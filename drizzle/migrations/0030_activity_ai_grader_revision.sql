@@ -22,7 +22,7 @@ alter table public.activity_ai_configuration_v1
 comment on column public.activity_ai_configuration_v1.allowed_activity_ids is
  'NULL preserves legacy scope; empty array denies all sources. To limit a future activation to Spot the Relationship, set only its verified activities.id values. This column never enables AI.';
 comment on column public.activity_ai_configuration_v1.grader_revision is
- 'Trusted receipt identity. Advance with each grading prompt/model/guard change; old request IDs conflict and old first attempts cannot authorize disclosure under a new revision.';
+ 'Trusted receipt identity. Advance with each grading prompt/model/guard change. Completed first attempts remain valid only for an identical trusted question/key/rubric.';
 
 alter function public.activity_ai_source_v1(uuid,text,uuid,integer,text,integer) rename to activity_ai_source_keyed_v1;
 revoke all on function public.activity_ai_source_keyed_v1(uuid,text,uuid,integer,text,integer) from public, anon, authenticated, service_role;
@@ -48,17 +48,41 @@ begin
   if activity is null or not (activity=any(allowed)) then return null; end if;
  end if;
  canonical:=canonical||jsonb_build_object('graderRevision',revision);
- if p_attempt=2 and not exists(select 1 from public.activity_ai_receipts_v1 r
-  where r.owner_id=p_owner and r.source_kind=p_kind and r.source_id=p_source
-   and r.item_order=p_order and r.attempt_no=1 and r.state='completed'
-   and (r.canonical_payload-'studentResponse'-'attemptNo'-'firstAttemptConfirmed')=
-       (canonical-'studentResponse'-'attemptNo'-'firstAttemptConfirmed')
-   and (p_kind='preview' or exists(select 1 from public.activity_item_responses a
-    where a.assignment_id=p_source and a.student_id=p_owner and a.item_order=p_order and a.attempt_no=1
-     and a.response_text=r.canonical_payload->>'studentResponse' and a.verdict=r.result->>'verdict')))
- then return null; end if;
+ -- A prompt/guard revision alone does not erase a completed learning attempt.
+ -- The keyed wrapper still requires the identical trusted question/key/rubric
+ -- and, for assignments, the saved first response/verdict. A key change denies
+ -- attempt 2 exactly as before; a revision change only invalidates its cache.
  if length(canonical::text)>64000 then return null; end if;
  return canonical;
 end $$;
 revoke all on function public.activity_ai_source_v1(uuid,text,uuid,integer,text,integer) from public, anon, authenticated, service_role;
+
+-- Permission to replace a saved request ID is explicit and narrowly scoped.
+-- Only terminal receipts whose complete payload changed solely by revision
+-- qualify. Lost/in-flight/uncertain outcomes never authorize a paid retry.
+alter function public.begin_activity_ai_request_v1(uuid,uuid,text,uuid,integer,text,integer)
+ rename to begin_activity_ai_request_base_v1;
+revoke all on function public.begin_activity_ai_request_base_v1(uuid,uuid,text,uuid,integer,text,integer)
+ from public, anon, authenticated, service_role;
+create function public.begin_activity_ai_request_v1(p_owner_id uuid,p_request_id uuid,p_source_kind text,p_source_id uuid,p_item_order integer,p_student_response text,p_attempt_no integer)
+returns jsonb language plpgsql security definer set search_path=pg_catalog,public as $$
+declare r public.activity_ai_receipts_v1; payload jsonb;
+begin
+ perform pg_advisory_xact_lock(hashtextextended('activity-ai-global-v1',0));
+ perform pg_advisory_xact_lock(hashtextextended('activity-ai-owner-v1:'||coalesce(p_owner_id::text,''),0));
+ select r1.* into r from public.activity_ai_request_keys_v1 k
+  join public.activity_ai_receipts_v1 r1 on r1.id=k.receipt_id
+  where k.request_id=p_request_id and k.owner_id=p_owner_id for update of r1;
+ if r.id is not null and r.state in ('completed','failed') then
+  payload:=public.activity_ai_source_v1(p_owner_id,p_source_kind,p_source_id,p_item_order,p_student_response,p_attempt_no);
+  if payload is not null and r.canonical_payload->'graderRevision' is distinct from payload->'graderRevision'
+   and (r.canonical_payload-'graderRevision')=(payload-'graderRevision') then
+   return public.activity_ai_reply_v1(p_request_id,r,'denied',409,'grader_revision_changed');
+  end if;
+ end if;
+ return public.begin_activity_ai_request_base_v1(p_owner_id,p_request_id,p_source_kind,p_source_id,p_item_order,p_student_response,p_attempt_no);
+end $$;
+revoke all on function public.begin_activity_ai_request_v1(uuid,uuid,text,uuid,integer,text,integer)
+ from public, anon, authenticated, service_role;
+grant execute on function public.begin_activity_ai_request_v1(uuid,uuid,text,uuid,integer,text,integer) to service_role;
 commit;

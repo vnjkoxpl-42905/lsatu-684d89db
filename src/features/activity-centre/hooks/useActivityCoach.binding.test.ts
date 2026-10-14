@@ -71,3 +71,60 @@ it('discards late judgment after the item unmounts', async () => {
   resolve({ data: { verdict: 'correct', feedback: 'Verified.' }, error: null });
   expect(await pending).toMatchObject({ ok: false, discarded: true });
 });
+
+const revisionError = () => ({ context: new Response(JSON.stringify({ code: 'grader_revision_changed' }), { status: 409 }) });
+it('recovers a confirmed terminal revision conflict once with a durable new identity', async () => {
+  fixture.invoke.mockResolvedValueOnce({ data: null, error: revisionError() })
+    .mockResolvedValue({ data: { verdict: 'partial', feedback: 'Check your indicator.' }, error: null });
+  const hook = renderHook(useActivityCoach);
+  let reply;
+  await act(async () => { reply = await hook.result.current.judge({ ...args, attemptNo: 2 }); });
+  expect(reply).toMatchObject({ ok: true, verdict: { verdict: 'partial' } });
+  const [old, updated] = fixture.invoke.mock.calls.map(call => call[1].body);
+  expect(updated).toEqual({ ...old, requestId: expect.any(String) });
+  expect(updated.requestId).not.toBe(old.requestId);
+  hook.unmount();
+  const reloaded = renderHook(useActivityCoach);
+  await act(async () => { await reloaded.result.current.judge({ ...args, attemptNo: 2 }); });
+  expect(fixture.invoke.mock.calls[2][1].body).toEqual(updated);
+});
+it('retains the replacement after a lost reply and does not rotate it on retry', async () => {
+  fixture.invoke.mockResolvedValueOnce({ data: null, error: revisionError() })
+    .mockRejectedValueOnce(new Error('reply lost'))
+    .mockResolvedValue({ data: { verdict: 'correct', feedback: 'Verified.' }, error: null });
+  const hook = renderHook(useActivityCoach);
+  await act(async () => { await hook.result.current.judge(args); });
+  await act(async () => { await hook.result.current.judge(args); });
+  expect(fixture.invoke.mock.calls[2][1].body).toEqual(fixture.invoke.mock.calls[1][1].body);
+});
+it('bounds revision recovery to one retry per submission', async () => {
+  fixture.invoke.mockImplementation(async () => ({ data: null, error: revisionError() }));
+  const hook = renderHook(useActivityCoach);
+  let reply;
+  await act(async () => { reply = await hook.result.current.judge(args); });
+  expect(reply).toMatchObject({ ok: false });
+  expect(fixture.invoke).toHaveBeenCalledTimes(2);
+});
+it.each([
+  { context: new Response(JSON.stringify({ code: 'request_conflict' }), { status: 409 }) },
+  { context: new Response(JSON.stringify({ code: 'grader_revision_changed' }), { status: 500 }) },
+  { message: 'grader_revision_changed' },
+])('keeps the existing identity for uncertain or unrelated failures', async error => {
+  fixture.invoke.mockResolvedValue({ data: null, error });
+  const hook = renderHook(useActivityCoach);
+  await act(async () => { await hook.result.current.judge(args); });
+  expect(fixture.invoke).toHaveBeenCalledTimes(1);
+  await act(async () => { await hook.result.current.judge(args); });
+  expect(fixture.invoke.mock.calls[1][1].body).toEqual(fixture.invoke.mock.calls[0][1].body);
+});
+it('does not send the replacement if persistence fails', async () => {
+  fixture.invoke.mockImplementationOnce(async () => {
+    vi.spyOn(localStorage, 'setItem').mockImplementation(() => { throw new Error('quota'); });
+    return { data: null, error: revisionError() };
+  });
+  const hook = renderHook(useActivityCoach);
+  let reply;
+  await act(async () => { reply = await hook.result.current.judge(args); });
+  expect(reply).toMatchObject({ ok: false, error: expect.stringContaining('No retry') });
+  expect(fixture.invoke).toHaveBeenCalledTimes(1);
+});

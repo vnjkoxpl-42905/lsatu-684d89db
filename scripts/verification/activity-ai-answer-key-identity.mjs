@@ -80,7 +80,8 @@ await setItem(key('stronger than'), { ...coach, grading_rubric: [''] }); eq((awa
 await setItem(undefined, { drill: 'negation drill', rubric: ['Weakest contradiction.'] });
 ({ b } = await run('legacy ' + randomUUID())); eq(b.status, 'reserved'); eq('answerKey' in b.payload, false);
 
-// 9. Revision-only changes invalidate cache, dispatch, finish and attempt 2.
+// 9. Revision-only changes invalidate cache, dispatch and finish, while a
+// completed first attempt under the identical question/key/rubric stays valid.
 await setItem(key('stronger … than'));
 const first = await run('revision first');
 eq((await dispatch(first.rid, first.b.claimId)).status, 'dispatched');
@@ -91,16 +92,21 @@ const beforeDispatch = await run('revision pending');
 const beforeFinish = await run('revision dispatched');
 eq((await dispatch(beforeFinish.rid, beforeFinish.b.claimId)).status, 'dispatched');
 await db.exec("update activity_ai_configuration_v1 set grader_revision='test-revision-2'");
+eq((await begin(beforeDispatch.rid, 'revision pending')).code === 'grader_revision_changed', false, 'reserved receipts cannot rotate their request identity');
+eq((await begin(beforeFinish.rid, 'revision dispatched')).code === 'grader_revision_changed', false, 'dispatched receipts cannot rotate their request identity');
+await db.query("update activity_ai_receipts_v1 set state='uncertain' where id=$1", [beforeFinish.rid]);
+eq((await begin(beforeFinish.rid, 'revision dispatched')).code === 'grader_revision_changed', false, 'uncertain receipts cannot rotate their request identity');
 eq((await dispatch(beforeDispatch.rid, beforeDispatch.b.claimId)).code, 'source_changed');
 eq((await finish(beforeFinish.rid, beforeFinish.b.claimId)).status, 'failed');
 eq((await db.query('select failure_category from activity_ai_receipts_v1 where id=$1', [beforeFinish.rid])).rows[0].failure_category, 'source_changed');
-eq((await begin(first.rid, 'revision first')).code, 'request_conflict', 'same request ID never silently regrades');
+eq((await begin(first.rid, 'revision first')).code, 'grader_revision_changed', 'terminal revision-only conflict explicitly permits identity recovery');
+eq((await begin(first.rid, 'edited answer')).code, 'request_conflict', 'a different response is not revision recovery');
 const revised = await run('revision first');
 eq(revised.b.status, 'reserved'); eq(revised.b.payload.graderRevision, 'test-revision-2');
-eq((await run('revision second', 2)).b.code, 'source_unavailable');
+eq((await run('revision second', 2)).b.status, 'reserved', 'unchanged trusted key preserves completed first-attempt progress');
 eq((await dispatch(revised.rid, revised.b.claimId)).status, 'dispatched');
 eq((await finish(revised.rid, revised.b.claimId)).status, 'completed');
-eq((await run('revision second', 2)).b.status, 'reserved');
+eq((await run('revision second after refreshed first', 2)).b.status, 'reserved');
 
 // 10. Optional Spot-only scope gates sources, including cached/dispatch/finish.
 const scopedCache = await run('revision first'); eq(scopedCache.b.status, 'cached');
