@@ -1,0 +1,592 @@
+{
+  "actor": "d763bfe6-d710-4c4b-90ff-4b3a20929211",
+  "observedAt": "2026-10-14T13:23:46.161Z",
+  "tables": {
+    "rc_drill_sessions": {
+      "count": 24,
+      "sha256": "7d7bdf9faeea02b7ddc2e7148593a060199e55e8665c04e439f09b29a0233e18"
+    },
+    "rc_attempts": {
+      "count": 202,
+      "sha256": "34198f1ee94483c963ae685bfd3fc116d593629e57373381e98c979eba2f5576"
+    },
+    "rc_annotations": {
+      "count": 4,
+      "sha256": "3616419e19d46a49561a1d101ba31ec1173387b362d9369c5797fa65418ba9f4"
+    }
+  },
+  "sessions": [
+    {
+      "id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "passageIds": [
+        1188,
+        1190,
+        1192,
+        1195
+      ],
+      "status": "completed",
+      "reveal": "end_of_set",
+      "protectedSource": true,
+      "sha256": "33a1947b389721a20844fa8f24391908d90d9cec50a0588d7af52bad1709baff"
+    },
+    {
+      "id": "08fc2b6f-2fe9-4b4c-8137-2b7b14c6c412",
+      "passageIds": [
+        1188
+      ],
+      "status": "in_progress",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "bee2084fe785a59cf419b4cd68d77a228bc901694b0871be956f776d346f5234"
+    },
+    {
+      "id": "13dcde0e-0c2e-4174-ba11-ba174e47093b",
+      "passageIds": [
+        14
+      ],
+      "status": "completed",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "f559144f24aacbcf4a4a31960fd3de15292e1f9a22e0e9bdb02737cf14964647"
+    },
+    {
+      "id": "2ed5a995-0086-47f6-88e2-f3b18216055f",
+      "passageIds": [
+        1188,
+        1190,
+        1192,
+        1195
+      ],
+      "status": "in_progress",
+      "reveal": "end_of_set",
+      "timing": {
+        "mode": "per_passage_budget",
+        "secondsPerPassage": 788
+      },
+      "protectedSource": false,
+      "sha256": "a18b33ef07b9ce20e537ba2d96b4c03efdadafe25859753d3d6794c116bb8a59"
+    },
+    {
+      "id": "307f5534-73d2-4f4f-93c0-ce390dd21a1a",
+      "passageIds": [
+        86,
+        363
+      ],
+      "status": "completed",
+      "reveal": "per_question",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "ff1b84ab802cd71d6a1edd13d293f75fa7e31945368c7338e3f6ded96f84db09"
+    },
+    {
+      "id": "3ac540b2-8fab-4c09-a792-c5b597fc4a26",
+      "passageIds": [
+        103
+      ],
+      "status": "completed",
+      "reveal": "per_question",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "f03e5199e6f756172a2b767a7ad42413c21655d96bd9bae68a71d38863de11a3"
+    },
+    {
+      "id": "4305a0a0-220a-432b-beb7-f2e8f960d001",
+      "passageIds": [
+        1188
+      ],
+      "status": "in_progress",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "be2e48e50c49c004fe6d644c0a535af2ab144faa6b17a3efaf3595016f47b838"
+    },
+    {
+      "id": "4bf94f94-9faa-4a61-924d-8ad5956bce9a",
+      "passageIds": [
+        16
+      ],
+      "status": "completed",
+      "reveal": "per_question",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "8c2e1020d652d790846deb21002c3670c2b146f9959040b8f46c2bb669a44b15"
+    },
+    {
+      "id": "54cff6c2-3630-4290-9e68-ec3e2c1efcd5",
+      "passageIds": [
+        78
+      ],
+      "status": "completed",
+      "reveal": "end_of_set",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "3000bb48c8ca0e9f18e0699772c0219d20a66ce0d28da6b20ae6b7404b756497"
+    },
+    {
+      "id": "5b2c7e2d-5d13-4ece-b4a5-f16c520b4dbd",
+      "passageIds": [
+        1188,
+        1190,
+        1192,
+        1195
+      ],
+      "status": "completed",
+      "reveal": "end_of_set",
+      "timing": {
+        "mode": "per_passage_budget",
+        "secondsPerPassage": 525
+      },
+      "protectedSource": true,
+      "sha256": "b0a90836f6db91faef329c289ef3516dc4e1b208e99f2acc0bad3b8aa925ecb5"
+    },
+    {
+      "id": "6320a6d9-4198-477f-9602-b068923e5027",
+      "passageIds": [
+        185
+      ],
+      "status": "completed",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "per_passage_budget",
+        "secondsPerPassage": 60
+      },
+      "protectedSource": false,
+      "sha256": "e09cb8a9d89ddfdec9d5353e49e13c5cc5d7fd72abab6d843e188d3be43fd6e7"
+    },
+    {
+      "id": "686a6ebc-218f-4a1c-85f8-1e2536ee03b9",
+      "passageIds": [
+        1352,
+        1353,
+        1355,
+        1359
+      ],
+      "status": "completed",
+      "reveal": "end_of_set",
+      "protectedSource": true,
+      "sha256": "4fd9e2a66265f0e5e1548ec878a766b5b95ed7c46cc7b795d639d4102debf6c8"
+    },
+    {
+      "id": "80879306-a72f-4e40-b776-d873b6a50886",
+      "passageIds": [
+        1188
+      ],
+      "status": "in_progress",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "28f8ec6f1effb8659d04050a1a14dd58e17fbd146829fea5e76c9d0106d7897f"
+    },
+    {
+      "id": "9199299d-a964-432e-b7e9-3d8929c9f595",
+      "passageIds": [
+        1188,
+        1190
+      ],
+      "status": "in_progress",
+      "reveal": "end_of_set",
+      "timing": {
+        "mode": "per_passage_budget",
+        "secondsPerPassage": 788
+      },
+      "protectedSource": false,
+      "sha256": "617e9a4507a593c871207f52b46c4713dc0d66c66d2e21b4e0290a434ead9702"
+    },
+    {
+      "id": "9316de3b-e4a3-4339-88cb-acceb9917650",
+      "passageIds": [
+        1168,
+        1172,
+        1174,
+        1178
+      ],
+      "status": "completed",
+      "protectedSource": true,
+      "sha256": "527d0c141867a0d31f271fa9535fb56f26aaf435347d3827a5c20c9ff1849eea"
+    },
+    {
+      "id": "95e51f84-149d-448b-a308-da78250f2bf1",
+      "passageIds": [
+        1188,
+        1190,
+        1192,
+        1195
+      ],
+      "status": "in_progress",
+      "reveal": "end_of_set",
+      "timing": {
+        "mode": "per_passage_budget",
+        "secondsPerPassage": 525
+      },
+      "protectedSource": false,
+      "sha256": "a1a55bbbdee2f4bee55deddd9c11e719375dee547a8947fd2639ecb1d3374e5e"
+    },
+    {
+      "id": "9e709f8a-0fbe-489e-b941-8a55e65d2688",
+      "passageIds": [
+        1320
+      ],
+      "status": "completed",
+      "reveal": "end_of_set",
+      "timing": {
+        "mode": "per_passage_budget",
+        "secondsPerPassage": 60
+      },
+      "protectedSource": false,
+      "sha256": "6792e482e7126892dd97ac51257e6d3bd18a99fa6b6916edfcedb9c64022e722"
+    },
+    {
+      "id": "aa1193f8-43a1-4390-b467-7f6bb3407fea",
+      "passageIds": [
+        730,
+        731,
+        733,
+        734
+      ],
+      "status": "completed",
+      "protectedSource": true,
+      "sha256": "fa2c45ebd316e07c17b1307b994a63208256bfb9ef71143999c75e1aca70a5c6"
+    },
+    {
+      "id": "c9122052-6e15-403b-a220-9e2aa9e02e76",
+      "passageIds": [
+        1326
+      ],
+      "status": "in_progress",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "2cb6a04b720b52e9b88c4715373178782e44daafe38e191138cd96f85990f934"
+    },
+    {
+      "id": "cdb802b9-06b6-4998-9707-acdb3cc9d314",
+      "passageIds": [
+        491
+      ],
+      "status": "in_progress",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "4a7e060997debf3e6433526d364f80794be686d9f5718f7966aea4e6d9b0e825"
+    },
+    {
+      "id": "e37448de-76ac-4fed-9209-0c03584aa79c",
+      "passageIds": [
+        1188
+      ],
+      "status": "in_progress",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "d80f09925dd0f741312dbe22b8a26dee24fa0ccfa2ccce15680f9c14af0b90b8"
+    },
+    {
+      "id": "f21e7fed-f72b-4970-a2b0-307741debfe0",
+      "passageIds": [
+        491
+      ],
+      "status": "completed",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "4c49b66094164aade6e2c5ce2bab09a0d5056169fd1c3fc1fda0ba8bed5f4674"
+    },
+    {
+      "id": "f5e38f2a-e329-4119-b819-9add3d21c54c",
+      "passageIds": [
+        16
+      ],
+      "status": "completed",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "96af4921b4a02ab43086b0f9a459bf524a59450d25b875dc7025e493f066eac5"
+    },
+    {
+      "id": "fd29ee7b-ec88-453d-8797-123baaa17a15",
+      "passageIds": [
+        16
+      ],
+      "status": "completed",
+      "reveal": "per_passage",
+      "timing": {
+        "mode": "unlimited"
+      },
+      "protectedSource": false,
+      "sha256": "43d15a07fed1fd4bcce93bc38c8b3d5abd711e4ce020044231ab930743003ea7"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "b7d010b9-a688-455c-b62b-e2c08aa7d47f",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7660,
+      "selected": "B",
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 15490
+    },
+    {
+      "id": "df4cf423-8829-4ef1-9d74-c7648fa5071d",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7661,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 20898
+    },
+    {
+      "id": "0163025b-5f3c-4b28-b575-eed5cf9f2876",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7662,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "1302fc24-13c0-46e4-99ad-22a9e0746fbf",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7663,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "5ae2fd87-e33d-4787-a6ef-4762bdc6331e",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7664,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "656ce2cf-7534-405d-87c0-f2a846b983d6",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7665,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "4fd5ed59-34c5-42d6-9589-33f730132786",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7666,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "1d50a2f9-2077-4f17-abc1-57757b4bc559",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7667,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "ce1cd905-1747-48f8-9260-796e7e538528",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7668,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "44bafd57-422f-4206-b5db-8cf1b82855ec",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7669,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "77dcf8b8-3451-4a24-a40c-b5b5564d25fb",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7670,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "d2135d2c-bf75-4787-972b-0332ad9cbb57",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7671,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "130e7395-6505-480e-a40d-c1a9eebb624e",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7672,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "22409f20-1b38-4ab1-ae9d-37758e9de90d",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7673,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "65fb52aa-2ba0-4cd2-9116-a0816652ed86",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7674,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "93229089-39dc-4939-adb9-fbb1ac18b97c",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7675,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "cccf9ecc-181c-4232-8f09-02aa46218af3",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7676,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "63aa9a52-67f4-499a-b410-212f7806f7cd",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7677,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "80f4aad5-f70d-476f-ae48-c8f05c547ef3",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7678,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "20fc9105-a306-493c-be04-8b8a85fa989d",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7679,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "2fc3c037-c8c7-4fc1-9930-aa0280d6dc33",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7680,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "0a8af12d-dd71-4bf3-a5ed-9e5bf2b5c38c",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7681,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "ad7328ae-ad7f-476d-89b9-004e6b3df150",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7682,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "48a9a8f4-1da4-4bd7-b023-ab4497a5d90c",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7683,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "df96a279-a019-4429-ac6f-5bc5c370a105",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7684,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "d6d1d79a-06ff-43dd-af5d-54a35f0af9f8",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7685,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    },
+    {
+      "id": "5404485e-b1a0-4ba4-bad3-3b4ee041185c",
+      "session_id": "06324cd6-76fe-46de-9689-f4644e7cb124",
+      "question_id": 7686,
+      "selected": null,
+      "flagged": false,
+      "is_first_attempt": true,
+      "time_ms": 0
+    }
+  ]
+}

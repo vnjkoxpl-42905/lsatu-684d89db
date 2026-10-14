@@ -1,5 +1,63 @@
 # RC repair evidence and remaining release gates
 
+## Save-response acceptance and recovered clipping evidence, 2026-10-14
+
+This continuation supersedes the earlier unresolved fault-control rows for the scenarios below. Scoring authority remains separate. No source passages, answer keys, historical grading, backend functions or existing account records were changed or deleted.
+
+### Real save-response permutations
+
+The dedicated actor remains `d763bfe6-d710-4c4b-90ff-4b3a20929211`. Production session `307f5534-73d2-4f4f-93c0-ce390dd21a1a` supplied these controlled response checks at 1280×720 and 1522×845:
+
+| Controlled condition | Observed result |
+|---|---|
+| Hold annotation hydration, then release its current GET response | Loading passage marks stays visible until release; normal marks hydrate afterward. Fresh request cursors successfully resolve the earlier interception limitation. |
+| Change passage while its hydration is held | New passage displays no old marks; the original request is cancelled, so continuing that cancelled interception correctly fails. The current passage response was released separately. |
+| Process annotation POST, discard acknowledgement, double-click Retry | Not saved remains visible until acknowledgement. One pending retry POST is observed; reload restores the saved mark. |
+| Hold an older pink-mark acknowledgement, apply newer orange intent, release replies in order | Newer intent remains Saving after the older acknowledgement; the next serialized POST acknowledges the final mark. Reload retains the final color and text. |
+| Process flag PATCH, discard acknowledgement, reload, double-click Retry | Scoped recovery restores; one pending retry PATCH acknowledges the final value. |
+| Hold both annotation POST and flag PATCH acknowledgements, leave the reader, sign out tester A, sign in secondary teacher B, then release both A replies | B receives no A reader/recovery state; opening A's session is refused as belonging to another account. B's other sessions were not signed out. |
+| Leave immediately after adding a mark, before the debounce sends it, then reopen the same actor/passage | Recovered, not saved appears with all marks, without automatic replay. Explicit Retry saves the pending mark. Screenshot: `output/playwright/rc-acceptance-2026-10-14/teardown-recovered.png`. |
+
+Nine added deterministic hook tests cover duplicate retries, unresolved acknowledgements across remount, stale success/rejection versus newer intent, A/B/A serialization and teardown, actor hydration and protected flags. They are controlled transport tests, not device evidence. Existing flag tests also cover unrecorded flags during initial-answer acknowledgement.
+
+### Reproduced answer-loss defect and bounded repair
+
+A six-question per-passage test selected all A choices and started Check passage. The first answer committed while its response was held. After browser teardown, only acknowledged answers and the last single backed-up choice restored; intermediate choices were lost. The old actor+session backup held one answer and each pick overwrote it. A deterministic regression reproduced the loss before repair.
+
+The repair retains every pending question draft, migrates legacy scalar backups, and clears only the acknowledged question and matching intent. Persisted saveRequested distinguishes ordinary picks from explicitly requested saves: reload restores all choices, while Retry writes only the requested subset. Ordinary unconfirmed choices remain hidden through clock Retry and a second reload. Generation guards prevent late save/retry/navigation/exit continuations from entering a newer session.
+
+Independent review identified and corrected the stale-session continuation and second-reload reveal risks before release. Final focused tests passed435/435; the dedicated backup/player slice passed41/41 and typecheck passed. Relevant lint has zero errors and one intentional ref-generation cleanup warning. Final build verifies2150 identities and scans757 files without canonical content. Local built entry: `index-BY4eDQVA.js`.
+
+Signed-in built-app checks used `http://127.0.0.1:8093`:
+
+- Session `fd29ee7b-ec88-453d-8797-123baaa17a15`, passage16, per_passage, untimed: all six choices restored; explicit Check passage and Finish reached completed results with exactly six first attempts. Receipts: `fixed-built-recovery.txt`, `recovered-partial-passage-results.png`, `backend-partial-recovered.json` under `output/playwright/rc-acceptance-2026-10-14`.
+- Session `4bf94f94-9faa-4a61-924d-8ad5956bce9a`, passage16, per_question, untimed: two unconfirmed A choices survived two reloads and clock Retry with zero backend attempts and no credited-answer reveal. Only explicit Confirm created attempts. Q14's initial POST held flagged:true while newer intent changed to false; releasing its acknowledgement produced the final flagged:false PATCH. All six explicit confirmations and duplicate Submit reached completed results. Receipts: `backend-unconfirmed-two-reloads.json`, `initial-flag-newer-intent.json`, `local-unconfirmed-reload-results.png`.
+- Protected session `06324cd6-76fe-46de-9689-f4644e7cb124`: navigation to official Q27, passage-only, reload and exit left every session/attempt/annotation table hash and the selected protected attempt rows unchanged. The six-width popup matrix fits390/480/700/1024/1366/1920 with no horizontal overflow. Receipts: `backend-fixed-protected-{before,after}.json`, `answer-recovery-built-matrix.json`.
+
+### Original clipping image recovered and compared
+
+The original attachment is `C:/Users/Joshu/AppData/Local/Temp/codex-clipboard-2c863896-ce48-4c72-bf5a-15893504f2db.png`,1522×845, teacher Practice/Drills, PT140 S4 RC, question-number dropdown open. Its adjacent finder pill and right side of the black drill hero are clipped; the dropdown fits. This concerns the retired setup row, not reader text.
+
+An isolated retained archive of `f59ddc48835b285674e6ddde55c1812db0bb1bef` ran at8092 without reverting main. Opening the old menus only, at1522×845 and1384×768 with device scale1.1, did not reproduce the historical crop. The attachment contains no reliable deployment identity or original browser zoom/crop metadata. No cause or historical fix is attributed without reproduction.
+
+Current signed-in production teacher setup and PT140 S4 Q17 finder selection fit1522/1384/390/700/1024/1366/1920 CSS widths. Each popup was reopened after resize and measured after real animations finished; dialog and listbox fit, document width equals viewport width. Screenshots `clipping-current.png`, `clipping-historical.png`, `clipping-historical-scaled.png`, and `clipping-current-matrix.json` preserve the comparison. The historical condition remains unresolved; the current equivalent does not reproduce it.
+
+Physical-device/cross-device persistence, actual screen-reader speech and actual200% browser zoom remain separately open. Current desktop emulation cannot certify those. The broader scoring-authority audit and repository-wide baseline failures remain separate.
+
+### Published repair and final production verification
+
+Safe-push passed typecheck and pushed `748a491d19a4c132fac6c76e71ef589f54b0521e`. Lovable read-only metadata confirmed that exact synced commit before free Publish changes. The dialog reported Your website was updated, and fresh production loaded `index-BxnJINCm.js`. Receipt: `output/playwright/rc-acceptance-2026-10-14/answer-recovery-publication.png`. No Lovable AI or credit-spending action was used.
+
+Production session `6ef06c88-316b-4fb5-b57c-8480f7b6aa04` used passage16, per_passage and untimed mode. Two ordinary choices survived two reloads and clock Retry with zero attempts or credited-answer reveal (`backend-production-unconfirmed.json`, `production-two-drafts-reloaded.png`). After all six A choices and explicit Check passage, the first answer POST succeeded on the server; its acknowledgement was discarded. Reload and duplicate Retry restored and saved all six choices. Explicit Check passage and Finish reached completed results with zero unanswered. The original first-attempt ID `10de5726-05e7-4823-8ea9-a1f9535261a6` was retained; there are exactly six first attempts for IDs1601–1606, without duplicates. Screenshots: `production-all-drafts-recovered.png`, `production-answer-recovery-results.png`.
+
+Read-only receipt `backend-answer-recovery-final.json` at `2026-10-14T13:51:43.400Z` confirms25 sessions,208 attempts,4 annotations. All five protected source-session hashes match the earlier checkpoint. The temporary in-app teacher login was cleared locally to restore the dedicated tester, without global teacher sign-out or removal of recovery/record data.
+
+Final full suite:40 failed,6778 passed,1 skipped across6819 tests; no RC file failed. Every failure identity existed in the earlier full-suite receipt.38 match the independently reproduced upstream baseline; two are the previously variable conditional failures. Receipt: `C:/Users/Joshu/AppData/Local/Temp/rc-answer-recovery-full-suite.json`. Final focused435/435 receipt: `C:/Users/Joshu/AppData/Local/Temp/rc-fault-repair-final-tests.json`. No whole-suite success is claimed.
+
+Final production at-end smoke used `fe1092cf-b706-4e0d-a707-bbfd80e423f0`, passage16, end_of_set and a60-second per-passage practice budget. Pause/reload retained00:32 and pending choices; clock Retry and Resume recovered. All six A choices stayed hidden through practice-budget overrun+1:22, with no silent submission. Five navigated choices had already saved before Submit, as intended for at-end persistence; correctness remained hidden. Explicit duplicate Submit reached completed results with exactly six first attempts and zero unanswered. Screenshots: `production-at-end-overrun.png`, `production-at-end-final-results.png`; receipts: `backend-at-end-{before-submit,final}.json` under the same artifact directory.
+
+The final receipt at `2026-10-14T13:58:59.116Z` supersedes the earlier counts:26 sessions,214 attempts,4 annotations. All five protected source-session hashes remain unchanged. All seven sessions created during this acceptance run are completed and preserved; no records were deleted. The desktop checklist in ticket08 is now evidenced, with actual-device/speech/browser-zoom and exact historical clipping conditions explicitly open rather than falsely certified.
+
 ## Acceptance continuation, 2026-10-14
 
 This checkpoint supersedes older browser-pending rows only for the scenarios named here. Ticket 08 remains open for the explicitly listed device, accessibility and fault-control limits. Scoring authority is separate; no answer keys, source passages, historical grading or backend functions were changed by this acceptance work.

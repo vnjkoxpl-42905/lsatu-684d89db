@@ -219,8 +219,8 @@ describe('RC account save safety', () => {
         await screen.findByText(`Question ${ordinal + 1}: blank`);
       }
     }
-    localStorage.setItem('lsatu:rc-clock:session-one', '30');
     first.unmount();
+    localStorage.setItem('lsatu:rc-clock:session-one', '30');
     api.getSession.mockResolvedValue(session({ reveal, currentQuestionIndex: 2 }));
     const second = mount();
     await screen.findByText('Question 3: B');

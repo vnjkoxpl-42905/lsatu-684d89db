@@ -1,0 +1,69 @@
+- region "Notifications (F8)":
+  - list
+- region "Notifications alt+T"
+- banner:
+  - navigation "Breadcrumb":
+    - button "Reading Comprehension"
+    - generic: /
+    - generic: The Official LSAT PrepTest 140
+    - generic: /
+    - generic: Section 4 · Passage 3 · Question 15 · Drill 2 of 6
+  - group "Session actions":
+    - button "Get help from Joshua":
+    - button "Pause Drill"
+    - button "Complete Drill"
+  - generic: Welcome, josh
+- main:
+  - button "Directions"
+  - button "Passage only"
+  - textbox "Find text in passage":
+    - /placeholder: Find Text, Type Here
+  - button "Underline":
+  - button "Yellow highlighter":
+  - button "Pink highlighter":
+  - button "Orange highlighter":
+  - button "Eraser":
+  - button "Text size":
+    - generic: A
+    - generic: a
+  - timer: "Time Elapsed: 00:14"
+  - button "Bookmark question":
+  - button "Bookmarks and study marks":
+  - heading "The Origins of Superior Performance" [level=1]
+  - paragraph: In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.
+  - paragraph: Until recently, however, little systematic research was done on the topic of superior performance, and previous estimates of the heritability of traits relevant to performance were based almost exclusively on random samples of the general population rather than on studies of highly trained superior performers as compared with the general population. Recent research in different domains of excellence suggests that exceptional performance arises predominantly from acquired complex skills and physiological adaptations, rather than from innate abilities. For example, it has been found that the most accomplished athletes show a systematic advantage in reaction time or perceptual discrimination only in their particular fields of performance, not in more general laboratory tests for these factors. Similarly, superior chess players have exceptional memory for configurations of chess pieces, but only if those configurations are typical of chess games.
+  - paragraph: The vast majority of exceptional adult performers were not exceptional as children, but started instruction early and improved their performance through sustained high-level training. Only extremely rarely is outstanding performance achieved without at least ten years of intensive, deliberate practice. With such intensive training, chess players who may not have superior innate capacities can acquire skills that circumvent basic limits on such factors as memory and the ability to process information. Recent research shows that, with the clear exception of some traits such as height, a surprisingly large number of anatomical characteristics, including aerobic capacity and the percentage of muscle fibers, show specific changes that develop from extended intense training.
+  - paragraph: The evidence does not, therefore, support the claim that a notion of innate talent must be invoked in order to account for the difference between good and outstanding performance, since it suggests instead that extended intense training, together with that level of talent common to all reasonably competent performers, may suffice to account for this difference. Since sustained intense training usually depends on an appropriate level of interest and desire, and since those who eventually become superior performers more often show early signs of exceptional interest than early evidence of unusual ability, motivational factors are more likely to be effective predictors of superior performance than is innate talent.
+  - generic: "15."
+  - paragraph: Which one of the following most accurately represents the primary function of the final paragraph?
+  - button "Flag question":
+  - list:
+    - button "Choice A": A
+    - paragraph: It makes proposals for educational reform based on the evidence cited by the author.
+    - button "Choice A is your answer and cannot be crossed out" [disabled]:
+    - button "Choice B": B
+    - paragraph: It demonstrates that two consequences of the findings regarding superior performance are at odds with one another.
+    - button "Cross out choice B":
+    - button "Choice C": C
+    - paragraph: It recapitulates the evidence against the supposed heritability of outstanding talent and advocates a particular direction to be taken in future research on the topic.
+    - button "Cross out choice C":
+    - button "Choice D": D
+    - paragraph: It raises and answers a possible objection to the author's view of the importance of intense training.
+    - button "Cross out choice D":
+    - button "Choice E": E
+    - paragraph: It draws two inferences regarding the explanatory and predictive roles of possible factors in the development of superior performance.
+    - button "Cross out choice E":
+  - button "More below":
+    - text: More below
+  - button "Save and exit"
+  - button "Question details"
+  - generic "Question overview"
+  - button "PT 140 · Section 4 · Passage 3 · Question 14 · Drill 1, answered": "1"
+  - button "PT 140 · Section 4 · Passage 3 · Question 15 · Drill 2, answered": "2"
+  - button "PT 140 · Section 4 · Passage 3 · Question 16 · Drill 3, unanswered": "3"
+  - button "PT 140 · Section 4 · Passage 3 · Question 17 · Drill 4, unanswered": "4"
+  - button "PT 140 · Section 4 · Passage 3 · Question 18 · Drill 5, unanswered": "5"
+  - button "PT 140 · Section 4 · Passage 3 · Question 19 · Drill 6, unanswered": "6"
+  - button "Previous question":
+  - button "Next question":
+  - button "Confirm"

@@ -1,0 +1,13 @@
+[
+  {
+    "method": "OPTIONS",
+    "status": 200
+  },
+  {
+    "method": "PATCH",
+    "status": 200,
+    "body": {
+      "flagged": false
+    }
+  }
+]
