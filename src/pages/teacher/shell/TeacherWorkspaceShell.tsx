@@ -9,6 +9,7 @@ import {
   MessageSquare,
   PencilRuler,
   Sparkles,
+  BookOpenText,
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -37,6 +38,7 @@ const ROOMS: Room[] = [
   { to: '/teacher/payments', label: 'Payments', Icon: CreditCard },
   { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/library', label: 'Library', Icon: Library },
+  { to: '/teacher/tools', label: 'Reading Center', Icon: BookOpenText },
   { to: '/teacher/assistant', label: 'Teaching Assistant', Icon: Sparkles },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
 ];

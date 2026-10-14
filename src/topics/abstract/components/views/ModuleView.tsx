@@ -193,12 +193,16 @@ function ModuleOverview({
   onPick: (stage: Stage) => void;
 }) {
   const { bootcampState, isPartUnlocked, isModuleComplete } = useApp();
+  const { user } = useAuth();
   const mod = getModule(moduleId)!;
   const row = bootcampState.moduleProgress[moduleId];
   const noteDone = Boolean(row?.noteComplete);
   const quizDone = row?.quizTotal > 0 && row.quizScore / row.quizTotal >= mod.quizPassThreshold;
   const sourceWork = sourceExerciseIds(bootcampState.drillAttempts);
   const drillDone = isModuleComplete(moduleId);
+  const quizSession = loadQuizSession(quizSessionKey(user?.id ?? null, moduleId), mod.quizSource ? quizItemCount(mod.quizSource) : 0);
+  const quizStarted = quizSession.index > 0 || quizSession.answered;
+  const drillStarted = bootcampState.drillAttempts.some((attempt) => mod.drillIds.includes(attempt.drillId));
   const mastery: MasteryLevel = ["m3", "m5", "m6", "m7"].includes(moduleId) ? computeMastery(row) : row?.masteryLevel ?? "none";
 
   return (
@@ -240,7 +244,7 @@ function ModuleOverview({
           lockedHint="Read the note to unlock."
           accent="yellow"
           onOpen={() => onPick("quiz")}
-          ctaLabel={quizDone ? "Retake" : "Start"}
+          ctaLabel={quizStarted ? "Resume" : quizDone ? "Retake" : "Start"}
         />}
         <PartRow
           icon={Target}
@@ -256,7 +260,7 @@ function ModuleOverview({
           lockedHint={mod.quizSource ? `Pass the quiz at ${Math.round(mod.quizPassThreshold * 100)}% to unlock.` : "Read the note to unlock."}
           accent="pink"
           onOpen={() => onPick("drill")}
-          ctaLabel={drillDone ? "Retake" : "Start"}
+          ctaLabel={drillDone ? "Retake" : drillStarted ? "Resume" : "Start"}
         />
       </div>
     </>
@@ -494,11 +498,13 @@ function ModuleNote({
 
 type QuizVerdict = "correct" | "partial" | "incorrect";
 
-function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
+export function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
   const { recordQuizScore, addXp, loading, progressOwnerId } = useApp();
   const { user } = useAuth();
   const owner = user?.id ?? null;
   const sessionKey = quizSessionKey(owner, moduleId);
+  const activeSessionKey = useRef(sessionKey);
+  activeSessionKey.current = sessionKey;
   const mod = getModule(moduleId)!;
   const items = useMemo(() => loadQuizItems(mod.quizSource), [mod.quizSource]);
   const [index, setIndex] = useState(0);
@@ -509,6 +515,7 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
   const [restoredAnswer, setRestoredAnswer] = useState(false);
   const [storageError, setStorageError] = useState(false);
   const [saveError, setSaveError] = useState(false);
+  const [savingQuiz, setSavingQuiz] = useState(false);
   const initialized = useRef<string | null>(null);
   const [ready, setReady] = useState(false);
   useEffect(() => {
@@ -581,7 +588,11 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
 
   const onNext = async () => {
     if (index + 1 >= items.length) {
+      if (savingQuiz) return;
+      setSavingQuiz(true);
       const result = await recordQuizScore(moduleId, Math.round(score), items.length, streakHigh);
+      if (activeSessionKey.current !== sessionKey) return;
+      setSavingQuiz(false);
       if (!result.ok) { setSaveError(true); return; }
       setSaveError(false);
       setFinished(true);
@@ -619,7 +630,7 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
       </div>
       <p className="text-sm mb-3" role={storageError ? "alert" : undefined}>{storageError ? "Your quiz place could not be saved on this browser. Keep this page open." : "Your quiz place and score are saved as you answer."}</p>
       {saveError && <p role="alert">Your quiz result could not be saved. Try Continue again.</p>}
-      {restoredAnswer ? <div className="bg-brutal-paper border-2 border-brutal-ink p-6"><p className="font-bold mb-4">Your answer to this item is saved and included in your score.</p><button className="brutal-btn" onClick={() => void onNext()}>Continue</button></div> : <QuizItemRenderer
+      {restoredAnswer ? <div className="bg-brutal-paper border-2 border-brutal-ink p-6"><p className="font-bold mb-4">Your answer to this item is saved and included in your score.</p><button disabled={savingQuiz} className="brutal-btn" onClick={() => void onNext()}>Continue</button></div> : <QuizItemRenderer
         key={index}
         source={mod.quizSource}
         item={items[index]}
@@ -1537,6 +1548,8 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
   const { markDrillComplete, markModuleDrillComplete, addXp, bootcampState, loading, progressOwnerId } = useApp();
   const { user } = useAuth();
   const owner = user?.id ?? null;
+  const activeOwner = useRef(owner);
+  activeOwner.current = owner;
   const mod = getModule(moduleId)!;
   const drills = useMemo(
     () => mod.drillIds.map((id) => DRILLS.find((d) => d.id === id)).filter(Boolean) as DrillItem[],
@@ -1548,11 +1561,13 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
   const [ready, setReady] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [answerSaved, setAnswerSaved] = useState(false);
   useEffect(() => {
     if (loading || progressOwnerId !== owner || initializedOwner.current === owner) return;
     const restored = restoreDrillPosition(drills.map((d) => d.id), bootcampState.drillAttempts, Boolean(bootcampState.moduleProgress[moduleId]?.drillComplete));
     setIndex(restored.index);
     setPicked(restored.picked);
+    setAnswerSaved(restored.picked !== null);
     setSaveError(null);
     initializedOwner.current = owner;
     setReady(true);
@@ -1586,6 +1601,7 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
     setSaving(true);
     setSaveError(null);
     setPicked(i);
+    setAnswerSaved(false);
     const correct = i === current.correctOptionIndex;
     const result = await markDrillComplete(
       current.id,
@@ -1596,18 +1612,24 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
       current.trapTag,
       Date.now() - startedRef.current,
     );
+    if (activeOwner.current !== owner) return;
     setSaving(false);
     if (!result.ok) setSaveError("Your answer could not be saved. Choose it again to retry.");
-    else if (correct) addXp(5);
+    else { setAnswerSaved(true); if (correct) addXp(5); }
   };
 
   const nextItem = async () => {
     if (index + 1 >= drills.length) {
+      setSaving(true);
       const result = await markModuleDrillComplete(moduleId);
+      if (activeOwner.current !== owner) return;
+      setSaving(false);
       if (result.ok) onDone();
       else setSaveError("Your module progress could not be saved. Try again.");
     } else {
       setPicked(null);
+      setAnswerSaved(false);
+      setSaveError(null);
       setIndex(index + 1);
     }
   };
@@ -1642,7 +1664,7 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
               <li key={i}>
                 <button
                   type="button"
-                  disabled={saving || (picked !== null && !saveError)}
+                  disabled={saving || answerSaved}
                   onClick={() => void submit(i)}
                   className={cn("w-full text-left p-4 border-2 border-brutal-ink font-bold", tone)}
                 >
@@ -1663,7 +1685,7 @@ export function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: 
             <button
               type="button"
               onClick={nextItem}
-              disabled={saving || Boolean(saveError)}
+              disabled={saving || !answerSaved}
               className="mt-4 brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
             >
               {index + 1 >= drills.length ? "Finish module" : "Next question"}

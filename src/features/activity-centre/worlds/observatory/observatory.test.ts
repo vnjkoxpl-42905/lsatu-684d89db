@@ -10,6 +10,33 @@ const drill = SEED_ACTIVITIES.find((a) => a.slug === "spot-the-relationship")!;
 const signals = drill.items.map((i) => parseSignal(i)!);
 const byOrder = (n: number) => signals.find((s) => s.order === n)!;
 
+describe("comparison and grading regressions", () => {
+  it("leaves swapped type/indicator pairs to the Coach", () => {
+    const item = drill.items.find((i) => i.order === 28)!;
+    expect(matchesCredited(item, 'causal, "more evenly than"; comparative, "since"')).toBe(false);
+    expect(matchesCredited(item, 'comparative, "more evenly than"; causal, "since"')).toBe(true);
+    expect(readAnswer(parseSignal(item)!, 'causal, "more evenly than"; comparative, "since"').drawn).toEqual([]);
+    const conflicting = 'comparative, more evenly than; causal, since; causal, more evenly than';
+    expect(matchesCredited(item, conflicting)).toBe(false);
+    expect(readAnswer(parseSignal(item)!, conflicting).quotedIndicators).toBe(false);
+  });
+  it("uses a pressure benchmark and teaches contextual comparisons", () => {
+    const item = drill.items.find((i) => i.order === 47)!;
+    expect(item.prompt).toContain("critical pressure threshold");
+    expect(item.prompt).not.toContain("critical flux");
+    expect(drill.instructions.coach?.rubric.join(" ")).toContain("recoverable from context");
+  });
+  it("explains the words and connections for every harder question", () => {
+    for (const item of drill.items.filter((i) => i.order >= 33)) {
+      const signal = parseSignal(item)!;
+      expect(item.explanation.length, `item ${item.order}`).toBeGreaterThan(200);
+      for (const r of signal.relations) {
+        expect(r.indicators.some((i) => i.toLowerCase().split(/\s+|…/).filter(Boolean).every((word) => item.explanation.toLowerCase().includes(word))), `item ${item.order}: ${r.kind}`).toBe(true);
+      }
+    }
+  });
+});
+
 describe("parsing the bank", () => {
   it("turns every one of the 48 items into a signal", () => {
     expect(drill.items.length).toBe(48);
@@ -151,9 +178,9 @@ describe("reading the answer", () => {
     expect(r.missed).toEqual(["causal"]);
   });
 
-  it("draws only the relationships that are both named and real", () => {
+  it("does not draw a correctly named type without its indicator", () => {
     const r = readAnswer(multi, "conditional and comparative");
-    expect(r.drawn).toEqual(["conditional"]);
+    expect(r.drawn).toEqual([]);
     expect(r.invented).toEqual(["comparative"]);
   });
 
