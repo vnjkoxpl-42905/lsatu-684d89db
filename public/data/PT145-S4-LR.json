@@ -1,0 +1,618 @@
+[
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Pundit: Grenier will almost certainly not be elected as mayor. Although she says she believes in raising city employees’ wages, it was only a few years ago that she was arguing that their wages should not be increased. Her claim that she has learned more about the issue since then—though sincere—will not matter to most voters, who will see her as insincere.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the pundit’s reasoning?",
+    "answerChoices": {
+      "A": "Voters are unlikely to vote for a politician whom they perceive to be insincere.",
+      "B": "Voters are unlikely to notice whether a politician’s stance on issues has changed over time.",
+      "C": "Voters are unlikely to be influenced by what a politician’s views were in the past if the voters agree with the politician’s current positions.",
+      "D": "Voters are likely to elect a politician who they believe understands their financial concerns.",
+      "E": "Voters are likely to question the sincerity of a politician who does not hold the same beliefs they do."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Point at issue",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Albert: Swenson’s popular book, which argues that sun exposure does not harm skin cells, is a model of poor scholarship. Nonetheless, it is valuable because it has stimulated new research on sun exposure. Yvonne: You’re kidding me! You might as well say that a virus is valuable because it stimulates epidemiologists.",
+    "questionStem": "The dialogue provides the most support for the claim that Albert and Yvonne disagree over whether",
+    "answerChoices": {
+      "A": "sun exposure harms skin cells",
+      "B": "Swenson’s book is a model of poor scholarship",
+      "C": "Swenson’s book should be considered valuable",
+      "D": "Swenson’s book has stimulated new research on sun exposure",
+      "E": "something that does not stimulate new research can have value"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Researchers have found that the percentage of people who start new businesses is much higher in countries with high per capita income than in countries with moderate per capita income. This is to be expected since most entrepreneurs in high- and middle-income countries start businesses to take advantage of perceived business opportunities, and there are more such opportunities in high-income countries. Surprisingly, however, the researchers also found that the percentage of people who start businesses is even higher in low-income countries than in high-income ones.",
+    "questionStem": "Which one of the following, if true, would most help to explain the researchers’ surprising finding?",
+    "answerChoices": {
+      "A": "In both high- and low-income countries, well over half of new businesses expect to provide jobs for no more than one or two people.",
+      "B": "Many governments of high-income countries provide assistance to individuals who want to start businesses, but very few governments of low-income countries do so.",
+      "C": "The percentage of new businesses that fail within a few years of being founded is generally no higher in low-income countries than in high-income countries.",
+      "D": "In high-income countries, many entrepreneurs who start businesses to take advantage of perceived business opportunities soon discover that the opportunities were illusory.",
+      "E": "In low-income countries, most entrepreneurs start businesses because all other employment options are either absent or unsatisfactory."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Film director: It’s inaccurate to say that filmgoers stayed away from my film because it received one or two negative reviews. My film had such a small audience during its opening weekend simply because it was competing with several other films that appeal to the same type of filmgoer that mine does, and the number of such viewers is relatively small.",
+    "questionStem": "Which one of the following, if true, most helps to support the film director’s explanation?",
+    "answerChoices": {
+      "A": "The film director’s film received no positive reviews.",
+      "B": "Filmgoers seldom see more than one film in a weekend.",
+      "C": "The total number of filmgoers was larger than average on the weekend the film director’s film opened.",
+      "D": "Each of the other films that the film director alludes to received one or two positive reviews.",
+      "E": "Most filmgoers are drawn to a variety of kinds of film."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Some scientific issues are so complex and counterintuitive that they cannot be well understood by readers of popular magazines. Nonetheless, stories about these difficult scientific issues are frequently the ones that these readers would find most fascinating. Unfortunately, this means that some of the scientific stories that would be most interesting to readers are usually not covered in popular magazines since _______.",
+    "questionStem": "The conclusion of the argument is strongly supported if which one of the following completes the passage?",
+    "answerChoices": {
+      "A": "editors of popular magazines generally do not approve stories about issues that cannot be well understood by those magazines’ readers",
+      "B": "popular magazines cannot stay in business unless they regularly publish stories that their readers find interesting",
+      "C": "highly complex and counterintuitive theories are increasingly common in almost all branches of science",
+      "D": "readers of popular magazines are generally unable to accurately assess their own understanding of complex scientific issues",
+      "E": "most readers of popular magazines are unwilling to seek out other sources in order to read about scientific issues that they find interesting"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Letter to the editor: Your newspaper’s advertisement claims that you provide coverage of the high school’s most popular sports. Clearly this is false advertising. Of the school’s students, 15 percent compete on the track team, while only 5 percent of the students play basketball. Hence, track is far more popular than basketball, yet track gets no coverage and basketball gets full-page coverage.",
+    "questionStem": "The reasoning in the letter to the editor is most vulnerable to the criticism that it",
+    "answerChoices": {
+      "A": "infers a cause from a mere correlation",
+      "B": "bases its conclusion on a sample that is too small",
+      "C": "misinterprets a key word in the newspaper’s advertisement",
+      "D": "employs as a premise the contention it purports to show",
+      "E": "criticizes the source of a claim rather than the claim itself"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "It is widely believed that the most environmentally sensible thing to do is to buy food from local farmers whenever it is available. But the distance that food travels turns out to be only a small part of its environmental impact. Certain foods can be produced with far less impact in some places rather than others. So, sometimes it is environmentally preferable to buy food that is not produced locally, rather than buy locally produced food.",
+    "questionStem": "The claim that the most environmentally sensible thing to do is to buy food from local farmers whenever it is available plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It is a principle upon which the reasoning in the argument is based.",
+      "B": "It is a general principle that is used to support a particular activity that falls under it.",
+      "C": "It is a general principle that is used to reject a particular activity that is not compatible with it.",
+      "D": "It is a view that is rejected by the argument.",
+      "E": "It is the conclusion of the argument."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot",
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Technology is radically improving the quality of life in some communities, and not only by direct application of innovations. After all, the design, production, testing, and marketing of new technology has itself become a growing industry that is turning around the fortunes of once-ailing communities. The companies involved create jobs, add to the tax base, and contribute to an upbeat spirit of renewal.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn by the argument as a whole?",
+    "answerChoices": {
+      "A": "The direct application of innovations is not the only way in which technology is radically improving the quality of life in some communities.",
+      "B": "The design, production, testing, and marketing of new technology has itself become a growing industry that is turning around the fortunes of once-ailing communities.",
+      "C": "Companies involved in the design, production, testing, and marketing of new technology create jobs, add to the tax base, and contribute to an upbeat spirit of renewal.",
+      "D": "Either the creation or the direct application of technological innovations is radically improving the quality of life in most communities.",
+      "E": "The only ways in which technology is radically improving the quality of life in some communities are by creating jobs, adding to the tax base, and contributing to an upbeat spirit of renewal."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Joshi is clearly letting campaign contributions influence his vote in city council. His campaign for re-election has received more financial support from property developers than any other city councilor’s has. And more than any other councilor’s, his voting record favors the interests of property developers.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes for granted that because certain events occurred sequentially, the earlier events caused the later events",
+      "B": "confuses one thing’s being necessary for another to occur with its being sufficient to make it occur",
+      "C": "makes a moral judgment when only a factual judgment can be justified",
+      "D": "presumes that one thing is the cause of another when it could easily be an effect of it",
+      "E": "has a conclusion that is simply a restatement of one of the argument’s stated premises"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Must Be False",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Columnist: Some people argue that the government should not take over failing private-sector banks because the government does not know how to manage financial institutions. However, rather than managing a bank’s day-to-day operations, the government would just need to select the bank’s senior management. Most politicians have never been military professionals, yet they appoint the top military officials entrusted with defending the country—at least as great a responsibility as managing a bank.",
+    "questionStem": "The columnist’s statements, if true, provide reason for rejecting which one of the following?",
+    "answerChoices": {
+      "A": "Commanding a branch of the military requires greater knowledge than running a bank does.",
+      "B": "Politicians do an adequate job of appointing the top military officials entrusted with defending the country.",
+      "C": "Politicians are not capable of managing a bank’s day-to-day operations.",
+      "D": "Banks that are owned by the government cannot be well managed.",
+      "E": "The government should not take over private-sector banks that are financially sound."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Polls have shown that a higher percentage of graduating university students are against proposals to reduce government social services than are students entering their first year at a university. These polls lead us to the conclusion that people with a university education are more likely to favor retaining or increasing the present level of government social services than are members of the overall population.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "The polls of graduating university students were designed to avoid overrepresenting any single academic discipline.",
+      "B": "The political views of people with a university education are to a large degree influenced by their professors, and university professors are usually against reducing government social services.",
+      "C": "Polls of retired persons who have not graduated from a university show a higher percentage of persons in favor of reducing government social services than do polls of retired persons who have graduated from a university.",
+      "D": "Polls of those who graduated from a university more than five years before being polled show a higher percentage of people in favor of reducing government social services than do polls of the overall population.",
+      "E": "In the polls cited, graduating university students were more likely to express strong opinions about the question of reducing government social services than were students entering a university."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Several movie critics have claimed that this movie will inspire people to act in socially irresponsible ways, yet this claim relies entirely on survey data that have turned out to be deeply flawed. Thus these critics have made a claim that is not only untrue but also potentially harmful to the moviemakers’ reputations.",
+    "questionStem": "The argument is flawed in that it",
+    "answerChoices": {
+      "A": "infers that a claim is false merely on the grounds that no satisfactory evidence for it has been offered",
+      "B": "fails to consider that a pejorative claim that is true can be more harmful to a person’s reputation than a false claim",
+      "C": "relies on a sample that is likely to be unrepresentative",
+      "D": "attacks the persons making an argument rather than attacking the substance of the argument",
+      "E": "fails to consider that, even if an argument’s conclusion is false, some of the evidence used to justify that conclusion may nonetheless be true"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Most people who are skilled banjo players are also skilled guitar players. But most people who are skilled guitar players are not skilled banjo players.",
+    "questionStem": "If the statements above are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "There are more people who are skilled at playing both the guitar and the banjo than there are people who are skilled at playing only one of the two instruments.",
+      "B": "A person trying to learn how to play the guitar is more likely to succeed in doing so than is a person trying to learn how to play the banjo.",
+      "C": "Playing the guitar takes more skill than playing the banjo does.",
+      "D": "There are more people who are skilled at playing the guitar than there are people who are skilled at playing the banjo.",
+      "E": "There are more people who are skilled at playing the banjo than there are people who are skilled at playing the guitar."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Argument part",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Obviously, entrepreneurial ability is needed to start a successful company. Yet many entrepreneurs who succeed in starting a company fail later for lack of managerial skills. For instance, they do not adequately analyze market trends and, consequently, they fail in managing company growth. Hence, the lack of managerial skills and the lack of entrepreneurial ability can each inhibit the development of successful companies.",
+    "questionStem": "The proposition that certain entrepreneurs fail in managing company growth plays which one of the following roles in the argument above?",
+    "answerChoices": {
+      "A": "It is the main conclusion drawn in the argument.",
+      "B": "It is presented as an example of the phenomenon the argument seeks to explain.",
+      "C": "It is meant as an aside and is not supposed to provide evidence in support of the argument’s conclusion.",
+      "D": "It is a premise that is intended to support the argument’s main conclusion directly.",
+      "E": "It is an example that is offered in support of a premise that is intended to support the argument’s main conclusion directly."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Most strongly supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Outsiders in any field often believe that they can bring in fresh, useful solutions that have been overlooked by insiders. But in fact, attempts at creativity that are not grounded in relevant experience are futile. Problems can be solved only by people who really understand them, and no one gains such understanding without experience.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "The more experience a person has in a field, the more creatively that person can solve problems in the field.",
+      "B": "Those people who are experienced in a field rarely overlook creative solutions.",
+      "C": "Creative solutions in a field always come from people with experience in that field.",
+      "D": "The experience required for effective problem-solving in a field does not vary depending on the field’s complexity.",
+      "E": "Outsiders should be properly trained in a field before being given responsibility in that field."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Argument part",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Researcher: Dinosaurs lack turbinates—nasal cavity bone structures in warm-blooded species that minimize water loss during breathing. According to some paleobiologists, this implies that all dinosaurs were cold-blooded. These paleobiologists must be mistaken, however, for fossil records show that some dinosaur species lived in Australia and Alaska, where temperatures drop below freezing. Only warm-blooded animals could survive such temperatures.",
+    "questionStem": "Which one of the following most accurately describes the role played in the researcher’s argument by the claim that only warm-blooded animals could survive temperatures below freezing?",
+    "answerChoices": {
+      "A": "It is presented as a potential counterexample to the argument’s main conclusion.",
+      "B": "It is a premise offered in support of the argument’s main conclusion.",
+      "C": "It is presented as counterevidence to the paleobiologists’ assertion that dinosaurs lack turbinates.",
+      "D": "It is the argument’s main conclusion.",
+      "E": "It is an intermediate conclusion for which the claim that some dinosaur species lived in Australia and Alaska is offered as support."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Principle: The government should not prevent someone from expressing a true belief unless expressing it would be harmful to people generally. Application: The government was wrong to prevent Calista from publicly expressing her belief that there is evidence that cancer rates have increased slightly over the last two decades and that this increase was due partly to excessive use of cell phones.",
+    "questionStem": "Which one of the following, if true, would most help to justify the above application of the principle?",
+    "answerChoices": {
+      "A": "The government has conducted extensive research to determine whether there is any causal link between use of cell phones and cancer.",
+      "B": "Several studies have found evidence that use of cell phones has been partially responsible for the increase in cancer rates over the last two decades, and it would benefit people to know this.",
+      "C": "Calista firmly believes that knowing about the causes of the increase in cancer rates over the last two decades would greatly benefit people generally.",
+      "D": "Unless there is strong evidence of a link between use of a product and disease, the suggestion that use of the product causes disease is usually harmful to people.",
+      "E": "Most people would reduce their use of cell phones if they were convinced that they were using them enough to increase their risk of developing cancer."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Psychologist: Phonemic awareness, or the knowledge that spoken language can be broken into component sounds, is essential for learning to read an alphabetic language. But one also needs to learn how sounds are symbolically represented by means of letters; otherwise, phonemic awareness will not translate into the ability to read an alphabetic language. Yet many children who are taught by the whole-language method, which emphasizes the ways words sound, learn to read alphabetic languages.",
+    "questionStem": "Which one of the following can be properly inferred from the psychologist’s statements?",
+    "answerChoices": {
+      "A": "The whole-language method invariably succeeds in teaching awareness of how spoken language can be broken into component sounds.",
+      "B": "When the whole-language method succeeds in teaching someone how to represent sounds by means of letters, that person acquires the ability to read an alphabetic language.",
+      "C": "Those unable to read an alphabetic language lack both phonemic awareness and the knowledge of how sounds are symbolically represented.",
+      "D": "Some children who are taught by the whole-language method are not prevented from learning how sounds are represented by means of letters.",
+      "E": "The whole-language method succeeds in teaching many children how to represent sounds symbolically by means of letters."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Studies have shown that pedestrians are struck by cars when crossing streets in crosswalks more often than they are struck when crossing outside of crosswalks. This is because crosswalks give many pedestrians an overly strong sense of security that oncoming cars will follow the signals, and these pedestrians are less likely to look both ways before crossing the street.",
+    "questionStem": "Which one of the following, if true, most undermines the explanation proposed above?",
+    "answerChoices": {
+      "A": "The overwhelming majority of pedestrians in high-traffic areas cross streets in crosswalks.",
+      "B": "The number of pedestrians struck by cars has increased in recent years.",
+      "C": "Pedestrians tend to underestimate the chances that the signals at a crosswalk will malfunction.",
+      "D": "Drivers are generally most alert to pedestrians who are in or near crosswalks.",
+      "E": "Measures intended to promote safety tend to make people less cautious."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Selena claims to have psychic powers. So if we find out whether Selena’s claim is true, we will thereby determine whether it is possible to have psychic powers.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "No one else has yet been found to have psychic powers.",
+      "B": "If it is possible to have psychic powers, then Selena has them.",
+      "C": "It is possible to determine whether Selena has psychic powers.",
+      "D": "If Selena’s claim turns out to be false, we will not know whether it is possible to have psychic powers.",
+      "E": "We will not be able to determine whether it is possible to have psychic powers unless we find out whether Selena’s claim is true."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Binaries",
+      "Ruling Out Options",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "In a recent study, researchers collected current prices for the 300 most common pharmaceutical drugs from the leading wholesalers specializing in bulk sales. It was found that these prices average 60 to 80 percent below the suggested wholesale prices listed for the same drugs in the current annual edition of a widely used, independently published pharmaceutical price guidebook.",
+    "questionStem": "Each of the following, if true, would help to explain the situation described above except:",
+    "answerChoices": {
+      "A": "A price war wherein pharmaceutical drug wholesalers tried to undercut each others’ prices began shortly before the study was conducted.",
+      "B": "Suggested wholesale prices for the most common pharmaceutical drugs tend to be less than those for less common pharmaceutical drugs.",
+      "C": "Wholesale prices for pharmaceutical drugs often fluctuate dramatically from one month to the next.",
+      "D": "Wholesale prices suggested by the independently published pharmaceutical price guidebook are calculated to allow every pharmaceutical wholesaler to make substantial profits.",
+      "E": "The prices suggested by the independently published pharmaceutical price guidebook are for sales of relatively small quantities of pharmaceutical drugs to individual doctors."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Argument part",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Theorist: Hatred and anger, grief and despair, love and joy are pairs of emotions that consist of the same core feeling and are distinguishable from each other only in terms of the social conditions that cause them and the behavior they in turn cause. So even if the meaning of a given piece of music is the emotion it elicits, this can mean only that music produces the core of a given emotion, for music is merely sound and, therefore, by itself creates neither social conditions nor human behavior.",
+    "questionStem": "The claim that music is merely sound plays which one of the following roles in the theorist’s argument?",
+    "answerChoices": {
+      "A": "It is a generalization a particular instance of which is cited by the argument in order to undermine the viewpoint that the argument is attacking.",
+      "B": "It is a portion of the conclusion drawn in the argument.",
+      "C": "It is a claim that is offered as partial support for the argument’s conclusion.",
+      "D": "It is a generalization the truth of which is claimed to be necessary to establish the conclusion of the argument.",
+      "E": "It is a hypothesis that must be rejected, according to the argument, because it is inconsistent with certain evidence."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Parallel method of reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "For a computer to be intelligent, it must possess at least one of three qualities: creativity, self-awareness, or the ability to learn from its mistakes. Because the QR3000 is not creative or self-aware, it must have the ability to learn from its mistakes if it is intelligent.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "Every vaccine is either an attenuated-virus vaccine, a dead-virus vaccine, or a pure DNA vaccine. Vaccine X cannot fall into the last two categories, because it contains living viral cells. Therefore, vaccine X must be an attenuated-virus vaccine.",
+      "B": "Every commonly used vaccine is either a dead-virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Vaccine X is not a dead- or attenuated-virus vaccine. Therefore, if it is a commonly used vaccine, it must be a pure DNA vaccine.",
+      "C": "Every vaccine is either a dead-virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Thus, if vaccine X is not a dead- or attenuated-virus vaccine, it must be a pure DNA vaccine.",
+      "D": "Every commonly used vaccine is either a dead-virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Vaccine X stimulates the production of killer T cells in the immune system, unlike any pure DNA vaccine. Therefore, if it is not a dead-virus vaccine, then it must be an attenuated-virus vaccine.",
+      "E": "Every commonly used vaccine is either a dead-virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Because vaccine X is not an attenuated-virus vaccine, it must be a pure DNA vaccine if it is not a dead-virus vaccine."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Repetitive Answers",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Mallotech portrays itself to the public as a socially responsible company, but critics charge that employees in many of its factories work in unsanitary conditions. Unless these critics are mistaken, then, Mallotech is not accurately portraying itself to the public.",
+    "questionStem": "The argument’s conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "A socially responsible company would never lie about whether its employees are working in unsanitary conditions.",
+      "B": "No company that conceals information from the public is socially responsible.",
+      "C": "Many employees in Mallotech’s factories work in unsanitary conditions.",
+      "D": "A socially responsible company would not have employees working in unsanitary conditions.",
+      "E": "Every company that is well managed is socially responsible."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Parallel flawed method of reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Many conceptual categories are parts of dichotomous (distinct and mutually exclusive) pairs: good or bad, right or wrong, rational or irrational, etc. However, advances in scientific understanding have shown some long-held dichotomies to be untenable. Some life forms have characteristics of both animals and plants; also, matter can be converted into energy and vice versa. Therefore, dichotomous classifications into mutually exclusive categories should generally be abandoned.",
+    "questionStem": "Which one of the following exhibits flawed reasoning most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Review by outside consultants has shown that this company should replace all of its computers with more powerful models. Therefore, not all of this company’s computers are powerful enough.",
+      "B": "Recent clinical trials have shown that some antianxiety drugs are addictive and can have life-threatening side effects. Therefore, the use of drugs for the treatment of anxiety should be discontinued.",
+      "C": "Current highway safety data clearly demonstrate that all intoxicated drivers are dangerous. So we should get intoxicated drivers off the roads.",
+      "D": "The longer fruit is kept, the more likely it is to become rotten. While these peaches seem to be fine, they have been kept for a rather long time. So it is best to throw them away now before they begin to rot.",
+      "E": "This budget is based on the assumption that revenue will increase for the next two years. However, revenue figures for past years show that assumption to be untenable. Therefore, this budget should be replaced by a more realistic one."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "All oceangoing ships carry seawater ballast tanks whose weight improves stability. To maintain the ship’s proper stability, water must be pumped out of these tanks when cargo is loaded and into them when cargo is unloaded. As a result, sea creatures often get into the tanks and are then inadvertently deposited into new habitats, where they can wreak ecological havoc. One viable way of addressing this problem would be to empty and then immediately refill the tanks in midocean, since midocean creatures and coastal sea creatures usually cannot survive in one another’s habitats.",
+    "questionStem": "Which one of the following is an assumption the argument requires?",
+    "answerChoices": {
+      "A": "Emptying and refilling an oceangoing ship’s ballast tanks in midocean would ensure at least that no sea creatures capable of disturbing the ecology in a new habitat are pumped into the tanks.",
+      "B": "An oceangoing ship’s ballast tanks could be emptied and refilled in midocean only in conditions of calm air and flat seas.",
+      "C": "Sea creatures have rarely, if ever, wreaked ecological havoc in a new habitat, unless they have been able to survive in that habitat after having been deposited there by oceangoing ships.",
+      "D": "Currently, seawater is pumped into or out of the ballast tanks of oceangoing ships to maintain proper stability only when unloading or loading cargo.",
+      "E": "There are at least some oceangoing ships whose stability could be adequately maintained while emptying and refilling their ballast tanks in midocean."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Plans / Recommendations",
+      "Plausibility"
+    ]
+  }
+]

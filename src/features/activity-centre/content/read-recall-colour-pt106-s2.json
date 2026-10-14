@@ -1,0 +1,2817 @@
+{
+ "slug": "read-recall-colour-pt106-s2",
+ "title": "Read, Recall, Colour \u00b7 PT106 Section 2",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT106.S2",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT106_S2_Q1",
+   "prompt": "Critic: People today place an especially high value on respect for others; yet, in their comedy acts, many of today's most popular comedians display blatant disrespect for others. But when people fail to live up to the very ideals they hold in highest esteem, exaggeration of such failings often forms the basis of successful comedy. Thus the current popularity of comedians who display disrespect in their acts is hardly surprising.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The speaker is a critic. \u00b7 People today place a value on respect for others. \u00b7 The value they place is especially high. \u00b7 This part contrasts with what came before. \u00b7 Many comedians display disrespect for others. \u00b7 Those comedians are among today's most popular ones. \u00b7 The disrespect they display is blatant. \u00b7 This happens in their comedy acts. (2) This is a contrast with what came before. \u00b7 People sometimes fail to live up to ideals. \u00b7 The ideals are ones they hold in highest esteem. \u00b7 Exaggeration of such failings forms the basis of comedy. \u00b7 The comedy in question is successful comedy. \u00b7 This often happens rather than always. (3) This is the conclusion. \u00b7 It is about the popularity of certain comedians. \u00b7 That popularity is current. \u00b7 Those comedians display disrespect in their acts. \u00b7 The popularity is hardly surprising.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Critic: People today place an especially high value on respect for others; yet, in their comedy acts, many of today's most popular comedians display blatant disrespect for others.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The speaker is a critic."
+      },
+      {
+       "n": 2,
+       "text": "People today place a value on respect for others."
+      },
+      {
+       "n": 3,
+       "text": "The value they place is especially high."
+      },
+      {
+       "n": 4,
+       "text": "This part contrasts with what came before."
+      },
+      {
+       "n": 5,
+       "text": "Many comedians display disrespect for others."
+      },
+      {
+       "n": 6,
+       "text": "Those comedians are among today's most popular ones."
+      },
+      {
+       "n": 7,
+       "text": "The disrespect they display is blatant."
+      },
+      {
+       "n": 8,
+       "text": "This happens in their comedy acts."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But when people fail to live up to the very ideals they hold in highest esteem, exaggeration of such failings often forms the basis of successful comedy.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "People sometimes fail to live up to ideals."
+      },
+      {
+       "n": 3,
+       "text": "The ideals are ones they hold in highest esteem."
+      },
+      {
+       "n": 4,
+       "text": "Exaggeration of such failings forms the basis of comedy."
+      },
+      {
+       "n": 5,
+       "text": "The comedy in question is successful comedy."
+      },
+      {
+       "n": 6,
+       "text": "This often happens rather than always."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Thus the current popularity of comedians who display disrespect in their acts is hardly surprising.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the popularity of certain comedians."
+      },
+      {
+       "n": 3,
+       "text": "That popularity is current."
+      },
+      {
+       "n": 4,
+       "text": "Those comedians display disrespect in their acts."
+      },
+      {
+       "n": 5,
+       "text": "The popularity is hardly surprising."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if people never fail to live up to the ideal of being respectful towards others?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q1",
+     "qnum": 1,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT106_S2_Q2",
+   "prompt": "The law firm of Sutherlin, P\u00e9rez, and Associates is one of the most successful law firms whose primary specialization is in criminal defense cases. In fact, the firm has a better than 90 percent acquittal rate in such cases. Dalton is an attorney whose primary specialization is in divorce cases, so Dalton certainly cannot be a member of Sutherlin, P\u00e9rez, and Associates.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Sutherlin, P\u00e9rez, and Associates is a law firm. \u00b7 That firm is among the most successful ones. \u00b7 The firms it is ranked among have a primary specialization. \u00b7 That specialization is in criminal defense cases. (2) This adds support to the previous point. \u00b7 The firm has an acquittal rate. \u00b7 That rate is better than 90 percent. \u00b7 The rate applies to criminal defense cases. (3) Dalton is an attorney. \u00b7 Dalton's primary specialization is in divorce cases. \u00b7 This is the conclusion drawn from that. \u00b7 Dalton cannot be a member of the firm. \u00b7 The firm is Sutherlin, P\u00e9rez, and Associates. \u00b7 The claim is made with certainty.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The law firm of Sutherlin, P\u00e9rez, and Associates is one of the most successful law firms whose primary specialization is in criminal defense cases.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Sutherlin, P\u00e9rez, and Associates is a law firm."
+      },
+      {
+       "n": 2,
+       "text": "That firm is among the most successful ones."
+      },
+      {
+       "n": 3,
+       "text": "The firms it is ranked among have a primary specialization."
+      },
+      {
+       "n": 4,
+       "text": "That specialization is in criminal defense cases."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In fact, the firm has a better than 90 percent acquittal rate in such cases.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This adds support to the previous point."
+      },
+      {
+       "n": 2,
+       "text": "The firm has an acquittal rate."
+      },
+      {
+       "n": 3,
+       "text": "That rate is better than 90 percent."
+      },
+      {
+       "n": 4,
+       "text": "The rate applies to criminal defense cases."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Dalton is an attorney whose primary specialization is in divorce cases, so Dalton certainly cannot be a member of Sutherlin, P\u00e9rez, and Associates.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Dalton is an attorney."
+      },
+      {
+       "n": 2,
+       "text": "Dalton's primary specialization is in divorce cases."
+      },
+      {
+       "n": 3,
+       "text": "This is the conclusion drawn from that."
+      },
+      {
+       "n": 4,
+       "text": "Dalton cannot be a member of the firm."
+      },
+      {
+       "n": 5,
+       "text": "The firm is Sutherlin, P\u00e9rez, and Associates."
+      },
+      {
+       "n": 6,
+       "text": "The claim is made with certainty."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the firm practices other areas of law as well?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q2",
+     "qnum": 2,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT106_S2_Q3",
+   "prompt": "Opponents of allowing triple-trailer trucks to use the national highway system are wrong in claiming that these trucks are more dangerous than other commercial vehicles. In the western part of the country, in areas where triple-trailers are now permitted on some highways, for these vehicles the rate of road accident fatalities per mile of travel is lower than the national rate for other types of commercial vehicles. Clearly, triple-trailers are safer than other commercial vehicles.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Some people oppose allowing triple-trailer trucks on the highways. \u00b7 The highway system in question is the national one. \u00b7 Those opponents claim these trucks are more dangerous. \u00b7 The comparison is with other commercial vehicles. \u00b7 The opponents are wrong in that claim. (2) This is about the western part of the country. \u00b7 It concerns certain areas there. \u00b7 Triple-trailers are permitted in those areas. \u00b7 They are permitted on some highways only. \u00b7 This permission holds now. (3) This is about those vehicles. \u00b7 There is a rate of road accident fatalities. \u00b7 The rate is measured per mile of travel. \u00b7 That rate is lower than another rate. \u00b7 The comparison is with the national rate. \u00b7 The national rate covers other types of commercial vehicles. (4) This is the conclusion. \u00b7 It is presented as clear. \u00b7 Triple-trailers are safer. \u00b7 The comparison is with other commercial vehicles.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Opponents of allowing triple-trailer trucks to use the national highway system are wrong in claiming that these trucks are more dangerous than other commercial vehicles.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some people oppose allowing triple-trailer trucks on the highways."
+      },
+      {
+       "n": 2,
+       "text": "The highway system in question is the national one."
+      },
+      {
+       "n": 3,
+       "text": "Those opponents claim these trucks are more dangerous."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with other commercial vehicles."
+      },
+      {
+       "n": 5,
+       "text": "The opponents are wrong in that claim."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In the western part of the country, in areas where triple-trailers are now permitted on some highways,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the western part of the country."
+      },
+      {
+       "n": 2,
+       "text": "It concerns certain areas there."
+      },
+      {
+       "n": 3,
+       "text": "Triple-trailers are permitted in those areas."
+      },
+      {
+       "n": 4,
+       "text": "They are permitted on some highways only."
+      },
+      {
+       "n": 5,
+       "text": "This permission holds now."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "for these vehicles the rate of road accident fatalities per mile of travel is lower than the national rate for other types of commercial vehicles.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about those vehicles."
+      },
+      {
+       "n": 2,
+       "text": "There is a rate of road accident fatalities."
+      },
+      {
+       "n": 3,
+       "text": "The rate is measured per mile of travel."
+      },
+      {
+       "n": 4,
+       "text": "That rate is lower than another rate."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with the national rate."
+      },
+      {
+       "n": 6,
+       "text": "The national rate covers other types of commercial vehicles."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Clearly, triple-trailers are safer than other commercial vehicles.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is presented as clear."
+      },
+      {
+       "n": 3,
+       "text": "Triple-trailers are safer."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with other commercial vehicles."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there are hardly any cars driven on Western highways, so they're generally much safer than most national highways?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q3",
+     "qnum": 3,
+     "question_type": "Weaken",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT106_S2_Q4",
+   "prompt": "Whittaker: There can be no such thing as the number of medical school students who drop out before their second year, because if they drop out, they never have a second year.\n\nHudson: By your reasoning I cannot help but become rich, because there is similarly no such thing as my dying before my first million dollars is in the bank.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Whittaker is the first speaker. \u00b7 He says a certain number cannot exist. \u00b7 The number would be of medical school students. \u00b7 Those students drop out before their second year. \u00b7 This is his reason. \u00b7 Students who drop out never have a second year. (2) Hudson is the second speaker. \u00b7 He applies Whittaker's reasoning. \u00b7 He says he cannot help becoming rich. \u00b7 This is his reason. \u00b7 There is similarly no such thing as his dying. \u00b7 The dying would come before he had a million dollars. \u00b7 That would be his first million dollars in the bank.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Whittaker: There can be no such thing as the number of medical school students who drop out before their second year, because if they drop out, they never have a second year.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Whittaker is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "He says a certain number cannot exist."
+      },
+      {
+       "n": 3,
+       "text": "The number would be of medical school students."
+      },
+      {
+       "n": 4,
+       "text": "Those students drop out before their second year."
+      },
+      {
+       "n": 5,
+       "text": "This is his reason."
+      },
+      {
+       "n": 6,
+       "text": "Students who drop out never have a second year."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Hudson: By your reasoning I cannot help but become rich, because there is similarly no such thing as my dying before my first million dollars is in the bank.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Hudson is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "He applies Whittaker's reasoning."
+      },
+      {
+       "n": 3,
+       "text": "He says he cannot help becoming rich."
+      },
+      {
+       "n": 4,
+       "text": "This is his reason."
+      },
+      {
+       "n": 5,
+       "text": "There is similarly no such thing as his dying."
+      },
+      {
+       "n": 6,
+       "text": "The dying would come before he had a million dollars."
+      },
+      {
+       "n": 7,
+       "text": "That would be his first million dollars in the bank."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether events may be adequately referred to hypothetically.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q4",
+     "qnum": 4,
+     "question_type": "Method",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT106_S2_Q5",
+   "prompt": "A newly developed light bulb is much more cost-effective than conventional light bulbs: it costs only about 3 times what a conventional light bulb costs but it lasts up to 10 times as long as a conventional light bulb. Despite the manufacturer's intense efforts to publicize the advantages of the new bulb, one analyst predicts that these new bulbs will prove to sell very poorly.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a light bulb that was newly developed. \u00b7 That bulb is more cost-effective than other bulbs. \u00b7 It is much more cost-effective. \u00b7 The comparison is with conventional light bulbs. (2) The new bulb costs about 3 times what a conventional one costs. \u00b7 That cost is presented as only that much. \u00b7 This is a contrast with what came before. \u00b7 The new bulb lasts longer than a conventional one. \u00b7 It lasts up to 10 times as long. \u00b7 The comparison is with a conventional light bulb. (3) The manufacturer made efforts to publicize the bulb. \u00b7 Those efforts were intense. \u00b7 What is publicized is the advantages of the new bulb. \u00b7 This is a concession that runs against what follows. \u00b7 An analyst makes a prediction. \u00b7 It is one analyst. \u00b7 The prediction is that the new bulbs will sell poorly. \u00b7 They will sell very poorly.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A newly developed light bulb is much more cost-effective than conventional light bulbs:",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a light bulb that was newly developed."
+      },
+      {
+       "n": 2,
+       "text": "That bulb is more cost-effective than other bulbs."
+      },
+      {
+       "n": 3,
+       "text": "It is much more cost-effective."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with conventional light bulbs."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "it costs only about 3 times what a conventional light bulb costs but it lasts up to 10 times as long as a conventional light bulb.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The new bulb costs about 3 times what a conventional one costs."
+      },
+      {
+       "n": 2,
+       "text": "That cost is presented as only that much."
+      },
+      {
+       "n": 3,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 4,
+       "text": "The new bulb lasts longer than a conventional one."
+      },
+      {
+       "n": 5,
+       "text": "It lasts up to 10 times as long."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with a conventional light bulb."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Despite the manufacturer's intense efforts to publicize the advantages of the new bulb, one analyst predicts that these new bulbs will prove to sell very poorly.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The manufacturer made efforts to publicize the bulb."
+      },
+      {
+       "n": 2,
+       "text": "Those efforts were intense."
+      },
+      {
+       "n": 3,
+       "text": "What is publicized is the advantages of the new bulb."
+      },
+      {
+       "n": 4,
+       "text": "This is a concession that runs against what follows."
+      },
+      {
+       "n": 5,
+       "text": "An analyst makes a prediction."
+      },
+      {
+       "n": 6,
+       "text": "It is one analyst."
+      },
+      {
+       "n": 7,
+       "text": "The prediction is that the new bulbs will sell poorly."
+      },
+      {
+       "n": 8,
+       "text": "They will sell very poorly."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the new lightbulb has Secret Downsides like safety concerns or lack of compatibility with most fixtures? What if all consumers care about is the upfront cost of the lightbulb rather than how long it lasts?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q5",
+     "qnum": 5,
+     "question_type": "Strengthen",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT106_S2_Q6",
+   "prompt": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage. Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor. Full flooding can be achieved, however, by sabotage. Any ship that sinks deep into the ocean when not fully flooded will implode. Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The Rienzi is a ship. \u00b7 It is a passenger ship. \u00b7 The Rienzi sank as a result of something. \u00b7 There was a hole in its hull. \u00b7 The hole may have been caused by sabotage. \u00b7 That cause is only a possibility. (2) This describes what normally happens. \u00b7 It concerns a ship with a hole in it. \u00b7 The ship sinks as rapidly as the Rienzi did. \u00b7 Water does not enter such a ship quickly enough. \u00b7 The water is not enough to fully flood the ship. \u00b7 That is its state when it reaches the ocean floor. (3) This is a contrast with what came before. \u00b7 Full flooding can be achieved. \u00b7 Sabotage is what can achieve it. (4) This is about ships that sink deep into the ocean. \u00b7 It applies to any such ship. \u00b7 The ship in question is not fully flooded. \u00b7 Such a ship will implode. (5) There are photographs of the sunken Rienzi. \u00b7 The photographs were taken deep in the sea. \u00b7 The Rienzi rests on the ocean floor. \u00b7 The photographs reveal something. \u00b7 The Rienzi did not implode.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The Rienzi is a ship."
+      },
+      {
+       "n": 2,
+       "text": "It is a passenger ship."
+      },
+      {
+       "n": 3,
+       "text": "The Rienzi sank as a result of something."
+      },
+      {
+       "n": 4,
+       "text": "There was a hole in its hull."
+      },
+      {
+       "n": 5,
+       "text": "The hole may have been caused by sabotage."
+      },
+      {
+       "n": 6,
+       "text": "That cause is only a possibility."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This describes what normally happens."
+      },
+      {
+       "n": 2,
+       "text": "It concerns a ship with a hole in it."
+      },
+      {
+       "n": 3,
+       "text": "The ship sinks as rapidly as the Rienzi did."
+      },
+      {
+       "n": 4,
+       "text": "Water does not enter such a ship quickly enough."
+      },
+      {
+       "n": 5,
+       "text": "The water is not enough to fully flood the ship."
+      },
+      {
+       "n": 6,
+       "text": "That is its state when it reaches the ocean floor."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Full flooding can be achieved, however, by sabotage.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "Full flooding can be achieved."
+      },
+      {
+       "n": 3,
+       "text": "Sabotage is what can achieve it."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Any ship that sinks deep into the ocean when not fully flooded will implode.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about ships that sink deep into the ocean."
+      },
+      {
+       "n": 2,
+       "text": "It applies to any such ship."
+      },
+      {
+       "n": 3,
+       "text": "The ship in question is not fully flooded."
+      },
+      {
+       "n": 4,
+       "text": "Such a ship will implode."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There are photographs of the sunken Rienzi."
+      },
+      {
+       "n": 2,
+       "text": "The photographs were taken deep in the sea."
+      },
+      {
+       "n": 3,
+       "text": "The Rienzi rests on the ocean floor."
+      },
+      {
+       "n": 4,
+       "text": "The photographs reveal something."
+      },
+      {
+       "n": 5,
+       "text": "The Rienzi did not implode."
+      }
+     ]
+    }
+   ],
+   "the_read": "If water did not enter the Rienzi abnormally quickly, it was sabotaged.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q6",
+     "qnum": 6,
+     "question_type": "Inference",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT106_S2_Q7",
+   "prompt": "For every 50 dogs that contract a certain disease, one will die from it. A vaccine exists that is virtually 100 percent effective in preventing this disease. Since the risk of death from complications of vaccination is one death per 5,000 vaccinations, it is therefore safer for a dog to receive the vaccine than not to receive it.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a certain disease. \u00b7 Dogs contract that disease. \u00b7 Out of every 50 such dogs, one will die. \u00b7 The dog dies from that disease. (2) A vaccine exists for this disease. \u00b7 The vaccine prevents the disease. \u00b7 It is effective in virtually all cases. \u00b7 That is close to 100 percent effective. (3) This gives a reason and then a conclusion. \u00b7 Vaccination carries a risk of death. \u00b7 The death would come from complications of vaccination. \u00b7 The risk is one death per 5,000 vaccinations. \u00b7 It is safer for a dog to receive the vaccine. \u00b7 The comparison is with not receiving it.",
+   "category": "Evaluate",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "For every 50 dogs that contract a certain disease, one will die from it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a certain disease."
+      },
+      {
+       "n": 2,
+       "text": "Dogs contract that disease."
+      },
+      {
+       "n": 3,
+       "text": "Out of every 50 such dogs, one will die."
+      },
+      {
+       "n": 4,
+       "text": "The dog dies from that disease."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "A vaccine exists that is virtually 100 percent effective in preventing this disease.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A vaccine exists for this disease."
+      },
+      {
+       "n": 2,
+       "text": "The vaccine prevents the disease."
+      },
+      {
+       "n": 3,
+       "text": "It is effective in virtually all cases."
+      },
+      {
+       "n": 4,
+       "text": "That is close to 100 percent effective."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since the risk of death from complications of vaccination is one death per 5,000 vaccinations, it is therefore safer for a dog to receive the vaccine than not to receive it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason and then a conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Vaccination carries a risk of death."
+      },
+      {
+       "n": 3,
+       "text": "The death would come from complications of vaccination."
+      },
+      {
+       "n": 4,
+       "text": "The risk is one death per 5,000 vaccinations."
+      },
+      {
+       "n": 5,
+       "text": "It is safer for a dog to receive the vaccine."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with not receiving it."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the vaccine causes debilitating complications in every dog that receives it?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q7",
+     "qnum": 7,
+     "question_type": "Evaluate",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT106_S2_Q8",
+   "prompt": "The symptoms of mental disorders are behavioral, cognitive, or emotional problems. Some patients with mental disorders can be effectively treated with psychotherapy. But it is now known that in some patients mental disorders result from chemical imbalances affecting the brain. Thus these patients can be effectively treated only with medication that will reduce or correct the imbalance.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Mental disorders have symptoms. \u00b7 Those symptoms are problems. \u00b7 Some of the problems are behavioral. \u00b7 Some of them are cognitive. \u00b7 Some of them are emotional. (2) This is about patients with mental disorders. \u00b7 Some of those patients can be treated. \u00b7 The treatment is psychotherapy. \u00b7 The treatment is effective for them. (3) This is a contrast with what came before. \u00b7 Something is now known. \u00b7 It concerns some patients rather than all. \u00b7 Their mental disorders result from chemical imbalances. \u00b7 The imbalances affect the brain. (4) This is the conclusion. \u00b7 It is about those patients. \u00b7 They can be effectively treated with medication. \u00b7 Medication is the only thing that works for them. \u00b7 The medication reduces or corrects the imbalance.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The symptoms of mental disorders are behavioral, cognitive, or emotional problems.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Mental disorders have symptoms."
+      },
+      {
+       "n": 2,
+       "text": "Those symptoms are problems."
+      },
+      {
+       "n": 3,
+       "text": "Some of the problems are behavioral."
+      },
+      {
+       "n": 4,
+       "text": "Some of them are cognitive."
+      },
+      {
+       "n": 5,
+       "text": "Some of them are emotional."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Some patients with mental disorders can be effectively treated with psychotherapy.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about patients with mental disorders."
+      },
+      {
+       "n": 2,
+       "text": "Some of those patients can be treated."
+      },
+      {
+       "n": 3,
+       "text": "The treatment is psychotherapy."
+      },
+      {
+       "n": 4,
+       "text": "The treatment is effective for them."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "But it is now known that in some patients mental disorders result from chemical imbalances affecting the brain.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "Something is now known."
+      },
+      {
+       "n": 3,
+       "text": "It concerns some patients rather than all."
+      },
+      {
+       "n": 4,
+       "text": "Their mental disorders result from chemical imbalances."
+      },
+      {
+       "n": 5,
+       "text": "The imbalances affect the brain."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Thus these patients can be effectively treated only with medication that will reduce or correct the imbalance.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about those patients."
+      },
+      {
+       "n": 3,
+       "text": "They can be effectively treated with medication."
+      },
+      {
+       "n": 4,
+       "text": "Medication is the only thing that works for them."
+      },
+      {
+       "n": 5,
+       "text": "The medication reduces or corrects the imbalance."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if psychotherapy can correct chemical imbalances in the brain?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q8",
+     "qnum": 8,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT106_S2_Q9",
+   "prompt": "Curator: The decision to restore the cloak of the central figure in Veronese's painting from its present red to the green found underneath is fully justified. Reliable x-ray and chemical tests show that the red pigment was applied after the painting had been completed, and that the red paint was not mixed in Veronese's workshop. Hence it appears likely that an artist other than Veronese tampered with Veronese's painting after its completion.\n\nArt critic: But in a copy of Veronese's painting made shortly after Veronese died, the cloak is red. It is highly unlikely that a copyist would have made so major a change so soon after Veronese's death.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The curator is the first speaker. \u00b7 A decision has been made about a painting. \u00b7 The painting is Veronese's. \u00b7 The decision concerns the cloak of the central figure. \u00b7 The cloak is presently red. \u00b7 The restoration would change it to green. \u00b7 The green was found underneath the red. \u00b7 The curator says the decision is fully justified. (2) Tests were done on the painting. \u00b7 The tests were x-ray and chemical ones. \u00b7 The tests are reliable. \u00b7 The red pigment was applied to the painting. \u00b7 It was applied after the painting was completed. \u00b7 The red paint was not mixed in Veronese's workshop. (3) This is the conclusion. \u00b7 Something appears likely rather than certain. \u00b7 An artist tampered with the painting. \u00b7 That artist was someone other than Veronese. \u00b7 The tampering came after the painting was completed. (4) The art critic is the second speaker. \u00b7 This is a contrast with the curator. \u00b7 A copy of the painting was made. \u00b7 The copy was made shortly after Veronese died. \u00b7 In that copy the cloak is red. (5) A copyist might have made a change. \u00b7 The change would have been a major one. \u00b7 It would have come soon after Veronese's death. \u00b7 That timing counts as very soon. \u00b7 Such a change is highly unlikely.",
+   "category": "Argument Part",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Curator: The decision to restore the cloak of the central figure in Veronese's painting from its present red to the green found underneath is fully justified.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The curator is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "A decision has been made about a painting."
+      },
+      {
+       "n": 3,
+       "text": "The painting is Veronese's."
+      },
+      {
+       "n": 4,
+       "text": "The decision concerns the cloak of the central figure."
+      },
+      {
+       "n": 5,
+       "text": "The cloak is presently red."
+      },
+      {
+       "n": 6,
+       "text": "The restoration would change it to green."
+      },
+      {
+       "n": 7,
+       "text": "The green was found underneath the red."
+      },
+      {
+       "n": 8,
+       "text": "The curator says the decision is fully justified."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Reliable x-ray and chemical tests show that the red pigment was applied after the painting had been completed, and that the red paint was not mixed in Veronese's workshop.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Tests were done on the painting."
+      },
+      {
+       "n": 2,
+       "text": "The tests were x-ray and chemical ones."
+      },
+      {
+       "n": 3,
+       "text": "The tests are reliable."
+      },
+      {
+       "n": 4,
+       "text": "The red pigment was applied to the painting."
+      },
+      {
+       "n": 5,
+       "text": "It was applied after the painting was completed."
+      },
+      {
+       "n": 6,
+       "text": "The red paint was not mixed in Veronese's workshop."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Hence it appears likely that an artist other than Veronese tampered with Veronese's painting after its completion.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Something appears likely rather than certain."
+      },
+      {
+       "n": 3,
+       "text": "An artist tampered with the painting."
+      },
+      {
+       "n": 4,
+       "text": "That artist was someone other than Veronese."
+      },
+      {
+       "n": 5,
+       "text": "The tampering came after the painting was completed."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Art critic: But in a copy of Veronese's painting made shortly after Veronese died, the cloak is red.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The art critic is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "This is a contrast with the curator."
+      },
+      {
+       "n": 3,
+       "text": "A copy of the painting was made."
+      },
+      {
+       "n": 4,
+       "text": "The copy was made shortly after Veronese died."
+      },
+      {
+       "n": 5,
+       "text": "In that copy the cloak is red."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "It is highly unlikely that a copyist would have made so major a change so soon after Veronese's death.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A copyist might have made a change."
+      },
+      {
+       "n": 2,
+       "text": "The change would have been a major one."
+      },
+      {
+       "n": 3,
+       "text": "It would have come soon after Veronese's death."
+      },
+      {
+       "n": 4,
+       "text": "That timing counts as very soon."
+      },
+      {
+       "n": 5,
+       "text": "Such a change is highly unlikely."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether the red cloak is evidence of tampering.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q9",
+     "qnum": 9,
+     "question_type": "Argument Part",
+     "correct_answer": "B"
+    },
+    {
+     "citation": "PT106.S2.Q10",
+     "qnum": 10,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT106_S2_Q11",
+   "prompt": "John works five days each week except when on vacation or during weeks in which national holidays occur. Four days a week he works in an insurance company; on Fridays he works as a blacksmith. Last week there were no holidays, and John was not on vacation. Therefore, he must have worked in the insurance company on Monday, Tuesday, Wednesday, and Thursday last week.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) John works each week. \u00b7 He works five days a week. \u00b7 There are exceptions to this. \u00b7 One exception is when he is on vacation. \u00b7 Another exception is weeks with national holidays. (2) John works in an insurance company. \u00b7 He does that four days a week. \u00b7 He also works as a blacksmith. \u00b7 The blacksmith work happens on Fridays. (3) This is about last week. \u00b7 There were no holidays last week. \u00b7 John was not on vacation then. (4) This is the conclusion. \u00b7 John must have worked in the insurance company. \u00b7 He worked there on Monday. \u00b7 He worked there on Tuesday. \u00b7 He worked there on Wednesday. \u00b7 He worked there on Thursday. \u00b7 This all happened last week.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "John works five days each week except when on vacation or during weeks in which national holidays occur.",
+     "details": [
+      {
+       "n": 1,
+       "text": "John works each week."
+      },
+      {
+       "n": 2,
+       "text": "He works five days a week."
+      },
+      {
+       "n": 3,
+       "text": "There are exceptions to this."
+      },
+      {
+       "n": 4,
+       "text": "One exception is when he is on vacation."
+      },
+      {
+       "n": 5,
+       "text": "Another exception is weeks with national holidays."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Four days a week he works in an insurance company; on Fridays he works as a blacksmith.",
+     "details": [
+      {
+       "n": 1,
+       "text": "John works in an insurance company."
+      },
+      {
+       "n": 2,
+       "text": "He does that four days a week."
+      },
+      {
+       "n": 3,
+       "text": "He also works as a blacksmith."
+      },
+      {
+       "n": 4,
+       "text": "The blacksmith work happens on Fridays."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Last week there were no holidays, and John was not on vacation.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about last week."
+      },
+      {
+       "n": 2,
+       "text": "There were no holidays last week."
+      },
+      {
+       "n": 3,
+       "text": "John was not on vacation then."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore, he must have worked in the insurance company on Monday, Tuesday, Wednesday, and Thursday last week.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "John must have worked in the insurance company."
+      },
+      {
+       "n": 3,
+       "text": "He worked there on Monday."
+      },
+      {
+       "n": 4,
+       "text": "He worked there on Tuesday."
+      },
+      {
+       "n": 5,
+       "text": "He worked there on Wednesday."
+      },
+      {
+       "n": 6,
+       "text": "He worked there on Thursday."
+      },
+      {
+       "n": 7,
+       "text": "This all happened last week."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the five days he works aren't necessarily weekdays? What if he typically works on the weekend and takes Monday and Tuesday off?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q11",
+     "qnum": 11,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT106_S2_Q12",
+   "prompt": "After several attempts to distract his young parrot from chewing on furniture, George reluctantly took an expert's advice and gently hit the parrot's beak whenever the bird started to chew furniture. The bird stopped chewing furniture, but it is now afraid of hands and will sometimes bite. Since chewing on the furniture would not have hurt the bird, George should not have hit it.\n\nWhen Carla's puppy escaped from her yard, it bounded into a busy street. Although Carla does not generally approve of physical discipline, she hit the puppy sharply with her hand. Now the puppy enters the street only when accompanied by Carla, so Carla was justified in disciplining the puppy.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Several attempts were made at distraction. \u00b7 The attempts targeted a young parrot. \u00b7 The parrot belongs to someone. \u00b7 The parrot was chewing on furniture. \u00b7 What comes next happened after those attempts. (2) George took some advice. \u00b7 The advice came from an expert. \u00b7 He took it reluctantly. \u00b7 He hit the parrot's beak. \u00b7 The hitting was gentle. \u00b7 He did this whenever the bird started to chew furniture. (3) The bird stopped chewing furniture. \u00b7 This is a contrast with that result. \u00b7 The bird is now afraid of hands. \u00b7 The bird will sometimes bite. \u00b7 The biting happens only sometimes. (4) A reason is given first. \u00b7 Chewing on the furniture would not have hurt the bird. \u00b7 This is the judgment that follows. \u00b7 George should not have hit the bird. (5) Carla has a puppy. \u00b7 The puppy escaped from her yard. \u00b7 The puppy bounded into a street. \u00b7 The street was busy. (6) This is a concession before the main point. \u00b7 Carla does not approve of physical discipline. \u00b7 That disapproval is a general one. \u00b7 Carla hit the puppy. \u00b7 She hit it sharply. \u00b7 She used her hand. (7) The puppy now enters the street. \u00b7 It does so only when accompanied. \u00b7 The one accompanying it is Carla. \u00b7 This is the conclusion drawn from that. \u00b7 Carla was justified in disciplining the puppy.",
+   "category": "Sufficient Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "After several attempts to distract his young parrot from chewing on furniture,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Several attempts were made at distraction."
+      },
+      {
+       "n": 2,
+       "text": "The attempts targeted a young parrot."
+      },
+      {
+       "n": 3,
+       "text": "The parrot belongs to someone."
+      },
+      {
+       "n": 4,
+       "text": "The parrot was chewing on furniture."
+      },
+      {
+       "n": 5,
+       "text": "What comes next happened after those attempts."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "George reluctantly took an expert's advice and gently hit the parrot's beak whenever the bird started to chew furniture.",
+     "details": [
+      {
+       "n": 1,
+       "text": "George took some advice."
+      },
+      {
+       "n": 2,
+       "text": "The advice came from an expert."
+      },
+      {
+       "n": 3,
+       "text": "He took it reluctantly."
+      },
+      {
+       "n": 4,
+       "text": "He hit the parrot's beak."
+      },
+      {
+       "n": 5,
+       "text": "The hitting was gentle."
+      },
+      {
+       "n": 6,
+       "text": "He did this whenever the bird started to chew furniture."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The bird stopped chewing furniture, but it is now afraid of hands and will sometimes bite.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The bird stopped chewing furniture."
+      },
+      {
+       "n": 2,
+       "text": "This is a contrast with that result."
+      },
+      {
+       "n": 3,
+       "text": "The bird is now afraid of hands."
+      },
+      {
+       "n": 4,
+       "text": "The bird will sometimes bite."
+      },
+      {
+       "n": 5,
+       "text": "The biting happens only sometimes."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Since chewing on the furniture would not have hurt the bird, George should not have hit it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A reason is given first."
+      },
+      {
+       "n": 2,
+       "text": "Chewing on the furniture would not have hurt the bird."
+      },
+      {
+       "n": 3,
+       "text": "This is the judgment that follows."
+      },
+      {
+       "n": 4,
+       "text": "George should not have hit the bird."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "When Carla's puppy escaped from her yard, it bounded into a busy street.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Carla has a puppy."
+      },
+      {
+       "n": 2,
+       "text": "The puppy escaped from her yard."
+      },
+      {
+       "n": 3,
+       "text": "The puppy bounded into a street."
+      },
+      {
+       "n": 4,
+       "text": "The street was busy."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "Although Carla does not generally approve of physical discipline, she hit the puppy sharply with her hand.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a concession before the main point."
+      },
+      {
+       "n": 2,
+       "text": "Carla does not approve of physical discipline."
+      },
+      {
+       "n": 3,
+       "text": "That disapproval is a general one."
+      },
+      {
+       "n": 4,
+       "text": "Carla hit the puppy."
+      },
+      {
+       "n": 5,
+       "text": "She hit it sharply."
+      },
+      {
+       "n": 6,
+       "text": "She used her hand."
+      }
+     ]
+    },
+    {
+     "n": 7,
+     "text": "Now the puppy enters the street only when accompanied by Carla, so Carla was justified in disciplining the puppy.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The puppy now enters the street."
+      },
+      {
+       "n": 2,
+       "text": "It does so only when accompanied."
+      },
+      {
+       "n": 3,
+       "text": "The one accompanying it is Carla."
+      },
+      {
+       "n": 4,
+       "text": "This is the conclusion drawn from that."
+      },
+      {
+       "n": 5,
+       "text": "Carla was justified in disciplining the puppy."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if physical discipline isn't necessarily justified or unjustified on the basis of harm coming to the animal?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q12",
+     "qnum": 12,
+     "question_type": "Sufficient Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT106_S2_Q13",
+   "prompt": "Mature white pines intercept almost all the sunlight that shines on them. They leave a deep litter that dries readily, and they grow to prodigious height so that, even when there are large gaps in a stand of such trees, little light reaches the forest floor. For this reason white pines cannot regenerate in their own shade. Thus, when in a dense forest a stand of trees consists of nothing but mature white pines, it is a fair bet that _______.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about white pines. \u00b7 The trees are mature ones. \u00b7 They intercept sunlight that shines on them. \u00b7 They intercept almost all of it. (2) This is still about the white pines. \u00b7 They leave a litter behind. \u00b7 The litter is deep. \u00b7 The litter dries readily. \u00b7 They grow to prodigious height. \u00b7 A result follows from these facts. (3) This holds even in a certain case. \u00b7 There can be gaps in a stand of such trees. \u00b7 The gaps are large. \u00b7 Little light reaches the forest floor. (4) A reason has just been given. \u00b7 White pines cannot regenerate. \u00b7 They cannot do so in their own shade. (5) This is the conclusion. \u00b7 It concerns a dense forest. \u00b7 There is a stand of trees in it. \u00b7 The stand consists of nothing but white pines. \u00b7 Those pines are mature. \u00b7 Something is a fair bet in that case.",
+   "category": "Fill In",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Mature white pines intercept almost all the sunlight that shines on them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about white pines."
+      },
+      {
+       "n": 2,
+       "text": "The trees are mature ones."
+      },
+      {
+       "n": 3,
+       "text": "They intercept sunlight that shines on them."
+      },
+      {
+       "n": 4,
+       "text": "They intercept almost all of it."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "They leave a deep litter that dries readily, and they grow to prodigious height so that,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is still about the white pines."
+      },
+      {
+       "n": 2,
+       "text": "They leave a litter behind."
+      },
+      {
+       "n": 3,
+       "text": "The litter is deep."
+      },
+      {
+       "n": 4,
+       "text": "The litter dries readily."
+      },
+      {
+       "n": 5,
+       "text": "They grow to prodigious height."
+      },
+      {
+       "n": 6,
+       "text": "A result follows from these facts."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "even when there are large gaps in a stand of such trees, little light reaches the forest floor.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This holds even in a certain case."
+      },
+      {
+       "n": 2,
+       "text": "There can be gaps in a stand of such trees."
+      },
+      {
+       "n": 3,
+       "text": "The gaps are large."
+      },
+      {
+       "n": 4,
+       "text": "Little light reaches the forest floor."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "For this reason white pines cannot regenerate in their own shade.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A reason has just been given."
+      },
+      {
+       "n": 2,
+       "text": "White pines cannot regenerate."
+      },
+      {
+       "n": 3,
+       "text": "They cannot do so in their own shade."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Thus, when in a dense forest a stand of trees consists of nothing but mature white pines, it is a fair bet that _______.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It concerns a dense forest."
+      },
+      {
+       "n": 3,
+       "text": "There is a stand of trees in it."
+      },
+      {
+       "n": 4,
+       "text": "The stand consists of nothing but white pines."
+      },
+      {
+       "n": 5,
+       "text": "Those pines are mature."
+      },
+      {
+       "n": 6,
+       "text": "Something is a fair bet in that case."
+      }
+     ]
+    }
+   ],
+   "the_read": "The trees are relatively similar ages.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q13",
+     "qnum": 13,
+     "question_type": "Fill In",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT106_S2_Q14",
+   "prompt": "Advertisement: A leading economist has determined that among people who used computers at their place of employment last year, those who also owned portable (\"laptop\") computers earned 25 percent more on average than those who did not. It is obvious from this that owning a laptop computer led to a higher-paying job.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This comes from an advertisement. \u00b7 An economist determined something. \u00b7 That economist is a leading one. \u00b7 The finding is about certain people. \u00b7 Those people used computers. \u00b7 They used them at their place of employment. \u00b7 This happened last year. (2) Some of those people also owned portable computers. \u00b7 Portable computers are called laptops. \u00b7 Those people earned more. \u00b7 They earned 25 percent more. \u00b7 The figure is an average. \u00b7 The comparison is with those who did not own laptops. (3) This is the conclusion. \u00b7 It is drawn from what came before. \u00b7 The conclusion is called obvious. \u00b7 Owning a laptop computer led to something. \u00b7 What it led to is a higher-paying job.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Advertisement: A leading economist has determined that among people who used computers at their place of employment last year,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This comes from an advertisement."
+      },
+      {
+       "n": 2,
+       "text": "An economist determined something."
+      },
+      {
+       "n": 3,
+       "text": "That economist is a leading one."
+      },
+      {
+       "n": 4,
+       "text": "The finding is about certain people."
+      },
+      {
+       "n": 5,
+       "text": "Those people used computers."
+      },
+      {
+       "n": 6,
+       "text": "They used them at their place of employment."
+      },
+      {
+       "n": 7,
+       "text": "This happened last year."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "those who also owned portable (\"laptop\") computers earned 25 percent more on average than those who did not.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some of those people also owned portable computers."
+      },
+      {
+       "n": 2,
+       "text": "Portable computers are called laptops."
+      },
+      {
+       "n": 3,
+       "text": "Those people earned more."
+      },
+      {
+       "n": 4,
+       "text": "They earned 25 percent more."
+      },
+      {
+       "n": 5,
+       "text": "The figure is an average."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with those who did not own laptops."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "It is obvious from this that owning a laptop computer led to a higher-paying job.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is drawn from what came before."
+      },
+      {
+       "n": 3,
+       "text": "The conclusion is called obvious."
+      },
+      {
+       "n": 4,
+       "text": "Owning a laptop computer led to something."
+      },
+      {
+       "n": 5,
+       "text": "What it led to is a higher-paying job."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's no causal relationship between laptop ownership and higher salaries? What if people with higher paying jobs are the only ones who can afford laptops? What if a specific personality trait leads people to buy laptops and seek out higher paying jobs?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q14",
+     "qnum": 14,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT106_S2_Q15",
+   "prompt": "Rhonda will see the movie tomorrow afternoon only if Paul goes to the concert in the afternoon. Paul will not go to the concert unless Ted agrees to go to the concert. However, Ted refuses to go to the concert. So Rhonda will not see the movie tomorrow afternoon.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about Rhonda seeing a movie. \u00b7 The time would be tomorrow afternoon. \u00b7 Her seeing it holds only under a condition. \u00b7 The condition is that Paul goes to the concert. \u00b7 Paul would go in the afternoon. (2) This is about Paul going to the concert. \u00b7 Paul will not go to the concert. \u00b7 There is an exception to that. \u00b7 The exception is that Ted agrees to go. (3) This is a contrast with what came before. \u00b7 Ted refuses to go. \u00b7 What he refuses is going to the concert. (4) This is the conclusion. \u00b7 Rhonda will not see the movie. \u00b7 The time in question is tomorrow afternoon.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Rhonda will see the movie tomorrow afternoon only if Paul goes to the concert in the afternoon.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about Rhonda seeing a movie."
+      },
+      {
+       "n": 2,
+       "text": "The time would be tomorrow afternoon."
+      },
+      {
+       "n": 3,
+       "text": "Her seeing it holds only under a condition."
+      },
+      {
+       "n": 4,
+       "text": "The condition is that Paul goes to the concert."
+      },
+      {
+       "n": 5,
+       "text": "Paul would go in the afternoon."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Paul will not go to the concert unless Ted agrees to go to the concert.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about Paul going to the concert."
+      },
+      {
+       "n": 2,
+       "text": "Paul will not go to the concert."
+      },
+      {
+       "n": 3,
+       "text": "There is an exception to that."
+      },
+      {
+       "n": 4,
+       "text": "The exception is that Ted agrees to go."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "However, Ted refuses to go to the concert.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "Ted refuses to go."
+      },
+      {
+       "n": 3,
+       "text": "What he refuses is going to the concert."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "So Rhonda will not see the movie tomorrow afternoon.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Rhonda will not see the movie."
+      },
+      {
+       "n": 3,
+       "text": "The time in question is tomorrow afternoon."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rules of conditional reasoning don't apply?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q15",
+     "qnum": 15,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT106_S2_Q16",
+   "prompt": "Private industry is trying to attract skilled research scientists by offering them high salaries. As a result, most research scientists employed in private industry now earn 50 percent more than do comparably skilled research scientists employed by the government. So, unless government-employed research scientists are motivated more by a sense of public duty than by their own interests, the government is likely to lose its most skilled research scientists to private industry, since none of these scientists would have problems finding private-sector jobs.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Private industry is trying to attract scientists. \u00b7 The scientists are research scientists. \u00b7 Those scientists are skilled. \u00b7 Private industry offers them salaries. \u00b7 The salaries are high. (2) This is a result of what came before. \u00b7 Most research scientists in private industry earn more. \u00b7 They earn 50 percent more. \u00b7 This is the case now. \u00b7 The comparison is with government-employed research scientists. \u00b7 Those scientists are comparably skilled. (3) This introduces the conclusion. \u00b7 A condition is attached to it. \u00b7 The condition concerns government-employed research scientists. \u00b7 They might be motivated by a sense of public duty. \u00b7 The comparison is with their own interests. \u00b7 The public duty would have to motivate them more. (4) The government is likely to lose scientists. \u00b7 The scientists it loses are its most skilled ones. \u00b7 They would go to private industry. \u00b7 A reason is given for this. \u00b7 None of these scientists would have problems finding jobs. \u00b7 The jobs would be in the private sector.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Private industry is trying to attract skilled research scientists by offering them high salaries.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Private industry is trying to attract scientists."
+      },
+      {
+       "n": 2,
+       "text": "The scientists are research scientists."
+      },
+      {
+       "n": 3,
+       "text": "Those scientists are skilled."
+      },
+      {
+       "n": 4,
+       "text": "Private industry offers them salaries."
+      },
+      {
+       "n": 5,
+       "text": "The salaries are high."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "As a result, most research scientists employed in private industry now earn 50 percent more than do comparably skilled research scientists employed by the government.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a result of what came before."
+      },
+      {
+       "n": 2,
+       "text": "Most research scientists in private industry earn more."
+      },
+      {
+       "n": 3,
+       "text": "They earn 50 percent more."
+      },
+      {
+       "n": 4,
+       "text": "This is the case now."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with government-employed research scientists."
+      },
+      {
+       "n": 6,
+       "text": "Those scientists are comparably skilled."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "So, unless government-employed research scientists are motivated more by a sense of public duty than by their own interests,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This introduces the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "A condition is attached to it."
+      },
+      {
+       "n": 3,
+       "text": "The condition concerns government-employed research scientists."
+      },
+      {
+       "n": 4,
+       "text": "They might be motivated by a sense of public duty."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with their own interests."
+      },
+      {
+       "n": 6,
+       "text": "The public duty would have to motivate them more."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "the government is likely to lose its most skilled research scientists to private industry, since none of these scientists would have problems finding private-sector jobs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The government is likely to lose scientists."
+      },
+      {
+       "n": 2,
+       "text": "The scientists it loses are its most skilled ones."
+      },
+      {
+       "n": 3,
+       "text": "They would go to private industry."
+      },
+      {
+       "n": 4,
+       "text": "A reason is given for this."
+      },
+      {
+       "n": 5,
+       "text": "None of these scientists would have problems finding jobs."
+      },
+      {
+       "n": 6,
+       "text": "The jobs would be in the private sector."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if government research jobs provide much better health insurance, 401k plans, and other fringe benefits that outweigh the salary differential?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q16",
+     "qnum": 16,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT106_S2_Q17",
+   "prompt": "Using fossil energy more efficiently is in the interest of the nation and the global environment, but major improvements are unlikely unless proposed government standards are implemented to eliminate products or practices that are among the least efficient in their class.\n\nObjection: Decisions on energy use are best left to the operation of the market.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about using fossil energy. \u00b7 The use in question is more efficient use. \u00b7 Such use is in the interest of the nation. \u00b7 It is also in the interest of the environment. \u00b7 The environment in question is the global one. (2) This is a contrast with what came before. \u00b7 Major improvements are unlikely. \u00b7 They are unlikely under a condition. \u00b7 The condition is that standards be implemented. \u00b7 The standards are government ones that have been proposed. \u00b7 The standards would eliminate certain products or practices. \u00b7 Those products or practices are among the least efficient in their class. (3) This is stated as an objection. \u00b7 It is about decisions on energy use. \u00b7 Such decisions are best left alone. \u00b7 They should be left to the operation of the market.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Using fossil energy more efficiently is in the interest of the nation and the global environment,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about using fossil energy."
+      },
+      {
+       "n": 2,
+       "text": "The use in question is more efficient use."
+      },
+      {
+       "n": 3,
+       "text": "Such use is in the interest of the nation."
+      },
+      {
+       "n": 4,
+       "text": "It is also in the interest of the environment."
+      },
+      {
+       "n": 5,
+       "text": "The environment in question is the global one."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "but major improvements are unlikely unless proposed government standards are implemented to eliminate products or practices that are among the least efficient in their class.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "Major improvements are unlikely."
+      },
+      {
+       "n": 3,
+       "text": "They are unlikely under a condition."
+      },
+      {
+       "n": 4,
+       "text": "The condition is that standards be implemented."
+      },
+      {
+       "n": 5,
+       "text": "The standards are government ones that have been proposed."
+      },
+      {
+       "n": 6,
+       "text": "The standards would eliminate certain products or practices."
+      },
+      {
+       "n": 7,
+       "text": "Those products or practices are among the least efficient in their class."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Objection: Decisions on energy use are best left to the operation of the market.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is stated as an objection."
+      },
+      {
+       "n": 2,
+       "text": "It is about decisions on energy use."
+      },
+      {
+       "n": 3,
+       "text": "Such decisions are best left alone."
+      },
+      {
+       "n": 4,
+       "text": "They should be left to the operation of the market."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we should only take a course of action that is likely result in the major improvements that serve the\u00a0interest of the nation and the global environment?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q17",
+     "qnum": 17,
+     "question_type": "Weaken",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT106_S2_Q18",
+   "prompt": "Dobson: Some historians claim that the people who built a ring of stones thousands of years ago in Britain were knowledgeable about celestial events. The ground for this claim is that two of the stones determine a line pointing directly to the position of the sun at sunrise at the spring equinox. There are many stones in the ring, however, so the chance that one pair will point in a celestially significant direction is large. Therefore, the people who built the ring were not knowledgeable about celestial events.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Dobson is the speaker. \u00b7 Some historians make a claim. \u00b7 The claim is about people who built a ring of stones. \u00b7 The ring was built thousands of years ago. \u00b7 It was built in Britain. \u00b7 Those people were knowledgeable about celestial events. (2) The claim has a ground. \u00b7 Two of the stones determine a line. \u00b7 The line points to a position of the sun. \u00b7 It points directly there. \u00b7 The position is where the sun is at sunrise. \u00b7 The sunrise is the one at the spring equinox. (3) This is a contrast with the claim. \u00b7 There are many stones in the ring. \u00b7 A conclusion is drawn from that. \u00b7 Some pair of stones may point in a certain direction. \u00b7 The direction would be celestially significant. \u00b7 The chance of that is large. (4) This is the conclusion. \u00b7 It is about the people who built the ring. \u00b7 They were not knowledgeable. \u00b7 The knowledge at issue is about celestial events.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Dobson: Some historians claim that the people who built a ring of stones thousands of years ago in Britain were knowledgeable about celestial events.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Dobson is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "Some historians make a claim."
+      },
+      {
+       "n": 3,
+       "text": "The claim is about people who built a ring of stones."
+      },
+      {
+       "n": 4,
+       "text": "The ring was built thousands of years ago."
+      },
+      {
+       "n": 5,
+       "text": "It was built in Britain."
+      },
+      {
+       "n": 6,
+       "text": "Those people were knowledgeable about celestial events."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The ground for this claim is that two of the stones determine a line pointing directly to the position of the sun at sunrise at the spring equinox.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The claim has a ground."
+      },
+      {
+       "n": 2,
+       "text": "Two of the stones determine a line."
+      },
+      {
+       "n": 3,
+       "text": "The line points to a position of the sun."
+      },
+      {
+       "n": 4,
+       "text": "It points directly there."
+      },
+      {
+       "n": 5,
+       "text": "The position is where the sun is at sunrise."
+      },
+      {
+       "n": 6,
+       "text": "The sunrise is the one at the spring equinox."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "There are many stones in the ring, however, so the chance that one pair will point in a celestially significant direction is large.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with the claim."
+      },
+      {
+       "n": 2,
+       "text": "There are many stones in the ring."
+      },
+      {
+       "n": 3,
+       "text": "A conclusion is drawn from that."
+      },
+      {
+       "n": 4,
+       "text": "Some pair of stones may point in a certain direction."
+      },
+      {
+       "n": 5,
+       "text": "The direction would be celestially significant."
+      },
+      {
+       "n": 6,
+       "text": "The chance of that is large."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore, the people who built the ring were not knowledgeable about celestial events.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the people who built the ring."
+      },
+      {
+       "n": 3,
+       "text": "They were not knowledgeable."
+      },
+      {
+       "n": 4,
+       "text": "The knowledge at issue is about celestial events."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because the evidence doesn't prove they were knowledgeable, that doesn't mean they definitely weren't knowledgeable?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q18",
+     "qnum": 18,
+     "question_type": "Classic Flaw",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT106_S2_Q19",
+   "prompt": "Nearly all mail that is correctly addressed arrives at its destination within two business days of being sent. In fact, correctly addressed mail takes longer than this only when it is damaged in transit. Overall, however, most mail arrives three business days or more after being sent.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about mail that is correctly addressed. \u00b7 Nearly all of it arrives at its destination. \u00b7 It arrives within two business days. \u00b7 The days counted are business days. \u00b7 The count starts when the mail is sent. (2) This sharpens the previous point. \u00b7 Correctly addressed mail sometimes takes longer. \u00b7 The comparison is with two business days. \u00b7 It takes longer only in one case. \u00b7 That case is when the mail is damaged in transit. (3) This is a contrast with what came before. \u00b7 The claim is about mail overall. \u00b7 Most mail arrives later than that. \u00b7 It arrives three business days or more after sending.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Nearly all mail that is correctly addressed arrives at its destination within two business days of being sent.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about mail that is correctly addressed."
+      },
+      {
+       "n": 2,
+       "text": "Nearly all of it arrives at its destination."
+      },
+      {
+       "n": 3,
+       "text": "It arrives within two business days."
+      },
+      {
+       "n": 4,
+       "text": "The days counted are business days."
+      },
+      {
+       "n": 5,
+       "text": "The count starts when the mail is sent."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In fact, correctly addressed mail takes longer than this only when it is damaged in transit.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This sharpens the previous point."
+      },
+      {
+       "n": 2,
+       "text": "Correctly addressed mail sometimes takes longer."
+      },
+      {
+       "n": 3,
+       "text": "The comparison is with two business days."
+      },
+      {
+       "n": 4,
+       "text": "It takes longer only in one case."
+      },
+      {
+       "n": 5,
+       "text": "That case is when the mail is damaged in transit."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Overall, however, most mail arrives three business days or more after being sent.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "The claim is about mail overall."
+      },
+      {
+       "n": 3,
+       "text": "Most mail arrives later than that."
+      },
+      {
+       "n": 4,
+       "text": "It arrives three business days or more after sending."
+      }
+     ]
+    }
+   ],
+   "the_read": "Most mail is either incorrectly addressed or damaged in transit.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q19",
+     "qnum": 19,
+     "question_type": "Inference",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT106_S2_Q20",
+   "prompt": "The report released by the interior ministry states that within the past 5 years the national land-reclamation program has resulted in a 19 percent increase in the amount of arable land within the country. If these figures are accurate, the program has been a resounding success. Senator Armand, a distinguished mathematician and a woman of indisputable brilliance, maintains, however, that the reclamation program could not possibly have been successful. Clearly, therefore, the figures cited in the report cannot be accurate.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A report was released. \u00b7 The interior ministry released it. \u00b7 The report covers the past 5 years. \u00b7 There is a land-reclamation program. \u00b7 The program is a national one. \u00b7 The program resulted in an increase. \u00b7 The increase was 19 percent. \u00b7 What increased was the amount of arable land in the country. (2) This is a conditional claim. \u00b7 The figures might be accurate. \u00b7 In that case the program has been a success. \u00b7 The success would be a resounding one. (3) Senator Armand is named here. \u00b7 She is a mathematician. \u00b7 She is described as distinguished. \u00b7 Her brilliance is indisputable. \u00b7 This is a contrast with what came before. \u00b7 She maintains a claim about the reclamation program. \u00b7 The program could not possibly have been successful. (4) This is the conclusion. \u00b7 It is presented as clear. \u00b7 The figures were cited in the report. \u00b7 Those figures cannot be accurate.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The report released by the interior ministry states that within the past 5 years the national land-reclamation program has resulted in a 19 percent increase in the amount of arable land within the country.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A report was released."
+      },
+      {
+       "n": 2,
+       "text": "The interior ministry released it."
+      },
+      {
+       "n": 3,
+       "text": "The report covers the past 5 years."
+      },
+      {
+       "n": 4,
+       "text": "There is a land-reclamation program."
+      },
+      {
+       "n": 5,
+       "text": "The program is a national one."
+      },
+      {
+       "n": 6,
+       "text": "The program resulted in an increase."
+      },
+      {
+       "n": 7,
+       "text": "The increase was 19 percent."
+      },
+      {
+       "n": 8,
+       "text": "What increased was the amount of arable land in the country."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "If these figures are accurate, the program has been a resounding success.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a conditional claim."
+      },
+      {
+       "n": 2,
+       "text": "The figures might be accurate."
+      },
+      {
+       "n": 3,
+       "text": "In that case the program has been a success."
+      },
+      {
+       "n": 4,
+       "text": "The success would be a resounding one."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Senator Armand, a distinguished mathematician and a woman of indisputable brilliance, maintains, however, that the reclamation program could not possibly have been successful.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Senator Armand is named here."
+      },
+      {
+       "n": 2,
+       "text": "She is a mathematician."
+      },
+      {
+       "n": 3,
+       "text": "She is described as distinguished."
+      },
+      {
+       "n": 4,
+       "text": "Her brilliance is indisputable."
+      },
+      {
+       "n": 5,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 6,
+       "text": "She maintains a claim about the reclamation program."
+      },
+      {
+       "n": 7,
+       "text": "The program could not possibly have been successful."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Clearly, therefore, the figures cited in the report cannot be accurate.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is presented as clear."
+      },
+      {
+       "n": 3,
+       "text": "The figures were cited in the report."
+      },
+      {
+       "n": 4,
+       "text": "Those figures cannot be accurate."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because Senator Armand is good at math and really smart, that doesn't mean she's correct in her assessment of the program?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q20",
+     "qnum": 20,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT106_S2_Q21",
+   "prompt": "Wirth: All efforts to identify a gene responsible for predisposing people to manic-depression have failed. In fact, nearly all researchers now agree that there is no \"manic-depression gene.\" Therefore, if these researchers are right, any claim that some people are genetically predisposed to manic-depression is simply false.\n\nChang: I do not dispute your evidence, but I take issue with your conclusion. Many of the researchers you refer to have found evidence that a set of several genes is involved and that complex interactions among these genes produce a predisposition to manic-depression.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Wirth is the first speaker. \u00b7 Efforts have been made to identify a gene. \u00b7 All of those efforts have failed. \u00b7 The gene would be responsible for a predisposition. \u00b7 The predisposition is to manic-depression. (2) This strengthens the previous point. \u00b7 Researchers agree on something. \u00b7 Nearly all of them agree. \u00b7 That agreement holds now. \u00b7 There is no manic-depression gene. (3) This is the conclusion. \u00b7 It rests on a condition. \u00b7 The condition is that those researchers are right. \u00b7 Some people might be claimed to be genetically predisposed. \u00b7 The predisposition would be to manic-depression. \u00b7 Any such claim is simply false. (4) Chang is the second speaker. \u00b7 Chang does not dispute the evidence. \u00b7 The evidence belongs to Wirth. \u00b7 This is a contrast with that. \u00b7 Chang takes issue with the conclusion. (5) This is about the researchers Wirth referred to. \u00b7 Many of them have found evidence. \u00b7 The evidence is that a set of genes is involved. \u00b7 The set contains several genes. \u00b7 There are interactions among these genes. \u00b7 Those interactions are complex. \u00b7 The interactions produce a predisposition to manic-depression.",
+   "category": "Controversy",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Wirth: All efforts to identify a gene responsible for predisposing people to manic-depression have failed.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Wirth is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "Efforts have been made to identify a gene."
+      },
+      {
+       "n": 3,
+       "text": "All of those efforts have failed."
+      },
+      {
+       "n": 4,
+       "text": "The gene would be responsible for a predisposition."
+      },
+      {
+       "n": 5,
+       "text": "The predisposition is to manic-depression."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In fact, nearly all researchers now agree that there is no \"manic-depression gene.\"",
+     "details": [
+      {
+       "n": 1,
+       "text": "This strengthens the previous point."
+      },
+      {
+       "n": 2,
+       "text": "Researchers agree on something."
+      },
+      {
+       "n": 3,
+       "text": "Nearly all of them agree."
+      },
+      {
+       "n": 4,
+       "text": "That agreement holds now."
+      },
+      {
+       "n": 5,
+       "text": "There is no manic-depression gene."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, if these researchers are right, any claim that some people are genetically predisposed to manic-depression is simply false.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on a condition."
+      },
+      {
+       "n": 3,
+       "text": "The condition is that those researchers are right."
+      },
+      {
+       "n": 4,
+       "text": "Some people might be claimed to be genetically predisposed."
+      },
+      {
+       "n": 5,
+       "text": "The predisposition would be to manic-depression."
+      },
+      {
+       "n": 6,
+       "text": "Any such claim is simply false."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Chang: I do not dispute your evidence, but I take issue with your conclusion.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Chang is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "Chang does not dispute the evidence."
+      },
+      {
+       "n": 3,
+       "text": "The evidence belongs to Wirth."
+      },
+      {
+       "n": 4,
+       "text": "This is a contrast with that."
+      },
+      {
+       "n": 5,
+       "text": "Chang takes issue with the conclusion."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Many of the researchers you refer to have found evidence that a set of several genes is involved and that complex interactions among these genes produce a predisposition to manic-depression.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the researchers Wirth referred to."
+      },
+      {
+       "n": 2,
+       "text": "Many of them have found evidence."
+      },
+      {
+       "n": 3,
+       "text": "The evidence is that a set of genes is involved."
+      },
+      {
+       "n": 4,
+       "text": "The set contains several genes."
+      },
+      {
+       "n": 5,
+       "text": "There are interactions among these genes."
+      },
+      {
+       "n": 6,
+       "text": "Those interactions are complex."
+      },
+      {
+       "n": 7,
+       "text": "The interactions produce a predisposition to manic-depression."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether current research indicates no one is genetically predisoposed to manic-depression.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q21",
+     "qnum": 21,
+     "question_type": "Controversy",
+     "correct_answer": "D"
+    },
+    {
+     "citation": "PT106.S2.Q22",
+     "qnum": 22,
+     "question_type": "Classic Flaw",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT106_S2_Q23",
+   "prompt": "Garbage dumps do not harm wildlife. Evidence is furnished by the Masai-Mara reserve in Kenya, where baboons that use the garbage dumps on the reserve as a food source mature faster and have more offspring than do baboons on the reserve that do not scavenge on garbage.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is a claim about garbage dumps. \u00b7 Garbage dumps do not cause harm. \u00b7 What they do not harm is wildlife. (2) Evidence is offered for that claim. \u00b7 The evidence comes from a reserve. \u00b7 The reserve is the Masai-Mara. \u00b7 The reserve is in Kenya. (3) There are baboons on the reserve. \u00b7 Some of them use the garbage dumps. \u00b7 They use the dumps as a food source. \u00b7 Those baboons mature faster. \u00b7 Those baboons have more offspring. \u00b7 The comparison is with other baboons on the reserve. \u00b7 Those other baboons do not scavenge on garbage.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Garbage dumps do not harm wildlife.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a claim about garbage dumps."
+      },
+      {
+       "n": 2,
+       "text": "Garbage dumps do not cause harm."
+      },
+      {
+       "n": 3,
+       "text": "What they do not harm is wildlife."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Evidence is furnished by the Masai-Mara reserve in Kenya,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Evidence is offered for that claim."
+      },
+      {
+       "n": 2,
+       "text": "The evidence comes from a reserve."
+      },
+      {
+       "n": 3,
+       "text": "The reserve is the Masai-Mara."
+      },
+      {
+       "n": 4,
+       "text": "The reserve is in Kenya."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "where baboons that use the garbage dumps on the reserve as a food source mature faster and have more offspring than do baboons on the reserve that do not scavenge on garbage.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There are baboons on the reserve."
+      },
+      {
+       "n": 2,
+       "text": "Some of them use the garbage dumps."
+      },
+      {
+       "n": 3,
+       "text": "They use the dumps as a food source."
+      },
+      {
+       "n": 4,
+       "text": "Those baboons mature faster."
+      },
+      {
+       "n": 5,
+       "text": "Those baboons have more offspring."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with other baboons on the reserve."
+      },
+      {
+       "n": 7,
+       "text": "Those other baboons do not scavenge on garbage."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there are Secret Downsides of feeding at the garbage dump?\nFor instance, what if the baboons that use trash as a food source have offspring with birth defects and cancer? What if maturing faster decreases the lifespan of the baboons who feed at the\u00a0garbage dump?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q23",
+     "qnum": 23,
+     "question_type": "Weaken",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT106_S2_Q24",
+   "prompt": "Marianne is a professional chess player who hums audibly while playing her matches, thereby distracting her opponents. When ordered by chess officials to cease humming or else be disqualified from professional chess, Marianne protested the order. She argued that since she was unaware of her humming, her humming was involuntary and that therefore she should not be held responsible for it.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Marianne is a chess player. \u00b7 She is a professional. \u00b7 She hums while playing her matches. \u00b7 The humming is audible. \u00b7 The humming distracts her opponents. (2) Chess officials gave Marianne an order. \u00b7 The order was to cease humming. \u00b7 The alternative was being disqualified. \u00b7 The disqualification would be from professional chess. \u00b7 Marianne protested the order. (3) Marianne made an argument. \u00b7 She was unaware of her humming. \u00b7 She gave that as her reason. \u00b7 Her humming was involuntary. \u00b7 A conclusion follows from that. \u00b7 She should not be held responsible for the humming.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Marianne is a professional chess player who hums audibly while playing her matches, thereby distracting her opponents.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Marianne is a chess player."
+      },
+      {
+       "n": 2,
+       "text": "She is a professional."
+      },
+      {
+       "n": 3,
+       "text": "She hums while playing her matches."
+      },
+      {
+       "n": 4,
+       "text": "The humming is audible."
+      },
+      {
+       "n": 5,
+       "text": "The humming distracts her opponents."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "When ordered by chess officials to cease humming or else be disqualified from professional chess, Marianne protested the order.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Chess officials gave Marianne an order."
+      },
+      {
+       "n": 2,
+       "text": "The order was to cease humming."
+      },
+      {
+       "n": 3,
+       "text": "The alternative was being disqualified."
+      },
+      {
+       "n": 4,
+       "text": "The disqualification would be from professional chess."
+      },
+      {
+       "n": 5,
+       "text": "Marianne protested the order."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "She argued that since she was unaware of her humming, her humming was involuntary and that therefore she should not be held responsible for it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Marianne made an argument."
+      },
+      {
+       "n": 2,
+       "text": "She was unaware of her humming."
+      },
+      {
+       "n": 3,
+       "text": "She gave that as her reason."
+      },
+      {
+       "n": 4,
+       "text": "Her humming was involuntary."
+      },
+      {
+       "n": 5,
+       "text": "A conclusion follows from that."
+      },
+      {
+       "n": 6,
+       "text": "She should not be held responsible for the humming."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if people can be held responsible for involuntary acts?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q24",
+     "qnum": 24,
+     "question_type": "Strengthen",
+     "correct_answer": "B"
+    },
+    {
+     "citation": "PT106.S2.Q25",
+     "qnum": 25,
+     "question_type": "Weaken",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 23,
+   "slug": "PT106_S2_Q26",
+   "prompt": "Smoking in bed has long been the main cause of home fires. Despite a significant decline in cigarette smoking in the last two decades, however, there has been no comparable decline in the number of people killed in home fires.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Smoking in bed causes home fires. \u00b7 It is the main cause of them. \u00b7 It has been so for a long time. (2) Cigarette smoking has declined. \u00b7 The decline is significant. \u00b7 It happened in the last two decades. \u00b7 This is a contrast with what follows. \u00b7 There has been no comparable decline elsewhere. \u00b7 What has not declined is the number of people killed. \u00b7 Those people are killed in home fires.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Smoking in bed has long been the main cause of home fires.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Smoking in bed causes home fires."
+      },
+      {
+       "n": 2,
+       "text": "It is the main cause of them."
+      },
+      {
+       "n": 3,
+       "text": "It has been so for a long time."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Despite a significant decline in cigarette smoking in the last two decades, however, there has been no comparable decline in the number of people killed in home fires.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Cigarette smoking has declined."
+      },
+      {
+       "n": 2,
+       "text": "The decline is significant."
+      },
+      {
+       "n": 3,
+       "text": "It happened in the last two decades."
+      },
+      {
+       "n": 4,
+       "text": "This is a contrast with what follows."
+      },
+      {
+       "n": 5,
+       "text": "There has been no comparable decline elsewhere."
+      },
+      {
+       "n": 6,
+       "text": "What has not declined is the number of people killed."
+      },
+      {
+       "n": 7,
+       "text": "Those people are killed in home fires."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there has been an increase in another source of house fires, like amateur deep frying, in the last 20 years? What if home fires caused by smoking weren't usually deadly?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT106.S2.Q26",
+     "qnum": 26,
+     "question_type": "Resolution",
+     "correct_answer": "B"
+    }
+   ]
+  }
+ ]
+}

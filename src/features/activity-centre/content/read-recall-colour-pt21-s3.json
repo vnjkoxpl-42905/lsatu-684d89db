@@ -1,0 +1,2766 @@
+{
+ "slug": "read-recall-colour-pt21-s3",
+ "title": "Read, Recall, Colour \u00b7 PT21 Section 3",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT21.S3",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT21_S3_Q1",
+   "prompt": "Everyone sitting in the waiting room of the school\u2019s athletic office this morning at nine o\u2019clock had just registered for a beginners tennis clinic. John, Mary, and Teresa were all sitting in the waiting room this morning at nine o\u2019clock. No accomplished tennis player would register for a beginners tennis clinic.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about everyone in a waiting room. \u00b7 The waiting room belongs to the school's athletic office. \u00b7 The time was this morning at nine o'clock. \u00b7 All of those people had just registered for something. \u00b7 What they registered for is a tennis clinic. \u00b7 The clinic is for beginners. (2) This is about three named people. \u00b7 One of them is John. \u00b7 One of them is Mary. \u00b7 One of them is Teresa. \u00b7 All three were in the waiting room. \u00b7 The time was this morning at nine o'clock. (3) This is about accomplished tennis players. \u00b7 It applies to all of them. \u00b7 None of them would register. \u00b7 What they would not register for is a beginners tennis clinic.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Everyone sitting in the waiting room of the school\u2019s athletic office this morning at nine o\u2019clock had just registered for a beginners tennis clinic.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about everyone in a waiting room."
+      },
+      {
+       "n": 2,
+       "text": "The waiting room belongs to the school's athletic office."
+      },
+      {
+       "n": 3,
+       "text": "The time was this morning at nine o'clock."
+      },
+      {
+       "n": 4,
+       "text": "All of those people had just registered for something."
+      },
+      {
+       "n": 5,
+       "text": "What they registered for is a tennis clinic."
+      },
+      {
+       "n": 6,
+       "text": "The clinic is for beginners."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "John, Mary, and Teresa were all sitting in the waiting room this morning at nine o\u2019clock.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about three named people."
+      },
+      {
+       "n": 2,
+       "text": "One of them is John."
+      },
+      {
+       "n": 3,
+       "text": "One of them is Mary."
+      },
+      {
+       "n": 4,
+       "text": "One of them is Teresa."
+      },
+      {
+       "n": 5,
+       "text": "All three were in the waiting room."
+      },
+      {
+       "n": 6,
+       "text": "The time was this morning at nine o'clock."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "No accomplished tennis player would register for a beginners tennis clinic.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about accomplished tennis players."
+      },
+      {
+       "n": 2,
+       "text": "It applies to all of them."
+      },
+      {
+       "n": 3,
+       "text": "None of them would register."
+      },
+      {
+       "n": 4,
+       "text": "What they would not register for is a beginners tennis clinic."
+      }
+     ]
+    }
+   ],
+   "the_read": "John, Mary, and Teresa are not accomplished tennis players.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q1",
+     "qnum": 1,
+     "question_type": "Inference",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT21_S3_Q2",
+   "prompt": "Most people who ride bicycles for pleasure do not ride until the warm weather of spring and summer arrives. Yet it is probably more effective to advertise bicycles earlier in the year. Most bicycles are purchased in the spring, but once shoppers are ready to shop for a bicycle, they usually have already decided which brand and model of bicycle they will purchase. By then it is generally too late to induce them to change their minds.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about people who ride bicycles. \u00b7 They ride for pleasure. \u00b7 It is about most of them, not all. \u00b7 They do not ride until certain weather arrives. \u00b7 The weather is warm. \u00b7 That warm weather comes in spring and summer. (2) This is a contrast with what came before. \u00b7 It is about advertising bicycles. \u00b7 Advertising earlier in the year is more effective. \u00b7 This is stated as probable rather than certain. (3) Most bicycles are purchased in the spring. \u00b7 A contrast follows that. \u00b7 It is about shoppers ready to shop. \u00b7 Those shoppers have already decided something. \u00b7 They have decided which brand they will buy. \u00b7 They have decided which model as well. \u00b7 This is usually the case rather than always. (4) This is about that point in time. \u00b7 It is too late by then. \u00b7 What is too late is inducing them to change their minds. \u00b7 This is generally so rather than always.",
+   "category": "Conclusion",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Most people who ride bicycles for pleasure do not ride until the warm weather of spring and summer arrives.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about people who ride bicycles."
+      },
+      {
+       "n": 2,
+       "text": "They ride for pleasure."
+      },
+      {
+       "n": 3,
+       "text": "It is about most of them, not all."
+      },
+      {
+       "n": 4,
+       "text": "They do not ride until certain weather arrives."
+      },
+      {
+       "n": 5,
+       "text": "The weather is warm."
+      },
+      {
+       "n": 6,
+       "text": "That warm weather comes in spring and summer."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Yet it is probably more effective to advertise bicycles earlier in the year.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about advertising bicycles."
+      },
+      {
+       "n": 3,
+       "text": "Advertising earlier in the year is more effective."
+      },
+      {
+       "n": 4,
+       "text": "This is stated as probable rather than certain."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Most bicycles are purchased in the spring, but once shoppers are ready to shop for a bicycle, they usually have already decided which brand and model of bicycle they will purchase.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Most bicycles are purchased in the spring."
+      },
+      {
+       "n": 2,
+       "text": "A contrast follows that."
+      },
+      {
+       "n": 3,
+       "text": "It is about shoppers ready to shop."
+      },
+      {
+       "n": 4,
+       "text": "Those shoppers have already decided something."
+      },
+      {
+       "n": 5,
+       "text": "They have decided which brand they will buy."
+      },
+      {
+       "n": 6,
+       "text": "They have decided which model as well."
+      },
+      {
+       "n": 7,
+       "text": "This is usually the case rather than always."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "By then it is generally too late to induce them to change their minds.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about that point in time."
+      },
+      {
+       "n": 2,
+       "text": "It is too late by then."
+      },
+      {
+       "n": 3,
+       "text": "What is too late is inducing them to change their minds."
+      },
+      {
+       "n": 4,
+       "text": "This is generally so rather than always."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if shoppers never choose which bicycle to purchase based on advertising, so advertising will be ineffective any time of year?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q2",
+     "qnum": 2,
+     "question_type": "Conclusion",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT21_S3_Q3",
+   "prompt": "During 1991 the number of people in the town of Bayburg who received municipal food assistance doubled, even though the number of people in Bayburg whose incomes were low enough to qualify for such assistance remained unchanged.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about the year 1991. \u00b7 The place is a town called Bayburg. \u00b7 It is about people who received food assistance. \u00b7 The assistance is municipal. \u00b7 The number of them doubled. (2) This is a contrast with what came before. \u00b7 It is about people in Bayburg. \u00b7 Those people have low enough incomes to qualify. \u00b7 What they would qualify for is such assistance. \u00b7 Their number remained unchanged.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "During 1991 the number of people in the town of Bayburg who received municipal food assistance doubled,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the year 1991."
+      },
+      {
+       "n": 2,
+       "text": "The place is a town called Bayburg."
+      },
+      {
+       "n": 3,
+       "text": "It is about people who received food assistance."
+      },
+      {
+       "n": 4,
+       "text": "The assistance is municipal."
+      },
+      {
+       "n": 5,
+       "text": "The number of them doubled."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "even though the number of people in Bayburg whose incomes were low enough to qualify for such assistance remained unchanged.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about people in Bayburg."
+      },
+      {
+       "n": 3,
+       "text": "Those people have low enough incomes to qualify."
+      },
+      {
+       "n": 4,
+       "text": "What they would qualify for is such assistance."
+      },
+      {
+       "n": 5,
+       "text": "Their number remained unchanged."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there was a public awareness campaign that encouraged those who were eligible, but had never applied for food assistance, to apply?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q3",
+     "qnum": 3,
+     "question_type": "Resolution",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT21_S3_Q4",
+   "prompt": "Campaigning for election to provincial or state office frequently requires that a candidate spend much time and energy catering to the interests of national party officials who can help the candidate to win office. The elected officials who campaign for reelection while they are in office thus often fail to serve the interests of their local constituencies.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about campaigning for election. \u00b7 The office is provincial or state office. \u00b7 Campaigning requires something of a candidate. \u00b7 This is frequently so rather than always. \u00b7 The candidate spends much time and energy. \u00b7 It is spent catering to interests. \u00b7 The interests belong to national party officials. \u00b7 Those officials can help the candidate win. (2) This is the conclusion. \u00b7 It is about elected officials. \u00b7 Those officials campaign for reelection. \u00b7 They do it while they are in office. \u00b7 They fail to serve certain interests. \u00b7 The interests belong to their local constituencies. \u00b7 This happens often rather than always.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Campaigning for election to provincial or state office frequently requires that a candidate spend much time and energy catering to the interests of national party officials who can help the candidate to win office.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about campaigning for election."
+      },
+      {
+       "n": 2,
+       "text": "The office is provincial or state office."
+      },
+      {
+       "n": 3,
+       "text": "Campaigning requires something of a candidate."
+      },
+      {
+       "n": 4,
+       "text": "This is frequently so rather than always."
+      },
+      {
+       "n": 5,
+       "text": "The candidate spends much time and energy."
+      },
+      {
+       "n": 6,
+       "text": "It is spent catering to interests."
+      },
+      {
+       "n": 7,
+       "text": "The interests belong to national party officials."
+      },
+      {
+       "n": 8,
+       "text": "Those officials can help the candidate win."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The elected officials who campaign for reelection while they are in office thus often fail to serve the interests of their local constituencies.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about elected officials."
+      },
+      {
+       "n": 3,
+       "text": "Those officials campaign for reelection."
+      },
+      {
+       "n": 4,
+       "text": "They do it while they are in office."
+      },
+      {
+       "n": 5,
+       "text": "They fail to serve certain interests."
+      },
+      {
+       "n": 6,
+       "text": "The interests belong to their local constituencies."
+      },
+      {
+       "n": 7,
+       "text": "This happens often rather than always."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if local constituent interests are the same as national party interests?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q4",
+     "qnum": 4,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT21_S3_Q5",
+   "prompt": "Since Professor Smythe has been head of the department, the most distinguished member of the faculty has resigned, fewer new courses have been developed, student enrollment has dropped, and the reputation of the department has gone down. These facts provide conclusive evidence that Professor Smythe was appointed to undermine the department.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This covers a period of time. \u00b7 The period is since Professor Smythe became head. \u00b7 Smythe is head of the department. \u00b7 A member of the faculty has resigned. \u00b7 That member was the most distinguished one. (2) This adds more things that happened. \u00b7 Fewer new courses have been developed. \u00b7 Student enrollment has dropped. \u00b7 The department's reputation has gone down. (3) This is the conclusion. \u00b7 It rests on those facts. \u00b7 The facts are called conclusive evidence. \u00b7 The claim is about Professor Smythe's appointment. \u00b7 He was appointed for a purpose. \u00b7 The purpose was to undermine the department.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Since Professor Smythe has been head of the department, the most distinguished member of the faculty has resigned,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This covers a period of time."
+      },
+      {
+       "n": 2,
+       "text": "The period is since Professor Smythe became head."
+      },
+      {
+       "n": 3,
+       "text": "Smythe is head of the department."
+      },
+      {
+       "n": 4,
+       "text": "A member of the faculty has resigned."
+      },
+      {
+       "n": 5,
+       "text": "That member was the most distinguished one."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "fewer new courses have been developed, student enrollment has dropped, and the reputation of the department has gone down.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This adds more things that happened."
+      },
+      {
+       "n": 2,
+       "text": "Fewer new courses have been developed."
+      },
+      {
+       "n": 3,
+       "text": "Student enrollment has dropped."
+      },
+      {
+       "n": 4,
+       "text": "The department's reputation has gone down."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "These facts provide conclusive evidence that Professor Smythe was appointed to undermine the department.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on those facts."
+      },
+      {
+       "n": 3,
+       "text": "The facts are called conclusive evidence."
+      },
+      {
+       "n": 4,
+       "text": "The claim is about Professor Smythe's appointment."
+      },
+      {
+       "n": 5,
+       "text": "He was appointed for a purpose."
+      },
+      {
+       "n": 6,
+       "text": "The purpose was to undermine the department."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Professor Smythe's appointment didn't cause any of these negative events? What if just because all of these things happened after Smythe's appointment, that doesn't mean it was intentional?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q5",
+     "qnum": 5,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT21_S3_Q6",
+   "prompt": "Books about architectural works, unless they are not intended for a general audience, ought to include discussions of both the utility and the aesthetic appeal of each of the buildings they consider. If they do not, they are flawed. Morton\u2019s book on Italian Baroque palaces describes these palaces\u2019 functional aspects, but fails to mention that the main hall of a palace he discusses at length has a ceiling that is one of the truly breathtaking masterpieces of Western art.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about books. \u00b7 The books are about architectural works. \u00b7 An exception is being set out. \u00b7 The exception is books not intended for a general audience. (2) Those books ought to include discussions. \u00b7 There are two things to discuss. \u00b7 One is the utility of the buildings. \u00b7 The other is their aesthetic appeal. \u00b7 This applies to each building the book considers. (3) This is a conditional statement. \u00b7 The condition is a book not doing that. \u00b7 Such a book is flawed. (4) This is about a book by Morton. \u00b7 The book is on Italian Baroque palaces. \u00b7 The book describes something. \u00b7 What it describes is the palaces' functional aspects. (5) This is a contrast with what the book does. \u00b7 The book fails to mention something. \u00b7 It is about the main hall of a palace. \u00b7 Morton discusses that palace at length. \u00b7 The hall has a ceiling. \u00b7 The ceiling is one of the masterpieces of Western art. \u00b7 It is described as truly breathtaking.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Books about architectural works, unless they are not intended for a general audience,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about books."
+      },
+      {
+       "n": 2,
+       "text": "The books are about architectural works."
+      },
+      {
+       "n": 3,
+       "text": "An exception is being set out."
+      },
+      {
+       "n": 4,
+       "text": "The exception is books not intended for a general audience."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "ought to include discussions of both the utility and the aesthetic appeal of each of the buildings they consider.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Those books ought to include discussions."
+      },
+      {
+       "n": 2,
+       "text": "There are two things to discuss."
+      },
+      {
+       "n": 3,
+       "text": "One is the utility of the buildings."
+      },
+      {
+       "n": 4,
+       "text": "The other is their aesthetic appeal."
+      },
+      {
+       "n": 5,
+       "text": "This applies to each building the book considers."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "If they do not, they are flawed.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a conditional statement."
+      },
+      {
+       "n": 2,
+       "text": "The condition is a book not doing that."
+      },
+      {
+       "n": 3,
+       "text": "Such a book is flawed."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Morton\u2019s book on Italian Baroque palaces describes these palaces\u2019 functional aspects,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a book by Morton."
+      },
+      {
+       "n": 2,
+       "text": "The book is on Italian Baroque palaces."
+      },
+      {
+       "n": 3,
+       "text": "The book describes something."
+      },
+      {
+       "n": 4,
+       "text": "What it describes is the palaces' functional aspects."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "but fails to mention that the main hall of a palace he discusses at length has a ceiling that is one of the truly breathtaking masterpieces of Western art.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what the book does."
+      },
+      {
+       "n": 2,
+       "text": "The book fails to mention something."
+      },
+      {
+       "n": 3,
+       "text": "It is about the main hall of a palace."
+      },
+      {
+       "n": 4,
+       "text": "Morton discusses that palace at length."
+      },
+      {
+       "n": 5,
+       "text": "The hall has a ceiling."
+      },
+      {
+       "n": 6,
+       "text": "The ceiling is one of the masterpieces of Western art."
+      },
+      {
+       "n": 7,
+       "text": "It is described as truly breathtaking."
+      }
+     ]
+    }
+   ],
+   "the_read": "If Morton's book is intended for a general audience, then it is flawed.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q6",
+     "qnum": 6,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT21_S3_Q7",
+   "prompt": "Of all the photographs taken of him at his wedding, there was one that John and his friends sharply disagreed about. His friends all said that this particular picture did not much resemble him, but John said that on the contrary it was the only photograph that did.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about photographs. \u00b7 The photographs were taken of John. \u00b7 They were taken at his wedding. \u00b7 One of them was disagreed about. \u00b7 The disagreement was between John and his friends. \u00b7 The disagreement was sharp. (2) This is about what his friends said. \u00b7 All of them said the same thing. \u00b7 They said the picture did not much resemble him. \u00b7 A contrast follows with what John said. \u00b7 John said the opposite. \u00b7 He said it was the only photograph that resembled him.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Of all the photographs taken of him at his wedding, there was one that John and his friends sharply disagreed about.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about photographs."
+      },
+      {
+       "n": 2,
+       "text": "The photographs were taken of John."
+      },
+      {
+       "n": 3,
+       "text": "They were taken at his wedding."
+      },
+      {
+       "n": 4,
+       "text": "One of them was disagreed about."
+      },
+      {
+       "n": 5,
+       "text": "The disagreement was between John and his friends."
+      },
+      {
+       "n": 6,
+       "text": "The disagreement was sharp."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "His friends all said that this particular picture did not much resemble him, but John said that on the contrary it was the only photograph that did.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about what his friends said."
+      },
+      {
+       "n": 2,
+       "text": "All of them said the same thing."
+      },
+      {
+       "n": 3,
+       "text": "They said the picture did not much resemble him."
+      },
+      {
+       "n": 4,
+       "text": "A contrast follows with what John said."
+      },
+      {
+       "n": 5,
+       "text": "John said the opposite."
+      },
+      {
+       "n": 6,
+       "text": "He said it was the only photograph that resembled him."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if John's vision of himself is very different from his friends' vision of him?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q7",
+     "qnum": 7,
+     "question_type": "Resolution",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT21_S3_Q8",
+   "prompt": "Eva: A \u201csmart highway\u201d system should be installed, one that would monitor areawide traffic patterns and communicate with computers in vehicles or with programmable highway signs to give drivers information about traffic congestion and alternate routes. Such a system, we can infer, would result in improved traffic flow in and around cities that would do more than improve drivers\u2019 tempers; it would decrease the considerable loss of money and productivity that now results from traffic congestion.\n\nLuis: There are already traffic reports on the radio. Why would a \u201csmart highway\u201d system be any better?",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The first speaker is named Eva. \u00b7 She is talking about a system. \u00b7 The system is called a smart highway. \u00b7 She says it should be installed. (2) The system would monitor traffic patterns. \u00b7 The patterns are areawide. \u00b7 The system would also communicate. \u00b7 It could communicate with computers in vehicles. \u00b7 It could instead communicate with programmable highway signs. \u00b7 The purpose is to give drivers information. \u00b7 The information is about traffic congestion. \u00b7 It is also about alternate routes. (3) This is stated as something we can infer. \u00b7 The system would improve traffic flow. \u00b7 The improvement is in and around cities. \u00b7 It would do more than one thing. \u00b7 Improving drivers' tempers is not all of it. (4) The system would decrease a loss. \u00b7 The loss is of money. \u00b7 The loss is also of productivity. \u00b7 The loss is considerable. \u00b7 It results from traffic congestion. \u00b7 This is happening now. (5) The second speaker is named Luis. \u00b7 He points out something that already exists. \u00b7 Traffic reports exist already. \u00b7 The reports are on the radio. (6) This is a question. \u00b7 The question is about the smart highway system. \u00b7 It asks why the system would be better. \u00b7 It doubts that it would be better at all.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Eva: A \u201csmart highway\u201d system should be installed,",
+     "details": [
+      {
+       "n": 1,
+       "text": "The first speaker is named Eva."
+      },
+      {
+       "n": 2,
+       "text": "She is talking about a system."
+      },
+      {
+       "n": 3,
+       "text": "The system is called a smart highway."
+      },
+      {
+       "n": 4,
+       "text": "She says it should be installed."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "one that would monitor areawide traffic patterns and communicate with computers in vehicles or with programmable highway signs to give drivers information about traffic congestion and alternate routes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The system would monitor traffic patterns."
+      },
+      {
+       "n": 2,
+       "text": "The patterns are areawide."
+      },
+      {
+       "n": 3,
+       "text": "The system would also communicate."
+      },
+      {
+       "n": 4,
+       "text": "It could communicate with computers in vehicles."
+      },
+      {
+       "n": 5,
+       "text": "It could instead communicate with programmable highway signs."
+      },
+      {
+       "n": 6,
+       "text": "The purpose is to give drivers information."
+      },
+      {
+       "n": 7,
+       "text": "The information is about traffic congestion."
+      },
+      {
+       "n": 8,
+       "text": "It is also about alternate routes."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Such a system, we can infer, would result in improved traffic flow in and around cities that would do more than improve drivers\u2019 tempers;",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is stated as something we can infer."
+      },
+      {
+       "n": 2,
+       "text": "The system would improve traffic flow."
+      },
+      {
+       "n": 3,
+       "text": "The improvement is in and around cities."
+      },
+      {
+       "n": 4,
+       "text": "It would do more than one thing."
+      },
+      {
+       "n": 5,
+       "text": "Improving drivers' tempers is not all of it."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "it would decrease the considerable loss of money and productivity that now results from traffic congestion.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The system would decrease a loss."
+      },
+      {
+       "n": 2,
+       "text": "The loss is of money."
+      },
+      {
+       "n": 3,
+       "text": "The loss is also of productivity."
+      },
+      {
+       "n": 4,
+       "text": "The loss is considerable."
+      },
+      {
+       "n": 5,
+       "text": "It results from traffic congestion."
+      },
+      {
+       "n": 6,
+       "text": "This is happening now."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Luis: There are already traffic reports on the radio.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The second speaker is named Luis."
+      },
+      {
+       "n": 2,
+       "text": "He points out something that already exists."
+      },
+      {
+       "n": 3,
+       "text": "Traffic reports exist already."
+      },
+      {
+       "n": 4,
+       "text": "The reports are on the radio."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "Why would a \u201csmart highway\u201d system be any better?",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a question."
+      },
+      {
+       "n": 2,
+       "text": "The question is about the smart highway system."
+      },
+      {
+       "n": 3,
+       "text": "It asks why the system would be better."
+      },
+      {
+       "n": 4,
+       "text": "It doubts that it would be better at all."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether a smart highway should be installed.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q8",
+     "qnum": 8,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    },
+    {
+     "citation": "PT21.S3.Q9",
+     "qnum": 9,
+     "question_type": "Strengthen",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT21_S3_Q10",
+   "prompt": "The terms \u201csex\u201d and \u201cgender\u201d are often used interchangeably. But \u201csex\u201d more properly refers to biological differences of male and female, while \u201cgender\u201d refers to society\u2019s construction of a system that identifies what is masculine and feminine. Unlike the set of characteristics defining biological sex, the set of traits that are associated with gender does not sort people into two nonoverlapping groups. The traits characterize people in a complex way, so that a person may have both \u201cmasculine\u201d and \u201cfeminine\u201d traits.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about two terms. \u00b7 One term is sex. \u00b7 The other term is gender. \u00b7 They are used interchangeably. \u00b7 This happens often rather than always. (2) This is a contrast with what came before. \u00b7 It is about the term sex. \u00b7 That term refers to biological differences. \u00b7 The differences are of male and female. \u00b7 This is the more proper use of the term. (3) This contrasts with the term sex. \u00b7 It is about the term gender. \u00b7 That term refers to a construction by society. \u00b7 The construction is a system. \u00b7 The system identifies what is masculine. \u00b7 It also identifies what is feminine. (4) A comparison is being drawn. \u00b7 One side is the characteristics defining biological sex. \u00b7 The other side is the traits associated with gender. \u00b7 The gender traits do not sort people into two groups. \u00b7 Those groups would have to be nonoverlapping. (5) The traits characterize people. \u00b7 They do it in a complex way. \u00b7 A result follows from that. \u00b7 A person may have masculine traits. \u00b7 The same person may have feminine traits. \u00b7 Having both is possible.",
+   "category": "Conclusion",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The terms \u201csex\u201d and \u201cgender\u201d are often used interchangeably.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about two terms."
+      },
+      {
+       "n": 2,
+       "text": "One term is sex."
+      },
+      {
+       "n": 3,
+       "text": "The other term is gender."
+      },
+      {
+       "n": 4,
+       "text": "They are used interchangeably."
+      },
+      {
+       "n": 5,
+       "text": "This happens often rather than always."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But \u201csex\u201d more properly refers to biological differences of male and female,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about the term sex."
+      },
+      {
+       "n": 3,
+       "text": "That term refers to biological differences."
+      },
+      {
+       "n": 4,
+       "text": "The differences are of male and female."
+      },
+      {
+       "n": 5,
+       "text": "This is the more proper use of the term."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "while \u201cgender\u201d refers to society\u2019s construction of a system that identifies what is masculine and feminine.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This contrasts with the term sex."
+      },
+      {
+       "n": 2,
+       "text": "It is about the term gender."
+      },
+      {
+       "n": 3,
+       "text": "That term refers to a construction by society."
+      },
+      {
+       "n": 4,
+       "text": "The construction is a system."
+      },
+      {
+       "n": 5,
+       "text": "The system identifies what is masculine."
+      },
+      {
+       "n": 6,
+       "text": "It also identifies what is feminine."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Unlike the set of characteristics defining biological sex, the set of traits that are associated with gender does not sort people into two nonoverlapping groups.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A comparison is being drawn."
+      },
+      {
+       "n": 2,
+       "text": "One side is the characteristics defining biological sex."
+      },
+      {
+       "n": 3,
+       "text": "The other side is the traits associated with gender."
+      },
+      {
+       "n": 4,
+       "text": "The gender traits do not sort people into two groups."
+      },
+      {
+       "n": 5,
+       "text": "Those groups would have to be nonoverlapping."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "The traits characterize people in a complex way, so that a person may have both \u201cmasculine\u201d and \u201cfeminine\u201d traits.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The traits characterize people."
+      },
+      {
+       "n": 2,
+       "text": "They do it in a complex way."
+      },
+      {
+       "n": 3,
+       "text": "A result follows from that."
+      },
+      {
+       "n": 4,
+       "text": "A person may have masculine traits."
+      },
+      {
+       "n": 5,
+       "text": "The same person may have feminine traits."
+      },
+      {
+       "n": 6,
+       "text": "Having both is possible."
+      }
+     ]
+    }
+   ],
+   "the_read": "Someone of male sex does not need to have exclusively masculine gender traits.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q10",
+     "qnum": 10,
+     "question_type": "Conclusion",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT21_S3_Q11",
+   "prompt": "Raising the tax rate on essential goods\u2014a traditional means of increasing government revenues\u2014invariably turns low- and middle-income taxpayers against the government. Hence government officials have proposed adding a new tax on purchases of luxury items such as yachts, private planes, jewels, and furs. The officials claim that this tax will result in a substantial increase in government revenues while affecting only the wealthy individuals and corporations who can afford to purchase such items.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about raising a tax rate. \u00b7 The tax is on essential goods. \u00b7 Doing this is a traditional means of increasing revenues. \u00b7 The revenues are the government's. \u00b7 It turns taxpayers against the government. \u00b7 The taxpayers are low- and middle-income ones. \u00b7 This is stated as happening invariably. (2) This follows from what came before. \u00b7 Government officials have made a proposal. \u00b7 The proposal is a new tax. \u00b7 The tax is on purchases of luxury items. \u00b7 Yachts are one example. \u00b7 Private planes are another. \u00b7 Jewels are another example. \u00b7 Furs are another example. (3) This is what the officials claim. \u00b7 The tax will increase government revenues. \u00b7 The increase will be substantial. \u00b7 The tax will affect only certain people. \u00b7 Those are wealthy individuals. \u00b7 Corporations are included too. \u00b7 They are the ones who can afford such items.",
+   "category": "Evaluate",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Raising the tax rate on essential goods\u2014a traditional means of increasing government revenues\u2014invariably turns low- and middle-income taxpayers against the government.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about raising a tax rate."
+      },
+      {
+       "n": 2,
+       "text": "The tax is on essential goods."
+      },
+      {
+       "n": 3,
+       "text": "Doing this is a traditional means of increasing revenues."
+      },
+      {
+       "n": 4,
+       "text": "The revenues are the government's."
+      },
+      {
+       "n": 5,
+       "text": "It turns taxpayers against the government."
+      },
+      {
+       "n": 6,
+       "text": "The taxpayers are low- and middle-income ones."
+      },
+      {
+       "n": 7,
+       "text": "This is stated as happening invariably."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Hence government officials have proposed adding a new tax on purchases of luxury items such as yachts, private planes, jewels, and furs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This follows from what came before."
+      },
+      {
+       "n": 2,
+       "text": "Government officials have made a proposal."
+      },
+      {
+       "n": 3,
+       "text": "The proposal is a new tax."
+      },
+      {
+       "n": 4,
+       "text": "The tax is on purchases of luxury items."
+      },
+      {
+       "n": 5,
+       "text": "Yachts are one example."
+      },
+      {
+       "n": 6,
+       "text": "Private planes are another."
+      },
+      {
+       "n": 7,
+       "text": "Jewels are another example."
+      },
+      {
+       "n": 8,
+       "text": "Furs are another example."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The officials claim that this tax will result in a substantial increase in government revenues while affecting only the wealthy individuals and corporations who can afford to purchase such items.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is what the officials claim."
+      },
+      {
+       "n": 2,
+       "text": "The tax will increase government revenues."
+      },
+      {
+       "n": 3,
+       "text": "The increase will be substantial."
+      },
+      {
+       "n": 4,
+       "text": "The tax will affect only certain people."
+      },
+      {
+       "n": 5,
+       "text": "Those are wealthy individuals."
+      },
+      {
+       "n": 6,
+       "text": "Corporations are included too."
+      },
+      {
+       "n": 7,
+       "text": "They are the ones who can afford such items."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if people will stop buying luxury goods once they are taxed, and the government will not generate any revenue?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q11",
+     "qnum": 11,
+     "question_type": "Evaluate",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT21_S3_Q12",
+   "prompt": "In a study of the relationship between aggression and television viewing in nursery school children, many interesting interactions among family styles, aggression, and television viewing were found. High aggression occurred in both high-viewing and low-viewing children and this seemed to be related to parental lifestyle. High-achieving, competitive, middle-class parents, whose children did not watch much television, had more aggressive children than parents who planned their lives in an organized, child-centered way, which included larger amounts of television viewing.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a study. \u00b7 The study is of a relationship. \u00b7 One side is aggression. \u00b7 The other side is television viewing. \u00b7 The subjects are nursery school children. (2) The study found interactions. \u00b7 There were many of them. \u00b7 They are described as interesting. \u00b7 Family styles are one of the things involved. \u00b7 Aggression is another of them. \u00b7 Television viewing is another. (3) High aggression occurred in children. \u00b7 It occurred in high-viewing children. \u00b7 It also occurred in low-viewing children. \u00b7 This seemed related to something. \u00b7 What it related to is parental lifestyle. \u00b7 This is a seeming rather than a certainty. (4) This is about a kind of parent. \u00b7 Those parents are high-achieving. \u00b7 Those parents are competitive. \u00b7 They are middle-class. \u00b7 Their children did not watch much television. (5) Those parents had more aggressive children. \u00b7 The comparison is with another kind of parent. \u00b7 Those others planned their lives. \u00b7 The planning was organized. \u00b7 It was also child-centered. \u00b7 Their way included more television viewing.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In a study of the relationship between aggression and television viewing in nursery school children,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a study."
+      },
+      {
+       "n": 2,
+       "text": "The study is of a relationship."
+      },
+      {
+       "n": 3,
+       "text": "One side is aggression."
+      },
+      {
+       "n": 4,
+       "text": "The other side is television viewing."
+      },
+      {
+       "n": 5,
+       "text": "The subjects are nursery school children."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "many interesting interactions among family styles, aggression, and television viewing were found.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The study found interactions."
+      },
+      {
+       "n": 2,
+       "text": "There were many of them."
+      },
+      {
+       "n": 3,
+       "text": "They are described as interesting."
+      },
+      {
+       "n": 4,
+       "text": "Family styles are one of the things involved."
+      },
+      {
+       "n": 5,
+       "text": "Aggression is another of them."
+      },
+      {
+       "n": 6,
+       "text": "Television viewing is another."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "High aggression occurred in both high-viewing and low-viewing children and this seemed to be related to parental lifestyle.",
+     "details": [
+      {
+       "n": 1,
+       "text": "High aggression occurred in children."
+      },
+      {
+       "n": 2,
+       "text": "It occurred in high-viewing children."
+      },
+      {
+       "n": 3,
+       "text": "It also occurred in low-viewing children."
+      },
+      {
+       "n": 4,
+       "text": "This seemed related to something."
+      },
+      {
+       "n": 5,
+       "text": "What it related to is parental lifestyle."
+      },
+      {
+       "n": 6,
+       "text": "This is a seeming rather than a certainty."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "High-achieving, competitive, middle-class parents, whose children did not watch much television,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a kind of parent."
+      },
+      {
+       "n": 2,
+       "text": "Those parents are high-achieving."
+      },
+      {
+       "n": 3,
+       "text": "Those parents are competitive."
+      },
+      {
+       "n": 4,
+       "text": "They are middle-class."
+      },
+      {
+       "n": 5,
+       "text": "Their children did not watch much television."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "had more aggressive children than parents who planned their lives in an organized, child-centered way, which included larger amounts of television viewing.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Those parents had more aggressive children."
+      },
+      {
+       "n": 2,
+       "text": "The comparison is with another kind of parent."
+      },
+      {
+       "n": 3,
+       "text": "Those others planned their lives."
+      },
+      {
+       "n": 4,
+       "text": "The planning was organized."
+      },
+      {
+       "n": 5,
+       "text": "It was also child-centered."
+      },
+      {
+       "n": 6,
+       "text": "Their way included more television viewing."
+      }
+     ]
+    }
+   ],
+   "the_read": "Television viewing alone cannot predict a child's aggression.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q12",
+     "qnum": 12,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT21_S3_Q13",
+   "prompt": "One of the effects of lead poisoning is an inflammation of the optic nerve, which causes those who have it to see bright haloes around light sources. In order to produce the striking yellow effects in his \u201cSunflowers\u201d paintings, Van Gogh used Naples yellow, a pigment containing lead. Since in his later paintings, Van Gogh painted bright haloes around the stars and sun, it is likely that he was suffering from lead poisoning caused by ingesting the pigments he used.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about lead poisoning. \u00b7 It names one of its effects. \u00b7 The effect is an inflammation. \u00b7 What is inflamed is the optic nerve. \u00b7 That causes people to see something. \u00b7 They see haloes around light sources. \u00b7 The haloes are bright. (2) This is about Van Gogh. \u00b7 It is about his Sunflowers paintings. \u00b7 He wanted yellow effects in them. \u00b7 The effects are striking. \u00b7 He used Naples yellow. \u00b7 Naples yellow is a pigment. \u00b7 The pigment contains lead. (3) This gives a reason for what follows. \u00b7 It is about his later paintings. \u00b7 He painted haloes in them. \u00b7 The haloes are bright. \u00b7 They are around the stars. \u00b7 They are around the sun as well. (4) This is the conclusion. \u00b7 It is stated as likely rather than certain. \u00b7 He was suffering from lead poisoning. \u00b7 The poisoning had a cause. \u00b7 The cause is ingesting pigments. \u00b7 The pigments are the ones he used.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "One of the effects of lead poisoning is an inflammation of the optic nerve, which causes those who have it to see bright haloes around light sources.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about lead poisoning."
+      },
+      {
+       "n": 2,
+       "text": "It names one of its effects."
+      },
+      {
+       "n": 3,
+       "text": "The effect is an inflammation."
+      },
+      {
+       "n": 4,
+       "text": "What is inflamed is the optic nerve."
+      },
+      {
+       "n": 5,
+       "text": "That causes people to see something."
+      },
+      {
+       "n": 6,
+       "text": "They see haloes around light sources."
+      },
+      {
+       "n": 7,
+       "text": "The haloes are bright."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In order to produce the striking yellow effects in his \u201cSunflowers\u201d paintings, Van Gogh used Naples yellow, a pigment containing lead.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about Van Gogh."
+      },
+      {
+       "n": 2,
+       "text": "It is about his Sunflowers paintings."
+      },
+      {
+       "n": 3,
+       "text": "He wanted yellow effects in them."
+      },
+      {
+       "n": 4,
+       "text": "The effects are striking."
+      },
+      {
+       "n": 5,
+       "text": "He used Naples yellow."
+      },
+      {
+       "n": 6,
+       "text": "Naples yellow is a pigment."
+      },
+      {
+       "n": 7,
+       "text": "The pigment contains lead."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since in his later paintings, Van Gogh painted bright haloes around the stars and sun,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason for what follows."
+      },
+      {
+       "n": 2,
+       "text": "It is about his later paintings."
+      },
+      {
+       "n": 3,
+       "text": "He painted haloes in them."
+      },
+      {
+       "n": 4,
+       "text": "The haloes are bright."
+      },
+      {
+       "n": 5,
+       "text": "They are around the stars."
+      },
+      {
+       "n": 6,
+       "text": "They are around the sun as well."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "it is likely that he was suffering from lead poisoning caused by ingesting the pigments he used.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is stated as likely rather than certain."
+      },
+      {
+       "n": 3,
+       "text": "He was suffering from lead poisoning."
+      },
+      {
+       "n": 4,
+       "text": "The poisoning had a cause."
+      },
+      {
+       "n": 5,
+       "text": "The cause is ingesting pigments."
+      },
+      {
+       "n": 6,
+       "text": "The pigments are the ones he used."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there wasn't a high enough concentration of lead in the yellow paint to cause lead poisoning? What if many other things, like artistic creativity and second-hand accounts from lead-poisoning-sufferers, inspired the halos?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q13",
+     "qnum": 13,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT21_S3_Q14",
+   "prompt": "Politician: The mandatory jail sentences that became law two years ago for certain crimes have enhanced the integrity of our system of justice, for no longer are there two kinds of justice, the kind dispensed by lenient judges and the kind dispensed by severe ones.\n\nPublic advocate: But with judges stripped of discretionary powers, there can be no leniency even where it would be appropriate. So juries now sometimes acquit a given defendant solely because the jurors feel that the mandatory sentence would be too harsh. Those juries, then, do not return an accurate verdict on the defendant\u2019s guilt. This is why it is imperative that the legislation instituting mandatory jail sentences be repealed.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The first speaker is a politician. \u00b7 The subject is mandatory jail sentences. \u00b7 Those sentences became law two years ago. \u00b7 They apply to certain crimes. \u00b7 They have enhanced something. \u00b7 What was enhanced is the integrity of the justice system. (2) This gives the reason for that claim. \u00b7 There are no longer two kinds of justice. \u00b7 One kind was dispensed by lenient judges. \u00b7 The other was dispensed by severe judges. (3) The second speaker is a public advocate. \u00b7 This is a contrast with the politician. \u00b7 Judges have been stripped of discretionary powers. \u00b7 There can be no leniency. \u00b7 That holds even where leniency would be appropriate. (4) This follows from what came before. \u00b7 It is about juries. \u00b7 They acquit a defendant. \u00b7 This happens sometimes rather than always. \u00b7 It is happening now. \u00b7 The reason is the jurors' feeling. \u00b7 They feel the mandatory sentence would be too harsh. \u00b7 That feeling is the sole reason. (5) This follows from what came before. \u00b7 It is about those juries. \u00b7 They do not return an accurate verdict. \u00b7 The verdict concerns the defendant's guilt. (6) This is the conclusion. \u00b7 It rests on what came before. \u00b7 Something is described as imperative. \u00b7 The legislation should be repealed. \u00b7 The legislation instituted mandatory jail sentences.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Politician: The mandatory jail sentences that became law two years ago for certain crimes have enhanced the integrity of our system of justice,",
+     "details": [
+      {
+       "n": 1,
+       "text": "The first speaker is a politician."
+      },
+      {
+       "n": 2,
+       "text": "The subject is mandatory jail sentences."
+      },
+      {
+       "n": 3,
+       "text": "Those sentences became law two years ago."
+      },
+      {
+       "n": 4,
+       "text": "They apply to certain crimes."
+      },
+      {
+       "n": 5,
+       "text": "They have enhanced something."
+      },
+      {
+       "n": 6,
+       "text": "What was enhanced is the integrity of the justice system."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "for no longer are there two kinds of justice, the kind dispensed by lenient judges and the kind dispensed by severe ones.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason for that claim."
+      },
+      {
+       "n": 2,
+       "text": "There are no longer two kinds of justice."
+      },
+      {
+       "n": 3,
+       "text": "One kind was dispensed by lenient judges."
+      },
+      {
+       "n": 4,
+       "text": "The other was dispensed by severe judges."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Public advocate: But with judges stripped of discretionary powers, there can be no leniency even where it would be appropriate.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The second speaker is a public advocate."
+      },
+      {
+       "n": 2,
+       "text": "This is a contrast with the politician."
+      },
+      {
+       "n": 3,
+       "text": "Judges have been stripped of discretionary powers."
+      },
+      {
+       "n": 4,
+       "text": "There can be no leniency."
+      },
+      {
+       "n": 5,
+       "text": "That holds even where leniency would be appropriate."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "So juries now sometimes acquit a given defendant solely because the jurors feel that the mandatory sentence would be too harsh.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This follows from what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about juries."
+      },
+      {
+       "n": 3,
+       "text": "They acquit a defendant."
+      },
+      {
+       "n": 4,
+       "text": "This happens sometimes rather than always."
+      },
+      {
+       "n": 5,
+       "text": "It is happening now."
+      },
+      {
+       "n": 6,
+       "text": "The reason is the jurors' feeling."
+      },
+      {
+       "n": 7,
+       "text": "They feel the mandatory sentence would be too harsh."
+      },
+      {
+       "n": 8,
+       "text": "That feeling is the sole reason."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Those juries, then, do not return an accurate verdict on the defendant\u2019s guilt.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This follows from what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about those juries."
+      },
+      {
+       "n": 3,
+       "text": "They do not return an accurate verdict."
+      },
+      {
+       "n": 4,
+       "text": "The verdict concerns the defendant's guilt."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "This is why it is imperative that the legislation instituting mandatory jail sentences be repealed.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on what came before."
+      },
+      {
+       "n": 3,
+       "text": "Something is described as imperative."
+      },
+      {
+       "n": 4,
+       "text": "The legislation should be repealed."
+      },
+      {
+       "n": 5,
+       "text": "The legislation instituted mandatory jail sentences."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether mandatory sentencing has been a positive addition to the legal system.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q14",
+     "qnum": 14,
+     "question_type": "Method",
+     "correct_answer": "D"
+    },
+    {
+     "citation": "PT21.S3.Q15",
+     "qnum": 15,
+     "question_type": "Counter",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT21_S3_Q16",
+   "prompt": "Researchers studying artificial sweeteners have long claimed that the perception of sweetness is determined by the activation of a single type of receptor on the tongue, called a sweetness receptor. They have also claimed that any given individual molecule of substance can activate at most one sweetness receptor and that the fewer molecules that are required to activate a receptor, the sweeter that substance will be perceived to be. Now, the researchers claim to have discovered a substance of which only one molecule is needed to activate any sweetness receptor.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about researchers. \u00b7 They study artificial sweeteners. \u00b7 They have claimed this for a long time. \u00b7 The perception of sweetness is determined by something. \u00b7 It is determined by the activation of a receptor. \u00b7 There is a single type of receptor. \u00b7 The receptor is on the tongue. \u00b7 It is called a sweetness receptor. (2) This is an additional claim by the researchers. \u00b7 It is about any individual molecule. \u00b7 Such a molecule can activate a receptor. \u00b7 It can activate at most one of them. \u00b7 A second part of the claim follows. \u00b7 It is about how many molecules are required. \u00b7 Fewer molecules are what matters here. (3) This completes the previous claim. \u00b7 It is about how the substance is perceived. \u00b7 The substance will be perceived as sweeter. (4) This is about the present. \u00b7 The researchers claim a discovery. \u00b7 What they discovered is a substance. \u00b7 Only one molecule of it is needed. \u00b7 One molecule can activate any sweetness receptor.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Researchers studying artificial sweeteners have long claimed that the perception of sweetness is determined by the activation of a single type of receptor on the tongue, called a sweetness receptor.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about researchers."
+      },
+      {
+       "n": 2,
+       "text": "They study artificial sweeteners."
+      },
+      {
+       "n": 3,
+       "text": "They have claimed this for a long time."
+      },
+      {
+       "n": 4,
+       "text": "The perception of sweetness is determined by something."
+      },
+      {
+       "n": 5,
+       "text": "It is determined by the activation of a receptor."
+      },
+      {
+       "n": 6,
+       "text": "There is a single type of receptor."
+      },
+      {
+       "n": 7,
+       "text": "The receptor is on the tongue."
+      },
+      {
+       "n": 8,
+       "text": "It is called a sweetness receptor."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "They have also claimed that any given individual molecule of substance can activate at most one sweetness receptor and that the fewer molecules that are required to activate a receptor,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional claim by the researchers."
+      },
+      {
+       "n": 2,
+       "text": "It is about any individual molecule."
+      },
+      {
+       "n": 3,
+       "text": "Such a molecule can activate a receptor."
+      },
+      {
+       "n": 4,
+       "text": "It can activate at most one of them."
+      },
+      {
+       "n": 5,
+       "text": "A second part of the claim follows."
+      },
+      {
+       "n": 6,
+       "text": "It is about how many molecules are required."
+      },
+      {
+       "n": 7,
+       "text": "Fewer molecules are what matters here."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "the sweeter that substance will be perceived to be.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This completes the previous claim."
+      },
+      {
+       "n": 2,
+       "text": "It is about how the substance is perceived."
+      },
+      {
+       "n": 3,
+       "text": "The substance will be perceived as sweeter."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Now, the researchers claim to have discovered a substance of which only one molecule is needed to activate any sweetness receptor.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the present."
+      },
+      {
+       "n": 2,
+       "text": "The researchers claim a discovery."
+      },
+      {
+       "n": 3,
+       "text": "What they discovered is a substance."
+      },
+      {
+       "n": 4,
+       "text": "Only one molecule of it is needed."
+      },
+      {
+       "n": 5,
+       "text": "One molecule can activate any sweetness receptor."
+      }
+     ]
+    }
+   ],
+   "the_read": "The newly discovered substance will be perceived to be very sweet.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q16",
+     "qnum": 16,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT21_S3_Q17",
+   "prompt": "An editorial in the _Grandburg Daily Herald_ claims that Grandburg\u2019s voters would generally welcome the defeat of the political party now in control of the Grandburg City Council. The editorial bases its claim on a recent survey that found that 59 percent of Grandburg\u2019s registered voters think that the party will definitely be out of power after next year\u2019s city council elections.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about an editorial. \u00b7 The editorial is in the Grandburg Daily Herald. \u00b7 It makes a claim about Grandburg's voters. \u00b7 Those voters would welcome something. \u00b7 They would generally welcome it rather than all of them. \u00b7 What they would welcome is the defeat of a political party. \u00b7 That party is now in control. \u00b7 It controls the Grandburg City Council. (2) This is the basis for the editorial's claim. \u00b7 The basis is a survey. \u00b7 The survey is a recent one. \u00b7 It found a figure of 59 percent. \u00b7 The percentage is of registered voters in Grandburg. \u00b7 Those voters think something. \u00b7 They think the party will be out of power. \u00b7 It would happen after next year's city council elections.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "An editorial in the _Grandburg Daily Herald_ claims that Grandburg\u2019s voters would generally welcome the defeat of the political party now in control of the Grandburg City Council.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about an editorial."
+      },
+      {
+       "n": 2,
+       "text": "The editorial is in the Grandburg Daily Herald."
+      },
+      {
+       "n": 3,
+       "text": "It makes a claim about Grandburg's voters."
+      },
+      {
+       "n": 4,
+       "text": "Those voters would welcome something."
+      },
+      {
+       "n": 5,
+       "text": "They would generally welcome it rather than all of them."
+      },
+      {
+       "n": 6,
+       "text": "What they would welcome is the defeat of a political party."
+      },
+      {
+       "n": 7,
+       "text": "That party is now in control."
+      },
+      {
+       "n": 8,
+       "text": "It controls the Grandburg City Council."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The editorial bases its claim on a recent survey that found that 59 percent of Grandburg\u2019s registered voters think that the party will definitely be out of power after next year\u2019s city council elections.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the basis for the editorial's claim."
+      },
+      {
+       "n": 2,
+       "text": "The basis is a survey."
+      },
+      {
+       "n": 3,
+       "text": "The survey is a recent one."
+      },
+      {
+       "n": 4,
+       "text": "It found a figure of 59 percent."
+      },
+      {
+       "n": 5,
+       "text": "The percentage is of registered voters in Grandburg."
+      },
+      {
+       "n": 6,
+       "text": "Those voters think something."
+      },
+      {
+       "n": 7,
+       "text": "They think the party will be out of power."
+      },
+      {
+       "n": 8,
+       "text": "It would happen after next year's city council elections."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because a majority expects something to happen, that doens't mean a majority would be happy about that thing happening?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q17",
+     "qnum": 17,
+     "question_type": "Strengthen",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT21_S3_Q18",
+   "prompt": "Prolonged exposure to nonionizing radiation\u2014 electromagnetic radiation at or below the frequency of visible light\u2014increases a person\u2019s chances of developing soft-tissue cancer. Electric power lines as well as such electrical appliances as electric blankets and video-display terminals are sources of nonionizing radiation.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about exposure to radiation. \u00b7 The exposure is prolonged. \u00b7 The radiation is nonionizing. \u00b7 Nonionizing radiation is electromagnetic. \u00b7 It is at or below the frequency of visible light. \u00b7 The exposure increases a person's chances. \u00b7 What the chances are of is developing cancer. \u00b7 The cancer is soft-tissue cancer. (2) This names sources of that radiation. \u00b7 Electric power lines are one source. \u00b7 Electrical appliances are also sources. \u00b7 Electric blankets are given as an example. \u00b7 Video-display terminals are another example.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Prolonged exposure to nonionizing radiation\u2014 electromagnetic radiation at or below the frequency of visible light\u2014increases a person\u2019s chances of developing soft-tissue cancer.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about exposure to radiation."
+      },
+      {
+       "n": 2,
+       "text": "The exposure is prolonged."
+      },
+      {
+       "n": 3,
+       "text": "The radiation is nonionizing."
+      },
+      {
+       "n": 4,
+       "text": "Nonionizing radiation is electromagnetic."
+      },
+      {
+       "n": 5,
+       "text": "It is at or below the frequency of visible light."
+      },
+      {
+       "n": 6,
+       "text": "The exposure increases a person's chances."
+      },
+      {
+       "n": 7,
+       "text": "What the chances are of is developing cancer."
+      },
+      {
+       "n": 8,
+       "text": "The cancer is soft-tissue cancer."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Electric power lines as well as such electrical appliances as electric blankets and video-display terminals are sources of nonionizing radiation.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This names sources of that radiation."
+      },
+      {
+       "n": 2,
+       "text": "Electric power lines are one source."
+      },
+      {
+       "n": 3,
+       "text": "Electrical appliances are also sources."
+      },
+      {
+       "n": 4,
+       "text": "Electric blankets are given as an example."
+      },
+      {
+       "n": 5,
+       "text": "Video-display terminals are another example."
+      }
+     ]
+    }
+   ],
+   "the_read": "Electric power lines and some appliances may increase risk of cancer.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q18",
+     "qnum": 18,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT21_S3_Q19",
+   "prompt": "In the first decade following the founding of the British Labour party, the number of people regularly voting for Labour increased fivefold. The number of committed Labour voters increased a further fivefold during the party\u2019s second decade. Since the increase was thus the same in the first as in the second decade, the often-made claim that the Labour party gained more voters in the party\u2019s second decade than in its first is clearly false.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a decade. \u00b7 The decade followed the founding of a party. \u00b7 The party is the British Labour party. \u00b7 It is about people voting for Labour. \u00b7 Those people voted regularly. \u00b7 Their number increased fivefold. (2) This is about committed Labour voters. \u00b7 Their number increased again. \u00b7 The increase was a further fivefold. \u00b7 It happened during the second decade. \u00b7 The decade is the party's own second. (3) This gives a reason for what follows. \u00b7 The increase is treated as the same in both decades. \u00b7 The comparison is between the first and the second. (4) This is the conclusion. \u00b7 It is about a claim other people make. \u00b7 The claim is made often. \u00b7 The claim is that Labour gained more voters in its second decade. \u00b7 The comparison is with its first decade. \u00b7 The conclusion says the claim is false. \u00b7 It says so clearly.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In the first decade following the founding of the British Labour party, the number of people regularly voting for Labour increased fivefold.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a decade."
+      },
+      {
+       "n": 2,
+       "text": "The decade followed the founding of a party."
+      },
+      {
+       "n": 3,
+       "text": "The party is the British Labour party."
+      },
+      {
+       "n": 4,
+       "text": "It is about people voting for Labour."
+      },
+      {
+       "n": 5,
+       "text": "Those people voted regularly."
+      },
+      {
+       "n": 6,
+       "text": "Their number increased fivefold."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The number of committed Labour voters increased a further fivefold during the party\u2019s second decade.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about committed Labour voters."
+      },
+      {
+       "n": 2,
+       "text": "Their number increased again."
+      },
+      {
+       "n": 3,
+       "text": "The increase was a further fivefold."
+      },
+      {
+       "n": 4,
+       "text": "It happened during the second decade."
+      },
+      {
+       "n": 5,
+       "text": "The decade is the party's own second."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since the increase was thus the same in the first as in the second decade,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason for what follows."
+      },
+      {
+       "n": 2,
+       "text": "The increase is treated as the same in both decades."
+      },
+      {
+       "n": 3,
+       "text": "The comparison is between the first and the second."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "the often-made claim that the Labour party gained more voters in the party\u2019s second decade than in its first is clearly false.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about a claim other people make."
+      },
+      {
+       "n": 3,
+       "text": "The claim is made often."
+      },
+      {
+       "n": 4,
+       "text": "The claim is that Labour gained more voters in its second decade."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with its first decade."
+      },
+      {
+       "n": 6,
+       "text": "The conclusion says the claim is false."
+      },
+      {
+       "n": 7,
+       "text": "It says so clearly."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if a fivefold increase of a greater number is larger than a fivefold increase of a smaller number?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q19",
+     "qnum": 19,
+     "question_type": "Classic Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT21_S3_Q20",
+   "prompt": "A number of seriously interested amateur astronomers have tested the new Exodus refractor telescope. With it, they were able to observe in crisp detail planetary features that were seen only as fuzzy images in their 8-inch (approximately 20-centimeter) Newtonian telescopes, even though the 8-inch telescopes, with their wider apertures, gather more light than the 4-inch (approximately 10-centimeter) Exodus. Given these amateur astronomers\u2019 observational findings, any serious amateur astronomer ought to choose the Exodus if she or he is buying a telescope for planetary observation.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about amateur astronomers. \u00b7 They are seriously interested ones. \u00b7 A number of them did something. \u00b7 They tested a telescope. \u00b7 The telescope is the Exodus refractor. \u00b7 The telescope is new. (2) This is about using that telescope. \u00b7 They were able to observe planetary features. \u00b7 The detail was crisp. \u00b7 The same features looked different before. \u00b7 They were seen only as fuzzy images. \u00b7 That was in their Newtonian telescopes. \u00b7 Those telescopes are 8-inch ones. \u00b7 Eight inches is about 20 centimeters. (3) This is a contrast with what came before. \u00b7 It is about the 8-inch telescopes. \u00b7 Those telescopes have wider apertures. \u00b7 They gather more light. \u00b7 The comparison is with the Exodus. \u00b7 The Exodus is a 4-inch telescope. \u00b7 Four inches is about 10 centimeters. (4) This is the conclusion. \u00b7 It rests on those observational findings. \u00b7 The findings belong to these amateur astronomers. \u00b7 It is about any serious amateur astronomer. \u00b7 Such a person ought to choose the Exodus. \u00b7 This applies under a condition. \u00b7 The condition is buying a telescope for planetary observation.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A number of seriously interested amateur astronomers have tested the new Exodus refractor telescope.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about amateur astronomers."
+      },
+      {
+       "n": 2,
+       "text": "They are seriously interested ones."
+      },
+      {
+       "n": 3,
+       "text": "A number of them did something."
+      },
+      {
+       "n": 4,
+       "text": "They tested a telescope."
+      },
+      {
+       "n": 5,
+       "text": "The telescope is the Exodus refractor."
+      },
+      {
+       "n": 6,
+       "text": "The telescope is new."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "With it, they were able to observe in crisp detail planetary features that were seen only as fuzzy images in their 8-inch (approximately 20-centimeter) Newtonian telescopes,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about using that telescope."
+      },
+      {
+       "n": 2,
+       "text": "They were able to observe planetary features."
+      },
+      {
+       "n": 3,
+       "text": "The detail was crisp."
+      },
+      {
+       "n": 4,
+       "text": "The same features looked different before."
+      },
+      {
+       "n": 5,
+       "text": "They were seen only as fuzzy images."
+      },
+      {
+       "n": 6,
+       "text": "That was in their Newtonian telescopes."
+      },
+      {
+       "n": 7,
+       "text": "Those telescopes are 8-inch ones."
+      },
+      {
+       "n": 8,
+       "text": "Eight inches is about 20 centimeters."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "even though the 8-inch telescopes, with their wider apertures, gather more light than the 4-inch (approximately 10-centimeter) Exodus.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about the 8-inch telescopes."
+      },
+      {
+       "n": 3,
+       "text": "Those telescopes have wider apertures."
+      },
+      {
+       "n": 4,
+       "text": "They gather more light."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with the Exodus."
+      },
+      {
+       "n": 6,
+       "text": "The Exodus is a 4-inch telescope."
+      },
+      {
+       "n": 7,
+       "text": "Four inches is about 10 centimeters."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Given these amateur astronomers\u2019 observational findings, any serious amateur astronomer ought to choose the Exodus if she or he is buying a telescope for planetary observation.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on those observational findings."
+      },
+      {
+       "n": 3,
+       "text": "The findings belong to these amateur astronomers."
+      },
+      {
+       "n": 4,
+       "text": "It is about any serious amateur astronomer."
+      },
+      {
+       "n": 5,
+       "text": "Such a person ought to choose the Exodus."
+      },
+      {
+       "n": 6,
+       "text": "This applies under a condition."
+      },
+      {
+       "n": 7,
+       "text": "The condition is buying a telescope for planetary observation."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's a downside to Exodus refractor telescopes? What if it's too expensive for any amateur?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q20",
+     "qnum": 20,
+     "question_type": "Method",
+     "correct_answer": "D"
+    },
+    {
+     "citation": "PT21.S3.Q21",
+     "qnum": 21,
+     "question_type": "Weaken",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT21_S3_Q22",
+   "prompt": "Anatomical bilateral symmetry is a common trait. It follows, therefore, that it confers survival advantages on organisms. After all, if bilateral symmetry did not confer such advantages, it would not be common.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a trait. \u00b7 The trait is anatomical bilateral symmetry. \u00b7 The trait is common. (2) This is the conclusion. \u00b7 It is drawn from what came before. \u00b7 The symmetry confers advantages. \u00b7 The advantages are survival advantages. \u00b7 They are conferred on organisms. (3) This supports the conclusion. \u00b7 It is a conditional statement. \u00b7 The condition is symmetry not conferring such advantages. \u00b7 In that case it would not be common.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Anatomical bilateral symmetry is a common trait.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a trait."
+      },
+      {
+       "n": 2,
+       "text": "The trait is anatomical bilateral symmetry."
+      },
+      {
+       "n": 3,
+       "text": "The trait is common."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "It follows, therefore, that it confers survival advantages on organisms.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is drawn from what came before."
+      },
+      {
+       "n": 3,
+       "text": "The symmetry confers advantages."
+      },
+      {
+       "n": 4,
+       "text": "The advantages are survival advantages."
+      },
+      {
+       "n": 5,
+       "text": "They are conferred on organisms."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "After all, if bilateral symmetry did not confer such advantages, it would not be common.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This supports the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is a conditional statement."
+      },
+      {
+       "n": 3,
+       "text": "The condition is symmetry not conferring such advantages."
+      },
+      {
+       "n": 4,
+       "text": "In that case it would not be common."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rules of conditional reasoning don't apply?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q22",
+     "qnum": 22,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT21_S3_Q23",
+   "prompt": "Electrical engineers have repeatedly demonstrated that the best solid-state amplifiers are indistinguishable from the best vacuum-tube amplifiers with respect to the characteristics commonly measured in evaluating the quality of an amplifier\u2019s musical reproduction. Therefore, those music lovers who insist that recorded music sounds better when played with the best vacuum-tube amplifier than when played with the best solid-state amplifier must be imagining the difference in quality that they claim to hear.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about electrical engineers. \u00b7 They have demonstrated something repeatedly. \u00b7 It concerns the best solid-state amplifiers. \u00b7 Those are indistinguishable from the best vacuum-tube amplifiers. \u00b7 The indistinguishability is limited to certain characteristics. \u00b7 Those characteristics are the ones commonly measured. \u00b7 They are measured to evaluate quality. \u00b7 The quality is of musical reproduction. (2) This is the conclusion. \u00b7 It is about certain music lovers. \u00b7 Those people insist on something. \u00b7 They say recorded music sounds better with a vacuum-tube amplifier. \u00b7 The comparison is with the best solid-state amplifier. \u00b7 The conclusion says they must be imagining it. \u00b7 What they imagine is the difference in quality. \u00b7 It is a difference they claim to hear.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Electrical engineers have repeatedly demonstrated that the best solid-state amplifiers are indistinguishable from the best vacuum-tube amplifiers with respect to the characteristics commonly measured in evaluating the quality of an amplifier\u2019s musical reproduction.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about electrical engineers."
+      },
+      {
+       "n": 2,
+       "text": "They have demonstrated something repeatedly."
+      },
+      {
+       "n": 3,
+       "text": "It concerns the best solid-state amplifiers."
+      },
+      {
+       "n": 4,
+       "text": "Those are indistinguishable from the best vacuum-tube amplifiers."
+      },
+      {
+       "n": 5,
+       "text": "The indistinguishability is limited to certain characteristics."
+      },
+      {
+       "n": 6,
+       "text": "Those characteristics are the ones commonly measured."
+      },
+      {
+       "n": 7,
+       "text": "They are measured to evaluate quality."
+      },
+      {
+       "n": 8,
+       "text": "The quality is of musical reproduction."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Therefore, those music lovers who insist that recorded music sounds better when played with the best vacuum-tube amplifier than when played with the best solid-state amplifier must be imagining the difference in quality that they claim to hear.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about certain music lovers."
+      },
+      {
+       "n": 3,
+       "text": "Those people insist on something."
+      },
+      {
+       "n": 4,
+       "text": "They say recorded music sounds better with a vacuum-tube amplifier."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with the best solid-state amplifier."
+      },
+      {
+       "n": 6,
+       "text": "The conclusion says they must be imagining it."
+      },
+      {
+       "n": 7,
+       "text": "What they imagine is the difference in quality."
+      },
+      {
+       "n": 8,
+       "text": "It is a difference they claim to hear."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if they are distinguishable with respect to characteristics not commonly measured?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q23",
+     "qnum": 23,
+     "question_type": "Weaken",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT21_S3_Q24",
+   "prompt": "Explanation must be distinguished from justification. Every human action potentially has an explanation; that is, with sufficient knowledge it would be possible to give an accurate description of the causes of that action. An action is justified only when the person performing the action has sufficient reasons for the action. According to many psychologists, even when there is a justification for an action, that justification often forms no part of the explanation. The general principle, however, is that only an action whose justification, that is, the reasons for the action, forms an essential part of its explanation is rational.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about two things. \u00b7 One of them is explanation. \u00b7 The other is justification. \u00b7 The two must be distinguished. (2) This is about every human action. \u00b7 Each one potentially has an explanation. \u00b7 The rest restates what that means. \u00b7 Sufficient knowledge would be needed. \u00b7 It would be possible to give a description. \u00b7 The description would be accurate. \u00b7 What is described is the causes of the action. (3) This is about when an action is justified. \u00b7 It states a necessary condition. \u00b7 The person performing the action must have reasons. \u00b7 The reasons must be sufficient. (4) This is attributed to psychologists. \u00b7 It is the view of many of them. \u00b7 It applies even when a justification exists. \u00b7 The justification forms no part of the explanation. \u00b7 This is often so rather than always. (5) This is a contrast with what came before. \u00b7 It states a general principle. \u00b7 The principle is about which actions are rational. \u00b7 An action's justification is its reasons. \u00b7 Those reasons must form part of its explanation. \u00b7 The part must be an essential one. \u00b7 Only such an action is rational.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Explanation must be distinguished from justification.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about two things."
+      },
+      {
+       "n": 2,
+       "text": "One of them is explanation."
+      },
+      {
+       "n": 3,
+       "text": "The other is justification."
+      },
+      {
+       "n": 4,
+       "text": "The two must be distinguished."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Every human action potentially has an explanation; that is, with sufficient knowledge it would be possible to give an accurate description of the causes of that action.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about every human action."
+      },
+      {
+       "n": 2,
+       "text": "Each one potentially has an explanation."
+      },
+      {
+       "n": 3,
+       "text": "The rest restates what that means."
+      },
+      {
+       "n": 4,
+       "text": "Sufficient knowledge would be needed."
+      },
+      {
+       "n": 5,
+       "text": "It would be possible to give a description."
+      },
+      {
+       "n": 6,
+       "text": "The description would be accurate."
+      },
+      {
+       "n": 7,
+       "text": "What is described is the causes of the action."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "An action is justified only when the person performing the action has sufficient reasons for the action.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about when an action is justified."
+      },
+      {
+       "n": 2,
+       "text": "It states a necessary condition."
+      },
+      {
+       "n": 3,
+       "text": "The person performing the action must have reasons."
+      },
+      {
+       "n": 4,
+       "text": "The reasons must be sufficient."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "According to many psychologists, even when there is a justification for an action, that justification often forms no part of the explanation.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is attributed to psychologists."
+      },
+      {
+       "n": 2,
+       "text": "It is the view of many of them."
+      },
+      {
+       "n": 3,
+       "text": "It applies even when a justification exists."
+      },
+      {
+       "n": 4,
+       "text": "The justification forms no part of the explanation."
+      },
+      {
+       "n": 5,
+       "text": "This is often so rather than always."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "The general principle, however, is that only an action whose justification, that is, the reasons for the action, forms an essential part of its explanation is rational.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It states a general principle."
+      },
+      {
+       "n": 3,
+       "text": "The principle is about which actions are rational."
+      },
+      {
+       "n": 4,
+       "text": "An action's justification is its reasons."
+      },
+      {
+       "n": 5,
+       "text": "Those reasons must form part of its explanation."
+      },
+      {
+       "n": 6,
+       "text": "The part must be an essential one."
+      },
+      {
+       "n": 7,
+       "text": "Only such an action is rational."
+      }
+     ]
+    }
+   ],
+   "the_read": "According to many psychologists, there are some human actions that are not rational.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q24",
+     "qnum": 24,
+     "question_type": "Inference",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT21_S3_Q25",
+   "prompt": "At the company picnic, all of the employees who participated in more than four of the scheduled events, and only those employees, were eligible for the raffle held at the end of the day. Since only a small proportion of the employees were eligible for the raffle, most of the employees must have participated in fewer than four of the scheduled events.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a company picnic. \u00b7 It is about employees. \u00b7 Those employees participated in scheduled events. \u00b7 They participated in more than four of them. (2) This limits the group to those employees only. \u00b7 Those employees were eligible for something. \u00b7 What they were eligible for is a raffle. \u00b7 The raffle was held at the end of the day. (3) This is the conclusion. \u00b7 It rests on a given. \u00b7 The given is that few employees were eligible. \u00b7 The proportion eligible was small. \u00b7 The conclusion is about most of the employees. \u00b7 They must have participated in fewer than four events. \u00b7 The events are the scheduled ones.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "At the company picnic, all of the employees who participated in more than four of the scheduled events,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a company picnic."
+      },
+      {
+       "n": 2,
+       "text": "It is about employees."
+      },
+      {
+       "n": 3,
+       "text": "Those employees participated in scheduled events."
+      },
+      {
+       "n": 4,
+       "text": "They participated in more than four of them."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "and only those employees, were eligible for the raffle held at the end of the day.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This limits the group to those employees only."
+      },
+      {
+       "n": 2,
+       "text": "Those employees were eligible for something."
+      },
+      {
+       "n": 3,
+       "text": "What they were eligible for is a raffle."
+      },
+      {
+       "n": 4,
+       "text": "The raffle was held at the end of the day."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since only a small proportion of the employees were eligible for the raffle, most of the employees must have participated in fewer than four of the scheduled events.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on a given."
+      },
+      {
+       "n": 3,
+       "text": "The given is that few employees were eligible."
+      },
+      {
+       "n": 4,
+       "text": "The proportion eligible was small."
+      },
+      {
+       "n": 5,
+       "text": "The conclusion is about most of the employees."
+      },
+      {
+       "n": 6,
+       "text": "They must have participated in fewer than four events."
+      },
+      {
+       "n": 7,
+       "text": "The events are the scheduled ones."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if most employees participated in exactly four events?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT21.S3.Q25",
+     "qnum": 25,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "E"
+    }
+   ]
+  }
+ ]
+}

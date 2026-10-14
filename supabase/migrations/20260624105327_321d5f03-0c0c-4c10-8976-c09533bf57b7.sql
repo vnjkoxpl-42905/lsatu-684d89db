@@ -1,0 +1,1 @@
+ALTER TABLE public.tutor_conversations ADD COLUMN IF NOT EXISTS action_status text;
