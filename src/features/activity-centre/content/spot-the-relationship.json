@@ -980,7 +980,7 @@
       "credited_answers": [
         "conditional, \"Provided\"; comparative, \"colder than\"; causal, \"because\" and \"lags\""
       ],
-      "explanation": "3 relationships in this sentence. *Provided* introduces a sufficient condition for the stated upward drift. *Colder than* compares the temperatures of the sample and reference cell. *Because* identifies the thermocouple's lag as the cause of the drift. *Provided* gives a condition: if the sample is colder than the reference cell, the reading drifts upward. *Colder than* compares their temperatures. *Because* introduces the cause of the drift, the thermocouple's lag. The technical name doesn't change what those words tell us.",
+      "explanation": "3 relationships in this sentence. *Provided* gives a condition: if the sample is colder than the reference cell, the reading drifts upward. *Colder than* compares their temperatures. *Because* introduces the cause of the drift, the thermocouple's lag. The technical name doesn't change what those words tell us.",
       "category": "Rung 3: Compound sentences",
       "answer_key": {
         "relationships": [
@@ -1073,7 +1073,7 @@
       "credited_answers": [
         "causal, \"Since\" and \"silted\"; comparative, \"slower than\"; conditional, \"unless\""
       ],
-      "explanation": "3 relationships in this sentence. *Since* presents silting as the cause of the wheel's reduced speed. *Slower than it did* compares the wheel's current turning with its past turning. *Cannot ... unless* makes annual spring dredging necessary for grinding. *Since* gives the cause of the slower turning: the mill race silted. *Slower than* compares the wheel's present speed with its earlier speed. *Unless* introduces a requirement for grinding: without dredging each spring, the mill cannot grind. Here *since* gives a reason, not merely a date.",
+      "explanation": "3 relationships in this sentence. *Since* gives the cause of the slower turning: the mill race silted. *Slower than* compares the wheel's present speed with its earlier speed. *Unless* introduces a requirement for grinding: without dredging each spring, the mill cannot grind. Here *since* gives a reason, not merely a date.",
       "category": "Rung 3: Compound sentences",
       "answer_key": {
         "relationships": [
@@ -1162,7 +1162,7 @@
       "credited_answers": [
         "conditional, \"only if\"; comparative, \"more vigorous than\"; causal, \"since\" and \"starves\""
       ],
-      "explanation": "3 relationships in this sentence. *Only if* makes greater rootstock vigour necessary for the transplant to take. *More vigorous than* compares the two plant parts in vigour. *Starves* attributes graft deprivation to weak stock, and *since* presents it as the explanation. *Only if* says the transplant needs a rootstock more vigorous than the scion. *More vigorous than* compares those two parts of the plant. *Since* and *starves* give the causal explanation: a weak stock deprives the graft of what it needs. The requirement and its explanation do different jobs.",
+      "explanation": "3 relationships in this sentence. *Only if* says the transplant needs a rootstock more vigorous than the scion. *More vigorous than* compares those two parts of the plant. *Since* and *starves* give the causal explanation: a weak stock deprives the graft of what it needs. The requirement and its explanation do different jobs.",
       "category": "Rung 3: Compound sentences",
       "answer_key": {
         "relationships": [
@@ -1350,7 +1350,7 @@
       "credited_answers": [
         "conditional, \"Unless\"; comparative, \"exceeds\"; causal, \"because\" and \"follows\""
       ],
-      "explanation": "3 relationships in this sentence. *Unless* with *cannot* makes the higher interstitial osmolality necessary for concentration. *Exceeds* compares the osmolality of the two fluids. *Because* presents water following the gradient as the causal mechanism explaining the requirement. *Unless* gives a requirement: without the higher fluid osmolality, the multiplier cannot concentrate the urine. *Exceeds* compares the fluid's osmolality with the filtrate's. *Because* gives the causal explanation, water moving along the gradient. The long scientific names don't change the meaning of *unless* or *exceeds*.",
+      "explanation": "3 relationships in this sentence. *Unless* gives a requirement: without the higher fluid osmolality, the multiplier cannot concentrate the urine. *Exceeds* compares the fluid's osmolality with the filtrate's. *Because* gives the causal explanation, water moving along the gradient. The long scientific names don't change the meaning of *unless* or *exceeds*.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [
@@ -1394,7 +1394,7 @@
       "credited_answers": [
         "conditional, \"only if\"; comparative, \"higher than\"; causal, \"since\" and \"inflate\""
       ],
-      "explanation": "3 relationships in this sentence. *Only if* makes a coefficient above the threshold necessary for acceptance. *Higher than* compares the coefficient with the site's cutoff value. *Since* and *inflate* present the increase in spurious matches at short lengths as the causal explanation. *Only if* makes a coefficient above the site threshold necessary for accepting the match. *Higher than* compares the coefficient with that threshold. *Since* gives the reason for the requirement: short series allow spurious matches to increase. Meeting the threshold alone doesn't guarantee acceptance.",
+      "explanation": "3 relationships in this sentence. *Only if* makes a coefficient above the site threshold necessary for accepting the match. *Higher than* compares the coefficient with that threshold. *Since* gives the reason for the requirement: short series allow spurious matches to increase. Meeting the threshold alone doesn't guarantee acceptance.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [
@@ -1480,7 +1480,7 @@
       "credited_answers": [
         "conditional, \"Only where\"; comparative, \"lower than\"; causal, \"because\" and \"homogenizes\""
       ],
-      "explanation": "3 relationships in this sentence. *Only where* makes below-baseline susceptibility necessary for intact preservation. *Lower than* compares susceptibility with a regional reference value. *Homogenizes* states bioturbation's effect on the signal, and *because* supplies the explanation. *Only where* makes susceptibility below the baseline necessary for preserving the intact excursion. *Lower than* compares the sediment's susceptibility with that baseline. *Because* and *homogenizes* give the causal explanation: bioturbation blends the signal. A required condition and an explanation of damage can appear in the same sentence.",
+      "explanation": "3 relationships in this sentence. *Only where* makes susceptibility below the baseline necessary for preserving the intact excursion. *Lower than* compares the sediment's susceptibility with that baseline. *Because* and *homogenizes* give the causal explanation: bioturbation blends the signal. A required condition and an explanation of damage can appear in the same sentence.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [
@@ -1524,7 +1524,7 @@
       "credited_answers": [
         "conditional, \"Provided\"; comparative, \"finer than\"; causal, \"since\" and \"produces\""
       ],
-      "explanation": "3 relationships in this sentence. *Provided* gives a sufficient condition for the stated meaningfulness of a null result. *Finer than* compares the assay's detection capability with a regulatory cutoff. *Produces* attributes meaningless nulls to a coarse assay, and *since* presents this as the explanation. *Provided* gives a condition under which a null result is meaningful. *Finer than* compares the assay's detection limit with the regulatory threshold. *Since* and *produces* give the reason: a coarse assay can produce a null that tells us nothing useful. The cause explains why the detection limit matters.",
+      "explanation": "3 relationships in this sentence. *Provided* gives a condition under which a null result is meaningful. *Finer than* compares the assay's detection limit with the regulatory threshold. *Since* and *produces* give the reason: a coarse assay can produce a null that tells us nothing useful. The cause explains why the detection limit matters.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [
