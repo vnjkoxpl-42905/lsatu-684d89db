@@ -64,6 +64,10 @@ const TYPE_WORDS: Record<RelationshipType, RegExp> = {
 const norm = (s: string) => s.toLowerCase().replace(/[‘’“”"'`*]/g, " ").replace(/[-_/]/g, " ").replace(/\s+/g, " ");
 const has = (hay: string, needle: string) => new RegExp(`\\b${needle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(hay);
 
+// Everyday words ("so", "if") leak only when the hint singles them out in quotes.
+const COMMON = new Set(["so", "if", "when", "since", "as", "than", "because", "unless", "whenever"]);
+const quoted = (raw: string, p: string) => new RegExp(`["'‘“*]\\s*${p}\\s*["'’”*]`, "i").test(raw);
+
 /**
  * First-attempt hint boundary. A first unsuccessful hint must not quote a key
  * indicator the student has not already written, nor name a type the student
@@ -74,7 +78,7 @@ export function hintLeaks(feedback: string, studentResponse: string, key: Answer
   for (const r of key.relationships) {
     const phrases = [...r.indicators, ...(r.required_parts ?? []).flat()]
       .flatMap((x) => x.split(/…|\.\.\./)).map((x) => norm(x).trim()).filter((x) => x.length >= 2);
-    if (phrases.some((p) => has(f, p) && !has(s, p))) return true;
+    if (phrases.some((p) => !has(s, p) && (COMMON.has(p) ? quoted(feedback, p) : has(f, p)))) return true;
     if (TYPE_WORDS[r.type].test(feedback) && !TYPE_WORDS[r.type].test(studentResponse)) return true;
   }
   return false;
