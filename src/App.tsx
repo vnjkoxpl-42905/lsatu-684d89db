@@ -127,6 +127,7 @@ const TeacherWorkspaceShell = safeLazy(() => import("./pages/teacher/shell/Teach
 const TeacherReadingCenter = safeLazy(() => import("./pages/teacher/tools/TeacherReadingCenter"));
 const ReadingCenterApp = safeLazy(() => import("./features/reading-center"));
 import ReadingCenterGate from '@/components/ReadingCenterGate';
+import MyWorkGate from '@/components/MyWorkGate';
 const DeskTodaySurface = safeLazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
 const TeacherPayments = safeLazy(() => import("./pages/teacher/shell/TeacherPayments"));
 const TeacherDevIndex = safeLazy(() => import("./pages/teacher/shell/TeacherDevIndex"));
@@ -624,8 +625,8 @@ const App = () => {
 
                     <Route path="/my-work" element={<ProtectedRoute allowSignedIn><StudentDestination destination="my-work" /></ProtectedRoute>}>
                       <Route index element={<DestinationIndex destination="my-work" />} />
-                      <Route path="to-do" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed={false} /></ProtectedRoute>} />
-                      <Route path="completed" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed /></ProtectedRoute>} />
+                      <Route path="to-do" element={<MyWorkGate><MyWorkPage completed={false} /></MyWorkGate>} />
+                      <Route path="completed" element={<MyWorkGate><MyWorkPage completed /></MyWorkGate>} />
                       <Route path="notes" element={<ProtectedRoute flag="has_classroom_access"><MyWorkNotesPage /></ProtectedRoute>} />
                     </Route>
 
