@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, useLocation } from 'react-router-dom';
+import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { RcAttempt, RcDrillSession, RcPassage } from '../lib/rcTypes';
 import type { RcPagerEntry } from '../lib/rcSession';
@@ -90,7 +90,12 @@ const attempt: RcAttempt = {
 function mount(search = '') {
   return render(<MemoryRouter initialEntries={[`/rc/drill?sessionId=session-one${search}`]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}><RcPlayer /><LocationProbe /></MemoryRouter>);
 }
-function LocationProbe() { const location = useLocation(); return <output data-testid="location">{location.pathname}{location.search}</output>; }
+function LocationProbe() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  return <><output data-testid="location">{location.pathname}{location.search}</output>
+    <button onClick={() => navigate('/rc/drill?sessionId=session-two')}>Switch to another drill</button></>;
+}
 beforeEach(() => {
   localStorage.clear();
   vi.clearAllMocks();
@@ -158,6 +163,135 @@ describe('RC account save safety', () => {
     await waitFor(() => expect(screen.getByTestId('pager-statuses').textContent?.match(/incorrect/g)).toHaveLength(3));
     expect(screen.getByRole('button', { name: 'Finish drill' })).toBeInTheDocument();
     expect(api.recordAttempt).toHaveBeenCalledTimes(3);
+    expect(api.completeSession).not.toHaveBeenCalled();
+  });
+
+  it('restores every selected passage answer after teardown during a partially acknowledged passage save', async () => {
+    api.getSession.mockResolvedValue(session({ reveal: 'per_passage' }));
+    const first = mount();
+    await screen.findByText('Question 1: blank');
+    for (const ordinal of [1, 2, 3]) {
+      fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+      if (ordinal < 3) {
+        fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+        await screen.findByText(`Question ${ordinal + 1}: blank`);
+      }
+    }
+    let rejectLostResponse!: (reason: Error) => void;
+    api.recordAttempt.mockImplementationOnce(() => new Promise<RcAttempt>((_, reject) => {
+      rejectLostResponse = reject;
+    }));
+    fireEvent.click(screen.getByRole('button', { name: 'Check passage' }));
+    await waitFor(() => expect(api.recordAttempt).toHaveBeenCalledTimes(1));
+    const committedFirst = api.recordAttempt.mock.calls[0][0] as RcAttempt;
+    first.unmount();
+    api.getSession.mockResolvedValue(session({ reveal: 'per_passage', currentQuestionIndex: 2 }));
+    api.getSessionAttempts.mockResolvedValue([committedFirst]);
+    mount();
+    await screen.findByText('Question 3: B');
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Question 1 · Drill 1: answered');
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Question 2 · Drill 2: answered');
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Question 3 · Drill 3: answered');
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('incorrect');
+    api.recordAttempt.mockRejectedValueOnce(new Error('Recovery save temporarily rejected'));
+    fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+    await waitFor(() => expect(screen.getByRole('alertdialog')).toHaveTextContent('That answer did not save'));
+    fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+    await waitFor(() => expect(screen.queryByRole('alertdialog')).toBeNull());
+    expect(api.recordAttempt.mock.calls.map(([value]) => value.questionId)).toEqual([1, 2, 2, 3]);
+    expect(api.recordAttempt.mock.calls.map(([value]) => value.selected)).toEqual(['B', 'B', 'B', 'B']);
+    expect(api.recordAttempt.mock.calls[1][0].id).toBe(api.recordAttempt.mock.calls[2][0].id);
+    expect(localStorage.getItem('lsatu:rc-answer:student-one:session-one')).toBeNull();
+    // The old browser's response arrives after the new player recovered its
+    // answers. It must not erase another question's current draft.
+    await act(async () => { rejectLostResponse(new Error('Connection closed after server commit')); });
+    expect(localStorage.getItem('lsatu:rc-answer:student-one:session-one')).toBeNull();
+  });
+
+  it.each(['per_question', 'per_passage'] as const)('keeps unconfirmed %s drafts hidden through clock recovery and a second reload', async (reveal) => {
+    api.getSession.mockResolvedValue(session({ reveal }));
+    const first = mount();
+    await screen.findByText('Question 1: blank');
+    for (const ordinal of [1, 2, 3]) {
+      fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+      if (ordinal < 3) {
+        fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+        await screen.findByText(`Question ${ordinal + 1}: blank`);
+      }
+    }
+    first.unmount();
+    localStorage.setItem('lsatu:rc-clock:session-one', '30');
+    api.getSession.mockResolvedValue(session({ reveal, currentQuestionIndex: 2 }));
+    const second = mount();
+    await screen.findByText('Question 3: B');
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Question 1 · Drill 1: answered');
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Question 2 · Drill 2: answered');
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('incorrect');
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: 'Choose B', hidden: true })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+    await waitFor(() => expect(screen.queryByRole('alertdialog')).toBeNull());
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    second.unmount();
+    api.getSession.mockResolvedValue(session({ reveal, currentQuestionIndex: 2, clockElapsedSeconds: 30 }));
+    mount();
+    await screen.findByText('Question 3: B');
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('incorrect');
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(screen.queryByRole('alertdialog')).toBeNull();
+    expect(screen.getByRole('button', { name: reveal === 'per_question' ? 'Confirm' : 'Check passage' })).not.toBeDisabled();
+  });
+
+  it.each(['per_passage', 'end_of_set'] as const)('does not adopt an old %s save continuation after switching sessions', async (reveal) => {
+    api.getSession.mockImplementation(async (id: string) => id === 'session-two'
+      ? { ...session({ reveal, clockElapsedSeconds: 0 }), id: 'session-two' }
+      : session({ reveal }));
+    localStorage.setItem('lsatu:rc-clock:session-two', '30');
+    mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    if (reveal === 'per_passage') {
+      for (const ordinal of [2, 3]) {
+        fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+        await screen.findByText(`Question ${ordinal}: blank`);
+        fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+      }
+    }
+    let resolveOldWrite!: (value: RcAttempt) => void;
+    api.recordAttempt.mockImplementationOnce(() => new Promise<RcAttempt>((resolve) => { resolveOldWrite = resolve; }));
+    fireEvent.click(screen.getByRole('button', { name: reveal === 'per_passage' ? 'Check passage' : 'Next question' }));
+    await waitFor(() => expect(api.recordAttempt).toHaveBeenCalledTimes(1));
+    const oldAttempt = api.recordAttempt.mock.calls[0][0] as RcAttempt;
+    fireEvent.click(screen.getByRole('button', { name: 'Switch to another drill' }));
+    await screen.findByRole('alertdialog');
+    expect(screen.getByTestId('location')).toHaveTextContent('session-two');
+    expect(screen.getByText('Question 1: blank')).toBeInTheDocument();
+    await act(async () => { resolveOldWrite(oldAttempt); });
+    const clocksBeforeRetry = api.saveSessionClock.mock.calls.length;
+    fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+    await waitFor(() => expect(screen.queryByRole('alertdialog')).toBeNull());
+    expect(api.recordAttempt).toHaveBeenCalledTimes(1);
+    expect(api.saveSessionClock.mock.calls.slice(clocksBeforeRetry).every(([id]) => id === 'session-two')).toBe(true);
+    expect(screen.getByText('Question 1: blank')).toBeInTheDocument();
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Question 1 · Drill 1: unanswered');
+    expect(screen.getByRole('button', { name: 'Choose B' })).not.toBeDisabled();
+  });
+
+  it('does not exit a new drill when an older Save and exit clock acknowledgement arrives', async () => {
+    api.getSession.mockImplementation(async (id: string) => id === 'session-two'
+      ? { ...session(), id: 'session-two' } : session());
+    mount();
+    await screen.findByText('Question 1: blank');
+    let resolveExitClock!: () => void;
+    api.saveSessionClock.mockImplementationOnce(() => new Promise<void>((resolve) => { resolveExitClock = resolve; }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save and exit' }));
+    await waitFor(() => expect(api.saveSessionClock).toHaveBeenCalledTimes(1));
+    fireEvent.click(screen.getByRole('button', { name: 'Switch to another drill' }));
+    await waitFor(() => expect(screen.getByTestId('location')).toHaveTextContent('session-two'));
+    await screen.findByText('Question 1: blank');
+    await act(async () => { resolveExitClock(); });
+    expect(screen.getByTestId('location')).toHaveTextContent('/rc/drill?sessionId=session-two');
+    expect(screen.getByRole('button', { name: 'Choose B' })).not.toBeDisabled();
     expect(api.completeSession).not.toHaveBeenCalled();
   });
 
@@ -319,6 +453,46 @@ describe('RC account save safety', () => {
     expect(writes.map((value) => value.selected)).toEqual([null, null, null]);
     expect(writes.filter((value) => value.questionId !== 1).map((value) => value.timeMs)).toEqual([0, 0]);
     expect(api.saveSessionClock).toHaveBeenCalled();
+  });
+
+  it('serializes duplicate completion clicks and retries a rejected acknowledgement without rewriting answers', async () => {
+    const savedAnswers = [attempt, { ...attempt, id: 'answer-two', questionId: 2 }];
+    api.getSessionAttempts.mockResolvedValue(savedAnswers);
+    let rejectCompletion!: (reason: Error) => void;
+    api.completeSession.mockImplementationOnce(() => new Promise<void>((_, reject) => {
+      rejectCompletion = reject;
+    })).mockResolvedValueOnce(undefined);
+    mount();
+    await screen.findByText('Question 3: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Complete Drill' }));
+    const confirm = screen.getByRole('button', { name: 'Confirm submission' });
+    fireEvent.click(confirm);
+    fireEvent.click(confirm);
+    await waitFor(() => expect(api.completeSession).toHaveBeenCalledTimes(1));
+    expect(screen.getByText('Saving your section…')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Choose B' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Complete Drill' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm submission' }));
+    expect(api.completeSession).toHaveBeenCalledTimes(1);
+    expect(api.recordAttempt).toHaveBeenCalledTimes(1);
+    expect(api.recordAttempt.mock.calls[0][0]).toMatchObject({ questionId: 3, selected: 'B' });
+
+    await act(async () => { rejectCompletion(new Error('Completion acknowledgement rejected')); });
+    expect(await screen.findByRole('alertdialog')).toHaveTextContent('The drill did not finish saving');
+    expect(screen.getByText('Question 3: B')).toBeInTheDocument();
+    expect(screen.getByTestId('pager-statuses').textContent?.match(/: answered/g)).toHaveLength(3);
+    const pausedClock = screen.getByTestId('clock').textContent;
+    vi.useFakeTimers();
+    await act(async () => { vi.advanceTimersByTime(10_000); });
+    expect(screen.getByTestId('clock').textContent).toBe(pausedClock);
+    vi.useRealTimers();
+    expect(screen.getByTestId('location')).toHaveTextContent('/rc/drill');
+    fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+    await waitFor(() => expect(screen.getByTestId('location').textContent).toBe('/rc/results/session-one'));
+    expect(api.completeSession).toHaveBeenCalledTimes(2);
+    expect(api.recordAttempt).toHaveBeenCalledTimes(1);
+    expect(savedAnswers.map((answer) => answer.selected)).toEqual(['B', 'B']);
   });
 
   it('reports a missing routed account session instead of waiting forever for an owner', async () => {

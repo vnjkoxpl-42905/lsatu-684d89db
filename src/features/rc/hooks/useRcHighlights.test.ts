@@ -176,4 +176,138 @@ describe('useRcHighlights with question-scoped targets', () => {
     await act(async () => oldRead(new Map([[PASSAGE, [{ target: 'passage', start: 0, end: 10, color: 'yellow' }]]])));
     expect(targetsOf(view.result.current.forPassage(PASSAGE))).toEqual(['passage:20-30']);
   });
+
+  it('deduplicates annotation retries until the delayed acknowledgement arrives', async () => {
+    const view = await setup();
+    let acknowledge!: () => void;
+    saveAnnotations.mockImplementationOnce(() => new Promise<void>((resolve) => { acknowledge = resolve; }));
+    act(() => {
+      view.result.current.add(PASSAGE, 'passage', 0, 10);
+      view.result.current.retrySave(PASSAGE);
+      view.result.current.retrySave(PASSAGE);
+    });
+    await waitFor(() => expect(saveAnnotations).toHaveBeenCalledTimes(1));
+    expect(view.result.current.statusForPassage(PASSAGE)).toBe('saving');
+    expect(localStorage.length).toBe(1);
+    await act(async () => acknowledge());
+    act(() => view.result.current.retrySave(PASSAGE));
+    expect(saveAnnotations).toHaveBeenCalledTimes(1);
+    expect(view.result.current.statusForPassage(PASSAGE)).toBe('saved');
+    view.unmount();
+  });
+
+  it('recovers a lost annotation acknowledgement after reload without automatically replaying', async () => {
+    const view = await setup();
+    let lostReply!: () => void;
+    saveAnnotations.mockImplementationOnce(() => new Promise<void>((resolve) => { lostReply = resolve; }));
+    act(() => {
+      view.result.current.add(PASSAGE, 'passage', 0, 10);
+      view.result.current.retrySave(PASSAGE);
+    });
+    await waitFor(() => expect(saveAnnotations).toHaveBeenCalledTimes(1));
+    view.unmount();
+    const restored = await setup();
+    expect(restored.result.current.statusForPassage(PASSAGE)).toBe('recovered');
+    expect(saveAnnotations).toHaveBeenCalledTimes(1);
+    // Newer intent must survive even if the lost reply subsequently arrives.
+    act(() => restored.result.current.add(PASSAGE, 'passage', 20, 30));
+    await act(async () => lostReply());
+    expect(localStorage.length).toBe(1);
+    expect(targetsOf(restored.result.current.forPassage(PASSAGE))).toEqual(['passage:0-10', 'passage:20-30']);
+    act(() => restored.result.current.retrySave(PASSAGE));
+    await waitFor(() => expect(restored.result.current.statusForPassage(PASSAGE)).toBe('saved'));
+    expect(saveAnnotations.mock.calls[1][1]).toHaveLength(2);
+    expect(localStorage.length).toBe(0);
+    restored.unmount();
+  });
+
+  it('keeps account B annotations pending when account A acknowledges its in-flight write', async () => {
+    let replyA!: () => void;
+    let replyB!: () => void;
+    saveAnnotations.mockImplementationOnce(() => new Promise<void>((resolve) => { replyA = resolve; }));
+    saveAnnotations.mockImplementationOnce(() => new Promise<void>((resolve) => { replyB = resolve; }));
+    const view = renderHook(({ actor }) => useRcHighlights([PASSAGE], actor), { initialProps: { actor: 'actor-a' } });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    act(() => { view.result.current.add(PASSAGE, 'passage', 0, 10); view.result.current.retrySave(PASSAGE); });
+    await waitFor(() => expect(saveAnnotations).toHaveBeenCalledTimes(1));
+    view.rerender({ actor: 'actor-b' });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    act(() => { view.result.current.add(PASSAGE, 'passage', 20, 30); view.result.current.retrySave(PASSAGE); });
+    await waitFor(() => expect(saveAnnotations).toHaveBeenCalledTimes(2));
+    await act(async () => replyA());
+    expect(targetsOf(view.result.current.forPassage(PASSAGE))).toEqual(['passage:20-30']);
+    expect(view.result.current.statusForPassage(PASSAGE)).toBe('saving');
+    expect(saveAnnotations.mock.calls.map((call) => call[2])).toEqual(['actor-a', 'actor-b']);
+    expect(localStorage.length).toBe(1);
+    await act(async () => replyB());
+    expect(view.result.current.statusForPassage(PASSAGE)).toBe('saved');
+    view.unmount();
+  });
+
+  it('ignores delayed hydration for a passage left behind and recovers its unsent edit on return', async () => {
+    const otherPassage = PASSAGE + 1;
+    const view = renderHook(({ ids }) => useRcHighlights(ids, 'actor-a'), { initialProps: { ids: [PASSAGE] } });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    act(() => view.result.current.add(PASSAGE, 'passage', 0, 10));
+    let staleRead!: (rows: Map<number, RcHighlight[]>) => void;
+    loadAnnotations.mockImplementationOnce(() => new Promise((resolve) => { staleRead = resolve; }));
+    view.rerender({ ids: [otherPassage] });
+    view.rerender({ ids: [PASSAGE] });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    await act(async () => staleRead(new Map([[otherPassage, [{ target: 'passage', start: 20, end: 30, color: 'pink' }]]])));
+    expect(targetsOf(view.result.current.forPassage(PASSAGE))).toEqual(['passage:0-10']);
+    expect(view.result.current.forPassage(otherPassage)).toEqual([]);
+    expect(view.result.current.statusForPassage(PASSAGE)).toBe('recovered');
+    expect(saveAnnotations).not.toHaveBeenCalled();
+    view.unmount();
+  });
+
+  it('does not surface an older save rejection over newer annotation intent', async () => {
+    const view = await setup();
+    let rejectOld!: (error: Error) => void;
+    saveAnnotations.mockImplementationOnce(() => new Promise<void>((_resolve, reject) => { rejectOld = reject; }));
+    act(() => { view.result.current.add(PASSAGE, 'passage', 0, 10); view.result.current.retrySave(PASSAGE); });
+    await waitFor(() => expect(saveAnnotations).toHaveBeenCalledTimes(1));
+    act(() => { view.result.current.removeAt(PASSAGE, 'passage', 5); view.result.current.retrySave(PASSAGE); });
+    await act(async () => rejectOld(new Error('old request failed')));
+    await waitFor(() => expect(view.result.current.statusForPassage(PASSAGE)).toBe('saved'));
+    expect(view.result.current.errorForPassage(PASSAGE)).toBeNull();
+    expect(saveAnnotations.mock.calls[1][1]).toEqual([]);
+    expect(localStorage.length).toBe(0);
+    view.unmount();
+  });
+
+  it('retains the newest account A marks through A/B/A switching, a stale reply and teardown', async () => {
+    let oldReply!: () => void;
+    saveAnnotations.mockImplementationOnce(() => new Promise<void>((resolve) => { oldReply = resolve; }));
+    const view = renderHook(({ actor }) => useRcHighlights([PASSAGE], actor), { initialProps: { actor: 'actor-a' } });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    act(() => { view.result.current.add(PASSAGE, 'passage', 0, 10); view.result.current.retrySave(PASSAGE); });
+    await waitFor(() => expect(saveAnnotations).toHaveBeenCalledTimes(1));
+    view.rerender({ actor: 'actor-b' });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    act(() => view.result.current.add(PASSAGE, 'passage', 40, 50, 'pink'));
+    view.rerender({ actor: 'actor-a' });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    expect(targetsOf(view.result.current.forPassage(PASSAGE))).toEqual(['passage:0-10']);
+    act(() => view.result.current.add(PASSAGE, 'passage', 20, 30));
+    await act(async () => oldReply());
+    view.unmount();
+
+    const restoredA = await setup();
+    expect(targetsOf(restoredA.result.current.forPassage(PASSAGE))).toEqual(['passage:0-10', 'passage:20-30']);
+    expect(restoredA.result.current.statusForPassage(PASSAGE)).toBe('recovered');
+    expect(saveAnnotations).toHaveBeenCalledTimes(1);
+    act(() => restoredA.result.current.retrySave(PASSAGE));
+    await waitFor(() => expect(restoredA.result.current.statusForPassage(PASSAGE)).toBe('saved'));
+    expect(saveAnnotations.mock.calls[1][2]).toBe('actor-a');
+    expect(saveAnnotations.mock.calls[1][1]).toHaveLength(2);
+    restoredA.unmount();
+    const restoredB = renderHook(() => useRcHighlights([PASSAGE], 'actor-b'));
+    await waitFor(() => expect(restoredB.result.current.loaded).toBe(true));
+    expect(targetsOf(restoredB.result.current.forPassage(PASSAGE))).toEqual(['passage:40-50']);
+    expect(restoredB.result.current.statusForPassage(PASSAGE)).toBe('recovered');
+    expect(saveAnnotations).toHaveBeenCalledTimes(2);
+    restoredB.unmount();
+  });
 });
