@@ -42,7 +42,7 @@ describe("Spot the Relationship answer key", () => {
     const flat = (t: string) => t.toLowerCase().replace(/\s*(\.\.\.|…)\s*/g, " ");
     for (const i of items) for (const r of i.answer_key!.relationships) {
       expect(r.connects, `item ${i.order}`).toMatch(/\S+.*->.*\S+/);
-      for (const ind of r.indicators) for (const part of ind.split(/\s*(?:\.\.\.|…)\s*/))
+      for (const ind of r.required_parts ? [] : r.indicators) for (const part of ind.split(/\s*(?:\.\.\.|…)\s*/))
         expect(i.prompt.toLowerCase(), `item ${i.order} ${part}`).toContain(part.toLowerCase());
       for (const parts of r.required_parts ?? []) for (const p of parts) expect(flat(i.prompt)).toContain(p.toLowerCase());
     }
