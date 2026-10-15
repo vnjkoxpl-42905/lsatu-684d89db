@@ -1,0 +1,519 @@
+/*
+ * The Debate Chamber: Rebuttal Rephrase's world.
+ *
+ * A torchlit rotunda in porphyry and bronze. Two plinths of imperial stone face
+ * each other on a polished dark floor between shadowed pilasters; two torch
+ * flames breathe from above, and the certainty arc is a bronze protractor
+ * inlaid between the stones, its degrees engraved in inscriptional capitals.
+ *
+ * The room stays almost empty, because the drill's insight is an absence: the
+ * author's plinth carries nothing until the student resolves what they actually
+ * claim. The empty plinth IS the lesson.
+ *
+ * CSS depth and SVG only. The flames are gradients, the marble is paint.
+ */
+
+.chamber {
+  --ch-floor: 355 24% 9%;
+  --ch-floor-deep: 356 32% 5%;
+  --ch-stone: 355 26% 16%;
+  --ch-edge: 28 38% 42%;
+  --ch-ink: 34 30% 93%;
+  --ch-ink-dim: 20 12% 66%;
+  --ch-light: 36 75% 74%;
+  --ch-bronze: 30 48% 48%;
+
+  position: relative;
+  color: hsl(var(--ch-ink));
+  background: hsl(var(--ch-floor-deep));
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.chamber > :not(.ch-room) {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- The rotunda ---------- */
+
+.ch-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Two torch flames, one over each plinth, breathing out of phase. */
+.ch-torchlight {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(34% 44% at 26% -4%, hsl(var(--ch-light) / 0.26), transparent 70%),
+    radial-gradient(22% 26% at 26% -6%, hsl(28 90% 60% / 0.2), transparent 72%),
+    radial-gradient(34% 44% at 74% -4%, hsl(var(--ch-light) / 0.2), transparent 70%),
+    radial-gradient(20% 24% at 74% -6%, hsl(28 90% 60% / 0.16), transparent 72%);
+  animation: ch-torch-breathe 7s ease-in-out infinite alternate;
+}
+
+@keyframes ch-torch-breathe {
+  0% {
+    opacity: 0.92;
+    transform: translateY(0);
+  }
+  38% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+/* Pilasters: shadowed columns at the chamber's edges. */
+.ch-columns {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, hsl(var(--ch-stone) / 0.95), transparent) 0 0 / 52px 100% no-repeat,
+    linear-gradient(-90deg, hsl(var(--ch-stone) / 0.95), transparent) 100% 0 / 52px 100% no-repeat,
+    linear-gradient(90deg, transparent 0, hsl(var(--ch-stone) / 0.3) 2px, transparent 3px) 54px 0 / 4px 100% no-repeat,
+    linear-gradient(90deg, transparent 0, hsl(var(--ch-stone) / 0.3) 2px, transparent 3px) calc(100% - 54px) 0 / 4px 100% no-repeat;
+}
+
+/* The polished floor: an inlaid ellipse and faint marble veins low in the
+   room, so the rotunda has actual geometry rather than a brown fog. */
+.ch-floorveins {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 38%;
+  background:
+    radial-gradient(
+      68% 88% at 50% 108%,
+      transparent 58%,
+      hsl(var(--ch-bronze) / 0.28) 59.5%,
+      transparent 62%
+    ),
+    radial-gradient(
+      52% 66% at 50% 108%,
+      transparent 56%,
+      hsl(var(--ch-bronze) / 0.16) 58%,
+      transparent 61%
+    ),
+    radial-gradient(60% 6% at 30% 40%, hsl(var(--ch-ink) / 0.07), transparent 80%),
+    radial-gradient(46% 5% at 72% 66%, hsl(var(--ch-ink) / 0.055), transparent 80%),
+    radial-gradient(52% 4% at 48% 86%, hsl(var(--ch-ink) / 0.05), transparent 80%),
+    linear-gradient(0deg, hsl(var(--ch-floor)), transparent);
+}
+
+/* The dark holds the edges. */
+.ch-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    115% 95% at 50% 36%,
+    transparent 44%,
+    hsl(var(--ch-floor-deep) / 0.72) 82%,
+    hsl(var(--ch-floor-deep)) 100%
+  );
+}
+
+/* ---------- Type ---------- */
+
+.chamber-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Inscriptional capitals, cut into the stone. */
+.chamber-display {
+  font-family: "Cinzel", var(--ac-serif, Georgia, serif);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.chamber-type {
+  font-family: "Spectral", var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  font-weight: 300;
+  color: hsl(var(--ch-ink));
+}
+
+/* ---------- The plinths ---------- */
+
+/* A block of porphyry with a bronze fillet at the top edge. */
+.ch-plinth {
+  position: relative;
+  border: 1px solid hsl(var(--ch-edge) / 0.5);
+  background:
+    radial-gradient(1px 1px at 22% 30%, hsl(var(--ch-ink) / 0.08), transparent 100%),
+    radial-gradient(1px 1px at 64% 62%, hsl(var(--ch-ink) / 0.06), transparent 100%),
+    radial-gradient(1px 1px at 84% 24%, hsl(var(--ch-ink) / 0.07), transparent 100%),
+    radial-gradient(1px 1px at 40% 80%, hsl(var(--ch-ink) / 0.05), transparent 100%),
+    linear-gradient(180deg, hsl(var(--ch-stone)), hsl(var(--ch-floor)));
+  box-shadow:
+    inset 0 1px 0 hsl(var(--ch-light) / 0.22),
+    inset 0 -1px 0 hsl(var(--ch-floor-deep)),
+    0 18px 34px hsl(var(--ch-floor-deep) / 0.95);
+  transition:
+    border-color 240ms ease,
+    opacity 240ms ease,
+    box-shadow 240ms ease;
+}
+
+/* The polished-floor reflection under each plinth. */
+.ch-plinth::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 100%;
+  height: 24px;
+  background: linear-gradient(180deg, hsl(var(--ch-light) / 0.07), transparent);
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+/* The author's plinth before it carries anything. Its emptiness is the point,
+   so it is drawn rather than filled. */
+.ch-plinth[data-state="empty"] {
+  background: transparent;
+  border-style: dashed;
+  border-color: hsl(var(--ch-edge) / 0.7);
+  box-shadow: none;
+}
+
+/* Resolved: equal visual weight to the attributed claim. Two positions facing
+   each other under the same torch, which is the whole reveal. */
+.ch-plinth[data-state="resolved"] {
+  border-color: hsl(var(--ch-light) / 0.65);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--ch-light) / 0.3),
+    0 0 26px hsl(var(--ch-light) / 0.1),
+    0 18px 34px hsl(var(--ch-floor-deep));
+}
+
+/* ---------- The unresolved rejection ---------- */
+
+/*
+ * The referential phrase hovering over the empty plinth: present, but visibly
+ * saying nothing. The shimmer runs along the referential words only.
+ */
+.ch-ghost {
+  color: hsl(var(--ch-ink-dim));
+  font-style: italic;
+}
+
+.ch-ghost-ref {
+  position: relative;
+  color: hsl(var(--ch-ink));
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--ch-light) / 0.3) 45%,
+    transparent 90%
+  );
+  background-size: 220% 100%;
+  animation: ch-shimmer 3.4s linear infinite;
+}
+
+@keyframes ch-shimmer {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
+/* ---------- The certainty arc ---------- */
+
+/* A bronze protractor inlaid in the floor, with the torch caught in it. */
+[data-testid="ch-arc"] {
+  position: relative;
+}
+
+[data-testid="ch-arc"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: min(100%, 460px);
+  height: 110px;
+  pointer-events: none;
+  background: radial-gradient(
+    52% 78% at 30% 55%,
+    hsl(var(--ch-bronze) / 0.16),
+    transparent 72%
+  );
+}
+
+.ch-arc-track {
+  stroke: hsl(var(--ch-bronze));
+  stroke-width: 1.75;
+  fill: none;
+  filter: drop-shadow(0 0 3px hsl(var(--ch-bronze) / 0.5));
+}
+
+.ch-arc-tick {
+  stroke: hsl(var(--ch-bronze) / 0.85);
+  stroke-width: 1.25;
+}
+
+/* The arc's engraved labels are HTML under the SVG, not SVG text: they sit on
+   the document's own type ramp, and they stay selectable and readable. */
+/* The arc is a ladder: None on the left, Always on the right, and the reading
+   is the left-to-right order. So the labels must never wrap. They used to, and
+   the result put "Usually" on a second row underneath "None", which reads as a
+   weaker word than the one above it -- the ladder saying the opposite of what
+   it means. */
+.ch-arc-labels {
+  column-gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.ch-arc-label {
+  color: hsl(var(--ch-ink-dim));
+  transition: color 240ms ease, text-shadow 240ms ease;
+  white-space: nowrap;
+}
+
+/* Narrow chamber: the five engravings shrink before they ever collide.
+   Measured against the arc's own width, not the viewport's. The rail this
+   world lives in is around 300px wide inside a 1200px window, so a viewport
+   media query -- which is what this was -- never fired on the one layout that
+   needed it, and the labels wrapped on every desktop. */
+.ch-arc {
+  container-type: inline-size;
+}
+
+@container (max-width: 520px) {
+  .ch-arc-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.07em;
+  }
+}
+
+@container (max-width: 380px) {
+  .ch-arc-label {
+    font-size: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .ch-arc-labels {
+    column-gap: 6px;
+  }
+}
+
+.ch-arc-label[data-lit="true"] {
+  color: hsl(var(--ch-light));
+  text-shadow: 0 0 12px hsl(var(--ch-light) / 0.4);
+}
+
+/* The needles. Theirs is the position being rejected, the author's is the
+   credited claim, and the student's is their own answer. */
+.ch-needle {
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ch-needle[data-who="attributed"] {
+  stroke: hsl(var(--ch-ink-dim));
+}
+
+.ch-needle[data-who="credited"] {
+  stroke: hsl(var(--ch-light));
+  filter: drop-shadow(0 0 3px hsl(var(--ch-light) / 0.6));
+}
+
+.ch-needle[data-who="student"] {
+  stroke: hsl(var(--ch-ink));
+  stroke-dasharray: 3 2;
+}
+
+/* The span between the credited position and an overshot answer. */
+.ch-overspan {
+  fill: hsl(var(--ch-light) / 0.14);
+  stroke: none;
+}
+
+/* ---------- Trap staging ---------- */
+
+/* A premise answer sits at the base of the plinth as a supporting block: it
+   holds the claim up, it is not the claim. */
+.ch-base-block {
+  border: 1px solid hsl(var(--ch-edge) / 0.5);
+  border-top: none;
+  background: hsl(var(--ch-floor) / 0.85);
+  color: hsl(var(--ch-ink-dim));
+}
+
+/* A dropped scope word, carved oversized on the credited claim. */
+.ch-carved {
+  font-family: "Cinzel", var(--ac-serif, Georgia, serif);
+  font-size: 1.22em;
+  letter-spacing: 0.06em;
+  color: hsl(var(--ch-light));
+  text-transform: uppercase;
+  text-shadow: 0 0 14px hsl(var(--ch-light) / 0.35);
+}
+
+/* ---------- The rail ---------- */
+
+.ch-nameplate {
+  border: 1px solid hsl(var(--ch-edge) / 0.45);
+  background: hsl(var(--ch-stone) / 0.5);
+  color: hsl(var(--ch-ink-dim));
+}
+
+.ch-nameplate[data-state="correct"] {
+  border-color: hsl(var(--ch-light) / 0.7);
+  color: hsl(var(--ch-ink));
+}
+
+.ch-nameplate[data-state="partial"] {
+  border-style: dashed;
+  color: hsl(var(--ch-ink));
+}
+
+.ch-nameplate[data-current="true"] {
+  box-shadow: inset 0 -2px 0 hsl(var(--ch-light) / 0.8);
+}
+
+/* ---------- Controls (shared by the wings) ---------- */
+
+.ch-button {
+  border: 1px solid hsl(var(--ch-edge));
+  background: hsl(var(--ch-stone));
+  color: hsl(var(--ch-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.ch-button:hover:not(:disabled) {
+  border-color: hsl(var(--ch-light) / 0.6);
+  box-shadow: 0 0 12px hsl(var(--ch-light) / 0.15);
+}
+
+.ch-button:disabled {
+  opacity: 0.55;
+}
+
+.ch-button[data-picked="true"] {
+  background: hsl(var(--ch-floor));
+  opacity: 1;
+}
+
+.ch-button[data-truth="true"] {
+  border-color: hsl(var(--ch-light));
+  box-shadow: inset 2px 0 0 hsl(var(--ch-light));
+  opacity: 1;
+}
+
+.ch-choice {
+  width: 100%;
+  border: 1px solid hsl(var(--ch-edge) / 0.5);
+  background: hsl(var(--ch-stone) / 0.7);
+  transition:
+    border-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.ch-choice:hover:not(:disabled) {
+  border-color: hsl(var(--ch-light) / 0.5);
+}
+
+.ch-choice:disabled {
+  opacity: 0.72;
+}
+
+.ch-choice[data-truth="true"] {
+  border-color: hsl(var(--ch-light));
+  box-shadow: inset 2px 0 0 hsl(var(--ch-light));
+  opacity: 1;
+}
+
+.ch-input {
+  border: 1px solid hsl(var(--ch-edge));
+  background: hsl(var(--ch-stone));
+  color: hsl(var(--ch-ink));
+  max-width: 34rem;
+}
+
+.ch-input::placeholder {
+  color: hsl(var(--ch-ink-dim) / 0.7);
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes ch-light-up {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ch-entrance-theirs {
+  animation: ch-light-up 620ms ease both;
+}
+
+.ch-entrance-authors {
+  /* Theirs first, then the empty one. The staging asks the question. */
+  animation: ch-light-up 620ms ease 900ms both;
+}
+
+.chamber[data-testid="chamber-entrance"] .ch-torchlight {
+  animation:
+    ch-light-up 800ms ease both,
+    ch-torch-breathe 7s ease-in-out 800ms infinite alternate;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .chamber *,
+  .chamber *::before,
+  .chamber *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  /* The shimmer is the one thing that must stop entirely: it is a continuous
+     loop, and shortening it would strobe rather than settle. */
+  .ch-ghost-ref {
+    animation: none !important;
+    background: hsl(var(--ch-light) / 0.16);
+  }
+
+  .ch-torchlight {
+    animation: none !important;
+  }
+
+  .ch-entrance-theirs,
+  .ch-entrance-authors {
+    animation: none !important;
+    opacity: 1;
+  }
+}

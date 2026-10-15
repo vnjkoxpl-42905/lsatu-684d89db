@@ -1,0 +1,2554 @@
+/* The Read, Recall, Colour door.
+ *
+ * One evening, in two registers. The hero is the runner's own indigo lifted
+ * into a dusk sky over a painted meadow, cut into depth planes that move at
+ * their own rates as she scrolls; everything under it sits on cream paper in
+ * the same light. The method is performed before it is explained, the four
+ * steps are the next thing she meets, and the sections she can run sit
+ * directly beneath.
+ *
+ * Every value is scoped to `.sl`. Nothing here touches the runner
+ * (`recall/section.css`) or the shell outside this door. Class names beginning
+ * `sl-` are the door's contract with its tests and its two wrappers; `rd-`
+ * names are the design and may change freely.
+ */
+
+.sl {
+  /* The hero panel's ink. Named so a rule that borrows it onto cream is
+     visible as a mistake instead of reading as an ordinary colour. */
+  --rd-on-dark: #fff;
+  --rd-cream: #f6f3ea;
+  --rd-paper: #fffdf8;
+  --rd-paper-2: #f3efe4;
+  --rd-ink: #16132b;
+  --rd-ink-2: #46435f;
+  --rd-ink-3: #6a6784;
+  --rd-line: #e3ded2;
+  --rd-line-2: #ede9df;
+  --rd-indigo: #1a1635;
+  --rd-indigo-2: #2a2450;
+  --rd-lavender: #c9c3ec;
+  --rd-apricot: #f3c9a0;
+  --rd-apricot-light: #ffe8c8;
+  --rd-marigold: #f2b544;
+  --rd-marigold-ink: #6e4600;
+  --rd-marigold-wash: rgba(242, 181, 68, 0.26);
+  --rd-emerald: #0e6f4d;
+  --rd-emerald-wash: rgba(14, 111, 77, 0.11);
+  --rd-display: "Fraunces", "Iowan Old Style", "Times New Roman", serif;
+  --rd-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --rd-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --rd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --rd-radius: 22px;
+  --rd-radius-panel: 28px;
+
+  min-height: 100%;
+  background: var(--rd-cream);
+  color: var(--rd-ink);
+  font-family: var(--rd-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  accent-color: var(--rd-ink);
+  caret-color: var(--rd-marigold-ink);
+  scrollbar-color: #c9c3b6 var(--rd-cream);
+}
+.sl ::selection {
+  background: var(--rd-marigold-wash);
+  color: var(--rd-ink);
+}
+.sl :focus-visible {
+  outline: 2px solid var(--rd-ink);
+  outline-offset: 3px;
+  box-shadow: none;
+  border-radius: 6px;
+}
+.sl em {
+  font-style: italic;
+}
+
+/* ---- the one micro-label style ---- */
+.sl-label {
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rd-ink-3);
+}
+
+/* =============================================================== hero */
+
+.rd-hero {
+  padding: 14px 14px 0;
+}
+.rd-hero-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 28px);
+  border-radius: var(--rd-radius-panel);
+  background: #2a2450;
+  color: var(--rd-on-dark);
+}
+
+/* The scene: five planes and a stage, each its own layer. */
+.mw {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.mw-layer {
+  position: absolute;
+  inset: -6% 0 0 0;
+  width: 100%;
+  height: 106%;
+  display: block;
+  overflow: visible;
+  will-change: transform;
+}
+.mw-sky {
+  z-index: 1;
+}
+.mw-far {
+  z-index: 2;
+}
+.mw-mid {
+  z-index: 3;
+}
+.mw-near {
+  z-index: 4;
+}
+.mw-grain {
+  z-index: 5;
+  inset: 0;
+  height: 100%;
+  opacity: 0.13;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  /* The grain never moves. `.mw-layer` promises the compositor a transform on
+     every plane, which held a full-size turbulence-filtered layer in memory
+     for nothing. */
+  will-change: auto;
+}
+.mw-stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 11%;
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+  padding: 0 22px;
+  will-change: transform;
+}
+.mw-grass {
+  z-index: 7;
+  pointer-events: none;
+}
+/* Six groups, not 170 blades. The duration and the phase come from the scene,
+   which knows how many groups there are; the origin sits on the ground line so
+   the skew leans the tips and leaves every base planted. */
+.mw-blades g {
+  animation: mw-sway 5.5s ease-in-out infinite alternate;
+}
+@keyframes mw-sway {
+  from {
+    transform: skewX(-1.6deg);
+  }
+  to {
+    transform: skewX(1.6deg);
+  }
+}
+
+/* Loops stop when their surface leaves the screen. The hero's scene and its
+   demonstration, and the four scenes on the step cards, are the whole of the
+   door's continuous motion; off screen they are work nobody can see. */
+.mw[data-still] .mw-blades g,
+.rd-demo[data-still] .rd-rec-dot,
+.rd-demo[data-still] .rd-wave i,
+.rd-demo[data-still] .rd-caret,
+.rd-method[data-still] .rd-scene *,
+.rd-method[data-still] .rd-scene *::before,
+.rd-method[data-still] .rd-scene *::after {
+  animation-play-state: paused;
+}
+
+.rd-hero-top {
+  position: relative;
+  /* Above the hero copy, which shares the same layer and comes later in the
+     DOM. On a phone the copy block starts level with the crumb line and took
+     the bottom half of the way out with it: a 73x47 target on a laptop
+     measured 73x32 at 375px. Nothing decorative sits over the exit. */
+  z-index: 9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 22px 28px 0;
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+.rd-crumbs strong {
+  font-weight: 500;
+  color: var(--rd-on-dark);
+}
+.rd-crumb-sep {
+  margin: 0 10px;
+  opacity: 0.55;
+}
+.rd-meta {
+  font-variant-numeric: tabular-nums;
+}
+.sl-crumb-back {
+  position: relative;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
+}
+/* The way out of the drill, drawn at 11px because it is a breadcrumb and
+   pressable at 71x45 because it is the exit. The target is an overlay rather
+   than padding so the crumb line keeps its height, the same way the runner's
+   rail controls were done. */
+.sl-crumb-back::after {
+  content: "";
+  position: absolute;
+  inset: -14px -8px;
+}
+.sl-crumb-back:hover {
+  color: var(--rd-on-dark);
+}
+
+.rd-hero-copy {
+  position: relative;
+  z-index: 8;
+  text-align: center;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: clamp(28px, 6vh, 64px) 24px 0;
+  will-change: transform, opacity, filter;
+}
+.sl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rd-on-dark);
+  background: rgba(22, 19, 43, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+  padding: 7px 14px 7px 12px;
+  backdrop-filter: blur(8px);
+}
+.sl-title {
+  margin: 22px 0 0;
+  font-family: var(--rd-display);
+  font-weight: 400;
+  font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 0;
+  font-size: clamp(46px, 6.6vw, 96px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  color: var(--rd-on-dark);
+}
+.sl-title em {
+  font-weight: 300;
+  color: var(--rd-apricot-light);
+}
+.sl-tagline {
+  margin: 22px auto 0;
+  max-width: 54ch;
+  font-size: clamp(16px, 1.3vw, 18px);
+  line-height: 1.55;
+  color: var(--rd-on-dark);
+  text-shadow: 0 1px 2px rgba(22, 19, 43, 0.35);
+  text-wrap: pretty;
+}
+.sl-tagline strong {
+  font-weight: 600;
+  color: var(--rd-on-dark);
+}
+.sl-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px 22px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+.sl-start {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 26px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--rd-cream);
+  background: var(--rd-ink);
+  border-radius: 9999px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 18px 30px -18px rgba(22, 19, 43, 0.7);
+  transition:
+    transform 0.35s var(--rd-ease),
+    background 0.2s ease,
+    box-shadow 0.35s var(--rd-ease);
+}
+.sl-start:hover {
+  background: var(--rd-indigo-2);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 24px 36px -18px rgba(22, 19, 43, 0.75);
+}
+.sl-start:active {
+  transform: translateY(0);
+}
+.sl-start svg {
+  transition: transform 0.35s var(--rd-ease);
+}
+.sl-start:hover svg {
+  transform: translateY(2px);
+}
+.sl-brief {
+  appearance: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 4px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-underline-offset: 5px;
+  transition: text-decoration-color 0.2s ease;
+}
+.sl-brief:hover {
+  text-decoration-color: var(--rd-on-dark);
+}
+.sl-brief svg {
+  transition: transform 0.35s var(--rd-ease);
+}
+.sl-brief:hover svg {
+  transform: translateX(3px);
+}
+.rd-hero :focus-visible {
+  outline-color: var(--rd-on-dark);
+}
+
+/* Reserves the room the stage lives in, so the copy never sits on it. */
+.rd-hero-space {
+  flex: 1 0 auto;
+  min-height: clamp(470px, 52vh, 600px);
+}
+
+/* =============================================================== demo */
+
+.rd-demo {
+  width: min(800px, 100%);
+  background: var(--rd-paper);
+  color: var(--rd-ink);
+  border-radius: 18px;
+  overflow: hidden;
+  text-align: left;
+  box-shadow:
+    0 0 0 1px rgba(22, 19, 43, 0.1),
+    0 40px 70px -34px rgba(22, 19, 43, 0.65),
+    0 12px 24px -16px rgba(22, 19, 43, 0.4);
+}
+.rd-demo-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #fbf9f3;
+  border-bottom: 1px solid var(--rd-line);
+}
+.rd-demo-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+.rd-demo-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #e0ddd3;
+}
+.rd-demo-dots i:first-child {
+  background: #f0876f;
+}
+.rd-demo-dots i:nth-child(2) {
+  background: #f2c65a;
+}
+.rd-demo-dots i:nth-child(3) {
+  background: #7fcb8e;
+}
+.rd-demo-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.rd-demo-step {
+  margin-left: auto;
+  font-family: var(--rd-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rd-marigold-ink);
+  background: var(--rd-marigold-wash);
+  border-radius: 9999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+.rd-demo-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--rd-mono);
+  font-size: 11.5px;
+  color: var(--rd-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.rd-rec-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #d2402e;
+  opacity: 0.45;
+}
+.rd-rec-dot[data-live] {
+  opacity: 1;
+  animation: rd-blink 1.3s ease-in-out infinite;
+}
+@keyframes rd-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+.rd-demo-play {
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+  /* Above the card body. The transcript below is transformed on every beat,
+     which put it over the bottom of the button's target and clipped it to
+     44x42. */
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--rd-line);
+  background: var(--rd-paper);
+  color: var(--rd-ink);
+  padding: 0;
+  transition: background 0.2s ease;
+}
+/* 44x44 to press, 28x28 to look at. The card's chrome is 13px type and a row
+   of 9px dots; a 44px disc in it would be the loudest thing on the hero. The
+   gap to the clock is 12px, so the overlay reaches into padding and never onto
+   a neighbour. */
+.rd-demo-play::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+/* The hero paints its focus ring white for the dark panel. The demonstration
+   is cream paper sitting on that panel, where white measured 1.05:1. */
+.rd-hero .rd-demo :focus-visible {
+  outline-color: var(--rd-ink);
+}
+.rd-demo-play:hover:not(:disabled) {
+  background: var(--rd-paper-2);
+}
+.rd-demo-play:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.rd-demo-body {
+  display: grid;
+  grid-template-columns: 1.12fr 1fr;
+}
+.rd-paper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 262px;
+  padding: 18px 20px 16px;
+  border-right: 1px solid var(--rd-line);
+}
+.rd-demo-label {
+  font-family: var(--rd-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rd-ink-3);
+}
+.rd-stim {
+  margin: 12px 0 0;
+  font-family: var(--rd-display);
+  font-variation-settings: "opsz" 18;
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: var(--rd-ink);
+  transition:
+    opacity 0.9s var(--rd-ease),
+    filter 0.9s var(--rd-ease),
+    transform 0.9s var(--rd-ease);
+}
+.rd-paper[data-gone] .rd-stim {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(-6px);
+}
+.rd-stim-line {
+  border-radius: 4px;
+  padding: 1px 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition:
+    background 0.45s ease,
+    color 0.45s ease;
+}
+.rd-stim-line[data-active] {
+  background: var(--rd-marigold-wash);
+}
+.rd-stim-line[data-done] {
+  color: var(--rd-ink-3);
+}
+.rd-gone {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 46%;
+  transform: translateY(-50%);
+  margin: 0;
+  padding: 0 12px;
+  text-align: center;
+  font-family: var(--rd-display);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--rd-ink-2);
+}
+.rd-keyrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 16px;
+}
+.rd-key {
+  display: inline-block;
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 4px 13px;
+  border-radius: 7px;
+  background: var(--rd-on-dark);
+  color: var(--rd-ink-2);
+  box-shadow:
+    0 2px 0 #d9d3c6,
+    0 0 0 1px var(--rd-line);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background 0.12s ease;
+}
+.rd-key[data-pressed] {
+  transform: translateY(2px);
+  background: var(--rd-marigold-wash);
+  box-shadow:
+    0 0 0 #d9d3c6,
+    0 0 0 1px #cfc9bd;
+}
+.rd-keyhint {
+  font-size: 12px;
+  color: var(--rd-ink-3);
+}
+.rd-voice {
+  display: flex;
+  flex-direction: column;
+  min-height: 262px;
+  padding: 18px 20px;
+  background: #f4f1ea;
+}
+.rd-voice-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  margin-top: 12px;
+}
+.rd-bubble {
+  background: var(--rd-indigo);
+  color: var(--rd-on-dark);
+  border-radius: 16px 16px 16px 5px;
+  padding: 11px 14px 13px;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 14px 24px -18px rgba(22, 19, 43, 0.7);
+}
+.rd-bubble p {
+  margin: 6px 0 0;
+}
+.rd-bubble-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--rd-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rd-apricot-light);
+}
+.rd-wave {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 12px;
+}
+.rd-wave i {
+  display: block;
+  width: 2px;
+  height: 4px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.rd-wave i:nth-child(2n) {
+  height: 8px;
+}
+.rd-wave i:nth-child(4) {
+  height: 11px;
+}
+.rd-wave[data-live] i {
+  animation: rd-wave 0.85s ease-in-out infinite alternate;
+}
+@keyframes rd-wave {
+  from {
+    height: 3px;
+  }
+  to {
+    height: 12px;
+  }
+}
+.rd-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: -2px;
+  background: var(--rd-apricot-light);
+  animation: rd-caret 1s steps(2) infinite;
+}
+@keyframes rd-caret {
+  50% {
+    opacity: 0;
+  }
+}
+.rd-colour {
+  align-self: flex-end;
+  max-width: 90%;
+  background: var(--rd-marigold);
+  color: var(--rd-ink);
+  border-radius: 14px 14px 5px 14px;
+  padding: 9px 14px 11px;
+  font-family: var(--rd-display);
+  font-style: italic;
+  font-size: 15.5px;
+  line-height: 1.4;
+  box-shadow: 0 12px 22px -16px rgba(110, 70, 0, 0.6);
+}
+.rd-colour p {
+  margin: 4px 0 0;
+}
+.rd-colour-head {
+  display: block;
+  font-family: var(--rd-mono);
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rd-marigold-ink);
+}
+.rd-bubble-recall {
+  border-radius: 16px 16px 16px 5px;
+}
+.rd-tally {
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-line);
+  border-radius: 14px;
+  padding: 12px 14px 13px;
+}
+.rd-tally-head {
+  display: block;
+  font-size: 13px;
+  color: var(--rd-ink-2);
+}
+.rd-tally-head strong {
+  font-family: var(--rd-display);
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--rd-ink);
+  margin-right: 2px;
+}
+.rd-tally-list {
+  list-style: none;
+  margin: 9px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.rd-tally-list li {
+  font-size: 12px;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  border: 1px solid var(--rd-line);
+  color: var(--rd-ink-3);
+}
+.rd-tally-list li[data-carried] {
+  background: var(--rd-emerald-wash);
+  border-color: transparent;
+  color: var(--rd-emerald);
+  font-weight: 500;
+}
+.rd-quiet {
+  margin: 6px 0 0;
+  font-family: var(--rd-display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--rd-ink-3);
+}
+.rd-demo-foot {
+  margin: 0;
+  padding: 8px 14px;
+  border-top: 1px solid var(--rd-line);
+  font-family: var(--rd-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rd-ink-3);
+}
+
+/* =============================================================== band */
+
+.rd-band {
+  display: grid;
+  gap: 14px;
+  max-width: 1240px;
+  margin: 28px auto 0;
+  padding: 0 24px;
+}
+.sl-notice {
+  margin: 0;
+  padding: 16px 20px;
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-line);
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--rd-ink-2);
+}
+
+/* ============================================================= method */
+
+.rd-method,
+.rd-counts,
+.rd-slab {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 104px 24px 0;
+}
+.rd-method-head,
+.rd-counts-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px 48px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.rd-h2 {
+  margin: 0;
+  font-family: var(--rd-display);
+  font-weight: 400;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-size: clamp(34px, 4.4vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+  color: var(--rd-ink);
+}
+.rd-h2 em {
+  font-weight: 300;
+}
+.rd-method-sub {
+  margin: 0;
+  max-width: 36ch;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--rd-ink-2);
+  text-wrap: pretty;
+}
+
+.sl-beats {
+  display: grid;
+  grid-template-columns: repeat(var(--sl-beat-count, 4), minmax(0, 1fr));
+  gap: 16px;
+}
+.sl-beat {
+  appearance: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  padding: 0 0 26px;
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-line);
+  border-radius: var(--rd-radius);
+  overflow: hidden;
+  transition:
+    transform 0.5s var(--rd-ease),
+    box-shadow 0.5s var(--rd-ease),
+    border-color 0.2s ease;
+}
+.sl-beat:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 44px -30px rgba(22, 19, 43, 0.4);
+}
+.sl-beat[aria-selected="true"] {
+  border-color: var(--rd-ink);
+  box-shadow: inset 0 0 0 1px var(--rd-ink);
+}
+.rd-step-n {
+  margin: 22px 24px 0;
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rd-ink-3);
+}
+.sl-beat .sl-l {
+  display: block;
+  margin: 8px 24px 0;
+  font-family: var(--rd-display);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--rd-ink);
+}
+.sl-beat .sl-d {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  margin: 10px 24px 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--rd-ink-2);
+}
+
+/* The four small scenes. */
+.rd-scene {
+  position: relative;
+  height: 172px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--rd-line);
+}
+.rd-sc-read {
+  background: linear-gradient(180deg, #d6cff0 0%, #ecd8d8 60%, #f5d9be 100%);
+}
+.rd-sc-tell {
+  background: linear-gradient(180deg, #2a2450 0%, #5b4f8f 70%, #a89fe0 100%);
+}
+.rd-sc-colour {
+  background: linear-gradient(180deg, #f5d9be 0%, #f3c9a0 55%, #e8c9d3 100%);
+}
+.rd-sc-recall {
+  background: linear-gradient(180deg, #b9b0dd 0%, #d8cfe6 60%, #eadfd8 100%);
+}
+.rd-sc-page {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  bottom: -14px;
+  height: 128px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding: 22px 20px;
+  background: var(--rd-paper);
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -10px 32px -16px rgba(22, 19, 43, 0.45);
+}
+.rd-sc-line {
+  display: block;
+  height: 9px;
+  border-radius: 5px;
+  background: #e4dfd3;
+}
+.rd-sc-sweep {
+  position: absolute;
+  left: 18px;
+  top: 20px;
+  width: 88%;
+  height: 13px;
+  border-radius: 6px;
+  background: var(--rd-marigold-wash);
+  transform-origin: left center;
+  animation: rd-sweep 3s var(--rd-ease) infinite;
+}
+@keyframes rd-sweep {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  80% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+}
+.rd-sc-bubble {
+  position: absolute;
+  left: 24px;
+  top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 15px;
+  background: var(--rd-indigo);
+  color: var(--rd-apricot-light);
+  border-radius: 14px 14px 14px 4px;
+  box-shadow: 0 16px 28px -16px rgba(0, 0, 0, 0.6);
+}
+.rd-sc-bubble-text {
+  font-family: var(--rd-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--rd-on-dark);
+}
+.rd-sc-page-turned {
+  left: 46%;
+  right: -30px;
+  bottom: -46px;
+  transform: rotate(-7deg);
+  opacity: 0.92;
+}
+.rd-sc-stroke {
+  position: absolute;
+  left: 8%;
+  top: 40%;
+  width: 84%;
+  height: 34px;
+  background: var(--rd-marigold);
+  border-radius: 18px 22px 20px 16px / 30px 26px 32px 28px;
+  transform: rotate(-2.5deg);
+  transform-origin: left center;
+  animation: rd-stroke 3.4s var(--rd-ease) infinite;
+}
+@keyframes rd-stroke {
+  0% {
+    transform: rotate(-2.5deg) scaleX(0);
+  }
+  45%,
+  85% {
+    transform: rotate(-2.5deg) scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-2.5deg) scaleX(1);
+    opacity: 0;
+  }
+}
+.rd-sc-chip {
+  position: absolute;
+  left: 26px;
+  bottom: 24px;
+  padding: 10px 14px 11px;
+  background: var(--rd-paper);
+  border-radius: 12px 12px 4px 12px;
+  font-family: var(--rd-display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--rd-ink);
+  box-shadow: 0 16px 28px -18px rgba(110, 70, 0, 0.55);
+}
+.rd-sc-chip-head {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--rd-mono);
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rd-marigold-ink);
+}
+.rd-sc-page-fading .rd-sc-line {
+  animation: rd-fade 3.6s ease-in-out infinite;
+}
+.rd-sc-page-fading .rd-sc-line:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.rd-sc-page-fading .rd-sc-line:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.rd-sc-page-fading .rd-sc-line:nth-child(4) {
+  animation-delay: 0.45s;
+}
+@keyframes rd-fade {
+  0%,
+  30% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  55%,
+  85% {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+.rd-sc-key {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  padding: 6px 15px;
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--rd-ink-2);
+  background: var(--rd-on-dark);
+  border-radius: 8px;
+  box-shadow:
+    0 3px 0 #cfc9bd,
+    0 0 0 1px #e3ded2,
+    0 12px 20px -12px rgba(22, 19, 43, 0.5);
+  animation: rd-press 3.6s ease-in-out infinite;
+}
+@keyframes rd-press {
+  0%,
+  22% {
+    transform: translateY(0);
+    box-shadow:
+      0 3px 0 #cfc9bd,
+      0 0 0 1px #e3ded2,
+      0 12px 20px -12px rgba(22, 19, 43, 0.5);
+  }
+  28%,
+  40% {
+    transform: translateY(3px);
+    box-shadow:
+      0 0 0 #cfc9bd,
+      0 0 0 1px #cfc9bd,
+      0 4px 10px -8px rgba(22, 19, 43, 0.5);
+  }
+  46%,
+  100% {
+    transform: translateY(0);
+    box-shadow:
+      0 3px 0 #cfc9bd,
+      0 0 0 1px #e3ded2,
+      0 12px 20px -12px rgba(22, 19, 43, 0.5);
+  }
+}
+
+/* ---- the drawer under the steps ---- */
+.sl-drawer {
+  margin-top: 18px;
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-line);
+  border-radius: var(--rd-radius);
+  overflow: hidden;
+  scroll-margin-top: 20px;
+}
+.sl-dr-tabs {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 14px 28px 0;
+  border-bottom: 1px solid var(--rd-line);
+}
+.sl-dr-tab {
+  appearance: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--rd-ink-3);
+  /* 45px tall. It was 43, and the underline still has to land on the tab
+     strip's own border, so the height goes on the top. */
+  padding: 10px 0 14px;
+  box-shadow: inset 0 -2px 0 transparent;
+  transition:
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.sl-dr-tab[aria-selected="true"] {
+  color: var(--rd-ink);
+  box-shadow: inset 0 -2px 0 var(--rd-ink);
+}
+.sl-dr-note {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--rd-ink-3);
+}
+.sl-dr-view {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 32px;
+  padding: 30px 28px 32px;
+}
+.sl-dr-view[data-pane="beat"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.sl-dr-title {
+  margin: 10px 0 0;
+  font-family: var(--rd-display);
+  font-weight: 400;
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.05;
+  letter-spacing: -0.024em;
+  color: var(--rd-ink);
+}
+.sl-dr-body {
+  margin: 14px 0 0;
+  max-width: 62ch;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--rd-ink-2);
+  text-wrap: pretty;
+}
+.rd-dr-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+.sl-close {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--rd-ink);
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-line);
+  border-radius: 9999px;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+.sl-close:hover {
+  background: var(--rd-paper-2);
+  border-color: #cfc9bd;
+}
+.sl-dr-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  align-self: start;
+  position: sticky;
+  top: 24px;
+}
+.sl-essay {
+  max-width: 68ch;
+}
+/* `.sl-essay p` outranks a bare class, so the lede was rendering at body
+   size. Written at the same specificity so it leads. */
+.rd-lede,
+.sl-essay p.rd-lede {
+  font-family: var(--rd-display);
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.45;
+  color: var(--rd-ink-2);
+}
+.sl-essay p {
+  margin: 0 0 14px;
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--rd-ink-2);
+  text-wrap: pretty;
+}
+.sl-essay p strong {
+  color: var(--rd-ink);
+  font-weight: 600;
+}
+.sl-essay h3,
+.sl-essay h4 {
+  margin: 36px 0 10px;
+  font-family: var(--rd-display);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--rd-ink);
+  text-wrap: balance;
+}
+.sl-essay section:first-of-type h4 {
+  margin-top: 8px;
+}
+.sl-essay ol {
+  margin: 10px 0 16px;
+  padding-left: 22px;
+}
+.sl-essay li {
+  margin-bottom: 8px;
+  font-size: 16.5px;
+  line-height: 1.6;
+  color: var(--rd-ink-2);
+}
+.sl-essay li strong {
+  color: var(--rd-ink);
+  font-weight: 600;
+}
+
+/* ============================================================= counts */
+
+.rd-counts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.rd-count {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 26px 28px;
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-line);
+  border-radius: var(--rd-radius);
+}
+.rd-count[data-tone="good"] {
+  background: var(--rd-indigo);
+  border-color: var(--rd-indigo);
+  color: var(--rd-on-dark);
+  box-shadow: 0 34px 60px -34px rgba(22, 19, 43, 0.7);
+}
+.rd-count-tag {
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rd-ink-3);
+}
+.rd-count[data-tone="good"] .rd-count-tag {
+  color: var(--rd-apricot-light);
+}
+.rd-count-quote {
+  margin: 18px 0 0;
+  font-family: var(--rd-display);
+  font-size: 22px;
+  line-height: 1.32;
+  letter-spacing: -0.012em;
+  text-wrap: pretty;
+}
+.rd-count-note {
+  margin: auto 0 0;
+  padding-top: 20px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--rd-ink-2);
+}
+.rd-count[data-tone="good"] .rd-count-note {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* =============================================================== slab */
+
+.rd-slab {
+  scroll-margin-top: 20px;
+}
+.sl-runs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 16px;
+  align-items: start;
+}
+.sl-runs > div:first-child {
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-line);
+  border-radius: var(--rd-radius);
+  padding: 26px 28px 14px;
+}
+.sl-aside {
+  padding: 24px 26px 26px;
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-line);
+  border-radius: var(--rd-radius);
+}
+.sl-aside p {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--rd-ink-2);
+}
+.sl-aside strong {
+  color: var(--rd-ink);
+  font-weight: 600;
+}
+/* The four steps in the "Before you start" aside. A numbered list rather than
+   a paragraph, because the aside is the last thing she reads before pressing
+   Start and the order is the whole content. Numbers are the authored labels'
+   job, so the marker is the count and nothing else. */
+.sl-aside-steps {
+  margin: 12px 0 0;
+  /* Tailwind preflight strips list markers globally, and the order is the whole
+     content of this list, so it is asked for back explicitly. */
+  list-style: decimal;
+  padding: 0 0 0 1.35em;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--rd-ink-2);
+}
+.sl-aside-steps li {
+  margin-top: 8px;
+}
+.sl-aside-steps li::marker {
+  color: var(--rd-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.sl-key {
+  display: inline-block;
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 5px;
+  background: var(--rd-on-dark);
+  color: var(--rd-ink-2);
+  box-shadow:
+    0 2px 0 #d9d3c6,
+    0 0 0 1px var(--rd-line);
+}
+.sl-note {
+  margin: 0;
+  font-size: 14px;
+  color: var(--rd-ink-3);
+}
+.sl-note[data-tone="bad"] {
+  color: var(--rd-ink);
+  font-weight: 500;
+}
+
+/* ---- the section rows ---- */
+.sl-sections {
+  display: flex;
+  flex-direction: column;
+}
+.sl-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 22px 0;
+  border-top: 1px solid var(--rd-line);
+}
+.sl-section:first-child {
+  border-top: 0;
+  padding-top: 8px;
+}
+.sl-sec-body {
+  min-width: 0;
+}
+.sl-sec-line {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.sl-sec-name {
+  font-family: var(--rd-display);
+  font-weight: 400;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--rd-ink);
+  font-variant-numeric: tabular-nums;
+}
+.sl-sec-clock {
+  font-family: var(--rd-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--rd-ink-3);
+}
+.sl-sec-attempts {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sl-sec-body > .sl-note {
+  margin-top: 10px;
+}
+/* A past Attempt is the way back to its Report Card, so it is a control and
+   not a footnote. It was 13.5px muted text with a dotted underline and no
+   padding, which is what a caption looks like, and the student it was built
+   for read the score off it and asked where the graded responses were
+   (Celia, 2026-09-08). Bordered, full width, and 44px of target. */
+.sl-sec-attempt {
+  align-items: center;
+  background: var(--rd-paper, #fff);
+  border: 1px solid var(--rd-line, rgba(0, 0, 0, 0.12));
+  border-radius: 10px;
+  color: var(--rd-ink-2);
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  font: inherit;
+  font-size: 13.5px;
+  gap: 4px 12px;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 8px 14px;
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+  width: 100%;
+}
+.sl-sec-attempt[data-flat="true"] {
+  background: none;
+  border-style: dashed;
+  color: var(--rd-ink-3);
+  cursor: default;
+}
+.sl-sec-attempt:hover:not([data-flat="true"]) {
+  border-color: currentColor;
+  color: var(--rd-ink);
+}
+/* What the row opens, said on the row rather than left to be guessed. */
+.sl-sec-attempt-go {
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sl-sec-attempt:not([data-flat="true"]) .sl-sec-attempt-go {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sl-sec-go {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 22px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--rd-cream);
+  background: var(--rd-ink);
+  border: 0;
+  border-radius: 9999px;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    transform 0.35s var(--rd-ease);
+}
+.sl-sec-go:hover:not(:disabled) {
+  background: var(--rd-indigo-2);
+  transform: translateY(-1px);
+}
+.sl-sec-go:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ---- the four numbers ---- */
+.sl-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-line);
+  border-radius: var(--rd-radius);
+  overflow: hidden;
+}
+.sl-stat {
+  padding: 20px 22px 22px;
+  border-left: 1px solid var(--rd-line);
+}
+.sl-stat:first-child {
+  border-left: 0;
+}
+.sl-sv {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--rd-display);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--rd-ink);
+}
+.sl-sv small {
+  font-size: 16px;
+  color: var(--rd-ink-3);
+}
+.sl-sv[data-dir="down"] {
+  color: var(--rd-emerald);
+}
+.sl-sv[data-empty] {
+  font-family: var(--rd-sans);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--rd-ink-3);
+}
+.sl-sd {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--rd-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- her runs ---- */
+.sl-scroll {
+  overflow-x: auto;
+  margin-top: 14px;
+}
+.sl-rtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.sl-rtable th {
+  text-align: left;
+  font-family: var(--rd-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--rd-ink-3);
+  padding: 0 12px 10px 0;
+}
+.sl-rtable th.sl-r,
+.sl-rtable td.sl-r {
+  text-align: right;
+  padding-right: 0;
+}
+.sl-rtable td {
+  padding: 12px 12px 12px 0;
+  border-top: 1px solid var(--rd-line);
+  font-variant-numeric: tabular-nums;
+  color: var(--rd-ink-2);
+  white-space: nowrap;
+}
+.sl-rtable td:first-child {
+  color: var(--rd-ink);
+  font-weight: 500;
+}
+.sl-ticks {
+  display: inline-flex;
+  gap: 3px;
+  justify-content: flex-end;
+}
+.sl-tick {
+  width: 5px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--rd-emerald);
+}
+.sl-tick[data-state="notJudged"] {
+  background: var(--rd-paper);
+  box-shadow: inset 0 0 0 1px var(--rd-emerald);
+}
+.sl-tick[data-state="silent"] {
+  background: var(--rd-line);
+  box-shadow: inset 0 0 0 1px var(--rd-ink-3);
+}
+.sl-tick[data-state="missing"] {
+  background: var(--rd-line);
+}
+.sl-skel {
+  display: inline-block;
+  height: 15px;
+  border-radius: 4px;
+  background: var(--rd-line-2);
+  animation: sl-pulse 1.4s ease-in-out infinite;
+}
+@keyframes sl-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* ============================================================== close */
+
+.rd-close {
+  padding: 104px 14px 14px;
+}
+.rd-close-panel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+  padding: clamp(72px, 12vh, 128px) 24px;
+  text-align: center;
+  color: var(--rd-on-dark);
+  border-radius: var(--rd-radius-panel);
+  background: linear-gradient(180deg, #1a1635 0%, #2a2450 38%, #5b4f8f 78%, #a89fe0 100%);
+}
+.rd-close-panel::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -35% -10%;
+  height: 60%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(243, 201, 160, 0.55), rgba(243, 201, 160, 0) 65%);
+  pointer-events: none;
+}
+.rd-close-line {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-width: 20ch;
+  font-family: var(--rd-display);
+  font-weight: 400;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-size: clamp(32px, 4.4vw, 58px);
+  line-height: 1.04;
+  letter-spacing: -0.026em;
+  text-wrap: balance;
+}
+.rd-close-line em {
+  font-weight: 300;
+  color: var(--rd-apricot-light);
+}
+.rd-close .sl-start {
+  position: relative;
+  z-index: 1;
+  color: var(--rd-ink);
+  background: var(--rd-cream);
+  box-shadow: 0 18px 30px -18px rgba(0, 0, 0, 0.6);
+}
+.rd-close .sl-start:hover {
+  background: var(--rd-on-dark);
+}
+.rd-close :focus-visible {
+  outline-color: var(--rd-on-dark);
+}
+
+/* ========================================================= responsive */
+
+@media (max-width: 1100px) {
+  .sl-beats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .rd-counts-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rd-count-note {
+    padding-top: 14px;
+  }
+}
+
+@media (max-width: 900px) {
+  .rd-hero-panel {
+    min-height: 0;
+  }
+  .rd-hero-space {
+    min-height: 720px;
+  }
+  .mw-stage {
+    bottom: 128px;
+    padding: 0 14px;
+  }
+  .rd-demo-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rd-paper {
+    border-right: 0;
+    border-bottom: 1px solid var(--rd-line);
+    min-height: 0;
+  }
+  .rd-voice {
+    min-height: 220px;
+  }
+  .rd-method,
+  .rd-counts,
+  .rd-slab {
+    padding-top: 72px;
+  }
+  .rd-close {
+    padding-top: 72px;
+  }
+  .sl-dr-view,
+  .sl-runs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sl-dr-side {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .sl-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sl-stat:nth-child(3) {
+    border-left: 0;
+  }
+  .sl-stat:nth-child(n + 3) {
+    border-top: 1px solid var(--rd-line);
+  }
+}
+
+@media (max-width: 640px) {
+  .rd-hero {
+    padding: 8px 8px 0;
+  }
+  .rd-hero-panel {
+    border-radius: 22px;
+  }
+  .rd-hero-top {
+    padding: 18px 18px 0;
+  }
+  .rd-meta {
+    display: none;
+  }
+  .rd-hero-copy {
+    padding: 28px 16px 0;
+  }
+  .sl-title {
+    font-size: clamp(40px, 12vw, 56px);
+  }
+  .sl-cta {
+    flex-direction: column;
+  }
+  .sl-start {
+    width: 100%;
+    justify-content: center;
+  }
+  .rd-hero-space {
+    min-height: 760px;
+  }
+  .rd-demo-title {
+    display: none;
+  }
+  .sl-beats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rd-method,
+  .rd-counts,
+  .rd-slab {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .sl-dr-tabs {
+    padding: 12px 20px 0;
+  }
+  .sl-dr-note {
+    display: none;
+  }
+  .sl-dr-view {
+    padding: 24px 20px 26px;
+  }
+  .sl-runs > div:first-child {
+    padding: 20px 20px 10px;
+  }
+  .sl-section {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sl-sec-go {
+    justify-self: start;
+  }
+  .sl-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sl-stat {
+    border-left: 0;
+    border-top: 1px solid var(--rd-line);
+  }
+  .sl-stat:first-child {
+    border-top: 0;
+  }
+  .rd-close {
+    padding: 72px 8px 8px;
+  }
+  .rd-close-panel {
+    border-radius: 22px;
+  }
+}
+
+/* Motion is a courtesy, never the mechanism. Every state above is reachable
+   with this on; continuous loops stop rather than speed up. */
+@media (prefers-reduced-motion: reduce) {
+  .sl *,
+  .sl *::before,
+  .sl *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .mw-layer,
+  .mw-stage,
+  .rd-hero-copy {
+    will-change: auto;
+  }
+}
+
+/* ------------------------------------------------------- the briefing page
+   The instructions on their own page, before anything records. One column,
+   everything open, Start at the top and again at the foot. */
+.sl-briefing-page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 20px 96px;
+  display: grid;
+  gap: 32px;
+}
+/* Stacked on purpose. It was space-between, and at this page's width the
+   title block and the CTA never fit on one line, so the CTA always wrapped
+   under the tagline: the layout that shipped was accidental. */
+.sl-bp-head {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: flex-start;
+}
+/* The notice, un-boxed. It shared fill, hairline and radius with the four step
+   cards below it, so the one sentence written to lower her shoulders read as a
+   fifth thing to do. A plain line in ink, the page speaking. */
+.sl-briefing-page .sl-notice {
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--rd-ink);
+  max-width: 62ch;
+}
+/* A landing-page pill on a task page. The lift and outer shadow are the
+   door's persuade register; on paper the fill darkening is enough. */
+.sl-briefing-page .sl-start,
+.sl-briefing-page .sl-start:hover,
+.sl-briefing-page .sl-start:active {
+  transform: none;
+  box-shadow: none;
+}
+/* The hero classes are written for the door's dark purple ground: .sl-title is
+   white at up to 96px, .sl-tagline is white with a drop shadow. This page sits
+   on paper, so both were being drawn in white on cream. The briefing page uses
+   the same classes for the same copy, so it restates the colour and the size
+   here rather than forking them. */
+/* The focus ring, per control rather than once at the top.
+   `.sl :focus-visible` sets a ring for the whole world, and loses the cascade on
+   the two button classes, so Start and Back matched :focus-visible and computed
+   outline-style: none. A keyboard student could not see where she was on the one
+   control that begins the run, and Back had no indicator at all.
+
+   The colour depends on the ground, and these buttons appear on both: the door
+   draws them on the dark hero panel, every other surface on cream. */
+.sl .sl-start:focus-visible,
+.sl .sl-brief:focus-visible {
+  outline: 2px solid var(--rd-ink);
+  outline-offset: 3px;
+}
+.rd-hero .sl-start:focus-visible,
+.rd-hero .sl-brief:focus-visible {
+  outline-color: var(--rd-cream);
+}
+/* 43x44 was under the 44x44 floor, and this is the exit control. */
+.sl-brief {
+  min-width: 44px;
+}
+
+/* Two more hero classes drawn in white for the door's dark panel. On paper they
+   were invisible: the drill's own name, and a Back button nobody could see. */
+.sl-briefing-page .sl-chip {
+  color: var(--rd-ink);
+  background: var(--rd-paper);
+  border-color: var(--rd-line);
+  backdrop-filter: none;
+}
+.sl-briefing-page .sl-brief {
+  color: var(--rd-ink-2);
+  text-decoration-color: var(--rd-line);
+}
+.sl-briefing-page .sl-brief:hover {
+  color: var(--rd-ink);
+  text-decoration-color: var(--rd-ink-2);
+}
+/* A heading inside the long version was set larger than the section heading
+   above it, so the page read as if the essay outranked its own label. */
+.sl-briefing-page .sl-bp-essay h3 {
+  font-size: 20px;
+  margin-top: 28px;
+}
+.sl-briefing-page .sl-title {
+  color: var(--rd-ink);
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  margin: 14px 0 0;
+}
+.sl-briefing-page .sl-title em {
+  color: var(--rd-ink-2);
+}
+/* .sl-tagline is white with a drop shadow, which is right on the door's dark
+   hero and unreadable here: this page sits on paper. The briefing page reuses
+   the class for the same line of copy, so it restates the colour rather than
+   forking the class. */
+.sl-briefing-page .sl-tagline {
+  margin: 12px 0 0;
+  color: var(--rd-ink-2);
+  text-shadow: none;
+}
+.sl-briefing-page .sl-tagline strong {
+  color: var(--rd-ink);
+}
+/* The long version, closed by default. */
+.sl-bp-more > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 14px 0;
+  border-top: 1px solid var(--rd-line);
+}
+/* The summary's heading used to inherit body weight, so the only help on the
+   page looked like a stray sentence beside an uppercase h2. Same treatment as
+   its sibling, and a drawn chevron instead of a " +" that some readers spoke. */
+.sl-bp-more > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sl-bp-more > summary > h2 {
+  display: inline;
+  margin: 0;
+}
+.sl-bp-more > summary::-webkit-details-marker {
+  display: none;
+}
+.sl-bp-more > summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid var(--rd-ink-2);
+  border-bottom: 1.5px solid var(--rd-ink-2);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 180ms var(--rd-ease);
+}
+.sl-bp-more[open] > summary::after {
+  transform: translateY(2px) rotate(225deg);
+}
+.sl-bp-more > summary:focus-visible {
+  outline: 2px solid var(--rd-ink);
+  outline-offset: 3px;
+}
+/* --rd-ink-soft is not a token this file defines, so both of these were falling
+   through to the global muted colour and landing at 5.9:1 on cream: fainter than
+   the body copy they sit beside. They use the real tokens now. */
+/* One micro-label style, the mono one the file declares as such. Section
+   headings and step numbers were two different Inter uppercase styles beside
+   the mono chip: three looks for one rank. */
+.sl-bp-h2 {
+  font-family: var(--rd-mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-bottom: 16px;
+  color: var(--rd-ink);
+}
+.sl-bp-list {
+  display: grid;
+  gap: 14px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sl-bp-list li {
+  border: 1px solid var(--rd-line, hsl(var(--border)));
+  border-radius: 16px;
+  padding: 18px 20px;
+}
+.sl-bp-n {
+  display: block;
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rd-ink-3);
+  margin-bottom: 6px;
+}
+.sl-bp-list li strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+/* The sentences she has to follow ran past 100 characters a line. The essay
+   already holds 68ch; the steps get a measure too. */
+.sl-bp-list li p {
+  margin: 0;
+  line-height: 1.6;
+  max-width: 62ch;
+}
+.sl-bp-foot p {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--rd-ink-2);
+}
+.sl-bp-fact {
+  font-size: 17px;
+  color: var(--rd-ink);
+}
+.sl-bp-foot .sl-bp-fact {
+  color: var(--rd-ink);
+}
+.sl-bp-closer {
+  font-family: var(--rd-display);
+  font-style: italic;
+  font-size: 19px;
+}
+.sl-bp-foot {
+  border-top: 1px solid var(--rd-line, hsl(var(--border)));
+  padding-top: 24px;
+  display: grid;
+  gap: 16px;
+}
+/* The page arrives in reading order: head, notice, then each step a beat
+   after the last, so the eye is led down the method rather than handed a
+   wall. Opacity and transform only; nothing here moves layout. */
+@keyframes sl-bp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.sl-briefing-page .sl-bp-head,
+.sl-briefing-page .sl-notice,
+.sl-briefing-page .sl-bp-h2,
+.sl-briefing-page .sl-bp-list li,
+.sl-briefing-page .sl-bp-more,
+.sl-briefing-page .sl-bp-foot {
+  animation: sl-bp-rise 560ms var(--rd-ease) both;
+}
+.sl-briefing-page .sl-notice {
+  animation-delay: 120ms;
+}
+.sl-briefing-page .sl-bp-h2 {
+  animation-delay: 200ms;
+}
+.sl-briefing-page .sl-bp-list li {
+  animation-delay: calc(260ms + var(--i, 0) * 90ms);
+}
+.sl-briefing-page .sl-bp-more,
+.sl-briefing-page .sl-bp-foot {
+  animation-delay: 640ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sl-briefing-page .sl-bp-head,
+  .sl-briefing-page .sl-notice,
+  .sl-briefing-page .sl-bp-h2,
+  .sl-briefing-page .sl-bp-list li,
+  .sl-briefing-page .sl-bp-more,
+  .sl-briefing-page .sl-bp-foot {
+    animation: none;
+  }
+  .sl-bp-more > summary::after {
+    transition: none;
+  }
+}
+/* ---- the briefing page's type scale ----
+   Sizes on this page had drifted to 16, 16.5, 17, 18, 19 and 20px: six steps
+   where the eye can tell apart three. One scale, in rem so it follows her
+   browser setting, ratio about 1.2 between neighbours:
+     label 0.6875  body 1  lead 1.1875  step 1.375  title clamp(2, 3.4vw, 3)
+   Roles: mono for labels, Inter for anything she reads at length, Fraunces
+   for the lines that are spoken to her (title, step names, lede, closer). */
+.sl-briefing-page {
+  --bp-label: 0.6875rem;
+  --bp-body: 1rem;
+  --bp-lead: 1.1875rem;
+  --bp-step: 1.375rem;
+  font-size: var(--bp-body);
+}
+.sl-briefing-page .sl-title {
+  font-size: clamp(2rem, 3.4vw, 3rem);
+}
+.sl-briefing-page .sl-tagline {
+  font-size: var(--bp-lead);
+  line-height: 1.5;
+}
+.sl-briefing-page .sl-notice,
+.sl-briefing-page .sl-bp-fact {
+  font-size: var(--bp-lead);
+  line-height: 1.5;
+}
+.sl-briefing-page .sl-bp-h2,
+.sl-briefing-page .sl-bp-n {
+  font-size: var(--bp-label);
+}
+/* Step names in the display face: they are the four things said to her,
+   and the sans bold they were in made them read as form labels. */
+.sl-briefing-page .sl-bp-list li strong {
+  font-family: var(--rd-display);
+  font-weight: 500;
+  font-variation-settings: "opsz" 24, "SOFT" 30, "WONK" 0;
+  font-size: var(--bp-step);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.sl-briefing-page .sl-bp-list li p {
+  font-size: var(--bp-body);
+  line-height: 1.65;
+}
+.sl-briefing-page .sl-bp-foot p {
+  font-size: var(--bp-body);
+  line-height: 1.6;
+}
+.sl-briefing-page .sl-bp-closer {
+  font-size: var(--bp-step);
+  line-height: 1.3;
+}
+.sl-briefing-page .sl-bp-essay p {
+  font-size: var(--bp-body);
+  line-height: 1.7;
+}
+.sl-briefing-page .sl-bp-essay p.rd-lede {
+  font-size: var(--bp-step);
+  line-height: 1.4;
+}
+.sl-briefing-page .sl-bp-essay h3 {
+  font-size: var(--bp-step);
+  margin: 32px 0 10px;
+}
+@media (max-width: 640px) {
+  .sl-bp-head {
+    flex-direction: column;
+  }
+}
+
+/* The demonstrations: one theatre, three films.
+
+   The stage is the drill's indigo, the same ground the runner uses, set into
+   the page with the depth the hero's demo card has: a soft lavender lift
+   behind it and a shadow that reads as a pane standing on the paper rather
+   than a box painted on it. The browser's controls are off; the bar below is
+   ours, in the door's mono face. Every token is defined at the top of this
+   file. */
+.sl-bp-demos {
+  margin: 36px 0 8px;
+}
+.sl-bp-demos-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 32px;
+  margin-bottom: 20px;
+}
+.sl-bp-demos-head .sl-bp-h2 {
+  margin: 0;
+}
+.sl-bp-demos-lede {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--rd-ink-2);
+  font-size: var(--bp-body, 1rem);
+  line-height: 1.6;
+}
+.sl-theatre {
+  position: relative;
+}
+.sl-theatre::before {
+  /* The lift. A wash of the hero's lavender and apricot behind the pane, so
+     the stage sits in the dusk world rather than on flat cream. */
+  content: "";
+  position: absolute;
+  inset: -6% -3% -2%;
+  border-radius: 40px;
+  background:
+    radial-gradient(60% 70% at 30% 20%, rgba(201, 195, 236, 0.55), transparent 70%),
+    radial-gradient(50% 60% at 80% 90%, rgba(243, 201, 160, 0.5), transparent 70%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: 0;
+}
+.sl-theatre-stage {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--rd-indigo);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 30px 60px -30px rgba(22, 19, 43, 0.55),
+    0 12px 28px -18px rgba(22, 19, 43, 0.45);
+  outline: none;
+}
+.sl-theatre-stage:focus-visible {
+  box-shadow:
+    0 0 0 3px var(--rd-cream),
+    0 0 0 5px var(--rd-ink),
+    0 30px 60px -30px rgba(22, 19, 43, 0.55);
+}
+.sl-theatre-stage video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+.sl-theatre[data-wide] .sl-theatre-stage {
+  border-radius: 0;
+}
+.sl-theatre[data-wide] .sl-theatre-stage video {
+  object-fit: contain;
+  background: #000;
+}
+/* The play mark. One, large, centred, in the door's paper on indigo, so the
+   poster reads as a still that is about to move rather than as a picture. */
+.sl-theatre-play {
+  appearance: none;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 88px;
+  height: 88px;
+  margin: -44px 0 0 -44px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--rd-paper);
+  color: var(--rd-indigo);
+  display: grid;
+  place-items: center;
+  padding-left: 5px;
+  box-shadow: 0 18px 40px -12px rgba(22, 19, 43, 0.7);
+  transition: transform 0.35s var(--rd-ease), background-color 0.2s;
+}
+.sl-theatre-play:hover {
+  transform: scale(1.06);
+  background: var(--rd-apricot-light);
+}
+.sl-theatre-play:focus-visible {
+  outline: 3px solid var(--rd-paper);
+  outline-offset: 4px;
+}
+/* The bar. Shown while paused and on hover or focus while playing; it fades
+   when she is simply watching. */
+.sl-theatre-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 14px 12px;
+  background: linear-gradient(to top, rgba(22, 19, 43, 0.85), rgba(22, 19, 43, 0));
+  color: var(--rd-on-dark);
+  opacity: 1;
+  transition: opacity 0.3s var(--rd-ease);
+}
+.sl-theatre[data-playing] .sl-theatre-bar {
+  opacity: 0;
+}
+.sl-theatre[data-playing] .sl-theatre-stage:hover .sl-theatre-bar,
+.sl-theatre[data-playing] .sl-theatre-stage:focus-within .sl-theatre-bar {
+  opacity: 1;
+}
+.sl-theatre-btn {
+  appearance: none;
+  cursor: pointer;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  display: grid;
+  place-items: center;
+  transition: background-color 0.2s;
+}
+.sl-theatre-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.sl-theatre-btn:focus-visible {
+  outline: 2px solid var(--rd-paper);
+  outline-offset: 2px;
+}
+.sl-theatre-time {
+  flex: none;
+  font-family: var(--rd-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.85);
+}
+.sl-theatre-scrub {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.sl-theatre-scrub::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    var(--rd-marigold) var(--sl-scrub, 0%),
+    rgba(255, 255, 255, 0.28) var(--sl-scrub, 0%)
+  );
+}
+.sl-theatre-scrub::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.28);
+}
+.sl-theatre-scrub::-moz-range-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--rd-marigold);
+}
+.sl-theatre-scrub::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--rd-paper);
+  box-shadow: 0 0 0 2px var(--rd-indigo);
+}
+.sl-theatre-scrub::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--rd-paper);
+  box-shadow: 0 0 0 2px var(--rd-indigo);
+}
+.sl-theatre-scrub:focus-visible {
+  outline: 2px solid var(--rd-paper);
+  outline-offset: -8px;
+  border-radius: 8px;
+}
+/* The chapters. Three, under the stage, each a still with its question and
+   its length. The one on the stage is marked with the marigold the Colour
+   step owns, in a hairline rather than a fill, so it is a pointer and not a
+   verdict. */
+.sl-theatre-chapters {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+}
+.sl-theatre-chapter {
+  appearance: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 14px;
+  row-gap: 2px;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--rd-line);
+  border-radius: 14px;
+  background: var(--rd-paper);
+  color: var(--rd-ink);
+  text-align: left;
+  font: inherit;
+  transition: border-color 0.2s, background-color 0.2s, transform 0.35s var(--rd-ease);
+}
+.sl-theatre-chapter:hover {
+  border-color: var(--rd-ink-3);
+  transform: translateY(-1px);
+}
+.sl-theatre-chapter[aria-current="true"] {
+  border-color: var(--rd-marigold);
+  box-shadow: 0 0 0 1px var(--rd-marigold);
+}
+.sl-theatre-chapter:focus-visible {
+  outline: 2px solid var(--rd-ink);
+  outline-offset: 2px;
+}
+.sl-theatre-thumb {
+  position: relative;
+  grid-row: 1 / span 2;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--rd-indigo);
+}
+.sl-theatre-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sl-theatre-live {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--rd-marigold);
+  box-shadow: 0 0 0 2px rgba(22, 19, 43, 0.6);
+  animation: sl-theatre-pulse 1.4s ease-in-out infinite;
+}
+@keyframes sl-theatre-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.sl-theatre-cap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.sl-bp-demo-label,
+.sl-bp-demo-time {
+  font-family: var(--rd-mono);
+  font-size: var(--bp-label, 0.6875rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rd-ink-3);
+}
+.sl-bp-demo-label {
+  color: var(--rd-ink);
+}
+.sl-theatre-sub {
+  font-size: 13px;
+  color: var(--rd-ink-3);
+}
+@media (max-width: 760px) {
+  .sl-theatre-chapters {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .sl-theatre-play {
+    width: 68px;
+    height: 68px;
+    margin: -34px 0 0 -34px;
+  }
+  .sl-theatre-time {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sl-theatre-play,
+  .sl-theatre-chapter,
+  .sl-theatre-bar {
+    transition: none;
+  }
+  .sl-theatre-live {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------- door extras
+   The demo films under the step cards on the library door, and the "more"
+   control under a capped section list. Same tokens as everything above. */
+.sl-door-demos {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 56px 24px 0;
+}
+.sl-door-demos .sl-bp-demos {
+  margin: 0;
+}
+.sl-more {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--rd-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.sl-more:focus-visible {
+  outline: 2px solid var(--rd-ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

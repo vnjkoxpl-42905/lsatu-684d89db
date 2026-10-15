@@ -1,0 +1,85 @@
+{
+  "_doc": "Per-drill human overrides for the assignment engine. Keys: question_types, question_features, reasoning_types, question_count, difficulty_min, difficulty_max, blended, question_qids, note. Anything omitted falls back to audit recommendation -> seed. Engine: scripts/assign-guided-drill-taxonomy.mjs.",
+
+  "w3-08-describing-arguments-set-1": {
+    "question_types": ["Role", "Method of Reasoning", "Main Conclusion"],
+    "note": "Describing-the-argument drill. Identity is the describe-the-argument question types, not the Focused-on-Evidence feature the engine fell back to."
+  },
+  "w5-07-describing-arguments-set-2": {
+    "question_types": ["Role", "Method of Reasoning", "Main Conclusion"],
+    "note": "Describing arguments — type-driven."
+  },
+  "w7-10-describing-arguments-set-3": {
+    "question_types": ["Role", "Method of Reasoning", "Main Conclusion"],
+    "note": "Describing arguments — type-driven."
+  },
+  "w13-describing-arguments-match-family": {
+    "question_types": ["Role", "Method of Reasoning", "Main Conclusion"],
+    "note": "Describing arguments (match family) — type-driven."
+  },
+
+  "w2-03-must-be-true-first-taste": {
+    "question_types": ["Must Be True"],
+    "note": "Must Be True first taste. Keep the type; do not let the generic Ruling Out Options feature drop it."
+  },
+  "w2-09-most-supported-first-taste": {
+    "question_types": ["Most Strongly Supported"],
+    "note": "Most Supported first taste. Keep the Most Strongly Supported type."
+  },
+
+  "w4-02-principle-strengthen-application-set-1": {
+    "question_count": 5,
+    "note": "Seed had null count; card says 'these five Principle-Strengthen questions'."
+  },
+  "w1-02-the-core-connection": {
+    "question_count": 7,
+    "note": "Count 7 from curriculum source ('Try these 7 questions, untimed'). Assumption-family blended set; types/feature derive."
+  },
+
+  "w5-10-evaluate-first-taste": {
+    "question_types": ["Evaluate"],
+    "note": "Accept: Evaluate is a small bank (~26 total LR). Type is right; pool spans all levels."
+  },
+  "w5-11-evaluate-set-1": {
+    "question_types": ["Evaluate"],
+    "note": "Accept: small Evaluate bank."
+  },
+  "w7-07-evaluate-set-2": {
+    "question_types": ["Evaluate"],
+    "note": "Accept: small Evaluate bank."
+  },
+  "w8-11-must-be-false-medium-set-2": {
+    "question_types": ["Must Be False"],
+    "note": "Accept: Must Be False is a small bank (~18 total LR). Type is right."
+  },
+  "w9-06-must-be-false-harder-set-2": {
+    "question_types": ["Must Be False"],
+    "note": "Accept: small Must Be False bank."
+  },
+  "w8-03-must-be-false-medium-set-1": {
+    "question_types": ["Must Be False"],
+    "question_count": 4,
+    "note": "Count 4 from curriculum source ('a set of four Must Be False questions, taken from tests 52, 56, 57'). Small Must Be False bank."
+  },
+
+  "w1-06-explain-curious-fact-first-taste": {
+    "question_features": ["Explain Curious Fact"],
+    "question_types": [],
+    "note": "LSAT Lab classifies Explain Curious Fact as a CAUSATION feature (not the Paradox type). Feature-driven; question types derive from the actual ECF questions (mixed)."
+  },
+  "w7-01-explain-curious-fact-medium-set-2": {
+    "question_features": ["Explain Curious Fact"],
+    "question_types": [],
+    "note": "ECF = Causation feature. Feature-driven, types derived."
+  },
+  "w7-05-explain-curious-fact-medium-set-3": {
+    "question_features": ["Explain Curious Fact"],
+    "question_types": [],
+    "note": "ECF = Causation feature. Feature-driven, types derived."
+  },
+  "w11-02-explain-curious-fact-harder-set-2": {
+    "question_features": ["Explain Curious Fact"],
+    "question_types": [],
+    "note": "ECF = Causation feature. Feature-driven, types derived."
+  }
+}

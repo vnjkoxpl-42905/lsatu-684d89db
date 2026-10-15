@@ -1,0 +1,8 @@
+/* Print stylesheet — placeholder per architecture-plan.md §1.4 + spec §3.5.
+ * Stage 4 will populate Quick Reference Card + Stage-Gate PDF report styles.
+ * For Lesson 1.1 review: confirms the import chain works.
+ */
+@media print {
+  body { background: white; color: black; }
+  .no-print { display: none !important; }
+}

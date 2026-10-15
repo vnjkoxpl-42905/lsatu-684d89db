@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "anthropic.claude-code",
+    "openai.chatgpt",
+    "ms-playwright.playwright",
+    "usernamehw.errorlens",
+    "gruntfuggly.todo-tree",
+    "johnpapa.vscode-peacock",
+    "eamodio.gitlens",
+    "yzhang.markdown-all-in-one",
+    "ms-edgedevtools.vscode-edge-devtools"
+  ]
+}
