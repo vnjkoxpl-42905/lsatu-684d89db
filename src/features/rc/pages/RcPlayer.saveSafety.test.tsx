@@ -60,7 +60,7 @@ vi.mock('../components/RcPassageSummary', () => ({ RcPassageSummary: () => null 
 vi.mock('../components/RcModals', () => ({
   RcQuestionDetails: ({ number, passage: source }: { number: number; passage: RcPassage }) => <div role="dialog" aria-label="Question details">PT {source.preptest} Section {source.section} Passage {source.setNumber} Question {number}</div>,
   RcSubmitConfirm: ({ onConfirm }: { onConfirm: () => void }) => <button onClick={onConfirm}>Confirm submission</button>,
-  RcTextSettings: () => null,
+  RcTextSettings: () => null, RcLineSpacingMenu: () => null,
 }));
 vi.mock('@/components/help/HelpSheet', () => ({ default: () => null }));
 

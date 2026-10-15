@@ -583,7 +583,7 @@ export function useClassroomHome(): {
   const markDone = React.useCallback(
     (key: string) => {
       const row = assigned.find((candidate) => candidate.key === key);
-      if (!row || row.status === "completed") return;
+      if (!row || row.status === "completed" || !manualCompletionAllowed(FEED_KIND[row.kind], row.selfCompleting)) return;
       setCompletingKey(key);
       completion.mutate(
         { sourceTable: row.sourceTable, refId: row.refId },

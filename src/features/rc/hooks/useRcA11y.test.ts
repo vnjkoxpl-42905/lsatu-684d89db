@@ -32,5 +32,18 @@ it('retains spacing and color across reload and migrates legacy spacing', () => 
   act(() => first.result.current.update({ lineHeight: 0.45, scheme: 'navy' }));
   first.unmount();
   const restored = renderHook(() => useRcA11y());
-  expect(restored.result.current.settings).toEqual({ fontSize: 100, lineHeight: 0.45, scheme: 'navy' });
+  expect(restored.result.current.settings).toEqual({ fontSize: 100, lineHeight: 0.45, scheme: 'navy', paragraphFocus: false });
+});
+
+
+it('persists paragraph focus and the percentage spacing choices independently', () => {
+  const first = renderHook(() => useRcA11y());
+  act(() => first.result.current.update({ paragraphFocus: true, lineHeight: 1.6 }));
+  first.unmount();
+  const restored = renderHook(() => useRcA11y());
+  expect(restored.result.current.settings.paragraphFocus).toBe(true);
+  expect(restored.result.current.extraLeading).toBe(1.6);
+  act(() => restored.result.current.update({ lineHeight: 0.8 }));
+  expect(restored.result.current.settings.paragraphFocus).toBe(true);
+  expect(restored.result.current.extraLeading).toBe(0.8);
 });

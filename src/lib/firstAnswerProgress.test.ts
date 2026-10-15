@@ -37,6 +37,17 @@ describe('first saved graded response', () => {
     expect(result.repeatCount).toBe(1);
   });
 
+  it('counts a persisted attempt once when a paged read overlaps, while retaining real repeats', () => {
+    const first = graded('attempts:first', 'LR:q1', '2026-09-26', false);
+    const repeat = graded('attempts:repeat', 'LR:q1', '2026-09-27', true);
+    const result = projectFirstAnswerProgress({
+      answers: [repeat, first, { ...first }, { ...repeat }],
+      window: 7, asOf: '2026-09-28', coverage,
+    });
+    expect(result.LR).toMatchObject({ correct: 0, denominator: 1, evidenceAttemptIds: ['attempts:first'] });
+    expect(result.repeatCount).toBe(1);
+  });
+
   it('keeps LR and RC separate and suppresses percentages below three', () => {
     const result = projectFirstAnswerProgress({
       answers: [graded('lr-1', 'LR:one', '2026-09-27', true), { ...graded('rc-1', 'RC:1:1', '2026-09-27', false), area: 'RC', source: 'rc_attempts' }],
