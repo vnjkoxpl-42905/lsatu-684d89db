@@ -11,6 +11,14 @@ const signals = drill.items.map((i) => parseSignal(i)!);
 const byOrder = (n: number) => signals.find((s) => s.order === n)!;
 
 describe("comparison and grading regressions", () => {
+  it("defers negated indicators and uncredited extra indicators instead of awarding instant credit", () => {
+    const item = drill.items[0];
+    for (const answer of ["conditional, only if is not the indicator", "conditional, only if and because"]) {
+      expect(matchesCredited(item, answer), answer).toBe(false);
+      expect(readAnswer(parseSignal(item)!, answer).drawn, answer).toEqual([]);
+    }
+    expect(matchesCredited(item, "conditional, only if (not causal)")).toBe(true);
+  });
   it("leaves swapped type/indicator pairs to the Coach", () => {
     const item = drill.items.find((i) => i.order === 28)!;
     expect(matchesCredited(item, 'causal, "more evenly than"; comparative, "since"')).toBe(false);

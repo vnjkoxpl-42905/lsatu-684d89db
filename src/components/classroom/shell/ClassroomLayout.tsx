@@ -47,6 +47,7 @@ import {
 } from "@/hooks/useAssignedTodoFeed";
 import { useDialogOverlay } from "@/components/classroom/shell/useDialogOverlay";
 import AssignedReadingCenterLink from '@/components/classroom/AssignedReadingCenterLink';
+import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import "@/components/classroom/classroom.css";
 
 type ClassroomSection = "notes" | "work" | "flagged" | "journal";
@@ -144,6 +145,10 @@ function ClassroomSidebar({
   const { theme, setTheme } = useTheme();
   const { user, signOut } = useAuth();
   const permissions = useUserPermissions();
+  const readingCenter = useReadingCenterAccess(!permissions.is_admin);
+  const readingCenterAssigned = !permissions.loading && !permissions.is_admin && readingCenter.allowed;
+  const destinationPermissions = { ...permissions, readingCenterAssigned,
+    readingCenterChecking: !permissions.is_admin && readingCenter.isPending };
   const unreadMessages = useUnreadMessageCount();
   const { notifications, markSignupNotificationsRead } = useNotifications();
   const unreadStudentSignups = React.useMemo(
@@ -234,7 +239,12 @@ function ClassroomSidebar({
   // point is to have the route's chunk parsed before the click lands, so the
   // student never sees the stage fallback at all.
 
-  const railGroups = resolveRailGroups(railPrefs).map((group) => ({
+  // An assigned tool belongs beside My Work. Preserve all other customized
+  // entries; this temporarily restores its parent destination without saving prefs.
+  const displayedRailPrefs = readingCenterAssigned
+    ? { ...railPrefs, hidden: railPrefs.hidden.filter((id) => id !== 'my-work') }
+    : railPrefs;
+  const railGroups = resolveRailGroups(displayedRailPrefs).map((group) => ({
     ...group,
     items: group.items.filter((item) => item.id !== "schedule" || !permissions.is_admin),
   }));
@@ -256,7 +266,7 @@ function ClassroomSidebar({
       case "my-work":
         return {
           active: location.pathname.startsWith("/my-work") || activeSection === "notes" || activeSection === "work",
-          onClick: () => go(permissions.loading ? "/my-work" : destinationLandingPath("my-work", permissions)),
+          onClick: () => go(permissions.loading ? "/my-work" : destinationLandingPath("my-work", destinationPermissions)),
         };
       case "practice":
         return {
@@ -312,10 +322,10 @@ function ClassroomSidebar({
                 // explains its own locked sections, so the rail never disables
                 // one. A padlock marks a destination with nothing open yet;
                 // clicking it still leads to the page that says why.
-                const locked = railItemLocked(item.id, permissions);
+                const locked = railItemLocked(item.id, destinationPermissions);
                 return (
+                  <React.Fragment key={item.id}>
                   <button
-                    key={item.id}
                     type="button"
                     className={`${navClass(active)}${locked ? " classroom-nav-dimmed" : ""}`}
                     onClick={onClick}
@@ -332,6 +342,8 @@ function ClassroomSidebar({
                       </>
                     ) : null}
                   </button>
+                  {item.id === 'my-work' && readingCenterAssigned ? <AssignedReadingCenterLink onNavigate={onNavigate} /> : null}
+                  </React.Fragment>
                 );
               })}
             </div>
@@ -339,7 +351,6 @@ function ClassroomSidebar({
 
           <div className="classroom-nav-group classroom-nav-shortcuts">
             <b>Quick access</b>
-            <AssignedReadingCenterLink onNavigate={onNavigate} />
             {/* aria-disabled rather than disabled: a disabled button drops out
                 of the tab order, so a keyboard student never reaches the
                 explanation of why it is locked. */}

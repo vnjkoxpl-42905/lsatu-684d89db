@@ -1,5 +1,4 @@
 -- Local draft. Additive follow-up to applied 0029. This does not enable AI.
-begin;
 
 -- Preserve the existing shape rules, but make their NULL/error outcomes false.
 alter function public.activity_ai_answer_key_valid_v1(jsonb) rename to activity_ai_answer_key_shape_v1;
@@ -85,4 +84,3 @@ end $$;
 revoke all on function public.begin_activity_ai_request_v1(uuid,uuid,text,uuid,integer,text,integer)
  from public, anon, authenticated, service_role;
 grant execute on function public.begin_activity_ai_request_v1(uuid,uuid,text,uuid,integer,text,integer) to service_role;
-commit;
