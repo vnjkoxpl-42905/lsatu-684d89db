@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, CircleCheck, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCourseStep } from '../courseProgress';
 import './drill-one.css';
@@ -135,7 +135,7 @@ export function DrillOneExperience({ questions, order = 1, legacyOrder }: { ques
           const selected = answer.selected === index;
           return <button ref={index === 0 ? firstOption : undefined} type="button" key={option} className="d1-option" aria-pressed={selected} disabled={answer.checked} data-selected={selected} data-correct={solved && selected} data-incorrect={answer.checked && selected && !solved} onClick={() => updateAnswer({ selected: index })}><span className="d1-option-letter" aria-hidden="true">{solved && selected ? <Check size={17}/> : String.fromCharCode(65 + index)}</span><span>{option}</span>{solved && selected && <span className="d1-sr-only">Correct answer</span>}</button>;
         })}</div>
-        <div className="d1-feedback-region">{answer.checked && answer.selected !== null && <div className="d1-feedback" data-correct={answer.selected === question.correct}><h3 ref={feedbackHeading} tabIndex={-1} aria-describedby={`${id}-explanation`} className="d1-feedback-title"><span className="d1-feedback-dot"/>{solved ? 'Correct.' : 'Not quite.'}</h3><p id={`${id}-explanation`}>{question.feedback[answer.selected]}</p></div>}</div>
+        <div className="d1-feedback-region">{answer.checked && answer.selected !== null && <div className="d1-feedback d1-feedback-halo" data-correct={solved}><div className="d1-feedback-surface"><h3 ref={feedbackHeading} tabIndex={-1} aria-describedby={`${id}-explanation`} className="d1-feedback-title"><span className="d1-feedback-icon" aria-hidden="true">{solved ? <CircleCheck size={24} strokeWidth={1.7}/> : <RotateCcw size={23} strokeWidth={1.7}/>}</span>{solved ? 'Correct.' : 'Not quite.'}</h3><p id={`${id}-explanation`}>{question.feedback[answer.selected]}</p></div></div>}</div>
         <div className="d1-answer-actions">{answer.checked ? (!solved && <button type="button" className="d1-retry" onClick={tryAgain}><RotateCcw size={15}/>Try again</button>) : <><button type="button" className="d1-primary" disabled={answer.selected === null} onClick={checkAnswer}>Check answer<ArrowRight size={17}/></button></>}{seenResults && <button type="button" className={`d1-retry${answer.checked ? '' : ' d1-return-results'}`} onClick={showResults}>Back to results<ArrowRight size={15}/></button>}</div>
       </div>
     </div>}

@@ -29,7 +29,7 @@ it('checks deliberately, preserves the rule panel, and shows question progress a
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   check();
   expect(screen.getByRole('heading', { name: 'Correct.' })).toHaveFocus();
-  expect(screen.getByRole('heading', { name: 'Correct.' })).toHaveAccessibleDescription(/Imagining a win helps/);
+  expect(screen.getByRole('heading', { name: 'Correct.' })).toHaveAccessibleDescription(/The rule tells you what follows from winning/);
   expect(screen.queryByText('Read the rule left to right')).toBeNull();
   expect(screen.queryByRole('button', { name: 'Try again' })).toBeNull();
   expect(document.querySelector('.d1-rule-panel')!.innerHTML).toBe(rulePanel);
@@ -43,7 +43,7 @@ it('gives a hint for a wrong answer without marking or naming the correct option
   fireEvent.click(answerOptions()[0]);
   check();
   expect(screen.getByRole('heading', { name: 'Not quite.' })).toHaveFocus();
-  expect(screen.getByText(/You added a case fact/)).toBeVisible();
+  expect(screen.getByText(/Does it also report that the win actually happened/)).toBeVisible();
   expect(screen.queryByText(/The correct answer is marked above/)).toBeNull();
   expect(screen.queryByText('Correct answer')).toBeNull();
   expect(answerOptions().filter(option => option.getAttribute('data-correct') === 'true')).toHaveLength(0);
