@@ -32,3 +32,11 @@ The controlled browser replay rendered actual RcResults with a synthetic histori
 - Typecheck passed. Production build passed, including the postbuild content scan (759 files); existing bundle-size, Tailwind utility and Browserslist warnings remain. Publication receipts are recorded below after completion.
 
 No full-suite pass or broad RC device/accessibility acceptance is claimed by this bounded answer-key repair. Earlier UI acceptance gaps remain separate.
+
+## Release integration
+
+Repair commit `79155d4e` was independently approved for both key integrity and historical-grade compatibility. The safe-push procedure merged concurrent main changes without conflicts into `ee91cddf0b2b28e28c6ba36c8c0d1ad3a4433e20`, passed the merged typecheck, and pushed it to origin/main. A second production build of that integrated commit passed, including the 759-file content scan. No Edge Functions or database migrations are part of this release. The unrelated unstaged MCP edit was excluded.
+
+Lovable reported the exact integrated SHA synced before the free direct publish request `d99d0281-24af-44c8-b922-c5a56f8e22ca`. At 2026-10-15 03:23:09 UTC (2026-10-14 locally), fresh public HTTP checks proved all nine changed bank files byte-identical by SHA256, question10733 credited D with its single D flag, and the historical-grade notice present in live `RcResults-CXV9uR-Y.js`, reached through `index-C9yNIW8o.js`. [Machine-readable publication receipt](2026-10-14-rc-key-publication.json). No paid agent request was sent.
+
+Read-only before/after production aggregate receipts match for the 26 affected response rows across five sessions. See [attempt-preservation receipt](2026-10-14-rc-key-attempt-receipt.json). This verifies unchanged stored records plus released assets; no new signed-in production attempt was created in this answer-key pass. A subsequent documentation-only commit records these receipts without requiring another frontend publication.
