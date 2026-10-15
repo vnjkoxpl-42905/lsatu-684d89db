@@ -1,0 +1,574 @@
+[
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In constructing a self-driving robotic car, engineers face\n the challenge of designing a car that avoids common\n traffic problems like crashes and congestion. These\n problems can also affect fish traveling together in\n schools. However, the principles fish use to navigate\n in schools ensure that these problems are much less\n common within schools of fish than among cars on the\n road. Hence, _______.",
+    "questionStem": "Which one of the following most logically completes the\n argument?",
+    "answerChoices": {
+      "A": "constructing a self-driving robotic car requires expertise in fish biology",
+      "B": "the best drivers use the same navigational principles that fish use in schools",
+      "C": "it is always advisable for engineers facing design challenges to look to the natural world for guidance in addressing those challenges",
+      "D": "studying the principles fish use to navigate in schools could help engineers to design a self-driving robotic car that avoids common traffic problems",
+      "E": "a self-driving robotic car using the navigational principles that fish use in schools would be better than a human-driven car at avoiding crashes and congestion"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "The Common Loon is a migratory bird that winters in\n warmer regions and returns to its breeding lakes in the\n spring. Typically, only one pair of loons occupies a single\n lake. Breeding pairs in search of breeding territory either\n occupy a vacant lake or take over an already occupied\n one. Surprisingly, almost half the time, returning loons\n choose to intrude on a territory already occupied by\n another pair of loons and attempt to oust its residents.\n This happens even when there are vacant lakes nearby\n that are perfectly suitable breeding territories.",
+    "questionStem": "Which one of the following, if true, most helps to\n explain the surprising behavior described above?",
+    "answerChoices": {
+      "A": "Most of the nearby vacant lakes have served as successful loon breeding territory in the past.",
+      "B": "Contests for occupied breeding territory may be initiated either by male loons or by female loons.",
+      "C": "Loons that intrude on an occupied breeding territory are successful in ousting its residents about half the time.",
+      "D": "Loons frequently determine that a lake is a suitable breeding territory by observing the presence of a breeding pair there.",
+      "E": "Lakes that are perfectly suitable for loon breeding have fish for food, a site for a nest, and a sheltered area to rear chicks."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Taxi driver: My passengers complained when, on a hot\n day, I turned off my cab’s air conditioner while\n driving up a steep hill. While the engine is\n powerful enough to both run the air conditioner\n and climb the hill without slowing, this would\n have decreased my fuel economy considerably.\n So turning off the air conditioner was the right\n decision.",
+    "questionStem": "Which one of the following principles, if valid, most\n supports the taxi driver’s reasoning?",
+    "answerChoices": {
+      "A": "A taxi driver should not run a cab’s air conditioner if doing so would make it difficult to maintain a consistent speed.",
+      "B": "A taxi driver should run a cab’s air conditioner only if doing so does not cause fuel economy to drop below normal levels.",
+      "C": "A taxi driver should try to balance concern for fuel economy with concern for passenger comfort.",
+      "D": "A taxi driver should always act in a way that is most likely to ensure customer satisfaction.",
+      "E": "A taxi driver’s turning off air-conditioning for a short period of time is acceptable only if passengers do not complain."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The reason J. S. Bach is remembered is not that he had\n a high ratio of outstanding compositions to mediocre\n compositions. It is rather because he was such a prolific\n composer. He wrote more than a thousand full-fledged\n compositions, so it was inevitable that some of them\n would be outstanding and, being outstanding, survive\n the ages.",
+    "questionStem": "Which one of the following, if true, most seriously\n weakens the argument?",
+    "answerChoices": {
+      "A": "Several of Bach’s contemporaries who produced more works than he did have been largely forgotten.",
+      "B": "There are a few highly regarded composers who wrote a comparatively small number of compositions.",
+      "C": "Bach wrote many compositions that were considered mediocre in his lifetime, and a large proportion of these compositions have been forgotten.",
+      "D": "The exact number of Bach’s compositions is not known, since many of them have been lost to posterity.",
+      "E": "Some great creative geniuses are remembered because they had a very high ratio of outstanding works to mediocre works."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Pundit: Clearly, the two major political parties in this city\n have become sharply divided on the issues. In the\n last four elections, for example, the parties were\n separated by less than 1 percent of the vote.",
+    "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "confuses the cause of the sharp division with an effect of the sharp division",
+      "B": "presumes, without argument, that sharp division is a bad thing",
+      "C": "has a conclusion that is merely a restatement of one of its premises",
+      "D": "fails to indicate how what is happening in one city compares with what is happening in other cities",
+      "E": "takes for granted that an almost even division in votes indicates a sharp division on issues"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The waters surrounding Shooter’s Island have long\n been a dumping ground for ruined ships and boats,\n and the wreckage there has caused these waters to be\n exceptionally still. An ornithologist found that the overall\n abundance of waterbirds around Shooter’s Island is\n similar to that around each of the neighboring islands,\n but that juvenile waterbirds are much more abundant\n around Shooter’s Island than around those other islands.\n This suggests that the still waters around Shooter’s Island\n serve as a nursery for the juveniles.",
+    "questionStem": "Which one of the following, if true, provides the most\n support for the argument’s conclusion?",
+    "answerChoices": {
+      "A": "The ruined ships and boats around Shooter’s Island have been there for decades.",
+      "B": "The number of juvenile waterbirds around Shooter’s Island, as well as the number around each neighboring island, does not fluctuate dramatically throughout the year.",
+      "C": "Waterbirds use still waters as nurseries for juveniles whenever possible.",
+      "D": "The waters around the islands neighboring Shooter’s Island are much rougher than the waters around Shooter’s Island.",
+      "E": "Waterbirds are typically much more abundant in areas that serve as nurseries for juvenile waterbirds than in areas that do not."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Pollster: When opinion researchers need a population\n sample that reflects the demographic\n characteristics of the national population, they\n choose their sample on the basis of national\n census data. Not everyone participates in the\n national census, despite its being mandatory. If,\n however, census participation became voluntary,\n as some have proposed, the participation rate\n would be much lower. So if census participation\n became voluntary, polls designed to discover the\n opinions of the national population would have\n less accurate results.",
+    "questionStem": "Which one of the following is an assumption on which\n the pollster’s argument depends?",
+    "answerChoices": {
+      "A": "Using data from the national census is not the only way for opinion researchers to get a population sample that reflects the demographic characteristics of the national population.",
+      "B": "Among people who do not currently participate in the national census, few, if any, would agree to participate if participation were voluntary.",
+      "C": "The group of people who would participate in a voluntary national census would differ in its demographic characteristics from the group of people who would participate in a mandatory national census.",
+      "D": "The people who refuse to participate in opinion polls comprise a group with approximately the same demographic characteristics as the group of people who do not currently participate in the national census.",
+      "E": "The percentage of the nation’s population that does not participate in the mandatory national census does not change significantly from one census to another."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sampling",
+      "Assumes Difference",
+      "Conditional Conclusion",
+      "Defender",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Of the many works in a collection from Japan’s\n Tokugawa period that the museum will soon put on\n display, those that are most sensitive to light, as well\n as the most valuable pieces, will be on display for two\n weeks only. Sakai Hoitsu’s “Spring and Autumn Maples”\n will be on display for two weeks only, so it is clearly\n among the most valuable pieces in the collection.",
+    "questionStem": "The flawed pattern of reasoning in the argument above\n most closely parallels that in which one of the following?",
+    "answerChoices": {
+      "A": "The city council will soon commission surveyors to update the city map. The new map will reflect existing structures as well as planned housing developments. But the housing development I live in was built several decades ago, so it will not be on the updated map.",
+      "B": "The city map was recently updated. Purple dots now indicate public buildings, whereas on the old map, blue dots indicated public buildings. On the updated map, the bank is designated with a blue dot. So the bank must have been a public building at some time in the past.",
+      "C": "I have just purchased the new city map, whose legend indicates that thoroughfares are marked by solid lines and that dotted lines designate one-way streets. Shearing Street is marked by a dotted line, even though it is a thoroughfare. So the mapmakers must have made a mistake.",
+      "D": "On this city map, a solid line designates the city limits. Solid lines also designate major thoroughfares. So there is no way of determining whether a particular solid line on the map is a thoroughfare or an indicator of the city limits.",
+      "E": "The legend on this city map indicates that historical monuments are designated by purple dots. Hospitals are also designated by purple dots. There is a purple dot on Wilson Street. So there must be a hospital on Wilson Street."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws",
+      "Repetitive Answers",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Marketing agent: A survey of my business clients reveals\n that, of those who made a profit last year, 90\n percent made at least $100,000 in profit for the\n year. In prior years, not one of these businesses\n made an annual profit of more than $10,000. So,\n 90 percent of my business clients increased their\n profits at least tenfold last year.",
+    "questionStem": "The reasoning in the marketing agent’s argument is most\n vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "overlooks the possibility that the business clients who made more than $100,000 last year made only slightly more than $100,000",
+      "B": "fails to explain why some of the business clients who made a profit did not increase their profits at least tenfold last year",
+      "C": "draws a conclusion about all of the business clients from premises about the business clients who made a profit last year",
+      "D": "treats conditions that are sufficient for making a profit as though they are necessary for making a profit",
+      "E": "overlooks the possibility that not all of the business clients made an annual profit of more than $10,000 last year"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Changes in Britain’s National Health Service have\n led many British hospitals to end on-site laundry\n services for their staff. Although the water in a typical\n residential washing machine, unlike that in the industrial\n washing machines used by hospitals, does not reach\n temperatures high enough to kill the dangerous bacterium\n Acinetobacter, hospital officials believe that the\n discontinuation of these services will not put patients\n at risk.",
+    "questionStem": "Which one of the following, if true, most helps to justify\n the hospital officials’ belief?",
+    "answerChoices": {
+      "A": "Hospital staff typically develop an immunity to Acinetobacter.",
+      "B": "Hospital patients infected with Acinetobacter can be isolated from other patients.",
+      "C": "Most hospital staff made use of the on-site laundry services before they were discontinued.",
+      "D": "Hospital staff are instructed to use clothes dryers at temperatures high enough to kill Acinetobacter.",
+      "E": "Water in residential washing machines reaches temperatures high enough to kill all dangerous bacteria other than Acinetobacter."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Alternatives",
+      "Anti-Causal",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Many newspapers have cut back on book reviews,\n replacing them with other features that, according to\n focus group research, are of greater interest to potential\n readers. Such a move is ill-advised. Though meant to\n increase readership, it actually decreases readership by\n alienating loyal readers while catering to casual readers\n who are more likely to watch television than pick up a\n newspaper.",
+    "questionStem": "Which one of the following most accurately expresses\n the conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "The newspapers should not have cut back on book reviews.",
+      "B": "Many newspapers have cut back on book reviews, replacing them with other features.",
+      "C": "Focus group research concluded that features other than book reviews were of greater interest to potential readers.",
+      "D": "The move to replace book reviews with other features was meant to increase readership, but it actually decreases it.",
+      "E": "The move to replace book reviews with other features alienates loyal readers and caters to casual readers."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Doctor: There will be more local cases of flu infection\n this year than there were last year. In addition to\n the strains of flu that were present in this area last\n year, a new strain has infected some people this\n year.",
+    "questionStem": "The conclusion of the doctor’s argument can be properly\n drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Effective approaches have been developed to deal with the strains of flu that were present last year.",
+      "B": "It is rare for new strains of flu to appear.",
+      "C": "The new strain of flu cannot be addressed with the approaches used to deal with the strains of flu that were present last year.",
+      "D": "The new strain of flu is expected to be more dangerous than the strains of flu that were present last year.",
+      "E": "There will be no decline this year in the number of cases of flu infection due to strains that were present last year."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Net Effect",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Hendry: Most employee strikes should be legally\n permitted. But strikes by university faculty are\n an exception. Faculty strikes harm a university’s\n students, and I accept the principle that an\n employee strike shouldn’t be legally permitted if\n it would harm the employer’s customers. Menkin: If your principle is correct, then, contrary to\n what you claim, employee strikes should almost\n never be legally permitted.",
+    "questionStem": "On the basis of their statements, Hendry and Menkin are\n committed to disagreeing over whether",
+    "answerChoices": {
+      "A": "a university’s students should be considered customers of the university",
+      "B": "most employee strikes would harm the employer’s customers",
+      "C": "strikes by university faculty should be legally permitted",
+      "D": "most employee strikes should be legally permitted",
+      "E": "faculty strikes harm a university’s students"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Most popular historical films are not documentaries;\n they are dramatic presentations of historical events.\n Such presentations cannot present the evidence for the\n accuracy of what they portray. Consequently, uninformed\n viewers of dramatic historical films should not regard\n them as accurate portrayals of historical events.",
+    "questionStem": "Which one of the following principles, if valid, most\n helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "Writers of historical dramas should attempt to provide their own distinctive insights into the meaning of the historical events they are portraying.",
+      "B": "Historical documentaries should be careful to present all the evidence when attempting to inform their audiences about historical events.",
+      "C": "Dramatic presentations of historical events are better suited for educational purposes if evidence supporting the accuracy of the presentation is also presented.",
+      "D": "Dramatic presentations of historical events should never sacrifice accuracy in order to tell a more entertaining story.",
+      "E": "One should never regard a historical account to be accurate unless one has considered the evidence on which it is based."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Carrillo: Using the number of existing primate species,\n along with measures of the genetic diversity\n among these primates and among the extinct\n primate species, our statistical model strongly\n supports the conclusion that the first primate\n developed around 81.5 million years ago.\n Olson: Given that the oldest primate fossils discovered so\n far date back only 55 million years, your estimate\n of how long primate species’ development has\n gone on is sheer speculation.",
+    "questionStem": "The dialogue provides the most support for the claim\n that Carrillo and Olson disagree over whether",
+    "answerChoices": {
+      "A": "primates have been around for more than 55 million years",
+      "B": "Carrillo’s statistical model is a reliable way of dating the first appearance of primate species",
+      "C": "the available sample of primate fossils is representative of the variety of primate species that have existed",
+      "D": "the dating of the primate fossils that Olson cites is accurate",
+      "E": "fossils of the first primate species that developed have been discovered"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Automobile executive: Our critics say that the\n communications devices installed in our\n automobiles are dangerously distracting to\n drivers. But these critics are wrong. Drivers who\n want to use communications devices are going\n to use them regardless. Our devices are easier for\n drivers to use, and hence they are safer.",
+    "questionStem": "The reasoning in the automobile executive’s argument is\n most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "attempts to apply a general principle to a situation to which that principle is not applicable",
+      "B": "fails to address the substantive point of the criticism that it is responding to",
+      "C": "treats a condition that is necessary to establish its conclusion as one that is sufficient to establish that conclusion",
+      "D": "presumes, without providing justification, that all communications devices are the same with respect to driver distraction",
+      "E": "is based on premises that presume the truth of the argument’s conclusion"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Since mosquito larvae are aquatic, outbreaks of\n mosquito-borne diseases typically increase after\n extended periods of wet weather. An exception to\n this generalization, however, occurs in areas where\n mosquitoes breed primarily in wetland habitats. In these\n areas, outbreaks of mosquito-borne diseases are worse\n after periods of drought.",
+    "questionStem": "Which one of the following, if true, most helps to resolve\n the apparent discrepancy described above?",
+    "answerChoices": {
+      "A": "The use of insecticides is typically prohibited in wetland habitats.",
+      "B": "Human populations tend to be sparse in areas near wetland habitats.",
+      "C": "Wetland habitats contain numerous aquatic insects that prey on mosquito larvae.",
+      "D": "Wetland habitats host a wider variety of mosquito species than do other areas where mosquitoes breed.",
+      "E": "Periods of drought in wetland habitats create conditions conducive to the emergence of new plant growth."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Efforts to get the public to exercise regularly, which\n have emphasized the positive health effects of exercise\n rather than the dangers of a sedentary lifestyle, have met\n with little success. In contrast, efforts to curb cigarette\n smoking, which have emphasized the dangers of smoking\n rather than the positive health effects of quitting, have\n been highly successful. Thus, efforts to get the public\n to exercise regularly would be more successful if they\n emphasized the dangers of a sedentary lifestyle rather\n than the positive health effects of exercise.",
+    "questionStem": "Which one of the following is an assumption on which\n the argument relies?",
+    "answerChoices": {
+      "A": "The health risks associated with a sedentary lifestyle are as great as those associated with smoking.",
+      "B": "Efforts to get the public to exercise regularly have been largely ineffective at conveying the message that exercise can have positive health effects.",
+      "C": "Although most smokers are aware of the dangers of smoking, few are aware of the positive health effects of quitting.",
+      "D": "Efforts to curb cigarette smoking would not be more successful if they emphasized the positive health effects of quitting rather than the dangers of smoking.",
+      "E": "The majority of people who successfully quit smoking cite health concerns as the primary motivation for their success."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity",
+      "Defender",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Henry: Engines powered by electricity from batteries\n cause less pollution than internal combustion\n engines. Therefore, to reduce urban pollution, we\n should replace standard automobiles with battery-powered vehicles. Umit: I disagree. Battery-powered vehicles have very\n short ranges and must be recharged often. Their\n widespread use would create a greater demand\n for electricity generated by power plants, which\n are themselves a major source of pollution.",
+    "questionStem": "Of the following, which one, if true, is the strongest\n counter Henry could make to Umit’s objection?",
+    "answerChoices": {
+      "A": "Pollution caused by power plants is generally confined to a small number of locations a significant distance from major cities.",
+      "B": "The increased air pollution resulting from a greater demand for electricity would be offset by the reduction in air pollution emitted by electric vehicles.",
+      "C": "Electric motors could be restricted to lighter vehicles such as compact cars, which have smaller batteries and therefore require less power to charge than do the larger batteries needed to power larger vehicles.",
+      "D": "Hybrid vehicles using both electric and gasoline power moderate the increased demand for electricity produced by power plants.",
+      "E": "Most power plants are currently operating well below capacity and could therefore accommodate the increased demand for electricity."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "History student: It is unfair for the History Department\n to prohibit students from citing certain online\n encyclopedias in their research papers merely\n because these sources are not peer reviewed. In\n their research, students should be allowed to read\n whatever they wish; otherwise, it is censorship.\n History professor: Students are allowed to read whatever\n they like. The rule stipulates only that certain\n online encyclopedias are not to be cited as\n references since, given that they are not peer\n reviewed, they cannot reasonably be treated as\n reliable support for any claim.",
+    "questionStem": "The dialogue provides most support for the claim that the\n student and the professor disagree over whether",
+    "answerChoices": {
+      "A": "research papers written for a history class require some citations to be from sources that have been peer reviewed",
+      "B": "prohibiting a certain sort of online source material from being cited as a research reference amounts to prohibiting students from reading that source material",
+      "C": "censorship of the reading of research publications that are peer reviewed can ever be justified",
+      "D": "sources that are not peer reviewed often have solid support for the claims that they make",
+      "E": "students should be allowed to read whatever they wish to in preparing to write a research paper for a history class"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Finance minister: The World Bank’s “Doing Business”\n report ranks countries in terms of ease of doing\n business in them. In producing the rankings,\n the World Bank assesses how difficult it is for a\n hypothetical business to comply with regulations\n and pay taxes. Since the last “Doing Business”\n report came out, our government has dramatically\n simplified tax filing for small and even midsized\n businesses. So our “Doing Business” ranking will\n probably improve.",
+    "questionStem": "The answer to which one of the following questions would\n most help in evaluating the finance minister’s argument?",
+    "answerChoices": {
+      "A": "If the finance minister’s country made it easier for small businesses to comply with regulations, would the rate at which new businesses are formed increase?",
+      "B": "Has compliance with tax laws by small and midsized businesses increased since tax filing was simplified?",
+      "C": "For small and midsized businesses in the finance minister’s country, is tax preparation and filing more difficult than complying with other regulations?",
+      "D": "Is what the finance minister considers to be a midsized business smaller than the hypothetical business used to produce the “Doing Business” report?",
+      "E": "Was the finance minister in office when the last “Doing Business” report was issued?"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Commentator: Unfortunately, Roehmer’s opinion column\n has a polarizing effect on national politics. She\n has always taken a partisan stance, and lately\n she has taken the further step of impugning\n the motives of her adversaries. That style of\n argumentation is guaranteed not to change the\n minds of people with opposing viewpoints;\n it only alienates them. But that is likely not a\n problem for Roehmer, since her column is just an\n attempt to please her loyal readers.",
+    "questionStem": "The reasoning in the commentator’s argument is most\n vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "fails to rule out the possibility that a purported cause of a phenomenon is actually an effect of that phenomenon",
+      "B": "criticizes a column merely by invoking the personal characteristics of its author",
+      "C": "concludes that one event caused another merely because that event occurred immediately prior to the other",
+      "D": "contradicts itself in its portrayal of Roehmer’s column",
+      "E": "employs a tactic at one point that it elsewhere objects to"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Fine short story writers are unlikely to become great\n novelists. Short story writers must master the ability to\n interweave the many small details that together allow\n mundane incidents to illuminate important truths. Because the novel drowns in such detail, novelists must\n focus on larger matters. Only a few writers possess both\n the ability to weave together many small details and the\n ability to focus on larger matters.",
+    "questionStem": "The reasoning in which one of the following is most\n similar to the reasoning above?",
+    "answerChoices": {
+      "A": "Engineers can never design an automobile that both meets high standards for comfort and safety and uses fuel efficiently, because high levels of comfort and safety generally require that a car be heavy, while efficient use of fuel usually requires that a car be light.",
+      "B": "Historians who write grand histories synthesizing the research of many other scholars are unlikely to make many original archival discoveries, because they are unlikely to think that those with their gifts should spend time sifting through material to find important new documents.",
+      "C": "Good painters cannot become good scholars of painting. Painters are inevitably biased toward their own style of painting and, accordingly, cannot be objective scholars.",
+      "D": "Because of the vast amount of medical knowledge one needs in order to become a successful specialist and because few people have the motivation required to obtain such knowledge, most people are unlikely to become successful specialists.",
+      "E": "Those who excel at one sport are unlikely to excel at another, because it is rare for someone who has the specialized talents necessary for success in one sport to also have the different specialized talents necessary for success in a different sport."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Politician: Every regulation currently being proposed by\n the Committee for Overseas Trade will reduce the\n trade deficit. Our country’s trade deficit is so large\n that it weakens the economy. Therefore, each of\n the proposed regulations would help the economy.",
+    "questionStem": "The reasoning in the politician’s argument is flawed in\n that the argument",
+    "answerChoices": {
+      "A": "takes for granted that the trade deficit will increase in size if no action is taken to reduce it",
+      "B": "takes for granted that the only means of strengthening the economy is reducing the trade deficit",
+      "C": "merely appeals to the authority of the committee without evaluating any reasons for the proposed regulations",
+      "D": "fails to consider the possibility that one effect of a regulation will be offset by other effects",
+      "E": "concludes that every regulation in a set will have the same effects as a set of regulations as a whole"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT150",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Essayist writing in 2012: At its onset, a new medium is\n limited to carrying content from the old medium\n it replaces. We are in that phase with e-books—\n today’s e-books take their content from print\n books. Thus it is too early to understand the\n e-book as a medium, since it has not yet taken its\n ultimate form.",
+    "questionStem": "Which one of the following principles, if valid, most helps\n to justify the essayist’s reasoning?",
+    "answerChoices": {
+      "A": "A medium cannot be fully understood without first understanding the media that came before it.",
+      "B": "No electronic medium can resemble a print medium more than it resembles other electronic media.",
+      "C": "The ultimate form that a medium will take depends on available technology.",
+      "D": "A medium cannot be understood without observing the evolution of its content.",
+      "E": "One medium can replace another only if it can represent richer and more varied content."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Missing Link / Idea"
+    ]
+  }
+]
