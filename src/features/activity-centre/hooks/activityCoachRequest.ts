@@ -19,3 +19,22 @@ export function retainCoachRequest(actor: string, source: CoachSource, itemOrder
   if (verified !== JSON.stringify({ identity, requestId })) throw new Error("The grading request could not be saved on this device.");
   return { contractVersion: 1, requestId, ...source, itemOrder, studentResponse, attemptNo };
 }
+
+/** Called only after the server confirms a terminal, revision-only conflict.
+ * Ordinary conflicts and uncertain outcomes must keep their original ID.
+ * If another caller already replaced it, reuse that durable replacement.
+ */
+export function replaceRevisionCoachRequest(actor: string, request: CoachRequest, storage: Storage = localStorage): CoachRequest {
+  const source = { sourceKind: request.sourceKind, sourceId: request.sourceId };
+  const current = retainCoachRequest(actor, source, request.itemOrder, request.studentResponse, request.attemptNo, storage);
+  if (current.requestId !== request.requestId) return current;
+  // Keep the storage identity identical to retainCoachRequest (no requestId or
+  // contractVersion in the source), so reload/retry finds this replacement.
+  const identity = { actor, sourceKind: request.sourceKind, sourceId: request.sourceId, itemOrder: request.itemOrder, studentResponse: request.studentResponse, attemptNo: request.attemptNo };
+  const key = `lsatu:activity-coach:v1:${JSON.stringify(identity)}`;
+  const requestId = crypto.randomUUID();
+  const saved = JSON.stringify({ identity, requestId });
+  storage.setItem(key, saved);
+  if (storage.getItem(key) !== saved) throw new Error("The replacement grading request could not be saved.");
+  return { ...request, requestId };
+}

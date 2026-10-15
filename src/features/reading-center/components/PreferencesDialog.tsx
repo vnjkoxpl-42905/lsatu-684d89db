@@ -222,7 +222,7 @@ export function PreferencesDialog({
           ) : (
             <Tabs defaultValue="spreed">
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="spreed">Spreed</TabsTrigger>
+                <TabsTrigger value="spreed">Reading</TabsTrigger>
                 <TabsTrigger value="appearance">Appearance</TabsTrigger>
                 <TabsTrigger value="advanced">Advanced</TabsTrigger>
               </TabsList>

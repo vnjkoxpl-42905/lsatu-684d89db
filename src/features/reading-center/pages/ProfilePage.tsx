@@ -1,46 +1,28 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { Link } from "react-router-dom";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { usePassages, usePreferences, useSavePreferences, useSessions, useReadingProfile, useSaveReadingProfile } from "../hooks/useReadingCenterData";
+import { usePassages, usePreferences, useSavePreferences, useSessions, useReadingProfile } from "../hooks/useReadingCenterData";
 import { DEFAULT_PREFERENCES, STAT_PERIODS, THEMES } from "../lib/constants";
-import { effectiveWpm } from "../lib/timing";
+import { readingSeries, summarizeReading, type ReadingMetric } from "../lib/analytics";
 import { readingTestWpm, recommendedGoal } from "../lib/goals";
 import { buildTextModel } from "../lib/spreeder";
-import type { Preferences, ReaderTheme, ReadingSession } from "../lib/types";
+import type { Preferences, ReaderTheme } from "../lib/types";
 import { Icon, MIcon } from "../components/Icon";
 import { TopBar } from "../components/AppShell";
 import { SpeedGauge } from "../components/SpeedGauge";
 import { DialogHeader, Dropdown, Modal } from "../components/spreeder-ui";
 import { PreferencesDialog } from "../components/ReaderDialogs";
 
-type Metric = "speed" | "focus" | "time";
+type Metric = ReadingMetric;
 const METRICS: { value: Metric; label: string }[] = [
-  { value: "speed", label: "Reading Speed" },
-  { value: "focus", label: "Reading Focus" },
-  { value: "time", label: "Training Time" },
+  { value: "speed", label: "Reading Pace" },
+  { value: "focus", label: "Active Time Share" },
+  { value: "time", label: "Active Reading Time" },
 ];
-
-function median(v: number[]): number {
-  if (!v.length) return 0;
-  const s = [...v].sort((a, b) => a - b);
-  const m = Math.floor(s.length / 2);
-  return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2);
-}
 
 function useSince(period: string): string {
   return useMemo(() => new Date(Date.now() - (STAT_PERIODS.find((p) => p.value === period)?.ms ?? STAT_PERIODS[3].ms)).toISOString(), [period]);
-}
-
-function series(sessions: ReadingSession[], metric: Metric): { x: string; y: number }[] {
-  const day = (iso: string) => new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-  if (metric === "speed") return sessions.map((s) => ({ x: day(s.ended_at), y: effectiveWpm(s.words_read, s.active_ms) }));
-  const by = new Map<string, ReadingSession[]>();
-  for (const s of sessions) by.set(day(s.ended_at), [...(by.get(day(s.ended_at)) ?? []), s]);
-  return [...by.entries()].map(([x, list]) =>
-    metric === "time"
-      ? { x, y: Math.round(list.reduce((n, s) => n + s.active_ms, 0) / 60000) }
-      : { x, y: Math.round((list.reduce((n, s) => n + s.active_ms / Math.max(1, s.active_ms + s.paused_ms), 0) / list.length) * 100) },
-  );
 }
 
 function Chart({ data, metric }: { data: { x: string; y: number }[]; metric: Metric }): React.ReactElement {
@@ -52,7 +34,7 @@ function Chart({ data, metric }: { data: { x: string; y: number }[]; metric: Met
           <CartesianGrid stroke="rgba(128,128,128,.25)" vertical={false} />
           <XAxis dataKey="x" tick={{ fontSize: 11, fill: "currentColor" }} />
           <YAxis tick={{ fontSize: 11, fill: "currentColor" }} />
-          <Tooltip formatter={(v: number) => [`${v} ${unit}`, "Speed"]} />
+          <Tooltip formatter={(v: number) => [`${v} ${unit}`, "Estimated pace"]} />
           <Line type="monotone" dataKey="y" stroke="#34ad07" strokeWidth={2} dot={{ r: 3 }} isAnimationActive={false} />
         </LineChart>
       ) : (
@@ -60,7 +42,7 @@ function Chart({ data, metric }: { data: { x: string; y: number }[]; metric: Met
           <CartesianGrid stroke="rgba(128,128,128,.25)" vertical={false} />
           <XAxis dataKey="x" tick={{ fontSize: 11, fill: "currentColor" }} />
           <YAxis tick={{ fontSize: 11, fill: "currentColor" }} />
-          <Tooltip formatter={(v: number) => [`${v} ${unit}`, metric === "focus" ? "Focus" : "Time"]} />
+          <Tooltip formatter={(v: number) => [`${v} ${unit}`, metric === "focus" ? "Active time share" : "Active reading time"]} />
           <Bar dataKey="y" fill="#3e92d7" isAnimationActive={false} />
         </BarChart>
       )}
@@ -70,7 +52,7 @@ function Chart({ data, metric }: { data: { x: string; y: number }[]; metric: Met
 
 const Empty = () => (
   <div className="flex h-full items-center justify-center text-base font-medium" style={{ color: "var(--rc-text)" }}>
-    Nothing just yet. Your results will appear here later <span className="ml-1.5 text-2xl" aria-hidden>🙂</span>
+    No saved reading activity in this period.
   </div>
 );
 
@@ -94,10 +76,10 @@ function Card({ title, children, period, onPeriod, onRefresh }: { title: string;
 function MetricCard({ title, metric, initial }: { title: string; metric: Metric; initial: string }): React.ReactElement {
   const [period, setPeriod] = useState(initial);
   const q = useSessions(useSince(period));
-  const data = series(q.data ?? [], metric);
+  const data = readingSeries(q.data ?? [], metric);
   return (
     <Card title={title} period={period} onPeriod={setPeriod} onRefresh={() => void q.refetch()}>
-      {q.error ? <p role="alert" className="p-4 text-sm">Your saved stats could not load. Use Refresh to try again.</p> : data.length === 0 ? <Empty /> : <Chart data={data} metric={metric} />}
+      {q.isLoading ? <p role="status" className="p-4 text-sm">Loading your reading activity.</p> : q.error ? <p role="alert" className="p-4 text-sm">Your saved stats could not load. Use Refresh to try again.</p> : data.length === 0 ? <Empty /> : <Chart data={data} metric={metric} />}
     </Card>
   );
 }
@@ -108,12 +90,12 @@ export default function ProfilePage(): React.ReactElement {
   const savePrefs = useSavePreferences();
   const [tab, setTab] = useState<"dashboard" | "stats">("dashboard");
   const [options, setOptions] = useState(false);
-  const [dialog, setDialog] = useState<"goals" | "settings" | "profile" | "recommend" | null>(null);
+  const [dialog, setDialog] = useState<"goals" | "settings" | "recommend" | null>(null);
   const profileQuery = useReadingProfile();
-  const name = profileQuery.data ?? "Reader";
-  const saveProfile = useSaveReadingProfile();
-  const recent = useSessions(useSince("30d")).data ?? [];
-  const currentSpeed = median(recent.slice(-5).map((s) => effectiveWpm(s.words_read, s.active_ms)));
+  const name = profileQuery.data ?? "";
+  const recentQuery = useSessions(useSince("30d"));
+  const recentTotals = summarizeReading(recentQuery.data ?? []);
+  const currentPace = summarizeReading((recentQuery.data ?? []).slice(-5)).paceWpm;
   const optionsBtn = useRef<HTMLButtonElement | null>(null);
 
   return (
@@ -125,7 +107,10 @@ export default function ProfilePage(): React.ReactElement {
           <div className="flex h-[66px] w-[66px] shrink-0 items-center justify-center rounded-full bg-white text-black sm:absolute sm:left-7 sm:top-5">
             <Icon name="person" size={40} />
           </div>
-          <div className="min-w-0 break-words text-lg font-bold sm:absolute sm:left-[128px] sm:top-5 sm:text-[25px]">{name}'s Reading Center</div>
+          <div className="min-w-0 break-words sm:absolute sm:left-[128px] sm:top-5">
+            <h1 className="text-lg font-bold sm:text-[25px]">Reading Progress</h1>
+            <p className="mt-1 text-sm">{profileQuery.isLoading ? "Loading your LSAT U account." : name ? `Reading activity for ${name}` : "Your Reading Center activity"}</p>
+          </div>
           <div className="flex min-w-0 flex-wrap items-center gap-2 sm:absolute sm:bottom-[10px] sm:right-[30px]">
             {(["dashboard", "stats"] as const).map((t) => (
               <button key={t} type="button" onClick={() => setTab(t)} className="h-10 rounded-full px-3 text-sm sm:px-5" style={{ background: tab === t ? "var(--rc-nav-active-bg)" : "transparent", color: "var(--rc-text)" }}>
@@ -137,22 +122,36 @@ export default function ProfilePage(): React.ReactElement {
             </button>
           </div>
         </section>
+        <p className="text-sm" style={{ color: "var(--rc-text-2)" }}>These charts use your saved Reading Center sessions. Pace uses playback and page estimates. Active time share compares recorded active and paused time.</p>
+        <section aria-label="Reading activity in the last 30 days" className="rounded-[15px] p-4" style={{ background: "var(--rc-card)" }}>
+          <h2 className="mb-3 text-base font-semibold">Last 30 days</h2>
+          {recentQuery.isLoading ? <p role="status" className="text-sm">Loading your saved activity.</p> : recentQuery.error ? <p role="alert" className="text-sm">Your saved activity could not load. <button type="button" className="underline" onClick={() => void recentQuery.refetch()}>Try again</button></p> : (
+            <dl className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
+              {[["Saved sessions", recentTotals.visits.toLocaleString()], ["Words presented", recentTotals.words.toLocaleString()], ["Active minutes", (recentTotals.activeMs / 60_000).toLocaleString(undefined, { maximumFractionDigits: 2 })]].map(([label, value]) => (
+                <div key={label} className="min-w-0"><dt className="text-xs" style={{ color: "var(--rc-text-2)" }}>{label}</dt><dd className="mt-1 break-words text-xl font-semibold">{value}</dd></div>
+              ))}
+            </dl>
+          )}
+        </section>
 
         {tab === "dashboard" ? (
           <div className="grid min-w-0 gap-4 lg:grid-cols-2">
-            <Card title="Vital Stats">
+            <Card title="Recent Reading Pace">
               <div className="grid h-full grid-cols-2 items-start pt-3 text-center">
-                {[["Current Speed", currentSpeed], ["Target Speed", prefs.goal_wpm]].map(([label, v]) => (
-                  <div key={label as string} className="flex min-w-0 flex-col items-center gap-2 [&>svg]:max-w-full">
-                    <h6 className="text-[15px] font-light">{label}</h6>
-                    <SpeedGauge value={v as number} />
-                  </div>
-                ))}
+                <div className="flex min-w-0 flex-col items-center gap-2 [&>svg]:max-w-full">
+                  <h6 className="text-sm font-light">Recent Pace</h6>
+                  {recentQuery.isLoading ? <p role="status" className="text-xs">Loading activity.</p> : recentQuery.error ? <p role="alert" className="text-xs">Reading activity unavailable.</p> : currentPace == null ? <p className="px-2 text-xs">No saved reading activity.</p> : <SpeedGauge value={currentPace} />}
+                  <span className="px-2 text-[11px]">Last five saved visits in 30 days.</span>
+                </div>
+                <div className="flex min-w-0 flex-col items-center gap-2 [&>svg]:max-w-full">
+                  <h6 className="text-sm font-light">Target Pace</h6>
+                  {prefsQuery.isLoading ? <p role="status" className="text-xs">Loading goal.</p> : prefsQuery.error ? <p className="text-xs">Goal unavailable.</p> : <SpeedGauge value={prefs.goal_wpm} />}
+                </div>
               </div>
             </Card>
-            <MetricCard title="Reading Focus" metric="focus" initial="30d" />
-            <MetricCard title="Training Time" metric="time" initial="6m" />
-            <MetricCard title="Reading Speed" metric="speed" initial="30d" />
+            <MetricCard title="Active Time Share" metric="focus" initial="30d" />
+            <MetricCard title="Active Reading Time" metric="time" initial="6m" />
+            <MetricCard title="Reading Pace" metric="speed" initial="30d" />
           </div>
         ) : (
           <StatsTab />
@@ -171,7 +170,6 @@ export default function ProfilePage(): React.ReactElement {
       <GoalsDialog open={dialog === "goals"} value={prefs.goal_wpm} onClose={() => setDialog(null)} onSet={(g) => savePrefs.mutate({ goal_wpm: g })} onRecommend={() => setDialog("recommend")} />
       {dialog === "recommend" && <RecommendGoals onClose={() => setDialog(null)} onSet={(g) => { savePrefs.mutate({ goal_wpm: g }); setDialog(null); }} />}
       <PreferencesDialog open={dialog === "settings"} onClose={() => setDialog(null)} prefs={prefs} onChange={(p: Partial<Preferences>) => savePrefs.mutate(p)} name={name} settingsOnly />
-      {dialog === "profile" && <EditProfile name={name} onClose={() => setDialog(null)} onSave={(n) => saveProfile.mutate(n, { onSuccess: () => setDialog(null) })} />}
     </div>
   );
 }
@@ -180,7 +178,7 @@ function StatsTab(): React.ReactElement {
   const [metric, setMetric] = useState<Metric>("speed");
   const [period, setPeriod] = useState("30d");
   const statsQuery = useSessions(useSince(period));
-  const data = series(statsQuery.data ?? [], metric);
+  const data = readingSeries(statsQuery.data ?? [], metric);
   const plain = { border: "none", padding: "0 0 0 8px", fontSize: 14, fontWeight: 400, color: "var(--rc-text)" };
   return (
     <section className="flex min-h-[320px] min-w-0 flex-col overflow-hidden rounded-[15px] p-3" style={{ background: "var(--rc-card)" }}>
@@ -188,13 +186,13 @@ function StatsTab(): React.ReactElement {
         <Dropdown ariaLabel="Metric" value={metric} options={METRICS} onChange={(v) => setMetric(v as Metric)} buttonStyle={plain} />
         <Dropdown ariaLabel="Period" value={period} options={STAT_PERIODS.map((p) => ({ value: p.value, label: p.label }))} onChange={(v) => setPeriod(String(v))} buttonStyle={plain} />
       </div>
-      {statsQuery.error ? <p role="alert" className="p-6 text-sm">Your saved stats could not load. <button type="button" className="underline" onClick={() => void statsQuery.refetch()}>Try again</button></p> : data.length === 0 ? (
+      {statsQuery.isLoading ? <p role="status" className="p-6 text-sm">Loading your reading activity.</p> : statsQuery.error ? <p role="alert" className="p-6 text-sm">Your saved stats could not load. <button type="button" className="underline" onClick={() => void statsQuery.refetch()}>Try again</button></p> : data.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center py-8 text-center">
           <div className="flex h-[150px] w-[150px] items-center justify-center rounded-full" style={{ background: "rgba(0,0,0,.25)" }}>
             <div className="flex h-[74px] w-[74px] items-center justify-center rounded-md bg-white text-[#252525]"><Icon name="statsChart" size={44} /></div>
           </div>
-          <div className="mt-4 text-[28px]">Not Enough Data</div>
-          <p className="mt-2 text-sm font-medium">We don't have enough data to display your stats yet.<br />Use the app for a while and come back soon.</p>
+          <div className="mt-4 text-[28px]">No Saved Reading Activity</div>
+          <p className="mt-2 text-sm font-medium">Read a text, then return here to see your saved sessions.</p>
         </div>
       ) : (
         <div className="mt-4 h-[300px]"><Chart data={data} metric={metric} /></div>
@@ -203,7 +201,7 @@ function StatsTab(): React.ReactElement {
   );
 }
 
-function OptionsMenu({ anchor, theme, onTheme, onClose, onPick }: { anchor: DOMRect; theme: ReaderTheme; onTheme: (t: ReaderTheme) => void; onClose: () => void; onPick: (d: "goals" | "settings" | "profile") => void }): React.ReactElement {
+function OptionsMenu({ anchor, theme, onTheme, onClose, onPick }: { anchor: DOMRect; theme: ReaderTheme; onTheme: (t: ReaderTheme) => void; onClose: () => void; onPick: (d: "goals" | "settings") => void }): React.ReactElement {
   const [sub, setSub] = useState(false);
   useEffect(() => {
     const close = (e: MouseEvent) => !(e.target as HTMLElement).closest("[data-rc-options]") && onClose();
@@ -217,7 +215,7 @@ function OptionsMenu({ anchor, theme, onTheme, onClose, onPick }: { anchor: DOMR
         <button type="button" className="rc-menu-item h-12 justify-between text-sm" onMouseEnter={() => setSub(true)} onClick={() => setSub((s) => !s)}>
           Theme: {label} <MIcon name="arrow_right" size={20} />
         </button>
-        <button type="button" className="rc-menu-item h-12 text-sm" onClick={() => onPick("profile")}><Icon name="person" size={18} /> Edit Profile</button>
+        <Link to="/classroom/account" className="rc-menu-item h-12 text-sm" onClick={onClose}><Icon name="person" size={18} /> LSAT U Profile</Link>
         <button type="button" className="rc-menu-item h-12 text-sm" onClick={() => onPick("goals")}><Icon name="flag" size={18} /> Goals</button>
         <button type="button" className="rc-menu-item h-12 text-sm" onClick={() => onPick("settings")}><Icon name="settings" size={18} /> Settings</button>
       </div>
@@ -307,23 +305,6 @@ function RecommendGoals({ onClose, onSet }: { onClose: () => void; onSet: (g: nu
             <button type="button" className="rc-green-btn mt-4 w-[200px]" onClick={() => onSet(goal)}>Set goals</button>
           </div>
         )}
-      </div>
-    </Modal>
-  );
-}
-
-function EditProfile({ name, onClose, onSave }: { name: string; onClose: () => void; onSave: (n: string) => void }): React.ReactElement {
-  const [v, setV] = useState(name);
-  return (
-    <Modal open onClose={onClose} width={420} closeOnEscape labelledBy="rc-ep-title">
-      <DialogHeader id="rc-ep-title" title="Edit Profile" onClose={onClose} />
-      <label className="mt-6 block px-5 text-xs" style={{ color: "var(--rc-text-2)" }}>
-        First name
-        <input value={v} onChange={(e) => setV(e.target.value)} className="mt-1 block w-full bg-transparent pb-1 text-base outline-none" style={{ borderBottom: "1px solid #ccc", color: "var(--rc-strong)" }} />
-      </label>
-      <div className="mt-8 flex justify-end gap-1.5 px-5 pb-4">
-        <button type="button" className="rc-outline-btn h-[38px]" onClick={onClose}>Cancel</button>
-        <button type="button" className="rc-green-btn" onClick={() => onSave(v)}>Save</button>
       </div>
     </Modal>
   );
