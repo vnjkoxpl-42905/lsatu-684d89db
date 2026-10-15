@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
+import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import { useLocation } from "react-router-dom";
 import {
   useAssignedTodoFeed,
@@ -122,6 +123,7 @@ export function useClassroomHome(): {
   );
   const { pathname } = useLocation();
   const { rows: assigned, loading: assignedLoading, failed: assignedFailed, retry: retryWork, evidenceWarnings = [] } = useAssignedTodoFeed();
+  const readingCenterAccess = useReadingCenterAccess();
   const itemsQuery = useClassroomItems();
   const bookingQuery = useStudentBooking();
   const planQuery = useCurrentWeeklyPlan();
@@ -182,7 +184,9 @@ export function useClassroomHome(): {
       // Assigned activities open through Classroom and their own assignment.
       // Showing them with Classroom off would put a
       // locked door on the page and, worse, could make it the hero.
-      .filter((row) => row.kind !== "activity" || access.activities)
+      .filter((row) => row.sourceTable === 'reading_center'
+        ? readingCenterAccess.allowed
+        : row.kind !== "activity" || access.activities)
       .map((row) => {
         const kind = FEED_KIND[row.kind];
         // The feed now carries the due date off the classroom_items row it
@@ -195,6 +199,7 @@ export function useClassroomHome(): {
           .join(" · ");
         return {
           key: row.key,
+          readingCenterAssigned: row.sourceTable === 'reading_center' && readingCenterAccess.allowed,
           title: row.title,
           kind,
           tone: KIND_TONE[kind],
@@ -214,7 +219,7 @@ export function useClassroomHome(): {
         };
 
       });
-  }, [access.activities, assigned, dueBySourceId, now, pathname]);
+  }, [access.activities, assigned, dueBySourceId, now, pathname, readingCenterAccess.allowed]);
 
   /**
    * Recent recaps and notes: reading matter, not work, so they never carry a

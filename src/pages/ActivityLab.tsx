@@ -83,10 +83,7 @@ import {
   buildTrapAutopsy,
 } from "@/features/activity-centre/worlds/chamber/wings/rounds";
 import { parseRebuttal, readResolution } from "@/features/activity-centre/worlds/chamber/chamber";
-import {
-  ObservatoryStage,
-  type SkyPhase,
-} from "@/features/activity-centre/worlds/observatory/ObservatoryStage";
+import type { SkyPhase } from "@/features/activity-centre/worlds/observatory/ObservatoryStage";
 import { ObservatoryEntrance } from "@/features/activity-centre/worlds/observatory/ObservatoryEntrance";
 import { SpeedRound } from "@/features/activity-centre/worlds/observatory/wings/SpeedRound";
 import { ForgeStatement } from "@/features/activity-centre/worlds/observatory/wings/ForgeStatement";
@@ -1333,15 +1330,8 @@ function ObservatoryPanel() {
     [signal, response],
   );
 
-  // Lab-only seals: lit by which types this item's own relations cover.
-  const seals = useMemo(
-    () => ({
-      conditional: !!reading?.drawn.includes("conditional"),
-      causal: !!reading?.drawn.includes("causal"),
-      comparative: !!reading?.drawn.includes("comparative"),
-    }),
-    [reading],
-  );
+  // Exercise the production binding rather than supplying pretend dial state.
+  const observatoryWorld = worldForTitle(str.title)!;
 
   const speedRound = useMemo(() => buildSpeedRound(str.items), [str.items]);
   const forgeTasks = useMemo(() => buildForgeTasks(str.items), [str.items]);
@@ -1410,12 +1400,12 @@ function ObservatoryPanel() {
         <div className="grid gap-0 lg:grid-cols-[62fr_38fr]">
           <div>
             {signal ? (
-              <ObservatoryStage
-                signal={signal}
-                phase={phase}
-                reading={reading}
-                seals={seals}
-              />
+              observatoryWorld.render({
+                item,
+                response,
+                answered: phase === "drawn",
+                verdict: phase === "drawn" && response && observatoryWorld.fastPath?.(item, response) ? "correct" : "partial",
+              })
             ) : (
               <div className="p-10 text-sm text-muted-foreground">
                 This item names no relationship, so there is no figure to draw.

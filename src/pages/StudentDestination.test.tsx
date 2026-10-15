@@ -4,11 +4,14 @@ import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 const BASE = { loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false, has_chat_access: false };
 const permissions = vi.hoisted(() => ({ loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false, has_chat_access: false }));
+const readingCenter = vi.hoisted(() => ({ allowed: false, isPending: false }));
 vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
+vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => readingCenter }));
 import { DestinationIndex, StudentDestination } from "./StudentDestination";
 afterEach(() => {
   cleanup();
   Object.assign(permissions, BASE);
+  readingCenter.allowed = false; readingCenter.isPending = false;
 });
 
 function Where() {
@@ -17,6 +20,21 @@ function Where() {
 }
 
 describe("visible locked destination sections", () => {
+  it('opens To do and Completed for a specific Reading Center grant while Notes stays locked', () => {
+    readingCenter.allowed = true;
+    render(<MemoryRouter initialEntries={['/my-work/to-do']}><StudentDestination destination="my-work" /></MemoryRouter>);
+    expect(screen.getByRole('link', { name: 'To do' })).toHaveAttribute('href', '/my-work/to-do');
+    expect(screen.getByRole('link', { name: 'Completed' })).toHaveAttribute('href', '/my-work/completed');
+    expect(screen.queryByRole('link', { name: 'Notes & recaps' })).toBeNull();
+    expect(screen.getByText('Notes & recaps')).toHaveAttribute('aria-disabled', 'true');
+  });
+  it('holds assignment-aware tabs until the Reading Center grant is verified', () => {
+    readingCenter.isPending = true;
+    render(<MemoryRouter initialEntries={['/my-work/to-do']}><StudentDestination destination="my-work" /></MemoryRouter>);
+    expect(screen.getByRole('navigation')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('link', { name: 'To do' })).toBeNull();
+    expect(screen.getByText('To do')).toHaveAttribute('title', 'Checking access');
+  });
   it.each([
     ["my-work", "/my-work/to-do", "My Work sections", ["To do", "Completed", "Notes & recaps"]],
     ["progress", "/progress/overview", "Progress sections", ["Overview", "History", "Topics"]],

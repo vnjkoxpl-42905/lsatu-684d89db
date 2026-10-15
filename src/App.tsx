@@ -124,6 +124,10 @@ const ActivityRunner = safeLazy(() => import("./features/activity-centre/compone
 
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const TeacherWorkspaceShell = safeLazy(() => import("./pages/teacher/shell/TeacherWorkspaceShell"));
+const TeacherReadingCenter = safeLazy(() => import("./pages/teacher/tools/TeacherReadingCenter"));
+const ReadingCenterApp = safeLazy(() => import("./features/reading-center"));
+import ReadingCenterGate from '@/components/ReadingCenterGate';
+import MyWorkGate from '@/components/MyWorkGate';
 const DeskTodaySurface = safeLazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
 const TeacherPayments = safeLazy(() => import("./pages/teacher/shell/TeacherPayments"));
 const TeacherDevIndex = safeLazy(() => import("./pages/teacher/shell/TeacherDevIndex"));
@@ -179,7 +183,7 @@ import { isOfficialTimedChildPath } from "@/lib/officialTimedRoute";
 // Surfaces that own the whole screen and must stay free of floating chrome.
 // The exam players are the strict case: nothing may sit over the passage, the
 // choices or the footer's primary action.
-const OVERLAY_FREE_PREFIXES = ["/book/", "/classroom", "/drill", "/rc", "/section/"];
+const OVERLAY_FREE_PREFIXES = ["/book/", "/classroom", "/drill", "/rc", "/section/", "/reading-center"];
 
 function GlobalOverlayMount() {
   const { pathname } = useLocation();
@@ -481,6 +485,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Navigate to="/classroom" replace />} />
 
+                  <Route path="/reading-center/*" element={<ReadingCenterGate><ReadingCenterApp /></ReadingCenterGate>} />
                   {/* Full-screen takeovers: actual LSAT question-doing + activity
                       runner stay OUTSIDE the persistent student shell. */}
                   <Route path="/drill" element={
@@ -620,8 +625,8 @@ const App = () => {
 
                     <Route path="/my-work" element={<ProtectedRoute allowSignedIn><StudentDestination destination="my-work" /></ProtectedRoute>}>
                       <Route index element={<DestinationIndex destination="my-work" />} />
-                      <Route path="to-do" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed={false} /></ProtectedRoute>} />
-                      <Route path="completed" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed /></ProtectedRoute>} />
+                      <Route path="to-do" element={<MyWorkGate><MyWorkPage completed={false} /></MyWorkGate>} />
+                      <Route path="completed" element={<MyWorkGate><MyWorkPage completed /></MyWorkGate>} />
                       <Route path="notes" element={<ProtectedRoute flag="has_classroom_access"><MyWorkNotesPage /></ProtectedRoute>} />
                     </Route>
 
@@ -761,6 +766,8 @@ const App = () => {
                       </ProtectedRoute>
                     }>
                       <Route index element={<TeacherWorkspaceIndex />} />
+                      <Route path="tools" element={<Navigate to="/teacher/tools/reading-center" replace />} />
+                      <Route path="tools/reading-center" element={<TeacherReadingCenter />} />
 
                       <Route path="today" element={
                         <React.Suspense fallback={<div />}>

@@ -37,7 +37,7 @@ interface Props {
   findQuery: string;
   findIndex: number;
   onFindCount: (count: number) => void;
-  /** Scroll position is kept per passage so switching back lands where they left. */
+  /** Scroll position is kept per passage and layout so reflow cannot erase it. */
   scrollTop: number;
   onScroll: (top: number) => void;
   /** Fraunces type stack from rcTypeStyles. */
@@ -105,12 +105,13 @@ export function RcPassagePane({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [findQuery, findIndex, passage.passageId, passageHighlights]);
 
-  // Restore this passage's scroll position when it becomes the current one.
+  // Restore after passage or layout changes. A wider layout can clamp the
+  // scroll position, so the player remembers each layout separately.
   React.useLayoutEffect(() => {
     const el = paneRef.current;
     if (el) el.scrollTop = scrollTop;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [passage.passageId]);
+  }, [passage.passageId, passageOnly]);
 
   const surface = useRcMarkSurface({
     disabled: annotationsDisabled,    textRef,

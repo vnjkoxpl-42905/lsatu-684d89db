@@ -1,0 +1,32 @@
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, expect, it, vi } from "vitest";
+import { ModuleQuiz } from "./ModuleView";
+import { quizSessionKey, loadQuizSession } from "../../lib/quiz-session";
+const state=vi.hoisted(()=>({loading:false,progressOwnerId:"qa",recordQuizScore:vi.fn(),addXp:vi.fn()}));
+vi.mock("@/contexts/AuthContext",()=>({useAuth:()=>({user:{id:"qa"}})}));
+vi.mock("../../store/AppContext",()=>({useApp:()=>state}));
+vi.mock("@/lib/cloudMirror",()=>({mirroredSetItem:vi.fn()}));
+beforeEach(()=>{localStorage.clear();state.recordQuizScore.mockReset();state.addXp.mockReset();state.recordQuizScore.mockResolvedValue({ok:true});});
+it("restores an answered optional quiz item with its score and continues without scoring twice",async()=>{
+ const view=render(<ModuleQuiz moduleId="m1" onDone={vi.fn()}/>);
+ fireEvent.click(screen.getByRole("button",{name:/Sentence 2/}));
+ await waitFor(()=>expect(loadQuizSession(quizSessionKey("qa","m1"),5)).toMatchObject({index:0,score:1,answered:true}));
+ view.unmount();render(<ModuleQuiz moduleId="m1" onDone={vi.fn()}/>);
+ expect(screen.getByText(/Your answer to this item is saved/)).toBeInTheDocument();
+ fireEvent.click(screen.getByRole("button",{name:"Continue"}));
+ expect(screen.getByText("Item 2 of 5")).toBeInTheDocument();
+ expect(state.addXp).toHaveBeenCalledTimes(1);
+ expect(loadQuizSession(quizSessionKey("qa","m1"),5)).toMatchObject({index:1,score:1,answered:false});
+});
+it("retains the quiz checkpoint when final backend save fails and allows a retry",async()=>{
+ const key=quizSessionKey("qa","m1");localStorage.setItem(key,JSON.stringify({index:4,score:4,streak:4,streakHigh:4,answered:true}));
+ state.recordQuizScore.mockResolvedValueOnce({ok:false}).mockResolvedValue({ok:true});
+ render(<ModuleQuiz moduleId="m1" onDone={vi.fn()}/>);
+ fireEvent.click(screen.getByRole("button",{name:"Continue"}));
+ await screen.findByRole("alert");
+ expect(loadQuizSession(key,5).score).toBe(4);
+ fireEvent.click(screen.getByRole("button",{name:"Continue"}));
+ await screen.findByText("Quiz complete");
+ expect(state.recordQuizScore).toHaveBeenLastCalledWith("m1",4,5,4);
+ expect(loadQuizSession(key,5)).toMatchObject({index:0,score:0,answered:false});
+});
