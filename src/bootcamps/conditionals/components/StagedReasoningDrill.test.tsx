@@ -127,7 +127,7 @@ it('preserves writing and blocks progress when AI grading is unavailable', async
   expect(screen.queryByRole('button', { name: 'I compared the direction and complete conditions' })).toBeNull();
 });
 
-it('uses specific AI revision feedback and discards the grade when writing changes', async () => {
+it('uses authored contextual revision feedback and discards the grade when writing changes', async () => {
   gradeRewrite.mockResolvedValueOnce({ correct: false, feedback: 'Your rewrite starts from taking the bus; the original starts from rain.' });
   const answers = Object.fromEntries([0, 1, 2].map(step => [`0:${step}`, { choice: sufficientStagedItems[0].stages[step].correct, writing: '', checked: true, accepted: true }]));
   localStorage.setItem('conditional-staged-v1:sufficient', JSON.stringify({ index: 0, step: 3, answers, fingerprint: JSON.stringify(sufficientStagedItems) }));
@@ -135,7 +135,8 @@ it('uses specific AI revision feedback and discards the grade when writing chang
   fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Whenever Mia takes the bus, it rains.' } });
   fireEvent.click(screen.getByRole('button', { name: 'Check my rewrite' }));
   await waitFor(() => expect(screen.getByRole('heading', { name: 'Revise your rewrite.' })).toHaveFocus());
-  expect(screen.getByText('Your rewrite starts from taking the bus; the original starts from rain.')).toBeVisible();
+  expect(screen.getByText(/You wrote: “Whenever Mia takes the bus, it rains.” Start with the rain/)).toBeVisible();
+  expect(screen.queryByText('Your rewrite starts from taking the bus; the original starts from rain.')).toBeNull();
   expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
   fireEvent.click(screen.getByRole('button', { name: 'Revise my answer' }));
   fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Mia takes the bus whenever it rains.' } });

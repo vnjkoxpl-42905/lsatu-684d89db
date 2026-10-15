@@ -54,7 +54,7 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
 
 const drillInstructions: Record<string, { summary: string; heading: string; steps: string[] }> = {
   'sufficient-practice': {
-    summary: 'Condition groups and diagrams', heading: 'Find the whole sufficient condition',
+    summary: 'Indicators, conditions and diagrams', heading: 'Find the condition and build the diagram',
     steps: ['Find the indicator that introduces the sufficient condition.', 'Find the complete condition it points to. Keep every word that limits it.', 'Build the diagram: the guarantee goes on the left, what it requires on the right.', 'Write the rule in ordinary English and compare it with our version.'],
   },
   'contrapositive-practice': {
