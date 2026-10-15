@@ -1,0 +1,59 @@
+{
+  "calls": 3,
+  "results": [
+    {
+      "passed": true,
+      "request": {
+        "studentResponse": "Whenever it rains, Mia rides the bus.",
+        "task": "rewrite",
+        "stagePrompt": "Rewrite this conditional in your own words.",
+        "original": "Mia takes the bus if it is raining.",
+        "expected": "If it is raining, then Mia takes the bus."
+      },
+      "status": 200,
+      "correct": true,
+      "feedback": "“Whenever it rains, Mia rides the bus.” expresses the same guarantee as the original rule.",
+      "case": "faithful-paraphrase",
+      "latencyMs": 1884,
+      "expectedCorrect": true,
+      "error": null
+    },
+    {
+      "passed": true,
+      "request": {
+        "studentResponse": "If Mia takes the bus, it is raining.",
+        "task": "rewrite",
+        "stagePrompt": "Rewrite this conditional in your own words.",
+        "original": "Mia takes the bus if it is raining.",
+        "expected": "If it is raining, then Mia takes the bus."
+      },
+      "status": 200,
+      "correct": false,
+      "feedback": "You wrote: “If Mia takes the bus, it is raining.” Your wording changes a claim in the rule. Check whether your sentence would allow exactly the same cases.",
+      "case": "converse-reversal",
+      "latencyMs": 1359,
+      "expectedCorrect": false,
+      "error": null
+    },
+    {
+      "passed": true,
+      "request": {
+        "studentResponse": "Every order ships the day it is placed.",
+        "task": "rewrite",
+        "stagePrompt": "Rewrite this conditional in your own words.",
+        "original": "If an order is placed before 2 p.m., it ships that day.",
+        "expected": "Any order placed before 2 p.m. ships that day."
+      },
+      "status": 200,
+      "correct": false,
+      "feedback": "You wrote: “Every order ships the day it is placed.” Your sentence treats the requirement as enough to prove the other condition. Which condition does the original rule say is enough?",
+      "case": "missing-time-qualifier",
+      "latencyMs": 1274,
+      "expectedCorrect": false,
+      "error": null
+    }
+  ],
+  "configuredModel": "openai/gpt-5-nano",
+  "endpoint": "grade-conditional-rewrite",
+  "checkedAt": "2026-10-15T04:35:25.7824313+00:00"
+}
