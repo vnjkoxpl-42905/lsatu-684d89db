@@ -4,7 +4,7 @@ An eight-scene, approximately 65-second narrated walkthrough, built from determi
 
 ## Edit and regenerate
 
-1. Edit `script.json`. This is the narration source. Keep the inline transcript in `RelationshipIntro.tsx` identical to its scene texts.
+1. Edit `script.json`. This is the narration source. The entry-page transcript was explicitly removed by Joshua on 2026-10-15; do not restore it.
 2. Run `build_audio.py` with a Python interpreter containing `kokoro_onnx`, `numpy` and `soundfile`. The existing `contrapositive-video/.venv/Scripts/python.exe` provides these on Joshua's Windows machine. The local model defaults to `~/.cache/hyperframes/tts/models/kokoro-v1.0.onnx`, voices to `~/.cache/hyperframes/tts/voices/voices-v1.0.bin`; environment variables `KOKORO_MODEL` and `KOKORO_VOICES` override them. This directly uses the installed local engine, not HyperFrames cloud rendering.
 3. Run `node scripts/media/spot-the-relationship/render.cjs` from the app root with FFmpeg on PATH and `@napi-rs/canvas` available to Node. Set `NODE_PATH` to an existing installation's `node_modules` if needed. Codex's bundled workspace dependencies provide canvas; the production app does not depend on it.
 4. Inspect `.render/contact-sheet.jpg` and actual playback. Check narration, captions, readable examples, all answer pairs and the mixed example. `--stills` renders only the review sheet and poster; `--encode-only` reuses existing numbered JPEG frames after an encoding failure. Do not reuse frames after changing the composition or timing.
@@ -15,7 +15,7 @@ Windows FFmpeg N-126374's default AAC coder stalls on the existing narration WAV
 
 ## Inline behavior
 
-The entry page uses native playback controls and English captions. Playback is user-initiated, with no autoplay or forced completion. The player requests no video bytes until used (`preload="none"`). Written instructions remain available, with an expandable verbatim transcript and an explicit playback-error fallback. Watching the film does not mark activity progress.
+The entry page uses native playback controls and English captions. Playback is user-initiated, with no autoplay or forced completion. The player requests no video bytes until used (`preload="none"`). Written instructions remain available with an explicit playback-error fallback. The transcript disclosure beneath the video was removed at Joshua's request on 2026-10-15. Watching the film does not mark activity progress.
 
 The film's colors distinguish labeled relationship types within this activity only. They are not new global design tokens. The narration and layout implement Joshua's request and remain open to his review.
 
