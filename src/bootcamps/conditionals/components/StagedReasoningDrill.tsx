@@ -4,21 +4,22 @@ import { Check, X } from 'lucide-react';
 import { referencePracticeItems } from './ConditionalReferenceSequence';
 import { OpeningMixedDrill } from './OpeningMixedDrill';
 import { useCourseStep } from '../courseProgress';
+import { gradeConditionalRewrite } from '@/lib/conditionalRewriteGrader';
 import './staged-reasoning-drill.css';
 
 type Stage = { name: string; prompt: string; options?: string[]; correct?: number; explanation: string; model?: string; hints?: string[]; label?: string };
 type Item = { sentence: string; stages: Stage[] };
-type Answer = { choice: number | null; writing: string; checked: boolean; accepted: boolean };
+type Answer = { choice: number | null; writing: string; checked: boolean; accepted: boolean; grade?: { submission: string; correct: boolean; feedback: string } };
 const empty = (): Answer => ({ choice: null, writing: '', checked: false, accepted: false });
 const not = (text: string, negative?: boolean) => negative ? `NOT (${text})` : text;
-const RIGHT: Record<string, string> = { 'Find the indicator': 'Right indicator.', 'Find the condition': 'Right condition.', 'Build the diagram': 'Right direction.', 'Reverse and negate': 'Right contrapositive.', 'Original rule': 'Right rule.' };
+const RIGHT: Record<string, string> = { 'Find the indicator': 'Right indicator.', 'Find the condition': 'Right condition.', 'Build the diagram': 'Correct diagram.', 'Reverse and negate': 'Right contrapositive.', 'Original rule': 'Right rule.' };
 function rightHeading(name: string) { return RIGHT[name] ?? "That's right."; }
 function choices(name: string, prompt: string, options: string[], correct: number, explanation: string, hints?: string[]): Stage { return { name, prompt, options, correct, explanation, hints }; }
 const REQUIRE_WORD = (pick: string) => `“${pick}” introduces what is required, not what is enough. Look for the word that introduces the guarantee.`;
 const FROM_REQUIREMENT = 'That is what the rule requires. Which condition is enough to guarantee it?';
 const BACKWARDS = 'That arrow starts from the requirement. Start from the condition that guarantees the result.';
 function hintFor(stage: Stage, choice: number) { return stage.hints?.[choice] || 'Not this one. Reread the rule and ask what it guarantees.'; }
-function reading(model: string, explanation: string): Stage { return { name: 'Write it in English', prompt: 'Write your diagram as an if/then sentence.', explanation, model, label: 'Your if/then sentence' }; }
+function reading(model: string, explanation: string): Stage { return { name: 'Write it in English', prompt: 'Rewrite this conditional in your own words.', explanation, model, label: 'Your rewrite' }; }
 
 /** One fresh everyday sentence per Group 1 indicator. None repeats a lesson example. */
 type IndicatorItem = { word: string; sentence: string; left: string; right: string; partial?: string; readback: string; why: string; indicators: string[]; indicatorHints: Record<string, string> };
@@ -64,14 +65,14 @@ export const sufficientStagedItems: Item[] = [
     const options = [...ideas.slice(index % ideas.length), ...ideas.slice(0, index % ideas.length)];
     const hint = (option: string) => option === item.left ? '' : option === item.partial ? PARTIAL : `${FROM_REQUIREMENT} Ask: ${item.word} what?`;
     return { sentence: item.sentence, stages: [
-      choices('Find the indicator', 'Which indicator introduces the sufficient condition?', item.indicators, item.indicators.indexOf(item.word), `Read “${item.word}” with the complete condition it refers to. ${item.why}`, item.indicators.map(word => word === item.word ? '' : item.indicatorHints[word])),
+      choices('Find the indicator', item.word.includes(' ') ? 'Which word or phrase indicates a conditional relationship?' : 'Which word indicates a conditional relationship?', item.indicators, item.indicators.indexOf(item.word), `Read “${item.word}” with the complete condition it refers to. ${item.why}`, item.indicators.map(word => word === item.word ? '' : item.indicatorHints[word])),
       choices('Find the condition', `What complete condition does “${item.word}” identify?`, options, options.indexOf(item.left), item.why, options.map(hint)),
-      choices('Build the diagram', 'Which direction keeps the original rule?', index % 2 ? [`${item.right} → ${item.left}`, `${item.left} → ${item.right}`] : [`${item.left} → ${item.right}`, `${item.right} → ${item.left}`], index % 2, item.why, index % 2 ? [BACKWARDS, ''] : ['', BACKWARDS]),
+      choices('Build the diagram', 'Which diagram matches this rule?', index % 2 ? [`${item.right} → ${item.left}`, `${item.left} → ${item.right}`] : [`${item.left} → ${item.right}`, `${item.right} → ${item.left}`], index % 2, item.why, index % 2 ? [BACKWARDS, ''] : ['', BACKWARDS]),
       reading(item.readback, 'Compare the condition on each side. Keep every restriction and do not turn the requirement into a guarantee.'),
     ] };
   }),
   { sentence: 'A package ships the same day if it is ordered before 2 p.m.', stages: [choices('Keep the condition', 'Which condition is enough for same-day shipping?', ['Package is ordered', 'Package is ordered before 2 p.m.', 'Package ships the same day'], 1, 'Before 2 p.m. limits the rule. A package ordered at five does not meet the condition.', [PARTIAL, '', 'That is the result. Which condition guarantees it?']), choices('Keep the meaning', 'Which sentence says the same thing?', ['If a package ships the same day, it was ordered before 2 p.m.', 'If a package is ordered before 2 p.m., it ships the same day.'], 1, 'Ordering before 2 p.m. is sufficient. Same-day shipping alone does not prove when the order came in.', ['That rule starts from the shipping. Start from what guarantees the shipping.', ''])] },
-  { sentence: 'The only cookies left in the jar are oatmeal.', stages: [choices('Build the diagram', 'Which diagram keeps the rule?', ['Cookie is oatmeal → Cookie is left in the jar', 'Cookie is left in the jar → Cookie is oatmeal'], 1, 'Every cookie left in the jar is oatmeal. An oatmeal cookie can still be on a plate.', [BACKWARDS + ' The only what? Cookies left in the jar.', '']), reading('If a cookie is left in the jar, it is oatmeal.', 'The only cookies left in the jar names the group the rule covers.')] },
+  { sentence: 'The only cookies left in the jar are oatmeal.', stages: [choices('Build the diagram', 'Which diagram matches this rule?', ['Cookie is oatmeal → Cookie is left in the jar', 'Cookie is left in the jar → Cookie is oatmeal'], 1, 'Every cookie left in the jar is oatmeal. An oatmeal cookie can still be on a plate.', [BACKWARDS + ' The only what? Cookies left in the jar.', '']), reading('If a cookie is left in the jar, it is oatmeal.', 'The only cookies left in the jar names the group the rule covers.')] },
   { sentence: 'Every key on the red ring opens a classroom.', stages: [choices('Build a case', 'Someone claims every key that opens a classroom is on the red ring. Which key fits our rule but disproves that claim?', ['On the red ring; opens a classroom', 'Not on the red ring; opens a classroom', 'On the red ring; opens no classroom', 'Not on the red ring; opens no classroom'], 1, 'A classroom key on another ring fits the rule. It disproves the reversed claim without breaking the original.', ['That key agrees with the claim. You need a classroom key the claim gets wrong.', '', 'That key breaks our rule. Every key on the red ring opens a classroom.', 'That key opens no classroom, so the claim says nothing about it.']), { name: 'Explain the limit', prompt: 'Why does your key disprove the reverse while keeping the rule true?', model: 'The rule says every key on the red ring opens a classroom. It does not say every key that opens a classroom is on the red ring.', explanation: 'Your example is a possible case, not a claim that this key actually exists.' }] },
 ];
 
@@ -86,7 +87,7 @@ export const contrapositiveStagedItems: Item[] = referencePracticeItems.map((ite
     choices('Reverse and negate', 'Which diagram is the contrapositive?', index % 2 ? [`${notRight} → ${notLeft}`, `${right} → ${left}`, `${notLeft} → ${notRight}`] : [`${right} → ${left}`, `${notRight} → ${notLeft}`, `${notLeft} → ${notRight}`], index % 2 ? 0 : 1, 'Reverse the conditions and negate each whole condition. Negating a condition that already says NOT removes that negation.', index % 2 ? ['', NO_NEGATE, NO_REVERSE] : [NO_NEGATE, '', NO_REVERSE]),
     // A sentence already in if/then form would only be copied back word for word.
     ...(item.readback === item.sentence ? [] : [reading(item.readback, item.why)]),
-    { name: 'Read the contrapositive', prompt: 'Now write the contrapositive in ordinary English.', model: item.contraReadback, explanation: item.why, label: 'Your if/then sentence' },
+    { name: 'Read the contrapositive', prompt: 'Now write the contrapositive in ordinary English.', model: item.contraReadback, explanation: item.why, label: 'Your rewrite' },
   ] };
 });
 
@@ -126,8 +127,9 @@ function restore(storageKey: string, items: Item[], accountState?: unknown) {
       if (!items[i]?.stages[s] || !a || typeof a.writing !== 'string' || !(a.choice === null || Number.isInteger(a.choice)) || typeof a.checked !== 'boolean' || typeof a.accepted !== 'boolean') continue;
       const stage = items[i].stages[s];
       if (a.choice !== null && (!stage.options || a.choice < 0 || a.choice >= stage.options.length)) continue;
-      const checked = a.checked;
-      answers[key] = { ...a, checked, accepted: checked && a.accepted && (stage.options ? a.choice === stage.correct : !!a.writing.trim()) };
+      const validGrade = !!a.grade && a.grade.submission === a.writing && typeof a.grade.correct === 'boolean' && typeof a.grade.feedback === 'string';
+      const checked = a.checked && (!!stage.options || validGrade);
+      answers[key] = { ...a, checked, accepted: checked && a.accepted && (stage.options ? a.choice === stage.correct : validGrade && a.grade!.correct) };
     }
     const firstUnfinished = items[index].stages.findIndex((_, s) => !answers[`${index}:${s}`]?.accepted);
     return { index, step: firstUnfinished < 0 ? step : Math.min(step, firstUnfinished), answers, archived };
@@ -143,11 +145,14 @@ function StagedRun({ items, storageKey, stepId }: { items: Item[]; storageKey: s
   const [answers, setAnswers] = useState<Record<string, Answer>>(initial.answers);
   const [storageFailed, setStorageFailed] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [grading, setGrading] = useState(false);
+  const [gradingError, setGradingError] = useState('');
   const heading = useRef<HTMLHeadingElement>(null);
   const feedback = useRef<HTMLHeadingElement>(null);
   const item = items[index], stage = item.stages[step], key = `${index}:${step}`;
   const answer = answers[key] ?? empty();
   const objective = !!stage.options;
+  const explanationTask = !objective && !stage.label;
   const correct = answer.choice === stage.correct;
   const completed = items.filter((q, i) => q.stages.every((_, s) => answers[`${i}:${s}`]?.accepted)).length;
   function update(patch: Partial<Answer>) { setAnswers(old => {
@@ -163,21 +168,32 @@ function StagedRun({ items, storageKey, stepId }: { items: Item[]; storageKey: s
     record?.({ state: snapshot, done: completed, total: items.length, ...(completed === items.length ? { status: 'done' as const } : {}) });
     try { localStorage.setItem(storageKey, JSON.stringify(snapshot)); setStorageFailed(false); } catch { setStorageFailed(!record); }
   }, [index, step, answers, items, storageKey, record, completed, initial.archived]);
-  useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [step, index, finished]);
+  useEffect(() => { setGradingError(''); heading.current?.focus({ preventScroll: true }); }, [step, index, finished]);
   useEffect(() => { if (!answer.checked) return; const el = feedback.current; el?.focus({ preventScroll: true }); el?.scrollIntoView?.({ behavior: matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' }); }, [answer.checked]);
-  function move(i: number) { setIndex(i); setStep(0); setFinished(false); }
+  async function checkWriting() {
+    setGrading(true); setGradingError('');
+    const submission = answer.writing;
+    try {
+      const result = await gradeConditionalRewrite({ original: item.sentence, expected: stage.model ?? '', studentResponse: submission, task: explanationTask ? 'explanation' : stage.name === 'Read the contrapositive' ? 'contrapositive' : 'rewrite', stagePrompt: stage.prompt });
+      update({ checked: true, accepted: result.correct, grade: { submission, ...result } });
+    } catch (error) { setGradingError(error instanceof Error ? error.message : 'Your rewrite could not be checked. Try again.'); }
+    finally { setGrading(false); }
+  }
+  function move(i: number) { setGradingError(''); setIndex(i); setStep(0); setFinished(false); }
   function next() { if (step < item.stages.length - 1) setStep(step + 1); else if (index < items.length - 1) move(index + 1); else setFinished(true); }
   return <section className="sr-run" aria-label="Step-by-step reasoning practice">
     {storageFailed && <p role="status" className="sr-storage-error">Your browser could not save this practice. Keep this page open to retain your work.</p>}
     <header className="sr-header"><span>YOUR PROGRESS</span><strong>{Math.round(completed / items.length * 100)}<small>%</small></strong><div role="progressbar" aria-label="Questions completed" aria-valuenow={completed} aria-valuemin={0} aria-valuemax={items.length}><i style={{ width: `${completed / items.length * 100}%` }}/></div></header>
-    {finished ? <div className="sr-results"><Check size={32}/><h2 ref={heading} tabIndex={-1}>You worked through the set.</h2><p>{completed} of {items.length} questions completed. Your written explanations were self-reviewed, not automatically graded.</p><div className="sr-review">{items.map((q, i) => <button key={i} onClick={() => move(i)}>Question {i + 1}</button>)}</div></div> : <>
-    <div className="sr-scene"><aside className="sr-statement"><p className="sr-counter" aria-label={`Question ${index + 1} of ${items.length}`}><b key={index}>{String(index + 1).padStart(2, '0')}</b><small>/ {items.length}</small></p><blockquote>{item.sentence}</blockquote><dl className="sr-legend"><div><dt>Sufficient</dt><dd>enough to guarantee the result</dd></div><div><dt>Necessary</dt><dd>required for the result</dd></div></dl></aside>
+    {finished ? <div className="sr-results"><Check size={32}/><h2 ref={heading} tabIndex={-1}>You worked through the set.</h2><p>{completed} of {items.length} questions completed. Your written rewrites were checked for their meaning.</p><div className="sr-review">{items.map((q, i) => <button key={i} onClick={() => move(i)}>Question {i + 1}</button>)}</div></div> : <>
+    <div className="sr-scene"><aside className="sr-statement"><p className="sr-counter" aria-label={`Question ${index + 1} of ${items.length}`}><b key={index}>{String(index + 1).padStart(2, '0')}</b><small>/ {items.length}</small></p><blockquote>{item.sentence}</blockquote></aside>
     <div className="sr-work"><ol className="sr-stages" aria-label="Steps for this rule" style={{ '--sr-p': step / Math.max(1, item.stages.length - 1) } as React.CSSProperties}>{item.stages.map((s, i) => <li key={i} aria-current={step === i ? 'step' : undefined} data-done={answers[`${index}:${i}`]?.accepted}><span>{answers[`${index}:${i}`]?.accepted ? <Check size={13}/> : i + 1}</span>{s.name}</li>)}</ol>
     <div className="sr-active" key={key}><p className="sr-step-label">STEP {step + 1} OF {item.stages.length}</p><h2 ref={heading} tabIndex={-1}>{stage.prompt}</h2>
-    {objective ? <div className="sr-options" role="group" aria-label="Answer choices">{stage.options!.map((option, i) => <button key={i} aria-pressed={answer.choice === i} data-state={answer.checked ? (answer.choice === i ? (correct ? 'right' : 'wrong') : 'dim') : undefined} disabled={answer.checked} onClick={() => update({ choice: i, checked: false, accepted: false })}><span>{answer.checked && answer.choice === i ? (correct ? <Check size={14} aria-hidden/> : <X size={14} aria-hidden/>) : String.fromCharCode(65 + i)}</span>{option}</button>)}</div> : <label className="sr-writing">{stage.label ?? 'Your explanation'}<textarea rows={4} value={answer.writing} disabled={answer.checked} onChange={e => update({ writing: e.target.value, accepted: false })}/></label>}
-    {!answer.checked ? <button className="sr-primary" disabled={objective ? answer.choice === null : !answer.writing.trim()} onClick={() => update({ checked: true, accepted: objective && correct })}>{objective ? 'Check this step' : stage.label ? 'Compare my sentence' : 'Compare my explanation'}</button> : <div className="sr-feedback" data-result={objective ? (correct ? 'right' : 'wrong') : 'compare'} role="status"><h3 ref={feedback} tabIndex={-1}>{objective && (correct ? <Check size={20} aria-hidden/> : <X size={20} aria-hidden/>)}{objective ? correct ? rightHeading(stage.name) : 'Not quite. Try again.' : 'Compare the meaning.'}</h3>{stage.model && <p className="sr-model"><strong className="sr-model-label">Our version:</strong> {stage.model}</p>}<p>{objective && !correct && answer.choice !== null ? hintFor(stage, answer.choice) : stage.explanation}</p>{!objective && <button className="sr-self-check" aria-pressed={answer.accepted} onClick={() => update({ accepted: !answer.accepted })}><Check size={16}/>I compared the direction and complete conditions</button>}<div className="sr-feedback-actions">{answer.accepted && <button className="sr-continue" onClick={next}>Continue</button>}<button className="sr-text" onClick={() => update({ checked: false, accepted: false })}>{objective && !correct ? 'Try again' : 'Revise my answer'}</button></div></div>}
+    {objective ? <div className="sr-options" role="group" aria-label="Answer choices">{stage.options!.map((option, i) => <button key={i} aria-pressed={answer.choice === i} data-state={answer.checked ? (answer.choice === i ? (correct ? 'right' : 'wrong') : 'dim') : undefined} disabled={answer.checked} onClick={() => update({ choice: i, checked: false, accepted: false })}><span>{answer.checked && answer.choice === i ? (correct ? <Check size={14} aria-hidden/> : <X size={14} aria-hidden/>) : String.fromCharCode(65 + i)}</span>{option}</button>)}</div> : <label className="sr-writing">{stage.label ?? 'Your explanation'}<textarea rows={4} value={answer.writing} disabled={answer.checked || grading} onChange={e => { setGradingError(''); update({ writing: e.target.value, accepted: false, grade: undefined }); }}/></label>}
+    {gradingError && <p role="alert" className="sr-storage-error">{gradingError}</p>}
+    {!answer.checked ? <button className="sr-primary" disabled={grading || (objective ? answer.choice === null : !answer.writing.trim())} onClick={() => objective ? update({ checked: true, accepted: correct }) : void checkWriting()}>{grading ? 'Checking your answer…' : objective ? 'Check this step' : explanationTask ? 'Check my explanation' : 'Check my rewrite'}</button> : <div className="sr-feedback" data-result={objective ? (correct ? 'right' : 'wrong') : answer.accepted ? 'right' : 'wrong'} role="status"><h3 ref={feedback} tabIndex={-1}>{(objective ? correct : answer.accepted) ? <Check size={20} aria-hidden/> : <X size={20} aria-hidden/>}{objective ? correct ? rightHeading(stage.name) : 'Not quite. Try again.' : answer.accepted ? explanationTask ? 'Your explanation works.' : 'Your rewrite keeps the meaning.' : explanationTask ? 'Revise your explanation.' : 'Revise your rewrite.'}</h3><p>{objective ? !correct && answer.choice !== null ? hintFor(stage, answer.choice) : stage.explanation : answer.grade?.feedback}</p><div className="sr-feedback-actions">{answer.accepted && <button className="sr-continue" onClick={next}>Continue</button>}{!answer.accepted && <button className="sr-text" onClick={() => update({ checked: false, accepted: false })}>{objective ? 'Try again' : 'Revise my answer'}</button>}</div></div>}
+
     </div></div></div>
-    <nav className="sr-navigation" aria-label="Practice navigation"><button disabled={index === 0 && step === 0} onClick={() => step ? setStep(step - 1) : move(index - 1)}>Previous</button><button className="sr-primary" disabled={!answer.accepted} onClick={next}>{step < item.stages.length - 1 ? 'Next step' : index < items.length - 1 ? 'Next question' : 'Review this set'}</button></nav></>}
+    <nav className="sr-navigation" aria-label="Practice navigation"><button disabled={grading || (index === 0 && step === 0)} onClick={() => step ? setStep(step - 1) : move(index - 1)}>Previous</button><button className="sr-primary" disabled={grading || !answer.accepted} onClick={next}>{step < item.stages.length - 1 ? 'Next step' : index < items.length - 1 ? 'Next question' : 'Review this set'}</button></nav></>}
   </section>;
 }
 
