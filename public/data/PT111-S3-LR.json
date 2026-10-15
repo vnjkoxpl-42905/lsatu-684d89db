@@ -1,0 +1,594 @@
+[
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "More and more computer programs that provide solutions to mathematical problems in engineering are being produced, and it is thus increasingly unnecessary for practicing engineers to have a thorough understanding of fundamental mathematical principles. Consequently, in training engineers who will work in industry, less emphasis should be placed on mathematical principles, so that space in the engineering curriculum will be available for other important subjects.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument given for the recommendation above?",
+    "answerChoices": {
+      "A": "The effective use of computer programs that provide solutions to mathematical problems in engineering requires an understanding of mathematical principles.",
+      "B": "Many of the computer programs that provide solutions to mathematical problems in engineering are already in routine use.",
+      "C": "Development of composites and other such new materials has meant that the curriculum for engineers who will work in industry must allow time for teaching the properties of these materials.",
+      "D": "Most of the computer programs that provide solutions to mathematical problems in engineering can be run on the types of computers available to most engineering firms.",
+      "E": "The engineering curriculum already requires that engineering students be familiar with and able to use a variety of computer programs."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Raymond Burr played the role of Perry Mason on television. Burr’s death in 1993 prompted a prominent lawyer to say, “Although not a lawyer, Mr. Burr strove for such authenticity that we feel as if we lost one of our own.” This comment from a prestigious attorney provides appalling evidence that, in the face of television, even some legal professionals are losing their ability to distinguish fiction from reality.",
+    "questionStem": "The reasoning in the argument is flawed because the argument",
+    "answerChoices": {
+      "A": "takes the views of one lawyer to represent the views of all lawyers",
+      "B": "criticizes the lawyer rather than the lawyer’s statement",
+      "C": "presumes that the lawyer is qualified to evaluate the performance of an actor",
+      "D": "focuses on a famous actor’s portrayal of a lawyer rather than on the usual way in which lawyers are portrayed on television",
+      "E": "ignores the part of the lawyer’s remark that indicates an awareness of the difference between reality and fiction"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Opponents of peat harvesting in this country argue that it would alter the ecological balance of our peat-rich wetlands and that, as a direct consequence of this, much of the country’s water supply would be threatened with contamination. But this cannot be true, for in Ireland, where peat has been harvested for centuries, the water supply is not contaminated. We can safely proceed with the harvesting of peat.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Over hundreds of years, the ecological balance of all areas changes slowly but significantly, sometimes to the advantage of certain flora and fauna.",
+      "B": "The original ecology of the peat-harvesting areas of Ireland was virtually identical to that of the undisturbed wetlands of this country.",
+      "C": "The activities of other industries in coming years are likely to have adverse effects on the water supply of this country.",
+      "D": "The peat resources of this country are far larger than those of some countries that successfully harvest peat.",
+      "E": "The peat-harvesting industry of Ireland has been able to supply most of that country’s fuel for generations."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "For the next year, the Chefs’ Union has requested a 10 percent salary increase for each of its members, whereas the Hotel Managers’ Union has requested only an 8 percent salary increase for each of its members. These facts demonstrate that the average dollar amount of the raises that the Chefs’ Union has requested for next year is greater than that of the raises requested by the Hotel Managers’ Union.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "The Chefs’ Union has many more members than does the Hotel Managers’ Union.",
+      "B": "The Chefs’ Union is a more powerful union than is the Hotel Managers’ Union and is therefore more likely to obtain the salary increases it requests.",
+      "C": "The current salaries of the members of the Chefs’ Union are, on average, higher than the current salaries of the members of the Hotel Managers’ Union.",
+      "D": "The average dollar amount of the raises that the members of the Chefs’ Union received last year was equal to the average dollar amount of the raises that the members of the Hotel Managers’ Union received.",
+      "E": "The members of the Chefs’ Union received salary increases of 10 percent in each of the last two years, while the members of the Hotel Managers’ Union received salary increases of only 8 percent in each of the last two years."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Parent: I had tried without success to get my young child to brush her teeth. I had hoped that she would imitate me, or that she would be persuaded by reason to brush her teeth. Then, I made a point of brushing her teeth for her immediately before reading her a story before her naps and at night. After several weeks, when I would pick up a storybook at these times, she began automatically to retrieve her toothbrush and brush her teeth herself.",
+    "questionStem": "The parent’s experience with the child most closely conforms to which one of the following generalizations?",
+    "answerChoices": {
+      "A": "Children are most effectively taught to do something by someone’s setting an example.",
+      "B": "Children more readily adopt a behavior through habit and repetition than through other means.",
+      "C": "Children are too young to understand rational arguments for adopting a behavior.",
+      "D": "Children often imitate the behavior of others rather than listening to reason.",
+      "E": "Children ordinarily act contrary to their parents’ expectations in order to get more attention."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Plans / Recommendations",
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The student body at this university takes courses in a wide range of disciplines. Miriam is a student at this university, so she takes courses in a wide range of disciplines.",
+    "questionStem": "Which one of the following arguments exhibits flawed reasoning most similar to that exhibited by the argument above?",
+    "answerChoices": {
+      "A": "The students at this school take mathematics. Miguel is a student at this school, so he takes mathematics.",
+      "B": "The editorial board of this law journal has written on many legal issues. Louise is on the editorial board, so she has written on many legal issues.",
+      "C": "The component parts of bulldozers are heavy. This machine is a bulldozer, so it is heavy.",
+      "D": "All older automobiles need frequent oil changes. This car is new, so its oil need not be changed as frequently.",
+      "E": "The individual cells of the brain are incapable of thinking. Therefore, the brain as a whole is incapable of thinking."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Part vs. Whole"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "The following passage is used for Section 3, questions 7 through 8. Opponent of offshore oil drilling: The projected benefits of drilling new oil wells in certain areas in the outer continental shelf are not worth the risk of environmental disaster. The oil already being extracted from these areas currently provides only 4 percent of our country’s daily oil requirement, and the new wells would only add one-half of 1 percent.\n\nProponent of offshore oil drilling: Don’t be ridiculous! You might just as well argue that new farms should not be allowed, since no new farm could supply the total food needs of our country for more than a few minutes.",
+    "questionStem": "The drilling proponent’s reply to the drilling opponent proceeds by",
+    "answerChoices": {
+      "A": "offering evidence in support of drilling that is more decisive than is the evidence offered by the drilling opponent",
+      "B": "claiming that the statistics cited as evidence by the drilling opponent are factually inaccurate",
+      "C": "pointing out that the drilling opponent’s argument is a misapplication of a frequently legitimate way of arguing",
+      "D": "citing as parallel to the argument made by the drilling opponent an argument in which the conclusion is strikingly unsupported",
+      "E": "proposing a conclusion that is more strongly supported by the drilling opponent’s evidence than is the conclusion offered by the drilling opponent"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The following passage is used for Section 3, questions 7 through 8. Opponent of offshore oil drilling: The projected benefits of drilling new oil wells in certain areas in the outer continental shelf are not worth the risk of environmental disaster. The oil already being extracted from these areas currently provides only 4 percent of our country’s daily oil requirement, and the new wells would only add one-half of 1 percent.\n\nProponent of offshore oil drilling: Don’t be ridiculous! You might just as well argue that new farms should not be allowed, since no new farm could supply the total food needs of our country for more than a few minutes.",
+    "questionStem": "Which one of the following, if true, most weakens the drilling proponent’s reply?",
+    "answerChoices": {
+      "A": "New farms do not involve a risk analogous to that run by new offshore oil drilling.",
+      "B": "Many of the largest oil deposits are located under land that is unsuitable for farming.",
+      "C": "Unlike oil, common agricultural products fulfill nutritional needs rather than fuel requirements.",
+      "D": "Legislation governing new oil drilling has been much more thoroughly articulated than has that governing new farms.",
+      "E": "The country under discussion imports a higher proportion of the farm products it needs than it does of the oil it needs."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "A running track with a hard surface makes for greater running speed than a soft one, at least under dry conditions, because even though step length is shorter on a hard surface, the time the runner’s foot remains in contact with the running surface is less with a hard surface.",
+    "questionStem": "Which one of the following, if true, is evidence that the explanation given above is only a partial one?",
+    "answerChoices": {
+      "A": "Dry running conditions can be guaranteed for indoor track races only.",
+      "B": "In general, taller runners have greater average step length than shorter runners do.",
+      "C": "Hard tracks enhance a runner’s speed by making it easier for the runner to maintain a posture that minimizes wind resistance.",
+      "D": "The tracks at which the world’s fastest running times have been recorded are located well above sea level, where the air is relatively thin.",
+      "E": "To remain in top condition, a soft track surface requires different maintenance procedures than does a hard one."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Point at Issue (Disagree)",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Goswami: I support the striking workers at Ergon Foods. They are underpaid. The majority of them make less than $20,000 per year.\nNordecki: If pay is the issue, I must disagree. The average annual salary of the striking workers at Ergon Foods is over $29,000.",
+    "questionStem": "Goswami and Nordecki disagree over the truth of which one of the following statements?",
+    "answerChoices": {
+      "A": "The average annual salary at Ergon Foods is over $29,000.",
+      "B": "Pay is the primary issue over which the workers are striking at Ergon Foods.",
+      "C": "It is reasonable to support striking workers who are underpaid.",
+      "D": "The striking workers at Ergon Foods are underpaid.",
+      "E": "It was unreasonable for the workers at Ergon Foods to go on strike."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Teacher to a student: You agree that it is bad to break promises. But when we speak to each other we all make an implicit promise to tell the truth, and lying is the breaking of that promise. So even if you promised Jeanne that you would tell me she is home sick, you should not tell me that, if you know that she is well.",
+    "questionStem": "Which one of the following is an assumption on which the teacher’s argument depends?",
+    "answerChoices": {
+      "A": "Most people always tell the truth.",
+      "B": "It is sometimes better to act in a friend’s best interests than to keep a promise to that friend.",
+      "C": "Breaking a promise leads to worse consequences than does telling a lie.",
+      "D": "Some implicit promises are worse to break than some explicit ones.",
+      "E": "One should never break a promise."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Paradox EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Despite the fact that antilock brakes are designed to make driving safer, research suggests that people who drive cars equipped with antilock brakes have more accidents than those who drive cars not equipped with antilock brakes.",
+    "questionStem": "Each of the following, if true, would help resolve the apparent discrepancy described above except:",
+    "answerChoices": {
+      "A": "Most cars equipped with antilock brakes are, on average, driven more carelessly than cars not equipped with antilock brakes.",
+      "B": "Antilock brakes malfunction more often than regular brakes.",
+      "C": "Antilock brakes require expensive specialized maintenance to be even as effective as unmaintained regular brakes.",
+      "D": "Most people who drive cars equipped with antilock brakes do not know how to use those brakes properly.",
+      "E": "Antilock brakes were designed for safety in congested urban driving, but accidents of the most serious nature take place on highways."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "President of the Regional Chamber of Commerce: We are all aware of the painful fact that almost no new businesses have moved into our region or started up here over the last ten years. But the Planning Board is obviously guilty of a gross exaggeration in its recent estimate that businesses are leaving the region at the rate of about four a week. After all, there were never more than about one thousand businesses in the region, so if they were really leaving at such a rate, they would all have been gone long ago.",
+    "questionStem": "The argument is most vulnerable to criticism on the ground that it",
+    "answerChoices": {
+      "A": "focuses on what is going out of a system while ignoring the issue of what is coming into the system",
+      "B": "confuses a claim about a rate of change within a system with a claim about the absolute size of the system",
+      "C": "argues against a position simply by showing that the position serves the interest of the Planning Board",
+      "D": "treats a claim about what is currently the case as if it were a claim about what has been the case for an extended period",
+      "E": "attacks what was offered as an estimate on the ground that it is not precise"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Rebuttals",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Parallel Method of Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "It is inaccurate to say that a diet high in refined sugar cannot cause adult-onset diabetes, since a diet high in refined sugar can make a person overweight, and being overweight can predispose a person to adult-onset diabetes.",
+    "questionStem": "The argument is most parallel, in its logical structure, to which one of the following?",
+    "answerChoices": {
+      "A": "It is inaccurate to say that being in cold air can cause a person to catch a cold, since colds are caused by viruses, and viruses flourish in warm, crowded places.",
+      "B": "It is accurate to say that no airline flies from Halifax to Washington. No airline offers a direct flight, although some airlines have flights from Halifax to Boston and others have flights from Boston to Washington.",
+      "C": "It is correct to say that overfertilization is the primary cause of lawn disease, since fertilizer causes lawn grass to grow rapidly and rapidly growing grass has little resistance to disease.",
+      "D": "It is incorrect to say that inferior motor oil cannot cause a car to get poorer gasoline mileage, since inferior motor oil can cause engine valve deterioration, and engine valve deterioration can lead to poorer gasoline mileage.",
+      "E": "It is inaccurate to say that Alexander the Great was a student of Plato; Alexander was a student of Aristotle and Aristotle was a student of Plato."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Causal Chains",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "During the recent economic downturn, banks contributed to the decline by loaning less money. Prior to the downturn, regulatory standards for loanmaking by banks were tightened. Clearly, therefore, banks will lend more money if those standards are relaxed.",
+    "questionStem": "The argument assumes that",
+    "answerChoices": {
+      "A": "the downturn did not cause a significant decrease in the total amount of money on deposit with banks which is the source of funds for banks to lend",
+      "B": "the imposition of the tighter regulatory standards was not a cause of the economic downturn",
+      "C": "the reason for tightening the regulatory standards was not arbitrary",
+      "D": "no economic downturn is accompanied by a significant decrease in the amount of money loaned out by banks to individual borrowers and to businesses",
+      "E": "no relaxation of standards for loanmaking by banks would compensate for the effects of the downturn"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Conditional Conclusion",
+      "Defender",
+      "Net Effect",
+      "Predictions",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Zoos have served both as educational resources and as entertainment. Unfortunately, removing animals from their natural habitats to stock the earliest zoos reduced certain species’ populations, endangering their survival. Today most new zoo animals are obtained from captive breeding programs, and many zoos now maintain breeding stocks for continued propagation of various species. This makes possible efforts to reestablish endangered species in the wild.",
+    "questionStem": "Which one of the following statements is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Zoos have played an essential role in educating the public about endangered species.",
+      "B": "Some specimens of endangered species are born and bred in zoos.",
+      "C": "No zoos exploit wild animals or endanger the survival of species.",
+      "D": "Nearly all of the animals in zoos today were born in captivity.",
+      "E": "The main purpose of zoos has shifted from entertainment to education."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Only a very small percentage of people from the service professions ever become board members of the 600 largest North American corporations. This shows that people from the service professions are underrepresented in the most important corporate boardrooms in North America.",
+    "questionStem": "Which one of the following points out a flaw committed in the argument?",
+    "answerChoices": {
+      "A": "Six hundred is too small a sample on which to base so sweeping a conclusion about the representation of people from the service professions.",
+      "B": "The percentage of people from the service professions who serve on the boards of the 600 largest North American corporations reveals little about the percentage of the members of these boards who are from the service professions.",
+      "C": "It is a mistake to take the 600 largest North American corporations to be typical of corporate boardrooms generally.",
+      "D": "It is irrelevant to smaller corporations whether the largest corporations in North America would agree to have significant numbers of workers from the service professions on the boards of the largest corporations.",
+      "E": "The presence of people from the service professions on a corporate board does not necessarily imply that that corporation will be more socially responsible than it has been in the past."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "If there are any inspired performances in the concert, the audience will be treated to a good show. But there will not be a good show unless there are sophisticated listeners in the audience, and to be a sophisticated listener one must understand one’s musical roots.",
+    "questionStem": "If all of the statements above are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "If there are no sophisticated listeners in the audience, then there will be no inspired musical performances in the concert.",
+      "B": "No people who understand their musical roots will be in the audience if the audience will not be treated to a good show.",
+      "C": "If there will be people in the audience who understand their musical roots, then at least one musical performance in the concert will be inspired.",
+      "D": "The audience will be treated to a good show unless there are people in the audience who do not understand their musical roots.",
+      "E": "If there are sophisticated listeners in the audience, then there will be inspired musical performances in the concert."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Principle EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Columnist: A recent study suggests that living with a parrot increases one’s risk of lung cancer. But no one thinks the government should impose financial impediments on the owning of parrots because of this apparent danger. So by the same token, the government should not levy analogous special taxes on hunting gear, snow skis, recreational parachutes, or motorcycles.",
+    "questionStem": "Each of the following principles is logically consistent with the columnist’s conclusion except:",
+    "answerChoices": {
+      "A": "The government should fund education by taxing nonessential sports equipment and recreational gear.",
+      "B": "The government should not tax those who avoid dangerous activities and adopt healthy lifestyles.",
+      "C": "The government should create financial disincentives to deter participation in activities it deems dangerous.",
+      "D": "The government should not create financial disincentives for people to race cars or climb mountains, even though these are dangerous activities.",
+      "E": "The government would be justified in levying taxes to provide food and shelter for those who cannot afford to pay for them."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers",
+      "EXCEPT",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Must Be True",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Scientist: Some critics of public funding for this research project have maintained that only if it can be indicated how the public will benefit from the project is continued public funding for it justified. If the critics were right about this, then there would not be the tremendous public support for the project that even its critics acknowledge.",
+    "questionStem": "If the scientist’s claims are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "The benefits derived from the research project are irrelevant to whether or not its funding is justified.",
+      "B": "Continued public funding for the research project is justified.",
+      "C": "Public support for the research project is the surest indication of whether or not it is justified.",
+      "D": "There is tremendous public support for the research project because it can be indicated how the public will benefit from the project.",
+      "E": "That a public benefit can be indicated is not a requirement for the justification of the research project’s continued public funding."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The new agriculture bill will almost surely fail to pass. The leaders of all major parties have stated that they oppose it.",
+    "questionStem": "Which one of the following, if true, adds the most support for the prediction that the agriculture bill will fail to pass?",
+    "answerChoices": {
+      "A": "Most bills that have not been supported by even one leader of a major party have not been passed into law.",
+      "B": "Most bills that have not been passed into law were not supported by even one member of a major party.",
+      "C": "If the leaders of all major parties endorse the new agriculture bill, it will pass into law.",
+      "D": "Most bills that have been passed into law were not unanimously supported by the leaders of all major parties.",
+      "E": "Most bills that have been passed into law were supported by at least one leader of a major party."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Predictions",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The folktale that claims that a rattlesnake’s age can be determined from the number of sections in its rattle is false, but only because the rattles are brittle and sometimes partially or completely break off. So if they were not so brittle, one could reliably determine a rattlesnake’s age simply from the number of sections in its rattle, because one new section is formed each time a rattlesnake molts.",
+    "questionStem": "Which one of the following is an assumption the argument requires in order for its conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "Rattlesnakes molt exactly once a year.",
+      "B": "The rattles of rattlesnakes of different species are identical in appearance.",
+      "C": "Rattlesnakes molt more frequently when young than when old.",
+      "D": "The brittleness of a rattlesnake’s rattle is not correlated with the length of the rattlesnake’s life.",
+      "E": "Rattlesnakes molt as often when food is scarce as they do when food is plentiful."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender",
+      "Rebuttals",
+      "Science",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "The following passage is used for Section 3, questions 23 through 24. Tony: A new kind of videocassette has just been developed. It lasts for only half as many viewings as the old kind does but costs a third as much. Therefore, video rental stores would find it significantly more economical to purchase and stock movies recorded on the new kind of videocassette than on the old kind.\n\nAnna: But the videocassette itself only accounts for 5 percent of the price a video rental store pays to buy a copy of a movie on video; most of the price consists of royalties the store pays to the studio that produced the movie. So the price that video rental stores pay per copy would decrease by considerably less than 5 percent, and royalties would have to be paid on additional copies.",
+    "questionStem": "Anna’s reply is structured to lead to which one of the following conclusions?",
+    "answerChoices": {
+      "A": "The royalties paid to movie studios for movies sold on videotape are excessively large.",
+      "B": "Video rental stores should always stock the highest-quality videocassettes available, because durability is more important than price.",
+      "C": "The largest part of the fee a customer pays to rent a movie from a video rental store goes toward the royalties the store paid in purchasing that movie.",
+      "D": "The cost savings to video rental stores that buy movies recorded on the cheaper videocassettes rather than movies recorded on the more durable ones will be small or nonexistent.",
+      "E": "If the price a video rental store pays to buy a movie on videocassette does not decrease, the rental fee the store charges on the movie will not decrease."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The following passage is used for Section 3, questions 23 through 24. Tony: A new kind of videocassette has just been developed. It lasts for only half as many viewings as the old kind does but costs a third as much. Therefore, video rental stores would find it significantly more economical to purchase and stock movies recorded on the new kind of videocassette than on the old kind.\n\nAnna: But the videocassette itself only accounts for 5 percent of the price a video rental store pays to buy a copy of a movie on video; most of the price consists of royalties the store pays to the studio that produced the movie. So the price that video rental stores pay per copy would decrease by considerably less than 5 percent, and royalties would have to be paid on additional copies.",
+    "questionStem": "Which one of the following, if true, would contribute most to a defense of Tony’s position against Anna’s reply?",
+    "answerChoices": {
+      "A": "The price that video rental stores pay for movies recorded on videocassettes is considerably less than the retail price of those movies.",
+      "B": "A significant proportion of the movies on videocassette purchased by video rental stores are bought as replacements for worn-out copies of movies the stores already have in stock.",
+      "C": "The royalty fee included in the price that video rental stores pay for movies on the new kind of videocassette will be half that included in the price of movies on the old kind.",
+      "D": "Given a choice, customers are more likely to buy a movie on videocassette than to rent it if the rental fee is more than half of the purchase price.",
+      "E": "Many of the movies rented from video rental stores, particularly children’s movies, average several viewings per rental fee."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Physician: Heart disease generally affects men at an earlier age than it does women, who tend to experience heart disease after menopause. Both sexes have the hormones estrogen and testosterone, but when they are relatively young, men have ten times as much testosterone as women, and women abruptly lose estrogen after menopause. We can conclude, then, that testosterone tends to promote, and estrogen tends to inhibit, heart disease.",
+    "questionStem": "The physician’s argument is questionable because it presumes which one of the following without providing sufficient justification?",
+    "answerChoices": {
+      "A": "Hormones are the primary factors that account for the differences in age-related heart disease risks between women and men.",
+      "B": "Estrogen and testosterone are the only hormones that promote or inhibit heart disease.",
+      "C": "Men with high testosterone levels have a greater risk for heart disease than do postmenopausal women.",
+      "D": "Because hormone levels are correlated with heart disease they influence heart disease.",
+      "E": "Hormone levels do not vary from person to person, especially among those of the same age and gender."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "People ought to take into account a discipline’s blemished origins when assessing the scientific value of that discipline. Take, for example, chemistry. It must be considered that many of its landmark results were obtained by alchemists—a group whose superstitions and appeals to magic dominated the early development of chemical theory.",
+    "questionStem": "The reasoning above is most susceptible to criticism because the author",
+    "answerChoices": {
+      "A": "fails to establish that disciplines with unblemished origins are scientifically valuable",
+      "B": "fails to consider how chemistry’s current theories and practices differ from those of the alchemists mentioned",
+      "C": "uses an example to contradict the principle under consideration",
+      "D": "does not prove that most disciplines that are not scientifically valuable have origins that are in some way suspect",
+      "E": "uses the word “discipline” in two different senses"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
+  }
+]

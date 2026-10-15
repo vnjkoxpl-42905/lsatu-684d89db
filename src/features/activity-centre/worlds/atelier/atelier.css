@@ -1,0 +1,507 @@
+/*
+ * The Argument Atelier: Find the Conclusion's world.
+ *
+ * A stained-glass master's workshop at golden hour. One hanging lamp throws a
+ * visible cone of light across the bench; the claims lie as panes of muted
+ * colored glass in lead cames, each tinted differently the way no two pieces
+ * from the same sheet ever match. On the build the conclusion pane ignites in
+ * the lamp's gold and crowns the window; the supports settle beneath it and
+ * lead struts are drawn up to hold it.
+ *
+ * The one thing the room refuses to do is crown a pane it is not sure of: at
+ * Level 5 an empty drawn came rises in the crown's place. The absence is the
+ * lesson. Depth is CSS transforms only; the struts are SVG.
+ */
+
+.atelier {
+  --at-table: 25 26% 11%;
+  --at-table-deep: 24 32% 6%;
+  --at-grid: 30 20% 30%;
+  --at-ink: 38 42% 93%;
+  --at-ink-dim: 32 16% 66%;
+  --at-glass: 26 22% 15%;
+  --at-edge: 30 18% 36%;
+  --at-lamp: 40 88% 62%;
+  --at-lead: 26 14% 22%;
+
+  position: relative;
+  color: hsl(var(--at-ink));
+  background: hsl(var(--at-table-deep));
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.atelier > :not(.at-room) {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- The workshop ---------- */
+
+.at-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* The hanging lamp's cone, thrown from the upper right, with a hot core. */
+.at-cone {
+  position: absolute;
+  inset: -8%;
+  background:
+    radial-gradient(58% 46% at 76% 0%, hsl(var(--at-lamp) / 0.3), transparent 66%),
+    radial-gradient(30% 22% at 76% 0%, hsl(46 95% 76% / 0.32), transparent 70%),
+    conic-gradient(
+      from 199deg at 76% -4%,
+      transparent 0deg,
+      hsl(var(--at-lamp) / 0.12) 12deg,
+      hsl(var(--at-lamp) / 0.05) 30deg,
+      transparent 42deg
+    );
+  animation: at-lamp-flicker 11s ease-in-out infinite alternate;
+}
+
+@keyframes at-lamp-flicker {
+  0%,
+  62% {
+    opacity: 1;
+  }
+  66% {
+    opacity: 0.94;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.97;
+  }
+}
+
+/* Dust hanging in the beam. */
+.at-dust,
+.at-dust::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 72% 18%, hsl(var(--at-lamp) / 0.5), transparent 100%),
+    radial-gradient(1px 1px at 64% 32%, hsl(var(--at-lamp) / 0.4), transparent 100%),
+    radial-gradient(1px 1px at 80% 40%, hsl(var(--at-lamp) / 0.35), transparent 100%),
+    radial-gradient(1.5px 1.5px at 56% 52%, hsl(var(--at-lamp) / 0.28), transparent 100%);
+  animation: at-dust-drift 22s linear infinite;
+  opacity: 0.8;
+}
+
+.at-dust::after {
+  background-image:
+    radial-gradient(1px 1px at 68% 24%, hsl(var(--at-lamp) / 0.4), transparent 100%),
+    radial-gradient(1px 1px at 86% 30%, hsl(var(--at-lamp) / 0.3), transparent 100%);
+  animation-duration: 31s;
+  animation-delay: -9s;
+}
+
+@keyframes at-dust-drift {
+  from {
+    transform: translateY(-2%);
+  }
+  to {
+    transform: translateY(4%);
+  }
+}
+
+/* Hanging glass sheets in the dark edges of the room: tall dim color slivers. */
+.at-sheets {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, hsl(190 45% 44% / 0.22), hsl(190 45% 32% / 0.07)) 3% 0 / 26px 42% no-repeat,
+    linear-gradient(180deg, hsl(350 50% 48% / 0.18), hsl(350 50% 34% / 0.06)) 9% 0 / 20px 34% no-repeat,
+    linear-gradient(180deg, hsl(90 35% 42% / 0.16), hsl(90 35% 32% / 0.05)) 14% 0 / 24px 38% no-repeat;
+  filter: blur(1px);
+}
+
+/* The bench: wood grain along the bottom of the room. */
+.at-bench {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 16%;
+  background:
+    repeating-linear-gradient(
+      92deg,
+      transparent 0 34px,
+      hsl(24 40% 20% / 0.5) 34px 36px
+    ),
+    linear-gradient(180deg, hsl(24 34% 13%), hsl(24 36% 8%));
+  box-shadow: inset 0 8px 20px -8px hsl(var(--at-table-deep));
+}
+
+/* The blueprint grid over the bench area, under the light. */
+.at-gridlines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(hsl(var(--at-grid) / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--at-grid) / 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(90% 80% at 60% 30%, black 30%, transparent 82%);
+}
+
+/* Kept for compatibility: the stage root carries this class. The grid moved to
+   .at-gridlines inside the scenery layer. */
+.atelier-table {
+  position: relative;
+}
+
+/* ---------- Type ---------- */
+
+.atelier-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* The master's display hand. */
+.atelier-display {
+  font-family: "Young Serif", var(--ac-serif, Georgia, serif);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.atelier-type {
+  font-family: "Spectral", var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  font-weight: 300;
+  color: hsl(var(--at-ink));
+}
+
+/* ---------- The panes ---------- */
+
+/* A pane of glass in a lead came: dark metal border, colored glass body. */
+.at-pane {
+  position: relative;
+  border: 2px solid hsl(var(--at-lead));
+  background: linear-gradient(
+    155deg,
+    hsl(var(--at-glass) / 0.96),
+    hsl(var(--at-table) / 0.88)
+  );
+  box-shadow:
+    inset 0 1px 0 hsl(var(--at-ink) / 0.1),
+    inset 0 0 0 1px hsl(var(--at-edge) / 0.35),
+    0 12px 26px hsl(var(--at-table-deep) / 0.9);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    opacity 220ms ease;
+  will-change: transform;
+}
+
+/* Each pane cut from a different sheet: muted glass tints, rotating. The tint
+   is identity, never verdict — roles are carried by the lamp's edge light. */
+.at-pane:nth-child(5n + 1) {
+  background-image: linear-gradient(
+    155deg,
+    hsl(196 52% 34% / 0.5),
+    hsl(196 52% 24% / 0.18)
+  );
+}
+
+.at-pane:nth-child(5n + 2) {
+  background-image: linear-gradient(
+    155deg,
+    hsl(350 48% 38% / 0.46),
+    hsl(350 48% 26% / 0.16)
+  );
+}
+
+.at-pane:nth-child(5n + 3) {
+  background-image: linear-gradient(
+    155deg,
+    hsl(88 38% 34% / 0.42),
+    hsl(88 38% 24% / 0.15)
+  );
+}
+
+.at-pane:nth-child(5n + 4) {
+  background-image: linear-gradient(
+    155deg,
+    hsl(260 40% 40% / 0.44),
+    hsl(260 40% 28% / 0.16)
+  );
+}
+
+.at-pane:nth-child(5n + 5) {
+  background-image: linear-gradient(
+    155deg,
+    hsl(28 62% 42% / 0.46),
+    hsl(28 62% 28% / 0.16)
+  );
+}
+
+/* A glass sparkle across every pane: one diagonal highlight. */
+.at-pane::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    transparent 42%,
+    hsl(var(--at-ink) / 0.05) 50%,
+    transparent 58%
+  );
+}
+
+/* The text is touchable before the build, but nothing about structure shows. */
+.at-pane[data-liftable="true"]:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--at-ink) / 0.14),
+    inset 0 0 0 1px hsl(var(--at-edge) / 0.4),
+    0 20px 34px hsl(var(--at-table-deep));
+}
+
+/* The crown: the pane the lamp ignites. */
+.at-pane[data-role="crown"] {
+  border-color: hsl(var(--at-lamp) / 0.85);
+  background-image: linear-gradient(
+    155deg,
+    hsl(var(--at-lamp) / 0.24),
+    hsl(var(--at-lamp) / 0.06)
+  );
+  box-shadow:
+    inset 0 1px 0 hsl(var(--at-lamp) / 0.4),
+    0 0 0 1px hsl(var(--at-lamp) / 0.25),
+    0 0 34px hsl(var(--at-lamp) / 0.22),
+    0 16px 32px hsl(var(--at-table-deep));
+}
+
+/* Supports sit under it, their glass dimmed out of the light. */
+.at-pane[data-role="support"] {
+  opacity: 0.88;
+}
+
+/* The claim the bank names as the wrong turn, once the build has run. */
+.at-pane[data-wrong-turn="true"] {
+  border-style: dashed;
+}
+
+/* Where the student's own answer landed. */
+.at-pane[data-picked="true"]::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 10%;
+  bottom: 10%;
+  width: 2px;
+  background: hsl(var(--at-ink) / 0.85);
+}
+
+/* ---------- The struts ---------- */
+
+.at-strut {
+  stroke: hsl(var(--at-lamp) / 0.65);
+  stroke-width: 1.5;
+  fill: none;
+  /* Drawn over 400ms, per the spec. The dash length is set inline from the
+     measured path length so the draw works at any pane spacing. */
+  animation: at-draw 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  filter: drop-shadow(0 0 3px hsl(var(--at-lamp) / 0.5));
+}
+
+@keyframes at-draw {
+  from {
+    stroke-dashoffset: var(--at-len, 100);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.at-strut-head {
+  fill: hsl(var(--at-lamp) / 0.65);
+}
+
+/* ---------- The unstated crown ---------- */
+
+/*
+ * At Level 5 the conclusion was never on the table. It is staged as a came the
+ * student had to build rather than find: no glass in the frame, drawn edge, so
+ * its absence from the argument is the visible fact.
+ */
+.at-pane[data-role="unstated"] {
+  background: transparent;
+  background-image: none;
+  border-style: dashed;
+  border-color: hsl(var(--at-lamp) / 0.65);
+  box-shadow: none;
+}
+
+.at-pane[data-role="unstated"]::after {
+  content: none;
+}
+
+/* ---------- The blueprint strip ---------- */
+
+.at-plaque {
+  border: 1px solid hsl(var(--at-edge) / 0.6);
+  color: hsl(var(--at-ink-dim));
+  background: hsl(var(--at-glass) / 0.5);
+}
+
+.at-plaque[data-state="correct"] {
+  border-color: hsl(var(--at-lamp) / 0.7);
+  color: hsl(var(--at-ink));
+  box-shadow: 0 0 8px hsl(var(--at-lamp) / 0.2);
+}
+
+.at-plaque[data-state="partial"] {
+  border-style: dashed;
+  border-color: hsl(var(--at-lamp) / 0.5);
+  color: hsl(var(--at-ink));
+}
+
+.at-plaque[data-current="true"] {
+  box-shadow: inset 0 -2px 0 hsl(var(--at-lamp) / 0.8);
+}
+
+/* ---------- Indicator small-caps ---------- */
+
+/* Training wheels: on at Levels 1-2, off at 3+, per the locked ladder. */
+.at-indicator {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace
+  );
+  font-size: 0.86em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: hsl(var(--at-lamp));
+}
+
+/* ---------- Controls (shared by the wings) ---------- */
+
+.at-button {
+  border: 1px solid hsl(var(--at-edge));
+  background: hsl(var(--at-glass));
+  color: hsl(var(--at-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.at-button:hover:not(:disabled) {
+  border-color: hsl(var(--at-lamp) / 0.7);
+  box-shadow: 0 0 12px hsl(var(--at-lamp) / 0.18);
+}
+
+.at-button:disabled {
+  opacity: 0.55;
+}
+
+.at-button[data-picked="true"] {
+  background: hsl(var(--at-table));
+  opacity: 1;
+}
+
+.at-button[data-truth="true"] {
+  border-color: hsl(var(--at-lamp));
+  box-shadow: inset 2px 0 0 hsl(var(--at-lamp));
+  opacity: 1;
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes at-lamp-on {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.5;
+  }
+  55% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes at-deal {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) translateX(10px) rotate(0.6deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.at-entrance-lamp {
+  animation: at-lamp-on 620ms ease both;
+}
+
+.at-entrance-pane {
+  /* Dealt in reading order, staggered 50ms, per the spec. */
+  animation: at-deal 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.atelier[data-testid="atelier-entrance"] .at-cone {
+  animation:
+    at-lamp-on 900ms ease both,
+    at-lamp-flicker 11s ease-in-out 900ms infinite alternate;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .atelier *,
+  .atelier *::before,
+  .atelier *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  .at-pane[data-liftable="true"]:hover {
+    transform: none;
+  }
+
+  /* The struts appear already drawn rather than drawing. */
+  .at-strut {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .at-cone,
+  .at-dust,
+  .at-dust::after {
+    animation: none !important;
+  }
+
+  .at-entrance-lamp,
+  .at-entrance-pane {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
