@@ -1,6 +1,7 @@
 import { ActivityEditorialIntro, type ActivityIntroProps } from "./ActivityEditorialIntro";
 import { SectionLaunch } from "./SectionLaunch";
 import { DrillEntrance } from "../conditionals/DrillEntrance";
+import { RelationshipIntro } from "./RelationshipIntro";
 
 export type { ActivityIntroProps } from "./ActivityEditorialIntro";
 
@@ -41,6 +42,9 @@ export interface SectionLaunchExtras {
  * hooks and React remounts cleanly when the choice changes.
  */
 export function ActivityIntro(props: ActivityIntroProps & SectionLaunchExtras) {
+  if (props.title === "Spot the Relationship" && props.mode !== "section") {
+    return <RelationshipIntro {...props} />;
+  }
   if (props.title === "Conditional Rephrase") {
     return <div className="conditional-general-entrance"><DrillEntrance mode="general" title="General Conditionals" onBack={props.onExit} onStart={props.onStart} questionCount={props.itemCount} startLabel={props.resumeAt && props.resumeAt > 1 ? "Continue practice" : "Start practice"} />
       <details className="conditional-rules-review"><summary>Review conditional rules and examples</summary><div className="conditional-rules-paper"><ActivityEditorialIntro {...props} /></div></details>

@@ -117,6 +117,10 @@ export interface ActivityIntroProps {
    * already under way and the button says so rather than reading as a restart.
    */
   resumeAt?: number;
+  /** Teacher previews do not write student progress. */
+  preview?: boolean;
+  /** Whether this run persists submitted answers to the student's assignment. */
+  canSaveProgress?: boolean;
   onStart: () => void;
   /** Omitted when the runner is embedded (teacher preview), which has its own chrome. */
   onExit?: () => void;
