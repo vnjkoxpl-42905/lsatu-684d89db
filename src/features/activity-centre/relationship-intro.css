@@ -23,9 +23,6 @@
 .relationship-heading > p:last-child { margin: 14px 0 0; color: #51463c; max-width: 60ch; }
 .relationship-intro .relationship-video { margin-bottom: 28px; }
 .relationship-intro .relationship-video video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; background: #1b1713; }
-.relationship-intro .relationship-video-transcript { margin-top: 12px; color: #42382e; font-size: .93rem; }
-.relationship-intro .relationship-video-transcript summary { cursor: pointer; padding-block: 6px; font-weight: 600; }
-.relationship-intro .relationship-video-transcript p { max-width: 80ch; margin: 10px 0 0; }
 .relationship-intro .relationship-video-fallback { color: #42382e; margin: 12px 0 0; }
 .relationship-launch-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; }
 .relationship-intro h2 { margin: 0 0 16px; color: #1b1713; font-size: 1.15rem; line-height: 1.35; }

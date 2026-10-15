@@ -24,16 +24,13 @@ it("places an accessible, captioned video before the written instructions withou
   expect(captions).toHaveAttribute("default");
   expect(captions).toHaveAttribute("src", "/media/spot-the-relationship/how-to-play-v1.vtt");
   expect(video.compareDocumentPosition(screen.getByRole("heading", { name: "What to write" })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  fireEvent.click(screen.getByText("Read the video transcript"));
-  expect(screen.getByText(/Your job is to name the relationship/)).toBeVisible();
 });
 
-it("keeps the transcript, written instructions and Start available after a video error", () => {
+it("keeps written instructions and Start available after a video error", () => {
   render(<ActivityIntro {...props} />);
   fireEvent.error(screen.getByLabelText("How to play Spot the Relationship"));
   expect(screen.getByRole("status")).toHaveTextContent("The video could not load.");
   expect(screen.getByRole("heading", { name: "What to write" })).toBeVisible();
-  expect(screen.getByText("Read the video transcript")).toBeVisible();
   expect(screen.getByRole("button", { name: "Start" })).toBeEnabled();
 });
 
