@@ -15,7 +15,11 @@ export default function TagsPage(): React.ReactElement | null {
   return (
     <div className="min-h-screen">
       <TopBar />
-      <NothingHereYet />
+      <div className="mx-auto max-w-xl px-6 py-16 text-center">
+        <h1 className="text-2xl font-semibold">Organize your articles</h1>
+        <p className="mt-4 leading-relaxed">Tags group articles by subject or reading goal, such as Science, Law, or Read again. Create a tag, then use an article's menu in My Library to add it. Select a tag to see those articles together.</p>
+        <p className="mt-4 text-sm">Use Create New Tag in the menu to get started.</p>
+      </div>
     </div>
   );
 }

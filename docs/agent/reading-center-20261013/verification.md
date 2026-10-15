@@ -73,3 +73,16 @@ Live Spreeder comparison confirmed Paste Text and Import Document menu entries a
 
 Fixed a slow-save loss risk: AddText locks fields and close controls while saving, prevents duplicate submission, shows saving status, and retains failed drafts for retry. Two mounted regressions plus six import/cloud tests passed; TypeScript and production build/content guard passed. Actual local browser with 12-second network latency showed disabled fields/Close/Cancel/Save and saving status, then the saved QA article appeared. Network conditions restored. Generated MCP dev stub was restored and excluded from changes.
 
+
+## LSAT U account and navigation corrections, 2026-10-14
+
+Reading Center now uses canonical profiles.display_name for the signed-in auth ID; account icon and LSAT U Profile link open /classroom/account. Its separate name editor is removed. The former Profile route remains Reading Progress, backed by only that account's recorded sessions. Loading/error/empty states are explicit. Recent pace and active time share describe playback/page estimates and recorded durations, with fractional minutes and a real 30-day session/word/time summary.
+
+Spreed is renamed My Library. Search text searches title, author, and article body. Reading Center heading always returns to the library, including resetting a shelf/search view. Return control has padding and no arrow; students return to /classroom, admins to /teacher/tools. The desktop hamburger is removed; the mobile drawer closes after navigation. Empty Courses shortcut is removed. Tags explains grouping articles by subject or reading goal. Generic blue document art is replaced by title/word-count covers. Added By Me contains only personal imports; shared articles have a separate From LSAT U shelf.
+
+Verified local QA student account link opens its actual LSAT U Account page, named josh. Database initially confirmed 3 own sessions / 139 words / 0.31 active minutes, exactly matching the rendered dashboard; teacher account has zero sessions. A fresh real serial read added exactly one session and 20 words (4 / 159 / 0.42). A second run plus statistics-only network failure, reload, and explicit retry confirmed retained work and exact cloud acknowledgement; final totals 6 / 199 / 0.64 matched both UI and database. Temporary network blocking was cleared. No real student assignments or teacher account data were changed.
+
+Session saving now retains per-account, per-session UUID retry records until exact cloud readback, safely across multiple tabs. Legacy pending arrays copy before clearing. Hidden/blurred playback pauses, background time is excluded, and final eReader page exposure counts once after five foreground seconds. Playback and exposure are not comprehension measurements. Focused regression tests cover save failures, exact-ID retry, account isolation, two-tab enqueue/ack races, final-page capture, foreground timing and mode switching.
+
+Library and dashboard passed 300/375/640/1036/1440 pixel checks with no horizontal page overflow; expanded mobile navigation and automatic closing were inspected. Viewport overrides reset. See account-navigation-matrix.json.
+

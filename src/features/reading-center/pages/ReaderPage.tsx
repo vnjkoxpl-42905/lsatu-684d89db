@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useAuth } from '@/contexts/AuthContext';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   useAddBookmark,
@@ -18,7 +19,7 @@ import { DEFAULT_PREFERENCES, FONTS } from "../lib/constants";
 import { RC_LIBRARY_PATH } from "../lib/routes";
 import { useReadingProfile } from "../hooks/useReadingCenterData";
 import type { Bookmark, Passage, Preferences, Progress } from "../lib/types";
-import { ReadingVisit } from "../lib/session";
+import { ReadingVisit, ReadingPageExposure, readingSessionOutbox } from "../lib/session";
 import { Icon, MIcon } from "../components/Icon";
 import { SpreederStage } from "../components/SpreederStage";
 import { EReader, EReaderBar, EReaderSearch, usePageOf } from "../components/EReader";
@@ -37,11 +38,12 @@ import {
 } from "../components/ReaderDialogs";
 
 export default function ReaderPage(): React.ReactElement {
+  const { user } = useAuth();
   const { slug } = useParams<{ slug: string }>();
   const passage = usePassageBySlug(slug);
   const prefs = usePreferences();
   const progress = useProgressList();
-  if (passage.isLoading || prefs.isLoading || progress.isLoading) return <div className="min-h-screen" style={{ background: "var(--rc-page)" }} />;
+  if (!user || passage.isLoading || prefs.isLoading || progress.isLoading) return <div className="min-h-screen" style={{ background: "var(--rc-page)" }} />;
   if (passage.error || prefs.error || progress.error) return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-3 px-4">
       <p role="alert">Your saved reading work could not load. Check your connection and try again.</p>
@@ -59,7 +61,8 @@ export default function ReaderPage(): React.ReactElement {
   }
   return (
     <Reader
-      key={passage.data.id}
+      key={`${user.id}:${passage.data.id}`}
+      userId={user.id}
       passage={passage.data}
       initialPrefs={prefs.data ?? DEFAULT_PREFERENCES}
       saved={(progress.data ?? []).find((p) => p.passage_id === passage.data!.id)}
@@ -92,7 +95,7 @@ function HeaderIcon({ label, onClick, children }: { label: string; onClick: () =
   );
 }
 
-function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPrefs: Preferences; saved: Progress | undefined }): React.ReactElement {
+function Reader({ userId, passage, initialPrefs, saved }: { userId: string; passage: Passage; initialPrefs: Preferences; saved: Progress | undefined }): React.ReactElement {
   const navigate = useNavigate();
   const savePrefs = useSavePreferences();
   const saveProgress = useSaveProgress();
@@ -138,18 +141,46 @@ function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPre
   const [completionState, setCompletionState] = useState<"idle" | "saving" | "error">("idle");
   const completionSaving = useRef(false);
   const visit = useRef(new ReadingVisit());
+  const pageExposure = useRef(new ReadingPageExposure());
+  const outbox = useMemo(() => readingSessionOutbox(userId), [userId]);
+  const mounted = useRef(true);
+  const [sessionState, setSessionState] = useState<'idle' | 'saving' | 'error'>(outbox.pending.length ? 'error' : 'idle');
+  const [foreground, setForeground] = useState(() => !document.hidden && document.hasFocus());
   const visitMeta = useRef({ reading_mode: prefs.reading_mode, wpm: prefs.wpm });
   const sessionContext = useRef({ prefs, recordSession });
   sessionContext.current = { prefs, recordSession };
+  const retrySessions = useCallback(async () => {
+    if (!outbox.pending.length) return;
+    if (mounted.current) setSessionState('saving');
+    try {
+      await outbox.flush((session) => sessionContext.current.recordSession.mutateAsync(session));
+      if (mounted.current) setSessionState('idle');
+    } catch {
+      if (mounted.current) setSessionState('error');
+    }
+  }, [outbox]);
+  const capturePage = useCallback((now = Date.now()) => {
+    if (visitMeta.current.reading_mode === 'ereader') visit.current.read(pageExposure.current.capture(now));
+  }, []);
   const flushSession = useCallback(() => {
+    capturePage();
     const session = visit.current.finish();
-    if (!session) return;
-    const context = sessionContext.current;
-    context.recordSession.mutate({ ...session, passage_id: passage.id, ...visitMeta.current });
-  }, [passage.id]);
+    if (session) outbox.enqueue({ ...session, id: crypto.randomUUID(), passage_id: passage.id, ...visitMeta.current });
+    void retrySessions();
+  }, [capturePage, passage.id, outbox, retrySessions]);
+  useEffect(() => {
+    mounted.current = true;
+    void retrySessions();
+    const retry = () => { void retrySessions(); };
+    window.addEventListener('online', retry);
+    return () => { mounted.current = false; window.removeEventListener('online', retry); };
+  }, [retrySessions]);
   const complete = async () => {
     if (finished || completionSaving.current) return;
     completionSaving.current = true;
+    capturePage();
+    visit.current.pause();
+    pageExposure.current.setActive(false);
     setCompletionState("saving");
     try {
       await saveProgress.mutateAsync({ passage_id: passage.id, word_index: Math.max(0, model.words.length - 1), completed: true });
@@ -163,13 +194,19 @@ function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPre
     }
   };
   const startWord = saved && !saved.completed_at ? Math.min(saved.word_index, model.words.length - 1) : 0;
-  const engine = useSpreederEngine({ model, prefs, stage, measure, initialWord: startWord, onFinish: complete, onReadChunk: (words) => visit.current.read(words) });
+  const engine = useSpreederEngine({ model, prefs, stage, measure, initialWord: startWord,
+    onFinish: () => { if (!document.hidden && document.hasFocus()) void complete(); },
+    onReadChunk: (words) => { if (!document.hidden && document.hasFocus()) visit.current.read(words); },
+  });
   const { activeWord, playing } = engine;
 
   // Spreeder pauses and relays out on resize.
   useEffect(() => {
     if (visitMeta.current.reading_mode !== prefs.reading_mode) {
       flushSession();
+      // A newly mounted eReader has already reported its page in a layout effect.
+      // Clear the previous page only when leaving eReader mode.
+      if (visitMeta.current.reading_mode === 'ereader') pageExposure.current.reset();
       visitMeta.current = { reading_mode: prefs.reading_mode, wpm: prefs.wpm };
     }
   }, [prefs.reading_mode, prefs.wpm, flushSession]);
@@ -198,10 +235,6 @@ function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPre
   }, [passage.id]);
 
   // ---- reading sessions (feed the Profile stats)
-  useEffect(() => {
-    if (playing) visit.current.play();
-    else visit.current.pause();
-  }, [playing]);
   useEffect(() => () => flushSession(), [flushSession]);
 
   // ---- dialogs
@@ -214,7 +247,7 @@ function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPre
   const [sheetWord, setSheetWord] = useState<Word | null>(null);
   const [note, setNote] = useState<BookmarkNoteState | null>(null);
   const [toast, setToast] = useState({ text: "", nonce: 0 });
-  const anyOpen = prefsOpen || wpmOpen || viewOpen || bmOpen || !!sheetWord || !!note || finished || completionState !== "idle";
+  const anyOpen = prefsOpen || wpmOpen || viewOpen || bmOpen || kbdOpen || searchOpen || !!sheetWord || !!note || finished || completionState !== "idle";
   const kbdBtn = useRef<HTMLButtonElement | null>(null);
 
   const changeSpeed = (wpm: number) => {
@@ -245,24 +278,50 @@ function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPre
   const [marks, setMarks] = useState<{ start: number; length: number }[]>([]);
   const pageOf = usePageOf();
   const goPage = (p: number) => setPage(Math.max(0, Math.min(pageCount - 1, p)));
-  const pageRange = useRef({ start: 0, end: 0, shownAt: Date.now() });
   const onPageWord = useCallback((i: number, end: number) => {
-    const prior = pageRange.current;
-    if (prior.start !== i && Date.now() - prior.shownAt >= 5000) visit.current.read(prior.end - prior.start);
-    if (prior.start !== i || prior.end !== end) pageRange.current = { start: i, end, shownAt: Date.now() };
+    visit.current.read(pageExposure.current.show(i, end));
     engine.goToWord(i);
   }, [engine.goToWord]);
   const onPageCount = useCallback((n: number) => setPageCount(n), []);
   useEffect(() => {
-    if (!isEReader) return;
-    const pause = () => visit.current.pause();
-    const resume = () => { if (!finished && !anyOpen) visit.current.play(); };
-    if (anyOpen || finished || document.hidden) pause();
-    else resume();
-    window.addEventListener("blur", pause);
-    window.addEventListener("focus", resume);
-    return () => { pause(); window.removeEventListener("blur", pause); window.removeEventListener("focus", resume); };
-  }, [isEReader, anyOpen, finished]);
+    const active = foreground && !document.hidden && document.hasFocus() && !anyOpen
+      && (isEReader ? pageExposure.current.hasPage : playing && !!engine.chunk);
+    pageExposure.current.setActive(active && isEReader);
+    if (active) visit.current.play(); else visit.current.pause();
+    if (!foreground || anyOpen) engine.pause();
+  }, [foreground, anyOpen, isEReader, playing, engine.chunk, engine.seekVersion, engine.pause, prefs.reading_mode]);
+  useEffect(() => {
+    const updateForeground = () => {
+      const active = !document.hidden && document.hasFocus();
+      if (!active) {
+        engine.pause();
+        pageExposure.current.setActive(false);
+        capturePage();
+        visit.current.pause();
+      }
+      setForeground(active);
+    };
+    const onPageHide = () => {
+      pageExposure.current.setActive(false);
+      visit.current.pause();
+      flushSession();
+    };
+    const protectUnsaved = (event: BeforeUnloadEvent) => {
+      if (outbox.pending.length && !outbox.retainedLocally) { event.preventDefault(); event.returnValue = ''; }
+    };
+    document.addEventListener('visibilitychange', updateForeground);
+    window.addEventListener('blur', updateForeground);
+    window.addEventListener('focus', updateForeground);
+    window.addEventListener('pagehide', onPageHide);
+    window.addEventListener('beforeunload', protectUnsaved);
+    return () => {
+      document.removeEventListener('visibilitychange', updateForeground);
+      window.removeEventListener('blur', updateForeground);
+      window.removeEventListener('focus', updateForeground);
+      window.removeEventListener('pagehide', onPageHide);
+      window.removeEventListener('beforeunload', protectUnsaved);
+    };
+  }, [engine.pause, capturePage, flushSession, outbox]);
 
   // ---- keyboard (Spreeder shortcuts)
   const keys = useRef({ anyOpen, isEReader, page, prefs, engine });
@@ -315,6 +374,12 @@ function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPre
           {completionState === "error" && <button type="button" className="rc-green-btn" onClick={() => void complete()}>Retry save</button>}
         </div>
       </Modal>
+      {sessionState !== 'idle' && <div role={sessionState === 'error' ? 'alert' : 'status'} className="flex shrink-0 flex-wrap items-center justify-center gap-2 px-4 py-2 text-sm" style={{ background: 'var(--rc-dialog)' }}>
+        <span>{sessionState === 'saving' ? 'Saving your reading statistics.' : outbox.retainedLocally
+          ? 'Your reading statistics have not saved yet. A retry copy is kept on this device.'
+          : 'Your reading statistics have not saved yet. Keep this page open to retry.'}</span>
+        {sessionState === 'error' && <button type="button" className="rc-outline-btn" onClick={() => void retrySessions()}>Retry statistics save</button>}
+      </div>}
       {/* Header */}
       {!fullscreen && <header className="relative flex h-14 shrink-0 items-center gap-2 px-2 sm:px-5">
         <button type="button" aria-label="Back to library" onClick={() => navigate(RC_LIBRARY_PATH)} className="z-10 flex shrink-0 items-center gap-2.5 sm:pl-3" style={{ color: "var(--rc-text)" }}>
@@ -383,10 +448,7 @@ function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPre
 
       {/* Bottom bar */}
       {isEReader ? (
-        <EReaderBar page={page} pageCount={pageCount} onPage={goPage} onFinish={() => {
-          visit.current.read(pageRange.current.end - pageRange.current.start);
-          complete();
-        }} />
+        <EReaderBar page={page} pageCount={pageCount} onPage={goPage} onFinish={() => void complete()} />
       ) : (
         <footer className="rc-reader-footer flex h-10 shrink-0 items-center px-5" style={{ background: "var(--rc-bottombar)", borderTop: "0.8px solid var(--rc-bottombar-border)" }}>
           {/* Spreeder at 1180px and below: keyboard button hidden, time left, speed + View right. */}
@@ -453,7 +515,7 @@ function Reader({ passage, initialPrefs, saved }: { passage: Passage; initialPre
         <EReaderSearch open={searchOpen} onClose={() => { setSearchOpen(false); setMarks([]); }} words={model.words} pageOf={pageOf} onSelect={(p, hits) => { setPage(p); setMarks(hits); }} />
       )}
       <FinishAlert
-        open={finished}
+        open={finished && sessionState === 'idle'}
         title={passage.title}
         onOkay={() => {
           if (document.fullscreenElement) document.exitFullscreen();
