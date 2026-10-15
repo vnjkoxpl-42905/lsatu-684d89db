@@ -1,4 +1,6 @@
-import { Children, isValidElement, useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { Children, isValidElement, useContext, useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { CourseFlashcardUrl, flashcardUrl } from './FlashcardTools';
 import './reference-sequence.css';
 import { NegativeCaseLab } from './CounterexampleLab';
 import { StudyDeck } from './StudyDeck';
@@ -10,9 +12,18 @@ import { necessaryConditionFilms } from '../content/necessaryConditionFilms';
 import { NecessaryConditionExperience } from './NecessaryConditionExperience';
 import { NecessaryConditionStatement } from './NecessaryConditionStatement';
 import { NecessaryIndicatorExplorer } from './NecessaryIndicatorExplorer';
+import { PulseWord } from './ContrapositiveVisuals';
 import { Neg, Notation, PopQuizTitle } from './ContrapositiveVisuals';
+import { useLessonInteraction } from '../courseProgress';
 
 const raffleRule = 'If you win the raffle, you get a bicycle.';
+// The meaning page and the first Spot the condition question share this rule.
+export const meaningRule = 'If you sign up for the fun run, you get a T-shirt.';
+
+function SufficientFlashcardLink() {
+  const url = useContext(CourseFlashcardUrl);
+  return url ? <Link className="oc-action" to={flashcardUrl(url, 'group-1', undefined, 'sufficient')}>Go to flashcards</Link> : null;
+}
 
 function ReferenceStep({ number, title, label, children, dark = false, part }: { part?: number; number: number; title: string; label: string; children: ReactNode; dark?: boolean }) {
   return <section id={`reference-step-${number}${part ? `-${part}` : ''}`} data-reference-step={number} data-toc data-toc-title={label} className={`cr-step co-section ${dark ? 'cr-dark' : ''}`}>
@@ -22,7 +33,7 @@ function ReferenceStep({ number, title, label, children, dark = false, part }: {
 }
 
 export function ReferenceQuestion({ prompt, options, correct, feedback, onAttempt }: { prompt: string; options: string[]; correct: number; feedback: string[]; onAttempt?: (choice: number | null) => void }) {
-  const [choice, setChoice] = useState<number | null>(null);
+  const [choice, setChoice] = useLessonInteraction<number | null>(`question:${prompt}`, null);
   const id = useId();
   const firstChoice = useRef<HTMLButtonElement>(null);
   return <div className="cr-question co-check"><h3 id={id}><Notation text={prompt}/></h3><div className="cr-answer-options" role="group" aria-labelledby={id}>
@@ -61,12 +72,11 @@ const sufficientFamily: FamilyEntry[] = [
   { word: 'each', sentence: 'Each person who borrows a locker has a key.', explanation: 'Each applies the statement to every individual locker borrower. We have changed the wording, not what borrowing proves.' },
 ];
 const necessaryFamily: FamilyEntry[] = [
-  { word: 'then', sentence: 'If someone borrows a locker, then they have a key.', explanation: 'Then introduces what the borrowing condition proves: the person has a key.' },
   { word: 'must', sentence: 'A person borrowing a locker must have a key.', explanation: 'Here we are describing a requirement under the stated rule. If must appears in an instruction instead, keep that meaning: a required action is not proof that someone completed it.' },
-  { word: 'necessary', sentence: 'Having a key is necessary for borrowing a locker.', explanation: 'Ask necessary for what? For borrowing a locker. Having a key is the requirement, not a promise that someone borrowed.' },
+  { word: 'necessary', sentence: 'Having a key is necessary for borrowing a locker.', explanation: 'Ask necessary for what? For borrowing a locker. Having a key is the requirement. It does not prove that anyone borrowed a locker.' },
   { word: 'required', sentence: 'Having a key is required for borrowing a locker.', explanation: 'Required names the same rule. Every locker borrower meets the key requirement.' },
   { word: 'only / only if', sentence: 'A person borrows a locker only if they have a key.', explanation: 'Only if makes having a key necessary. Only people with a key borrow a locker says the same thing. Neither gives a locker to every person with a key.' },
-  { word: 'depends', sentence: 'Borrowing a locker depends on having a key.', explanation: 'Having a key is what the borrowing depends on. The rule does not make the key enough by itself.' },
+  { word: 'depends', sentence: 'Borrowing a locker depends on having a key.', explanation: 'Depends on names a requirement here: borrowing needs a key. The key is not enough by itself.' },
   { word: 'need / need to', sentence: 'A person needs a key to borrow a locker.', explanation: 'What does the person need? A key. A person needs to have a key to borrow a locker expresses the same requirement.' },
   { word: 'have to', sentence: 'A person has to have a key to borrow a locker.', explanation: 'Having a key is required for borrowing. Read have to have a key as one complete requirement.' },
   { word: 'essential', sentence: 'Having a key is essential for borrowing a locker.', explanation: 'Essential for borrowing names the requirement. The borrowing cannot meet this rule without the key.' },
@@ -74,7 +84,7 @@ const necessaryFamily: FamilyEntry[] = [
 ];
 
 export function WordFamily({ entries, role }: { entries: FamilyEntry[]; role: 'sufficient' | 'necessary' }) {
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selected, setSelected] = useLessonInteraction<number | null>(`family:${role}`, null);
   const regionId = useId();
   const firstExpression = useRef<HTMLButtonElement>(null);
   return <div className={`cr-family co-lab cr-family-${role}`}>
@@ -92,8 +102,8 @@ const cases = [
   { label: 'Necessary present', fact: 'You get a bicycle.', question: 'What do we know about winning the raffle?', options: ['You win the raffle.', "You don't win the raffle.", 'Winning the raffle is not settled.'], correct: 2, reasoning: ["You might get it by winning, but you could buy it or receive it as a gift. Getting a bicycle alone doesn't prove winning.", "You could win and get a bicycle. Nothing in the fact rules out winning.", 'You could get a bicycle with or without winning the raffle. Having the required result does not prove the sufficient condition.'] },
 ];
 function FourCaseExplorer() {
-  const [selected, setSelected] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [selected, setSelected] = useLessonInteraction('four-cases:selection', 0);
+  const [answers, setAnswers] = useLessonInteraction<Record<number, number>>('four-cases:answers', {});
   const current = cases[selected];
   const answer = answers[selected];
   return <div className="cr-cases co-lab"><p className="co-kicker">One rule. Four starting facts.</p><blockquote>{raffleRule}</blockquote>
@@ -101,13 +111,13 @@ function FourCaseExplorer() {
     <div className="cr-case-fact"><span>Given</span><strong>{current.fact}</strong></div><h3>{current.question}</h3>
     <div className="cr-answer-options" role="group" aria-label="Choose what follows">{current.options.map((option, index) => <button type="button" key={option} aria-pressed={answer === index} onClick={() => setAnswers({ ...answers, [selected]: index })}>{option}</button>)}</div>
     <div role="status">{answer !== undefined && <div className={`cr-feedback ${answer === current.correct ? 'cr-correct' : 'cr-revise'}`}><strong>{answer === current.correct ? 'Correct.' : 'Not quite.'}</strong><p>{current.reasoning[answer]}</p></div>}</div>
-    {Object.keys(answers).length === 4 && <div className="cr-case-review"><h3>Keep these four distinctions</h3><dl>{cases.map(item => <div key={item.label}><dt>{item.label}</dt><dd>{item.options[item.correct]}</dd></div>)}</dl><p>The rule still holds in all four cases. Two facts give an inference; two leave the other condition open.</p></div>}
+    {cases.every((item, index) => answers[index] === item.correct) && <div className="cr-case-review"><h3>Keep these four distinctions</h3><dl>{cases.map(item => <div key={item.label}><dt>{item.label}</dt><dd>{item.options[item.correct]}</dd></div>)}</dl><p>The rule still holds in all four cases. Two facts give an inference; two leave the other condition open.</p></div>}
     <button type="button" className="cr-reset" onClick={() => { setAnswers({}); setSelected(0); }}>Reset the four cases</button>
   </div>;
 }
 
 function ContrapositiveDiscovery() {
-  const [attempted, setAttempted] = useState(false);
+  const [attempted, setAttempted] = useLessonInteraction('contrapositive-discovery:solved', false);
   return <div className="cr-discovery"><p>Use this stated rule for a different case.</p><blockquote>If a report is in the published archive, it has an approval stamp.</blockquote>
     <p>A report in that archive has to carry the stamp. Now you inspect Report K. It has no approval stamp.</p>
     <ReferenceQuestion prompt="Could Report K be in the published archive while this rule holds?" options={['Yes, its location is unrestricted.', 'No, it cannot be in that archive.', 'Yes, the missing stamp puts it in the archive.']} correct={1} onAttempt={choice => setAttempted(choice !== null)} feedback={['Its location is restricted by the rule. If K were in the archive, it would have a stamp, which conflicts with the given fact.', 'An archived K would have to have a stamp. K has no stamp, so it cannot be in the published archive under this rule.', 'The missing stamp rules out archive membership. It does not prove it.']}/>
@@ -132,7 +142,7 @@ const writingSteps = [
   { button: 'Fill the remaining condition', explanation: 'The other condition is that you get a bicycle. I shorten it to Get bicycle and put it on the right. Keep getting a bicycle distinct from merely owning one already.' },
 ];
 export function IncrementalWriter() {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useLessonInteraction('diagram-writer:step', 0);
   const resetControl = useRef<HTMLButtonElement>(null);
   return <div className="cr-writer co-lab"><blockquote>{step > 0 ? <><mark>If</mark> you win the raffle, you get a bicycle.</> : raffleRule}</blockquote>
     <div className="cr-writing-sheet" aria-label="Diagram construction"><span className="cr-paper-label">Our diagram</span>{step < 2 ? <p>The rule is our starting point.</p> : <RuleDiagram left={step >= 3 ? 'Win' : 'Not placed yet'} right={step >= 4 ? 'Get bicycle' : 'Not placed yet'} />}</div>
@@ -155,28 +165,28 @@ type TargetExample = { label: string; before: string; target: string; after: str
 export const targetExamples: TargetExample[] = [
   { label: 'Group after the indicator', before: 'Only ', target: 'reports with editor approval', after: ' are published.', options: ['reports', 'reports with editor approval', 'published'], correct: 1, feedback: ['Reports alone drops with editor approval. The statement restricts publication to that qualified group.', 'Only refers to reports with editor approval. Keep that qualification; it is the required idea.', 'Published is the other condition. Only limits which reports can meet it.'] },
   { label: 'Group before the indicator', before: '', target: 'Editor approval', after: ' is necessary for publication.', options: ['publication', 'editor approval'], correct: 1, feedback: ['Publication is what has the requirement. Editor approval is what the rule calls necessary.', 'The group comes before necessary. Editor approval is the requirement for publication.'] },
-  { label: 'The same word can move', before: 'Publication makes it necessary to have ', target: 'editor approval', after: '.', options: ['publication', 'editor approval'], correct: 1, feedback: ['Publication still needs something. Moving necessary earlier has not made publication the requirement.', 'Editor approval is still what publication requires. Here the group comes after necessary; in the previous sentence it came before.'] },
+  { label: 'The same word in a new place', before: 'Publication makes it necessary to have ', target: 'editor approval', after: '.', options: ['publication', 'editor approval'], correct: 1, feedback: ['Publication still needs something. Moving necessary earlier has not made publication the requirement.', 'Editor approval is still what publication requires. Here the group comes after necessary; in the previous sentence it came before.'] },
 ];
 export function TargetReader({ item }: { item: TargetExample }) {
-  const [choice, setChoice] = useState<number | null>(null);
+  const [choice, setChoice] = useLessonInteraction<number | null>(`target:${item.before}${item.target}${item.after}`, null);
   const correct = choice === item.correct;
   const id = useId();
   const firstTarget = useRef<HTMLButtonElement>(null);
   return <div className="cr-target co-lab"><p className="co-kicker">{item.label}</p><blockquote>{item.before}{correct ? <mark>{item.target}</mark> : item.target}{item.after}</blockquote><h3 id={id}>Which complete idea does the indicator refer to?</h3><div className="cr-answer-options" role="group" aria-labelledby={id}>{item.options.map((option, index) => <button ref={index === 0 ? firstTarget : undefined} key={option} type="button" aria-pressed={choice === index} onClick={() => setChoice(index)}>{option}</button>)}</div><div role="status">{choice !== null && <div className={`cr-feedback ${correct ? 'cr-correct' : 'cr-revise'}`}><strong>{correct ? 'Correct group.' : 'Not quite.'}</strong><p>{item.feedback[choice]}</p></div>}</div>{choice !== null && <button type="button" className="cr-reset" onClick={() => { firstTarget.current?.focus(); setChoice(null); }}>Clear the group</button>}</div>;
 }
 
-type PracticeItem = { sentence: string; left: string; right: string; leftCode: string; rightCode: string; leftNegated?: boolean; rightNegated?: boolean; originalPosition: number; contraPosition: number; why: string; readback: string; contraReadback: string };
+type PracticeItem = { sentence: string; left: string; right: string; leftCode: string; rightCode: string; leftNegated?: boolean; rightNegated?: boolean; originalPosition: number; contraPosition: number; why: string; readback: string; contraReadback: string; contraWhy: string };
 export const referencePracticeItems: PracticeItem[] = [
-  { sentence: 'If a parcel has a red tracking tag, its sender has paid for tracking.', left: 'Parcel has red tracking tag', right: 'Sender has paid for tracking', leftCode: 'RT', rightCode: 'PT', originalPosition: 1, contraPosition: 2, why: 'The if-clause is enough to prove payment. A sender who paid could have a parcel without this tag; payment alone does not settle the tag.', readback: 'If a parcel has a red tracking tag, its sender has paid for tracking.', contraReadback: 'If its sender has not paid for tracking, the parcel does not have a red tracking tag.' },
-  { sentence: 'Every applicant who submits by Friday receives a confirmation.', left: 'Applicant submits by Friday', right: 'Applicant receives confirmation', leftCode: 'SF', rightCode: 'RC', originalPosition: 2, contraPosition: 0, why: 'Keep who submits by Friday with applicant. The rule gives those applicants confirmations; it does not restrict all confirmations to them.', readback: 'If an applicant submits by Friday, the applicant receives a confirmation.', contraReadback: 'If an applicant does not receive a confirmation, the applicant did not submit by Friday.' },
-  { sentence: 'A document is stored in the archive only if it has a catalogue number.', left: 'Document stored in archive', right: 'Document has catalogue number', leftCode: 'A', rightCode: 'C', originalPosition: 0, contraPosition: 1, why: 'Only if identifies the catalogue number as required. A numbered document could remain outside the archive.', readback: 'If a document is stored in the archive, it has a catalogue number.', contraReadback: 'If a document has no catalogue number, it is not stored in the archive.' },
-  { sentence: 'A backup copy is required for a file to be deleted.', left: 'File is deleted', right: 'File has backup copy', leftCode: 'D', rightCode: 'B', originalPosition: 1, contraPosition: 0, why: 'The requirement appears first in the rule. Deletion requires the backup; having a backup does not prove deletion.', readback: 'If a file is deleted, it has a backup copy.', contraReadback: 'If a file has no backup copy, it is not deleted under this rule.' },
-  { sentence: 'Only guests with prepaid tickets enter the balcony.', left: 'Guest enters balcony', right: 'Guest has prepaid ticket', leftCode: 'E', rightCode: 'P', originalPosition: 2, contraPosition: 1, why: 'Only restricts balcony entrants to guests with prepaid tickets. A ticketed guest can stay outside, so the ticket alone is not enough.', readback: 'If a guest enters the balcony, the guest has a prepaid ticket.', contraReadback: 'If a guest does not have a prepaid ticket, the guest does not enter the balcony.' },
-  { sentence: 'The only recipes printed on the weekly menu are vegan recipes.', left: 'Recipe printed on weekly menu', right: 'Recipe is vegan', leftCode: 'M', rightCode: 'V', originalPosition: 0, contraPosition: 2, why: 'The only recipes printed on the weekly menu names the group whose recipes must be vegan. Other vegan recipes can be absent from the menu.', readback: 'If a recipe is printed on the weekly menu, it is vegan.', contraReadback: 'If a recipe is not vegan, it is not printed on the weekly menu.' },
+  { sentence: 'If a parcel has a red tracking tag, its sender has paid for tracking.', left: 'Parcel has red tracking tag', right: 'Sender has paid for tracking', leftCode: 'RT', rightCode: 'PT', originalPosition: 1, contraPosition: 2, why: 'A red tracking tag is enough to prove the sender paid for tracking, so the tag goes on the left. Keep red: the rule is about red tracking tags, not every tag. Paying for tracking doesn’t prove the tag. A sender who paid could still send a parcel without one.', readback: 'If a parcel has a red tracking tag, its sender has paid for tracking.', contraReadback: 'If a parcel’s sender has not paid for tracking, the parcel does not have a red tracking tag.', contraWhy: "A parcel with a red tracking tag would have a sender who paid for tracking. So if the sender has not paid, the parcel can't have that tag." },
+  { sentence: 'Every applicant who submits by Friday receives a confirmation.', left: 'Applicant submits by Friday', right: 'Applicant receives confirmation', leftCode: 'SF', rightCode: 'RC', originalPosition: 2, contraPosition: 0, why: 'Keep who submits by Friday with applicant. The rule gives those applicants confirmations; it does not restrict all confirmations to them.', readback: 'If an applicant submits by Friday, the applicant receives a confirmation.', contraReadback: 'If an applicant does not receive a confirmation, the applicant did not submit by Friday.', contraWhy: "No confirmation means the applicant can't have submitted by Friday, or the rule would have given one." },
+  { sentence: 'A document is stored in the archive only if it has a catalogue number.', left: 'Document stored in archive', right: 'Document has catalogue number', leftCode: 'A', rightCode: 'C', originalPosition: 0, contraPosition: 1, why: 'Only if identifies the catalogue number as required. A numbered document could remain outside the archive.', readback: 'If a document is stored in the archive, it has a catalogue number.', contraReadback: 'If a document has no catalogue number, it is not stored in the archive.', contraWhy: "Every archived document has a catalogue number. A document without one can't be in the archive, or it would break the rule." },
+  { sentence: 'A backup copy is required for a file to be deleted.', left: 'File is deleted', right: 'File has backup copy', leftCode: 'D', rightCode: 'B', originalPosition: 1, contraPosition: 0, why: 'The requirement appears first in the rule. Deletion requires the backup; having a backup does not prove deletion.', readback: 'If a file is deleted, it has a backup copy.', contraReadback: 'If a file has no backup copy, it is not deleted under this rule.', contraWhy: "A deleted file would have to have a backup copy. A file with no backup copy can't have been deleted under this rule." },
+  { sentence: 'Only guests with prepaid tickets enter the balcony.', left: 'Guest enters balcony', right: 'Guest has prepaid ticket', leftCode: 'E', rightCode: 'P', originalPosition: 2, contraPosition: 1, why: 'Only restricts balcony entrants to guests with prepaid tickets. A ticketed guest can stay outside, so the ticket alone is not enough.', readback: 'If a guest enters the balcony, the guest has a prepaid ticket.', contraReadback: 'If a guest does not have a prepaid ticket, the guest does not enter the balcony.', contraWhy: "Every guest on the balcony has a prepaid ticket. A guest without one can't enter the balcony, or the rule would be broken." },
+  { sentence: 'The only recipes printed on the weekly menu are vegan recipes.', left: 'Recipe printed on weekly menu', right: 'Recipe is vegan', leftCode: 'M', rightCode: 'V', originalPosition: 0, contraPosition: 2, why: 'The only recipes printed on the weekly menu names the group whose recipes must be vegan. Other vegan recipes can be absent from the menu.', readback: 'If a recipe is printed on the weekly menu, it is vegan.', contraReadback: 'If a recipe is not vegan, it is not printed on the weekly menu.', contraWhy: "Every recipe on the weekly menu is vegan. A recipe that isn't vegan can't be on the menu, or the rule would be broken." },
 
-  { sentence: 'If a parcel has not cleared customs, it stays in the holding room.', left: 'Parcel has cleared customs', right: 'Parcel stays in holding room', leftCode: 'C', rightCode: 'H', leftNegated: true, originalPosition: 2, contraPosition: 1, why: 'Not having cleared customs is enough to prove the holding room. A parcel outside that room cannot be one that has not cleared customs, so it has cleared customs. Negating not cleared removes the not.', readback: 'If a parcel has not cleared customs, it stays in the holding room.', contraReadback: 'If a parcel does not stay in the holding room, it has cleared customs.' },
-  { sentence: 'If the display is active, its status light is not red.', left: 'Display is active', right: 'Status light is red', leftCode: 'A', rightCode: 'R', rightNegated: true, originalPosition: 1, contraPosition: 2, why: 'An active display requires a light that is not red. A red light is the absence of that requirement, so it rules out an active display. A light that is not red does not prove the display is active.', readback: 'If the display is active, its status light is not red.', contraReadback: 'If the status light is red, the display is not active.' },
-  { sentence: 'If a room is not reserved, its door is not locked.', left: 'Room is reserved', right: 'Door is locked', leftCode: 'R', rightCode: 'L', leftNegated: true, rightNegated: true, originalPosition: 0, contraPosition: 1, why: 'The rule requires an unlocked door for a room that is not reserved. A locked door rules out that not-reserved condition, proving a reservation. Reversing and negating removes both existing not-signs; it does not make reservation enough for locking.', readback: 'If a room is not reserved, its door is not locked.', contraReadback: 'If a room’s door is locked, the room is reserved.' },
+  { sentence: 'If a parcel has not cleared customs, it stays in the holding room.', left: 'Parcel has cleared customs', right: 'Parcel stays in holding room', leftCode: 'C', rightCode: 'H', leftNegated: true, originalPosition: 2, contraPosition: 1, why: 'Not having cleared customs is enough to keep a parcel in the holding room, so the left side keeps its not: the parcel has not cleared customs. The holding room goes on the right. A parcel in the holding room could still be one that has cleared customs.', readback: 'If a parcel has not cleared customs, it stays in the holding room.', contraReadback: 'If a parcel does not stay in the holding room, it has cleared customs.', contraWhy: "A parcel that has not cleared customs has to stay in the holding room. So a parcel outside that room can't be one that has not cleared customs. It has cleared. Negating has not cleared removes the not." },
+  { sentence: 'If the display is active, its status light is not red.', left: 'Display is active', right: 'Status light is red', leftCode: 'A', rightCode: 'R', rightNegated: true, originalPosition: 1, contraPosition: 2, why: 'An active display is enough to know its status light is not red, so the active display goes on the left and the right side keeps its not: the light is not red. A light that is not red doesn’t prove the display is active. An inactive display could have a green light too.', readback: 'If the display is active, its status light is not red.', contraReadback: 'If the status light is red, the display is not active.', contraWhy: "An active display can't have a red status light. So if the light is red, the display can't be active." },
+  { sentence: 'If a kiosk is not staffed, its shutter is not raised.', left: 'Kiosk is staffed', right: 'Shutter is raised', leftCode: 'S', rightCode: 'R', leftNegated: true, rightNegated: true, originalPosition: 0, contraPosition: 1, why: 'A kiosk that is not staffed must have its shutter not raised. Keep both nots: not staffed goes on the left, and shutter not raised goes on the right. A shutter that is not raised doesn’t prove the kiosk is unstaffed. A staffed kiosk could keep its shutter down too.', readback: 'If a kiosk is not staffed, its shutter is not raised.', contraReadback: 'If a kiosk’s shutter is raised, the kiosk is staffed.', contraWhy: "An unstaffed kiosk can't have its shutter raised. So if the shutter is raised, the kiosk must be staffed." },
 ];
 function practiceDiagrams(item: PracticeItem) {
   const left = `${item.leftNegated ? '~' : ''}${item.leftCode}`;
@@ -195,34 +205,36 @@ function practiceChoices(item: PracticeItem, contrapositive: boolean) {
   return options;
 }
 export function IntegratedItem({ item, number, onChecked }: { item: PracticeItem; number: number; onChecked?: (checked: boolean) => void }) {
-  const [original, setOriginal] = useState<number | null>(null);
-  const [contra, setContra] = useState<number | null>(null);
-  const [checked, setChecked] = useState(false);
+  const [original, setOriginal] = useLessonInteraction<number | null>(`integrated:${item.sentence}:original`, null);
+  const [contra, setContra] = useLessonInteraction<number | null>(`integrated:${item.sentence}:contra`, null);
+  const [checked, setChecked] = useLessonInteraction(`integrated:${item.sentence}:checked`, false);
+  const [misses, setMisses] = useLessonInteraction(`integrated:${item.sentence}:misses`, 0);
+  const [shown, setShown] = useLessonInteraction(`integrated:${item.sentence}:shown`, false);
   const correct = original === item.originalPosition && contra === item.contraPosition;
   const labels = [{ code: item.leftCode, meaning: item.left }, { code: item.rightCode, meaning: item.right }];
   if (number % 2 === 0) labels.reverse();
-  const change = (value: number, isContra: boolean) => { setChecked(false); onChecked?.(false); if (isContra) setContra(value); else setOriginal(value); };
-  const reset = () => { setOriginal(null); setContra(null); setChecked(false); onChecked?.(false); };
+  const change = (value: number, isContra: boolean) => { setChecked(false); setShown(false); onChecked?.(false); if (isContra) setContra(value); else setOriginal(value); };
+  const reset = () => { setOriginal(null); setContra(null); setChecked(false); setShown(false); onChecked?.(false); };
   return <div className="cr-integrated-item co-check" data-reference-practice={number}><header><span className="cr-item-number">{String(number).padStart(2, '0')}</span><h3>{item.sentence}</h3></header><dl className="cr-practice-legend">{labels.map(label => <div key={label.code}><dt>{label.code}</dt><dd>{label.meaning}</dd></div>)}</dl>
     <fieldset><legend>Original diagram for item {number}</legend><div className="cr-answer-options cr-symbol-options">{practiceChoices(item, false).map((option, index) => <button key={option} type="button" aria-pressed={original === index} onClick={() => change(index, false)}><Notation text={option}/></button>)}</div></fieldset>
     <fieldset><legend>Contrapositive for item {number}</legend><div className="cr-answer-options cr-symbol-options">{practiceChoices(item, true).map((option, index) => <button key={option} type="button" aria-pressed={contra === index} onClick={() => change(index, true)}><Notation text={option}/></button>)}</div></fieldset>
-    <div className="cr-control-row"><button type="button" className="cr-primary" disabled={original === null || contra === null} aria-label={`Check both diagrams for item ${number}`} onClick={() => { setChecked(true); onChecked?.(true); }}>Check both diagrams</button><button type="button" className="cr-reset" onClick={reset}>Try item {number} again</button></div>
-    <div role="status">{checked && <div className={`cr-feedback ${correct ? 'cr-correct' : 'cr-revise'}`}><strong>{correct ? 'Both diagrams are correct.' : 'Review the rule.'}</strong><p>{original === item.originalPosition ? 'Your original keeps the direction.' : 'Your original changes the direction or negates conditions the rule did not negate.'} {contra === item.contraPosition ? 'Your contrapositive reverses and negates both complete conditions.' : 'Your contrapositive must start from the missing requirement and rule out the sufficient condition.'}</p><p>{item.why}</p><p className="cr-answer-key">Original: <Notation text={practiceDiagrams(item).original}/><br/>Contrapositive: <Notation text={practiceDiagrams(item).contra}/></p><p>Read the original: {item.readback}</p><p>Read its contrapositive: {item.contraReadback}</p></div>}</div>
+    <div className="cr-control-row"><button type="button" className="cr-primary" disabled={original === null || contra === null} aria-label={`Check both diagrams for item ${number}`} onClick={() => { setChecked(true); if (!correct) setMisses(count => count + 1); onChecked?.(correct); }}>Check both diagrams</button><button type="button" className="cr-reset" onClick={reset}>Try item {number} again</button></div>
+    <div role="status">{checked && <div className={`cr-feedback ${correct ? 'cr-correct' : 'cr-revise'}`}><strong>{correct ? 'Both diagrams are correct.' : 'Review the rule.'}</strong><p>{original === item.originalPosition ? 'Your original keeps the direction.' : 'Your original changes the direction or negates conditions the rule did not negate.'} {contra === item.contraPosition ? 'Your contrapositive reverses and negates both complete conditions.' : 'Your contrapositive must start from the missing requirement and rule out the sufficient condition.'}</p>{(correct || shown) && <><p>{item.why}</p><p className="cr-answer-key">Original: <Notation text={practiceDiagrams(item).original}/><br/>Contrapositive: <Notation text={practiceDiagrams(item).contra}/></p><p>Read the original: {item.readback}</p><p>Read its contrapositive: {item.contraReadback}</p></>}{!correct && misses >= 2 && !shown && <button type="button" onClick={() => setShown(true)}>Show me</button>}{shown && !correct && <button type="button" onClick={() => onChecked?.(true)}>I compared both diagrams</button>}</div>}</div>
   </div>;
 }
 
 export function conditionalReferenceContent() {
   return <div className="cr-sequence">
     <ReferenceStep number={1} label="Start with meaning" title="What does a conditional tell you?">
-      <p>A <strong>condition</strong> is an idea that can be true or false. You win a raffle. You get a bicycle. We can ask whether either condition holds in a particular case.</p>
+      <p>A <strong>condition</strong> is an idea that can be true or false. You sign up for the fun run. You get a T-shirt. We can ask whether either condition holds in a particular case.</p>
       <p>A <strong>conditional statement</strong> tells us that if one condition is true, another has to be true too. It gives us a rule we can use, even before we know whether either condition is true in a particular case.</p>
       <p className="co-if-inline">We aren't saying the first condition happened. We're asking what would follow <strong>if</strong> it did.</p>
       <HypotheticalFigure/>
       <h3>Why learn this?</h3><p>On the LSAT, you need to distinguish what the information proves from what it leaves open. A conditional rule can help you prove a conclusion. An argument can also misuse the rule and reach a conclusion it hasn't proved. We'll practice telling those apart.</p>
-      <p>Let's read one rule.</p><blockquote>{raffleRule}</blockquote>
-      <p>Under this rule, winning the raffle makes getting a bicycle certain. Winning without getting one would break the stated rule. That is what we mean by a <strong>guarantee</strong> here.</p>
-      <p>Compare that with “If you win the raffle, you usually get a bicycle.” Usually allows an exception. Our rule does not. Take the stated rule as given; we are asking what it tells us, not whether a real organizer keeps a promise.</p>
-      <ReferenceQuestion prompt="Does the rule itself tell us that you actually win the raffle?" options={['Yes, it says you win.', 'No, it tells you what follows if you win.']} correct={1} feedback={['You added a case fact. The rule has not reported a win; it tells you what getting one would prove.', 'Imagining a win helps us understand the rule. We need a separate fact to prove that you actually win.']}/>
+      <p>Let's read one rule.</p><blockquote>{meaningRule}</blockquote>
+      <p>Under this rule, signing up makes getting a T-shirt certain. Signing up without getting one would break the rule. That is what we mean by a <strong>guarantee</strong> here.</p>
+      <p>Compare that with “If you sign up for the fun run, you usually get a T-shirt.” Usually allows an exception. Our rule does not. Take the rule as given. We're asking what it tells us, not whether the organizers really hand out shirts.</p>
+      <ReferenceQuestion prompt="Does the rule itself tell us that you actually sign up for the fun run?" options={['Yes, it says you sign up.', 'No, it tells you what follows if you sign up.']} correct={1} feedback={['You added a fact. The rule never says you signed up. It tells you what follows if you do.', 'Imagining that you sign up helps you understand the rule. You need a separate fact to know that you actually did.']}/>
       <p>Now let's take the two conditions one at a time.</p>
     </ReferenceStep>
 
@@ -240,6 +252,7 @@ export function conditionalReferenceContent() {
           <h3>Group 1: Sufficient-condition indicators</h3>
           <p>In our rule, <strong>if</strong> is the indicator and <strong>being enrolled in law school</strong> is the sufficient condition. These words and phrases point to it too:</p>
           <ul>{sufficientFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
+          <SufficientFlashcardLink/>
           <p>The indicator is the word. The sufficient condition is the whole idea it points to.</p>
         </section>
 
@@ -273,6 +286,12 @@ export function conditionalReferenceContent() {
         <NecessaryConditionStatement/>
         <p>But being a student doesn’t mean you’re enrolled in law school. You could be studying history instead.</p>
         <p className="nc-takeaway"><strong>Being a student is required. It doesn’t prove enrollment on its own.</strong></p>
+        <section className="cr-sufficient-explanation nc-certainty" aria-label="Where the certainty is">
+          <h3>Where the certainty is</h3>
+          <p><strong>The necessary condition is what you can guarantee will occur if the sufficient condition happens.</strong></p>
+          <p>Look at the name. It's called necessary because it is necessary. If someone is enrolled in law school, being a student has to be true.</p>
+          <p>The sufficient condition opens the door. Once it's open, the necessary condition is guaranteed to be on the other side. That makes it <PulseWord>the place of certainty.</PulseWord> It's what you can prove.</p>
+        </section>
         <NecessaryConditionExperience/>
         <section className="cr-sufficient-explanation" aria-label="Why a requirement is not necessarily enough">
           <h3>Two roles in the same rule</h3>
@@ -283,7 +302,7 @@ export function conditionalReferenceContent() {
         <SufficientConditionFilm key="necessary-definition" assets={necessaryConditionFilms} title="Why the requirement is not enough here" ariaLabel="Short explanation of necessity"/>
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 2 indicator words">
           <h3>Group 2: Necessary-condition indicators</h3>
-          <p>These words and phrases help you identify the <strong>necessary condition</strong>. Read the whole rule, then identify <strong>what is required and what requires it</strong>.</p>
+          <p>In an if-then rule, the necessary condition is the part after <strong>then</strong>. These words and phrases mark that same part, wherever it sits in the sentence. Each one tells you a <strong>necessary condition</strong> is in play. Read the whole rule, then identify <strong>what is required and what requires it</strong>.</p>
           <NecessaryIndicatorExplorer/>
           <h3>Why only if is different from if</h3>
           <div className="nc-role-comparison">
@@ -392,10 +411,10 @@ export function conditionalReferenceContent() {
     <ReferenceStep number={12} label="Check an interpretation" title="Try the rule from the inside">
       <p>A <strong>“Put yourself in it”</strong> lets you test what a proposed sufficient condition would prove. First read the ordinary meaning. Propose the sufficient idea. Imagine a case meeting it. Ask what the rule now requires.</p>
       <blockquote>Only people wearing helmets ride the studio bikes.</blockquote><p>The rule restricts riders to people wearing helmets. Keep that meaning while trying each proposed starting point.</p>
-      <div className="cr-personalized"><div><p className="co-kicker">First proposed starting point</p><ReferenceQuestion prompt="If I'm riding a studio bike, what does this rule tell me?" options={['I am wearing a helmet.', 'The helmet question is open.']} correct={0} feedback={['The rule puts every rider in the helmet-wearing group. Riding → Wearing helmet keeps that meaning.', 'Only restricts who rides. If you meet the riding condition, the rule does settle helmet wearing.']}/></div><div><p className="co-kicker">Try the other starting point</p><ReferenceQuestion prompt="If I'm wearing a helmet, must I be riding a studio bike?" options={['Yes, the helmet proves riding.', 'No, I could wear one without riding.']} correct={1} feedback={['You gave every helmet wearer a ride. The rule restricts riders; it does not make all helmet wearers riders.', 'A helmet wearer waiting beside a bike fits the rule. Wearing helmet → Riding would add a promise the original did not make.']}/></div></div>
+      <div className="cr-personalized"><div><p className="co-kicker">First proposed starting point</p><ReferenceQuestion prompt="If I'm riding a studio bike, what does this rule tell me?" options={['I am wearing a helmet.', 'The helmet question is open.']} correct={0} feedback={['The rule puts every rider in the helmet-wearing group. Riding → Wearing helmet keeps that meaning.', 'Only restricts who rides. If you meet the riding condition, the rule does settle helmet wearing.']}/></div><div><p className="co-kicker">Try the other starting point</p><ReferenceQuestion prompt="If I'm wearing a helmet, must I be riding a studio bike?" options={['Yes, the helmet proves riding.', 'No, I could wear one without riding.']} correct={1} feedback={['You gave every helmet wearer a ride. The rule restricts riders; it does not make all helmet wearers riders.', 'A helmet wearer waiting beside a bike fits the rule. Wearing helmet → Riding would say something the original never says.']}/></div></div>
       <p>The first reading matches the rule. The second proposed arrow fails because it rules out a case the original permits. Use the imagined situation to inspect meaning, not to supply extra facts from what usually happens.</p>
       <h3>Use the What Test beside it</h3><p>Only what? People wearing helmets. People alone would drop the helmet restriction. The complete phrase tells us which people can ride a studio bike. Riding proves that the rider wears a helmet; wearing one still doesn't prove riding.</p>
-      <p>The What Test keeps wearing a helmet attached to people. The “Put yourself in it” lets you check the arrow: imagine you ride a studio bike, then ask what the rule requires you to know. If your diagram instead promises a ride to everyone wearing a helmet, it has changed the rule.</p>
+      <p>The What Test keeps wearing a helmet attached to people. The “Put yourself in it” lets you check the arrow: imagine you ride a studio bike, then ask what the rule requires you to know. If your diagram instead gives a ride to everyone wearing a helmet, it has changed the rule.</p>
       <p>We've now read the rule, understood its limits, written both directions and checked the language. Put those pieces together with fresh sentences.</p>
     </ReferenceStep>
 
@@ -408,9 +427,9 @@ export function conditionalReferenceContent() {
     <section id="reference-boundary" className="cr-boundary co-section" data-reference-boundary data-toc data-toc-title="Permission and instructions">
       <p className="co-kicker">Before the attached practice</p><h2>Keep what the rule actually gives you</h2>
       <p>The core process is now in place. One more distinction matters for the practice: a conditional can give permission or an instruction. Keep that strength instead of turning it into a report of what someone did.</p>
-      <blockquote>Every guest with a ticket may use the cloakroom.</blockquote><p>May use gives permission here. A ticketed guest is allowed to use the cloakroom. The guest could keep their coat on and never go inside.</p>
+      <blockquote>Every guest with a ticket may use the cloakroom.</blockquote><p>May use gives permission here. A ticketed guest is allowed to use the cloakroom. The guest could still walk straight past it.</p>
       <ReferenceQuestion prompt="Lena is a guest with a ticket. Do we know that she used the cloakroom?" options={['Yes, the ticket proves that she used it.', 'No, we know she is allowed to use it.']} correct={1} feedback={['You turned permission into a completed action. Lena meets the condition for permission, but we have no fact reporting her use of the cloakroom.', 'The rule gives Lena permission because she is a guest with a ticket. Whether she used the cloakroom remains open.']}/>
-      <p>Now compare an instruction. “If your coat is wet, hang it on the rack” tells you what to do with a wet coat. It does not report that someone followed the instruction.</p>
+      <p>Now compare an instruction. “If your umbrella is wet, put it in the stand” tells you what to do with a wet umbrella. It does not report that someone followed the instruction.</p>
       <ReferenceQuestion prompt="The notice says: If a tray is empty, return it to the counter. This tray is empty. What does the instruction prove?" options={['The tray has been returned.', 'The instruction calls for returning the tray.', 'The tray cannot be returned.']} correct={1} feedback={['You turned an instruction into a completed action. The notice has not reported that anyone returned this tray.', 'The empty tray meets the condition in the instruction, so the notice calls for returning it. Whether someone returned it is a separate question.', 'The instruction asks for a return. It does not say a return is impossible.']}/>
       <p>Allowed to use isn't used. Told to return isn't returned. Your conclusion should keep the meaning the rule actually gave you.</p>
     </section>

@@ -3,13 +3,15 @@ import { StrictMode } from 'react';
 import { afterEach, expect, it, vi } from 'vitest';
 import { OpeningMixedDrill, openingDiagramItems } from './OpeningMixedDrill';
 import { completeConditionItems, equivalenceItems, transferItems, confirmationItemsByError, obligationConfirmationItem } from '../content/mixedDrillItems';
+import { CourseProgressProvider, type CourseProgressStore } from '../courseProgress';
 import { mixedFamilyItems } from './MixedFamilyPractice';
 
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 const active = () => within(document.querySelector<HTMLElement>('[data-mixed-question]:not([hidden])')!);
 const next = () => {
-  fireEvent.click(screen.getByRole('button', { name: /^(Next question|Try a fresh case|Review practice|Finish practice)$/ }));
-  const proceed = screen.queryByRole('button', { name: 'Continue' });
+  fireEvent.click(within(document.querySelector<HTMLElement>('.omd-navigation')!).getByRole('button', { name: /^(Next question|Try a fresh case|Review practice|Finish practice)$/ }));
+  const introduction = document.querySelector<HTMLElement>('.omd-introduction:not([hidden])');
+  const proceed = introduction ? within(introduction).queryByRole('button', { name: 'Continue' }) : null;
   if (proceed) fireEvent.click(proceed);
 };
 function renderPractice() {
@@ -217,7 +219,7 @@ it('builds diagrams from full condition labels and gives only a hint for a rever
   fireEvent.click(active().getByRole('button', { name: 'Try again' }));
   solve(3);
   expect(diagram).toHaveAttribute('data-result', 'right');
-  expect(diagram.querySelector('.cir-feedback p')).toHaveTextContent('Right. Read it back: If Mia trains, she qualifies.');
+  expect(diagram.querySelector('.cir-feedback p')).toHaveTextContent('Correct. Read it back: If Mia trains, she qualifies.');
   expect(diagram.querySelector('.cir-feedback')).toHaveTextContent(/Training is enough under this rule/);
 });
 
@@ -226,4 +228,66 @@ it('maps the shared one-word diagram labels to full condition labels', () => {
     ['Mia trains', 'Mia qualifies'], ['Person is a dancer', 'Person stretches'], ['Student is admitted', 'Student is a senior'],
     ['Person votes', 'Person is a member'], ['Bridge opens', 'Bridge has been inspected'], ['There is funding', 'There is approval'], ['Person is a hiker', 'Person brings a map'],
   ]);
+});
+
+
+it('restores checked choices and unfinished independent writing after a remount', () => {
+  let saved: CourseProgressStore['steps'] = {};
+  const save: CourseProgressStore['save'] = (id, patch) => { saved = { ...saved, [id]: { ...saved[id], ...patch, updatedAt: '2026-10-13' } as CourseProgressStore['steps'][string] }; };
+  const mountSaved = () => render(<CourseProgressProvider store={{ steps: saved, save }}><OpeningMixedDrill stepId="mixed-practice"/></CourseProgressProvider>);
+  let view = mountSaved();
+  fireEvent.click(screen.getByRole('button', { name: 'Begin practice' }));
+  for (let index = 0; index < 10; index++) { solve(index); next(); }
+  fireEvent.change(active().getByLabelText('Your diagram'), { target: { value: 'My unfinished diagram' } });
+  fireEvent.change(active().getByLabelText('Read it in English'), { target: { value: 'My unfinished sentence' } });
+  view.unmount();
+  view = mountSaved();
+  expect(active().getByLabelText('Your diagram')).toHaveValue('My unfinished diagram');
+  expect(active().getByLabelText('Read it in English')).toHaveValue('My unfinished sentence');
+  expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
+  expect(active().getByRole('status')).toHaveTextContent('Conditional:');
+  expect(screen.getByRole('button', { name: 'Next question' })).toBeEnabled();
+  for (let index = 0; index < 9; index++) fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
+  expect(active().getByRole('button', { name: completeConditionItems[0].options[completeConditionItems[0].correct] })).toHaveAttribute('aria-pressed', 'true');
+  expect(active().getByRole('status')).toHaveTextContent(completeConditionItems[0].feedback[completeConditionItems[0].correct]);
+}, 30000);
+
+
+it('checks both whole-rule equivalence and obligation when both distinctions need repair', () => {
+  renderPractice();
+  for (let index = 0; index < 16; index++) { solve(index); next(); }
+  choose(equivalenceItems[0].options[(equivalenceItems[0].correct + 1) % equivalenceItems[0].options.length]);
+  for (let index = 16; index < 23; index++) { solve(index); next(); }
+  choose(transferItems[3].options[0]);
+  solve(23);
+  next();
+  const comparison = confirmationItemsByError.equivalence[0];
+  expect(screen.getByText('Fresh check 1 of 2')).toBeVisible();
+  expect(active().getByText(comparison.sentence)).toBeVisible();
+  choose(comparison.options[comparison.correct]);
+  next();
+  expect(active().getByText(obligationConfirmationItem.sentence)).toBeVisible();
+}, 30000);
+
+it.each(['copy revision', 'shortened bank', 'changed identity', 'retired follow-up'])('preserves all earlier work across a %s', change => {
+  const save = vi.fn();
+  const mount = (steps: CourseProgressStore['steps']) => render(<CourseProgressProvider store={{ steps, save }}><OpeningMixedDrill stepId="mixed-practice"/></CourseProgressProvider>);
+  mount({});
+  const initial = save.mock.calls.at(-1)![1].state as { questionIds: string[]; fingerprint: string };
+  cleanup();
+  const earlier = Array.from({ length: 4 }, (_, index) => ({ finished: true, fingerprint: `edition-${index}`, attempts: { old: { draftReadback: `Earlier sentence ${index}` } }, results: { old: { firstCorrect: false, correct: true } } }));
+  const questionIds = change === 'shortened bank' ? initial.questionIds.slice(0, -1)
+    : change === 'changed identity' ? ['retired-question', ...initial.questionIds.slice(1)]
+    : change === 'retired follow-up' ? [...initial.questionIds, 'retired-fresh-check'] : initial.questionIds;
+  const previous = { ...initial, fingerprint: change === 'copy revision' ? 'old-content' : initial.fingerprint, questionIds, archived: earlier, finished: true, attempts: { old: { draftReadback: 'My last written attempt' } }, results: { old: { firstCorrect: false, correct: true, errors: [] } } };
+  mount({ 'mixed-practice': { status: 'done', updatedAt: '2026-10-13', state: previous } });
+  const restored = save.mock.calls.at(-1)![1];
+  expect(restored.state.archived).toHaveLength(5);
+  expect(restored.state.archived.slice(0, 4)).toEqual(earlier);
+  expect(restored.state.archived[4]).toMatchObject({ attempts: previous.attempts, results: previous.results, finished: true });
+  expect(restored.state.finished).toBe(false);
+  expect(restored.done).toBe(0);
+  expect(screen.getByRole('button', { name: 'Begin practice' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Your practice results' })).not.toBeInTheDocument();
 });

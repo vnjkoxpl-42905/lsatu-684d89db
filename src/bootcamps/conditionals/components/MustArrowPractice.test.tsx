@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, expect, it } from 'vitest';
 import { MustArrowPractice } from './MustArrowPractice';
+import { CourseLessonProvider, CourseProgressProvider, useDeviceCourseProgress } from '../courseProgress';
 
 afterEach(cleanup);
 function answer(option: string) {
@@ -20,7 +21,9 @@ it('requires an answer before feedback and explains the placement mistake', () =
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   expect(screen.getByRole('heading', { name: 'Not quite.' })).toHaveFocus();
   expect(feedback).toHaveTextContent('It belongs on the right, because enrollment requires it.');
-  expect(screen.getByRole('progressbar')).toHaveAttribute('value', '1');
+  expect(screen.getByRole('progressbar')).toHaveAttribute('value', '0');
+  expect(screen.getByRole('button', { name: /Next question/ })).toBeDisabled();
+  expect(feedback).not.toHaveTextContent('The answer:');
   expect(screen.queryByRole('button', { name: 'Check answer' })).not.toBeInTheDocument();
 });
 
@@ -79,14 +82,14 @@ it('explains every distractor using the specific reasoning error', () => {
       ['This folder is marked complete and contains a signed form.', 'That treats both sides as facts.'],
     ],
     [
-      ['The library extends your loan → You renew online', 'That follows the rule order but reverses the requirement.'],
+      ['The library extends your loan → You renew online', 'That follows the word order but puts the sides the wrong way round.'],
       ['If → The library extends your loan', 'If is an indicator, not a complete condition.'],
     ],
   ];
   wrongResponses.forEach((responses, questionIndex) => responses.forEach(([choice, explanation]) => {
     const { container, unmount } = render(<MustArrowPractice/>);
     for (let previous = 0; previous < questionIndex; previous++) {
-      fireEvent.click(screen.getAllByRole('radio')[0]);
+      fireEvent.click(screen.getAllByRole('radio')[[0, 1, 2, 1][previous]]);
       fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
       fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
     }
@@ -95,4 +98,32 @@ it('explains every distractor using the specific reasoning error', () => {
     expect(screen.getByRole('heading', { name: 'Not quite.' })).toHaveFocus();
     unmount();
   }));
+});
+
+it('resumes drafts and repeated-miss assistance, and completes only after every question is corrected or reviewed', () => {
+  localStorage.removeItem('conditional-course-progress:must-arrow-resume');
+  let store: ReturnType<typeof useDeviceCourseProgress> | undefined;
+  function Provider() {
+    store = useDeviceCourseProgress('must-arrow-resume');
+    return <CourseProgressProvider store={store}><CourseLessonProvider stepId="must-arrow"><MustArrowPractice/></CourseLessonProvider></CourseProgressProvider>;
+  }
+  const view = render(<Provider/>);
+  expect(store!.steps['must-arrow']).toBeUndefined();
+  answer('You are a student.');
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+  answer('You are a student.');
+  view.unmount();
+  render(<Provider/>);
+  expect(screen.getByRole('heading', { name: 'Not quite.' })).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: 'Show me' }));
+  expect(screen.getByRole('heading', { name: 'Worked explanation' })).toHaveFocus();
+  const interaction = () => (store!.steps['must-arrow'].state as { lessonInteractions: Record<string, { complete: boolean; answers: { first: number; assisted: boolean }[] }> }).lessonInteractions['quiz:must-arrow'];
+  expect(interaction()).toMatchObject({ complete: false, answers: [{ first: 1, assisted: true }, {}, {}, {}] });
+  fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
+  answer('You are a student.');
+  fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
+  answer('If this folder is marked complete, it must contain a signed form.');
+  fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
+  answer('You renew online → The library extends your loan');
+  expect(interaction().complete).toBe(true);
 });

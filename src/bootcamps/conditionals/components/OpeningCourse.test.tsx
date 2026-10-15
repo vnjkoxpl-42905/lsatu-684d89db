@@ -14,7 +14,7 @@ it('offers nine dedicated notes and twelve interleaved drill entries', () => {
   expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(9);
   expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(12);
   expect(document.querySelector('.co-pages')).toBeNull();
-  expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'missing-requirement', 'foundation-practice']);
+  expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'foundation-practice', 'sufficient-words']);
 });
 
 it('shows the rule count in plain words and never says statements or practise', () => {
@@ -35,6 +35,7 @@ it('teaches each prerequisite before the source drills that use it', () => {
   expect(position('contrapositive')).toBeLessThan(position('source-intro-diagrams-contrapositive'));
   expect(position('contrapositive')).toBeLessThan(position('source-rephrase-contrapositive'));
   expect(position('contrapositive-practice')).toBeLessThan(position('source-independent'));
+  expect(position('four-situations')).toBe(position('contrapositive') + 1);
 });
 
 it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an old reader index', async step => {
@@ -43,26 +44,27 @@ it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an o
   await waitFor(() => expect(document.querySelector('.opening-course-content')).not.toBeNull());
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(screen.getByRole('navigation', { name: 'Course navigation' })).toBeVisible();
-  expect(screen.queryByRole('button', { name: /Mark lesson/ })).toBeNull();
+  if (step.type === 'note') expect(screen.getByRole('button', { name: /Mark lesson/ })).toBeVisible();
+  else expect(screen.queryByRole('button', { name: /Mark lesson/ })).toBeNull();
 });
 
 it('separates a drill landing from its attempt surface', () => {
   const { rerender } = render(<MemoryRouter><OpeningCourseScreen view="foundation-practice" url={url}/></MemoryRouter>);
   expect(screen.getByRole('link', { name: 'Start practice' })).toHaveAttribute('href', '/course/foundation-practice?run=1');
-  expect(screen.queryByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Does the rule itself tell us that you actually sign up for the fun run?' })).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="foundation-practice" run url={url}/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Does the rule itself tell us that you actually sign up for the fun run?' })).toBeVisible();
 });
 
 it('retains a corrected answer when returning from another dedicated lesson', () => {
   const { rerender } = render(<MemoryRouter><OpeningCourseScreen view="meaning" url={url}/></MemoryRouter>);
-  fireEvent.click(screen.getByRole('button', { name: 'Yes, it says you win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Yes, it says you sign up.' }));
   expect(screen.getByText('Not quite.')).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you sign up.' }));
   rerender(<MemoryRouter><OpeningCourseScreen view="sufficient" url={url}/></MemoryRouter>);
-  expect(screen.queryByRole('button', { name: 'No, it tells you what follows if you win.' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'No, it tells you what follows if you sign up.' })).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="meaning" url={url}/></MemoryRouter>);
-  expect(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' })).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByRole('button', { name: 'No, it tells you what follows if you sign up.' })).toHaveAttribute('aria-pressed', 'true');
   expect(screen.getByText('Correct.')).toBeVisible();
 });
 
@@ -72,12 +74,12 @@ it('exposes only the permitted content and flashcard families', () => {
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
   expect(document.querySelector('.opening-course-content')).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={steps} url={url}/></MemoryRouter>);
-  // The mixed word deck is the only indicator set, and it is always there.
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
-  expect(screen.queryByRole('heading', { name: /Group [12] words/ })).toBeNull();
+  expect(screen.getByRole('heading', { name: 'Group 1 words' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Group 2 words' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Mixed indicator review' })).toBeNull();
   const both = OPENING_COURSE_PATH.filter(step => step.unitId === 'group-1' || step.unitId === 'group-2');
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={both} url={url}/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Mixed indicator review' })).toBeVisible();
   expect(screen.queryByRole('heading', { name: 'Sufficient and necessary' })).toBeNull();
 });
 
@@ -127,4 +129,17 @@ it('focuses the destination after drawer navigation and restores the trigger aft
   fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
   await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
   await waitFor(() => expect(screen.getByRole('button', { name: 'Course menu' })).toHaveFocus());
+});
+
+it('focuses the new heading when entering a deck or returning to the sets on the same tools route', async () => {
+  render(<MemoryRouter initialEntries={['/course/tools']}><CourseNavigationHarness/></MemoryRouter>);
+  await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Flashcards' })).toHaveFocus());
+  const openDeck = screen.getAllByRole('link', { name: 'Go to flashcards' })[0];
+  openDeck.focus();
+  fireEvent.click(openDeck);
+  await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Sufficient and necessary' })).toHaveFocus());
+  const returnToSets = screen.getByRole('link', { name: 'All flashcard sets' });
+  returnToSets.focus();
+  fireEvent.click(returnToSets);
+  await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Flashcards' })).toHaveFocus());
 });

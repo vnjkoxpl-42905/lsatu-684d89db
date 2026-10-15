@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# Safe push to origin/main when Lovable may have committed in parallel.
+# Safe push to origin/main, or an explicit review branch, when Lovable may have committed in parallel.
 # Fetches, fast-forwards or merges (never rebases, never force-pushes), then pushes.
 
 set -e
 cd "$(git rev-parse --show-toplevel)"
+TARGET="${1:-main}"
+if [ "$#" -gt 1 ] || ! git check-ref-format --branch "$TARGET" >/dev/null; then
+  echo "Usage: .claude/safe-push.sh [target-branch]" >&2
+  exit 1
+fi
 
-# Typecheck gate: tsc does not run during `vite build` (esbuild strips types), so a
-# type error (e.g. a missing import that crashes at runtime) would otherwise ship to
-# main and auto-deploy. Block the push on any compile error. Set SKIP_TYPECHECK=1 to
-# bypass for an emergency push.
 git fetch origin main --quiet
 
 LOCAL=$(git rev-parse HEAD)
@@ -24,7 +25,10 @@ else
   git merge origin/main --no-edit
 fi
 
-# Check the merged checkout that will actually be published.
+# Typecheck gate: tsc does not run during `vite build` (esbuild strips types), so a
+# type error (e.g. a missing import that crashes at runtime) would otherwise ship to
+# main and auto-deploy. Block the push on any compile error. Set SKIP_TYPECHECK=1 to
+# bypass for an emergency push.
 if [ "${SKIP_TYPECHECK:-0}" != "1" ]; then
   echo "[safe-push] Typechecking (npm run typecheck)..."
   if ! npm run --silent typecheck; then
@@ -35,5 +39,5 @@ if [ "${SKIP_TYPECHECK:-0}" != "1" ]; then
 fi
 
 # Push the checkout that passed the gate, including an isolated detached worktree.
-git push origin HEAD:main
-echo "[safe-push] Pushed $(git log -1 --format='%h %s')"
+git push origin "HEAD:$TARGET"
+echo "[safe-push] Pushed $(git log -1 --format='%h %s') to origin/$TARGET"

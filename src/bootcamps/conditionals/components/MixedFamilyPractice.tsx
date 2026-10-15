@@ -40,7 +40,7 @@ export const mixedFamilyItems: MixedItem[] = [
     left: 'Joins choir trip', right: 'Parent signs consent form',
     partialFeedback: 'A parent alone drops what the parent has to do. Ask: only if what? Keep the whole clause.',
     otherFeedback: 'Joining the trip is the condition that carries the requirement. Look at the clause after only if to find what joining needs.',
-    reversed: "Your arrow promises a place on the trip to every student with a signed form. A student with a signed form who is ill on the day fits the rule, so the signature isn't enough.",
+    reversed: "Your arrow gives a place on the trip to every student with a signed form. A student with a signed form who is ill on the day fits the rule, so the signature isn't enough.",
     why: 'Only if names a requirement. Any student on the trip has a signed form. A signed form leaves the trip open.',
     readback: 'If a student joins the choir trip, a parent has signed the consent form.',
   },
@@ -68,7 +68,7 @@ export const mixedFamilyItems: MixedItem[] = [
   },
   {
     sentence: 'The only phones placed in the same-day repair queue are phones that arrived with a cracked screen.', word: 'the only', family: 'sufficient',
-    targetPrompt: 'Which phones does the rule say arrived with a cracked screen?', targetFeedback: 'The rule covers phones in the same-day repair queue.',
+    targetPrompt: 'Which phones does the rule cover?', targetFeedback: 'The rule covers phones in the same-day repair queue.',
     target: 'phones placed in the same-day repair queue', partial: 'phones', other: 'phones that arrived with a cracked screen',
     left: 'Phone in same-day repair queue', right: 'Arrived with cracked screen',
     partialFeedback: 'Phones alone would make a claim about every phone in the shop. Ask: the only what? Keep every word that limits the group.',
@@ -79,11 +79,11 @@ export const mixedFamilyItems: MixedItem[] = [
   },
   {
     sentence: 'Only stalls with a permit sell food at the festival.', word: 'only', family: 'necessary',
-    targetPrompt: 'Which stalls does the rule allow to sell food at the festival?', targetFeedback: 'Every stall selling food at the festival has a permit.',
-    target: 'stalls with a permit', partial: 'stalls', other: 'sell food at the festival',
+    targetPrompt: 'What must a stall have if it sells food at the festival?', targetFeedback: 'Every stall selling food at the festival has a permit.',
+    target: 'a permit', partial: 'a stall', other: 'sell food at the festival',
     left: 'Stall sells food at festival', right: 'Stall has permit',
-    partialFeedback: 'Stalls alone loses the restriction. Ask: only what? Keep every word that limits which stalls.',
-    otherFeedback: 'Selling food is what the restriction limits, not the stalls it allows. Ask: only what? The answer names which stalls sell food under this rule.',
+    partialFeedback: 'A stall alone names who the rule is about, not what it must have. Ask: only what? Only stalls with a permit, so the requirement is the permit.',
+    otherFeedback: 'Selling food is what needs something, so it is not the requirement. Ask: only what? The answer names what a food stall must have.',
     reversed: 'Your arrow says every stall with a permit sells food. A permitted stall selling only crafts fits the rule.',
     why: "Only limits food sellers to permitted stalls. A stall selling food has a permit. A permit doesn't tell you what the stall sells.",
     readback: 'If a stall sells food at the festival, it has a permit.',
@@ -96,16 +96,18 @@ const targetOptions = (item: MixedItem, index: number) => {
 };
 const sideOptions = (item: MixedItem, index: number) => index % 2 === 0 ? [item.right, item.left] : [item.left, item.right];
 
-export function MixedItemCheck({ item, index, onChecked, onResult, embedded = false }: { item: MixedItem; index: number; onChecked: (checked: boolean) => void; onResult?: (result: { targetCorrect: boolean; targetIncomplete: boolean; sideCorrect: boolean } | null) => void; embedded?: boolean }) {
-  const [draftDiagram, setDraftDiagram] = useState('');
-  const [draftReadback, setDraftReadback] = useState('');
-  const [comparing, setComparing] = useState(false);
+export type MixedAttempt = { draftDiagram: string; draftReadback: string; comparing: boolean; target: string | null; left: string | null; checked: boolean };
+export function MixedItemCheck({ item, index, onChecked, onResult, embedded = false, initialAttempt, onAttempt }: { initialAttempt?: MixedAttempt; onAttempt?: (attempt: MixedAttempt) => void; item: MixedItem; index: number; onChecked: (checked: boolean) => void; onResult?: (result: { targetCorrect: boolean; targetIncomplete: boolean; sideCorrect: boolean } | null) => void; embedded?: boolean }) {
+  const [draftDiagram, setDraftDiagram] = useState(initialAttempt?.draftDiagram ?? '');
+  const [draftReadback, setDraftReadback] = useState(initialAttempt?.draftReadback ?? '');
+  const [comparing, setComparing] = useState(initialAttempt?.comparing ?? false);
   const draftQuestion = useId();
   const readbackQuestion = useId();
   const draftInput = useRef<HTMLTextAreaElement>(null);
-  const [target, setTarget] = useState<string | null>(null);
-  const [left, setLeft] = useState<string | null>(null);
-  const [checked, setChecked] = useState(false);
+  const [target, setTarget] = useState<string | null>(initialAttempt?.target ?? null);
+  const [left, setLeft] = useState<string | null>(initialAttempt?.left ?? null);
+  const [checked, setChecked] = useState(initialAttempt?.checked ?? false);
+  useEffect(() => { onAttempt?.({ draftDiagram, draftReadback, comparing, target, left, checked }); }, [draftDiagram, draftReadback, comparing, target, left, checked, onAttempt]);
   const targetQuestion = useId();
   const comparisonHeading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (comparing) comparisonHeading.current?.focus(); }, [comparing]);
@@ -130,7 +132,7 @@ export function MixedItemCheck({ item, index, onChecked, onResult, embedded = fa
     <h3 id={sideQuestion}>Which condition gives you enough to prove the other?</h3>
     <div className="co-choices" role="group" aria-labelledby={sideQuestion}>{sideOptions(item, index).map(option => <button type="button" key={option} aria-pressed={left === option} onClick={() => change(() => setLeft(option))}>{option}</button>)}</div>
     {left && <RuleDiagram left={left} right={left === item.left ? item.right : item.left} label={`Your diagram: ${left} implies ${left === item.left ? item.right : item.left}`}/>}
-    <div className="cr-control-row"><button type="button" className="co-primary" disabled={target === null || left === null} onClick={() => { setChecked(true); onChecked(true); onResult?.({ targetCorrect, targetIncomplete: target === item.partial, sideCorrect }); }}>{embedded ? 'Check answer' : `Check question ${number}`}</button><button type="button" className="cr-reset" onClick={reset}>{embedded ? 'Revise my answer' : `Try sentence ${number} again`}</button></div>
+    <div className="cr-control-row"><button type="button" className="co-primary" disabled={target === null || left === null} onClick={() => { setChecked(true); onChecked(targetCorrect && sideCorrect); onResult?.({ targetCorrect, targetIncomplete: target === item.partial, sideCorrect }); }}>{embedded ? 'Check answer' : `Check question ${number}`}</button><button type="button" className="cr-reset" onClick={reset}>{embedded ? 'Revise my answer' : `Try sentence ${number} again`}</button></div>
     <div role="status">{checked && <div className={`co-feedback ${targetCorrect && sideCorrect ? 'co-correct' : ''}`}>
       {targetCorrect && sideCorrect ? <>
         <strong>Read it back: {item.readback}</strong>
@@ -150,7 +152,7 @@ export function MixedFamilyPractice() {
   const [current, setCurrent] = useState(0);
   const [checked, setChecked] = useState<boolean[]>(() => mixedFamilyItems.map(() => false));
   return <>
-    <p>These rules use both kinds of indicator. The family name stays hidden until you check your choices. First translate each rule yourself, without supplied condition labels. Then compare your work and check who or what the rule covers and the arrow direction before moving on.</p>
+    <p>These rules use both kinds of indicator. Translate first, then compare the complete conditions and arrow direction. First translate each rule yourself, without supplied condition labels. Then compare your work and check who or what the rule covers and the arrow direction before moving on.</p>
     <p className="co-kicker" role="status">Question {current + 1} of {mixedFamilyItems.length}</p>
     {mixedFamilyItems.map((item, index) => <div key={item.sentence} hidden={current !== index}><MixedItemCheck item={item} index={index} onChecked={value => setChecked(previous => previous.map((old, itemIndex) => itemIndex === index ? value : old))}/></div>)}
     <div className="co-choices"><button type="button" disabled={current === 0} onClick={() => setCurrent(current - 1)}>Previous mixed question</button><button type="button" disabled={current === mixedFamilyItems.length - 1 || !checked[current]} onClick={() => setCurrent(current + 1)}>Next mixed question</button></div>
