@@ -30,6 +30,7 @@ import {
 import '../rc.css';
 import { missedRcConfig } from '@/lib/timedSectionAdoption';
 import { safeRcReturnTo } from '../lib/rcReturnTo';
+import { isHistoricalRcGrade } from '../lib/rcHistoricalGrading';
 
 /** m:ss. Results show real recorded time, never an estimate. */
 function clock(ms: number): string {
@@ -243,6 +244,10 @@ export default function RcResults() {
 
           {/* Score. No PrepTest-equivalent and no percentile: we do not have the
               cohort data those would need. */}
+          {items.some(item => {
+            const attempt = firstAttempts.get(item.question.questionId);
+            return attempt && isHistoricalRcGrade(item.question.questionId, item.question.correctAnswer, attempt.selected, attempt.isCorrect);
+          }) && <p role="status" className="mb-4 rounded border p-3 text-sm">A saved response has a recorded score that differs from the corrected answer key. This report preserves the recorded score and shows the current credited answer. Your saved answers and timing have not changed.</p>}
           <div className="mb-8 flex items-center justify-center gap-12">
             <div className="flex flex-col items-center gap-3">
               <ScoreRing value={correct} total={total} tooltip={`${correct} / ${total}`} />

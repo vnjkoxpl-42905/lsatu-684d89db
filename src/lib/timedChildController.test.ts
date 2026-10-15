@@ -33,9 +33,9 @@ function initialize(sectionKind: 'lr' | 'rc') {
   rcAttempts = [];
 }
 const saved = () => p.current_leg !== (kind === 'lr' ? 0 : 1) ? null : kind === 'lr' ? { kind: 'lr', record: lrRecord } : { kind: 'rc', session: rcSession, attempts: rcAttempts };
-function controller() {
+function controller(rcBank = passages) {
   const transport = { auth: { getUser: async () => ({ data: { user: { id: owner } }, error: null }) }, rpc } as TimedWorkTransport;
-  return new TimedChildController(new TimedWorkClient(owner, work, transport, localStorage, locks), owner, work, kind === 'lr' ? 0 : 1, kind, 'device', async () => raw, async () => passages, () => 1000);
+  return new TimedChildController(new TimedWorkClient(owner, work, transport, localStorage, locks), owner, work, kind === 'lr' ? 0 : 1, kind, 'device', async () => raw, async () => rcBank, () => 1000);
 }
 beforeEach(() => {
   vi.stubGlobal('crypto', webcrypto); localStorage.clear(); queues.clear(); receipts.clear(); lost = false; initialize('lr');
@@ -68,6 +68,28 @@ beforeEach(() => {
 const answer = (selected: TimedChildAnswer['selected'], attemptId?: string): TimedChildAnswer => ({ selected, timeMs: 1000, flagged: true, switchCount: 1, eliminations: ['C'], ...(attemptId ? { attemptId } : {}) });
 
 describe('official child controller uses protected source commands exclusively', () => {
+  it.each([['B', true], ['D', false]] as const)('preserves an unchanged historical RC %s grade but grades changed answers with the current key', async (selected, isCorrect) => {
+    initialize('rc');
+    const rcBank = structuredClone(passages);
+    rcBank[0].questions[0].questionId = 10733;
+    rcBank[0].questions[0].correctAnswer = 'D';
+    const frozen = p.timed_manifest as TimedObject;
+    const leg = (frozen.legs as TimedObject[])[1];
+    leg.qids = ['10733', '21'];
+    Object.assign((leg.questions as TimedObject[])[0], { qid: '10733', questionId: 10733 });
+    const id = crypto.randomUUID();
+    rcAttempts = [{ id, user_id: owner, session_id: child, question_id: 10733, passage_id: 10, selected,
+      is_correct: isCorrect, time_ms: 100, flagged: false, eliminations: [], is_first_attempt: true, created_at: sample }];
+    const c = controller(rcBank); const state = await c.load();
+    expect(state.answers['10733'].selected).toBe(selected);
+    expect(rpc.mock.calls.some(([name]) => name === 'commit_timed_work_v1')).toBe(false);
+    const next = await c.checkpoint(state, 0, state.answers);
+    expect(rcAttempts[0].is_correct).toBe(isCorrect);
+    expect(rcAttempts[0].id).toBe(id);
+    next.answers['10733'].selected = selected === 'B' ? 'D' : 'B';
+    await c.checkpoint(next, 0, next.answers);
+    expect(rcAttempts[0].is_correct).toBe(selected === 'B');
+  });
   it('persists unanswered LR flags/time/eliminations and restores them through an account reload without inventing an answer', async () => {
     const c = controller(); const state = await c.load();
     const next = await c.checkpoint(state, 1, { [qids[0]]: answer(null), [qids[1]]: answer('A') }, [qids[1]]);
