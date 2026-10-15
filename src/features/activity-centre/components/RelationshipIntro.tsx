@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { ActivityIntroProps } from "./ActivityEditorialIntro";
 import "../relationship-intro.css";
 
 /** Keep the launch instructions current even for an older assignment snapshot. */
 export function RelationshipIntro({ title, resumeAt = 1, preview, canSaveProgress = false, onStart, onExit }: ActivityIntroProps) {
+  const [videoFailed, setVideoFailed] = useState(false);
   return (
     <div className="relationship-intro" data-testid="relationship-intro">
       {onExit && <button type="button" className="relationship-exit" onClick={onExit}><ArrowLeft size={16} aria-hidden="true" />Exit</button>}
@@ -12,6 +14,34 @@ export function RelationshipIntro({ title, resumeAt = 1, preview, canSaveProgres
         <h1>Name the relationship.<br />Find the words that create it.</h1>
         <p>Each answer needs both: the relationship type and its indicator words.</p>
       </header>
+
+      <section className="relationship-video" aria-labelledby="relationship-video-title">
+        <h2 id="relationship-video-title">Watch how it works</h2>
+        <video
+          controls
+          preload="none"
+          playsInline
+          poster="/media/spot-the-relationship/how-to-play-v1.webp"
+          src="/media/spot-the-relationship/how-to-play-v1.mp4"
+          aria-label="How to play Spot the Relationship"
+          onError={() => setVideoFailed(true)}
+        >
+          <track kind="captions" src="/media/spot-the-relationship/how-to-play-v1.vtt" srcLang="en" label="English" default />
+          Your browser cannot play this video. Read the transcript or the written instructions below.
+        </video>
+        {videoFailed && <p className="relationship-video-fallback" role="status">The video could not load. Read the transcript or follow the written instructions below.</p>}
+        <details className="relationship-video-transcript">
+          <summary>Read the video transcript</summary>
+          <p>Your job is to name the relationship, then find the words that create it.</p>
+          <p>Read the whole sentence first. A lantern can be lit only if its wick is dry.</p>
+          <p>Notice only if. Those words make a dry wick necessary for lighting the lantern. That is a conditional relationship.</p>
+          <p>Write the type, then quote the indicator: Conditional, only if. Give both parts of the answer.</p>
+          <p>A causal relationship says one thing produces or changes another. The room warmed because the heater switched on. Here, because gives the cause.</p>
+          <p>A comparative relationship compares things. This lamp is brighter than that one. Brighter than makes the comparison.</p>
+          <p>Sometimes a sentence contains more than one type. If the lamp is on, the room is brighter than the hallway. If is conditional. Brighter than is comparative. Include each type with its own indicator words.</p>
+          <p>Read the sentence. Name each relationship type. Quote the words that create it. You're ready to start.</p>
+        </details>
+      </section>
 
       <div className="relationship-launch-grid">
         <section className="relationship-instructions" aria-labelledby="relationship-instructions-title">
