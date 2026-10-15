@@ -16,7 +16,7 @@ export const OPENING_COURSE_PATH: OpeningCourseStep[] = [
   { id: 'missing-requirement', type: 'note', title: 'The contrapositive', description: 'See what follows when a necessary condition is false.', unitId: 'orientation' },
   { id: 'foundation-practice', type: 'drill', title: 'Spot the condition', description: 'Identify sufficient and necessary conditions, place them beside the arrow, recognize indicators, and decide what the facts prove.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'sufficient-words', type: 'note', title: 'Find the complete condition', description: 'Identify the full sufficient condition, including the words that limit who or what the rule covers.', unitId: 'group-1' },
-  { id: 'sufficient-practice', type: 'drill', title: 'Build the sufficient side', description: 'Find the whole condition, construct the diagram and repair its direction.', unitId: 'group-1' },
+  { id: 'sufficient-practice', type: 'drill', title: 'Read the rule', description: 'Find the indicator and complete condition, build the diagram, then rewrite the rule in your own words.', unitId: 'group-1' },
   { id: 'necessary-words', type: 'note', title: 'Necessary-condition words', description: 'Read only, only if, only when, only where, always, requires and must.', unitId: 'group-2' },
   { id: 'whole-meaning', type: 'note', title: 'Keep the whole meaning', description: 'Keep qualifications, permission and obligation intact before translating a rule.', unitId: 'group-2' },
   { id: 'source-intro-identify', type: 'drill', title: 'Drill 2: Find both conditions', description: 'Find the indicators and their groups, then write the complete sufficient and necessary conditions.', unitId: 'group-2' },
