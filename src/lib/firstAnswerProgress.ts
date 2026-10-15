@@ -199,6 +199,21 @@ function areaProgress(rows: GradedQuestionAnswer[], area: ProgressArea): AreaPro
   };
 }
 
+/** Keep one row per persisted attempt ID across paged source reads. */
+export function orderedDistinctAnswers(answers: GradedQuestionAnswer[]): GradedQuestionAnswer[] {
+  const ordered = answers
+    .filter((answer) => validDate(answer.gradedAt))
+    .sort((a, b) => Date.parse(a.gradedAt) - Date.parse(b.gradedAt)
+      || Date.parse(a.answeredAt ?? a.gradedAt) - Date.parse(b.answeredAt ?? b.gradedAt)
+      || a.attemptId.localeCompare(b.attemptId));
+  const seenAttemptIds = new Set<string>();
+  return ordered.filter((answer) => {
+    if (seenAttemptIds.has(answer.attemptId)) return false;
+    seenAttemptIds.add(answer.attemptId);
+    return true;
+  });
+}
+
 /** Select each question's first graded answer globally, then apply the window. */
 export function projectFirstAnswerProgress(input: {
   answers: GradedQuestionAnswer[];
@@ -206,11 +221,7 @@ export function projectFirstAnswerProgress(input: {
   asOf: string;
   coverage: ProgressCoverage;
 }): FirstAnswerProgress {
-  const ordered = input.answers
-    .filter((answer) => validDate(answer.gradedAt))
-    .sort((a, b) => Date.parse(a.gradedAt) - Date.parse(b.gradedAt)
-      || Date.parse(a.answeredAt ?? a.gradedAt) - Date.parse(b.answeredAt ?? b.gradedAt)
-      || a.attemptId.localeCompare(b.attemptId));
+  const ordered = orderedDistinctAnswers(input.answers);
   const firstByQuestion = new Map<string, GradedQuestionAnswer>();
   for (const answer of ordered) {
     if (!firstByQuestion.has(answer.questionKey)) firstByQuestion.set(answer.questionKey, answer);
