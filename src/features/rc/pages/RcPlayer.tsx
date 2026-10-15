@@ -19,6 +19,7 @@ import {
   RcQuestionDetails,
   RcSubmitConfirm,
   RcTextSettings,
+  RcLineSpacingMenu,
 } from '../components/RcModals';
 import { RC_DIRECTIONS, RC_FONT_SCALE_OPTIONS } from '../lib/rcDirections';
 import { readActiveRcAnswerBackups, readRcAnswerBackups, writeRcAnswerBackup, requestRcAnswerBackupSave, clearRcAnswerBackup } from '../lib/rcAnswerBackup';
@@ -1198,25 +1199,28 @@ function RcPlayerRunner() {
            * used and never did.
            */
           rightTools={
-            findCount > 0 ? (
-              <>
-                <span className="px-1 text-[13px] tabular-nums text-slate-700">
-                  {Math.min(findIndex, findCount - 1) + 1} of {findCount}
-                </span>
-                <RcToolbarIcon
-                  label="Previous match"
-                  onClick={() => setFindIndex((i) => (i - 1 + findCount) % findCount)}
-                >
-                  <ChevronUp size={18} />
-                </RcToolbarIcon>
-                <RcToolbarIcon
-                  label="Next match"
-                  onClick={() => setFindIndex((i) => (i + 1) % findCount)}
-                >
-                  <ChevronDown size={18} />
-                </RcToolbarIcon>
-              </>
-            ) : undefined
+            <>
+              <RcLineSpacingMenu settings={a11y.settings} onChange={a11y.update} />
+              {findCount > 0 ? (
+                <>
+                  <span className="px-1 text-[13px] tabular-nums text-slate-700">
+                    {Math.min(findIndex, findCount - 1) + 1} of {findCount}
+                  </span>
+                  <RcToolbarIcon
+                    label="Previous match"
+                    onClick={() => setFindIndex((i) => (i - 1 + findCount) % findCount)}
+                  >
+                    <ChevronUp size={18} />
+                  </RcToolbarIcon>
+                  <RcToolbarIcon
+                    label="Next match"
+                    onClick={() => setFindIndex((i) => (i + 1) % findCount)}
+                  >
+                    <ChevronDown size={18} />
+                  </RcToolbarIcon>
+                </>
+            ) : null}
+            </>
           }
           /* No REVIEW badge here. The toolbar's left group is where the
              section's tools live, and the breadcrumb plus the absent clock
@@ -1270,6 +1274,7 @@ function RcPlayerRunner() {
           passageOnly={passageOnly}
           passage={
             <RcPassagePane
+              paragraphFocus={a11y.settings.paragraphFocus}
               annotationsDisabled={!highlights.loaded}
               passage={item.passage}
               highlights={highlights.forPassage(item.passage.passageId)}

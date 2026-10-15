@@ -7,6 +7,7 @@ import type { RcAttempt, RcPassage } from '@/features/rc/lib/rcTypes';
 import type { LRQuestion } from './questionLoader';
 import { analyseSection } from './sectionAnalysis';
 import { UNANSWERED } from './sectionAnswer';
+import { rcCheckpointGrade } from '@/features/rc/lib/rcHistoricalGrading';
 
 export interface TimedChildAnswer {
   selected: TimedLetter | null; timeMs: number; flagged: boolean; switchCount: number; eliminations: TimedLetter[]; attemptId?: string;
@@ -92,11 +93,14 @@ export class TimedChildController {
   pending(): TimedWorkCommand | null { return this.client.readPending(); }
   private rcAnswers(state: TimedChildState, answers: Record<string, TimedChildAnswer>): RcAttempt[] {
     if (!state.view || !('state' in state.view)) return invalid('The acknowledged RC child is missing.');
+    const view = state.view;
     return Object.entries(answers).map(([qid, answer]) => {
       const item = (state.view as TimedRcView).state.items.find(value => String(value.question.questionId) === qid);
       if (!item || !answer.attemptId) return invalid('RC answers require the exact frozen question and stable ID.');
+      const prior = view.attempts.find(attempt => attempt.id === answer.attemptId && attempt.questionId === item.question.questionId
+        && attempt.userId === this.ownerId && attempt.sessionId === view.session.id);
       return { id: answer.attemptId, userId: this.ownerId, sessionId: state.view!.session.id, questionId: item.question.questionId, passageId: item.passage.passageId,
-        selected: answer.selected, isCorrect: answer.selected === null ? null : answer.selected === item.question.correctAnswer,
+        selected: answer.selected, isCorrect: rcCheckpointGrade(item.question.questionId, item.question.correctAnswer, answer.selected, answer.attemptId, prior),
         timeMs: Math.floor(answer.timeMs), flagged: answer.flagged, eliminations: answer.eliminations, isFirstAttempt: true };
     });
   }

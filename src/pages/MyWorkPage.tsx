@@ -44,7 +44,7 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
           <button type="button" className="classroom-button" onClick={retry}>Try again</button>
         </div>
       )}
-      <div className="student-work-count">{visible.length} {completed ? "completed" : "to do"}</div>
+      <div className="student-work-count">{visible.length} {failed ? "shown (list may be incomplete)" : completed ? "completed" : "to do"}</div>
       {visible.length === 0 ? (
         <p className="student-destination-message">
           {failed ? "We could not confirm whether this list is complete." : completed ? "Finished assignments will appear here after your work is saved." : "Nothing is assigned right now."}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NavLink, Outlet, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { ArrowLeft, Activity, Plus } from 'lucide-react';
 import { format } from 'date-fns';
@@ -48,7 +48,11 @@ export default function StudentDossier() {
   // narrow per-student RPC rather than showing a nameless header.
   const { data: rpcEmail } = useStudentEmail(studentId ?? null);
 
-  const [showAssign, setShowAssign] = useState(false);
+  const [assignStudentId, setAssignStudentId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setAssignStudentId(null);
+  }, [studentId]);
 
   const studentName = student?.display_name?.trim() || null;
   const studentEmail = student?.email ?? rpcEmail ?? null;
@@ -65,7 +69,7 @@ export default function StudentDossier() {
       student,
       studentName,
       studentEmail,
-      openAssign: () => setShowAssign(true),
+      openAssign: () => setAssignStudentId(studentId ?? null),
     }),
     [student, studentEmail, studentId, studentName],
   );
@@ -102,7 +106,7 @@ export default function StudentDossier() {
 
           <button
             type="button"
-            onClick={() => setShowAssign(true)}
+            onClick={() => setAssignStudentId(studentId)}
             className="inline-flex shrink-0 items-center gap-1.5 bg-teacher-accent px-3 py-2 text-xs font-semibold text-white transition hover:bg-teacher-accent-hover"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={2} />
@@ -141,11 +145,12 @@ export default function StudentDossier() {
         <Outlet context={context} />
       </div>
 
-      {showAssign && user && (
+      {assignStudentId === studentId && user && (
         <AssignmentBuilder
+          key={studentId}
           studentId={studentId}
           adminUserId={user.id}
-          onClose={() => setShowAssign(false)}
+          onClose={() => setAssignStudentId(null)}
         />
       )}
     </section>
