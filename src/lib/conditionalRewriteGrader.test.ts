@@ -34,7 +34,6 @@ describe('conditional rewrite grading contract', () => {
       { correct: true, issue: 'reversal', evidence: 'Mia' },
       { correct: false, issue: 'correct', evidence: 'Mia' },
       { correct: false, issue: '__proto__', evidence: 'Mia' },
-      { correct: true, issue: 'correct', evidence: 'Mia', condition: 'rainfall', result: 'Mia' },
     ]) expect(() => parseGrade(JSON.stringify(value), request)).toThrow();
   });
   it('replaces the three captured bad hints with diagnosis-specific hints, without answer leaks or contradictory praise', () => {
@@ -65,6 +64,21 @@ describe('conditional rewrite grading contract', () => {
     const studentResponse = 'A dry day when Mia takes the bus leaves the rule true but disproves the reverse.';
     expect(parseGrade(JSON.stringify({ correct: true, issue: 'correct', evidence: studentResponse }), { studentResponse, task: 'explanation' }).feedback)
       .toContain('keeps the original rule true while disproving its reverse');
+  });
+  it('maps case and whitespace normalization back to the actual learner text without accepting invented words', () => {
+    const studentResponse = 'Whenever it RAINS, Mia   rides the bus.';
+    const result = parseGrade(JSON.stringify({ correct: true, issue: 'correct', evidence: 'it rains', condition: 'it rains', result: 'Mia rides the bus' }), { studentResponse, task: 'rewrite' });
+    expect(result.feedback).toContain('“it RAINS” guarantees “Mia rides the bus”');
+    expect(() => parseGrade(JSON.stringify({ correct: true, issue: 'correct', evidence: 'it snows', condition: 'it snows', result: 'Mia rides the bus' }), { studentResponse, task: 'rewrite' })).toThrow('evidence_not_in_submission');
+  });
+  it('accepts the captured correct verdict when optional condition metadata paraphrases the learner', () => {
+    const studentResponse = 'Whenever it rains, Mia rides the bus.';
+    const captured = { correct: true, issue: 'correct', evidence: studentResponse, condition: 'If it is raining', result: 'Mia rides the bus' };
+    expect(parseGrade(JSON.stringify(captured), { studentResponse, task: 'rewrite' })).toEqual({
+      correct: true,
+      feedback: '“Whenever it rains, Mia rides the bus.” expresses the same guarantee as the original rule.',
+    });
+    expect(parseGrade(JSON.stringify({ correct: true, issue: 'correct', evidence: studentResponse }), { studentResponse, task: 'rewrite' }).correct).toBe(true);
   });
   beforeEach(() => invoke.mockReset());
   it('keeps unavailable or malformed service responses ungraded', async () => {
