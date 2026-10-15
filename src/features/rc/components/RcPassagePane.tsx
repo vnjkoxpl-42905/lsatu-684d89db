@@ -44,6 +44,7 @@ interface Props {
   textStyle: React.CSSProperties;
   /** Drops the divider and the reading-measure cap in Passage Only View. */
   passageOnly?: boolean;
+  paragraphFocus?: boolean;
   children?: React.ReactNode;
 }
 
@@ -64,6 +65,7 @@ export function RcPassagePane({
   onScroll,
   textStyle,
   passageOnly,
+  paragraphFocus = false,
   children,
 }: Props) {
   const paneRef = React.useRef<HTMLDivElement>(null);
@@ -130,6 +132,7 @@ export function RcPassagePane({
         'rc-exam-col rc-passage-col relative min-w-0 overflow-y-auto px-6 pb-7 pt-6 sm:pl-9 sm:pr-8',
         // Fraunces is high-contrast; grayscale smoothing thins its hairlines.
         'subpixel-antialiased selection:bg-blue-100',
+        paragraphFocus && 'rc-paragraph-focus',
         passageOnly ? 'rc-passage-only' : 'border-slate-200 lg:border-r',
         // Cap the reading measure. 52ch in Fraunces measures ~68 real
         // characters, inside the 45-75 readable band. Passage-only reading
