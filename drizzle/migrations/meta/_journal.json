@@ -218,6 +218,13 @@
       "when": 1791943044423,
       "tag": "0030_activity_ai_grader_revision",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1792037826505,
+      "tag": "0031_return_teacher_missed_session_credit",
+      "breakpoints": true
     }
   ]
 }
