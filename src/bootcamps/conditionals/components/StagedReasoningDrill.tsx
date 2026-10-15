@@ -5,6 +5,7 @@ import { referencePracticeItems } from './ConditionalReferenceSequence';
 import { OpeningMixedDrill } from './OpeningMixedDrill';
 import { useCourseStep } from '../courseProgress';
 import { gradeConditionalRewrite } from '@/lib/conditionalRewriteGrader';
+import { contextualRewriteFeedback } from '@/lib/conditionalRewriteFeedback';
 import './staged-reasoning-drill.css';
 
 type Stage = { name: string; prompt: string; options?: string[]; correct?: number; explanation: string; model?: string; hints?: string[]; label?: string };
@@ -174,7 +175,8 @@ function StagedRun({ items, storageKey, stepId }: { items: Item[]; storageKey: s
     setGrading(true); setGradingError('');
     const submission = answer.writing;
     try {
-      const result = await gradeConditionalRewrite({ original: item.sentence, expected: stage.model ?? '', studentResponse: submission, task: explanationTask ? 'explanation' : stage.name === 'Read the contrapositive' ? 'contrapositive' : 'rewrite', stagePrompt: stage.prompt });
+      const request = { original: item.sentence, expected: stage.model ?? '', studentResponse: submission, task: explanationTask ? 'explanation' as const : stage.name === 'Read the contrapositive' ? 'contrapositive' as const : 'rewrite' as const, stagePrompt: stage.prompt };
+      const result = contextualRewriteFeedback(request, await gradeConditionalRewrite(request));
       update({ checked: true, accepted: result.correct, grade: { submission, ...result } });
     } catch (error) { setGradingError(error instanceof Error ? error.message : 'Your rewrite could not be checked. Try again.'); }
     finally { setGrading(false); }
