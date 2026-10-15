@@ -18,7 +18,7 @@ import {
 import type { MasteryLevel } from "../../types";
 import { cn } from "../../lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
-import { MODULES, type ModuleId } from "../../data/modules";
+import { LECTURE_MODULES, type ModuleId } from "../../data/modules";
 
 interface SidebarProps {
   onNavigate?: () => void;
@@ -134,18 +134,18 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
             Modules
           </div>
         </li>
-        {MODULES.map((m) => {
+        {LECTURE_MODULES.map((m) => {
           const row = bootcampState.moduleProgress[m.id];
           const noteDone = Boolean(row?.noteComplete);
           const quizPassed =
             row?.quizTotal > 0 && row.quizScore / row.quizTotal >= m.quizPassThreshold;
-          const drillDone = Boolean(row?.drillComplete);
-          const pct = modulePct(noteDone, quizPassed, drillDone);
+          const drillDone = isModuleComplete(m.id);
+          const pct = m.quizSource ? modulePct(noteDone, quizPassed, drillDone) : (noteDone ? 50 : 0) + (drillDone ? 50 : 0);
           const unlocked = isModuleUnlocked(m.id);
           const done = isModuleComplete(m.id);
           const active = currentView === "module" && currentModuleId === m.id;
-          const aced = bootcampState.aceBadges.includes(m.id);
-          const mastery: MasteryLevel = row?.masteryLevel ?? "none";
+          const aced = Boolean(m.quizSource) && bootcampState.aceBadges.includes(m.id);
+          const mastery: MasteryLevel = ["m3", "m5", "m6", "m7"].includes(m.id) ? "none" : row?.masteryLevel ?? "none";
           const medalColor =
             mastery === "mastered"
               ? "text-brutal-yellow"
@@ -184,7 +184,7 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
                 ) : (
                   <ProgressRing pct={pct} />
                 )}
-                <span className="flex-1 text-left truncate">
+                <span className="flex-1 text-left leading-snug">
                   M{m.number}. {m.name}
                 </span>
                 {mastery !== "none" && (
@@ -198,18 +198,6 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
             </li>
           );
         })}
-
-        <li className="pt-2">
-          <NavButton
-            label="Final Set"
-            icon={Flag}
-            active={currentView === "timed_set"}
-            onClick={() => {
-              setCurrentView("timed_set");
-              onNavigate?.();
-            }}
-          />
-        </li>
 
         <li className="pt-3">
           <button

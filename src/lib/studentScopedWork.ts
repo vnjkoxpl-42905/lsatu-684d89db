@@ -73,6 +73,7 @@ export async function loadScopedStudentWorkSources(scope: StudentSubjectScope) {
   ]);
   if (itemsResult.error) throw itemsResult.error;
   const activityEvidence = await loadActivityWorkEvidence(studentId, activities.map((item) => item.id));
+  await assertActiveStudentScope(scope);
   return {
     actorId: scope.actorId,
     studentId,
@@ -111,5 +112,6 @@ export async function loadScopedOwnedAssignmentSources(scope: StudentSubjectScop
   const activityEvidence = activities.state === 'ready'
     ? await readSource(() => loadActivityWorkEvidence(studentId, activities.data.map((item) => item.id)))
     : null;
+  await assertActiveStudentScope(scope);
   return { actorId: scope.actorId, studentId, guided, activities, items, assignmentEvidence, activityEvidence };
 }

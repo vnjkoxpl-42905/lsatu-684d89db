@@ -9,7 +9,7 @@ interface Props {
   loading?: boolean;
 }
 
-function pct(n: number | undefined): string {
+function pct(n: number | null | undefined): string {
   return typeof n === "number" ? `${n}%` : "·";
 }
 
@@ -61,7 +61,7 @@ export function BootcampCard({ topic, metrics, loading }: Props) {
             Drill accuracy
           </dt>
           <dd className="mt-0.5 font-semibold text-[#11181c]">
-            {loading ? "·" : pct(metrics?.avgDrillAccuracyPct)}
+            {loading ? "·" : metrics?.avgDrillAccuracyPct === null ? "No graded attempts" : pct(metrics?.avgDrillAccuracyPct)}
           </dd>
         </div>
         <div>

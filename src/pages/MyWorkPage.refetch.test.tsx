@@ -13,6 +13,8 @@ let finishPlanRead: ((result: { data: null; error: Error }) => void) | undefined
 vi.mock('@/contexts/AuthContext', () => ({
   useAuth: () => ({ user: { id: 'student-1' } }),
 }));
+vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: false, is_admin: false, has_classroom_access: true }) }));
+vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => ({ allowed: false, isPending: false }) }));
 vi.mock('@/hooks/useStudentAssignments', () => ({
   useStudentAssignments: () => ({ assignments: [], loading: false, error: null, refresh: async () => undefined }),
   useStudentTAAssignments: () => ({ assignments: [], loading: false, error: null, refresh: async () => undefined }),
@@ -69,6 +71,7 @@ describe('My Work while weekly plan status refreshes', () => {
 
     await act(async () => { finishPlanRead!({ data: null, error: new Error('status unavailable') }); });
     await waitFor(() => expect(screen.getByText('Some assignments could not refresh. Your saved work is still shown.')).toBeInTheDocument());
+    expect(screen.getByText('2 shown (list may be incomplete)')).toBeInTheDocument();
     expect(screen.getByText('Read the passage')).toBeInTheDocument();
     expect(screen.getByText('Intro to LR')).toBeInTheDocument();
   });
@@ -82,6 +85,7 @@ it('names rejected saved progress, retains other work, and clears the warning af
   render(<QueryClientProvider client={client}><MemoryRouter><MyWorkPage completed={false} /></MemoryRouter></QueryClientProvider>);
   await waitFor(() => expect(screen.getByText('Progress unverified')).toBeInTheDocument());
   expect(screen.getByText(/Could not confirm saved assignment sessions/)).toBeInTheDocument();
+  expect(screen.getByText(/shown \(list may be incomplete\)/)).toBeInTheDocument();
   expect(screen.getByText('Intro to LR')).toBeInTheDocument();
   evidenceState.broken = false;
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }));

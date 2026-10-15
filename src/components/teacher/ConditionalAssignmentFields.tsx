@@ -23,6 +23,7 @@ export function ConditionalAssignmentFields({ value, onChange, disabled = false 
       <select aria-label="Conditional assignment scope" className={selectClass} value={value.scope} onChange={event => {
         const scope = event.target.value as ConditionalAssignmentTarget['scope'];
         onChange({ ...value, scope, mode: scope === 'general' ? 'practice' : 'learn',
+          curriculumVersion: scope === 'stage' ? 2 : undefined,
           unitId: value.unitId ?? units[0]?.id, area: value.area ?? 'translation' });
       }}>
         <option value="course">Full curriculum from the beginning</option><option value="stage">Start at a curriculum stage</option><option value="area">One area</option>
@@ -31,7 +32,8 @@ export function ConditionalAssignmentFields({ value, onChange, disabled = false 
     </label>
     {(value.scope === 'skill' || value.scope === 'stage') && <label className="block text-xs">{value.scope === 'stage' ? 'Starting skill' : 'Skill'}
       <select aria-label="Conditional skill" className={selectClass} value={value.unitId ?? ''}
-        onChange={event => onChange({ ...value, unitId: event.target.value })}>
+        onChange={event => onChange({ ...value, unitId: event.target.value,
+          curriculumVersion: value.scope === 'stage' ? 2 : undefined })}>
         <option value="" disabled>{units.length ? 'Choose a skill' : 'Loading skills…'}</option>
         {units.map(unit => <option key={unit.id} value={unit.id}>{unit.title}</option>)}
       </select>

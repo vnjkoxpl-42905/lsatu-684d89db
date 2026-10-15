@@ -5,7 +5,7 @@ import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useClassroomItems } from '@/hooks/useClassroomItems';
 import { BookOpen, Loader2, Lock } from 'lucide-react';
 import { BUILD_SHA, BUILD_TIME } from '@/lib/buildInfo';
-import { BOOTCAMPS, classroomItemMatchesBootcamp } from '@/lib/bootcamps';
+import { BOOTCAMPS, classroomItemMatchesBootcamp, isQuickDrill } from '@/lib/bootcamps';
 
 export default function BootcampsPage() {
   const navigate = useNavigate();
@@ -82,8 +82,14 @@ export default function BootcampsPage() {
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            {visible.map((bc) => (
+          <div className="space-y-8">
+          {([
+            ['Bootcamps', visible.filter((b) => !isQuickDrill(b))],
+            ['Quick Drills', visible.filter(isQuickDrill)],
+          ] as const).filter(([, list]) => list.length > 0).map(([heading, list]) => (
+          <div key={heading} className="space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{heading}</h3>
+            {list.map((bc) => (
               <div
                 key={bc.id}
                 className="rounded-xl bg-card border border-border shadow-sm p-6 flex flex-col sm:flex-row gap-6 items-start"
@@ -120,13 +126,15 @@ export default function BootcampsPage() {
                       onClick={() => navigate(bc.route)}
                       className="inline-flex items-center gap-1.5 rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
                     >
-                      Launch Bootcamp
+                      {isQuickDrill(bc) ? 'Start drill' : 'Launch Bootcamp'}
                       <span className="ml-1">→</span>
                     </button>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+          ))}
           </div>
         )}
       </section>

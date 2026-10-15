@@ -16,7 +16,7 @@ import { parseCallback, readThrow } from "./loom/loom";
 
 import { ObservatoryEntrance } from "./observatory/ObservatoryEntrance";
 import { ObservatoryStage } from "./observatory/ObservatoryStage";
-import { parseSignal, readAnswer } from "./observatory/observatory";
+import { matchesCredited, parseSignal, readAnswer } from "./observatory/observatory";
 
 import { PolarityEntrance } from "./polarity/PolarityEntrance";
 import { PolarityStage } from "./polarity/PolarityStage";
@@ -77,6 +77,15 @@ export interface WorldRenderArgs {
   response?: string;
   /** Whether the run has judged this item yet. Drives the world's phase. */
   answered: boolean;
+  /**
+   * The verdict the item resolved with, once it has. A world that reads the
+   * answer for itself still has to defer to this: its reader is a quick
+   * pattern match, and a student the Coach marked correct must not be told a
+   * relationship is "still undrawn" because they phrased the type differently.
+   */
+  verdict?: Verdict | null;
+  /** Actual items resolved correctly in this run, including restored progress. */
+  completedItems?: ActivityItem[];
   /** The whole run's progress. Worlds that draw a rail read it; the rest ignore it. */
   mileposts?: RunMilepost[];
   /** Which milepost is the item on screen. */
@@ -223,12 +232,26 @@ const WORLDS: WorldBinding[] = [
     accent: "235 48% 56%",
     carriesPrompt: true,
     Entrance: ObservatoryEntrance,
-    render: ({ item, response, answered }) => {
+    render: ({ item, response, answered, verdict, completedItems = [] }) => {
       const signal = parseSignal(item);
       if (!signal) return null;
-      const reading = answered && response ? readAnswer(signal, response) : null;
-      return <ObservatoryStage signal={signal} phase={answered ? "drawn" : "arrival"} reading={reading} />;
+      // A correct verdict draws the whole figure. The reader only decides what
+      // to draw when the answer fell short, which is where it is useful.
+      const reading =
+        answered && response && verdict !== "correct" ? readAnswer(signal, response) : null;
+      const seals = { conditional: false, causal: false, comparative: false };
+      for (const completed of completedItems) {
+        for (const relation of parseSignal(completed)?.relations ?? []) seals[relation.kind] = true;
+      }
+      if (answered && verdict === "correct") {
+        for (const relation of signal.relations) seals[relation.kind] = true;
+      }
+      return <ObservatoryStage signal={signal} phase={answered ? "drawn" : "arrival"} reading={reading} seals={seals} />;
     },
+    // Every credited answer here is a structured "type, indicator" list, so an
+    // answer that names exactly those types and quotes a credited indicator for
+    // each is correct without asking anyone. Anything else goes to the Coach.
+    fastPath: (item, response) => matchesCredited(item, response),
   },
   {
     slug: "conditional-rephrase",

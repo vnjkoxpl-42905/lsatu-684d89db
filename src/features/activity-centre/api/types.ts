@@ -54,6 +54,15 @@ export interface ActivityItem {
   explanation: string;
   /** Optional grouping label (e.g. "Universal Statement"). */
   category?: string;
+  /**
+   * Structured grading key (Spot the Relationship). Server-side grading input
+   * only; never shown to the student. The explanation stays the student copy.
+   */
+  answer_key?: {
+    relationships: { type: string; indicators: string[]; required_parts?: string[][]; connects: string; why: string }[];
+    traps: string[];
+    context_benchmark: string | null;
+  };
 }
 
 /**

@@ -30,6 +30,9 @@ import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const DrillSetupPreview = React.lazy(() => import('./dev/DrillSetupPreview'));
 const PracticeExamsPreview = React.lazy(() => import('./dev/PracticeExamsPreview'));
+const ConditionalOpeningPreview = import.meta.env.DEV
+  ? safeLazy(() => import('./dev/ConditionalOpeningPreview'))
+  : () => null;
 const Drill = safeLazy(() => import("./pages/Drill"));
 const DrillLaunchGate = safeLazy(() => import("./components/drill/DrillLaunchGate"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
@@ -115,11 +118,16 @@ const ActivityCentre = safeLazy(() => import("./pages/ActivityCentre"));
 const ConditionalPractice = safeLazy(() => import("./features/activity-centre/conditionals/ConditionalPractice"));
 const ConditionalPracticeLab = safeLazy(() => import("./features/activity-centre/conditionals/ConditionalPractice").then(module => ({ default: module.ConditionalPracticeLab })));
 const ConditionalIndicatorsRefresher = safeLazy(() => import("./features/conditional-refresher/ConditionalIndicatorsRefresher"));
+const UnlessDrillPage = safeLazy(() => import("./features/quick-drills/unless-drill/UnlessDrillPage"));
 const ActivitySections = safeLazy(() => import("./pages/ActivitySections"));
 const ActivityRunner = safeLazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const TeacherWorkspaceShell = safeLazy(() => import("./pages/teacher/shell/TeacherWorkspaceShell"));
+const TeacherReadingCenter = safeLazy(() => import("./pages/teacher/tools/TeacherReadingCenter"));
+const ReadingCenterApp = safeLazy(() => import("./features/reading-center"));
+import ReadingCenterGate from '@/components/ReadingCenterGate';
+import MyWorkGate from '@/components/MyWorkGate';
 const DeskTodaySurface = safeLazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
 const TeacherPayments = safeLazy(() => import("./pages/teacher/shell/TeacherPayments"));
 const TeacherDevIndex = safeLazy(() => import("./pages/teacher/shell/TeacherDevIndex"));
@@ -175,7 +183,7 @@ import { isOfficialTimedChildPath } from "@/lib/officialTimedRoute";
 // Surfaces that own the whole screen and must stay free of floating chrome.
 // The exam players are the strict case: nothing may sit over the passage, the
 // choices or the footer's primary action.
-const OVERLAY_FREE_PREFIXES = ["/book/", "/classroom", "/drill", "/rc", "/section/"];
+const OVERLAY_FREE_PREFIXES = ["/book/", "/classroom", "/drill", "/rc", "/section/", "/reading-center"];
 
 function GlobalOverlayMount() {
   const { pathname } = useLocation();
@@ -287,6 +295,9 @@ const App = () => {
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             {import.meta.env.DEV && <Route path="/dev/drill-setup-preview" element={<DrillSetupPreview />} />}
+            {import.meta.env.DEV && <Route path="/dev/conditional-opening-preview" element={<ConditionalOpeningPreview />} />}
+            {/* Dev-only: the Abstract bootcamp without sign-in or assignment, for local QA. Progress writes are skipped with no user. */}
+            {import.meta.env.DEV && <Route path="/dev/abstract-preview" element={<AbstractBootcamp />} />}
             {import.meta.env.DEV && <Route path="/dev/practice-exams-preview/*" element={<PracticeExamsPreview />} />}
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
@@ -474,6 +485,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Navigate to="/classroom" replace />} />
 
+                  <Route path="/reading-center/*" element={<ReadingCenterGate><ReadingCenterApp /></ReadingCenterGate>} />
                   {/* Full-screen takeovers: actual LSAT question-doing + activity
                       runner stay OUTSIDE the persistent student shell. */}
                   <Route path="/drill" element={
@@ -613,8 +625,8 @@ const App = () => {
 
                     <Route path="/my-work" element={<ProtectedRoute allowSignedIn><StudentDestination destination="my-work" /></ProtectedRoute>}>
                       <Route index element={<DestinationIndex destination="my-work" />} />
-                      <Route path="to-do" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed={false} /></ProtectedRoute>} />
-                      <Route path="completed" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed /></ProtectedRoute>} />
+                      <Route path="to-do" element={<MyWorkGate><MyWorkPage completed={false} /></MyWorkGate>} />
+                      <Route path="completed" element={<MyWorkGate><MyWorkPage completed /></MyWorkGate>} />
                       <Route path="notes" element={<ProtectedRoute flag="has_classroom_access"><MyWorkNotesPage /></ProtectedRoute>} />
                     </Route>
 
@@ -715,6 +727,11 @@ const App = () => {
                         <ConditionalIndicatorsRefresher />
                       </ProtectedRoute>
                     } />
+                    <Route path="/quick-drills/unless-drill" element={
+                      <ProtectedRoute flag={["has_activity_access", "has_drill_access"]}>
+                        <UnlessDrillPage />
+                      </ProtectedRoute>
+                    } />
                     <Route path="/analytics" element={<RedirectWithSearch to="/progress/overview" />} />
                     <Route path="/history" element={<RedirectLegacyHistory />} />
                     <Route path="/schedule" element={
@@ -749,6 +766,8 @@ const App = () => {
                       </ProtectedRoute>
                     }>
                       <Route index element={<TeacherWorkspaceIndex />} />
+                      <Route path="tools" element={<Navigate to="/teacher/tools/reading-center" replace />} />
+                      <Route path="tools/reading-center" element={<TeacherReadingCenter />} />
 
                       <Route path="today" element={
                         <React.Suspense fallback={<div />}>

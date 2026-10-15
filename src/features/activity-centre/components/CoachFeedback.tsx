@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { ActivityItem, FeedbackState } from "../api/types";
+import { renderInlineMarks } from "../prompt-format";
 
 interface CoachFeedbackProps {
   verdict: FeedbackState;
@@ -94,7 +95,9 @@ export function CoachFeedback({
 
       {resolved && item.explanation && (
         <p className="border-l-2 border-[hsl(var(--ac-emerald)/0.35)] pl-4 text-sm leading-relaxed text-foreground/75">
-          {item.explanation}
+          {/* Explanations are authored with the same *emphasis* marks as
+              prompts. Printed raw, a student read the asterisks. */}
+          {renderInlineMarks(item.explanation, "explanation")}
         </p>
       )}
     </div>

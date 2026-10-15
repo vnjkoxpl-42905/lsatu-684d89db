@@ -22,6 +22,18 @@ describe('first-answer History and Topics', () => {
     expect(details.topics).toEqual([{ topic: 'Weaken', correct: 1, denominator: 1, percent: null, evidenceAttemptIds: ['new'] }]);
   });
 
+  it('shows each persisted attempt once in History and Topics after overlapping reads', () => {
+    const first = answer('attempts:first', 'LR:q1', '2026-09-26', false, 'Weaken');
+    const repeat = answer('attempts:repeat', 'LR:q1', '2026-09-27', true, 'Weaken');
+    const details = firstAnswerDetails([repeat, first, { ...first }, { ...repeat }], 7, '2026-09-28');
+    expect(details.history.map((row) => [row.attemptId, row.isFirst])).toEqual([
+      ['attempts:repeat', false], ['attempts:first', true],
+    ]);
+    expect(details.topics).toEqual([{
+      topic: 'Weaken', correct: 0, denominator: 1, percent: null, evidenceAttemptIds: ['attempts:first'],
+    }]);
+  });
+
   it('only groups persisted LR topics and discloses untyped first answers', () => {
     const details = firstAnswerDetails([
       answer('a', 'LR:a', '2026-09-27', false),

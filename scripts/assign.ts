@@ -23,6 +23,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { supabase } from "@/integrations/supabase/client";
 import { assignWork } from "@/lib/assignWork";
+import { BOOTCAMPS } from "@/lib/bootcamps";
+import { updateClassroomItem } from "@/lib/classroomItems";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -58,16 +60,17 @@ const drillQuery = arg("drill");
 const messageText = arg("message");
 const sectionQuery = arg("section");
 const setQuery = arg("set");
+const bootcampQuery = arg("bootcamp");
 const scheduleFor = arg("schedule");
 const dueOn = arg("due");
 const dryRun = has("dry-run");
 
-const kinds = [activityQuery, drillQuery, messageText, sectionQuery, setQuery].filter(Boolean).length;
+const kinds = [activityQuery, drillQuery, messageText, sectionQuery, setQuery, bootcampQuery].filter(Boolean).length;
 if (!studentQuery || kinds !== 1) {
   console.error(
     "usage: vite-node scripts/assign.ts -- --student <name|email> \\\n" +
       "         (--activity <title> | --drill <slug|title> | --message <text>\\\n" +
-      "          | --section PT<n>.S<n> | --set <title|id>)\\\n" +
+      "          | --section PT<n>.S<n> | --set <title|id> | --bootcamp <id|title>)\\\n" +
       "         [--schedule YYYY-MM-DD] [--due YYYY-MM-DD] [--dry-run]",
   );
   process.exit(2);
@@ -411,6 +414,8 @@ const ACCESS_FLAGS = {
   guided_drill: ["has_drill_access"],
   // A homework set is opened from /classroom/:id and run at /drill.
   homework_set: ["has_classroom_access", "has_drill_access"],
+  // Bootcamps and Quick Drills open behind the Activities/Drill doors.
+  bootcamp: ["has_activity_access"],
 } as const;
 
 async function ensureCanOpen(classId: string, kind: keyof typeof ACCESS_FLAGS, who: string) {
@@ -474,6 +479,15 @@ async function main() {
     item = { kind: "homework_set", setId: s.id };
     label = s.title;
     note = `  ${s.count} questions, timed 35:00 · set ${s.created ? "created" : "reused"} (${s.id})`;
+  } else if (bootcampQuery) {
+    const q = bootcampQuery.trim().toLowerCase();
+    const b = BOOTCAMPS.find((x) => x.id === q || x.title.toLowerCase() === q);
+    if (!b) {
+      console.error(`assign: no bootcamp matches "${bootcampQuery}". Known: ${BOOTCAMPS.map((x) => x.id).join(", ")}`);
+      process.exit(1);
+    }
+    item = { kind: "bootcamp", topicId: b.id };
+    label = b.title;
   } else {
     const s = await resolveSet(setQuery!);
     item = { kind: "homework_set", setId: s.id };
@@ -521,6 +535,11 @@ async function main() {
   }
   const r = ok[0];
   const n = r.notify;
+  // A bootcamp has no assignment row; its due date lives on the classroom
+  // item, stamped afterwards exactly as the Desk's Assign sheet does.
+  if (item.kind === "bootcamp" && dueOn && r.classroomItemId) {
+    await updateClassroomItem(r.classroomItemId, { due_at: dueAtEndOfDay(dueOn) });
+  }
   // After the write, not before: a student who is never assigned anything has
   // no business having a feature opened for them.
   await ensureCanOpen(student.class_id, item.kind, who);

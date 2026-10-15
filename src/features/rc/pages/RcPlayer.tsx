@@ -21,7 +21,7 @@ import {
   RcTextSettings,
 } from '../components/RcModals';
 import { RC_DIRECTIONS, RC_FONT_SCALE_OPTIONS } from '../lib/rcDirections';
-import { readActiveRcAnswerBackup, readRcAnswerBackup, writeRcAnswerBackup, clearRcAnswerBackup } from '../lib/rcAnswerBackup';
+import { readActiveRcAnswerBackups, readRcAnswerBackups, writeRcAnswerBackup, requestRcAnswerBackupSave, clearRcAnswerBackup } from '../lib/rcAnswerBackup';
 import { completedRcDestination, rcReviewRedirect } from '../lib/rcSessionDestination';
 import { safeRcReturnTo } from '../lib/rcReturnTo';
 import { useRcA11y } from '../hooks/useRcA11y';
@@ -141,6 +141,7 @@ function RcPlayerRunner() {
   const completedRef = React.useRef(false);
   const completionPendingRef = React.useRef(false);
   const attemptIdsRef = React.useRef(new Map<number, string>());
+  const answerWriteGenerationRef = React.useRef(0);
 
   const reviewOnly = params.get('review') === '1';
   const protectedReview = reviewOnly && (!!config.timedSectionSittingId || !!config.practiceTestRunId);
@@ -181,6 +182,7 @@ function RcPlayerRunner() {
 
   React.useEffect(() => {
     let cancelled = false;
+    const answerWriteGeneration = ++answerWriteGenerationRef.current;
 
     // A new drill starts clean. React Router keeps this component mounted
     // across a search-param change, so without this the previous sitting's
@@ -197,6 +199,10 @@ function RcPlayerRunner() {
     completionPendingRef.current = false;
     attemptIdsRef.current.clear();
     pendingSaveRef.current = null;
+    navigationInFlightRef.current = false;
+    setSavingNavigation(false);
+    setSubmitting(false);
+    setRetryingSave(false);
     setSaveError(null);
     setReattemptPicks(new Map());
     setSkippedReattempt(new Set());
@@ -308,6 +314,7 @@ function RcPlayerRunner() {
 
     return () => {
       cancelled = true;
+      if (answerWriteGenerationRef.current === answerWriteGeneration) answerWriteGenerationRef.current++;
     };
     // Re-boot when the drill being pointed at changes: React Router keeps this
     // component mounted across a search-param change, so an empty dep list
@@ -336,19 +343,21 @@ function RcPlayerRunner() {
     if (!sessionId || !sessionOwnerId) return;
     const clockNeedsSave = !reviewOnly && sessionStatus === 'in_progress'
       && Math.floor(readClockBackup(sessionId)) > (config.clockElapsedSeconds ?? 0);
-    const pendingAnswer = readActiveRcAnswerBackup(sessionOwnerId, sessionId, sessionStatus, reviewOnly);
+    const pendingAnswers = readActiveRcAnswerBackups(sessionOwnerId, sessionId, sessionStatus, reviewOnly)
+      .filter((answer) => seeded.items.some((entry) => entry.question.questionId === answer.questionId));
+    const pendingAnswer = pendingAnswers.at(-1);
+    for (const answer of pendingAnswers) attemptIdsRef.current.set(answer.questionId, answer.attemptId);
     if (pendingAnswer) {
-      attemptIdsRef.current.set(pendingAnswer.questionId, pendingAnswer.attemptId);
       dispatch({
         type: 'restore',
         state: {
-          answers: new Map([[pendingAnswer.questionId, pendingAnswer.selected]]),
+          answers: new Map(pendingAnswers.map((answer) => [answer.questionId, answer.selected])),
           currentIndex: Math.min(Math.max(pendingAnswer.currentIndex, 0), seeded.items.length - 1),
           paused: true,
         },
       });
-      setElapsed((old) => Math.max(old, pendingAnswer.elapsed));
-      setSaveError('Your last answer still needs to save.');
+      setElapsed((old) => Math.max(old, ...pendingAnswers.map((answer) => answer.elapsed)));
+      if (pendingAnswers.some((answer) => answer.saveRequested)) setSaveError('Your last answer still needs to save.');
     }
     // The component stays mounted across a session change, so this promise can
     // land after the player has already moved to a different drill. Without the
@@ -376,14 +385,17 @@ function RcPlayerRunner() {
           }
         }
         const savedIndex = config.currentQuestionIndex;
+        const unsavedAnswers = pendingAnswers.filter((answer) => !hydrated.recorded.has(answer.questionId));
+        const pendingSaves = unsavedAnswers.filter((answer) => answer.saveRequested);
+        const lastUnsavedAnswer = unsavedAnswers.at(-1);
+        const restoredAnswers = new Map(hydrated.answers);
+        for (const answer of unsavedAnswers) restoredAnswers.set(answer.questionId, answer.selected);
         const resumeIndex = !reviewOnly && Number.isSafeInteger(savedIndex) && savedIndex >= 0 && savedIndex < seeded.items.length
           ? savedIndex : hydrated.firstUnansweredIndex === -1 ? 0 : hydrated.firstUnansweredIndex;
         dispatch({
           type: 'restore',
           state: {
-            answers: pendingAnswer && !hydrated.recorded.has(pendingAnswer.questionId)
-              ? new Map(hydrated.answers).set(pendingAnswer.questionId, pendingAnswer.selected)
-              : hydrated.answers,
+            answers: restoredAnswers,
             // In review this stays empty: `state.eliminations` is what a
             // re-attempt writes, and seeding it with the FIRST attempt's
             // cross-outs would file them against the second. The restored set
@@ -396,19 +408,21 @@ function RcPlayerRunner() {
             revealed: hydrated.revealed,
             reviewedPassages: hydrated.reviewedPassages,
             currentIndex:
-              pendingAnswer && !hydrated.recorded.has(pendingAnswer.questionId)
-                ? pendingAnswer.currentIndex
+              lastUnsavedAnswer
+                ? Math.min(Math.max(lastUnsavedAnswer.currentIndex, 0), seeded.items.length - 1)
                 : targetIndex >= 0
                 ? targetIndex
                 : resumeIndex,
             submitted: hydrated.submitted,
-            paused: clockNeedsSave || (!!pendingAnswer && !hydrated.recorded.has(pendingAnswer.questionId)),
+            paused: clockNeedsSave || pendingSaves.length > 0,
           },
         });
-        if (pendingAnswer && hydrated.recorded.has(pendingAnswer.questionId)) {
-          clearRcAnswerBackup(sessionOwnerId, sessionId);
-          setSaveError(null);
+        for (const answer of pendingAnswers) {
+          if (attempts.some((attempt) => attempt.id === answer.attemptId && attempt.questionId === answer.questionId)) {
+            clearRcAnswerBackup(sessionOwnerId, sessionId, answer.questionId, answer.attemptId);
+          }
         }
+        if (!pendingSaves.length) setSaveError(null);
         if (clockNeedsSave) setSaveError('Your saved clock still needs to reach your account.');
         // What the student crossed out the first time is theirs to see in
         // review. It is display only: the array written with a re-attempt is
@@ -441,7 +455,8 @@ function RcPlayerRunner() {
   const [findCount, setFindCount] = React.useState(0);
   const [highlightMode, setHighlightMode] = React.useState<RcHighlightMode>('none');
   const [modal, setModal] = React.useState<'details' | 'submit' | null>(null);
-  const [scrollTops, setScrollTops] = React.useState<Map<number, number>>(new Map());
+  // Full-width reflow may clamp scrollTop. Keep the split position separately.
+  const [scrollTops, setScrollTops] = React.useState<Map<string, number>>(new Map());
   const [reattemptPicks, setReattemptPicks] = React.useState<Map<number, RcLetter>>(new Map());
   const [skippedReattempt, setSkippedReattempt] = React.useState<Set<number>>(new Set());
   /**
@@ -523,39 +538,58 @@ function RcPlayerRunner() {
     };
   }, [sessionId, sessionStatus, loadingAnswers, answerLoadError, reviewOnly, failAccountSave]);
 
+  // Async continuations belong to the drill that rendered their callback.
+  // Sampling the current generation inside an old closure would adopt a new
+  // drill after navigation and let its delayed save mutate that drill.
+  const answerWriteGeneration = answerWriteGenerationRef.current;
   const retryAccountSave = async () => {
+    if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
     if (!sessionId || sessionStatus !== 'in_progress' || retryingSave) return;
     setRetryingSave(true);
     try {
       writeClockBackup(sessionId, elapsedRef.current);
-      const pendingAnswer = sessionOwnerId ? readRcAnswerBackup(sessionOwnerId, sessionId) : null;
-      const pending = pendingSaveRef.current ?? (pendingAnswer
-        ? async () => {
-            const target = state.items.find((entry) => entry.question.questionId === pendingAnswer.questionId);
-            return target ? writeAttempt(target, pendingAnswer.selected) : false;
+      const pendingAnswers = sessionOwnerId ? readRcAnswerBackups(sessionOwnerId, sessionId)
+        .filter((answer) => answer.saveRequested && !state.recorded.has(answer.questionId)) : [];
+      const saveDraftsFrom = async (start: number): Promise<boolean> => {
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
+        for (let index = start; index < pendingAnswers.length; index++) {
+          const answer = pendingAnswers[index];
+          const target = state.items.find((entry) => entry.question.questionId === answer.questionId);
+          if (!target || !await writeAttempt(target, answer.selected)) {
+            if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
+            pendingSaveRef.current = () => saveDraftsFrom(index);
+            return false;
           }
-        : null);
+        }
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
+        return true;
+      };
+      const pending = pendingSaveRef.current ?? (pendingAnswers.length ? () => saveDraftsFrom(0) : null);
       // An answer retry alone does not acknowledge the stopped section clock.
       // If completion reached the account before its response was lost, the
       // completion retry is idempotent and there is no active clock to update.
       const latest = completionPendingRef.current ? await getSession(sessionId) : null;
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
       if (latest?.status !== 'completed' || latest.userId !== sessionOwnerId) {
         await saveSessionClock(sessionId, elapsedRef.current, state.currentIndex);
       }
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
       if (pending) {
         if (!await pending()) return;
       }
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
       pendingSaveRef.current = null;
       setSaveError(null);
       dispatch({ type: 'setPaused', paused: false });
     } catch (err) {
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
       if (isHandoffError(err)) {
         setError('This practice test is active on another device. This device has stopped saving.');
       } else {
         console.error('[rc:save:retry] account save failed', err);
       }
     } finally {
-      setRetryingSave(false);
+      if (answerWriteGenerationRef.current === answerWriteGeneration) setRetryingSave(false);
     }
   };
 
@@ -571,13 +605,18 @@ function RcPlayerRunner() {
 
   const writeAttempt = React.useCallback(
     async (target: RcSessionItem, selected: RcLetter | null): Promise<boolean> => {
-      if (!sessionId) return false;
+      if (!sessionId || answerWriteGenerationRef.current !== answerWriteGeneration) return false;
       // A question already written once in this session is not written again.
       // Resume used to lose the reveal state, which left Confirm enabled on a
       // question that was already answered and inserted a second attempt row
       // for it. The reveal state is restored now; this is the belt.
       if (state.recorded.has(target.question.questionId)) return true;
       const questionId = target.question.questionId;
+      if (sessionOwnerId && !requestRcAnswerBackupSave(sessionOwnerId, sessionId, [questionId])) {
+        pendingSaveRef.current = () => writeAttempt(target, selected);
+        failAccountSave('The answer save could not be backed up on this device. Keep this page open and retry.');
+        return false;
+      }
       const attemptId = attemptIdsRef.current.get(questionId) ?? crypto.randomUUID();
       attemptIdsRef.current.set(questionId, attemptId);
       // Closing a set persists unanswered scoring rows too. Only the visible
@@ -598,14 +637,14 @@ function RcPlayerRunner() {
           eliminations: state.eliminations.get(target.question.questionId) ?? [],
           isFirstAttempt: true,
         });
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
         dispatch({ type: 'markRecorded', questionIds: [questionId] });
         flagPersistence.acknowledgeRecordedFlag(questionId, state.flagged.has(questionId));
-        if (sessionOwnerId && readRcAnswerBackup(sessionOwnerId, sessionId)?.questionId === questionId) {
-          clearRcAnswerBackup(sessionOwnerId, sessionId);
-        }
-        attemptIdsRef.current.delete(questionId);
+        if (sessionOwnerId) clearRcAnswerBackup(sessionOwnerId, sessionId, questionId, attemptId);
+        if (attemptIdsRef.current.get(questionId) === attemptId) attemptIdsRef.current.delete(questionId);
         return true;
       } catch (err) {
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
         if (isHandoffError(err)) {
           setError('This practice test is active on another device. This device has stopped saving.');
           return false;
@@ -618,12 +657,15 @@ function RcPlayerRunner() {
          * the drill stays where it is and says what happened instead.
          */
         if (selected && sessionOwnerId) {
-          const backedUp = writeRcAnswerBackup(sessionOwnerId, sessionId, {
+          const newerAnswer = readRcAnswerBackups(sessionOwnerId, sessionId)
+            .find((answer) => answer.questionId === questionId && answer.attemptId !== attemptId);
+          const backedUp = !!newerAnswer || writeRcAnswerBackup(sessionOwnerId, sessionId, {
             questionId,
             selected,
             attemptId,
             currentIndex: state.currentIndex,
             elapsed: elapsedRef.current,
+            saveRequested: true,
           });
           if (!backedUp) {
             pendingSaveRef.current = () => writeAttempt(target, selected);
@@ -636,34 +678,44 @@ function RcPlayerRunner() {
         return false;
       }
     },
-    [sessionId, sessionOwnerId, state.flagged, state.eliminations, state.recorded, state.currentIndex, state.items, failAccountSave, flagPersistence],
+    [answerWriteGeneration, sessionId, sessionOwnerId, state.flagged, state.eliminations, state.recorded, state.currentIndex, state.items, failAccountSave, flagPersistence],
   );
 
   const recordPassage = React.useCallback(
     async (passageId: number) => {
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
       const items = itemsForPassage(state, passageId).filter(
         (i) => !state.recorded.has(i.question.questionId),
       );
+      if (sessionId && sessionOwnerId && !requestRcAnswerBackupSave(sessionOwnerId, sessionId, items.map((entry) => entry.question.questionId))) {
+        pendingSaveRef.current = () => recordPassage(passageId);
+        failAccountSave('The passage save could not be backed up on this device. Keep this page open and retry.');
+        return false;
+      }
       const saveFrom = async (start: number): Promise<boolean> => {
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
         for (let index = start; index < items.length; index++) {
           const target = items[index];
           if (!await writeAttempt(target, state.answers.get(target.question.questionId) ?? null)) {
+            if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
             pendingSaveRef.current = () => saveFrom(index);
             return false;
           }
         }
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
         dispatch({ type: 'reviewPassage', passageId });
         return true;
       };
       return saveFrom(0);
     },
-    [state, writeAttempt],
+    [answerWriteGeneration, sessionId, sessionOwnerId, state, writeAttempt, failAccountSave],
   );
 
   /* ------------------------------------------------------ navigation */
 
   const goTo = React.useCallback(
     async (index: number) => {
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
       if (state.paused || loadingAnswers || answerLoadError || navigationInFlightRef.current || !state.items[index]) return;
       navigationInFlightRef.current = true;
       setSavingNavigation(true);
@@ -671,11 +723,14 @@ function RcPlayerRunner() {
       let answerSaved = !leaving || config.reveal !== 'end_of_set'
         || state.recorded.has(leaving.question.questionId) || !state.answers.has(leaving.question.questionId);
       const move = async (): Promise<boolean> => {
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
         if (!answerSaved && leaving) {
           if (!await writeAttempt(leaving, state.answers.get(leaving.question.questionId) ?? null)) {
+            if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
             pendingSaveRef.current = move;
             return false;
           }
+          if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
           answerSaved = true;
         }
         try {
@@ -683,9 +738,11 @@ function RcPlayerRunner() {
             if (!sessionId) throw new Error('This section is not available to save.');
             await saveSessionClock(sessionId, elapsedRef.current, index);
           }
+          if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
           dispatch({ type: 'goto', index });
           return true;
         } catch (err) {
+          if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
           if (isHandoffError(err)) {
             setError('This practice test is active on another device. This device has stopped saving.');
           } else {
@@ -698,26 +755,39 @@ function RcPlayerRunner() {
       try {
         await move();
       } finally {
-        navigationInFlightRef.current = false;
-        setSavingNavigation(false);
+        if (answerWriteGenerationRef.current === answerWriteGeneration) {
+          navigationInFlightRef.current = false;
+          setSavingNavigation(false);
+        }
       }
     },
-    [state, config.reveal, writeAttempt, loadingAnswers, answerLoadError, reviewOnly, sessionId, failAccountSave],
+    [answerWriteGeneration, state, config.reveal, writeAttempt, loadingAnswers, answerLoadError, reviewOnly, sessionId, failAccountSave],
   );
 
   const handleSubmit = React.useCallback(async () => {
+    if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
     if (navigationInFlightRef.current || submitting) return;
     navigationInFlightRef.current = true;
     setSubmitting(true);
     const targets = state.items.filter((target) => !state.recorded.has(target.question.questionId));
+    if (sessionId && sessionOwnerId && !requestRcAnswerBackupSave(sessionOwnerId, sessionId, targets.map((target) => target.question.questionId))) {
+      pendingSaveRef.current = async () => { await handleSubmit(); return completedRef.current; };
+      failAccountSave('The drill save could not be backed up on this device. Keep this page open and retry.');
+      setSubmitting(false);
+      navigationInFlightRef.current = false;
+      return;
+    }
     const finish = async (): Promise<boolean> => {
-      if (!sessionId) return false;
+      if (!sessionId || answerWriteGenerationRef.current !== answerWriteGeneration) return false;
       completionPendingRef.current = true;
       try {
         const latest = await getSession(sessionId);
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
         if (latest?.status !== 'completed') await saveSessionClock(sessionId, elapsedRef.current);
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
         await completeSession(sessionId);
       } catch (err) {
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
         if (isHandoffError(err)) {
           setError('This practice test is active on another device. This device has stopped saving.');
           return false;
@@ -726,6 +796,7 @@ function RcPlayerRunner() {
         failAccountSave('The drill did not finish saving.');
         return false;
       }
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
       completedRef.current = true;
       completionPendingRef.current = false;
       dispatch({ type: 'submit' });
@@ -738,9 +809,11 @@ function RcPlayerRunner() {
       return true;
     };
     const saveFrom = async (start: number): Promise<boolean> => {
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
       for (let index = start; index < targets.length; index++) {
         const target = targets[index];
         if (!await writeAttempt(target, state.answers.get(target.question.questionId) ?? null)) {
+          if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
           pendingSaveRef.current = () => saveFrom(index);
           return false;
         }
@@ -750,12 +823,15 @@ function RcPlayerRunner() {
     try {
       await saveFrom(0);
     } finally {
-      setSubmitting(false);
-      navigationInFlightRef.current = false;
+      if (answerWriteGenerationRef.current === answerWriteGeneration) {
+        setSubmitting(false);
+        navigationInFlightRef.current = false;
+      }
     }
-  }, [state, writeAttempt, sessionId, navigate, returnTo, config.practiceTestRunId, failAccountSave, submitting]);
+  }, [answerWriteGeneration, state, writeAttempt, sessionId, sessionOwnerId, navigate, returnTo, config.practiceTestRunId, failAccountSave, submitting]);
 
   const handleSaveExit = React.useCallback(async () => {
+    if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
     if (reviewOnly) {
       navigate(exitPath);
       return;
@@ -769,9 +845,12 @@ function RcPlayerRunner() {
         && !state.recorded.has(current.question.questionId)) {
         if (!await writeAttempt(current, state.answers.get(current.question.questionId) ?? null)) return;
       }
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
       await saveSessionClock(sessionId, elapsedRef.current, state.currentIndex);
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
       navigate(exitPath);
     } catch (err) {
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
       if (isHandoffError(err)) {
         setError('This practice test is active on another device. This device has stopped saving.');
       } else {
@@ -779,9 +858,9 @@ function RcPlayerRunner() {
         console.error('[rc:exit] account save failed', err);
       }
     } finally {
-      navigationInFlightRef.current = false;
+      if (answerWriteGenerationRef.current === answerWriteGeneration) navigationInFlightRef.current = false;
     }
-  }, [reviewOnly, navigate, exitPath, sessionId, state, writeAttempt, failAccountSave]);
+  }, [answerWriteGeneration, reviewOnly, navigate, exitPath, sessionId, state, writeAttempt, failAccountSave]);
 
   const toggleFlag = React.useCallback(
     (questionId: number) => {
@@ -867,6 +946,7 @@ function RcPlayerRunner() {
           attemptId,
           currentIndex: state.currentIndex,
           elapsed: elapsedRef.current,
+          saveRequested: false,
         });
         if (!backedUp) {
           pendingSaveRef.current = () => writeAttempt(item, letter);
@@ -1012,6 +1092,7 @@ function RcPlayerRunner() {
           if (await writeAttempt(item, selected)) {
             dispatch({ type: 'reveal', questionId });
           } else {
+            if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
             pendingSaveRef.current = async () => {
               if (!await writeAttempt(item, selected)) return false;
               dispatch({ type: 'reveal', questionId });
@@ -1207,9 +1288,13 @@ function RcPlayerRunner() {
               findQuery={findQuery}
               findIndex={findIndex}
               onFindCount={setFindCount}
-              scrollTop={scrollTops.get(item.passage.passageId) ?? 0}
+              scrollTop={
+                scrollTops.get(`${item.passage.passageId}:${passageOnly}`) ??
+                scrollTops.get(`${item.passage.passageId}:${!passageOnly}`) ??
+                0
+              }
               onScroll={(top) =>
-                setScrollTops((prev) => new Map(prev).set(item.passage.passageId, top))
+                setScrollTops((prev) => new Map(prev).set(`${item.passage.passageId}:${passageOnly}`, top))
               }
               textStyle={type.passage}
               passageOnly={passageOnly}

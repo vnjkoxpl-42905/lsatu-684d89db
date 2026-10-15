@@ -2,7 +2,7 @@ import { useApp } from "../../store/AppContext";
 import { ArrowRight, CheckCircle2, Lock, Star, Flame, Medal } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { cn } from "../../lib/utils";
-import { MODULES } from "../../data/modules";
+import { LECTURE_MODULES } from "../../data/modules";
 import type { MasteryLevel } from "../../types";
 
 const container: Variants = {
@@ -24,12 +24,12 @@ export default function Dashboard() {
   } = useApp();
   const prefersReducedMotion = useReducedMotion();
 
-  const completedCount = MODULES.filter((m) => isModuleComplete(m.id)).length;
-  const overallPct = Math.round((completedCount / MODULES.length) * 100);
+  const completedCount = LECTURE_MODULES.filter((m) => isModuleComplete(m.id)).length;
+  const overallPct = Math.round((completedCount / LECTURE_MODULES.length) * 100);
 
   // Recommended next: first module that is unlocked and not complete.
   const recommended =
-    MODULES.find((m) => isModuleUnlocked(m.id) && !isModuleComplete(m.id)) ?? null;
+    LECTURE_MODULES.find((m) => isModuleUnlocked(m.id) && !isModuleComplete(m.id)) ?? null;
 
   return (
     <motion.div
@@ -64,6 +64,17 @@ export default function Dashboard() {
         </div>
       </motion.div>
 
+      <motion.section variants={itemFx} className="mb-8 rounded-lg border border-brutal-ink-trace bg-brutal-paper p-6" aria-labelledby="homework-steps">
+        <h2 id="homework-steps" className="text-xl font-bold mb-3">How to complete your homework</h2>
+        <ol className="list-decimal pl-5 space-y-2 leading-relaxed">
+          <li>Work through <strong>Modules 1–7 in order</strong>.</li>
+          <li>Open <strong>Note</strong>. After reading, click <strong>I read this</strong> to save it.</li>
+          <li>Open <strong>Drill</strong> and complete its questions. Quizzes are optional extra practice.</li>
+        </ol>
+        <p className="mt-4 leading-relaxed"><strong>Module 3 has 15 answer choices.</strong> For each one, write what must be present and create your own example argument. You can click <strong>Show breakdown</strong> at any time, then revise your response and save it.</p>
+        <p className="mt-3 text-sm leading-relaxed">Reviewed breakdowns and saved written responses are tracked separately. Reviewing alone does not complete the written exercise. A module is done when its note and drill are saved. When you’re signed in, your saved progress belongs to your account so you can return to it.</p>
+      </motion.section>
+
       {recommended && (
         <motion.div variants={itemFx} className="mb-10">
           <button
@@ -90,15 +101,13 @@ export default function Dashboard() {
           The 7 Modules
         </h2>
         <ul className="space-y-3 list-none m-0 p-0">
-          {MODULES.map((m) => {
+          {LECTURE_MODULES.map((m) => {
             const row = bootcampState.moduleProgress[m.id];
             const noteDone = Boolean(row?.noteComplete);
-            const quizPassed =
-              row?.quizTotal > 0 && row.quizScore / row.quizTotal >= m.quizPassThreshold;
-            const drillDone = Boolean(row?.drillComplete);
+            const drillDone = isModuleComplete(m.id);
             const unlocked = isModuleUnlocked(m.id);
-            const aced = bootcampState.aceBadges.includes(m.id);
-            const mastery: MasteryLevel = row?.masteryLevel ?? "none";
+            const aced = Boolean(m.quizSource) && bootcampState.aceBadges.includes(m.id);
+            const mastery: MasteryLevel = ["m3", "m5", "m6", "m7"].includes(m.id) ? "none" : row?.masteryLevel ?? "none";
             const medalColor =
               mastery === "mastered"
                 ? "text-brutal-yellow"
@@ -107,7 +116,7 @@ export default function Dashboard() {
                   : mastery === "practicing"
                     ? "text-brutal-pink"
                     : "text-brutal-ink-trace";
-            const pct = (noteDone ? 33 : 0) + (quizPassed ? 33 : 0) + (drillDone ? 34 : 0);
+            const pct = (noteDone ? 50 : 0) + (row?.drillComplete ? 50 : 0);
             return (
               <li key={m.id}>
                 <button
@@ -134,9 +143,13 @@ export default function Dashboard() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-black uppercase tracking-tight truncate">{m.name}</p>
-                    <p className="text-xs font-bold text-brutal-ink-soft truncate mt-0.5">
+                    <p className="font-black uppercase tracking-tight">{m.name}</p>
+                    <p className="text-xs font-bold text-brutal-ink-soft mt-0.5">
                       {m.subtitle}
+                    </p>
+                    <p className="text-xs font-bold mt-2">
+                      {drillDone ? "Done" : noteDone || row?.drillComplete ? "In progress" : "Not started"}
+                      {" · "}Note: {noteDone ? "saved" : "not saved"}{" · "}Drill: {row?.drillComplete ? "saved" : "not finished"}
                     </p>
                     <div className="mt-2 h-1.5 w-full bg-brutal-ink-trace">
                       <div
