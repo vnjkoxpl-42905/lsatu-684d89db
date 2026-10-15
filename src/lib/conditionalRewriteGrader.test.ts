@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createRateLimiter, parseGrade, validRequest } from '../../supabase/functions/grade-conditional-rewrite/core';
 import { gradeConditionalRewrite } from './conditionalRewriteGrader';
 import liveResults from '../../docs/agent/verification/2026-10-14-conditional-rewrite-live-tests.json';
+import finalResults from '../../docs/agent/verification/2026-10-15-conditional-rewrite-final-three-live-tests.json';
 
 const { invoke } = vi.hoisted(() => ({ invoke: vi.fn() }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: { functions: { invoke } } }));
@@ -34,7 +35,7 @@ describe('conditional rewrite grading contract', () => {
       { issue: 'correct', evidence: 'Mia' },
     ]) expect(() => parseGrade(JSON.stringify(value), request)).toThrow();
   });
-  it('replaces the three captured bad hints with diagnosis-specific hints, without answer leaks or contradictory praise', () => {
+  it('replaces captured bad hints with grounded comparisons without answer leaks or contradictory praise', () => {
     const diagnostics = [
       { case: 'converse-reversal', issue: 'reversal', evidence: 'If Mia takes the bus' },
       { case: 'missing-time-qualifier', issue: 'missing_restriction', evidence: 'Every order' },
@@ -91,7 +92,7 @@ describe('conditional rewrite grading contract', () => {
     const result = parseGrade(JSON.stringify({ correct: false, issue: 'weakened_modality', evidence: 'invented sentence' }), { studentResponse: 'The market might move indoors.', task: 'rewrite' });
     expect(result.feedback).toContain('The market might move indoors.');
     expect(result.feedback).not.toContain('invented');
-    expect(result.feedback).toContain('makes the result optional');
+    expect(result.feedback).toContain('What guarantee changed');
   });
   it('accepts the second captured verdict with omitted issue and safely handles unknown incorrect categories', () => {
     const studentResponse = 'Whenever it rains, Mia rides the bus.';
@@ -100,8 +101,20 @@ describe('conditional rewrite grading contract', () => {
     for (const issue of [undefined, '__proto__', 'unknown', 'correct']) {
       const grade = parseGrade(JSON.stringify({ correct: false, issue }), { studentResponse, task: 'rewrite' });
       expect(grade.correct).toBe(false);
-      expect(grade.feedback).toContain('Your wording changes a claim');
+      expect(grade.feedback).toContain('What guarantee changed');
       expect(grade.feedback).toContain(studentResponse);
+    }
+  });
+  it('ignores both observed wrong diagnostic categories and compares the exact learner text with the original rule', () => {
+    for (const name of ['converse-reversal', 'missing-time-qualifier']) {
+      const captured = finalResults.results.find(row => row.case === name)!;
+      const grade = parseGrade(JSON.stringify({ correct: false, issue: 'reversal', evidence: captured.request.studentResponse }), captured.request);
+      expect(grade.correct).toBe(false);
+      expect(grade.feedback).toContain(captured.request.studentResponse);
+      expect(grade.feedback).toContain(captured.request.original);
+      expect(grade.feedback).not.toContain(captured.request.expected);
+      expect(grade.feedback).not.toMatch(/requirement|revers|enough to prove|causal|matches the meaning/);
+      expect(grade.feedback).toContain('What guarantee changed');
     }
   });
   beforeEach(() => invoke.mockReset());
