@@ -51,7 +51,7 @@ serve(async req => {
     });
     if (!response.ok) return reply({ error: 'Answer checking is unavailable. Please try again.' }, response.status === 429 ? 429 : 503);
     const result = await response.json();
-    return reply(parseGrade(result.choices?.[0]?.message?.content));
+    return reply(parseGrade(result.choices?.[0]?.message?.content, { studentResponse: input.studentResponse, task: input.task }));
   } catch {
     return reply({ error: 'Your answer has not been checked. Please try again.' }, 503);
   }
