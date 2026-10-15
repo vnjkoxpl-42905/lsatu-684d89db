@@ -27,6 +27,14 @@ type SingleSessionBooking = {
   association?: "verified_user" | "possible_match_unverified_email";
 };
 
+type PackageSession = {
+  id: string;
+  start_at: string;
+  status: string;
+  credit_refunded: boolean;
+  teacher_missed_at?: string | null;
+};
+
 const fmtSession = (iso: string) => new Date(iso).toLocaleString(undefined, {
   weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
 });
@@ -57,6 +65,8 @@ export default function StudentBookingPanel({
   const [singleSessions, setSingleSessions] = useState<SingleSessionBooking[]>([]);
   const [possibleMatches, setPossibleMatches] = useState<SingleSessionBooking[]>([]);
   const [busy, setBusy] = useState(false);
+  const [packageSessions, setPackageSessions] = useState<PackageSession[]>([]);
+  const [missedSession, setMissedSession] = useState<PackageSession | null>(null);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -69,6 +79,10 @@ export default function StudentBookingPanel({
       setPass(res.pass);
       setSingleSessions(res.single_session_bookings ?? []);
       setPossibleMatches(res.single_session_possible_matches ?? []);
+      if (res.pass) {
+        const history = await call("history", { pass_id: res.pass.id }) as { redemptions: PackageSession[] };
+        setPackageSessions(history.redemptions.filter(b => new Date(b.start_at).getTime() <= Date.now()));
+      } else setPackageSessions([]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to load booking access");
     } finally {
@@ -77,6 +91,21 @@ export default function StudentBookingPanel({
   }, [studentId]);
 
   useEffect(() => { void refresh(); }, [refresh]);
+
+  async function returnMissedCredit() {
+    if (!missedSession || busy) return;
+    setBusy(true);
+    try {
+      const { data, error } = await supabase.rpc("admin_return_teacher_missed_credit" as never,
+        { _redemption_id: missedSession.id } as never);
+      if (error) throw error;
+      toast.success((data as { already_returned?: boolean })?.already_returned ? "Credit already returned" : "Credit returned");
+      setMissedSession(null);
+      await refresh();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not return credit");
+    } finally { setBusy(false); }
+  }
 
   async function grant() {
     setBusy(true);
@@ -209,6 +238,25 @@ export default function StudentBookingPanel({
             {busy ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : null}
             Grant booking access
           </Button>
+        </div>
+      )}
+
+      {!loading && packageSessions.length > 0 && (
+        <div className="mt-4 border-t border-zinc-800 pt-3">
+          <h3 className="text-sm font-semibold text-zinc-200">Past sessions</h3>
+          <ul className="mt-2 space-y-2">
+            {packageSessions.map(booking => <li key={booking.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-zinc-800 px-3 py-2 text-sm">
+              <span className="text-zinc-200">{fmtSession(booking.start_at)}</span>
+              {booking.credit_refunded ? <span className="text-xs text-emerald-400">Credit returned</span>
+                : ['booked', 'no_show'].includes(booking.status) ? <Button size="sm" variant="outline" disabled={busy} onClick={() => setMissedSession(booking)}>I missed this session</Button>
+                : <span className="text-xs text-zinc-500">{booking.status.replace(/_/g, ' ')}</span>}
+            </li>)}
+          </ul>
+          {missedSession && <div role="group" aria-label="Return missed session credit" className="mt-3 rounded-lg border border-amber-500/40 p-3">
+            <p className="text-sm text-zinc-200">Return 1 credit for {fmtSession(missedSession.start_at)}?</p>
+            <p className="mt-1 text-xs text-zinc-400">The student can book another session. The original calendar event and session history stay in place.</p>
+            <div className="mt-3 flex gap-2"><Button size="sm" disabled={busy} onClick={() => void returnMissedCredit()}>Return 1 credit</Button><Button size="sm" variant="ghost" disabled={busy} onClick={() => setMissedSession(null)}>Keep credit unchanged</Button></div>
+          </div>}
         </div>
       )}
 
