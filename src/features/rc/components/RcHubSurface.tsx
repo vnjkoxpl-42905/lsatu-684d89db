@@ -50,7 +50,7 @@ const REVEAL_OPTIONS: { id: RcRevealMode; label: string; caption: string }[] = [
     label: 'After each passage',
     caption: 'Finish a passage, then walk through it',
   },
-  { id: 'end_of_set', label: 'At the end', caption: 'Test conditions, review at the end' },
+  { id: 'end_of_set', label: 'At the end', caption: 'Finish the drill, then review' },
   {
     id: 'per_question',
     label: 'After each question',
@@ -145,7 +145,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     new Map(),
   );
   const [loadError, setLoadError] = React.useState<string | null>(null);
-  const [historyError, setHistoryError] = React.useState(false);
+  const [historyStatus, setHistoryStatus] = React.useState<'loading' | 'ready' | 'failed'>('loading');
+  const [eligibilityRevision, refreshEligibility] = React.useReducer((n: number) => n + 1, 0);
   const [indexStatus, setIndexStatus] = React.useState<'loading' | 'ready' | 'failed'>('loading');
   const [loadAttempt, retryLoad] = React.useReducer((n: number) => n + 1, 0);
   const [notice, setNotice] = React.useState<string | null>(null);
@@ -187,13 +188,14 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   React.useEffect(() => {
     let cancelled = false;
     setLoadError(null);
-    setHistoryError(false);
+    setHistoryStatus('loading');
     setIndexStatus('loading');
     (async () => {
       try {
         const all = await loadAllIndexPassages();
         if (!cancelled) {
           setPassages(all as RcIndexPassageWithPt[]);
+          refreshEligibility();
           setIndexStatus('ready');
         }
       } catch {
@@ -216,11 +218,13 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       if (cancelled) return;
       if (historyRead.status === 'fulfilled') {
         setHistory(historyRead.value);
+        refreshEligibility();
+        setHistoryStatus('ready');
       } else {
         /* A student with no history gets an empty map, not a throw, so a
            throw is a failed read. Fresh and Incorrect would silently treat
            every passage as unseen; say so instead. */
-        setHistoryError(true);
+        setHistoryStatus('failed');
       }
       if (sessionsRead.status !== 'fulfilled') return;
       const s = sessionsRead.value;
@@ -303,18 +307,17 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   React.useEffect(() => {
     const key = params.toString();
     const ids = params.get('passages');
-    if (selectionAppliedFor.current === key || ids && passages.length === 0) return;
+    if (selectionAppliedFor.current === key || ids !== null && passages.length === 0) return;
     selectionAppliedFor.current = key;
     setSelectionQuery(key);
 
-    if (ids) {
-      const wanted = ids
-        .split(',')
-        .map((n) => Number(n.trim()))
-        .filter((n) => Number.isFinite(n));
-      const known = wanted.filter((id) => passages.some((p) => p.passageId === id));
+    if (ids !== null) {
+      const wanted = ids.split(',').map((n) => /^\d+$/.test(n.trim()) ? Number(n.trim()) : NaN);
+      const known = [...new Set(wanted.filter((id) => Number.isSafeInteger(id) && id > 0
+        && passages.some((p) => p.passageId === id && p.questionCount > 0)))];
       if (known.length !== wanted.length) {
-        setNotice('That passage could not be found. Build a drill below instead.');
+        setNotice('The linked passages could not be verified. Choose passages and preview the drill below.');
+        setAutoStart(false);
       }
       setHandPicked(known);
       setHandPickOpen(known.length > 0);
@@ -368,9 +371,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       : timing === 'custom'
         ? customSeconds
         : 0;
-  /* Inspect and Start both act on what is on screen. They wait for a passage
-     list that loaded on this attempt and a custom pace that parses. */
-  const builderReady = indexStatus === 'ready' && selectionQuery === params.toString() && !customInvalid;
+  /* Empty history is valid only after a successful read. New previews and
+     launches wait for both eligibility inputs and a custom pace that parses. */
+  const builderReady = indexStatus === 'ready' && historyStatus === 'ready'
+    && selectionQuery === params.toString() && !customInvalid;
 
   const ptRun = params.get('ptRun');
   const ptLeg = params.get('ptLeg');
@@ -390,7 +394,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
 
   // A change to any launch setting makes an inspected set stale. The same IDs
   // are used for both the read-only inspection and the eventual session.
-  const selectionKey = JSON.stringify({ count, timing, customSeconds, customInvalid, reveal, filters, handPicked, query: params.toString() });
+  // A retry invalidates immediately; successful index/history reads also revise
+  // eligibility so an older inspection cannot survive a refreshed pool.
+  const selectionKey = JSON.stringify({ count, timing, customSeconds, customInvalid, reveal, filters, handPicked, handPickOpen,
+    eligibilityRevision, loadAttempt, query: params.toString() });
   const selectionKeyRef = React.useRef(selectionKey);
   selectionKeyRef.current = selectionKey;
   const activeSet = selectedSet?.key === selectionKey ? selectedSet : null;
@@ -409,10 +416,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   const activeSetKey = activeSet ? activeSet.key + '|' + activeSet.ids.join(',') : null;
   const shortfallAccepted = activeSetKey !== null && acceptedShortfall === activeSetKey;
   const needsShortfallAck = activeSet !== null && summary.shortfall > 0 && !shortfallAccepted;
-  const canStart = activeSet !== null && builderReady && !needsShortfallAck;
-
   const inspectSet = async () => {
-    if (!builderReady) return;
+    if (!builderReady || (handPickOpen && handPicked.length === 0)) return;
     const request = ++inspectRequest.current;
     const key = selectionKey;
     setSelectedSet(null);
@@ -435,7 +440,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         return;
       }
       const full = await loadPassages(ids);
-      if (request !== inspectRequest.current || key !== selectionKeyRef.current) return;
+      if (!mounted.current || request !== inspectRequest.current || key !== selectionKeyRef.current) return;
       if (full.length !== ids.length || full.some((passage, index) => passage.passageId !== ids[index])) {
         setNotice('Some passages could not be loaded. Try previewing the drill again.');
         return;
@@ -446,13 +451,15 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         setNotice('A passage in this set loaded without its questions. Choose different passages.');
         return;
       }
-      setSelectedSet({ key, ids, passages: full });
+      const inspected = { key, ids, passages: full };
+      setSelectedSet(inspected);
+      return inspected;
     } catch {
-      if (request === inspectRequest.current && key === selectionKeyRef.current) {
+      if (mounted.current && request === inspectRequest.current && key === selectionKeyRef.current) {
         setNotice('The selected passages could not be loaded. Try again.');
       }
     } finally {
-      if (request === inspectRequest.current) setInspecting(false);
+      if (mounted.current && request === inspectRequest.current) setInspecting(false);
     }
   };
 
@@ -465,39 +472,39 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   const start = async (options?: { replace?: boolean }) => {
     if (startingRef.current) return;
     if (pendingLoad.error) { setNotice(pendingLoad.error); return; }
-    if (!uncertainStart.current && !options?.replace && !canStart) {
-      setNotice(activeSet ? 'Confirm the drill below before starting it.' : 'Preview the drill before starting it.');
-      return;
-    }
+    if (!uncertainStart.current && !builderReady) return;
     startingRef.current = true;
     setStarting(true);
+    const replace = options?.replace ?? params.get('start') === '1';
     try {
-      const chosen = uncertainStart.current?.ids ?? (options?.replace
-        ? handPicked.length > 0
-          ? handPicked
-          : selectPassages({
-              pool: passages,
-              questionIdsByPassage,
-              filters,
-              history,
-              count,
-              seed: Date.now() % 2147483647,
-            }).selected.map((p) => p.passageId)
-        : activeSet?.ids ?? []);
-
-      if (chosen.length === 0) {
-        setNotice('No passages match those filters. Loosen one and try again.');
+      // Autostart inspects through the same content checks as a manual Preview.
+      // An uncertain launch already owns its validated, immutable request.
+      const inspected = uncertainStart.current ? null : activeSet ?? (options?.replace ? await inspectSet() : null);
+      if (!mounted.current) return;
+      if (!uncertainStart.current && !inspected) {
         startingRef.current = false;
         setStarting(false);
         return;
       }
+      if (!uncertainStart.current && inspected!.key !== selectionKeyRef.current) {
+        throw new Error('Your settings changed. Preview the drill again before starting.');
+      }
+      if (!uncertainStart.current && handPicked.length === 0 && inspected!.ids.length < count
+        && acceptedShortfall !== inspected!.key + '|' + inspected!.ids.join(',')) {
+        throw new Error('Confirm the smaller drill below before starting it.');
+      }
+      const chosen = uncertainStart.current?.ids ?? inspected!.ids;
       const canonical = params.get('timedSection') === 'manual-canonical' && !params.has('assignmentId') && !params.has('assignment') &&
         !ptRun && !params.has('ptLeg') && reveal === 'end_of_set' ? canonicalRcSection(chosen) : null;
       const protectedPace = timing === 'untimed' ? 'untimed' : secondsPerPassage === 525 ? 'standard' :
         secondsPerPassage === 788 ? 'time-and-a-half' : secondsPerPassage === 1050 ? 'double-time' : null;
-      if (!uncertainStart.current && canonical && protectedPace && await manualSectionsEnabled()) {
+      const useProtectedSection = !uncertainStart.current && canonical && protectedPace && await manualSectionsEnabled();
+      if (!uncertainStart.current && inspected!.key !== selectionKeyRef.current) {
+        throw new Error('Your settings changed. Preview the drill again before starting.');
+      }
+      if (useProtectedSection) {
         if (!mounted.current) return;
-        navigate(newManualSectionHref('rc', canonical.pt, canonical.section, protectedPace), { replace: options?.replace });
+        navigate(newManualSectionHref('rc', canonical.pt, canonical.section, protectedPace), { replace: replace || undefined });
         return;
       }
       if (!actorId || !mounted.current) throw new Error('You need to be signed in to drill.');
@@ -505,7 +512,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       // student edits or inspects another set while reconnecting.
       const request = uncertainStart.current ?? {
         id: crypto.randomUUID(), actorId, ids: [...chosen], config: structuredClone(config),
-        back: safeReturnTo(params.get('returnTo')), replace: options?.replace,
+        back: safeReturnTo(params.get('returnTo')), replace: replace || undefined,
       };
       uncertainStart.current = request;
       // Persist before the write; storage failure prevents an unrepeatable launch.
@@ -545,14 +552,19 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     }
   };
 
-  // Runs a tick after the link has been applied, so it starts on the count and
-  // timing the link asked for rather than on the builder defaults.
+  // Wait for both eligibility reads and URL settings. Invalid/failed links stay
+  // at configuration, while valid autostarts still replace their launcher URL.
   React.useEffect(() => {
-    if (!autoStart || passages.length === 0 || selectionQuery !== params.toString() || starting) return;
+    if (!autoStart) return;
+    if (indexStatus === 'failed' || historyStatus === 'failed' || uncertainStart.current || pendingLoad.error) {
+      setAutoStart(false);
+      return;
+    }
+    if (!builderReady || starting) return;
     setAutoStart(false);
     void start({ replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoStart, passages, starting, selectionQuery, params]);
+  }, [autoStart, builderReady, starting, selectionKey, indexStatus, historyStatus]);
 
   const toggle = (key: 'topics' | 'formats' | 'frameworks', value: string) =>
     setFilters((f) => ({
@@ -644,11 +656,12 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </button>
         </div>
       )}
-      {historyError && !loadError && (
+      {historyStatus === 'loading' && !loadError && <p className="rc-field-hint" role="status">Loading your answer history…</p>}
+      {historyStatus === 'failed' && !loadError && (
         <div className="rc-builder-alert" role="status">
           <span>
             Your answer history could not be loaded, so the Fresh and Incorrect filters cannot tell
-            which passages you have already done.
+            which passages you have already done. Retry before previewing or starting a new drill.
           </span>
           <button type="button" className="rc-chip" onClick={retryLoad} disabled={indexStatus === 'loading'}>
             Retry
@@ -795,7 +808,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </div>
           <div className="rc-field-hint">
             {indexStatus === 'ready' || passages.length > 0
-              ? `${plural(preview.poolSize, 'passage')} match your filters`
+              ? historyStatus === 'ready' ? `${plural(preview.poolSize, 'passage')} match your filters` : 'Waiting for your answer history'
               : indexStatus === 'loading'
                 ? 'Loading passages…'
                 : 'Passage list unavailable'}
@@ -803,7 +816,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           <div className="rc-field-hint">
             {!handPickOpen && RC_ADAPTIVE_LABEL}
           </div>
-          {!handPickOpen && preview.shortfallMessage && passages.length > 0 && (
+          {!handPickOpen && historyStatus === 'ready' && preview.shortfallMessage && passages.length > 0 && (
             <div className="rc-field-hint">{preview.shortfallMessage}</div>
           )}
           <div className="rc-chip-row" style={{ marginTop: 10 }}>

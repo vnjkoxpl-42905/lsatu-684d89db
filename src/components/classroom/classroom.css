@@ -1019,7 +1019,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    Scoped to the classroom stage: .rc-page at /rc renders outside
    ClassroomLayout, so html.dark is never set there and it keeps the ladder
    above. */
-html.dark .classroom-root.classroom-root-drill {
+html.dark .classroom-root.classroom-root-drill,
+html:not(.light) .drill-setup-preview {
   --observatory-stage-well: rgba(255, 255, 255, 0.03);
   --observatory-stage-ink: #f5f1ec;
   --observatory-stage-muted: #9a938c;
@@ -5705,12 +5706,16 @@ html.dark .classroom-root.classroom-root-drill {
 }
 
 /* RC creation has one primary action; lookup and homework remain separate. */
-.drill-observatory-root .drill-view-tabs button:not([aria-current="page"]) {
-  color: var(--observatory-stage-ink);
+.drill-observatory-root .drill-view-tabs .drill-destination-tabs > button:not([aria-current="page"]) {
+  color: hsl(var(--foreground));
 }
 .drill-observatory-root .drill-view-tabs button:focus-visible {
-  outline: 2px solid var(--observatory-stage-ink);
+  outline: 2px solid hsl(var(--foreground));
   outline-offset: 3px;
+}
+.drill-observatory-root .drill-history-workspace,
+.drill-observatory-root .rc-create-workspace {
+  color: hsl(var(--foreground));
 }
 .drill-observatory-root .rc-practice-create {
   display: flex;

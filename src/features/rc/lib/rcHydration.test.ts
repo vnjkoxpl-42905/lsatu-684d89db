@@ -65,6 +65,42 @@ function attempt(over: Partial<RcAttempt> & { questionId: number }): RcAttempt {
 const ITEMS = buildItems([passage(1, [101, 102]), passage(2, [201, 202])]);
 
 describe('hydrateFromAttempts', () => {
+  const draft = { questionId: 101, selected: 'B', attemptId: '33333333-3333-4333-8333-333333333333', flagged: true, eliminations: ['C'] };
+  const draftItems = ITEMS.map((item) => ({ ...item, question: { ...item.question,
+    choices: ['A', 'B', 'C'].map((letter) => ({ letter: letter as RcLetter, text: letter, correct: letter === 'A', tag: null, percent: null, responseCount: null, explanation: null })),
+  } }));
+
+  it.each(['per_passage', 'per_question', 'end_of_set'] as const)('restores validated %s drafts without recording or revealing them', (revealMode) => {
+    const h = hydrateFromAttempts({ items: draftItems, attempts: [], revealMode, reviewOnly: false, draftAnswers: [draft, { ...draft, questionId: 102 }] });
+    expect([...h.answers]).toEqual([[101, 'B'], [102, 'B']]);
+    expect(h.flagged.has(101)).toBe(true);
+    expect(h.eliminations.get(101)).toEqual(['C']);
+    expect(h.recorded.size).toBe(0);
+    expect(h.revealed.size).toBe(0);
+    expect(h.reviewedPassages.size).toBe(0);
+    expect(h.submitted).toBe(false);
+  });
+
+  it('keeps recorded answers and skips authoritative over account drafts', () => {
+    const h = hydrateFromAttempts({ items: draftItems,
+      attempts: [attempt({ questionId: 101, selected: 'A' }), attempt({ questionId: 102, selected: null })],
+      revealMode: 'per_question', reviewOnly: false, draftAnswers: [draft, { ...draft, questionId: 102 }],
+    });
+    expect(h.answers.get(101)).toBe('A');
+    expect(h.answers.has(102)).toBe(false);
+    expect(h.flagged.size).toBe(0);
+    expect(h.eliminations.size).toBe(0);
+  });
+
+  it('ignores malformed, out-of-session, and unavailable-choice drafts, and all drafts in review', () => {
+    const invalid = [null, { ...draft, questionId: -1 }, { ...draft, selected: 'Z' }, { ...draft, attemptId: 'bad' },
+      { ...draft, flagged: 'yes' }, { ...draft, eliminations: ['Z'] }, { ...draft, questionId: 999 }, { ...draft, selected: 'E' }];
+    const input = { items: draftItems, attempts: [], revealMode: 'per_passage' as const, reviewOnly: false };
+    expect(hydrateFromAttempts({ ...input, draftAnswers: invalid }).answers.size).toBe(0);
+    expect(hydrateFromAttempts({ ...input, draftAnswers: { answers: [draft] } }).answers.size).toBe(0);
+    expect(hydrateFromAttempts({ ...input, reviewOnly: true, draftAnswers: [draft] }).answers.size).toBe(0);
+  });
+
   it('takes the answer from the first attempt, not the latest one', () => {
     // The exact shape that was breaking: the student answered B, reviewed the
     // session once and re-answered D. getSessionAttempts returns both, oldest

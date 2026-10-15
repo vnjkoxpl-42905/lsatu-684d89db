@@ -65,6 +65,7 @@ import {
   saveSessionClock,
 } from '../api/rcProgress';
 import type { RcDrillConfig, RcHighlightMode, RcLetter, RcPassage } from '../lib/rcTypes';
+import { readRcDraftAnswers } from '../lib/rcTypes';
 // The player owns player.css; rc.css carries the review layer, which mounts
 // inside the player too, so it must not depend on the hub having been visited.
 import '../rc.css';
@@ -142,6 +143,7 @@ function RcPlayerRunner() {
   const completedRef = React.useRef(false);
   const completionPendingRef = React.useRef(false);
   const attemptIdsRef = React.useRef(new Map<number, string>());
+  const draftTimeMsRef = React.useRef(new Map<number, number>());
   const answerWriteGenerationRef = React.useRef(0);
 
   const reviewOnly = params.get('review') === '1';
@@ -199,6 +201,7 @@ function RcPlayerRunner() {
     completedRef.current = false;
     completionPendingRef.current = false;
     attemptIdsRef.current.clear();
+    draftTimeMsRef.current.clear();
     pendingSaveRef.current = null;
     navigationInFlightRef.current = false;
     setSavingNavigation(false);
@@ -346,7 +349,16 @@ function RcPlayerRunner() {
       && Math.floor(readClockBackup(sessionId)) > (config.clockElapsedSeconds ?? 0);
     const pendingAnswers = readActiveRcAnswerBackups(sessionOwnerId, sessionId, sessionStatus, reviewOnly)
       .filter((answer) => seeded.items.some((entry) => entry.question.questionId === answer.questionId));
+    const accountDrafts = !reviewOnly && sessionStatus === 'in_progress'
+      && !config.timedSectionSittingId && !config.practiceTestRunId
+      ? readRcDraftAnswers(config.draftAnswers).filter((draft) => seeded.items.some((entry) =>
+        entry.question.questionId === draft.questionId && entry.question.choices.some((choice) => choice.letter === draft.selected)))
+      : [];
     const pendingAnswer = pendingAnswers.at(-1);
+    for (const draft of accountDrafts) {
+      attemptIdsRef.current.set(draft.questionId, draft.attemptId);
+      draftTimeMsRef.current.set(draft.questionId, draft.timeMs ?? 0);
+    }
     for (const answer of pendingAnswers) attemptIdsRef.current.set(answer.questionId, answer.attemptId);
     if (pendingAnswer) {
       dispatch({
@@ -372,6 +384,7 @@ function RcPlayerRunner() {
           attempts,
           revealMode: config.reveal,
           reviewOnly,
+          draftAnswers: accountDrafts,
         });
         // An unanswered question has no attempt row to carry its cross-outs,
         // so bring them back from this device's session-scoped copy. Never
@@ -622,9 +635,11 @@ function RcPlayerRunner() {
       attemptIdsRef.current.set(questionId, attemptId);
       // Closing a set persists unanswered scoring rows too. Only the visible
       // question owns this timer; other filler rows have no measured dwell.
-      const timeMs = state.items[state.currentIndex]?.question.questionId === questionId
+      const currentTimeMs = state.items[state.currentIndex]?.question.questionId === questionId
         ? Math.max(0, Date.now() - questionStart.current)
         : 0;
+      const timeMs = currentTimeMs + (!config.timedSectionSittingId && !config.practiceTestRunId
+        ? draftTimeMsRef.current.get(questionId) ?? 0 : 0);
       try {
         await recordAttempt({
           id: attemptId,
@@ -679,7 +694,7 @@ function RcPlayerRunner() {
         return false;
       }
     },
-    [answerWriteGeneration, sessionId, sessionOwnerId, state.flagged, state.eliminations, state.recorded, state.currentIndex, state.items, failAccountSave, flagPersistence],
+    [answerWriteGeneration, sessionId, sessionOwnerId, config, state.flagged, state.eliminations, state.recorded, state.currentIndex, state.items, failAccountSave, flagPersistence],
   );
 
   const recordPassage = React.useCallback(
@@ -740,6 +755,12 @@ function RcPlayerRunner() {
             await saveSessionClock(sessionId, elapsedRef.current, index);
           }
           if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
+          if (leaving && index !== state.currentIndex && !reviewOnly
+            && !config.timedSectionSittingId && !config.practiceTestRunId && !state.recorded.has(leaving.question.questionId)) {
+            const questionId = leaving.question.questionId;
+            draftTimeMsRef.current.set(questionId, (draftTimeMsRef.current.get(questionId) ?? 0)
+              + Math.max(0, Date.now() - questionStart.current));
+          }
           dispatch({ type: 'goto', index });
           return true;
         } catch (err) {
@@ -762,7 +783,7 @@ function RcPlayerRunner() {
         }
       }
     },
-    [answerWriteGeneration, state, config.reveal, writeAttempt, loadingAnswers, answerLoadError, reviewOnly, sessionId, failAccountSave],
+    [answerWriteGeneration, state, config, writeAttempt, loadingAnswers, answerLoadError, reviewOnly, sessionId, failAccountSave],
   );
 
   const handleSubmit = React.useCallback(async () => {
@@ -840,28 +861,58 @@ function RcPlayerRunner() {
     if (!sessionId || state.paused || navigationInFlightRef.current) return;
     navigationInFlightRef.current = true;
     setModal(null);
+    const protectedSession = !!config.timedSectionSittingId || !!config.practiceTestRunId;
+    const drafts = state.items.flatMap((entry) => {
+      const questionId = entry.question.questionId;
+      const selected = state.answers.get(questionId);
+      if (!selected || state.recorded.has(questionId) || isRevealed(state, config.reveal, entry)) return [];
+      const attemptId = attemptIdsRef.current.get(questionId) ?? crypto.randomUUID();
+      attemptIdsRef.current.set(questionId, attemptId);
+      const timeMs = (draftTimeMsRef.current.get(questionId) ?? 0)
+        + (state.items[state.currentIndex]?.question.questionId === questionId ? Math.max(0, Date.now() - questionStart.current) : 0);
+      return [{ questionId, selected, attemptId, timeMs, flagged: state.flagged.has(questionId), eliminations: state.eliminations.get(questionId) ?? [] }];
+    });
+    const saveAndExit = async (): Promise<boolean> => {
+      if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
+      try {
+        if (protectedSession) {
+          const current = getCurrentItem(state);
+          if (current && state.answers.has(current.question.questionId)
+            && !state.recorded.has(current.question.questionId)) {
+            if (!await writeAttempt(current, state.answers.get(current.question.questionId) ?? null)) return false;
+          }
+        }
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
+        if (protectedSession) {
+          await saveSessionClock(sessionId, elapsedRef.current, state.currentIndex);
+        } else {
+          if (!sessionOwnerId) throw new Error('The drill owner could not be verified.');
+          await saveSessionClock(sessionId, elapsedRef.current, state.currentIndex, { actorId: sessionOwnerId, answers: drafts });
+        }
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
+        if (!protectedSession && sessionOwnerId) {
+          for (const draft of drafts) clearRcAnswerBackup(sessionOwnerId, sessionId, draft.questionId, draft.attemptId);
+        }
+        navigate(exitPath);
+        return true;
+      } catch (err) {
+        if (answerWriteGenerationRef.current !== answerWriteGeneration) return false;
+        if (isHandoffError(err)) {
+          setError('This practice test is active on another device. This device has stopped saving.');
+        } else {
+          pendingSaveRef.current = saveAndExit;
+          failAccountSave('Your work did not finish saving. Keep this page open and retry.');
+          console.error('[rc:exit] account save failed', err);
+        }
+        return false;
+      }
+    };
     try {
-      const current = getCurrentItem(state);
-      if (current && state.answers.has(current.question.questionId)
-        && !state.recorded.has(current.question.questionId)) {
-        if (!await writeAttempt(current, state.answers.get(current.question.questionId) ?? null)) return;
-      }
-      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
-      await saveSessionClock(sessionId, elapsedRef.current, state.currentIndex);
-      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
-      navigate(exitPath);
-    } catch (err) {
-      if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
-      if (isHandoffError(err)) {
-        setError('This practice test is active on another device. This device has stopped saving.');
-      } else {
-        failAccountSave('Your work did not finish saving. Keep this page open and retry.');
-        console.error('[rc:exit] account save failed', err);
-      }
+      await saveAndExit();
     } finally {
       if (answerWriteGenerationRef.current === answerWriteGeneration) navigationInFlightRef.current = false;
     }
-  }, [answerWriteGeneration, reviewOnly, navigate, exitPath, sessionId, state, writeAttempt, failAccountSave]);
+  }, [answerWriteGeneration, reviewOnly, navigate, exitPath, sessionId, sessionOwnerId, config, state, writeAttempt, failAccountSave]);
 
   const toggleFlag = React.useCallback(
     (questionId: number) => {

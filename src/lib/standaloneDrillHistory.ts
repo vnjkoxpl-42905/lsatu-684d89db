@@ -1,10 +1,12 @@
 import type { StandaloneDrillRun } from '@/lib/drillRunLedger';
 import { launchDrill } from '@/lib/drillLaunch';
 import type { RcAttempt, RcDrillSession } from '@/features/rc/lib/rcTypes';
+import { readRcDraftAnswers } from '@/features/rc/lib/rcTypes';
 import type { DrillResumeSession } from '@/lib/drillResumeSession';
 
 export type StandaloneDrillHistoryItem = {
   key: string;
+  section: 'lr' | 'rc';
   title: string;
   detail: string;
   date: string;
@@ -26,6 +28,7 @@ export function buildStandaloneDrillHistory(
     .filter((run) => run.session.status === 'completed' || run.session.attempts.length > 0)
     .map((run) => ({
       key: `lr:${run.id}`,
+      section: 'lr',
       title: run.source_key === 'drill::adaptive' ? 'Smart Drill' : run.label || 'LR drill',
       detail: run.source_key === 'drill::adaptive'
         ? `${run.session.attempts.length} answer${run.session.attempts.length === 1 ? '' : 's'} saved`
@@ -40,15 +43,21 @@ export function buildStandaloneDrillHistory(
     }));
 
   const rc: StandaloneDrillHistoryItem[] = rcSessions
-    .filter((session) => !session.config.practiceTestRunId && session.config.source !== 'assignment' &&
+    .filter((session) => !session.config.practiceTestRunId && !session.config.timedSectionSittingId && session.config.source !== 'assignment' &&
       (session.status === 'completed' || session.status === 'in_progress'))
-    .filter((session) => session.status === 'completed' || (rcAttempts.get(session.id)?.length ?? 0) > 0)
+    .filter((session) => session.status === 'completed' || (rcAttempts.get(session.id)?.length ?? 0) > 0
+      || readRcDraftAnswers(session.config.draftAnswers).length > 0)
     .map((session) => {
       const firstAnswers = (rcAttempts.get(session.id) ?? []).filter((answer) => answer.isFirstAttempt);
+      const drafts = readRcDraftAnswers(session.config.draftAnswers);
+      const savedCount = new Set([...firstAnswers.map((answer) => answer.questionId), ...drafts.map((draft) => draft.questionId)]).size;
       return {
         key: `rc:${session.id}`,
+        section: 'rc',
         title: `RC drill · ${session.passageIds.length} passage${session.passageIds.length === 1 ? '' : 's'}`,
-        detail: `${firstAnswers.length} first answer${firstAnswers.length === 1 ? '' : 's'} saved`,
+        detail: drafts.length > 0 && session.status === 'in_progress'
+          ? `${savedCount} answer${savedCount === 1 ? '' : 's'} saved`
+          : `${firstAnswers.length} first answer${firstAnswers.length === 1 ? '' : 's'} saved`,
         date: session.completedAt ?? session.config.lastActiveAt ?? session.startedAt,
         status: session.status as 'completed' | 'in_progress',
         continueTo: `/rc/drill?sessionId=${encodeURIComponent(session.id)}`,
@@ -65,6 +74,7 @@ export function buildStandaloneDrillHistory(
     !lrRuns.some((run) => run.source_key === 'drill::adaptive' && run.session.status === 'in_progress')
     ? [{
       key: 'smart:adaptive',
+      section: 'lr',
       title: 'Smart Drill',
       detail: `${smartDrill.attempts.length} answer${smartDrill.attempts.length === 1 ? '' : 's'} saved`,
       date: smartDrill.updated_at,

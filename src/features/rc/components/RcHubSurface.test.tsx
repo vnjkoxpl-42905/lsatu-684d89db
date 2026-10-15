@@ -89,6 +89,11 @@ vi.mock('../lib/rcBank', () => ({
 import { RcHubSurface } from './RcHubSurface';
 import type { RcDrillConfig } from '../lib/rcTypes';
 
+beforeEach(async () => {
+  const progress = await import('../api/rcProgress');
+  vi.mocked(progress.getQuestionHistory).mockReset().mockResolvedValue(new Map());
+});
+
 /**
  * Changes the query WITHOUT remounting the surface. Both URLs match the same
  * route, so React Router keeps the component mounted — which is the case the
@@ -202,6 +207,115 @@ describe('RcHubSurface autostart', () => {
     expect(createSession.mock.calls[0][1]).toEqual([1188, 1201]);
   });
 
+  it.each(['1188,999999', '1188,invalid', '1188,1188', '', '1188,', '-1'])(
+    'stops an invalid linked selection at configuration: %s', async ids => {
+      mount(`/classroom/drill?section=rc&passages=${ids}&start=1`);
+      await screen.findByText(/linked passages could not be verified/);
+      await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+      expect(createSession).not.toHaveBeenCalled();
+      expect(loadPassages).not.toHaveBeenCalled();
+      expect(navigate).not.toHaveBeenCalled();
+    },
+  );
+
+  it('requires acknowledgment rather than autostarting a smaller adaptive set', async () => {
+    mount('/classroom/drill?section=rc&count=4&start=1');
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    const start = await screen.findByRole('button', { name: 'Start this drill' });
+    expect(start).toBeDisabled();
+    expect(createSession).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('checkbox', { name: /Only 3 passages of the 4 you asked for/ }));
+    fireEvent.click(start);
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toHaveLength(3);
+    expect(navigate).toHaveBeenCalledWith(expect.stringContaining('/rc/drill?sessionId='), { replace: true });
+  });
+
+  it.each(['missing passage', 'missing questions'])('stops autostart when content has %s', async problem => {
+    loadPassages.mockImplementationOnce(async ids => problem === 'missing passage' ? [] :
+      ids.map(passageId => ({ passageId, questions: [] })) as never);
+    mount('/classroom/drill?section=rc&passages=1188&start=1');
+    await screen.findByText(problem === 'missing passage' ? /Some passages could not be loaded/ : /loaded without its questions/);
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    expect(createSession).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it('waits for history and uses the acknowledged Fresh eligibility for autostart', async () => {
+    const progress = await import('../api/rcProgress');
+    let release!: () => void;
+    vi.mocked(progress.getQuestionHistory).mockImplementationOnce(() => new Promise(resolve => {
+      release = () => resolve(new Map([[11880, {
+        questionId: 11880, attempts: 1, everIncorrect: false, incorrectOnLastTake: false,
+        incorrectCount: 0, lastSeenAt: '2026-10-15T12:00:00Z',
+      }]]));
+    }));
+    mount('/classroom/drill?section=rc&count=2&start=1');
+    await waitFor(() => expect(release).toBeDefined());
+    expect(loadPassages).not.toHaveBeenCalled();
+    expect(createSession).not.toHaveBeenCalled();
+    await act(async () => release());
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect([...createSession.mock.calls[0][1]].sort()).toEqual([1201, 1202]);
+    expect(loadPassages.mock.calls[0][0]).toEqual(createSession.mock.calls[0][1]);
+    expect(navigate).toHaveBeenCalledWith(expect.stringContaining('/rc/drill?sessionId='), { replace: true });
+  });
+
+  it('leaves a failed history autostart at configuration after Retry', async () => {
+    const progress = await import('../api/rcProgress');
+    vi.mocked(progress.getQuestionHistory).mockRejectedValueOnce(new Error('offline'));
+    mount('/classroom/drill?section=rc&count=1&start=1');
+    await screen.findByText(/answer history could not be loaded/);
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    expect(loadPassages).not.toHaveBeenCalled();
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('does not launch an autostart inspection after the link settings change', async () => {
+    const full = await loadPassages([1188]);
+    loadPassages.mockClear();
+    let release!: () => void;
+    loadPassages.mockImplementationOnce(() => new Promise(resolve => { release = () => resolve(full); }));
+    mount('/classroom/drill?section=rc&passages=1188&start=1', 'section=rc&passages=1201');
+    await waitFor(() => expect(release).toBeDefined());
+    fireEvent.click(screen.getByRole('button', { name: 'next link' }));
+    await act(async () => release());
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    expect(createSession).not.toHaveBeenCalled();
+    expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual([1201]);
+  });
+
+  it.each(['history', 'content'])('discards delayed autostart %s after an account switch', async delayed => {
+    const progress = await import('../api/rcProgress');
+    const full = await loadPassages([1188]);
+    loadPassages.mockClear();
+    let release!: () => void;
+    if (delayed === 'history') {
+      vi.mocked(progress.getQuestionHistory).mockImplementationOnce(() => new Promise(resolve => {
+        release = () => resolve(new Map());
+      }));
+    } else {
+      loadPassages.mockImplementationOnce(() => new Promise(resolve => { release = () => resolve(full); }));
+    }
+    const entry = '/classroom/drill?section=rc&passages=1188&start=1';
+    const view = render(<MemoryRouter initialEntries={[entry]}><RcHubSurface embedded showHistory={false} /></MemoryRouter>);
+    await waitFor(() => expect(release).toBeDefined());
+    auth.id = 'another-owner';
+    view.rerender(<MemoryRouter initialEntries={[entry]}><RcHubSurface embedded showHistory={false} /></MemoryRouter>);
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    await act(async () => release());
+    expect(createSession).toHaveBeenCalledTimes(1);
+    expect(createSession.mock.calls[0][2]?.actorId).toBe('another-owner');
+    expect(navigate).toHaveBeenCalledTimes(1);
+  });
+
   it('clears a previous hand-pick when the next link names no passages', async () => {
     /* One mount throughout — unmounting between the two links would prove
        nothing, since a fresh surface starts with an empty selection anyway.
@@ -312,6 +426,59 @@ describe('RcHubSurface launch truth (#171)', () => {
 
   const primary = () => screen.getAllByRole('button', { name: /^(Preview drill|Start this drill|Loading preview…|Starting…)$/ })[0];
   const launchSummary = () => screen.getByRole('region', { name: 'Launch summary' });
+
+  it.each(['Fresh', 'Incorrect before', 'Incorrect on last try', 'Any'])(
+    'waits for acknowledged history before previewing with %s and adaptive difficulty', async status => {
+      const progress = await import('../api/rcProgress');
+      let release!: () => void;
+      vi.mocked(progress.getQuestionHistory).mockImplementationOnce(() => new Promise(resolve => {
+        release = () => resolve(new Map([[11880, {
+          questionId: 11880, attempts: 1, everIncorrect: true, incorrectOnLastTake: true,
+          incorrectCount: 1, lastSeenAt: '2026-10-15T12:00:00Z',
+        }]]));
+      }));
+      mount('/classroom/drill?section=rc&count=1');
+      await waitFor(() => expect(release).toBeDefined());
+      fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+      fireEvent.click(screen.getByRole('button', { name: status }));
+      expect(primary()).toBeDisabled();
+      fireEvent.click(primary());
+      expect(loadPassages).not.toHaveBeenCalled();
+      expect(createSession).not.toHaveBeenCalled();
+
+      await act(async () => release());
+      await waitFor(() => expect(primary()).toBeEnabled());
+      fireEvent.click(primary());
+      await screen.findByRole('region', { name: 'Selected reading set' });
+      const inspected = loadPassages.mock.calls[0][0];
+      if (status.startsWith('Incorrect')) expect(inspected).toEqual([1188]);
+      else expect(inspected).not.toContain(1188);
+      expect(createSession).not.toHaveBeenCalled();
+    },
+  );
+
+  it('blocks a failed history read and waits for the retry before previewing', async () => {
+    const progress = await import('../api/rcProgress');
+    vi.mocked(progress.getQuestionHistory).mockRejectedValueOnce(new Error('offline'));
+    mount('/classroom/drill?section=rc&passages=1188');
+    await screen.findByText(/answer history could not be loaded/);
+    expect(primary()).toBeDisabled();
+    fireEvent.click(primary());
+    expect(loadPassages).not.toHaveBeenCalled();
+
+    let release!: () => void;
+    vi.mocked(progress.getQuestionHistory).mockImplementationOnce(() => new Promise(resolve => {
+      release = () => resolve(new Map());
+    }));
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+    await waitFor(() => expect(release).toBeDefined());
+    expect(primary()).toBeDisabled();
+    await act(async () => release());
+    await waitFor(() => expect(primary()).toBeEnabled());
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    expect(createSession).not.toHaveBeenCalled();
+  });
 
   it('times the hand-picked passages, not the stepper, and says the count is in passages', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201&timing=standard');
@@ -437,6 +604,18 @@ describe('RcHubSurface launch truth (#171)', () => {
     expect(primary()).toHaveTextContent('Preview drill');
   });
 
+  it('invalidates an adaptive inspection when switching to an empty manual selection', async () => {
+    mount('/classroom/drill?section=rc&count=1');
+    await waitFor(() => expect(primary()).toBeEnabled());
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    fireEvent.click(screen.getByRole('button', { name: 'Choose passages' }));
+    expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
+    expect(primary()).toHaveTextContent('Preview drill');
+    expect(primary()).toBeDisabled();
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
   it('will not pass inspection when a passage loads without questions', async () => {
     loadPassages.mockImplementationOnce(async (ids: number[]) =>
       ids.map((passageId) => ({ passageId, preptest: 140, title: 'Empty', setNumber: 1, text: 'x', questions: [] })) as never);
@@ -558,7 +737,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     expect(navigate).not.toHaveBeenCalled();
   });
 
-  it('retains the original UUID across a builder remount and ignores earlier unrelated sessions', async () => {
+  it('recovers the original UUID after remount even when fresh history cannot load', async () => {
     createSession.mockRejectedValueOnce(new Error('network reset'));
     getSession.mockResolvedValueOnce(null).mockRejectedValueOnce(new Error('offline'));
     const first = mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
@@ -568,7 +747,10 @@ describe('RcHubSurface launch truth (#171)', () => {
     const [config, passageIds, request] = createSession.mock.calls[0];
     first.unmount();
     adoption.sessions = [{ id: 'unrelated-previous-run', config, passageIds, status: 'in_progress', startedAt: new Date().toISOString() }];
+    const progress = await import('../api/rcProgress');
+    vi.mocked(progress.getQuestionHistory).mockRejectedValueOnce(new Error('offline'));
     mount('/classroom/drill?section=rc&stage=type-drill&count=3');
+    await screen.findByText(/answer history could not be loaded/);
     getSession.mockResolvedValueOnce({ id: request!.id, userId: request!.actorId, config, passageIds, status: 'in_progress' } as RcDrillSession);
     fireEvent.click(await screen.findByRole('button', { name: 'Retry original launch' }));
     await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringContaining('sessionId=' + request!.id), { replace: undefined }));

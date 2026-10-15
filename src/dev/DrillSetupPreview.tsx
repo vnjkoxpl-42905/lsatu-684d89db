@@ -4,6 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import { QuestionBankProvider, useQuestionBank } from '@/contexts/QuestionBankContext';
 import { QuestionPicker } from '@/components/drill/QuestionPicker';
 import { Button } from '@/components/ui/button';
+import AcademyMainhub from '@/pages/AcademyMainhub';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import '@/components/classroom/classroom.css';
 
 const groups = [
@@ -74,7 +76,7 @@ function PreviewContent() {
   const openSetup = () => setSearchParams({}, { replace: false });
   const closeSetup = () => setSearchParams({ view: 'home' }, { replace: false });
   return (
-    <div className="drill-setup-preview flex min-h-screen bg-[#fbf8f5] font-['Outfit']">
+    <div className="drill-setup-preview flex min-h-screen bg-[#fbf8f5] font-['Outfit']" style={searchParams.get('section') === 'rc' ? { background: 'hsl(var(--background))' } : undefined}>
       <aside className="hidden w-[268px] shrink-0 border-r border-[#e8d9ca] bg-[#fcfaf8] p-2 md:block">
         <div className="flex min-h-[calc(100vh-16px)] flex-col rounded-lg border border-[#ead9c9] px-5 py-5 text-[#37322e]">
           <div className="mb-7 flex items-center gap-2 text-xs tracking-[0.15em]"><span className="rounded bg-[#35312e] px-1.5 py-1 font-semibold text-white">LS</span> LSAT U</div>
@@ -89,7 +91,8 @@ function PreviewContent() {
       </aside>
       <main className="min-w-0 flex-1 p-4 md:p-6 lg:p-8">
         <div className="drill-observatory-root mx-auto max-w-[1140px]">
-          {showSetup ? <div className="drill-observatory-launcher overflow-hidden">
+          {searchParams.get('section') === 'rc' && <div className="mb-4 flex justify-end"><ThemeToggle /></div>}
+          {searchParams.get('section') === 'rc' ? <AcademyMainhub /> : showSetup ? <div className="drill-observatory-launcher overflow-hidden">
             <div className="drill-observatory-launcher-panel">
               {isLoading && <p className="p-8">Loading questions…</p>}
               {error && <p className="p-8" role="alert">{error}</p>}

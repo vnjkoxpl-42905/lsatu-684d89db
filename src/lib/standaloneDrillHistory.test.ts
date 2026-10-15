@@ -20,7 +20,7 @@ const answer = (sessionId: string): RcAttempt => ({
   timeMs: 300, flagged: false, eliminations: [], isFirstAttempt: true,
 });
 const lr = (id: string, status: 'in_progress' | 'completed', attempts: number): StandaloneDrillRun => ({
-  id, label: 'Custom LR', updated_at: '2026-09-29T12:00:00Z',
+  id, source_key: 'custom::set', label: 'Custom LR', updated_at: '2026-09-29T12:00:00Z',
   session: { status, attempts: Array.from({ length: attempts }, () => ({})), question_queue: ['q1'] },
 } as StandaloneDrillRun);
 const smart = (status: 'in_progress' | 'completed', attempts: number): DrillResumeSession => ({
@@ -30,6 +30,13 @@ const smart = (status: 'in_progress' | 'completed', attempts: number): DrillResu
 } as DrillResumeSession);
 
 describe('buildStandaloneDrillHistory', () => {
+  it('makes unchecked account drafts resumable without scored attempts', () => {
+    const draft = { questionId: 33, selected: 'A', attemptId: '12345678-1234-1234-1234-123456789012', flagged: false, eliminations: [] } as const;
+    const rows = buildStandaloneDrillHistory([], [rc('draft', { config: {
+      source: 'manual', reveal: 'per_passage', timing: { mode: 'unlimited' }, draftAnswers: [{ ...draft, eliminations: [] }],
+    } })], new Map());
+    expect(rows).toMatchObject([{ key: 'rc:draft', section: 'rc', detail: '1 answer saved', continueTo: '/rc/drill?sessionId=draft' }]);
+  });
   it('keeps each saved sitting distinct and sorts LR with RC', () => {
     const rows = buildStandaloneDrillHistory(
       [lr('lr-1', 'in_progress', 1), lr('lr-2', 'completed', 1)],
@@ -49,9 +56,10 @@ describe('buildStandaloneDrillHistory', () => {
         rc('empty-rc'),
         rc('pt-rc', { config: { source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' }, practiceTestRunId: 'test' } }),
         rc('assigned-rc', { config: { source: 'assignment', reveal: 'end_of_set', timing: { mode: 'unlimited' } } }),
+        rc('section-rc', { config: { source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' }, timedSectionSittingId: 'sitting' } }),
         rc('finished-rc', { status: 'completed' }),
       ],
-      new Map([['pt-rc', [answer('pt-rc')]], ['assigned-rc', [answer('assigned-rc')]]]),
+      new Map([['pt-rc', [answer('pt-rc')]], ['assigned-rc', [answer('assigned-rc')]], ['section-rc', [answer('section-rc')]]]),
     );
     expect(rows.map((row) => row.key)).toEqual(['lr:finished', 'rc:finished-rc']);
   });

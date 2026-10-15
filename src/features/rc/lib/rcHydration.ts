@@ -19,6 +19,7 @@
  */
 import type { RcSessionItem } from './rcSession';
 import type { RcAttempt, RcLetter, RcRevealMode } from './rcTypes';
+import { readRcDraftAnswers } from './rcTypes';
 
 export interface RcHydrationInput {
   /** The session's questions, already flattened by `buildItems`. */
@@ -28,6 +29,8 @@ export interface RcHydrationInput {
   revealMode: RcRevealMode;
   /** A `?review=1` deep link shows every question's feedback at once. */
   reviewOnly: boolean;
+  /** Caller supplies these only for an active, ordinary drill. */
+  draftAnswers?: unknown;
 }
 
 export interface RcHydration {
@@ -53,6 +56,7 @@ export function hydrateFromAttempts({
   attempts,
   revealMode,
   reviewOnly,
+  draftAnswers,
 }: RcHydrationInput): RcHydration {
   const inSession = new Set(items.map((i) => i.question.questionId));
 
@@ -88,6 +92,17 @@ export function hydrateFromAttempts({
     if (a.selected) answers.set(questionId, a.selected);
     if (a.eliminations?.length) eliminations.set(questionId, [...a.eliminations]);
     if (a.flagged) flagged.add(questionId);
+  }
+
+  if (!reviewOnly) {
+    for (const draft of readRcDraftAnswers(draftAnswers)) {
+      const item = items.find((entry) => entry.question.questionId === draft.questionId);
+      if (!item || recorded.has(draft.questionId)
+        || !item.question.choices.some((choice) => choice.letter === draft.selected)) continue;
+      answers.set(draft.questionId, draft.selected);
+      eliminations.set(draft.questionId, [...draft.eliminations]);
+      if (draft.flagged) flagged.add(draft.questionId);
+    }
   }
 
   return {

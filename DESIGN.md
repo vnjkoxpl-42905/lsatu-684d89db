@@ -302,6 +302,12 @@ The product's distinctive pattern is not a control, it is a container. A room co
 
 ## Do's and Don'ts
 
+### Drill creation and drill history are separate destinations
+
+RC correction, 2026-10-15: selecting **Create** opens the passage builder directly. Existing sittings belong in **In progress** or **Completed**, filtered by the selected LR/RC section. Do not put an attempt list, results, or Resume/Delete controls under Create, or add a second Create button merely to reach setup. Preserve the preview-to-start boundary: a preview reads the selected content; starting creates the sitting. Assigned work and protected timed sections keep their own destinations.
+
+The RC builder uses Workroom semantic tokens on its entire setup surface. Its inherited dark-card palette must not place pale text on a light card. Check both themes, selected controls, keyboard focus, phone, mid-width, wide and docked layouts in the rendered app. Saved-set copy must state its actual support: reusable templates currently support LR, while RC sittings are in history. These are scoped corrections and implementation constraints, not approval of exact replacement copy or a mandate to copy another platform's layout.
+
 ### Do:
 
 - **Do** resolve every colour from a token, and treat a token that resolves to nothing as a defect. Verify a new token renders before documenting it.
