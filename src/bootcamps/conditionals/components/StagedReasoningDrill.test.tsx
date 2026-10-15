@@ -1,11 +1,14 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { afterEach, beforeEach, expect, it } from 'vitest';
+import { cleanup, fireEvent, render, screen, within, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { StagedReasoningDrill, sufficientStagedItems, contrapositiveStagedItems } from './StagedReasoningDrill';
 import { diagramExamples, flashcardExamples, translationExamples } from './ConditionalOpeningLesson';
 import { referencePracticeItems } from './ConditionalReferenceSequence';
+vi.mock('@/lib/conditionalRewriteGrader', () => ({ gradeConditionalRewrite: vi.fn() }));
+import { gradeConditionalRewrite } from '@/lib/conditionalRewriteGrader';
+const gradeRewrite = vi.mocked(gradeConditionalRewrite);
 afterEach(cleanup);
-beforeEach(() => localStorage.clear());
+beforeEach(() => { localStorage.clear(); gradeRewrite.mockReset(); });
 const mount = (mode: 'sufficient' | 'contrapositive') => render(<MemoryRouter><StagedReasoningDrill mode={mode}/></MemoryRouter>);
 
 it('uses one fresh sentence per Group 1 indicator, none copied from a lesson, plus three practice items', () => {
@@ -23,7 +26,7 @@ it('uses one fresh sentence per Group 1 indicator, none copied from a lesson, pl
   for (const item of indicatorItems) {
     const [indicator, , , write] = item.stages;
     indicator.options!.forEach((_, i) => { if (i !== indicator.correct) expect(indicator.hints![i]).toBeTruthy(); });
-    expect(write).toMatchObject({ name: 'Write it in English', prompt: 'Write your diagram as an if/then sentence.', label: 'Your if/then sentence' });
+    expect(write).toMatchObject({ name: 'Write it in English', prompt: 'Rewrite this conditional in your own words.', label: 'Your rewrite' });
     expect(write.model).toMatch(/^If .*, then /);
   }
   expect(contrapositiveStagedItems).toHaveLength(9);
@@ -56,7 +59,8 @@ it('shows one stage at a time and requires a correct checked choice', () => {
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
 });
 
-it('requires an attempted written readback and explicit self-comparison', () => {
+it('grades the exact submitted rewrite before allowing progress', async () => {
+  gradeRewrite.mockResolvedValue({ correct: true, feedback: 'Your rewrite preserves both conditions and their direction.' });
   localStorage.setItem('conditional-staged-v1:contrapositive', JSON.stringify({ index: 1, step: 0, answers: {}, fingerprint: JSON.stringify(contrapositiveStagedItems) }));
   mount('contrapositive');
   for (const correct of [1, 0]) {
@@ -64,14 +68,15 @@ it('requires an attempted written readback and explicit self-comparison', () => 
     fireEvent.click(screen.getByRole('button', { name: 'Check this step' }));
     fireEvent.click(screen.getByRole('button', { name: 'Next step' }));
   }
-  expect(screen.getByRole('heading', { name: 'Write your diagram as an if/then sentence.' })).toBeVisible();
-  expect(screen.getByRole('textbox', { name: 'Your if/then sentence' })).toBeVisible();
-  expect(screen.getByRole('button', { name: 'Compare my sentence' })).toBeDisabled();
+  expect(screen.getByRole('heading', { name: 'Rewrite this conditional in your own words.' })).toBeVisible();
+  expect(screen.getByRole('textbox', { name: 'Your rewrite' })).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Check my rewrite' })).toBeDisabled();
   fireEvent.change(screen.getByRole('textbox'), { target: { value: 'My reading.' } });
-  fireEvent.click(screen.getByRole('button', { name: 'Compare my sentence' }));
-  expect(screen.getByText('Our version:')).toBeVisible();
-  expect(screen.getByRole('button', { name: 'Next step' })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'I compared the direction and complete conditions' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Check my rewrite' }));
+  await waitFor(() => expect(screen.getByRole('heading', { name: 'Your rewrite keeps the meaning.' })).toHaveFocus());
+  expect(gradeRewrite).toHaveBeenCalledWith(expect.objectContaining({ studentResponse: 'My reading.', original: contrapositiveStagedItems[1].sentence, expected: contrapositiveStagedItems[1].stages[2].model, task: 'rewrite' }));
+  expect(screen.queryByText('Our version:')).toBeNull();
+  expect(screen.queryByRole('button', { name: 'I compared the direction and complete conditions' })).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: 'Next step' }));
   expect(screen.getByRole('heading', { name: 'Now write the contrapositive in ordinary English.' })).toBeVisible();
 });
@@ -90,21 +95,51 @@ it('keeps answers saved against an older item set in the record instead of readi
   const answers = { '0:0': { choice: 2, writing: '', checked: true, accepted: true }, '0:3': { choice: null, writing: 'Old readback.', checked: true, accepted: true } };
   localStorage.setItem('conditional-staged-v1:sufficient', JSON.stringify({ index: 0, step: 3, answers, fingerprint: 'v2:old' }));
   mount('sufficient');
-  expect(screen.getByRole('heading', { name: 'Which indicator introduces the sufficient condition?' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Which word indicates a conditional relationship?' })).toBeVisible();
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
   const stored = JSON.parse(localStorage.getItem('conditional-staged-v1:sufficient')!);
   expect(stored.answers).toEqual({});
   expect(stored.archived).toEqual([{ fingerprint: 'v2:old', index: 0, step: 3, answers }]);
 });
 
-it('restores drafts and invalidates later checks when an earlier step is revised', () => {
+it('keeps ungraded drafts and does not offer to revise a correct objective answer', () => {
   const answers = { '0:0': { choice: 0, writing: '', checked: true, accepted: true }, '0:1': { choice: 1, writing: '', checked: true, accepted: true }, '0:2': { choice: null, writing: 'My saved reasoning.', checked: true, accepted: true } };
   localStorage.setItem('conditional-staged-v1:contrapositive', JSON.stringify({ index: 0, step: 0, answers, fingerprint: JSON.stringify(contrapositiveStagedItems) }));
   mount('contrapositive');
   expect(screen.getByRole('heading', { name: 'Right rule.' })).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Revise my answer' }));
+  expect(screen.queryByRole('button', { name: 'Revise my answer' })).toBeNull();
   const stored = JSON.parse(localStorage.getItem('conditional-staged-v1:contrapositive')!);
-  expect(stored.answers['0:1'].accepted).toBe(false);
+  expect(stored.answers['0:1'].accepted).toBe(true);
   expect(stored.answers['0:2'].checked).toBe(false);
   expect(stored.answers['0:2'].writing).toBe('My saved reasoning.');
+});
+
+it('preserves writing and blocks progress when AI grading is unavailable', async () => {
+  gradeRewrite.mockRejectedValue(new Error('Sign in to check your rewrite.'));
+  const answers = Object.fromEntries([0, 1, 2].map(step => [`0:${step}`, { choice: sufficientStagedItems[0].stages[step].correct, writing: '', checked: true, accepted: true }]));
+  localStorage.setItem('conditional-staged-v1:sufficient', JSON.stringify({ index: 0, step: 3, answers, fingerprint: JSON.stringify(sufficientStagedItems) }));
+  mount('sufficient');
+  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Mia takes the bus whenever it rains.' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Check my rewrite' }));
+  expect(await screen.findByRole('alert')).toHaveTextContent('Sign in to check your rewrite.');
+  expect(screen.getByRole('textbox')).toHaveValue('Mia takes the bus whenever it rains.');
+  expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
+  expect(screen.queryByRole('button', { name: 'I compared the direction and complete conditions' })).toBeNull();
+});
+
+it('uses specific AI revision feedback and discards the grade when writing changes', async () => {
+  gradeRewrite.mockResolvedValueOnce({ correct: false, feedback: 'Your rewrite starts from taking the bus; the original starts from rain.' });
+  const answers = Object.fromEntries([0, 1, 2].map(step => [`0:${step}`, { choice: sufficientStagedItems[0].stages[step].correct, writing: '', checked: true, accepted: true }]));
+  localStorage.setItem('conditional-staged-v1:sufficient', JSON.stringify({ index: 0, step: 3, answers, fingerprint: JSON.stringify(sufficientStagedItems) }));
+  mount('sufficient');
+  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Whenever Mia takes the bus, it rains.' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Check my rewrite' }));
+  await waitFor(() => expect(screen.getByRole('heading', { name: 'Revise your rewrite.' })).toHaveFocus());
+  expect(screen.getByText('Your rewrite starts from taking the bus; the original starts from rain.')).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('button', { name: 'Revise my answer' }));
+  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Mia takes the bus whenever it rains.' } });
+  const stored = JSON.parse(localStorage.getItem('conditional-staged-v1:sufficient')!);
+  expect(stored.answers['0:3'].grade).toBeUndefined();
+  expect(stored.answers['0:3'].accepted).toBe(false);
 });
