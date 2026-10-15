@@ -148,6 +148,7 @@ export default function ReviewQueuePage() {
   const nativeLabError = canIntroLr && nativeLabReview.isError;
   const episodeError = canIntroLr && episodeReview.isError;
   const hasError = journalError || flagError || rcError || activityError || sectionError || practiceTestError || introLrError || hardSentencesError || nativeLabError || episodeError;
+  const partialQueue = hasError || projection.unavailable > 0;
   const failedSources = [journalError && "LR wrong answers", flagError && "LR flags", rcError && "RC drills", activityError && "Activities", sectionError && "Timed sections", practiceTestError && "PrepTests", introLrError && "Intro to LR", hardSentencesReview.isError && canIntroLr && "Hard Sentences", nativeLabError && "Native Intro to LR labs", episodeError && "Saved review tasks", ...hardSentencesUnavailable].filter(Boolean).join(", ");
 
   const setParam = (key: string, value: string | null) => {
@@ -208,8 +209,8 @@ export default function ReviewQueuePage() {
 
       {loading ? <p className="review-queue-state" role="status">Loading saved work…</p> : visibleItems.length === 0 ? (
         <div className="review-queue-state">
-          <h3>{hasError ? "No items from the loaded source" : items.length > 0 ? "No items match these filters" : "No saved work here yet"}</h3>
-          <p>{hasError ? "Retry to see the full list." : items.length > 0 ? "Try another reason or clear the search." : "Questions and Activities you miss or flag, or timed section questions you opened and left blank, will appear here."}</p>
+          <h3>{partialQueue ? "The full review queue is unavailable" : items.length > 0 ? "No items match these filters" : "No saved work here yet"}</h3>
+          <p>{partialQueue ? "Some saved work could not be shown. Check the warning above for the affected source." : items.length > 0 ? "Try another reason or clear the search." : "Questions and Activities you miss or flag, or timed section questions you opened and left blank, will appear here."}</p>
         </div>
       ) : table ? (
         <div className="review-queue-table-wrap">

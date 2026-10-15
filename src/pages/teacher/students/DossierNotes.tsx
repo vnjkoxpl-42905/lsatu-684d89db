@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import StudentNotes from '@/components/hub/StudentNotes';
 import SessionBundleList from '@/components/teacher/students/SessionBundleList';
@@ -14,14 +14,18 @@ import { useDossier } from './StudentDossier';
 export default function DossierNotes() {
   const { studentId, studentName } = useDossier();
   const { user } = useAuth();
-  const [showRecap, setShowRecap] = useState(false);
+  const [recapStudentId, setRecapStudentId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setRecapStudentId(null);
+  }, [studentId]);
 
   return (
     <div className="space-y-5 p-5">
       <div className="flex justify-end">
         <button
           type="button"
-          onClick={() => setShowRecap(true)}
+          onClick={() => setRecapStudentId(studentId)}
           className="inline-flex items-center gap-1.5 border border-black/15 px-3 py-2 text-xs font-semibold text-black/55 transition hover:bg-white/25 hover:text-black"
         >
           <BookOpen className="h-3.5 w-3.5" strokeWidth={1.5} />
@@ -53,11 +57,12 @@ export default function DossierNotes() {
         <StudentNotes studentId={studentId} studentName={studentName} />
       </section>
 
-      {showRecap && user && (
+      {recapStudentId === studentId && user && (
         <RecapComposer
+          key={studentId}
           studentId={studentId}
           adminUserId={user.id}
-          onClose={() => setShowRecap(false)}
+          onClose={() => setRecapStudentId(null)}
         />
       )}
     </div>

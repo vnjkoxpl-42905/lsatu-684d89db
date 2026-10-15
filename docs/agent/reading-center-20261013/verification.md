@@ -64,3 +64,12 @@ Live entry changed from `/assets/index-C8F-Wb_V.js` to `/assets/index-DByF-8o8.j
 ## Scope retained from the original release
 
 AI Summary/Generate remain excluded by Joshua's earlier decision. Import supports text, Markdown and HTML up to 5 MB; PDF/DOCX parsing, Wordela integration and the original Spreeder commercial catalogue are outside this feature. No Edge Function deployment or Lovable AI credit spending was used.
+
+## Student article import check, 2026-10-14
+
+Published QA student UI: pasted a 44-word two-paragraph article and imported a 20-word HTML article through the real file chooser. Both appeared under Added By Me, survived reload, and opened in View with exact expected text. HTML scripts/styles/head title were excluded and entities/Unicode preserved; HTML paragraph formatting is flattened. Serial playback reached ENDARTICLE, 100 percent, and the finish confirmation. Unsupported CSV showed a clear format error with Save disabled. Cloud readback confirmed both owner IDs match the QA student. No real student assignment changed.
+
+Live Spreeder comparison confirmed Paste Text and Import Document menu entries and a single-file chooser; no source-account content was imported. This does not establish full format or service parity. Supported files remain TXT/MD/TEXT/HTML/HTM up to 5 MiB; PDF/DOCX/URL import is unsupported.
+
+Fixed a slow-save loss risk: AddText locks fields and close controls while saving, prevents duplicate submission, shows saving status, and retains failed drafts for retry. Two mounted regressions plus six import/cloud tests passed; TypeScript and production build/content guard passed. Actual local browser with 12-second network latency showed disabled fields/Close/Cancel/Save and saving status, then the saved QA article appeared. Network conditions restored. Generated MCP dev stub was restored and excluded from changes.
+
