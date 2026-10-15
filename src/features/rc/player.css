@@ -157,3 +157,10 @@ mark[data-rc-highlight] {
   border: 1px solid rgba(15, 23, 42, 0.25);
   cursor: pointer;
 }
+
+/* A background only: annotations and selection keep their DOM ranges and hit areas. */
+@media (hover: hover) and (pointer: fine) {
+  .rc-paragraph-focus .rc-passage-text p:hover {
+    background-color: color-mix(in srgb, var(--rc-fg) 9%, var(--rc-bg));
+  }
+}

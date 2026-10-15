@@ -48,7 +48,7 @@ vi.mock('../components/RcChrome', () => ({
 vi.mock('../components/RcPassagePane', () => ({ RcPassagePane: () => null }));
 vi.mock('../components/RcPassageSummary', () => ({ RcPassageSummary: () => null }));
 vi.mock('../components/RcModals', () => ({
-  RcQuestionDetails: () => null, RcSubmitConfirm: () => null, RcTextSettings: () => null,
+  RcQuestionDetails: () => null, RcSubmitConfirm: () => null, RcTextSettings: () => null, RcLineSpacingMenu: () => null,
 }));
 vi.mock('@/components/help/HelpSheet', () => ({ default: () => null }));
 
