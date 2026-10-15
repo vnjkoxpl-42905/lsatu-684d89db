@@ -148,7 +148,16 @@ describe('Hard Sentences in the rendered Review queue', () => {
     fixture.failedCapstone = true;
     mount();
     expect(await screen.findByRole('alert')).toHaveTextContent('Hard Sentences cluster attempts, Hard Sentences capstone attempts');
-    expect(screen.getByText('No items from the loaded source')).toBeInTheDocument();
+    expect(screen.getByText('The full review queue is unavailable')).toBeInTheDocument();
+    expect(screen.queryByText('No saved work here yet')).not.toBeInTheDocument();
+  });
+  it('does not claim an empty queue when a saved task has no supported source', async () => {
+    fixture.clusters['student-a'] = [];
+    fixture.capstones['student-a'] = [];
+    fixture.episodeRecords['student-a'] = { episodes: [{ id: 'unsupported-task', student_id: 'student-a', actor_id: 'teacher', source_kind: 'hs_capstone', source_id: 'missing-submission', question_id: M5_CAPSTONE[0].id, reason: 'teacher_selected', selection_reason: 'Review this answer.', created_at: '2026-09-30T13:00:00Z' }], events: [] };
+    mount();
+    expect(await screen.findByText('The full review queue is unavailable')).toBeInTheDocument();
+    expect(screen.getByText(/1 saved review task has an unavailable or unsupported source/)).toBeInTheDocument();
     expect(screen.queryByText('No saved work here yet')).not.toBeInTheDocument();
   });
   it('keeps source, area, table and last-opened identity in the detail return route', async () => {

@@ -1,4 +1,4 @@
-import type { GradedQuestionAnswer, ProgressWindow } from './firstAnswerProgress';
+import { orderedDistinctAnswers, type GradedQuestionAnswer, type ProgressWindow } from './firstAnswerProgress';
 
 export type HistoryAnswer = GradedQuestionAnswer & { isFirst: boolean };
 export interface TopicAccuracy {
@@ -18,10 +18,7 @@ export function inProgressWindow(date: string, window: ProgressWindow, asOf: str
 
 /** First identity is chosen across all time before the selected window. */
 export function firstAnswerDetails(answers: GradedQuestionAnswer[], window: ProgressWindow, asOf: string) {
-  const ordered = answers.filter((answer) => Number.isFinite(Date.parse(answer.gradedAt)))
-    .sort((a, b) => Date.parse(a.gradedAt) - Date.parse(b.gradedAt)
-      || Date.parse(a.answeredAt ?? a.gradedAt) - Date.parse(b.answeredAt ?? b.gradedAt)
-      || a.attemptId.localeCompare(b.attemptId));
+  const ordered = orderedDistinctAnswers(answers);
   const firstAnswers = new Set<GradedQuestionAnswer>();
   const seen = new Set<string>();
   for (const answer of ordered) {
