@@ -1,0 +1,61 @@
+{
+  "duration": 65.21066666666667,
+  "scenes": [
+    {
+      "id": "intro",
+      "title": "Spot the Relationship",
+      "text": "Your job is to name the relationship, then find the words that create it.",
+      "start": 0.6,
+      "end": 4.931
+    },
+    {
+      "id": "read",
+      "title": "Read the sentence",
+      "text": "Read the whole sentence first. A lantern can be lit only if its wick is dry.",
+      "start": 5.831,
+      "end": 10.375
+    },
+    {
+      "id": "spot",
+      "title": "Find the connection",
+      "text": "Notice only if. Those words make a dry wick necessary for lighting the lantern. That is a conditional relationship.",
+      "start": 11.275,
+      "end": 18.784
+    },
+    {
+      "id": "answer",
+      "title": "Write both parts",
+      "text": "Write the type, then quote the indicator: Conditional, only if. Give both parts of the answer.",
+      "start": 19.684,
+      "end": 25.209
+    },
+    {
+      "id": "cause",
+      "title": "Look for a cause",
+      "text": "A causal relationship says one thing produces or changes another. The room warmed because the heater switched on. Here, because gives the cause.",
+      "start": 26.109,
+      "end": 35.219
+    },
+    {
+      "id": "compare",
+      "title": "Look for a comparison",
+      "text": "A comparative relationship compares things. This lamp is brighter than that one. Brighter than makes the comparison.",
+      "start": 36.119,
+      "end": 42.945
+    },
+    {
+      "id": "mixed",
+      "title": "Check for another type",
+      "text": "Sometimes a sentence contains more than one type. If the lamp is on, the room is brighter than the hallway. If is conditional. Brighter than is comparative. Include each type with its own indicator words.",
+      "start": 43.845,
+      "end": 56.688
+    },
+    {
+      "id": "close",
+      "title": "Your turn",
+      "text": "Read the sentence. Name each relationship type. Quote the words that create it. You're ready to start.",
+      "start": 57.588,
+      "end": 63.711
+    }
+  ]
+}

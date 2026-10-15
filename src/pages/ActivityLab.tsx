@@ -428,9 +428,10 @@ function IntroPanel() {
         />
       </div>
       {/* Mirrors the runner's intro wrapper, which carries the same attribute. */}
-      <div className="act-home" data-world={worldForTitle(a.title)?.slug}>
+      <div className="activity-centre act-home" data-world={worldForTitle(a.title)?.slug}>
         <ActivityIntro
           key={a.slug}
+          preview
           title={a.title}
           subtitle={a.subtitle}
           instructions={instructions}

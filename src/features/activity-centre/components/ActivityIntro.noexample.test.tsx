@@ -112,10 +112,15 @@ describe("ActivityIntro without a worked example", () => {
           onStart={() => {}}
         />,
       );
-      expect(hero(container)).toHaveAttribute(
-        "data-orbs",
-        a.instructions.worked_example ? "true" : "false",
-      );
+      if (a.title === "Spot the Relationship") {
+        expect(container.querySelector('[data-testid="relationship-intro"]')).not.toBeNull();
+        expect(container.querySelector(".act-orbs")).toBeNull();
+      } else {
+        expect(hero(container)).toHaveAttribute(
+          "data-orbs",
+          a.instructions.worked_example ? "true" : "false",
+        );
+      }
       unmount();
     }
   });

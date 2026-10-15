@@ -19,16 +19,13 @@ export const RC_COLOR_SCHEMES: { id: RcColorScheme; label: string }[] = [
 /** Percentages, matching the official interface's own wording. */
 export const RC_FONT_SIZES = [75, 100, 125, 150, 175];
 
-/**
- * Extra leading added on top of the pane's own line height, rather than an
- * absolute value. The passage and the question column run at different line
- * heights (1.6 by default), and one absolute number would
- * flatten that difference the moment a student touched the control.
+/** Extra leading relative to the comfortable 1.6 default: 100%, 150%, 200%.
+ * Existing intermediate leading values remain valid when restoring preferences.
  */
 export const RC_LINE_HEIGHTS = [
-  { label: 'Default', value: 0 },
-  { label: 'Roomy', value: 0.25 },
-  { label: 'Roomiest', value: 0.45 },
+  { label: 'Default', percent: 100, value: 0 },
+  { label: 'Medium', percent: 150, value: 0.8 },
+  { label: 'Large', percent: 200, value: 1.6 },
 ];
 
 export interface RcA11ySettings {
@@ -36,11 +33,12 @@ export interface RcA11ySettings {
   fontSize: number;
   /** Extra leading, not an absolute line height. */
   lineHeight: number;
+  paragraphFocus: boolean;
 }
 
 const STORAGE_KEY = 'rc-player-a11y';
 
-const DEFAULTS: RcA11ySettings = { scheme: 'default', fontSize: 100, lineHeight: 0 };
+const DEFAULTS: RcA11ySettings = { scheme: 'default', fontSize: 100, lineHeight: 0, paragraphFocus: false };
 
 /**
  * Line height used to be stored as an absolute 1.35 / 1.65 / 1.85. Map those
@@ -48,7 +46,7 @@ const DEFAULTS: RcA11ySettings = { scheme: 'default', fontSize: 100, lineHeight:
  */
 function migrateLineHeight(stored: number | undefined): number {
   if (typeof stored !== 'number' || !Number.isFinite(stored) || stored < 0) return DEFAULTS.lineHeight;
-  if (stored < 1) return RC_LINE_HEIGHTS.some(option => option.value === stored) ? stored : DEFAULTS.lineHeight;
+  if (RC_LINE_HEIGHTS.some(option => option.value === stored) || stored === 0.25 || stored === 0.45) return stored;
   if (stored === 1.85) return 0.45;
   if (stored === 1.65) return 0.25;
   return 0;
@@ -64,6 +62,7 @@ function read(): RcA11ySettings {
       fontSize: typeof parsed.fontSize === 'number' && Number.isFinite(parsed.fontSize)
         && parsed.fontSize >= 50 && parsed.fontSize <= 300 ? parsed.fontSize : DEFAULTS.fontSize,
       lineHeight: migrateLineHeight(parsed.lineHeight),
+      paragraphFocus: parsed.paragraphFocus === true,
     };
   } catch {
     return DEFAULTS;
@@ -87,6 +86,7 @@ export function useRcA11y() {
       fontSize: typeof patch.fontSize === 'number' && Number.isFinite(patch.fontSize)
         && patch.fontSize >= 50 && patch.fontSize <= 300 ? patch.fontSize : prev.fontSize,
       lineHeight: patch.lineHeight === undefined ? prev.lineHeight : migrateLineHeight(patch.lineHeight),
+      paragraphFocus: typeof patch.paragraphFocus === 'boolean' ? patch.paragraphFocus : prev.paragraphFocus,
     }));
   }, []);
 

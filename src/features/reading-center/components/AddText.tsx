@@ -30,7 +30,10 @@ export function AddTextScreen({
   const [error, setError] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
   const file = useRef<HTMLInputElement | null>(null);
+  const saving = useRef(false);
   const isEdit = mode === "edit";
+  const busy = upsert.isPending || importing;
+  const close = () => { if (!busy && !saving.current) onClose(); };
 
   useEffect(() => {
     if (mode === "import") file.current?.click();
@@ -48,21 +51,24 @@ export function AddTextScreen({
     } finally { setImporting(false); }
   };
 
-  const canSave = title.trim() !== "" && body.trim() !== "" && !upsert.isPending && !importing;
-  const save = () =>
+  const canSave = title.trim() !== "" && body.trim() !== "" && !busy;
+  const save = () => {
+    if (!canSave || saving.current) return;
+    saving.current = true;
     upsert.mutate(
       passage
         ? { id: passage.id, title: title.trim(), body: body.trim(), author: author.trim() || null, genre: genre.trim() || null }
         : { title: title.trim(), body: body.trim() },
-      { onSuccess: (p) => onSaved(p.slug), onError: (e) => setError(e.message) },
+      { onSuccess: (p) => onSaved(p.slug), onError: (e) => setError(e.message), onSettled: () => { saving.current = false; } },
     );
+  };
 
   return (
-    <Modal open onClose={onClose} fullScreen closeOnEscape labelledBy="rc-add-title">
-      <div className="flex h-full flex-col px-[30px] pb-[28px] pt-[19px]">
+    <Modal open onClose={close} fullScreen closeOnEscape labelledBy="rc-add-title">
+      <fieldset disabled={busy} className="flex h-full min-w-0 flex-col px-[30px] pb-[28px] pt-[19px]">
         <div className="flex items-start justify-between">
           <h2 id="rc-add-title" className="pl-1 text-2xl leading-8" style={{ color: "var(--rc-text)" }}>{isEdit ? "Edit Text" : "Add To Library"}</h2>
-          <button type="button" aria-label="Close" onClick={onClose} className="-mr-[10px] mt-px flex h-9 w-[34px] items-center justify-center rounded-full hover:bg-[var(--rc-menu-hover)]" style={{ color: "var(--rc-strong)" }}>
+          <button type="button" aria-label="Close" onClick={close} className="-mr-[10px] mt-px flex h-9 w-[34px] items-center justify-center rounded-full hover:bg-[var(--rc-menu-hover)]" style={{ color: "var(--rc-strong)" }}>
             <MIcon name="close" />
           </button>
         </div>
@@ -95,6 +101,7 @@ export function AddTextScreen({
           </>
         )}
         {error && <p role="alert" className="mt-2 text-sm" style={{ color: "#f44336" }}>{error}</p>}
+        {upsert.isPending && <p role="status" className="mt-2 text-sm">Saving your text.</p>}
         {mode === "import" && (
           <div className="mt-3 flex items-center gap-3 text-sm">
             <button type="button" disabled={importing} className="rc-outline-btn" onClick={() => file.current?.click()}>{importing ? "Reading file..." : "Choose file"}</button>
@@ -107,7 +114,7 @@ export function AddTextScreen({
           </div>
         )}
         <div className="mt-[31px] flex items-center justify-end -mr-1.5 gap-[5px]">
-          {!isEdit && <button type="button" className="rc-outline-btn h-[38px] w-[84px]" onClick={onClose}>Cancel</button>}
+          {!isEdit && <button type="button" className="rc-outline-btn h-[38px] w-[84px]" onClick={close}>Cancel</button>}
           <button
             type="button"
             className="h-[38px] w-[120px] rounded text-sm font-medium"
@@ -115,10 +122,10 @@ export function AddTextScreen({
             onClick={save}
             style={canSave ? { background: "var(--rc-green)", color: "#fff" } : { background: "var(--rc-btn-disabled-bg)", color: "var(--rc-btn-disabled-fg)" }}
           >
-            Save
+            {upsert.isPending ? "Saving..." : "Save"}
           </button>
         </div>
-      </div>
+      </fieldset>
     </Modal>
   );
 }

@@ -14,6 +14,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'csv-parse/sync';
+import { applyCorrections, resolveCredit } from './rc-answer-keys.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'scripts/rc-source/data');
@@ -182,7 +183,7 @@ for (const p of passagesCsv) {
     const choices = LETTERS.map((l) => raw.find((c) => c.letter === l)).filter(Boolean);
     const correctChoices = choices.filter((c) => c.correct);
 
-    if (choices.length !== 5 || correctChoices.length !== 1) {
+    if (raw.length === 0 && !recoveredById.has(questionId)) {
       excluded.push({
         questionId,
         passageId,
@@ -191,14 +192,18 @@ for (const p of passagesCsv) {
       continue;
     }
 
+    // Do not silently drop malformed recovered/authored questions or hide
+    // duplicate letters by selecting only the first matching choice.
+    resolveCredit(questionId, raw);
+
     const expl = explById.get(questionId);
     const hasWritten = bool(q.has_written_explanation);
-    // correct_answer is authored only for explained questions; for the rest the
-    // credited letter comes from answer_choices.correct.
-    const correctAnswer = nullable(expl?.correct_answer) ?? correctChoices[0].letter;
+    // An explicit recovered key must never be silently ignored. Conflicting
+    // source fields are rejected before writing generated bank files.
+    const rec = recoveredById.get(questionId);
+    const correctAnswer = resolveCredit(questionId, choices, nullable(expl?.correct_answer), nullable(rec?.correctanswer));
     // The prompt normally rides on the explanation record, which a recovered
     // question does not have; its questiontext comes from the API instead.
-    const rec = recoveredById.get(questionId);
     const prompt = nullable(expl?.prompt) ?? nullable(rec?.questiontext) ?? null;
     if (prompt === null) nullPromptCount += 1;
 
@@ -242,6 +247,10 @@ for (const p of passagesCsv) {
 }
 
 // ------------------------------------------------------------------- write out
+// Keep immutable recovery captures intact; apply only address/text-bound,
+// independently documented corrections before any generated output is written.
+applyCorrections([...byPreptest].map(([preptest, passages]) => ({ preptest, passages })),
+  JSON.parse(readFileSync(join(ROOT, 'src/features/rc/lib/rcAnswerKeyCorrections.json'), 'utf8')));
 mkdirSync(OUT, { recursive: true });
 for (const f of readdirSync(OUT)) {
   if (f.startsWith('RC-PT') || f === 'rc-index.json') {

@@ -61,3 +61,6 @@ verify_jwt = false
 
 [functions.stripe-sync]
 verify_jwt = true
+
+[functions.grade-conditional-rewrite]
+verify_jwt = true
