@@ -9,6 +9,34 @@ const props = {
   itemCount: 48, maxAttempts: 2, onStart: vi.fn(), onExit: vi.fn(),
 };
 
+it("places an accessible, captioned video before the written instructions without autoplay", () => {
+  render(<ActivityIntro {...props} />);
+  const video = screen.getByLabelText("How to play Spot the Relationship");
+  expect(video).toHaveAttribute("controls");
+  expect(video).toHaveAttribute("preload", "none");
+  expect(video).toHaveAttribute("playsinline");
+  expect(video).not.toHaveAttribute("autoplay");
+  expect(video).toHaveAttribute("src", "/media/spot-the-relationship/how-to-play-v1.mp4");
+  expect(video).toHaveAttribute("poster", "/media/spot-the-relationship/how-to-play-v1.webp");
+  const captions = video.querySelector("track");
+  expect(captions).toHaveAttribute("kind", "captions");
+  expect(captions).toHaveAttribute("srclang", "en");
+  expect(captions).toHaveAttribute("default");
+  expect(captions).toHaveAttribute("src", "/media/spot-the-relationship/how-to-play-v1.vtt");
+  expect(video.compareDocumentPosition(screen.getByRole("heading", { name: "What to write" })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  fireEvent.click(screen.getByText("Read the video transcript"));
+  expect(screen.getByText(/Your job is to name the relationship/)).toBeVisible();
+});
+
+it("keeps the transcript, written instructions and Start available after a video error", () => {
+  render(<ActivityIntro {...props} />);
+  fireEvent.error(screen.getByLabelText("How to play Spot the Relationship"));
+  expect(screen.getByRole("status")).toHaveTextContent("The video could not load.");
+  expect(screen.getByRole("heading", { name: "What to write" })).toBeVisible();
+  expect(screen.getByText("Read the video transcript")).toBeVisible();
+  expect(screen.getByRole("button", { name: "Start" })).toBeEnabled();
+});
+
 it("replaces stale snapshot instructions with readable steps, one example and one Start action", () => {
   render(<ActivityIntro {...props} />);
   expect(screen.getByRole("heading", { name: "What to write" })).toBeVisible();

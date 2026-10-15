@@ -21,6 +21,12 @@
 .relationship-eyebrow { margin: 0 0 10px; color: #605329; font-size: .82rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
 .relationship-heading h1 { margin: 0; color: #1b1713; font-family: Georgia, serif; font-weight: 400; font-size: clamp(1.85rem, 3.8vw, 3rem); line-height: 1.15; letter-spacing: -.025em; }
 .relationship-heading > p:last-child { margin: 14px 0 0; color: #51463c; max-width: 60ch; }
+.relationship-intro .relationship-video { margin-bottom: 28px; }
+.relationship-intro .relationship-video video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; background: #1b1713; }
+.relationship-intro .relationship-video-transcript { margin-top: 12px; color: #42382e; font-size: .93rem; }
+.relationship-intro .relationship-video-transcript summary { cursor: pointer; padding-block: 6px; font-weight: 600; }
+.relationship-intro .relationship-video-transcript p { max-width: 80ch; margin: 10px 0 0; }
+.relationship-intro .relationship-video-fallback { color: #42382e; margin: 12px 0 0; }
 .relationship-launch-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; }
 .relationship-intro h2 { margin: 0 0 16px; color: #1b1713; font-size: 1.15rem; line-height: 1.35; }
 .relationship-instructions ol { margin: 0; padding-left: 1.4rem; list-style: decimal; }
