@@ -1,0 +1,648 @@
+[
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The government’s tax collection agency has not followed\n through on its plan, announced a year ago, to crack down\n on violations of corporate income tax law. Audits are\n the primary tool for detecting such violations, and over\n the past year, not a single audit of corporate income tax\n returns has been completed.",
+    "questionStem": "Which one of the following, if true, most weakens the\n argument?",
+    "answerChoices": {
+      "A": "The plan to crack down on violations of corporate income tax law is part of a broad campaign against corporate misconduct.",
+      "B": "The number of personal income tax returns audited over the past year is greater than in previous years.",
+      "C": "Most audits of corporate income tax returns do not reveal any significant violations.",
+      "D": "It generally takes longer than one year to complete an audit of a corporate income tax return.",
+      "E": "Over the last five years, fewer audits of corporate income tax returns have been completed than in the preceding five years."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Columnist: Making some types of products from\n recycled materials is probably as damaging to\n the environment as it would be to make those\n products from entirely nonrecycled materials. The recycling process for those products requires\n as much energy as producing them from raw\n materials, and almost all energy production\n damages the environment.",
+    "questionStem": "The reasoning in the columnist’s argument is most\n vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "uses the word “environment” in one sense in a premise and in a different sense in the conclusion drawn from that premise",
+      "B": "treats an effect of energy-related damage to the environment as if it were instead a cause of such damage",
+      "C": "fails to consider that the particular types of recycled products that it cites may not be representative of recycled products in general",
+      "D": "fails to consider that making products from recycled materials may have environmental benefits unrelated to energy consumption",
+      "E": "presumes that simply because one phenomenon follows another phenomenon the earlier phenomenon must be a cause of the later one"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Argue the Anti-Conclusion",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Role",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Physician: We are constantly bombarded by warnings,\n based on initial studies’ tentative conclusions,\n about this or that food having adverse health\n effects. If the medical establishment wants people\n to pay attention to health warnings, it should\n announce only conclusive results, the kind that\n can come only from definitive studies. After all,\n people who are constantly subjected to fire drills\n eventually come to ignore the fire alarm.",
+    "questionStem": "The statement that people who are constantly subjected\n to fire drills eventually come to ignore the fire alarm\n plays which one of the following roles in the physician’s\n argument?",
+    "answerChoices": {
+      "A": "It is presented as an example of the sort of warning referred to in the argument’s overall conclusion.",
+      "B": "It is a statement that plays no logical role in the argument but that instead serves to impugn the motives of the medical establishment.",
+      "C": "It is an analogy offered in support of the argument’s overall conclusion.",
+      "D": "It is an analogy that forms part of a specific objection to the argument’s overall conclusion.",
+      "E": "It is an analogy offered to clarify the distinction the physician makes between an initial study and a definitive study."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A club wanted to determine whether it could increase\n attendance by changing its weekly meetings from\n Tuesday to another day. At one Tuesday meeting, the\n club’s president took a survey of all members present. Of\n those surveyed, 95 percent said that they had no difficulty\n attending on Tuesdays. On the basis of this survey\n result, the club’s president concluded that the attendance\n problem was not due primarily to schedule conflicts.",
+    "questionStem": "A questionable technique used in the club president’s\n reasoning is",
+    "answerChoices": {
+      "A": "drawing a conclusion on the basis of circular reasoning",
+      "B": "making a generalization on the basis of a sample that is likely to be unrepresentative",
+      "C": "treating a generalization that applies to most cases as if it applied without exception",
+      "D": "drawing a conclusion on the basis of premises that contradict one another",
+      "E": "inferring, solely from the claim that a change is not sufficient to solve a problem, that it is not necessary either."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Sampling",
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The railway authority inspector who recently thoroughly\n checked the tracks testified that they were in good\n condition. Thus, since the inspector has no bias in\n the matter, we should be suspicious of the newspaper\n reporter’s claim that the tracks are in poor condition.",
+    "questionStem": "The reasoning in the argument above is most similar to\n the reasoning in which one of the following arguments?",
+    "answerChoices": {
+      "A": "My pottery instructor says that making pottery will not cause repetitive-motion injuries if it is done properly. So I will probably not get such injuries, for whenever I do pottery I use the proper techniques that my instructor taught me.",
+      "B": "Gardner, a noted paleontologist who has no vested interest in the case, assures us that the alleged dinosaur bones are not old enough to be from dinosaurs. So we should be skeptical of Penwick’s claim to have found dinosaur bones, for Gardner inspected the bones carefully.",
+      "C": "The engineer hired by the company that maintains the bridge has examined the bridge and declared it safe. This engineer is the only one who has given the bridge a close examination recently. Thus, we should consider the bridge safe.",
+      "D": "The reporter who recently interviewed the prime minister said the prime minister appeared to be in poor health. But despite the fact that the reporter works for a paper with opposition leanings, we should accept that the prime minister is in poor health. After all, reporters won’t let their bias affect them when the truth of their claims will eventually be discovered.",
+      "E": "The snowblower salesperson claims that there will be above-average snowfall this winter, but because the salesperson is biased, we can discount that claim."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "If the proposed air pollution measures were to be\n implemented, ozone levels in the city’s air would be one\n fifth lower than current levels. Since the ozone in our air\n is currently responsible for over $5 billion in health costs,\n we would spend about a billion dollars less on these\n ozone-related health costs should the proposed measures\n be adopted.",
+    "questionStem": "The argument is most vulnerable to criticism on the\n grounds that it",
+    "answerChoices": {
+      "A": "fails to consider the possibility that other types of pollution not involving ozone might rise, perhaps even producing an overall increase in health costs",
+      "B": "presumes, without providing evidence, that ozone-related health costs in the city vary roughly in proportion to ozone levels",
+      "C": "provides no explicit reason for believing that the proposed air pollution measures will in fact be adopted",
+      "D": "attempts to support its conclusion by making an appeal to emotions",
+      "E": "discusses air pollution in order to draw attention away from more significant sources of health-related costs"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Math-y Stuff",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Newspaper article: Recently discovered clay tablets\n from southern Egypt date to between 3300 and\n 3200 B.C. Though most of the tablets translated\n thus far are tax records, one of them appears\n to contain literary writing. Hence, these tablets\n challenge the widely held belief among historians\n that the Sumerian civilization in Mesopotamia\n was the first to create literature.",
+    "questionStem": "The argument in the newspaper article requires the\n assumption that",
+    "answerChoices": {
+      "A": "most of the recently discovered tablets that have not yet been translated contain literary writing",
+      "B": "every civilization that has kept tax records has also kept other written records",
+      "C": "historians generally believe that the Sumerians did not create literature earlier than 3300 B.C.",
+      "D": "some historians are skeptical about the authenticity of the recently discovered tablets",
+      "E": "the Sumerian civilization arose sometime between 3300 and 3200 B.C."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Climatologist: The waters off the Pacific coast of North\n America have warmed about 4 degrees over\n the past 15 years. Some scientists claim that\n this trend is a symptom of a more general,\n global warming caused by human-generated air\n pollution. However, this conclusion is far from\n justified—it is known that there are many natural\n cycles of ocean temperature changes that last 60\n years or more.",
+    "questionStem": "Which one of the following most accurately expresses\n the main conclusion drawn in the climatologist’s\n argument?",
+    "answerChoices": {
+      "A": "Some scientists have found evidence that the waters off the Pacific coast of North America have grown significantly warmer over the past 15 years.",
+      "B": "The warming of the waters off the Pacific coast of North America is not a symptom of a more general, global warming caused by human-generated air pollution.",
+      "C": "The conclusion that the warming of the waters off the Pacific coast of North America is a symptom of a more general, global warming caused by human-generated air pollution is far from justified.",
+      "D": "The warming of the waters off the Pacific coast of North America may be the result of a natural cycle of ocean temperature changes.",
+      "E": "If the warming of the waters off the Pacific coast of North America is due to a natural cycle of ocean temperature changes, then it is not a symptom of a more general, global warming caused by human-generated air pollution."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Important Pivot",
+      "Alternatives",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Robin: Archaeologists can study the artifacts left by\n ancient cultures to determine whether they were\n nomadic or sedentary. If the artifacts were made\n to last rather than to be quickly discarded, the\n culture was likely sedentary. Kendall: But what artifacts a people make is determined\n largely by the materials available to them.",
+    "questionStem": "Their statements commit Robin and Kendall to\n disagreeing over whether",
+    "answerChoices": {
+      "A": "the distinction that Robin makes between two kinds of cultures is illicit",
+      "B": "it is reasonable to assume that a culture whose artifacts were not durable was nomadic",
+      "C": "any evidence other than the intended durability of a culture’s artifacts can establish conclusively which of the two kinds of cultures a particular culture was",
+      "D": "the distinction that Robin makes between the different kinds of cultures is as important as many archaeologists have thought",
+      "E": "studying a culture’s artifacts can reveal a great deal about the culture"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Railroads rely increasingly on automation. Since fewer\n railroad workers are needed, operating costs have been\n reduced. This means that we can expect the volume of\n freight shipped by rail to grow. The chief competitor of\n railway shipping is shipping by truck, and no reduction in\n operating costs is predicted for the trucking industry.",
+    "questionStem": "Which one of the following most accurately states the\n argument’s overall conclusion?",
+    "answerChoices": {
+      "A": "The volume of freight shipped by rail can be expected to increase.",
+      "B": "Increasing reliance on automation means that fewer railroad workers are needed.",
+      "C": "No reduction in operating costs is predicted for the trucking industry.",
+      "D": "Operating costs for railroads have been reduced as a result of increased reliance on automation.",
+      "E": "The chief competitor of railway shipping is shipping by truck."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Predictions",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In the past, infants who were not breast-fed were fed\n cow’s milk. Then doctors began advising that cow’s milk\n fed to infants should be boiled, as the boiling would\n sterilize the milk and prevent gastrointestinal infections\n potentially fatal to infants. Once this advice was widely\n implemented, there was an alarming increase among\n infants in the incidence of scurvy, caused by vitamin C\n deficiency. Breast-fed infants, however, did not contract\n scurvy.",
+    "questionStem": "Which one of the following is most strongly supported\n by the information above?",
+    "answerChoices": {
+      "A": "Boiled cow’s milk makes less vitamin C available to infants than does the same amount of mother’s milk.",
+      "B": "Infants who consume cow’s milk that has not been boiled frequently contract potentially fatal gastrointestinal infections.",
+      "C": "Mother’s milk can cause gastrointestinal infections in infants.",
+      "D": "When doctors advised that cow’s milk fed to infants should be boiled, they did not know that scurvy was caused by vitamin C deficiency.",
+      "E": "When doctors advised that cow’s milk fed to infants should be boiled, most mothers did not breast-feed their infants."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The only effective check on grass and brush fires is rain.\n If the level of rainfall is below normal for an extended\n period of time, then there are many more such fires. Yet\n grass and brush fires cause less financial damage overall\n during long periods of severe drought than during periods\n of relatively normal rainfall.",
+    "questionStem": "Which one of the following, if true, would most help to\n resolve the apparent paradox described above?",
+    "answerChoices": {
+      "A": "Fire departments tend to receive less funding during periods of severe drought than during periods of normal rainfall.",
+      "B": "Areas subject to grass and brush fires tend to be less densely populated than areas where there are few such fires.",
+      "C": "Unusually large, hard-to-control grass and brush fires typically occur only when there is a large amount of vegetation for them to consume.",
+      "D": "Grass and brush fires that are not caused by human negligence or arson tend to be started by lightning.",
+      "E": "When vegetation is destroyed in a grass or brush fire, it tends to be replaced naturally by vegetation that is equally if not more flammable."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Medical researcher: A new screening test detects certain\n polyps at such an early stage that it is generally\n unclear whether the polyps are malignant. But\n the risk that a polyp might be malignant leads\n doctors, in most cases, to have such polyps\n surgically removed, which is a dangerous\n process. Yet some of those polyps turn out not to\n be malignant. Thus, the new screening test can\n prompt dangerous operations that actually are not\n medically necessary.",
+    "questionStem": "Which one of the following is an assumption that the\n medical researcher’s argument requires?",
+    "answerChoices": {
+      "A": "A surgical operation that is dangerous is ethically justified only for treating a medical condition that is more dangerous.",
+      "B": "Surgical removal of nonmalignant polyps detected by the new screening test is not always medically necessary.",
+      "C": "If the new screening test encourages medically unnecessary operations, then probably it either should not be used or its use should be modified.",
+      "D": "A polyp detected by the new screening test should be surgically removed if it is malignant.",
+      "E": "The screening test is medically useful only when it detects a polyp that requires treatment."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Defender",
+      "New Concept in Conclusion",
+      "Predictions",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Psychologist: Most people’s blood pressure rises when\n they talk. But extroverted people experience\n milder surges when they speak than do\n introverted people, for whom speaking is more\n stressful. This suggests that the increases result\n from the psychological stress of communicating\n rather than from the physical exertion of speech\n production.",
+    "questionStem": "Which one of the following, if true, most strengthens the\n psychologist’s argument?",
+    "answerChoices": {
+      "A": "Medications designed to lower blood pressure do not keep the people who take them from experiencing blood-pressure fluctuations when speaking.",
+      "B": "In general, the lower one’s typical blood pressure, the more one’s blood pressure will increase under stress.",
+      "C": "Introverted people who do not have chronically high blood pressure often sense the rises in blood pressure that occur when they speak in conversation.",
+      "D": "Deaf people experience increased blood pressure when they sign, but no change when they move their hands for other reasons.",
+      "E": "Extroverted people are more likely to have chronically high blood pressure than are introverted people and are more likely to take medication to lower their blood pressure."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "One should only buy a frying pan that has a\n manufacturer’s warranty, even if it requires paying\n more, and even if one would never bother seeking\n reimbursement should the pan not work well or last\n long. Manufacturers will not offer a warranty on\n a product if doing so means that they will need to\n reimburse many customers because the product did not\n work well or last long.",
+    "questionStem": "The conclusion of the argument is strongly supported if\n which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Most people who buy a frying pan with a manufacturer’s warranty would seek reimbursement should the pan fail to work well or last long.",
+      "B": "All of the frying pans currently on the market that are covered by a manufacturer’s warranty work at least as well at the time of purchase as any of the frying pans not covered by a warranty.",
+      "C": "The more a frying pan costs, the more likely it is to be covered by a manufacturer’s warranty.",
+      "D": "The most expensive frying pans are the ones most likely to work well for many years.",
+      "E": "Most frying pan manufacturers’ warranties provide for full customer satisfaction."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Journalist: When judges do not maintain strict control\n over their courtrooms, lawyers often try to\n influence jury verdicts by using inflammatory\n language and by badgering witnesses. These\n obstructive behaviors hinder the jury’s effort to\n reach a correct verdict. Whenever lawyers engage\n in such behavior, therefore, it is reasonable to\n doubt whether the verdict is correct.",
+    "questionStem": "Which one of the following, if true, most weakens the\n journalist’s argument?",
+    "answerChoices": {
+      "A": "Court proceedings overseen by judges who are very strict in controlling lawyers’ behavior are known to result sometimes in incorrect verdicts.",
+      "B": "Lawyers tend to be less concerned than are judges about whether the outcomes of jury trials are just or not.",
+      "C": "People who are influenced by inflammatory language are very unlikely to admit at some later time that they were influenced by such language.",
+      "D": "Obstructive courtroom behavior by a lawyer is seldom effective in cases where jurors are also presented with legitimate evidence.",
+      "E": "The selection of jurors is based in part on an assessment of the likelihood that they are free of bias."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Mateo: Global warming has caused permafrost to melt\n under several arctic villages, forcing all their\n inhabitants to relocate at great expense. Since\n pollution from automobiles is a major contributor\n to global warming, the automotive industry\n should be required to help pay for the villagers’\n relocation.",
+    "questionStem": "Which one of the following principles, if valid, would\n most help to justify Mateo’s argument?",
+    "answerChoices": {
+      "A": "Any industry has an obligation to pay for any damage that it should have known would result from its activities.",
+      "B": "Manufacturers should be required to produce goods in a way that minimizes harm to people and the environment.",
+      "C": "When the use of a product causes damage, governments should not be required to help pay for the damage unless those responsible for manufacturing the product are also required to help pay for them.",
+      "D": "Any industry manufacturing a product whose use contributes to costly damage for others should be liable for any damage generated by that product’s use.",
+      "E": "An industry that contributes to global warming should be required to help pay for resulting damage to specific communities only if it has a general obligation to help pay for all damage produced by global warming."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Lindsey: Several people claim that our company was\n unfair when it failed to give bonuses to the staff. Perhaps they recalled that the company had\n promised that if it increased its profits over last\n year’s, the staff would all get bonuses. However,\n the company’s profit was much smaller this year\n than it was last year. Clearly, then, the company\n acted fairly.",
+    "questionStem": "The argument is flawed in that it",
+    "answerChoices": {
+      "A": "relies on the opinions of certain unnamed people without establishing that those people were well informed on the matter",
+      "B": "infers that an opinion is false merely because one potential reason for that opinion has been undermined",
+      "C": "dismisses a claim on the basis of certain irrelevant attributes of the people who made the claim",
+      "D": "confuses the size of a quantity with the amount by which that quantity has increased",
+      "E": "overlooks the possibility that a policy can be fair even when it is not generous"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "It is widely known that the rescue squads serving high\n mountain areas with treacherous weather save the lives\n of many mountain climbers every year. However, many\n experienced climbers believe that the rising annual toll of\n deaths and injuries among climbers in these regions can\n be significantly reduced only by completely abolishing\n the rescue squads.",
+    "questionStem": "Which one of the following, if true, would most help to\n justify the apparently paradoxical belief of the\n experienced climbers?",
+    "answerChoices": {
+      "A": "It is difficult to recruit and train members for the rescue squads.",
+      "B": "The recording of deaths and injuries tends to be more accurate in mountain regions served by rescue squads.",
+      "C": "People who commonly take risks with their lives and health do not expect other people to take those risks to rescue them.",
+      "D": "Most of the people injured or killed while mountain climbing were not adequately prepared for the dangers they would face.",
+      "E": "The lower the risk of climbing a particular mountain is perceived to be, the greater the number of less competent climbers who attempt to climb it."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Paula: Earthlike planets seem to be the rule rather than\n the exception, so there probably are intelligent\n beings on other planets. Furthermore, we can\n expect our radio telescopes to detect signs of\n such beings. Alien scientists would have basically\n the same understanding of mathematics and\n physics that humans have. Thus they would\n inevitably discover gravity, electromagnetism,\n and other fundamental physical phenomena\n and then develop technologies such as radio\n communication. Ashley: That is like saying they would inevitably have\n the same legal or political systems that humans\n do. Our science, mathematics, and technology are\n unique outgrowths of our physiology, cognitive\n makeup, and environment. Using radio telescopes\n to search for intelligent life is a waste of time and\n money.",
+    "questionStem": "The dialogue provides the most evidence that Paula and\n Ashley disagree with each other about whether",
+    "answerChoices": {
+      "A": "it is probable that there are intelligent alien beings who have developed radio communication",
+      "B": "it is probable that there are intelligent alien beings who have the same legal or political systems that humans do",
+      "C": "our technology is influenced by our cognitive makeup",
+      "D": "there is likely to be intelligent life on other planets",
+      "E": "scientists should spend more time and money on the search for intelligent extraterrestrial life"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Dense Stimulus",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Developer: The builders of the Glen Veil apartment\n complex will not complete the complex unless\n a road connecting it to the town of Sierra is\n built. The completed apartment complex would\n strengthen Sierra’s economy, and a stronger\n economy would benefit every Sierra resident.\n Therefore, the residents of Sierra should vote in\n favor of a local tax to fund construction of the\n proposed road.",
+    "questionStem": "Which one of the following principles, if valid, would\n most help to justify the developer’s reasoning?",
+    "answerChoices": {
+      "A": "If a construction project is necessary in order to strengthen a town’s economy, then the residents of that town should vote in favor of a local tax to fund that construction project.",
+      "B": "The residents of a town should not vote in favor of a local tax to fund a construction project unless that construction project will produce results that benefit all of those residents.",
+      "C": "Whenever a town funds a construction project, it should do so by means of a tax rather than debt.",
+      "D": "Only those residents who will benefit from the results of a construction project should be required to pay a tax to fund that project.",
+      "E": "Anyone who would benefit from the results of a construction project should vote in favor of a local tax to fund that project."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Historian: Because medieval epistemology (theory of\n knowledge) is a complex subject, intellectual\n historians have, until recently, failed to produce\n a definition that would help to determine what\n should and what should not be included in\n it. Clearly, the solution is to define medieval\n epistemology simply as “the epistemological\n beliefs of the medieval epistemologists.” That\n way, if we want to know whether medieval\n epistemology includes some epistemological\n claim, we just ask whether any medieval\n epistemologists believed it. If any did, it is part\n of medieval epistemology; if any medieval\n epistemologists believed the opposite, then that\n opposite claim is part of medieval epistemology.",
+    "questionStem": "Which one of the following, if true, would most weaken\n the historian’s argument?",
+    "answerChoices": {
+      "A": "Medieval epistemologists held some of the same epistemological beliefs as did ancient epistemologists.",
+      "B": "The epistemological beliefs of medieval epistemologists depended upon their beliefs about nonepistemological matters.",
+      "C": "The writings of most medieval epistemologists include passages that are clearly not about epistemology.",
+      "D": "Some medieval epistemologists had epistemological beliefs that contradicted the epistemological beliefs of other medieval epistemologists.",
+      "E": "There is much debate as to which medieval thinkers, if any, were epistemologists."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Dense Stimulus",
+      "Plans / Recommendations",
+      "Plausibility",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Official: Six months ago, the fines for parking violations\n on the city’s streets were raised to help pay for\n the parking garage that had just opened. Since\n then, parking violations on our streets have\n dropped by 50 percent. Hence, if we want there\n to be even fewer parking violations, the fines\n should be raised again.",
+    "questionStem": "The reasoning in the official’s argument is flawed in that\n the argument",
+    "answerChoices": {
+      "A": "takes a possible effect of a reduction to be a possible cause of that reduction",
+      "B": "takes for granted that raising fines a second time will reduce parking violations at least as much as it did the first time",
+      "C": "fails to take into account the financial benefits the city is now deriving from fines for parking violations",
+      "D": "takes for granted that people who park their cars illegally would prefer to park legally",
+      "E": "fails to establish that the initial decrease in parking violations was not due to the availability of additional parking spaces"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Consumer advocate: Some agricultural crops are\n now being genetically engineered to produce\n important pharmaceuticals. However, this\n development raises the possibility that the drugs\n will end up in the general food supply, since if\n pollen from a drug-producing crop drifts into\n a nearby field in which an ordinary, non-drug-producing crop of the same species is being\n grown, the pollen could fertilize that crop and\n turn it into a drug-producing crop as well.",
+    "questionStem": "Which one of the following, if true, would most weaken\n the consumer advocate’s argument?",
+    "answerChoices": {
+      "A": "As far as scientists know, none of the pharmaceuticals produced by genetically engineered crops would present any danger to public health if they were present in the general food supply.",
+      "B": "If pollen from a genetically engineered crop is prevented from drifting into fields in which ordinary crops of the same species are being grown, then there is no risk of the pollen fertilizing the latter crops.",
+      "C": "The genetically engineered crops that produce pharmaceuticals are not among the crop species that comprise the largest portions of the general food supply.",
+      "D": "In crops genetically engineered to produce pharmaceuticals, the drugs are not present in any part of the plant used for food in ordinary crops of the same species.",
+      "E": "If pollen from a drug-producing crop turned an ordinary crop of the same species into a drug-producing crop, it would be possible for scientists to identify the latter crop."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Intermediate Conclusions",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Most of the members of Bargaining Unit Number 17 of the\n government employees’ union are computer programmers.\n Thus it is certain that some of the government employees\n who work in the Hanson Building are computer\n programmers, since _______.",
+    "questionStem": "The conclusion of the argument follows logically if which\n one of the following completes the passage?",
+    "answerChoices": {
+      "A": "most of the government employees who belong to Bargaining Unit Number 17 but are not computer programmers work in the Hanson Building",
+      "B": "most members of the executive committee of Bargaining Unit Number 17 work in the Hanson Building",
+      "C": "most of the government employees who work in the Hanson Building are members of Bargaining Unit Number 17",
+      "D": "most of the members of Bargaining Unit Number 17 work in the Hanson Building",
+      "E": "most of the people who work in the Hanson building are government employees"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Logical Completion",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Every Labrador retriever in my neighborhood is a well-behaved dog. However, no pet would be well behaved\n if it were not trained. Thus it is training, not the genetic\n makeup of the breed, that accounts for these Labrador\n retrievers’ good behavior.",
+    "questionStem": "The flawed reasoning in which one of the following is\n most closely parallel to the flawed reasoning in the\n argument above?",
+    "answerChoices": {
+      "A": "All the students at Bryker School excel in their studies. However, students at Bryker School would not excel if they did not have good teachers. Thus, all schools should hire good teachers if they want their students to excel.",
+      "B": "Whenever it snows there are relatively more car crashes on the highways. Yet in general, there would not be car crashes unless people were careless. So it is not icy roads, but carelessness, that causes car crashes when it snows.",
+      "C": "Every musician I know is a good dancer. Every mathematician I know is a bad dancer. Thus, it is a sense of rhythm, not the ability to count, that is most responsible for good dancing.",
+      "D": "All of the good cooks in my country use butter, not margarine, in their cooking. Thus, if you want to be a good cook, you must use butter, not margarine, in your cooking.",
+      "E": "All of the students in my algebra class received an A, even though none of them can solve word problems. No student who is unable to solve word problems has an adequate understanding of algebra. It follows that the students in my class received A’s not because they did any good work."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  }
+]

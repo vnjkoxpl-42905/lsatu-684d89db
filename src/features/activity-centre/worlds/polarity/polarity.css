@@ -1,0 +1,671 @@
+/*
+ * The Polarity Chamber: Negation Station's world.
+ *
+ * An obsidian void split by an aurora. The statement hangs engraved on a plate
+ * of polished black glass; behind it a curtain of ultraviolet light breathes,
+ * and the floor is a survey grid receding into the dark. Light here means
+ * logical strength: the credited negation sits at a fixed ring on a column of
+ * aurora light, an overshoot floods the whole room with glare, and the flip —
+ * the moment of negation — inverts the chamber itself.
+ *
+ * The flip is a CSS 3D transform, one plate turning over in real perspective.
+ * Everything atmospheric lives in .po-room, an aria-hidden layer stack, so the
+ * tested DOM (faces, beam, stamps, verdict, chips) is untouched by the scene.
+ */
+
+.polarity {
+  --po-void: 262 58% 3%;
+  --po-room: 258 34% 7%;
+  --po-room-deep: 260 46% 4%;
+  --po-glass: 256 30% 10%;
+  --po-bevel: 258 34% 36%;
+  --po-ink: 258 36% 95%;
+  --po-ink-dim: 256 18% 68%;
+  --po-key: 264 45% 88%;
+  --po-aurora-a: 275 96% 64%;
+  --po-aurora-b: 190 95% 62%;
+  --po-aurora-c: 320 88% 64%;
+
+  position: relative;
+  color: hsl(var(--po-ink));
+  background: hsl(var(--po-void));
+  overflow: hidden;
+  isolation: isolate;
+  transition: background-color 600ms ease;
+}
+
+/* Everything that is not scenery sits above the room. */
+.polarity > :not(.po-room) {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- The room: aurora, floor grid, motes ---------- */
+
+.po-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* The aurora curtain. Three drifting ribbons of polar light, heavily blurred,
+   folded over each other behind the plate. */
+.po-aurora {
+  position: absolute;
+  inset: -20% -10%;
+  background:
+    radial-gradient(42% 68% at 30% 18%, hsl(var(--po-aurora-a) / 0.34), transparent 68%),
+    radial-gradient(36% 60% at 72% 10%, hsl(var(--po-aurora-b) / 0.2), transparent 66%),
+    radial-gradient(30% 52% at 52% 30%, hsl(var(--po-aurora-c) / 0.16), transparent 70%);
+  filter: blur(34px) saturate(1.15);
+  animation: po-aurora-breathe 16s ease-in-out infinite alternate;
+  transform-origin: 50% 0%;
+}
+
+@keyframes po-aurora-breathe {
+  0% {
+    transform: translateX(-3%) scaleY(1);
+    filter: blur(34px) saturate(1.05) hue-rotate(0deg);
+  }
+  50% {
+    transform: translateX(2%) scaleY(1.08);
+    filter: blur(40px) saturate(1.3) hue-rotate(-14deg);
+  }
+  100% {
+    transform: translateX(-1%) scaleY(0.98);
+    filter: blur(36px) saturate(1.15) hue-rotate(10deg);
+  }
+}
+
+/* A second, sharper curtain: thin vertical rays through the blur. */
+.po-aurora-rays {
+  position: absolute;
+  inset: -6% 0 30% 0;
+  background: repeating-linear-gradient(
+    93deg,
+    transparent 0 34px,
+    hsl(var(--po-aurora-a) / 0.05) 34px 37px,
+    transparent 37px 82px,
+    hsl(var(--po-aurora-b) / 0.04) 82px 84px
+  );
+  mask-image: radial-gradient(75% 70% at 50% 12%, black 20%, transparent 78%);
+  animation: po-rays-drift 22s linear infinite;
+}
+
+@keyframes po-rays-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 340px 0;
+  }
+}
+
+/* The survey floor: a perspective grid receding to the horizon. */
+.po-floor {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  bottom: -12%;
+  height: 52%;
+  transform: perspective(720px) rotateX(58deg);
+  transform-origin: 50% 0%;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      hsl(var(--po-key) / 0.09) 0 1px,
+      transparent 1px 72px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      hsl(var(--po-key) / 0.08) 0 1px,
+      transparent 1px 56px
+    );
+  mask-image: linear-gradient(180deg, transparent 0%, black 26%, black 82%, transparent 100%);
+  opacity: 0.8;
+}
+
+/* The horizon line where curtain meets floor. */
+.po-horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 42%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--po-aurora-a) / 0.35) 30%,
+    hsl(var(--po-aurora-b) / 0.3) 65%,
+    transparent
+  );
+  filter: blur(0.5px);
+}
+
+/* Dust motes rising through the key light. Two layers, different speeds. */
+.po-motes,
+.po-motes::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background-image:
+    radial-gradient(1.5px 1.5px at 22% 80%, hsl(var(--po-key) / 0.5), transparent 100%),
+    radial-gradient(1px 1px at 48% 64%, hsl(var(--po-aurora-b) / 0.5), transparent 100%),
+    radial-gradient(1.5px 1.5px at 71% 88%, hsl(var(--po-key) / 0.4), transparent 100%),
+    radial-gradient(1px 1px at 84% 52%, hsl(var(--po-aurora-a) / 0.45), transparent 100%),
+    radial-gradient(1px 1px at 12% 40%, hsl(var(--po-key) / 0.35), transparent 100%);
+  background-size: 100% 100%;
+  animation: po-motes-rise 26s linear infinite;
+  opacity: 0.7;
+}
+
+.po-motes::after {
+  background-image:
+    radial-gradient(1px 1px at 34% 92%, hsl(var(--po-aurora-c) / 0.4), transparent 100%),
+    radial-gradient(1.5px 1.5px at 60% 76%, hsl(var(--po-key) / 0.35), transparent 100%),
+    radial-gradient(1px 1px at 90% 68%, hsl(var(--po-aurora-b) / 0.35), transparent 100%);
+  animation-duration: 38s;
+  animation-delay: -12s;
+}
+
+@keyframes po-motes-rise {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-56%);
+  }
+}
+
+/* The vignette that keeps the edges of the void black. */
+.po-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    110% 90% at 50% 40%,
+    transparent 42%,
+    hsl(var(--po-void) / 0.7) 78%,
+    hsl(var(--po-void)) 100%
+  );
+}
+
+/* The polarity inversion: the whole room flips negative and comes back. */
+@keyframes po-invert {
+  0% {
+    filter: none;
+  }
+  30%,
+  55% {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+.polarity[data-inverting="true"] {
+  animation: po-invert 1200ms ease-in-out 1;
+}
+
+/* An overshoot floods the chamber. The aurora blows out into glare; the error
+   is brightness itself, something seen rather than told. */
+.polarity[data-glare="true"] {
+  background: hsl(var(--po-room));
+}
+
+.polarity[data-glare="true"] .po-aurora {
+  filter: blur(46px) saturate(1.6) brightness(1.9);
+}
+
+.polarity[data-glare="true"] .po-vignette {
+  background: radial-gradient(
+    110% 90% at 50% 34%,
+    hsl(var(--po-key) / 0.16) 0%,
+    transparent 48%,
+    hsl(var(--po-void) / 0.6) 100%
+  );
+}
+
+/* ---------- Type ---------- */
+
+.polarity-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* The chamber's engraved display voice. */
+.polarity-display {
+  font-family: "Italiana", var(--ac-serif, Georgia, serif);
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+/* ---------- The plate ---------- */
+
+.po-stage {
+  perspective: 1400px;
+}
+
+.po-plate {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 900ms cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.po-plate[data-face="negation"] {
+  transform: rotateY(180deg);
+}
+
+/* The refusal: it trembles once and comes back. The absence of the flip is the
+   world's "no". */
+@keyframes po-refuse {
+  0%,
+  100% {
+    transform: rotateY(0deg);
+  }
+  25% {
+    transform: rotateY(2deg);
+  }
+  75% {
+    transform: rotateY(-2deg);
+  }
+}
+
+.po-plate[data-refusing="true"] {
+  animation: po-refuse 420ms ease-in-out 1;
+}
+
+.po-face {
+  backface-visibility: hidden;
+  background:
+    linear-gradient(164deg, hsl(256 30% 14%) 0%, hsl(var(--po-room-deep)) 82%);
+  border: 1px solid hsl(var(--po-bevel) / 0.9);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--po-key) / 0.28),
+    inset 0 -1px 0 hsl(var(--po-void)),
+    inset 0 0 44px hsl(var(--po-void) / 0.8),
+    0 30px 60px -12px hsl(var(--po-void) / 0.95);
+  font-family: "Spectral", var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  font-weight: 300;
+}
+
+.po-face p {
+  text-shadow: 0 1px 12px hsl(var(--po-aurora-a) / 0.18);
+}
+
+/* The prismatic bevel: a hairline of split light along the plate's edge. */
+.po-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  padding: 1px;
+  background: linear-gradient(
+    138deg,
+    hsl(var(--po-aurora-b) / 0.55) 0%,
+    transparent 22%,
+    transparent 62%,
+    hsl(var(--po-aurora-a) / 0.5) 88%,
+    hsl(var(--po-aurora-c) / 0.55) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.9;
+}
+
+/* The specular streak that crosses the glass when the room inverts. */
+.po-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    transparent 32%,
+    hsl(var(--po-key) / 0.14) 46%,
+    hsl(var(--po-key) / 0.02) 52%,
+    transparent 64%
+  );
+  transform: translateX(-120%);
+}
+
+.polarity[data-inverting="true"] .po-face::after {
+  animation: po-specular 1100ms cubic-bezier(0.5, 0, 0.2, 1) 1;
+}
+
+@keyframes po-specular {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(120%);
+  }
+}
+
+.po-face[data-side="back"] {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+}
+
+/* The floor catches the plate: a true mirrored glow, not a smudge. */
+.po-reflection {
+  height: 42px;
+  margin-top: 6px;
+  background:
+    radial-gradient(60% 130% at 50% 0%, hsl(var(--po-aurora-a) / 0.18), transparent 74%),
+    linear-gradient(180deg, hsl(var(--po-key) / 0.12), transparent 82%);
+  filter: blur(6px);
+  transform: scaleY(-1);
+  mask-image: linear-gradient(0deg, black 10%, transparent 100%);
+}
+
+/* ---------- The strength beam ---------- */
+
+/* A standing column of aurora light. The credited level is a fixed halo; the
+   student's answer materializes at its own altitude. */
+.po-beam {
+  position: relative;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--po-aurora-b) / 0.85),
+    hsl(var(--po-aurora-a) / 0.5) 55%,
+    hsl(var(--po-aurora-a) / 0.06)
+  );
+  box-shadow:
+    0 0 12px hsl(var(--po-aurora-a) / 0.5),
+    0 0 34px hsl(var(--po-aurora-a) / 0.22);
+  animation: po-beam-hum 5s ease-in-out infinite alternate;
+}
+
+@keyframes po-beam-hum {
+  from {
+    box-shadow:
+      0 0 10px hsl(var(--po-aurora-a) / 0.4),
+      0 0 28px hsl(var(--po-aurora-a) / 0.18);
+  }
+  to {
+    box-shadow:
+      0 0 16px hsl(var(--po-aurora-a) / 0.6),
+      0 0 44px hsl(var(--po-aurora-b) / 0.3);
+  }
+}
+
+/* The credited level: a fixed halo the student's shard should meet. */
+.po-ring {
+  position: absolute;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  margin-top: -11px;
+  border: 1px solid hsl(var(--po-key) / 0.9);
+  border-radius: 50%;
+  box-shadow:
+    0 0 10px hsl(var(--po-aurora-b) / 0.5),
+    inset 0 0 8px hsl(var(--po-aurora-b) / 0.35);
+}
+
+/* The student's answer: a shard of light on the same column. */
+.po-marker {
+  position: absolute;
+  left: 50%;
+  width: 14px;
+  height: 2px;
+  margin-left: -7px;
+  background: hsl(var(--po-ink));
+  box-shadow: 0 0 6px hsl(var(--po-key) / 0.6);
+  transition: top 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Exactly enough: shard meets halo, and the halo rings once. */
+.po-marker[data-push="minimal"] {
+  background: hsl(var(--po-aurora-b));
+  box-shadow:
+    0 0 12px hsl(var(--po-aurora-b)),
+    0 0 30px hsl(var(--po-aurora-b) / 0.5);
+}
+
+.po-marker[data-push="overshoot"] {
+  background: hsl(var(--po-key));
+  box-shadow:
+    0 0 18px hsl(var(--po-key)),
+    0 0 40px hsl(var(--po-key) / 0.6);
+}
+
+.po-rung {
+  color: hsl(var(--po-ink-dim));
+  transition:
+    color 300ms ease,
+    text-shadow 300ms ease;
+}
+
+.po-rung[data-lit="true"] {
+  color: hsl(var(--po-ink));
+  text-shadow: 0 0 12px hsl(var(--po-aurora-a) / 0.6);
+}
+
+/* ---------- The two stamps ---------- */
+
+.po-stamp {
+  border: 1px solid hsl(var(--po-bevel) / 0.7);
+  color: hsl(var(--po-ink-dim));
+  background: hsl(var(--po-glass) / 0.55);
+  backdrop-filter: blur(2px);
+  transition:
+    color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.po-stamp[data-lit="true"] {
+  border-color: hsl(var(--po-aurora-b) / 0.8);
+  color: hsl(var(--po-ink));
+  box-shadow:
+    inset 0 0 0 1px hsl(var(--po-aurora-b) / 0.2),
+    0 0 16px hsl(var(--po-aurora-b) / 0.25);
+}
+
+/* ---------- The chips ---------- */
+
+.po-chip {
+  width: 14px;
+  height: 8px;
+  border: 1px solid hsl(var(--po-bevel) / 0.6);
+  background: transparent;
+  transform: skewX(-12deg);
+}
+
+.po-chip[data-level="full"] {
+  background: hsl(var(--po-aurora-b) / 0.85);
+  border-color: hsl(var(--po-aurora-b));
+  box-shadow: 0 0 8px hsl(var(--po-aurora-b) / 0.5);
+}
+
+.po-chip[data-level="half"] {
+  background: linear-gradient(90deg, hsl(var(--po-aurora-a) / 0.7) 50%, transparent 50%);
+}
+
+.po-chip[data-current="true"] {
+  box-shadow: 0 2px 0 hsl(var(--po-key) / 0.8);
+}
+
+/* ---------- Controls (shared by the wing) ---------- */
+
+.po-button {
+  border: 1px solid hsl(var(--po-bevel));
+  background: hsl(var(--po-glass));
+  color: hsl(var(--po-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.po-button:hover:not(:disabled) {
+  border-color: hsl(var(--po-aurora-a) / 0.7);
+  box-shadow: 0 0 14px hsl(var(--po-aurora-a) / 0.2);
+}
+
+.po-button:disabled {
+  opacity: 0.55;
+}
+
+.po-button[data-picked="true"] {
+  background: hsl(var(--po-room));
+  opacity: 1;
+}
+
+.po-button[data-truth="true"] {
+  border-color: hsl(var(--po-aurora-b));
+  box-shadow: inset 2px 0 0 hsl(var(--po-aurora-b));
+  opacity: 1;
+}
+
+.po-input {
+  border: 1px solid hsl(var(--po-bevel));
+  background: hsl(var(--po-glass));
+  color: hsl(var(--po-ink));
+  max-width: 34rem;
+}
+
+.po-input::placeholder {
+  color: hsl(var(--po-ink-dim) / 0.7);
+}
+
+/* ---------- Entrance ---------- */
+
+/* The threshold: the aurora ignites from nothing, the plate descends through
+   it, and the chamber's name etches itself in light and burns off. The room is
+   dark and empty again exactly as the first statement arrives. */
+
+@keyframes po-aurora-ignite {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.4);
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.polarity[data-testid="polarity-entrance"] .po-aurora {
+  animation:
+    po-aurora-ignite 1100ms cubic-bezier(0.22, 1, 0.36, 1) both,
+    po-aurora-breathe 16s ease-in-out 1100ms infinite alternate;
+  transform-origin: 50% 0%;
+}
+
+@keyframes po-descend {
+  from {
+    opacity: 0;
+    transform: translateY(-56px) rotateX(18deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.po-entrance-plate {
+  animation: po-descend 780ms cubic-bezier(0.22, 1, 0.36, 1) 340ms both;
+}
+
+@keyframes po-etch-off {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.7em;
+    filter: blur(4px);
+  }
+  35% {
+    opacity: 1;
+    letter-spacing: 0.34em;
+    filter: blur(0);
+  }
+  78% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    letter-spacing: 0.34em;
+  }
+}
+
+.po-entrance-name {
+  animation: po-etch-off 1650ms ease both 320ms;
+  text-shadow:
+    0 0 22px hsl(var(--po-aurora-a) / 0.7),
+    0 0 60px hsl(var(--po-aurora-b) / 0.4);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .polarity *,
+  .polarity *::before,
+  .polarity *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  /* The inversion is a full-screen filter flip; shortened it would strobe, so
+     it is removed rather than sped up. */
+  .polarity[data-inverting="true"] {
+    animation: none !important;
+  }
+
+  .po-plate[data-refusing="true"] {
+    animation: none !important;
+  }
+
+  /* The flip becomes a crossfade, per the spec. */
+  .po-plate {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .po-face[data-side="back"] {
+    transform: none;
+  }
+
+  .po-aurora,
+  .po-aurora-rays,
+  .po-motes,
+  .po-motes::after,
+  .po-beam {
+    animation: none !important;
+  }
+
+  .po-entrance-plate,
+  .po-entrance-name {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
