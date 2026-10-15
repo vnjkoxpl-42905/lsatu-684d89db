@@ -52,7 +52,8 @@ BEGIN
   IF NOT EXISTS (SELECT 1 FROM public.booking_passes WHERE id=p AND status='expired' AND used_credits=0)
     THEN RAISE EXCEPTION 'expired_pass_reactivated'; END IF;
 
-  UPDATE public.booking_pass_redemptions SET credit_refunded=false,start_at=now()+interval '1 day' WHERE id=r;
+  UPDATE public.booking_pass_redemptions SET credit_refunded=false,
+    start_at=now()+interval '1 day', end_at=now()+interval '1 day 70 minutes' WHERE id=r;
   BEGIN
     PERFORM public.admin_return_teacher_missed_credit(r);
     RAISE EXCEPTION 'future_session_accepted';
