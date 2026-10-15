@@ -323,7 +323,7 @@ function matchedKinds(signal: Signal, response: string): RelationKind[] {
   return signal.relations.filter((r) => {
     const claimed = pairs.filter((pair) => pair.named.has(r.kind));
     return claimed.length > 0 && claimed.every((pair) =>
-      pair.named.size === 1 && indicatorQuoted(r, pair.answer),
+      pair.named.size === 1 && confidentPair(r, pair.answer),
     );
   }).map((r) => r.kind);
 }
@@ -351,6 +351,25 @@ function indicatorQuoted(r: Relation, answer: string): boolean {
   return r.requiredParts.some((parts) => parts.every((part) => quotes(part, answer)));
 }
 
+const PAIR_LABEL: Record<RelationKind, RegExp> = {
+  conditional: /^(?:a\s+|an\s+)?(?:conditional(?:s|ly)?|(?:necessary|sufficient)\s+condition|if\s+then(?:\s+rule)?|requirement)\b[\s,:().]*/i,
+  causal: /^(?:a\s+|an\s+)?(?:causal(?:ity|ly)?|causation|cause(?:\s+and\s+effect)?)\b[\s,:().]*/i,
+  comparative: /^(?:a\s+|an\s+)?(?:comparative(?:ly)?|comparisons?|compar(?:e|es|ing|ed))\b[\s,:().]*/i,
+};
+
+/** Instant credit is for positive type/indicator pairs, not prose that merely
+ * contains the key. Any unexplained words or extra indicators need the Coach. */
+function confidentPair(r: Relation, answer: string): boolean {
+  const cleaned = answer.replace(/\(\s*(?:not|no|never)\s+(?:a\s+|an\s+|the\s+)?(?:conditional|causal|comparative|comparison)\s*\)/gi, " ").trim();
+  const label = PAIR_LABEL[r.kind];
+  if (!label.test(cleaned) || !indicatorQuoted(r, cleaned)) return false;
+  let remainder = cleaned.replace(label, "");
+  const parts = [...r.indicators.flatMap((indicator) => normalize(indicator.replace(/[.,]+$/, "")).split(/…|\.\.\./)),
+    ...(r.requiredParts ?? []).flat()].map((part) => part.trim()).filter(Boolean).sort((a, b) => b.length - a.length);
+  for (const part of parts) remainder = remainder.replace(new RegExp(`\\b${escape(part)}\\b`, "gi"), " ");
+  return remainder.replace(/\band\b/g, " ").replace(/[\s,:.'"`…()[\]{}]/g, "") === "";
+}
+
 export function matchesCredited(item: ActivityItem, response: string): boolean {
   const signal = parseSignal(item);
   if (!signal || !response.trim()) return false;
@@ -359,7 +378,7 @@ export function matchesCredited(item: ActivityItem, response: string): boolean {
   const real = new Set(signal.relations.map((r) => r.kind));
   if (named.size !== real.size || [...named].some((k) => !real.has(k))) return false;
   if (!answerPairs(response).every((pair) => pair.named.size === 1 && signal.relations.some((r) =>
-    pair.named.has(r.kind) && indicatorQuoted(r, pair.answer),
+    pair.named.has(r.kind) && confidentPair(r, pair.answer),
   ))) return false;
   const matched = matchedKinds(signal, response);
   return signal.relations.every((r) => matched.includes(r.kind));

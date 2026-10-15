@@ -13,10 +13,20 @@ import {
 } from "@/lib/destinationAccess";
 import { preserveRedirectLocation } from "@/lib/preserveRedirectLocation";
 import { DestinationHeadingContext } from "@/contexts/DestinationHeadingContext";
+import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
+
+function useDestinationPermissions(destination: Destination) {
+  const permissions = useUserPermissions();
+  const readingCenter = useReadingCenterAccess(destination === 'my-work' && !permissions.is_admin);
+  return { ...permissions,
+    readingCenterAssigned: destination === 'my-work' && !permissions.is_admin && readingCenter.allowed,
+    readingCenterChecking: destination === 'my-work' && !permissions.is_admin && readingCenter.isPending,
+  };
+}
 
 export function StudentDestination({ destination }: { destination: Destination }) {
   const { pathname } = useLocation();
-  const permissions = useUserPermissions();
+  const permissions = useDestinationPermissions(destination);
   const config = DESTINATIONS[destination];
   const showExamTabs = destination === "practice" && pathname.startsWith("/practice/exams");
   const visibleTabs = showExamTabs ? [...config.tabs, ...EXAM_TABS] : config.tabs;
@@ -65,7 +75,7 @@ export function StudentDestination({ destination }: { destination: Destination }
           <p>{config.introduction}</p>
         </div>
       </header>
-      <nav className="student-destination-tabs" aria-label={`${config.title} sections`} aria-busy={permissions.loading}>
+      <nav className="student-destination-tabs" aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>
         {renderTabs(config.tabs, "primary")}
       </nav>
       {showExamTabs ? (
@@ -96,8 +106,8 @@ export function StudentDestination({ destination }: { destination: Destination }
  */
 export function DestinationIndex({ destination }: { destination: Destination }) {
   const { search, hash } = useLocation();
-  const permissions = useUserPermissions();
-  if (permissions.loading) return null;
+  const permissions = useDestinationPermissions(destination);
+  if (permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)) return null;
   return <Navigate to={preserveRedirectLocation(destinationLandingPath(destination, permissions), search, hash)} replace />;
 }
 
