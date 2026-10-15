@@ -54,7 +54,7 @@ serve(async req => {
       return reply({ error: 'Answer checking is unavailable. Please try again.' }, response.status === 429 ? 429 : 503);
     }
     const result = await response.json();
-    return reply(parseGrade(result.choices?.[0]?.message?.content, { studentResponse: input.studentResponse, task: input.task }));
+    return reply(parseGrade(result.choices?.[0]?.message?.content, { studentResponse: input.studentResponse, task: input.task, original: input.original }));
   } catch (error) {
     const allowed = new Set(['missing_grade', 'invalid_json', 'invalid_verdict', 'invalid_evidence', 'evidence_not_in_submission', 'invalid_issue']);
     const code = error instanceof Error && allowed.has(error.message) ? error.message : 'request_failed';
