@@ -14,7 +14,6 @@ const next = () => {
 };
 function renderPractice() {
   const view = render(<OpeningMixedDrill/>);
-  fireEvent.click(screen.getByRole('button', { name: 'Begin practice' }));
   return view;
 }
 function choose(option: string) {
@@ -47,10 +46,9 @@ function solve(index: number) {
 it('shows one task, a single 24-question counter, progress and predictable heading focus', () => {
   render(<StrictMode><OpeningMixedDrill/></StrictMode>);
   expect(screen.getByRole('heading', { name: 'What does the rule cover?' })).not.toHaveFocus();
-  expect(screen.queryByRole('group', { name: 'Answer choices' })).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: 'Begin practice' }));
+  expect(screen.getByRole('group', { name: 'Answer choices' })).toBeVisible();
   expect(screen.getByText('Question 1 of 24')).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'What does the rule cover?' })).toHaveFocus();
+  expect(screen.queryByRole('button', { name: 'Begin practice' })).toBeNull();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
   expect(screen.queryByRole('button', { name: 'Choose the left condition' })).toBeNull();
@@ -164,19 +162,17 @@ it('checks an obligation mistake with a new obligation case rather than a differ
   expect(screen.getByText(/What is required and what actually happened: you answered the new question correctly on your first try/)).toBeVisible();
 });
 
-it('pauses before a new stage with its own explanation instead of stacking an overview above every task', () => {
+it('continues directly to the next stage without repeating instructions', () => {
   renderPractice();
   for (let index = 0; index < 2; index++) { solve(index); next(); }
   solve(2);
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   expect(screen.getByRole('heading', { name: 'Build the diagram' })).toBeVisible();
-  expect(screen.getByText('If a parcel has a blue sticker, it has been inspected.')).toBeVisible();
-  expect(screen.queryByRole('button', { name: 'Choose the left condition' })).toBeNull();
-  expect(screen.queryByRole('progressbar')).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: 'Continue' }));
+  expect(screen.queryByText('If a parcel has a blue sticker, it has been inspected.')).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
+  expect(screen.getByRole('progressbar')).toBeVisible();
   expect(screen.getByText('Question 4 of 24')).toBeVisible();
   expect(screen.getByRole('button', { name: 'Choose the left condition' })).toBeVisible();
-  expect(screen.getByText('If a parcel has a blue sticker, it has been inspected.')).not.toBeVisible();
 });
 
 it('offers review directly when no first-attempt errors need a fresh case', () => {

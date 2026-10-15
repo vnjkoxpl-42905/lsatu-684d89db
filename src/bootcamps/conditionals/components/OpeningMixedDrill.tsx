@@ -6,7 +6,7 @@ import { MixedItemCheck, mixedFamilyItems } from './MixedFamilyPractice';
 import { useCourseStep } from '../courseProgress';
 import './opening-mixed-drill.css';
 
-const stages = [
+export const mixedDrillStages = [
   { title: 'What does the rule cover?', purpose: 'Keep the restriction that tells you which cases the rule covers.', example: 'Every guest wearing a gold badge receives a voucher.', explanation: 'The rule covers guests wearing a gold badge. Leaving out wearing a gold badge would make a claim about all guests.', instruction: 'Choose the description that keeps the restriction in each rule.' },
   { title: 'Build the diagram', purpose: 'If the condition on the left is true, what must follow on the right?', example: 'If a parcel has a blue sticker, it has been inspected.', explanation: 'A blue sticker is enough to prove inspection. Inspection is required for a blue-sticker parcel. An inspected parcel could still have no blue sticker.', instruction: 'Choose a side of the arrow, then choose the condition that belongs there. Read the diagram in English before checking.' },
   { title: 'Translate the rule yourself', purpose: 'Write your own diagram before looking at supplied conditions.', example: 'Only members use the studio.', explanation: 'First decide what the rule says you need in order to use the studio. Write both conditions and an arrow, then read your diagram as an if/then sentence.', instruction: 'Write your diagram and English version. Compare with the choices only after making that attempt.' },
@@ -97,7 +97,7 @@ function DrillQuestion({ question, onCheck }: { question: Question; onCheck: Che
 function DiagramQuestion({ item, onCheck }: { item: DiagramItem; onCheck: Check }) {
   const [solved, setSolved] = useState<boolean | null>(null);
   const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
-  return <div className="cir-root omd-diagram" data-result={solved === null ? undefined : solved ? 'right' : 'wrong'}><p>Build the original diagram, then read it as an if/then sentence before checking.</p>
+  return <div className="cir-root omd-diagram" data-result={solved === null ? undefined : solved ? 'right' : 'wrong'}>
     <DiagramDrills items={[item]} embedded persistProgress={false} allowContrapositive={false} allowNegation={false} shuffleItems={false} explanations={solved ? diagramFollowUps : {}} feedbackForResult={result => {
       if (result.correct) return `Right. Read it back: ${diagramReadbacks[item.id]?.readback ?? `If ${item.left.toLowerCase()}, then ${item.right.toLowerCase()}.`}`;
       const reversed = same(result.left, item.right) && same(result.right, item.left);
@@ -120,10 +120,10 @@ const RetainedQuestion = memo(function RetainedQuestion({ question, record }: {
 });
 
 const confirmationPool: MixedDrillChoiceItem[] = [...Object.values(confirmationItemsByError).flat(), obligationConfirmationItem];
-type MixedState = { questions: Question[]; current: number; visited: string[]; results: Record<string, Result>; finished: boolean; introducedStages: number[] };
+type MixedState = { questions: Question[]; current: number; visited: string[]; results: Record<string, Result>; finished: boolean };
 /** Rebuilds a saved run. Anything that no longer matches the current question set starts fresh. */
 function restoreMixed(state: unknown): MixedState | null {
-  const data = state as { questionIds?: unknown; current?: unknown; visited?: unknown; results?: unknown; finished?: unknown; introducedStages?: unknown } | undefined;
+  const data = state as { questionIds?: unknown; current?: unknown; visited?: unknown; results?: unknown; finished?: unknown } | undefined;
   if (!data || !Array.isArray(data.questionIds) || !data.results || typeof data.results !== 'object') return null;
   const ids = data.questionIds as unknown[];
   if (ids.length < baselineQuestions.length || baselineQuestions.some((question, index) => ids[index] !== question.id)) return null;
@@ -136,8 +136,7 @@ function restoreMixed(state: unknown): MixedState | null {
   }
   const current = Number.isInteger(data.current) && (data.current as number) >= 0 && (data.current as number) < questions.length ? data.current as number : 0;
   const visited = Array.isArray(data.visited) ? (data.visited as unknown[]).filter((id): id is string => questions.some(question => question.id === id)) : [];
-  const introducedStages = Array.isArray(data.introducedStages) ? (data.introducedStages as unknown[]).filter((value): value is number => Number.isInteger(value)) : [];
-  return { questions, current, visited: visited.length ? visited : [questions[current].id], results, finished: data.finished === true, introducedStages };
+  return { questions, current, visited: visited.length ? visited : [questions[current].id], results, finished: data.finished === true };
 }
 
 export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
@@ -149,22 +148,20 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
   const [visited, setVisited] = useState(restored?.visited ?? [baselineQuestions[0].id]);
   const [results, setResults] = useState<Record<string, Result>>(restored?.results ?? {});
   const [finished, setFinished] = useState(restored?.finished ?? false);
-  const [introducedStages, setIntroducedStages] = useState<number[]>(restored?.introducedStages ?? []);
   useEffect(() => {
-    saveStep?.({ state: { questionIds: questions.map(question => question.id), current, visited, results, finished, introducedStages }, done: baselineQuestions.filter(question => results[question.id]).length, total: baselineQuestions.length, ...(finished ? { status: 'done' as const } : {}) });
-  }, [saveStep, questions, current, visited, results, finished, introducedStages]);
+    saveStep?.({ state: { questionIds: questions.map(question => question.id), current, visited, results, finished }, done: baselineQuestions.filter(question => results[question.id]).length, total: baselineQuestions.length, ...(finished ? { status: 'done' as const } : {}) });
+  }, [saveStep, questions, current, visited, results, finished]);
   const heading = useRef<HTMLHeadingElement>(null);
   const runner = useRef<HTMLElement>(null);
   const question = questions[current];
-  const stage = stages[question.stage];
-  const showIntroduction = !finished && !introducedStages.includes(question.stage);
-  const lastPosition = useRef({ current, finished, showIntroduction });
+  const stage = mixedDrillStages[question.stage];
+  const lastPosition = useRef({ current, finished });
   useEffect(() => {
-    if (lastPosition.current.current === current && lastPosition.current.finished === finished && lastPosition.current.showIntroduction === showIntroduction) return;
-    lastPosition.current = { current, finished, showIntroduction };
+    if (lastPosition.current.current === current && lastPosition.current.finished === finished) return;
+    lastPosition.current = { current, finished };
     heading.current?.focus({ preventScroll: true });
     runner.current?.scrollIntoView?.({ block: 'start', behavior: 'instant' });
-  }, [current, finished, showIntroduction]);
+  }, [current, finished]);
 
   const record = useCallback((id: string, correct: boolean | null, errors: MixedDrillError[] = []) => {
     setResults(previous => {
@@ -203,19 +200,12 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
       <p>When you return to a sentence, read your diagram back in English. Keep every restriction, and ask whether your arrow promises more than the rule does.</p>
       <button type="button" className="omd-primary" onClick={() => { setFinished(false); move(0); }}>Review my answers</button>
     </div>
-    <div className="omd-introduction" hidden={!showIntroduction}>
-      <h2 ref={showIntroduction ? heading : undefined} tabIndex={-1}>{stage.title}</h2>
-      <p>{stage.purpose}</p>
-      {stage.example && <blockquote>{stage.example}</blockquote>}
-      <p>{stage.explanation}</p><p>{stage.instruction}</p>
-      <button type="button" className="omd-primary" onClick={() => setIntroducedStages(previous => [...previous, question.stage])}>{question.stage === 0 ? 'Begin practice' : 'Continue'}</button>
-    </div>
-    <div hidden={finished || showIntroduction}>
+    <div hidden={finished}>
     <div className="omd-progress-heading"><p>{question.stage < 5 ? `Stage ${question.stage + 1} of 5` : `${baselineQuestions.length} main questions completed`}</p><p>{question.stage < 5 ? `Question ${current + 1} of ${baselineQuestions.length}` : `Fresh check ${current - baselineQuestions.length + 1} of ${questions.length - baselineQuestions.length}`}</p></div>
     <div className="omd-progress" role="progressbar" aria-label={question.stage < 5 ? 'Main questions completed' : 'Fresh checks completed'} aria-valuemin={0} aria-valuemax={question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length} aria-valuenow={questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length}><span style={{ width: `${questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length / (question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length) * 100}%` }}/></div>
-    <h2 ref={!finished && !showIntroduction ? heading : undefined} tabIndex={-1}>{stage.title}</h2><p className="omd-purpose">{stage.purpose}</p>
+    <h2 ref={!finished ? heading : undefined} tabIndex={-1}>{stage.title}</h2>
     </div>
-    {questions.filter(item => visited.includes(item.id)).map(item => <div key={item.id} hidden={finished || showIntroduction || item.id !== question.id} data-mixed-question={item.id}><RetainedQuestion question={item} record={record}/></div>)}
-    {!finished && !showIntroduction && <nav className="omd-navigation" aria-label="Practice questions"><button type="button" disabled={current === 0} onClick={() => move(current - 1)}>Previous question</button><button type="button" className="omd-primary" disabled={!results[question.id]?.correct} onClick={next}>{current === questions.length - 1 ? (question.stage === 5 ? 'Finish practice' : pendingConfirmations.length ? 'Try a fresh case' : 'Review practice') : 'Next question'}</button></nav>}
+    {questions.filter(item => visited.includes(item.id)).map(item => <div key={item.id} hidden={finished || item.id !== question.id} data-mixed-question={item.id}><RetainedQuestion question={item} record={record}/></div>)}
+    {!finished && <nav className="omd-navigation" aria-label="Practice questions"><button type="button" disabled={current === 0} onClick={() => move(current - 1)}>Previous question</button><button type="button" className="omd-primary" disabled={!results[question.id]?.correct} onClick={next}>{current === questions.length - 1 ? (question.stage === 5 ? 'Finish practice' : pendingConfirmations.length ? 'Try a fresh case' : 'Review practice') : 'Next question'}</button></nav>}
   </section>;
 }

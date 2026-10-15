@@ -2,7 +2,6 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCourseStep } from '../courseProgress';
-import { DrillDemo } from './DrillDemo';
 import './drill-one.css';
 
 export type DrillOneQuestion = {
@@ -29,7 +28,6 @@ export function DrillOneEntry({ startUrl, lessonsUrl }: { startUrl: string; less
       <header data-course-heading className="d1-entry-title"><p className="d1-eyebrow">Conditional reasoning</p><h1>Spot the <em>condition</em></h1><FoldedPaper/></header>
       <section className="d1-entry-instructions" aria-label="Practice instructions"><span className="d1-eyebrow">Your task</span><h2>Decide what the information proves.</h2>
         <ol><li><span>01</span><p>Start with rules and facts. Decide what a rule proves on its own, what a fact adds, and test a claim against a possible case.</p></li><li><span>02</span><p>Recall what sufficient and necessary mean. Read the arrow and decide which condition belongs on each side.</p></li><li><span>03</span><p>Find the indicator words and the complete conditions they introduce. Check each answer. If it isn't right, read the hint and try again.</p></li></ol>
-        <DrillDemo drillId="foundation-practice"/>
         <Link className="d1-primary" to={startUrl}>Start practice<ArrowRight size={18}/></Link>
       </section>
     </div>
