@@ -1,0 +1,430 @@
+/*
+ * The Press: Dumb it Down's world.
+ *
+ * A hot-metal print shop. Oiled iron, ink rollers overhead, one warm work lamp
+ * over the bed, and a single stroke of vermilion — the proofreader's red — for
+ * everything the machine wants flagged. The paragraph stands on the bed as a
+ * monolith of set type; the student's one sentence is the press stroke, and on
+ * a good stroke the platen lands and the answer comes off the bed as a printed
+ * proof strip: ink on paper, the only paper in the room.
+ *
+ * The refusal matters as much as the stroke. On a wrong answer the platen dips
+ * and returns, and the monolith stands un-conquered.
+ */
+
+.press {
+  --pr-bed: 21 16% 10%;
+  --pr-bed-deep: 19 20% 6%;
+  --pr-metal: 26 12% 38%;
+  --pr-ink: 39 40% 92%;
+  --pr-ink-dim: 32 14% 62%;
+  --pr-block: 24 14% 14%;
+  --pr-signal: 40 62% 66%;
+  --pr-red: 14 78% 50%;
+  --pr-paper: 42 52% 93%;
+  --pr-paper-ink: 24 30% 12%;
+
+  position: relative;
+  background: hsl(var(--pr-bed-deep));
+  color: hsl(var(--pr-ink));
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.press > :not(.pr-room) {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- The shop ---------- */
+
+.pr-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* The work lamp over the bed. */
+.pr-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 52% at 50% 4%, hsl(38 60% 60% / 0.16), transparent 70%),
+    radial-gradient(120% 80% at 50% 10%, hsl(var(--pr-bed) / 0.9), transparent 74%);
+}
+
+/* The frame: two iron side rails with bolt lines. */
+.pr-frame {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, hsl(var(--pr-block)), hsl(var(--pr-bed-deep) / 0)) 0 0 / 26px 100% no-repeat,
+    linear-gradient(-90deg, hsl(var(--pr-block)), hsl(var(--pr-bed-deep) / 0)) 100% 0 / 26px 100% no-repeat,
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 54px,
+      hsl(var(--pr-ink) / 0.14) 54px 57px
+    ) 7px 0 / 3px 100% no-repeat,
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 54px,
+      hsl(var(--pr-ink) / 0.14) 54px 57px
+    ) calc(100% - 10px) 0 / 3px 100% no-repeat;
+}
+
+/* Two ink rollers across the top of the machine. */
+.pr-rollers {
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 22px;
+  background:
+    linear-gradient(
+      180deg,
+      hsl(var(--pr-bed-deep)) 0%,
+      hsl(var(--pr-metal) / 0.7) 26%,
+      hsl(var(--pr-ink) / 0.2) 38%,
+      hsl(var(--pr-metal) / 0.5) 52%,
+      hsl(var(--pr-bed-deep)) 100%
+    );
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 6px 18px hsl(var(--pr-bed-deep) / 0.9);
+}
+
+.pr-rollers::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 100%;
+  height: 8px;
+  background:
+    linear-gradient(
+      180deg,
+      hsl(var(--pr-red) / 0.5),
+      hsl(var(--pr-red) / 0.12) 70%,
+      transparent
+    );
+  filter: blur(1px);
+}
+
+/* Ink spatter on the floor of the shop. */
+.pr-spatter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 24%;
+  background-image:
+    radial-gradient(2px 2px at 18% 66%, hsl(var(--pr-bed-deep)), transparent 100%),
+    radial-gradient(3px 3px at 34% 82%, hsl(14 40% 20% / 0.8), transparent 100%),
+    radial-gradient(2px 2px at 61% 74%, hsl(var(--pr-bed-deep)), transparent 100%),
+    radial-gradient(2.5px 2.5px at 78% 88%, hsl(14 40% 18% / 0.7), transparent 100%),
+    linear-gradient(0deg, hsl(var(--pr-bed) / 0.8), transparent);
+}
+
+.pr-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    118% 95% at 50% 34%,
+    transparent 46%,
+    hsl(var(--pr-bed-deep) / 0.7) 84%,
+    hsl(var(--pr-bed-deep)) 100%
+  );
+}
+
+/* ---------- Type ---------- */
+
+.press-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Wood-type poster face: the shop's display voice. */
+.press-display {
+  font-family: "Bevan", var(--ac-serif, Georgia, serif);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* Set type. Justified, because that is what a composed block looks like. */
+.press-type {
+  font-family: "Spectral", var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  text-align: justify;
+  hyphens: auto;
+  color: hsl(var(--pr-ink));
+}
+
+/* ---------- The platen ---------- */
+
+.press-platen {
+  position: relative;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--pr-metal)),
+    hsl(var(--pr-block)) 60%,
+    hsl(var(--pr-bed-deep))
+  );
+  border: 1px solid hsl(var(--pr-metal));
+  box-shadow:
+    inset 0 1px 0 hsl(var(--pr-ink) / 0.24),
+    0 12px 26px hsl(var(--pr-bed-deep) / 0.95);
+  will-change: transform;
+}
+
+/* Platen bolts. */
+.press-platen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    2.5px 2.5px at 14px 50%,
+    hsl(var(--pr-ink) / 0.4),
+    transparent 100%
+  );
+  background-size: 15% 100%;
+  background-repeat: repeat-x;
+}
+
+/* The vermilion proof stripe along the platen's working edge. */
+.press-platen::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: -2px;
+  height: 2px;
+  background: hsl(var(--pr-red) / 0.75);
+  border-radius: 1px;
+}
+
+/* ---------- The monolith ---------- */
+
+.press-monolith {
+  position: relative;
+  transform-origin: bottom center;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 26px,
+      hsl(var(--pr-ink) / 0.025) 26px 27px
+    ),
+    linear-gradient(180deg, hsl(var(--pr-block)), hsl(var(--pr-bed)));
+  border: 1px solid hsl(var(--pr-metal) / 0.55);
+  /* The mass: a deep letterpress shadow under it, a lit top edge on it. */
+  box-shadow:
+    inset 0 1px 0 hsl(var(--pr-ink) / 0.12),
+    0 26px 48px hsl(var(--pr-bed-deep)),
+    0 3px 0 hsl(var(--pr-bed-deep));
+  will-change: transform, opacity;
+}
+
+/* ---------- Slugs ---------- */
+
+/* The base slug: a line of set metal. */
+.press-slug {
+  border: 1px solid hsl(var(--pr-metal) / 0.6);
+  background: hsl(var(--pr-block) / 0.85);
+}
+
+/* The credited line and the student's own: pulled proofs. Ink on paper, the
+   only paper in the room, with a deckled bottom edge. */
+.press-slug[data-tone="credited"],
+.press-slug[data-tone="student"],
+.press-slug[data-tone="narrow"],
+.press-slug[data-tone="sprawl"] {
+  background:
+    linear-gradient(180deg, hsl(var(--pr-paper)), hsl(40 45% 88%));
+  border-color: hsl(38 30% 74%);
+  box-shadow:
+    0 1px 0 hsl(var(--pr-ink) / 0.25) inset,
+    0 10px 20px hsl(var(--pr-bed-deep) / 0.8);
+}
+
+.press-slug[data-tone="credited"] .press-type,
+.press-slug[data-tone="student"] .press-type,
+.press-slug[data-tone="narrow"] .press-type,
+.press-slug[data-tone="sprawl"] .press-type {
+  color: hsl(var(--pr-paper-ink));
+}
+
+/* The credited proof carries the maker's red chop in its corner. */
+.press-slug[data-tone="credited"] {
+  position: relative;
+}
+
+.press-slug[data-tone="credited"]::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid hsl(var(--pr-red) / 0.85);
+  border-radius: 1px;
+  transform: rotate(8deg);
+}
+
+/* Too narrow prints short and thin against the credited slug's full measure. */
+.press-slug[data-tone="narrow"] {
+  max-width: 52%;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* Topic-only prints full width but hollow: outlined letterforms, no fill.
+   It never made it to paper. */
+.press-slug[data-tone="topic"] .press-type {
+  color: transparent;
+  -webkit-text-stroke: 0.5px hsl(var(--pr-ink) / 0.75);
+}
+
+/* Sprawl: the stroke stopped part way, so the proof sits torn and unfinished. */
+.press-slug[data-tone="sprawl"] {
+  border-style: dashed;
+}
+
+/* ---------- The checklist ---------- */
+
+.press-idea-mark {
+  margin-top: 6px;
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border: 1px solid hsl(var(--pr-metal));
+}
+
+/* Judged and kept: filled. Judged and lost: a gap in the metal. Unjudged: a
+   plain marker, because nobody has looked at this answer yet. */
+.press-idea[data-state="kept"] .press-idea-mark {
+  background: hsl(var(--pr-signal));
+  border-color: hsl(var(--pr-signal));
+  box-shadow: 0 0 8px hsl(var(--pr-signal) / 0.4);
+}
+
+.press-idea[data-state="lost"] .press-idea-mark {
+  background: transparent;
+  border-style: dashed;
+  border-color: hsl(var(--pr-red) / 0.7);
+}
+
+.press-idea[data-state="lost"] span:last-child {
+  opacity: 0.6;
+}
+
+/* ---------- The compression gauge ---------- */
+
+.press-gauge-track {
+  height: 3px;
+  border-radius: 2px;
+  background: hsl(var(--pr-metal) / 0.4);
+  overflow: hidden;
+}
+
+.press-gauge-fill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  background: hsl(var(--pr-ink-dim));
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), background-color 260ms ease;
+}
+
+/* Overrun: the proofreader's red comes out. */
+[data-state="long"] .press-gauge-fill {
+  background: hsl(var(--pr-red));
+}
+
+/* ---------- Refusal and the spike ---------- */
+
+.press-refusal {
+  color: hsl(var(--pr-ink-dim));
+}
+
+.press-spike-line {
+  color: hsl(var(--pr-ink-dim));
+  box-shadow: inset 2px 0 0 hsl(var(--pr-metal));
+  padding-left: 10px;
+}
+
+.press-spike-line[data-current="true"] {
+  color: hsl(var(--pr-ink));
+  box-shadow: inset 2px 0 0 hsl(var(--pr-red) / 0.85);
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes press-bed-light {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes press-platen-rise {
+  from {
+    transform: translateY(30px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes press-monolith-lower {
+  from {
+    opacity: 0;
+    transform: translateY(-34px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.press-entrance-bed {
+  animation: press-bed-light 520ms ease both;
+}
+
+.press-entrance-platen {
+  animation: press-platen-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) 280ms both;
+}
+
+.press-entrance-monolith {
+  animation: press-monolith-lower 760ms cubic-bezier(0.7, 0, 0.18, 1) 900ms both;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .press *,
+  .press *::before,
+  .press *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  .press-entrance-bed,
+  .press-entrance-platen,
+  .press-entrance-monolith {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Workspace Inspiration Set</title>
+  <style>
+    :root {
+      --bg: #080909;
+      --ink: #f5f1e8;
+      --muted: #a09b91;
+      --dim: #656158;
+      --line: rgba(255,255,255,.09);
+      --line2: rgba(255,255,255,.16);
+      --gold: #d7b76b;
+      --blue: #9dbde8;
+      --green: #9ec7a1;
+      --rose: #d7a09d;
+      --panel: #111211;
+      --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Geist Sans", "Helvetica Neue", sans-serif;
+      --mono: "SF Mono", "Geist Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(215,183,107,.16), transparent 26rem),
+        radial-gradient(circle at 100% 0%, rgba(157,189,232,.12), transparent 30rem),
+        linear-gradient(180deg, #0d0e0e 0%, #070808 100%);
+    }
+    .page { width: min(1440px, calc(100vw - 56px)); margin: 0 auto; padding: 54px 0 72px; }
+    .header { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 48px; align-items: end; margin-bottom: 30px; }
+    .eyebrow { color: var(--gold); font: 700 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 14px 0 0; max-width: 850px; font-size: clamp(42px, 5vw, 76px); line-height: .94; letter-spacing: -.045em; }
+    .intro { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+    .source {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 7px;
+      background: rgba(255,255,255,.028);
+      min-height: 520px;
+    }
+    .core {
+      height: 100%;
+      border: 1px solid rgba(255,255,255,.065);
+      border-radius: 13px;
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.018));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .rank { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--ink); color: #0b0b0a; font: 800 12px/1 var(--mono); margin-bottom: 22px; }
+    h2 { margin: 0; font-size: 20px; letter-spacing: -.03em; }
+    .role { margin: 7px 0 18px; color: var(--gold); font: 700 10px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    p { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 0; }
+    ul { list-style: none; padding: 0; margin: 20px 0 0; }
+    li { border-top: 1px solid var(--line); padding: 10px 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .tag { display: inline-block; margin-top: 18px; border: 1px solid var(--line2); border-radius: 999px; padding: 7px 9px; color: var(--ink); font: 700 10px/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+    .rule {
+      margin-top: 24px;
+      border: 1px solid rgba(215,183,107,.24);
+      background: rgba(215,183,107,.07);
+      border-radius: 16px;
+      padding: 18px 20px;
+      color: #ded4bd;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    @media (max-width: 1180px) { .grid { grid-template-columns: repeat(2, minmax(0,1fr)); } .header { grid-template-columns: 1fr; } }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } .page { width: min(100vw - 28px, 720px); padding-top: 32px; } .source { min-height: auto; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="header">
+      <div>
+        <div class="eyebrow">Reference Set · Teacher Workspace</div>
+        <h1>Top five inspiration pools to use.</h1>
+      </div>
+      <p class="intro">These are not sites to copy. Each has a job: real product patterns, premium dark styling, futuristic composition, or broad visual search. We will combine them into one LSAT U-specific direction.</p>
+    </section>
+
+    <section class="grid">
+      <article class="source">
+        <div class="core">
+          <div class="rank">01</div>
+          <h2>Refero</h2>
+          <div class="role">Real product UI references</div>
+          <p>Use it for task rows, sidebars, filters, empty states, memory/settings surfaces, and real app workflows.</p>
+          <ul>
+            <li>Borrow: pattern quality, dense-but-clear product screens.</li>
+            <li>Avoid: turning Today into a generic SaaS dashboard.</li>
+          </ul>
+          <span class="tag">Primary product reference</span>
+        </div>
+      </article>
+
+      <article class="source">
+        <div class="core">
+          <div class="rank">02</div>
+          <h2>Mobbin</h2>
+          <div class="role">Production flow library</div>
+          <p>Use it to study how real apps handle list-detail workflows, action review, approvals, and navigation hierarchy.</p>
+          <ul>
+            <li>Borrow: flows and interaction logic.</li>
+            <li>Avoid: consumer-app softness that weakens the teacher operator feel.</li>
+          </ul>
+          <span class="tag">Workflow reference</span>
+        </div>
+      </article>
+
+      <article class="source">
+        <div class="core">
+          <div class="rank">03</div>
+          <h2>Godly</h2>
+          <div class="role">Futuristic web taste</div>
+          <p>Use it for premium composition, spacing, dark surfaces, and memorable visual posture.</p>
+          <ul>
+            <li>Borrow: atmosphere and high-end visual discipline.</li>
+            <li>Avoid: portfolio effects that hurt utility.</li>
+          </ul>
+          <span class="tag">Mood reference</span>
+        </div>
+      </article>
+
+      <article class="source">
+        <div class="core">
+          <div class="rank">04</div>
+          <h2>Dark.Design</h2>
+          <div class="role">Premium dark mode</div>
+          <p>Use it for the OLED, minimal, futuristic dark palette without making the interface feel noisy or neon.</p>
+          <ul>
+            <li>Borrow: restraint, contrast, dark hierarchy.</li>
+            <li>Avoid: low-contrast gray-on-black fatigue.</li>
+          </ul>
+          <span class="tag">Visual system reference</span>
+        </div>
+      </article>
+
+      <article class="source">
+        <div class="core">
+          <div class="rank">05</div>
+          <h2>Pinterest</h2>
+          <div class="role">Wide mood-board search</div>
+          <p>Use it only to collect broad “futuristic dashboard” and “teacher dashboard” mood cues, then filter aggressively.</p>
+          <ul>
+            <li>Borrow: visual motifs and layout sparks.</li>
+            <li>Avoid: concept art, fake widgets, and overdesigned sci-fi panels.</li>
+          </ul>
+          <span class="tag">Broad search reference</span>
+        </div>
+      </article>
+    </section>
+
+    <div class="rule">
+      <strong>Recommended use:</strong> Refero + Mobbin decide the product anatomy. Godly + Dark.Design decide the premium futuristic feel. Pinterest is only a broad mood-board source, not the authority.
+    </div>
+  </main>
+</body>
+</html>

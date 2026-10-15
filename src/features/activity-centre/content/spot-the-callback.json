@@ -1,0 +1,219 @@
+{
+  "slug": "spot-the-callback",
+  "title": "Spot the Callback",
+  "subtitle": "Say what the marked phrase is pointing back to",
+  "item_format": "free-text",
+  "instructions": {
+    "coach": {
+      "drill": "a callback drill: a phrase in the second paragraph refers back to an idea in the first paragraph in different words, and the student has to say which idea and what it means",
+      "rubric": [
+        "Judge two things separately. First, did the student point at the correct earlier idea, on the correct side of any debate. Second, did they actually restate its content.",
+        "Naming a location is not an answer. 'The thing in the first paragraph about the drums' identifies where the idea is and says nothing about what it is.",
+        "Where the paragraph sets two views against each other, pointing at the wrong side is wrong even if the topic is right.",
+        "On the harder items the phrase carries the author's judgment. A student who gets the topic but lands on the wrong valence has not finished the job.",
+        "Where the author's note names a planted near-miss, a student who chose it should be told what separates it from the real referent rather than simply marked down."
+      ],
+      "partial_rule": "Mark 'partial' when the student points at the right earlier idea but does not translate it, restating only its location or its topic. Mark 'incorrect' when they point at the wrong idea, at a planted near-miss, or at the opposing side of the debate."
+    },
+    "tagline": "That, this, the second one. Every one of them points backward.",
+    "task": "The marked phrase refers back to an idea from the first paragraph. Tell me which idea it is, and say what that idea actually claims.",
+    "rules": [
+      "Start with the phrase itself. A demonstrative like that or this is a signal that the author is reaching backward.",
+      "Decode the phrase's parts before you go looking. Cartographic is about mapmaking, insulation is protection, so cartographic insulation is protection through mapmaking.",
+      "Then find the idea in the first paragraph that the phrase is standing in for.",
+      "Saying where the idea is does not count. Say what it claims.",
+      "If the first paragraph holds two opposed views, decide which one the phrase is pointing at before you answer."
+    ],
+    "worked_example": {
+      "statement": "The club spent two seasons building around a high defensive line that squeezed play into the opposition half. It worked against sides that wanted to pass out from the back. It failed badly against anyone willing to kick long.\n\nThe new manager has abandoned \"that compressed shape\" and drops the back four twenty yards deeper.",
+      "credited_answers": [
+        "The high defensive line that squeezed play into the opposition half."
+      ],
+      "explanation": "That signals a backward reference. Compressed shape is new wording for the same thing the first paragraph described as a high line squeezing play into the opposition half. Saying the old tactic would point in the right direction without translating anything, which is why it is only a near miss."
+    },
+    "answer_label": "Your answer",
+    "answer_placeholder": "Name the idea the marked phrase points back to, and what it says…"
+  },
+  "items": [
+    {
+      "order": 1,
+      "prompt": "The city's civic centre was built in the 1960s with a raised concrete plaza separating the building from the street. Planners at the time described the plaza as a dignified approach. Pedestrians described it as a wind tunnel they crossed as fast as they could.\n\nThe current renovation removes **\"that elevated forecourt\"** and brings the entrance down to pavement level.",
+      "credited_answers": [
+        "the raised concrete plaza between the building and the street."
+      ],
+      "explanation": "Topic: Architecture. Translation must say: a raised plaza that held the entrance away from the street. Near-miss: none planted at this rung. `partial`: \"the plaza\" with no content, or \"the thing being removed.\"",
+      "category": "Q1: near-synonym swap"
+    },
+    {
+      "order": 2,
+      "prompt": "Conservators argued for years that the spalling terracotta panels should be swapped for cast replicas. The architects who ran the survey disagreed. A panel losing its surface, they held, still carries the mould marks that date the building, and a replica carries none.\n\n**\"That position\"** has now been written into the listing, and no panel may be replaced while its mould marks survive.",
+      "credited_answers": [
+        "the architects' claim that a decaying original still carries datable mould marks a replica cannot."
+      ],
+      "explanation": "Topic: Architecture. Translation must name *which* claim and *whose*. Near-miss: the conservators' replacement argument, stated first and at equal length. `partial`: \"the architects' view\" without saying what it was.",
+      "category": "Q2: demonstrative compression"
+    },
+    {
+      "order": 3,
+      "prompt": "For a century the museum showed its marbles as art and its plaster casts as teaching aids, shelved in an unlabelled basement corridor. Recent scholarship treats the casts as objects in their own right, with their own makers, their own damage, and their own history of handling.\n\n**\"This rehabilitation of the copy\"** is why the basement corridor is being relabelled as a gallery.",
+      "credited_answers": [
+        "the recent scholarly move to treat casts as objects worth study in themselves."
+      ],
+      "explanation": "Topic: Architecture. Translation must carry the approving valence: the copy has been promoted, not merely discussed. Near-miss: \"the marbles shown as art.\" `partial`: \"new research on casts,\" which loses the promotion.",
+      "category": "Q3: nominalized swap, valence matters"
+    },
+    {
+      "order": 4,
+      "prompt": "The 1890s arcade was glazed with one continuous sheet of rolled glass along its whole length, which the builders praised as an unbroken sky. Shopkeepers underneath complained of glare and heat. Later arcades in the same city broke the glazing into bays with solid ribs between them, and their tenants stayed longer.\n\nThe trust's report attributes the arcade's decline to **\"that fenestral overreach\"** and recommends reinstating the bays.",
+      "credited_answers": [
+        "the single continuous glass roof."
+      ],
+      "explanation": "Topic: Architecture. Decode: *fenestral* is to do with glazing and windows; *overreach* is going too far. So: glazing taken too far. Translation must name the unbroken sheet, not its effects. Near-misses planted: the glare and heat (the consequence), and the later arcades' bays (the remedy). `partial`: \"the glare problem.\"",
+      "category": "Q4: re-categorization with a vocabulary decode"
+    },
+    {
+      "order": 5,
+      "prompt": "A school of postwar planners held that a neighbourhood's health could be read off one number, its density, and that raising the number would raise the health. Critics at the time noted that two districts at identical densities behaved nothing alike, because one had shops along the ground floor and the other had blank walls. The planners' answer was to build to the target density and wait.\n\nThe current masterplan is written by people who watched **\"that arithmetic faith\"** empty three districts, and it specifies ground-floor use before it specifies density at all.",
+      "credited_answers": [
+        "the postwar planners' belief that density alone determines a neighbourhood's health, so raising density raises health."
+      ],
+      "explanation": "Topic: Architecture. Attribution required: the planners', not the critics'. The precise mistaken use: treating a single number as sufficient, not \"using numbers.\" Near-misses: density as a topic; the critics' ground-floor observation. `partial`: \"the planners' focus on density,\" which names the topic and misses that the error was treating it as the whole story.",
+      "category": "Q5: evaluative metaphor, whole position"
+    },
+    {
+      "order": 6,
+      "prompt": "The club spent two seasons building around a high defensive line that squeezed play into the opposition half. It worked against sides that wanted to pass out from the back. It failed badly against anyone willing to kick long.\n\nThe new manager has abandoned **\"that compressed shape\"** and drops the back four twenty yards deeper.",
+      "credited_answers": [
+        "the high defensive line squeezing play into the opposition half."
+      ],
+      "explanation": "Topic: Sport. Translation must say what the shape was, not just that it existed. `partial`: \"the old tactic.\"",
+      "category": "Q1: near-synonym swap"
+    },
+    {
+      "order": 7,
+      "prompt": "The analytics staff argued the striker's finishing was fine and his service was the problem. The coaching staff read the same numbers the other way: the chances were arriving, and he was missing them.\n\n**\"This second reading\"** is what the transfer list reflects, and it is the striker who has been listed.",
+      "credited_answers": [
+        "the coaching staff's reading, that the chances were arriving and the striker was missing them."
+      ],
+      "explanation": "Topic: Sport. Near-miss: the analytics view, given first. `partial`: \"the coaches' opinion.\"",
+      "category": "Q2: demonstrative compression"
+    },
+    {
+      "order": 8,
+      "prompt": "Distance coaches once treated the long slow run as the whole foundation of training, and anything faster as garnish. Physiologists pushed back, showing that easy volume develops one system and leaves another untouched, and that runners on volume alone plateau within two seasons.\n\n**\"That physiological correction\"** is why modern programmes put two hard sessions inside an otherwise easy week.",
+      "credited_answers": [
+        "the physiologists' finding that easy volume alone develops one system, leaves another untouched, and produces a plateau."
+      ],
+      "explanation": "Topic: Sport. Valence: the physiologists are being credited. Near-miss: the old coaching orthodoxy. `partial`: \"what scientists said about training.\"",
+      "category": "Q3: nominalized swap, valence matters"
+    },
+    {
+      "order": 9,
+      "prompt": "The federation ranks teams by a rating that adds a fixed bonus for playing away and subtracts nothing for the quality of the opposition. Smaller nations quickly learned to schedule away fixtures against weak sides. Their ratings climbed for two years while their results against ranked opponents got worse.\n\nThe review calls the whole episode **\"that incentive myopia\"** and rewrites the formula around opposition strength.",
+      "credited_answers": [
+        "the rating formula's fixed away bonus with no adjustment for opposition quality."
+      ],
+      "explanation": "Topic: Sport. Decode: *myopia* is short-sightedness; an incentive that fails to see past its own immediate effect. Translation must name the formula's defect, not the behaviour it produced. Near-misses: the scheduling behaviour of small nations, and the worsening results. `partial`: \"teams gaming the rankings,\" which describes the symptom.",
+      "category": "Q4: re-categorization with a vocabulary decode"
+    },
+    {
+      "order": 10,
+      "prompt": "One tradition of coaching holds that a player's ceiling is fixed early and the job is to identify it, so squads are cut young and the cut is treated as information. Its critics point out that the players cut at sixteen and the players kept differ mostly in birth month, and that late-born players who survive outperform the others by twenty-two. The tradition's response has been to cut earlier.\n\nThe academy's new director was one of the players released at sixteen, and she has built her whole intake policy against **\"that early verdict\"**.",
+      "credited_answers": [
+        "the coaching tradition's belief that a player's ceiling is fixed early, making an early cut a reliable read."
+      ],
+      "explanation": "Topic: Sport. Attribution: the tradition's, not the critics'. The precise mistaken use: treating the early cut as information about ceiling. Near-misses: the birth-month finding; the fact of being released. `partial`: \"cutting players young,\" which is the practice and not the belief that licensed it.",
+      "category": "Q5: evaluative metaphor, whole position"
+    },
+    {
+      "order": 11,
+      "prompt": "The estuary restoration began by breaching the seawall in three places and letting the tide back onto two hundred hectares of former pasture. Salt marsh re-established within four years. Waders returned in the fifth.\n\n**\"That deliberate flooding\"** is now the template for six other sites on the same coast.",
+      "credited_answers": [
+        "breaching the seawall to let the tide back onto former pasture."
+      ],
+      "explanation": "Topic: Ecology. Translation must include the intent and the mechanism. `partial`: \"the flooding.\"",
+      "category": "Q1: near-synonym swap"
+    },
+    {
+      "order": 12,
+      "prompt": "Foresters proposed removing the standing deadwood to reduce fire load. The entomologists on the panel objected that the deadwood holds the beetle assemblage the woodpeckers feed on, and that a stand cleared of it goes quiet within a decade.\n\n**\"That objection\"** is why the management plan now leaves every trunk over forty centimetres standing.",
+      "credited_answers": [
+        "the entomologists' claim that deadwood holds the beetle assemblage the woodpeckers depend on, so clearing it silences the stand."
+      ],
+      "explanation": "Topic: Ecology. Near-miss: the fire-load rationale. `partial`: \"the entomologists disagreed.\"",
+      "category": "Q2: demonstrative compression"
+    },
+    {
+      "order": 13,
+      "prompt": "Reserve design was governed for decades by a rule that one large protected area always beats several small ones of the same total size. Field surveys through the 1990s kept finding the opposite in fragmented farmland, where several small reserves held more species between them than one large block did.\n\n**\"This inversion of the old rule\"** is what the county's scattered reserve network was built on.",
+      "credited_answers": [
+        "the survey finding that in fragmented farmland several small reserves outperform one large block."
+      ],
+      "explanation": "Topic: Ecology. Valence: the old rule is being displaced. Near-miss: the old single-large rule itself. `partial`: \"research on reserve size.\"",
+      "category": "Q3: nominalized swap, valence matters"
+    },
+    {
+      "order": 14,
+      "prompt": "The lake's recovery programme measured success by total fish biomass, which rose every year for six years. Almost all of the rise was one introduced species that tolerates low oxygen. The native community that the programme existed to protect kept contracting underneath the rising total.\n\nThe audit blames **\"that aggregative blindness\"** and rewrites the target around native species richness.",
+      "credited_answers": [
+        "measuring success by total fish biomass, a single aggregate that hid the composition underneath."
+      ],
+      "explanation": "Topic: Ecology. Decode: *aggregative* is to do with totals; *blindness* is what the total could not show. Translation must name the metric choice, not the outcome. Near-misses: the introduced species; the contracting natives. `partial`: \"the invasive fish.\"",
+      "category": "Q4: re-categorization with a vocabulary decode"
+    },
+    {
+      "order": 15,
+      "prompt": "A strand of restoration thinking holds that an ecosystem has one correct prior state, that this state can be read off a historical baseline, and that the job is to return the system to it. Its critics observe that the chosen baseline is almost always the earliest date with good records rather than any ecologically meaningful moment, and that the climate the baseline formed under no longer exists. Practitioners in the tradition have responded by pushing the baseline further back.\n\nThe catchment's new plan was written by an ecologist who spent a decade failing to hold a river to **\"that documentary ideal\"**, and it sets targets in terms of function rather than composition.",
+      "credited_answers": [
+        "the restorationist belief that a single correct prior state exists, can be read from a historical baseline, and should be restored."
+      ],
+      "explanation": "Topic: Ecology. Attribution: the tradition's, not the critics'. The precise mistaken use: treating a records-driven baseline as *the* correct state. Near-misses: the climate-has-changed point (the critics'); historical records as a topic. `partial`: \"restoring rivers to how they used to be,\" which loses that the error is in where the target comes from.",
+      "category": "Q5: evaluative metaphor, whole position"
+    },
+    {
+      "order": 16,
+      "prompt": "The novel was published in monthly parts, and each part had to end on a hook strong enough to sell the next one. The chapter breaks in the modern single volume fall exactly where those hooks were. Readers who meet it as a book often find the pacing strange.\n\n**\"That serial rhythm\"** is invisible on the shelf and audible on every page.",
+      "credited_answers": [
+        "the monthly part-publication that forced a hook at the end of each instalment."
+      ],
+      "explanation": "Topic: Literature. `partial`: \"the way it was published.\"",
+      "category": "Q1: near-synonym swap"
+    },
+    {
+      "order": 17,
+      "prompt": "One editor argued the manuscript's inconsistencies were authorial and should stand. The other held that a scribe copying at speed produces exactly this pattern of error, and that preserving it preserves the scribe rather than the author.\n\n**\"The second argument\"** carried the volume, and the edition silently corrects sixty readings.",
+      "credited_answers": [
+        "the claim that the pattern of error is what a fast-copying scribe produces, so keeping it preserves the scribe rather than the author."
+      ],
+      "explanation": "Topic: Literature. Near-miss: the first editor's authorial-inconsistency position. `partial`: \"the second editor's view.\"",
+      "category": "Q2: demonstrative compression"
+    },
+    {
+      "order": 18,
+      "prompt": "Critics long read the narrator's flat affect as a failure of characterisation, a writer unable to render feeling. A later generation read the same flatness as the point: a narrator describing a year she cannot yet feel, in the only register available to her.\n\n**\"This reversal of the charge\"** is why the novel is now taught in the same course that once used it as a bad example.",
+      "credited_answers": [
+        "the later reading that the flat affect is deliberate and characterising rather than a failure."
+      ],
+      "explanation": "Topic: Literature. Valence: a defence, not a neutral alternative. Near-miss: the original charge of failed characterisation. `partial`: \"critics changed their minds.\"",
+      "category": "Q3: nominalized swap, valence matters"
+    },
+    {
+      "order": 19,
+      "prompt": "The prize's judges are given the full list in January and asked to submit a shortlist in March. Almost every shortlisted book in twenty years has been published between September and December. Publishers now schedule their strongest titles into that window and their others outside it.\n\nThe trustees' report names **\"that recency artefact\"** and moves the reading period to a rolling twelve months.",
+      "credited_answers": [
+        "the compressed January-to-March judging window that leaves recently published books freshest in judges' minds."
+      ],
+      "explanation": "Topic: Literature. Decode: *recency* is the nearness in time; an *artefact* is a distortion produced by the method rather than the thing measured. Translation must name the judging schedule, not publisher behaviour. Near-misses: the autumn publication pattern; publishers' scheduling. `partial`: \"books published in autumn win,\" which is the symptom.",
+      "category": "Q4: re-categorization with a vocabulary decode"
+    },
+    {
+      "order": 20,
+      "prompt": "A durable school of criticism holds that a work's meaning is settled by what its author intended, that the intention is recoverable from letters and drafts, and that a reading unsupported by that record is simply wrong. Its opponents point out that drafts record what an author tried, not what the finished work does, and that the letters of working writers are full of intentions the books abandon. The school's reply has been to widen the archive.\n\nThe editor of the new companion spent four years in a novelist's papers and came out of them arguing against **\"that archival certainty\"**, and the volume prints six incompatible readings without ranking them.",
+      "credited_answers": [
+        "the school's belief that authorial intention settles meaning and is recoverable from the documentary record, making unsupported readings wrong."
+      ],
+      "explanation": "Topic: Literature. Attribution: the school's, not its opponents'. The precise mistaken use: treating the archive as decisive about meaning, not merely informative. Near-misses: the drafts-record-attempts point (the opponents'); archives as a topic. `partial`: \"the idea that the author's intention matters,\" which is far weaker than the position being rejected.",
+      "category": "Q5: evaluative metaphor, whole position"
+    }
+  ]
+}

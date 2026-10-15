@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Workspace Instrument Panel Direction</title>
+  <style>
+    :root {
+      --canvas: #b9c0c5;
+      --canvas-2: #aeb8be;
+      --ink: #070b11;
+      --muted: rgba(7, 11, 17, 0.47);
+      --hairline: rgba(7, 11, 17, 0.18);
+      --soft: rgba(255, 255, 255, 0.18);
+      --active: #050914;
+      --paper: rgba(235, 240, 243, 0.28);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Geist", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      background:
+        linear-gradient(rgba(7, 11, 17, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(7, 11, 17, 0.035) 1px, transparent 1px),
+        radial-gradient(circle at 52% 45%, rgba(255,255,255,.35), transparent 28%),
+        linear-gradient(180deg, var(--canvas), var(--canvas-2));
+      background-size: 42px 42px, 42px 42px, 100% 100%, 100% 100%;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 28px 34px 34px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 34px;
+    }
+
+    .topbar,
+    .bottombar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .topbar .left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .dash {
+      width: 42px;
+      height: 1px;
+      background: rgba(7, 11, 17, 0.35);
+      display: inline-block;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 290px minmax(420px, 1fr) 330px;
+      align-items: center;
+      gap: 42px;
+      width: min(1220px, calc(100vw - 68px));
+      margin: 0 auto;
+    }
+
+    .panel-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .reference {
+      display: grid;
+      gap: 18px;
+      align-content: center;
+    }
+
+    .reference-frame {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px solid rgba(7, 11, 17, 0.22);
+      background: rgba(255,255,255,.12);
+      overflow: hidden;
+    }
+
+    .reference-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(.8) contrast(.96);
+    }
+
+    .tool-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .tool {
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      height: 34px;
+      padding: 0 12px 0 8px;
+      color: rgba(7, 11, 17, .72);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .tool.active {
+      color: white;
+      background: var(--active);
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      border: 1.4px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    .count {
+      min-width: 22px;
+      height: 18px;
+      border: 1px solid currentColor;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+    }
+
+    .workspace {
+      min-height: 560px;
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      justify-items: center;
+      padding: 20px 0;
+    }
+
+    .workspace-title {
+      text-align: center;
+      max-width: 560px;
+    }
+
+    .kicker {
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(7, 11, 17, .52);
+      font-weight: 750;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 5vw, 74px);
+      line-height: .94;
+      letter-spacing: -0.06em;
+      font-weight: 760;
+    }
+
+    .sub {
+      margin: 16px auto 0;
+      max-width: 430px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: rgba(7, 11, 17, .58);
+      font-weight: 560;
+    }
+
+    .central-object {
+      align-self: center;
+      width: min(500px, 78vw);
+      position: relative;
+      display: grid;
+      justify-items: center;
+    }
+
+    .task-brief {
+      width: min(430px, 100%);
+      min-height: 210px;
+      padding: 28px 30px;
+      border: 2px solid rgba(7, 11, 17, .88);
+      background: linear-gradient(180deg, rgba(246,248,249,.38), rgba(196,207,213,.2));
+      box-shadow: 0 34px 70px rgba(9, 20, 28, .16);
+      position: relative;
+    }
+
+    .task-brief:before,
+    .task-brief:after {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 0;
+      width: 100%;
+      border-top: 1px solid rgba(7, 11, 17, .2);
+      transform: rotate(29deg);
+      transform-origin: center;
+    }
+
+    .task-brief:after {
+      transform: rotate(-29deg);
+    }
+
+    .task-content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
+    }
+
+    .task-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 11px;
+      font-weight: 760;
+      color: rgba(7, 11, 17, .54);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .task-name {
+      font-size: 26px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-weight: 780;
+      max-width: 300px;
+    }
+
+    .task-reason {
+      font-size: 13px;
+      line-height: 1.45;
+      color: rgba(7, 11, 17, .58);
+      font-weight: 570;
+      max-width: 310px;
+    }
+
+    .orbit {
+      width: 500px;
+      height: 128px;
+      border: 2px solid rgba(7, 11, 17, .48);
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      border-radius: 50%;
+      margin-top: -52px;
+      position: relative;
+    }
+
+    .orbit:after {
+      content: "";
+      width: 64px;
+      height: 4px;
+      background: var(--ink);
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .selected-task {
+      text-align: center;
+      margin-top: -16px;
+      font-size: 12px;
+      color: rgba(7, 11, 17, .55);
+      font-weight: 650;
+    }
+
+    .selected-task strong {
+      display: block;
+      color: var(--ink);
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      margin-top: 2px;
+    }
+
+    .control-panel {
+      display: grid;
+      gap: 24px;
+      align-content: center;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      width: 172px;
+    }
+
+    .action {
+      height: 52px;
+      border: 1px solid rgba(7, 11, 17, .35);
+      display: grid;
+      align-content: center;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(255,255,255,.11);
+    }
+
+    .action.active {
+      background: var(--active);
+      color: white;
+    }
+
+    .slider-set {
+      display: grid;
+      gap: 14px;
+      width: 176px;
+    }
+
+    .slider-label {
+      font-size: 11px;
+      color: rgba(7, 11, 17, .48);
+      font-weight: 620;
+      margin-bottom: 5px;
+    }
+
+    .slider {
+      height: 1px;
+      background: rgba(7, 11, 17, .46);
+      position: relative;
+    }
+
+    .slider:after {
+      content: "";
+      width: 34px;
+      height: 3px;
+      background: var(--ink);
+      position: absolute;
+      top: -1px;
+      left: 42%;
+    }
+
+    .translation {
+      border-top: 1px solid rgba(7, 11, 17, .22);
+      padding-top: 18px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: rgba(7, 11, 17, .62);
+      font-weight: 560;
+    }
+
+    .translation strong {
+      color: var(--ink);
+    }
+
+    .corner-note {
+      width: 50px;
+      height: 50px;
+      border: 1px solid rgba(7, 11, 17, .62);
+      display: grid;
+      align-content: center;
+      padding-left: 7px;
+      font-size: 10px;
+      line-height: .95;
+      font-weight: 760;
+    }
+
+    .bottombar {
+      align-items: end;
+      color: rgba(7, 11, 17, .9);
+    }
+
+    @media (max-width: 1050px) {
+      .layout {
+        grid-template-columns: 1fr;
+        width: min(760px, calc(100vw - 34px));
+        gap: 28px;
+      }
+
+      .workspace {
+        min-height: auto;
+      }
+
+      .control-panel {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="left">
+        <span>Tue</span>
+        <span class="dash"></span>
+        <span>Teacher Workspace</span>
+      </div>
+      <span>2026</span>
+    </header>
+
+    <section class="layout">
+      <aside class="reference">
+        <div>
+          <div class="panel-label">Reference</div>
+          <div class="reference-frame">
+            <img src="teacher-workspace-instrument-reference.jpg" alt="Instrument panel reference" />
+          </div>
+        </div>
+
+        <div>
+          <div class="panel-label">Today groups</div>
+          <div class="tool-list">
+            <div class="tool active"><span class="icon"></span><span>Needs action now</span><span class="count">3</span></div>
+            <div class="tool"><span class="icon"></span><span>Review next</span><span class="count">4</span></div>
+            <div class="tool"><span class="icon"></span><span>Plan / assign</span><span class="count">2</span></div>
+            <div class="tool"><span class="icon"></span><span>Later today</span><span class="count">5</span></div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <div class="workspace-title">
+          <div class="kicker">Instrument Panel Direction</div>
+          <h1>One selected teacher move.</h1>
+          <p class="sub">The page should feel like a precise operating surface: sparse, calm, and built around the next decision instead of scattered dashboard cards.</p>
+        </div>
+
+        <div class="central-object">
+          <div class="task-brief">
+            <div class="task-content">
+              <div class="task-meta">
+                <span>Needs action now</span>
+                <span>Student: Meghan</span>
+              </div>
+              <div class="task-name">Approve recap and assign review set</div>
+              <div class="task-reason">Transcript mentions conditional confusion twice. Completion is low, so review should come before new material.</div>
+            </div>
+          </div>
+          <div class="orbit"></div>
+          <div class="selected-task">Selected task <strong>01</strong></div>
+        </div>
+      </section>
+
+      <aside class="control-panel">
+        <div>
+          <div class="panel-label">Teacher controls</div>
+          <div class="action-grid">
+            <div class="action active">Approve</div>
+            <div class="action">Edit</div>
+            <div class="action">Assign</div>
+            <div class="action">Open student</div>
+          </div>
+        </div>
+
+        <div class="slider-set">
+          <div>
+            <div class="slider-label">Urgency</div>
+            <div class="slider"></div>
+          </div>
+          <div>
+            <div class="slider-label">Confidence</div>
+            <div class="slider"></div>
+          </div>
+        </div>
+
+        <div class="translation">
+          <strong>Borrow the language, not the literal tool.</strong><br />
+          The cube becomes a selected task. The left tools become task groups. The right tools become approval and assignment controls.
+        </div>
+      </aside>
+    </section>
+
+    <footer class="bottombar">
+      <div class="corner-note">NO<br />GENERIC<br />DASH</div>
+      <span>Teacher Desk visual direction · 014</span>
+    </footer>
+  </main>
+</body>
+</html>
