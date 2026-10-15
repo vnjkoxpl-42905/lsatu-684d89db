@@ -85,7 +85,7 @@ export function PreferencesDialog({
       ) : (
         <>
           <div className="mt-6">
-            <PillTabs value={tab} onChange={(v) => setTab(v as PrefTab)} tabs={[...(settingsOnly ? [] : [{ value: "spreed" as const, label: "Spreed" }]), { value: "appearance", label: "Appearance" }, { value: "advanced", label: "Advanced" }]} />
+            <PillTabs value={tab} onChange={(v) => setTab(v as PrefTab)} tabs={[...(settingsOnly ? [] : [{ value: "spreed" as const, label: "Reading" }]), { value: "appearance", label: "Appearance" }, { value: "advanced", label: "Advanced" }]} />
           </div>
           <div className="mt-9 space-y-6 px-4 sm:px-11">
             {tab === "spreed" && (
@@ -202,7 +202,7 @@ export function BookmarksDialog({
           </div>
           <div className="mt-4 text-[28px]" style={{ color: "#616161" }}>No Bookmarks Yet</div>
           <p className="mt-3 max-w-[760px] text-base font-medium" style={{ color: "#757575" }}>
-            To create a bookmark, simply pause Spreeder while you're reading and long press or click on any word.
+            To create a bookmark, pause the reader, then press and hold or click a word.
           </p>
         </div>
       ) : (

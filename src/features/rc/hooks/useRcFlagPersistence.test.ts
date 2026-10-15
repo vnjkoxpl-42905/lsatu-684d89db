@@ -111,3 +111,56 @@ it('ignores a late account-A acknowledgement while account-B intent is pending',
   await act(async () => acknowledgeB());
   expect(view.result.current.statusForQuestion(7)).toBe('saved');
 });
+
+it('keeps a lost flag acknowledgement recoverable after reload and retries the same intent once', async () => {
+  save.mockImplementationOnce(() => new Promise<void>(() => undefined));
+  const view = renderHook(() => useRcFlagPersistence(options));
+  act(() => view.result.current.setFlag(7, true));
+  await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+  view.unmount();
+  const restored = renderHook(() => useRcFlagPersistence(options));
+  expect(restored.result.current.statusForQuestion(7)).toBe('recovered');
+  expect(save).toHaveBeenCalledTimes(1);
+  act(() => { restored.result.current.retry(7); restored.result.current.retry(7); });
+  await waitFor(() => expect(restored.result.current.statusForQuestion(7)).toBe('saved'));
+  expect(save).toHaveBeenCalledTimes(2);
+  expect(save.mock.calls[1]).toEqual(save.mock.calls[0]);
+  expect(localStorage.length).toBe(0);
+});
+
+it('preserves personal recovery without exposing or replaying it in protected review', async () => {
+  save.mockRejectedValueOnce(new Error('offline'));
+  const view = renderHook(({ enabled }) => useRcFlagPersistence({ ...options, enabled }), { initialProps: { enabled: true } });
+  act(() => view.result.current.setFlag(7, true));
+  await waitFor(() => expect(view.result.current.statusForQuestion(7)).toBe('error'));
+  const recovery = localStorage.getItem(localStorage.key(0)!);
+  view.rerender({ enabled: false });
+  act(() => {
+    view.result.current.setFlag(7, false);
+    view.result.current.retry(7);
+    view.result.current.acknowledgeRecordedFlag(7, true);
+  });
+  expect(view.result.current.pendingFlags.size).toBe(0);
+  expect(view.result.current.statusForQuestion(7)).toBe('idle');
+  expect(save).toHaveBeenCalledTimes(1);
+  expect(localStorage.getItem(localStorage.key(0)!)).toBe(recovery);
+  view.rerender({ enabled: true });
+  expect(view.result.current.pendingFlags.get(7)).toBe(true);
+  expect(view.result.current.statusForQuestion(7)).toBe('recovered');
+  expect(save).toHaveBeenCalledTimes(1);
+});
+
+it('saves the latest flag after an older request rejects without retaining its stale error', async () => {
+  let rejectOld!: (error: Error) => void;
+  save.mockImplementationOnce(() => new Promise<void>((_resolve, reject) => { rejectOld = reject; }));
+  const view = renderHook(() => useRcFlagPersistence(options));
+  act(() => view.result.current.setFlag(7, true));
+  await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+  act(() => view.result.current.setFlag(7, false));
+  await act(async () => rejectOld(new Error('old flag request failed')));
+  await waitFor(() => expect(view.result.current.statusForQuestion(7)).toBe('saved'));
+  expect(save).toHaveBeenLastCalledWith('session-a', 7, false, 'actor-a');
+  expect(view.result.current.errorForQuestion(7)).toBeNull();
+  expect(view.result.current.pendingFlags.size).toBe(0);
+  expect(localStorage.length).toBe(0);
+});

@@ -24,7 +24,9 @@ await db.query('insert into profiles values($1,null)', [owner]);
 await db.query("insert into activity_assignments values($1,$2,'free-text',$3,$4,'assigned',null)", [source, owner, JSON.stringify([{ order: 1, prompt: 'Trusted source statement', credited_answers: ['Trusted credited answer'], explanation: 'Trusted author note' }]), JSON.stringify({ coach: { drill: 'Source-owned relationship drill', rubric: ['Use the trusted relationship rubric.'] } })]);
 const snapshot = async () => (await db.query('select to_jsonb(a) as value from activity_assignments a')).rows;
 const before = await snapshot();
-await db.exec(await readFile(new URL('../../supabase/migrations/20261001120000_activity_ai_admission_v1.sql', import.meta.url), 'utf8'));
+for (const file of ['supabase/migrations/20261001120000_activity_ai_admission_v1.sql', 'drizzle/migrations/0028_activity_ai_source_answer_key.sql', 'drizzle/migrations/0029_activity_ai_answer_key_identity.sql', 'drizzle/migrations/0030_activity_ai_grader_revision.sql']) {
+ await db.exec(await readFile(new URL('../../' + file, import.meta.url), 'utf8'));
+}
 const invoke = async (name, args) => {
  const keys = name === 'begin_activity_ai_request_v1' ? ['p_owner_id','p_request_id','p_source_kind','p_source_id','p_item_order','p_student_response','p_attempt_no'] : name === 'dispatch_activity_ai_request_v1' ? ['p_owner_id','p_request_id','p_claim_id'] : ['p_owner_id','p_request_id','p_claim_id','p_result','p_failure_category'];
  const values = keys.map(key => key === 'p_result' && args[key] !== null ? JSON.stringify(args[key]) : args[key]);
@@ -50,4 +52,23 @@ const malformed = request('Malformed model');
 eq((await gradeCoachRequest(malformed, owner, invoke, async () => { paidCalls++; return new Response('{}'); })).status, 502);
 eq((await db.query("select state,failure_category from activity_ai_receipts_v1 where canonical_payload->>'studentResponse'='Malformed model'")).rows, [{ state: 'failed', failure_category: 'malformed_result' }]);
 eq(await snapshot(), before); eq((await db.query('select count(*)::int n from activity_item_responses')).rows[0].n, 0);
+// New key validation and hint guard work together through the real RPCs.
+const relationshipKey = { relationships: [{ type: 'conditional', indicators: ['if'], connects: 'a -> b', why: 'If gives a sufficient condition.' }], traps: [], context_benchmark: null };
+const keyedItem = { order: 1, prompt: 'If the ferry misses the tide, it docks at the outer berth.', credited_answers: ['conditional, "if"'], explanation: 'A conditional.', answer_key: relationshipKey };
+await db.query('update activity_assignments set items=$1,instructions=$2', [JSON.stringify([keyedItem]), JSON.stringify({ coach: { drill: 'Relationship drill', rubric: ['Name the relationship.'], grading_rubric: ['Grade each type and indicator pair.'] } })]);
+const { SAFE_FIRST_HINT } = await import(answerKeyUrl);
+const leakingModel = async () => { paidCalls++; return new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify({ verdict: 'incorrect', feedback: 'The indicator is `if`.' }) } }] })); };
+const guarded = request('I am unsure');
+eq((await gradeCoachRequest(guarded, owner, invoke, leakingModel)).body, { verdict: 'incorrect', feedback: SAFE_FIRST_HINT });
+eq((await db.query('select result from activity_ai_receipts_v1 where id=$1', [guarded.requestId])).rows[0].result, { verdict: 'incorrect', feedback: SAFE_FIRST_HINT });
+const beforeCache = paidCalls;
+eq((await gradeCoachRequest(guarded, owner, invoke, leakingModel)).status, 200); eq(paidCalls, beforeCache);
+await db.exec("update activity_ai_configuration_v1 set grader_revision='edge-test-v3'");
+eq((await gradeCoachRequest(guarded, owner, invoke, leakingModel)).status, 409); eq(paidCalls, beforeCache);
+eq((await gradeCoachRequest({ ...guarded, requestId: randomUUID() }, owner, invoke, leakingModel)).status, 200); eq(paidCalls, beforeCache + 1);
+const { traps: _traps, ...missingTraps } = relationshipKey;
+await db.query('update activity_assignments set items=$1', [JSON.stringify([{ ...keyedItem, answer_key: missingTraps }])]);
+const receiptsBefore = (await db.query('select count(*)::integer n from activity_ai_receipts_v1')).rows[0].n;
+eq((await gradeCoachRequest(request('missing traps'), owner, invoke, leakingModel)).status, 403);
+eq(paidCalls, beforeCache + 1); eq((await db.query('select count(*)::integer n from activity_ai_receipts_v1')).rows[0].n, receiptsBefore);
 await db.close(); console.log(`Activity Edge + actual SQL: ${checks} assertions passed with ${paidCalls} MOCK provider calls, no actual AI or managed writes.`);
