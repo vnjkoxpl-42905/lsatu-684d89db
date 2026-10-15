@@ -49,10 +49,16 @@ serve(async req => {
         ],
       }),
     });
-    if (!response.ok) return reply({ error: 'Answer checking is unavailable. Please try again.' }, response.status === 429 ? 429 : 503);
+    if (!response.ok) {
+      console.error('conditional_rewrite_provider_failure', { status: response.status });
+      return reply({ error: 'Answer checking is unavailable. Please try again.' }, response.status === 429 ? 429 : 503);
+    }
     const result = await response.json();
     return reply(parseGrade(result.choices?.[0]?.message?.content, { studentResponse: input.studentResponse, task: input.task }));
-  } catch {
+  } catch (error) {
+    const allowed = new Set(['missing_grade', 'invalid_json', 'invalid_verdict', 'invalid_evidence', 'evidence_not_in_submission', 'invalid_issue']);
+    const code = error instanceof Error && allowed.has(error.message) ? error.message : 'request_failed';
+    console.error('conditional_rewrite_ungraded', { code });
     return reply({ error: 'Your answer has not been checked. Please try again.' }, 503);
   }
 });
