@@ -3,7 +3,7 @@ import type { ActivityIntroProps } from "./ActivityEditorialIntro";
 import "../relationship-intro.css";
 
 /** Keep the launch instructions current even for an older assignment snapshot. */
-export function RelationshipIntro({ title, maxAttempts = 2, resumeAt = 1, preview, canSaveProgress = false, onStart, onExit }: ActivityIntroProps) {
+export function RelationshipIntro({ title, resumeAt = 1, preview, canSaveProgress = false, onStart, onExit }: ActivityIntroProps) {
   return (
     <div className="relationship-intro" data-testid="relationship-intro">
       {onExit && <button type="button" className="relationship-exit" onClick={onExit}><ArrowLeft size={16} aria-hidden="true" />Exit</button>}
@@ -44,7 +44,6 @@ export function RelationshipIntro({ title, maxAttempts = 2, resumeAt = 1, previe
 
       <footer className="relationship-launch">
         <div className="relationship-run-notes">
-          <p>You have up to {maxAttempts} {maxAttempts === 1 ? "attempt" : "attempts"} per question.{maxAttempts > 1 ? " If your first answer needs work, use the hint to try again." : ""} Then review the answer and explanation.</p>
           <p>{preview ? "Teacher preview: trying this activity does not change a student's progress." : canSaveProgress ? "Your submitted answers save as you go. You can leave and return to continue." : "This run does not save answers or change assignment progress."}</p>
         </div>
         <button type="button" className="relationship-start" onClick={onStart}>

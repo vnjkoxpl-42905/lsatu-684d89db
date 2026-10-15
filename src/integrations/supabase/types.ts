@@ -271,8 +271,10 @@ export type Database = {
           actor_concurrency: number
           actor_day: number
           actor_minute: number
+          allowed_activity_ids: string[] | null
           enabled: boolean
           global_day: number
+          grader_revision: string
           lease_seconds: number
           singleton: boolean
         }
@@ -280,8 +282,10 @@ export type Database = {
           actor_concurrency?: number
           actor_day?: number
           actor_minute?: number
+          allowed_activity_ids?: string[] | null
           enabled?: boolean
           global_day?: number
+          grader_revision?: string
           lease_seconds?: number
           singleton?: boolean
         }
@@ -289,8 +293,10 @@ export type Database = {
           actor_concurrency?: number
           actor_day?: number
           actor_minute?: number
+          allowed_activity_ids?: string[] | null
           enabled?: boolean
           global_day?: number
+          grader_revision?: string
           lease_seconds?: number
           singleton?: boolean
         }
@@ -7027,6 +7033,7 @@ export type Database = {
         Args: { exclude_ids?: string[] }
         Returns: string[]
       }
+      activity_ai_answer_key_shape_v1: { Args: { key: Json }; Returns: boolean }
       activity_ai_answer_key_valid_v1: { Args: { key: Json }; Returns: boolean }
       activity_ai_reply_v1: {
         Args: {
@@ -7039,6 +7046,17 @@ export type Database = {
         Returns: Json
       }
       activity_ai_source_base_v1: {
+        Args: {
+          p_attempt: number
+          p_kind: string
+          p_order: number
+          p_owner: string
+          p_response: string
+          p_source: string
+        }
+        Returns: Json
+      }
+      activity_ai_source_keyed_v1: {
         Args: {
           p_attempt: number
           p_kind: string
@@ -7361,6 +7379,18 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      begin_activity_ai_request_base_v1: {
+        Args: {
+          p_attempt_no: number
+          p_item_order: number
+          p_owner_id: string
+          p_request_id: string
+          p_source_id: string
+          p_source_kind: string
+          p_student_response: string
+        }
+        Returns: Json
       }
       begin_activity_ai_request_v1: {
         Args: {
