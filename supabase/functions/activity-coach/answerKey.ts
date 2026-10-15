@@ -60,16 +60,22 @@ export function readGradingRubric(raw: unknown): string[] | null {
 }
 
 const TYPE_WORDS: Record<RelationshipType, RegExp> = {
-  conditional: /\bcondition(?:al|s)?\b/i,
-  causal: /\bcaus(?:al|e|es|ation)\b/i,
+  conditional: /\bcondition(?:al|s)?\b|\bif\s*[-/]?\s*then\b/i,
+  causal: /\bcaus(?:al|e|es|ation|ality)\b/i,
   comparative: /\bcompar(?:ative|ison|isons|e)\b/i,
 };
 const norm = (s: string) => s.toLowerCase().replace(/[‘’“”"'`*]/g, " ").replace(/[-_/]/g, " ").replace(/\s+/g, " ");
 const has = (hay: string, needle: string) => new RegExp(`\\b${needle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(hay);
 
-// Everyday words ("so", "if") leak only when the hint singles them out in quotes.
+// Everyday words ("so", "if") leak when quoted or explicitly singled out.
 const COMMON = new Set(["so", "if", "when", "since", "as", "than", "because", "unless", "whenever"]);
-const quoted = (raw: string, p: string) => new RegExp(`["'‘“*]\\s*${p}\\s*["'’”*]`, "i").test(raw);
+const quoted = (raw: string, p: string) => new RegExp("[\"'‘“*`]\\s*" + p + "\\s*[\"'’”*`]", "i").test(raw);
+// Common words are harmless in ordinary prose, but naming one as the answer
+// discloses it even without quotation marks.
+const singledOut = (feedback: string, p: string) => {
+  const escaped = p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`\\b(?:indicator|signal|keyword|word|phrase|answer)(?:\\s+words?)?\\s*(?:(?:is|are|was|would be)\\s+|[:=]\\s*)${escaped}\\b|\\b(?:look for|quote|use|notice|identify|spot|focus on)\\s+(?:the\\s+(?:word|phrase|indicator)\\s+)?${escaped}\\b|\\b${escaped}\\s+(?:is|acts as|serves as)\\s+(?:the\\s+|an?\\s+)?(?:indicator|signal|keyword)\\b`, "i").test(norm(feedback));
+};
 
 /**
  * First-attempt hint boundary. A first unsuccessful hint must not quote a key
@@ -81,11 +87,11 @@ export function hintLeaks(feedback: string, studentResponse: string, key: Answer
   for (const r of key.relationships) {
     const phrases = [...r.indicators, ...(r.required_parts ?? []).flat()]
       .flatMap((x) => x.split(/…|\.\.\./)).map((x) => norm(x).trim()).filter((x) => x.length >= 2);
-    if (phrases.some((p) => !has(s, p) && (COMMON.has(p) ? quoted(feedback, p) : has(f, p)))) return true;
+    if (phrases.some((p) => !has(s, p) && (COMMON.has(p) ? quoted(feedback, p) || singledOut(feedback, p) : has(f, p)))) return true;
     if (TYPE_WORDS[r.type].test(feedback) && !TYPE_WORDS[r.type].test(studentResponse)) return true;
   }
   return false;
 }
 
 export const SAFE_FIRST_HINT =
-  "Part of your answer is worth keeping. Check that each relationship you name is paired with the exact words in the sentence that create it, and reread the sentence for anything you have not yet named.";
+  "Check each relationship you name against the exact words in the sentence that create it. Then reread the sentence for anything you have not yet named.";

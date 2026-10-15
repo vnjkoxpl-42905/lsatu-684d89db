@@ -111,4 +111,17 @@ describe("first-attempt hint boundary", () => {
     expect(hintLeaks('Think about what "when" does.', "causal, because", key)).toBe(true);
     expect(hintLeaks("Look again when you reread it.", "causal, because", key)).toBe(false);
   });
+  it.each(['The indicator is if.', 'The indicator is `if`.', 'Look for if.', 'If is the indicator.', 'This is an if-then relationship.'])('blocks explicit first-attempt disclosure: %s', async (feedback) => {
+    const i2 = content.items.find((i) => i.order === 2)!;
+    expect(hintLeaks(feedback, 'I am unsure', i2.answer_key as any)).toBe(true);
+    const out = await capture(1, { answerKey: i2.answer_key, statement: i2.prompt, studentResponse: 'I am unsure' }, { verdict: 'incorrect', feedback });
+    expect((out.out.body as any).feedback).toBe(SAFE_FIRST_HINT);
+    expect(out.finishArgs.p_result).toEqual({ verdict: 'incorrect', feedback: SAFE_FIRST_HINT });
+    expect(SAFE_FIRST_HINT).not.toMatch(/worth keeping|got right|correct/i);
+  });
+  it('keeps everyday if and an already supplied indicator', () => {
+    const i2 = content.items.find((i) => i.order === 2)!;
+    expect(hintLeaks('Check your answer if you are unsure.', 'I am unsure', i2.answer_key as any)).toBe(false);
+    expect(hintLeaks('The indicator is `if`.', 'conditional, if', i2.answer_key as any)).toBe(false);
+  });
 });
