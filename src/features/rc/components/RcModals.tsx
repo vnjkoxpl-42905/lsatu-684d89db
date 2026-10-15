@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { X } from 'lucide-react';
+import { X, Check, ListFilter } from 'lucide-react';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { cn } from '@/lib/utils';
 import {
   RC_COLOR_SCHEMES,
@@ -84,15 +85,10 @@ export function RcTextSettings({
 }) {
   return (
     <>
-      <Section label="Line spacing" />
-      {RC_LINE_HEIGHTS.map((option) => (
-        <OptionRow
-          key={option.label}
-          label={option.label}
-          selected={settings.lineHeight === option.value}
-          onClick={() => onChange({ lineHeight: option.value })}
-        />
-      ))}
+      <Section label="Reading focus" />
+      <OptionRow label="Paragraph focus" selected={settings.paragraphFocus}
+        onClick={() => onChange({ paragraphFocus: !settings.paragraphFocus })} />
+      <p className="px-3 pb-2 text-xs text-slate-500">Highlight the paragraph under your mouse.</p>
 
       <Section label="Color scheme" />
       {RC_COLOR_SCHEMES.map((scheme) => (
@@ -105,6 +101,39 @@ export function RcTextSettings({
       ))}
     </>
   );
+}
+
+/** Standalone toolbar menu. Percentages scale the comfortable default leading. */
+export function RcLineSpacingMenu({ settings, onChange }: {
+  settings: RcA11ySettings;
+  onChange: (patch: Partial<RcA11ySettings>) => void;
+}) {
+  const legacy = !RC_LINE_HEIGHTS.some(option => option.value === settings.lineHeight);
+  const options = legacy ? [...RC_LINE_HEIGHTS, {
+    label: 'Saved spacing', percent: Math.round((1.6 + settings.lineHeight) / 1.6 * 100), value: settings.lineHeight,
+  }] : RC_LINE_HEIGHTS;
+  return <DropdownMenu.Root>
+    <DropdownMenu.Trigger asChild>
+      <button type="button" aria-label="Change line spacing" title="Change line spacing"
+        className="flex items-center justify-center rounded-sm border border-transparent p-1.5 text-slate-800 hover:bg-slate-200 data-[state=open]:border-slate-700 data-[state=open]:bg-white">
+        <ListFilter size={20} aria-hidden="true" />
+      </button>
+    </DropdownMenu.Trigger>
+    <DropdownMenu.Portal>
+      <DropdownMenu.Content align="end" sideOffset={8}
+        className="z-[80] w-60 max-w-[calc(100vw-1rem)] rounded-2xl border-2 border-slate-900 bg-white p-2 text-slate-900 shadow-md">
+        <DropdownMenu.Label className="pb-2 text-center text-xs font-medium">Change Line Spacing</DropdownMenu.Label>
+        <DropdownMenu.RadioGroup value={String(settings.lineHeight)} onValueChange={value => onChange({ lineHeight: Number(value) })}>
+          {options.map(option => <DropdownMenu.RadioItem key={option.value} value={String(option.value)}
+            className="flex cursor-pointer items-center gap-2 rounded-lg border border-transparent px-3 py-2 text-sm outline-none data-[highlighted]:bg-slate-100 data-[state=checked]:border-lime-300 data-[state=checked]:bg-lime-100">
+            <span className="flex-1 font-semibold uppercase">{option.label}</span>
+            <span className="tabular-nums">{option.percent}%</span>
+            <span className="w-4"><DropdownMenu.ItemIndicator><Check size={16} aria-hidden="true" /></DropdownMenu.ItemIndicator></span>
+          </DropdownMenu.RadioItem>)}
+        </DropdownMenu.RadioGroup>
+      </DropdownMenu.Content>
+    </DropdownMenu.Portal>
+  </DropdownMenu.Root>;
 }
 
 function Section({ label }: { label: string }) {
