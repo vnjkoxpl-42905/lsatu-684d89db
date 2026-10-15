@@ -1,6 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ActivityIntro } from "./ActivityIntro";
+import { ActivityEditorialIntro as ActivityIntro } from "./ActivityEditorialIntro";
 import type { ActivityInstructions } from "../api/types";
 
 // The intro ends with its primary action, under the rules and the worked
