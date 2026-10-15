@@ -3,7 +3,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useDeleteTag, usePreferences, useSaveTag, useTags } from "../hooks/useReadingCenterData";
-import { RC_COURSES_PATH, RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_TAGS_PATH, rcTagPath } from "../lib/routes";
+import { RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_TAGS_PATH, rcTagPath } from "../lib/routes";
 import type { ReaderTheme, UserTag } from "../lib/types";
 import { Icon, MIcon, type IconName } from "./Icon";
 import { ConfirmDialog, PopMenu, TAG_COLORS, TagColorPicker, TagEditDialog, TagGlyph } from "./Tags";
@@ -26,10 +26,10 @@ export function useAppTheme(): void {
 }
 
 const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
-  { to: RC_LIBRARY_PATH, label: "Spreed", icon: "book", end: true },
+  { to: RC_LIBRARY_PATH, label: "My Library", icon: "book", end: true },
   { to: RC_TAGS_PATH, label: "Tags", icon: "pricetag" },
-  { to: RC_COURSES_PATH, label: "Courses", icon: "school" },
-  { to: RC_PROFILE_PATH, label: "Profile", icon: "person" },
+  { to: RC_PROFILE_PATH, label: "Reading Progress", icon: "statsChart" },
+  { to: "/classroom/account", label: "LSAT U Profile", icon: "person" },
 ];
 
 export function AppShell(): React.ReactElement {
@@ -42,11 +42,14 @@ export function AppShell(): React.ReactElement {
     return () => media.removeEventListener("change", change);
   }, []);
   const [addOpen, setAddOpen] = useState(false);
+  const [addMenuTop, setAddMenuTop] = useState(180);
   const [screen, setScreen] = useState<"paste" | "import" | null>(null);
   const [creatingTag, setCreatingTag] = useState(false);
   const { is_admin } = useUserPermissions();
   const navigate = useNavigate();
-  const onTags = useLocation().pathname.startsWith(RC_TAGS_PATH);
+  const { pathname } = useLocation();
+  const onTags = pathname.startsWith(RC_TAGS_PATH);
+  useEffect(() => { if (narrow) setNavOpen(false); }, [pathname, narrow]);
   // Spreeder collapses the sidenav to a 90px icon rail rather than hiding it.
   const rail = !navOpen;
 
@@ -58,15 +61,16 @@ export function AppShell(): React.ReactElement {
         className={`${narrow && navOpen ? "fixed left-0 z-40" : "sticky"} top-0 h-screen shrink-0 overflow-y-auto transition-[width] duration-200`}
         style={{ width: rail ? 90 : 230, background: "var(--rc-sidenav)", borderRight: "0.8px solid rgba(128,128,128,.15)" }}
       >
-        <NavLink to={is_admin ? "/teacher/tools" : "/classroom"} aria-label={is_admin ? "Back to Teacher Workspace" : "Back to Classroom"} title={is_admin ? "Back to Teacher Workspace" : "Back to Classroom"} className="flex min-h-10 items-center gap-2 px-5 text-sm" style={{ color: "var(--rc-nav-text)" }}>
-          <Icon name="arrowBack" size={22} />
-          {!rail && <span>{is_admin ? "Teacher Workspace" : "Classroom"}</span>}
+        <NavLink to={is_admin ? "/teacher/tools" : "/classroom"} aria-label={is_admin ? "Teacher Workspace" : "LSAT U Home"} title={is_admin ? "Teacher Workspace" : "LSAT U Home"} className="mx-4 mt-3 flex min-h-11 items-center justify-center rounded-lg border border-current/20 px-2 py-3 text-center text-xs font-medium hover:bg-[var(--rc-nav-hover)]" style={{ color: "var(--rc-nav-text)" }}>
+          <span>{rail ? "LSAT U" : is_admin ? "Teacher Workspace" : "LSAT U Home"}</span>
         </NavLink>
         <div className="flex h-[60px] items-center">
-          <button type="button" aria-label={rail ? "Show menu" : "Hide menu"} onClick={() => setNavOpen((o) => !o)} className="ml-[15px] flex h-8 w-8 items-center justify-center rounded-full hover:bg-[rgba(158,158,158,.2)]" style={{ color: "var(--rc-nav-text)" }}>
+          {narrow && <button type="button" aria-label={rail ? "Show menu" : "Hide menu"} onClick={() => setNavOpen((o) => !o)} className="ml-[15px] flex h-8 w-8 shrink-0 items-center justify-center rounded-full hover:bg-[rgba(158,158,158,.2)]" style={{ color: "var(--rc-nav-text)" }}>
             <Icon name="menu" size={24} />
-          </button>
-          {!rail && <span className="ml-2.5 whitespace-nowrap text-[19px] font-semibold leading-none tracking-tight" style={{ color: "var(--rc-nav-text)" }}>Reading Center</span>}
+          </button>}
+          <NavLink to={RC_LIBRARY_PATH} aria-label="Reading Center home" title="Reading Center home" onClick={() => { if (narrow) setNavOpen(false); }} className={`${narrow ? "ml-2.5" : "px-5"} flex min-h-11 items-center text-[19px] font-semibold leading-tight tracking-tight`} style={{ color: "var(--rc-nav-text)" }}>
+            {rail ? <Icon name="book" size={24} /> : "Reading Center"}
+          </NavLink>
         </div>
         {onTags ? (
           <TagsNav rail={rail} onBack={() => navigate(RC_LIBRARY_PATH)} onCreate={() => setCreatingTag(true)} />
@@ -76,7 +80,7 @@ export function AppShell(): React.ReactElement {
               <button
                 type="button"
                 aria-label="Add Text"
-                onClick={() => setAddOpen((o) => !o)}
+                onClick={(e) => { setAddMenuTop(e.currentTarget.getBoundingClientRect().bottom + 4); setAddOpen((o) => !o); }}
                 className="flex h-[55px] items-center rounded-xl text-sm font-medium"
                 style={{ width: rail ? 49 : 189, background: "var(--rc-addtext-bg)", color: "var(--rc-addtext-fg)" }}
               >
@@ -85,6 +89,7 @@ export function AppShell(): React.ReactElement {
               </button>
               {addOpen && (
                 <AddTextMenu
+                  top={addMenuTop}
                   onClose={() => setAddOpen(false)}
                   onPick={(s) => {
                     setAddOpen(false);
@@ -237,7 +242,7 @@ function useTagParam(): string | undefined {
   return rest ? decodeURIComponent(rest) : undefined;
 }
 
-function AddTextMenu({ onClose, onPick }: { onClose: () => void; onPick: (s: "paste" | "import") => void }): React.ReactElement {
+function AddTextMenu({ top, onClose, onPick }: { top: number; onClose: () => void; onPick: (s: "paste" | "import") => void }): React.ReactElement {
   useEffect(() => {
     const close = (e: MouseEvent) => !(e.target as HTMLElement).closest("[data-rc-addmenu]") && onClose();
     window.addEventListener("mousedown", close);
@@ -249,7 +254,7 @@ function AddTextMenu({ onClose, onPick }: { onClose: () => void; onPick: (s: "pa
     </button>
   );
   return createPortal(
-    <div data-rc-addmenu className="rc-menu fixed left-[18px] top-[165px] z-50 w-[192px] py-2">
+    <div data-rc-addmenu className="rc-menu fixed left-[18px] z-50 w-[192px] py-2" style={{ top }}>
       {item("copy", "Paste Text", () => onPick("paste"))}
       {item("documentText", "Import Document", () => onPick("import"))}
       {/* AI Book Summary and AI Generate are left out until LSAT U integration (Joshua, 2026-10-13). */}
@@ -265,11 +270,11 @@ export function TopBar({ query, onQuery, placeholder }: { query?: string; onQuer
     <div className="flex h-[50px] min-w-0 items-center justify-end gap-2 px-3 md:gap-3 md:pr-[44px]">
       {onQuery && (
         <label className="flex h-8 min-w-0 flex-1 items-center rounded-lg px-3 text-[13px] md:max-w-[232px]" style={{ background: "var(--rc-searchbox)", border: "0.8px solid rgba(128,128,128,.35)" }}>
-          <input value={query} onChange={(e) => onQuery(e.target.value)} placeholder={placeholder} aria-label="Search passages" className="min-w-0 flex-1 bg-transparent font-medium outline-none placeholder:text-[var(--rc-text)]" style={{ color: "var(--rc-text)" }} />
+          <input value={query} onChange={(e) => onQuery(e.target.value)} placeholder={placeholder ?? "Search text"} aria-label="Search text" className="min-w-0 flex-1 bg-transparent font-medium outline-none placeholder:text-[var(--rc-text)]" style={{ color: "var(--rc-text)" }} />
           <Icon name="search" size={18} />
         </label>
       )}
-      <button type="button" aria-label="Profile" onClick={() => navigate(RC_PROFILE_PATH)} className="flex items-center" style={{ color: "var(--rc-text)" }}>
+      <button type="button" aria-label="LSAT U Profile" title="LSAT U Profile" onClick={() => navigate("/classroom/account")} className="flex items-center" style={{ color: "var(--rc-text)" }}>
         <Icon name="personCircle" size={34} />
       </button>
     </div>

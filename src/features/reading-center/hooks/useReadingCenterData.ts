@@ -6,6 +6,7 @@ import { rcDb } from "../lib/db";
 import { DEFAULT_PREFERENCES } from "../lib/constants";
 import { countWords, slugify } from "../lib/tokenize";
 import { mergePassageMetadata, metadataForEdit, progressPayload, readingCenterKey, type PassageMetadata } from "../lib/persistence";
+import { matchesRecordedSession } from "../lib/sessionPersistence";
 import type { Passage, Preferences, Progress, Bookmark, ReadingSession, UserTag } from "../lib/types";
 
 async function checked<T>(request: PromiseLike<{ data?: unknown; error: { message: string } | null }>): Promise<T> {
@@ -116,7 +117,20 @@ export function useSessions(sinceIso?: string) {
   } });
 }
 export function useRecordSession() {
-  return useScopedMutation((session: Omit<ReadingSession, "id">, userId) => checked(rcDb("reading_center_sessions").insert({ ...session, user_id: userId }).select("id").single()), "sessions");
+  return useScopedMutation(async (session: ReadingSession, userId) => {
+    if (!session.id) throw new Error("This reading visit needs a stable save ID.");
+    let result: { data: Record<string, unknown> | null; error: { message: string } | null };
+    try {
+      result = await rcDb("reading_center_sessions")
+        .upsert({ ...session, user_id: userId }, { onConflict: "id", ignoreDuplicates: true }).select("*").maybeSingle();
+    } catch (error) {
+      result = { data: null, error: { message: error instanceof Error ? error.message : "Your reading visit could not save." } };
+    }
+    // Duplicate retries return no inserted row. An interrupted response may also hide a committed write.
+    const row = result.data ?? await checked<Record<string, unknown> | null>(rcDb("reading_center_sessions")
+      .select("*").eq("id", session.id).eq("user_id", userId).maybeSingle());
+    if (!matchesRecordedSession(row, session, userId)) throw new Error(result.error?.message || "Your reading visit could not be confirmed. Try again.");
+  }, "sessions");
 }
 
 export function useUpsertPassage() {
@@ -186,11 +200,8 @@ export function useDeleteTag() {
 }
 export function useReadingProfile() {
   const { user } = useAuth();
-  return useQuery({ queryKey: readingCenterKey(user?.id, "profile"), enabled: !!user, queryFn: async () => {
-    const row = await checked<{ display_name: string } | null>(rcDb("reading_center_profile").select("display_name").eq("user_id", requireUser(user?.id)).maybeSingle());
-    return row?.display_name || user?.user_metadata?.full_name || "Reader";
+  return useQuery({ queryKey: readingCenterKey(user?.id, "profile"), enabled: !!user, staleTime: 0, refetchOnMount: "always", refetchOnWindowFocus: true, queryFn: async () => {
+    const row = await checked<{ display_name: string | null } | null>(supabase.from("profiles").select("display_name").eq("class_id", requireUser(user?.id)).maybeSingle());
+    return row?.display_name?.trim() || user?.user_metadata?.display_name?.trim() || user?.email || "Reader";
   } });
-}
-export function useSaveReadingProfile() {
-  return useScopedMutation((name: string, userId) => checked(rcDb("reading_center_profile").upsert({ user_id: userId, display_name: name.trim() || "Reader" }, { onConflict: "user_id" }).select("user_id").single()), "profile");
 }
