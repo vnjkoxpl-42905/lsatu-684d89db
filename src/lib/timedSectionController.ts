@@ -7,9 +7,10 @@ import type { LRQuestion } from './questionLoader';
 import type { TimedObject } from './timedWorkClient';
 import { loadPassages } from '@/features/rc/lib/rcBank';
 import { initialState } from '@/features/rc/lib/rcSession';
-import type { RcPassage } from '@/features/rc/lib/rcTypes';
+import type { RcLetter, RcPassage } from '@/features/rc/lib/rcTypes';
 import { analyseSection } from './sectionAnalysis';
 import { UNANSWERED } from './sectionAnswer';
+import { isHistoricalRcGrade, rcCheckpointGrade } from '@/features/rc/lib/rcHistoricalGrading';
 
 export interface TimedSectionState {
   snapshot: TimedSectionSnapshot;
@@ -22,6 +23,16 @@ export interface TimedSectionState {
 const object = (value: unknown): value is TimedObject => !!value && typeof value === 'object' && !Array.isArray(value);
 function invalid(message: string): never { throw new TimedSectionError('contract', message); }
 const empty = (rc: boolean): TimedChildAnswer => ({ selected: null, timeMs: 0, flagged: false, switchCount: 0, eliminations: [], ...(rc ? { attemptId: crypto.randomUUID() } : {}) });
+
+function rcGrade(state: TimedSectionState, question: LRQuestion, answer: TimedChildAnswer) {
+  const child = state.snapshot.child;
+  const prior = child?.kind === 'rc' ? child.attempts.find(attempt => attempt.id === answer.attemptId
+    && String(attempt.question_id) === question.qid) : undefined;
+  return rcCheckpointGrade(Number(question.qid), question.correctAnswer, answer.selected, answer.attemptId, prior ? {
+    id: String(prior.id), questionId: Number(prior.question_id), selected: prior.selected as RcLetter | null,
+    isCorrect: prior.is_correct as boolean | null,
+  } : undefined);
+}
 
 export class TimedSectionController {
   private readonly store: TimedSectionStore;
@@ -74,7 +85,8 @@ export class TimedSectionController {
       for (const attempt of child.attempts) {
         const question = questions.find(value => value.qid === String(attempt.question_id));
         if (!question || (attempt.selected === null ? attempt.is_correct !== null && attempt.is_correct !== false
-          : attempt.is_correct !== (attempt.selected === question.correctAnswer))) invalid('An account RC answer contradicts verified content.');
+          : attempt.is_correct !== (attempt.selected === question.correctAnswer)
+            && !isHistoricalRcGrade(Number(question.qid), question.correctAnswer, attempt.selected, attempt.is_correct))) invalid('An account RC answer contradicts verified content.');
         put(String(attempt.question_id), { selected: attempt.selected as TimedChildAnswer['selected'], timeMs: Number(attempt.time_ms),
           flagged: Boolean(attempt.flagged), eliminations: attempt.eliminations as TimedChildAnswer['eliminations'], attemptId: String(attempt.id) });
       }
@@ -105,7 +117,7 @@ export class TimedSectionController {
       const passage = state.passages.find(value => value.questions.some(question => String(question.questionId) === qid));
       if (!passage || !answer.attemptId) invalid('The RC answer has no stable account attempt identity.');
       return { attemptId: answer.attemptId, questionId: Number(qid), passageId: passage.passageId, selected: answer.selected,
-        isCorrect: answer.selected === null ? null : answer.selected === state.questions.find(question => question.qid === qid)!.correctAnswer,
+        isCorrect: rcGrade(state, state.questions.find(question => question.qid === qid)!, answer),
         timeMs: Math.floor(answer.timeMs), flagged: answer.flagged, eliminations: answer.eliminations };
     }) };
     await this.store.prepare('checkpoint', payload, state.snapshot);
@@ -115,7 +127,8 @@ export class TimedSectionController {
     // Closeout uses acknowledged child answers only. The runner must checkpoint first.
     const stats = state.questions.map(question => { const answer = state.answers[question.qid]; return {
       qid: question.qid, qnum: question.qnum, qtype: question.qtype, difficulty: question.difficulty,
-      initialAnswer: answer.selected ?? UNANSWERED, correctAnswer: question.correctAnswer, initialCorrect: answer.selected === question.correctAnswer,
+      initialAnswer: answer.selected ?? UNANSWERED, correctAnswer: question.correctAnswer,
+      initialCorrect: state.snapshot.sitting.kind === 'rc' ? rcGrade(state, question, answer) === true : answer.selected === question.correctAnswer,
       timeMs: answer.timeMs, flagged: answer.flagged, switchCount: answer.switchCount, eliminations: answer.eliminations,
       answeredInOvertime: state.regulationAnsweredQids === undefined ? undefined : !state.regulationAnsweredQids.includes(question.qid),
     }; });

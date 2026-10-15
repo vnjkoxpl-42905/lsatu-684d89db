@@ -9,9 +9,10 @@ const blueprint = manifest.blueprints[0]; const nativeCrypto = crypto;
 beforeAll(() => vi.stubGlobal('crypto', { randomUUID: nativeCrypto.randomUUID.bind(nativeCrypto), subtle: webcrypto.subtle }));
 afterAll(() => vi.unstubAllGlobals());
 const owner = '10000000-0000-4000-8000-000000000001'; const work = '20000000-0000-4000-8000-000000000001';
-function setup(kind: 'lr' | 'rc') {
-  const source = blueprint.legs.find((value: { kind: string }) => value.kind === kind);
-  const sitting = { id: work, owner_id: owner, kind, pt: blueprint.pt, section: source.section, frozen_source: source, frozen_qids: source.qids,
+function setup(kind: 'lr' | 'rc', pt = blueprint.pt) {
+  const selectedBlueprint = manifest.blueprints.find((value: { pt: number }) => value.pt === pt);
+  const source = selectedBlueprint.legs.find((value: { kind: string }) => value.kind === kind);
+  const sitting = { id: work, owner_id: owner, kind, pt, section: source.section, frozen_source: source, frozen_qids: source.qids,
     phase: 'running', budget_ms: 2100000, elapsed_ms: 1000, clock_anchor_at: '2026-09-30T10:00:00Z', lease_expires_at: '2026-09-30T10:00:30Z',
     device_id: 'device-a', revision: 2, writer_epoch: 1, current_index: 0 } as unknown as TimedSectionSitting;
   const snapshot = { contractVersion: 1, workKind: 'standalone-section', sitting, serverTime: '2026-09-30T10:00:05Z',
@@ -22,10 +23,34 @@ function setup(kind: 'lr' | 'rc') {
     prepare: vi.fn().mockResolvedValue({}), retry: vi.fn().mockResolvedValue(snapshot), requireCapability: vi.fn().mockResolvedValue(undefined) };
   const controller = new TimedSectionController(client as unknown as TimedSectionClient, 'device-a',
     async (pt, section) => JSON.parse(readFileSync(`public/data/PT${pt}-S${section}-LR.json`, 'utf8')),
-    async () => JSON.parse(readFileSync(`public/data/rc/RC-PT${blueprint.pt}.json`, 'utf8')).passages, () => 1000);
+    async () => JSON.parse(readFileSync(`public/data/rc/RC-PT${pt}.json`, 'utf8')).passages.map(passage => ({ ...passage,
+      questions: passage.questions.map(question => question.questionId === 10733 ? { ...question, correctAnswer: 'D' } : question) })), () => 1000);
   return { snapshot, controller, client };
 }
 describe('parentless standalone section controller', () => {
+  it.each([
+    ['running', 'B', true], ['complete', 'B', true], ['running', 'D', false], ['complete', 'D', false],
+  ] as const)('preserves the acknowledged historical %s %s score without regrading', async (phase, selected, isCorrect) => {
+    const { controller, client, snapshot } = setup('rc', 159);
+    const id = '40000000-0000-4000-8000-000000000001';
+    snapshot.sitting.phase = phase;
+    snapshot.child = { kind: 'rc', session: { id: '30000000-0000-4000-8000-000000000001' }, attempts: [{ id,
+      question_id: 10733, passage_id: 1756, selected, is_correct: isCorrect, time_ms: 100, flagged: false, eliminations: [] }] };
+    const before = structuredClone(snapshot.child);
+    const state = await controller.load();
+    expect(state.answers['10733'].selected).toBe(selected);
+    expect(state.questions.find(question => question.qid === '10733')!.correctAnswer).toBe('D');
+    expect(client.prepare).not.toHaveBeenCalled();
+    expect(snapshot.child).toEqual(before);
+    if (phase === 'complete') return;
+    await controller.checkpoint(state, 0, state.answers);
+    expect(client.prepare.mock.calls[0][1].answers.find(answer => answer.questionId === 10733).isCorrect).toBe(isCorrect);
+    await controller.close(state);
+    expect(client.prepare.mock.calls[1][1].analysis.totals.correct).toBe(isCorrect ? 1 : 0);
+    state.answers['10733'].selected = selected === 'B' ? 'D' : 'B';
+    await controller.checkpoint(state, 0, state.answers);
+    expect(client.prepare.mock.calls[2][1].answers.find(answer => answer.questionId === 10733).isCorrect).toBe(selected === 'B');
+  });
   it('prepares LR correctness from verified source and preserves unselected marker state', async () => {
     const { controller, client } = setup('lr'); const state = await controller.load(); const qid = state.questions[0].qid;
     state.answers[qid] = { ...state.answers[qid], selected: state.questions[0].correctAnswer, timeMs: 120.8, flagged: true };
@@ -56,6 +81,14 @@ describe('parentless standalone section controller', () => {
   it('rejects child correctness drift before showing an account answer', async () => {
     const { controller, snapshot } = setup('lr');
     snapshot.child = { kind: 'lr', record: { attempts: [{ qid: snapshot.sitting.frozen_qids[0], selected_answer: 'Z', correct: true, time_ms: 0 }] } };
+    await expect(controller.load()).rejects.toMatchObject({ kind: 'contract' });
+  });
+  it('rejects a mismatch not explained by the corrected question previous key', async () => {
+    const { controller, snapshot } = setup('rc', 159);
+    snapshot.child = { kind: 'rc', session: { id: '30000000-0000-4000-8000-000000000001' }, attempts: [{
+      id: crypto.randomUUID(), question_id: 10733, passage_id: 1756, selected: 'A', is_correct: true,
+      time_ms: 100, flagged: false, eliminations: [],
+    }] };
     await expect(controller.load()).rejects.toMatchObject({ kind: 'contract' });
   });
   it('builds the LR report from close receipt history UUID and RC report from native child UUID', async () => {

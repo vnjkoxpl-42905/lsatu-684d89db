@@ -29,7 +29,6 @@ const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: RC_LIBRARY_PATH, label: "My Library", icon: "book", end: true },
   { to: RC_TAGS_PATH, label: "Tags", icon: "pricetag" },
   { to: RC_PROFILE_PATH, label: "Reading Progress", icon: "statsChart" },
-  { to: "/classroom/account", label: "LSAT U Profile", icon: "person" },
 ];
 
 export function AppShell(): React.ReactElement {

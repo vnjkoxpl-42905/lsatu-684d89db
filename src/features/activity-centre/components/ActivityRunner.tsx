@@ -910,6 +910,8 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
           format={assignment.item_format}
           mode={assignment.mode}
           resumeAt={index + 1}
+          preview={preview}
+          canSaveProgress={!readOnly && Boolean(user)}
           /*
            * The goal is per accommodation, so there is no single "target" on the
            * assignment to read. A student on 70% extra time is not slow when she

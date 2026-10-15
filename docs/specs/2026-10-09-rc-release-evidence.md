@@ -219,3 +219,7 @@ For every live test, record route, viewport/zoom, actor role, test session/recor
 - Safe-push gate, deployment identity and deployment success: pending.
 - Fresh signed-in production walk against the deployed commit: pending.
 - PT159 S2 Q2 answer-key authority and affected-scope adjudication: open. No key changes or scoring certification are implied by this UI repair.
+
+### 2026-10-14 answer-key follow-up
+
+The separate answer-key investigation now has a full-bank audit and 56 independently corroborated corrections, including PT159 S2 Q2 to D. See [the repair evidence](../audits/2026-10-14-rc-answer-key-repair.md) for exact scope, historical-score handling, checks and publication receipts. This follow-up does not close the unrelated browser/device acceptance gaps above.
