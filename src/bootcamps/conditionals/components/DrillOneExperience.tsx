@@ -110,11 +110,12 @@ export function DrillOneExperience({ questions, order = 1, legacyOrder }: { ques
   }
 
   return <section className="d1-experience" aria-label="Spot the condition questions">
-    <div className="d1-progress-summary">
-      <div><span className="d1-eyebrow">Your progress</span><p>{answered === 0 ? 'Ready to begin' : answered === questions.length ? 'Practice complete' : 'Keep going'}</p></div>
-      <div className="d1-progress-value" aria-hidden="true"><strong>{completion}<span>%</span></strong><span>complete</span></div>
-    </div>
-    <div className="d1-progress-track" role="progressbar" aria-label="Questions answered" aria-valuenow={answered} aria-valuemin={0} aria-valuemax={questions.length} aria-valuetext={`${completion}% complete. ${answered} of ${questions.length} questions answered.`}><span style={{ width: `${answered / questions.length * 100}%` }}/></div>
+    {/* Segmented progress adapted from Jatin Yadav's 21st.dev Progress Bar.
+        https://21st.dev/@jatin-yadav05/components/progress-bar */}
+    <header className="d1-run-progress">
+      <div className="d1-run-progress-labels"><strong>{finished ? 'Practice complete' : `Question ${current + 1} of ${questions.length}`}</strong><span>{answered} of {questions.length} answered</span></div>
+      <div className="d1-segmented-progress" role="progressbar" aria-label="Questions answered" aria-valuenow={answered} aria-valuemin={0} aria-valuemax={questions.length} aria-valuetext={`${completion}% complete. ${answered} of ${questions.length} questions answered.`}>{answers.map((item, index) => <span key={index} data-answered={item.first !== null} data-current={!finished && index === current} aria-hidden="true"/>)}</div>
+    </header>
     {finished ? <div className="d1-completion">
       <div className="d1-completion-mark" aria-hidden="true"><Check size={32}/></div>
       <p className="d1-eyebrow">You worked through every question</p><h2 ref={heading} tabIndex={-1}>Spot the condition complete.</h2>
@@ -125,18 +126,17 @@ export function DrillOneExperience({ questions, order = 1, legacyOrder }: { ques
       <div className="d1-rule-panel">
         <div className="d1-rule-top"><span className="d1-eyebrow">{question.contextLabel ?? 'Given rule'}</span><span className="d1-rule-number" aria-hidden="true">{String(current + 1).padStart(2, '0')}</span></div>
         <blockquote>{question.rule}</blockquote>
-        {solved && question.conditions && <figure className="d1-relation"><figcaption>Read the rule left to right</figcaption><div className="d1-relation-pair"><div><span>Sufficient</span><strong>{question.conditions[0]}</strong></div><span className="d1-relation-arrow" aria-hidden="true">→</span><span className="d1-sr-only">requires</span><div><span>Necessary</span><strong>{question.conditions[1]}</strong></div></div><p>If the left condition is true, the right condition must be true.</p></figure>}
+
         <div className="d1-rule-foot" aria-hidden="true"><span/><span/><span/></div>
       </div>
       <div className="d1-question-body">
-        <p className="d1-question-position">Question {current + 1} of {questions.length}</p>
         <h2 id={`${id}-question`} ref={heading} tabIndex={-1}>{question.prompt}</h2>
         <div className="d1-options" role="group" aria-labelledby={`${id}-question`}>{question.options.map((option, index) => {
           const selected = answer.selected === index;
           return <button ref={index === 0 ? firstOption : undefined} type="button" key={option} className="d1-option" aria-pressed={selected} disabled={answer.checked} data-selected={selected} data-correct={solved && selected} data-incorrect={answer.checked && selected && !solved} onClick={() => updateAnswer({ selected: index })}><span className="d1-option-letter" aria-hidden="true">{solved && selected ? <Check size={17}/> : String.fromCharCode(65 + index)}</span><span>{option}</span>{solved && selected && <span className="d1-sr-only">Correct answer</span>}</button>;
         })}</div>
-        <div className="d1-feedback-region">{answer.checked && answer.selected !== null && <div className="d1-feedback" data-correct={answer.selected === question.correct}><h3 ref={feedbackHeading} tabIndex={-1} aria-describedby={`${id}-explanation${solved && question.conditions ? ` ${id}-readback` : ''}`} className="d1-feedback-title"><span className="d1-feedback-dot"/>{solved ? 'Correct.' : 'Not quite.'}</h3><p id={`${id}-explanation`}>{question.feedback[answer.selected]}</p>{solved && question.conditions && <p id={`${id}-readback`} className="d1-sr-only">The diagram places “{question.conditions[0]}” on the left as the sufficient condition and “{question.conditions[1]}” on the right as the necessary condition. If the left condition is true, the right condition must be true.</p>}</div>}</div>
-        <div className="d1-answer-actions">{answer.checked ? (!solved && <button type="button" className="d1-retry" onClick={tryAgain}><RotateCcw size={15}/>Try again</button>) : <><p>Select one answer.</p><button type="button" className="d1-primary" disabled={answer.selected === null} onClick={checkAnswer}>Check answer<ArrowRight size={17}/></button></>}{seenResults && <button type="button" className={`d1-retry${answer.checked ? '' : ' d1-return-results'}`} onClick={showResults}>Back to results<ArrowRight size={15}/></button>}</div>
+        <div className="d1-feedback-region">{answer.checked && answer.selected !== null && <div className="d1-feedback" data-correct={answer.selected === question.correct}><h3 ref={feedbackHeading} tabIndex={-1} aria-describedby={`${id}-explanation`} className="d1-feedback-title"><span className="d1-feedback-dot"/>{solved ? 'Correct.' : 'Not quite.'}</h3><p id={`${id}-explanation`}>{question.feedback[answer.selected]}</p></div>}</div>
+        <div className="d1-answer-actions">{answer.checked ? (!solved && <button type="button" className="d1-retry" onClick={tryAgain}><RotateCcw size={15}/>Try again</button>) : <><button type="button" className="d1-primary" disabled={answer.selected === null} onClick={checkAnswer}>Check answer<ArrowRight size={17}/></button></>}{seenResults && <button type="button" className={`d1-retry${answer.checked ? '' : ' d1-return-results'}`} onClick={showResults}>Back to results<ArrowRight size={15}/></button>}</div>
       </div>
     </div>}
     {!finished && <nav className="d1-navigation" aria-label="Question navigation"><button type="button" className="d1-previous" disabled={current === 0} onClick={() => go(current - 1)}><ArrowLeft size={16}/>Previous question</button><button type="button" className="d1-next" disabled={!solved} onClick={() => { if (current === questions.length - 1) showResults(); else go(current + 1); }}>{current === questions.length - 1 ? 'See results' : 'Next question'}<ArrowRight size={17}/></button></nav>}

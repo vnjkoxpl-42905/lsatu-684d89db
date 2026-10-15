@@ -108,7 +108,7 @@
 @media(max-width:480px) { .oc-course-screen.d1-screen { padding:23px 14px 50px; } .d1-screen .oc-drill-run-header { grid-template-columns:1fr auto; gap:12px; margin-bottom:20px; } .d1-screen .oc-drill-run-header>.oc-back { grid-row:auto; font-size:.72rem; } .d1-screen.oc-course-screen .oc-drill-run-header [data-course-heading] h1 { font-size:2.1rem; } .d1-screen .oc-drill-run-header .oc-label { font-size:.62rem; } .d1-experience { border-radius:10px; } .d1-experience .d1-progress-header { padding:18px 20px 12px; } .d1-progress-header>span:last-child { font-size:.65rem; } .d1-progress-header>span:last-child>span { margin:0 3px; } .d1-progress { padding:0 20px 19px; gap:4px; } .d1-eyebrow { font-size:.62rem; letter-spacing:.13em; } .d1-rule-panel { padding:21px 21px 25px; } .d1-experience .d1-rule-panel blockquote { font-size:1.5rem; } .d1-question-body { padding:25px 20px 22px; } .d1-experience .d1-question-body h2 { font-size:1.2rem; } .d1-experience button.d1-option { font-size:.9rem; padding:13px 12px; gap:11px; } .d1-navigation { padding:16px 20px; gap:10px; } .d1-navigation button { font-size:.73rem; gap:6px; } .d1-answer-actions { gap:12px; } .d1-answer-actions .d1-primary { gap:12px; padding:12px; } .d1-entry-title { min-height:230px; padding-right:100px; } .d1-entry-lead { font-size:1.02rem; } .d1-sculpture { transform:scale(.48); right:-80px; top:42px; } .d1-entry-instructions h2 { font-size:1.9rem; } .d1-entry-instructions li p { font-size:.96rem; } .d1-completion { padding:35px 20px; } .d1-review-list button { gap:10px; } .d1-review-list button>span:last-child { font-size:.65rem; gap:6px; } }
 @media(prefers-reduced-motion:reduce) { .d1-entry *,.d1-experience *,.d1-experience *::after { animation:none!important; transition:none!important; } .d1-primary:not(:disabled):hover,.d1-experience button.d1-option:not(:disabled):hover { transform:none; } }
 
-/* Answer controls and the relationship revealed after an answer. */
+/* Answer controls. */
 .d1-screen .opening-course-content { max-width:none; border-radius:0; overflow:visible; }
 .d1-experience button:not(.d1-option) { border-radius:5px; min-width:0; cursor:pointer; }
 .d1-experience button:not(.d1-option):disabled { cursor:not-allowed; }
@@ -119,18 +119,6 @@
 .d1-experience .d1-review-list button { border-bottom:1px solid #d9ddd9; border-radius:0; padding:14px 4px; }
 .d1-experience .d1-feedback h3 { font:700 .96rem/1.5 var(--font-mc-sans,Arial,sans-serif); margin:0; }
 .d1-experience .d1-feedback h3:focus { outline:none; }
-.d1-relation { position:relative; margin:42px -12px 0; perspective:700px; animation:d1-unfold .65s cubic-bezier(.22,1,.36,1) both; transform-origin:top; }
-.d1-relation figcaption { color:#c7d6dc; font-size:.75rem; margin:0 0 15px; line-height:1.5; }
-.d1-relation-pair { display:grid; grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr); align-items:stretch; gap:7px; }
-.d1-relation-pair>div { display:flex; flex-direction:column; gap:12px; padding:16px 12px 20px; border-radius:5px; background:linear-gradient(135deg,#fbf7e9,#e5e5d9); color:#193a4c; box-shadow:0 3px 0 #b7c2bc,0 7px 0 #9baea74a,0 17px 24px #06172638; }
-.d1-relation-pair>div:last-child { background:linear-gradient(135deg,#e5ecea,#ccdce0); }
-.d1-relation-pair>div>span { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:#496373; }
-.d1-relation-pair strong { font:500 .96rem/1.5 var(--font-mc-sans,Arial,sans-serif); }
-.d1-relation-arrow { align-self:center; font-size:1.4rem; color:#e8ad84; }
-.d1-experience .d1-relation p { color:#d4e0e3; font-size:.875rem; line-height:1.65; margin:24px 0 0; }
-@keyframes d1-unfold { from { opacity:0; transform:rotateX(-18deg) translateY(-7px); } to { opacity:1; transform:rotateX(0) translateY(0); } }
-@media(max-width:800px) { .d1-relation { margin:26px 0 0; max-width:470px; } .d1-relation-pair { grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr); gap:9px; } .d1-relation-pair>div { padding:16px; } }
-@media(prefers-reduced-motion:reduce) { .d1-relation { animation:none; } }
 
 /* Reading and decision controls keep their full size at docked and phone widths. */
 .d1-entry-instructions li p { font-size:1.125rem; }
@@ -141,26 +129,22 @@
 .d1-experience .d1-answer-actions>p { font-size:.875rem; }
 .d1-experience .d1-feedback .d1-correct-answer { font-size:.9375rem; }
 .d1-navigation button,.d1-retry { font-size:1rem; }
-.d1-relation figcaption,.d1-experience .d1-relation p { font-size:1rem; }
-.d1-relation-pair strong { font-size:1rem; }
-.d1-relation-pair>div>span { font-size:.7rem; }
 .d1-review-list button { font-size:1rem; }
 .d1-review-list button>span:last-child { font-size:.875rem; }
 @media(max-width:480px) { .d1-answer-actions { flex-wrap:wrap; } .d1-navigation { align-items:stretch; } .d1-navigation button { max-width:50%; text-align:left; font-size:.9375rem; } .d1-navigation svg { flex-shrink:0; } .d1-review-list button { align-items:flex-start; } .d1-review-list button>span:last-child { text-align:right; } }
 @media(max-width:480px) { .d1-entry-grid { padding-top:20px; gap:20px; } .d1-entry-title { min-height:270px; padding-right:0; } .d1-screen.oc-course-screen .d1-entry-title h1 { font-size:clamp(4.5rem,21vw,5.3rem); white-space:nowrap; margin:16px 0 20px; } .d1-entry-lead { max-width:15ch; } .d1-sculpture { top:128px; right:-72px; } }
 
-/* A continuous completion rail replaces the crowded per-question ticks. */
-.d1-progress-summary { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:24px 30px 18px; }
-.d1-progress-summary .d1-eyebrow { color:var(--d1-muted); }
-.d1-experience .d1-progress-summary p { margin:7px 0 0; font-size:1.125rem; font-weight:500; color:var(--d1-ink); }
-.d1-progress-value { display:flex; align-items:baseline; gap:10px; color:var(--d1-blue); }
-.d1-progress-value strong { font-family:var(--font-mc-serif,Georgia,serif); font-weight:400; font-size:2.6rem; line-height:1; font-variant-numeric:tabular-nums; letter-spacing:-.04em; }
-.d1-progress-value strong span { font-size:1.2rem; margin-left:3px; }
-.d1-progress-value>span { font-size:.875rem; color:var(--d1-muted); }
-.d1-progress-track { height:8px; margin:0 30px 26px; background:#e7e9e4; border-radius:99px; overflow:hidden; box-shadow:inset 0 1px 2px #193a4c0a; }
-.d1-progress-track>span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#244c62,#548078); box-shadow:0 0 8px #54807826; transition:width .6s cubic-bezier(.22,1,.36,1); }
-@media(max-width:480px) { .d1-progress-summary { padding:20px 20px 16px; gap:12px; } .d1-progress-value { align-items:flex-end; flex-direction:column; gap:5px; } .d1-progress-value strong { font-size:2.2rem; } .d1-progress-value>span { font-size:.75rem; } .d1-progress-track { margin:0 20px 22px; } }
-@media(prefers-reduced-motion:reduce) { .d1-progress-track>span { transition:none; } }
+/* Segmented 21st.dev progress adapted to real per-question answer state. */
+.d1-run-progress { padding:20px 30px; }
+.d1-run-progress-labels { display:flex; justify-content:space-between; align-items:baseline; gap:16px; margin-bottom:13px; font-variant-numeric:tabular-nums; }
+.d1-run-progress-labels strong { font-size:.9rem; font-weight:600; color:var(--d1-ink); }
+.d1-run-progress-labels>span { font-size:.8rem; color:var(--d1-muted); }
+.d1-segmented-progress { display:flex; gap:4px; }
+.d1-segmented-progress>span { flex:1; min-width:0; height:9px; border-radius:3px; background:#e1e6e3; transition:background-color .2s ease; }
+.d1-segmented-progress>span[data-answered=true] { background:var(--d1-blue); }
+.d1-segmented-progress>span[data-current=true] { box-shadow:inset 0 0 0 1px var(--d1-blue); }
+@media(max-width:480px) { .d1-run-progress { padding:18px 20px; } .d1-run-progress-labels { gap:10px; } .d1-run-progress-labels strong { font-size:.82rem; } .d1-run-progress-labels>span { font-size:.73rem; } .d1-segmented-progress { gap:3px; } .d1-segmented-progress>span { height:7px; border-radius:2px; } }
+@media(prefers-reduced-motion:reduce) { .d1-segmented-progress>span { transition:none; } }
 
 /* The entry title is a phrase ("Spot the condition"), not a numeral; size it so it wraps cleanly. */
 .d1-screen.oc-course-screen .d1-entry-title h1 { font-size:clamp(3.4rem,6.2vw,5.8rem); line-height:.98; letter-spacing:-.05em; max-width:9ch; }
