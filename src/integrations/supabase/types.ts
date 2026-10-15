@@ -1264,6 +1264,8 @@ export type Database = {
           student_note: string | null
           submission_error: string | null
           submission_status: string
+          teacher_missed_at: string | null
+          teacher_missed_by: string | null
           updated_at: string
         }
         Insert: {
@@ -1297,6 +1299,8 @@ export type Database = {
           student_note?: string | null
           submission_error?: string | null
           submission_status?: string
+          teacher_missed_at?: string | null
+          teacher_missed_by?: string | null
           updated_at?: string
         }
         Update: {
@@ -1330,6 +1334,8 @@ export type Database = {
           student_note?: string | null
           submission_error?: string | null
           submission_status?: string
+          teacher_missed_at?: string | null
+          teacher_missed_by?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -7193,6 +7199,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      admin_return_teacher_missed_credit: {
+        Args: { _redemption_id: string }
+        Returns: Json
+      }
       append_review_event_v1: {
         Args: {
           p_episode: string
@@ -7535,6 +7545,8 @@ export type Database = {
           student_note: string | null
           submission_error: string | null
           submission_status: string
+          teacher_missed_at: string | null
+          teacher_missed_by: string | null
           updated_at: string
         }[]
         SetofOptions: {
