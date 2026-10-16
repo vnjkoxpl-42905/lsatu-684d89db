@@ -13,6 +13,8 @@ The repo has more than one bounded context, each with its own language. This map
 - [Activity Centre](./src/features/activity-centre/CONTEXT.md) — coach-led skill exercises a student is assigned, and the Read, Recall, Colour drill that runs inside one: Chunk, Detail, Coverage, The Recall, Report Card.
 - [Booking](./src/components/booking/CONTEXT.md) — paying for and scheduling tutoring time: Packages, Booking Passes, the public microsite, and the Single Session (Slots, Holds, Bookers).
 
+- [Reading Center](./src/features/reading-center/CONTEXT.md): the home for Dashboard, LR Recall and Speed Reading. LR Recall keeps the Read, Recall, Colour method defined in Activity Centre; its section collection and results remain separate from Speed Reading passages and reading progress.
+
 ## Relationships
 
 - Both surfaces describe the same product but to different audiences (prospective student vs. operator), so a word can carry different weight in each. Check the right glossary before reusing a term.

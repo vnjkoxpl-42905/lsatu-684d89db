@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import ReadingCenterGate from "@/components/ReadingCenterGate";
+import { ReadingCenterRrcGate } from "@/components/AssignmentGate";
 import { AppShell, useAppTheme } from "./components/AppShell";
 import LibraryPage from "./pages/LibraryPage";
 import ReaderPage from "./pages/ReaderPage";
@@ -9,10 +11,12 @@ import TagsPage from "./pages/TagsPage";
 import CoursesPage from "./pages/CoursesPage";
 import AdminPassagesPage from "./pages/AdminPassagesPage";
 import ReadingCenterHome from "./pages/ReadingCenterHome";
+import RrcPage from "./pages/RrcPage";
 import "./reading-center.css";
 
 export default function ReadingCenter() {
-  useAppTheme();
+  const { pathname } = useLocation();
+  useAppTheme(pathname.startsWith('/reading-center/read/'));
   useEffect(() => {
     const fonts = document.createElement("link");
     fonts.rel = "stylesheet";
@@ -23,8 +27,8 @@ export default function ReadingCenter() {
   return (
     <div id="reading-center-root" className="rc-root" data-rc-theme="light">
       <Routes>
-        <Route index element={<ReadingCenterHome />} />
-        <Route element={<AppShell />}>
+        <Route element={<ReadingCenterGate><AppShell /></ReadingCenterGate>}>
+          <Route index element={<ReadingCenterHome />} />
           <Route path="speed-reading" element={<LibraryPage />} />
           <Route path="tags" element={<TagsPage />} />
           <Route path="tags/:tag" element={<LibraryPage />} />
@@ -33,7 +37,10 @@ export default function ReadingCenter() {
           <Route path="stats" element={<Navigate to="../profile" replace />} />
           <Route path="manage" element={<ProtectedRoute requireAdmin><AdminPassagesPage /></ProtectedRoute>} />
         </Route>
-        <Route path="read/:slug" element={<ReaderPage />} />
+        <Route element={<ReadingCenterRrcGate><AppShell rrcOnly /></ReadingCenterRrcGate>}>
+          <Route path="rrc" element={<RrcPage />} />
+        </Route>
+        <Route path="read/:slug" element={<ReadingCenterGate><ReaderPage /></ReadingCenterGate>} />
         <Route path="*" element={<Navigate to="/reading-center" replace />} />
       </Routes>
     </div>
