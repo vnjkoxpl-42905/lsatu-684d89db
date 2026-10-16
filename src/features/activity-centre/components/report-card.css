@@ -1,0 +1,519 @@
+.rc {
+  /* ── The console: a deep plum field ─────────────────────────────────── */
+  --rc-console: oklch(0.245 0.058 312);
+  --rc-console-raised: oklch(0.315 0.062 312);
+  --rc-console-hairline: oklch(0.385 0.055 312);
+  --rc-console-ink: oklch(0.968 0.014 312);
+  --rc-console-ink-dim: oklch(0.815 0.035 312);
+  --rc-console-ink-faint: oklch(0.7 0.05 312);
+
+  /* ── The page: a violet-cast white, never cream, never grey ─────────── */
+  --rc-page: oklch(0.979 0.008 312);
+  --rc-card: oklch(0.995 0.004 312);
+  --rc-fill: oklch(0.958 0.012 312);
+  --rc-ink: oklch(0.235 0.032 312);
+  --rc-ink-muted: oklch(0.475 0.03 312);
+  --rc-ink-faint: oklch(0.505 0.035 312);
+  --rc-hairline: oklch(0.9 0.014 312);
+  --rc-hairline-soft: oklch(0.945 0.011 312);
+
+  /* ── The four categories. Each is a KIND of feedback, not a severity. ─
+     `-ink` is the text weight, measured to clear 4.5:1 on both the page and
+     its own soft field; `-soft` is that field; `-lit` is the console version,
+     which has to clear the same bar against a dark plum instead. */
+  --rc-detail-ink: oklch(0.475 0.135 12);
+  --rc-detail-soft: oklch(0.952 0.028 12);
+  --rc-detail-lit: oklch(0.775 0.115 14);
+
+  --rc-read-ink: oklch(0.46 0.095 218);
+  --rc-read-soft: oklch(0.948 0.03 218);
+  --rc-read-lit: oklch(0.79 0.1 210);
+
+  --rc-colour-ink: oklch(0.475 0.105 72);
+  --rc-colour-soft: oklch(0.955 0.04 82);
+  --rc-colour-lit: oklch(0.83 0.13 82);
+
+  --rc-method-ink: oklch(0.455 0.09 278);
+  --rc-method-soft: oklch(0.951 0.026 278);
+  --rc-method-lit: oklch(0.79 0.085 280);
+
+  /* Sound. Not a category, and the only thing on the page that moves. Held at
+     328 rather than nearer the reds: the playhead lands on the same line as the
+     dropped-Detail chips, and twenty degrees of hue is not enough separation
+     between "this is playing" and "this is what you lost". */
+  --rc-signal: oklch(0.545 0.225 328);
+  --rc-signal-bright: oklch(0.715 0.2 328);
+  --rc-signal-soft: oklch(0.957 0.032 328);
+  --rc-signal-ink: oklch(0.995 0.005 328);
+
+  /* The two faint inks are set where they are because that is where they clear
+     4.5:1 on their own ground, measured in the browser rather than assumed.
+     Every label on this card is 10px, so there is no large-text exemption to
+     lean on. */
+  --rc-display: "Fraunces", "Iowan Old Style", "Times New Roman", serif;
+  --rc-body: "Lexend", "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --rc-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Exponential ease. No bounce anywhere on this page: it is a page about
+     being told what you got wrong, and a spring reads as a toy. */
+  --rc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  background: var(--rc-page);
+  color: var(--rc-ink);
+  font-family: var(--rc-body);
+}
+
+/* The card is read on a laptop in a long sitting, so the body column is capped
+   at a measure rather than at the shell's container width. */
+.rc__measure {
+  margin-inline: auto;
+  max-width: 72ch;
+}
+
+/* ── Micro-labels ─────────────────────────────────────────────────────────
+   One label style for the whole card. Every section of a stimulus wears it,
+   which is what makes the order legible: she learns four labels once and then
+   knows where she is on all twenty-two. */
+.rc__label {
+  color: var(--rc-ink-faint);
+  font-family: var(--rc-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.rc__label--onconsole {
+  color: var(--rc-console-ink-faint);
+}
+
+/* The card's two headings.
+ *
+ * Each wraps a small label and a display line so the heading reads as one
+ * string ("Report Card, Attempt 2, At the standard") while keeping the two type
+ * sizes it had when both were paragraphs. Tailwind's preflight already flattens
+ * heading size and weight; this keeps the margin off and lets the children own
+ * their own type.
+ */
+.rc__title {
+  margin: 0;
+  font: inherit;
+  letter-spacing: normal;
+}
+
+.rc__title > .rc__label {
+  display: block;
+}
+
+.rc__display {
+  font-family: var(--rc-display);
+  font-variation-settings: "opsz" 96;
+  font-weight: 380;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+/* ── The console ──────────────────────────────────────────────────────── */
+
+.rc__console {
+  background: var(--rc-console);
+  color: var(--rc-console-ink);
+}
+
+.rc__console-divider {
+  border-color: var(--rc-console-hairline);
+}
+
+/* ── The ledger of twenty-two ─────────────────────────────────────────────
+   The whole section as one row of marks, so the shape of the run is visible
+   before any one stimulus is opened. Twenty-two accordion rows are a list;
+   this is a picture. */
+.rc__ledger {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(auto-fit, minmax(28px, 1fr));
+}
+
+.rc__tick {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* 44px of target, reached by being 44px rather than by wrapped text. */
+  min-height: 44px;
+  justify-content: center;
+  padding: 4px 0;
+  transition: background-color 160ms var(--rc-ease);
+}
+
+.rc__tick:hover {
+  background: var(--rc-console-raised);
+}
+
+.rc__tick:focus-visible {
+  outline: 2px solid var(--rc-signal-bright);
+  outline-offset: 2px;
+}
+
+.rc__tick-n {
+  color: var(--rc-console-ink-faint);
+  font-family: var(--rc-mono);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  transition: color 160ms var(--rc-ease);
+}
+
+.rc__tick[aria-current="true"] .rc__tick-n {
+  color: var(--rc-console-ink);
+}
+
+/* The mark itself. FILL carries the band, so the ledger survives grayscale.
+   The fill is gold rather than white because gold is what she held on this
+   card, and a row of twenty-two white squares is a barcode. */
+.rc__mark {
+  border: 1.5px solid var(--rc-console-ink-dim);
+  border-radius: 3px;
+  display: block;
+  height: 18px;
+  position: relative;
+  width: 18px;
+}
+
+/* Held everything: solid. */
+.rc__mark--at-the-standard {
+  background: var(--rc-colour-lit);
+  border-color: var(--rc-colour-lit);
+}
+
+/* Most of it: filled from the floor, so the gap at the top is what she lost. */
+.rc__mark--nearly-there::after,
+.rc__mark--thin::after {
+  background: var(--rc-colour-lit);
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.rc__mark--nearly-there::after {
+  height: 66%;
+}
+
+.rc__mark--thin::after {
+  height: 30%;
+}
+
+/* Lost it: a hollow ring. Empty, and round against three squares, so it reads
+   as a different kind of thing rather than as a worse colour. */
+.rc__mark--lost-it {
+  border-color: var(--rc-detail-lit);
+  border-radius: 50%;
+}
+
+/* Said back word for word: an open mark with a bar through it. Not a worse
+   score, which is the whole point, so it takes no hue at all. */
+.rc__mark--recited {
+  border-radius: 50%;
+  border-style: dashed;
+}
+
+.rc__mark--ungraded {
+  border-style: dotted;
+  border-color: var(--rc-console-ink-faint);
+}
+
+/* The stimulus currently open, marked on the ledger so she never loses her
+   place in twenty-two. */
+.rc__tick[aria-current="true"] .rc__mark {
+  box-shadow: 0 0 0 2px var(--rc-console), 0 0 0 3.5px var(--rc-signal-bright);
+}
+
+/* ── The transport ────────────────────────────────────────────────────── */
+
+.rc__transport {
+  align-items: center;
+  background: var(--rc-console-raised);
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+}
+
+.rc__source {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--rc-console-ink-dim);
+  cursor: pointer;
+  font-family: var(--rc-body);
+  font-size: 12px;
+  font-weight: 500;
+  /* PRODUCT.md binds 44x44 by being that size. These were 34. */
+  min-height: 44px;
+  padding: 0 14px;
+  transition:
+    background-color 180ms var(--rc-ease),
+    color 180ms var(--rc-ease);
+  white-space: nowrap;
+}
+
+.rc__source:hover {
+  color: var(--rc-console-ink);
+}
+
+.rc__source[aria-pressed="true"] {
+  background: var(--rc-signal);
+  color: var(--rc-signal-ink);
+}
+
+.rc__source:focus-visible {
+  outline: 2px solid var(--rc-signal-bright);
+  outline-offset: 2px;
+}
+
+/* ── A line of her run ────────────────────────────────────────────────────
+   The comparison the drill is about: the line as written, what she said for
+   it, and what the standard says for the same line. Stacked rather than in
+   columns, because the three are read in that order and a column layout makes
+   her scan sideways for a sentence she is meant to read straight through. */
+.rc__line {
+  border-top: 1px solid var(--rc-hairline-soft);
+  padding: 14px 0 14px 16px;
+  position: relative;
+  transition: background-color 220ms var(--rc-ease);
+}
+
+.rc__line:first-child {
+  border-top: 0;
+}
+
+/* The playhead. The only thing on the page that moves, and the only saturated
+   colour in the reading body while it does. */
+.rc__line::before {
+  background: var(--rc-signal);
+  border-radius: 2px;
+  bottom: 10px;
+  content: "";
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 10px;
+  transform: scaleY(0.4);
+  transform-origin: center;
+  transition:
+    opacity 200ms var(--rc-ease),
+    transform 320ms var(--rc-ease);
+  width: 3px;
+}
+
+/* Lifted, not tinted red.
+   A whole block washed in the signal colour reads as "this line is wrong",
+   which is the one thing it does not mean. The moving bar carries the fact
+   that it is playing; the field only has to lift off the page. */
+.rc__line[data-playing="true"] {
+  background: var(--rc-signal-soft);
+}
+
+.rc__line[data-playing="true"]::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* The line as written. It is the anchor for the two beneath it, so it carries
+   the weight and they do not. */
+.rc__line-text {
+  color: var(--rc-ink);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.rc__line-spoken {
+  color: var(--rc-ink-muted);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* What she held and what she dropped, as a list of short phrases rather than
+   a semicolon-joined sentence. Nine phrases run together is a paragraph she
+   skims; nine rows is a thing she reads. */
+.rc__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.rc__chip {
+  border-radius: 5px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  padding: 3px 8px;
+}
+
+.rc__chip--held {
+  background: var(--rc-colour-soft);
+  color: var(--rc-colour-ink);
+}
+
+/* Hollow against the held ones. Shape, not hue: see the palette note above.
+   It carries the darker ink and the heavier border of the two, because what
+   she dropped is the half of this pair she is here to read. */
+.rc__chip--dropped {
+  background: var(--rc-detail-soft);
+  box-shadow: inset 0 0 0 1.5px var(--rc-detail-ink);
+  color: var(--rc-detail-ink);
+  font-weight: 500;
+}
+
+/* ── Playback affordance on a line ────────────────────────────────────── */
+
+.rc__hear {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--rc-hairline);
+  border-radius: 999px;
+  color: var(--rc-ink-faint);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 6px;
+  font-family: var(--rc-body);
+  font-size: 11px;
+  height: 26px;
+  padding: 0 10px;
+  position: relative;
+  transition:
+    border-color 160ms var(--rc-ease),
+    color 160ms var(--rc-ease);
+}
+
+/* Forty-four pixels of target on a 26px control.
+ *
+ * Given as a centred overlay rather than a height, because this one sits inline
+ * beside a line of text: growing the box would push the line it belongs to
+ * apart. Same trick as the runner's rail controls, for the same reason. */
+.rc__hear::after,
+.rc__summary::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+.rc__hear:hover {
+  border-color: var(--rc-signal);
+  color: var(--rc-signal);
+}
+
+.rc__hear[data-playing="true"] {
+  background: var(--rc-signal);
+  border-color: var(--rc-signal);
+  color: var(--rc-signal-ink);
+}
+
+.rc__hear:focus-visible {
+  outline: 2px solid var(--rc-signal);
+  outline-offset: 2px;
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .rc *,
+  .rc *::before,
+  .rc *::after {
+    animation: none !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* ── Category accents ─────────────────────────────────────────────────────
+   One class per kind of feedback. The label takes the hue and a rule sits
+   under it, so the eye can find "what slipped" or "your Read" on any of the
+   twenty-two without reading a word. */
+.rc__movement {
+  border-top: 2px solid var(--rc-tone-soft, var(--rc-hairline));
+}
+
+.rc__movement .rc__label {
+  color: var(--rc-tone-ink, var(--rc-ink-faint));
+}
+
+.rc__movement--detail {
+  --rc-tone-ink: var(--rc-detail-ink);
+  --rc-tone-soft: var(--rc-detail-soft);
+}
+
+.rc__movement--read {
+  --rc-tone-ink: var(--rc-read-ink);
+  --rc-tone-soft: var(--rc-read-soft);
+}
+
+.rc__movement--colour {
+  --rc-tone-ink: var(--rc-colour-ink);
+  --rc-tone-soft: var(--rc-colour-soft);
+}
+
+.rc__movement--method {
+  --rc-tone-ink: var(--rc-method-ink);
+  --rc-tone-soft: var(--rc-method-soft);
+}
+
+/* A panel in the tone of the section it sits in. */
+.rc__panel {
+  background: var(--rc-tone-soft, var(--rc-fill));
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+/* ── The ground the card lands on ─────────────────────────────────────────
+   The runner's report phase is a `.activity-centre` page, which paints the
+   Centre's warm cream (`38 36% 93%`). A violet card floating on warm cream is
+   the exact clash the palette above was chosen to get away from, and the
+   student never sees the card on the neutral ground it was designed against.
+   So the report phase brings its own ground, tuned one step darker than the
+   card's page so the card still reads as a card. */
+/* Compounded rather than bare: `.activity-centre` paints its cream at the same
+   specificity, so a lone `.rc-ground` wins or loses on stylesheet order, which
+   is not a thing to leave to chance across a code-split build. */
+.activity-centre.rc-ground,
+.rc-ground {
+  background: oklch(0.925 0.014 312);
+}
+
+/* ── The focus ring ───────────────────────────────────────────────────────
+   `.activity-centre :focus-visible` forces an emerald ring on every focusable
+   thing inside the module. Emerald is precisely what this card must not have,
+   and it was reaching the ledger, the transport and every "Hear it" button.
+   Same shape as the module's ring, in the colour that means sound here. */
+.activity-centre .rc :focus-visible,
+.rc :focus-visible {
+  box-shadow:
+    0 0 0 2px var(--rc-page),
+    0 0 0 4px var(--rc-signal);
+  outline: none;
+}
+
+/* On the console the ring has to clear a dark plum instead of paper. */
+.activity-centre .rc__console :focus-visible,
+.rc__console :focus-visible {
+  box-shadow:
+    0 0 0 2px var(--rc-console),
+    0 0 0 4px var(--rc-signal-bright);
+}
+
+/* The disclosures ("The passage", the per-movement openers).
+ *
+ * A `summary` styled as a 10px label is a 16px target. It cannot grow its box
+ * without moving the prose it introduces, so it takes the same overlay as
+ * "Hear it". */
+.rc__summary {
+  position: relative;
+}

@@ -1,0 +1,634 @@
+[
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Certain companies require their managers to rank workers in the groups they supervise from best to worst, giving each worker a unique ranking based on job performance. The top 10 percent of the workers in each group are rewarded and the bottom 10 percent are penalized or fired. But this system is unfair to workers. Good workers could receive low rankings merely because they belong to groups of exceptionally good workers. Furthermore, managers often give the highest rankings to workers who share the manager’s interests outside of work.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Some companies require their managers to give unique rankings to the workers they supervise.",
+      "B": "Under the ranking system, the top 10 percent of the workers in each group are rewarded and the bottom 10 percent are penalized or fired.",
+      "C": "The ranking system is not a fair way to determine penalties or rewards for workers.",
+      "D": "Workers in exceptionally strong work groups are unfairly penalized under the ranking system.",
+      "E": "Managers often give the highest rankings to workers who share the manager’s outside interests."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Sampling",
+      "Important Pivot",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Psychologist: A study of 436 university students found that those who took short naps throughout the day suffered from insomnia more frequently than those who did not. Moreover, people who work on commercial fishing vessels often have irregular sleep patterns that include frequent napping, and they also suffer from insomnia. So it is very likely that napping tends to cause insomnia.",
+    "questionStem": "The reasoning in the psychologist’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that university students suffer from insomnia more frequently than do members of the general population",
+      "B": "presumes that all instances of insomnia have the same cause",
+      "C": "fails to provide a scientifically respectable definition for the term “napping”",
+      "D": "fails to consider the possibility that frequent daytime napping is an effect rather than a cause of insomnia",
+      "E": "presumes, without providing justification, that there is such a thing as a regular sleep pattern for someone working on a commercial fishing vessel"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Whenever Joe’s car is vacuumed, the employees of K & L Auto vacuum it; they are the only people who ever vacuum Joe’s car. If the employees of K & L Auto vacuumed Joe’s car, then Joe took his car to K & L Auto to be fixed. Joe’s car was recently vacuumed. Therefore, Joe took his car to K & L Auto to be fixed.",
+    "questionStem": "The pattern of reasoning exhibited by the argument above is most similar to that exhibited by which one of the following?",
+    "answerChoices": {
+      "A": "Emily’s water glass is wet and it would be wet only if she drank water from it this morning. Since the only time she drinks water in the morning is when she takes her medication, Emily took her medication this morning.",
+      "B": "Lisa went to the hair salon today since either she went to the hair salon today or she went to the bank this morning, but Lisa did not go to the bank this morning.",
+      "C": "There are no bills on John’s kitchen table. Since John gets at least one bill per day and he always puts his bills on his kitchen table, someone else must have checked John’s mail today.",
+      "D": "Linda is grumpy only if she does not have her coffee in the morning, and Linda does not have her coffee in the morning only if she runs out of coffee. Therefore, Linda runs out of coffee only on days that she is grumpy.",
+      "E": "Jeff had to choose either a grapefruit or cereal for breakfast this morning. Given that Jeff is allergic to grapefruit, Jeff must have had cereal for breakfast this morning."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Editorialist: In a large corporation, one of the functions of the corporation’s president is to promote the key interests of the shareholders. Therefore, the president has a duty to keep the corporation’s profits high.",
+    "questionStem": "Which one of the following, if true, would most strengthen the editorialist’s argument?",
+    "answerChoices": {
+      "A": "Shareholders sometimes will be satisfied even if dividends paid to them from company profits are not high.",
+      "B": "The president and the board of directors of a corporation are jointly responsible for advancing the key interests of the shareholders.",
+      "C": "Keeping a corporation’s profits high is likely to advance the important interests of the corporation’s shareholders.",
+      "D": "In considering where to invest, most potential shareholders are interested in more than just the profitability of a corporation.",
+      "E": "The president of a corporation has many functions besides advancing the important interests of the corporation’s shareholders."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Everyone in Biba’s neighborhood is permitted to swim at Barton Pool at some time during each day that it is open. No children under the age of 6 are permitted to swim at Barton Pool between noon and 5 P.M. From 5 P.M. until closing, Barton Pool is reserved for adults only.",
+    "questionStem": "If all the sentences above are true, then which one of the following must be true?",
+    "answerChoices": {
+      "A": "Few children under the age of 6 live in Biba’s neighborhood.",
+      "B": "If Biba’s next-door neighbor has a child under the age of 6, then Barton Pool is open before noon.",
+      "C": "If most children who swim in Barton Pool swim in the afternoon, then the pool is generally less crowded after 5 P.M.",
+      "D": "On days when Barton Pool is open, at least some children swim there in the afternoon.",
+      "E": "Any child swimming in Barton Pool before 5 P.M. must be breaking Barton Pool rules."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Beck: Our computer program estimates municipal automotive use based on weekly data. Some staff question the accuracy of the program’s estimates. But because the figures it provides are remarkably consistent from week to week, we can be confident of its accuracy.",
+    "questionStem": "The reasoning in Beck’s argument is flawed in that it",
+    "answerChoices": {
+      "A": "fails to establish that consistency is a more important consideration than accuracy",
+      "B": "fails to consider the program’s accuracy in other tasks that it may perform",
+      "C": "takes for granted that the program’s output would be consistent even if its estimates were inaccurate",
+      "D": "regards accuracy as the sole criterion for judging the program’s value",
+      "E": "fails to consider that the program could produce consistent but inaccurate output"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Inertia affects the flow of water pumped through a closed system of pipes. When the pump is first switched on, the water, which has mass, takes time to reach full speed. When the pump is switched off, inertia causes the decrease in the water flow to be gradual. The effects of inductance in electrical circuits are similar to the effects of inertia in water pipes.",
+    "questionStem": "The information above provides the most support for which one of the following?",
+    "answerChoices": {
+      "A": "The rate at which electrical current flows is affected by inductance.",
+      "B": "The flow of electrical current in a circuit requires inertia.",
+      "C": "Inertia in the flow of water pumped by an electrically powered pump is caused by inductance in the pump’s circuits.",
+      "D": "Electrical engineers try to minimize the effects of inductance in electrical circuits.",
+      "E": "When a water pump is switched off it continues to pump water for a second or two."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Journalist: To reconcile the need for profits sufficient to support new drug research with the moral imperative to provide medicines to those who most need them but cannot afford them, some pharmaceutical companies feel justified in selling a drug in rich nations at one price and in poor nations at a much lower price. But this practice is unjustified. A nation with a low average income may still have a substantial middle class better able to pay for new drugs than are many of the poorer citizens of an overall wealthier nation.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the journalist’s reasoning?",
+    "answerChoices": {
+      "A": "People who are ill deserve more consideration than do healthy people, regardless of their relative socioeconomic positions.",
+      "B": "Wealthy institutions have an obligation to expend at least some of their resources to assist those incapable of assisting themselves.",
+      "C": "Whether one deserves special consideration depends on one’s needs rather than on characteristics of the society to which one belongs.",
+      "D": "The people in wealthy nations should not have better access to health care than do the people in poorer nations.",
+      "E": "Unequal access to health care is more unfair than an unequal distribution of wealth."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Plans / Recommendations",
+      "Principles in Answers",
+      "Rebuttals",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Robert: The school board is considering adopting a year-round academic schedule that eliminates the traditional three-month summer vacation. This schedule should be adopted, since teachers need to cover more new material during the school year than they do now. Samantha: The proposed schedule will not permit teachers to cover more new material. Even though the schedule eliminates summer vacation, it adds six new two-week breaks, so the total number of school days will be about the same as before.",
+    "questionStem": "Which one of the following, if true, is a response Robert could make that would counter Samantha’s argument?",
+    "answerChoices": {
+      "A": "Teachers would be willing to accept elimination of the traditional three-month summer vacation as long as the total vacation time they are entitled to each year is not reduced.",
+      "B": "Most parents who work outside the home find it difficult to arrange adequate supervision for their school-age children over the traditional three-month summer vacation.",
+      "C": "In school districts that have adopted a year-round schedule that increases the number of school days per year, students show a deeper understanding and better retention of new material.",
+      "D": "Teachers spend no more than a day of class time reviewing old material when students have been away from school for only a few weeks, but have to spend up to a month of class time reviewing after a three-month summer vacation.",
+      "E": "Students prefer taking a long vacation from school during the summer to taking more frequent but shorter vacations spread throughout the year."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Anti-Causal",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In order to reduce traffic congestion and raise revenue for the city, the mayor plans to implement a charge of $10 per day for driving in the downtown area. Payment of this charge will be enforced using a highly sophisticated system that employs digital cameras and computerized automobile registration. This system will not be ready until the end of next year. Without this system, however, mass evasion of the charge will result. Therefore, when the mayor’s plan is first implemented, payment of the charge will not be effectively enforced.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends for its conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "The mayor’s plan to charge for driving downtown will be implemented before the end of next year.",
+      "B": "The city will incur a budget deficit if it does not receive the revenue it expects to raise from the charge for driving downtown.",
+      "C": "The plan to charge for driving downtown should be implemented as soon as payment of the charge can be effectively enforced.",
+      "D": "Raising revenue is a more important consideration for the city than is reducing traffic congestion.",
+      "E": "A daily charge for driving downtown is the most effective way to reduce traffic congestion."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Predictions",
+      "Timeframes",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A recent study revealed that the percentage of people treated at large, urban hospitals who recover from their illnesses is lower than the percentage for people treated at smaller, rural hospitals.",
+    "questionStem": "Each of the following, if true, contributes to an explanation of the difference in recovery rates except:",
+    "answerChoices": {
+      "A": "Because there are fewer patients to feed, nutritionists at small hospitals are better able to tailor meals to the dietary needs of each patient.",
+      "B": "The less friendly, more impersonal atmosphere of large hospitals can be a source of stress for patients at those hospitals.",
+      "C": "Although large hospitals tend to draw doctors trained at the more prestigious schools, no correlation has been found between the prestige of a doctor’s school and patients’ recovery rate.",
+      "D": "Because space is relatively scarce in large hospitals, doctors are encouraged to minimize the length of time that patients are held for observation following a medical procedure.",
+      "E": "Doctors at large hospitals tend to have a greater number of patients and consequently less time to explain to staff and to patients how medications are to be administered."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT",
+      "Medical",
+      "Percentages"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Perry: Worker-owned businesses require workers to spend time on management decision-making and investment strategy, tasks that are not directly productive. Also, such businesses have less extensive divisions of labor than do investor-owned businesses. Such inefficiencies can lead to low profitability, and thus increase the risk for lenders. Therefore, lenders seeking to reduce their risk should not make loans to worker-owned businesses.",
+    "questionStem": "Which one of the following, if true, most seriously weakens Perry’s argument?",
+    "answerChoices": {
+      "A": "Businesses with the most extensive divisions of labor sometimes fail to make the fullest use of their most versatile employees’ potential.",
+      "B": "Lenders who specialize in high-risk loans are the largest source of loans for worker-owned businesses.",
+      "C": "Investor-owned businesses are more likely than worker-owned businesses are to receive start-up loans.",
+      "D": "Worker-owned businesses have traditionally obtained loans from cooperative lending institutions established by coalitions of worker-owned businesses.",
+      "E": "In most worker-owned businesses, workers compensate for inefficiencies by working longer hours than do workers in investor-owned businesses."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Some paleontologists believe that certain species of dinosaurs guarded their young in protective nests long after the young hatched. As evidence, they cite the discovery of fossilized hadrosaur babies and adolescents in carefully designed nests. But similar nests for hatchlings and adolescents are constructed by modern crocodiles, even though crocodiles guard their young only for a very brief time after they hatch. Hence, _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "paleontologists who believe that hadrosaurs guarded their young long after the young hatched have no evidence to support this belief",
+      "B": "we will never be able to know the extent to which hadrosaurs guarded their young",
+      "C": "hadrosaurs guarded their young for at most very brief periods after hatching",
+      "D": "it is unclear whether what we learn about hadrosaurs from their fossilized remains tells us anything about other dinosaurs",
+      "E": "the construction of nests for hatchlings and adolescents is not strong evidence for the paleontologists’ belief"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Analogies",
+      "Logical Completion",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "For one academic year all the students at a high school were observed. The aim was to test the hypothesis that studying more increased a student’s chances of earning a higher grade. It turned out that the students who spent the most time studying did not earn grades as high as did many students who studied less. Nonetheless, the researchers concluded that the results of the observation supported the initial hypothesis.",
+    "questionStem": "Which one of the following, if true, most helps to explain why the researchers drew the conclusion described above?",
+    "answerChoices": {
+      "A": "The students who spent the most time studying earned higher grades than did some students who studied for less time than the average.",
+      "B": "The students tended to get slightly lower grades as the academic year progressed.",
+      "C": "In each course, the more a student studied, the better his or her grade was in that course.",
+      "D": "The students who spent the least time studying tended to be students with no more than average involvement in extracurricular activities.",
+      "E": "Students who spent more time studying understood the course material better than other students did."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researchers had three groups of professional cyclists cycle for one hour at different levels of intensity. Members of groups A, B, and C cycled at rates that sustained, for an hour, pulses of about 60 percent, 70 percent, and 85 percent, respectively, of the recommended maximum pulse rate for recreational cyclists. Most members of Group A reported being less depressed and angry afterward. Most members of Group B did not report these benefits. Most members of Group C reported feeling worse in these respects than before the exercise.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "The higher the pulse rate attained in sustained exercise, the less psychological benefit the exercise tends to produce.",
+      "B": "The effect that a period of cycling has on the mood of professional cyclists tends to depend at least in part on how intense the cycling is.",
+      "C": "For professional cyclists, the best exercise from the point of view of improving mood is cycling that pushes the pulse no higher than 60 percent of the maximum pulse rate.",
+      "D": "Physical factors, including pulse rate, contribute as much to depression as do psychological factors.",
+      "E": "Moderate cycling tends to benefit professional cyclists physically as much or more than intense cycling."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Percentages"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Anyone who believes in extraterrestrials believes in UFOs. But the existence of UFOs has been conclusively refuted. Therefore a belief in extraterrestrials is false as well.",
+    "questionStem": "Which one of the following arguments contains flawed reasoning most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Anyone who believes in unicorns believes in centaurs. But it has been demonstrated that there are no centaurs, so there are no unicorns either.",
+      "B": "Anyone who believes in unicorns believes in centaurs. But you do not believe in centaurs, so you do not believe in unicorns either.",
+      "C": "Anyone who believes in unicorns believes in centaurs. But you do not believe in unicorns, so you do not believe in centaurs either.",
+      "D": "Anyone who believes in unicorns believes in centaurs. But there is no good reason to believe in centaurs, so a belief in unicorns is unjustified as well.",
+      "E": "Anyone who believes in unicorns believes in centaurs. But it has been conclusively proven that there is no such thing as a unicorn, so a belief in centaurs is mistaken as well."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "People want to be instantly and intuitively liked. Those persons who are perceived as forming opinions of others only after cautiously gathering and weighing the evidence are generally resented. Thus, it is imprudent to appear prudent.",
+    "questionStem": "Which one of the following, if assumed, enables the argument’s conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "People who act spontaneously are well liked.",
+      "B": "Imprudent people act instantly and intuitively.",
+      "C": "People resent those less prudent than themselves.",
+      "D": "People who are intuitive know instantly when they like someone.",
+      "E": "It is imprudent to cause people to resent you."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Must Be False",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Journalist: Recent studies have demonstrated that a regular smoker who has just smoked a cigarette will typically display significantly better short-term memory skills than a nonsmoker, whether or not the nonsmoker has also just smoked a cigarette for the purposes of the study. Moreover, the majority of those smokers who exhibit this superiority in short-term memory skills will do so for at least eight hours after having last smoked.",
+    "questionStem": "If the journalist’s statements are true, then each of the following could be true except:",
+    "answerChoices": {
+      "A": "The short-term memory skills exhibited by a nonsmoker who has just smoked a cigarette are usually substantially worse than the short-term memory skills exhibited by a nonsmoker who has not recently smoked a cigarette.",
+      "B": "The short-term memory skills exhibited by a nonsmoker who has just smoked a cigarette are typically superior to those exhibited by a regular smoker who has just smoked a cigarette.",
+      "C": "The short-term memory skills exhibited by a nonsmoker who has just smoked a cigarette are typically superior to those exhibited by a regular smoker who has not smoked for more than eight hours.",
+      "D": "A regular smoker who, immediately after smoking a cigarette, exhibits short-term memory skills no better than those typically exhibited by a nonsmoker is nevertheless likely to exhibit superior short-term memory skills in the hours following a period of heavy smoking.",
+      "E": "The short-term memory skills exhibited by a regular smoker who last smoked a cigarette five hours ago are typically superior to those exhibited by a regular smoker who has just smoked a cigarette."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Educator: It has been argued that our professional organization should make decisions about important issues-such as raising dues and taking political stands-by a direct vote of all members rather than by having members vote for officers who in turn make the decisions. This would not, however, be the right way to decide these matters, for the vote of any given individual is much more likely to determine organizational policy by influencing the election of an officer than by influencing the result of a direct vote on a single issue.",
+    "questionStem": "Which one of the following principles would, if valid, most help to justify the educator’s reasoning?",
+    "answerChoices": {
+      "A": "No procedure for making organizational decisions should allow one individual’s vote to weigh more than that of another.",
+      "B": "Outcomes of organizational elections should be evaluated according to their benefit to the organization as a whole, not according to the fairness of the methods by which they are produced.",
+      "C": "Important issues facing organizations should be decided by people who can devote their full time to mastering the information relevant to the issues.",
+      "D": "An officer of an organization should not make a particular decision on an issue unless a majority of the organization’s members would approve of that decision.",
+      "E": "An organization’s procedures for making organizational decisions should maximize the power of each member of the organization to influence the decisions made."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Neural connections carrying signals from the cortex (the brain region responsible for thought) down to the amygdala (a brain region crucial for emotions) are less well developed than connections carrying signals from the amygdala up to the cortex. Thus, the amygdala exerts a greater influence on the cortex than vice versa.",
+    "questionStem": "The argument’s conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The influence that the amygdala exerts on the rest of the brain is dependent on the influence that the cortex exerts on the rest of the brain.",
+      "B": "No other brain region exerts more influence on the cortex than does the amygdala.",
+      "C": "The region of the brain that has the most influence on the cortex is the one that has the most highly developed neural connections to the cortex.",
+      "D": "The amygdala is not itself controlled by one or more other regions of the brain.",
+      "E": "The degree of development of a set of neural connections is directly proportional to the influence transmitted across those connections."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Science",
+      "Volume Dial",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The Iliad and the Odyssey were both attributed to Homer in ancient times. But these two poems differ greatly in tone and vocabulary and in certain details of the fictional world they depict. So they are almost certainly not the work of the same poet.",
+    "questionStem": "Which one of the following statements, if true, most weakens the reasoning above?",
+    "answerChoices": {
+      "A": "Several hymns that were also attributed to Homer in ancient times differ more from the Iliad in the respects mentioned than does the Odyssey.",
+      "B": "Both the Iliad and the Odyssey have come down to us in manuscripts that have suffered from minor copying errors and other textual corruptions.",
+      "C": "Works known to have been written by the same modern writer are as different from each other in the respects mentioned as are the Iliad and the Odyssey.",
+      "D": "Neither the Iliad nor the Odyssey taken by itself is completely consistent in all of the respects mentioned.",
+      "E": "Both the Iliad and the Odyssey were the result of an extended process of oral composition in which many poets were involved."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Moralist: A statement is wholly truthful only if it is true and made without intended deception. A statement is a lie if it is intended to deceive or if its speaker, upon learning that the statement was misinterpreted, refrains from clarifying it.",
+    "questionStem": "Which one of the following judgments most closely conforms to the principles stated by the moralist?",
+    "answerChoices": {
+      "A": "Ted’s statement to the investigator that he had been abducted by extraterrestrial beings was wholly truthful even though no one has ever been abducted by extraterrestrial beings. After all, Ted was not trying to deceive the investigator.",
+      "B": "Tony was not lying when he told his granddaughter that he did not wear dentures, for even though Tony meant to deceive his granddaughter, she made it clear to Tony that she did not believe him.",
+      "C": "Siobhan did not tell a lie when she told her supervisor that she was ill and hence would not be able to come to work for an important presentation. However, even though her statement was true, it was not wholly truthful.",
+      "D": "Walter’s claim to a potential employer that he had done volunteer work was a lie. Even though Walter had worked without pay in his father’s factory, he used the phrase “volunteer work” in an attempt to deceive the interviewer into thinking he had worked for a socially beneficial cause.",
+      "E": "The tour guide intended to deceive the tourists when he told them that the cabin they were looking at was centuries old. Still, his statement about the cabin’s age was not a lie, for if he thought that this statement had been misinterpreted, he would have tried to clarify it."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Principle: It is healthy for children to engage in an activity that promotes their intellectual development only if engaging in that activity does not detract from their social development. Application: Although Megan’s frequent reading stimulates her intellectually, it reduces the amount of time she spends interacting with other people. Therefore, it is not healthy for her to read as much as she does.",
+    "questionStem": "The application of the principle is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It misinterprets the principle as a universal claim intended to hold in all cases without exception, rather than as a mere generalization.",
+      "B": "It overlooks the possibility that the benefits of a given activity may sometimes be important enough to outweigh the adverse health effects.",
+      "C": "It misinterprets the principle to be, at least in part, a claim about what is unhealthy, rather than solely a claim about what is healthy.",
+      "D": "It takes for granted that any decrease in the amount of time a child spends interacting with others detracts from that child’s social development.",
+      "E": "It takes a necessary condition for an activity’s being healthy as a sufficient condition for its being so."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus",
+      "Contrapositive Logic",
+      "Missing Link / Idea",
+      "Relative vs. Absolute"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In response to several bacterial infections traced to its apple juice, McElligott now flash pasteurizes its apple juice by quickly heating and immediately rechilling it. Intensive pasteurization, in which juice is heated for an hour, eliminates bacteria more effectively than does any other method, but is likely to destroy the original flavor. However, because McElligott’s citrus juices have not been linked to any bacterial infections, they remain unpasteurized.",
+    "questionStem": "The statements above, if true, provide the most support for which one of the following claims?",
+    "answerChoices": {
+      "A": "McElligott’s citrus juices contain fewer infectious bacteria than do citrus juices produced by other companies.",
+      "B": "McElligott’s apple juice is less likely to contain infectious bacteria than are McElligott’s citrus juices.",
+      "C": "McElligott’s citrus juices retain more of the juices’ original flavor than do any pasteurized citrus juices.",
+      "D": "The most effective method for eliminating bacteria from juice is also the method most likely to destroy flavor.",
+      "E": "Apple juice that undergoes intensive pasteurization is less likely than McElligott’s apple juice is to contain bacteria."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Sociologist: Widespread acceptance of the idea that individuals are incapable of looking after their own welfare is injurious to a democracy. So legislators who value democracy should not propose any law prohibiting behavior that is not harmful to anyone besides the person engaging in it. After all, the assumptions that appear to guide legislators will often become widely accepted.",
+    "questionStem": "The sociologist’s argument requires the assumption that",
+    "answerChoices": {
+      "A": "democratically elected legislators invariably have favorable attitudes toward the preservation of democracy",
+      "B": "people tend to believe what is believed by those who are prominent and powerful",
+      "C": "legislators often seem to be guided by the assumption that individuals are incapable of looking after their own welfare, even though these legislators also seem to value democracy",
+      "D": "in most cases, behavior that is harmful to the person who engages in it is harmful to no one else",
+      "E": "a legislator proposing a law prohibiting an act that can harm only the person performing the act will seem to be assuming that individuals are incapable of looking after their own welfare"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "Dense Stimulus",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  }
+]

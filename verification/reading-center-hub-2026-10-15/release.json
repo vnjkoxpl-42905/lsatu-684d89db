@@ -1,0 +1,14 @@
+{
+  "verified_at": "2026-10-16T00:28:57.100227+00:00",
+  "commit": "b6e09031c9cc34398828e3961f5e1a1ed212c529",
+  "lovable_project": "53b9a6f2-aba7-4ae4-8dd1-fa5b8aab4d76",
+  "deployment_id": "21d82876-ca54-4618-a76f-f3a6b757779f",
+  "domain": "https://lsatprep.study",
+  "production_entry": "/assets/index-BmB1aNAc.js",
+  "live_hub_verified": true,
+  "live_rrc_collection_verified": true,
+  "live_speed_collection_verified": true,
+  "three_imported_passages_present": true,
+  "student_session_used": false,
+  "new_recording_or_grading_calls": false
+}

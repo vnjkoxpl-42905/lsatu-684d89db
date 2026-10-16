@@ -1,0 +1,15 @@
+.paper-phase-label { margin-bottom: 16px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.paper-timing-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 12px; color: hsl(var(--muted-foreground)); }
+.paper-timing-clock { font-variant-numeric: tabular-nums; font-size: 18px; font-weight: 600; color: hsl(var(--foreground)); }
+.paper-timing-track { height: 3px; margin: 10px 0 20px; border-radius: 2px; overflow: hidden; background: hsl(var(--muted)); }
+.paper-timing-track > span { display: block; height: 100%; background: hsl(var(--aw-accent,var(--ac-emerald))); transition: width .2s linear; }
+.paper-timed-statement { padding: 20px; margin-bottom: 20px; border: 1px solid hsl(var(--border)); border-radius: 14px; background: hsl(var(--background)); }
+.paper-timed-statement > span { font-size: 10px; letter-spacing: .12em; font-weight: 600; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.paper-timed-statement > p { margin-top: 10px; font-size: clamp(18px,2vw,23px); line-height: 1.6; color: hsl(var(--foreground)); }
+.paper-timing-instruction,.paper-hidden-note { margin-top: 14px; max-width: 36rem; font-size: 13px; line-height: 1.65; color: hsl(var(--muted-foreground)); }
+.paper-hidden-note { margin: 0 0 16px; padding-bottom: 16px; border-bottom: 1px solid hsl(var(--border)); }
+@media (prefers-reduced-motion: reduce) { .paper-timing-track > span { transition: none; } }
+.paper-paired-option { display: grid; gap: 13px; }
+.paper-paired-row { display: grid; gap: 7px; }
+.paper-paired-row + .paper-paired-row { border-top: 1px solid hsl(var(--border)); padding-top: 12px; }
+.paper-paired-label { font-size: 10px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }

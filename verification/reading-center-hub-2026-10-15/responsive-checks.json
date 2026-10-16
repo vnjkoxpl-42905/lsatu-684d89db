@@ -1,0 +1,166 @@
+{
+  "hub": [
+    {
+      "actions": [
+        {
+          "height": 48,
+          "text": "Open RRC",
+          "width": 215.1999969482422
+        },
+        {
+          "height": 48,
+          "text": "Open Speed Reading",
+          "width": 215.1999969482422
+        }
+      ],
+      "cards": [
+        {
+          "label": "Read, Recall, Colour",
+          "width": 264.8000183105469
+        },
+        {
+          "label": "Speed Reading",
+          "width": 264.8000183105469
+        }
+      ],
+      "scrollWidth": 305,
+      "width": 320
+    },
+    {
+      "actions": [
+        {
+          "height": 48,
+          "text": "Open RRC",
+          "width": 495.2000122070313
+        },
+        {
+          "height": 48,
+          "text": "Open Speed Reading",
+          "width": 495.2000122070313
+        }
+      ],
+      "cards": [
+        {
+          "label": "Read, Recall, Colour",
+          "width": 544.7999877929688
+        },
+        {
+          "label": "Speed Reading",
+          "width": 544.7999877929688
+        }
+      ],
+      "scrollWidth": 585,
+      "width": 600
+    },
+    {
+      "actions": [
+        {
+          "height": 48,
+          "text": "Open RRC",
+          "width": 276.3999938964844
+        },
+        {
+          "height": 48,
+          "text": "Open Speed Reading",
+          "width": 276.3999938964844
+        }
+      ],
+      "cards": [
+        {
+          "label": "Read, Recall, Colour",
+          "width": 342
+        },
+        {
+          "label": "Speed Reading",
+          "width": 342
+        }
+      ],
+      "scrollWidth": 768,
+      "width": 768
+    },
+    {
+      "actions": [
+        {
+          "height": 48,
+          "text": "Open RRC",
+          "width": 404.3999938964844
+        },
+        {
+          "height": 48,
+          "text": "Open Speed Reading",
+          "width": 404.3999938964844
+        }
+      ],
+      "cards": [
+        {
+          "label": "Read, Recall, Colour",
+          "width": 470
+        },
+        {
+          "label": "Speed Reading",
+          "width": 470
+        }
+      ],
+      "scrollWidth": 1024,
+      "width": 1024
+    },
+    {
+      "actions": [
+        {
+          "height": 48,
+          "text": "Open RRC",
+          "width": 404.3999938964844
+        },
+        {
+          "height": 48,
+          "text": "Open Speed Reading",
+          "width": 404.3999938964844
+        }
+      ],
+      "cards": [
+        {
+          "label": "Read, Recall, Colour",
+          "width": 470
+        },
+        {
+          "label": "Speed Reading",
+          "width": 470
+        }
+      ],
+      "scrollWidth": 1440,
+      "width": 1440
+    }
+  ],
+  "rrc": [
+    {
+      "scrollWidth": 305,
+      "title": "Read, Recall, Colour",
+      "width": 320
+    },
+    {
+      "scrollWidth": 585,
+      "title": "Read, Recall, Colour",
+      "width": 600
+    },
+    {
+      "scrollWidth": 753,
+      "title": "Read, Recall, Colour",
+      "width": 768
+    },
+    {
+      "scrollWidth": 1014,
+      "title": "Read, Recall, Colour",
+      "width": 1024
+    },
+    {
+      "scrollWidth": 1425,
+      "title": "Read, Recall, Colour",
+      "width": 1440
+    }
+  ],
+  "phoneOverflowFixed": true,
+  "progressBars": 42,
+  "legacyRedirect": "/activities/sections?from=legacy#sections -> /reading-center/rrc?from=legacy#sections",
+  "savedReportOpened": "dcf39d3a-279f-4f9b-8d2d-f856356120ba",
+  "existingReaderOpened": "1. Plants and Geological Time"
+}

@@ -1,0 +1,23 @@
+{
+  "observedAt": "2026-10-15T03:05:32.880Z",
+  "evidenceKind": "isolated controlled replay, not live-account acceptance",
+  "browserExecutable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "component": "RcResults",
+  "fixture": {
+    "questionId": 10733,
+    "currentKey": "D",
+    "savedSelected": "B",
+    "savedIsCorrect": true,
+    "savedScore": "1/6",
+    "percent": 17
+  },
+  "notice": "A saved response has a recorded score that differs from the corrected answer key. This report preserves the recorded score and shows the current credited answer. Your saved answers and timing have not changed.",
+  "backendWrites": [],
+  "externalRequests": [],
+  "pageErrors": [],
+  "screenshot": "results.png"
+}

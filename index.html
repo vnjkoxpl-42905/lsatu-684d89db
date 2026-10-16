@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>LSATU</title>
+    <meta name="description" content="Logical Reasoning practice with adaptive question selection.">
+    <meta name="author" content="Aspiring Attorneys" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+
+    <!-- The drill hub's hero photograph is the LCP element on /classroom/drill.
+         It is a CSS background, so Chrome cannot discover it until the React
+         bundle has booted and rendered the hero: a signed-in mobile trace on
+         2026-09-08 measured it queued at 5,260ms for an LCP of 6,542ms, while
+         the download itself took only 550ms. Preloading it here puts the
+         request in the initial document, in parallel with the boot, at high
+         priority. The webp is 37 KB; the type attribute keeps browsers without
+         webp support from fetching it at all. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/mainhub/hub-horizon.webp"
+      fetchpriority="high"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://prod.spline.design" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@500;600&family=Roboto+Mono:wght@500&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Causation Station "punk" theme serif, scoped via .cs-punk / font-punk-serif -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- Activity Centre worlds: one display face per world, scoped inside each world's wrapper class.
+         Italiana=Polarity · EB Garamond=Specimen Lab · Marcellus=Observatory · Barlow Condensed=Switchyard
+         Young Serif=Atelier · Spectral=body serif across worlds · Bevan=Press · Alegreya=Loom -->
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Barlow+Condensed:wght@500;600;700&family=Young+Serif&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Bevan&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
+
+
+
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+
+  
+  
+  
+  <meta property="og:title" content="LSATU">
+  <meta name="twitter:title" content="LSATU">
+  <meta property="og:description" content="Logical Reasoning practice with adaptive question selection.">
+  <meta name="twitter:description" content="Logical Reasoning practice with adaptive question selection.">
+  <link rel="icon" type="image/png" href="/pwa-192x192.png">
+</head>
+
+  <!-- No background here. The boot fallback below paints its own dark ground;
+       an inline background on <body> would outrank `body { @apply bg-background }`
+       for the life of the page and leave black behind the booted app. -->
+  <body style="margin:0;">
+    <!-- Boot fallback. React's createRoot clears #root on mount, so everything
+         below is replaced the instant the app renders. It only stays on screen
+         when the bundle never boots — a stale cached shell pointing at deleted
+         asset hashes, a blocked/failed module fetch, or JS disabled. Without
+         it the page is a literal black screen with no way to self-diagnose,
+         which is exactly what a student reported on 2026-07-31. -->
+    <div id="root">
+      <div id="boot-fallback" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;color:#EAE5DA;background:#070606;">
+        <div style="max-width:32rem;text-align:center;">
+          <div style="font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#8A8475;">LSAT U</div>
+          <p id="boot-msg" style="margin:22px 0 0;font-size:18px;line-height:1.55;color:#EAE5DA;">Loading&hellip;</p>
+          <div id="boot-actions" style="display:none;margin-top:28px;">
+            <button type="button" id="boot-reset" style="cursor:pointer;font:inherit;font-size:14px;color:#E8CF96;background:transparent;border:1px solid rgba(232,207,150,0.4);border-radius:2px;padding:12px 28px;">Reset and reload</button>
+            <p style="margin:18px 0 0;font-size:12.5px;line-height:1.6;color:#8A8475;">If this keeps happening, open the site in a private window or a different browser, and email contact@aspiringattorneys.com.</p>
+          </div>
+          <noscript><p style="margin:22px 0 0;font-size:18px;line-height:1.55;color:#EAE5DA;">JavaScript is required to use LSAT U. Please enable it and reload.</p></noscript>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Purge every client-side cache layer, then reload past the HTTP cache.
+      // Mirrors the kill-switch in public/sw.js for the case where the bundle
+      // never boots, so main.tsx's own cleanup never gets the chance to run.
+      window.__lsatuBootReset = function () {
+        var done = function () {
+          var u = new URL(window.location.href);
+          u.searchParams.set('sw-cleanup', Date.now().toString());
+          window.location.replace(u.toString());
+        };
+        var jobs = [];
+        try {
+          if (navigator.serviceWorker) {
+            jobs.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
+              return Promise.all(rs.map(function (r) { return r.unregister(); }));
+            }));
+          }
+        } catch (e) {}
+        try {
+          if (window.caches) {
+            jobs.push(caches.keys().then(function (ks) {
+              return Promise.all(ks.map(function (k) { return caches.delete(k); }));
+            }));
+          }
+        } catch (e) {}
+        try { sessionStorage.clear(); } catch (e) {}
+        Promise.all(jobs).then(done, done);
+        // Never strand the user if a purge hangs.
+        setTimeout(done, 4000);
+      };
+      // If React has not replaced #root by now, the bundle is not coming.
+      setTimeout(function () {
+        var el = document.getElementById('boot-fallback');
+        if (!el) return;
+        var msg = document.getElementById('boot-msg');
+        var actions = document.getElementById('boot-actions');
+        if (msg) msg.textContent =
+          'This page failed to load. That is almost always a stale copy cached in this browser, not a problem with your account.';
+        if (actions) actions.style.display = 'block';
+        var btn = document.getElementById('boot-reset');
+        if (btn) btn.addEventListener('click', window.__lsatuBootReset);
+      }, 12000);
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

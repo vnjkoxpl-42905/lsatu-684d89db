@@ -1,0 +1,30 @@
+export const tokens = {
+  paper: '#F4EFE2',
+  paperBright: '#FAF6EA',
+  paperDeep: '#ECE5D2',
+  ink: '#14110C',
+  inkSoft: '#2D2820',
+  inkMute: '#6B6457',
+  rule: '#C8BFA8',
+  ruleSoft: '#DDD3BB',
+  verdigris: '#1F5C4A',
+  verdigrisDeep: '#133A2E',
+  verdigrisTint: '#DDE9E2',
+  cake: '#E15F7B',
+  cakeDeep: '#B73D5A',
+  cakeTint: '#F9E1E6',
+  g1: '#1F5C4A',
+  g1Tint: '#E2EBE5',
+  g2: '#8A6A14',
+  g2Tint: '#F2EAD0',
+  g3: '#5B3FA8',
+  g3Tint: '#EBE6F4',
+  strike: '#A02828',
+  strikeTint: '#F4DDDB',
+} as const;
+
+export const groupMeta = {
+  g1: { label: 'Group 1 · Real Flaw', short: 'G1', color: tokens.g1, tint: tokens.g1Tint },
+  g2: { label: 'Group 2 · Distractor', short: 'G2', color: tokens.g2, tint: tokens.g2Tint },
+  g3: { label: 'Group 3 · House-Named', short: 'G3', color: tokens.g3, tint: tokens.g3Tint },
+} as const;

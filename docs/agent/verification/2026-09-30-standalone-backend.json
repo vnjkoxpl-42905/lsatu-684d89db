@@ -1,0 +1,140 @@
+{
+  "date": "2026-09-30",
+  "deployed": true,
+  "enabled": false,
+  "route": "managed Lovable Cloud SQL",
+  "reviewedWrapperSha256": "2a4860476a8debbfc948e00585e9c9431725db6b93dc1f218f37520a462930d9",
+  "preservation": {
+    "rows": [
+      {
+        "digest": "65fd3f11f790bdeafb82abfa019bd4da",
+        "original_values_preserved": true,
+        "row_count": 1177,
+        "table_name": "attempts"
+      },
+      {
+        "digest": "cfa54115013550c6fab25f9c7e224df8",
+        "original_values_preserved": true,
+        "row_count": 213,
+        "table_name": "bootcamp_kv"
+      },
+      {
+        "digest": "d41d8cd98f00b204e9800998ecf8427e",
+        "original_values_preserved": true,
+        "row_count": 0,
+        "table_name": "practice_test_assignments"
+      },
+      {
+        "digest": "806df7e0bed7c4f3f45bf83f4cd6d49c",
+        "original_values_preserved": true,
+        "row_count": 7,
+        "table_name": "practice_test_runs"
+      },
+      {
+        "digest": "0b817d90487e722c9ea4c7d6d0b5d365",
+        "original_values_preserved": true,
+        "row_count": 42,
+        "table_name": "profiles"
+      },
+      {
+        "digest": "10a292c3553068ad4a3ab04b67a65476",
+        "original_values_preserved": true,
+        "row_count": 146,
+        "table_name": "rc_attempts"
+      },
+      {
+        "digest": "6e04434cd7eeda5dbed8be42dc66e893",
+        "original_values_preserved": true,
+        "row_count": 30,
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "digest": "786364359a0650d7b8a962affa266e96",
+        "original_values_preserved": true,
+        "row_count": 26,
+        "table_name": "section_history"
+      },
+      {
+        "digest": "86624338c77bb6859d9fcc23fdd552ea",
+        "original_values_preserved": true,
+        "row_count": 118,
+        "table_name": "timed_content_manifests_v1"
+      },
+      {
+        "digest": "70b026c1ad8ccad3cbc5bcde9457b362",
+        "original_values_preserved": true,
+        "row_count": 1,
+        "table_name": "timed_pt_configuration_v1"
+      },
+      {
+        "digest": "2d3aada4cddd03a3bc5eee16ebd9de13",
+        "original_values_preserved": true,
+        "row_count": 3,
+        "table_name": "timed_pt_lr_bindings_v1"
+      },
+      {
+        "digest": "3f0e7135cd31e4f7ff7c7a88c70aa27f",
+        "original_values_preserved": true,
+        "row_count": 132,
+        "table_name": "timed_pt_receipts_v1"
+      },
+      {
+        "digest": "5b5a6609a26931d8ffc1b2406c9db085",
+        "original_values_preserved": true,
+        "row_count": 2,
+        "table_name": "user_roles"
+      },
+      {
+        "digest": "fc9425f0046f85427f488e915b588404",
+        "original_values_preserved": true,
+        "row_count": 706,
+        "table_name": "wrong_answer_journal"
+      }
+    ]
+  },
+  "postInstall": {
+    "rows": [
+      {
+        "existing_pt_configuration": {
+          "enabled": true,
+          "lease_ms": 30000,
+          "manifest_sha256": "c27b478f2d50f8353a98d4a1a905d2f94f87929ba2ea2179230d4f7a3d51c25c",
+          "singleton": true
+        },
+        "standalone_capability": {
+          "contractVersion": 1,
+          "enabled": false,
+          "operations": [
+            "read",
+            "create",
+            "claim",
+            "start",
+            "checkpoint",
+            "heartbeat",
+            "pause",
+            "resume",
+            "close",
+            "abandon"
+          ],
+          "sources": [
+            "manual-canonical"
+          ],
+          "stage": "writer-installed",
+          "workKind": "standalone-section"
+        },
+        "standalone_sittings": 0
+      }
+    ]
+  },
+  "checks": {
+    "foundation": 31,
+    "writer": 108,
+    "realPostgresConcurrency": 29,
+    "managedRole": 11,
+    "preservingInstallerEachMode": 43
+  },
+  "limits": [
+    "Interface integration and browser acceptance remain incomplete.",
+    "Only manual canonical first-three sections supported; assigned/custom and unsupported fourth sections remain outside this contract."
+  ]
+}
