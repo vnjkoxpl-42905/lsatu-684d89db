@@ -52,6 +52,16 @@ The two RRC doors (`SectionLibraryLaunch`, `SectionLaunch`, both drawn by `Secti
 - **Steps:** four cards, each with a small drawn scene, doubling as the ARIA tablist the tests already contract (`sl-beat`, `sl-beat-tab-N`, `sl-beat-panel`). The full briefing is the second tab of the drawer.
 - **Tokens:** scoped to `.sl` as `--rd-*`. The design detector reports them as outside DESIGN.md; that is the sanctioned-world exception above, not drift.
 
+## Reading Center LR Recall entry correction (2026-10-16)
+
+Joshua now wants `/reading-center/rrc` to make choosing a drill and finding its instructions/examples obvious. This supersedes the 2026-09-05 **Persuade** priority for this Reading Center entry, not the approved visual identity or other Activity Centre worlds. The current published page has not yet been redesigned for this correction.
+
+Apply the activity-entry constraints in [DESIGN.md](../../DESIGN.md): one dominant task action, explicit tutorial labels, no repeated summaries, four steps beside the recorded examples, and truthful attempt labels. Joshua requested removing the hero tagline and the standalone Retelling/Reciting/Listing comparison, shortening the example introduction, naming it as a tutorial/example, and labelling the three selectors Example 1 to Example 3. Preserve necessary method requirements within the instructions.
+
+Proposed, awaiting layout adoption: a compact entry with immediately available section choice and an Instructions & examples destination; the recorded videos become the main demonstration. The synthetic RecallDemo would leave the primary launch area or become optional help. Keep the approved white surfaces, indigo/lavender, typography and illustration identity. Neither a global recolour nor removal of the runner's effects is proposed.
+
+Behavior boundary: Choose a section scrolls/focuses the list. A started unfinished attempt is not currently resumable from that list; Run it again creates a new attempt. Do not promise Resume without implementing and verifying it. Preserve completed report links and all attempts. Detailed analytics remain in Reading Progress, summaries on Dashboard, with the existing RRC-only access exception preserved.
+
 ## The Report Card (locked 2026-09-08)
 
 Its own world, scoped to `.rc` in `report-card.css`. Joshua's brief: highly
