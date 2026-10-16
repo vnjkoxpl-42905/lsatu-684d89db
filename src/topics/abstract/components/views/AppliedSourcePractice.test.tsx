@@ -1,0 +1,25 @@
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { expect, it, vi } from "vitest";
+import { ModuleDrill } from "./ModuleView";
+const save = vi.hoisted(() => vi.fn());
+const finish = vi.hoisted(() => vi.fn());
+vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: null }) }));
+vi.mock("../../store/AppContext", () => ({ useApp: () => ({markDrillComplete:save,markModuleDrillComplete:finish,addXp:vi.fn(), loading:false, progressOwnerId:null, bootcampState:{drillAttempts:[],moduleProgress:{}}}) }));
+it("shows the complete original five-choice question, persists the keyed attempt, and prevents advancement on save failure", async () => {
+  save.mockResolvedValueOnce({ok:false}).mockResolvedValue({ok:true}); finish.mockResolvedValue({ok:true});
+  const onDone = vi.fn();
+  render(<ModuleDrill moduleId="m5" onDone={onDone}/>);
+  expect(screen.getByText(/PT103-S1-Q18/)).toBeInTheDocument();
+  expect(screen.getAllByRole("button")).toHaveLength(5);
+  const answer = screen.getByRole("button", {name:/^C\. arguing that the principle/});
+  fireEvent.click(answer);
+  await screen.findByRole("alert");
+  expect(screen.getByRole("button", {name:/Finish module/})).toBeDisabled();
+  expect(onDone).not.toHaveBeenCalled();
+  fireEvent.click(answer);
+  await waitFor(() => expect(screen.getByRole("button", {name:/Finish module/})).toBeEnabled());
+  expect(save).toHaveBeenLastCalledWith("source_pt103_s1_q18", "method", true, 2, "Pretty sure", "wrong_method", expect.any(Number));
+  fireEvent.click(screen.getByRole("button", {name:/Finish module/}));
+  await waitFor(() => expect(onDone).toHaveBeenCalledOnce());
+  expect(finish).toHaveBeenCalledWith("m5");
+});

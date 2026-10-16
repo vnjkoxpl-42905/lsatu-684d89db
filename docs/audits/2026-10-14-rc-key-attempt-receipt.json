@@ -1,0 +1,86 @@
+{
+  "checkedAt": "2026-10-15T03:23:59.4242950Z",
+  "description": "Read-only aggregate hashes for saved RC attempts touching the 57 documented corrected question IDs. No database writes. Includes status and attempts, answers, verdicts, timing in query receipt; not a signed-in browser acceptance.",
+  "before": {
+    "rows": [
+      {
+        "attempt_rows": 23,
+        "match_previous_key": 1,
+        "receipt_md5": "46a8973b5feec8ce173b97cc78d67419",
+        "session_status": "completed",
+        "sessions": 2,
+        "source_kind": "full_practice_test",
+        "verdicts_differ_from_new_key": 0
+      },
+      {
+        "attempt_rows": 1,
+        "match_previous_key": 1,
+        "receipt_md5": "118ff2f9ce0c5762a20e6225d402ddfa",
+        "session_status": "in_progress",
+        "sessions": 1,
+        "source_kind": "full_practice_test",
+        "verdicts_differ_from_new_key": 1
+      },
+      {
+        "attempt_rows": 1,
+        "match_previous_key": 0,
+        "receipt_md5": "44cbbf6b709550e8f09524477a827f3b",
+        "session_status": "completed",
+        "sessions": 1,
+        "source_kind": "ordinary_rc",
+        "verdicts_differ_from_new_key": 0
+      },
+      {
+        "attempt_rows": 1,
+        "match_previous_key": 0,
+        "receipt_md5": "59f229b997075c74fefca2528d3e59fa",
+        "session_status": "completed",
+        "sessions": 1,
+        "source_kind": "standalone_timed_section",
+        "verdicts_differ_from_new_key": 0
+      }
+    ]
+  },
+  "after": {
+    "rows": [
+      {
+        "attempt_rows": 23,
+        "match_previous_key": 1,
+        "receipt_md5": "46a8973b5feec8ce173b97cc78d67419",
+        "session_status": "completed",
+        "sessions": 2,
+        "source_kind": "full_practice_test",
+        "verdicts_differ_from_new_key": 0
+      },
+      {
+        "attempt_rows": 1,
+        "match_previous_key": 1,
+        "receipt_md5": "118ff2f9ce0c5762a20e6225d402ddfa",
+        "session_status": "in_progress",
+        "sessions": 1,
+        "source_kind": "full_practice_test",
+        "verdicts_differ_from_new_key": 1
+      },
+      {
+        "attempt_rows": 1,
+        "match_previous_key": 0,
+        "receipt_md5": "44cbbf6b709550e8f09524477a827f3b",
+        "session_status": "completed",
+        "sessions": 1,
+        "source_kind": "ordinary_rc",
+        "verdicts_differ_from_new_key": 0
+      },
+      {
+        "attempt_rows": 1,
+        "match_previous_key": 0,
+        "receipt_md5": "59f229b997075c74fefca2528d3e59fa",
+        "session_status": "completed",
+        "sessions": 1,
+        "source_kind": "standalone_timed_section",
+        "verdicts_differ_from_new_key": 0
+      }
+    ]
+  },
+  "unchanged": true,
+  "sql": "WITH corrections(question_id,old_key,new_key) AS (VALUES (3883,'D','A'),(3884,'A','B'),(3891,'E','B'),(5470,'A','C'),(6483,'E','A'),(6802,'B','D'),(6904,'C','E'),(7106,'D','B'),(7120,'C','E'),(7122,'C','E'),(7229,'A','D'),(7230,'C','B'),(7234,'B','A'),(7686,'E','D'),(10087,'A','D'),(10088,'A','C'),(10089,'A','D'),(10090,'A','E'),(10091,'A','C'),(10093,'A','B'),(10094,'A','D'),(10095,'A','B'),(10096,'A','C'),(10097,'A','E'),(10098,'A','E'),(10100,'A','E'),(10101,'A','E'),(10102,'A','B'),(10104,'A','D'),(10105,'A','B'),(10106,'A','D'),(10108,'A','D'),(10109,'A','D'),(10111,'A','D'),(10113,'A','E'),(10732,'B','E'),(10733,'B','D'),(10735,'B','D'),(10737,'B','C'),(10739,'B','A'),(10740,'B','E'),(10741,'B','D'),(10742,'B','C'),(10743,'B','C'),(10744,'B','E'),(10745,'B','C'),(10746,'B','D'),(10747,'B','A'),(10748,'B','C'),(10750,'B','E'),(10751,'B','A'),(10752,'B','A'),(10753,'B','C'),(10754,'B','C'),(10755,'B','A'),(10757,'B','A'),(10758,'B','C')), affected AS (SELECT a.*,c.old_key,c.new_key,CASE WHEN s.practice_test_run_id IS NOT NULL OR s.config->>'practiceTestRunId' IS NOT NULL THEN 'full_practice_test' WHEN s.timed_section_sitting_id IS NOT NULL OR s.config->>'timedSectionSittingId' IS NOT NULL THEN 'standalone_timed_section' ELSE 'ordinary_rc' END AS source_kind,s.status AS session_status FROM public.rc_attempts a JOIN corrections c ON c.question_id=a.question_id JOIN public.rc_drill_sessions s ON s.id=a.session_id AND s.user_id=a.user_id) SELECT source_kind,session_status,count(*)::int AS attempt_rows,count(DISTINCT session_id)::int AS sessions,count(*) FILTER(WHERE selected IS NOT NULL AND is_correct IS DISTINCT FROM (selected=new_key))::int AS verdicts_differ_from_new_key,count(*) FILTER(WHERE selected IS NOT NULL AND is_correct=(selected=old_key))::int AS match_previous_key,md5(string_agg(row_to_json(affected)::text,'|' ORDER BY id)) AS receipt_md5 FROM affected GROUP BY source_kind,session_status ORDER BY source_kind,session_status"
+}

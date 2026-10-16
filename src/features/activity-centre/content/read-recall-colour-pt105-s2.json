@@ -1,0 +1,2679 @@
+{
+ "slug": "read-recall-colour-pt105-s2",
+ "title": "Read, Recall, Colour \u00b7 PT105 Section 2",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT105.S2",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT105_S2_Q1",
+   "prompt": "French divers recently found a large cave along the coast of the Mediterranean Sea. The cave is accessible only through an underwater tunnel. The interior of the cave is completely filled with seawater and contains numerous large stalagmites, which are stony pillars that form when drops of water fall repeatedly on a single spot on a cave floor, leaving behind mineral deposits that accumulate over time.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Divers found a cave. \u00b7 The divers were French. \u00b7 The find was recent. \u00b7 The cave is large. \u00b7 The cave is along a coast. \u00b7 The coast is the Mediterranean Sea's. (2) There is only one way into the cave. \u00b7 The way in is a tunnel. \u00b7 The tunnel is underwater. (3) This is about the inside of the cave. \u00b7 It is filled with water. \u00b7 The water is seawater. \u00b7 It is filled completely. \u00b7 The cave contains stalagmites. \u00b7 The stalagmites are numerous. \u00b7 The stalagmites are large. (4) Stalagmites are a kind of pillar. \u00b7 The pillars are made of stone. \u00b7 They form from falling drops of water. \u00b7 The drops fall repeatedly. \u00b7 The drops fall on one single spot. \u00b7 The spot is on a cave floor. \u00b7 The drops leave mineral deposits behind. \u00b7 The deposits build up over time.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "French divers recently found a large cave along the coast of the Mediterranean Sea.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Divers found a cave."
+      },
+      {
+       "n": 2,
+       "text": "The divers were French."
+      },
+      {
+       "n": 3,
+       "text": "The find was recent."
+      },
+      {
+       "n": 4,
+       "text": "The cave is large."
+      },
+      {
+       "n": 5,
+       "text": "The cave is along a coast."
+      },
+      {
+       "n": 6,
+       "text": "The coast is the Mediterranean Sea's."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The cave is accessible only through an underwater tunnel.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is only one way into the cave."
+      },
+      {
+       "n": 2,
+       "text": "The way in is a tunnel."
+      },
+      {
+       "n": 3,
+       "text": "The tunnel is underwater."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The interior of the cave is completely filled with seawater and contains numerous large stalagmites,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the inside of the cave."
+      },
+      {
+       "n": 2,
+       "text": "It is filled with water."
+      },
+      {
+       "n": 3,
+       "text": "The water is seawater."
+      },
+      {
+       "n": 4,
+       "text": "It is filled completely."
+      },
+      {
+       "n": 5,
+       "text": "The cave contains stalagmites."
+      },
+      {
+       "n": 6,
+       "text": "The stalagmites are numerous."
+      },
+      {
+       "n": 7,
+       "text": "The stalagmites are large."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "which are stony pillars that form when drops of water fall repeatedly on a single spot on a cave floor, leaving behind mineral deposits that accumulate over time.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Stalagmites are a kind of pillar."
+      },
+      {
+       "n": 2,
+       "text": "The pillars are made of stone."
+      },
+      {
+       "n": 3,
+       "text": "They form from falling drops of water."
+      },
+      {
+       "n": 4,
+       "text": "The drops fall repeatedly."
+      },
+      {
+       "n": 5,
+       "text": "The drops fall on one single spot."
+      },
+      {
+       "n": 6,
+       "text": "The spot is on a cave floor."
+      },
+      {
+       "n": 7,
+       "text": "The drops leave mineral deposits behind."
+      },
+      {
+       "n": 8,
+       "text": "The deposits build up over time."
+      }
+     ]
+    }
+   ],
+   "the_read": "The cave was not always completely filled with water.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q1",
+     "qnum": 1,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT105_S2_Q2",
+   "prompt": "A director of the Rexx Pharmaceutical Company argued that the development costs for new vaccines that the health department has requested should be subsidized by the government, since the marketing of vaccines promised to be less profitable than the marketing of any other pharmaceutical product. In support of this claim the director argued that sales of vaccines are likely to be lower since each vaccine is administered to a patient only once, whereas medicines that combat diseases and chronic illnesses are administered many times to each patient.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A director made an argument. \u00b7 The director is at Rexx Pharmaceutical Company. \u00b7 The argument is about development costs. \u00b7 The costs are for new vaccines. \u00b7 The health department requested those vaccines. \u00b7 He wants the costs subsidized. \u00b7 The government should do the subsidizing. (2) This is his reason. \u00b7 It is about marketing vaccines. \u00b7 Marketing vaccines is expected to be less profitable. \u00b7 The comparison is with marketing any other pharmaceutical product. (3) This is further support for the claim. \u00b7 Vaccine sales are likely to be lower. \u00b7 The reason is how often a vaccine is given. \u00b7 A vaccine is given to a patient only once. (4) This is the contrast. \u00b7 It is about other medicines. \u00b7 Those medicines fight diseases and chronic illnesses. \u00b7 Those are given many times to each patient.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A director of the Rexx Pharmaceutical Company argued that the development costs for new vaccines that the health department has requested should be subsidized by the government,",
+     "details": [
+      {
+       "n": 1,
+       "text": "A director made an argument."
+      },
+      {
+       "n": 2,
+       "text": "The director is at Rexx Pharmaceutical Company."
+      },
+      {
+       "n": 3,
+       "text": "The argument is about development costs."
+      },
+      {
+       "n": 4,
+       "text": "The costs are for new vaccines."
+      },
+      {
+       "n": 5,
+       "text": "The health department requested those vaccines."
+      },
+      {
+       "n": 6,
+       "text": "He wants the costs subsidized."
+      },
+      {
+       "n": 7,
+       "text": "The government should do the subsidizing."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "since the marketing of vaccines promised to be less profitable than the marketing of any other pharmaceutical product.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is his reason."
+      },
+      {
+       "n": 2,
+       "text": "It is about marketing vaccines."
+      },
+      {
+       "n": 3,
+       "text": "Marketing vaccines is expected to be less profitable."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with marketing any other pharmaceutical product."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "In support of this claim the director argued that sales of vaccines are likely to be lower since each vaccine is administered to a patient only once,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is further support for the claim."
+      },
+      {
+       "n": 2,
+       "text": "Vaccine sales are likely to be lower."
+      },
+      {
+       "n": 3,
+       "text": "The reason is how often a vaccine is given."
+      },
+      {
+       "n": 4,
+       "text": "A vaccine is given to a patient only once."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "whereas medicines that combat diseases and chronic illnesses are administered many times to each patient.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the contrast."
+      },
+      {
+       "n": 2,
+       "text": "It is about other medicines."
+      },
+      {
+       "n": 3,
+       "text": "Those medicines fight diseases and chronic illnesses."
+      },
+      {
+       "n": 4,
+       "text": "Those are given many times to each patient."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if it's obligatory for pharmaceutical companies to absorb the costs of developing vaccines as a contribution to the public good? What if the government is not obliged to subsidized less profitable pharmaceutical products?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q2",
+     "qnum": 2,
+     "question_type": "Weaken",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT105_S2_Q3",
+   "prompt": "Manager: Our new computer network, the purpose of which is to increase productivity, can be installed during the day, which would disrupt our employees' work, or else at night, which would entail much higher installation charges. Since saving money is important, we should have the network installed during the day.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A manager is speaking. \u00b7 There is a new computer network. \u00b7 Its purpose is to increase productivity. \u00b7 It can be installed during the day. (2) That option would disrupt work. \u00b7 The work disrupted is the employees'. \u00b7 The other option is installing at night. \u00b7 Night installation would cost much more. (3) Saving money is important. \u00b7 That is the reason given. \u00b7 The conclusion is to install during the day.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Manager: Our new computer network, the purpose of which is to increase productivity, can be installed during the day,",
+     "details": [
+      {
+       "n": 1,
+       "text": "A manager is speaking."
+      },
+      {
+       "n": 2,
+       "text": "There is a new computer network."
+      },
+      {
+       "n": 3,
+       "text": "Its purpose is to increase productivity."
+      },
+      {
+       "n": 4,
+       "text": "It can be installed during the day."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "which would disrupt our employees' work, or else at night, which would entail much higher installation charges.",
+     "details": [
+      {
+       "n": 1,
+       "text": "That option would disrupt work."
+      },
+      {
+       "n": 2,
+       "text": "The work disrupted is the employees'."
+      },
+      {
+       "n": 3,
+       "text": "The other option is installing at night."
+      },
+      {
+       "n": 4,
+       "text": "Night installation would cost much more."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since saving money is important, we should have the network installed during the day.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Saving money is important."
+      },
+      {
+       "n": 2,
+       "text": "That is the reason given."
+      },
+      {
+       "n": 3,
+       "text": "The conclusion is to install during the day."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the monetary value of lost productivity due to daytime installation is greater than the increased cost of evening installation?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q3",
+     "qnum": 3,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT105_S2_Q4",
+   "prompt": "An ingredient in marijuana known as THC has been found to inactivate herpesviruses in experiments. In previous experiments researchers found that inactivated herpesviruses can convert healthy cells into cancer cells. It can be concluded that the use of marijuana can cause cancer.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is an ingredient in marijuana. \u00b7 The ingredient is called THC. \u00b7 THC can inactivate herpesviruses. \u00b7 This was found in experiments. (2) This comes from previous experiments. \u00b7 Researchers were the ones who found it. \u00b7 It is about inactivated herpesviruses. \u00b7 They can convert cells. \u00b7 The cells converted are healthy ones. \u00b7 They become cancer cells. (3) This is the conclusion. \u00b7 It is about using marijuana. \u00b7 Using marijuana can cause cancer.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "An ingredient in marijuana known as THC has been found to inactivate herpesviruses in experiments.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is an ingredient in marijuana."
+      },
+      {
+       "n": 2,
+       "text": "The ingredient is called THC."
+      },
+      {
+       "n": 3,
+       "text": "THC can inactivate herpesviruses."
+      },
+      {
+       "n": 4,
+       "text": "This was found in experiments."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In previous experiments researchers found that inactivated herpesviruses can convert healthy cells into cancer cells.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This comes from previous experiments."
+      },
+      {
+       "n": 2,
+       "text": "Researchers were the ones who found it."
+      },
+      {
+       "n": 3,
+       "text": "It is about inactivated herpesviruses."
+      },
+      {
+       "n": 4,
+       "text": "They can convert cells."
+      },
+      {
+       "n": 5,
+       "text": "The cells converted are healthy ones."
+      },
+      {
+       "n": 6,
+       "text": "They become cancer cells."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "It can be concluded that the use of marijuana can cause cancer.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about using marijuana."
+      },
+      {
+       "n": 3,
+       "text": "Using marijuana can cause cancer."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if other ingredients in marijuana negate THC's carcinogenic effects?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q4",
+     "qnum": 4,
+     "question_type": "Weaken",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT105_S2_Q5",
+   "prompt": "Archaeologist: A large corporation has recently offered to provide funding to restore an archaeological site and to construct facilities to make the site readily accessible to the general public. The restoration will conform to the best current theories about how the site appeared at the height of the ancient civilization that occupied it. This offer should be rejected, however, because many parts of the site contain unexamined evidence.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) An archaeologist is speaking. \u00b7 A corporation has made an offer. \u00b7 The corporation is large. \u00b7 The offer is recent. \u00b7 The offer is funding. \u00b7 The funding would restore an archaeological site. \u00b7 It would also construct facilities. \u00b7 The facilities would make the site readily accessible to the general public. (2) The restoration will follow theories. \u00b7 They are the best current theories. \u00b7 They concern how the site appeared. \u00b7 The moment described is the height of that civilization. \u00b7 The civilization was ancient. \u00b7 That civilization occupied the site. (3) This is the conclusion. \u00b7 The offer should be rejected. \u00b7 The reason is unexamined evidence. \u00b7 Many parts of the site contain it.",
+   "category": "Sufficient Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Archaeologist: A large corporation has recently offered to provide funding to restore an archaeological site and to construct facilities to make the site readily accessible to the general public.",
+     "details": [
+      {
+       "n": 1,
+       "text": "An archaeologist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "A corporation has made an offer."
+      },
+      {
+       "n": 3,
+       "text": "The corporation is large."
+      },
+      {
+       "n": 4,
+       "text": "The offer is recent."
+      },
+      {
+       "n": 5,
+       "text": "The offer is funding."
+      },
+      {
+       "n": 6,
+       "text": "The funding would restore an archaeological site."
+      },
+      {
+       "n": 7,
+       "text": "It would also construct facilities."
+      },
+      {
+       "n": 8,
+       "text": "The facilities would make the site readily accessible to the general public."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The restoration will conform to the best current theories about how the site appeared at the height of the ancient civilization that occupied it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The restoration will follow theories."
+      },
+      {
+       "n": 2,
+       "text": "They are the best current theories."
+      },
+      {
+       "n": 3,
+       "text": "They concern how the site appeared."
+      },
+      {
+       "n": 4,
+       "text": "The moment described is the height of that civilization."
+      },
+      {
+       "n": 5,
+       "text": "The civilization was ancient."
+      },
+      {
+       "n": 6,
+       "text": "That civilization occupied the site."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "This offer should be rejected, however, because many parts of the site contain unexamined evidence.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The offer should be rejected."
+      },
+      {
+       "n": 3,
+       "text": "The reason is unexamined evidence."
+      },
+      {
+       "n": 4,
+       "text": "Many parts of the site contain it."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if making the site available to the public is more important that preserving unexamined evidence?\nor\nWhat the restoration will not endanger the unexamined evidence?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q5",
+     "qnum": 5,
+     "question_type": "Sufficient Assumption",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT105_S2_Q6",
+   "prompt": "Besides laying eggs in her own nest, any female wood duck will lay an egg in the nest of another female wood duck if she sees the other duck leaving her nest. Under natural nesting conditions, this parasitic behavior is relatively rare because the ducks' nests are well hidden. However, when people put up nesting boxes to help the ducks breed, they actually undercut the ducks' reproductive efforts. These nesting boxes become so crowded with extra eggs that few, if any, of the eggs in those boxes hatch.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A female wood duck lays eggs in her own nest. \u00b7 She will also lay an egg elsewhere. \u00b7 The other place is another female wood duck's nest. \u00b7 This happens under a condition. \u00b7 The condition is seeing the other duck leave her nest. \u00b7 This is true of any female wood duck. (2) This is about natural nesting conditions. \u00b7 The behavior is called parasitic. \u00b7 It is relatively rare. \u00b7 The reason is the nests. \u00b7 The nests are well hidden. (3) This is a contrast. \u00b7 People put up nesting boxes. \u00b7 Their intent is to help the ducks breed. \u00b7 The actual effect is the opposite. \u00b7 They undercut the ducks' reproductive efforts. (4) The boxes become crowded. \u00b7 What crowds them is extra eggs. \u00b7 The crowding has a result. \u00b7 Few of the eggs hatch. \u00b7 It is possible that none of them hatch. \u00b7 This is about eggs in those boxes.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Besides laying eggs in her own nest, any female wood duck will lay an egg in the nest of another female wood duck if she sees the other duck leaving her nest.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A female wood duck lays eggs in her own nest."
+      },
+      {
+       "n": 2,
+       "text": "She will also lay an egg elsewhere."
+      },
+      {
+       "n": 3,
+       "text": "The other place is another female wood duck's nest."
+      },
+      {
+       "n": 4,
+       "text": "This happens under a condition."
+      },
+      {
+       "n": 5,
+       "text": "The condition is seeing the other duck leave her nest."
+      },
+      {
+       "n": 6,
+       "text": "This is true of any female wood duck."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Under natural nesting conditions, this parasitic behavior is relatively rare because the ducks' nests are well hidden.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about natural nesting conditions."
+      },
+      {
+       "n": 2,
+       "text": "The behavior is called parasitic."
+      },
+      {
+       "n": 3,
+       "text": "It is relatively rare."
+      },
+      {
+       "n": 4,
+       "text": "The reason is the nests."
+      },
+      {
+       "n": 5,
+       "text": "The nests are well hidden."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "However, when people put up nesting boxes to help the ducks breed, they actually undercut the ducks' reproductive efforts.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "People put up nesting boxes."
+      },
+      {
+       "n": 3,
+       "text": "Their intent is to help the ducks breed."
+      },
+      {
+       "n": 4,
+       "text": "The actual effect is the opposite."
+      },
+      {
+       "n": 5,
+       "text": "They undercut the ducks' reproductive efforts."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "These nesting boxes become so crowded with extra eggs that few, if any, of the eggs in those boxes hatch.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The boxes become crowded."
+      },
+      {
+       "n": 2,
+       "text": "What crowds them is extra eggs."
+      },
+      {
+       "n": 3,
+       "text": "The crowding has a result."
+      },
+      {
+       "n": 4,
+       "text": "Few of the eggs hatch."
+      },
+      {
+       "n": 5,
+       "text": "It is possible that none of them hatch."
+      },
+      {
+       "n": 6,
+       "text": "This is about eggs in those boxes."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if even fewer duck eggs hatch in the wild due to the wood duck predator's predilection for omelets?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q6",
+     "qnum": 6,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT105_S2_Q7",
+   "prompt": "The crux of creativity resides in the ability to manufacture variations on a theme. If we look at the history of science, for instance, we see that every idea is built upon a thousand related ideas. Careful analysis leads us to understand that what we choose to call a new theme or a new discovery is itself always and without exception some sort of variation, on a deep level, of previous themes.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Creativity has a crux. \u00b7 The crux is an ability. \u00b7 The ability is to manufacture variations. \u00b7 The variations are on a theme. (2) This is an example. \u00b7 The example is the history of science. \u00b7 Every idea is built on other ideas. \u00b7 The number given is a thousand. \u00b7 Those ideas are related. (3) Careful analysis leads to an understanding. \u00b7 It is about what we call new. \u00b7 We call things a new theme or a new discovery. \u00b7 That is our choice of words. \u00b7 Such a thing is itself a variation. \u00b7 This is always true, without exception. \u00b7 The variation is on a deep level. \u00b7 It varies previous themes.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The crux of creativity resides in the ability to manufacture variations on a theme.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Creativity has a crux."
+      },
+      {
+       "n": 2,
+       "text": "The crux is an ability."
+      },
+      {
+       "n": 3,
+       "text": "The ability is to manufacture variations."
+      },
+      {
+       "n": 4,
+       "text": "The variations are on a theme."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "If we look at the history of science, for instance, we see that every idea is built upon a thousand related ideas.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an example."
+      },
+      {
+       "n": 2,
+       "text": "The example is the history of science."
+      },
+      {
+       "n": 3,
+       "text": "Every idea is built on other ideas."
+      },
+      {
+       "n": 4,
+       "text": "The number given is a thousand."
+      },
+      {
+       "n": 5,
+       "text": "Those ideas are related."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Careful analysis leads us to understand that what we choose to call a new theme or a new discovery is itself always and without exception some sort of variation, on a deep level, of previous themes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Careful analysis leads to an understanding."
+      },
+      {
+       "n": 2,
+       "text": "It is about what we call new."
+      },
+      {
+       "n": 3,
+       "text": "We call things a new theme or a new discovery."
+      },
+      {
+       "n": 4,
+       "text": "That is our choice of words."
+      },
+      {
+       "n": 5,
+       "text": "Such a thing is itself a variation."
+      },
+      {
+       "n": 6,
+       "text": "This is always true, without exception."
+      },
+      {
+       "n": 7,
+       "text": "The variation is on a deep level."
+      },
+      {
+       "n": 8,
+       "text": "It varies previous themes."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the \"crux of creativity\" has nothing to do with the history of science? What if these new discoveries or themes are not examples of creativity?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q7",
+     "qnum": 7,
+     "question_type": "Inference",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT105_S2_Q8",
+   "prompt": "Millions of female bats rear their pups in Bracken Cave. Although the mothers all leave the cave nightly, on their return each mother is almost always swiftly reunited with her own pup. Since the bats' calls are their only means of finding one another, and a bat pup cannot distinguish the call of its mother from that of any other adult bat, it is clear that each mother bat can recognize the call of her pup.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Female bats rear pups. \u00b7 There are millions of them. \u00b7 This happens in Bracken Cave. (2) The mothers leave the cave. \u00b7 All of them leave. \u00b7 The mothers leave every night. \u00b7 The mothers come back to the cave. \u00b7 On return each mother is reunited with a pup. \u00b7 The pup is her own. \u00b7 This happens almost always. \u00b7 The reunion happens swiftly. (3) These are the premises. \u00b7 The bats have calls of their own. \u00b7 The calls are how they find one another. \u00b7 Calls are their only means of doing so. \u00b7 A bat pup cannot distinguish its mother's call. \u00b7 It cannot tell her call from that of any other adult bat. (4) This is the conclusion. \u00b7 It is stated as clear. \u00b7 Each mother bat can recognize a call. \u00b7 The call is her pup's.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Millions of female bats rear their pups in Bracken Cave.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Female bats rear pups."
+      },
+      {
+       "n": 2,
+       "text": "There are millions of them."
+      },
+      {
+       "n": 3,
+       "text": "This happens in Bracken Cave."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Although the mothers all leave the cave nightly, on their return each mother is almost always swiftly reunited with her own pup.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The mothers leave the cave."
+      },
+      {
+       "n": 2,
+       "text": "All of them leave."
+      },
+      {
+       "n": 3,
+       "text": "The mothers leave every night."
+      },
+      {
+       "n": 4,
+       "text": "The mothers come back to the cave."
+      },
+      {
+       "n": 5,
+       "text": "On return each mother is reunited with a pup."
+      },
+      {
+       "n": 6,
+       "text": "The pup is her own."
+      },
+      {
+       "n": 7,
+       "text": "This happens almost always."
+      },
+      {
+       "n": 8,
+       "text": "The reunion happens swiftly."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since the bats' calls are their only means of finding one another, and a bat pup cannot distinguish the call of its mother from that of any other adult bat,",
+     "details": [
+      {
+       "n": 1,
+       "text": "These are the premises."
+      },
+      {
+       "n": 2,
+       "text": "The bats have calls of their own."
+      },
+      {
+       "n": 3,
+       "text": "The calls are how they find one another."
+      },
+      {
+       "n": 4,
+       "text": "Calls are their only means of doing so."
+      },
+      {
+       "n": 5,
+       "text": "A bat pup cannot distinguish its mother's call."
+      },
+      {
+       "n": 6,
+       "text": "It cannot tell her call from that of any other adult bat."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "it is clear that each mother bat can recognize the call of her pup.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is stated as clear."
+      },
+      {
+       "n": 3,
+       "text": "Each mother bat can recognize a call."
+      },
+      {
+       "n": 4,
+       "text": "The call is her pup's."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the child bats never leave the same place and the mothers just fly back to the same exact spot? What if it's innate and they don't need to recognize one another to find each other?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q8",
+     "qnum": 8,
+     "question_type": "Method",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT105_S2_Q9",
+   "prompt": "Someone who gets sick from eating a meal will often develop a strong distaste for the one food in the meal that had the most distinctive flavor, whether or not that food caused the sickness. This phenomenon explains why children are especially likely to develop strong aversions to some foods.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A person becomes sick. \u00b7 The sickness comes from eating a meal. \u00b7 That person often develops a distaste. \u00b7 The distaste is strong. \u00b7 It is for one food in the meal. \u00b7 That food had the most distinctive flavor. \u00b7 This holds either way. \u00b7 It does not matter whether that food caused the sickness. (2) The phenomenon explains something. \u00b7 It is about children. \u00b7 Children develop strong aversions. \u00b7 The aversions are to some foods. \u00b7 Children are especially likely to do this.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Someone who gets sick from eating a meal will often develop a strong distaste for the one food in the meal that had the most distinctive flavor, whether or not that food caused the sickness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A person becomes sick."
+      },
+      {
+       "n": 2,
+       "text": "The sickness comes from eating a meal."
+      },
+      {
+       "n": 3,
+       "text": "That person often develops a distaste."
+      },
+      {
+       "n": 4,
+       "text": "The distaste is strong."
+      },
+      {
+       "n": 5,
+       "text": "It is for one food in the meal."
+      },
+      {
+       "n": 6,
+       "text": "That food had the most distinctive flavor."
+      },
+      {
+       "n": 7,
+       "text": "This holds either way."
+      },
+      {
+       "n": 8,
+       "text": "It does not matter whether that food caused the sickness."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This phenomenon explains why children are especially likely to develop strong aversions to some foods.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The phenomenon explains something."
+      },
+      {
+       "n": 2,
+       "text": "It is about children."
+      },
+      {
+       "n": 3,
+       "text": "Children develop strong aversions."
+      },
+      {
+       "n": 4,
+       "text": "The aversions are to some foods."
+      },
+      {
+       "n": 5,
+       "text": "Children are especially likely to do this."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if children never get sick from eating meals?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q9",
+     "qnum": 9,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT105_S2_Q10",
+   "prompt": "Premiums for automobile accident insurance are often higher for red cars than for cars of other colors. To justify these higher charges, insurance companies claim that, overall, a greater percentage of red cars are involved in accidents than are cars of any other color. If this claim is true, then lives could undoubtedly be saved by banning red cars from the roads altogether.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about insurance premiums. \u00b7 The insurance is automobile accident insurance. \u00b7 Premiums are higher for red cars. \u00b7 The comparison is with cars of other colors. \u00b7 This is often the case. (2) Insurance companies want to justify the charges. \u00b7 They make a claim. \u00b7 The claim is about a percentage. \u00b7 A greater percentage of red cars are involved in accidents. \u00b7 The comparison is with cars of any other color. \u00b7 This is an overall figure. (3) This is conditional on the claim being true. \u00b7 The conclusion is that lives could be saved. \u00b7 The way to save them is banning red cars. \u00b7 The ban would remove them from the roads. \u00b7 The ban would be total, not partial. \u00b7 The claim is made with certainty.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Premiums for automobile accident insurance are often higher for red cars than for cars of other colors.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about insurance premiums."
+      },
+      {
+       "n": 2,
+       "text": "The insurance is automobile accident insurance."
+      },
+      {
+       "n": 3,
+       "text": "Premiums are higher for red cars."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with cars of other colors."
+      },
+      {
+       "n": 5,
+       "text": "This is often the case."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "To justify these higher charges, insurance companies claim that, overall, a greater percentage of red cars are involved in accidents than are cars of any other color.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Insurance companies want to justify the charges."
+      },
+      {
+       "n": 2,
+       "text": "They make a claim."
+      },
+      {
+       "n": 3,
+       "text": "The claim is about a percentage."
+      },
+      {
+       "n": 4,
+       "text": "A greater percentage of red cars are involved in accidents."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with cars of any other color."
+      },
+      {
+       "n": 6,
+       "text": "This is an overall figure."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "If this claim is true, then lives could undoubtedly be saved by banning red cars from the roads altogether.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is conditional on the claim being true."
+      },
+      {
+       "n": 2,
+       "text": "The conclusion is that lives could be saved."
+      },
+      {
+       "n": 3,
+       "text": "The way to save them is banning red cars."
+      },
+      {
+       "n": 4,
+       "text": "The ban would remove them from the roads."
+      },
+      {
+       "n": 5,
+       "text": "The ban would be total, not partial."
+      },
+      {
+       "n": 6,
+       "text": "The claim is made with certainty."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the color red does not cause the accidents? What if red cars tend to get in more accidents because reckless drivers tend to choose red cars?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q10",
+     "qnum": 10,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT105_S2_Q11",
+   "prompt": "A certain credit-card company awards its customers bonus points for using its credit card. Customers can use accumulated points in the purchase of brand name merchandise by mail at prices lower than the manufacturers' suggested retail prices. At any given time, therefore, customers who purchase merchandise using the bonus points spend less than they would spend if they purchased the same merchandise in retail stores.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a credit-card company. \u00b7 It awards bonus points. \u00b7 The points go to its customers. \u00b7 They are awarded for using its credit card. (2) Customers accumulate the points. \u00b7 They can use them to purchase merchandise. \u00b7 The merchandise is brand name. \u00b7 The purchase is by mail. \u00b7 The prices are lower. \u00b7 The comparison is with manufacturers' suggested retail prices. (3) This is the conclusion. \u00b7 It holds at any given time. \u00b7 It is about customers who purchase using the bonus points. \u00b7 Those customers spend less money. \u00b7 The comparison is with what they would otherwise spend. \u00b7 The alternative is buying the same merchandise in retail stores.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A certain credit-card company awards its customers bonus points for using its credit card.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a credit-card company."
+      },
+      {
+       "n": 2,
+       "text": "It awards bonus points."
+      },
+      {
+       "n": 3,
+       "text": "The points go to its customers."
+      },
+      {
+       "n": 4,
+       "text": "They are awarded for using its credit card."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Customers can use accumulated points in the purchase of brand name merchandise by mail at prices lower than the manufacturers' suggested retail prices.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Customers accumulate the points."
+      },
+      {
+       "n": 2,
+       "text": "They can use them to purchase merchandise."
+      },
+      {
+       "n": 3,
+       "text": "The merchandise is brand name."
+      },
+      {
+       "n": 4,
+       "text": "The purchase is by mail."
+      },
+      {
+       "n": 5,
+       "text": "The prices are lower."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with manufacturers' suggested retail prices."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "At any given time, therefore, customers who purchase merchandise using the bonus points spend less than they would spend if they purchased the same merchandise in retail stores.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It holds at any given time."
+      },
+      {
+       "n": 3,
+       "text": "It is about customers who purchase using the bonus points."
+      },
+      {
+       "n": 4,
+       "text": "Those customers spend less money."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with what they would otherwise spend."
+      },
+      {
+       "n": 6,
+       "text": "The alternative is buying the same merchandise in retail stores."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if retail stores are always running sales that mark down brand name items lower than MSRP?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q11",
+     "qnum": 11,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT105_S2_Q12",
+   "prompt": "It is probably not true that colic in infants is caused by the inability of those infants to tolerate certain antibodies found in cow's milk, since it is often the case that symptoms of colic are shown by infants that are fed breast milk exclusively.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is the conclusion. \u00b7 It is hedged as probably not true. \u00b7 The claim being rejected is about colic in infants. \u00b7 The claim is that colic is caused by an inability. \u00b7 The inability is to tolerate certain antibodies. \u00b7 Those antibodies are found in cow's milk. (2) This is the reason. \u00b7 This is often the case. \u00b7 Symptoms of colic are shown. \u00b7 They are shown by infants. \u00b7 Those infants are fed breast milk. \u00b7 They are fed breast milk exclusively.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "It is probably not true that colic in infants is caused by the inability of those infants to tolerate certain antibodies found in cow's milk,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is hedged as probably not true."
+      },
+      {
+       "n": 3,
+       "text": "The claim being rejected is about colic in infants."
+      },
+      {
+       "n": 4,
+       "text": "The claim is that colic is caused by an inability."
+      },
+      {
+       "n": 5,
+       "text": "The inability is to tolerate certain antibodies."
+      },
+      {
+       "n": 6,
+       "text": "Those antibodies are found in cow's milk."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "since it is often the case that symptoms of colic are shown by infants that are fed breast milk exclusively.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the reason."
+      },
+      {
+       "n": 2,
+       "text": "This is often the case."
+      },
+      {
+       "n": 3,
+       "text": "Symptoms of colic are shown."
+      },
+      {
+       "n": 4,
+       "text": "They are shown by infants."
+      },
+      {
+       "n": 5,
+       "text": "Those infants are fed breast milk."
+      },
+      {
+       "n": 6,
+       "text": "They are fed breast milk exclusively."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if cow's milk and breast milk contain the same antibodies? What if colic can have multiple causes?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q12",
+     "qnum": 12,
+     "question_type": "Weaken",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT105_S2_Q13",
+   "prompt": "Yolanda: Gaining access to computers without authorization and manipulating the data and programs they contain is comparable to joyriding in stolen cars; both involve breaking into private property and treating it recklessly. Joyriding, however, is the more dangerous crime because it physically endangers people, whereas only intellectual property is harmed in the case of computer crimes.\n\nArjun: I disagree! For example, unauthorized use of medical records systems in hospitals could damage data systems on which human lives depend, and therefore computer crimes also cause physical harm to people.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Yolanda is the first speaker. \u00b7 She describes gaining access to computers. \u00b7 The access is without authorization. \u00b7 It also includes manipulating data and programs. \u00b7 Those are what the computers contain. \u00b7 She compares this to joyriding. \u00b7 The joyriding is in stolen cars. (2) This is what the two share. \u00b7 Both involve breaking in. \u00b7 What is broken into is private property. \u00b7 Both involve treating it recklessly. (3) This is a contrast. \u00b7 Joyriding is the more dangerous of the two. \u00b7 The reason is that it endangers people. \u00b7 The danger is physical. \u00b7 With computer crimes only intellectual property is harmed. (4) A second speaker begins. \u00b7 The speaker is Arjun. \u00b7 Arjun disagrees with what Yolanda said. (5) This is his example. \u00b7 It is unauthorized use. \u00b7 The use is of medical records systems. \u00b7 Those systems are in hospitals. \u00b7 Such use could damage data systems. \u00b7 Human lives depend on those systems. (6) This is his conclusion. \u00b7 It is about computer crimes. \u00b7 They cause physical harm. \u00b7 The harm is to people. \u00b7 They do this too, not only joyriding.",
+   "category": "Controversy",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Yolanda: Gaining access to computers without authorization and manipulating the data and programs they contain is comparable to joyriding in stolen cars;",
+     "details": [
+      {
+       "n": 1,
+       "text": "Yolanda is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "She describes gaining access to computers."
+      },
+      {
+       "n": 3,
+       "text": "The access is without authorization."
+      },
+      {
+       "n": 4,
+       "text": "It also includes manipulating data and programs."
+      },
+      {
+       "n": 5,
+       "text": "Those are what the computers contain."
+      },
+      {
+       "n": 6,
+       "text": "She compares this to joyriding."
+      },
+      {
+       "n": 7,
+       "text": "The joyriding is in stolen cars."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "both involve breaking into private property and treating it recklessly.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is what the two share."
+      },
+      {
+       "n": 2,
+       "text": "Both involve breaking in."
+      },
+      {
+       "n": 3,
+       "text": "What is broken into is private property."
+      },
+      {
+       "n": 4,
+       "text": "Both involve treating it recklessly."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Joyriding, however, is the more dangerous crime because it physically endangers people, whereas only intellectual property is harmed in the case of computer crimes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Joyriding is the more dangerous of the two."
+      },
+      {
+       "n": 3,
+       "text": "The reason is that it endangers people."
+      },
+      {
+       "n": 4,
+       "text": "The danger is physical."
+      },
+      {
+       "n": 5,
+       "text": "With computer crimes only intellectual property is harmed."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Arjun: I disagree!",
+     "details": [
+      {
+       "n": 1,
+       "text": "A second speaker begins."
+      },
+      {
+       "n": 2,
+       "text": "The speaker is Arjun."
+      },
+      {
+       "n": 3,
+       "text": "Arjun disagrees with what Yolanda said."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "For example, unauthorized use of medical records systems in hospitals could damage data systems on which human lives depend,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is his example."
+      },
+      {
+       "n": 2,
+       "text": "It is unauthorized use."
+      },
+      {
+       "n": 3,
+       "text": "The use is of medical records systems."
+      },
+      {
+       "n": 4,
+       "text": "Those systems are in hospitals."
+      },
+      {
+       "n": 5,
+       "text": "Such use could damage data systems."
+      },
+      {
+       "n": 6,
+       "text": "Human lives depend on those systems."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "and therefore computer crimes also cause physical harm to people.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is his conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about computer crimes."
+      },
+      {
+       "n": 3,
+       "text": "They cause physical harm."
+      },
+      {
+       "n": 4,
+       "text": "The harm is to people."
+      },
+      {
+       "n": 5,
+       "text": "They do this too, not only joyriding."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether computer crimes only ever cause harm to intellectual property.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q13",
+     "qnum": 13,
+     "question_type": "Controversy",
+     "correct_answer": "D"
+    },
+    {
+     "citation": "PT105.S2.Q14",
+     "qnum": 14,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT105_S2_Q15",
+   "prompt": "A report of a government survey concluded that Center City was among the ten cities in the nation with the highest dropout rate from its schools. The survey data were obtained by asking all city residents over the age of 19 whether they were high school graduates and computing the proportion who were not. A city school official objected that the result did not seem accurate according to the schools' figures.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a report. \u00b7 The report is of a government survey. \u00b7 It reached a conclusion. \u00b7 The conclusion is about Center City. \u00b7 Center City was among ten cities. \u00b7 Those ten had the highest dropout rate. \u00b7 The rate is from its schools. \u00b7 The comparison is nationwide. (2) This is how the data were obtained. \u00b7 People were asked a question. \u00b7 Those asked were all city residents. \u00b7 They were over the age of 19. \u00b7 The question was whether they were high school graduates. \u00b7 A proportion was then computed. \u00b7 The proportion was of those who were not. (3) Someone raised an objection. \u00b7 The objector is a city school official. \u00b7 The objection is that the result did not seem accurate. \u00b7 The basis is the schools' own figures.",
+   "category": "Gap Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A report of a government survey concluded that Center City was among the ten cities in the nation with the highest dropout rate from its schools.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a report."
+      },
+      {
+       "n": 2,
+       "text": "The report is of a government survey."
+      },
+      {
+       "n": 3,
+       "text": "It reached a conclusion."
+      },
+      {
+       "n": 4,
+       "text": "The conclusion is about Center City."
+      },
+      {
+       "n": 5,
+       "text": "Center City was among ten cities."
+      },
+      {
+       "n": 6,
+       "text": "Those ten had the highest dropout rate."
+      },
+      {
+       "n": 7,
+       "text": "The rate is from its schools."
+      },
+      {
+       "n": 8,
+       "text": "The comparison is nationwide."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The survey data were obtained by asking all city residents over the age of 19 whether they were high school graduates and computing the proportion who were not.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is how the data were obtained."
+      },
+      {
+       "n": 2,
+       "text": "People were asked a question."
+      },
+      {
+       "n": 3,
+       "text": "Those asked were all city residents."
+      },
+      {
+       "n": 4,
+       "text": "They were over the age of 19."
+      },
+      {
+       "n": 5,
+       "text": "The question was whether they were high school graduates."
+      },
+      {
+       "n": 6,
+       "text": "A proportion was then computed."
+      },
+      {
+       "n": 7,
+       "text": "The proportion was of those who were not."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "A city school official objected that the result did not seem accurate according to the schools' figures.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Someone raised an objection."
+      },
+      {
+       "n": 2,
+       "text": "The objector is a city school official."
+      },
+      {
+       "n": 3,
+       "text": "The objection is that the result did not seem accurate."
+      },
+      {
+       "n": 4,
+       "text": "The basis is the schools' own figures."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if many of the residents over 19 had gone and dropped out of school in another city? What if most people who didn't finish high school were expelled?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q15",
+     "qnum": 15,
+     "question_type": "Gap Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT105_S2_Q16",
+   "prompt": "Brown dwarfs\u2014dim red stars that are too cool to burn hydrogen\u2014are very similar in appearance to red dwarf stars, which are just hot enough to burn hydrogen. Stars, when first formed, contain substantial amounts of the element lithium. All stars but the coolest of the brown dwarfs are hot enough to destroy lithium completely by converting it to helium. Accordingly, any star found that contains no lithium is not one of these coolest brown dwarfs.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Brown dwarfs are stars. \u00b7 They are dim and red. \u00b7 They are too cool to burn hydrogen. \u00b7 They look very similar to red dwarf stars. \u00b7 Red dwarfs are just hot enough to burn hydrogen. (2) This is about stars when first formed. \u00b7 Newly formed stars contain lithium. \u00b7 The amounts are substantial. (3) Almost all stars are hot enough to destroy lithium. \u00b7 The exception is the coolest of the brown dwarfs. \u00b7 The destruction is complete. \u00b7 It happens by converting lithium to helium. (4) This is the conclusion. \u00b7 It is about any star found to contain no lithium. \u00b7 Such a star is not one of these coolest brown dwarfs.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Brown dwarfs\u2014dim red stars that are too cool to burn hydrogen\u2014are very similar in appearance to red dwarf stars, which are just hot enough to burn hydrogen.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Brown dwarfs are stars."
+      },
+      {
+       "n": 2,
+       "text": "They are dim and red."
+      },
+      {
+       "n": 3,
+       "text": "They are too cool to burn hydrogen."
+      },
+      {
+       "n": 4,
+       "text": "They look very similar to red dwarf stars."
+      },
+      {
+       "n": 5,
+       "text": "Red dwarfs are just hot enough to burn hydrogen."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Stars, when first formed, contain substantial amounts of the element lithium.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about stars when first formed."
+      },
+      {
+       "n": 2,
+       "text": "Newly formed stars contain lithium."
+      },
+      {
+       "n": 3,
+       "text": "The amounts are substantial."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "All stars but the coolest of the brown dwarfs are hot enough to destroy lithium completely by converting it to helium.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Almost all stars are hot enough to destroy lithium."
+      },
+      {
+       "n": 2,
+       "text": "The exception is the coolest of the brown dwarfs."
+      },
+      {
+       "n": 3,
+       "text": "The destruction is complete."
+      },
+      {
+       "n": 4,
+       "text": "It happens by converting lithium to helium."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Accordingly, any star found that contains no lithium is not one of these coolest brown dwarfs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about any star found to contain no lithium."
+      },
+      {
+       "n": 3,
+       "text": "Such a star is not one of these coolest brown dwarfs."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if at one point in their lives the coolest brown dwarfs were hot enough to burn lithium? What if the coolest brown dwarfs were not always this way?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q16",
+     "qnum": 16,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT105_S2_Q17",
+   "prompt": "Whenever a company loses a major product-liability lawsuit, the value of the company's stocks falls significantly within hours after the announcement. Cotoy has long been involved in a major product-liability lawsuit, and its stocks fell significantly in value today. Therefore, we can be sure that an unfavorable judgment against Cotoy in that lawsuit was announced earlier today.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is a rule about companies. \u00b7 The trigger is losing a lawsuit. \u00b7 The lawsuit is a major product-liability one. \u00b7 The company's stock value falls. \u00b7 The fall is significant. \u00b7 It happens within hours. \u00b7 It happens after the announcement. (2) Cotoy is involved in a lawsuit. \u00b7 The lawsuit is a major product-liability one. \u00b7 The involvement has been long. \u00b7 Cotoy's stocks fell. \u00b7 The fall was significant. \u00b7 The fall happened today. (3) This is the conclusion. \u00b7 It is stated with certainty. \u00b7 A judgment was announced. \u00b7 The judgment was unfavorable. \u00b7 It was against Cotoy. \u00b7 It was in that lawsuit. \u00b7 The announcement was earlier today.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Whenever a company loses a major product-liability lawsuit, the value of the company's stocks falls significantly within hours after the announcement.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a rule about companies."
+      },
+      {
+       "n": 2,
+       "text": "The trigger is losing a lawsuit."
+      },
+      {
+       "n": 3,
+       "text": "The lawsuit is a major product-liability one."
+      },
+      {
+       "n": 4,
+       "text": "The company's stock value falls."
+      },
+      {
+       "n": 5,
+       "text": "The fall is significant."
+      },
+      {
+       "n": 6,
+       "text": "It happens within hours."
+      },
+      {
+       "n": 7,
+       "text": "It happens after the announcement."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Cotoy has long been involved in a major product-liability lawsuit, and its stocks fell significantly in value today.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Cotoy is involved in a lawsuit."
+      },
+      {
+       "n": 2,
+       "text": "The lawsuit is a major product-liability one."
+      },
+      {
+       "n": 3,
+       "text": "The involvement has been long."
+      },
+      {
+       "n": 4,
+       "text": "Cotoy's stocks fell."
+      },
+      {
+       "n": 5,
+       "text": "The fall was significant."
+      },
+      {
+       "n": 6,
+       "text": "The fall happened today."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, we can be sure that an unfavorable judgment against Cotoy in that lawsuit was announced earlier today.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is stated with certainty."
+      },
+      {
+       "n": 3,
+       "text": "A judgment was announced."
+      },
+      {
+       "n": 4,
+       "text": "The judgment was unfavorable."
+      },
+      {
+       "n": 5,
+       "text": "It was against Cotoy."
+      },
+      {
+       "n": 6,
+       "text": "It was in that lawsuit."
+      },
+      {
+       "n": 7,
+       "text": "The announcement was earlier today."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if other situations can cause a company's stocks to fall significantly in value? What if we can't use bad conditional reasoning?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q17",
+     "qnum": 17,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT105_S2_Q18",
+   "prompt": "In recent years the climate has been generally cool in northern Asia. But during periods when the average daily temperature and humidity in northern Asia were slightly higher than their normal levels the yields of most crops grown there increased significantly. In the next century, the increased average daily temperature and humidity attained during those periods are expected to become the norm. Yet scientists predict that the yearly yields of most of the region's crops will decrease during the next century.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about recent years. \u00b7 The place is northern Asia. \u00b7 The climate there has been generally cool. (2) This is a contrast. \u00b7 There were periods of higher temperature and humidity. \u00b7 The measure is the average daily level. \u00b7 The rise above normal was slight. \u00b7 The yields of crops increased. \u00b7 The increase was significant. \u00b7 It applied to most crops grown there. (3) This is about the next century. \u00b7 Those higher levels are expected to become the norm. \u00b7 They are the levels reached during those periods. (4) This is the puzzle. \u00b7 Scientists make a prediction. \u00b7 The yields will decrease. \u00b7 The yields are yearly. \u00b7 It applies to most of the region's crops. \u00b7 This is during the next century.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In recent years the climate has been generally cool in northern Asia.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about recent years."
+      },
+      {
+       "n": 2,
+       "text": "The place is northern Asia."
+      },
+      {
+       "n": 3,
+       "text": "The climate there has been generally cool."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But during periods when the average daily temperature and humidity in northern Asia were slightly higher than their normal levels the yields of most crops grown there increased significantly.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "There were periods of higher temperature and humidity."
+      },
+      {
+       "n": 3,
+       "text": "The measure is the average daily level."
+      },
+      {
+       "n": 4,
+       "text": "The rise above normal was slight."
+      },
+      {
+       "n": 5,
+       "text": "The yields of crops increased."
+      },
+      {
+       "n": 6,
+       "text": "The increase was significant."
+      },
+      {
+       "n": 7,
+       "text": "It applied to most crops grown there."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "In the next century, the increased average daily temperature and humidity attained during those periods are expected to become the norm.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the next century."
+      },
+      {
+       "n": 2,
+       "text": "Those higher levels are expected to become the norm."
+      },
+      {
+       "n": 3,
+       "text": "They are the levels reached during those periods."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Yet scientists predict that the yearly yields of most of the region's crops will decrease during the next century.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the puzzle."
+      },
+      {
+       "n": 2,
+       "text": "Scientists make a prediction."
+      },
+      {
+       "n": 3,
+       "text": "The yields will decrease."
+      },
+      {
+       "n": 4,
+       "text": "The yields are yearly."
+      },
+      {
+       "n": 5,
+       "text": "It applies to most of the region's crops."
+      },
+      {
+       "n": 6,
+       "text": "This is during the next century."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if sustained high temperatures will cause an increase in crop pests?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q18",
+     "qnum": 18,
+     "question_type": "Resolution",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT105_S2_Q19",
+   "prompt": "No one in the French department to which Professor Alban belongs is allowed to teach more than one introductory level class in any one term. Moreover, the only language classes being taught next term are advanced ones. So it is untrue that both of the French classes Professor Alban will be teaching next term will be introductory level classes.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a rule. \u00b7 It applies to a French department. \u00b7 Professor Alban belongs to it. \u00b7 No one there may teach more than one introductory level class. \u00b7 The limit is per term. (2) This is a second premise. \u00b7 It is about next term. \u00b7 The only language classes being taught are advanced ones. (3) This is the conclusion. \u00b7 It denies a claim. \u00b7 The claim is about two French classes. \u00b7 Professor Alban will teach them next term. \u00b7 The claim is that both will be introductory level.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "No one in the French department to which Professor Alban belongs is allowed to teach more than one introductory level class in any one term.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a rule."
+      },
+      {
+       "n": 2,
+       "text": "It applies to a French department."
+      },
+      {
+       "n": 3,
+       "text": "Professor Alban belongs to it."
+      },
+      {
+       "n": 4,
+       "text": "No one there may teach more than one introductory level class."
+      },
+      {
+       "n": 5,
+       "text": "The limit is per term."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Moreover, the only language classes being taught next term are advanced ones.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a second premise."
+      },
+      {
+       "n": 2,
+       "text": "It is about next term."
+      },
+      {
+       "n": 3,
+       "text": "The only language classes being taught are advanced ones."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "So it is untrue that both of the French classes Professor Alban will be teaching next term will be introductory level classes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It denies a claim."
+      },
+      {
+       "n": 3,
+       "text": "The claim is about two French classes."
+      },
+      {
+       "n": 4,
+       "text": "Professor Alban will teach them next term."
+      },
+      {
+       "n": 5,
+       "text": "The claim is that both will be introductory level."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Professor Alban is teaching a language class at a different school next term?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q19",
+     "qnum": 19,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT105_S2_Q20",
+   "prompt": "Some people have been promoting a new herbal mixture as a remedy for the common cold. The mixture contains, among other things, extracts of the plants purple coneflower and goldenseal. A cold sufferer, skeptical of the claim that the mixture is an effective cold remedy, argued, \"Suppose that the mixture were an effective cold remedy. Since most people with colds wish to recover quickly, it follows that almost everybody with a cold would be using it. Therefore, since there are many people who have colds but do not use the mixture, it is obviously not effective.\"",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Some people are promoting something. \u00b7 What they promote is a herbal mixture. \u00b7 The mixture is new. \u00b7 They promote it as a remedy. \u00b7 The remedy is for the common cold. (2) The mixture contains extracts. \u00b7 The extracts are of plants. \u00b7 One plant is purple coneflower. \u00b7 The other is goldenseal. \u00b7 It contains other things too. (3) A cold sufferer makes an argument. \u00b7 The sufferer is skeptical. \u00b7 The skepticism is about the claim that the mixture is an effective cold remedy. \u00b7 The argument opens with a supposition. \u00b7 The supposition is that the mixture were effective. (4) This is a premise. \u00b7 Most people with colds wish to recover quickly. \u00b7 A consequence is drawn from it. \u00b7 Almost everybody with a cold would be using it. (5) This is the conclusion. \u00b7 There are many people who have colds. \u00b7 Those people do not use the mixture. \u00b7 The mixture is not effective. \u00b7 The speaker treats this as obvious.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Some people have been promoting a new herbal mixture as a remedy for the common cold.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some people are promoting something."
+      },
+      {
+       "n": 2,
+       "text": "What they promote is a herbal mixture."
+      },
+      {
+       "n": 3,
+       "text": "The mixture is new."
+      },
+      {
+       "n": 4,
+       "text": "They promote it as a remedy."
+      },
+      {
+       "n": 5,
+       "text": "The remedy is for the common cold."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The mixture contains, among other things, extracts of the plants purple coneflower and goldenseal.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The mixture contains extracts."
+      },
+      {
+       "n": 2,
+       "text": "The extracts are of plants."
+      },
+      {
+       "n": 3,
+       "text": "One plant is purple coneflower."
+      },
+      {
+       "n": 4,
+       "text": "The other is goldenseal."
+      },
+      {
+       "n": 5,
+       "text": "It contains other things too."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "A cold sufferer, skeptical of the claim that the mixture is an effective cold remedy, argued, \"Suppose that the mixture were an effective cold remedy.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A cold sufferer makes an argument."
+      },
+      {
+       "n": 2,
+       "text": "The sufferer is skeptical."
+      },
+      {
+       "n": 3,
+       "text": "The skepticism is about the claim that the mixture is an effective cold remedy."
+      },
+      {
+       "n": 4,
+       "text": "The argument opens with a supposition."
+      },
+      {
+       "n": 5,
+       "text": "The supposition is that the mixture were effective."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Since most people with colds wish to recover quickly, it follows that almost everybody with a cold would be using it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a premise."
+      },
+      {
+       "n": 2,
+       "text": "Most people with colds wish to recover quickly."
+      },
+      {
+       "n": 3,
+       "text": "A consequence is drawn from it."
+      },
+      {
+       "n": 4,
+       "text": "Almost everybody with a cold would be using it."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Therefore, since there are many people who have colds but do not use the mixture, it is obviously not effective.\"",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "There are many people who have colds."
+      },
+      {
+       "n": 3,
+       "text": "Those people do not use the mixture."
+      },
+      {
+       "n": 4,
+       "text": "The mixture is not effective."
+      },
+      {
+       "n": 5,
+       "text": "The speaker treats this as obvious."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if very few people know about the remedy? What if there are other, better, more widely known remedies?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q20",
+     "qnum": 20,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    },
+    {
+     "citation": "PT105.S2.Q21",
+     "qnum": 21,
+     "question_type": "Method",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT105_S2_Q22",
+   "prompt": "To hold criminals responsible for their crimes involves a failure to recognize that criminal actions, like all actions, are ultimately products of the environment that forged the agent's character. It is not criminals but people in the law-abiding majority who by their actions do most to create and maintain this environment. Therefore, it is law-abiding people whose actions, and nothing else, make them alone truly responsible for crime.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about holding criminals responsible. \u00b7 They are held responsible for their crimes. \u00b7 Doing so involves a failure. \u00b7 The failure is to recognize something. \u00b7 What is not recognized concerns criminal actions. (2) Criminal actions are like all actions. \u00b7 They are products of the environment. \u00b7 This is ultimately so. \u00b7 The environment forged the agent's character. (3) Criminals are not the ones who do most. \u00b7 The ones who do are people in the law-abiding majority. \u00b7 They do it by their actions. \u00b7 What they do most is create and maintain this environment. (4) This is the conclusion. \u00b7 It is about law-abiding people. \u00b7 Their actions make them responsible. \u00b7 Nothing other than their actions does. \u00b7 They alone are responsible. \u00b7 The responsibility is true responsibility. \u00b7 It is responsibility for crime.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "To hold criminals responsible for their crimes involves a failure to recognize that criminal actions,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about holding criminals responsible."
+      },
+      {
+       "n": 2,
+       "text": "They are held responsible for their crimes."
+      },
+      {
+       "n": 3,
+       "text": "Doing so involves a failure."
+      },
+      {
+       "n": 4,
+       "text": "The failure is to recognize something."
+      },
+      {
+       "n": 5,
+       "text": "What is not recognized concerns criminal actions."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "like all actions, are ultimately products of the environment that forged the agent's character.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Criminal actions are like all actions."
+      },
+      {
+       "n": 2,
+       "text": "They are products of the environment."
+      },
+      {
+       "n": 3,
+       "text": "This is ultimately so."
+      },
+      {
+       "n": 4,
+       "text": "The environment forged the agent's character."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "It is not criminals but people in the law-abiding majority who by their actions do most to create and maintain this environment.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Criminals are not the ones who do most."
+      },
+      {
+       "n": 2,
+       "text": "The ones who do are people in the law-abiding majority."
+      },
+      {
+       "n": 3,
+       "text": "They do it by their actions."
+      },
+      {
+       "n": 4,
+       "text": "What they do most is create and maintain this environment."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore, it is law-abiding people whose actions, and nothing else, make them alone truly responsible for crime.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about law-abiding people."
+      },
+      {
+       "n": 3,
+       "text": "Their actions make them responsible."
+      },
+      {
+       "n": 4,
+       "text": "Nothing other than their actions does."
+      },
+      {
+       "n": 5,
+       "text": "They alone are responsible."
+      },
+      {
+       "n": 6,
+       "text": "The responsibility is true responsibility."
+      },
+      {
+       "n": 7,
+       "text": "It is responsibility for crime."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because someone is a product of their environment, that doesn't mean their environment is solely responsible for everything they do?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q22",
+     "qnum": 22,
+     "question_type": "Classic Flaw",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT105_S2_Q23",
+   "prompt": "Chronic back pain is usually caused by a herniated or degenerated spinal disk. In most cases the disk will have been damaged years before chronic pain develops, and in fact an estimated one in five people over the age of 30 has a herniated or degenerated disk that shows no chronic symptoms. If chronic pain later develops in such a case, it is generally brought about by a deterioration of the abdominal and spinal muscles caused by insufficient exercise.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about chronic back pain. \u00b7 It usually has one cause. \u00b7 The cause is a spinal disk. \u00b7 The disk is herniated or degenerated. (2) This is true in most cases. \u00b7 The disk was damaged earlier. \u00b7 The damage came years earlier. \u00b7 It came before the chronic pain developed. (3) This is an estimate. \u00b7 It is one in five people. \u00b7 Those people are over the age of 30. \u00b7 They have a herniated or degenerated disk. \u00b7 That disk shows no chronic symptoms. (4) This is conditional on chronic pain developing later. \u00b7 It concerns such a case. \u00b7 The pain is generally brought about by a deterioration. \u00b7 The deterioration is of muscles. \u00b7 The muscles are abdominal and spinal. \u00b7 The deterioration is caused by insufficient exercise.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Chronic back pain is usually caused by a herniated or degenerated spinal disk.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about chronic back pain."
+      },
+      {
+       "n": 2,
+       "text": "It usually has one cause."
+      },
+      {
+       "n": 3,
+       "text": "The cause is a spinal disk."
+      },
+      {
+       "n": 4,
+       "text": "The disk is herniated or degenerated."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In most cases the disk will have been damaged years before chronic pain develops,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is true in most cases."
+      },
+      {
+       "n": 2,
+       "text": "The disk was damaged earlier."
+      },
+      {
+       "n": 3,
+       "text": "The damage came years earlier."
+      },
+      {
+       "n": 4,
+       "text": "It came before the chronic pain developed."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "and in fact an estimated one in five people over the age of 30 has a herniated or degenerated disk that shows no chronic symptoms.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an estimate."
+      },
+      {
+       "n": 2,
+       "text": "It is one in five people."
+      },
+      {
+       "n": 3,
+       "text": "Those people are over the age of 30."
+      },
+      {
+       "n": 4,
+       "text": "They have a herniated or degenerated disk."
+      },
+      {
+       "n": 5,
+       "text": "That disk shows no chronic symptoms."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "If chronic pain later develops in such a case, it is generally brought about by a deterioration of the abdominal and spinal muscles caused by insufficient exercise.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is conditional on chronic pain developing later."
+      },
+      {
+       "n": 2,
+       "text": "It concerns such a case."
+      },
+      {
+       "n": 3,
+       "text": "The pain is generally brought about by a deterioration."
+      },
+      {
+       "n": 4,
+       "text": "The deterioration is of muscles."
+      },
+      {
+       "n": 5,
+       "text": "The muscles are abdominal and spinal."
+      },
+      {
+       "n": 6,
+       "text": "The deterioration is caused by insufficient exercise."
+      }
+     ]
+    }
+   ],
+   "the_read": "People may be able to take actions that prevent herniated or degenerated disks from becoming painful.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q23",
+     "qnum": 23,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT105_S2_Q24",
+   "prompt": "Each December 31 in Country Q, a tally is made of the country's total available coal supplies\u2014that is, the total amount of coal that has been mined throughout the country but not consumed. In 1991 that amount was considerably lower than it had been in 1990. Furthermore, Country Q has not imported or exported coal since 1970.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This happens each December 31. \u00b7 The place is Country Q. \u00b7 A tally is made. \u00b7 The tally is of total available coal supplies. \u00b7 They are the country's. \u00b7 A definition of that term follows. (2) This is the definition. \u00b7 It is the total amount of coal. \u00b7 The coal has been mined. \u00b7 It was mined throughout the country. \u00b7 The coal has not been consumed. (3) This is about 1991. \u00b7 The amount was lower. \u00b7 It was considerably lower than in 1990. (4) This is an additional fact. \u00b7 Country Q has not imported coal. \u00b7 It has not exported coal. \u00b7 This has held since 1970.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Each December 31 in Country Q, a tally is made of the country's total available coal supplies\u2014that is,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This happens each December 31."
+      },
+      {
+       "n": 2,
+       "text": "The place is Country Q."
+      },
+      {
+       "n": 3,
+       "text": "A tally is made."
+      },
+      {
+       "n": 4,
+       "text": "The tally is of total available coal supplies."
+      },
+      {
+       "n": 5,
+       "text": "They are the country's."
+      },
+      {
+       "n": 6,
+       "text": "A definition of that term follows."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "the total amount of coal that has been mined throughout the country but not consumed.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the definition."
+      },
+      {
+       "n": 2,
+       "text": "It is the total amount of coal."
+      },
+      {
+       "n": 3,
+       "text": "The coal has been mined."
+      },
+      {
+       "n": 4,
+       "text": "It was mined throughout the country."
+      },
+      {
+       "n": 5,
+       "text": "The coal has not been consumed."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "In 1991 that amount was considerably lower than it had been in 1990.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about 1991."
+      },
+      {
+       "n": 2,
+       "text": "The amount was lower."
+      },
+      {
+       "n": 3,
+       "text": "It was considerably lower than in 1990."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Furthermore, Country Q has not imported or exported coal since 1970.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional fact."
+      },
+      {
+       "n": 2,
+       "text": "Country Q has not imported coal."
+      },
+      {
+       "n": 3,
+       "text": "It has not exported coal."
+      },
+      {
+       "n": 4,
+       "text": "This has held since 1970."
+      }
+     ]
+    }
+   ],
+   "the_read": "More coal was consumed than was mined in 1991 in Country Q.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q24",
+     "qnum": 24,
+     "question_type": "Inference",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 23,
+   "slug": "PT105_S2_Q25",
+   "prompt": "Tom: Employers complain that people graduating from high school too often lack the vocational skills required for full-time employment. Therefore, since these skills are best acquired on the job, we should require high school students to work at part-time jobs so that they acquire the skills needed for today's job market.\n\nMary: There are already too few part-time jobs for students who want to work, and simply requiring students to work will not create jobs for them.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Tom is the first speaker. \u00b7 Employers are making a complaint. \u00b7 The complaint is about people graduating from high school. \u00b7 Those people lack vocational skills. \u00b7 The skills are required for full-time employment. \u00b7 This happens too often. (2) This begins his conclusion. \u00b7 It rests on a premise. \u00b7 The premise is that these skills are best acquired on the job. (3) This is his recommendation. \u00b7 High school students should be required to work. \u00b7 The work is part-time jobs. \u00b7 The purpose is that they acquire skills. \u00b7 The skills are needed for today's job market. (4) Mary is the second speaker. \u00b7 There are already too few part-time jobs. \u00b7 They are too few for students who want to work. \u00b7 Simply requiring students to work will not create jobs. \u00b7 It will not create jobs for them.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Tom: Employers complain that people graduating from high school too often lack the vocational skills required for full-time employment.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Tom is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "Employers are making a complaint."
+      },
+      {
+       "n": 3,
+       "text": "The complaint is about people graduating from high school."
+      },
+      {
+       "n": 4,
+       "text": "Those people lack vocational skills."
+      },
+      {
+       "n": 5,
+       "text": "The skills are required for full-time employment."
+      },
+      {
+       "n": 6,
+       "text": "This happens too often."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Therefore, since these skills are best acquired on the job,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This begins his conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on a premise."
+      },
+      {
+       "n": 3,
+       "text": "The premise is that these skills are best acquired on the job."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "we should require high school students to work at part-time jobs so that they acquire the skills needed for today's job market.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is his recommendation."
+      },
+      {
+       "n": 2,
+       "text": "High school students should be required to work."
+      },
+      {
+       "n": 3,
+       "text": "The work is part-time jobs."
+      },
+      {
+       "n": 4,
+       "text": "The purpose is that they acquire skills."
+      },
+      {
+       "n": 5,
+       "text": "The skills are needed for today's job market."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Mary: There are already too few part-time jobs for students who want to work, and simply requiring students to work will not create jobs for them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Mary is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "There are already too few part-time jobs."
+      },
+      {
+       "n": 3,
+       "text": "They are too few for students who want to work."
+      },
+      {
+       "n": 4,
+       "text": "Simply requiring students to work will not create jobs."
+      },
+      {
+       "n": 5,
+       "text": "It will not create jobs for them."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether high school students should be required to work part time.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT105.S2.Q25",
+     "qnum": 25,
+     "question_type": "Method",
+     "correct_answer": "D"
+    }
+   ]
+  }
+ ]
+}

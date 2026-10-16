@@ -1,0 +1,1241 @@
+{
+  "build": "2026-09-08e",
+  "judge": "gemini-direct",
+  "sections": [
+    "pt102-s3",
+    "pt105-s2",
+    "pt134-s3"
+  ],
+  "rows": [
+    {
+      "slug": "PT102_S3_Q1",
+      "percent": 81,
+      "carried": 17,
+      "total": 21,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "A director is speaking.",
+        "The director is at Ace Manufacturing Company.",
+        "This applies to all employees.",
+        "Ace Manufacturing has a commitment."
+      ],
+      "readAloudWordsCut": 67
+    },
+    {
+      "slug": "PT102_S3_Q2",
+      "percent": 93,
+      "carried": 14,
+      "total": 15,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The devices would go in all cars."
+      ],
+      "readAloudWordsCut": 45
+    },
+    {
+      "slug": "PT102_S3_Q3",
+      "percent": 91,
+      "carried": 21,
+      "total": 23,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "Many businesses lay off workers.",
+        "It is generally so."
+      ],
+      "readAloudWordsCut": 92
+    },
+    {
+      "slug": "PT102_S3_Q4",
+      "percent": 84,
+      "carried": 16,
+      "total": 19,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The material was contained in atmospheric dust.",
+        "What increased was the population of Antarctic algae.",
+        "Diatoms are given as an example."
+      ],
+      "readAloudWordsCut": 76
+    },
+    {
+      "slug": "PT102_S3_Q5",
+      "percent": 93,
+      "carried": 13,
+      "total": 14,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The dinners are eaten at home."
+      ],
+      "readAloudWordsCut": 61
+    },
+    {
+      "slug": "PT102_S3_Q6",
+      "percent": 96,
+      "carried": 23,
+      "total": 24,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The legislator claims to be forced to it."
+      ],
+      "readAloudWordsCut": 75
+    },
+    {
+      "slug": "PT102_S3_Q7",
+      "percent": 100,
+      "carried": 10,
+      "total": 10,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 51
+    },
+    {
+      "slug": "PT102_S3_Q8",
+      "percent": 100,
+      "carried": 23,
+      "total": 23,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 57
+    },
+    {
+      "slug": "PT102_S3_Q10",
+      "percent": 100,
+      "carried": 17,
+      "total": 17,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 28
+    },
+    {
+      "slug": "PT102_S3_Q11",
+      "percent": 94,
+      "carried": 29,
+      "total": 31,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "It is about a person whose doctor wants to schedule surgery.",
+        "Being told is simple."
+      ],
+      "readAloudWordsCut": 117
+    },
+    {
+      "slug": "PT102_S3_Q13",
+      "percent": 100,
+      "carried": 17,
+      "total": 17,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 73
+    },
+    {
+      "slug": "PT102_S3_Q14",
+      "percent": 87,
+      "carried": 13,
+      "total": 15,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "Their physical coordination improves.",
+        "They always do this."
+      ],
+      "readAloudWordsCut": 50
+    },
+    {
+      "slug": "PT102_S3_Q15",
+      "percent": 92,
+      "carried": 11,
+      "total": 12,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "It would be done to all rhinoceroses."
+      ],
+      "readAloudWordsCut": 48
+    },
+    {
+      "slug": "PT102_S3_Q16",
+      "percent": 100,
+      "carried": 26,
+      "total": 26,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 96
+    },
+    {
+      "slug": "PT102_S3_Q17",
+      "percent": 95,
+      "carried": 19,
+      "total": 20,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The discoveries were complex."
+      ],
+      "readAloudWordsCut": 52
+    },
+    {
+      "slug": "PT102_S3_Q18",
+      "percent": 100,
+      "carried": 20,
+      "total": 20,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 73
+    },
+    {
+      "slug": "PT102_S3_Q19",
+      "percent": 83,
+      "carried": 24,
+      "total": 29,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The decrease is slight.",
+        "Its volume remains unchanged.",
+        "This is about a portion of a sheet of glass.",
+        "It holds for any such portion.",
+        "There is only one object."
+      ],
+      "readAloudWordsCut": 99
+    },
+    {
+      "slug": "PT102_S3_Q20",
+      "percent": 100,
+      "carried": 7,
+      "total": 7,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 0
+    },
+    {
+      "slug": "PT102_S3_Q21",
+      "percent": 89,
+      "carried": 17,
+      "total": 19,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "It is about a poet interested in the Poetics.",
+        "This is stated with certainty."
+      ],
+      "readAloudWordsCut": 71
+    },
+    {
+      "slug": "PT102_S3_Q22",
+      "percent": 92,
+      "carried": 12,
+      "total": 13,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is stated as certain."
+      ],
+      "readAloudWordsCut": 46
+    },
+    {
+      "slug": "PT102_S3_Q23",
+      "percent": 82,
+      "carried": 23,
+      "total": 28,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The paintings are by major artists.",
+        "The director did so privately.",
+        "The condemnation was round.",
+        "The prices settle the issue.",
+        "The prices demonstrate something."
+      ],
+      "readAloudWordsCut": 99
+    },
+    {
+      "slug": "PT102_S3_Q24",
+      "percent": 91,
+      "carried": 21,
+      "total": 23,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "They have been very successful.",
+        "Those companies are few."
+      ],
+      "readAloudWordsCut": 76
+    },
+    {
+      "slug": "PT105_S2_Q1",
+      "percent": 75,
+      "carried": 18,
+      "total": 24,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The water is seawater.",
+        "The stalagmites are numerous.",
+        "The stalagmites are large.",
+        "The pillars are made of stone.",
+        "The drops fall on one single spot.",
+        "The drops leave mineral deposits behind."
+      ],
+      "readAloudWordsCut": 66
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "percent": 89,
+      "carried": 17,
+      "total": 19,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": false,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The comparison is with marketing any other pharmaceutical product.",
+        "Those medicines fight diseases and chronic illnesses."
+      ],
+      "readAloudWordsCut": 87
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "percent": 100,
+      "carried": 11,
+      "total": 11,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 49
+    },
+    {
+      "slug": "PT105_S2_Q4",
+      "percent": 100,
+      "carried": 13,
+      "total": 13,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 42
+    },
+    {
+      "slug": "PT105_S2_Q5",
+      "percent": 94,
+      "carried": 17,
+      "total": 18,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "An archaeologist is speaking."
+      ],
+      "readAloudWordsCut": 68
+    },
+    {
+      "slug": "PT105_S2_Q6",
+      "percent": 95,
+      "carried": 21,
+      "total": 22,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is true of any female wood duck."
+      ],
+      "readAloudWordsCut": 88
+    },
+    {
+      "slug": "PT105_S2_Q7",
+      "percent": 88,
+      "carried": 15,
+      "total": 17,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "That is our choice of words.",
+        "The variation is on a deep level."
+      ],
+      "readAloudWordsCut": 72
+    },
+    {
+      "slug": "PT105_S2_Q8",
+      "percent": 90,
+      "carried": 19,
+      "total": 21,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "All of them leave.",
+        "These are the premises."
+      ],
+      "readAloudWordsCut": 76
+    },
+    {
+      "slug": "PT105_S2_Q9",
+      "percent": 100,
+      "carried": 13,
+      "total": 13,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 50
+    },
+    {
+      "slug": "PT105_S2_Q10",
+      "percent": 76,
+      "carried": 13,
+      "total": 17,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The insurance is automobile accident insurance.",
+        "The way to save them is banning red cars.",
+        "The ban would remove them from the roads.",
+        "The ban would be total, not partial."
+      ],
+      "readAloudWordsCut": 63
+    },
+    {
+      "slug": "PT105_S2_Q11",
+      "percent": 94,
+      "carried": 15,
+      "total": 16,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": false,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The merchandise is brand name."
+      ],
+      "readAloudWordsCut": 66
+    },
+    {
+      "slug": "PT105_S2_Q12",
+      "percent": 100,
+      "carried": 12,
+      "total": 12,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 45
+    },
+    {
+      "slug": "PT105_S2_Q13",
+      "percent": 97,
+      "carried": 29,
+      "total": 30,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is his example."
+      ],
+      "readAloudWordsCut": 85
+    },
+    {
+      "slug": "PT105_S2_Q15",
+      "percent": 100,
+      "carried": 19,
+      "total": 19,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 71
+    },
+    {
+      "slug": "PT105_S2_Q16",
+      "percent": 93,
+      "carried": 14,
+      "total": 15,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "They are dim and red."
+      ],
+      "readAloudWordsCut": 77
+    },
+    {
+      "slug": "PT105_S2_Q17",
+      "percent": 85,
+      "carried": 17,
+      "total": 20,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "It is stated with certainty.",
+        "A judgment was announced.",
+        "The announcement was earlier today."
+      ],
+      "readAloudWordsCut": 59
+    },
+    {
+      "slug": "PT105_S2_Q18",
+      "percent": 95,
+      "carried": 18,
+      "total": 19,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The rise above normal was slight."
+      ],
+      "readAloudWordsCut": 81
+    },
+    {
+      "slug": "PT105_S2_Q19",
+      "percent": 100,
+      "carried": 13,
+      "total": 13,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 59
+    },
+    {
+      "slug": "PT105_S2_Q20",
+      "percent": 88,
+      "carried": 21,
+      "total": 24,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The mixture is new.",
+        "One plant is purple coneflower.",
+        "This is a premise."
+      ],
+      "readAloudWordsCut": 96
+    },
+    {
+      "slug": "PT105_S2_Q22",
+      "percent": 85,
+      "carried": 17,
+      "total": 20,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "Their actions make them responsible.",
+        "Nothing other than their actions does.",
+        "The responsibility is true responsibility."
+      ],
+      "readAloudWordsCut": 70
+    },
+    {
+      "slug": "PT105_S2_Q23",
+      "percent": 100,
+      "carried": 19,
+      "total": 19,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 79
+    },
+    {
+      "slug": "PT105_S2_Q24",
+      "percent": 83,
+      "carried": 15,
+      "total": 18,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This happens each December 31.",
+        "It was mined throughout the country.",
+        "This is an additional fact."
+      ],
+      "readAloudWordsCut": 57
+    },
+    {
+      "slug": "PT105_S2_Q25",
+      "percent": 68,
+      "carried": 13,
+      "total": 19,
+      "band": "thin",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "Tom is the first speaker.",
+        "Employers are making a complaint.",
+        "This begins his conclusion.",
+        "It rests on a premise.",
+        "The skills are needed for today's job market.",
+        "Mary is the second speaker."
+      ],
+      "readAloudWordsCut": 80
+    },
+    {
+      "slug": "PT134_S3_Q1",
+      "percent": 68,
+      "carried": 15,
+      "total": 22,
+      "band": "thin",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": false,
+      "readMatches": false,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is the conclusion.",
+        "It rests on a given.",
+        "The given is that only a limited number of battles can be waged.",
+        "The battles are environmental ones.",
+        "It would be reasonable for certain organizations to do something.",
+        "Those organizations are dedicated to preserving species.",
+        "The conclusion itself is left blank."
+      ],
+      "readAloudWordsCut": 49
+    },
+    {
+      "slug": "PT134_S3_Q2",
+      "percent": 95,
+      "carried": 19,
+      "total": 20,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "Harris learned it soon."
+      ],
+      "readAloudWordsCut": 58
+    },
+    {
+      "slug": "PT134_S3_Q3",
+      "percent": 85,
+      "carried": 17,
+      "total": 20,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is around running boat engines.",
+        "The damage happens over time.",
+        "The conclusion itself is left blank."
+      ],
+      "readAloudWordsCut": 42
+    },
+    {
+      "slug": "PT134_S3_Q4",
+      "percent": 94,
+      "carried": 17,
+      "total": 18,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is marked as evident."
+      ],
+      "readAloudWordsCut": 64
+    },
+    {
+      "slug": "PT134_S3_Q5",
+      "percent": 90,
+      "carried": 19,
+      "total": 21,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "Most of them lack immoral characters.",
+        "The characters now tend to be different."
+      ],
+      "readAloudWordsCut": 50
+    },
+    {
+      "slug": "PT134_S3_Q6",
+      "percent": 76,
+      "carried": 13,
+      "total": 17,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is the conclusion.",
+        "The resident has lived here that long.",
+        "The resident saw this only a few times.",
+        "The coincidence is exact."
+      ],
+      "readAloudWordsCut": 61
+    },
+    {
+      "slug": "PT134_S3_Q7",
+      "percent": 100,
+      "carried": 19,
+      "total": 19,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 57
+    },
+    {
+      "slug": "PT134_S3_Q8",
+      "percent": 86,
+      "carried": 6,
+      "total": 7,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "They therefore tend to be the most congested."
+      ],
+      "readAloudWordsCut": 28
+    },
+    {
+      "slug": "PT134_S3_Q9",
+      "percent": 100,
+      "carried": 11,
+      "total": 11,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 46
+    },
+    {
+      "slug": "PT134_S3_Q10",
+      "percent": 94,
+      "carried": 16,
+      "total": 17,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is an example."
+      ],
+      "readAloudWordsCut": 77
+    },
+    {
+      "slug": "PT134_S3_Q11",
+      "percent": 93,
+      "carried": 13,
+      "total": 14,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The politicians are the city's."
+      ],
+      "readAloudWordsCut": 44
+    },
+    {
+      "slug": "PT134_S3_Q12",
+      "percent": 100,
+      "carried": 17,
+      "total": 17,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 62
+    },
+    {
+      "slug": "PT134_S3_Q13",
+      "percent": 100,
+      "carried": 17,
+      "total": 17,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 53
+    },
+    {
+      "slug": "PT134_S3_Q14",
+      "percent": 94,
+      "carried": 16,
+      "total": 17,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "Arnot makes an argument for the claim."
+      ],
+      "readAloudWordsCut": 49
+    },
+    {
+      "slug": "PT134_S3_Q15",
+      "percent": 96,
+      "carried": 24,
+      "total": 25,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The payoff would be big."
+      ],
+      "readAloudWordsCut": 85
+    },
+    {
+      "slug": "PT134_S3_Q16",
+      "percent": 82,
+      "carried": 18,
+      "total": 22,
+      "band": "nearly-there",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is an editorial.",
+        "This is an additional point.",
+        "What offends them is their seatmates' cell-phone excesses.",
+        "This is often so."
+      ],
+      "readAloudWordsCut": 54
+    },
+    {
+      "slug": "PT134_S3_Q17",
+      "percent": 92,
+      "carried": 22,
+      "total": 24,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "Acetylsalicylic acid is given as an example.",
+        "Doing so impairs the brain's cognitive functions."
+      ],
+      "readAloudWordsCut": 81
+    },
+    {
+      "slug": "PT134_S3_Q18",
+      "percent": 94,
+      "carried": 16,
+      "total": 17,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "A lawyer is speaking."
+      ],
+      "readAloudWordsCut": 70
+    },
+    {
+      "slug": "PT134_S3_Q19",
+      "percent": 90,
+      "carried": 18,
+      "total": 20,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is a contrast.",
+        "The figure is nearly 20 percent less."
+      ],
+      "readAloudWordsCut": 79
+    },
+    {
+      "slug": "PT134_S3_Q20",
+      "percent": 100,
+      "carried": 8,
+      "total": 8,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 28
+    },
+    {
+      "slug": "PT134_S3_Q21",
+      "percent": 91,
+      "carried": 21,
+      "total": 23,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "An economics professor is speaking.",
+        "This is a contrast."
+      ],
+      "readAloudWordsCut": 71
+    },
+    {
+      "slug": "PT134_S3_Q22",
+      "percent": 91,
+      "carried": 21,
+      "total": 23,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The rate is astounding.",
+        "This is typically so."
+      ],
+      "readAloudWordsCut": 86
+    },
+    {
+      "slug": "PT134_S3_Q23",
+      "percent": 89,
+      "carried": 8,
+      "total": 9,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is an additional premise."
+      ],
+      "readAloudWordsCut": 9
+    },
+    {
+      "slug": "PT134_S3_Q24",
+      "percent": 100,
+      "carried": 11,
+      "total": 11,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 47
+    },
+    {
+      "slug": "PT134_S3_Q25",
+      "percent": 87,
+      "carried": 13,
+      "total": 15,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "This is a contrast.",
+        "It is quite unlikely."
+      ],
+      "readAloudWordsCut": 51
+    },
+    {
+      "slug": "PT134_S3_Q26",
+      "percent": 88,
+      "carried": 14,
+      "total": 16,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [
+        "The information would be complete and detailed.",
+        "This is treated as clear."
+      ],
+      "readAloudWordsCut": 62
+    }
+  ]
+}

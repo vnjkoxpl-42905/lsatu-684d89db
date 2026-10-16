@@ -1,0 +1,166 @@
+/*
+ * What is left of the RC player's own stylesheet after it moved onto the LR
+ * player's chrome. Everything here is scoped to the exam pane — the frame,
+ * toolbar and footer are the shared official components and carry no RC CSS.
+ *
+ * Only four things genuinely need CSS rather than utility classes:
+ *   - the accessibility color schemes, which repaint the reading surface
+ *   - the exam paragraph conventions, which need :has() and text-indent
+ *   - Passage Only View's two-column reflow
+ *   - the highlight and find <mark>s, which are painted into the DOM by
+ *     rcHighlightPaint and so cannot carry React classes
+ */
+
+.rc-exam {
+  --rc-bg: #ffffff;
+  /* The LR player's stimulus color, so the default scheme is exact parity. */
+  --rc-fg: #111827;
+}
+
+/* Accessibility color schemes. They repaint the reading surface only: the
+   frame, toolbar and footer stay in the official chrome around them. */
+.rc-exam.rc-scheme-grey { --rc-bg: #d9d9d9; --rc-fg: #4a4a4a; }
+.rc-exam.rc-scheme-purple { --rc-bg: #dcf5dc; --rc-fg: #4b0082; }
+.rc-exam.rc-scheme-violet { --rc-bg: #b9a6d4; --rc-fg: #000000; }
+.rc-exam.rc-scheme-navy { --rc-bg: #001a4d; --rc-fg: #ffe600; }
+.rc-exam.rc-scheme-black { --rc-bg: #000000; --rc-fg: #ffffff; }
+
+.rc-exam-col {
+  background: var(--rc-bg);
+  color: var(--rc-fg);
+}
+
+/* Under a scheme the row fills would fight the chosen palette, so the choice
+   rows go transparent and their state reads from the border instead. */
+.rc-exam[class*='rc-scheme-'] .rc-choice { background-color: transparent; }
+.rc-exam[class*='rc-scheme-'] .rc-choice-text { color: inherit; }
+
+/* Slate-on-black is unreadable, so the darkest schemes invert the badge. */
+.rc-exam.rc-scheme-navy .rc-choice-badge-selected,
+.rc-exam.rc-scheme-black .rc-choice-badge-selected {
+  background: var(--rc-fg);
+  border-color: var(--rc-fg);
+  color: var(--rc-bg);
+}
+
+/* -------------------------------------------------------------- passage */
+
+/* Exam convention: every paragraph indents its first line, including the
+   opening one, and paragraphs are separated by a blank line. */
+.rc-passage-text p {
+  margin: 0 0 1em;
+  text-indent: 20px;
+}
+
+.rc-passage-text p:last-child { margin-bottom: 0; }
+
+/* Comparative headers and the italic intro line stand on their own. */
+.rc-passage-text p:has(> strong:only-child),
+.rc-passage-text p:has(> em:only-child) {
+  text-indent: 0;
+  margin: 1.2em 0 0.5em;
+  font-weight: inherit;
+}
+
+.rc-passage-title {
+  font-size: 1em;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+/* Full-passage reading uses the available canvas. Columns belong on the
+   growing text block so the scroll container never overflows sideways.
+   A docked or narrow pane stays in one column; em sizing also respects zoom. */
+.rc-passage-only {
+  container-type: inline-size;
+}
+
+.rc-passage-only .rc-passage-text {
+  max-width: 72ch;
+  margin-inline: auto;
+}
+
+.rc-passage-only .rc-passage-title {
+  max-width: 72ch;
+  margin-inline: auto;
+}
+
+.rc-passage-only .rc-passage-text p {
+  margin-bottom: 0.65em;
+}
+
+.rc-passage-only .rc-passage-text p:last-child { margin-bottom: 0; }
+
+@container (min-width: 68rem) {
+  .rc-passage-only .rc-passage-title { max-width: 156ch; }
+
+  .rc-passage-only .rc-passage-text {
+    max-width: 156ch;
+    column-width: 28em;
+    column-count: 2;
+    column-gap: 2.5em;
+    column-fill: balance;
+  }
+}
+
+/* ---------------------------------------------------------------- marks */
+
+mark[data-rc-find] {
+  background: #ffd54f;
+  color: inherit;
+  padding: 0;
+}
+
+mark[data-rc-find].rc-find-active { background: #ff9800; }
+
+mark[data-rc-highlight] {
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------ selection popover */
+
+.rc-selection-popover {
+  position: absolute;
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 4px 6px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.2);
+  font-size: 13px;
+}
+
+.rc-selection-popover button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: inherit;
+}
+
+.rc-selection-popover button:hover { background: #f1f5f9; }
+
+.rc-swatches { display: inline-flex; gap: 6px; }
+
+.rc-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(15, 23, 42, 0.25);
+  cursor: pointer;
+}
+
+/* A background only: annotations and selection keep their DOM ranges and hit areas. */
+@media (hover: hover) and (pointer: fine) {
+  .rc-paragraph-focus .rc-passage-text p:hover {
+    background-color: color-mix(in srgb, var(--rc-fg) 9%, var(--rc-bg));
+  }
+}

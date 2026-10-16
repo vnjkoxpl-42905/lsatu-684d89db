@@ -1,0 +1,388 @@
+/* A scoped reading room: long lessons in ordinary daylight, with quiet controls. */
+.co-opening {
+  --co-ink: oklch(0.29 0.035 175);
+  --co-teal: oklch(0.43 0.075 174);
+  --co-action-ink: oklch(0.99 0.008 90);
+  --co-paper: oklch(0.98 0.012 90);
+  --co-polish-panel: oklch(0.99 0.008 90);
+  --co-polish-fill: oklch(0.955 0.017 130);
+  --co-polish-selected: oklch(0.91 0.035 154);
+  --co-polish-line: oklch(0.83 0.018 150);
+  --co-polish-control-line: oklch(0.63 0.03 164);
+  --co-polish-muted: oklch(0.44 0.03 170);
+  --co-polish-dark: oklch(0.29 0.037 172);
+  --co-polish-light: oklch(0.96 0.017 115);
+  --co-polish-light-muted: oklch(0.85 0.035 145);
+  --co-polish-success: oklch(0.94 0.034 151);
+  --co-polish-success-ink: oklch(0.35 0.065 152);
+  --co-polish-revise: oklch(0.96 0.038 87);
+  --co-polish-revise-ink: oklch(0.39 0.05 77);
+  --co-exhibit-sufficient: oklch(0.945 0.022 130);
+  --co-exhibit-required: oklch(0.94 0.027 87);
+  --co-diagram-ground: oklch(0.95 0.024 135);
+  --co-sheet-ground: oklch(0.98 0.015 90);
+  --co-sheet-rule: oklch(0.9 0.019 130);
+  --co-set-inclusive: oklch(0.92 0.029 161);
+  --co-set-contained: oklch(0.96 0.032 87);
+  --co-set-contained-line: oklch(0.52 0.061 77);
+  --co-polish-space: 1.5rem;
+  --co-polish-inset: 3.5rem;
+  --co-polish-radius: 0.5rem;
+  --co-polish-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--co-ink);
+}
+
+/* This palette is local to the opening course, including its retained exercises. */
+:root:not(.light) .oc-workspace .co-opening {
+  --co-ink:oklch(0.94 0.015 95);
+  --co-teal:oklch(0.80 0.070 165);
+  --co-action-ink:oklch(0.20 0.018 165);
+  --co-coral:oklch(0.80 0.120 65);
+  --co-paper:oklch(0.20 0.018 165);
+  --co-polish-panel:oklch(0.25 0.020 165);
+  --co-polish-fill:oklch(0.29 0.022 165);
+  --co-polish-selected:oklch(0.36 0.035 165);
+  --co-polish-line:oklch(0.40 0.023 165);
+  --co-polish-control-line:oklch(0.66 0.030 165);
+  --co-polish-muted:oklch(0.78 0.022 155);
+  --co-polish-dark:oklch(0.17 0.018 165);
+  --co-polish-light:oklch(0.94 0.015 95);
+  --co-polish-light-muted:oklch(0.78 0.022 155);
+  --co-polish-success:oklch(0.30 0.040 155);
+  --co-polish-success-ink:oklch(0.86 0.065 155);
+  --co-polish-revise:oklch(0.30 0.025 75);
+  --co-polish-revise-ink:oklch(0.86 0.075 75);
+  --co-exhibit-sufficient:oklch(0.29 0.035 155);
+  --co-exhibit-required:oklch(0.29 0.025 75);
+  --co-diagram-ground:oklch(0.29 0.022 165);
+  --co-sheet-ground:oklch(0.25 0.020 165);
+  --co-sheet-rule:oklch(0.40 0.023 165);
+  --co-set-inclusive:oklch(0.32 0.040 155);
+  --co-set-contained:oklch(0.36 0.025 75);
+  --co-set-contained-line:oklch(0.70 0.055 75);
+}
+/* Older authored examples keep their meaning, but no longer keep a light-only fill. */
+:root:not(.light) .oc-workspace .co-opening :is(.co-lab,.co-check,.co-meaning-figure>div,.co-pass-figure,.co-hypothetical-tag,.cr-extension,.cr-faq details,.cr-dark .cr-question,.cr-language-pair span) {
+  background:var(--co-polish-panel);
+  color:var(--co-ink);
+  border-color:var(--co-polish-line);
+}
+:root:not(.light) .oc-workspace .co-opening :is(.co-hero,.co-think-pause,.co-footer,.co-expression-section:nth-child(even),.co-expression-section blockquote,.co-word-comparison>div,.co-flash-face,.cr-step-body>blockquote,.cr-contrast>div,.cr-case-review dl>div,.cr-formula,.cr-language-pair p,.cr-boundary,.cr-step[data-reference-step]) {
+  background:var(--co-polish-fill);
+  color:var(--co-ink);
+}
+:root:not(.light) .oc-workspace .co-opening :is(.co-role-pair>div,.co-intro-relationship>div,.co-sentence-target,.co-if-premise,.co-if-cue,.co-gate-track>div.co-lit,.cr-writer mark,.cr-target mark) {
+  background:var(--co-exhibit-sufficient);
+  color:var(--co-ink);
+}
+:root:not(.light) .oc-workspace .co-opening :is(.co-role-pair>div:last-child,.co-intro-relationship>div:last-child,.co-meaning-figure>div+div,.co-flipped,.co-switch mark,.co-hero-sentence mark,.co-sentence-indicator,.co-if-consequence) {
+  background:var(--co-exhibit-required);
+  color:var(--co-ink);
+}
+:root:not(.light) .oc-workspace .co-opening :is(.co-small,.co-gate-track>div,.co-hero-figure figcaption,.co-if-connection figcaption,.cr-case-review dt,.cr-item-number,.cr-family-list button>span) { color:var(--co-polish-muted); }
+:root:not(.light) .oc-workspace .co-opening :is(.co-arrow>span,.co-target-sentence figcaption>span,.co-role-compass>div:last-child>span,.co-role-compass>div:last-child>strong,.co-overview-set>span) { color:var(--co-ink); }
+:root:not(.light) .oc-workspace .co-opening .co-feedback { background:var(--co-polish-revise); color:var(--co-polish-revise-ink); }
+:root:not(.light) .oc-workspace .co-opening .co-correct { background:var(--co-polish-success); color:var(--co-polish-success-ink); }
+:root:not(.light) .oc-workspace .co-opening button:not(.omd-primary):not(.cir-btn):not(.co-primary):not(.cr-primary):not(:disabled):not([aria-pressed=true]) { background:var(--co-polish-panel); color:var(--co-ink); border-color:var(--co-polish-control-line); }
+:root:not(.light) .oc-workspace .co-opening button[aria-pressed=true] { background:var(--co-polish-selected); color:var(--co-ink); border-color:var(--co-teal); }
+:root:not(.light) .oc-workspace .co-opening :is(.co-primary,.cr-primary) { background:var(--co-teal); color:var(--co-action-ink); border-color:var(--co-teal); }
+:root:not(.light) .oc-workspace .co-opening :is(.co-primary,.cr-primary):hover:not(:disabled) { background:var(--co-teal); color:var(--co-action-ink); }
+:root:not(.light) .oc-workspace .co-opening button:disabled { opacity:1; background:var(--co-polish-fill); color:var(--co-polish-muted); border-color:var(--co-polish-line); }
+:root:not(.light) .oc-workspace .co-opening .co-packed { fill:var(--co-set-inclusive); stroke:var(--co-teal); }
+:root:not(.light) .oc-workspace .co-opening .co-ready { fill:var(--co-set-contained); stroke:var(--co-set-contained-line); }
+:root:not(.light) .oc-workspace .co-opening .co-animal circle { fill:var(--co-polish-panel); stroke:var(--co-polish-control-line); }
+:root:not(.light) .oc-workspace .co-opening .co-sufficient-figure .co-hero-sentence strong { background:var(--co-exhibit-sufficient); }
+:root:not(.light) .oc-workspace .co-opening .co-attempt-input { background:var(--co-polish-panel); color:var(--co-ink); border-color:var(--co-polish-control-line); }
+
+/* Keep the established room identity, with a consistent reading measure. */
+.co-opening .co-hero p,
+.co-opening .cr-step-body > p,
+.co-opening .cr-discovery > p,
+.co-opening .cr-discovery-reasoning > p {
+  text-wrap: pretty;
+}
+.co-opening h1,
+.co-opening h2,
+.co-opening h3 {
+  text-wrap: balance;
+}
+.co-opening .co-intro-hero {
+  padding-inline: var(--co-polish-inset);
+}
+.co-opening .co-hero-sentence > span:nth-child(2) {
+  font-weight: 700;
+}
+.co-opening .co-reading-preferences {
+  padding-inline: var(--co-polish-inset);
+  border-bottom: 1px solid var(--co-polish-line);
+}
+.co-opening .co-reading-preferences span {
+  font-size: 0.875rem;
+  color: var(--co-polish-muted);
+  line-height: 1.6;
+}
+
+/* Contents belong beside the reading, never over a student's next answer. */
+.co-opening .co-lesson-navigation {
+  padding: 1rem var(--co-polish-inset) 0;
+}
+.co-opening .co-lesson-navigation[hidden] { display: none; }
+.co-opening .co-lesson-navigation nav { margin: 0; }
+.co-opening .co-lesson-navigation details {
+  border-bottom: 1px solid var(--co-polish-line);
+  padding-bottom: 1rem;
+}
+.co-opening .co-lesson-navigation summary {
+  cursor: pointer;
+  min-height: 44px;
+  align-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--co-polish-muted);
+}
+.co-opening .co-lesson-navigation ol {
+  margin: 0.75rem 0 0;
+  padding: 0 0 0 1.5rem;
+  columns: 2;
+  column-gap: 2rem;
+}
+.co-opening .co-lesson-navigation li { break-inside: avoid; }
+.co-opening .co-lesson-navigation a {
+  box-sizing: border-box;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 0.5rem;
+  color: var(--co-ink);
+  text-decoration-color: var(--co-polish-control-line);
+  text-underline-offset: 0.2em;
+}
+.co-opening .co-lesson-navigation a[aria-current] { font-weight: 650; }
+
+/* Section framing was repeated around already-framed practice. Flatten it. */
+.co-opening .cr-sequence {
+  --cr-ink: var(--co-ink);
+  --cr-teal: var(--co-teal);
+  --cr-paper: var(--co-paper);
+  --cr-line: var(--co-polish-line);
+}
+.co-opening .cr-sequence .cr-step {
+  margin-block: 0;
+  padding: 3rem var(--co-polish-inset) 3.5rem;
+  border: 0;
+  border-top: 1px solid var(--co-polish-line);
+  border-radius: 0;
+  box-shadow: none;
+  scroll-margin-top: 1.5rem;
+}
+.co-opening .cr-sequence .cr-step[data-reference-step="1"] {
+  padding-top: 2.5rem;
+  border: 0;
+}
+.co-opening .cr-step-heading {
+  gap: 1.5rem;
+  align-items: baseline;
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: 2rem;
+}
+.co-opening .cr-step-heading h2 {
+  max-width: 30ch;
+  font-size: 2.5rem;
+  line-height: 1.15;
+}
+.co-opening .cr-number {
+  font-size: 3rem;
+  min-width: 1.3em;
+  color: var(--co-polish-muted);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.co-opening .cr-step-body > p { margin-block: 1.5rem; }
+.co-opening .cr-sequence .cr-step-body > blockquote,
+.co-opening .cr-discovery blockquote,
+.co-opening .co-meaning-figure .co-hero-state,
+.co-opening .co-section > blockquote {
+  border: 0;
+  border-radius: var(--co-polish-radius);
+  padding: 1.5rem;
+}
+.co-opening .cr-sequence .cr-dark {
+  background: var(--co-polish-dark);
+  color: var(--co-polish-light);
+}
+.co-opening .cr-dark .cr-step-heading .co-kicker,
+.co-opening .cr-dark .cr-number {
+  color: var(--co-polish-light-muted);
+}
+
+/* Practice has a clear boundary; supporting notes stay on the page. */
+.co-opening .cr-question,
+.co-opening .cr-pattern,
+.co-opening .cr-integrated-item,
+.co-opening .cr-cases,
+.co-opening .cr-family,
+.co-opening .cr-target {
+  box-shadow: none;
+  border-radius: var(--co-polish-radius);
+  border-color: var(--co-polish-line);
+  padding: var(--co-polish-space);
+  background: var(--co-polish-panel);
+}
+.co-opening .cr-question h3 { font-size: 1.0625rem; line-height: 1.55; }
+.co-opening .cr-pattern .cr-question {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.co-opening .cr-feedback,
+.co-opening .cr-method,
+.co-opening .cr-training-note {
+  border: 0;
+  border-radius: var(--co-polish-radius);
+  padding: var(--co-polish-space);
+}
+.co-opening .cr-feedback { background: var(--co-polish-fill); }
+.co-opening .cr-correct {
+  background: var(--co-polish-success);
+  color: var(--co-polish-success-ink);
+}
+.co-opening .cr-revise {
+  background: var(--co-polish-revise);
+  color: var(--co-polish-revise-ink);
+}
+.co-opening .cr-pattern-grid,
+.co-opening .cr-integrated-grid { gap: 1.5rem; }
+.co-opening .cr-integrated-item h3 { font-size: 1.125rem; }
+.co-opening .cr-contrast > div,
+.co-opening .cr-personalized > div {
+  border-top: 1px solid var(--co-polish-line);
+}
+
+/* Labels and state boundaries must remain readable on a narrow phone. */
+.co-opening .cr-family-list button,
+.co-opening .cr-case-tabs button,
+.co-opening .cr-symbol-options button,
+.co-opening .cr-pattern .cr-answer-options button,
+.co-opening .cr-integrated-item .cr-primary,
+.co-opening .cr-practice-legend dd,
+.co-opening .cr-practice-legend dt,
+.co-opening .cr-integrated-item legend,
+.co-opening .cr-family-role span,
+.co-opening .cr-paper-label,
+.co-opening .cr-legend,
+.co-opening .cr-case-review dt {
+  font-size: 0.875rem;
+}
+.co-opening .cr-family-list button > span { color: var(--co-polish-muted); }
+.co-opening .cr-answer-options { gap: 0.75rem; }
+.co-opening .cr-answer-options button {
+  min-height: 48px;
+  border-color: var(--co-polish-control-line);
+  background: var(--co-polish-panel);
+  color: var(--co-ink);
+  border-radius: var(--co-polish-radius);
+  transition: background-color 180ms var(--co-polish-ease), color 180ms var(--co-polish-ease);
+}
+.co-opening .cr-answer-options button:hover:not(:disabled) {
+  background: var(--co-polish-fill);
+}
+.co-opening .cr-sequence button[aria-pressed="true"] {
+  color: var(--co-ink);
+  background: var(--co-polish-selected);
+  border-color: var(--co-teal);
+  box-shadow: none;
+  font-weight: 600;
+}
+.co-opening .cr-sequence .cr-primary {
+  background: var(--co-teal);
+  color: var(--co-polish-light);
+  min-height: 48px;
+  border-radius: var(--co-polish-radius);
+}
+.co-opening .cr-sequence .cr-primary:hover:not(:disabled) {
+  background: var(--co-polish-dark);
+}
+.co-opening .cr-reset {
+  border: 0;
+  background: transparent;
+  color: var(--co-polish-muted);
+  font-size: 0.875rem !important;
+  padding-inline: 0.5rem;
+}
+.co-opening .cr-sequence button:disabled {
+  opacity: 1;
+  background: var(--co-polish-fill);
+  color: var(--co-polish-muted);
+  border-color: var(--co-polish-line);
+}
+.co-opening button:focus-visible,
+.co-opening a:focus-visible,
+.co-opening summary:focus-visible {
+  outline: 2px solid var(--co-ink);
+  outline-offset: 4px;
+}
+.co-opening .cr-dark button:focus-visible {
+  outline-color: var(--co-polish-control-line);
+}
+
+/* Transform-only connector motion, with the same static reading. */
+@keyframes cr-travel {
+  0% { transform: translateX(0); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateX(1.5rem); opacity: 0; }
+}
+@keyframes cr-travel-vertical {
+  0% { transform: translateY(0); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateY(1.5rem); opacity: 0; }
+}
+
+@media (max-width: 900px) {
+  .co-opening { --co-polish-inset: 2rem; }
+  .co-opening .cr-pattern-grid,
+  .co-opening .cr-integrated-grid { grid-template-columns: minmax(0, 1fr); }
+  .co-opening .cr-step-heading h2 { font-size: 2.125rem; }
+}
+@media (max-width: 600px) {
+  .co-opening { --co-polish-inset: 1.5rem; --co-polish-space: 1.125rem; }
+  .co-opening .cr-sequence .cr-step { padding-block: 2.5rem; }
+  .co-opening .cr-step-heading { gap: 1rem; align-items: flex-start; }
+  .co-opening .cr-step-heading h2 { font-size: 1.75rem; }
+  .co-opening .cr-number { font-size: 2rem; }
+  .co-opening .cr-step-heading .co-kicker { line-height: 1.6; }
+  .co-opening .co-lesson-navigation ol { columns: 1; }
+  .co-opening .cr-if small,
+  .co-opening .cr-then small,
+  .co-opening .cr-hypothetical figcaption { font-size: 0.875rem; }
+  .co-opening .cr-family-list { gap: 0.5rem; }
+  .co-opening .cr-family-list button { min-height: 48px; }
+  .co-opening .cr-symbol-options button,
+  .co-opening .cr-pattern .cr-answer-options button { flex-basis: 100%; }
+  .co-opening .cr-control-row { gap: 0.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .co-opening .cr-sequence * { animation: none !important; transition: none !important; }
+}
+.co-opening .co-meaning-figure > div,
+.co-opening .co-pass-figure,
+.co-opening .co-hypothetical-tag,
+.co-opening .co-if-consequence {
+  border-left: 0;
+  border-radius: var(--co-radius);
+}
+.co-opening .co-small,
+.co-opening .co-meaning-figure span,
+.co-opening .co-roles-figure span,
+.co-opening .co-hero-target span,
+.co-opening .co-pass-figure span,
+.co-opening .co-hypothetical-tag {
+  font-size: 0.875rem !important;
+}
+.co-opening .cr-item-number {
+  flex: 0 0 2ch;
+  white-space: nowrap;
+  color: var(--co-muted);
+}

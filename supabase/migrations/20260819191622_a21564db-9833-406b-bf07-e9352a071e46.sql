@@ -1,0 +1,2 @@
+REVOKE EXECUTE ON FUNCTION public.apply_booking_package_payment(uuid, text, text, text) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.apply_booking_package_payment(uuid, text, text, text) TO service_role;

@@ -1,0 +1,500 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://atrcqxpmqrynmtvvyjju.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "lsat-u-mcp",
+      "version": "0.3.0",
+      "title": "LSAT U"
+    },
+    "tools": [
+      {
+        "name": "echo",
+        "title": "Echo",
+        "description": "Echo the input text back. Useful to verify the LSAT U MCP connection is live.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Text to echo back."
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_my_profile",
+        "title": "Get my LSAT U profile",
+        "description": "Return the signed-in user's LSAT U profile: display name, level, streak, XP and layout preferences.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_homework",
+        "title": "List my homework assignments",
+        "description": "List homework assignments for the signed-in student, newest first. Optionally filter by status.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "assigned",
+                "in_progress",
+                "completed"
+              ],
+              "description": "Optional status filter."
+            },
+            "limit": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "description": "Max rows to return. Defaults to 25."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_classroom_items",
+        "title": "List my classroom items",
+        "description": "List classroom items (notes, drills, bootcamp modules, homework) shared with the signed-in student by their instructor.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "description": "Max items to return. Defaults to 25."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "find_students",
+        "title": "Find LSAT U students",
+        "description": "Admin-only. Resolve a student name or email to the exact LSAT U student ID before posting anything.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 160,
+              "description": "Student name or email fragment."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 25
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "post_classroom_note",
+        "title": "Post a Classroom note",
+        "description": "Admin-only. Post a student-facing note under Notes and recaps, with optional bell and inbox notification. Resolve the student first.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "student_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "content_html": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 500
+            },
+            "notify": {
+              "type": "boolean",
+              "description": "Defaults to true."
+            },
+            "idempotency_key": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 160,
+              "description": "Stable unique key for this exact post. Reuse it only when retrying."
+            }
+          },
+          "required": [
+            "student_id",
+            "title",
+            "content_html",
+            "idempotency_key"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "assign_passage_map_homework",
+        "title": "Assign passage-map homework",
+        "description": "Admin-only. Publish structured passage-map homework under Assigned work. Student responses save in the Classroom; the attached answer key stays hidden until submission.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "student_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "content_html": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500000
+            },
+            "response_schema": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "number",
+                  "const": 1
+                },
+                "sections": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "instructions": {
+                        "type": "string",
+                        "maxLength": 1000
+                      },
+                      "fields": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 200
+                            },
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "short",
+                                "long"
+                              ]
+                            },
+                            "rows": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 16
+                            },
+                            "placeholder": {
+                              "type": "string",
+                              "maxLength": 300
+                            },
+                            "required": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "label"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 1,
+                        "maxItems": 80
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "fields"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "maxItems": 30
+                }
+              },
+              "required": [
+                "version",
+                "sections"
+              ],
+              "additionalProperties": false
+            },
+            "answer_key_html": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500000
+            },
+            "notify": {
+              "type": "boolean",
+              "description": "Defaults to true."
+            },
+            "idempotency_key": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 160,
+              "description": "Stable unique key for this exact assignment. Reuse it only when retrying."
+            }
+          },
+          "required": [
+            "student_id",
+            "title",
+            "content_html",
+            "response_schema",
+            "answer_key_html",
+            "idempotency_key"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_assignment_status",
+        "title": "Get assignment status",
+        "description": "Admin-only. Verify that a structured LSAT U assignment exists and report its view, save, submission, and answer-key state.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "assignment_id": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "assignment_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_students",
+        "title": "List students (admin)",
+        "description": "Admin only. List LSAT U students, optionally filtered by a case-insensitive name substring. Returns id (class_id = user_id) and display_name — use the id when calling assign_homework or send_note.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional case-insensitive name substring."
+            },
+            "limit": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 200,
+              "description": "Max rows (default 50)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_homework_sets",
+        "title": "List homework sets (admin)",
+        "description": "Admin only. List homework sets you have created. Use a set's id when calling assign_homework.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional case-insensitive title substring."
+            },
+            "limit": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 200,
+              "description": "Max rows (default 50)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "assign_homework",
+        "title": "Assign homework set to a student (admin)",
+        "description": "Admin only. Assign an existing homework set to a student and notify them (bell + inbox + email). Creates a homework_assignments row and a Classroom feed item. Get the set id from list_homework_sets and the student id from list_students.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "set_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "homework_sets.id to assign."
+            },
+            "student_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Target student's id (profiles.class_id / auth user id)."
+            }
+          },
+          "required": [
+            "set_id",
+            "student_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "send_note",
+        "title": "Send a classroom note to a student (admin)",
+        "description": "Admin only. Post a plain-text note to a student's Classroom feed and notify them (bell + inbox + email). Line breaks are preserved. For rich HTML notes use post_classroom_note.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "student_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Target student's id (profiles.class_id / auth user id)."
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160,
+              "description": "Short note title."
+            },
+            "body_markdown": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000,
+              "description": "Note body (plain text; line breaks preserved)."
+            }
+          },
+          "required": [
+            "student_id",
+            "title",
+            "body_markdown"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
