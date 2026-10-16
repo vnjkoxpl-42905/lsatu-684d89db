@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { CoachFeedback } from "./CoachFeedback";
+import { SEED_ACTIVITIES } from "../content";
+import { relationshipExplanation } from "../relationshipPresentation";
 import type { ActivityItem } from "../api/types";
 
 // Two things a student could not see before. The authored explanation names the
@@ -93,5 +95,29 @@ describe("emphasis in the explanation", () => {
     const em = screen.getByText("makes");
     expect(em.tagName).toBe("EM");
     expect(screen.queryByText(/\*makes\*/)).not.toBeInTheDocument();
+  });
+});
+
+const first = SEED_ACTIVITIES.find((activity) => activity.slug === "spot-the-relationship")!.items[0];
+
+describe("Spot feedback disclosure", () => {
+  it("shows only the hint before resolution", () => {
+    render(<CoachFeedback item={first} verdict="partial" feedback="Read the second clause again." revealed={false} resolved={false} />);
+    expect(screen.getByText("Read the second clause again.")).toBeVisible();
+    expect(screen.queryByText("Credited answer")).toBeNull();
+    expect(screen.queryByText(relationshipExplanation(first))).toBeNull();
+  });
+
+  it("uses corrected presentation for a stale first-item explanation after success", () => {
+    const { container } = render(<CoachFeedback item={{ ...first, explanation: "2 relationships in this sentence. Stale explanation." }} verdict="correct" feedback="" revealed={false} resolved />);
+    expect(container.textContent).toContain(relationshipExplanation(first).replace(/\*/g, ""));
+    expect(container.textContent).not.toContain("Stale explanation.");
+    expect(screen.queryByText("Credited answer")).toBeNull();
+  });
+
+  it("reveals the credited answer only when requested", () => {
+    render(<CoachFeedback item={first} verdict="incorrect" feedback="" revealed resolved />);
+    expect(screen.getByText("Credited answer")).toBeVisible();
+    expect(screen.getByText(first.credited_answers[0])).toBeVisible();
   });
 });

@@ -37,11 +37,10 @@ describe("StatementPanel renders authored prompt structure", () => {
     expect(b.querySelector(".ac-display")?.className).toContain("text-2xl");
   });
 
-  it("shows the difficulty band as the question type chip", () => {
+  it("hides Spot difficulty metadata after an attempt", () => {
     const item = itemFrom("spot-the-relationship", 48);
     const { container } = render(<StatementPanel item={item} showQuestionType />);
-    const chip = container.querySelector("span")!;
-    expect(within(chip as HTMLElement).getByText(/Rung 4/)).toBeTruthy();
+    expect(within(container).queryByText(/Rung 4/)).toBeNull();
   });
 
   it("stands down when the Activity's world already shows the prompt", () => {
@@ -54,7 +53,7 @@ describe("StatementPanel renders authored prompt structure", () => {
     expect(container.textContent).toBe("");
   });
 
-  it("keeps the question-type chip even when the world has the prompt", () => {
+  it("does not leave a raw Spot chip when the world has the prompt", () => {
     // The chip appears only after a first attempt, and it is not a duplicate of
     // anything the world draws, so it survives. It comes without the card,
     // which on its own would read as a panel that failed to load.
@@ -62,7 +61,7 @@ describe("StatementPanel renders authored prompt structure", () => {
     const { container } = render(
       <StatementPanel item={item} showQuestionType showPrompt={false} />,
     );
-    expect(within(container).getByText(/Rung 4/)).toBeTruthy();
+    expect(within(container).queryByText(/Rung 4/)).toBeNull();
     expect(container.textContent).not.toContain(item.prompt);
     expect(container.querySelector(".ac-display")).toBeNull();
   });

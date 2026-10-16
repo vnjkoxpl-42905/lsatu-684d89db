@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +17,8 @@ interface AnswerPanelProps {
   onShowAnswer: () => void;
   onNext: () => void;
   judging: boolean;
+  /** The previous Spot hint stays visible while the student revises. */
+  retrying?: boolean;
   attempts: number;
   result: { verdict: FeedbackState; feedback: string; covered?: number[] } | null;
   revealed: boolean;
@@ -35,7 +37,7 @@ const DEFAULT_ANSWER_LABEL = "Your answer";
 const DEFAULT_ANSWER_PLACEHOLDER = "Write your answer…";
 
 const emeraldBtn =
-  "w-full md:w-auto bg-[hsl(var(--ac-emerald))] text-white hover:bg-[hsl(var(--ac-emerald-strong))] h-12 px-6 text-[15px] font-medium rounded-xl";
+  "w-full md:w-auto bg-[hsl(var(--ac-emerald-strong))] text-white hover:bg-[hsl(var(--ac-emerald-strong))] h-12 px-6 text-[15px] font-medium rounded-xl";
 
 /** Right panel: textarea, submit, and the coach feedback / retry / reveal flow. */
 export function AnswerPanel({
@@ -48,6 +50,7 @@ export function AnswerPanel({
   onShowAnswer,
   onNext,
   judging,
+  retrying = false,
   attempts,
   result,
   revealed,
@@ -57,8 +60,9 @@ export function AnswerPanel({
   answerPlaceholder,
   creditedSecondaryLabel,
 }: AnswerPanelProps) {
+  const answerId = useId();
   const canSubmit = value.trim().length > 0 && !judging && !resolved;
-  const showRetry = !!result && result.verdict !== "correct" && !revealed && attempts < MAX_ATTEMPTS;
+  const showRetry = !retrying && !!result && result.verdict !== "correct" && !revealed && attempts < MAX_ATTEMPTS;
   // Picked this item back up mid-attempt: the count came from the saved log,
   // not from anything that happened on this screen, so say so rather than
   // letting the student spend their last try thinking it is their first.
@@ -76,6 +80,7 @@ export function AnswerPanel({
 
   return (
     <div
+      aria-busy={judging}
       className="flex h-full flex-col rounded-[24px] border border-border bg-card p-7 shadow-[0_1px_2px_rgba(30,24,16,0.05)] md:p-9"
       onKeyDown={(e) => {
         // Enter continues once there is nothing left to answer. A button under
@@ -86,11 +91,13 @@ export function AnswerPanel({
         onNext();
       }}
     >
-      <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+      <label htmlFor={answerId} className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
         {answerLabel ?? DEFAULT_ANSWER_LABEL}
       </label>
       <Textarea
+        id={answerId}
         ref={answerRef}
+        aria-keyshortcuts="Control+Enter Meta+Enter"
         // Every world's entrance autofocuses; the box the student actually
         // types in did not. Over 62 questions that is 62 mouse trips.
         autoFocus
@@ -99,23 +106,20 @@ export function AnswerPanel({
         placeholder={answerPlaceholder ?? DEFAULT_ANSWER_PLACEHOLDER}
         disabled={judging || resolved || revealed}
         rows={4}
-        className="mt-3 resize-none rounded-2xl border-border bg-[hsl(var(--background))] text-[15px] leading-relaxed focus-visible:ring-0"
+        className="mt-3 resize-none rounded-2xl border-border bg-[hsl(var(--background))] text-[15px] leading-relaxed text-foreground disabled:opacity-100"
         onKeyDown={(e) => {
           if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && canSubmit) onSubmit();
         }}
       />
-      {/* The shortcut has always worked and has never been mentioned. */}
-      <p className="mt-2 text-xs text-muted-foreground">
-        <kbd className="rounded border border-border px-1 py-0.5 font-sans text-[10px]">⌘</kbd>
-        <span aria-hidden="true"> + </span>
-        <kbd className="rounded border border-border px-1 py-0.5 font-sans text-[10px]">↵</kbd>
-        <span> to submit{resolved ? ", Enter to continue" : ""}</span>
-      </p>
-
-      <div className="mt-4 flex flex-wrap items-center gap-3">
+      {!resolved && <div className="mt-4 flex flex-wrap items-center gap-3">
         {!resolved && !showRetry && (
           <Button onClick={onSubmit} disabled={!canSubmit} className={emeraldBtn}>
-            {judging ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit"}
+            {judging ? (
+              <>
+                <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />
+                <span role="status">Checking answer…</span>
+              </>
+            ) : "Submit"}
           </Button>
         )}
         {resumedMidItem && (
@@ -128,7 +132,7 @@ export function AnswerPanel({
             <Button onClick={onRetry} className={emeraldBtn} disabled={judging}>
               Try again
             </Button>
-            <Button variant="ghost" onClick={onShowAnswer} disabled={judging} className="text-muted-foreground">
+            <Button variant="ghost" onClick={onShowAnswer} disabled={judging} className="text-foreground underline-offset-4 hover:underline">
               Show answer
             </Button>
             <span className="text-xs text-muted-foreground">
@@ -136,12 +140,7 @@ export function AnswerPanel({
             </span>
           </>
         )}
-        {resolved && (
-          <Button onClick={onNext} className={emeraldBtn}>
-            {isLast ? "Finish" : "Next"}
-          </Button>
-        )}
-      </div>
+      </div>}
 
       {/* A screen-reader user got silence after submitting: the chip and the
           prose both rendered with nothing announcing them. */}
@@ -161,6 +160,13 @@ export function AnswerPanel({
             secondaryLabel={creditedSecondaryLabel}
             item={item}
           />
+        </div>
+      )}
+      {resolved && (
+        <div className="mt-6">
+          <Button onClick={onNext} className={emeraldBtn}>
+            {isLast ? "Finish" : "Next"}
+          </Button>
         </div>
       )}
     </div>

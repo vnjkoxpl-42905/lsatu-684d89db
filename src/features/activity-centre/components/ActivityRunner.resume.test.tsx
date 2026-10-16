@@ -316,3 +316,24 @@ describe("General practice shows the run's real progress", () => {
     expect(container.querySelector('[role="progressbar"]')).toHaveAttribute("aria-valuenow", String(Math.round(3 / seed.items.length * 100)));
   });
 });
+
+describe("Spot the Relationship completion progress", () => {
+  it("restores resolved questions, counts revealed answers, and finishes only after answering the final question", async () => {
+    Object.defineProperty(HTMLElement.prototype, "scrollIntoView", { configurable: true, value: vi.fn() });
+    const seed = SEED_ACTIVITIES.find(a => a.slug === "spot-the-relationship")!;
+    activityState.assignment = { ...makeAssignment("in_progress"), title: seed.title, instructions: seed.instructions, items: seed.items };
+    listItemResponses.mockResolvedValue([
+      row(1, 2, "incorrect", "A wrong answer, then revealed"),
+      ...seed.items.slice(1, -1).map(item => row(item.order, 1, "correct", item.credited_answers[0])),
+    ]);
+    renderRouted();
+    const progress = await screen.findByRole("progressbar", { name: "Practice progress" });
+    expect(progress).toHaveAttribute("aria-valuetext", "47 of 48 questions completed");
+    expect(progress).not.toHaveAttribute("aria-valuenow", "100");
+    expect(screen.getByText("Question 48")).toBeInTheDocument();
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: seed.items.at(-1)!.credited_answers[0] } });
+    fireEvent.click(screen.getByRole("button", { name: /^Submit$/ }));
+    await waitFor(() => expect(progress).toHaveAttribute("aria-valuenow", "100"));
+    expect(progress).toHaveAttribute("aria-valuetext", "48 of 48 questions completed");
+  });
+});
