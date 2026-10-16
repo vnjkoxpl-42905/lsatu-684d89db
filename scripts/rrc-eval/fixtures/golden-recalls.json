@@ -1,0 +1,1260 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-16T22:22:27.981Z",
+  "status": "authored-fixtures-awaiting-grader-execution",
+  "cases": [
+    {
+      "id": "owner-gold-pt105_s2_q1",
+      "sourceSection": "PT105.S2",
+      "itemSlug": "PT105_S2_Q1",
+      "spoken": "Okay. So some French divers recently found this big cave along the coast of the Mediterranean Sea. And the only way into it is through an underwater tunnel. The inside of the cave is completely filled with seawater, and it's got a lot of these big stalagmites in it, which are pillars made of stone that form when drops of water fall on the same single spot on the cave floor over and over, and they leave behind mineral deposits that build up over time.",
+      "expected": {
+        "mustCarryDetails": [
+          "Divers found a cave.",
+          "The divers were French.",
+          "The find was recent.",
+          "The cave is large.",
+          "The cave is along a coast.",
+          "The coast is the Mediterranean Sea's.",
+          "There is only one way into the cave.",
+          "The way in is a tunnel.",
+          "The tunnel is underwater.",
+          "This is about the inside of the cave.",
+          "It is filled with water.",
+          "The water is seawater.",
+          "It is filled completely.",
+          "The cave contains stalagmites.",
+          "The stalagmites are numerous.",
+          "The stalagmites are large.",
+          "Stalagmites are a kind of pillar.",
+          "The pillars are made of stone.",
+          "They form from falling drops of water.",
+          "The drops fall repeatedly.",
+          "The drops fall on one single spot.",
+          "The spot is on a cave floor.",
+          "The drops leave mineral deposits behind.",
+          "The deposits build up over time."
+        ],
+        "mustMissDetails": [],
+        "minPercent": 100,
+        "readGiven": false,
+        "reciting": false,
+        "listing": false
+      },
+      "provenance": {
+        "origin": "exact authored whole-recall script from homepage worked example",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt105-s2.json",
+        "sourceFileSha256": "4706097764f49dc555bdbe2ce04b543eacb882422da12dec85eb1c73702d9288",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Owner designates performance 10/10. Expected detail coverage is independently grounded in this exact script; script-to-current-video/audio alignment not independently verified. No separate CLIR is present in this whole-recall script, so no Read is required or fabricated.",
+        "ownerDesignatedPerformanceScore": 10,
+        "ownerDesignatedScoreScale": 10,
+        "scriptFile": "scripts/rrc-eval/fixtures/homepage-recalls.json",
+        "scriptSha256": "9029622b364cbe677fb8b852911d2eea18dd7225115bece24f7dc614e4058d8a",
+        "scriptToAudioIndependentlyVerified": false,
+        "archivedOriginalScriptFile": "verification/lr-recall-reference-audit-2026-10-16/homepage-example-sources/recall/scripts.json"
+      },
+      "recall": "Okay. So some French divers recently found this big cave along the coast of the Mediterranean Sea. And the only way into it is through an underwater tunnel. The inside of the cave is completely filled with seawater, and it's got a lot of these big stalagmites in it, which are pillars made of stone that form when drops of water fall on the same single spot on the cave floor over and over, and they leave behind mineral deposits that build up over time."
+    },
+    {
+      "id": "owner-gold-pt105_s2_q2",
+      "sourceSection": "PT105.S2",
+      "itemSlug": "PT105_S2_Q2",
+      "spoken": "Okay. So a director at the Rexx Pharmaceutical Company argued that the government should subsidize the development costs for the new vaccines that the health department asked them for. And the reason is that marketing vaccines is going to be less profitable than marketing any other pharmaceutical product. And to support that, the director says vaccine sales are likely to be lower, because each vaccine only gets administered to a patient once, whereas medicines that treat diseases and chronic illnesses get administered many times to each patient.",
+      "expected": {
+        "mustCarryDetails": [
+          "A director made an argument.",
+          "The director is at Rexx Pharmaceutical Company.",
+          "The argument is about development costs.",
+          "The costs are for new vaccines.",
+          "The health department requested those vaccines.",
+          "He wants the costs subsidized.",
+          "The government should do the subsidizing.",
+          "This is his reason.",
+          "It is about marketing vaccines.",
+          "Marketing vaccines is expected to be less profitable.",
+          "The comparison is with marketing any other pharmaceutical product.",
+          "This is further support for the claim.",
+          "Vaccine sales are likely to be lower.",
+          "The reason is how often a vaccine is given.",
+          "A vaccine is given to a patient only once.",
+          "This is the contrast.",
+          "It is about other medicines.",
+          "Those medicines fight diseases and chronic illnesses.",
+          "Those are given many times to each patient."
+        ],
+        "mustMissDetails": [],
+        "minPercent": 100,
+        "readGiven": false,
+        "reciting": false,
+        "listing": false
+      },
+      "provenance": {
+        "origin": "exact authored whole-recall script from homepage worked example",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt105-s2.json",
+        "sourceFileSha256": "4706097764f49dc555bdbe2ce04b543eacb882422da12dec85eb1c73702d9288",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Owner designates performance 10/10. Expected detail coverage is independently grounded in this exact script; script-to-current-video/audio alignment not independently verified. No separate CLIR is present in this whole-recall script, so no Read is required or fabricated.",
+        "ownerDesignatedPerformanceScore": 10,
+        "ownerDesignatedScoreScale": 10,
+        "scriptFile": "scripts/rrc-eval/fixtures/homepage-recalls.json",
+        "scriptSha256": "9029622b364cbe677fb8b852911d2eea18dd7225115bece24f7dc614e4058d8a",
+        "scriptToAudioIndependentlyVerified": false,
+        "archivedOriginalScriptFile": "verification/lr-recall-reference-audit-2026-10-16/homepage-example-sources/recall/scripts.json"
+      },
+      "recall": "Okay. So a director at the Rexx Pharmaceutical Company argued that the government should subsidize the development costs for the new vaccines that the health department asked them for. And the reason is that marketing vaccines is going to be less profitable than marketing any other pharmaceutical product. And to support that, the director says vaccine sales are likely to be lower, because each vaccine only gets administered to a patient once, whereas medicines that treat diseases and chronic illnesses get administered many times to each patient."
+    },
+    {
+      "id": "owner-gold-pt105_s2_q3",
+      "sourceSection": "PT105.S2",
+      "itemSlug": "PT105_S2_Q3",
+      "spoken": "Okay. So the manager is saying they've got this new computer network going in, and the purpose of it is to increase productivity. And they can install it during the day, which would disrupt the employees' work, or they can install it at night, which would mean much higher installation charges. And since saving money is important, the manager concludes they should have the network installed during the day.",
+      "expected": {
+        "mustCarryDetails": [
+          "A manager is speaking.",
+          "There is a new computer network.",
+          "Its purpose is to increase productivity.",
+          "It can be installed during the day.",
+          "That option would disrupt work.",
+          "The work disrupted is the employees'.",
+          "The other option is installing at night.",
+          "Night installation would cost much more.",
+          "Saving money is important.",
+          "That is the reason given.",
+          "The conclusion is to install during the day."
+        ],
+        "mustMissDetails": [],
+        "minPercent": 100,
+        "readGiven": false,
+        "reciting": false,
+        "listing": false
+      },
+      "provenance": {
+        "origin": "exact authored whole-recall script from homepage worked example",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt105-s2.json",
+        "sourceFileSha256": "4706097764f49dc555bdbe2ce04b543eacb882422da12dec85eb1c73702d9288",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Owner designates performance 10/10. Expected detail coverage is independently grounded in this exact script; script-to-current-video/audio alignment not independently verified. No separate CLIR is present in this whole-recall script, so no Read is required or fabricated.",
+        "ownerDesignatedPerformanceScore": 10,
+        "ownerDesignatedScoreScale": 10,
+        "scriptFile": "scripts/rrc-eval/fixtures/homepage-recalls.json",
+        "scriptSha256": "9029622b364cbe677fb8b852911d2eea18dd7225115bece24f7dc614e4058d8a",
+        "scriptToAudioIndependentlyVerified": false,
+        "archivedOriginalScriptFile": "verification/lr-recall-reference-audit-2026-10-16/homepage-example-sources/recall/scripts.json"
+      },
+      "recall": "Okay. So the manager is saying they've got this new computer network going in, and the purpose of it is to increase productivity. And they can install it during the day, which would disrupt the employees' work, or they can install it at night, which would mean much higher installation charges. And since saving money is important, the manager concludes they should have the network installed during the day."
+    },
+    {
+      "id": "quantifier-all-faithful",
+      "sourceSection": "PT102.S3",
+      "itemSlug": "PT102_S3_Q1",
+      "spoken": "Director of Ace Manufacturing Company: Our management consultant proposes that we reassign staff so that all employees are doing both what they like to do and what they do well. This, she says, will \"increase productivity by fully exploiting our available resources.\" But Ace Manufacturing has a long-standing commitment not to exploit its workers. Therefore, implementing her recommendations would cause us to violate our own policy.",
+      "expected": {
+        "mustCarryDetails": [
+          "This applies to all employees."
+        ],
+        "mustMissDetails": []
+      },
+      "provenance": {
+        "origin": "authored controlled fixture",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt102-s3.json",
+        "sourceFileSha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+        "status": "authored-expectations-not-provider-validated",
+        "note": ""
+      }
+    },
+    {
+      "id": "quantifier-most-material-change",
+      "sourceSection": "PT102.S3",
+      "itemSlug": "PT102_S3_Q1",
+      "spoken": "Director of Ace Manufacturing Company: Our management consultant proposes that we reassign staff so that most employees are doing both what they like to do and what they do well. This, she says, will \"increase productivity by fully exploiting our available resources.\" But Ace Manufacturing has a long-standing commitment not to exploit its workers. Therefore, implementing her recommendations would cause us to violate our own policy.",
+      "expected": {
+        "mustCarryDetails": [],
+        "mustMissDetails": [
+          "This applies to all employees."
+        ]
+      },
+      "provenance": {
+        "origin": "authored controlled fixture",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt102-s3.json",
+        "sourceFileSha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Most does not carry all, even if the rest is accurate."
+      }
+    },
+    {
+      "id": "conditional-music-actual-paraphrase",
+      "sourceSection": "PT102.S3",
+      "itemSlug": "PT102_S3_Q20",
+      "spoken": "If music videos are art, then TV birthed art because music videos came from TV. My thought, TV isn't art, but created one. Argument, if music videos are art, then TV birthed art, because TV birthed music videos.",
+      "expected": {
+        "mustCarryDetails": [
+          "This is about anyone with a certain view.",
+          "The view is that music videos are an art form.",
+          "That person should also agree to something.",
+          "They should agree television gave rise to an art form.",
+          "This is the reason given.",
+          "Television gave rise to music videos."
+        ],
+        "mustMissDetails": []
+      },
+      "provenance": {
+        "origin": "exact WHAT YOU SAID saved live report, ordinal18",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt102-s3.json",
+        "sourceFileSha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Ordinal18 is question20. If/then carries conditional framing and argument role; do not require exact person-oriented phrasing. Insists-strength is not forced as carried."
+      }
+    },
+    {
+      "id": "conditional-music-reversed-origin",
+      "sourceSection": "PT102.S3",
+      "itemSlug": "PT102_S3_Q20",
+      "spoken": "If music videos are art, then television gave rise to art because music videos gave rise to television.",
+      "expected": {
+        "mustCarryDetails": [],
+        "mustMissDetails": [
+          "Television gave rise to music videos."
+        ]
+      },
+      "provenance": {
+        "origin": "authored controlled fixture",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt102-s3.json",
+        "sourceFileSha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Reverse the production relation; surface vocabulary overlap cannot earn the original fact."
+      }
+    },
+    {
+      "id": "negation-company-policy-reversal",
+      "sourceSection": "PT102.S3",
+      "itemSlug": "PT102_S3_Q1",
+      "spoken": "Director of Ace Manufacturing Company: Our management consultant proposes that we reassign staff so that all employees are doing both what they like to do and what they do well. This, she says, will \"increase productivity by fully exploiting our available resources.\" But Ace Manufacturing has a long-standing commitment to exploit its workers. Therefore, implementing her recommendations would cause us to violate our own policy.",
+      "expected": {
+        "mustCarryDetails": [],
+        "mustMissDetails": [
+          "The commitment is not to exploit its workers."
+        ]
+      },
+      "provenance": {
+        "origin": "authored controlled fixture",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt102-s3.json",
+        "sourceFileSha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Negation removed; do not infer the missing not from the stimulus."
+      }
+    },
+    {
+      "id": "safety-context-actual-norway",
+      "sourceSection": "PT102.S3",
+      "itemSlug": "PT102_S3_Q24",
+      "spoken": "The US lags Norway and Canada in workplace safety, but in all three, joint labor management safety committees really cut injuries, so the committees do work. In The US, successful committees are only in a small number of companies, set up voluntarily, not mandated. Ah, so there's the problem. Voluntary, therefore rare, but in Norway and some Canadian provinces, these joint safety committees are legally required. Found in all medium and large workplaces, A legal requirement means wider adoption. US workplace safety ranks far behind Norway and Canada, yet in all three, very successful joint labor management safety committees reduce injuries. The key difference seems US committees are only in few voluntarily established companies. Norway and several Canadian provinces legally require them in all medium large workplaces. So, The US lags due to voluntary adoption. Norway and parts of Canada mandate wider coverage.",
+      "expected": {
+        "mustCarryDetails": [
+          "The committees oversee workplace safety conditions.",
+          "What they reduced is occupational injuries."
+        ],
+        "mustMissDetails": [
+          "Sweden is one of them.",
+          "This is about Sweden."
+        ]
+      },
+      "provenance": {
+        "origin": "exact WHAT YOU SAID saved live report, ordinal22",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt102-s3.json",
+        "sourceFileSha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Ordinal22 is question24. Workplace context carries occupational injuries/oversight. Norway is a factual substitution and does not carry Sweden. Causal inference is not silently accepted as required reference CLIR."
+      }
+    },
+    {
+      "id": "safety-context-country-repaired",
+      "sourceSection": "PT102.S3",
+      "itemSlug": "PT102_S3_Q24",
+      "spoken": "The US lags Sweden and Canada in workplace safety, but in all three, joint labor management safety committees really cut injuries, so the committees do work. In The US, successful committees are only in a small number of companies, set up voluntarily, not mandated. Ah, so there's the problem. Voluntary, therefore rare, but in Sweden and some Canadian provinces, these joint safety committees are legally required. Found in all medium and large workplaces, A legal requirement means wider adoption. US workplace safety ranks far behind Sweden and Canada, yet in all three, very successful joint labor management safety committees reduce injuries. The key difference seems US committees are only in few voluntarily established companies. Sweden and several Canadian provinces legally require them in all medium large workplaces. So, The US lags due to voluntary adoption. Sweden and parts of Canada mandate wider coverage.",
+      "expected": {
+        "mustCarryDetails": [
+          "The committees oversee workplace safety conditions.",
+          "What they reduced is occupational injuries.",
+          "Sweden is one of them.",
+          "This is about Sweden."
+        ],
+        "mustMissDetails": []
+      },
+      "provenance": {
+        "origin": "authored controlled fixture",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt102-s3.json",
+        "sourceFileSha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Controlled country repair of actual transcript. No minimum whole score: do not bless causal overstatement elsewhere."
+      }
+    },
+    {
+      "id": "safety-material-domain-change",
+      "sourceSection": "PT102.S3",
+      "itemSlug": "PT102_S3_Q24",
+      "spoken": "The US lags Sweden and Canada in workplace safety, but in all three, joint labor management safety committees really cut sports injuries, so the committees do work. In The US, successful committees are only in a small number of companies, set up voluntarily, not mandated. Ah, so there's the problem. Voluntary, therefore rare, but in Sweden and some Canadian provinces, these joint safety committees are legally required. Found in all medium and large workplaces, A legal requirement means wider adoption. US workplace safety ranks far behind Sweden and Canada, yet in all three, very successful joint labor management safety committees reduce sports injuries. The key difference seems US committees are only in few voluntarily established companies. Sweden and several Canadian provinces legally require them in all medium large workplaces. So, The US lags due to voluntary adoption. Sweden and parts of Canada mandate wider coverage.",
+      "expected": {
+        "mustCarryDetails": [],
+        "mustMissDetails": [
+          "What they reduced is occupational injuries."
+        ]
+      },
+      "provenance": {
+        "origin": "authored controlled fixture",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt102-s3.json",
+        "sourceFileSha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Explicit sports injury domain overrides implicit workplace-injury reading. Near-lexical match must not earn credit."
+      }
+    },
+    {
+      "id": "conditional-ship-unless-faithful",
+      "sourceSection": "PT106.S2",
+      "itemSlug": "PT106_S2_Q6",
+      "spoken": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage. Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor. Full flooding can be achieved, however, by sabotage. Any ship that sinks deep into the ocean when not fully flooded will implode. Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode. So unless water entered the Rienzi unusually fast, somebody sabotaged it.",
+      "expected": {
+        "mustCarryDetails": [],
+        "mustMissDetails": [],
+        "readGiven": true,
+        "readMatches": true
+      },
+      "provenance": {
+        "origin": "authored controlled fixture",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt106-s2.json",
+        "sourceFileSha256": "02eb4364787633782626435b0353e52e1cffdfb1aae5fdbc55050faf4fde9fda",
+        "status": "authored-expectations-not-provider-validated",
+        "note": "Unless water entered unusually fast is equivalent here to if it did not enter abnormally quickly. Separate inference appended; original stimulus remains intact."
+      },
+      "recall": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage. Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor. Full flooding can be achieved, however, by sabotage. Any ship that sinks deep into the ocean when not fully flooded will implode. Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode."
+    },
+    {
+      "id": "owner-audio-transcript-pt101_s2_q2",
+      "sourceSection": "PT101.S2",
+      "itemSlug": "PT101_S2_Q2",
+      "spoken": "Okay, so everybody out there, they prefer colors that they can see really easily as opposed to colors that they can't see really easily. So, you know, people like, you know, really bright primary colors like red, yellow, you know, blue, as opposed to like, you know, navy blue versus ocean blue. Those are really, you know, subtle differences. Okay, so infants, they can distinguish bright colors super easily. But as opposed to adults, you know, for whatever reason, maybe their eyes aren't as fully developed, they can't really distinguish subtle shades. My best friend just had a baby. And I know that, like, when the baby is very, very, very young, like a couple days, weeks old, they can actually only really see, like, black and white high contrast images. So they sell a lot of baby things that are, like, image cards or books or stuff that are high contrast black and white because the baby can see it and it helps them, like, develop their price. Okay, so when we're comparing toys, a brightly colored infant toy that's the same type of toy and the same price as a subtly colored toy, the bright one's gonna sell better. People want a fire engine red mobile as opposed to a, I don't know, like a pastel colored mobile. Okay, so this is a premise set. We just have a set of facts, and we can infer that toys that are in colors that are easy for infants. Infants to distinguish sell better than toys that are not, you know, comparable toys that are not in easily distinguishable infant colors.",
+      "expected": {
+        "mustCarryDetails": [],
+        "mustMissDetails": [],
+        "minPercent": 100,
+        "reciting": false,
+        "listing": false
+      },
+      "provenance": {
+        "origin": "actual saved instructor recording transcript with source reads removed",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt101-s2.json",
+        "sourceFileSha256": "b10821f1caf8f1b9637c304cf90e8c96546b07cb1c5aa44b92f98fc079c923dd",
+        "status": "owner-designated-10-of-10-ASR-unreviewed-awaiting-provider-validation",
+        "ownerDesignatedPerformanceScore": 10,
+        "ownerDesignatedScoreScale": 10,
+        "transcriptFile": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q2\\superwhisper-transcript.txt",
+        "transcriptSha256": "e7f555b3af7477df6d239ed9e6dcb90d67b4d05b7e4cdbce25a4ec2bc1ffd7a8",
+        "audioFile": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q2\\original-audio.mp3",
+        "audioSha256": "01856ff1ee9a441556a1ecf5bdfe863a57a3da87c49c183089a4a195be788d66",
+        "audioSha256FromPublicationManifest": "01856ff1ee9a441556a1ecf5bdfe863a57a3da87c49c183089a4a195be788d66",
+        "directListeningVerified": false,
+        "transcriptAudioAlignmentVerified": false,
+        "preprocessing": {
+          "implementation": "supabase/functions/_shared/rrcReads.ts#stripVerbatimReads",
+          "implementationSha256": "d614e65821ab71d604ba76c85078b6251fe352f2f3ce6b8b73227490afa54714",
+          "input": "complete saved ASR text tokenized on whitespace as working speech",
+          "wordsCut": 49,
+          "chunksReadAloud": [
+            1,
+            2,
+            3
+          ]
+        },
+        "note": "Owner designates her recordings as the 10/10 benchmark. This executes the actual saved ASR transcript, with verbatim source reads removed using the production stripper. ASR fidelity and audio alignment have not been independently reviewed. minPercent 100 is an expectation to test, not a previously observed result; any failure remains visible and requires analysis. Supplemental instructor explanation is not a required student fact. No separate final-recall window is asserted."
+      }
+    },
+    {
+      "id": "owner-audio-transcript-pt102_s3_q5",
+      "sourceSection": "PT102.S3",
+      "itemSlug": "PT102_S3_Q5",
+      "spoken": "so adults who go to the office for work spend an average of 100 minutes of less time each week cooking dinner, you know, meal prepping, whatever, than adults who don't work outside the home. They have a home office, they have an all remote job. You know, that makes sense because the people who are commuting to the office that takes more time that they can't of courses. Okay, but even though they're spending these different amounts of time on average cooking dinner, as opposed to what you might think, the two groups, you know, the work from home and the work from the office people, are eating dinners that, you know, don't really change a whole lot in terms of nutritional value, menu variety, number of courses. They're eating like Pretty much the same things. And so, how could that be? This is a paradox. And so, what if adults who are working outside the home are eating out more and they're eating nutritious, multi course meals being cooked by a restaurant or a takeout place, or they're ordering one of those meal kit service type things? And so, it takes less time, but they're getting the same nutritional value in the same number of courses and all of that.",
+      "expected": {
+        "mustCarryDetails": [],
+        "mustMissDetails": [],
+        "minPercent": 100,
+        "reciting": false,
+        "listing": false
+      },
+      "provenance": {
+        "origin": "actual saved instructor recording transcript with source reads removed",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt102-s3.json",
+        "sourceFileSha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+        "status": "owner-designated-10-of-10-ASR-unreviewed-awaiting-provider-validation",
+        "ownerDesignatedPerformanceScore": 10,
+        "ownerDesignatedScoreScale": 10,
+        "transcriptFile": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT102\\S3\\Q5\\superwhisper-transcript.txt",
+        "transcriptSha256": "ada6ef7a121003ae774fccec63c5c6d4d99c9174b121f9918983d1d585b5508d",
+        "audioFile": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT102\\S3\\Q5\\original-audio.mp3",
+        "audioSha256": "2e790fdcf9a823490ca07b8ac8678e241e41d26e830811e10f5b756895ae7391",
+        "audioSha256FromPublicationManifest": "2e790fdcf9a823490ca07b8ac8678e241e41d26e830811e10f5b756895ae7391",
+        "directListeningVerified": false,
+        "transcriptAudioAlignmentVerified": false,
+        "preprocessing": {
+          "implementation": "supabase/functions/_shared/rrcReads.ts#stripVerbatimReads",
+          "implementationSha256": "d614e65821ab71d604ba76c85078b6251fe352f2f3ce6b8b73227490afa54714",
+          "input": "complete saved ASR text tokenized on whitespace as working speech",
+          "wordsCut": 61,
+          "chunksReadAloud": [
+            1,
+            2
+          ]
+        },
+        "note": "Owner designates her recordings as the 10/10 benchmark. This executes the actual saved ASR transcript, with verbatim source reads removed using the production stripper. ASR fidelity and audio alignment have not been independently reviewed. minPercent 100 is an expectation to test, not a previously observed result; any failure remains visible and requires analysis. Supplemental instructor explanation is not a required student fact. No separate final-recall window is asserted."
+      }
+    },
+    {
+      "id": "owner-audio-transcript-pt105_s2_q1",
+      "sourceSection": "PT105.S2",
+      "itemSlug": "PT105_S2_Q1",
+      "spoken": "All right, Okay, so these French divers, they're diving off the coast of the Mediterranean Sea and they recently found this large cave. It's like, I'm picturing like an underwater cave where they're, you know, maybe it used to be above water and now it's filled in, or maybe it's like a volcano situation, who knows? Okay, so the only way to get to this cave is through an underwater tunnel. This is like, oh, this is like the Thai soccer team. That got trapped in an underwater cave. If you all are too young for this, look up Amy Polar Thai Boys on YouTube. It's very stalagmites, Okay, so inside this cave that you can only get to, Through an underwater tunnel off the coast of the Mediterranean, it's totally filled with water, like floor to ceiling. You cannot breathe, you need a scuba tank. But it's filled with these stalagmites, which is what happens when, like, drops of water, I guess stalactites are the ones that form on the ceiling. These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits layer up, and then there are these, like, little pillars. So from this, we can infer that it wasn't always totally filled with water because the drops had to, you know, form.",
+      "expected": {
+        "mustCarryDetails": [],
+        "mustMissDetails": [],
+        "minPercent": 100,
+        "reciting": false,
+        "listing": false
+      },
+      "provenance": {
+        "origin": "actual saved instructor recording transcript with source reads removed",
+        "sourceFile": "src/features/activity-centre/content/read-recall-colour-pt105-s2.json",
+        "sourceFileSha256": "4706097764f49dc555bdbe2ce04b543eacb882422da12dec85eb1c73702d9288",
+        "status": "owner-designated-10-of-10-ASR-unreviewed-awaiting-provider-validation",
+        "ownerDesignatedPerformanceScore": 10,
+        "ownerDesignatedScoreScale": 10,
+        "transcriptFile": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT105\\S2\\Q1\\superwhisper-transcript.txt",
+        "transcriptSha256": "7b58dd37686b17590b17a955dd0323560f2aa3d1a4b6ed197f62aeba7fae42fc",
+        "audioFile": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT105\\S2\\Q1\\original-audio.mp3",
+        "audioSha256": "e91363b6f8abfdae2a928a0fed202b8d61c73041118982e65b276ac7f5eb8538",
+        "audioSha256FromPublicationManifest": "e91363b6f8abfdae2a928a0fed202b8d61c73041118982e65b276ac7f5eb8538",
+        "directListeningVerified": false,
+        "transcriptAudioAlignmentVerified": false,
+        "preprocessing": {
+          "implementation": "supabase/functions/_shared/rrcReads.ts#stripVerbatimReads",
+          "implementationSha256": "d614e65821ab71d604ba76c85078b6251fe352f2f3ce6b8b73227490afa54714",
+          "input": "complete saved ASR text tokenized on whitespace as working speech",
+          "wordsCut": 66,
+          "chunksReadAloud": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "note": "Owner designates her recordings as the 10/10 benchmark. This executes the actual saved ASR transcript, with verbatim source reads removed using the production stripper. ASR fidelity and audio alignment have not been independently reviewed. minPercent 100 is an expectation to test, not a previously observed result; any failure remains visible and requires analysis. Supplemental instructor explanation is not a required student fact. No separate final-recall window is asserted."
+      }
+    }
+  ],
+  "referenceCandidates": [
+    {
+      "citation": "PT101.S2.Q1",
+      "source_section": "PT101.S2",
+      "item_slug": "PT101_S2_Q1",
+      "type": "argument / scope",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt101-s2.json",
+      "app_source_file_sha256": "b10821f1caf8f1b9637c304cf90e8c96546b07cb1c5aa44b92f98fc079c923dd",
+      "source_proposition": "Press release: A comprehensive review evaluating the medical studies done up to the present time has found no reason to think that drinking coffee in normal amounts harms the coffee-drinker's heart. So coffee drinkers can relax and enjoy their beverage—it is safe to drink coffee.",
+      "source_proposition_sha256_utf8": "a1cbc5e04ebcf231bd25ae57691836ef70e176e465318b447cc8a2d45d2d39fd",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "Press release: A comprehensive review evaluating the medical studies done up to the present time has found no reason to think that drinking coffee in normal amounts harms the coffee-drinker's heart.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is a press release."
+            },
+            {
+              "n": 2,
+              "text": "A review has been done."
+            },
+            {
+              "n": 3,
+              "text": "The review is a comprehensive one."
+            },
+            {
+              "n": 4,
+              "text": "The review evaluated medical studies."
+            },
+            {
+              "n": 5,
+              "text": "Those studies were done up to the present time."
+            },
+            {
+              "n": 6,
+              "text": "The review found no reason to think something."
+            },
+            {
+              "n": 7,
+              "text": "The thing is that drinking coffee harms the heart."
+            },
+            {
+              "n": 8,
+              "text": "The amounts of coffee are normal ones."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "So coffee drinkers can relax and enjoy their beverage—it is safe to drink coffee.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is the conclusion."
+            },
+            {
+              "n": 2,
+              "text": "Coffee drinkers can relax."
+            },
+            {
+              "n": 3,
+              "text": "They can enjoy their beverage."
+            },
+            {
+              "n": 4,
+              "text": "It is safe to drink coffee."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "What if just because coffee isn't bad for your heart that doesn't mean it's safe overall? What if coffee makes your hair fall out?",
+      "clir_type": "Loophole",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q1\\superwhisper-transcript.txt",
+      "transcript_sha256": "52a71b77ea962ffbcfcf4e8b962d86dfafc8139c51ebc0f2af671523f7f43af4",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q1\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "2d6d192d74582d501857817322023af761f7e89667eac44686dc9f0703c16370",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q1\\metadata.json",
+      "paraphrase_evidence": "we have no reason to think, based on these studies, that drinking coffee in normal amounts",
+      "analysis_evidence": "What if just because it's not bad for your heart doesn't mean it doesn't have other adverse effects?",
+      "grading_focus": "Preserve no reason to think, heart-specific finding, normal amounts and broader safety conclusion; speculation about harms is reaction, not a stimulus fact.",
+      "cautions": "The transcript sometimes upgrades no reason to think harm into not going to harm; this is not automatically faithful.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT101.S2.Q2",
+      "source_section": "PT101.S2",
+      "item_slug": "PT101_S2_Q2",
+      "type": "inference / comparison",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt101-s2.json",
+      "app_source_file_sha256": "b10821f1caf8f1b9637c304cf90e8c96546b07cb1c5aa44b92f98fc079c923dd",
+      "source_proposition": "All people prefer colors that they can distinguish easily to colors that they have difficulty distinguishing. Infants can easily distinguish bright colors but, unlike adults, have difficulty distinguishing subtle shades. A brightly colored toy for infants sells better than the same toy in subtle shades at the same price.",
+      "source_proposition_sha256_utf8": "da737724703248cf455959bdc0f253f325be24b22f371d053daed9701d376a4d",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "All people prefer colors that they can distinguish easily to colors that they have difficulty distinguishing.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about all people."
+            },
+            {
+              "n": 2,
+              "text": "People prefer some colors to others."
+            },
+            {
+              "n": 3,
+              "text": "The preferred colors are ones they can distinguish easily."
+            },
+            {
+              "n": 4,
+              "text": "The other colors are ones they have difficulty distinguishing."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "Infants can easily distinguish bright colors but, unlike adults, have difficulty distinguishing subtle shades.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about infants."
+            },
+            {
+              "n": 2,
+              "text": "Infants can distinguish bright colors easily."
+            },
+            {
+              "n": 3,
+              "text": "There is a contrast in this sentence."
+            },
+            {
+              "n": 4,
+              "text": "Infants have difficulty distinguishing subtle shades."
+            },
+            {
+              "n": 5,
+              "text": "Adults are unlike infants in this."
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "text": "A brightly colored toy for infants sells better than the same toy in subtle shades at the same price.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about a toy for infants."
+            },
+            {
+              "n": 2,
+              "text": "The toy is brightly colored."
+            },
+            {
+              "n": 3,
+              "text": "That toy sells better than another version."
+            },
+            {
+              "n": 4,
+              "text": "The other version is the same toy in subtle shades."
+            },
+            {
+              "n": 5,
+              "text": "The price of both is the same."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "Infant toys may be purchased in color shades the infant prefers.",
+      "clir_type": "Inference",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q2\\superwhisper-transcript.txt",
+      "transcript_sha256": "e7f555b3af7477df6d239ed9e6dcb90d67b4d05b7e4cdbce25a4ec2bc1ffd7a8",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q2\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "01856ff1ee9a441556a1ecf5bdfe863a57a3da87c49c183089a4a195be788d66",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q2\\metadata.json",
+      "paraphrase_evidence": "the same type of toy and the same price as a subtly colored toy",
+      "analysis_evidence": "we can infer that toys that are in colors that are easy for infants",
+      "grading_focus": "Preserve universal preference, infant/adult contrast and same-toy same-price comparison. Personal anecdotes and eye-development guesses are not required facts.",
+      "cautions": "The commentary generalizes to primary colors and adds biological speculation; do not treat it as gold source text.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT101.S2.Q14",
+      "source_section": "PT101.S2",
+      "item_slug": "PT101_S2_Q14",
+      "type": "controversy / opposing positions",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt101-s2.json",
+      "app_source_file_sha256": "b10821f1caf8f1b9637c304cf90e8c96546b07cb1c5aa44b92f98fc079c923dd",
+      "source_proposition": "Steven: The allowable blood alcohol level for drivers should be cut in half. With this reduced limit, social drinkers will be deterred from drinking and driving, resulting in significantly increased highway safety.\n\nMiguel: No, lowering the current allowable blood alcohol level would have little effect on highway safety, because it would not address the most important aspect of the drunken driving problem, which is the danger to the public posed by heavy drinkers, who often drive with a blood alcohol level of twice the current legal limit.",
+      "source_proposition_sha256_utf8": "a5574e6cea80fda65ab7ed7d75b3b30bd431b72f8dfc6b97eb757b322ee6a3a8",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "Steven: The allowable blood alcohol level for drivers should be cut in half.",
+          "details": [
+            {
+              "n": 1,
+              "text": "Steven is the first speaker."
+            },
+            {
+              "n": 2,
+              "text": "There is an allowable blood alcohol level."
+            },
+            {
+              "n": 3,
+              "text": "The level applies to drivers."
+            },
+            {
+              "n": 4,
+              "text": "It should be cut in half."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "With this reduced limit, social drinkers will be deterred from drinking and driving, resulting in significantly increased highway safety.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about the reduced limit."
+            },
+            {
+              "n": 2,
+              "text": "Social drinkers will be deterred."
+            },
+            {
+              "n": 3,
+              "text": "What they are deterred from is drinking and driving."
+            },
+            {
+              "n": 4,
+              "text": "A result would follow from that."
+            },
+            {
+              "n": 5,
+              "text": "The result is increased highway safety."
+            },
+            {
+              "n": 6,
+              "text": "The increase would be significant."
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "text": "Miguel: No, lowering the current allowable blood alcohol level would have little effect on highway safety,",
+          "details": [
+            {
+              "n": 1,
+              "text": "Miguel is the second speaker."
+            },
+            {
+              "n": 2,
+              "text": "He disagrees with Steven."
+            },
+            {
+              "n": 3,
+              "text": "The level could be lowered."
+            },
+            {
+              "n": 4,
+              "text": "The level is the current allowable one."
+            },
+            {
+              "n": 5,
+              "text": "Lowering it would have little effect."
+            },
+            {
+              "n": 6,
+              "text": "The effect would be on highway safety."
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "text": "because it would not address the most important aspect of the drunken driving problem,",
+          "details": [
+            {
+              "n": 1,
+              "text": "This gives a reason."
+            },
+            {
+              "n": 2,
+              "text": "Lowering the level would not address something."
+            },
+            {
+              "n": 3,
+              "text": "What it misses is an aspect of the problem."
+            },
+            {
+              "n": 4,
+              "text": "The problem is drunken driving."
+            },
+            {
+              "n": 5,
+              "text": "That aspect is the most important one."
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "text": "which is the danger to the public posed by heavy drinkers, who often drive with a blood alcohol level of twice the current legal limit.",
+          "details": [
+            {
+              "n": 1,
+              "text": "The aspect is a danger."
+            },
+            {
+              "n": 2,
+              "text": "The danger is to the public."
+            },
+            {
+              "n": 3,
+              "text": "Heavy drinkers pose that danger."
+            },
+            {
+              "n": 4,
+              "text": "Heavy drinkers drive at a certain level."
+            },
+            {
+              "n": 5,
+              "text": "They often do so."
+            },
+            {
+              "n": 6,
+              "text": "Their blood alcohol level is twice the legal limit."
+            },
+            {
+              "n": 7,
+              "text": "The limit is the current one."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "The speakers disagree over whether cutting the allowable blood alcohol in half will improve highway safety.",
+      "clir_type": "Controversy",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q14\\superwhisper-transcript.txt",
+      "transcript_sha256": "9a6c1654743e0e2dfc2c85747f7ff62c0c7b972b645c35fcc4997ee5740f2188",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q14\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "1ee31305f9dc3387248a5770e4eaf96342c572332dd56bb77465d0bf8e3b95e7",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q14\\metadata.json",
+      "paraphrase_evidence": "the biggest problem with drunk driving is the danger to the public from heavy drinkers",
+      "analysis_evidence": "the speakers are disagreeing over whether lowering the allowable blood alcohol level would have an impact on safety.",
+      "grading_focus": "Keep Steven and Miguel positions separate; preserve cut in half, social versus heavy drinkers, significantly versus little effect, twice current legal limit.",
+      "cautions": "Hypothetical alcohol values and drug-driving speculation are examples, not asserted stimulus values; ASR uses have for halve and Stephen for Steven.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT102.S3.Q5",
+      "source_section": "PT102.S3",
+      "item_slug": "PT102_S3_Q5",
+      "type": "resolution / apparent conflict",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt102-s3.json",
+      "app_source_file_sha256": "b83fb75eedca3d6238368a79923c7f68fe464f991e0d95da1ab9704935f39177",
+      "source_proposition": "Adults who work outside the home spend, on average, 100 minutes less time each week in preparing dinner than adults who do not work outside the home. But, contrary to expectation, comparisons show that the dinners eaten at home by the two groups of adults do not differ significantly with respect to nutritional value, variety of menus, or number of courses.",
+      "source_proposition_sha256_utf8": "15553cb6f38ab6ca674c8c24d03d108c65462c26589efe195c926cfc5e1ee5b2",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "Adults who work outside the home spend, on average, 100 minutes less time each week in preparing dinner than adults who do not work outside the home.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about adults who work outside the home."
+            },
+            {
+              "n": 2,
+              "text": "They spend less time preparing dinner."
+            },
+            {
+              "n": 3,
+              "text": "The amount less is 100 minutes."
+            },
+            {
+              "n": 4,
+              "text": "The period is each week."
+            },
+            {
+              "n": 5,
+              "text": "This is an average."
+            },
+            {
+              "n": 6,
+              "text": "The comparison is with adults who do not work outside the home."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "But, contrary to expectation, comparisons show that the dinners eaten at home by the two groups of adults do not differ significantly with respect to nutritional value, variety of menus, or number of courses.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is a contrast."
+            },
+            {
+              "n": 2,
+              "text": "The result runs contrary to expectation."
+            },
+            {
+              "n": 3,
+              "text": "The dinners of the two groups are compared."
+            },
+            {
+              "n": 4,
+              "text": "The dinners are eaten at home."
+            },
+            {
+              "n": 5,
+              "text": "They do not differ significantly."
+            },
+            {
+              "n": 6,
+              "text": "One respect is nutritional value."
+            },
+            {
+              "n": 7,
+              "text": "Another is variety of menus."
+            },
+            {
+              "n": 8,
+              "text": "Another is the number of courses."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "What if adults who work outside the home are eating out more?",
+      "clir_type": "Resolution",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT102\\S3\\Q5\\superwhisper-transcript.txt",
+      "transcript_sha256": "ada6ef7a121003ae774fccec63c5c6d4d99c9174b121f9918983d1d585b5508d",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT102\\S3\\Q5\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "2e790fdcf9a823490ca07b8ac8678e241e41d26e830811e10f5b756895ae7391",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT102\\S3\\Q5\\metadata.json",
+      "paraphrase_evidence": "spend an average of 100 minutes of less time each week cooking dinner",
+      "analysis_evidence": "what if adults who are working outside the home are eating out more",
+      "grading_focus": "Preserve 100 minutes less each week, on average, dinner eaten at home and all three comparison dimensions. Resolution is separate from recall.",
+      "cautions": "Outside-home versus not-outside-home is narrowed to office versus remote work. Eating out, takeout and meal-kit possibilities require review; do not automatically bless them as a single correct resolution.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT105.S2.Q1",
+      "source_section": "PT105.S2",
+      "item_slug": "PT105_S2_Q1",
+      "type": "inference / physical process",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt105-s2.json",
+      "app_source_file_sha256": "4706097764f49dc555bdbe2ce04b543eacb882422da12dec85eb1c73702d9288",
+      "source_proposition": "French divers recently found a large cave along the coast of the Mediterranean Sea. The cave is accessible only through an underwater tunnel. The interior of the cave is completely filled with seawater and contains numerous large stalagmites, which are stony pillars that form when drops of water fall repeatedly on a single spot on a cave floor, leaving behind mineral deposits that accumulate over time.",
+      "source_proposition_sha256_utf8": "b32ded238e000a86221bf43fa90cd143ce471227df1e89e0bd80ef9fadd9bcfe",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "French divers recently found a large cave along the coast of the Mediterranean Sea.",
+          "details": [
+            {
+              "n": 1,
+              "text": "Divers found a cave."
+            },
+            {
+              "n": 2,
+              "text": "The divers were French."
+            },
+            {
+              "n": 3,
+              "text": "The find was recent."
+            },
+            {
+              "n": 4,
+              "text": "The cave is large."
+            },
+            {
+              "n": 5,
+              "text": "The cave is along a coast."
+            },
+            {
+              "n": 6,
+              "text": "The coast is the Mediterranean Sea's."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "The cave is accessible only through an underwater tunnel.",
+          "details": [
+            {
+              "n": 1,
+              "text": "There is only one way into the cave."
+            },
+            {
+              "n": 2,
+              "text": "The way in is a tunnel."
+            },
+            {
+              "n": 3,
+              "text": "The tunnel is underwater."
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "text": "The interior of the cave is completely filled with seawater and contains numerous large stalagmites,",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about the inside of the cave."
+            },
+            {
+              "n": 2,
+              "text": "It is filled with water."
+            },
+            {
+              "n": 3,
+              "text": "The water is seawater."
+            },
+            {
+              "n": 4,
+              "text": "It is filled completely."
+            },
+            {
+              "n": 5,
+              "text": "The cave contains stalagmites."
+            },
+            {
+              "n": 6,
+              "text": "The stalagmites are numerous."
+            },
+            {
+              "n": 7,
+              "text": "The stalagmites are large."
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "text": "which are stony pillars that form when drops of water fall repeatedly on a single spot on a cave floor, leaving behind mineral deposits that accumulate over time.",
+          "details": [
+            {
+              "n": 1,
+              "text": "Stalagmites are a kind of pillar."
+            },
+            {
+              "n": 2,
+              "text": "The pillars are made of stone."
+            },
+            {
+              "n": 3,
+              "text": "They form from falling drops of water."
+            },
+            {
+              "n": 4,
+              "text": "The drops fall repeatedly."
+            },
+            {
+              "n": 5,
+              "text": "The drops fall on one single spot."
+            },
+            {
+              "n": 6,
+              "text": "The spot is on a cave floor."
+            },
+            {
+              "n": 7,
+              "text": "The drops leave mineral deposits behind."
+            },
+            {
+              "n": 8,
+              "text": "The deposits build up over time."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "The cave was not always completely filled with water.",
+      "clir_type": "Inference",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT105\\S2\\Q1\\superwhisper-transcript.txt",
+      "transcript_sha256": "7b58dd37686b17590b17a955dd0323560f2aa3d1a4b6ed197f62aeba7fae42fc",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT105\\S2\\Q1\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "e91363b6f8abfdae2a928a0fed202b8d61c73041118982e65b276ac7f5eb8538",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT105\\S2\\Q1\\metadata.json",
+      "paraphrase_evidence": "the only way to get to this cave is through an underwater tunnel",
+      "analysis_evidence": "we can infer that it wasn't always totally filled with water",
+      "grading_focus": "Preserve French divers, recent discovery, Mediterranean coast, only tunnel access, completely seawater-filled, numerous large stalagmites, repeated drops and accumulated minerals over time.",
+      "cautions": "Stalactite explanation, scuba and anecdote are supplementary. Amy Polar is an ASR name error. Does not establish complete final-recall performance.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT106.S2.Q6",
+      "source_section": "PT106.S2",
+      "item_slug": "PT106_S2_Q6",
+      "type": "inference / conditional reasoning",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt106-s2.json",
+      "app_source_file_sha256": "02eb4364787633782626435b0353e52e1cffdfb1aae5fdbc55050faf4fde9fda",
+      "source_proposition": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage. Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor. Full flooding can be achieved, however, by sabotage. Any ship that sinks deep into the ocean when not fully flooded will implode. Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode.",
+      "source_proposition_sha256_utf8": "d0e9fd37831a15b840525f2cd67412d257d646e50fe6fcd9668c7df6be0b61ab",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage.",
+          "details": [
+            {
+              "n": 1,
+              "text": "The Rienzi is a ship."
+            },
+            {
+              "n": 2,
+              "text": "It is a passenger ship."
+            },
+            {
+              "n": 3,
+              "text": "The Rienzi sank as a result of something."
+            },
+            {
+              "n": 4,
+              "text": "There was a hole in its hull."
+            },
+            {
+              "n": 5,
+              "text": "The hole may have been caused by sabotage."
+            },
+            {
+              "n": 6,
+              "text": "That cause is only a possibility."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This describes what normally happens."
+            },
+            {
+              "n": 2,
+              "text": "It concerns a ship with a hole in it."
+            },
+            {
+              "n": 3,
+              "text": "The ship sinks as rapidly as the Rienzi did."
+            },
+            {
+              "n": 4,
+              "text": "Water does not enter such a ship quickly enough."
+            },
+            {
+              "n": 5,
+              "text": "The water is not enough to fully flood the ship."
+            },
+            {
+              "n": 6,
+              "text": "That is its state when it reaches the ocean floor."
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "text": "Full flooding can be achieved, however, by sabotage.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is a contrast with what came before."
+            },
+            {
+              "n": 2,
+              "text": "Full flooding can be achieved."
+            },
+            {
+              "n": 3,
+              "text": "Sabotage is what can achieve it."
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "text": "Any ship that sinks deep into the ocean when not fully flooded will implode.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about ships that sink deep into the ocean."
+            },
+            {
+              "n": 2,
+              "text": "It applies to any such ship."
+            },
+            {
+              "n": 3,
+              "text": "The ship in question is not fully flooded."
+            },
+            {
+              "n": 4,
+              "text": "Such a ship will implode."
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "text": "Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode.",
+          "details": [
+            {
+              "n": 1,
+              "text": "There are photographs of the sunken Rienzi."
+            },
+            {
+              "n": 2,
+              "text": "The photographs were taken deep in the sea."
+            },
+            {
+              "n": 3,
+              "text": "The Rienzi rests on the ocean floor."
+            },
+            {
+              "n": 4,
+              "text": "The photographs reveal something."
+            },
+            {
+              "n": 5,
+              "text": "The Rienzi did not implode."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "If water did not enter the Rienzi abnormally quickly, it was sabotaged.",
+      "clir_type": "Inference",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT106\\S2\\Q6\\superwhisper-transcript.txt",
+      "transcript_sha256": "01af745f1a29693878511334cd5a428652cef2c1c14080ada79a18c0cdae8bfe",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT106\\S2\\Q6\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "8dabe7bc79ae6c26982993ec75e3bf7ea2d46f754e1f6f76d4c61813a2ad3418",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT106\\S2\\Q6\\metadata.json",
+      "paraphrase_evidence": "water can't get in quickly enough for it to be completely, fully 100% flooded by the time it reaches the ocean floor",
+      "analysis_evidence": "Unless it was, you know, there was something abnormal about the ship",
+      "grading_focus": "Preserve normally, possibly sabotaged, not-fully-flooded implies implosion, observed no implosion, conditional sabotage inference rather than definite sabotage.",
+      "cautions": "Transcript says explodes/blown up while correcting to imploded. Name variants and holed/hold are ASR risks. Do not adopt physical reversal as a faithful detail.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    }
+  ],
+  "notes": [
+    "Six archive references remain source/inspiration. Three actual saved transcripts are now owner-designated 10/10 benchmark cases, preprocessed with the production read stripper; ASR fidelity remains unreviewed. Expectations do not claim a measured pass.",
+    "Three owner-designated homepage whole-recall scripts are positive fixtures. Their exact text supports every authored detail, but no independent script/audio match or separate Read is claimed.",
+    "Controlled regression expectations name only defensible specific details; unspecified details are deliberately unconstrained.",
+    "No provider calls or benchmark scores were produced while authoring this file."
+  ]
+}
