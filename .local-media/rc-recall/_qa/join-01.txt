@@ -1,0 +1,4 @@
+card -> Cumulative Recall @ 00:00:03.000
+  00:00:00.000 Chapter: Cumulative Recall. The source calls Cumulative Recall “Decaf”.
+  00:00:03.865 How do you get the most out of decaf RC translation?
+  00:00:06.385 And so Decafs role in the elemental curriculum is really,

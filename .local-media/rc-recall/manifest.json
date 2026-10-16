@@ -1,0 +1,361 @@
+{
+  "builtAt": "2026-10-16T13:31:19.266Z",
+  "verified": false,
+  "note": "Not verified. Complete the README edit-boundary checks, then set verified by hand.",
+  "profile": {
+    "height": 480,
+    "fps": 30,
+    "video": [
+      "-c:v",
+      "libx264",
+      "-preset",
+      "medium",
+      "-crf",
+      "32",
+      "-pix_fmt",
+      "yuv420p",
+      "-profile:v",
+      "high"
+    ],
+    "audio": [
+      "-c:a",
+      "aac",
+      "-b:a",
+      "64k",
+      "-ac",
+      "1",
+      "-ar",
+      "44100"
+    ],
+    "mp3": [
+      "-c:a",
+      "libmp3lame",
+      "-b:a",
+      "64k",
+      "-ac",
+      "1"
+    ],
+    "budgetBytes": 209715200
+  },
+  "totalBytes": 139092261,
+  "budgetBytes": 209715200,
+  "withinBudget": true,
+  "files": [
+    {
+      "path": "examples/cumulative-01.mp3",
+      "bytes": 1230764,
+      "sha256": "238d96249bb2678bb92c992c89cd12b0ef72ab16a97e0b7fe424b3ad0c2d0a41"
+    },
+    {
+      "path": "examples/cumulative-01.mp4",
+      "bytes": 5551737,
+      "sha256": "c29f7a06f53e8572af2f50a9ba052b984af3f70e1264281c98b737a1fbf9b6ef"
+    },
+    {
+      "path": "examples/cumulative-01.txt",
+      "bytes": 3302,
+      "sha256": "fe99d3b1e3d9d33072489e5a5d4d13a862d3ef283e6559776315d8141c33abe1"
+    },
+    {
+      "path": "examples/cumulative-01.vtt",
+      "bytes": 5737,
+      "sha256": "43f91fbf4cfc84e0b494c81158cced053de796a2a5988530de6e03b9b21ca770"
+    },
+    {
+      "path": "examples/cumulative-02.mp3",
+      "bytes": 1836716,
+      "sha256": "1eb1ed99a790fb74cc2ea0a75745a5a436c5e37c5693642a81e43f7e8e177b29"
+    },
+    {
+      "path": "examples/cumulative-02.mp4",
+      "bytes": 8742565,
+      "sha256": "cacd552332e212c303ac3936b18ea6feb8921b49abaeba5bdf3984f56335e890"
+    },
+    {
+      "path": "examples/cumulative-02.txt",
+      "bytes": 4968,
+      "sha256": "a0c06bae9b8b6f15ce658fef9047eeba26ff6a9442be1ea7f47036f00b346d1c"
+    },
+    {
+      "path": "examples/cumulative-02.vtt",
+      "bytes": 8567,
+      "sha256": "90759382c26c0dfe05440f9a26fc7bf557c19a37819ecc8359e0d6aeeb83f498"
+    },
+    {
+      "path": "examples/cumulative-03.mp3",
+      "bytes": 802604,
+      "sha256": "4711042b47e0a55bc9bbfc5c043ea9828a8f18c950b38d3d3fb550c3f97b65b4"
+    },
+    {
+      "path": "examples/cumulative-03.mp4",
+      "bytes": 3753855,
+      "sha256": "7252af096c7ed53c19010d5723db2f934d13c691697a966de4b902d4a993a0b4"
+    },
+    {
+      "path": "examples/cumulative-03.txt",
+      "bytes": 2162,
+      "sha256": "9a15300f892e3d61a548a355cb226e60471880ffba5532b4764957ab389a55f4"
+    },
+    {
+      "path": "examples/cumulative-03.vtt",
+      "bytes": 3739,
+      "sha256": "7e357d1f8dd5add3832fb36979fd82eb4aad9f93117ccb874883910faad8d48b"
+    },
+    {
+      "path": "examples/cumulative-04.mp3",
+      "bytes": 1242668,
+      "sha256": "9d00402395804762f587306bd3f19a4d42223c3a8aa1b3a0e6e607ef075011c7"
+    },
+    {
+      "path": "examples/cumulative-04.mp4",
+      "bytes": 6180496,
+      "sha256": "9ee25bf9f917fbea2e78d82ceebd762e26e3c534d0fe311d8d343577e2c39136"
+    },
+    {
+      "path": "examples/cumulative-04.txt",
+      "bytes": 3477,
+      "sha256": "06e4b90865581de7cf0162c20ac53301c982b01148fc3323ad1e052080390ae8"
+    },
+    {
+      "path": "examples/cumulative-04.vtt",
+      "bytes": 5879,
+      "sha256": "9132094f39b9502c24c8f3ed9ad62be095f0d7cfb6b3b8e0408f1116869d7849"
+    },
+    {
+      "path": "examples/cumulative-05.mp3",
+      "bytes": 1081580,
+      "sha256": "9c1d389b96a81f82fbff41ba8126eb90c0c453c2c6e611331ceae0658f3f82cd"
+    },
+    {
+      "path": "examples/cumulative-05.mp4",
+      "bytes": 5266024,
+      "sha256": "5cb4c9c7e4112ee78ea11b0eb1a2fea0babc408d5f325e6b4e1e8779122ee643"
+    },
+    {
+      "path": "examples/cumulative-05.txt",
+      "bytes": 3170,
+      "sha256": "9e90352ddcd944a660ccb411d5ba50ed28b8d055b7972f80fa99bd673a8dbab4"
+    },
+    {
+      "path": "examples/cumulative-05.vtt",
+      "bytes": 5539,
+      "sha256": "5be8bc07d050d72e35217d961e0eda284bf8db54d459fd8c039765d0befceb17"
+    },
+    {
+      "path": "examples/cumulative-06.mp3",
+      "bytes": 1071788,
+      "sha256": "ba053199f80c5d3cc91648ce2dd4704b74f9a6c318d69a1731e7f3609ce35f6b"
+    },
+    {
+      "path": "examples/cumulative-06.mp4",
+      "bytes": 5253632,
+      "sha256": "81468e1bd64817a8211b9079a95c0df15d4bec4fe6390a1a1fb413102ae2c815"
+    },
+    {
+      "path": "examples/cumulative-06.txt",
+      "bytes": 2915,
+      "sha256": "2030495be2a761d5cd3b3e22d18f6362c6c541714dc2e7daceb94d8857f44620"
+    },
+    {
+      "path": "examples/cumulative-06.vtt",
+      "bytes": 5020,
+      "sha256": "dbe34cad515657dd0dbeae9ec26ec9a37eb25f0b94b566fd869c81fbe90414e4"
+    },
+    {
+      "path": "examples/cumulative-07.mp3",
+      "bytes": 1482668,
+      "sha256": "0a6a66ecd9fbb1b9c4f98561318de66ce07511e4d33d94b4ddf78214857c3af2"
+    },
+    {
+      "path": "examples/cumulative-07.mp4",
+      "bytes": 7727042,
+      "sha256": "8fc24f5cb3188ba5a9214892542474c3b692607c95ea4a03b2e5400e92e131c9"
+    },
+    {
+      "path": "examples/cumulative-07.txt",
+      "bytes": 4144,
+      "sha256": "95cbfe53783e6c248ee43a2ae170b980cf3c8fa60d2485baf80c186444f9e5ec"
+    },
+    {
+      "path": "examples/cumulative-07.vtt",
+      "bytes": 7239,
+      "sha256": "4ee02f5123c14b92e17c95562226d03c2309f6ba7311a35f665db96c40dcf1d0"
+    },
+    {
+      "path": "examples/rc-recall-01.mp3",
+      "bytes": 1876844,
+      "sha256": "6ce68e17f7c199580c703a5821ab043f3cfc4b0bf28348233e0b321e6b94ff08"
+    },
+    {
+      "path": "examples/rc-recall-01.mp4",
+      "bytes": 9150874,
+      "sha256": "1066a5902e012321163c24ecacf8b342cec56ac51e2c7203d777d8ac0a93cc23"
+    },
+    {
+      "path": "examples/rc-recall-01.txt",
+      "bytes": 5545,
+      "sha256": "2b1b12ab5be8016eb50917804be0342d8c619768f5f477a27734ff26bbfd1b96"
+    },
+    {
+      "path": "examples/rc-recall-01.vtt",
+      "bytes": 8244,
+      "sha256": "fd28404fc29a67381cdc5a37d41302540771c5487d278817a776aed0e676d36c"
+    },
+    {
+      "path": "examples/rc-recall-02.mp3",
+      "bytes": 3173996,
+      "sha256": "6a07a3dcb7d4ddd198b91433d81f4d0173bad13a26ac7ad026ec043b0032edfb"
+    },
+    {
+      "path": "examples/rc-recall-02.mp4",
+      "bytes": 13735328,
+      "sha256": "64ef920b672cd97783e1393dd743bf4e56cc48e4d9316e153b48b93e637bcbb9"
+    },
+    {
+      "path": "examples/rc-recall-02.txt",
+      "bytes": 8290,
+      "sha256": "4f76b02d380512193a910f0ec32f3bdd650a553ed3d0e5fc09bc636a50c639e6"
+    },
+    {
+      "path": "examples/rc-recall-02.vtt",
+      "bytes": 14507,
+      "sha256": "2efb0c6974d98def6b45551d93c24d452f3b2027b703ddb20fdcbc0dee18fc2c"
+    },
+    {
+      "path": "examples/rc-recall-03.mp3",
+      "bytes": 1510892,
+      "sha256": "71bfb494fa70ea46bc20a2e2aba63265d8a2b08a3f3d868eb6339d28574c8303"
+    },
+    {
+      "path": "examples/rc-recall-03.mp4",
+      "bytes": 6903181,
+      "sha256": "ede4ce417f5288ba8efe416ad49e73f5c3bf82a32095857949e316438c54d6c0"
+    },
+    {
+      "path": "examples/rc-recall-03.txt",
+      "bytes": 4218,
+      "sha256": "d76f76e69f65073a92f52e7d8892b9f0933d3998294037f8f4cdbab41b536fe7"
+    },
+    {
+      "path": "examples/rc-recall-03.vtt",
+      "bytes": 7511,
+      "sha256": "ec32b42ac4a69f9625b8ebbd47f0023819099ee20b2ed236db9dda51687b0158"
+    },
+    {
+      "path": "examples/rc-recall-note.mp3",
+      "bytes": 1123628,
+      "sha256": "7a758f879c17a7c6bd79eefff8e40ba4a57f680d013f5bbf9ab88a5ef825cdfc"
+    },
+    {
+      "path": "examples/rc-recall-note.mp4",
+      "bytes": 6531785,
+      "sha256": "fd1d4f73c702ada952a2be112c7453a4ad870b93381136e18844871f1044b1bc"
+    },
+    {
+      "path": "examples/rc-recall-note.txt",
+      "bytes": 2987,
+      "sha256": "8d5583a719c2d7f1c1012094b72e4590cc8abd6e88ca4bef310f9e70ebcd754f"
+    },
+    {
+      "path": "examples/rc-recall-note.vtt",
+      "bytes": 5191,
+      "sha256": "dd07b96b701e6f80e5c5d336bbc5313547180119664a810be44a91c05dc83656"
+    },
+    {
+      "path": "how-and-why-to-do-rc-recall.mp3",
+      "bytes": 7786622,
+      "sha256": "86887f6b12e9be96250a95839ba05ddcaa9200c75013fa945eabe6251c8b79a2"
+    },
+    {
+      "path": "how-and-why-to-do-rc-recall.mp4",
+      "bytes": 35901308,
+      "sha256": "699516601a944a4fa80bf79b6983108663ae7d1159c0b15288f6ae6b7443e616"
+    },
+    {
+      "path": "how-and-why-to-do-rc-recall.txt",
+      "bytes": 18468,
+      "sha256": "08cefc860b1d60ccccaf551c673b16aa37411d5796bb17bd49127c00e078b53e"
+    },
+    {
+      "path": "how-and-why-to-do-rc-recall.vtt",
+      "bytes": 32845,
+      "sha256": "188b52726f5c9575fdff60b90fa4e5b6a30edaf2b8a082357991a80893b551a1"
+    }
+  ],
+  "results": {
+    "examples": [
+      {
+        "stem": "examples/cumulative-01",
+        "seconds": 153.792,
+        "bytes": 5551737,
+        "reused": true
+      },
+      {
+        "stem": "examples/cumulative-02",
+        "seconds": 229.525333,
+        "bytes": 8742565,
+        "reused": true
+      },
+      {
+        "stem": "examples/cumulative-03",
+        "seconds": 100.266667,
+        "bytes": 3753855,
+        "reused": true
+      },
+      {
+        "stem": "examples/cumulative-04",
+        "seconds": 155.264,
+        "bytes": 6180496,
+        "reused": true
+      },
+      {
+        "stem": "examples/cumulative-05",
+        "seconds": 135.125333,
+        "bytes": 5266024,
+        "reused": true
+      },
+      {
+        "stem": "examples/cumulative-06",
+        "seconds": 133.909333,
+        "bytes": 5253632,
+        "reused": true
+      },
+      {
+        "stem": "examples/cumulative-07",
+        "seconds": 185.28,
+        "bytes": 7727042,
+        "reused": true
+      },
+      {
+        "stem": "examples/rc-recall-note",
+        "seconds": 140.394667,
+        "bytes": 6531785,
+        "reused": true
+      },
+      {
+        "stem": "examples/rc-recall-01",
+        "seconds": 234.538667,
+        "bytes": 9150874,
+        "reused": true
+      },
+      {
+        "stem": "examples/rc-recall-02",
+        "seconds": 396.693333,
+        "bytes": 13735328,
+        "reused": true
+      },
+      {
+        "stem": "examples/rc-recall-03",
+        "seconds": 188.8,
+        "bytes": 6903181,
+        "reused": true
+      }
+    ],
+    "instruction": {
+      "stem": "how-and-why-to-do-rc-recall",
+      "seconds": 973.071519,
+      "bytes": 35901308,
+      "joins": 4
+    }
+  }
+}
