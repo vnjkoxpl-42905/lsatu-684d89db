@@ -11,6 +11,7 @@ export interface SectionLibraryLaunchProps {
   /** The list itself, which owns the sections and the starting. */
   children: ReactNode;
   onExit?: () => void;
+  compact?: boolean;
 }
 
 /**
@@ -34,6 +35,7 @@ export function SectionLibraryLaunch({
   instructions,
   children,
   onExit,
+  compact = false,
 }: SectionLibraryLaunchProps) {
   return (
     <SectionLaunchFrame
@@ -43,6 +45,7 @@ export function SectionLibraryLaunch({
       onExit={onExit}
       showBreadcrumbs={false}
       sectionsFirst
+      compact={compact}
       afterSteps={
         <div className="sl-door-demos">
           <SectionDemos />
