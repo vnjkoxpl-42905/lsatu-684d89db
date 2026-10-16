@@ -125,8 +125,6 @@ import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const TeacherWorkspaceShell = safeLazy(() => import("./pages/teacher/shell/TeacherWorkspaceShell"));
 const TeacherReadingCenter = safeLazy(() => import("./pages/teacher/tools/TeacherReadingCenter"));
 const ReadingCenterApp = safeLazy(() => import("./features/reading-center"));
-const ReadingCenterRrc = safeLazy(() => import("./features/reading-center/pages/RrcPage"));
-import ReadingCenterGate from '@/components/ReadingCenterGate';
 import MyWorkGate from '@/components/MyWorkGate';
 const DeskTodaySurface = safeLazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
 const TeacherPayments = safeLazy(() => import("./pages/teacher/shell/TeacherPayments"));
@@ -493,14 +491,7 @@ const App = () => {
                       </React.Suspense>
                     </ActivityAssignmentGate>
                   } />
-                  <Route path="/reading-center/rrc" element={
-                    <ReadingCenterRrcGate>
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <ReadingCenterRrc />
-                      </React.Suspense>
-                    </ReadingCenterRrcGate>
-                  } />
-                  <Route path="/reading-center/*" element={<ReadingCenterGate><ReadingCenterApp /></ReadingCenterGate>} />
+                  <Route path="/reading-center/*" element={<ReadingCenterApp />} />
                   {/* Full-screen takeovers: actual LSAT question-doing + activity
                       runner stay OUTSIDE the persistent student shell. */}
                   <Route path="/drill" element={

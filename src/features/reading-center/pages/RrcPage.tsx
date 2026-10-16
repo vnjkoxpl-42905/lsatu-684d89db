@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { rrcExitPath } from '../lib/rrcNavigation';
 import '@/features/activity-centre/activity-centre.css';
 
-/** Reuses the original section collection and recorder without reader CSS. */
+/** The original LR collection keeps its artwork, demonstrations and saved attempts. */
 export default function RrcPage() {
   const navigate = useNavigate();
   const { user } = useAuth();

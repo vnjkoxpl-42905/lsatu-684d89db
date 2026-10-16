@@ -1,60 +1,56 @@
 // @vitest-environment jsdom
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import ReadingCenterHome from "./ReadingCenterHome";
-import { RC_HOME_PATH, RC_LIBRARY_PATH, RC_RRC_PATH, rcReaderPath } from "../lib/routes";
 
-const permissions = vi.hoisted(() => ({ is_admin: false }));
-vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
+const state = vi.hoisted(() => ({ recall: { data: { assignments: [], grades: [] }, isLoading: false, isError: false, refetch: vi.fn() },
+  sessions: { data: [], isLoading: false, isError: false, refetch: vi.fn() }, passages: { data: [], isLoading: false, isError: false, refetch: vi.fn() },
+  progress: { data: [], isLoading: false, isError: false, refetch: vi.fn() } }));
+vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "me" } }) }));
+vi.mock("../hooks/useRecallDashboard", () => ({ useRecallDashboard: () => state.recall, useDashboardSessions: () => state.sessions, useDashboardProgress: () => state.progress, useDashboardPassages: () => state.passages }));
+vi.mock("recharts", () => ({ ResponsiveContainer: () => null, CartesianGrid: () => null, Line: () => null, LineChart: () => null, Tooltip: () => null, XAxis: () => null, YAxis: () => null }));
 
 let node: HTMLDivElement;
 let root: Root;
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 beforeEach(() => {
-  permissions.is_admin = false;
-  node = document.createElement("div");
-  document.body.append(node);
-  root = createRoot(node);
+  for (const query of Object.values(state)) { query.isLoading = false; query.isError = false; query.refetch.mockClear(); }
+  state.recall.data = { assignments: [], grades: [] };
+  state.sessions.data = []; state.passages.data = []; state.progress.data = [];
+  node = document.createElement("div"); document.body.append(node); root = createRoot(node);
 });
 afterEach(() => { act(() => root.unmount()); node.remove(); });
+const render = () => act(() => root.render(<MemoryRouter><ReadingCenterHome /></MemoryRouter>));
 
-function renderHub() {
-  act(() => root.render(
-    <MemoryRouter initialEntries={[RC_HOME_PATH]}>
-      <Routes>
-        <Route path={RC_HOME_PATH} element={<ReadingCenterHome />} />
-        <Route path={RC_RRC_PATH} element={<h1>RRC collection</h1>} />
-        <Route path={RC_LIBRARY_PATH} element={<h1>Speed Reading collection</h1>} />
-      </Routes>
-    </MemoryRouter>,
-  ));
-}
-
-describe("Reading Center activity hub", () => {
-  it.each([
-    ["Open RRC", "RRC collection"],
-    ["Open Speed Reading", "Speed Reading collection"],
-  ])("opens the independent activity through %s", (label, destination) => {
-    renderHub();
-    const link = [...node.querySelectorAll("a")].find((a) => a.textContent === label)!;
-    act(() => link.click());
-    expect(node.querySelector("h1")?.textContent).toBe(destination);
+describe("Reading dashboard", () => {
+  it("starts with truthful empty states and links to separate activities", () => {
+    render();
+    expect(node.querySelector("h1")?.textContent).toBe("Your reading dashboard");
+    expect(node.textContent).toContain("No graded LR runs yet");
+    expect(node.textContent).toContain("No recorded reading sessions yet");
+    expect(node.querySelector('a[href="/reading-center/rrc"]')).not.toBeNull();
+    expect(node.querySelector('a[href="/reading-center/speed-reading"]')).not.toBeNull();
+    expect(node.textContent).not.toContain("Choose your reading activity");
   });
 
-  it("keeps the hub free of Speed Reading library controls and gives students a home link", () => {
-    renderHub();
-    expect(node.querySelectorAll("section")).toHaveLength(2);
-    expect(node.querySelector('a[href="/classroom"]')?.textContent).toContain("LSAT U Home");
-    expect(node.querySelector("input")).toBeNull();
-    expect(node.textContent).not.toContain("Add Text");
-    expect(rcReaderPath("my passage")).toBe("/reading-center/read/my%20passage");
+  it("shows a failed query as unavailable with retry rather than a false zero", () => {
+    state.recall.isError = true;
+    render();
+    expect(node.querySelector('[aria-label="LR drills completed"]')?.textContent).toContain("Unavailable");
+    expect(node.querySelector('[aria-label="LR Recall progress"]')?.textContent).not.toContain("No graded LR runs");
+    const retry = [...node.querySelectorAll("button")].find(button => button.textContent === "Try again")!;
+    act(() => retry.click());
+    expect(state.recall.refetch).toHaveBeenCalledTimes(1);
+    expect(node.textContent).toContain("No recorded reading sessions yet");
   });
 
-  it("gives teachers a workspace return link", () => {
-    permissions.is_admin = true;
-    renderHub();
-    expect(node.querySelector('a[href="/teacher/tools"]')?.textContent).toContain("Teacher Workspace");
+  it("keeps an available LR resume link when the passage collection fails", () => {
+    state.recall.data.assignments = [{ id: "owned", student_id: "me", mode: "section", status: "in_progress", title: "PT101.S2", started_at: "2026-10-16T10:00:00Z" }] as never[];
+    state.passages.isError = true;
+    render();
+    expect(node.querySelector('a[href="/reading-center/rrc/attempt/owned"]')?.textContent).toContain("Resume");
+    expect(node.textContent).toContain("Some recent practice could not load");
   });
 });
