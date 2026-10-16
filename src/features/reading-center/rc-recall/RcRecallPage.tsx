@@ -96,31 +96,37 @@ export default function RcRecallPage() {
   const timing = TIMING[mode];
 
   return <main className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:py-10" data-reading-activity="rc-recall">
-    <h1 className="text-2xl font-semibold">RC Recall</h1>
+    <h1 className="text-2xl font-semibold">RC Training</h1>
     <p className="mt-1 max-w-3xl text-sm leading-6" style={muted}>
-      Work a full four-passage RC section, one paragraph at a time. You translate, recall from memory, and check yourself. The app keeps the time and your recordings. It does not score your recall.
+      Work through all four passages, one paragraph at a time. Choose whether to check each recall against the text or retell the passage from the beginning as you go. Your time and recordings are saved; your recall is not graded.
     </p>
 
     <section className="mt-6 rounded-2xl border p-5 sm:p-6" style={panel} aria-labelledby="rc-recall-start">
       <h2 id="rc-recall-start" className="text-lg font-semibold">Start a section</h2>
       <fieldset className="mt-3">
-        <legend className="text-sm font-semibold">Mode</legend>
+        <legend className="text-sm font-semibold">Choose a method</legend>
         <div className="mt-2 grid gap-3 sm:grid-cols-2">
-          {(["rc_recall", "cumulative_recall"] as RecallMode[]).map((m) => <label key={m} className="flex min-h-11 cursor-pointer gap-3 rounded-xl border p-3 text-sm" style={{ borderColor: mode === m ? "var(--rc-accent, #494387)" : "var(--rc-outline-2)" }}>
-            <input type="radio" name="mode" value={m} checked={mode === m} onChange={() => setMode(m)} className="mt-1" />
-            <span><span className="block font-semibold">{MODE_LABEL[m]}</span>
-              <span className="block leading-6" style={muted}>{m === "rc_recall"
-                ? "Recall each paragraph, then look back and confirm it."
-                : "Recall each paragraph, then recall everything read so far, without looking back."}</span></span>
+          {(["rc_recall", "cumulative_recall"] as RecallMode[]).map((m) => <label key={m} className="flex min-h-28 cursor-pointer gap-3 rounded-xl border p-4 text-sm transition-colors focus-within:ring-2 focus-within:ring-[var(--rc-accent,#494387)] focus-within:ring-offset-2 motion-reduce:transition-none" style={{
+            borderColor: mode === m ? "var(--rc-accent, #494387)" : "var(--rc-outline-2)",
+            background: mode === m ? "color-mix(in srgb, var(--rc-accent, #494387) 7%, var(--rc-card))" : "var(--rc-card)",
+            boxShadow: mode === m ? "inset 0 0 0 1px var(--rc-accent, #494387)" : undefined,
+          }}>
+            <input type="radio" name="mode" value={m} checked={mode === m} onChange={() => setMode(m)} className="mt-1" style={{ accentColor: "var(--rc-accent, #494387)" }} />
+            <span className="min-w-0">
+              <span className="block font-semibold">{MODE_LABEL[m]}</span>
+              <span className="mt-1 block leading-6" style={muted}>{m === "rc_recall"
+                ? "After each paragraph, retell it, then check it against the text."
+                : "After each new paragraph, retell everything read so far with the text hidden."}</span>
+            </span>
           </label>)}
         </div>
       </fieldset>
 
       {mode === "rc_recall" && <fieldset className="mt-4">
-        <legend className="text-sm font-semibold">What each confirmation covers</legend>
+        <legend className="text-sm font-semibold">What you check</legend>
         <div className="mt-2 space-y-1 text-sm">
-          <label className="flex min-h-11 items-center gap-2"><input type="radio" name="scope" checked={scope === "all_read"} onChange={() => setScope("all_read")} /> All the text read so far (the written default)</label>
-          <label className="flex min-h-11 items-center gap-2"><input type="radio" name="scope" checked={scope === "current_sub_passage"} onChange={() => setScope("current_sub_passage")} /> Only the current sub-passage (comparative passages)</label>
+          <label className="flex min-h-11 items-center gap-2"><input type="radio" name="scope" checked={scope === "all_read"} onChange={() => setScope("all_read")} /> Everything read so far</label>
+          <label className="flex min-h-11 items-center gap-2"><input type="radio" name="scope" checked={scope === "current_sub_passage"} onChange={() => setScope("current_sub_passage")} /> Only the current passage or passage pair</label>
         </div>
       </fieldset>}
 
@@ -137,7 +143,7 @@ export default function RcRecallPage() {
             {inTest.map((s) => <option key={s.section} value={s.section}>{sectionLabel(s)}</option>)}
           </select></label>
         <button type="button" className={button} style={{ background: "var(--rc-accent, #494387)", color: "#fff" }} disabled={!selected || starting} onClick={() => void start()}>
-          {starting ? "Starting…" : `Start ${MODE_LABEL[mode]}`}
+          {starting ? "Starting…" : "Start section"}
         </button>
       </div>}
       {startError && <p role="alert" className="mt-3 text-sm" style={{ color: "var(--rc-danger, #b3261e)" }}>{startError}</p>}
@@ -154,8 +160,7 @@ export default function RcRecallPage() {
         <ExamplePlayer base={base} heading={INSTRUCTION_VIDEO.title} clip={{ id: "instructions", mode, kind: "example", stem: INSTRUCTION_VIDEO.stem, title: INSTRUCTION_VIDEO.title, sourceTitle: "How and Why to Do Decaf RC Translation and How and Why to Do Cappuccino RC Translation" }} />
       </div>}
       <p className="mt-2 text-sm leading-6" style={muted}>
-        The source lesson uses “Decaf” and “Cappuccino” for these two methods. You may hear those names in the footage.
-        {" "}{SOURCE_NAME_MAP.map((m) => `${m.source} = ${m.app}`).join("; ")}.
+        The videos call these methods Decaf and Cappuccino: {SOURCE_NAME_MAP.map((m) => `${m.source} = ${m.app}`).join("; ")}.
       </p>
       <h3 className="mt-4 text-sm font-semibold">The standards</h3>
       <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-6">

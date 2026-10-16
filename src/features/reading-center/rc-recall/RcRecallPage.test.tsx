@@ -39,19 +39,26 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllEnvs());
 
 describe("RC Recall page", () => {
+  it("uses the RC Training title and plain-language method names", () => {
+    renderPage();
+    expect(screen.getByRole("heading", { level: 1, name: "RC Training" })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /Check as you go/ })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /Retell from the beginning/ })).toBeInTheDocument();
+  });
+
   it("lists the section even though its passages have no drillable questions", async () => {
     renderPage();
     expect(await screen.findByRole("option", { name: "PT140 · Section 4" })).toBeInTheDocument();
-    await waitFor(() => expect(screen.getByRole("button", { name: /start rc recall/i })).toBeEnabled());
+    await waitFor(() => expect(screen.getByRole("button", { name: /start section/i })).toBeEnabled());
   });
 
   it("shows the full instructions and the source-name mapping for the chosen mode", async () => {
     renderPage();
-    expect(await screen.findByText(/source lesson uses/i)).toHaveTextContent(/Cappuccino/);
+    expect(await screen.findByText(/videos call these methods/i)).toHaveTextContent(/Cappuccino/);
     expect(screen.getByText(/confirm your translation with all the text you have read/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByLabelText(/RC Recall without look-back/));
-    expect(await screen.findByText(/recap the translations of paragraphs 1 \+ 2 back to back/i)).toBeInTheDocument();
-    expect(screen.queryByLabelText(/Only the current sub-passage/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("radio", { name: /Retell from the beginning/ }));
+    expect(await screen.findByText(/With the text hidden, retell paragraphs 1 and 2 in order/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Only the current passage or passage pair/)).not.toBeInTheDocument();
   });
 
   it("hides every video player and Watch Instructions when no media base is set", async () => {
@@ -84,7 +91,7 @@ describe("RC Recall page", () => {
   it("starts nothing and saves nothing when the loaded section does not match", async () => {
     data.loadPassages.mockResolvedValue([]);
     renderPage();
-    const startButton = await screen.findByRole("button", { name: /start rc recall/i });
+    const startButton = await screen.findByRole("button", { name: /start section/i });
     await waitFor(() => expect(startButton).toBeEnabled());
     fireEvent.click(startButton);
     expect(await screen.findByRole("alert")).toHaveTextContent(/could not be started.*nothing was saved/i);

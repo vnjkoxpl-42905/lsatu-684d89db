@@ -62,8 +62,8 @@ export const RC_RECALL_DEMO_CORRECTION = [
 
 /** The names the source lesson uses, so app copy and footage line up. */
 export const SOURCE_NAME_MAP = [
-  { app: "RC Recall without look-back", source: "Decaf" },
-  { app: "RC Recall with look-back", source: "Cappuccino" },
+  { app: "Retell from the beginning", source: "Decaf" },
+  { app: "Check as you go", source: "Cappuccino" },
 ] as const;
 
 export function mediaBase(env: Record<string, string | undefined> = import.meta.env as Record<string, string | undefined>): string | null {

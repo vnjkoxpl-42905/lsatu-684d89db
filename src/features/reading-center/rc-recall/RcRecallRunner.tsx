@@ -249,10 +249,10 @@ function FinishedPanel({ mode, finished, recaps, onExit, onRetry, busy }: {
         : <ul className="mt-2 space-y-1 text-sm">
           <li>{saved} of {spoken.length} spoken recaps saved</li>
           {pending > 0 && <li role="status">{pending} still uploading</li>}
-          {failed > 0 && <li role="alert">{failed} could not be saved. They stay on this device and upload when you next open RC Recall.</li>}
+          {failed > 0 && <li role="alert">{failed} could not be saved. They stay on this device and upload when you next open RC Training.</li>}
         </ul>}
       {failedSilent > 0 && <p role="alert" className="mt-2 text-sm">{failedSilent} silent recap record{failedSilent === 1 ? "" : "s"} could not be saved.</p>}
     </section>
-    <button type="button" className={`${button} mt-5`} style={primary} onClick={onExit}>Back to RC Recall</button>
+    <button type="button" className={`${button} mt-5`} style={primary} onClick={onExit}>Back to RC Training</button>
   </div>;
 }

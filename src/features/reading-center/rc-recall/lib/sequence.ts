@@ -41,8 +41,8 @@ export interface RecallStep {
 export const RECAP_KINDS: StepKind[] = ["recall", "cumulative", "passage_recap"];
 
 export const MODE_LABEL: Record<RecallMode, string> = {
-  rc_recall: "RC Recall with look-back",
-  cumulative_recall: "RC Recall without look-back",
+  rc_recall: "Check as you go",
+  cumulative_recall: "Retell from the beginning",
 };
 
 /** Per-passage guidance in minutes, from the source workouts. Guidance only. */
@@ -142,9 +142,9 @@ export function stepInstruction(step: RecallStep, mode: RecallMode, scope: Confi
           : "Take a few seconds to confirm your translation with all the text you have read of the passage so far. You are checking, not rereading from scratch.";
     case "cumulative":
       return step.paragraph === 1
-        ? "Without looking back, recap the translations of paragraphs 1 and 2 back to back."
-        : `Without looking back, recap the translations of paragraphs 1 to ${n} back to back.`;
+        ? "With the text hidden, retell paragraphs 1 and 2 in order."
+        : `With the text hidden, retell paragraphs 1 to ${n} in order.`;
     case "passage_recap":
-      return "Optional: look away and recap the full translation of the entire passage. Do it when you first start RC Recall and every so often, to confirm that you can.";
+      return "Optional: With the text hidden, retell the full passage aloud or silently. Try it at the start, then every so often to check your recall.";
   }
 }

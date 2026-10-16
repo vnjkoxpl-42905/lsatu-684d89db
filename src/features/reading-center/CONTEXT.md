@@ -1,6 +1,6 @@
 # Reading Center
 
-Reading practice hub with a Dashboard, LR Recall and Speed Reading. Spec: ai-os
+Reading practice hub with a Dashboard, LR Recall, RC Training and Speed Reading. Spec: ai-os
 brainstorms/2026-10-12-reading-center-build-spec.md.
 
 - lib/: pure logic (tokenize, timing, constants, types). No React, no Supabase. Unit tested.
@@ -18,9 +18,9 @@ lib/tokenize.ts and must stay stable for a given passage body.
   runner, recordings and grading remain owned by `activity-centre`.
 - Speed Reading keeps the general passage collection. It is separate from LR
   sections.
-- RC Recall (`rc-recall/`, `/reading-center/rc-recall`, hub members only) runs a
-  full four-passage section from the existing RC bank in two modes, RC Recall with
-  look-back and RC Recall without look-back. It has its own tables (`rc_recall_attempts`,
+- RC Training (`rc-recall/`, `/reading-center/rc-recall`, hub members only) runs a
+  full four-passage section from the existing RC bank in two modes, Check as you go
+  and Retell from the beginning. It has its own tables (`rc_recall_attempts`,
   `rc_recall_recaps`), private bucket (`rc-recall-recordings`) and IndexedDB
   backup (`rc-recall-backup`); none of it touches LR recording, recovery or
   grading. Attempts are append-only. It saves objective facts only and never

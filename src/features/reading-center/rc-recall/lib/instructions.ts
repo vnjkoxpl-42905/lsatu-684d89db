@@ -28,7 +28,7 @@ export const RC_RECALL_STEPS = [
   "Look away from paragraph 2 and recap the full translation of paragraph 2 silently.",
   "Take a few seconds to confirm your translation with all the text you have read of the passage so far. This confirmation includes every paragraph you have read so far.",
   "Repeat this pattern for all remaining paragraphs.",
-  "Optional: look away and recap the full translation of the entire passage, spoken or silent. Do it when you first begin RC Recall and periodically afterward, just to confirm that you can.",
+  "Optional: look away and recap the full translation of the passage, aloud or silently. Try it when you start, then again every so often to check your recall.",
   "Complete this same process on all remaining passages in the section.",
 ];
 
@@ -37,22 +37,22 @@ export const CUMULATIVE_STEPS = [
   "Look away from paragraph 1 and recap the full translation of paragraph 1.",
   "Read, translate, and quip paragraph 2. Do it just like LR.",
   "Look away from paragraph 2 and recap the full translation of paragraph 2.",
-  "Without looking back, recap the translations of paragraphs 1 + 2 back to back.",
+  "With the text hidden, retell paragraphs 1 and 2 in order.",
   "Read, translate, and quip paragraph 3. Do it just like LR.",
   "Look away from paragraph 3 and recap the full translation of paragraph 3.",
-  "Without looking back, recap the translations of paragraphs 1 + 2 + 3 back to back.",
+  "With the text hidden, retell paragraphs 1, 2, and 3 in order.",
   "Repeat this pattern for all remaining paragraphs.",
   "Complete this same process on all remaining passages in the section.",
 ];
 
 export const COMPARATIVE_NOTE =
   "In a comparative passage, the source note and the Passage A / Passage B headings are labels, not paragraphs to recall. " +
-  "In RC Recall with look-back, you choose before you start whether a confirmation covers all the text you have read so far (the written default) or only the current sub-passage. " +
-  "In RC Recall without look-back, once you start Passage B, recall Passage A and Passage B together.";
+  "In Check as you go, choose before you start whether each check covers all the text read so far or only the current passage pair. " +
+  "In Retell from the beginning, once you begin Passage B, retell Passage A and Passage B together with the text hidden.";
 
 export const VOICE_NOTE =
   "Do your recaps out loud in the beginning to keep yourself honest about the quality and completeness of the recaps. " +
-  "Move to silent recaps when you feel ready. In RC Recall, paragraph recaps and confirmations are silent; the optional passage-end recap can be out loud or silent. " +
+  "Move to silent recaps when you feel ready. Paragraph recaps and checks are silent in Check as you go; the optional passage recap can be spoken or silent. " +
   "Only spoken recaps are recorded.";
 
 export const TIMING = {
