@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ArrowRight, Mic } from "lucide-react";
+import { ArrowDown, ArrowRight, Mic, Play } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
 import { MeadowScene } from "./MeadowScene";
@@ -285,7 +285,7 @@ export function SectionLaunchFrame({
                     ))}
                   </div>
                   <div className="sl-workspace-learning">
-                    {afterSteps && <button type="button" className="sl-start" onClick={() => switchView("examples")}>Watch examples</button>}
+                    {afterSteps && <button type="button" className="sl-start" onClick={() => switchView("examples")}><Play size={16} aria-hidden="true" />Watch examples</button>}
                     {briefing && (
                       <details className="sl-workspace-more">
                         <summary>Read more</summary>
