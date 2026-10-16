@@ -365,7 +365,7 @@ export function SectionLibrary({
               disabled={starting !== null}
               onClick={() => void start(choice)}
             >
-              {starting === choice.id ? "Starting\u2026" : done.length > 0 ? "Run it again" : "Start"}
+              {starting === choice.id ? "Starting\u2026" : done.length > 0 ? "Start new attempt" : "Start section"}
             </button>
           </div>
         );

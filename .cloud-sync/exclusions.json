@@ -336,6 +336,22 @@
     "reason": "excluded file"
   },
   {
+    "path": "verification/lr-recall-views-2026-10-16/build.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "verification/lr-recall-views-2026-10-16/card-size-build.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "verification/lr-recall-views-2026-10-16/tests-all.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "verification/lr-recall-views-2026-10-16/tests-focused.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "verification/reading-center-hub-2026-10-15/build.log",
     "reason": "excluded file"
   },

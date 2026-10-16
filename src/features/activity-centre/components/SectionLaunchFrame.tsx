@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowRight, Mic } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
@@ -136,17 +136,9 @@ function StepScene({ kind }: { kind: (typeof STEP_KINDS)[number] }) {
 }
 
 /**
- * The door to Read, Recall, Colour, drawn once for both of its pages.
- *
- * There are two doors and one design. The library is where she picks tonight's
- * section; the section page is where she reads its clock and starts it. They
- * share the hero, the demonstration, the four steps and the briefing, and
- * differ only in the slab underneath.
- *
- * The page is built to be understood in one viewport: the method is performed
- * in the hero before it is explained, the four steps are the next thing she
- * meets, and the sections she can run sit directly beneath. The long briefing
- * is one tab away and never in the way.
+ * Shared section entrance. Reading Center uses the compact variant to switch
+ * the whole hero between its demonstration, instructions and recorded examples.
+ * Standalone section pages keep their existing lower-page teaching layout.
  */
 export function SectionLaunchFrame({
   title,
@@ -178,6 +170,19 @@ export function SectionLaunchFrame({
     [instructions.briefing],
   );
   const beats = beatSection?.steps ?? [];
+
+  const [view, setView] = useState<"home" | "instructions" | "examples">("home");
+  const switchedHeading = useRef<HTMLHeadingElement>(null);
+  const didSwitch = useRef(false);
+  useEffect(() => {
+    if (!compact || !didSwitch.current) return;
+    switchedHeading.current?.focus({ preventScroll: true });
+  }, [compact, view]);
+  const switchView = (next: typeof view) => {
+    didSwitch.current = true;
+    setView(next);
+    heroRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  };
 
   const [beat, setBeat] = useState(0);
   const [pane, setPane] = useState<"beat" | "briefing">("beat");
@@ -242,12 +247,11 @@ export function SectionLaunchFrame({
   const goToSections = useCallback(() => {
     const slab = sectionsRef.current;
     if (!slab) return;
-    // The app can run inside an editor frame whose scrolling container swallows
-    // smooth document scrolling. Jump first, then focus the destination without
-    // starting a second browser-controlled scroll back toward the hero.
-    slab.scrollIntoView({ behavior: "auto", block: "start" });
+    // Keep the standalone editor-frame fallback, while the workspace scrolls
+    // smoothly unless the student has requested reduced motion.
+    slab.scrollIntoView({ behavior: compact && !reduced ? "smooth" : "auto", block: "start" });
     slab.focus({ preventScroll: true });
-  }, []);
+  }, [compact, reduced]);
 
 
   const briefing = instructions.briefing;
@@ -256,8 +260,53 @@ export function SectionLaunchFrame({
   return (
     <div className={compact ? "sl sl-compact" : "sl"}>
       {/* ---------------------------------------------------------------- hero */}
-      <section className="rd-hero" ref={heroRef} aria-labelledby="rd-title">
-        <div className="rd-hero-panel">
+      <section className="rd-hero" ref={heroRef} aria-labelledby={compact && view !== "home" ? "sl-view-title" : "rd-title"}>
+        <motion.div layout={compact && !reduced} transition={{ duration: reduced ? 0 : 0.24, ease: EASE }} className="rd-hero-panel" data-view={compact ? view : undefined}>
+          {compact && view !== "home" ? (
+            <motion.div key={view} className="sl-workspace-view" initial={{ opacity: reduced ? 1 : 0 }} animate={{ opacity: 1 }} transition={{ duration: reduced ? 0 : 0.2 }}>
+              <div className="sl-workspace-header">
+                <h1 id="sl-view-title" ref={switchedHeading} tabIndex={-1}>{view === "instructions" ? "Instructions" : "Video examples"}</h1>
+                <div className="sl-workspace-actions">
+                  <button type="button" className="sl-start" onClick={goToSections}>Choose a section</button>
+                  {view === "examples" && <button type="button" className="sl-brief" onClick={() => switchView("instructions")}>Back to instructions</button>}
+                  <button type="button" className="sl-brief" onClick={() => switchView("home")}>Back to home</button>
+                </div>
+              </div>
+              {view === "instructions" ? (
+                <>
+                  <div className="sl-workspace-steps">
+                    {beats.map((step, i) => (
+                      <section className="sl-beat rd-step" key={i} data-kind={STEP_KINDS[i] ?? "read"}>
+                        <StepScene kind={STEP_KINDS[i] ?? "read"} />
+                        <span className="rd-step-n">Step {i + 1}</span>
+                        <h2 className="sl-l">{renderInlineMarks(step.label, `sl-workspace-label-${i}`)}</h2>
+                        <p className="sl-d">{renderInlineMarks(step.body, `sl-workspace-body-${i}`)}</p>
+                      </section>
+                    ))}
+                  </div>
+                  <div className="sl-workspace-learning">
+                    {afterSteps && <button type="button" className="sl-start" onClick={() => switchView("examples")}>Watch examples</button>}
+                    {briefing && (
+                      <details className="sl-workspace-more">
+                        <summary>Read more</summary>
+                        <div className="sl-essay">
+                          {briefing.lede && <p className="rd-lede">{renderInlineMarks(briefing.lede, "sl-workspace-lede")}</p>}
+                          {briefing.sections.map((section, i) => (
+                            <section key={i}>
+                              <h2>{renderInlineMarks(section.heading, `sl-workspace-h-${i}`)}</h2>
+                              {section.body.map((para, j) => <p key={j}>{renderInlineMarks(para, `sl-workspace-p-${i}-${j}`)}</p>)}
+                              {section.demo && <ol>{section.demo.beats.map((item, j) => <li key={j}><strong>{item.kind}</strong> {renderInlineMarks(item.text, `sl-workspace-demo-${i}-${j}`)}</li>)}</ol>}
+                            </section>
+                          ))}
+                        </div>
+                      </details>
+                    )}
+                  </div>
+                </>
+              ) : afterSteps}
+            </motion.div>
+          ) : <>
+
           <div className="rd-hero-top">
             <span className="rd-crumbs">
               {showBreadcrumbs ? (
@@ -299,7 +348,7 @@ export function SectionLaunchFrame({
               <Mic size={11} strokeWidth={2.6} aria-hidden="true" />
               Read, Recall, Colour
             </span>
-            <h1 className="sl-title" id="rd-title">
+            <h1 className="sl-title" id="rd-title" ref={switchedHeading} tabIndex={-1}>
               {/* "Read, Recall, Colour · PT102 Section 3" is one title in the
                   record and two lines on the door: the drill, then the section
                   it is run on, in the same italic the library gives "back".
@@ -317,9 +366,9 @@ export function SectionLaunchFrame({
                 title
               )}
             </h1>
-            <p className="sl-tagline">
+            {!compact && <p className="sl-tagline">
               {instructions.tagline ? renderInlineMarks(instructions.tagline, "sl-tagline") : subtitle}
-            </p>
+            </p>}
             <div className="sl-cta">
               {primaryAction ?? (
                 <button type="button" className="sl-start" onClick={goToSections}>
@@ -327,7 +376,7 @@ export function SectionLaunchFrame({
                 </button>
               )}
               {briefing && (
-                <button type="button" className="sl-brief" onClick={openBriefing}>
+                <button type="button" className="sl-brief" onClick={compact ? () => switchView("instructions") : openBriefing}>
                   Read the full instructions
                 </button>
               )}
@@ -345,7 +394,8 @@ export function SectionLaunchFrame({
           <MeadowScene progress={scrollYProgress}>
             <RecallDemo />
           </MeadowScene>
-        </div>
+          </>}
+        </motion.div>
       </section>
 
       {sectionsFirst && (
@@ -374,7 +424,7 @@ export function SectionLaunchFrame({
       )}
 
       {/* -------------------------------------------------------------- method */}
-      {beats.length > 0 && (
+      {!compact && beats.length > 0 && (
         <motion.section
           className="rd-method"
           ref={methodRef}
@@ -541,10 +591,10 @@ export function SectionLaunchFrame({
         </motion.section>
       )}
 
-      {afterSteps}
+      {!compact && afterSteps}
 
       {/* ------------------------------------------------------- what counts */}
-      <motion.section className="rd-counts" aria-labelledby="rd-counts-title" {...reveal}>
+      {!compact && <motion.section className="rd-counts" aria-labelledby="rd-counts-title" {...reveal}>
         <div className="rd-counts-head">
           <h2 id="rd-counts-title" className="rd-h2">
             Your own words, <em>every</em> detail.
@@ -578,6 +628,7 @@ export function SectionLaunchFrame({
         </div>
       </motion.section>
 
+      }
       {/* --------------------------------------------------------------- slab */}
       {!sectionsFirst && (
         <motion.section

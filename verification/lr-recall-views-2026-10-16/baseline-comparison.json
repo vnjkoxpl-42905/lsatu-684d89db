@@ -1,0 +1,85 @@
+{
+  "baseline": {
+    "suites": 10,
+    "tests": 22,
+    "passed": 8,
+    "failed": 14,
+    "failures": [
+      {
+        "file": "ActivityIntro.exit.test.tsx",
+        "name": "ActivityIntro worked example shows each Activity's own answer in the after orb, never a fixed string",
+        "message": "TypeError: Cannot read properties of null (reading 'textContent')"
+      },
+      {
+        "file": "ActivityItemView.a11y.test.tsx",
+        "name": "getting through 62 questions without the mouse announces the verdict instead of only drawing it",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.a11y.test.tsx",
+        "name": "getting through 62 questions without the mouse continues on Enter once there is nothing left to answer",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.a11y.test.tsx",
+        "name": "what happens to the words already written keeps the answer on Try again rather than emptying the box",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.a11y.test.tsx",
+        "name": "what happens to the words already written drops the cache once the attempt is on record",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.coach.test.tsx",
+        "name": "ActivityItemView sends the Activity's own Coach brief vocab-rehab sends its own rubric, not the negation default",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.coach.test.tsx",
+        "name": "ActivityItemView sends the Activity's own Coach brief spot-the-relationship sends its own rubric, not the negation default",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.coach.test.tsx",
+        "name": "ActivityItemView sends the Activity's own Coach brief find-the-conclusion sends its own rubric, not the negation default",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.coach.test.tsx",
+        "name": "ActivityItemView sends the Activity's own Coach brief rebuttal-rephrase sends its own rubric, not the negation default",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.coach.test.tsx",
+        "name": "ActivityItemView sends the Activity's own Coach brief dumb-it-down sends its own rubric, not the negation default",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.coach.test.tsx",
+        "name": "ActivityItemView sends the Activity's own Coach brief spot-the-callback sends its own rubric, not the negation default",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.coach.test.tsx",
+        "name": "ActivityItemView sends the Activity's own Coach brief omits coach for a legacy Activity so the negation default still applies",
+        "message": "AssertionError: expected \"spy\" to be called at least once"
+      },
+      {
+        "file": "ActivityItemView.paper.test.tsx",
+        "name": "the paper-first conditional response requires paper work before revealing exactly five diagrams",
+        "message": "AssertionError: expected [ <button …(4)>…(2)</button>, …(3) ] to have a length of 5 but got 4"
+      },
+      {
+        "file": "ActivityItemView.paper.test.tsx",
+        "name": "the paper-first conditional response gives rule-specific retry feedback for a wrong route without calling the Coach",
+        "message": "Error: Unable to fire a \"click\" event - please provide a DOM element."
+      }
+    ]
+  },
+  "current": {
+    "tests": 489,
+    "failed": 14
+  },
+  "sameFailures": true
+}

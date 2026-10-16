@@ -1,0 +1,52 @@
+{
+  "commit": "b7557bf16a25456dffaf9278384df2ef1cadcfa0",
+  "built_assets": [
+    "/assets/index-CvGtiliP.js"
+  ],
+  "focused_tests": {
+    "passed": 148,
+    "failed": 0
+  },
+  "broader_tests": {
+    "passed": 475,
+    "failed": 14,
+    "baseline_same_failures": true
+  },
+  "responsive_widths": [
+    320,
+    600,
+    768,
+    1024,
+    1440
+  ],
+  "browser_checks": [
+    "whole-area view switching",
+    "4 full step bodies without clipping",
+    "Read more closed initially and expandable",
+    "Example3 selection",
+    "video opens paused and plays on request",
+    "video removed and paused on exit",
+    "chooser scroll/focus without starting attempt",
+    "keyboard heading focus",
+    "reduced motion",
+    "no duplicate sections",
+    "no Watch instructions control",
+    "no console errors"
+  ],
+  "publication": "published_and_live_verified",
+  "deployment_id": "1bb8945b-2579-412f-897f-7ff6092a3bd0",
+  "live_asset": "/assets/index-De-rZ_Pg.js",
+  "lovable_latest_commit": "b7557bf16a25456dffaf9278384df2ef1cadcfa0",
+  "safe_push_typecheck": "passed",
+  "live_verified": [
+    "retained animated home",
+    "no tagline/aside/duplicates/comparison",
+    "whole-area instructions with4unclippedsteps",
+    "Read more closed then expanded",
+    "no Watch instructions",
+    "Example3selectedpaused",
+    "Back to instructions and Back to home",
+    "same route throughout",
+    "no console errors"
+  ]
+}
