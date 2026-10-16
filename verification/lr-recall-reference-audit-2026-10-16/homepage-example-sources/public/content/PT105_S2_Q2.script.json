@@ -1,0 +1,107 @@
+{
+ "slug": "PT105_S2_Q2",
+ "duration": 141.548,
+ "beats": [
+  {
+   "kind": "read",
+   "start": 0.0,
+   "end": 14.3,
+   "gi": 0,
+   "chunkNs": [
+    1,
+    2
+   ],
+   "cue": "read"
+  },
+  {
+   "kind": "tell",
+   "start": 14.3,
+   "end": 39.862,
+   "srcStart": 14.3,
+   "gi": 0,
+   "chunkNs": [
+    1,
+    2
+   ],
+   "cue": "tell"
+  },
+  {
+   "kind": "colour",
+   "start": 39.862,
+   "end": 46.184,
+   "srcStart": 39.84,
+   "gi": 0,
+   "chunkNs": [
+    1,
+    2
+   ],
+   "cue": "colour"
+  },
+  {
+   "kind": "read",
+   "start": 46.184,
+   "end": 58.464,
+   "gi": 1,
+   "chunkNs": [
+    3,
+    4
+   ]
+  },
+  {
+   "kind": "tell",
+   "start": 58.464,
+   "end": 78.006,
+   "srcStart": 58.42,
+   "gi": 1,
+   "chunkNs": [
+    3,
+    4
+   ]
+  },
+  {
+   "kind": "colour",
+   "start": 78.006,
+   "end": 103.048,
+   "srcStart": 77.94,
+   "gi": 1,
+   "chunkNs": [
+    3,
+    4
+   ]
+  },
+  {
+   "kind": "review",
+   "start": 103.048,
+   "end": 108.048,
+   "chunkNs": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "cue": "review"
+  },
+  {
+   "kind": "press",
+   "start": 108.048,
+   "end": 109.148,
+   "phase": "before",
+   "cue": "recall"
+  },
+  {
+   "kind": "recall",
+   "start": 109.148,
+   "end": 138.548
+  },
+  {
+   "kind": "press2",
+   "start": 138.548,
+   "end": 140.148
+  },
+  {
+   "kind": "settle",
+   "start": 140.148,
+   "end": 141.548
+  }
+ ]
+}

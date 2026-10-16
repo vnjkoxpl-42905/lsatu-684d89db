@@ -1,0 +1,195 @@
+{
+ "slug": "PT105_S2_Q1",
+ "duration": 139.86,
+ "beats": [
+  {
+   "kind": "card",
+   "start": 0.0,
+   "end": 5.0,
+   "step": "read"
+  },
+  {
+   "kind": "read",
+   "start": 5.0,
+   "end": 8.28,
+   "gi": 0,
+   "chunkNs": [
+    1
+   ]
+  },
+  {
+   "kind": "card",
+   "start": 8.28,
+   "end": 13.68,
+   "step": "tell"
+  },
+  {
+   "kind": "tell",
+   "start": 13.68,
+   "end": 19.002,
+   "srcStart": 5.2,
+   "gi": 0,
+   "chunkNs": [
+    1
+   ]
+  },
+  {
+   "kind": "card",
+   "start": 19.002,
+   "end": 24.602,
+   "step": "colour"
+  },
+  {
+   "kind": "colour",
+   "start": 24.602,
+   "end": 33.446,
+   "srcStart": 10.5,
+   "gi": 0,
+   "chunkNs": [
+    1
+   ],
+   "map": [
+    {
+     "o": 0.0,
+     "s": 10.5,
+     "d": 7.762
+    },
+    {
+     "o": 7.762,
+     "s": 21.12,
+     "d": 1.082
+    }
+   ]
+  },
+  {
+   "kind": "read",
+   "start": 33.446,
+   "end": 35.746,
+   "gi": 1,
+   "chunkNs": [
+    2
+   ]
+  },
+  {
+   "kind": "tell",
+   "start": 35.746,
+   "end": 39.768,
+   "srcStart": 24.48,
+   "gi": 1,
+   "chunkNs": [
+    2
+   ]
+  },
+  {
+   "kind": "colour",
+   "start": 39.768,
+   "end": 56.314,
+   "srcStart": 28.48,
+   "gi": 1,
+   "chunkNs": [
+    2
+   ],
+   "map": [
+    {
+     "o": 0.0,
+     "s": 28.48,
+     "d": 7.502
+    },
+    {
+     "o": 7.502,
+     "s": null,
+     "d": 6.302,
+     "text": "There's no walking in. You'd have to swim through a tunnel in the dark to get there. That sounds like a nightmare."
+    },
+    {
+     "o": 13.804,
+     "s": 41.06,
+     "d": 2.742
+    }
+   ]
+  },
+  {
+   "kind": "read",
+   "start": 56.314,
+   "end": 70.174,
+   "gi": 2,
+   "chunkNs": [
+    3,
+    4
+   ]
+  },
+  {
+   "kind": "tell",
+   "start": 70.174,
+   "end": 80.116,
+   "srcStart": 57.64,
+   "gi": 2,
+   "chunkNs": [
+    3,
+    4
+   ]
+  },
+  {
+   "kind": "colour",
+   "start": 80.116,
+   "end": 101.04,
+   "srcStart": 67.56,
+   "gi": 2,
+   "chunkNs": [
+    3,
+    4
+   ],
+   "map": [
+    {
+     "o": 0.0,
+     "s": 67.56,
+     "d": 8.962
+    },
+    {
+     "o": 8.962,
+     "s": 80.18,
+     "d": 11.962
+    }
+   ]
+  },
+  {
+   "kind": "review",
+   "start": 101.04,
+   "end": 106.04,
+   "chunkNs": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "cue": "review"
+  },
+  {
+   "kind": "card",
+   "start": 106.04,
+   "end": 112.24,
+   "step": "recall"
+  },
+  {
+   "kind": "press",
+   "start": 112.24,
+   "end": 113.34,
+   "phase": "before"
+  },
+  {
+   "kind": "recall",
+   "start": 113.34,
+   "end": 136.86
+  },
+  {
+   "kind": "press2",
+   "start": 136.86,
+   "end": 138.46
+  },
+  {
+   "kind": "settle",
+   "start": 138.46,
+   "end": 139.86
+  }
+ ]
+}

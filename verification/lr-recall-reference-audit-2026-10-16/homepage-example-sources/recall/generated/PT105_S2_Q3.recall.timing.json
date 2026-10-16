@@ -1,0 +1,35 @@
+{
+  "slug": "PT105_S2_Q3",
+  "sample_rate": 24000,
+  "total_duration": 22.44,
+  "sentences": [
+    {
+      "index": 0,
+      "text": "Okay.",
+      "start": 0.0,
+      "end": 0.8,
+      "duration": 0.8
+    },
+    {
+      "index": 1,
+      "text": "So the manager is saying they've got this new computer network going in, and the purpose of it is to increase productivity.",
+      "start": 0.8,
+      "end": 7.92,
+      "duration": 7.12
+    },
+    {
+      "index": 2,
+      "text": "And they can install it during the day, which would disrupt the employees' work, or they can install it at night, which would mean much higher installation charges.",
+      "start": 7.92,
+      "end": 16.4,
+      "duration": 8.48
+    },
+    {
+      "index": 3,
+      "text": "And since saving money is important, the manager concludes they should have the network installed during the day.",
+      "start": 16.4,
+      "end": 22.44,
+      "duration": 6.04
+    }
+  ]
+}

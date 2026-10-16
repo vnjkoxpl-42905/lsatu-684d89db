@@ -1,0 +1,110 @@
+{
+  "files": [
+    {
+      "sha256": "9029622b364cbe677fb8b852911d2eea18dd7225115bece24f7dc614e4058d8a",
+      "git_blob": "71fb20eaf0d2cf59f081b231d2d76efb5618b3f7",
+      "source_path": "recall/scripts.json",
+      "bytes": 1478
+    },
+    {
+      "sha256": "8cda3342df67c3edc54921e26fcfabb7612719638b207cc9ededab68c2567c89",
+      "git_blob": "eb54410829351c3cb471e0145ad9a5e6e93c57a8",
+      "source_path": "recall/patches.json",
+      "bytes": 1107
+    },
+    {
+      "sha256": "2ab556c4a199ef503cc6ecf73540de7fb5d5e63521d0d4ae6a84a5b1b36c7f08",
+      "git_blob": "347c9a66db07c77149e5ef2d6ae0f3d67c4d8666",
+      "source_path": "public/audio/transcripts.json",
+      "bytes": 5465
+    },
+    {
+      "sha256": "90137f00f36d9e4af715c66af823e10aed2b268dc0c43ece7e1aa3922d5a8173",
+      "git_blob": "bf1fc0789601c8dc4ad164821ce8c6b3a49db4bd",
+      "source_path": "public/content/stimuli.json",
+      "bytes": 7869
+    },
+    {
+      "sha256": "615c54519609205aabead44233b4f6f70a4c40068c5ea83e36fdc0fdb1606c23",
+      "git_blob": "cfbccd6f62dcb1ba53f693735794073d20708b98",
+      "source_path": "src/pov/POVInstructional.tsx",
+      "bytes": 9703
+    },
+    {
+      "sha256": "130a1a25d023b7032e92f603d935bc4b97803d4f10b4db8dfc6d23daefe3decb",
+      "git_blob": "c05f44ff9e0237689ba1f62bccaa74cd88fb1d86",
+      "source_path": "public/content/PT105_S2_Q1.script.json",
+      "bytes": 2530
+    },
+    {
+      "sha256": "dc236aea46861f1e54ef235429ec42310c42b10c828e3709a2724e5699e98319",
+      "git_blob": "3f37296ec3e80b4eee2a9393f04093de7a0af077",
+      "source_path": "public/content/PT105_S2_Q1.cues.instr.json",
+      "bytes": 2985
+    },
+    {
+      "sha256": "4903cb42248e41c99d2a4115c722bafff6b569b3e2d176e641b4e09e30471c8e",
+      "git_blob": "3fa7974be6743401882635ded7d3be29cb0b815a",
+      "source_path": "align/_instr/PT105_S2_Q1.txt",
+      "bytes": 594
+    },
+    {
+      "sha256": "c9be35e82344e374941b904b7c4c8ccf37126622c3e0462b92e87a9f26b746c0",
+      "git_blob": "b0d3f4e128e9aed20f764cd41b7491b0d659b0b3",
+      "source_path": "recall/generated/PT105_S2_Q1.recall.timing.json",
+      "bytes": 996
+    },
+    {
+      "sha256": "496656d5f1357fd828e647a5a399f4de11e7d11ae5df2b94d51df49ed96b7f99",
+      "git_blob": "6d079a3289f7ceb0455ee886d220a6a317134a8b",
+      "source_path": "public/content/PT105_S2_Q2.script.json",
+      "bytes": 1331
+    },
+    {
+      "sha256": "feca7c79ed18a6f78c6a6698922356cba1b6f97bcc23899df67c38f83935e26e",
+      "git_blob": "56e83f958016cc1f6fda49fd43844e6268625f8f",
+      "source_path": "public/content/PT105_S2_Q2.cues.instr.json",
+      "bytes": 3484
+    },
+    {
+      "sha256": "00ff418a32a09c79133c6fedcf776924155c37fe118bdf5735465c1aa8d65798",
+      "git_blob": "6a4a5900fa200cd6253f6d1cb2f039d26865c997",
+      "source_path": "align/_instr/PT105_S2_Q2.txt",
+      "bytes": 297
+    },
+    {
+      "sha256": "b609898f4256e182abfdce7c5afd83b9c282c03d3eea97c3553332f552505d56",
+      "git_blob": "10d2130cf7125c75bfcb22d27e6bcf7027d54e10",
+      "source_path": "recall/generated/PT105_S2_Q2.recall.timing.json",
+      "bytes": 1096
+    },
+    {
+      "sha256": "b34444e9975d8e719177fc8f14d5ba2909433caf9413397070cdeffaec982c5d",
+      "git_blob": "01482cc0aec82a468a9c23884c20bbb94d90ba5b",
+      "source_path": "public/content/PT105_S2_Q3.script.json",
+      "bytes": 1645
+    },
+    {
+      "sha256": "7e4c989678c68835cab9a10c26ab4a48e46b44bac200669b06beed676379f44a",
+      "git_blob": "87c8a7fdd78c280ac86fb0da1c3e206979ad21a2",
+      "source_path": "public/content/PT105_S2_Q3.cues.instr.json",
+      "bytes": 2978
+    },
+    {
+      "sha256": "4d1c23ba9c981e9c749727bcceb61fb18d1aa4e9227971a798b79bc27c01f7e8",
+      "git_blob": "7e7e50c0b1ae82e372cc7538312903ff82e4951a",
+      "source_path": "align/_instr/PT105_S2_Q3.txt",
+      "bytes": 351
+    },
+    {
+      "sha256": "1ee241b339a48ebe2e6fe13a676f3a3256f717749582fb38637cfa6ab1c63de9",
+      "git_blob": "3ee0803aa18611a49131a7fc181ceb8270c3795b",
+      "source_path": "recall/generated/PT105_S2_Q3.recall.timing.json",
+      "bytes": 949
+    }
+  ],
+  "limitation": "Text source retrieval only. Rendered MP4 audio has not been compared against these scripts or cues.",
+  "repository": "vnjkoxpl-42905/lsatu-films",
+  "requested_ref": "6357e00",
+  "tree_sha": "6357e0023ab6d26a4ee13d37842835b2e896ab90"
+}

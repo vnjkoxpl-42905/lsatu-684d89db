@@ -1,0 +1,810 @@
+{
+  "generated_at": "2026-10-16T13:37:39.844998+00:00",
+  "status": "candidate-not-humanapproved",
+  "scope": "Six exact-mapped local instructor walkthrough references; no provider calls or audio listening; complete transcript and authored question text read. Not a gold benchmark or benchmark result.",
+  "why_not_gold": "Walkthroughs mix original reading, paraphrase, reaction and CLIR, and contain ASR and content errors. They are inspiration and adjudication material, not automatically full-credit recalls.",
+  "three_homepage_examples": "Keep separate as worked-example assets; this packet does not assert independent review of those video contents.",
+  "audio_hash_note": "Recorded publication hashes; not freshly rehashed. Text/source hashes freshly computed.",
+  "candidates": [
+    {
+      "citation": "PT101.S2.Q1",
+      "source_section": "PT101.S2",
+      "item_slug": "PT101_S2_Q1",
+      "type": "argument / scope",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt101-s2.json",
+      "app_source_file_sha256": "b10821f1caf8f1b9637c304cf90e8c96546b07cb1c5aa44b92f98fc079c923dd",
+      "source_proposition": "Press release: A comprehensive review evaluating the medical studies done up to the present time has found no reason to think that drinking coffee in normal amounts harms the coffee-drinker's heart. So coffee drinkers can relax and enjoy their beverage—it is safe to drink coffee.",
+      "source_proposition_sha256_utf8": "a1cbc5e04ebcf231bd25ae57691836ef70e176e465318b447cc8a2d45d2d39fd",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "Press release: A comprehensive review evaluating the medical studies done up to the present time has found no reason to think that drinking coffee in normal amounts harms the coffee-drinker's heart.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is a press release."
+            },
+            {
+              "n": 2,
+              "text": "A review has been done."
+            },
+            {
+              "n": 3,
+              "text": "The review is a comprehensive one."
+            },
+            {
+              "n": 4,
+              "text": "The review evaluated medical studies."
+            },
+            {
+              "n": 5,
+              "text": "Those studies were done up to the present time."
+            },
+            {
+              "n": 6,
+              "text": "The review found no reason to think something."
+            },
+            {
+              "n": 7,
+              "text": "The thing is that drinking coffee harms the heart."
+            },
+            {
+              "n": 8,
+              "text": "The amounts of coffee are normal ones."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "So coffee drinkers can relax and enjoy their beverage—it is safe to drink coffee.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is the conclusion."
+            },
+            {
+              "n": 2,
+              "text": "Coffee drinkers can relax."
+            },
+            {
+              "n": 3,
+              "text": "They can enjoy their beverage."
+            },
+            {
+              "n": 4,
+              "text": "It is safe to drink coffee."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "What if just because coffee isn't bad for your heart that doesn't mean it's safe overall? What if coffee makes your hair fall out?",
+      "clir_type": "Loophole",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q1\\superwhisper-transcript.txt",
+      "transcript_sha256": "52a71b77ea962ffbcfcf4e8b962d86dfafc8139c51ebc0f2af671523f7f43af4",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q1\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "2d6d192d74582d501857817322023af761f7e89667eac44686dc9f0703c16370",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q1\\metadata.json",
+      "paraphrase_evidence": "we have no reason to think, based on these studies, that drinking coffee in normal amounts",
+      "analysis_evidence": "What if just because it's not bad for your heart doesn't mean it doesn't have other adverse effects?",
+      "grading_focus": "Preserve no reason to think, heart-specific finding, normal amounts and broader safety conclusion; speculation about harms is reaction, not a stimulus fact.",
+      "cautions": "The transcript sometimes upgrades no reason to think harm into not going to harm; this is not automatically faithful.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT101.S2.Q2",
+      "source_section": "PT101.S2",
+      "item_slug": "PT101_S2_Q2",
+      "type": "inference / comparison",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt101-s2.json",
+      "app_source_file_sha256": "b10821f1caf8f1b9637c304cf90e8c96546b07cb1c5aa44b92f98fc079c923dd",
+      "source_proposition": "All people prefer colors that they can distinguish easily to colors that they have difficulty distinguishing. Infants can easily distinguish bright colors but, unlike adults, have difficulty distinguishing subtle shades. A brightly colored toy for infants sells better than the same toy in subtle shades at the same price.",
+      "source_proposition_sha256_utf8": "da737724703248cf455959bdc0f253f325be24b22f371d053daed9701d376a4d",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "All people prefer colors that they can distinguish easily to colors that they have difficulty distinguishing.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about all people."
+            },
+            {
+              "n": 2,
+              "text": "People prefer some colors to others."
+            },
+            {
+              "n": 3,
+              "text": "The preferred colors are ones they can distinguish easily."
+            },
+            {
+              "n": 4,
+              "text": "The other colors are ones they have difficulty distinguishing."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "Infants can easily distinguish bright colors but, unlike adults, have difficulty distinguishing subtle shades.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about infants."
+            },
+            {
+              "n": 2,
+              "text": "Infants can distinguish bright colors easily."
+            },
+            {
+              "n": 3,
+              "text": "There is a contrast in this sentence."
+            },
+            {
+              "n": 4,
+              "text": "Infants have difficulty distinguishing subtle shades."
+            },
+            {
+              "n": 5,
+              "text": "Adults are unlike infants in this."
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "text": "A brightly colored toy for infants sells better than the same toy in subtle shades at the same price.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about a toy for infants."
+            },
+            {
+              "n": 2,
+              "text": "The toy is brightly colored."
+            },
+            {
+              "n": 3,
+              "text": "That toy sells better than another version."
+            },
+            {
+              "n": 4,
+              "text": "The other version is the same toy in subtle shades."
+            },
+            {
+              "n": 5,
+              "text": "The price of both is the same."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "Infant toys may be purchased in color shades the infant prefers.",
+      "clir_type": "Inference",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q2\\superwhisper-transcript.txt",
+      "transcript_sha256": "e7f555b3af7477df6d239ed9e6dcb90d67b4d05b7e4cdbce25a4ec2bc1ffd7a8",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q2\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "01856ff1ee9a441556a1ecf5bdfe863a57a3da87c49c183089a4a195be788d66",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q2\\metadata.json",
+      "paraphrase_evidence": "the same type of toy and the same price as a subtly colored toy",
+      "analysis_evidence": "we can infer that toys that are in colors that are easy for infants",
+      "grading_focus": "Preserve universal preference, infant/adult contrast and same-toy same-price comparison. Personal anecdotes and eye-development guesses are not required facts.",
+      "cautions": "The commentary generalizes to primary colors and adds biological speculation; do not treat it as gold source text.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT101.S2.Q14",
+      "source_section": "PT101.S2",
+      "item_slug": "PT101_S2_Q14",
+      "type": "controversy / opposing positions",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt101-s2.json",
+      "app_source_file_sha256": "b10821f1caf8f1b9637c304cf90e8c96546b07cb1c5aa44b92f98fc079c923dd",
+      "source_proposition": "Steven: The allowable blood alcohol level for drivers should be cut in half. With this reduced limit, social drinkers will be deterred from drinking and driving, resulting in significantly increased highway safety.\n\nMiguel: No, lowering the current allowable blood alcohol level would have little effect on highway safety, because it would not address the most important aspect of the drunken driving problem, which is the danger to the public posed by heavy drinkers, who often drive with a blood alcohol level of twice the current legal limit.",
+      "source_proposition_sha256_utf8": "a5574e6cea80fda65ab7ed7d75b3b30bd431b72f8dfc6b97eb757b322ee6a3a8",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "Steven: The allowable blood alcohol level for drivers should be cut in half.",
+          "details": [
+            {
+              "n": 1,
+              "text": "Steven is the first speaker."
+            },
+            {
+              "n": 2,
+              "text": "There is an allowable blood alcohol level."
+            },
+            {
+              "n": 3,
+              "text": "The level applies to drivers."
+            },
+            {
+              "n": 4,
+              "text": "It should be cut in half."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "With this reduced limit, social drinkers will be deterred from drinking and driving, resulting in significantly increased highway safety.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about the reduced limit."
+            },
+            {
+              "n": 2,
+              "text": "Social drinkers will be deterred."
+            },
+            {
+              "n": 3,
+              "text": "What they are deterred from is drinking and driving."
+            },
+            {
+              "n": 4,
+              "text": "A result would follow from that."
+            },
+            {
+              "n": 5,
+              "text": "The result is increased highway safety."
+            },
+            {
+              "n": 6,
+              "text": "The increase would be significant."
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "text": "Miguel: No, lowering the current allowable blood alcohol level would have little effect on highway safety,",
+          "details": [
+            {
+              "n": 1,
+              "text": "Miguel is the second speaker."
+            },
+            {
+              "n": 2,
+              "text": "He disagrees with Steven."
+            },
+            {
+              "n": 3,
+              "text": "The level could be lowered."
+            },
+            {
+              "n": 4,
+              "text": "The level is the current allowable one."
+            },
+            {
+              "n": 5,
+              "text": "Lowering it would have little effect."
+            },
+            {
+              "n": 6,
+              "text": "The effect would be on highway safety."
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "text": "because it would not address the most important aspect of the drunken driving problem,",
+          "details": [
+            {
+              "n": 1,
+              "text": "This gives a reason."
+            },
+            {
+              "n": 2,
+              "text": "Lowering the level would not address something."
+            },
+            {
+              "n": 3,
+              "text": "What it misses is an aspect of the problem."
+            },
+            {
+              "n": 4,
+              "text": "The problem is drunken driving."
+            },
+            {
+              "n": 5,
+              "text": "That aspect is the most important one."
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "text": "which is the danger to the public posed by heavy drinkers, who often drive with a blood alcohol level of twice the current legal limit.",
+          "details": [
+            {
+              "n": 1,
+              "text": "The aspect is a danger."
+            },
+            {
+              "n": 2,
+              "text": "The danger is to the public."
+            },
+            {
+              "n": 3,
+              "text": "Heavy drinkers pose that danger."
+            },
+            {
+              "n": 4,
+              "text": "Heavy drinkers drive at a certain level."
+            },
+            {
+              "n": 5,
+              "text": "They often do so."
+            },
+            {
+              "n": 6,
+              "text": "Their blood alcohol level is twice the legal limit."
+            },
+            {
+              "n": 7,
+              "text": "The limit is the current one."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "The speakers disagree over whether cutting the allowable blood alcohol in half will improve highway safety.",
+      "clir_type": "Controversy",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q14\\superwhisper-transcript.txt",
+      "transcript_sha256": "9a6c1654743e0e2dfc2c85747f7ff62c0c7b972b645c35fcc4997ee5740f2188",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q14\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "1ee31305f9dc3387248a5770e4eaf96342c572332dd56bb77465d0bf8e3b95e7",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT101\\S2\\Q14\\metadata.json",
+      "paraphrase_evidence": "the biggest problem with drunk driving is the danger to the public from heavy drinkers",
+      "analysis_evidence": "the speakers are disagreeing over whether lowering the allowable blood alcohol level would have an impact on safety.",
+      "grading_focus": "Keep Steven and Miguel positions separate; preserve cut in half, social versus heavy drinkers, significantly versus little effect, twice current legal limit.",
+      "cautions": "Hypothetical alcohol values and drug-driving speculation are examples, not asserted stimulus values; ASR uses have for halve and Stephen for Steven.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT102.S3.Q5",
+      "source_section": "PT102.S3",
+      "item_slug": "PT102_S3_Q5",
+      "type": "resolution / apparent conflict",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt102-s3.json",
+      "app_source_file_sha256": "e300ad57a62e31f4ecbe05c5d6e931d725548f82eab69d4989d994a52305afe5",
+      "source_proposition": "Adults who work outside the home spend, on average, 100 minutes less time each week in preparing dinner than adults who do not work outside the home. But, contrary to expectation, comparisons show that the dinners eaten at home by the two groups of adults do not differ significantly with respect to nutritional value, variety of menus, or number of courses.",
+      "source_proposition_sha256_utf8": "15553cb6f38ab6ca674c8c24d03d108c65462c26589efe195c926cfc5e1ee5b2",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "Adults who work outside the home spend, on average, 100 minutes less time each week in preparing dinner than adults who do not work outside the home.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about adults who work outside the home."
+            },
+            {
+              "n": 2,
+              "text": "They spend less time preparing dinner."
+            },
+            {
+              "n": 3,
+              "text": "The amount less is 100 minutes."
+            },
+            {
+              "n": 4,
+              "text": "The period is each week."
+            },
+            {
+              "n": 5,
+              "text": "This is an average."
+            },
+            {
+              "n": 6,
+              "text": "The comparison is with adults who do not work outside the home."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "But, contrary to expectation, comparisons show that the dinners eaten at home by the two groups of adults do not differ significantly with respect to nutritional value, variety of menus, or number of courses.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is a contrast."
+            },
+            {
+              "n": 2,
+              "text": "The result runs contrary to expectation."
+            },
+            {
+              "n": 3,
+              "text": "The dinners of the two groups are compared."
+            },
+            {
+              "n": 4,
+              "text": "The dinners are eaten at home."
+            },
+            {
+              "n": 5,
+              "text": "They do not differ significantly."
+            },
+            {
+              "n": 6,
+              "text": "One respect is nutritional value."
+            },
+            {
+              "n": 7,
+              "text": "Another is variety of menus."
+            },
+            {
+              "n": 8,
+              "text": "Another is the number of courses."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "What if adults who work outside the home are eating out more?",
+      "clir_type": "Resolution",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT102\\S3\\Q5\\superwhisper-transcript.txt",
+      "transcript_sha256": "ada6ef7a121003ae774fccec63c5c6d4d99c9174b121f9918983d1d585b5508d",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT102\\S3\\Q5\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "2e790fdcf9a823490ca07b8ac8678e241e41d26e830811e10f5b756895ae7391",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT102\\S3\\Q5\\metadata.json",
+      "paraphrase_evidence": "spend an average of 100 minutes of less time each week cooking dinner",
+      "analysis_evidence": "what if adults who are working outside the home are eating out more",
+      "grading_focus": "Preserve 100 minutes less each week, on average, dinner eaten at home and all three comparison dimensions. Resolution is separate from recall.",
+      "cautions": "Outside-home versus not-outside-home is narrowed to office versus remote work. Eating out, takeout and meal-kit possibilities require review; do not automatically bless them as a single correct resolution.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT105.S2.Q1",
+      "source_section": "PT105.S2",
+      "item_slug": "PT105_S2_Q1",
+      "type": "inference / physical process",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt105-s2.json",
+      "app_source_file_sha256": "4706097764f49dc555bdbe2ce04b543eacb882422da12dec85eb1c73702d9288",
+      "source_proposition": "French divers recently found a large cave along the coast of the Mediterranean Sea. The cave is accessible only through an underwater tunnel. The interior of the cave is completely filled with seawater and contains numerous large stalagmites, which are stony pillars that form when drops of water fall repeatedly on a single spot on a cave floor, leaving behind mineral deposits that accumulate over time.",
+      "source_proposition_sha256_utf8": "b32ded238e000a86221bf43fa90cd143ce471227df1e89e0bd80ef9fadd9bcfe",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "French divers recently found a large cave along the coast of the Mediterranean Sea.",
+          "details": [
+            {
+              "n": 1,
+              "text": "Divers found a cave."
+            },
+            {
+              "n": 2,
+              "text": "The divers were French."
+            },
+            {
+              "n": 3,
+              "text": "The find was recent."
+            },
+            {
+              "n": 4,
+              "text": "The cave is large."
+            },
+            {
+              "n": 5,
+              "text": "The cave is along a coast."
+            },
+            {
+              "n": 6,
+              "text": "The coast is the Mediterranean Sea's."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "The cave is accessible only through an underwater tunnel.",
+          "details": [
+            {
+              "n": 1,
+              "text": "There is only one way into the cave."
+            },
+            {
+              "n": 2,
+              "text": "The way in is a tunnel."
+            },
+            {
+              "n": 3,
+              "text": "The tunnel is underwater."
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "text": "The interior of the cave is completely filled with seawater and contains numerous large stalagmites,",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about the inside of the cave."
+            },
+            {
+              "n": 2,
+              "text": "It is filled with water."
+            },
+            {
+              "n": 3,
+              "text": "The water is seawater."
+            },
+            {
+              "n": 4,
+              "text": "It is filled completely."
+            },
+            {
+              "n": 5,
+              "text": "The cave contains stalagmites."
+            },
+            {
+              "n": 6,
+              "text": "The stalagmites are numerous."
+            },
+            {
+              "n": 7,
+              "text": "The stalagmites are large."
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "text": "which are stony pillars that form when drops of water fall repeatedly on a single spot on a cave floor, leaving behind mineral deposits that accumulate over time.",
+          "details": [
+            {
+              "n": 1,
+              "text": "Stalagmites are a kind of pillar."
+            },
+            {
+              "n": 2,
+              "text": "The pillars are made of stone."
+            },
+            {
+              "n": 3,
+              "text": "They form from falling drops of water."
+            },
+            {
+              "n": 4,
+              "text": "The drops fall repeatedly."
+            },
+            {
+              "n": 5,
+              "text": "The drops fall on one single spot."
+            },
+            {
+              "n": 6,
+              "text": "The spot is on a cave floor."
+            },
+            {
+              "n": 7,
+              "text": "The drops leave mineral deposits behind."
+            },
+            {
+              "n": 8,
+              "text": "The deposits build up over time."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "The cave was not always completely filled with water.",
+      "clir_type": "Inference",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT105\\S2\\Q1\\superwhisper-transcript.txt",
+      "transcript_sha256": "7b58dd37686b17590b17a955dd0323560f2aa3d1a4b6ed197f62aeba7fae42fc",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT105\\S2\\Q1\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "e91363b6f8abfdae2a928a0fed202b8d61c73041118982e65b276ac7f5eb8538",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT105\\S2\\Q1\\metadata.json",
+      "paraphrase_evidence": "the only way to get to this cave is through an underwater tunnel",
+      "analysis_evidence": "we can infer that it wasn't always totally filled with water",
+      "grading_focus": "Preserve French divers, recent discovery, Mediterranean coast, only tunnel access, completely seawater-filled, numerous large stalagmites, repeated drops and accumulated minerals over time.",
+      "cautions": "Stalactite explanation, scuba and anecdote are supplementary. Amy Polar is an ASR name error. Does not establish complete final-recall performance.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    },
+    {
+      "citation": "PT106.S2.Q6",
+      "source_section": "PT106.S2",
+      "item_slug": "PT106_S2_Q6",
+      "type": "inference / conditional reasoning",
+      "status": "candidate-not-humanapproved",
+      "selection_checks": {
+        "exact_citation": true,
+        "ungrouped": true,
+        "written_clir_present": true,
+        "complete_transcript_file_read": true,
+        "authored_question_read": true,
+        "no_known_timing_exception": true,
+        "not_known_silent_source": true
+      },
+      "app_source_path": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-reading-hub-20261015\\src\\features\\activity-centre\\content\\read-recall-colour-pt106-s2.json",
+      "app_source_file_sha256": "02eb4364787633782626435b0353e52e1cffdfb1aae5fdbc55050faf4fde9fda",
+      "source_proposition": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage. Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor. Full flooding can be achieved, however, by sabotage. Any ship that sinks deep into the ocean when not fully flooded will implode. Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode.",
+      "source_proposition_sha256_utf8": "d0e9fd37831a15b840525f2cd67412d257d646e50fe6fcd9668c7df6be0b61ab",
+      "authored_chunks": [
+        {
+          "n": 1,
+          "text": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage.",
+          "details": [
+            {
+              "n": 1,
+              "text": "The Rienzi is a ship."
+            },
+            {
+              "n": 2,
+              "text": "It is a passenger ship."
+            },
+            {
+              "n": 3,
+              "text": "The Rienzi sank as a result of something."
+            },
+            {
+              "n": 4,
+              "text": "There was a hole in its hull."
+            },
+            {
+              "n": 5,
+              "text": "The hole may have been caused by sabotage."
+            },
+            {
+              "n": 6,
+              "text": "That cause is only a possibility."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "text": "Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This describes what normally happens."
+            },
+            {
+              "n": 2,
+              "text": "It concerns a ship with a hole in it."
+            },
+            {
+              "n": 3,
+              "text": "The ship sinks as rapidly as the Rienzi did."
+            },
+            {
+              "n": 4,
+              "text": "Water does not enter such a ship quickly enough."
+            },
+            {
+              "n": 5,
+              "text": "The water is not enough to fully flood the ship."
+            },
+            {
+              "n": 6,
+              "text": "That is its state when it reaches the ocean floor."
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "text": "Full flooding can be achieved, however, by sabotage.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is a contrast with what came before."
+            },
+            {
+              "n": 2,
+              "text": "Full flooding can be achieved."
+            },
+            {
+              "n": 3,
+              "text": "Sabotage is what can achieve it."
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "text": "Any ship that sinks deep into the ocean when not fully flooded will implode.",
+          "details": [
+            {
+              "n": 1,
+              "text": "This is about ships that sink deep into the ocean."
+            },
+            {
+              "n": 2,
+              "text": "It applies to any such ship."
+            },
+            {
+              "n": 3,
+              "text": "The ship in question is not fully flooded."
+            },
+            {
+              "n": 4,
+              "text": "Such a ship will implode."
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "text": "Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode.",
+          "details": [
+            {
+              "n": 1,
+              "text": "There are photographs of the sunken Rienzi."
+            },
+            {
+              "n": 2,
+              "text": "The photographs were taken deep in the sea."
+            },
+            {
+              "n": 3,
+              "text": "The Rienzi rests on the ocean floor."
+            },
+            {
+              "n": 4,
+              "text": "The photographs reveal something."
+            },
+            {
+              "n": 5,
+              "text": "The Rienzi did not implode."
+            }
+          ]
+        }
+      ],
+      "reference_clir": "If water did not enter the Rienzi abnormally quickly, it was sabotaged.",
+      "clir_type": "Inference",
+      "transcript_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT106\\S2\\Q6\\superwhisper-transcript.txt",
+      "transcript_sha256": "01af745f1a29693878511334cd5a428652cef2c1c14080ada79a18c0cdae8bfe",
+      "audio_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT106\\S2\\Q6\\original-audio.mp3",
+      "audio_sha256_from_publication_manifest": "8dabe7bc79ae6c26982993ec75e3bf7ea2d46f754e1f6f76d4c61813a2ad3418",
+      "metadata_path": "C:\\Users\\Joshu\\dev\\ai-os\\corpus\\loophole-online\\question-database\\library\\PT106\\S2\\Q6\\metadata.json",
+      "paraphrase_evidence": "water can't get in quickly enough for it to be completely, fully 100% flooded by the time it reaches the ocean floor",
+      "analysis_evidence": "Unless it was, you know, there was something abnormal about the ship",
+      "grading_focus": "Preserve normally, possibly sabotaged, not-fully-flooded implies implosion, observed no implosion, conditional sabotage inference rather than definite sabotage.",
+      "cautions": "Transcript says explodes/blown up while correcting to imploded. Name variants and holed/hold are ASR risks. Do not adopt physical reversal as a faithful detail.",
+      "gold_response": false,
+      "human_adjudication_required": true
+    }
+  ]
+}

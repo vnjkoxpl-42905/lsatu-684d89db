@@ -1,0 +1,16 @@
+{
+  "Q1_TUNNEL": {
+    "slug": "PT105_S2_Q1",
+    "replaces": [35.96, 41.06],
+    "was": "If you all are too young for this, look up Amy Poehler Thai boys on YouTube.",
+    "text": "There's no walking in. You'd have to swim through a tunnel in the dark to get there. That sounds like a nightmare.",
+    "why": "R6-Q7: the aside talks past the material to an audience and dates the film. Approved 2026-09-10."
+  },
+  "Q3_ASSUMPTION": {
+    "slug": "PT105_S2_Q3",
+    "replaces": [70.68, 78.40],
+    "was": "That doesn't mean it's the most important thing. It's the overriding concern, and that should be the sole basis on which we make this decision.",
+    "text": "That doesn't mean it's the most important thing, or the overriding concern, or the only thing we should be deciding this on.",
+    "why": "R6-Q8: as recorded the second sentence asserts the assumption as fact, the opposite of his point. Approved 2026-09-10. Span widened from the approved 72.84-78.40 to 70.68-78.40 so one whole sentence is synthesised rather than a fragment beginning 'or', which gets unnatural prosody in isolation."
+  }
+}

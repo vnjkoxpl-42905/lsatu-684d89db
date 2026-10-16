@@ -1,0 +1,35 @@
+{
+  "slug": "PT105_S2_Q1",
+  "sample_rate": 24000,
+  "total_duration": 23.52,
+  "sentences": [
+    {
+      "index": 0,
+      "text": "Okay.",
+      "start": 0.0,
+      "end": 0.8,
+      "duration": 0.8
+    },
+    {
+      "index": 1,
+      "text": "So some French divers recently found this big cave along the coast of the Mediterranean Sea.",
+      "start": 0.8,
+      "end": 6.12,
+      "duration": 5.32
+    },
+    {
+      "index": 2,
+      "text": "And the only way into it is through an underwater tunnel.",
+      "start": 6.12,
+      "end": 8.84,
+      "duration": 2.72
+    },
+    {
+      "index": 3,
+      "text": "The inside of the cave is completely filled with seawater, and it's got a lot of these big stalagmites in it, which are pillars made of stone that form when drops of water fall on the same single spot on the cave floor over and over, and they leave behind mineral deposits that build up over time.",
+      "start": 8.84,
+      "end": 23.52,
+      "duration": 14.68
+    }
+  ]
+}

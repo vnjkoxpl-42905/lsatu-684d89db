@@ -1,0 +1,121 @@
+{
+ "slug": "PT105_S2_Q3",
+ "duration": 109.532,
+ "beats": [
+  {
+   "kind": "read",
+   "start": 0.0,
+   "end": 10.28,
+   "gi": 0,
+   "chunkNs": [
+    1,
+    2
+   ],
+   "cue": "read"
+  },
+  {
+   "kind": "tell",
+   "start": 10.28,
+   "end": 30.822,
+   "srcStart": 11.32,
+   "gi": 0,
+   "chunkNs": [
+    1,
+    2
+   ],
+   "cue": "tell"
+  },
+  {
+   "kind": "colour",
+   "start": 30.822,
+   "end": 46.804,
+   "srcStart": 31.84,
+   "gi": 0,
+   "chunkNs": [
+    1,
+    2
+   ],
+   "cue": "colour"
+  },
+  {
+   "kind": "read",
+   "start": 46.804,
+   "end": 50.404,
+   "gi": 1,
+   "chunkNs": [
+    3
+   ]
+  },
+  {
+   "kind": "tell",
+   "start": 50.404,
+   "end": 56.446,
+   "srcStart": 51.4,
+   "gi": 1,
+   "chunkNs": [
+    3
+   ]
+  },
+  {
+   "kind": "colour",
+   "start": 56.446,
+   "end": 77.992,
+   "srcStart": 57.42,
+   "gi": 1,
+   "chunkNs": [
+    3
+   ],
+   "map": [
+    {
+     "o": 0.0,
+     "s": 57.42,
+     "d": 13.282
+    },
+    {
+     "o": 13.282,
+     "s": null,
+     "d": 6.542,
+     "text": "That doesn't mean it's the most important thing, or the overriding concern, or the only thing we should be deciding this on."
+    },
+    {
+     "o": 19.824,
+     "s": 78.4,
+     "d": 1.722
+    }
+   ]
+  },
+  {
+   "kind": "review",
+   "start": 77.992,
+   "end": 82.992,
+   "chunkNs": [
+    1,
+    2,
+    3
+   ],
+   "cue": "review"
+  },
+  {
+   "kind": "press",
+   "start": 82.992,
+   "end": 84.092,
+   "phase": "before",
+   "cue": "recall"
+  },
+  {
+   "kind": "recall",
+   "start": 84.092,
+   "end": 106.532
+  },
+  {
+   "kind": "press2",
+   "start": 106.532,
+   "end": 108.132
+  },
+  {
+   "kind": "settle",
+   "start": 108.132,
+   "end": 109.532
+  }
+ ]
+}
