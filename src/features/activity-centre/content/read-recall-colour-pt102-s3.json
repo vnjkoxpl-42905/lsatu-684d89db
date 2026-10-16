@@ -2560,7 +2560,8 @@
       },
       {
        "n": 4,
-       "text": "Sweden is one of them."
+       "text": "Sweden is one of them.",
+       "coverageGroup": "country-sweden"
       },
       {
        "n": 5,
@@ -2634,7 +2635,8 @@
       },
       {
        "n": 2,
-       "text": "This is about Sweden."
+       "text": "This is about Sweden.",
+       "coverageGroup": "country-sweden"
       },
       {
        "n": 3,
