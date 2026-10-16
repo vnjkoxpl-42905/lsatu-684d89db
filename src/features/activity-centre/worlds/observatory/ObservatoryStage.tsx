@@ -36,9 +36,9 @@ interface ObservatoryStageProps {
 }
 
 const CAPTION: Record<RelationKind, string> = {
-  conditional: "If this, then this. A rule.",
-  causal: "This makes that happen.",
-  comparative: "More of this than that.",
+  conditional: "Conditional relationship",
+  causal: "Causal relationship",
+  comparative: "Comparative relationship",
 };
 
 const SEAL_ORDER: RelationKind[] = ["conditional", "causal", "comparative"];
@@ -196,10 +196,7 @@ export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryS
 
       <div className="flex items-center justify-between">
         <span className="observatory-display text-sm text-[hsl(var(--ob-ink))]">
-          {drawn ? "The figure" : "The field"}
-        </span>
-        <span className="observatory-mono text-xs text-[hsl(var(--ob-ink-dim))]">
-          Rung {signal.rung}
+          Sentence
         </span>
       </div>
 
@@ -269,7 +266,7 @@ export function ObservatoryStage({ signal, phase, reading, seals }: ObservatoryS
             ))}
           {reading?.missed.length ? (
             <p className="ob-caption text-sm" data-testid="ob-missed">
-              Still undrawn: {reading.missed.join(", ")}. The figure is there in the sentence.
+              Not yet identified: {reading.missed.map((kind) => SEAL_LABEL[kind]).join(", ")}.
             </p>
           ) : null}
         </div>

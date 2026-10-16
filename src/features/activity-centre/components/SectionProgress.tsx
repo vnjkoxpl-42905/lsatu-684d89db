@@ -18,13 +18,19 @@ import type { SectionGradeStub } from "../api/types";
 export function SectionProgress({
   loadGrades = listMySectionGrades,
   onOpen,
+  heading = "Your progress",
+  emptyMessage,
+  initiallyExpanded = false,
 }: {
   loadGrades?: () => Promise<SectionGradeStub[]>;
   onOpen?: (assignmentId: string) => void;
+  heading?: string;
+  emptyMessage?: string;
+  initiallyExpanded?: boolean;
 }) {
   const [runs, setRuns] = useState<SectionGradeStub[] | null>(null);
   const [failed, setFailed] = useState(false);
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(initiallyExpanded);
 
   useEffect(() => {
     let cancelled = false;
@@ -44,7 +50,7 @@ export function SectionProgress({
   if (failed) {
     return (
       <section className="rounded-2xl border border-border/60 bg-card/40 p-6">
-        <h2 className="text-sm font-semibold tracking-wide text-foreground">Your progress</h2>
+        <h2 className="text-sm font-semibold tracking-wide text-foreground">{heading}</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Your past runs could not be loaded just now. They are saved — try again in a moment.
         </p>
@@ -55,7 +61,7 @@ export function SectionProgress({
   if (runs === null) {
     return (
       <section className="rounded-2xl border border-border/60 bg-card/40 p-6">
-        <h2 className="text-sm font-semibold tracking-wide text-foreground">Your progress</h2>
+        <h2 className="text-sm font-semibold tracking-wide text-foreground">{heading}</h2>
         <p className="mt-2 text-sm text-muted-foreground">Loading your past runs…</p>
       </section>
     );
@@ -64,10 +70,9 @@ export function SectionProgress({
   if (runs.length === 0) {
     return (
       <section className="rounded-2xl border border-border/60 bg-card/40 p-6">
-        <h2 className="text-sm font-semibold tracking-wide text-foreground">Your progress</h2>
+        <h2 className="text-sm font-semibold tracking-wide text-foreground">{heading}</h2>
         <p className="mt-2 max-w-[60ch] text-sm text-muted-foreground">
-          No graded runs yet. Finish a section below and its marked report is saved here — every
-          run you do from then on shows up in this list.
+          {emptyMessage ?? "No graded runs yet. Finish a section below and its marked report is saved here. Every run you do from then on shows up in this list."}
         </p>
       </section>
     );
@@ -85,24 +90,24 @@ export function SectionProgress({
   return (
     <section className="rounded-2xl border border-border/60 bg-card/40 p-6">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h2 className="text-sm font-semibold tracking-wide text-foreground">Your progress</h2>
+        <h2 className="text-sm font-semibold tracking-wide text-foreground">{heading}</h2>
         <p className="text-xs text-muted-foreground">
           {ordered.length} graded {ordered.length === 1 ? "run" : "runs"}
           {ordered.length > 1 && (
             <>
               {" · "}
               {change > 0 ? `up ${change}` : change < 0 ? `down ${Math.abs(change)}` : "level"}
-              {change === 0 ? "" : " points"} since your first
+              {change === 0 ? "" : Math.abs(change) === 1 ? " point" : " points"} since your first
             </>
           )}
         </p>
       </div>
 
-      <div className="mt-5 flex h-24 items-end gap-1.5" aria-hidden="true">
+      <div className="mt-5 grid h-24 auto-cols-fr grid-flow-col items-end gap-px" aria-hidden="true">
         {ordered.map((r) => (
           <div
             key={`${r.assignment_id}-${r.attempt_no}`}
-            className="min-w-[6px] flex-1 rounded-t bg-primary/70"
+            className="min-w-0 rounded-t bg-primary/70"
             style={{ height: `${Math.max(4, pct(r))}%` }}
           />
         ))}

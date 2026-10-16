@@ -125,6 +125,57 @@ it('keeps the acknowledged question position during a later clock-only heartbeat
   expect(clock.config.clockElapsedSeconds).toBe(20);
 });
 
+const draft = { questionId: 7, selected: 'B' as const, attemptId, timeMs: 1500, flagged: true, eliminations: ['C' as const] };
+
+it('serializes account drafts with the clock and preserves them through a queued heartbeat without scoring', async () => {
+  let acknowledge!: () => void;
+  update.mockImplementationOnce((changes: { config: RcDrillConfig }) => ({
+    eq() { return this; }, select() { return this; },
+    maybeSingle: () => new Promise((resolve) => {
+      acknowledge = () => { clock.config = changes.config; resolve({ data: { id: sessionId }, error: null }); };
+    }),
+  }));
+  const exit = saveSessionClock(sessionId, 19, 1, { actorId: owner, answers: [draft] });
+  const heartbeat = saveSessionClock(sessionId, 20);
+  await vi.waitFor(() => expect(update).toHaveBeenCalledTimes(1));
+  acknowledge();
+  await Promise.all([exit, heartbeat]);
+  expect(clock.config).toMatchObject({ draftAnswers: [draft], currentQuestionIndex: 1, clockElapsedSeconds: 20 });
+  expect(insert).not.toHaveBeenCalled();
+  await saveSessionClock(sessionId, 21, 1, { actorId: owner, answers: [] });
+  expect(clock.config.draftAnswers).toEqual([]);
+});
+
+it('validates persisted draft entries on read and rejects invalid snapshots before writing', async () => {
+  clock.config.draftAnswers = [draft, { ...draft, questionId: 8, selected: 'Z' }] as RcDrillConfig['draftAnswers'];
+  expect((await getSession(sessionId))?.config.draftAnswers).toEqual([draft]);
+  await expect(saveSessionClock(sessionId, 20, 1, { actorId: owner, answers: [{ ...draft, attemptId: 'invalid' }] })).rejects.toThrow('drafts');
+  await expect(saveSessionClock(sessionId, 20, 1, { actorId: owner, answers: [draft, draft] })).rejects.toThrow('drafts');
+  await expect(saveSessionClock(sessionId, 20, 1, { actorId: owner, answers: [{ ...draft, timeMs: -1 }] })).rejects.toThrow('drafts');
+  expect(update).not.toHaveBeenCalled();
+});
+
+it('rejects draft saves for another actor or a session that is no longer active', async () => {
+  await expect(saveSessionClock(sessionId, 20, 1, { actorId: 'other-actor', answers: [draft] })).rejects.toThrow('account changed');
+  clock.status = 'completed';
+  await expect(saveSessionClock(sessionId, 20, 1, { actorId: owner, answers: [draft] })).rejects.toThrow('no longer available');
+  expect(update).not.toHaveBeenCalled();
+});
+
+it.each(['timedSectionSittingId', 'practiceTestRunId'] as const)('rejects draft snapshots for protected %s sessions', async (key) => {
+  clock.config[key] = 'protected';
+  await expect(saveSessionClock(sessionId, 20, 1, { actorId: owner, answers: [draft] })).rejects.toThrow('drafts');
+  expect(update).not.toHaveBeenCalled();
+});
+
+it('requires a matching active row acknowledgement for drafts and can retry the same intent after rejection', async () => {
+  update.mockImplementationOnce(() => ({ eq() { return this; }, select() { return this; }, maybeSingle: async () => ({ data: null, error: null }) }));
+  await expect(saveSessionClock(sessionId, 20, 1, { actorId: owner, answers: [draft] })).rejects.toThrow('did not reach');
+  expect(clock.config.draftAnswers).toBeUndefined();
+  await saveSessionClock(sessionId, 20, 1, { actorId: owner, answers: [draft] });
+  expect(clock.config.draftAnswers).toEqual([draft]);
+});
+
 it('serializes clock heartbeats behind navigation so a stale config cannot overwrite its position', async () => {
   let acknowledge!: () => void;
   update.mockImplementationOnce((changes: { config: RcDrillConfig }) => {
@@ -170,6 +221,12 @@ it('inserts the stable client launch UUID and verifies its account acknowledgeme
   const saved = await createSession(clock.config as RcDrillConfig, [3], { id: sessionId, actorId: owner });
   expect(insert).toHaveBeenCalledWith(expect.objectContaining({ id: sessionId, user_id: owner, passage_ids: [3] }));
   expect(saved.id).toBe(sessionId);
+});
+it('does not carry another session draft answers into a newly created drill', async () => {
+  insert.mockImplementationOnce((payload) => ({ select: () => ({ single: async () => ({ data: { ...payload, status: 'in_progress', started_at: '2026-10-02T00:00:00Z' }, error: null }) }) }));
+  const saved = await createSession({ ...clock.config, draftAnswers: [draft] } as RcDrillConfig, [3]);
+  expect(insert.mock.calls.at(-1)[0].config.draftAnswers).toBeUndefined();
+  expect(saved.config.draftAnswers).toBeUndefined();
 });
 it('rejects an actor switch before inserting a launch', async () => {
   getUser.mockResolvedValueOnce({ data: { user: { id: owner } } }).mockResolvedValueOnce({ data: { user: { id: 'another-owner' } } });

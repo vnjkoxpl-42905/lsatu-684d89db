@@ -25,10 +25,16 @@ export function SectionLibraryPanel({
   title = "Read, Recall, Colour",
   subtitle = null,
   instructions,
+  showProgress = true,
+  compact = false,
 }: {
   onExit?: () => void;
   title?: string;
   subtitle?: string | null;
+  /** Hide aggregate history when Reading Progress is available in the host. */
+  showProgress?: boolean;
+  /** Use the shorter introduction inside the Reading Center workspace. */
+  compact?: boolean;
   /**
    * The drill's own briefing. Defaults to the authored section instructions
    * because the door is not a section and carries no snapshot of its own, and
@@ -72,6 +78,7 @@ export function SectionLibraryPanel({
       subtitle={subtitle}
       instructions={instructions ?? (sectionInstructions as unknown as ActivityInstructions)}
       onExit={onExit}
+      compact={compact}
     >
       {/*
         * Starting and reopening are the same navigation, on purpose.
@@ -82,12 +89,12 @@ export function SectionLibraryPanel({
         * the tab that produced it. A completed section routes itself to the
         * card rather than to the runner.
         */}
-      <SectionProgress onOpen={(id) => navigate(`/activities/${id}`)} />
+      {showProgress && <SectionProgress onOpen={(id) => navigate(`/reading-center/rrc/attempt/${id}`)} />}
 
       <SectionLibrary
         attempts={assignments}
-        onStart={(id) => navigate(`/activities/${id}`, { state: { startSection: true } })}
-        onOpenAttempt={(id) => navigate(`/activities/${id}`)}
+        onStart={(id) => navigate(`/reading-center/rrc/attempt/${id}`, { state: { startSection: true } })}
+        onOpenAttempt={(id) => navigate(`/reading-center/rrc/attempt/${id}`)}
       />
     </SectionLibraryLaunch>
   );

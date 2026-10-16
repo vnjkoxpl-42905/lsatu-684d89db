@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { usePassages, usePreferences, useSavePreferences, useSessions, useReadingProfile } from "../hooks/useReadingCenterData";
 import { DEFAULT_PREFERENCES, STAT_PERIODS, THEMES } from "../lib/constants";
@@ -13,6 +13,7 @@ import { TopBar } from "../components/AppShell";
 import { SpeedGauge } from "../components/SpeedGauge";
 import { DialogHeader, Dropdown, Modal } from "../components/spreeder-ui";
 import { PreferencesDialog } from "../components/ReaderDialogs";
+import { LrRecallProgress } from "../components/LrRecallProgress";
 
 type Metric = ReadingMetric;
 const METRICS: { value: Metric; label: string }[] = [
@@ -85,6 +86,35 @@ function MetricCard({ title, metric, initial }: { title: string; metric: Metric;
 }
 
 export default function ProfilePage(): React.ReactElement {
+  const [params, setParams] = useSearchParams();
+  const activity = params.get("activity") === "speed-reading" ? "speed-reading" : "lr-recall";
+  const selectActivity = (value: string) => setParams(current => { const next = new URLSearchParams(current); next.set("activity", value); return next; });
+  return <div className="min-h-screen">
+    <TopBar />
+    <header className="px-5 pt-4 sm:px-[26px]">
+      <h1 className="text-2xl font-semibold">Reading Progress</h1>
+      <p className="mt-2 text-sm" style={{ color: "var(--rc-text-2)" }}>Explore your saved practice and results for each activity.</p>
+      <div role="tablist" aria-label="Reading activity" className="my-5 flex flex-wrap gap-2">
+        {([['lr-recall', 'LR Recall'], ['speed-reading', 'Speed Reading']] as const).map(([value, label]) =>
+          <button key={value} type="button" role="tab" id={`progress-tab-${value}`} aria-controls="reading-progress-panel" aria-selected={activity === value} tabIndex={activity === value ? 0 : -1}
+            className="min-h-11 rounded-lg px-4 text-sm font-medium" style={{ background: activity === value ? "var(--rc-nav-active-bg)" : "var(--rc-card)", color: "var(--rc-text)" }}
+            onKeyDown={event => {
+              if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+              event.preventDefault();
+              const next = event.key === "Home" ? "lr-recall" : event.key === "End" ? "speed-reading" : value === "lr-recall" ? "speed-reading" : "lr-recall";
+              selectActivity(next);
+              document.getElementById(`progress-tab-${next}`)?.focus();
+            }}
+            onClick={() => selectActivity(value)}>{label}</button>)}
+      </div>
+    </header>
+    <div role="tabpanel" id="reading-progress-panel" aria-labelledby={`progress-tab-${activity}`}>
+      {activity === "lr-recall" ? <div className="px-5 pb-10 sm:px-[26px]"><LrRecallProgress /></div> : <SpeedReadingProgress />}
+    </div>
+  </div>;
+}
+
+function SpeedReadingProgress(): React.ReactElement {
   const prefsQuery = usePreferences();
   const prefs = prefsQuery.data ?? DEFAULT_PREFERENCES;
   const savePrefs = useSavePreferences();
@@ -100,7 +130,6 @@ export default function ProfilePage(): React.ReactElement {
 
   return (
     <div className="min-h-screen">
-      <TopBar />
       {(prefsQuery.error || profileQuery.error) && <p role="alert" className="px-6 py-3 text-sm">Your saved profile or preferences could not load. <button type="button" className="underline" onClick={() => { void prefsQuery.refetch(); void profileQuery.refetch(); }}>Try again</button></p>}
       <div className="space-y-4 px-[26px] pb-10">
         <section className="relative flex min-h-[180px] flex-col gap-4 rounded-[15px] p-4 sm:p-0" style={{ background: "var(--rc-card)" }}>
@@ -108,13 +137,13 @@ export default function ProfilePage(): React.ReactElement {
             <Icon name="person" size={40} />
           </div>
           <div className="min-w-0 break-words sm:absolute sm:left-[128px] sm:top-5">
-            <h1 className="text-lg font-bold sm:text-[25px]">Reading Progress</h1>
+            <h2 className="text-lg font-bold sm:text-[25px]">Speed Reading</h2>
             <p className="mt-1 text-sm">{profileQuery.isLoading ? "Loading your LSAT U account." : name ? `Reading activity for ${name}` : "Your Reading Center activity"}</p>
           </div>
           <div className="flex min-w-0 flex-wrap items-center gap-2 sm:absolute sm:bottom-[10px] sm:right-[30px]">
             {(["dashboard", "stats"] as const).map((t) => (
               <button key={t} type="button" onClick={() => setTab(t)} className="h-10 rounded-full px-3 text-sm sm:px-5" style={{ background: tab === t ? "var(--rc-nav-active-bg)" : "transparent", color: "var(--rc-text)" }}>
-                {t === "dashboard" ? "Dashboard" : "Stats"}
+                {t === "dashboard" ? "Overview" : "Charts"}
               </button>
             ))}
             <button ref={optionsBtn} type="button" aria-haspopup="menu" aria-expanded={options} onClick={() => setOptions((o) => !o)} className="flex h-10 items-center pl-4 text-sm">

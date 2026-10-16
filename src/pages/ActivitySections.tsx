@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import { SectionLibraryPanel } from "@/features/activity-centre/components/SectionLibraryPanel";
-import "@/features/activity-centre/activity-centre.css";
+import { Navigate, useLocation } from "react-router-dom";
 
 /**
  * Read, Recall, Colour, reachable without waiting to be assigned it.
@@ -12,6 +10,6 @@ import "@/features/activity-centre/activity-centre.css";
  * from the Activities page.
  */
 export default function ActivitySections() {
-  const navigate = useNavigate();
-  return <SectionLibraryPanel onExit={() => navigate("/activities")} />;
+  const location = useLocation();
+  return <Navigate replace to={`/reading-center/rrc${location.search}${location.hash}`} state={location.state} />;
 }

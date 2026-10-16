@@ -11,6 +11,7 @@ export interface SectionLibraryLaunchProps {
   /** The list itself, which owns the sections and the starting. */
   children: ReactNode;
   onExit?: () => void;
+  compact?: boolean;
 }
 
 /**
@@ -34,6 +35,7 @@ export function SectionLibraryLaunch({
   instructions,
   children,
   onExit,
+  compact = false,
 }: SectionLibraryLaunchProps) {
   return (
     <SectionLaunchFrame
@@ -43,9 +45,10 @@ export function SectionLibraryLaunch({
       onExit={onExit}
       showBreadcrumbs={false}
       sectionsFirst
+      compact={compact}
       afterSteps={
         <div className="sl-door-demos">
-          <SectionDemos />
+          <SectionDemos simpleLabels={compact} />
         </div>
       }
       hideClose
@@ -56,7 +59,7 @@ export function SectionLibraryLaunch({
           <div style={{ marginTop: 12 }}>{children}</div>
         </div>
 
-        <aside className="sl-aside">
+        {!compact && <aside className="sl-aside">
           {/*
             * The steps themselves are not repeated here. They are performed in
             * the hero, drawn as the four cards, and filmed under those; a fourth
@@ -73,7 +76,7 @@ export function SectionLibraryLaunch({
             Every completed attempt stays here. If you run a section again, it
             is saved as a new attempt. Your earlier attempts are never replaced.
           </p>
-        </aside>
+        </aside>}
       </div>
     </SectionLaunchFrame>
   );

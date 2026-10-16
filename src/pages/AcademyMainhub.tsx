@@ -54,18 +54,6 @@ function MainhubHero({
     })}`);
   }, [drillReturnTo, navigate]);
 
-  if (section === "rc") {
-    return (
-      <section className="rc-practice-create" aria-labelledby="rc-create-title">
-        <div>
-          <h2 id="rc-create-title">Create an RC drill</h2>
-          <p>Choose passages, timing, and when to check your answers.</p>
-        </div>
-        <Button type="button" onClick={onOpenBuilder}>Create RC drill <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
-      </section>
-    );
-  }
-
   return (
     <Card
       data-section={section}
@@ -240,7 +228,7 @@ export default function AcademyMainhub({
       listSessions(),
       view === "in-progress" ? loadDrillResumeSession(user.id, "drill::adaptive") : Promise.resolve(null),
     ]).then(async ([lr, allRc, smartDrill]) => {
-      const rc = allRc.filter((session) => session.userId === user.id && !session.config.practiceTestRunId && session.config.source !== "assignment" &&
+      const rc = allRc.filter((session) => session.userId === user.id && !session.config.practiceTestRunId && !session.config.timedSectionSittingId && session.config.source !== "assignment" &&
         (session.status === "completed" || session.status === "in_progress"));
       const attempts = await Promise.all(rc.map(async (session) => [session.id, await getSessionAttempts(session.id)] as const));
       return buildStandaloneDrillHistory(lr, rc, new Map(attempts), smartDrill);
@@ -291,6 +279,16 @@ export default function AcademyMainhub({
       : "default";
   const isLauncherStage = stage === "type-drill";
 
+  // Existing RC builder links resolve to the same Create destination. Preserve
+  // passage/timing/return parameters while removing the obsolete launcher stage.
+  React.useEffect(() => {
+    if (section !== "rc" || view !== "create" || stageParam !== "type-drill") return;
+    const next = new URLSearchParams(searchParams);
+    next.delete("stage");
+    next.set("view", "create");
+    setSearchParams(next, { replace: true });
+  }, [section, view, stageParam, searchParams, setSearchParams]);
+
   /* Sitting a section moved to the Testing Centre. Old links, bookmarks and
      anything a student had open land there rather than silently falling back
      to the hub's default stage with no explanation. */
@@ -321,9 +319,9 @@ export default function AcademyMainhub({
   const changeSection = React.useCallback(
     (next: DrillSection) => {
       rememberSection(next);
-      setSearchParams({ [DRILL_SECTION_PARAM]: next }, { replace: false });
+      setSearchParams({ [DRILL_SECTION_PARAM]: next, ...(view !== "create" ? { view } : {}) }, { replace: false });
     },
-    [setSearchParams],
+    [setSearchParams, view],
   );
 
   const openAnalytics = React.useCallback(
@@ -399,26 +397,29 @@ export default function AcademyMainhub({
           their padding by design — they read as three objects on one field, not
           as one split surface. */}
       <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5">
-        <nav aria-label="Drills" className="drill-view-tabs flex flex-wrap gap-2 border-b border-border pb-3">
+        <nav aria-label="Drills" className="drill-view-tabs flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
+          <div className="drill-destination-tabs flex flex-wrap gap-2">
           {([ ["create", "Create"], ["in-progress", "In progress"], ["completed", "Completed"], ["saved", "Saved sets"] ] as const).map(([key, label]) => (
             <Button key={key} type="button" size="sm" variant={view === key ? "default" : "ghost"} aria-current={view === key ? "page" : undefined} onClick={() => changeView(key)}>{label}</Button>
           ))}
+          </div>
+          {!(section === "lr" && view === "create" && isLauncherStage) && <SectionToggle section={section} onChange={changeSection} />}
         </nav>
         {view === "saved" ? (
-          <section className="rounded-xl border border-border bg-card p-6" aria-label="Saved sets">
-            <h1 className="text-xl font-semibold">Saved sets</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Inspect, launch, rename, or duplicate a set you saved.</p>
-            <Button className="mt-5" onClick={() => navigate("/practice/drills/saved")}>Open saved sets <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
+          <section className="drill-history-workspace rounded-xl border border-border bg-card p-6" aria-label="Saved sets">
+            <h1 className="text-xl font-semibold">Saved LR sets</h1>
+            <p className="mt-2 text-sm text-muted-foreground">Reusable saved sets support Logical Reasoning. Find your RC drills in In progress or Completed.</p>
+            <Button className="mt-5" onClick={() => navigate("/practice/drills/saved")}>Open saved LR sets <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
           </section>
         ) : view === "in-progress" || view === "completed" ? (
-          <section className="rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
+          <section className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
             <div className="flex items-center justify-between gap-3">
               <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">{view === "in-progress" ? "Your saved Smart Drill, custom LR, and RC drills. Assigned work stays in My Work." : "Your completed Smart Drill, custom LR, and RC drills. Assigned work stays in My Work."}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{section === "rc" ? "Your Reading Comprehension drills." : "Your Smart Drill and Logical Reasoning drills."}</p>
             {runsLoading ? <p className="mt-6 text-sm text-muted-foreground" role="status">Loading your drills…</p> : runsError ? <p className="mt-6 text-sm text-destructive" role="alert">{runsError}</p> : (() => {
-              const selected = runs.filter((run) => run.status === (view === "completed" ? "completed" : "in_progress"));
+              const selected = runs.filter((run) => run.section === section && run.status === (view === "completed" ? "completed" : "in_progress"));
               return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill and save an answer to see it here."}</p> : (
                 <ul className="mt-5 space-y-3">{selected.map((run) => (
                   <li key={run.key} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
@@ -432,7 +433,14 @@ export default function AcademyMainhub({
               );
             })()}
           </section>
-        ) : <>
+        ) : section === "rc" && stage !== "analytics" ? <>
+          <div className="drill-observatory-tools">
+            <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} />
+          </div>
+          <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
+            <RcHubSurface embedded showHistory={false} onCancel={() => changeView("in-progress")} />
+          </section>
+        </> : <>
         {/* The address row rides above the hero rather than inside it: the
             route label row is decorative and aria-hidden, and the hero's two
             columns are already the page's two primary actions. It sits in the
@@ -455,14 +463,6 @@ export default function AcademyMainhub({
             bank={section}
             withSearch={false}
           />
-          {/* Search and the section switch are one cluster hard right, on the
-              same line. The search trigger used to ride at the end of the
-              address row, which parked it directly above the LR/RC switch and
-              read as a stack of two unrelated controls. Side by side they read
-              as what they are: the two utilities of this band. */}
-          <div className="drill-observatory-tools-aside">
-            <SectionToggle section={section} onChange={changeSection} />
-          </div>
         </div>}
 
         {/* The hero stays mounted across section changes (its content swaps in

@@ -302,6 +302,37 @@ The product's distinctive pattern is not a control, it is a container. A room co
 
 ## Do's and Don'ts
 
+### Activity entries must make the next action clear
+
+Reading Center correction, 2026-10-16: Joshua rejected competing emphasis, repeated summaries and unclear tutorial labels on LR Recall. An activity entry serves someone choosing work or learning how to do it. It must not require them to read a promotional landing page first.
+
+- Give the main task one dominant action. Keep instructions and examples clearly available as a secondary destination. A control's label must describe what it actually does: choosing a section, starting a new attempt and opening a report are different actions. Never label a new attempt Resume.
+- Each section must help the student act, understand a requirement or inspect their own work. Remove a repeated explanation instead of finding a new slogan for it. Product-name chips, headings and taglines do not each need to repeat the same name or method.
+- Use explicit teaching labels, such as Instructions and Video examples. Numbered demonstration selectors use Example 1, Example 2 and Example 3; source citations are secondary metadata. Accessible names must agree with the visible labels.
+- Keep the four steps and recorded examples within the same activity area, using clearly labelled views where appropriate. Keep necessary detail available without repeating the same step body in several adjacent components. Long explanations should be optional once the task and requirements are clear.
+- Shorten presentation without dropping the method: silent reading, looking away, retelling aloud in one's own words, reacting and recalling the complete argument remain distinct requirements. Do not infer understanding from delivery alone or promise improvement on an unsupported timetable.
+- Preserve a scoped room's approved visual identity, but make decorative motion subordinate to the task and the actual tutorial. Do not introduce another competing demonstration merely to fill a hero.
+
+These are reusable review constraints. Joshua approved the LR Recall replacement layout after the clarification interview on 2026-10-16. The dated Reading Center correction in [.impeccable/surfaces/src-features-activity-centre.md](.impeccable/surfaces/src-features-activity-centre.md) records its scope. Approval does not establish publication; that requires separate live verification. Palette, runner behavior, grading and saved work are unchanged by this document.
+
+### Drill creation and drill history are separate destinations
+
+RC correction, 2026-10-15: selecting **Create** opens the passage builder directly. Existing sittings belong in **In progress** or **Completed**, filtered by the selected LR/RC section. Do not put an attempt list, results, or Resume/Delete controls under Create, or add a second Create button merely to reach setup. Preserve the preview-to-start boundary: a preview reads the selected content; starting creates the sitting. Assigned work and protected timed sections keep their own destinations.
+
+The RC builder uses Workroom semantic tokens on its entire setup surface. Its inherited dark-card palette must not place pale text on a light card. Check both themes, selected controls, keyboard focus, phone, mid-width, wide and docked layouts in the rendered app. Saved-set copy must state its actual support: reusable templates currently support LR, while RC sittings are in history. These are scoped corrections and implementation constraints, not approval of exact replacement copy or a mandate to copy another platform's layout.
+
+### Spot practice must make the task and completion clear (2026-10-16)
+
+- Omit keyboard-shortcut helper copy beneath answer inputs by default. Retain keyboard submission, navigation, visible focus and accessible controls.
+- Use ordinary student labels: Sentence and Your answer. Keep internal metaphors, Rung and difficulty categories out of task and feedback UI. Authoring and parser metadata may remain internal; the scoped visual identity does not require metaphorical task labels.
+- Ask the learner to name each relationship and quote the words that signal it. Each answer needs a relationship type and supporting quotation, including every type present in a sentence.
+- Drive the accessible completion bar from resolved questions, separately from question position and accuracy. Entering question 48 with 47 resolved means 47 of 48 completed, not 100%. Only resolution of the final question earns full completion. Revealed or deliberately unjudged completion does not establish correctness or mastery. Expose a meaningful name, range/current value and completed-count text; do not rely on color alone and honor reduced motion.
+- Give a response-specific hint before revealing a first unsuccessful answer. Retain the learner's text and useful hint during retry. Correct responses receive the full authored explanation. Explicit reveal or the existing attempt cap shows the full answer and explanation; the illustration agrees with the shown answer while the earned verdict stays unchanged. Keep full answers and explanations hidden during the first unresolved unsuccessful attempt. Unavailable grading remains honestly unjudged.
+- Place feedback and the full explanation before Next or Finish in reading and keyboard order. Once the question resolves and an authored explanation is available, suppress advice to retry it; preserve the earned verdict.
+- Normalize the exact legacy fallback at the presentation boundary to: Check that each relationship type matches the words you quoted. Reread the whole sentence for any relationship you missed. Do not bring rejected words-create-it wording back through fallback feedback. Keep other grader feedback and all verdicts intact; a presentation correction must not rewrite historical responses, grading keys or earned results.
+
+Verification covers initial, correct, wrong, editing retry, reveal and unavailable states; completion at zero, resume, last unanswered and final resolution; keyboard/screen-reader access, visible focus, computed contrast, reduced motion and narrow/mid-width/wide/docked layouts. Check semantic judgments and teaching feedback separately, including the exact legacy fallback and explanation-before-Next order. See [.impeccable/surfaces/src-features-activity-centre.md](.impeccable/surfaces/src-features-activity-centre.md) for surface-specific behavior. The vault's wiki/COPY-CORRECTIONS.md and bootcamp-builder teaching-preference ledgers retain dated correction history.
+
 ### Do:
 
 - **Do** resolve every colour from a token, and treat a token that resolves to nothing as a defect. Verify a new token renders before documenting it.

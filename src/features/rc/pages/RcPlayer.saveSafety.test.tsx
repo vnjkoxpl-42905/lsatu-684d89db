@@ -41,6 +41,7 @@ vi.mock('../components/RcQuestionPane', () => ({
   }) => <div>
     <p>Question {item.number}: {selected ?? 'blank'}</p>
     <button disabled={interactionDisabled} onClick={() => onSelect('B')}>Choose B</button>
+    <button disabled={interactionDisabled} onClick={() => onSelect('C')}>Choose C</button>
     <button disabled={interactionDisabled} onClick={onToggleFlag}>Toggle question flag</button>
     {reattemptMode && <button onClick={onSkipToAnswer}>Show saved answer</button>}
   </div>,
@@ -73,7 +74,7 @@ const passage: RcPassage = {
   questions: [1, 2, 3].map((questionId) => ({
     questionId, position: questionId, questionType: 'Main point', questionTypeFamily: 'Main point',
     difficulty: null, prompt: `Question ${questionId}`, correctAnswer: 'A' as const, hasWrittenExplanation: false,
-    explanationBlocks: [], totalResponses: null, features: [], choices: [{ letter: 'B' as const, text: 'Choice B', tag: null, percent: null, responseCount: null, correct: false, explanation: null }],
+    explanationBlocks: [], totalResponses: null, features: [], choices: ['B', 'C'].map((letter: 'B' | 'C') => ({ letter, text: `Choice ${letter}`, tag: null, percent: null, responseCount: null, correct: false, explanation: null })),
   })),
 };
 let loadedPassages = [passage];
@@ -109,6 +110,166 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('RC account save safety', () => {
+  it.each(['per_passage', 'per_question'] as const)('restores Q1 and Q2 from account drafts with fresh device storage in %s without confirming them', async (reveal) => {
+    let account = session({ reveal });
+    api.getSession.mockImplementation(async () => account);
+    api.saveSessionClock.mockImplementation(async (_id, elapsed, index, drafts) => {
+      account = { ...account, config: { ...account.config, clockElapsedSeconds: elapsed,
+        ...(index === undefined ? {} : { currentQuestionIndex: index }),
+        ...(drafts ? { draftAnswers: structuredClone(drafts.answers) } : {}),
+      } };
+    });
+    const first = mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+    await screen.findByText('Question 2: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Choose C' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save and exit' }));
+    await waitFor(() => expect(screen.getByTestId('location').textContent).toBe('/rc'));
+    expect(account.config.draftAnswers?.map(({ questionId, selected }) => [questionId, selected])).toEqual([[1, 'B'], [2, 'C']]);
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(api.completeSession).not.toHaveBeenCalled();
+    const firstAttemptId = account.config.draftAnswers![0].attemptId;
+    first.unmount();
+    localStorage.clear();
+    mount();
+    await screen.findByText('Question 2: C');
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Drill 1: answered');
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('incorrect');
+    fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
+    await screen.findByText('Question 1: B');
+    if (reveal === 'per_question') {
+      expect(screen.getByRole('button', { name: 'Confirm' })).not.toBeDisabled();
+      expect(api.recordAttempt).not.toHaveBeenCalled();
+      fireEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+      await waitFor(() => expect(api.recordAttempt).toHaveBeenCalledTimes(1));
+      expect(api.recordAttempt.mock.calls[0][0]).toMatchObject({ questionId: 1, selected: 'B', id: firstAttemptId });
+      await waitFor(() => expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Drill 1: incorrect'));
+      expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Drill 2: answered');
+    } else {
+      fireEvent.click(screen.getByRole('button', { name: 'Choose C' }));
+      await screen.findByText('Question 1: C');
+      expect(api.recordAttempt).not.toHaveBeenCalled();
+    }
+  });
+
+  it('saves earlier drafts when exiting from an unanswered current question and restores that position', async () => {
+    api.getSession.mockResolvedValue(session({ reveal: 'per_passage' }));
+    const first = mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+    await screen.findByText('Question 2: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Save and exit' }));
+    await waitFor(() => expect(screen.getByTestId('location').textContent).toBe('/rc'));
+    const saved = api.saveSessionClock.mock.calls.find((call) => call[3]);
+    expect(saved[2]).toBe(1);
+    expect(saved[3].answers).toEqual([expect.objectContaining({ questionId: 1, selected: 'B' })]);
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(localStorage.getItem('lsatu:rc-answer:student-one:session-one')).toBeNull();
+    first.unmount();
+    localStorage.clear();
+    api.getSession.mockResolvedValue(session({ reveal: 'per_passage', currentQuestionIndex: saved[2], clockElapsedSeconds: saved[1], draftAnswers: saved[3].answers }));
+    mount();
+    await screen.findByText('Question 2: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
+    await screen.findByText('Question 1: B');
+  });
+
+  it('keeps a fully selected account-drafted passage hidden until Check passage is acknowledged', async () => {
+    api.getSession.mockResolvedValue(session({ reveal: 'per_passage', draftAnswers: [1, 2, 3].map((questionId) => ({
+      questionId, selected: 'B', attemptId: crypto.randomUUID(), flagged: false, eliminations: [],
+    })) }));
+    mount();
+    await screen.findByText('Question 1: B');
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('incorrect');
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Check passage' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Finish drill' })).toBeInTheDocument());
+    expect(api.recordAttempt).toHaveBeenCalledTimes(3);
+  });
+
+  it('does not exit or score drafts when the account rejects their save, then retries the draft snapshot', async () => {
+    const priorId = crypto.randomUUID();
+    api.getSession.mockResolvedValue(session({ reveal: 'per_passage', currentQuestionIndex: 0, draftAnswers: [{ questionId: 1, selected: 'B', attemptId: priorId, flagged: false, eliminations: [] }] }));
+    mount();
+    await screen.findByText('Question 1: B');
+    fireEvent.click(screen.getByRole('button', { name: 'Choose C' }));
+    await screen.findByText('Question 1: C');
+    api.saveSessionClock.mockRejectedValueOnce(new Error('draft save offline'));
+    fireEvent.click(screen.getByRole('button', { name: 'Save and exit' }));
+    expect(await screen.findByRole('alertdialog')).toHaveTextContent('Your work did not finish saving');
+    expect(screen.getByTestId('location').textContent).toContain('/rc/drill');
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(localStorage.getItem('lsatu:rc-answer:student-one:session-one')).toContain('C');
+    expect(screen.getByRole('button', { name: 'Choose B', hidden: true })).toBeDisabled();
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('incorrect');
+    const intent = api.saveSessionClock.mock.calls[0][3];
+    expect(intent.answers[0]).toMatchObject({ selected: 'C' });
+    expect(intent.answers[0].attemptId).not.toBe(priorId);
+    fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+    await waitFor(() => expect(screen.getByTestId('location').textContent).toBe('/rc'));
+    expect(api.saveSessionClock.mock.calls.filter((call) => call[3]).at(-1)[3]).toEqual(intent);
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+  });
+
+  it('preserves measured time for each draft across navigation and a fresh-device resume, adding new dwell on Confirm', async () => {
+    let now = Date.now();
+    const clock = vi.spyOn(Date, 'now').mockImplementation(() => now);
+    try {
+      api.getSession.mockResolvedValue(session({ reveal: 'per_question' }));
+      const first = mount();
+      await screen.findByText('Question 1: blank');
+      fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+      now += 1500;
+      fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+      await screen.findByText('Question 2: blank');
+      fireEvent.click(screen.getByRole('button', { name: 'Choose C' }));
+      now += 2400;
+      fireEvent.click(screen.getByRole('button', { name: 'Save and exit' }));
+      await waitFor(() => expect(screen.getByTestId('location').textContent).toBe('/rc'));
+      const saved = api.saveSessionClock.mock.calls.find((call) => call[3]);
+      expect(saved[3].answers.map(({ questionId, timeMs }) => [questionId, timeMs])).toEqual([[1, 1500], [2, 2400]]);
+      expect(api.recordAttempt).not.toHaveBeenCalled();
+      first.unmount();
+      localStorage.clear();
+      now += 100000;
+      api.getSession.mockResolvedValue(session({ reveal: 'per_question', currentQuestionIndex: saved[2], clockElapsedSeconds: saved[1], draftAnswers: saved[3].answers }));
+      mount();
+      await screen.findByText('Question 2: C');
+      fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
+      await screen.findByText('Question 1: B');
+      now += 700;
+      fireEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+      await waitFor(() => expect(api.recordAttempt).toHaveBeenCalledTimes(1));
+      expect(api.recordAttempt.mock.calls[0][0]).toMatchObject({ questionId: 1, selected: 'B', timeMs: 2200, id: saved[3].answers[0].attemptId });
+      expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Drill 2: answered');
+    } finally {
+      clock.mockRestore();
+    }
+  });
+
+  it('keeps protected practice-test exit on its existing attempt path and ignores config drafts', async () => {
+    api.getSession.mockResolvedValue(session({ practiceTestRunId: 'protected', draftAnswers: [{ questionId: 1, selected: 'C', attemptId: crypto.randomUUID(), flagged: false, eliminations: [] }] }));
+    mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save and exit' }));
+    await waitFor(() => expect(screen.getByTestId('location').textContent).toBe('/rc'));
+    expect(api.recordAttempt).toHaveBeenCalledTimes(1);
+    expect(api.saveSessionClock.mock.calls.every((call) => call[3] === undefined)).toBe(true);
+  });
+
+  it('keeps an active protected timed section on its existing redirect without saving drafts', async () => {
+    const id = '10000000-0000-4000-8000-000000000001';
+    api.getSession.mockResolvedValue(session({ timedSectionSittingId: id, draftAnswers: [{ questionId: 1, selected: 'C', attemptId: crypto.randomUUID(), flagged: false, eliminations: [] }] }));
+    mount();
+    await waitFor(() => expect(screen.getByTestId('location').textContent).toBe(`/testing/sections/${id}`));
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(api.saveSessionClock).not.toHaveBeenCalled();
+  });
+
   it('reports saved answer status in blind review without exposing correctness until reveal', async () => {
     api.getSession.mockResolvedValue({ ...session(), status: 'completed' });
     api.getSessionAttempts.mockResolvedValue([attempt, { ...attempt, id: 'answer-two', questionId: 2, selected: 'A', isCorrect: true }]);

@@ -1,11 +1,12 @@
 /**
- * Reading Center lives in the teacher workspace's Tools room. The reader takes
- * the whole viewport (like the whiteboard); the library, stats and passage
- * manager render inside the workspace shell. The reader sits under /read/ so a
- * passage slug can never collide with "stats" or "manage".
+ * Reading Center is the activity hub. Speed Reading keeps its own library and
+ * reader; RRC uses its existing section collection and attempts independently.
+ * Keep the original reader, tags, profile and manager URLs stable.
  */
 export const TOOLS_PATH = "/teacher/tools";
-export const RC_LIBRARY_PATH = "/reading-center";
+export const RC_HOME_PATH = "/reading-center";
+export const RC_LIBRARY_PATH = "/reading-center/speed-reading";
+export const RC_RRC_PATH = "/reading-center/rrc";
 export const RC_STATS_PATH = "/reading-center/profile";
 export const RC_PROFILE_PATH = "/reading-center/profile";
 export const RC_TAGS_PATH = "/reading-center/tags";

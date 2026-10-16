@@ -14,6 +14,7 @@ import {
 } from './rcSupabase.types';
 import type {
   RcAttempt,
+  RcDraftAnswer,
   RcDrillConfig,
   RcDrillSession,
   RcHighlight,
@@ -21,6 +22,7 @@ import type {
   RcQuestionHistory,
   RcSessionStatus,
 } from '../lib/rcTypes';
+import { readRcDraftAnswers } from '../lib/rcTypes';
 import { isActivePracticeTestDevice } from '@/lib/practiceTestStore';
 
 /** Postgres "relation does not exist" — the migration has not been run. */
@@ -71,6 +73,7 @@ export function toSession(row: RcDrillSessionRow): RcDrillSession {
     userId: row.user_id,
     config: {
       ...config,
+      ...(config.draftAnswers === undefined ? {} : { draftAnswers: readRcDraftAnswers(config.draftAnswers) }),
       timing,
       timedSectionSittingId: protectedId,
       practiceTestRunId: config.practiceTestRunId ?? row.practice_test_run_id ?? undefined,
@@ -122,12 +125,14 @@ export async function createSession(
     throw new Error('This practice test is active on another device.');
   }
   if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+  // Reusing drill settings (including Drill your misses) must start fresh work.
+  const { draftAnswers: _draftAnswers, ...freshConfig } = config;
   const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .insert({
       ...(request ? { id: request.id } : {}),
       user_id: userId,
-      config,
+      config: freshConfig,
       passage_ids: passageIds,
       practice_test_run_id: config.practiceTestRunId ?? null,
       practice_test_leg: config.practiceTestLegIndex ?? null,
@@ -163,10 +168,12 @@ export async function listSessions(): Promise<RcDrillSession[]> {
 
 const clockWriteChains = new Map<string, Promise<void>>();
 
-/** Save spent time and, on navigation, the account-acknowledged question position. */
-export function saveSessionClock(id: string, elapsedSeconds: number, currentQuestionIndex?: number): Promise<void> {
+type RcDraftSave = { actorId: string; answers: RcDraftAnswer[] };
+
+/** Draft snapshots share the clock queue so a heartbeat cannot overwrite them. */
+export function saveSessionClock(id: string, elapsedSeconds: number, currentQuestionIndex?: number, drafts?: RcDraftSave): Promise<void> {
   const previous = clockWriteChains.get(id) ?? Promise.resolve();
-  const write = previous.catch(() => undefined).then(() => writeSessionClock(id, elapsedSeconds, currentQuestionIndex));
+  const write = previous.catch(() => undefined).then(() => writeSessionClock(id, elapsedSeconds, currentQuestionIndex, drafts));
   clockWriteChains.set(id, write);
   void write.finally(() => {
     if (clockWriteChains.get(id) === write) clockWriteChains.delete(id);
@@ -174,22 +181,29 @@ export function saveSessionClock(id: string, elapsedSeconds: number, currentQues
   return write;
 }
 
-async function writeSessionClock(id: string, elapsedSeconds: number, currentQuestionIndex?: number): Promise<void> {
+async function writeSessionClock(id: string, elapsedSeconds: number, currentQuestionIndex?: number, drafts?: RcDraftSave): Promise<void> {
   if (currentQuestionIndex !== undefined && (!Number.isSafeInteger(currentQuestionIndex) || currentQuestionIndex < 0)) {
     throw new Error('That question position could not be saved.');
   }
   const userId = await requireUserId();
+  if (drafts && drafts.actorId !== userId) throw new Error('The signed-in account changed.');
   const session = await getSession(id);
   if (!session || session.userId !== userId || session.status !== 'in_progress') {
     throw new Error('The section is no longer available to save.');
   }
   await assertActivePracticeTestSession(id);
+  const answers = drafts ? readRcDraftAnswers(drafts.answers) : undefined;
+  if (drafts && (session.config.timedSectionSittingId || session.config.practiceTestRunId
+    || !Array.isArray(drafts.answers) || answers.length !== drafts.answers.length)) {
+    throw new Error('These reading drafts could not be saved.');
+  }
   const seconds = Math.max(session.config.clockElapsedSeconds ?? 0, Math.floor(elapsedSeconds));
   const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .update({
       config: {
         ...session.config,
+        ...(answers === undefined ? {} : { draftAnswers: answers }),
         clockElapsedSeconds: seconds,
         ...(currentQuestionIndex === undefined ? {} : { currentQuestionIndex }),
         lastActiveAt: new Date().toISOString(),

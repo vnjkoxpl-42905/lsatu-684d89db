@@ -6,6 +6,7 @@ import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissi
 import { supabase } from "@/integrations/supabase/client";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import LockedModule from "@/components/LockedModule";
+import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import { loadPracticeTestRun } from "@/lib/practiceTest";
 import { classroomItemMatchesBootcamp } from '@/lib/bootcamps';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
@@ -124,8 +125,32 @@ function ptOfRun(runId: string | null | undefined): number | null {
 // ── Route wrappers ─────────────────────────────────────────────────────────
 
 /** /activities/:assignmentId */
-export function ActivityAssignmentGate({ children }: { children: ReactNode }) {
+export function ActivityAssignmentGate({ children, rrcOnly = false }: { children: ReactNode; rrcOnly?: boolean }) {
   const { assignmentId } = useParams<{ assignmentId: string }>();
+  const { user, authReady } = useAuth();
+  const permissions = useUserPermissions();
+  const access = useReadingCenterAccess(!permissions.is_admin);
+  const ownRrc = useQuery({
+    queryKey: ['rrc-assignment-gate', user?.id, assignmentId],
+    enabled: authReady && !!user && !!assignmentId && !permissions.loading,
+    queryFn: async () => {
+      let query = supabase.from('activity_assignments').select('id,mode,item_format').eq('id', assignmentId!);
+      if (!permissions.is_admin) query = query.eq('student_id', user!.id);
+      const { data, error } = await query.maybeSingle();
+      if (error || !data) return null;
+      if (data.mode === 'section' && data.item_format === 'spoken-recall') return 'section';
+      return data.mode === 'section-library' ? 'library' : null;
+    },
+    staleTime: 0,
+  });
+  if (!authReady || permissions.loading || (!!user && (ownRrc.isPending || (!permissions.is_admin && access.isPending)))) {
+    return <div role="status" className="flex min-h-screen items-center justify-center">Checking activity access…</div>;
+  }
+  if (rrcOnly) {
+    return <ProtectedRoute allowSignedIn>{ownRrc.data === 'section' && (permissions.is_admin || access.allowed || permissions.has_classroom_access)
+      ? children : <LockedModule />}</ProtectedRoute>;
+  }
+  if (ownRrc.data && access.allowed) return <ProtectedRoute allowSignedIn>{children}</ProtectedRoute>;
   return (
     <AssignmentGate
       flag="has_activity_access"
@@ -136,6 +161,29 @@ export function ActivityAssignmentGate({ children }: { children: ReactNode }) {
       {children}
     </AssignmentGate>
   );
+}
+
+/** The RRC door accepts a hub grant or its existing, specifically assigned library. */
+export function ReadingCenterRrcGate({ children }: { children: ReactNode }) {
+  const { user, authReady } = useAuth();
+  const permissions = useUserPermissions();
+  const access = useReadingCenterAccess(!permissions.is_admin);
+  const legacy = useQuery({
+    queryKey: ['rrc-library-gate', user?.id],
+    enabled: authReady && !!user && !permissions.loading && permissions.has_classroom_access && !permissions.is_admin && !access.allowed,
+    queryFn: async () => {
+      const { data, error } = await supabase.from('activity_assignments').select('id')
+        .eq('student_id', user!.id).eq('mode', 'section-library').limit(1);
+      return !error && !!data?.length;
+    },
+    staleTime: 0,
+  });
+  if (!authReady || permissions.loading || (!!user && !permissions.is_admin &&
+    (access.isPending || (!access.allowed && permissions.has_classroom_access && legacy.isPending)))) {
+    return <div role="status" className="flex min-h-screen items-center justify-center">Checking Read, Recall, Colour access…</div>;
+  }
+  return <ProtectedRoute allowSignedIn>{permissions.is_admin || access.allowed || (permissions.has_classroom_access && legacy.data === true)
+    ? children : <LockedModule />}</ProtectedRoute>;
 }
 
 /** /classroom/ta/:assignmentId */

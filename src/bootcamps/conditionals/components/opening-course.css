@@ -237,3 +237,10 @@
 .oc-status-bar{display:inline-block;width:42px;height:4px;border-radius:2px;background:#e9d2a8;overflow:hidden}.oc-status-bar i{display:block;height:100%;background:#b77847}
 .oc-path-card[data-progress=done]{border-left:4px solid #1f7a54}.oc-path-card[data-progress=started]{border-left:4px solid #e5bd77}
 .dark .oc-status-started{color:#f6dfb5;background:#4a3a1f}.dark .oc-tracker-steps i[data-progress=done],.dark .oc-status-done{background:#2f9a6d}
+
+/* One course navigation, shared by the desktop rail and mobile drawer. */
+.cb-shell.oc-workspace .cb-workspace-status { display:flex; align-items:center; border-bottom:1px solid var(--oc-line); justify-content:flex-end; min-height:48px; padding:12px 24px; margin-bottom:0; }
+.cb-shell.oc-workspace .cb-workspace-status .cb-save { margin-left:0; color:var(--oc-muted); font-size:.8125rem; line-height:1.5; }
+.oc-course-rail nav a:hover,.oc-course-drawer nav a:hover { background:var(--oc-hover); color:var(--oc-ink); }
+.oc-course-rail nav a svg,.oc-course-drawer nav a svg { flex-shrink:0; }
+@media(max-width:600px) { .cb-shell.oc-workspace .cb-workspace-status { padding:10px 20px; } }

@@ -15,6 +15,7 @@ import { draftKey, flushOutbox, queueAttempt, type PendingAttempt } from "../dra
 import type { RunScore } from "../progress";
 import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 import { useAuth } from "@/contexts/AuthContext";
+import { rrcExitPath } from '@/features/reading-center/lib/rrcNavigation';
 import { MAX_ATTEMPTS } from "../api/types";
 import type { JudgeSource, Verdict } from "../api/types";
 import { cachePracticeRun, createPracticeRun, loadPracticeRuns, readCachedRuns, syncPracticeRun, practiceSaveMessage, type PracticeRun } from "../conditionals/practiceStore";
@@ -25,6 +26,7 @@ import { PaperDiagramPanel } from "./PaperDiagramPanel";
 import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityProgress } from "./ActivityProgress";
+import { RELATIONSHIP_ANSWER_PROMPT } from "../relationshipPresentation";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
 import { SectionRunner } from "../recall/SectionRunner";
@@ -111,7 +113,11 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   // Centre. Returning to the intro keeps `index`, so the Start action resumes on
   // the same question rather than restarting the Activity.
   const handleBackToIntro = routed ? () => setPhase("intro") : undefined;
-  const handleLeave = routed ? () => navigate(isGeneral ? "/activities/conditionals" : "/activities") : undefined;
+  const handleLeave = routed ? () => {
+    if (isRrc && user) {
+      void rrcExitPath(user.id).then(path => navigate(path));
+    } else navigate(isGeneral ? "/activities/conditionals" : "/activities");
+  } : undefined;
   const { user } = useAuth();
 
   // "Activity not found." was shown for two very different situations: an id
@@ -138,6 +144,16 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
    */
   const viewingSomeoneElse = Boolean(assignment && user && assignment.student_id !== user.id);
   const isGeneral = assignment?.title === "Conditional Rephrase";
+  const isRrc = assignment?.mode === 'section-library' ||
+    (assignment?.mode === 'section' && assignment?.item_format === 'spoken-recall');
+  useEffect(() => {
+    // Redirect only after the saved assignment proves its kind and owner.
+    // Preserve launch state and query parameters, including startSection.
+    if (!routed || preview || !isRrc || !assignment || !user || viewingSomeoneElse ||
+      location.pathname !== `/activities/${assignment.id}`) return;
+    const path = assignment.mode === 'section-library' ? '/reading-center/rrc' : `/reading-center/rrc/attempt/${assignment.id}`;
+    navigate(`${path}${location.search}${location.hash}`, { replace: true, state: location.state });
+  }, [assignment, isRrc, location.hash, location.pathname, location.search, location.state, navigate, preview, routed, user, viewingSomeoneElse]);
   const persistPractice = useCallback((next: PracticeRun): boolean => {
     if (!user || next.userId !== user.id || viewingSomeoneElse) return false;
     try { cachePracticeRun(next); }
@@ -343,6 +359,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       item: currentItem,
       response: responses[currentItem.order],
       answered: verdicts[currentItem.order] !== undefined,
+      revealed: Object.prototype.hasOwnProperty.call(verdicts, currentItem.order) && verdicts[currentItem.order] !== "correct",
       verdict: verdicts[currentItem.order],
       completedItems: items.filter((item) => verdicts[item.order] === "correct"),
       mileposts: isGeneral ? undefined : mileposts,
@@ -1080,7 +1097,12 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   }
 
   return (
-    <div className="activity-centre min-h-screen" data-world={world?.slug}>
+    <div className={`activity-centre min-h-screen${world?.slug === "spot-the-relationship" ? " relationship-run" : ""}`} data-world={world?.slug}>
+      {world?.slug === "spot-the-relationship" && <header className="relationship-run-header">
+        {handleBackToIntro && <ActivityExitButton onExit={handleBackToIntro} tone="light" />}
+        <span className="relationship-run-title">Spot the Relationship</span>
+        <ActivityProgress variant="relationship" completed={items.filter(item => Object.prototype.hasOwnProperty.call(verdicts, item.order)).length} total={items.length} />
+      </header>}
       <div className="grid min-h-screen grid-cols-1 md:grid-cols-[minmax(320px,42%)_1fr]">
         {worldStage ? (
           /* The world carries the item itself, so the rail's job here is only
@@ -1092,12 +1114,12 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             className="ac-yard-band relative flex min-h-[200px] flex-col md:min-h-[560px] md:sticky md:top-0 md:h-screen"
             data-expanded={bandExpanded ? "true" : "false"}
           >
-            <div className="flex items-center justify-between gap-3 bg-[hsl(var(--aw-page,var(--background)))] px-5 py-4 md:px-6">
+            {world.slug !== "spot-the-relationship" && <div className="flex items-center justify-between gap-3 bg-[hsl(var(--aw-page,var(--background)))] px-5 py-4 md:px-6">
               {handleBackToIntro && <ActivityExitButton onExit={handleBackToIntro} tone="light" />}
               {!isGeneral && <span className="text-[11px] font-semibold tabular-nums tracking-wide text-[hsl(var(--aw-soft,var(--muted-foreground)))]">
                 {index + 1} / {items.length}
               </span>}
-            </div>
+            </div>}
             <div className="min-h-0 flex-1">{worldStage}</div>
             {/* Phone only. The world is the reward, not the route to the answer
                 box: below md it rides as a band the student can open when they
@@ -1177,7 +1199,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             coach={assignment.instructions?.coach}
             coachSource={preview && previewActivityId ? { sourceKind: "preview", sourceId: previewActivityId } : !preview ? { sourceKind: "assignment", sourceId: assignment.id } : undefined}
             answerLabel={assignment.instructions?.answer_label}
-            answerPlaceholder={assignment.instructions?.answer_placeholder}
+            answerPlaceholder={world?.slug === "spot-the-relationship" ? RELATIONSHIP_ANSWER_PROMPT : assignment.instructions?.answer_placeholder}
             creditedSecondaryLabel={assignment.instructions?.credited_secondary_label}
             promptInWorld={Boolean(worldStage && world?.carriesPrompt)}
             fastPath={world?.fastPath}

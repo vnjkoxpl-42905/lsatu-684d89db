@@ -153,6 +153,39 @@ export type RcTiming =
   | { mode: 'unlimited' }
   | { mode: 'per_passage_budget'; secondsPerPassage: number };
 
+/** Account-backed working choices. These are not scored or confirmed attempts. */
+export interface RcDraftAnswer {
+  questionId: number;
+  selected: RcLetter;
+  attemptId: string;
+  /** Measured question time carried forward until explicit confirmation. */
+  timeMs?: number;
+  flagged: boolean;
+  eliminations: RcLetter[];
+}
+
+/** Config is JSONB: validate it before allowing saved choices into the player. */
+export function readRcDraftAnswers(value: unknown): RcDraftAnswer[] {
+  if (!Array.isArray(value)) return [];
+  const drafts = new Map<number, RcDraftAnswer>();
+  for (const entry of value) {
+    if (!entry || !Number.isSafeInteger(entry.questionId) || entry.questionId <= 0
+      || typeof entry.selected !== 'string' || !/^[A-E]$/.test(entry.selected)
+      || typeof entry.attemptId !== 'string'
+      || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(entry.attemptId)
+      || typeof entry.flagged !== 'boolean' || !Array.isArray(entry.eliminations)
+      || entry.timeMs !== undefined && (!Number.isSafeInteger(entry.timeMs) || entry.timeMs < 0)
+      || entry.eliminations.length > 5
+      || !entry.eliminations.every((letter: unknown) => typeof letter === 'string' && /^[A-E]$/.test(letter))) continue;
+    drafts.set(entry.questionId, {
+      questionId: entry.questionId, selected: entry.selected, attemptId: entry.attemptId,
+      flagged: entry.flagged, eliminations: [...new Set<RcLetter>(entry.eliminations)],
+      ...(entry.timeMs === undefined ? {} : { timeMs: entry.timeMs }),
+    });
+  }
+  return [...drafts.values()];
+}
+
 export interface RcDrillConfig {
   reveal: RcRevealMode;
   timing: RcTiming;
@@ -161,6 +194,7 @@ export interface RcDrillConfig {
   clockElapsedSeconds?: number;
   /** Zero-based question position acknowledged by the account. Older sessions omit it. */
   currentQuestionIndex?: number;
+  draftAnswers?: RcDraftAnswer[];
   lastActiveAt?: string;
   practiceTestRunId?: string;
   practiceTestLegIndex?: number;

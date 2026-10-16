@@ -85,7 +85,7 @@ describe("choosing a section", () => {
       <SectionLibrary attempts={[]} onStart={onStart} loadChoices={load} beginAttempt={begin} />,
     );
     await screen.findByText("PT102.S3");
-    fireEvent.click(screen.getAllByRole("button", { name: "Start" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Start section" })[0]);
     await vi.waitFor(() => expect(begin).toHaveBeenCalledWith("a1"));
     await vi.waitFor(() => expect(onStart).toHaveBeenCalledWith("new-assignment"));
   });
@@ -94,7 +94,7 @@ describe("choosing a section", () => {
     const begin = vi.fn(() => Promise.reject(new Error("nope")));
     render(<SectionLibrary attempts={[]} onStart={vi.fn()} loadChoices={load} beginAttempt={begin} />);
     await screen.findByText("PT102.S3");
-    fireEvent.click(screen.getAllByRole("button", { name: "Start" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Start section" })[0]);
     expect(await screen.findByText(/Could not start that section/)).toBeInTheDocument();
   });
 });
@@ -264,13 +264,13 @@ describe("a section she was assigned and has not opened", () => {
     expect(screen.getAllByText("Not run yet.").length).toBe(2);
   });
 
-  it("still reads Start, because he has not run it", async () => {
+  it("offers Start section for an unused assignment", async () => {
     render(
       <SectionLibrary attempts={[waiting()]} onStart={vi.fn()} loadChoices={load} loadGrades={noGrades} />,
     );
     await screen.findByText("PT105.S2");
-    expect(screen.queryByRole("button", { name: "Run it again" })).not.toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: "Start" }).length).toBe(2);
+    expect(screen.queryByRole("button", { name: "Start new attempt" })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "Start section" }).length).toBe(2);
   });
 
   it("opens the row he was given instead of creating one that deletes it", async () => {
@@ -286,7 +286,7 @@ describe("a section she was assigned and has not opened", () => {
       />,
     );
     await screen.findByText("PT105.S2");
-    fireEvent.click(screen.getAllByRole("button", { name: "Start" })[1]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Start section" })[1]);
     expect(onStart).toHaveBeenCalledWith("assigned-105");
     expect(beginAttempt).not.toHaveBeenCalled();
   });
@@ -304,7 +304,7 @@ describe("a section she was assigned and has not opened", () => {
       />,
     );
     await screen.findByText("PT102.S3");
-    fireEvent.click(screen.getAllByRole("button", { name: "Start" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Start section" })[0]);
     expect(beginAttempt).toHaveBeenCalledWith("a1");
   });
 
@@ -323,7 +323,7 @@ describe("a section she was assigned and has not opened", () => {
       />,
     );
     await screen.findByText("PT105.S2");
-    fireEvent.click(screen.getAllByRole("button", { name: /Start|Run it again/ })[1]);
+    fireEvent.click(screen.getByRole("button", { name: "Start new attempt" }));
     expect(beginAttempt).toHaveBeenCalledWith("a2");
   });
 });

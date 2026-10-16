@@ -11,7 +11,7 @@ export function RelationshipIntro({ title, resumeAt = 1, preview, canSaveProgres
       {onExit && <button type="button" className="relationship-exit" onClick={onExit}><ArrowLeft size={16} aria-hidden="true" />Exit</button>}
       <header className="relationship-heading">
         <p className="relationship-eyebrow">{title}</p>
-        <h1>Name the relationship.<br />Find the words that create it.</h1>
+        <h1>Name the relationship.<br />Find the words that signal it.</h1>
         <p>Each answer needs both: the relationship type and its indicator words.</p>
       </header>
 
@@ -37,7 +37,7 @@ export function RelationshipIntro({ title, resumeAt = 1, preview, canSaveProgres
           <h2 id="relationship-instructions-title">What to write</h2>
           <ol>
             <li><strong>Read the sentence.</strong> Look for a conditional, causal, or comparative relationship.</li>
-            <li><strong>Name the type and quote the words.</strong> Include the exact word or phrase that creates that relationship.</li>
+            <li><strong>Name the type and quote the words.</strong> Quote the word or phrase that signals that relationship.</li>
             <li><strong>Check for another relationship.</strong> If the sentence contains more than one type, name each type with its own indicator words.</li>
           </ol>
         </section>

@@ -40,7 +40,7 @@ Statement/body text across dark worlds runs Spectral 300; micro-labels stay on t
 ## Unresolved
 
 - Negation Station is not in `SEED_ACTIVITIES`, so its diorama only shows once assigned.
-- Progress ornaments (chips, plaques, mileposts, seals…) remain unreachable from the runner; feeding them real verdicts is its own piece of work.
+- Progress ornaments in other worlds still require per-world runner reachability and earned-outcome verification. Observatory seals are wired to real correct outcomes, including restored completions; revealing an answer does not award a seal.
 
 ## Read, Recall, Colour door (locked 2026-09-05)
 
@@ -51,6 +51,18 @@ The two RRC doors (`SectionLibraryLaunch`, `SectionLaunch`, both drawn by `Secti
 - **Signature moment:** `RecallDemo`, a looping performance of the method on a synthetic stimulus, labelled as such, whose text literally dissolves at the Recall step.
 - **Steps:** four cards, each with a small drawn scene, doubling as the ARIA tablist the tests already contract (`sl-beat`, `sl-beat-tab-N`, `sl-beat-panel`). The full briefing is the second tab of the drawer.
 - **Tokens:** scoped to `.sl` as `--rd-*`. The design detector reports them as outside DESIGN.md; that is the sanctioned-world exception above, not drift.
+
+## Reading Center LR Recall entry correction (2026-10-16)
+
+Joshua now wants `/reading-center/rrc` to make choosing a drill and finding its instructions/examples obvious. This supersedes the 2026-09-05 **Persuade** priority for this Reading Center entry, not the approved visual identity or other Activity Centre worlds. The current published page has not yet been redesigned for this correction.
+
+Apply the activity-entry constraints in [DESIGN.md](../../DESIGN.md): one dominant task action, explicit tutorial labels, no repeated summaries, four steps beside the recorded examples, and truthful attempt labels. Joshua requested removing the hero tagline and the standalone Retelling/Reciting/Listing comparison, shortening the example introduction, naming it as a tutorial/example, and labelling the three selectors Example 1 to Example 3. Preserve necessary method requirements within the instructions.
+
+The initial audit proposal to move the synthetic RecallDemo was rejected during the clarification interview. Approved replacement, 2026-10-16: keep the opening purple scene and animation in place, without its tagline. Read the full instructions replaces the entire purple area's contents with all four existing step boxes and their text together. Longer unchanged briefing text sits under Read more, closed initially. Watch examples switches that same area to one paused player with Example 1 to Example 3 selectors. Video views return to instructions; Back to home restores the introduction locally. Choose a section remains available in every view. Use smooth, reduced-motion-aware transitions and preserve the white surfaces, indigo/lavender, typography and illustration identity. Do not replace only the inner white panel or navigate away from the page.
+
+Remove the original lower-page instructions/videos, the Before you start aside and the standalone comparison cards. Watch instructions is reserved for a separate future full-instructions video and stays absent until its real asset exists. Keep all three existing example recordings. Section buttons become Start section / Start new attempt without changing attempt behavior. Approval authorizes implementation; publication requires separate verification.
+
+Behavior boundary: Choose a section scrolls/focuses the list. A started unfinished attempt is not currently resumable from that list; Run it again creates a new attempt. Do not promise Resume without implementing and verifying it. Preserve completed report links and all attempts. Detailed analytics remain in Reading Progress, summaries on Dashboard, with the existing RRC-only access exception preserved.
 
 ## The Report Card (locked 2026-09-08)
 
@@ -98,3 +110,33 @@ sanctioned departure from the wing's surface after the RRC door.
 - **Harness:** `/src/dev/report-card-preview.html` renders it at twenty-two
   stimuli without `App.tsx`. `?state=clean|faults|partial`, `?playing=N` to
   freeze the playhead on a line. `scripts/_rc_shots.mjs` captures the matrix.
+
+## Spot the Relationship practice correction (2026-10-16)
+
+### Use labels and instructions the student can act on
+
+- Label the prompt Sentence and the response Your answer. Keep The Field, The Figure, Rung, raw difficulty categories and other internal metaphors out of task and feedback UI. Retain authoring/parser metadata internally and preserve the scoped scene identity.
+- Omit shortcut helpers beneath the answer input by default. Retain Command/Control + Enter submission, keyboard navigation, accessible controls and visible focus.
+- Ask the learner to name each relationship and quote the words that signal it. Require a type and supporting quotation for every relationship type present. Use this wording consistently across instructions, placeholders and fallback feedback.
+- Explain the sentence's meaning and limits rather than adding editorial classifications. In item 1, reaching 28 degrees is necessary for opening but does not alone guarantee it. Comparison guidance covers equality as well as more/less; item 12's as strong as must not receive a superiority-only caption.
+
+### Count completed work independently of position and accuracy
+
+Use a visible, accessible bar backed by resolved-question state, separate from question position, accuracy and earned relationship seals. Correct resolution, answer reveal at the existing cap or by deliberate choice, and deliberate unjudged continuation can complete a question without all establishing correctness or mastery. At question 48 with the final answer unresolved, 47 of 48 are completed; only final resolution earns 100%. Give the bar a clear name, range/current value and completed-count text. Keep status understandable without color and use a static reduced-motion treatment.
+
+Observatory seals reflect real correct outcomes, including restored outcomes from the saved attempt log. A revealed answer may show the full illustration but must not light an unearned seal. Keep earned state distinct from both completion and what is displayed for study.
+
+### Keep feedback useful through correction and reveal
+
+- Target a first unsuccessful hint to the actual response and missing or mistaken part. Preserve valid work without inventing praise or a diagnosis. Do not disclose unwritten answer indicators or list missing types. Keep the full authored answer and explanation hidden while that first unsuccessful attempt remains unresolved.
+- Retain the learner's written response and useful hint during editing and retry. A retry must not clear the response or make the prior hint disappear.
+- Correct answers show the full authored explanation, including indicator, meaning and relevant limit, without requiring Show answer. Explicit reveal and the existing attempt-cap resolution show the full answer plus explanation. The left illustration then agrees with the shown answer rather than continuing to diagnose the earlier response. Preserve the earned verdict and attempt policy.
+- Put feedback, the shown answer where applicable, and the explanation before Next or Finish in reading and keyboard order. When a question has resolved and an authored explanation is available, suppress corrective advice to retry; keep its earned verdict visible.
+- Normalize only the exact legacy fallback through relationshipFeedback at the frontend presentation boundary. Use: Check that each relationship type matches the words you quoted. Reread the whole sentence for any relationship you missed. This prevents rejected words-create-it wording from returning through a fallback. Keep other grader feedback and earned verdicts intact. Presentation repairs must not rewrite historical responses, assignment snapshots, grading keys or rubric data.
+- Keep service failure visibly unjudged with a truthful retry/continuation path. Evaluate semantic verdicts and feedback accuracy/helpfulness separately; a lexical disclosure guard alone does not establish teaching quality.
+
+### Verify the complete practice state sequence
+
+Check exact correct, wrong type, missing indicator, swapped pairs, first hint, editing/retry-to-correct, second unsuccessful attempt, explicit reveal and Coach failure. Exercise equality item 12, multi-type item 29, contextual comparison item 47 and split indicator item 48. Verify completion at 0/48, 1/48, resume, 47/48 on entering the last question and 48/48 only after final resolution. Check earned seals independently of reveal, legacy fallback normalization, suppression of resolved retry advice and explanation-before-Next order. Inspect keyboard operation, named textarea/loading status, screen-reader progress/status, contrast, reduced motion and narrow/mid-width/wide/docked layouts. Both panels must agree on the answer being shown without changing its earned result.
+
+The development-only /activity-lab provides shell/spot-the-relationship for composed layout and observatory for all 48 items and arrival/drawn/sample-answer states. Reset must clear the response, result, hint and progress even on question 1; activity identity and preview-run identity must remount the answer state. Harness checks do not establish integrated Coach, persistence or production behavior. See [DESIGN.md](../../DESIGN.md) for shared constraints; the vault's wiki/COPY-CORRECTIONS.md and existing bootcamp-builder teaching-preference copies retain dated correction history.
