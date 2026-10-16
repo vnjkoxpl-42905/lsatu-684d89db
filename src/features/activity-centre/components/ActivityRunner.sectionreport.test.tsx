@@ -24,6 +24,8 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: { storage: { from: 
  */
 
 const navigate = vi.fn();
+const exitPath = vi.hoisted(() => vi.fn().mockResolvedValue('/reading-center/rrc'));
+vi.mock('@/features/reading-center/lib/rrcNavigation', () => ({ rrcExitPath: exitPath }));
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
   return { ...actual, useNavigate: () => navigate };
@@ -159,6 +161,47 @@ function renderRouted(startSection = false) {
     </MemoryRouter>,
   );
 }
+
+describe('RRC canonical assignment navigation', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    localStorage.clear();
+    activityState.assignment = makeSectionAssignment('assigned');
+    activityState.loading = false;
+    activityState.error = null;
+    listItemResponses.mockReset().mockResolvedValue([]);
+    exitPath.mockResolvedValue('/reading-center/rrc');
+  });
+  it('preserves the legacy assignment launch query, hash and recorder launch state', async () => {
+    const state = { startSection: true, source: 'my-work' };
+    render(<MemoryRouter initialEntries={[{ pathname: '/activities/assign-1', search: '?from=my-work', hash: '#attempt', state }]}>
+      <Routes><Route path="/activities/:assignmentId" element={<ActivityRunner />} /></Routes>
+    </MemoryRouter>);
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith('/reading-center/rrc/attempt/assign-1?from=my-work#attempt', { replace: true, state }));
+  });
+  it('does not canonicalize an assignment belonging to another student', async () => {
+    activityState.assignment = { ...makeSectionAssignment('assigned'), student_id: 'someone-else' };
+    renderRouted();
+    await screen.findByText(/Admin view of a student/);
+    expect(navigate).not.toHaveBeenCalled();
+  });
+  it('leaves the new section briefing for its RRC collection', async () => {
+    render(<MemoryRouter initialEntries={['/reading-center/rrc/attempt/assign-1']}>
+      <Routes><Route path="/reading-center/rrc/attempt/:assignmentId" element={<ActivityRunner />} /></Routes>
+    </MemoryRouter>);
+    fireEvent.click(await screen.findByRole('button', { name: /^back$/i }));
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith('/reading-center/rrc'));
+  });
+  it('returns an individually assigned legacy section to assigned work without a library grant', async () => {
+    exitPath.mockResolvedValue('/classroom');
+    render(<MemoryRouter initialEntries={['/reading-center/rrc/attempt/assign-1']}>
+      <Routes><Route path="/reading-center/rrc/attempt/:assignmentId" element={<ActivityRunner />} /></Routes>
+    </MemoryRouter>);
+    fireEvent.click(await screen.findByRole('button', { name: /^back$/i }));
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith('/classroom'));
+    expect(exitPath).toHaveBeenCalledWith('user-1');
+  });
+});
 
 describe("recovering an acknowledged-evidence RRC closeout after reload", () => {
   beforeEach(() => {

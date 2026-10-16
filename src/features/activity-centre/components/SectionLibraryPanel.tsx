@@ -82,12 +82,12 @@ export function SectionLibraryPanel({
         * the tab that produced it. A completed section routes itself to the
         * card rather than to the runner.
         */}
-      <SectionProgress onOpen={(id) => navigate(`/activities/${id}`)} />
+      <SectionProgress onOpen={(id) => navigate(`/reading-center/rrc/attempt/${id}`)} />
 
       <SectionLibrary
         attempts={assignments}
-        onStart={(id) => navigate(`/activities/${id}`, { state: { startSection: true } })}
-        onOpenAttempt={(id) => navigate(`/activities/${id}`)}
+        onStart={(id) => navigate(`/reading-center/rrc/attempt/${id}`, { state: { startSection: true } })}
+        onOpenAttempt={(id) => navigate(`/reading-center/rrc/attempt/${id}`)}
       />
     </SectionLibraryLaunch>
   );

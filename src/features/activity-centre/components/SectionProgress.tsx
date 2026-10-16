@@ -98,11 +98,11 @@ export function SectionProgress({
         </p>
       </div>
 
-      <div className="mt-5 flex h-24 items-end gap-1.5" aria-hidden="true">
+      <div className="mt-5 grid h-24 auto-cols-fr grid-flow-col items-end gap-px" aria-hidden="true">
         {ordered.map((r) => (
           <div
             key={`${r.assignment_id}-${r.attempt_no}`}
-            className="min-w-[6px] flex-1 rounded-t bg-primary/70"
+            className="min-w-0 rounded-t bg-primary/70"
             style={{ height: `${Math.max(4, pct(r))}%` }}
           />
         ))}

@@ -15,6 +15,7 @@ import { draftKey, flushOutbox, queueAttempt, type PendingAttempt } from "../dra
 import type { RunScore } from "../progress";
 import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 import { useAuth } from "@/contexts/AuthContext";
+import { rrcExitPath } from '@/features/reading-center/lib/rrcNavigation';
 import { MAX_ATTEMPTS } from "../api/types";
 import type { JudgeSource, Verdict } from "../api/types";
 import { cachePracticeRun, createPracticeRun, loadPracticeRuns, readCachedRuns, syncPracticeRun, practiceSaveMessage, type PracticeRun } from "../conditionals/practiceStore";
@@ -111,7 +112,11 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   // Centre. Returning to the intro keeps `index`, so the Start action resumes on
   // the same question rather than restarting the Activity.
   const handleBackToIntro = routed ? () => setPhase("intro") : undefined;
-  const handleLeave = routed ? () => navigate(isGeneral ? "/activities/conditionals" : "/activities") : undefined;
+  const handleLeave = routed ? () => {
+    if (isRrc && user) {
+      void rrcExitPath(user.id).then(path => navigate(path));
+    } else navigate(isGeneral ? "/activities/conditionals" : "/activities");
+  } : undefined;
   const { user } = useAuth();
 
   // "Activity not found." was shown for two very different situations: an id
@@ -138,6 +143,16 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
    */
   const viewingSomeoneElse = Boolean(assignment && user && assignment.student_id !== user.id);
   const isGeneral = assignment?.title === "Conditional Rephrase";
+  const isRrc = assignment?.mode === 'section-library' ||
+    (assignment?.mode === 'section' && assignment?.item_format === 'spoken-recall');
+  useEffect(() => {
+    // Redirect only after the saved assignment proves its kind and owner.
+    // Preserve launch state and query parameters, including startSection.
+    if (!routed || preview || !isRrc || !assignment || !user || viewingSomeoneElse ||
+      location.pathname !== `/activities/${assignment.id}`) return;
+    const path = assignment.mode === 'section-library' ? '/reading-center/rrc' : `/reading-center/rrc/attempt/${assignment.id}`;
+    navigate(`${path}${location.search}${location.hash}`, { replace: true, state: location.state });
+  }, [assignment, isRrc, location.hash, location.pathname, location.search, location.state, navigate, preview, routed, user, viewingSomeoneElse]);
   const persistPractice = useCallback((next: PracticeRun): boolean => {
     if (!user || next.userId !== user.id || viewingSomeoneElse) return false;
     try { cachePracticeRun(next); }

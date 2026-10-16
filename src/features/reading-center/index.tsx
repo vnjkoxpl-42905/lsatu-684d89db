@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage";
 import TagsPage from "./pages/TagsPage";
 import CoursesPage from "./pages/CoursesPage";
 import AdminPassagesPage from "./pages/AdminPassagesPage";
+import ReadingCenterHome from "./pages/ReadingCenterHome";
 import "./reading-center.css";
 
 export default function ReadingCenter() {
@@ -22,8 +23,9 @@ export default function ReadingCenter() {
   return (
     <div id="reading-center-root" className="rc-root" data-rc-theme="light">
       <Routes>
+        <Route index element={<ReadingCenterHome />} />
         <Route element={<AppShell />}>
-          <Route index element={<LibraryPage />} />
+          <Route path="speed-reading" element={<LibraryPage />} />
           <Route path="tags" element={<TagsPage />} />
           <Route path="tags/:tag" element={<LibraryPage />} />
           <Route path="courses" element={<CoursesPage />} />

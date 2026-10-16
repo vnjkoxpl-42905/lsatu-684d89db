@@ -3,7 +3,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useDeleteTag, usePreferences, useSaveTag, useTags } from "../hooks/useReadingCenterData";
-import { RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_TAGS_PATH, rcTagPath } from "../lib/routes";
+import { RC_HOME_PATH, RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_TAGS_PATH, rcTagPath } from "../lib/routes";
 import type { ReaderTheme, UserTag } from "../lib/types";
 import { Icon, MIcon, type IconName } from "./Icon";
 import { ConfirmDialog, PopMenu, TAG_COLORS, TagColorPicker, TagEditDialog, TagGlyph } from "./Tags";
@@ -26,7 +26,8 @@ export function useAppTheme(): void {
 }
 
 const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
-  { to: RC_LIBRARY_PATH, label: "My Library", icon: "book", end: true },
+  { to: RC_HOME_PATH, label: "All activities", icon: "book", end: true },
+  { to: RC_LIBRARY_PATH, label: "Speed Reading", icon: "book", end: true },
   { to: RC_TAGS_PATH, label: "Tags", icon: "pricetag" },
   { to: RC_PROFILE_PATH, label: "Reading Progress", icon: "statsChart" },
 ];
@@ -67,7 +68,7 @@ export function AppShell(): React.ReactElement {
           {narrow && <button type="button" aria-label={rail ? "Show menu" : "Hide menu"} onClick={() => setNavOpen((o) => !o)} className="ml-[15px] flex h-8 w-8 shrink-0 items-center justify-center rounded-full hover:bg-[rgba(158,158,158,.2)]" style={{ color: "var(--rc-nav-text)" }}>
             <Icon name="menu" size={24} />
           </button>}
-          <NavLink to={RC_LIBRARY_PATH} aria-label="Reading Center home" title="Reading Center home" onClick={() => { if (narrow) setNavOpen(false); }} className={`${narrow ? "ml-2.5" : "px-5"} flex min-h-11 items-center text-[19px] font-semibold leading-tight tracking-tight`} style={{ color: "var(--rc-nav-text)" }}>
+          <NavLink to={RC_HOME_PATH} aria-label="Reading Center home" title="Reading Center home" onClick={() => { if (narrow) setNavOpen(false); }} className={`${narrow ? "ml-2.5" : "px-5"} flex min-h-11 items-center text-[19px] font-semibold leading-tight tracking-tight`} style={{ color: "var(--rc-nav-text)" }}>
             {rail ? <Icon name="book" size={24} /> : "Reading Center"}
           </NavLink>
         </div>
