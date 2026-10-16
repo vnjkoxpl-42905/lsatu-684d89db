@@ -29,9 +29,9 @@ const decaf = (n: number, title: string, source: string): ExampleClip => ({
 export const CUMULATIVE_EXAMPLES: ExampleClip[] = [
   decaf(1, "Paragraph 1: read, translate, quip and recall", "Decaf RC Translation Demo - PT140.S4.P3 Paragraph 1 RTQ + Recap"),
   decaf(2, "Paragraph 2: read, translate, quip and recall", "Decaf RC Translation Demo - PT140.S4.P3 Paragraph 2 RTQ + Recap"),
-  decaf(3, "Cumulative recap of paragraphs 1 and 2", "Decaf RC Translation Demo - PT140.S4.P3 Partial Passage Recap 1"),
+  decaf(3, "Recall paragraphs 1 and 2 together", "Decaf RC Translation Demo - PT140.S4.P3 Partial Passage Recap 1"),
   decaf(4, "Paragraph 3: read, translate, quip and recall", "Decaf RC Translation Demo - PT140.S4.P3 Paragraph 3 RTQ + Recap"),
-  decaf(5, "Cumulative recap of paragraphs 1 to 3", "Decaf RC Translation Demo - PT140.S4.P3 Partial Passage Recap 2"),
+  decaf(5, "Recall paragraphs 1 to 3 together", "Decaf RC Translation Demo - PT140.S4.P3 Partial Passage Recap 2"),
   decaf(6, "Paragraph 4: read, translate, quip and recall", "Decaf RC Translation Demo - PT140.S4.P3 Paragraph 4 RTQ + Recap"),
   decaf(7, "Complete passage recap", "Decaf RC Translation Demo - PT140.S4 Complete Passage Recap"),
 ];
@@ -62,8 +62,8 @@ export const RC_RECALL_DEMO_CORRECTION = [
 
 /** The names the source lesson uses, so app copy and footage line up. */
 export const SOURCE_NAME_MAP = [
-  { app: "Cumulative Recall", source: "Decaf" },
-  { app: "RC Recall", source: "Cappuccino" },
+  { app: "RC Recall without look-back", source: "Decaf" },
+  { app: "RC Recall with look-back", source: "Cappuccino" },
 ] as const;
 
 export function mediaBase(env: Record<string, string | undefined> = import.meta.env as Record<string, string | undefined>): string | null {

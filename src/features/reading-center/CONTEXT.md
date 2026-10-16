@@ -19,8 +19,8 @@ lib/tokenize.ts and must stay stable for a given passage body.
 - Speed Reading keeps the general passage collection. It is separate from LR
   sections.
 - RC Recall (`rc-recall/`, `/reading-center/rc-recall`, hub members only) runs a
-  full four-passage section from the existing RC bank in two modes, RC Recall and
-  Cumulative Recall. It has its own tables (`rc_recall_attempts`,
+  full four-passage section from the existing RC bank in two modes, RC Recall with
+  look-back and RC Recall without look-back. It has its own tables (`rc_recall_attempts`,
   `rc_recall_recaps`), private bucket (`rc-recall-recordings`) and IndexedDB
   backup (`rc-recall-backup`); none of it touches LR recording, recovery or
   grading. Attempts are append-only. It saves objective facts only and never

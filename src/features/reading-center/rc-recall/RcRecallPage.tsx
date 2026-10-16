@@ -154,7 +154,7 @@ export default function RcRecallPage() {
         <ExamplePlayer base={base} heading={INSTRUCTION_VIDEO.title} clip={{ id: "instructions", mode, kind: "example", stem: INSTRUCTION_VIDEO.stem, title: INSTRUCTION_VIDEO.title, sourceTitle: "How and Why to Do Decaf RC Translation and How and Why to Do Cappuccino RC Translation" }} />
       </div>}
       <p className="mt-2 text-sm leading-6" style={muted}>
-        The source lesson calls Cumulative Recall “Decaf” and RC Recall “Cappuccino”. You may hear those names in the footage.
+        The source lesson uses “Decaf” and “Cappuccino” for these two methods. You may hear those names in the footage.
         {" "}{SOURCE_NAME_MAP.map((m) => `${m.source} = ${m.app}`).join("; ")}.
       </p>
       <h3 className="mt-4 text-sm font-semibold">The standards</h3>

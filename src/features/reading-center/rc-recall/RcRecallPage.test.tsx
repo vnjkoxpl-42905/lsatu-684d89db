@@ -47,9 +47,9 @@ describe("RC Recall page", () => {
 
   it("shows the full instructions and the source-name mapping for the chosen mode", async () => {
     renderPage();
-    expect(await screen.findByText(/source lesson calls Cumulative Recall/i)).toHaveTextContent(/Cappuccino/);
+    expect(await screen.findByText(/source lesson uses/i)).toHaveTextContent(/Cappuccino/);
     expect(screen.getByText(/confirm your translation with all the text you have read/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByLabelText(/Cumulative Recall/));
+    fireEvent.click(screen.getByLabelText(/RC Recall without look-back/));
     expect(await screen.findByText(/recap the translations of paragraphs 1 \+ 2 back to back/i)).toBeInTheDocument();
     expect(screen.queryByLabelText(/Only the current sub-passage/)).not.toBeInTheDocument();
   });

@@ -30,10 +30,12 @@ function shell(rrcOnly = false) {
 }
 
 describe('Reading Center activity rail', () => {
-  it('keeps the three activity destinations beside the existing LR stage', () => {
+  it('shows RC Recall as its own activity beside the existing LR stage', () => {
     shell(true);
     expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('href', '/reading-center');
     expect(screen.getByRole('link', { name: 'LR Recall' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'RC Recall' })).toHaveAttribute('href', '/reading-center/rc-recall');
+    expect(screen.getByRole('link', { name: 'RC Recall' })).not.toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: 'Speed Reading' })).toHaveAttribute('href', '/reading-center/speed-reading');
     expect(screen.getByRole('link', { name: 'Tags' })).toHaveAttribute('href', '/reading-center/tags');
     expect(screen.getByRole('heading', { name: 'Existing LR collection' })).toBeInTheDocument();

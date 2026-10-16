@@ -47,8 +47,8 @@ export const CUMULATIVE_STEPS = [
 
 export const COMPARATIVE_NOTE =
   "In a comparative passage, the source note and the Passage A / Passage B headings are labels, not paragraphs to recall. " +
-  "In RC Recall you choose before you start whether a confirmation covers all the text you have read so far (the written default) or only the current sub-passage. " +
-  "In Cumulative Recall, once you start Passage B, the cumulative recap covers Passage A and Passage B together.";
+  "In RC Recall with look-back, you choose before you start whether a confirmation covers all the text you have read so far (the written default) or only the current sub-passage. " +
+  "In RC Recall without look-back, once you start Passage B, recall Passage A and Passage B together.";
 
 export const VOICE_NOTE =
   "Do your recaps out loud in the beginning to keep yourself honest about the quality and completeness of the recaps. " +
