@@ -24,7 +24,7 @@ import { RRC_DEMOS, demoDuration, demoLabel, type RrcDemo } from "../content/rea
  * Nothing autoplays. The page is quiet until she presses play, the same rule
  * as the microphone: nothing begins without her.
  */
-export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
+export function SectionDemos({ demos = RRC_DEMOS, simpleLabels = false }: { demos?: RrcDemo[]; simpleLabels?: boolean }) {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -56,14 +56,17 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
   const choose = useCallback(
     (i: number) => {
       if (i === index) {
-        toggle();
+        if (!simpleLabels) toggle();
         return;
       }
-      carryOn.current = playing;
+      carryOn.current = !simpleLabels && playing;
+      videoRef.current?.pause();
+      setPlaying(false);
+      setLength(0);
       setIndex(i);
       setTime(0);
     },
-    [index, playing, toggle],
+    [index, playing, simpleLabels, toggle],
   );
 
   // A new source: pick up where the last film left off, if it was running.
@@ -78,13 +81,18 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
   }, [current?.src, play]);
 
   useEffect(() => {
+    const video = videoRef.current;
+    return () => { video?.pause(); };
+  }, []);
+
+  useEffect(() => {
     const onChange = () => setWide(document.fullscreenElement === stageRef.current);
     document.addEventListener("fullscreenchange", onChange);
     return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
 
   const onEnded = () => {
-    if (index + 1 < demos.length) {
+    if (!simpleLabels && index + 1 < demos.length) {
       carryOn.current = true;
       setIndex(index + 1);
       setTime(0);
@@ -129,12 +137,13 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
 
   if (demos.length === 0 || !current) return null;
 
+  const currentLabel = simpleLabels ? `Example ${index + 1}` : demoLabel(current);
   const total = length || current.seconds;
   const pct = total > 0 ? (time / total) * 100 : 0;
 
   return (
-    <section className="sl-bp-demos" aria-labelledby="sl-bp-demos-h">
-      <div className="sl-bp-demos-head">
+    <section className="sl-bp-demos" aria-labelledby={simpleLabels ? undefined : "sl-bp-demos-h"} aria-label={simpleLabels ? "Video examples" : undefined}>
+      {!simpleLabels && <div className="sl-bp-demos-head">
         <h2 className="sl-bp-h2" id="sl-bp-demos-h">
           Watch it done
         </h2>
@@ -143,7 +152,7 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
           Listen for the look away, the retell in plain words, and the whole argument coming back
           with the text gone.
         </p>
-      </div>
+      </div>}
 
       <div className="sl-theatre" data-playing={playing || undefined} data-wide={wide || undefined}>
         <div
@@ -151,7 +160,7 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
           ref={stageRef}
           tabIndex={0}
           role="group"
-          aria-label={`${demoLabel(current)} player`}
+          aria-label={`${currentLabel} player`}
           onKeyDown={onKey}
           onContextMenu={(e) => e.preventDefault()}
         >
@@ -161,7 +170,7 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
             preload="metadata"
             playsInline
             poster={current.poster}
-            aria-label={demoLabel(current)}
+            aria-label={currentLabel}
             controlsList="nodownload noremoteplayback noplaybackrate"
             disablePictureInPicture
             disableRemotePlayback
@@ -182,7 +191,7 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
               type="button"
               className="sl-theatre-play"
               onClick={toggle}
-              aria-label={time > 0 ? "Resume" : `Play ${demoLabel(current)}`}
+              aria-label={time > 0 ? "Resume" : `Play ${currentLabel}`}
             >
               <Play size={30} strokeWidth={2} aria-hidden="true" />
             </button>
@@ -251,7 +260,7 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
                 type="button"
                 className="sl-theatre-chapter"
                 aria-current={i === index ? "true" : undefined}
-                aria-label={`${demoLabel(d)}, ${demoDuration(d)}`}
+                aria-label={`${simpleLabels ? `Example ${i + 1}` : demoLabel(d)}, ${demoDuration(d)}`}
                 onClick={() => choose(i)}
               >
                 <span className="sl-theatre-thumb" aria-hidden="true">
@@ -260,13 +269,13 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
                 </span>
                 <span className="sl-theatre-cap">
                   <span className="sl-bp-demo-label">
-                    Question {d.question}
+                    {simpleLabels ? `Example ${i + 1}` : `Question ${d.question}`}
                   </span>
                   <span className="sl-bp-demo-time">{demoDuration(d)}</span>
                 </span>
-                <span className="sl-theatre-sub">
+                {!simpleLabels && <span className="sl-theatre-sub">
                   PrepTest {d.prepTest} · Section {d.section}
-                </span>
+                </span>}
               </button>
             </li>
           ))}

@@ -52,6 +52,18 @@ The two RRC doors (`SectionLibraryLaunch`, `SectionLaunch`, both drawn by `Secti
 - **Steps:** four cards, each with a small drawn scene, doubling as the ARIA tablist the tests already contract (`sl-beat`, `sl-beat-tab-N`, `sl-beat-panel`). The full briefing is the second tab of the drawer.
 - **Tokens:** scoped to `.sl` as `--rd-*`. The design detector reports them as outside DESIGN.md; that is the sanctioned-world exception above, not drift.
 
+## Reading Center LR Recall entry correction (2026-10-16)
+
+Joshua now wants `/reading-center/rrc` to make choosing a drill and finding its instructions/examples obvious. This supersedes the 2026-09-05 **Persuade** priority for this Reading Center entry, not the approved visual identity or other Activity Centre worlds. The current published page has not yet been redesigned for this correction.
+
+Apply the activity-entry constraints in [DESIGN.md](../../DESIGN.md): one dominant task action, explicit tutorial labels, no repeated summaries, four steps beside the recorded examples, and truthful attempt labels. Joshua requested removing the hero tagline and the standalone Retelling/Reciting/Listing comparison, shortening the example introduction, naming it as a tutorial/example, and labelling the three selectors Example 1 to Example 3. Preserve necessary method requirements within the instructions.
+
+The initial audit proposal to move the synthetic RecallDemo was rejected during the clarification interview. Approved replacement, 2026-10-16: keep the opening purple scene and animation in place, without its tagline. Read the full instructions replaces the entire purple area's contents with all four existing step boxes and their text together. Longer unchanged briefing text sits under Read more, closed initially. Watch examples switches that same area to one paused player with Example 1 to Example 3 selectors. Video views return to instructions; Back to home restores the introduction locally. Choose a section remains available in every view. Use smooth, reduced-motion-aware transitions and preserve the white surfaces, indigo/lavender, typography and illustration identity. Do not replace only the inner white panel or navigate away from the page.
+
+Remove the original lower-page instructions/videos, the Before you start aside and the standalone comparison cards. Watch instructions is reserved for a separate future full-instructions video and stays absent until its real asset exists. Keep all three existing example recordings. Section buttons become Start section / Start new attempt without changing attempt behavior. Approval authorizes implementation; publication requires separate verification.
+
+Behavior boundary: Choose a section scrolls/focuses the list. A started unfinished attempt is not currently resumable from that list; Run it again creates a new attempt. Do not promise Resume without implementing and verifying it. Preserve completed report links and all attempts. Detailed analytics remain in Reading Progress, summaries on Dashboard, with the existing RRC-only access exception preserved.
+
 ## The Report Card (locked 2026-09-08)
 
 Its own world, scoped to `.rc` in `report-card.css`. Joshua's brief: highly

@@ -302,6 +302,19 @@ The product's distinctive pattern is not a control, it is a container. A room co
 
 ## Do's and Don'ts
 
+### Activity entries must make the next action clear
+
+Reading Center correction, 2026-10-16: Joshua rejected competing emphasis, repeated summaries and unclear tutorial labels on LR Recall. An activity entry serves someone choosing work or learning how to do it. It must not require them to read a promotional landing page first.
+
+- Give the main task one dominant action. Keep instructions and examples clearly available as a secondary destination. A control's label must describe what it actually does: choosing a section, starting a new attempt and opening a report are different actions. Never label a new attempt Resume.
+- Each section must help the student act, understand a requirement or inspect their own work. Remove a repeated explanation instead of finding a new slogan for it. Product-name chips, headings and taglines do not each need to repeat the same name or method.
+- Use explicit teaching labels, such as Instructions and Video examples. Numbered demonstration selectors use Example 1, Example 2 and Example 3; source citations are secondary metadata. Accessible names must agree with the visible labels.
+- Keep the four steps and recorded examples within the same activity area, using clearly labelled views where appropriate. Keep necessary detail available without repeating the same step body in several adjacent components. Long explanations should be optional once the task and requirements are clear.
+- Shorten presentation without dropping the method: silent reading, looking away, retelling aloud in one's own words, reacting and recalling the complete argument remain distinct requirements. Do not infer understanding from delivery alone or promise improvement on an unsupported timetable.
+- Preserve a scoped room's approved visual identity, but make decorative motion subordinate to the task and the actual tutorial. Do not introduce another competing demonstration merely to fill a hero.
+
+These are reusable review constraints. Joshua approved the LR Recall replacement layout after the clarification interview on 2026-10-16. The dated Reading Center correction in [.impeccable/surfaces/src-features-activity-centre.md](.impeccable/surfaces/src-features-activity-centre.md) records its scope. Approval does not establish publication; that requires separate live verification. Palette, runner behavior, grading and saved work are unchanged by this document.
+
 ### Drill creation and drill history are separate destinations
 
 RC correction, 2026-10-15: selecting **Create** opens the passage builder directly. Existing sittings belong in **In progress** or **Completed**, filtered by the selected LR/RC section. Do not put an attempt list, results, or Resume/Delete controls under Create, or add a second Create button merely to reach setup. Preserve the preview-to-start boundary: a preview reads the selected content; starting creates the sitting. Assigned work and protected timed sections keep their own destinations.

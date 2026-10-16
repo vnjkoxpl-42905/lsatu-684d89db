@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SectionLibraryLaunch } from "./SectionLibraryLaunch";
 import type { ActivityInstructions } from "../api/types";
 import { METHOD_STEPS } from "../recall/method";
@@ -12,6 +12,11 @@ import sectionInstructions from "../content/read-recall-colour-section.instructi
  * stopped being that page. They are about the door, not about which component
  * happens to draw it, so they moved here with it.
  */
+beforeEach(() => {
+  vi.spyOn(HTMLMediaElement.prototype, "load").mockImplementation(() => {});
+  vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
+});
+
 const instructions = {
   tagline: "Read it, tell it back, react to it.",
   task: "Work through the stimulus out loud.",
@@ -160,6 +165,67 @@ describe("the library door", () => {
       /One section keeps the method steady|Say each retelling|The whole section records/i,
     );
     // The retired step-2 label, which is what the hand-written aside had.
-    expect(pageText).not.toMatch(/say it back/i);
+    expect(pageText).not.toMatch(/\bsay it back\b/i);
+  });
+});
+
+
+describe("Reading Center inline instructions and examples", () => {
+  function renderCompact() {
+    HTMLElement.prototype.scrollIntoView = vi.fn();
+    return render(
+      <SectionLibraryLaunch title="Read, Recall, Colour" subtitle={null}
+        instructions={sectionInstructions as ActivityInstructions} compact>
+        <p>the sections go here</p>
+      </SectionLibraryLaunch>,
+    );
+  }
+
+  it("keeps only the opening demonstration and section choices on first load", () => {
+    const { container } = renderCompact();
+    expect(container.querySelector(".rd-demo")).not.toBeNull();
+    expect(container.querySelector(".sl-tagline")).toBeNull();
+    expect(container.querySelector(".sl-aside")).toBeNull();
+    expect(container.querySelector(".rd-counts")).toBeNull();
+    expect(container.querySelector(".rd-method")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Watch instructions" })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Example 1/ })).toBeNull();
+  });
+
+  it("swaps the whole entrance for all four complete steps and closed extended reading", async () => {
+    const { container } = renderCompact();
+    fireEvent.click(screen.getByRole("button", { name: "Read the full instructions" }));
+    expect(container.querySelector(".rd-demo")).toBeNull();
+    expect(screen.getByRole("heading", { name: "Instructions", level: 1 })).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByRole("heading", { name: "Instructions", level: 1 })).toHaveFocus());
+    const steps = sectionInstructions.briefing.sections.find((section) => "steps" in section)?.steps ?? [];
+    expect(container.querySelectorAll(".sl-workspace-steps .rd-step")).toHaveLength(4);
+    for (const step of steps) expect(within(container.querySelector(".sl-workspace-steps") as HTMLElement).getByText(step.body)).toBeInTheDocument();
+    const more = container.querySelector("details");
+    expect(more).not.toHaveAttribute("open");
+    fireEvent.click(screen.getByText("Read more", { selector: "summary" }));
+    expect(more).toHaveAttribute("open");
+    expect(screen.getByRole("button", { name: "Choose a section" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Back to home" }));
+    expect(container.querySelector(".rd-demo")).not.toBeNull();
+    expect(screen.getByRole("heading", { name: "Read, Recall, Colour" })).toHaveFocus();
+  });
+
+  it("opens one paused player, chooses examples, and stops it when leaving", () => {
+    const { container } = renderCompact();
+    fireEvent.click(screen.getByRole("button", { name: "Read the full instructions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Watch examples" }));
+    expect(container.querySelectorAll("video")).toHaveLength(1);
+    expect(container.querySelector("video")?.autoplay).toBe(false);
+    expect(screen.getByRole("button", { name: "Play Example 1" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Example 1 player" })).toBeInTheDocument();
+    for (const n of [1, 2, 3]) expect(screen.getByRole("button", { name: new RegExp(`^Example ${n},`) })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /^Example 3,/ }));
+    expect(screen.getByRole("button", { name: /^Example 3,/ })).toHaveAttribute("aria-current", "true");
+    expect(screen.getByRole("button", { name: "Choose a section" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Back to instructions" }));
+    expect(container.querySelector("video")).toBeNull();
+    expect(HTMLMediaElement.prototype.pause).toHaveBeenCalled();
+    expect(container.querySelectorAll(".sl-workspace-steps .rd-step")).toHaveLength(4);
   });
 });
