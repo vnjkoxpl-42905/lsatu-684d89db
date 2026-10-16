@@ -110,3 +110,33 @@ sanctioned departure from the wing's surface after the RRC door.
 - **Harness:** `/src/dev/report-card-preview.html` renders it at twenty-two
   stimuli without `App.tsx`. `?state=clean|faults|partial`, `?playing=N` to
   freeze the playhead on a line. `scripts/_rc_shots.mjs` captures the matrix.
+
+## Spot the Relationship practice correction (2026-10-16)
+
+Status: explicit Joshua rules captured from the current correction task, with the parent reporting the live The Figure/Rung 1/category chip and the item-1 explanation ending The textbook necessary condition. These observations explain the correction; this section documents requested behavior and pending checks, not implementation, acceptance or publication. The parent owns app code in this checkout. This newer task-language direction supersedes field/figure/rung/category labels in Spot student practice, while preserving the approved scoped scene identity and unrelated LR Recall documentation.
+
+### Use labels and instructions the student can act on
+
+- Use Sentence for the prompt and Your answer for the response. Do not print The Field, The Figure, Rung, raw difficulty categories or other internal metaphors in the active task or feedback. Keep parsing metadata internal. Avoid replacing the rejected labels with new decorative labels.
+- Omit the shortcut helper beneath the answer input by default; retain Command/Control + Enter submission and keyboard access, focus and navigation. This is a copy removal, not removal of keyboard operation.
+- Replace exact words that create it with quote the words that signal the relationship. Candidate full instruction: Name each relationship and quote the words that signal it. Preserve both required parts, and support several relationships in one sentence. The complete replacement sentence is a candidate, not quoted user approval.
+- Keep explanations substantive. The textbook necessary condition is editorial classification rather than a useful final inference. An implementation candidate for item 1 is to explain that reaching 28 degrees alone does not guarantee opening. Comparison guidance must cover equality as well as more/less; item 12's as strong as must not receive a superiority-only caption. These are audit-derived implementation principles, not newly approved literal copy.
+
+### Count completed work independently of position and accuracy
+
+Use a visible, accessible completion bar backed by the resolved-question state, rather than the question index or decorative seals. Keep Question N of 48 distinct from N completed and from accuracy. Count correct resolution, answer reveal at the existing cap or by deliberate choice, and deliberate unjudged continuation as completion without claiming they all establish correctness or mastery. At the last unanswered question, 47 of 48 are completed; the bar reaches 100% only when that final question resolves. Expose a clear accessible name, range/current value and count text; preserve a static reduced-motion treatment and status understandable without color.
+
+### Keep feedback useful through correction and reveal
+
+Implementation principles, pending verification:
+
+- A first unsuccessful response gets a hint targeted to the actual error or missing part, while preserving valid work. Do not disclose unwritten answer indicators or list missing types. Keep the authored full explanation and answer hidden while that first unsuccessful attempt remains unresolved.
+- Retry preserves the learner's text and the useful hint while the learner edits. Retrying is not a blank start and must not make the previous hint disappear.
+- Correct answers show the full authored explanation, including indicator, meaning and relevant limit, without requiring Show answer. Explicit reveal and the existing attempt-cap resolution show the full answer plus explanation. The left illustration must then agree with the revealed answer rather than still diagnosing the earlier response; preserve the earned verdict.
+- Service failure remains unjudged with a truthful retry/continuation path. Do not turn unavailable grading into a wrong or correct answer. Evaluate semantic verdicts and the accuracy/helpfulness of feedback separately; a lexical disclosure guard cannot establish teaching quality.
+
+Implementation owners: ActivityRunner orchestrates resolution/progress and world state; ActivityQuestionStack/ActivityItemView own per-item flow; AnswerPanel owns labels, retry and loading accessibility; StatementPanel owns the raw category chip; ObservatoryStage and worlds/registry.tsx own scene labels/illustrations; content/spot-the-relationship.json owns instructions, categories and authored explanations. Do not publish or rewrite historical assignment snapshots as part of this documentation capture.
+
+Pending verification: check exact correct, wrong type, missing indicator, swapped pairs, first hint, edit/retry-to-correct, second unsuccessful attempt, explicit reveal and Coach failure. Exercise equality item 12, multi-type item 29, contextual comparison item 47 and split indicator item 48. Check progress at 0/48, 1/48, resume, 47/48 on entering the last question, and 48/48 only after final resolution. Verify both panels agree, keyboard operation and named textarea/loading status, contrast, screen-reader progress/status, reduced motion, and narrow/mid-width/wide/docked layouts. Existing tests that require shortcut text or Rung chips must follow the new direction. These checks are requirements, not reported passes.
+
+Existing development harness: /activity-lab, shell then spot-the-relationship for composed layout; observatory for all 48 items and arrival/drawn/sample-answer states. The harness is not evidence of the integrated Coach, retry, persistence or live publication. See [DESIGN.md](../../DESIGN.md), the vault's wiki/COPY-CORRECTIONS.md section 2026-10-16: Spot practice must name the task plainly, and the six existing bootcamp-builder teaching-preference copies. Preserve all earlier entry/video and LR Recall corrections.

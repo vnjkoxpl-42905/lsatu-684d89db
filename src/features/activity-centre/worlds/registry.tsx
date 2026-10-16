@@ -77,6 +77,8 @@ export interface WorldRenderArgs {
   response?: string;
   /** Whether the run has judged this item yet. Drives the world's phase. */
   answered: boolean;
+  /** The answer is visible for study; this never awards credit. */
+  revealed?: boolean;
   /**
    * The verdict the item resolved with, once it has. A world that reads the
    * answer for itself still has to defer to this: its reader is a quick
@@ -232,13 +234,13 @@ const WORLDS: WorldBinding[] = [
     accent: "235 48% 56%",
     carriesPrompt: true,
     Entrance: ObservatoryEntrance,
-    render: ({ item, response, answered, verdict, completedItems = [] }) => {
+    render: ({ item, response, answered, revealed, verdict, completedItems = [] }) => {
       const signal = parseSignal(item);
       if (!signal) return null;
       // A correct verdict draws the whole figure. The reader only decides what
       // to draw when the answer fell short, which is where it is useful.
       const reading =
-        answered && response && verdict !== "correct" ? readAnswer(signal, response) : null;
+        answered && !revealed && response && verdict !== "correct" ? readAnswer(signal, response) : null;
       const seals = { conditional: false, causal: false, comparative: false };
       for (const completed of completedItems) {
         for (const relation of parseSignal(completed)?.relations ?? []) seals[relation.kind] = true;
@@ -246,7 +248,7 @@ const WORLDS: WorldBinding[] = [
       if (answered && verdict === "correct") {
         for (const relation of signal.relations) seals[relation.kind] = true;
       }
-      return <ObservatoryStage signal={signal} phase={answered ? "drawn" : "arrival"} reading={reading} seals={seals} />;
+      return <div className="flex h-full flex-col">{revealed && <p className="px-5 pt-4 text-sm text-[hsl(var(--aw-ink))] md:px-12">Answer shown</p>}<ObservatoryStage signal={signal} phase={answered ? "drawn" : "arrival"} reading={reading} seals={seals} /></div>;
     },
     // Every credited answer here is a structured "type, indicator" list, so an
     // answer that names exactly those types and quotes a credited indicator for

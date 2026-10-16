@@ -23,7 +23,9 @@ interface StatementPanelProps {
  */
 export function StatementPanel({ item, showQuestionType, showPrompt = true }: StatementPanelProps) {
   const scale = promptScale(item.prompt);
-  const chip = showQuestionType && item.category ? (
+  // Spot categories are internal difficulty metadata, including older snapshots.
+  const isRelationship = !!item.answer_key || /^Rung\s+\d/i.test(item.category ?? "");
+  const chip = showQuestionType && !isRelationship && item.category ? (
     <span className="inline-flex w-fit items-center rounded-full bg-[hsl(var(--muted))] px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
       {item.category}
     </span>
