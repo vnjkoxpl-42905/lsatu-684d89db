@@ -61,6 +61,19 @@ describe("explicit reviewed fact groups", () => {
 });
 
 describe("auditable meaning judgments", () => {
+  it("allows an empty uncertainty list but refuses to grade unresolved transcript meaning", () => {
+    const base = JSON.parse(response(true, "Sweden"));
+    expect(parseJudgeReply(JSON.stringify({ ...base, uncertain_details: [] }), [1], "Sweden.").verdicts[1])
+      .toBe(true);
+    expect(() => parseJudgeReply(JSON.stringify({ ...base, uncertain_details: [1] }), [1], "Sweden."))
+      .toThrow("transcript meaning is uncertain");
+    expect(parseJudgeReply(JSON.stringify({ ...base, uncertain_details: [1] }), [1]).verdicts[1]).toBe(true);
+  });
+
+  it.each([null, "1", ["1"], [9]])("refuses malformed uncertainty metadata: %j", (uncertain_details) => {
+    expect(() => parseJudgeReply(JSON.stringify({ ...JSON.parse(response(true, "Sweden")), uncertain_details }),
+      [1], "Sweden.")).toThrow("malformed uncertain_details");
+  });
   it.each([null, "false", 7, []])("rejects non-object verdict rows: %j", (row) => {
     expect(() => parseJudgeReply(JSON.stringify({ verdicts: [row] }), [1], "Sweden."))
       .toThrow("not an object");
@@ -156,4 +169,8 @@ it("asks for meaning and student evidence while protecting the instructor refere
   expect(prompt).toContain("SHORT EXACT quote from WHAT SHE SAID");
   expect(prompt).toContain("Do NOT use it as evidence");
   expect(prompt).toContain("Treat\n  equivalent meanings consistently");
+  expect(prompt).toContain("Equivalent quantity expressions count");
+  expect(prompt).toContain("put that Detail id in uncertain_details");
+  expect(prompt).not.toContain("When you are genuinely torn, mark it NOT carried");
+  expect(prompt).not.toContain("A dropped proper noun, number or");
 });

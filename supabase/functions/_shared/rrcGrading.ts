@@ -251,8 +251,12 @@ export function pickDecoys(details: string[], howMany = 2): string[] {
 const KIND_RULE: Record<DetailKind, string> = {
   content:
     'CONTENT — a fact. Carried if she stated it, in any words, in any order. ' +
-    'Synonyms and paraphrase count fully. A dropped proper noun, number or ' +
-    'quantifier is NOT carried: "all employees" is missed if she said "the staff".',
+    'Synonyms and paraphrase count fully. A uniquely identified entity may be ' +
+    'named by its role or context instead of its proper name. Equivalent ' +
+    'quantity expressions count: "half" and "50 percent" mean the same. ' +
+    'Deduct only a lost or changed claim, not a missing label. A different ' +
+    'country, a missing meaningful quantity, all changed to most, and lost ' +
+    'negation are real changes. Do not assume an unstated all from "the staff".',
   structure:
     'STRUCTURE — a discourse role, not words. Carried if the relationship is ' +
     'present in HOW she told it; she never has to name it. "This is a contrast." ' +
@@ -370,7 +374,10 @@ RULES:
   to, not as evidence that she said it. This is the most important rule here.
 - Some of the Details below belong to a DIFFERENT stimulus and she cannot have
   carried them. Mark those not carried. Do not try to guess which.
-- When you are genuinely torn, mark it NOT carried.
+- If unclear or garbled transcription prevents deciding whether a meaning was
+  carried, put that Detail id in uncertain_details. Do not guess a deduction
+  or credit. A clear omission is still a miss, not uncertainty. If speech is
+  clear enough to establish the meaning, judge that meaning normally.
 - Her transcript may contain mangled or clipped words. Judge the substance.
 - Be fair as well as strict. Her own words, her own order and a plainer
   phrasing all count in full. Only a change of MEANING counts against her: a
@@ -457,7 +464,7 @@ How to use it, and how not to:
   found, the run coloured and in her own words.
 
 Reply with JSON only, no prose and no code fence:
-{"verdicts":[{"id":1,"carried":true,"evidence":"exact student words","reason":""}],"reciting":false,"reciting_reason":"",
+{"verdicts":[{"id":1,"carried":true,"evidence":"exact student words","reason":""}],"uncertain_details":[],"reciting":false,"reciting_reason":"",
 "listing":false,"listing_reason":"","coloured":true,"colour_specific":true,
 "big_misses":[],"next_time":""${
     input.theRead ? ',\n"read_given":true,"read_matches":true,"read_reason":""' : ""
@@ -570,6 +577,16 @@ export function parseJudgeReply(raw: string, expectedIds: number[], spoken?: str
   const obj = extractJson(raw) as Record<string, unknown>;
   const rows = obj.verdicts;
   if (!Array.isArray(rows)) throw new JudgeReplyError("reply has no verdicts array");
+  if (spoken !== undefined && obj.uncertain_details !== undefined) {
+    const uncertain = obj.uncertain_details;
+    if (!Array.isArray(uncertain) || uncertain.some((id) =>
+      typeof id !== "number" || !Number.isInteger(id) || !expectedIds.includes(id))) {
+      throw new JudgeReplyError("malformed uncertain_details");
+    }
+    if (uncertain.length) {
+      throw new JudgeReplyError(`transcript meaning is uncertain for Details ${uncertain.join(", ")}`);
+    }
+  }
 
   const verdicts: Record<number, boolean> = {};
   const detailEvidence: NonNullable<JudgeReply["detailEvidence"]> = {};
