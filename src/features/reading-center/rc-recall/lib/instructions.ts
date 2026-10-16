@@ -47,7 +47,7 @@ export const CUMULATIVE_STEPS = [
 
 export const COMPARATIVE_NOTE =
   "In a comparative passage, the source note and the Passage A / Passage B headings are labels, not paragraphs to recall. " +
-  "In Check as you go, choose before you start whether each check covers all the text read so far or only the current passage pair. " +
+  "In Check as you go, choose before you start whether each check covers all the text read so far or only the current passage (A or B in a passage pair). " +
   "In Retell from the beginning, once you begin Passage B, retell Passage A and Passage B together with the text hidden.";
 
 export const VOICE_NOTE =

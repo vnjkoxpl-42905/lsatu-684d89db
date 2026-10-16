@@ -11,10 +11,12 @@ import {
 } from "./lib/sequence";
 import type { SegmentedPassage } from "./lib/segment";
 import { useRecapRecorder } from "./useRecapRecorder";
+import { ArrowRight, BookOpen, Check, CheckCircle2, Clock3, EyeOff, Mic, VolumeX } from "lucide-react";
+import "./RcRecallRunner.css";
 
 const panel = { background: "var(--rc-card)", borderColor: "var(--rc-outline-2)" };
 const muted = { color: "var(--rc-text-2)" };
-const button = "inline-flex min-h-11 items-center justify-center rounded-lg px-4 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50";
+const button = "rct-run-button inline-flex min-h-11 items-center justify-center rounded-lg px-4 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50";
 const primary = { background: "var(--rc-accent, #494387)", color: "#fff" };
 const secondary = { border: "1px solid var(--rc-outline-2)", color: "var(--rc-text)" };
 
@@ -176,31 +178,45 @@ export default function RcRecallRunner({ mode, scope, passages, segmented, attem
   const recalling = isRecap && phase === "recalling";
   const passage = segmented[step.passage];
 
-  return <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6" data-testid="rc-recall-runner">
-    <div className="flex flex-wrap items-center justify-between gap-2 text-sm" style={muted}>
-      <span>{MODE_LABEL[mode]} · Passage {step.passage + 1} of {passages.length} · Paragraph {step.paragraph + 1} of {passage.paragraphs.length}</span>
-      <span aria-label="Elapsed time" className="tabular-nums">{formatClock(elapsed)}</span>
+  return <div className="rct-run" data-testid="rc-recall-runner">
+    <header className="rct-run-header">
+      <div><p className="rct-run-eyebrow">RC Training <span>/</span> {MODE_LABEL[mode]}</p>
+        <p className="rct-run-location">Passage {step.passage + 1} <span>of {passages.length}</span></p></div>
+      <div className="rct-run-clock"><Clock3 size={16} aria-hidden="true" /><span aria-label="Elapsed time" className="tabular-nums">{formatClock(elapsed)}</span><span className="rct-run-clock-label">elapsed</span></div>
+    </header>
+    <div className="rct-run-section-progress" aria-label="Passage progress">
+      {passages.map((_, position) => <div key={position} className={`rct-run-passage ${position === step.passage ? "is-current" : position < step.passage ? "is-done" : ""}`} aria-current={position === step.passage ? "step" : undefined}>
+        <span>{position < step.passage ? <Check size={13} aria-hidden="true" /> : String(position + 1).padStart(2, "0")}</span><span>Passage {position + 1}</span>
+      </div>)}
     </div>
     {failedSilent > 0 && <p role="alert" className="mt-3 text-sm" style={{ color: "var(--rc-danger, #b3261e)" }}>
       {failedSilent} silent recap record{failedSilent === 1 ? "" : "s"} could not be saved. Your other recaps are unaffected.
     </p>}
-    <p className="mt-1 text-xs" style={muted}>Guidance: {passageGuidanceMinutes(mode)} per passage. A guide, not a limit.</p>
-    <h2 ref={heading} tabIndex={-1} className="mt-4 text-xl font-semibold outline-none">{STEP_TITLE[step.kind]}</h2>
-    <p className="mt-2 text-sm leading-6" role="status">{stepInstruction(step, mode, scope)}</p>
+    <div className="rct-run-workspace">
+      <aside className="rct-run-guide">
+        <span className="rct-run-stage-icon">{hidden ? <EyeOff size={22} aria-hidden="true" /> : step.kind === "confirm" ? <CheckCircle2 size={22} aria-hidden="true" /> : <BookOpen size={22} aria-hidden="true" />}</span>
+        <p className="rct-run-eyebrow">Paragraph {step.paragraph + 1} of {passage.paragraphs.length}</p>
+        <h2 ref={heading} tabIndex={-1} className="rct-run-title outline-none">{STEP_TITLE[step.kind]}</h2>
+        <p className="rct-run-instruction" role="status">{stepInstruction(step, mode, scope)}</p>
+        <div className="rct-run-paragraph-progress" aria-label="Paragraph progress">{passage.paragraphs.map((_, position) => <span key={position} className={position <= step.paragraph ? "is-reached" : ""} />)}</div>
+        <p className="rct-run-guidance">Guidance: {passageGuidanceMinutes(mode)} per passage. A guide, not a limit.</p>
+      </aside>
+      <section className={`rct-run-paper ${hidden ? "is-hidden" : ""}`} aria-label={hidden ? "Passage text hidden" : "Passage text"}>
+        <div className="rct-run-paper-heading"><span>{hidden ? "Recall workspace" : step.kind === "confirm" ? "Check your translation" : "The passage"}</span><span>{hidden ? "Text hidden" : `Paragraph ${step.paragraph + 1}`}</span></div>
+        {hidden ? <div className="rct-run-recall-space"><div className={`rct-run-recall-symbol ${recalling ? "is-active" : ""}`}>{recalling && effectiveVoice === "spoken" ? <Mic size={32} aria-hidden="true" /> : <EyeOff size={32} aria-hidden="true" />}</div><p className="rct-run-recall-heading">{recalling ? "Tell it in your own words." : "Make the passage your own."}</p><p className="rct-run-hidden-note">The text is hidden while you recall. Do not look back.</p>{recalling && <span className="rct-run-active-status"><span />{effectiveVoice === "spoken" ? "Recording this recap only" : "Silent recap in progress"}</span>}</div>
+          : <div className="rct-run-passage-body">{step.visible.map((i) => <div key={i} className="rct-run-paragraph">
+            {passage.paragraphs[i].labels.map((label) => <p key={label} className="rct-run-passage-label">{label}</p>)}
+            <p>{passage.paragraphs[i].text}</p>
+          </div>)}</div>}
+      </section>
+    </div>
 
-    <section className="mt-4 rounded-2xl border p-5 sm:p-6" style={panel} aria-label={hidden ? "Passage text hidden" : "Passage text"}>
-      {hidden ? <p className="text-sm leading-6" style={muted}>The text is hidden while you recall. Do not look back.</p>
-        : step.visible.map((i) => <div key={i} className="mb-4 last:mb-0">
-          {passage.paragraphs[i].labels.map((label) => <p key={label} className="mb-2 text-sm font-semibold" style={muted}>{label}</p>)}
-          <p className="text-base leading-7">{passage.paragraphs[i].text}</p>
-        </div>)}
-    </section>
-
-    {isRecap && !recalling && step.voiceChoice && <fieldset className="mt-4">
+    {isRecap && !recalling && step.voiceChoice && <fieldset className="rct-run-voice">
       <legend className="text-sm font-semibold">How will you recap?</legend>
       <div className="mt-2 flex flex-wrap gap-4 text-sm">
         {(["spoken", "silent"] as Voice[]).map((v) => <label key={v} className="flex min-h-11 items-center gap-2">
           <input type="radio" name="voice" value={v} checked={voice === v} onChange={() => setVoice(v)} />
+          {v === "spoken" ? <Mic size={16} aria-hidden="true" /> : <VolumeX size={16} aria-hidden="true" />}
           {v === "spoken" ? "Out loud (recorded)" : "Silent (not recorded)"}
         </label>)}
       </div>
@@ -210,9 +226,9 @@ export default function RcRecallRunner({ mode, scope, passages, segmented, attem
 
     {notice && <p role="alert" className="mt-3 text-sm" style={{ color: "var(--rc-danger, #b3261e)" }}>{notice}</p>}
 
-    <div className="mt-5 flex flex-wrap gap-3">
+    <div className="rct-run-actions">
       {!isRecap && <button type="button" className={button} style={primary} disabled={busy} onClick={advance}>
-        {step.kind === "confirm" ? "Confirmed, continue" : "Done reading, continue"}
+        {step.kind === "confirm" ? "Confirmed, continue" : "Done reading, continue"}<ArrowRight size={16} aria-hidden="true" />
       </button>}
       {isRecap && !recalling && <button type="button" className={button} style={primary} disabled={busy} onClick={() => void startRecap()}>
         {effectiveVoice === "spoken" ? "Start recording the recap" : "Start the recap"}
@@ -236,14 +252,17 @@ function FinishedPanel({ mode, finished, recaps, onExit, onRetry, busy }: {
   const failed = spoken.filter((r) => r.state === "failed").length;
   const pending = spoken.filter((r) => r.state === "pending").length;
   const failedSilent = recaps.filter((r) => r.voice === "silent" && r.state === "failed").length;
-  return <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6" data-testid="rc-recall-finished">
-    <h2 className="text-xl font-semibold">{finished.completed ? `${MODE_LABEL[mode]} section complete` : "Attempt ended early"}</h2>
-    <p className="mt-2 text-sm" style={muted}>Time {formatClock(finished.seconds)}. {finished.completed ? "Every paragraph and passage was worked in order." : "Saved as not completed."}</p>
+  return <div className="rct-run rct-run-finished" data-testid="rc-recall-finished">
+    <div className="rct-run-finish-banner"><span className="rct-run-stage-icon">{finished.completed ? <CheckCircle2 size={28} aria-hidden="true" /> : <BookOpen size={28} aria-hidden="true" />}</span><p className="rct-run-eyebrow">RC Training / {MODE_LABEL[mode]}</p>
+      <h2>{finished.completed ? `${MODE_LABEL[mode]} section complete` : "Attempt ended early"}</h2>
+      <p>{finished.completed ? "Every paragraph and passage was worked in order." : finished.error ? "This attempt is not completed. Try saving it again below." : "Saved as not completed."}</p>
+      <div className="rct-run-finish-time"><Clock3 size={18} aria-hidden="true" /><span>{formatClock(finished.seconds)}</span><span>total time</span></div>
+    </div>
     {finished.error && <div role="alert" className="mt-3 text-sm" style={{ color: "var(--rc-danger, #b3261e)" }}>
       <p>{finished.error}</p>
       <button type="button" className={`${button} mt-2`} style={secondary} disabled={busy} onClick={onRetry}>Try saving again</button>
     </div>}
-    <section className="mt-4 rounded-2xl border p-5" style={panel} aria-label="Recording status">
+    <section className="rct-run-recordings" style={panel} aria-label="Recording status">
       <h3 className="text-base font-semibold">Recordings</h3>
       {spoken.length === 0 ? <p className="mt-1 text-sm" style={muted}>No spoken recaps in this attempt, so nothing was recorded.</p>
         : <ul className="mt-2 space-y-1 text-sm">

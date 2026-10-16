@@ -48,22 +48,28 @@ describe("RC Recall page", () => {
 
   it("lists the section even though its passages have no drillable questions", async () => {
     renderPage();
-    expect(await screen.findByRole("option", { name: "PT140 · Section 4" })).toBeInTheDocument();
+    expect(await screen.findByRole("combobox", { name: "PrepTest" })).toHaveTextContent("PT140");
+    await waitFor(() => expect(screen.getByRole("combobox", { name: "Section" })).toHaveTextContent("Section 4"));
+    expect(screen.getByRole("combobox", { name: "Section" })).not.toHaveTextContent("PT140");
     await waitFor(() => expect(screen.getByRole("button", { name: /start section/i })).toBeEnabled());
   });
 
   it("shows the full instructions and the source-name mapping for the chosen mode", async () => {
     renderPage();
+    expect(screen.getByText(/videos call these methods/i)).not.toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Read the full instructions" }));
     expect(await screen.findByText(/videos call these methods/i)).toHaveTextContent(/Cappuccino/);
-    expect(screen.getByText(/confirm your translation with all the text you have read/i)).toBeInTheDocument();
+    expect(screen.getByText(/confirm your translation with all the text you have read/i)).toBeVisible();
     fireEvent.click(screen.getByRole("radio", { name: /Retell from the beginning/ }));
     expect(await screen.findByText(/With the text hidden, retell paragraphs 1 and 2 in order/i)).toBeInTheDocument();
-    expect(screen.queryByLabelText(/Only the current passage or passage pair/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("radio", { name: /Only the current passage/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Close full instructions" }));
+    expect(screen.getByText(/With the text hidden, retell paragraphs 1 and 2 in order/i)).not.toBeVisible();
   });
 
   it("hides every video player and Watch Instructions when no media base is set", async () => {
     renderPage();
-    await screen.findByRole("option", { name: "PT140 · Section 4" });
+    await screen.findByRole("combobox", { name: "Section" });
     expect(document.querySelector("video")).toBeNull();
     expect(screen.queryByRole("button", { name: /watch instructions/i })).not.toBeInTheDocument();
   });
