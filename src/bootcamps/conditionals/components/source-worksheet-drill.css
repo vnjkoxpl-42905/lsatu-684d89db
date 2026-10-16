@@ -73,3 +73,39 @@
 .sw-symbol-slot button span{font-family:Georgia,serif;font-size:24px;font-weight:700}
 .sw-choice-slot button[aria-pressed=true]{color:#173544}
 .dark .sw-choice-slot button[aria-pressed=true]{color:#edf3ed}
+
+/* Worksheet controls keep their own readable states instead of native popups. */
+.sw-experience { --sw-control:#fffdf7; --sw-selected:#e6efe9; --sw-selected-line:#28624f; color-scheme:light; }
+.sw-experience .sw-question-position { margin:0; font-size:1rem; line-height:1.4; font-weight:650; color:var(--sw-ink); }
+.sw-experience .sw-completion-label { margin:5px 0 0; font-size:.875rem; line-height:1.5; color:var(--sw-soft); }
+.sw-experience .sw-group-picker { border:0; padding:0; margin:0; min-width:0; }
+.sw-experience .sw-group-picker legend { padding:0; margin-bottom:12px; font-size:1rem; line-height:1.5; font-weight:600; color:var(--sw-ink); }
+.sw-group-choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.sw-experience .sw-group-card { display:flex; align-items:flex-start; gap:11px; min-height:88px; padding:15px; border:1px solid var(--sw-line); border-radius:8px; background:var(--sw-control); color:var(--sw-ink); cursor:pointer; }
+.sw-group-card input { flex:0 0 18px; width:18px; height:18px; margin:3px 0 0; accent-color:var(--sw-selected-line); }
+.sw-group-card>span { display:grid; gap:5px; min-width:0; }
+.sw-group-card strong { font-size:.94rem; font-weight:650; line-height:1.4; }
+.sw-group-card>span>span { font-size:.875rem; line-height:1.5; color:var(--sw-soft); }
+.sw-experience .sw-group-card:has(input:checked) { background:var(--sw-selected); border-color:var(--sw-selected-line); box-shadow:inset 0 0 0 1px var(--sw-selected-line); }
+.sw-experience .sw-group-card:has(input:focus-visible) { outline:3px solid var(--sw-accent); outline-offset:3px; }
+.sw-experience .sw-navigation { flex-wrap:wrap; }
+.sw-experience .sw-navigation>button { color:var(--sw-ink); background:transparent; min-height:44px; }
+.sw-experience .sw-question-picker { display:grid; grid-template-columns:repeat(auto-fill,minmax(42px,1fr)); gap:8px; flex-basis:100%; order:3; padding-top:5px; }
+.sw-experience .sw-question-picker button { position:relative; display:flex; justify-content:center; align-items:center; min-height:44px; padding:8px 3px; border:1px solid var(--sw-line); border-radius:7px; background:var(--sw-control); color:var(--sw-ink); font-size:.875rem; line-height:1; font-weight:600; font-variant-numeric:tabular-nums; }
+.sw-experience .sw-question-picker button[data-status="completed"] { background:var(--sw-selected); border-color:var(--sw-selected-line); }
+.sw-experience .sw-question-picker button[data-status="needs review"] { background:#fff0d4; border-color:#a76a22; color:#5b3a14; }
+.sw-experience .sw-question-picker button[data-status="in progress"] { border-style:dashed; }
+.sw-experience .sw-question-picker button[aria-current=step] { outline:2px solid var(--sw-ink); outline-offset:2px; font-weight:750; }
+.sw-question-picker button svg { position:absolute; right:2px; bottom:2px; }
+.sw-experience .sw-rule .sw-stage-rail button { background:transparent; color:inherit; }
+.sw-experience .sw-tokens button { color:var(--sw-ink); }
+.sw-experience .sw-tokens button[aria-pressed=true] { color:#173544; }
+.dark .sw-experience { --sw-control:#1f3742; --sw-selected:#234c40; --sw-selected-line:#9ed4bc; color-scheme:dark; }
+.dark .sw-experience .sw-question-picker button[data-status="needs review"] { background:#4c371e; border-color:#d9ad71; color:#ffe1b6; }
+@media(max-width:600px) { .sw-group-choices { grid-template-columns:1fr; } .sw-experience .sw-group-card { min-height:72px; padding:13px 14px; } .sw-experience .sw-question-picker { gap:7px; } }
+
+.sw-experience .sw-active-task button.sw-primary { background:#254d65; color:#fffdf7!important; border:1px solid #254d65; }
+.sw-experience .sw-active-task button.sw-primary:disabled { background:#dce4e1; color:#536772!important; border-color:#cbd5d1; }
+.dark .sw-experience .sw-active-task button.sw-primary { background:#c5dfd1; color:#173544!important; border-color:#c5dfd1; }
+.dark .sw-experience .sw-active-task button.sw-primary:disabled { background:#304950; color:#bfcdcb!important; border-color:#50636a; }
+.sw-group-card input:focus-visible { outline:none; }

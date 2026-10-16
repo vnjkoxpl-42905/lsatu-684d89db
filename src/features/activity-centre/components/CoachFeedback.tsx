@@ -1,3 +1,4 @@
+import { relationshipExplanation } from "../relationshipPresentation";
 import { cn } from "@/lib/utils";
 import type { ActivityItem, FeedbackState } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
@@ -60,6 +61,8 @@ export function CoachFeedback({
   secondaryLabel,
   item,
 }: CoachFeedbackProps) {
+  const isRelationship = !!item.answer_key || /^Rung\s+\d/i.test(item.category ?? "");
+  const explanation = isRelationship ? relationshipExplanation(item) : item.explanation;
   const style = VERDICT_STYLE[verdict];
   return (
     <div className="space-y-4">
@@ -75,7 +78,7 @@ export function CoachFeedback({
         </span>
       </div>
 
-      {feedback && <p className="text-[15px] leading-relaxed text-foreground/85">{feedback}</p>}
+      {feedback && <p className="text-[15px] leading-relaxed text-foreground">{feedback}</p>}
 
       {revealed && (
         <div className="rounded-2xl border border-border bg-[hsl(var(--muted)/0.5)] p-4">
@@ -93,11 +96,11 @@ export function CoachFeedback({
         </div>
       )}
 
-      {resolved && item.explanation && (
-        <p className="border-l-2 border-[hsl(var(--ac-emerald)/0.35)] pl-4 text-sm leading-relaxed text-foreground/75">
+      {resolved && explanation && (
+        <p className="border-l-2 border-[hsl(var(--ac-emerald)/0.35)] pl-4 text-sm leading-relaxed text-foreground">
           {/* Explanations are authored with the same *emphasis* marks as
               prompts. Printed raw, a student read the asterisks. */}
-          {renderInlineMarks(item.explanation, "explanation")}
+          {renderInlineMarks(explanation, "explanation")}
         </p>
       )}
     </div>

@@ -1,7 +1,7 @@
 {
   "slug": "spot-the-relationship",
   "title": "Spot the Relationship",
-  "subtitle": "Name the relationship and the exact words that create it",
+  "subtitle": "Name each relationship and quote the words that signal it",
   "item_format": "free-text",
   "instructions": {
     "coach": {
@@ -32,7 +32,7 @@
       ]
     },
     "tagline": "Type plus the exact words. Both halves, every time.",
-    "task": "Tell me what kind of relationship this sentence contains and the exact word or words that create it. If there is more than one, name them all.",
+    "task": "Name each relationship in the sentence and quote the words that signal it.",
     "rules": [
       "Answer in the game format: type, then the words. Conditional, only if. Causal, caused. Comparative, heavier than.",
       "A conditional says what must be true. A causal says one thing made another happen. A comparative measures one thing against another.",
@@ -49,7 +49,7 @@
       "explanation": "Only if introduces the necessary condition. A dry wick is required for lighting, which is not the same as saying a dry wick makes the lantern light. That would be causal, and this sentence does not claim it."
     },
     "answer_label": "Your answer",
-    "answer_placeholder": "Name the relationship and the exact words that create it…"
+    "answer_placeholder": "Name each relationship and quote the words that signal it."
   },
   "items": [
     {
@@ -58,7 +58,7 @@
       "credited_answers": [
         "conditional, \"only if\""
       ],
-      "explanation": "1 relationship in this sentence. *Only if* makes reaching 28 degrees necessary for the vent to open. The textbook necessary condition.",
+      "explanation": "1 relationship in this sentence. *Only if* makes reaching 28 degrees necessary for the vent to open. Reaching 28 degrees alone does not guarantee that the vent opens.",
       "category": "Rung 1: Single relationship, classic indicators",
       "answer_key": {
         "relationships": [

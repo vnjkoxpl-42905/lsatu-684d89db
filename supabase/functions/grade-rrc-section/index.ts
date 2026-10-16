@@ -42,7 +42,7 @@ const corsHeaders = {
 };
 
 /** Bumped when the prompt or the scoring changes, so a re-grade is legible. */
-const GRADER_VERSION = 1;
+const GRADER_VERSION = 2;
 /**
  * Which deploy is answering. Bumped on every change to this function.
  *
@@ -50,7 +50,7 @@ const GRADER_VERSION = 1;
  * this is the only way to prove from outside that a fix is the one running.
  * Returned on the 202 body and on the admin diagnostic below.
  */
-const BUILD = "2026-09-09a";
+const BUILD = "2026-10-16-meaning-evidence";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
@@ -179,6 +179,7 @@ async function judge(prompt: string): Promise<string> {
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-lite",
         temperature: 0,
+        max_tokens: 8192,
         messages: [{ role: "user", content: prompt }],
       }),
     });
@@ -196,7 +197,7 @@ async function judge(prompt: string): Promise<string> {
       headers: { "x-goog-api-key": direct, "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0, responseMimeType: "application/json" },
+        generationConfig: { temperature: 0, responseMimeType: "application/json", maxOutputTokens: 8192 },
       }),
     },
   );
@@ -419,7 +420,7 @@ serve(async (req) => {
         const other = cItems[(i + 1) % cItems.length];
         const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
         const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
-        const entries = buildJudgeEntries(toDetailsByLine(chunks), decoys);
+        const entries = buildJudgeEntries(toDetailsByLine(chunks, slug), decoys);
         try {
           const raw = await judge(
             buildJudgePrompt({
@@ -429,7 +430,7 @@ serve(async (req) => {
               theRead: (item.the_read as string | null) ?? null,
             }),
           );
-          const g = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)));
+          const g = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id), spoken));
           return {
             slug,
             percent: g.percent,
@@ -820,7 +821,7 @@ serve(async (req) => {
       const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
       const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
 
-      const entries = buildJudgeEntries(toDetailsByLine(chunks), decoys);
+      const entries = buildJudgeEntries(toDetailsByLine(chunks, slug), decoys);
 
       /*
        * Her run cut into the lines she was rephrasing.
@@ -883,7 +884,7 @@ serve(async (req) => {
             recall: recallText || null,
           }),
         );
-        const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)), lineSpans);
+        const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id), spoken), lineSpans);
 
 
         // Reciting is decided in code, not by the model: it is a measurement,

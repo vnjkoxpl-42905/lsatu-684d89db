@@ -24,6 +24,8 @@
 export type DetailKind = "content" | "structure" | "modality";
 
 export interface Detail {
+  /** Reviewed aliases of one scoring fact; never inferred by the judge. */
+  coverageGroup?: string;
   /** 1-based index within the stimulus, stable across the whole judgement. */
   n: number;
   text: string;
@@ -153,11 +155,24 @@ export function toDetails(texts: string[]): Detail[] {
  * would produce, so ids and scores are identical either way. The only addition
  * is the line number, which no score reads.
  */
-export function toDetailsByLine(lines: { details: { text: string }[] }[]): Detail[] {
+// Assignment items are immutable snapshots. This reviewed identity-specific
+// correction also reaches older snapshots that predate coverageGroup metadata.
+// Match exact authored wording and question identity; never infer aliases.
+const REVIEWED_COVERAGE_GROUPS: Record<string, Record<string, string>> = {
+  PT102_S3_Q24: {
+    "Sweden is one of them.": "country-sweden",
+    "This is about Sweden.": "country-sweden",
+  },
+};
+
+export function toDetailsByLine(lines: { details: { text: string; coverageGroup?: string }[] }[], itemSlug?: string): Detail[] {
   const out: Detail[] = [];
   lines.forEach((line, index) => {
     for (const d of line.details ?? []) {
-      out.push({ n: out.length + 1, text: d.text, kind: classifyDetail(d.text), line: index + 1 });
+      const coverageGroup = d.coverageGroup?.trim() ||
+        (itemSlug ? REVIEWED_COVERAGE_GROUPS[itemSlug]?.[d.text] : undefined);
+      out.push({ n: out.length + 1, text: d.text, kind: classifyDetail(d.text), line: index + 1,
+        ...(coverageGroup ? { coverageGroup } : {}) });
     }
   });
   return out;
@@ -166,6 +181,7 @@ export function toDetailsByLine(lines: { details: { text: string }[] }[]): Detai
 // --- The one model call ------------------------------------------------------
 
 export interface JudgeEntry {
+  coverageGroup?: string;
   id: number;
   text: string;
   kind: DetailKind;
@@ -190,7 +206,8 @@ export interface JudgeEntry {
  * the same prompt and a disagreement between two runs is the model's, not ours.
  */
 export function buildJudgeEntries(details: Detail[], decoyTexts: string[]): JudgeEntry[] {
-  const real = details.map((d) => ({ text: d.text, kind: d.kind, decoy: false, line: d.line }));
+  const real = details.map((d) => ({ text: d.text, kind: d.kind, decoy: false, line: d.line,
+    ...(d.coverageGroup ? { coverageGroup: d.coverageGroup } : {}) }));
   const decoys = decoyTexts.map((text) => ({ text, kind: classifyDetail(text), decoy: true }));
 
   if (decoys.length === 0) return real.map((e, i) => ({ id: i + 1, ...e }));
@@ -234,8 +251,12 @@ export function pickDecoys(details: string[], howMany = 2): string[] {
 const KIND_RULE: Record<DetailKind, string> = {
   content:
     'CONTENT — a fact. Carried if she stated it, in any words, in any order. ' +
-    'Synonyms and paraphrase count fully. A dropped proper noun, number or ' +
-    'quantifier is NOT carried: "all employees" is missed if she said "the staff".',
+    'Synonyms and paraphrase count fully. A uniquely identified entity may be ' +
+    'named by its role or context instead of its proper name. Equivalent ' +
+    'quantity expressions count: "half" and "50 percent" mean the same. ' +
+    'Deduct only a lost or changed claim, not a missing label. A different ' +
+    'country, a missing meaningful quantity, all changed to most, and lost ' +
+    'negation are real changes. Do not assume an unstated all from "the staff".',
   structure:
     'STRUCTURE — a discourse role, not words. Carried if the relationship is ' +
     'present in HOW she told it; she never has to name it. "This is a contrast." ' +
@@ -353,12 +374,34 @@ RULES:
   to, not as evidence that she said it. This is the most important rule here.
 - Some of the Details below belong to a DIFFERENT stimulus and she cannot have
   carried them. Mark those not carried. Do not try to guess which.
-- When you are genuinely torn, mark it NOT carried.
+- If unclear or garbled transcription prevents deciding whether a meaning was
+  carried, put that Detail id in uncertain_details. Do not guess a deduction
+  or credit. A clear omission is still a miss, not uncertainty. If speech is
+  clear enough to establish the meaning, judge that meaning normally.
 - Her transcript may contain mangled or clipped words. Judge the substance.
 - Be fair as well as strict. Her own words, her own order and a plainer
   phrasing all count in full. Only a change of MEANING counts against her: a
   dropped specific, a lost qualifier, a claim made stronger or weaker than the
   source, a relationship that vanished. Never mark a Detail missed for style.
+- Mark a Detail missed only for missing or changed MEANING. Before marking it
+  missed, look for an equivalent claim anywhere in WHAT SHE SAID, including
+  pronouns and relationships expressed without the source's labels. For example,
+  "if music videos are art, TV created art" carries the conditional position;
+  she need not also say "anyone with that view insists". "Safety committees
+  reduced workplace injuries" carries both the committees' safety role and
+  the injury outcome without separately naming each role again.
+- Do not demand the source's wording or discourse labels. But never fill in a
+  missing fact from the source or the correct run: changing Sweden to Norway,
+  all to most, likely to certain, or reversing a conditional changes meaning.
+- For each verdict return evidence: a SHORT EXACT quote from WHAT SHE SAID.
+  For a carried Detail quote the words that express its meaning. For a missed
+  Detail quote the closest relevant words and explain the missing or changed
+  meaning in reason. If there are no relevant words use evidence "" and explain
+  the omission. Never quote the stimulus or correct run as student evidence.
+- Several authored Details may describe the same underlying fact. Treat
+  equivalent meanings consistently, and describe one underlying error only
+  ONCE in big_misses and next_time. Do not invent another error because the
+  same fact has two labels. Still return a verdict for every numbered Detail.
 
 THE DETAILS:
 ${list}
@@ -421,7 +464,7 @@ How to use it, and how not to:
   found, the run coloured and in her own words.
 
 Reply with JSON only, no prose and no code fence:
-{"verdicts":[{"id":1,"carried":true}],"reciting":false,"reciting_reason":"",
+{"verdicts":[{"id":1,"carried":true,"evidence":"exact student words","reason":""}],"uncertain_details":[],"reciting":false,"reciting_reason":"",
 "listing":false,"listing_reason":"","coloured":true,"colour_specific":true,
 "big_misses":[],"next_time":""${
     input.theRead ? ',\n"read_given":true,"read_matches":true,"read_reason":""' : ""
@@ -442,6 +485,7 @@ Return exactly one verdict for every id from 1 to ${input.entries.length}.`;
 // --- Reading the answer ------------------------------------------------------
 
 export interface JudgeReply {
+  detailEvidence?: Record<number, { evidence: string; reason: string }>;
   verdicts: Record<number, boolean>;
   reciting: boolean;
   recitingReason: string;
@@ -529,19 +573,59 @@ export function extractJson(raw: string): unknown {
   throw new JudgeReplyError("JSON object never closed");
 }
 
-export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply {
+export function parseJudgeReply(raw: string, expectedIds: number[], spoken?: string): JudgeReply {
   const obj = extractJson(raw) as Record<string, unknown>;
   const rows = obj.verdicts;
   if (!Array.isArray(rows)) throw new JudgeReplyError("reply has no verdicts array");
+  if (spoken !== undefined && obj.uncertain_details !== undefined) {
+    const uncertain = obj.uncertain_details;
+    if (!Array.isArray(uncertain) || uncertain.some((id) =>
+      typeof id !== "number" || !Number.isInteger(id) || !expectedIds.includes(id))) {
+      throw new JudgeReplyError("malformed uncertain_details");
+    }
+    if (uncertain.length) {
+      throw new JudgeReplyError(`transcript meaning is uncertain for Details ${uncertain.join(", ")}`);
+    }
+  }
 
   const verdicts: Record<number, boolean> = {};
+  const detailEvidence: NonNullable<JudgeReply["detailEvidence"]> = {};
+  const normalizeEvidence = (text: string) => text.normalize("NFKC").toLowerCase()
+    .replace(/[\u2018\u2019]/g, "'").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  const studentWords = spoken === undefined ? undefined : ` ${normalizeEvidence(spoken)} `;
   for (const row of rows) {
+    if (studentWords !== undefined && (row === null || typeof row !== "object" || Array.isArray(row))) {
+      throw new JudgeReplyError("verdict row is not an object");
+    }
     const r = row as Record<string, unknown>;
     const id = typeof r.id === "number" ? r.id : Number(r.id);
     if (!Number.isFinite(id)) continue;
+    if (studentWords !== undefined && expectedIds.includes(id)) {
+      if (id in verdicts) throw new JudgeReplyError(`Detail ${id} has duplicate verdicts`);
+      if (typeof r.carried !== "boolean") throw new JudgeReplyError(`Detail ${id} has no boolean verdict`);
+      if (typeof r.evidence !== "string" || typeof r.reason !== "string") {
+        throw new JudgeReplyError(`Detail ${id} has no evidence audit`);
+      }
+      const evidence = normalizeEvidence(r.evidence);
+      if (r.carried === true && !evidence) {
+        throw new JudgeReplyError(`Detail ${id} was credited without student evidence`);
+      }
+      if (evidence && !studentWords.includes(` ${evidence} `)) {
+        throw new JudgeReplyError(`Detail ${id} quotes words outside the student's transcript`);
+      }
+      if (r.carried !== true && !r.reason.trim()) {
+        throw new JudgeReplyError(`Detail ${id} was deducted without a meaning explanation`);
+      }
+    }
+    if (expectedIds.includes(id) && typeof r.evidence === "string" && typeof r.reason === "string") {
+      detailEvidence[id] = { evidence: r.evidence, reason: r.reason };
+    }
     verdicts[id] = r.carried === true;
   }
   const missingIds = expectedIds.filter((id) => !(id in verdicts));
+  if (studentWords !== undefined && missingIds.length) {
+    throw new JudgeReplyError(`missing verdicts for Details ${missingIds.join(", ")}`);
+  }
   const flag = (k: string) => obj[k] === true;
   const reason = (k: string) => (typeof obj[k] === "string" ? (obj[k] as string) : "");
 
@@ -560,6 +644,7 @@ export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply 
 
   return {
     verdicts,
+    detailEvidence,
     reciting: flag("reciting"),
     recitingReason: reason("reciting_reason"),
     listing: flag("listing"),
@@ -607,6 +692,8 @@ export interface LineGrade {
 }
 
 export interface StimulusGrade {
+  /** Student-only quotations and explanations returned by this judge call. */
+  detail_evidence?: Record<number, { text: string; carried: boolean; evidence: string; reason: string }>;
   carried: number;
   total: number;
   /** Whole-number percent over the stimulus's OWN Details. */
@@ -644,7 +731,26 @@ export function gradeStimulus(
   /** Her run cut into lines, when it could be. Feedback only, never scored. */
   lineSpans: { n: number; text: string; spoken: string; startMs?: number; endMs?: number }[] = [],
 ): StimulusGrade {
-  const own = entries.filter((e) => !e.decoy);
+  // Semantic aliases require an explicit, reviewed coverageGroup. Otherwise only
+  // equivalent wording (apart from case/spacing) on the SAME line is deduped.
+  // Identical generic labels on different lines may name different claims.
+  const seen = new Map<string, JudgeEntry>();
+  const own = entries.filter((e) => {
+    if (e.decoy) return false;
+    if (!e.coverageGroup && e.line === undefined) return true;
+    const key = e.coverageGroup
+      ? `reviewed-group:${e.coverageGroup}`
+      : `exact:${e.line}:${e.text.trim().toLowerCase().replace(/\s+/g, " ")}`;
+    const previous = seen.get(key);
+    if (previous) {
+      if (reply.verdicts[previous.id] !== reply.verdicts[e.id]) {
+        throw new JudgeReplyError("equivalent Details received conflicting verdicts");
+      }
+      return false;
+    }
+    seen.set(key, e);
+    return true;
+  });
   const carriedEntries = own.filter((e) => reply.verdicts[e.id] === true);
   const total = own.length;
   // Guard the empty stimulus rather than dividing by zero into NaN, which
@@ -669,6 +775,9 @@ export function gradeStimulus(
   });
 
   return {
+    detail_evidence: Object.fromEntries(entries.filter((e) => !e.decoy && reply.detailEvidence?.[e.id])
+      .map((e) => [e.id, { text: e.text, carried: reply.verdicts[e.id] === true,
+        ...reply.detailEvidence![e.id] }])),
     carried: carriedEntries.length,
     total,
     percent,

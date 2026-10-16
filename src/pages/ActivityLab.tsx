@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { SEED_ACTIVITIES } from "@/features/activity-centre/content";
+import { ActivityProgress } from "@/features/activity-centre/components/ActivityProgress";
+import { RELATIONSHIP_ANSWER_PROMPT } from "@/features/activity-centre/relationshipPresentation";
 import { SectionStage } from "@/features/activity-centre/recall/SectionStage";
 import { SectionReportCard } from "@/features/activity-centre/components/SectionReportCard";
 import { SectionRunHistory } from "@/features/activity-centre/components/SectionRunHistory";
@@ -202,6 +204,7 @@ function Tabs<T extends string>({
 
 export default function ActivityLab() {
   const [world, setWorld] = useState<World>("switchyard");
+  if (new URLSearchParams(window.location.search).get("preview") === "relationship") return <ShellPanel relationshipOnly />;
 
   return (
     <div className="activity-centre min-h-screen">
@@ -326,29 +329,36 @@ function ListPanel() {
  * the left column and the answer column stands on the world's own ground via
  * its `data-world` shell. Composed here from the same pieces the real runner
  * mounts (world stage + ActivityQuestionStack) so the per-world shell can be
- * seen without a login. Answering is inert: the Coach is not judged here.
+ * seen without a login. Exact answers use the real local check; no progress is saved.
  */
-function ShellPanel() {
-  const [slug, setSlug] = useState<string>(LAB_ACTIVITIES[0].slug);
+function ShellPanel({ relationshipOnly = false }: { relationshipOnly?: boolean }) {
+  const [slug, setSlug] = useState<string>(relationshipOnly ? "spot-the-relationship" : LAB_ACTIVITIES[0].slug);
   const activity = LAB_ACTIVITIES.find((a) => a.slug === slug) ?? LAB_ACTIVITIES[0];
   const world = worldForTitle(activity.title);
-  const stage = world?.render({ item: activity.items[0], answered: false });
+  const [position, setPosition] = useState(0);
+  const [previewRun, setPreviewRun] = useState(0);
+  const [outcomes, setOutcomes] = useState<Record<number, "correct" | "partial" | "incorrect" | null>>({});
+  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const item = activity.items[position] ?? activity.items[0];
+  const spot = slug === "spot-the-relationship";
+  const stage = world?.render({ item, response: answers[item.order], answered: Object.prototype.hasOwnProperty.call(outcomes, item.order), verdict: outcomes[item.order], revealed: Object.prototype.hasOwnProperty.call(outcomes, item.order) && outcomes[item.order] !== "correct", completedItems: activity.items.filter(i => outcomes[i.order] === "correct") });
   // Mirrors the runner's phone band. The shell is only useful as a proxy for a
   // screen auth makes unreachable if it carries the same container decisions.
   const [bandExpanded, setBandExpanded] = useState(false);
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-4 border-b border-border bg-card px-6 py-3">
+      {!relationshipOnly && <div className="flex flex-wrap items-center gap-4 border-b border-border bg-card px-6 py-3">
         <Tabs
           options={LAB_ACTIVITIES.map((a) => a.slug)}
           value={slug}
-          onChange={setSlug}
+          onChange={(value) => { setSlug(value); setPosition(0); setOutcomes({}); setAnswers({}); }}
           label="Shell"
         />
-      </div>
+      </div>}
 
-      <div className="activity-centre" data-world={world?.slug}>
+      <div className={`activity-centre${spot ? " relationship-run" : ""}`} data-world={world?.slug}>
+        {spot && <header className="relationship-run-header"><button type="button" onClick={() => { setPreviewRun(prev => prev + 1); setPosition(0); setOutcomes({}); setAnswers({}); }}>Reset preview</button><span className="relationship-run-title">Spot the Relationship</span><ActivityProgress variant="relationship" completed={Object.keys(outcomes).length} total={activity.items.length} /></header>}
         <div className="grid min-h-[720px] grid-cols-1 md:grid-cols-[minmax(320px,42%)_1fr]">
           <aside
             className="ac-yard-band relative flex min-h-[200px] flex-col md:min-h-[560px]"
@@ -366,16 +376,18 @@ function ShellPanel() {
           </aside>
           <main className="bg-[hsl(var(--aw-page,var(--background)))]">
             <ActivityQuestionStack
+              key={`${slug}:${previewRun}`}
               items={activity.items}
               format={activity.item_format}
               coach={activity.instructions?.coach}
               answerLabel={activity.instructions?.answer_label}
-              answerPlaceholder={activity.instructions?.answer_placeholder}
+              answerPlaceholder={spot ? RELATIONSHIP_ANSWER_PROMPT : activity.instructions?.answer_placeholder}
               promptInWorld={Boolean(stage && world?.carriesPrompt)}
-              activeIndex={0}
-              onResolved={() => {}}
-              onRecord={async () => {}}
-              onNext={() => {}}
+              activeIndex={position}
+              fastPath={world?.fastPath}
+              onResolved={(order, verdict) => setOutcomes(prev => ({ ...prev, [order]: verdict }))}
+              onRecord={async ({ itemOrder, responseText }) => { setAnswers(prev => ({ ...prev, [itemOrder]: responseText })); }}
+              onNext={() => setPosition(prev => Math.min(activity.items.length - 1, prev + 1))}
             />
           </main>
         </div>
