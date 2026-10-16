@@ -54,6 +54,8 @@ export interface SectionLaunchFrameProps {
    */
   sectionsFirst?: boolean;
   onExit?: () => void;
+  /** A smaller entrance for the embedded Reading Center library. */
+  compact?: boolean;
 
 }
 
@@ -161,6 +163,7 @@ export function SectionLaunchFrame({
   children,
   sectionsFirst = false,
   onExit,
+  compact = false,
 
 }: SectionLaunchFrameProps) {
   const reduced = useReducedMotion();
@@ -251,7 +254,7 @@ export function SectionLaunchFrame({
   const current = beats[beat];
 
   return (
-    <div className="sl">
+    <div className={compact ? "sl sl-compact" : "sl"}>
       {/* ---------------------------------------------------------------- hero */}
       <section className="rd-hero" ref={heroRef} aria-labelledby="rd-title">
         <div className="rd-hero-panel">

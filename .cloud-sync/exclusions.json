@@ -328,11 +328,27 @@
     "reason": "credential assignment redacted in snapshot"
   },
   {
+    "path": "verification/compact-lr-2026-10-16/build.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "verification/compact-lr-2026-10-16/tests.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "verification/reading-center-hub-2026-10-15/build.log",
     "reason": "excluded file"
   },
   {
     "path": "verification/reading-center-hub-2026-10-15/tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "verification/reading-center-integrated-2026-10-16/build.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "verification/reading-center-integrated-2026-10-16/tests.log",
     "reason": "excluded file"
   }
 ]

@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-16",
+  "commit": "1c247a0c140f8243bd7b63533e35f8899231a774",
+  "deploymentId": "c28decb7-a3b5-49c5-aead-2b5a09c51b61",
+  "projectId": "53b9a6f2-aba7-4ae4-8dd1-fa5b8aab4d76",
+  "testsPassed": 169,
+  "testFiles": 29,
+  "build": "passed",
+  "safePushTypecheck": "passed",
+  "scopedLint": "passed",
+  "review": "no high-confidence bugs",
+  "liveAsset": "/assets/index-Der6UY5S.js",
+  "liveVerified": true,
+  "liveChecks": ["Compact LR introduction", "No duplicate aggregate progress", "Section chooser", "Reading Progress LR history", "Speed Reading Overview and Charts", "No console errors"]
+}

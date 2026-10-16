@@ -3,6 +3,8 @@ import type { Passage, Progress, ReadingSession } from "./types";
 import { effectiveWpm } from "./timing";
 import { RC_RRC_PATH, rcReaderPath } from "./routes";
 
+export type DashboardPassage = Pick<Passage, "id" | "slug" | "title">;
+
 export interface RecentReadingActivity {
   id: string;
   title: string;
@@ -27,7 +29,7 @@ export function readingDashboard(
   assignments: ActivityAssignmentSummary[],
   grades: SectionGradeStub[],
   sessions: ReadingSession[],
-  passages: Passage[],
+  passages: DashboardPassage[],
   progress: Progress[],
 ) {
   const ownSections = assignments.filter(a => a.student_id === userId && a.mode === "section" && !a.revoked_at);

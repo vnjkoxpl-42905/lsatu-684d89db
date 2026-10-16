@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppShell, useAppTheme } from './AppShell';
@@ -14,6 +14,7 @@ vi.mock('./AddText', () => ({ AddTextScreen: () => <div>Add text dialog</div> })
 
 beforeEach(() => {
   state.allowed = true; state.theme = 'dark'; state.admin = false;
+  Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1024 });
   Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn(() => ({
     matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn(),
   })) });
@@ -46,6 +47,26 @@ describe('Reading Center activity rail', () => {
     expect(screen.queryByRole('button', { name: 'Add Text' })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Reading Center home' })).toHaveAttribute('href', '/reading-center/rrc');
     expect(screen.getByRole('link', { name: 'LSAT U Home' })).toHaveAttribute('href', '/classroom');
+  });
+  it('gives a narrow LR stage the full width and opens navigation as a drawer', () => {
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 320 });
+    shell(true);
+    expect(screen.getByRole('heading', { name: 'Existing LR collection' })).toBeInTheDocument();
+    const menu = screen.getByRole('button', { name: 'Open Reading Center menu' });
+    expect(menu).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'LR Recall' })).not.toBeInTheDocument();
+    expect(document.getElementById('reading-center-navigation')).toBeNull();
+    fireEvent.click(menu);
+    expect(menu).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('link', { name: 'LR Recall' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Close menu' }));
+    expect(menu).toHaveAttribute('aria-expanded', 'false');
+    expect(document.getElementById('reading-center-navigation')).toBeNull();
+    fireEvent.click(menu);
+    expect(screen.getByRole('dialog', { name: 'Reading Center navigation' })).toBeInTheDocument();
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(menu).toHaveFocus();
   });
 });
 

@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-16",
+  "commit": "04d2569e8afc1cd76dabcd75be0d8349aca692ff",
+  "projectId": "53b9a6f2-aba7-4ae4-8dd1-fa5b8aab4d76",
+  "deploymentId": "18f86dab-ff2b-42e3-ba82-a00b6a587469",
+  "url": "https://lsatprep.study/reading-center",
+  "palette": "Pure White",
+  "tests": { "passed": 143, "files": 25 },
+  "productionBuild": "passed",
+  "safePushTypecheck": "passed",
+  "lovableCommitMatched": true,
+  "liveAsset": "/assets/index-z7PYazhb.js",
+  "liveVerified": true,
+  "liveChecks": ["Dashboard default and own statistics", "LR Recall sidebar and white surfaces", "Speed Reading three imported passages", "No console errors"]
+}

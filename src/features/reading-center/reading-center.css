@@ -190,6 +190,17 @@
 [data-reading-activity="rrc"] .sl .rd-voice {
   background: var(--rd-paper-2);
 }
+/* The rail changes the available stage width independently of the viewport. */
+[data-reading-activity="rrc"] { container-type: inline-size; }
+[data-reading-activity="rrc"] .sl-theatre-chapter,
+[data-reading-activity="rrc"] .sl-theatre-chapters > li { min-width: 0; }
+[data-reading-activity="rrc"] .sl-theatre-cap { flex-wrap: wrap; }
+@container (max-width: 760px) {
+  [data-reading-activity="rrc"] .sl-theatre-chapters {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
 @media (min-width: 1181px) {
   .rc-root .rc-reader-footer { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .rc-root .rc-reader-keyboard { display: flex; }

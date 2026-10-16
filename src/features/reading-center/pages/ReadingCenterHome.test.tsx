@@ -9,8 +9,7 @@ const state = vi.hoisted(() => ({ recall: { data: { assignments: [], grades: [] 
   sessions: { data: [], isLoading: false, isError: false, refetch: vi.fn() }, passages: { data: [], isLoading: false, isError: false, refetch: vi.fn() },
   progress: { data: [], isLoading: false, isError: false, refetch: vi.fn() } }));
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "me" } }) }));
-vi.mock("../hooks/useRecallDashboard", () => ({ useRecallDashboard: () => state.recall }));
-vi.mock("../hooks/useReadingCenterData", () => ({ useSessions: () => state.sessions, usePassages: () => state.passages, useProgressList: () => state.progress }));
+vi.mock("../hooks/useRecallDashboard", () => ({ useRecallDashboard: () => state.recall, useDashboardSessions: () => state.sessions, useDashboardProgress: () => state.progress, useDashboardPassages: () => state.passages }));
 vi.mock("recharts", () => ({ ResponsiveContainer: () => null, CartesianGrid: () => null, Line: () => null, LineChart: () => null, Tooltip: () => null, XAxis: () => null, YAxis: () => null }));
 
 let node: HTMLDivElement;

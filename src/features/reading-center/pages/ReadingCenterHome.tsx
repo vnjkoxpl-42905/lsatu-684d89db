@@ -2,8 +2,7 @@ import { ArrowRight, Clock3, Gauge, Mic } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useAuth } from "@/contexts/AuthContext";
-import { usePassages, useProgressList, useSessions } from "../hooks/useReadingCenterData";
-import { useRecallDashboard } from "../hooks/useRecallDashboard";
+import { useDashboardPassages, useDashboardProgress, useDashboardSessions, useRecallDashboard } from "../hooks/useRecallDashboard";
 import { readingDashboard, recordedTime } from "../lib/dashboard";
 import { RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_RRC_PATH } from "../lib/routes";
 
@@ -49,9 +48,9 @@ function Trend({ title, description, unit, points, loading, failed, empty, to, r
 export default function ReadingCenterHome() {
   const { user } = useAuth();
   const recall = useRecallDashboard();
-  const sessions = useSessions();
-  const passages = usePassages();
-  const progress = useProgressList();
+  const sessions = useDashboardSessions();
+  const passages = useDashboardPassages();
+  const progress = useDashboardProgress();
   const dashboard = readingDashboard(user?.id ?? "", recall.data?.assignments ?? [], recall.data?.grades ?? [], sessions.data ?? [], passages.data ?? [], progress.data ?? []);
   const recentLoading = recall.isLoading || passages.isLoading || progress.isLoading;
   const recentFailed = recall.isError || passages.isError || progress.isError;

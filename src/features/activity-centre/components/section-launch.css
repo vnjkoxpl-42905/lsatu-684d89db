@@ -2552,3 +2552,120 @@
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* The workspace library keeps the painted entrance and every instruction,
+   while the demonstration sizes its own space instead of reserving a screen.
+   Other section entrances retain the original proportions. */
+.sl-compact {
+  container-type: inline-size;
+}
+.sl-compact .rd-hero-panel {
+  min-height: 0;
+}
+.sl-compact .rd-hero-top {
+  padding: 16px 24px 0;
+}
+.sl-compact .rd-hero-copy {
+  padding: 18px 24px 0;
+}
+.sl-compact .sl-title {
+  margin-top: 14px;
+  font-size: clamp(36px, 5.6cqi, 64px);
+  line-height: 1.04;
+}
+.sl-compact .sl-tagline {
+  margin-top: 14px;
+  font-size: 16px;
+}
+.sl-compact .sl-cta {
+  margin-top: 18px;
+  gap: 8px 20px;
+}
+.sl-compact .rd-hero-space {
+  display: none;
+}
+.sl-compact .mw {
+  position: static;
+  overflow: visible;
+}
+.sl-compact .mw-stage {
+  position: relative;
+  bottom: auto;
+  padding: 22px 24px 48px;
+}
+.sl-compact .rd-demo {
+  width: min(720px, 100%);
+}
+.sl-compact .rd-demo-body {
+  grid-template-columns: 1.12fr 1fr;
+}
+.sl-compact .rd-paper,
+.sl-compact .rd-voice {
+  min-height: 210px;
+  padding: 14px 16px;
+}
+.sl-compact .rd-paper {
+  border-right: 1px solid var(--rd-line);
+  border-bottom: 0;
+}
+.sl-compact .rd-method,
+.sl-compact .rd-counts,
+.sl-compact .rd-slab {
+  padding-top: 32px;
+}
+.sl-compact .sl-runs {
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.42fr);
+}
+.sl-compact .sl-runs > div:first-child,
+.sl-compact .sl-aside {
+  padding: 20px;
+}
+.sl-compact .sl-door-demos {
+  padding-top: 32px;
+}
+.sl-compact .rd-counts {
+  padding-bottom: 32px;
+}
+@container (max-width: 760px) {
+  .sl-compact .sl-runs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sl-compact .sl-aside {
+    padding: 16px 20px;
+  }
+}
+@container (max-width: 600px) {
+  .sl-compact .rd-hero-copy {
+    padding: 16px 16px 0;
+  }
+  .sl-compact .sl-cta {
+    flex-direction: row;
+  }
+  .sl-compact .sl-start {
+    width: auto;
+  }
+  .sl-compact .mw-stage {
+    padding: 18px 14px 32px;
+  }
+  .sl-compact .rd-demo-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sl-compact .rd-paper,
+  .sl-compact .rd-voice {
+    min-height: 180px;
+  }
+  .sl-compact .rd-paper {
+    border-right: 0;
+    border-bottom: 1px solid var(--rd-line);
+  }
+  .sl-compact .rd-demo-title {
+    display: none;
+  }
+  .sl-compact .rd-method,
+  .sl-compact .rd-counts,
+  .sl-compact .rd-slab {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 24px;
+  }
+}

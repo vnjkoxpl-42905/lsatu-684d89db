@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
@@ -38,6 +38,8 @@ const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
 export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.ReactElement {
   const [narrow, setNarrow] = useState(() => window.innerWidth < 768);
   const [navOpen, setNavOpen] = useState(() => window.innerWidth >= 768);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const drawer = useRef<HTMLElement>(null);
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
     const change = () => { setNarrow(media.matches); setNavOpen(!media.matches); };
@@ -55,14 +57,39 @@ export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.Reac
   const { pathname } = useLocation();
   const onTags = pathname.startsWith(RC_TAGS_PATH);
   useEffect(() => { if (narrow) setNavOpen(false); }, [pathname, narrow]);
-  // Spreeder collapses the sidenav to a 90px icon rail rather than hiding it.
-  const rail = !navOpen;
+  useEffect(() => {
+    if (!narrow || !navOpen) return;
+    const controls = () => Array.from(drawer.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled])') ?? []);
+    controls()[0]?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { event.preventDefault(); setNavOpen(false); }
+      if (event.key !== 'Tab') return;
+      const items = controls();
+      const first = items[0], last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => { window.removeEventListener('keydown', handleKey); menuButton.current?.focus(); };
+  }, [narrow, navOpen]);
+  // Small screens give the activity the full stage; navigation opens over it.
+  const rail = !narrow && !navOpen;
 
   return (
-    <div className="relative flex min-h-screen" style={{ background: "var(--rc-page)", color: "var(--rc-text)" }}>
+    <div className="relative flex min-h-screen flex-col md:flex-row" style={{ background: "var(--rc-page)", color: "var(--rc-text)" }}>
+      {narrow && <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-3 border-b px-3" style={{ background: "var(--rc-sidenav)", color: "var(--rc-nav-text)" }}>
+        <button ref={menuButton} type="button" aria-label="Open Reading Center menu" aria-expanded={navOpen} aria-controls="reading-center-navigation" onClick={() => setNavOpen(true)} className="flex h-11 w-11 items-center justify-center rounded-lg hover:bg-[var(--rc-nav-hover)]">
+          <Icon name="menu" size={24} />
+        </button>
+        <span className="text-base font-semibold">Reading Center</span>
+      </header>}
       {narrow && navOpen && <button type="button" aria-label="Close menu" onClick={() => setNavOpen(false)} className="fixed inset-0 z-30 bg-black/40" />}
-      {narrow && navOpen && <div className="w-[90px] shrink-0" />}
-      <aside
+      {(!narrow || navOpen) && <aside
+        ref={drawer}
+        id="reading-center-navigation"
+        role={narrow ? 'dialog' : undefined}
+        aria-modal={narrow ? true : undefined}
+        aria-label={narrow ? 'Reading Center navigation' : undefined}
         className={`${narrow && navOpen ? "fixed left-0 z-40" : "sticky"} top-0 h-screen shrink-0 overflow-y-auto transition-[width] duration-200`}
         style={{ width: rail ? 90 : 230, background: "var(--rc-sidenav)", borderRight: "0.8px solid rgba(128,128,128,.15)" }}
       >
@@ -130,7 +157,7 @@ export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.Reac
             </nav>
           </>
         )}
-      </aside>
+      </aside>}
       <div className="min-w-0 flex-1">
         <Outlet />
       </div>
