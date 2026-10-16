@@ -1,0 +1,612 @@
+[
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "“Hot spot” is a term that ecologists use to describe those habitats with the greatest concentrations of species found only in one place-so-called “endemic” species. Many of these hot spots are vulnerable to habitat loss due to commercial development. Furthermore, loss of endemic species accounts for most modern-day extinctions. Thus, given that only a limited number of environmental battles can be waged, it would be reasonable for organizations dedicated to preserving species to _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "try to help only those species who are threatened with extinction because of habitat loss",
+      "B": "concentrate their resources on protecting hot spot habitats",
+      "C": "treat all endemic species as equally valuable and equally in need of preservation",
+      "D": "accept that most endemic species will become extinct",
+      "E": "expand the definition of “hot spot” to include vulnerable habitats that are not currently home to many endangered species"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Logical Completion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Principle: If you sell an item that you know to be defective, telling the buyer that the item is sound, you thereby commit fraud. Application: Wilton sold a used bicycle to Harris, knowing very little about its condition. Wilton told Harris that the bicycle was in good working condition, but Harris soon learned that the brakes were defective. Wilton was therefore guilty of fraud.",
+    "questionStem": "The application of the principle is most vulnerable to criticism on the grounds that",
+    "answerChoices": {
+      "A": "the application fails to establish whether Wilton was given the opportunity to repair the brakes",
+      "B": "the application fails to indicate how much money Wilton received for the bicycle",
+      "C": "the application uses the word “defective” in a sense that is crucially different from how it is used in the statement of the principle",
+      "D": "Harris might not have believed Wilton’s statement about the bicycle’s condition",
+      "E": "asserting something without justification is not the same as asserting something one knows to be false"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Engine noise from boats traveling through killer whales’ habitats ranges in frequency from 100 hertz to 3,000 hertz, an acoustical range that overlaps that in which the whales communicate through screams and squeals. Though killer whales do not seem to behave differently around running boat engines, engine noise from boats can be loud enough to damage their hearing over time. Therefore, _______ .",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "younger killer whales are better able to tolerate engine noise from boats than older whales are",
+      "B": "killer whales are less likely to attempt to communicate with one another when boat engines are operating nearby",
+      "C": "noise from boat engines may impair killer whales’ ability to communicate",
+      "D": "killer whales are most likely to prefer areas where boat traffic is present, but light",
+      "E": "killer whales would probably be more successful in finding food if boats did not travel through their habitats"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Journalist: A manufacturers’ trade group that has long kept its membership list secret inadvertently sent me a document listing hundreds of manufacturing companies. A representative of the trade group later confirmed that every company listed in the document does indeed belong to the trade group. Because Bruch Industries is not listed on the document, it is evidently not a member of the trade group.",
+    "questionStem": "The journalist’s reasoning in the argument is flawed in that the journalist",
+    "answerChoices": {
+      "A": "gives no reason to think that Bruch Industries would want to belong to the trade group",
+      "B": "does not present any evidence that the document names every member of the trade group",
+      "C": "does not explain how it is that the trade group could have inadvertently sent out a secret document",
+      "D": "presents no reason why Bruch Industries would not want its membership in the trade group to be known",
+      "E": "takes for granted the accuracy of a statement by a representative who had a reason to withhold information"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Peter: Unlike in the past, most children’s stories nowadays don’t have clearly immoral characters in them. They should, though. Children need to learn the consequences of being bad. Yoko: Children’s stories still tend to have clearly immoral characters in them, but now these characters tend not to be the sort that frighten children. Surely that’s an improvement.",
+    "questionStem": "Peter and Yoko disagree over whether today’s children’s stories",
+    "answerChoices": {
+      "A": "should be less frightening than they are",
+      "B": "tend to be less frightening than earlier children’s stories were",
+      "C": "differ significantly in overall quality from earlier children’s stories",
+      "D": "tend to have clearly immoral characters in them",
+      "E": "should help children learn the consequences of being bad"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Local resident: An overabundance of algae must be harmful to the smaller fish in this pond. During the fifteen or so years that I have lived here, the few times that I have seen large numbers of dead small fish wash ashore in late summer coincide exactly with the times that I have noticed abnormally large amounts of algae in the water.",
+    "questionStem": "The local resident’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that smaller fish are somehow more susceptible to harm as a result of overabundant algae than are larger fish",
+      "B": "fails to consider that the effects on smaller fish of overabundant algae may be less severe in larger bodies of water with more diverse ecosystems",
+      "C": "ignores the possibility that the same cause might have different effects on fish of different sizes",
+      "D": "ignores the possibility that the overabundance of algae and the deaths of smaller fish are independent effects of a common cause",
+      "E": "ignores the possibility that below-normal amounts of algae are detrimental to the pond’s smaller fish"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Tanner: The public should demand political debates before any election. V oters are better able to choose the candidate best suited for office if they watch the candidates seriously debate one another. Saldana: Political debates almost always benefit the candidate who has the better debating skills. Thus, they don’t really help voters determine which candidate is most qualified for office.",
+    "questionStem": "The dialogue provides the most support for the claim that Tanner and Saldana disagree over which one of the following?",
+    "answerChoices": {
+      "A": "Political candidates with strong debating skills are more likely to win elections than those with weak debating skills.",
+      "B": "A voter who watches a political debate will likely be better able, as a result, to determine which candidate is more qualified for office.",
+      "C": "Debating skills are of little use to politicians in doing their jobs once they are elected to office.",
+      "D": "The candidates with the best debating skills are the ones who are most qualified for the political offices for which they are running.",
+      "E": "Political debates tend to have a major effect on which candidate among those participating in a debate will win the election."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A recent study shows that those highways that carry the most traffic, and thus tend to be the most congested, have the lowest rate of fatal traffic accidents.",
+    "questionStem": "Which one of the following, if true, most helps to explain the phenomenon described above?",
+    "answerChoices": {
+      "A": "Drivers have more accidents when they become distracted.",
+      "B": "The highways that have the highest rate of fatal accidents have moderate volumes of traffic.",
+      "C": "Most of the motorists on very heavily traveled highways tend to be commuting to or from work.",
+      "D": "Most serious accidents occur when vehicles are moving at a high rate of speed.",
+      "E": "Heavily traveled highways do not always carry a higher proportion of large trucks."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In some jurisdictions, lawmakers have instituted sentencing guidelines that mandate a penalty for theft that is identical to the one they have mandated for bribery. Hence, lawmakers in those jurisdictions evidently consider the harm resulting from theft to be equal to the harm resulting from bribery.",
+    "questionStem": "Which one of the following, if true, would most strengthen the argument?",
+    "answerChoices": {
+      "A": "In general, lawmakers mandate penalties for crimes that are proportional to the harm they believe to result from those crimes.",
+      "B": "In most cases, lawmakers assess the level of harm resulting from an act in determining whether to make that act illegal.",
+      "C": "Often, in response to the unusually great harm resulting from a particular instance of a crime, lawmakers will mandate an increased penalty for that crime.",
+      "D": "In most cases, a victim of theft is harmed no more than a victim of bribery is harmed.",
+      "E": "If lawmakers mandate penalties for crimes that are proportional to the harm resulting from those crimes, crime in those lawmakers’ jurisdictions will be effectively deterred."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Role",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "People often admonish us to learn the lessons of history, but, even if it were easy to discover what the past was really like, it is nearly impossible to discover its lessons. We are supposed, for example, to learn the lessons of World War I. But what are they? And were we ever to discover what they are, it is not clear that we could ever apply them, for we shall never again have a situation just like World War I.",
+    "questionStem": "That we should learn the lessons of history figures in the argument in which one of the following ways?",
+    "answerChoices": {
+      "A": "It sets out a problem the argument as a whole is designed to resolve.",
+      "B": "It is compatible with accepting the argument’s conclusion and with denying it.",
+      "C": "It is a position that the argument simply takes for granted is false.",
+      "D": "It expresses the position the argument as a whole is directed toward discrediting.",
+      "E": "It is an assumption that is required in order to establish the argument’s conclusion."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Sigerson argues that the city should adopt ethical guidelines that preclude its politicians from accepting campaign contributions from companies that do business with the city. Sigerson’s proposal is dishonest, however, because he has taken contributions from such companies throughout his career in city politics.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "confuses a sufficient condition for adopting ethical guidelines for politicians with a necessary condition for adopting such guidelines",
+      "B": "rejects a proposal on the grounds that an inadequate argument has been given for it",
+      "C": "fails to adequately address the possibility that other city politicians would resist Sigerson’s proposal",
+      "D": "rejects a proposal on the grounds that the person offering it is unfamiliar with the issues it raises",
+      "E": "overlooks the fact that Sigerson’s proposal would apply only to the future conduct of city politicians"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Some gardening books published by Garden Path Press recommend tilling the soil and adding compost before starting a new garden on a site, but they do not explain the difference between hot and cold composting. Since any gardening book that recommends adding compost is flawed if it does not explain at least the basics of composting, some books published by Garden Path are flawed.",
+    "questionStem": "The argument requires the assumption that",
+    "answerChoices": {
+      "A": "some gardening books that recommend tilling the soil and adding compost before starting a new garden are not flawed",
+      "B": "gardeners should not add compost to the soil unless they have a thorough understanding of composting",
+      "C": "an explanation of the basics of composting must include an explanation of the difference between hot and cold composting",
+      "D": "everyone who understands the difference between hot and cold composting understands at least the basics of composting",
+      "E": "no gardening book that includes an explanation of at least the basics of composting is flawed"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Conditional Diagramming",
+      "Conditional Conclusion",
+      "Untriggered Conditional",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Astronomers have found new evidence that the number of galaxies in the universe is not 10 billion, as previously believed, but 50 billion. This discovery will have an important effect on theories about how galaxies are formed. But even though astronomers now believe 40 billion more galaxies exist, many astronomers’ estimates of the universe’s total mass remain virtually unchanged.",
+    "questionStem": "Which one of the following, if true, does most to explain why the estimates remain virtually unchanged?",
+    "answerChoices": {
+      "A": "The mass of galaxies is thought to make up only a tiny percentage of the universe’s total mass.",
+      "B": "The overwhelming majority of galaxies are so far from Earth that their mass can be only roughly estimated.",
+      "C": "The number of galaxies that astronomers believe exist tends to grow as the instruments used to detect galaxies become more sophisticated.",
+      "D": "Theories about how galaxies are formed are rarely affected by estimates of the universe’s total mass.",
+      "E": "There is no consensus among astronomers on the proper procedures for estimating the universe’s total mass."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Newspaper subscriber: Arnot’s editorial argues that by making certain fundamental changes in government we would virtually eliminate our most vexing social ills. But clearly this conclusion is false. After all, the argument Arnot makes for this claim depends on the dubious assumption that government can be trusted to act in the interest of the public.",
+    "questionStem": "Which one of the following most accurately expresses a flaw in the argument’s reasoning?",
+    "answerChoices": {
+      "A": "it repudiates a claim merely on the grounds that an inadequate argument has been given for it",
+      "B": "it treats a change that is required for virtual elimination of society’s most vexing social ills as a change that will guarantee the virtual elimination of those ills",
+      "C": "it fails to consider that, even if an argument’s conclusion is false, some of the assumptions used to justify that conclusion may nonetheless be true",
+      "D": "it distorts the opponent’s argument and then attacks this distorted argument",
+      "E": "it uses the key term “government” in one sense in a premise and in another sense in the conclusion"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Columnist: Shortsighted motorists learn the hard way about the wisdom of preventive auto maintenance; such maintenance almost always pays off in the long run. Our usually shortsighted city council should be praised for using similar wisdom when they hired a long-term economic development adviser. In hiring this adviser, the council made an investment that is likely to have a big payoff in several years. Other cities in this region that have devoted resources to economic development planning have earned large returns on such an investment.",
+    "questionStem": "Which one of the following, if true, most weakens the columnist’s argument?",
+    "answerChoices": {
+      "A": "Even some cars that receive regular preventive maintenance break down, requiring costly repairs.",
+      "B": "The columnist’s city has a much smaller population and economy than the other cities did when they began devoting resources to economic development planning.",
+      "C": "Most motorists who fail to perform preventive maintenance on their cars do so for nonfinancial reasons.",
+      "D": "Qualified economic development advisers generally demand higher salaries than many city councils are willing to spend.",
+      "E": "Cities that have earned large returns due to hiring economic development advisers did not earn any returns at all in the advisers’ first few years of employment."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Editorial: Cell-phone usage on buses and trains is annoying to other passengers. This suggests that recent proposals to allow use of cell phones on airplanes are ill-advised. Cell-phone use would be far more upsetting on airplanes than it is on buses and trains. Airline passengers are usually packed in tightly. And if airline passengers are offended by the cell-phone excesses of their seatmates, they often cannot move to another seat.",
+    "questionStem": "Which one of the following most accurately describes the role played in the editorial’s argument by the statement that cell-phone use would be far more upsetting on airplanes than it is on buses and trains?",
+    "answerChoices": {
+      "A": "It is the main conclusion of the argument.",
+      "B": "It is a claim that the argument tries to rebut.",
+      "C": "It is a premise that indirectly supports the main conclusion of the argument by supporting a premise for that conclusion.",
+      "D": "It is a conclusion for which support is provided and that itself is used in turn to directly support the argument’s main conclusion.",
+      "E": "It provides background information that plays no role in the reasoning in the argument."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Science writer: The deterioration of cognitive faculties associated with Alzheimer’s disease is evidently caused by the activities of microglia-the brain’s own immune cells. For one thing, this deterioration can be slowed by some anti-inflammatory drugs, such as acetylsalicylic acid. Furthermore, patients with Alzheimer’s are unable to eliminate the protein BA from the brain, where it accumulates and forms deposits. The microglia attack these protein deposits by releasing poisons that destroy surrounding healthy brain cells, thereby impairing the brain’s cognitive functions.",
+    "questionStem": "Which one of the following, if true, most helps to support the science writer’s argument?",
+    "answerChoices": {
+      "A": "The inability of Alzheimer’s patients to eliminate the protein BA from the brain is due to a deficiency in the brain’s immune system.",
+      "B": "Acetylsalicylic acid reduces the production of immune cells in the brain.",
+      "C": "The activity of microglia results in a decrease in the buildup of protein deposits in the brain.",
+      "D": "The protein BA directly interferes with the cognitive functions of the brain.",
+      "E": "Immune reactions by microglia occur in certain diseases of the brain other than Alzheimer’s."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science",
+      "Focused on Evidence",
+      "Explain Curious Fact",
+      "Breadcrumbs",
+      "Medical",
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Lawyer: One is justified in accessing information in computer files without securing authorization from the computer’s owner only if the computer is typically used in the operation of a business. If, in addition, there exist reasonable grounds for believing that such a computer contains data usable as evidence in a legal proceeding against the computer’s owner, then accessing the data in those computer files without the owner’s authorization is justified.",
+    "questionStem": "The principles stated by the lawyer most strongly support which one of the following judgments?",
+    "answerChoices": {
+      "A": "Rey gave his friend Sunok a key to the store where he worked and asked her to use the store owners’ computer to look up their friend Jim’s phone number, which Rey kept on the computer. Because Sunok had Rey’s permission, her action was justified.",
+      "B": "Police department investigators accessed the electronic accounting files of the central computer owned by a consulting firm that was on trial for fraudulent business practices without seeking permission from the firm’s owners. Contrary to the investigators’ reasonable beliefs, however, the files ultimately provided no evidence of wrongdoing. Nevertheless, the investigators’ action was justified.",
+      "C": "A police officer accessed, without Natalie’s permission, files on the computer that Natalie owned and used exclusively in the operation of her small business. Since the police officer’s search of the files on Natalie’s computer produced no evidence usable in any legal proceeding against Natalie, the police officer’s action was clearly not justified.",
+      "D": "Customs officials examined all of the files stored on a laptop computer confiscated from an importer whom they suspected of smuggling. Because there were reasonable grounds for believing that the computer had typically been used in the operation of the importer’s legitimate business, the customs officials’ action was justified.",
+      "E": "Against the company owner’s wishes, a police officer accessed some of the files on one of the company’s computers. Although the computer was typically used in the operation of the company’s business, the particular files accessed by the police officer were personal letters written by one of the company’s employees. Thus, the police officer’s unauthorized use of the computer was not justified."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The conventional process for tanning leather uses large amounts of calcium oxide and sodium sulfide. Tanning leather using biological catalysts costs about the same as using these conventional chemicals if the cost of waste disposal is left out of the comparison. However, nearly 20 percent less waste is produced with biological catalysts, and waste disposal is a substantial part of the overall cost of tanning. It is therefore less costly to tan leather if biological catalysts are used instead.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Leather tanned using the conventional process is not lower in quality than is leather tanned using biological catalysts.",
+      "B": "The biological catalysts that can be used in the tanning process are less costly by weight than are calcium oxide and sodium sulfide.",
+      "C": "New technological innovations have recently made the use of biological catalysts in the tanning process much more cost effective.",
+      "D": "Disposal of tanning waste produced with biological catalysts does not cost significantly more than disposal of the same amount of waste produced with the conventional process.",
+      "E": "The labor costs associated with tanning leather using biological catalysts are not any greater than the labor costs associated with the conventional tanning process."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Assumes Similarity",
+      "Defender",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "One should not play a practical joke on someone if it shows contempt for that person or if one believes it might bring significant harm to that person.",
+    "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
+    "answerChoices": {
+      "A": "I should not have played that practical joke on you yesterday. Even if it was not contemptuous, I should have realized that it would bring significant harm to someone.",
+      "B": "I have no reason to think that the practical joke I want to play would harm anyone. So, since the joke would show no contempt for the person the joke is played on, it would not be wrong for me to play it.",
+      "C": "Because of the circumstances, it would be wrong for me to play the practical joke I had intended to play on you. Even though it would not show contempt for anyone, it could easily bring you significant harm.",
+      "D": "It would have been wrong for me to play the practical joke that I had intended to play on you. Even though I did not have reason to think that it would significantly harm anyone, I did think that it would show contempt for someone.",
+      "E": "Someone was harmed as a result of my practical joke. Thus, even though it did not show contempt for the person I played the joke on, I should not have played it."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Economics professor: Marty’s Pizza and Checkers Pizza are the two major pizza parlors in our town. Marty’s sold coupon books including coupons good for one large plain pizza at any local pizza parlor, at Marty’s expense. But Checkers refused to accept these coupons, even though they were redeemed by all other local pizza parlors. Accepting them would have cost Checkers nothing and would have satisfied those of its potential customers who had purchased the coupon books. This shows that Checkers’s motive in refusing to accept the coupons was simply to hurt Marty’s Pizza.",
+    "questionStem": "Which one of the following, if assumed, enables the economics professor’s conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "Any company that refuses to accept coupons issued by a competitor when doing so would satisfy some of the company’s potential customers is motivated solely by the desire to hurt that competitor.",
+      "B": "Any company that wishes to hurt a competitor by refusing to accept coupons issued by that competitor will refuse to accept them even when accepting them would cost nothing and would satisfy its potential customers.",
+      "C": "At least one company has refused to accept coupons issued by its major local competitor simply in order to hurt that competitor, even though those coupons were accepted by all other local competitors.",
+      "D": "Any company that accepts its major competitor’s coupons helps its competitor by doing so, even if it also satisfies its own actual or potential customers.",
+      "E": "If accepting coupons issued by a competitor would not enable a company to satisfy its actual or potential customers, then that company’s refusal to accept the coupons is motivated by the desire to satisfy customers."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Science writer: Scientists’ astounding success rate with research problems they have been called upon to solve causes the public to believe falsely that science can solve any problem. In fact, the problems scientists are called upon to solve are typically selected by scientists themselves. When the problems are instead selected by politicians or business leaders, their formulation is nevertheless guided by scientists in such a way as to make scientific solutions feasible. Scientists are almost never asked to solve problems that are not subject to such formulation.",
+    "questionStem": "The science writer’s statements, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "If a problem can be formulated in such a way as to make a scientific solution feasible, scientists will usually be called upon to solve that problem.",
+      "B": "Any problem a scientist can solve can be formulated in such a way as to make a scientific solution feasible.",
+      "C": "Scientists would probably have a lower success rate with research problems if their grounds for selecting such problems were less narrow.",
+      "D": "Most of the problems scientists are called upon to solve are problems that politicians and business leaders want solved, but whose formulation the scientists have helped to guide.",
+      "E": "The only reason for the astounding success rate of science is that the problems scientists are called upon to solve are usually selected by the scientists themselves."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Most auto mechanics have extensive experience. Furthermore, most mechanics with extensive experience understand electronic circuits. Thus, most auto mechanics understand electronic circuits.",
+    "questionStem": "The pattern of flawed reasoning in which one of the following arguments is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "During times of the year when automobile traffic increases, gas prices also increase. Increases in gas prices lead to increases in consumer complaints. Thus, increased automobile traffic causes increased consumer complaints.",
+      "B": "The most common species of birds in this region are migratory. Moreover, most migratory birds have left this region by the end of November. Hence, few birds remain in this region during the winter.",
+      "C": "It is not surprising that most speeding tickets in this region are issued to drivers of sports cars. After all, most drivers who are not interested in driving fast do not buy sports cars.",
+      "D": "Most nature photographers find portrait photography boring. Moreover, most portrait photographers especially enjoy photographing dignitaries. Thus, most nature photographers find photographing dignitaries especially boring.",
+      "E": "Most snow-removal companies run lawn-care services during the summer. Also, most companies that run lawn-care services during the summer hire additional workers in the summer. Thus, most snow-removal companies hire additional workers in the summer."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "If one wants to succeed, then one should act as though one were genuinely confident about one’s abilities, even if one actually distrusts one’s skills. Success is much more easily obtained by those who genuinely believe themselves capable of succeeding than by those filled with self-doubts.",
+    "questionStem": "Which one of the following statements, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Those who convince others that they are capable of succeeding usually have few self-doubts.",
+      "B": "Genuine confidence is often a by-product of pretended self-confidence.",
+      "C": "Success is usually more a matter of luck or determination than of skill.",
+      "D": "Many people who behave in a self-confident manner are genuinely confident about their abilities.",
+      "E": "Self-doubt can hamper as well as aid the development of the skills necessary for success."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Journalist: The trade union members at AutoFaber Inc. are planning to go on strike. Independent arbitration would avert a strike, but only if both sides agree to accept the arbitrator’s recommendations as binding. However, based on past experience, the union is quite unlikely to agree to this, so a strike is likely.",
+    "questionStem": "Which one of the following arguments exhibits a pattern of reasoning most similar to that exhibited by the journalist’s argument?",
+    "answerChoices": {
+      "A": "The company will downsize unless more stock is issued. Furthermore, if the company downsizes, the shareholders will demand a change. Since no more stock is being issued, we can be sure that the shareholders will demand a change.",
+      "B": "Rodriguez will donate her paintings to the museum only if the new wing is named after her. The only other person the new wing could be named after is the museum’s founder, Wu. But it was decided yesterday that the gardens, not the new wing, would be named after Wu. So Rodriguez will donate her paintings to the museum.",
+      "C": "Reynolds and Khripkova would not make suitable business partners, since they are constantly squabbling, whereas good business partners know how to get along with each other most of the time and, if they quarrel, know how to resolve their differences.",
+      "D": "Lopez will run in tomorrow’s marathon. Lopez will win the marathon only if his sponsors do a good job of keeping him hydrated. But his sponsors are known to be poor at keeping their athletes hydrated. So it is probable that Lopez will not win the marathon.",
+      "E": "The new course in microeconomics is offered either in the fall or in the spring. The new course will be offered in the spring if there is a qualified instructor available. Since the economics department currently lacks a qualified instructor for such courses, however, the course will not be offered in the spring."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT134",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Acquiring complete detailed information about all the pros and cons of a product one might purchase would clearly be difficult and expensive. It is rational not to acquire such information unless one expects that the benefits of doing so will outweigh the cost and difficulty of doing so. Therefore, consumers who do not bother to acquire such information are thereby behaving rationally.",
+    "questionStem": "The conclusion of the argument is properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Rational consumers who do not expect that the benefits outweigh the cost and difficulty of acquiring detailed information about a product they might purchase usually do not bother to acquire such information.",
+      "B": "Whenever it is rational not to acquire detailed information about a product, it would be irrational to bother to acquire such information.",
+      "C": "The benefits of acquiring detailed information about a product one might purchase usually do not outweigh the cost and difficulty of doing so.",
+      "D": "Rational consumers usually expect that the benefits of acquiring detailed information about a product they might purchase would not outweigh the cost and difficulty of doing so.",
+      "E": "Consumers who do not bother to acquire complete detailed information about a product they might purchase do not expect that the benefits of acquiring such information will outweigh the cost and difficulty of doing so."
+    },
+    "correctAnswer": "E"
+  }
+]

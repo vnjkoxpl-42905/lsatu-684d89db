@@ -1,0 +1,104 @@
+{
+  "date": "2026-09-30",
+  "mechanism": "Managed SQL with authenticated role and explicit non-admin tester claims; not HTTP/JWT proof",
+  "alwaysRollback": true,
+  "expectedAbort": "ZQ999",
+  "persistentRowsCreated": 0,
+  "recordsDeleted": 0,
+  "checks": [
+    {
+      "table": "attempts",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "attempts",
+      "outcome": "FAIL-insert-permitted-rolled-back",
+      "variant": "mixed-attribution",
+      "errorClass": "ZQ002",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "rc_drill_sessions",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "rc_attempts",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "bootcamp_kv",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "guided_drill_assignments",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "activity_assignments",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "activity_item_responses",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "homework_assignments",
+      "outcome": "unverified-no-fixture",
+      "variant": "foreign-owner",
+      "foreignFixtureExists": false
+    },
+    {
+      "table": "practice_test_runs",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "classroom_items",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    },
+    {
+      "table": "section_history",
+      "outcome": "PASS-RLS-denied",
+      "variant": "foreign-owner",
+      "errorClass": "42501",
+      "foreignFixtureExists": true,
+      "positiveCandidateValid": true
+    }
+  ]
+}

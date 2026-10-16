@@ -1,0 +1,613 @@
+[
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Francis: Failure to become properly registered to vote prevents one-third of the voting-age citizens of Lagonia from voting. If local election boards made the excessively cumbersome registration process easier, more people would register  and vote. \nSharon: The high number of citizens not registered to vote has persisted despite many attempts to make registering easier. Surveys show that most of these citizens believe that their votes would not make a difference. Until that belief is changed, simplifying the registration process will not increase the percentage of citizens registering to vote.",
+    "questionStem": "The main issue in dispute between Francis and Sharon is",
+    "answerChoices": {
+      "A": "whether changing the voter registration process would be cumbersome",
+      "B": "why so many citizens do not register to vote",
+      "C": "what percentage of those registered to vote actually vote",
+      "D": "whether local election boards have simplified the registration process",
+      "E": "why the public lacks confidence in the effects of voting"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Advertisement: Anyone who thinks moisturizers are not important for beautiful skin should consider what happens to the earth, the skin of the world, in times of drought. Without regular infusions of moisture the ground becomes lined and cracked and its lush loveliness fades away. Thus your skin, too, should be protected from the ravages caused by lack of moisture; give it the protection provided by regular infusions of Dewyfresh, the drought-defying moisturizer.",
+    "questionStem": "The Dewyfresh advertisement exhibits which one of the following errors of reasoning?",
+    "answerChoices": {
+      "A": "It treats something that is necessary for bringing about a state of affairs as something that is sufficient to bring about that state of affairs.",
+      "B": "It treats the fact that two things regularly occur together as proof that there is a single thing that is the cause of them both.",
+      "C": "It overlooks the fact that changing what people think is the case does not necessarily change what is the case.",
+      "D": "It relies on the ambiguity of the term “infusion,” which can designate either a process or the product of that process.",
+      "E": "It relies on an analogy between two things that are insufficiently alike in the respects in which they would have to be alike for the conclusion to be supported."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Method",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "M: The Greek alphabet must have been invented by some individual who knew the Phoenician writing system and who wanted to have some way of recording Homeric epics and thereby preserving expressions of a highly developed tradition of oral poetry.\nP: Your hypothesis is laughable! What would have been the point of such a person’s writing Homeric epics down? Surely a person who knew them well enough to write them down would not need to read them; and no one else could read them, according to your hypothesis.",
+    "questionStem": "Which one of the following is an argumentative strategy that P uses in responding to M?",
+    "answerChoices": {
+      "A": "attacking M’s understanding of the literary value of oral poetry",
+      "B": "disagreeing with M’s thesis without attempting to refute it",
+      "C": "challenging M’s knowledge of the Phoenician writing system",
+      "D": "attempting to undermine M’s hypothesis by making it appear absurd",
+      "E": "providing an alternative interpretation of evidence put forward by M"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plausibility",
+      "2-Speaker",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "M: The Greek alphabet must have been invented by some individual who knew the Phoenician writing system and who wanted to have some way of recording Homeric epics and thereby preserving expressions of a highly developed tradition of oral poetry.\nP: Your hypothesis is laughable! What would have been the point of such a person’s writing Homeric epics down? Surely a person who knew them well enough to write\nthem down would not need to read them; and no one else could read them, according to your hypothesis.",
+    "questionStem": "P’s argument is vulnerable to which one of the following criticisms?",
+    "answerChoices": {
+      "A": "It fails to demonstrate that the Phoenician alphabet alone could have provided the basis for the Greek alphabet.",
+      "B": "It incorrectly assumes that the first text ever written in Greek was a Homeric poem.",
+      "C": "It confuses the requirements for a complex oral tradition with the requirements of a written language.",
+      "D": "It attempts to demonstrate the truth of a hypothesis merely by showing that it is possible.",
+      "E": "It overlooks the possibility that the person who invented the Greek alphabet did so with the intention of teaching it to others."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Bacteria from food can survive for several days on the surface of plastic cutting boards, but bacteria can penetrate wooden cutting boards almost immediately, leaving the surface free of contamination. Therefore, wooden cutting boards, unlike plastic cutting boards, need not be washed in order to prevent their contaminating food that is cut on them; wiping them off to remove food debris is sufficient.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Washing plastic cutting boards does not remove all bacteria from the surface.",
+      "B": "Prevention of bacterial contamination is the only respect in which wooden cutting boards are superior to plastic cutting boards.",
+      "C": "Food that is not already contaminated with bacteria can be contaminated only by being cut on contaminated cutting boards.",
+      "D": "Bacteria that penetrate into wooden cutting boards do not reemerge on the surface after the cutting boards have been used.",
+      "E": "Washing wooden cutting boards kills bacteria below the surface of the cutting boards."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Plans / Recommendations",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Asthmagon was long considered the most effective of the drugs known as beta-2 agonists, designed to alleviate asthma attacks. However, studies conducted in Rhiago between 1981 and 1987 revealed that nearly one out of every five of the asthma patients under observation who took asthmagon suffered serious side effects after taking the drug. Citing this statistic, some doctors argue that asthmagon should be banned as an anti-asthma drug.",
+    "questionStem": "Which one of the following, if true, most weakens the case for the proposed ban of asthmagon?",
+    "answerChoices": {
+      "A": "In Rhiago, where asthmagon had been the most widely prescribed of the beta-2 agonists, the number of asthma deaths increased between 1981 and 1987.",
+      "B": "Many of the patients under observation to whom asthmagon was administered had not previously taken a beta-2 agonist.",
+      "C": "Despite the growing concern about the drug, many physicians in Rhiago still prescribe asthmagon to asthma sufferers.",
+      "D": "Among the patients observed, only those who had very high cholesterol counts suffered side effects after taking asthmagon.",
+      "E": "Asthmagon increases the severity of asthma attacks in some people because the drug can cause damage to heart tissues."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In response to requests made by the dairy industry the government is considering whether to approve the synthetic hormone BST for use in dairy cows. BST increases milk production but also leads to recurring udder inflammation, decreased fertility, and symptoms of stress in cows who receive the hormone. All of these problems can be kept under control with constant veterinary care, but such levels of veterinary\nhelp would cost big farms far less per cow than they would small farms.",
+    "questionStem": "If the statements above are true, which one of the following claims is most strongly supported by them?",
+    "answerChoices": {
+      "A": "The government is unlikely to approve the synthetic hormone BST for use in cows.",
+      "B": "The proportion of cows that suffer from udder inflammation, decreased fertility, and symptoms of stress is currently greater on big dairy farms than on small ones.",
+      "C": "At the present time milk from cows raised on small farms is safer to drink than milk from cows raised on big farms.",
+      "D": "The milk from cows who receive BST will not be safe for people to drink.",
+      "E": "Owners of big farms stand to gain more from government approval of BST than do owners of small farms."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Must be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Jones is selling a house to Smith. The contract between the two specifies that for up to a year after ownership is transferred, Jones will be responsible for repairing any “major structural defects,” defined as defects in the roof or roof-supporting components of the house, that might be found. Jones is not responsible for any other repairs. The house has a truss roof, which means that the only walls that support the roof are the exterior walls.",
+    "questionStem": "It can be properly concluded from the information above that",
+    "answerChoices": {
+      "A": "Jones did not know of any defects in the roof or roof-supporting components of the house at the time the contract was written",
+      "B": "although other components of the house may contain defects, the roof and roof-supporting components of the house are currently free from such defects",
+      "C": "the contract does not oblige Jones to repair any defects in the house’s nonexterior walls after ownership of the house has been transferred",
+      "D": "Smith will be obliged to repair all structural defects in the house within a year after ownership is transferred, except those for which Jones is responsible",
+      "E": "in the past Jones has had to make repairs to some of the house’s exterior walls"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "The play Mankind must have been written between 1431 and 1471. It cannot have been written before 1431, for in that year the rose noble, a coin mentioned in the play, was first circulated. The play cannot have been written after 1471, since in that year King Henry VI died, and he is mentioned as a living monarch in the play’s dedication.",
+    "questionStem": "The argument would be most seriously weakened if which one of the following were discovered?",
+    "answerChoices": {
+      "A": "The Royal Theatre Company includes the play on a list of those performed in 1480.",
+      "B": "Another coin mentioned in the play was first minted in 1422.",
+      "C": "The rose noble was neither minted nor circulated after 1468.",
+      "D": "Although Henry VI was deposed in 1461, he was briefly restored to the throne in 1470.",
+      "E": "In a letter written in early 1428, a merchant told of having seen the design for a much-discussed new coin called the “rose noble.”"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "All material bodies are divisible into parts, and everything divisible is imperfect. It follows that all material bodies are imperfect. It likewise follows that the spirit is not a material body.",
+    "questionStem": "The final conclusion above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Everything divisible is a material body.",
+      "B": "Nothing imperfect is indivisible.",
+      "C": "The spirit is divisible.",
+      "D": "The spirit is perfect.",
+      "E": "The spirit is either indivisible or imperfect."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Must be True",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Special kinds of cotton that grow fibers of green or brown have been around since the 1930s but only recently became commercially feasible when a long-fibered variety that can be spun by machine was finally bred. Since the cotton need not be dyed, processing plants avoid the expense of dyeing and the ecological hazards of getting rid of leftover dye and by-products.",
+    "questionStem": "Which one of the following can be properly inferred from the passage?",
+    "answerChoices": {
+      "A": "It is ecologically safer to process long-fibered cotton than short-fibered cotton.",
+      "B": "Green and brown cottons that can be spun only by hand are not commercially viable.",
+      "C": "Hand-spun cotton is more ecologically safe than machine-spun cotton.",
+      "D": "Short-fibered regular cottons are economically competitive with synthetic fabrics.",
+      "E": "Garments made of green and brown cottons are less expensive than garments made of regular cotton."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "People in the tourist industry know that excessive development of seaside areas by the industry damages the environment. Such development also hurts the tourist industry by making these areas unattractive to tourists, a fact of which people in the tourist industry are well aware. People in the tourist industry would never knowingly do anything to damage the industry. Therefore, they would never knowingly damage the seaside environment, and people who are concerned about damage to the seaside environment thus have nothing to fear from the tourist industry.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "No support is provided for the claim that excessive development hurts the tourist industry.",
+      "B": "That something is not the cause of a problem is used as evidence that it never coexists with that problem.",
+      "C": "The argument shifts from applying a characteristic to a few members of a group to applying the characteristic to all members of that group.",
+      "D": "The possibility that the tourist industry would unintentionally harm the environment is ignored.",
+      "E": "The argument establishes that a certain state of affairs is likely and then treats that as evidence that the state of affairs is inevitable."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Health officials claim that because the foods and beverages mentioned or consumed on many television programs are extremely low in nutritional\nvalue, watching television has a bad influence on the dietary habits of television viewers.",
+    "questionStem": "The claim by health officials depends on the presupposition that",
+    "answerChoices": {
+      "A": "the eating and drinking habits of people on television programs are designed to mirror the eating and drinking habits of television viewers",
+      "B": "seeing some foods and beverages being consumed on, or hearing them mentioned on, television programs increases the likelihood that viewers will consume similar kinds of foods and beverages",
+      "C": "the food and beverage industry finances television programs so that the foods and beverages that have recently appeared on the market can be advertised on those programs",
+      "D": "television viewers are only interested in the people on television programs who have the same eating and drinking habits as they do",
+      "E": "the eating and drinking habits of people on television programs provide health officials with accurate predictions about the foods and beverages that will become popular among television viewers"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In an effort to boost sales during the summer months, which are typically the best for soft-drink sales, Foamy Soda lowered its prices. In spite of this, however, the sales of Foamy Soda dropped during the summer months.",
+    "questionStem": "Each of the following, if true, contributes to reconciling the apparent discrepancy indicated above except:",
+    "answerChoices": {
+      "A": "The soft-drink industry as a whole experienced depressed sales during the summer months.",
+      "B": "Foamy Soda’s competitors lowered their prices even more drastically during the summer months.",
+      "C": "Because of an increase in the price of sweeteners, the production costs of Foamy Soda rose during the summer months.",
+      "D": "A strike at Foamy Soda’s main plant forced production cutbacks that resulted in many stores not receiving their normal shipments during the summer months.",
+      "E": "The weather during the summer months was unseasonably cool, decreasing the demand for soft drinks."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Dr. Z: Many of the characterizations of my work offered by Dr. Q are imprecise, and such characterizations do not provide an adequate basis for sound criticism of my work.",
+    "questionStem": "Which one of the following can be properly inferred from Dr. Z’s statement?",
+    "answerChoices": {
+      "A": "Some of Dr. Q’s characterizations of Dr. Z’s work provide an adequate basis for sound criticism of Dr. Z’s work.",
+      "B": "All of Dr. Q’s characterizations of Dr. Z’s work that are not imprecise provide an adequate basis for sound criticism of Dr. Z’s work.",
+      "C": "All of the characterizations of Dr. Z’s work by Dr. Q that do not provide an adequate basis for sound criticism of Dr. Z’s work are imprecise.",
+      "D": "If the characterization of someone’s work is precise, then it provides a sound basis for criticizing that work.",
+      "E": "At least one of Dr. Q’s characterizations of Dr. Z’s work fails to provide an adequate basis for sound criticism of that work."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "K, a research scientist, was accused of having falsified laboratory data. Although the original data in question have disappeared, data from K’s more recent experiments have been examined and clearly none of them were falsified. Therefore, the accusation should be dismissed.",
+    "questionStem": "Which one of the following contains questionable reasoning that is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "L, an accountant, was charged with having embezzled funds from a client. The charge should be ignored, however, because although the records that might reveal this embezzlement have been destroyed, records of L’s current clients show clearly that there has never been any embezzlement from them.",
+      "B": "M, a factory supervisor, was accused of failing to enforce safety standards. This accusation should be discussed, because although the identity of the accuser was not revealed, a survey of factory personnel revealed that some violations of the standards have occurred.",
+      "C": "N, a social scientist, was charged with plagiarism. The charge is without foundation because although strong similarities between N’s book and the work of another scholar have been discovered, the other scholar’s work was written after N’s work was published.",
+      "D": "O, an auto mechanic, has been accused of selling stolen auto parts. The accusation seems to be justified since although no evidence links O directly to these sales, the pattern of distribution of the auto parts points to O as the source.",
+      "E": "P, a politician, has been accused of failing to protect the public interest. From at least some points of view, however, the accusation will undoubtedly be considered false, because there is clearly disagreement about where the public interest lies."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Focused on Evidence",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Method",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The widespread staff reductions in a certain region’s economy are said to be causing people who still have their jobs to cut back on new purchases as though they, too, had become economically distressed. Clearly, however, actual spending by such people is undiminished, because there has been no unusual increase in the amount of money held by those people in savings account.",
+    "questionStem": "The argument in the passage proceeds by doing which one of the following?",
+    "answerChoices": {
+      "A": "concluding that since an expected consequence of a supposed development did not occur, that development itself did not take place",
+      "B": "concluding that since only one of the two predictable consequences of a certain kind of behavior is observed to occur, this observed occurrence cannot, in the current situation, be a consequence of such behavior",
+      "C": "arguing that since people’s economic behavior is guided by economic self-interest, only misinformation or error will cause people to engage in economic behavior that harms them economically",
+      "D": "arguing that since two alternative developments exhaust all the plausible possibilities, one of those developments occurred and the other did not",
+      "E": "concluding that since the evidence concerning a supposed change is ambiguous, it is most likely that no change is actually taking place"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The widespread staff reductions in a certain region’s economy are said to be causing people who still have their jobs to cut back on new purchases as though they, too, had become economically distressed. Clearly, however, actual spending by such people is undiminished, because there has been no unusual increase in the amount of money held by those people in savings account.",
+    "questionStem": "Which one of the following is an assumption on which the argument relies?",
+    "answerChoices": {
+      "A": "If people in the region who continue to be employed have debts, they are not now paying them off at an accelerated rate.",
+      "B": "People in the region who continue to be employed and who have relatives who have lost their jobs commonly assist those relatives financially.",
+      "C": "If people in the region who have lost jobs get new jobs, the new jobs generally pay less well than the ones they lost.",
+      "D": "People in the region who continue to be employed are pessimistic about their prospects for increasing their incomes.",
+      "E": "There exist no statistics about sales of goods in the region as a whole."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Defender",
+      "Math-y Stuff",
+      "Net Effect",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Every student who walks to school goes home for lunch. It follows that some students who have part-time jobs do not walk to school.",
+    "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Some students who do not have part-time jobs go home for lunch.",
+      "B": "Every student who goes home for lunch has a part-time job.",
+      "C": "Some students who do not have part-time jobs do not go home for lunch.",
+      "D": "Some students who do not go home for lunch have part-time jobs.",
+      "E": "Every student who goes home for lunch walks to school."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers",
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "When the Pinecrest Animal Shelter, a charitable organization, was in danger of closing because it could not pay for important repairs, its directors appealed to the townspeople to donate money that would be earmarked to pay for those repairs. Since more funds were ultimately donated than were used for the repairs, the directors plan to donate the surplus funds to other animal shelters. But before doing so, the directors should obtain permission from those who made the donations.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the position advocated above and yet places the least restriction on the allocation of funds by directors of charitable organizations?",
+    "answerChoices": {
+      "A": "The directors of charitable organizations cannot allocate publicly solicited funds to any purposes for which the directors had not specifically earmarked the funds in advance.",
+      "B": "People who solicit charitable donations from the public for a specific cause should spend the funds only on that cause or, if that becomes impossible, should dispose of the funds according to the express wishes of the donors.",
+      "C": "Directors of charitable organizations who solicit money from the public must return all the money received from an appeal if more money is received than can practicably be used for the purposes specified in the appeal.",
+      "D": "Donors of money to charitable organizations cannot delegate to the directors of those organizations the responsibility of allocating the funds received to various purposes consonant with the purposes of the organization as the directors of the organization see fit.",
+      "E": "People who contribute money to charitable organizations should be considered to be placing their trust in the directors of those organizations to use the money wisely according to whatever circumstance might arise."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The amount of electricity consumed in Millville on any day in August is directly proportional to peak humidity on that day. Since the average peak humidity this August was three points higher than the average peak humidity last August, it follows that more energy was consumed in Millville this August than last August.",
+    "questionStem": "Which one of the following arguments has a pattern of reasoning most similar to the one in the argument above?",
+    "answerChoices": {
+      "A": "The amount of art supplies used in any of the Aesthetic Institute's 25 classes is directly proportional to the number of students in that class. Since in these classes the institute enrolled 20 percent more students overall last year than in the previous year, more art supplies were used in the institute's classes last year than in the previous year.",
+      "B": "The number of courses in painting offered by the Aesthetic Institute in any term is directly proportional to the number of students enrolled in the institute in that term. But the institute offers the same number of courses in sculpture each term. Hence, the institute usually offers more courses in painting than in sculpture.",
+      "C": "The number of new students enrolled at the Aesthetic Institute in any given year is directly proportional to the amount of advertising the institute has done in the previous year. Hence, if the institute seeks to increase its student body it must increase the amount it spends on advertising.",
+      "D": "The fees paid by a student at the Aesthetic Institute are directly proportional to the number of classes in which that student enrolls. Since the number of students at the Aesthetic Institute is increasing, it follows that the institute is collecting a greater amount in fees paid by students than it used to.",
+      "E": "The number of instructors employed by the Aesthetic Institute in any term is directly proportional to the number of classes offered in that term and also directly proportional to the number of students enrolled at the institute. Thus, the number of classes offered by the institute in any term is directly proportional to the number of students enrolled in that term."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Conditional Diagramming",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Letter to the editor: After Baerton’s factory closed, there was a sharp increase in the number of claims filed for job-related injury compensation by the factory’s former employees. Hence there is reason to believe that most of those who filed for compensation after the factory closed were just out to gain benefits they did not deserve, and filed only to help them weather their job loss.",
+    "questionStem": "Each of the following, if true, weakens the argument above EXCEPT:",
+    "answerChoices": {
+      "A": "Workers cannot file for compensation for many jobrelated injuries, such as hearing loss from factory noise, until they have left the job.",
+      "B": "In the years before the factory closed, the factory's managers dismissed several employees who had filed injury claims.",
+      "C": "Most workers who receive an injury on the job file for compensation on the day they suffer the injury.",
+      "D": "Workers who incur partial disabilities due to injuries on the job often do not file for compensation because they would have to stop working to receive compensation but cannot afford to live on that compensation alone.",
+      "E": "Workers who are aware that they will soon be laid off from a job often become depressed, making them more prone to job-related injuries."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT",
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Historians of North American architecture who have studied early nineteenth-century houses with wooden floors have observed that the boards used on the floors of bigger houses were generally much narrower than those used on the floors of smaller houses. These historians have argued that, since the people for whom the bigger houses were built were generally richer than the people for whom the smaller houses were built, floors made out of narrow floorboards were probably once a status symbol, designed to proclaim the owner’s wealth.",
+    "questionStem": "Which one of the following, if true, most helps to strengthen the historians' argument?",
+    "answerChoices": {
+      "A": "More original floorboards have survived from big early nineteenth-century houses than from small early nineteenth-century houses.",
+      "B": "In the early nineteenth century, a piece of narrow floorboard was not significantly less expensive than a piece of wide floorboard of the same length.",
+      "C": "In the early nineteenth century, smaller houses generally had fewer rooms than did bigger houses.",
+      "D": "Some early nineteenth-century houses had wide floorboards near the walls of each room and narrower floorboards in the center, where the floors were usually carpeted.",
+      "E": "Many of the biggest early nineteenth-century houses but very few small houses from that period had some floors that were made of materials that were considerably more expensive."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Ethicist: A society is just when, and only when, first, each person has an equal right to basic liberties, and second, inequalities in the distribution of income and wealth are not tolerated unless these inequalities are to everyone’s advantage and are attached to jobs open to everyone.",
+    "questionStem": "Which one of the following judgments most closely conforms to the principle described above?",
+    "answerChoices": {
+      "A": "Society S guarantees everyone an equal right to basic liberties, while allowing inequalities in the distribution of income and wealth that are to the advantage of everyone. Further, the jobs to which these inequalities are attached are open to most people. Thus, society S is just.",
+      "B": "Society S gives everyone an equal right to basic liberties, but at the expense of creating inequalities in the distribution of income and wealth. Thus, society S is not just.",
+      "C": "Society S allows inequalities in the distribution of income and wealth, although everyone benefits, and these inequalities are attached to jobs that are open to everyone. Thus, society S is just.",
+      "D": "Society S distributes income and wealth to everyone equally, but at the expense of creating inequalities in the right to basic liberties. Thus, society S is not just.",
+      "E": "Society S gives everyone an equal right to basic liberties, and although there is an inequality in the distribution of income and wealth, the jobs to which these inequalities are attached are open to all. Thus, society S is just."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Principles in Stimulus",
+      "Repetitive Answers",
+      "Binaries"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Economist: In order to decide what to do about protecting the ozone layer, we must determine the monetary amount of the economic resources that we would willingly expend to protect it. Such a determination amounts to a calculation of the monetary value of the ozone layer. Environmentalists argue that the ozone layer does not have a calculable monetary value. However, we would not willingly expend an amount equal to all of the world’s economic resources to protect the ozone layer,\nso the ozone layer is demonstrably worth less than that amount. Thus, the ozone layer has a calculable monetary value.",
+    "questionStem": "The reasoning in the economist’s argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "uses evidence that the monetary value of a particular natural resource is less than a certain amount in order to establish that the monetary value of any natural resource is less than that amount",
+      "B": "presupposes that the ozone layer should not be protected and then argues to that claim as a conclusion",
+      "C": "takes advantage of an ambiguity in the term “value” to deflect the environmentalists’ charge",
+      "D": "gives no reason for thinking that merely establishing an upper limit on a certain monetary value would allow the calculation of that monetary value",
+      "E": "does not directly address the argument of the environmentalists"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Columnist on the arts: My elected government representatives were within their rights to vote to support the arts with tax dollars. While funded by the government, however, some artists have produced works of art that are morally or aesthetically offensive to many taxpayers. Nonetheless, my conclusion is that no taxpayers have been treated unjustly whose tax dollars are used to fund some particular work of art that they may find abominable.",
+    "questionStem": "Which one of the following principles, if valid, most supports the columnist’s argument?",
+    "answerChoices": {
+      "A": "Taxpayers should be allowed to decide whether a portion of their tax dollars is to be used to fund the arts.",
+      "B": "The funding of a particular activity is warranted if it is funded by elected representatives who legitimately fund that activity in general.",
+      "C": "Elected representatives are within their rights to fund any activity that is supported by a majority of their constituents.",
+      "D": "Those who resent taxation to subsidize offensive art should vote against their incumbent government representatives.",
+      "E": "Since taxpayers are free to leave their country if they disapprove of their representatives’ decisions, they have no right to complain about arts funding."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Weighing Tradeoffs"
+    ]
+  }
+]

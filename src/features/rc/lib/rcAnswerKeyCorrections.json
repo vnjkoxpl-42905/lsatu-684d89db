@@ -1,0 +1,1316 @@
+{
+  "schemaVersion": 1,
+  "audit": {
+    "sourceReport": "docs/audits/2026-10-14-rc-answer-key-audit.json",
+    "sha256": "02083c8ef19760beb35c9681918b351a911424b799326a3960727b85259cb99f",
+    "verifiedQuestions": 2150
+  },
+  "corrections": [
+    {
+      "questionId": 3883,
+      "preptest": 153,
+      "section": 4,
+      "setNumber": 1,
+      "position": 6,
+      "previousAnswer": "D",
+      "correctAnswer": "A",
+      "identitySha256": "13bb3145940b1cfce17f5ff9a0cfee9554804d5f09427f110e3bf6a71916099d",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT153-S4-P1-Q6/forest-preservation",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "5fcc1f3d3e42d7197267f98a06bca22b8ea5fbdb31f96e53aab405f54f6719ef"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-82/reading-comprehension/q-6/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 3884,
+      "preptest": 153,
+      "section": 4,
+      "setNumber": 1,
+      "position": 7,
+      "previousAnswer": "A",
+      "correctAnswer": "B",
+      "identitySha256": "8a0692d7eef56b9e57a6364501b6d9cc4c45fc5cca5882e548e5f04a5fc13156",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT153-S4-P1-Q7/forest-preservation",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "a332e393d2785e48b7ed3d4b5445b8dab9333ee33ebfdaf792dc5d0c4086d8ad"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-82/reading-comprehension/q-7/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 3891,
+      "preptest": 153,
+      "section": 4,
+      "setNumber": 3,
+      "position": 14,
+      "previousAnswer": "E",
+      "correctAnswer": "B",
+      "identitySha256": "00d02b1dea3f90d4f89c863c6403209ff00424934e1ad6717b7eb53ec2ff417e",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT153-S4-P3-Q14/judicial-reasoning",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "2e814e089f8a3b676a3c09f0420f22a5ac1d1cfd30d698faf94bedc5e2743575"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-82/reading-comprehension/q-14/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 5470,
+      "preptest": 111,
+      "section": 2,
+      "setNumber": 1,
+      "position": 1,
+      "previousAnswer": "A",
+      "correctAnswer": "C",
+      "identitySha256": "6023390ced59b3111d0019ee5e15bf3b9da108e0dac3d3d91ba52c1b2bf3f28e",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT111-S2-P1-Q1/womens-memoirs-of-the-french-revolution",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "49b6e9410b9b045d3fd3a63d326432eb7a0eb9a7113d737efe6b3b10142153f0"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-35/reading-comprehension/q-1/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 6483,
+      "preptest": 118,
+      "section": 2,
+      "setNumber": 1,
+      "position": 5,
+      "previousAnswer": "E",
+      "correctAnswer": "A",
+      "identitySha256": "b1cb8ad3604bbd5f81d4504e965e69477cebb3d7cce90fc5f6d3f1bc3e541d4c",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT118-S2-P1-Q5/disaster-relief",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Preserve existing verified E→A correction from commit 37fce4a2 (2026-09-26), independently rechecked against published LSAT Lab credit. Immutable recovery input remains E."
+    },
+    {
+      "questionId": 6802,
+      "preptest": 121,
+      "section": 3,
+      "setNumber": 1,
+      "position": 2,
+      "previousAnswer": "B",
+      "correctAnswer": "D",
+      "identitySha256": "fd86810e2e7a2eedf93646b34ee6fa692f03bf0ba7da0684a831b5e8d292c47b",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT121-S3-P1-Q2/cave-paintings",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "4988c7efbec517298b2aae745db8da843bcd2af1e5dbf4cb37938e924c5f4be7"
+        },
+        {
+          "url": "https://7sage.com/u/guest/question/PT121.S3.P1.Q2",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 6904,
+      "preptest": 122,
+      "section": 3,
+      "setNumber": 1,
+      "position": 3,
+      "previousAnswer": "C",
+      "correctAnswer": "E",
+      "identitySha256": "ea8b7b114802467a358393b87da91b3e7230cc09b71b5ef7c1f18ca010c72231",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT122-S3-P1-Q3/court-computer-displays",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "29b90afdd25b9831f1cdcc8b5a638d681ebd74dc9874a3609b186cd1a8f63a17"
+        },
+        {
+          "url": "https://7sage.com/u/guest/question/PT122.S3.P1.Q3",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 7106,
+      "preptest": 155,
+      "section": 3,
+      "setNumber": 1,
+      "position": 3,
+      "previousAnswer": "D",
+      "correctAnswer": "B",
+      "identitySha256": "0c2a72642b9f0e6a3891ececf05278d1cae13e33dcecbec571549d190b6d9f0e",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT155-S3-P1-Q3/screening-nonfiction-films",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "d6345360602862285f5bf8077c44ae0ffc08038f23e6bec667df1fa9bbc1d428"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-89/reading-comprehension/q-3/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 7120,
+      "preptest": 155,
+      "section": 3,
+      "setNumber": 3,
+      "position": 17,
+      "previousAnswer": "C",
+      "correctAnswer": "E",
+      "identitySha256": "fdc01a130a5ce1de830824a11bfee807735077234c11ba98791d5027ce7d34fa",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT155-S3-P3-Q17/nanoscale-computer-chips",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "bed102fab657f24a5286fd3810b4173d3b5c9d84ae470d75ee04fabbfee310f1"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-89/reading-comprehension/q-17/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 7122,
+      "preptest": 155,
+      "section": 3,
+      "setNumber": 3,
+      "position": 19,
+      "previousAnswer": "C",
+      "correctAnswer": "E",
+      "identitySha256": "01614a6a21e1c02b96c1286e9438a09b88d0e806bd2144fa71f7fb8f90c6fb04",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT155-S3-P3-Q19/nanoscale-computer-chips",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "18ca969e0c99a670aac6847059f52fd1f6717afe79e18b8fa734163aeb928658"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-89/reading-comprehension/q-19/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 7229,
+      "preptest": 128,
+      "section": 4,
+      "setNumber": 1,
+      "position": 1,
+      "previousAnswer": "A",
+      "correctAnswer": "D",
+      "identitySha256": "bba5b94b68635f048a659a911435a2b794e9dbeec978ef59039d44e68f30af4d",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT128-S4-P1-Q1/new-zealands-wool-growers",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "727e76973b52de9b90be8772cd4cb5a2a3bc3f423ab3ca9d450e9e14d17d6f57"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-128/reading-comprehension/section-4/q-1/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 7230,
+      "preptest": 128,
+      "section": 4,
+      "setNumber": 1,
+      "position": 2,
+      "previousAnswer": "C",
+      "correctAnswer": "B",
+      "identitySha256": "a141f4eef841693d5e97d2582ddfcd6a1af4197214ae6b6726f50da13d68050b",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT128-S4-P1-Q2/new-zealands-wool-growers",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "e692408c6dc0da71d9b3a432a40f09a1447118f39bcbae584fa43d911f00e17e"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-128/reading-comprehension/section-4/q-2/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 7234,
+      "preptest": 128,
+      "section": 4,
+      "setNumber": 1,
+      "position": 6,
+      "previousAnswer": "B",
+      "correctAnswer": "A",
+      "identitySha256": "2055c9af63c081913944cb489753b7f0497bd924367a1c475e0df23efa9fcac8",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT128-S4-P1-Q6/new-zealands-wool-growers",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "cd0489194d97d04e9ccaf2ac81d4ede7b5f713a20e55bcd9507463283002d475"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-128/reading-comprehension/section-4/q-6/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 7686,
+      "preptest": 101,
+      "section": 1,
+      "setNumber": 4,
+      "position": 27,
+      "previousAnswer": "E",
+      "correctAnswer": "D",
+      "identitySha256": "a2b6023278d4fc7377b677f168d6998de037ad9b03e489d5cb4d0dbb20033876",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT101-S1-P4-Q27/fake-artwork",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "aeb265b4ff3bdced025c247b3fd3b33f70940cf605a553e2a868b5d08eb14dbd"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-24/reading-comprehension/q-27/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10087,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 1,
+      "position": 1,
+      "previousAnswer": "A",
+      "correctAnswer": "D",
+      "identitySha256": "d3a3495be8c224c12845824a76b06286252a4fda2b5db22c862b8b379fb07522",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P1-Q1/deep-well-injection",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "29dae0697d4390a71b9966ee8fafe0e5136388d02933c8713713cf50c97945b7"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-1/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10088,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 1,
+      "position": 2,
+      "previousAnswer": "A",
+      "correctAnswer": "C",
+      "identitySha256": "84b72f72d9056b68f131d538fd2ae6e45e4f537d062f530bb5abd99bf0b23d6a",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P1-Q2/deep-well-injection",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "bc2fa2c7c9000c3e26a543d7312a400d8c870aac8ac4587025f1afdf0241af73"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-2/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10089,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 1,
+      "position": 3,
+      "previousAnswer": "A",
+      "correctAnswer": "D",
+      "identitySha256": "b5a466592f9272c96f7f4f894e39017f550c1bfb9902f39cfee6ba4c5450bb02",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P1-Q3/deep-well-injection",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "31dcea18d7fbf1f1c835602f3ae2ae0c7be7d5fa8dc1c02d29162badc845e942"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-3/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10090,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 1,
+      "position": 4,
+      "previousAnswer": "A",
+      "correctAnswer": "E",
+      "identitySha256": "89ffe4c7e3e06db084cc9dd078fe434d854f0ba15f5d654a6e84ebe2769f3732",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P1-Q4/deep-well-injection",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "86c51421bed9af46d306e999f3310989e29e357b13926eec11ddb17a6bcc1758"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-4/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10091,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 1,
+      "position": 5,
+      "previousAnswer": "A",
+      "correctAnswer": "C",
+      "identitySha256": "b853ec929918c3e9271315c8b118d7d40ff009ca37fea7c5d2335e884dc2df30",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P1-Q5/deep-well-injection",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "7e6c27038d5795776479c61708b48c7b3d7b82c5ce3a3c4783d24f36acc40210"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-5/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10093,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 1,
+      "position": 7,
+      "previousAnswer": "A",
+      "correctAnswer": "B",
+      "identitySha256": "46f3a5cdfa9383609a8333f86b24dab2c07e0e46168316ee0a984b65883dbe95",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P1-Q7/deep-well-injection",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "56dfb3904dd485360b6f34e42694df327e6fb0c0cdfbb2964aff1688acb65b12"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-7/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10094,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 2,
+      "position": 8,
+      "previousAnswer": "A",
+      "correctAnswer": "D",
+      "identitySha256": "8996db8c1e2b0fcc21bbdcc7a3e149a7af9afae2a085d7df8dfba432e1dc51bc",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P2-Q8/trickster-vs-picaro",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "0009f3d173e6d4b4a57c05f6706d0ef98bab6b103e2ffc4d98b9eee5a47590da"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-8/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10095,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 2,
+      "position": 9,
+      "previousAnswer": "A",
+      "correctAnswer": "B",
+      "identitySha256": "169e5c3b8aaca5e419ef31bd0f5729ac31f708c622869e6d1227e6726af665df",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P2-Q9/trickster-vs-picaro",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "ffad460ca4f94f300188a9d437d8c8d2985c8f7a043a76d09e1ad31dc5dfbc91"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-9/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10096,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 2,
+      "position": 10,
+      "previousAnswer": "A",
+      "correctAnswer": "C",
+      "identitySha256": "d81050ab4b5e47f4182921a06819d5363c867e917f2e5c075ee1634799803958",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P2-Q10/trickster-vs-picaro",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "b0154513673f3a2402b5afcff7f25c2f10e725362810d01a191df9a0eedd110c"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-10/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10097,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 2,
+      "position": 11,
+      "previousAnswer": "A",
+      "correctAnswer": "E",
+      "identitySha256": "360f0d786513a718c39cae320d8eec9b35cb568696d486c13239921042697220",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P2-Q11/trickster-vs-picaro",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "bbf06c5e8908b7a7d5f690a8a32cfa67e51834e3b29dd2f8f783095fadf5533f"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-11/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10098,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 2,
+      "position": 12,
+      "previousAnswer": "A",
+      "correctAnswer": "E",
+      "identitySha256": "a1042ab34d341c41f053d12e38ed9e4ca418ca8b171d951d82a2aee4fe5b790d",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P2-Q12/trickster-vs-picaro",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "a6f8d2c18628f8f76c80891488d4d17c871d1d579626ff9031e7decf3e0b2bca"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-12/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10100,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 3,
+      "position": 14,
+      "previousAnswer": "A",
+      "correctAnswer": "E",
+      "identitySha256": "3d6b3d3f154f826f82122e38d9fea1885bd82760ea87fc5309575d363cf3211f",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P3-Q14/plagiarism",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "98c0e818ea1552924b1ce5f97171515a0b009b7d1b0eea7ad95fcee0d06954df"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-14/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10101,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 3,
+      "position": 15,
+      "previousAnswer": "A",
+      "correctAnswer": "E",
+      "identitySha256": "7e2f5537b602b558e339953206e0362b7cc3b231cdc44b1781f39b7220cfde28",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P3-Q15/plagiarism",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "e9b32d8db0169e5d1fe17946111beacdeb70fc0b7507e591d1a8287d9ad53111"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-15/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10102,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 3,
+      "position": 16,
+      "previousAnswer": "A",
+      "correctAnswer": "B",
+      "identitySha256": "bdf7f7f6658e3d47c6abd366ea15cbadd66f32de78629a54e5e24251d4b47072",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P3-Q16/plagiarism",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "58fe2c33f779e3128414956f51ed5eb75ee1bbff462f583c89a37bd9caa28b7e"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-16/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10104,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 3,
+      "position": 18,
+      "previousAnswer": "A",
+      "correctAnswer": "D",
+      "identitySha256": "a166fc00fc5a24989211c41cbf9d2821e9b85c7527eadfdd7706c23fd544ef18",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P3-Q18/plagiarism",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "2452dba1ff5668fdb1a186cebe0277fa20f3c08a454f9c4f617b15f903889600"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-18/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10105,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 3,
+      "position": 19,
+      "previousAnswer": "A",
+      "correctAnswer": "B",
+      "identitySha256": "2c38d8ee92e3d42b03f506efce9e24034fa94c3be724f110b94e3acc53f18fe0",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P3-Q19/plagiarism",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "a90e4a1a3928224684224cec9c4f64b4da03b1364bc4d5c072fe22e5378fe05b"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-19/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10106,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 3,
+      "position": 20,
+      "previousAnswer": "A",
+      "correctAnswer": "D",
+      "identitySha256": "d6028167b67eb6ef2e67f5116292e17d0879c31fe245622a54c6de14869d20b0",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P3-Q20/plagiarism",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "399aa852e282ba2c225b4da4833cf0dbd03f0c9ed7c4832349c2ff3dd8c7128e"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-20/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10108,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 4,
+      "position": 22,
+      "previousAnswer": "A",
+      "correctAnswer": "D",
+      "identitySha256": "8d4be1925274fce3031551dad9258f7d507233476b3bbf2bb0dd18d13e5e1e30",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P4-Q22/criminal-sanctions",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "04a29439e4e06985d2b8f32338df860f5b7d26243ea0f7df2f346885fb116018"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-22/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10109,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 4,
+      "position": 23,
+      "previousAnswer": "A",
+      "correctAnswer": "D",
+      "identitySha256": "f2f26d54c21b150e01971dc67374eb243eedbdfedb87daadc7624a1b7850fb08",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P4-Q23/criminal-sanctions",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "c720e5b77477cfca26235b1adfa0157180daa4efda7fa66d40adb27aa1c22a53"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-23/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10111,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 4,
+      "position": 25,
+      "previousAnswer": "A",
+      "correctAnswer": "D",
+      "identitySha256": "b864e6f87fc82a02395d7050ccdbe5109be7cfdd853cbe931440561b00a7f181",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P4-Q25/criminal-sanctions",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "a36d13ed8e1a8113fe43fadfcc25b684f6dac8a6a710af29720b8b856ffae7a1"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-25/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10113,
+      "preptest": 158,
+      "section": 1,
+      "setNumber": 4,
+      "position": 27,
+      "previousAnswer": "A",
+      "correctAnswer": "E",
+      "identitySha256": "2fe8a558831b26729ad2875415fe9867cbf06d26d9c5163fba3c395dd1c25d5d",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT158-S1-P4-Q27/criminal-sanctions",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "cde076f51a09b93825bf88aee69c2bad6684c93286b32cc70ac8c9cb15810185"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-90/reading-comprehension/q-27/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10732,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 1,
+      "position": 1,
+      "previousAnswer": "B",
+      "correctAnswer": "E",
+      "identitySha256": "cd88e804fa668e3b12e48d30214c57ea80bd2d351949466b0572419e16073b28",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P1-Q1/torchy-brown",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "64ef7d7fb006cab34edda35f05f3bbdcd7f23ca5f90a88003f6d1cab86cc9272"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-1/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10733,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 1,
+      "position": 2,
+      "previousAnswer": "B",
+      "correctAnswer": "D",
+      "identitySha256": "164eb14dc4c2117d0613bf2a9e6ce179fc970617e8ec105e3a45f65e9a409b1b",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P1-Q2/torchy-brown",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "fcf9fd07bdee147a127e3a9599a46b607c1d8704c3ef487b3b4568ab56330204"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-2/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10735,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 1,
+      "position": 4,
+      "previousAnswer": "B",
+      "correctAnswer": "D",
+      "identitySha256": "476c798e62ba6e7453abfe7eee2ddbe3b995bfab5b2f8c9b5bb0485870d79c0d",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P1-Q4/torchy-brown",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "44cd0e4f64b8e4ac0843a01c7014bbc9e074ce6e9c3a533fe1714ff071fdb1d9"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-4/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10737,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 1,
+      "position": 6,
+      "previousAnswer": "B",
+      "correctAnswer": "C",
+      "identitySha256": "493d70e33937ac92456dcc249413e47ca0a4ded1d2cf521d875744f4ba630d55",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P1-Q6/torchy-brown",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "bdae510fb914d970963f1b9a97d042e7892ed67cdf09b6cd635f052b9251e48f"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-6/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10739,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 2,
+      "position": 8,
+      "previousAnswer": "B",
+      "correctAnswer": "A",
+      "identitySha256": "532504b635a1145a00c7cf067b986d8235fc5246ac533df8ff8a71b9e9bb118b",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P2-Q8/microloans",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "0de9245e9ef596904342d2dc081a55c910b7b99a1994af754ffcfa3594f022e0"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-8/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10740,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 2,
+      "position": 9,
+      "previousAnswer": "B",
+      "correctAnswer": "E",
+      "identitySha256": "ac60110c5f7101ee1403db5d6d8d92ad0f3c0748892e2fbbe87f500e9d8f81bf",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P2-Q9/microloans",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "d3121ae5b4175ae0de567ec750dedf4cb9d070e077df5df71d9e1f85ca254e4b"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-9/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10741,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 2,
+      "position": 10,
+      "previousAnswer": "B",
+      "correctAnswer": "D",
+      "identitySha256": "7b32d05137ca0a398f1c2092c10a23c06bca1e56287d3bbb73215e159485e0b7",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P2-Q10/microloans",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "b11e9ee3f9f59aa70b7657de1db3962d95837ab451a479ffabe930c1ef5ceea2"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-10/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10742,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 2,
+      "position": 11,
+      "previousAnswer": "B",
+      "correctAnswer": "C",
+      "identitySha256": "6bd528d267972fafdec13427228fa6fc0fdb7ea732825a91b84b0d0586d52337",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P2-Q11/microloans",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "253cf3e7b24b86729fb8734917bcf2c2d859b235dfdfa5036711bea0b401e0c8"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-11/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10743,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 2,
+      "position": 12,
+      "previousAnswer": "B",
+      "correctAnswer": "C",
+      "identitySha256": "4a20ab49b06c742497ede10339f6a0f9849c7bb77852f32f1397b8c996cc2c7d",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P2-Q12/microloans",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "1887f412ff391517ef762cbff5e4ce7a22393e1bc7e03a2924c1087ea4539146"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-12/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10744,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 2,
+      "position": 13,
+      "previousAnswer": "B",
+      "correctAnswer": "E",
+      "identitySha256": "ca61b4e6bb98c9fa0fa1e044ac050619554cadad72dcefefc345a0108b2d9da3",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P2-Q13/microloans",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "415d51705a44bcf769f4e1abef01ab6b6267ac2414647982aa4916dbb52a70e7"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-13/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10745,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 2,
+      "position": 14,
+      "previousAnswer": "B",
+      "correctAnswer": "C",
+      "identitySha256": "344e41050641af4ef836cf6984a36c8d0bf6f1b346bcdac100451d6c5da3e102",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P2-Q14/microloans",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "80567b1b77fc56d68a41c760775e6c910976cbfe5eca266bcc3eab15de74e6ea"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-14/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10746,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 3,
+      "position": 15,
+      "previousAnswer": "B",
+      "correctAnswer": "D",
+      "identitySha256": "af51ca9b512240379410ef879744e6c42938de7109383bb164b5a8e69602a3ed",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P3-Q15/expanding-universe",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "e637f91731b269719345011c3077b191505ad773875d8fd9a852b25961fc0092"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-15/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10747,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 3,
+      "position": 16,
+      "previousAnswer": "B",
+      "correctAnswer": "A",
+      "identitySha256": "e7d8290d6c224dc98ee0175f5a240238cbc26199154dde07c07ab200b646d20d",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P3-Q16/expanding-universe",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "0ffa4b92d8521774e2368ba79e458e3c764d5fac10e2849665696c81a7f65b29"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-16/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10748,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 3,
+      "position": 17,
+      "previousAnswer": "B",
+      "correctAnswer": "C",
+      "identitySha256": "e9bd9ad8e215ccfbad48fe9ef371aa498b8c930c566ca3247146f63a15751e7e",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P3-Q17/expanding-universe",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "9a52bb7b898b523c5967b7563494a40aabd6a19500ef82e1392f8a8fb0ca142b"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-17/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10750,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 3,
+      "position": 19,
+      "previousAnswer": "B",
+      "correctAnswer": "E",
+      "identitySha256": "1413218ee12c7805ff381924025ebbe76756d0c0cf7c099cf99ada36c5e7481b",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P3-Q19/expanding-universe",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "fd96bf321eda06a0f5a2d536a5da94dd93923babfac8fb2fd6588263f23f4ec0"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-19/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10751,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 3,
+      "position": 20,
+      "previousAnswer": "B",
+      "correctAnswer": "A",
+      "identitySha256": "2d147caab2c2ec2ef5cb1e61711315ffe3386b89ad54f05ea6d999445bccce05",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P3-Q20/expanding-universe",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "a99652c0371c39a1bca2422ea86a939ad929b8305899ff9ca41148cadba7f2a1"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-20/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10752,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 3,
+      "position": 21,
+      "previousAnswer": "B",
+      "correctAnswer": "A",
+      "identitySha256": "1baef4a63cb07df3d38a06db2e27265b8eba19595a733b61e539498f7d7cdd16",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P3-Q21/expanding-universe",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "fd54072b1664bb3a73b5dcfb983b788892a892a290d6b712223169ebcc698e3e"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-21/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10753,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 4,
+      "position": 22,
+      "previousAnswer": "B",
+      "correctAnswer": "C",
+      "identitySha256": "9e6e93f20bbf8055b81ce0c35e5276ba22cd29b6dc1c003e8ba456486515e42a",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P4-Q22/defining-ownership",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "0946788039ec34df0587514132d5e0e4961be58d52b27760343259a8ef8c3673"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-22/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10754,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 4,
+      "position": 23,
+      "previousAnswer": "B",
+      "correctAnswer": "C",
+      "identitySha256": "04003b9146dbfc9d0f5db8bce0831c085b91fc00ffdb67347097da25391a41c7",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P4-Q23/defining-ownership",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "140f0bf3f8f28c243bbed567033e4e52a142ea341318daca2606d78b6396ef57"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-23/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10755,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 4,
+      "position": 24,
+      "previousAnswer": "B",
+      "correctAnswer": "A",
+      "identitySha256": "5145782d3f507f940c58726e883f5d21ea412c8be1d846a507067d0f0032b739",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P4-Q24/defining-ownership",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "a864e5c3d30b65dacc0ecd39932b22c496db20a58dfcaed890b4552070ed6b49"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-24/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10757,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 4,
+      "position": 26,
+      "previousAnswer": "B",
+      "correctAnswer": "A",
+      "identitySha256": "12a0a4b970b880e5a10a8f3932ba08b17eb2cb83037953e42e56a977cca0104a",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P4-Q26/defining-ownership",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "ed20906558cabb66d9e5dd7d14f39c3af032d4ed2cb08a956fffb058fbf5db54"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-26/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    },
+    {
+      "questionId": 10758,
+      "preptest": 159,
+      "section": 2,
+      "setNumber": 4,
+      "position": 27,
+      "previousAnswer": "B",
+      "correctAnswer": "C",
+      "identitySha256": "444474da37baf67e70f6a375bda715f67753052673878c6421dee95e7a243425",
+      "sources": [
+        {
+          "url": "https://www.lsatlab.com/lsat-explanations/PT159-S2-P4-Q27/defining-ownership",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": "38aba5775ca16814102f543860b5db9c901bede0be7a525775b57bff966b6d28"
+        },
+        {
+          "url": "https://lsathacks.com/explanations/lsat-preptest-159/reading-comprehension/section-2/q-27/",
+          "observedAt": "2026-10-15T02:42:29.312Z",
+          "sourceSha256": null
+        }
+      ],
+      "reason": "Published LSAT Lab credit independently corroborated against the authored explanation and matching official question/choice identity. No historical regrading."
+    }
+  ]
+}

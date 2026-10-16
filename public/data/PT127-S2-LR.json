@@ -1,0 +1,633 @@
+[
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "This region’s swimmers generally swim during the day because they are too afraid of sharks to swim after dark but feel safe swimming during daylight hours. Yet all recent shark attacks on swimmers in the area have occurred during the day, indicating that, contrary to popular opinion, it is not more dangerous to swim here at night than during the day.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "overlooks the possibility that some sharks are primarily nocturnal hunters",
+      "B": "bases its conclusion on evidence from an unreliable source",
+      "C": "overlooks the possibility that swimmers might feel anxiety caused by not being able to see one’s surroundings in the dark",
+      "D": "presumes, without providing justification, that swimmers cannot be the most knowledgeable about which times of day are safest for swimming",
+      "E": "fails to take into account the possibility that the number of shark attacks at night would increase dramatically if more people swam at night"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Explain Curious Fact",
+      "Alternatives",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Denise: Crime will be reduced only when punishment is certain and is sufficiently severe to give anyone considering committing a crime reason to decide against doing so. Reshmi: No, crime will be most effectively reduced if educational opportunities are made readily available to everyone, so that those who once viewed criminal activity as the only means of securing a comfortable lifestyle will choose a different path.",
+    "questionStem": "Their dialogue provides the most support for the claim that Denise and Reshmi agree that",
+    "answerChoices": {
+      "A": "people are capable of choosing whether or not to commit crimes",
+      "B": "crime is the most important issue facing modern society",
+      "C": "reducing crime requires fair and consistent responses to criminal behavior",
+      "D": "crimes are committed in response to economic need",
+      "E": "reducing crime requires focusing on assured punishments"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Acme Corporation offers unskilled workers excellent opportunities for advancement. As evidence, consider the fact that the president of the company, Ms. Garon, worked as an assembly line worker, an entry-level position requiring no special skills, when she first started at Acme.",
+    "questionStem": "Which one of the following statements, if true, most weakens the reasoning above?",
+    "answerChoices": {
+      "A": "Acme’s vice president of operations also worked as an assembly line worker when he first started at Acme.",
+      "B": "Acme regularly hires top graduates of business schools and employs them briefly in each of a succession of entry-level positions before promoting them to management.",
+      "C": "Acme promotes its own employees to senior management positions much more frequently than it hires senior managers from other companies.",
+      "D": "Ms. Garon worked at Acme for more than 20 years before she was promoted to president.",
+      "E": "Acme pays entry-level employees slightly higher wages than most other businesses in the same industry."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Sampling",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The song of the yellow warbler signals to other yellow warblers that a particular area has been appropriated by the singer as its own feeding territory. Although the singing deters other yellow warblers from taking over the feeding territory of the singer, other yellow warblers may range for food within a portion of the singer’s territory. However, a warbler sings a special song when it molts (sheds its feathers). Other yellow warblers will not enter the smaller core territory of a yellow warbler singing its molting song. Therefore yellow warblers, which can only fly short distances during molting, have no competition for the food supply within the range of their restricted flying.",
+    "questionStem": "The argument makes which one of the following assumptions?",
+    "answerChoices": {
+      "A": "The core areas contain just enough food to sustain one yellow warbler while it molts.",
+      "B": "Warblers are the only molting birds that lay claim to core areas of feeding territories by singing.",
+      "C": "There are no birds other than yellow warblers that compete with yellow warblers for food.",
+      "D": "Warblers often share their feeding areas with other kinds of birds, which often do not eat the same insects or seeds as warblers do.",
+      "E": "The core areas of each feeding territory are the same size for each molting warbler."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Chinh: Television producers should not pay attention to the preferences of the viewing public when making creative decisions. Great painters do not consider what the museum-going public wants to see. Lana: But television is expressly for the viewing public. So a producer is more like a CEO than like an artist. Just as a company would be foolhardy not to consider consumers’ tastes when developing products, the TV producer must consider viewers’ preferences.",
+    "questionStem": "According to Lana, Chinh’s argument is flawed in that it",
+    "answerChoices": {
+      "A": "is circular",
+      "B": "relies on a sample of consumers that is unrepresentative of consumers in general",
+      "C": "infers from the effect produced by an action that the action is intended to produce that effect",
+      "D": "fails to consider the possibility that painters may in fact try to please the museum-going public",
+      "E": "offers a faulty analogy"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies",
+      "Assumes Similarity",
+      "Causal Chains",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Dietitian: High consumption of sodium increases some people’s chances of developing heart disease. To maintain cardiac health without lowering sodium consumption, therefore, these people should eat fresh, rather than canned or frozen, fruit and vegetables, since the potassium in plant foods helps to prevent sodium’s malign effects.",
+    "questionStem": "Which one of the following is an assumption required by the dietitian’s argument?",
+    "answerChoices": {
+      "A": "Fresh fruits and vegetables contain more potassium than sodium.",
+      "B": "Food processing businesses often add sodium to foods being canned or frozen.",
+      "C": "Potassium is the only mineral that helps to prevent sodium’s malign effects.",
+      "D": "Potassium in fruits and vegetables has few negative side effects.",
+      "E": "Fresh fruits and vegetables contain more potassium than do canned or frozen ones."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Conditional Conclusion",
+      "Medical",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Dana intentionally watered the plant every other day. But since the plant was a succulent, and needed dry soil, the frequent watering killed the plant. Therefore Dana intentionally killed the plant.",
+    "questionStem": "Which one of the following arguments exhibits a flawed pattern of reasoning most similar to the flawed pattern of reasoning exhibited in the argument above?",
+    "answerChoices": {
+      "A": "Jack stole $10 from Kelly and bet it on a race. The bet returned $100 to Jack. Therefore Jack really stole $100 from Kelly.",
+      "B": "Celeste knows that coffee is grown in the mountains in Peru and that Peru is in South America. Therefore Celeste should know that coffee is grown in South America.",
+      "C": "The restaurant owner decided to take an item off her restaurant’s menu. This decision disappointed Jerry because that item was his favorite dish. Therefore the restaurant owner decided to disappoint Jerry.",
+      "D": "The heavy rain caused the dam to break, and the breaking of the dam caused the fields downstream to be flooded. Therefore the heavy rain caused the flooding of the fields.",
+      "E": "The power plant raised the water temperature, and whatever raised the water temperature is responsible for the decrease in fish. Therefore the power plant is responsible for the decrease in fish."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "This boulder is volcanic in origin and yet the rest of the rock in this area is sedimentary. Since this area was covered by southward-moving glaciers during the last ice age, this boulder was probably deposited here, hundreds of miles from its geological birthplace, by a glacier.",
+    "questionStem": "Which one of the following, if true, most seriously undermines the conclusion drawn in the argument above?",
+    "answerChoices": {
+      "A": "Most boulders that have been moved by glaciers have not been moved more than 100 miles.",
+      "B": "The closest geological source of volcanic rock is 50 miles south of this boulder.",
+      "C": "The closest geological source of volcanic rock is 50 miles north of this boulder.",
+      "D": "There are no geological sources of volcanic rock north of this boulder.",
+      "E": "No other boulders of volcanic origin exist within 50 miles of this boulder."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Role",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Rifka: We do not need to stop and ask for directions. We would not need to do that unless, of course, we were lost. Craig: The fact that we are lost is precisely why we need to stop.",
+    "questionStem": "In the exchange above, the function of Craig’s comment is to",
+    "answerChoices": {
+      "A": "contradict the conclusion of Rifka’s argument without offering any reason to reject any of Rifka’s implicit premises",
+      "B": "deny one of Rifka’s implicit premises and thereby arrive at a different conclusion",
+      "C": "imply that Rifka’s argument is invalid by accepting the truth of its premises while rejecting its conclusion",
+      "D": "provide a counterexample to Rifka’s generalization",
+      "E": "affirm the truth of the stated premise of Rifka’s argument while remaining noncommittal about its conclusion"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Rebuttals",
+      "Untriggered Conditional",
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Critic: The idealized world portrayed in romance literature is diametrically opposed to the debased world portrayed in satirical literature. Nevertheless, the major characters in both types of works have moral qualities that reflect the worlds in which they are presented. Comedy and tragedy, meanwhile, require that the moral qualities of major characters change during the course of the action. Therefore, neither tragedy nor comedy can be classified as satirical literature or romance literature.",
+    "questionStem": "The critic’s conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Some characters in comedies and tragedies are neither debased nor idealized.",
+      "B": "The visions of the world portrayed in works of tragedy and works of comedy change during the course of the action.",
+      "C": "If a character in a tragedy is idealized at the beginning of the action depicted in the tragedy, he or she must be debased at the end.",
+      "D": "In romance literature and satirical literature, characters’ moral qualities do not change during the course of the action.",
+      "E": "Both comedy and tragedy require that the moral qualities of minor characters change during the course of the action."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Lance: If experience teaches us nothing else, it teaches us that every general rule has at least one exception. Frank: What you conclude is itself a general rule. If we assume that it is true, then there is at least one general rule that has no exceptions. Therefore, you must withdraw your conclusion.",
+    "questionStem": "Frank’s argument is an attempt to counter Lance’s conclusion by",
+    "answerChoices": {
+      "A": "demonstrating that Lance assumes the very thing he sets out to prove",
+      "B": "showing that Lance’s conclusion involves him in a contradiction",
+      "C": "showing that no general rule can have exceptions",
+      "D": "establishing that experience teaches us the opposite of what Lance concludes",
+      "E": "showing that it has no implications for any real cases"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Throughout a certain nation, electricity has actually become increasingly available to people in urban areas while energy production has been subsidized to help residents of rural areas gain access to electricity. However, even with the subsidy, many of the most isolated rural populations still have no access to electricity. Thus, the energy subsidy has failed to achieve its intended purpose.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes for granted that the subsidy’s intended purpose could have been achieved if the subsidy had not existed",
+      "B": "takes for granted that if a subsidy has any benefit for those whom it was not intended to benefit, then that subsidy has failed to achieve its intended purpose",
+      "C": "presumes, without providing justification, that the intended purpose of the subsidy was to benefit not only rural populations in the nation who have no electricity, but other people in the nation as well",
+      "D": "overlooks the possibility that even many of the people in the nation who live in urban areas would have difficulty gaining access to electricity without the subsidy",
+      "E": "fails to take into account that the subsidy could have helped many of the rural residents in the nation gain access to electricity even if many other rural residents in the nation were not helped in this way"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Heart attacks are most likely to occur on Mondays. The accepted explanation is that because Monday is the first day of the workweek, people feel more stress on Mondays than on other days. However, research shows that even unemployed retired people are more likely to have heart attacks on Mondays than on other days.",
+    "questionStem": "Which one of the following, if true, most helps to explain the increased likelihood that an unemployed retiree will have a heart attack on a Monday?",
+    "answerChoices": {
+      "A": "Because they associate Monday with work, retired people are more likely to begin large projects on Mondays.",
+      "B": "Many retired people take up part-time jobs after they retire from their careers.",
+      "C": "People seldom change their dietary and other health habits after retirement.",
+      "D": "Stress is the major factor influencing the risk of heart attack.",
+      "E": "Unemployed retired people are even more likely to have heart attacks than are people who have jobs."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Breadcrumbs",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Psychologist: We asked 100 entrepreneurs and 100 business managers to answer various questions and rate how confident they were that their responses were correct. While members of each group were overconfident, in general the entrepreneurs were much more so than the business managers. This indicates that people who are especially overconfident are more likely to attempt to start a business in spite of the enormous odds against success than people who are less confident.",
+    "questionStem": "Which one of the following, if true, lends the most support to the psychologist’s conclusion?",
+    "answerChoices": {
+      "A": "The questions asked of the entrepreneurs and business managers included personal, political, and business questions.",
+      "B": "At least some of the entrepreneurs surveyed had accurately determined before attempting to start their businesses what the odds were against their attempts being successful.",
+      "C": "Another survey showed that degree of confidence was highly correlated with success in business.",
+      "D": "The business managers who were most overconfident were found to have attempted to start businesses in the past.",
+      "E": "How confident each person surveyed was that his or her answers to the questions asked were correct corresponded closely to that person’s confidence in his or her business acumen."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "If Agnes’s research proposal is approved, the fourth-floor lab must be cleaned out for her use. Immanuel’s proposal, on the other hand, requires less space. So if his proposal is approved, he will continue to work in the second-floor lab. Only those proposals the director supports will be approved. So since the director will support both proposals, the fourth-floor lab must be cleaned out.",
+    "questionStem": "The argument’s reasoning is flawed because the argument",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that the fourth-floor lab is bigger than the second-floor lab",
+      "B": "fails to consider the possibility that a proposal will be rejected even with the director’s support",
+      "C": "presumes, without providing justification, that the director will support both proposals with equal enthusiasm",
+      "D": "fails to consider the possibility that Immanuel will want to move to a bigger lab once his proposal is approved",
+      "E": "presumes, without providing justification, that no lab other than the fourth-floor lab would be adequate for Agnes’s research"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In order to expand its mailing lists for e-mail advertising, the Outdoor Sports Company has been offering its customers financial incentives if they provide the e-mail addresses of their friends. However, offering such incentives is an unethical business practice, because it encourages people to exploit their personal relationships for profit, which risks damaging the integrity of those relationships.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "It is unethical for people to exploit their personal relationships for profit if in doing so they risk damaging the integrity of those relationships.",
+      "B": "If it would be unethical to use information that was gathered in a particular way, then it is unethical to gather that information in the first place.",
+      "C": "It is an unethical business practice for a company to deliberately damage the integrity of its customers’ personal relationships in any way.",
+      "D": "It is unethical to encourage people to engage in behavior that could damage the integrity of their personal relationships.",
+      "E": "Providing a friend’s personal information to a company in exchange for a financial reward will almost certainly damage the integrity of one’s personal relationship with that friend."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Glen: An emphasis on law’s purely procedural side produces a concern with personal rights that leads to the individual’s indifference to society’s welfare. Law’s primary role should be to create virtuous citizens. Sara: But such a role would encourage government to decide which modes of life are truly virtuous; that would be more dangerous than government’s being overprotective of individuals’ rights.",
+    "questionStem": "The dialogue provides the most support for the claim that Glen and Sara disagree about whether",
+    "answerChoices": {
+      "A": "citizens can be assumed to be capable of making good choices without governmental interference",
+      "B": "virtuousness on the part of citizens is more important than the protection of citizens’ rights",
+      "C": "there is an inherent danger in allowing government to decide what constitutes virtuous behavior among citizens",
+      "D": "an emphasis on law’s purely procedural side results in government’s being overprotective of citizens’ rights",
+      "E": "the cultivation of virtue among citizens should be the primary role of law"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Some credit card companies allow cardholders to skip payments for up to six months under certain circumstances, but it is almost never in a cardholder’s interest to do so. Finance charges accumulate during the skipped-payment period, and the cost to the cardholder is much greater in the long run.",
+    "questionStem": "Which one of the following arguments illustrates a principle most similar to the principle underlying the argument above?",
+    "answerChoices": {
+      "A": "Although insecticides are effective in ridding the environment of insect pests, they often kill beneficial insects at the same time. Since these beneficial insects are so important, we must find other ways to combat insect pests.",
+      "B": "Increasing the base salary of new employees is good for a company. Although the company’s payroll will increase, it will be easier for the company to recruit new employees.",
+      "C": "It is unwise to use highway maintenance funds for construction of new roads. There is some immediate benefit from new roads, but if these funds are not used for maintenance, the total maintenance cost will be greater in the long run.",
+      "D": "It is better to invest in a used piece of equipment than to purchase a new one. Although used equipment requires more repairs and is sometimes more costly in the long run, buying a new machine requires a far greater initial outlay of capital.",
+      "E": "Sports cars are impractical for most drivers. While there is undoubtedly a certain thrill associated with driving these cars, their small size makes them incapable of transporting any but the smallest amounts of cargo."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implicit Principles",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "None of the students taking literature are taking physics, but several of the students taking physics are taking art. In addition, none of the students taking rhetoric are taking physics.",
+    "questionStem": "Which one of the following statements follows logically from the statements above?",
+    "answerChoices": {
+      "A": "There are students who are taking art but not literature.",
+      "B": "None of the students taking literature are taking art.",
+      "C": "There are students who are taking rhetoric but not literature.",
+      "D": "None of the students taking rhetoric are taking literature.",
+      "E": "There are students who are taking both art and literature."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rule Puzzle",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Psychologist: Psychotherapists who attempt to provide psychotherapy on radio or television talk shows are expected to do so in ways that entertain a broad audience. However, satisfying this demand is nearly always incompatible with providing high-quality psychological help. For this reason, psychotherapists should never provide psychotherapy on talk shows.",
+    "questionStem": "Which one of the following principles must be assumed in order for the psychologist’s conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "It is never appropriate for psychotherapists to attempt to entertain a broad audience.",
+      "B": "The context in which psychological help is presented has a greater impact on its quality than the nature of the advice that is given.",
+      "C": "Psychotherapy should never be provided in a context in which there is any chance that the therapy might be of less than high quality.",
+      "D": "Most members of radio and television talk show audiences are seeking entertainment rather than high-quality psychological help.",
+      "E": "Psychotherapists should never attempt to provide psychological help in a manner that makes it unlikely to be of high quality."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Tania: A good art critic is not fair in the ordinary sense; it is only about things that do not interest one that one can give a truly unbiased opinion. Since art is a passion, good criticism of art cannot be separated from emotion. Monique: Art is not simply a passion. The best art critics passionately engage with the artwork, but render their criticism only after shedding all of their biases and consulting general principles of aesthetics.",
+    "questionStem": "The dialogue most strongly supports the claim that Tania and Monique disagree about whether",
+    "answerChoices": {
+      "A": "art is not simply a passion",
+      "B": "good art criticism is sometimes unbiased",
+      "C": "art critics should not feel emotion toward artworks",
+      "D": "fairness generally requires minimizing the influence of bias",
+      "E": "the passionate engagement of the art critic with the artwork is the most important aspect of art criticism"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The writing styles in works of high literary quality are not well suited to the avoidance of misinterpretation. For this reason, the writing in judicial decisions, which are primarily intended as determinations of law, is rarely of high literary quality. However, it is not uncommon to find writing of high literary quality in dissenting opinions, which are sometimes included in written decisions in cases heard by a panel of judges.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the statements above?",
+    "answerChoices": {
+      "A": "It is not uncommon for more than one judge to have an influence on the way a dissenting opinion is written.",
+      "B": "Unlike literary works, legal opinions rely heavily on the use of technical terminology.",
+      "C": "The law is not to any great extent determined by dissenting opinions.",
+      "D": "Judges spend much more time reading judicial decisions than reading works of high literary quality.",
+      "E": "Judicial decisions issued by panels of judges are likely to be more widely read than are judicial decisions issued by a single judge who hears a case alone."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Ecologist: Without the intervention of conservationists, squirrel monkeys will become extinct. But they will survive if large tracts of second-growth forest habitat are preserved for them. Squirrel monkeys flourish in second-growth forest because of the plentiful supply of their favorite insects and fruit.",
+    "questionStem": "Which one of the following can be properly inferred from the ecologist’s statements?",
+    "answerChoices": {
+      "A": "No habitat other than second-growth forest contains plentiful supplies of squirrel monkeys’ favorite insects and fruit.",
+      "B": "At least some of the conservationists who intervene to help the squirrel monkeys survive will do so by preserving second-growth forest habitat for the monkeys.",
+      "C": "Without plentiful supplies of their favorite insects and fruit, squirrel monkeys will become extinct.",
+      "D": "If conservationists intervene to help squirrel monkeys survive, then the squirrel monkeys will not become extinct.",
+      "E": "Without the intervention of conservationists, large tracts of second-growth forest habitat will not be preserved for squirrel monkeys."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Over 40,000 lead seals from the early Byzantine Empire remain today. Apart from the rare cases where the seal authenticated a document of special importance, most seals had served their purpose when the document was opened. Lead was not expensive, but it was not free: most lead seals would have been recast once they had served their purpose. Thus the number of early Byzantine documents sealed in such a fashion must have been many times the number of remaining lead seals.",
+    "questionStem": "Which one of the following statements, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Most of the lead seals produced during the early Byzantine Empire were affixed to documents that were then opened during that period.",
+      "B": "Most of the lead seals produced during the early Byzantine Empire were affixed to documents that have since been destroyed.",
+      "C": "The amount of lead available for seals in the early Byzantine Empire was much greater than the amount of lead that remains in the seals today.",
+      "D": "During the time of the early Byzantine Empire there were at most 40,000 documents of enough importance to prevent the removing and recycling of the seal.",
+      "E": "During the time of the early Byzantine Empire there were fewer than 40,000 seals affixed to documents at any given time."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Role",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Farmer: In the long run, it is counterproductive for farmers to use insecticides. Because insects’ resistance to insecticides increases with insecticide use, farmers have to use greater and greater amounts of costly insecticides to control insect pests.",
+    "questionStem": "Which one of the following most accurately describes the role played in the farmer’s argument by the proposition that farmers have to use greater and greater amounts of costly insecticides to control insect pests?",
+    "answerChoices": {
+      "A": "It is the argument’s main conclusion, but not its only conclusion.",
+      "B": "It is a claim for which a causal explanation is provided and which itself is used as direct support for the argument’s only conclusion.",
+      "C": "It is the argument’s only conclusion.",
+      "D": "It is a claim that is used as direct support for an intermediary conclusion, which in turn is used as direct support for the argument’s main conclusion.",
+      "E": "It identifies a phenomenon for which the argument’s main conclusion offers a causal explanation."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  }
+]

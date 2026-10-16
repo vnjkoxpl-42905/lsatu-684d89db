@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-30",
+  "ordinaryJwt": true,
+  "fixtureIds": {
+    "assignment": "182c9d92-0271-406d-b02a-1b642cdfd538",
+    "mirror": "346ca279-c347-4b85-bb8d-e87a1165707d",
+    "response": "70fdab48-396d-4ef0-8c29-577e39fbd7f7"
+  },
+  "checks": [
+    "admin capability; student capability denied",
+    "admin issued dedicated source with own attribution",
+    "student owned source read and direct saved response",
+    "student revoke denied",
+    "admin stale/wrong selected subject denied",
+    "atomic source/mirror revoke and idempotent attributed receipt",
+    "source snapshot, progress, original actor, response and mirror metadata preserved",
+    "revoked direct reads/update/response insert and mirror resurrection denied"
+  ],
+  "notifications": 0,
+  "gradingRequests": 0,
+  "deletes": 0,
+  "preExistingRowsModified": 0,
+  "receipt": {
+    "revoked_at": "2026-09-30T13:45:09.734371+00:00",
+    "mirrors_hidden": 1
+  },
+  "passed": true
+}

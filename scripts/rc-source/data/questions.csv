@@ -1,0 +1,2151 @@
+question_id,passage_id,preptest,section,set_number,position,question_type,question_type_family,difficulty,has_written_explanation
+7660,1188,101,1,1,1,Main Point,Big Picture,1,t
+7661,1188,101,1,1,2,Author Opinion,Implied,1,f
+7662,1188,101,1,1,3,Locate Detail,Stated,2,t
+7663,1188,101,1,1,4,Application,Beyond Passage,1,f
+7664,1188,101,1,1,5,Non-Author Opinion,Implied,3,t
+7665,1188,101,1,1,6,Locate Detail,Stated,2,f
+7666,1190,101,1,2,7,Main Point,Big Picture,4,t
+7667,1190,101,1,2,8,Inference,Implied,2,t
+7668,1190,101,1,2,9,Locate Detail,Stated,3,t
+7669,1190,101,1,2,10,Author Opinion,Implied,2,t
+7670,1190,101,1,2,11,Local Purpose,Author’s Intent,3,f
+7671,1190,101,1,2,12,Primary Purpose,Big Picture,3,t
+7672,1190,101,1,2,13,Paragraph Purpose,Author’s Intent,2,f
+7673,1192,101,1,3,14,Main Point,Big Picture,3,t
+7674,1192,101,1,3,15,Inference,Implied,2,t
+7675,1192,101,1,3,16,Inference,Implied,3,f
+7676,1192,101,1,3,17,Local Purpose,Author’s Intent,3,f
+7677,1192,101,1,3,18,Analogy,Beyond Passage,3,t
+7678,1192,101,1,3,19,Locate Detail,Stated,5,t
+7679,1192,101,1,3,20,Organization,Big Picture,1,f
+7680,1195,101,1,4,21,Primary Purpose,Big Picture,4,t
+7681,1195,101,1,4,22,Main Point,Big Picture,4,t
+7682,1195,101,1,4,23,Locate Detail,Stated,3,t
+7683,1195,101,1,4,24,Locate Detail,Stated,5,t
+7684,1195,101,1,4,25,Inference,Implied,2,f
+7685,1195,101,1,4,26,Application,Beyond Passage,3,f
+7686,1195,101,1,4,27,Paragraph Purpose,Author’s Intent,3,f
+8415,1352,101,4,1,1,Main Point,Big Picture,2,t
+8416,1352,101,4,1,2,Local Purpose,Author’s Intent,1,f
+8417,1352,101,4,1,3,Paragraph Purpose,Author’s Intent,2,f
+8418,1352,101,4,1,4,Inference,Implied,1,f
+8419,1352,101,4,1,5,Inference,Implied,2,f
+8420,1352,101,4,1,6,Inference,Implied,4,t
+8421,1352,101,4,1,7,Locate Detail,Stated,3,f
+8422,1352,101,4,1,8,Application,Beyond Passage,5,t
+8423,1353,101,4,2,9,Primary Purpose,Big Picture,2,t
+8424,1353,101,4,2,10,Inference,Implied,4,t
+8425,1353,101,4,2,11,Locate Detail,Stated,5,t
+8426,1353,101,4,2,12,Inference,Implied,5,t
+8427,1353,101,4,2,13,Paragraph Purpose,Author’s Intent,4,f
+8428,1353,101,4,2,14,Main Point,Big Picture,3,t
+8429,1355,101,4,3,15,Main Point,Big Picture,2,t
+8430,1355,101,4,3,16,Application,Beyond Passage,4,t
+8431,1355,101,4,3,17,Application,Beyond Passage,5,t
+8432,1355,101,4,3,18,Weaken,Beyond Passage,3,t
+8433,1355,101,4,3,19,Inference,Implied,5,t
+8434,1355,101,4,3,20,Author Opinion,Implied,5,t
+8435,1359,101,4,4,21,Main Point,Big Picture,3,t
+8436,1359,101,4,4,22,Local Purpose,Author’s Intent,5,t
+8437,1359,101,4,4,23,Non-Author Opinion,Implied,2,t
+8438,1359,101,4,4,24,Locate Detail,Stated,1,f
+8439,1359,101,4,4,25,Author's Attitude,Implied,4,t
+8440,1359,101,4,4,26,Non-Author Opinion,Implied,5,t
+8441,1359,101,4,4,27,Locate Detail,Stated,5,t
+7559,1168,102,1,1,1,Main Point,Big Picture,2,t
+7560,1168,102,1,1,2,Locate Detail,Stated,2,t
+7561,1168,102,1,1,3,Organization,Big Picture,2,t
+7562,1168,102,1,1,4,Author's Attitude,Implied,2,f
+7563,1168,102,1,1,5,Author Opinion,Implied,4,f
+7564,1168,102,1,1,6,Must be False,Stated,3,t
+7565,1168,102,1,1,7,Primary Purpose,Big Picture,2,f
+7566,1172,102,1,2,8,Main Point,Big Picture,3,t
+7567,1172,102,1,2,9,Locate Detail,Stated,3,f
+7568,1172,102,1,2,10,Inference,Implied,3,t
+7569,1172,102,1,2,11,Local Purpose,Author’s Intent,4,t
+7570,1172,102,1,2,12,Locate Detail,Stated,4,t
+7571,1172,102,1,2,13,Organization,Big Picture,3,t
+7572,1174,102,1,3,14,Main Point,Big Picture,2,f
+7573,1174,102,1,3,15,Local Purpose,Author’s Intent,3,t
+7574,1174,102,1,3,16,Author Opinion,Implied,1,f
+7575,1174,102,1,3,17,Paragraph Purpose,Author’s Intent,2,t
+7576,1174,102,1,3,18,Author's Attitude,Implied,3,t
+7577,1174,102,1,3,19,Author Opinion,Implied,5,t
+7578,1174,102,1,3,20,Application,Beyond Passage,3,t
+7579,1174,102,1,3,21,Primary Purpose,Big Picture,4,t
+7580,1178,102,1,4,22,Main Point,Big Picture,4,t
+7581,1178,102,1,4,23,Locate Detail,Stated,3,t
+7582,1178,102,1,4,24,Five Questions,Stated,3,t
+7583,1178,102,1,4,25,Non-Author Opinion,Implied,4,t
+7584,1178,102,1,4,26,Principle,Implied,5,t
+4508,730,103,4,1,1,Author's Attitude,Implied,2,t
+4509,730,103,4,1,2,Locate Detail,Stated,1,f
+4510,730,103,4,1,3,Meaning in Context,Author’s Intent,2,f
+4511,730,103,4,1,4,Locate Detail,Stated,5,t
+4512,730,103,4,1,5,Non-Author Opinion,Implied,4,t
+4513,731,103,4,2,6,Main Point,Big Picture,4,t
+4514,731,103,4,2,7,Local Purpose,Author’s Intent,1,t
+4515,731,103,4,2,8,Locate Detail,Stated,3,t
+4516,731,103,4,2,9,Locate Detail,Stated,3,t
+4517,731,103,4,2,10,Inference,Implied,2,f
+4518,731,103,4,2,11,Analogy,Beyond Passage,2,t
+4519,731,103,4,2,12,Inference,Implied,3,t
+4520,731,103,4,2,13,Application,Beyond Passage,3,f
+4521,733,103,4,3,14,Primary Purpose,Big Picture,3,t
+4522,733,103,4,3,15,Locate Detail,Stated,4,t
+4523,733,103,4,3,16,Analogy,Beyond Passage,5,t
+4524,733,103,4,3,17,Organization,Big Picture,2,t
+4525,733,103,4,3,18,Author Opinion,Implied,4,t
+4526,733,103,4,3,19,Inference,Implied,4,t
+4527,733,103,4,3,20,Local Purpose,Author’s Intent,1,f
+4528,733,103,4,3,21,Locate Detail,Stated,2,f
+4529,734,103,4,4,22,Main Point,Big Picture,2,f
+4530,734,103,4,4,23,Paragraph Purpose,Author’s Intent,3,f
+4531,734,103,4,4,24,Primary Purpose,Big Picture,2,t
+4532,734,103,4,4,25,Locate Detail,Stated,3,t
+4533,734,103,4,4,26,Locate Detail,Stated,2,t
+4534,734,103,4,4,27,Non-Author Opinion,Implied,3,t
+8291,1320,104,2,1,1,Main Point,Big Picture,1,t
+8292,1320,104,2,1,2,Locate Detail,Stated,3,t
+8293,1320,104,2,1,3,Inference,Implied,4,t
+8294,1320,104,2,1,4,Author's Attitude,Implied,2,t
+8295,1320,104,2,1,5,Analogy,Beyond Passage,5,t
+8296,1320,104,2,1,6,Weaken,Beyond Passage,2,t
+8297,1322,104,2,2,7,Main Point,Big Picture,3,t
+8298,1322,104,2,2,8,Locate Detail,Stated,4,t
+8299,1322,104,2,2,9,Local Purpose,Author’s Intent,1,f
+8300,1322,104,2,2,10,Local Purpose,Author’s Intent,4,t
+8301,1322,104,2,2,11,Application,Beyond Passage,3,t
+8302,1322,104,2,2,12,Analogy,Beyond Passage,5,t
+8303,1322,104,2,2,13,Inference,Implied,5,t
+8304,1322,104,2,2,14,Author Opinion,Implied,5,t
+8305,1325,104,2,3,15,Locate Detail,Stated,1,f
+8306,1325,104,2,3,16,Local Purpose,Author’s Intent,4,t
+8307,1325,104,2,3,17,Weaken,Beyond Passage,2,f
+8308,1325,104,2,3,18,Organization,Big Picture,4,t
+8309,1325,104,2,3,19,Locate Detail,Stated,1,f
+8310,1325,104,2,3,20,Inference,Implied,3,t
+8311,1325,104,2,3,21,Inference,Implied,4,f
+8312,1326,104,2,4,22,Organization,Big Picture,1,f
+8313,1326,104,2,4,23,Main Point,Big Picture,3,f
+8314,1326,104,2,4,24,Analogy,Beyond Passage,3,t
+8315,1326,104,2,4,25,Author's Attitude,Implied,3,t
+8316,1326,104,2,4,26,Author Opinion,Implied,3,t
+4585,719,104,3,1,1,Main Point,Big Picture,1,f
+4586,719,104,3,1,2,Meaning in Context,Author’s Intent,4,t
+4587,719,104,3,1,3,Paragraph Purpose,Author’s Intent,1,f
+4588,719,104,3,1,4,Author Opinion,Implied,3,t
+4589,719,104,3,1,5,Inference,Implied,3,t
+4590,719,104,3,1,6,Principle,Implied,2,t
+4591,719,104,3,1,7,Primary Purpose,Big Picture,4,t
+4592,721,104,3,2,8,Main Point,Big Picture,4,t
+4593,721,104,3,2,9,Local Purpose,Author’s Intent,5,t
+4594,721,104,3,2,10,Application,Beyond Passage,2,t
+4595,721,104,3,2,11,Paragraph Purpose,Author’s Intent,5,t
+4596,721,104,3,2,12,Author Opinion,Implied,3,t
+4597,721,104,3,2,13,Inference,Implied,5,t
+4598,721,104,3,2,14,Primary Purpose,Big Picture,5,t
+4599,725,104,3,3,15,Main Point,Big Picture,2,f
+4600,725,104,3,3,16,Locate Detail,Stated,1,f
+4601,725,104,3,3,17,Evaluate,Beyond Passage,3,t
+4602,725,104,3,3,18,Inference,Implied,2,t
+4603,725,104,3,3,19,Local Purpose,Author’s Intent,4,t
+4604,725,104,3,3,20,Weaken,Beyond Passage,3,t
+4605,725,104,3,3,21,Non-Author Opinion,Implied,3,t
+4606,728,104,3,4,22,Locate Detail,Stated,1,f
+4607,728,104,3,4,23,Locate Detail,Stated,1,f
+4608,728,104,3,4,24,Non-Author Opinion,Implied,3,t
+4609,728,104,3,4,25,Locate Detail,Stated,2,f
+4610,728,104,3,4,26,Author's Attitude,Implied,3,t
+7407,1142,105,3,1,1,Main Point,Big Picture,2,f
+7408,1142,105,3,1,2,Locate Detail,Stated,2,t
+7409,1142,105,3,1,3,Meaning in Context,Author’s Intent,1,f
+7410,1142,105,3,1,4,Paragraph Purpose,Author’s Intent,2,t
+7411,1142,105,3,1,5,Local Purpose,Author’s Intent,2,t
+7412,1142,105,3,1,6,Inference,Implied,3,t
+7413,1142,105,3,1,7,Weaken,Beyond Passage,3,f
+7414,1144,105,3,2,8,Main Point,Big Picture,3,t
+7415,1144,105,3,2,9,Locate Detail,Stated,2,t
+7416,1144,105,3,2,10,Meaning in Context,Author’s Intent,3,t
+7417,1144,105,3,2,11,Locate Detail,Stated,2,t
+7418,1144,105,3,2,12,Author Opinion,Implied,4,f
+7419,1144,105,3,2,13,Author's Attitude,Implied,4,t
+7420,1144,105,3,2,14,Principle,Implied,5,t
+7421,1146,105,3,3,15,Main Point,Big Picture,4,f
+7422,1146,105,3,3,16,Locate Detail,Stated,3,f
+7423,1146,105,3,3,17,Locate Detail,Stated,4,t
+7424,1146,105,3,3,18,Inference,Implied,4,f
+7425,1146,105,3,3,19,Inference,Implied,1,f
+7426,1146,105,3,3,20,Author's Attitude,Implied,4,t
+7427,1146,105,3,3,21,Primary Purpose,Big Picture,2,t
+7428,1148,105,3,4,22,Main Point,Big Picture,3,t
+7429,1148,105,3,4,23,Locate Detail,Stated,5,t
+7430,1148,105,3,4,24,Inference,Implied,3,f
+7431,1148,105,3,4,25,Weaken,Beyond Passage,2,f
+7432,1148,105,3,4,26,Analogy,Beyond Passage,2,f
+4711,703,106,4,1,1,Main Point,Big Picture,3,t
+4712,703,106,4,1,2,Locate Detail,Stated,2,t
+4713,703,106,4,1,3,Author's Attitude,Implied,1,f
+4714,703,106,4,1,4,Inference,Implied,1,f
+4715,703,106,4,1,5,Primary Purpose,Big Picture,1,t
+4716,706,106,4,2,6,Main Point,Big Picture,2,t
+4717,706,106,4,2,7,Analogy,Beyond Passage,5,t
+4718,706,106,4,2,8,Locate Detail,Stated,5,t
+4719,706,106,4,2,9,Meaning in Context,Author’s Intent,3,t
+4720,706,106,4,2,10,Application,Beyond Passage,3,t
+4721,706,106,4,2,11,Author Opinion,Implied,3,t
+4722,706,106,4,2,12,Inference,Implied,4,t
+4723,706,106,4,2,13,Paragraph Purpose,Author’s Intent,1,f
+4724,707,106,4,3,14,Main Point,Big Picture,3,t
+4725,707,106,4,3,15,Non-Author Opinion,Implied,4,f
+4726,707,106,4,3,16,Locate Detail,Stated,2,t
+4727,707,106,4,3,17,Non-Author Opinion,Implied,3,t
+4728,707,106,4,3,18,Principle,Implied,1,f
+4729,707,106,4,3,19,Meaning in Context,Author’s Intent,4,t
+4730,707,106,4,3,20,Paragraph Purpose,Author’s Intent,3,t
+4731,707,106,4,3,21,Inference,Implied,2,t
+4732,710,106,4,4,22,Author Opinion,Implied,4,t
+4733,710,106,4,4,23,Locate Detail,Stated,1,f
+4734,710,106,4,4,24,Meaning in Context,Author’s Intent,3,t
+4735,710,106,4,4,25,Organization,Big Picture,1,f
+4736,710,106,4,4,26,Weaken,Beyond Passage,4,t
+4762,673,107,2,1,1,Main Point,Big Picture,3,t
+4763,673,107,2,1,2,Non-Author Opinion,Implied,4,t
+4764,673,107,2,1,3,Locate Detail,Stated,2,t
+4765,673,107,2,1,4,Local Purpose,Author’s Intent,3,t
+4766,673,107,2,1,5,Organization,Big Picture,4,t
+4767,673,107,2,1,6,Locate Detail,Stated,5,t
+4768,673,107,2,1,7,Author Opinion,Implied,4,t
+4769,676,107,2,2,8,Main Point,Big Picture,4,t
+4770,676,107,2,2,9,Locate Detail,Stated,4,f
+4771,676,107,2,2,10,Non-Author Opinion,Implied,1,f
+4772,676,107,2,2,11,Application,Beyond Passage,4,t
+4773,676,107,2,2,12,Organization,Big Picture,3,f
+4774,676,107,2,2,13,Non-Author Opinion,Implied,2,f
+4775,676,107,2,2,14,Author's Attitude,Implied,5,t
+4776,676,107,2,2,15,Principle,Implied,3,t
+4777,679,107,2,3,16,Primary Purpose,Big Picture,3,t
+4778,679,107,2,3,17,Main Point,Big Picture,4,t
+4779,679,107,2,3,18,Locate Detail,Stated,2,f
+4780,679,107,2,3,19,Analogy,Beyond Passage,2,t
+4781,679,107,2,3,20,Inference,Implied,2,t
+4782,679,107,2,3,21,Organization,Big Picture,3,f
+4783,680,107,2,4,22,Author Opinion,Implied,2,f
+4784,680,107,2,4,23,Organization,Big Picture,4,f
+4785,680,107,2,4,24,Locate Detail,Stated,1,f
+4786,680,107,2,4,25,Locate Detail,Stated,3,t
+4787,680,107,2,4,26,Meaning in Context,Author’s Intent,3,t
+4788,680,107,2,4,27,Author Opinion,Implied,2,f
+8064,1280,108,1,1,1,Main Point,Big Picture,1,f
+8065,1280,108,1,1,2,Author Opinion,Implied,3,t
+8066,1280,108,1,1,3,Locate Detail,Stated,3,f
+8067,1280,108,1,1,4,Meaning in Context,Author’s Intent,2,f
+8068,1280,108,1,1,5,Locate Detail,Stated,1,f
+8069,1280,108,1,1,6,Organization,Big Picture,5,f
+8070,1280,108,1,1,7,Non-Author Opinion,Implied,2,t
+8071,1280,108,1,1,8,Primary Purpose,Big Picture,2,f
+8072,1286,108,1,2,9,Main Point,Big Picture,1,f
+8073,1286,108,1,2,10,Locate Detail,Stated,3,t
+8074,1286,108,1,2,11,Meaning in Context,Author’s Intent,3,t
+8075,1286,108,1,2,12,Inference,Implied,2,f
+8076,1286,108,1,2,13,Author's Attitude,Implied,4,t
+8077,1286,108,1,2,14,Non-Author Opinion,Implied,3,f
+8078,1286,108,1,2,15,Inference,Implied,3,t
+8079,1286,108,1,2,16,Analogy,Beyond Passage,3,f
+8080,1290,108,1,3,17,Main Point,Big Picture,3,t
+8081,1290,108,1,3,18,Local Purpose,Author’s Intent,2,t
+8082,1290,108,1,3,19,Non-Author Opinion,Implied,4,f
+8083,1290,108,1,3,20,Principle,Implied,2,t
+8084,1290,108,1,3,21,Primary Purpose,Big Picture,3,t
+8085,1294,108,1,4,22,Main Point,Big Picture,3,t
+8086,1294,108,1,4,23,Strengthen,Beyond Passage,4,t
+8087,1294,108,1,4,24,Locate Detail,Stated,4,t
+8088,1294,108,1,4,25,Paragraph Purpose,Author’s Intent,4,t
+8089,1294,108,1,4,26,Application,Beyond Passage,2,t
+7532,1160,108,4,1,1,Main Point,Big Picture,4,t
+7533,1160,108,4,1,2,Principle,Implied,1,f
+7534,1160,108,4,1,3,Locate Detail,Stated,3,t
+7535,1160,108,4,1,4,Author Opinion,Implied,3,f
+7536,1160,108,4,1,5,Locate Detail,Stated,2,t
+7537,1160,108,4,1,6,Local Purpose,Author’s Intent,2,f
+7538,1160,108,4,1,7,Author Opinion,Implied,5,t
+7539,1162,108,4,2,8,Main Point,Big Picture,2,t
+7540,1162,108,4,2,9,Author Opinion,Implied,2,t
+7541,1162,108,4,2,10,Author Opinion,Implied,2,t
+7542,1162,108,4,2,11,Author's Attitude,Implied,2,t
+7543,1162,108,4,2,12,Paragraph Purpose,Author’s Intent,2,t
+7544,1162,108,4,2,13,Analogy,Beyond Passage,3,t
+7545,1162,108,4,2,14,Locate Detail,Stated,1,t
+7546,1162,108,4,2,15,Primary Purpose,Big Picture,1,f
+7547,1164,108,4,3,16,Main Point,Big Picture,3,t
+7548,1164,108,4,3,17,Locate Detail,Stated,5,t
+7549,1164,108,4,3,18,Paragraph Purpose,Author’s Intent,2,f
+7550,1164,108,4,3,19,Non-Author Opinion,Implied,3,f
+7551,1164,108,4,3,20,Application,Beyond Passage,4,t
+7552,1166,108,4,4,21,Main Point,Big Picture,1,f
+7553,1166,108,4,4,22,Inference,Implied,5,t
+7554,1166,108,4,4,23,Inference,Implied,1,f
+7555,1166,108,4,4,24,Primary Purpose,Big Picture,1,t
+7556,1166,108,4,4,25,Analogy,Beyond Passage,5,t
+7557,1166,108,4,4,26,Locate Detail,Stated,4,t
+7558,1166,108,4,4,27,Primary Purpose,Big Picture,4,t
+5267,1045,109,2,1,1,Main Point,Big Picture,2,t
+5268,1045,109,2,1,2,Meaning in Context,Author’s Intent,2,t
+5269,1045,109,2,1,3,Locate Detail,Stated,4,t
+5270,1045,109,2,1,4,Weaken,Beyond Passage,5,t
+5271,1045,109,2,1,5,Paragraph Purpose,Author’s Intent,5,t
+5272,1045,109,2,1,6,Non-Author Opinion,Implied,4,t
+5273,1045,109,2,1,7,Primary Purpose,Big Picture,2,t
+5274,1051,109,2,2,8,Author's Attitude,Implied,3,f
+5275,1051,109,2,2,9,Locate Detail,Stated,1,f
+5276,1051,109,2,2,10,Non-Author Opinion,Implied,2,t
+5277,1051,109,2,2,11,Strengthen,Beyond Passage,2,t
+5278,1051,109,2,2,12,Locate Detail,Stated,2,f
+5279,1051,109,2,2,13,Author Opinion,Implied,3,f
+5280,1051,109,2,2,14,Principle,Implied,2,f
+5281,1057,109,2,3,15,Main Point,Big Picture,4,t
+5282,1057,109,2,3,16,Inference,Implied,3,f
+5283,1057,109,2,3,17,Paragraph Purpose,Author’s Intent,2,f
+5284,1057,109,2,3,18,Non-Author Opinion,Implied,2,f
+5285,1057,109,2,3,19,Author Opinion,Implied,3,t
+5286,1057,109,2,3,20,Inference,Implied,2,f
+5287,1057,109,2,3,21,Weaken,Beyond Passage,3,t
+5288,1057,109,2,3,22,Locate Detail,Stated,4,f
+5289,1059,109,2,4,23,Main Point,Big Picture,2,t
+5290,1059,109,2,4,24,Author's Attitude,Implied,4,t
+5291,1059,109,2,4,25,Local Purpose,Author’s Intent,4,t
+5292,1059,109,2,4,26,Inference,Implied,5,t
+5293,1059,109,2,4,27,Primary Purpose,Big Picture,4,t
+5294,1059,109,2,4,28,Locate Detail,Stated,2,t
+5343,1027,110,1,1,1,Main Point,Big Picture,2,t
+5344,1027,110,1,1,2,Author's Attitude,Implied,3,t
+5345,1027,110,1,1,3,Main Point,Big Picture,2,f
+5346,1027,110,1,1,4,Organization,Big Picture,1,t
+5347,1027,110,1,1,5,Inference,Implied,4,t
+5348,1027,110,1,1,6,Principle,Implied,2,f
+5349,1031,110,1,2,7,Author Opinion,Implied,5,f
+5350,1031,110,1,2,8,Locate Detail,Stated,1,f
+5351,1031,110,1,2,9,Meaning in Context,Author’s Intent,2,t
+5352,1031,110,1,2,10,Paragraph Purpose,Author’s Intent,2,f
+5353,1031,110,1,2,11,Local Purpose,Author’s Intent,2,t
+5354,1031,110,1,2,12,Analogy,Beyond Passage,5,t
+5355,1034,110,1,3,13,Inference,Implied,4,t
+5356,1034,110,1,3,14,Locate Detail,Stated,3,t
+5357,1034,110,1,3,15,Paragraph Purpose,Author’s Intent,1,f
+5358,1034,110,1,3,16,Strengthen,Beyond Passage,2,t
+5359,1034,110,1,3,17,Locate Detail,Stated,2,t
+5360,1034,110,1,3,18,Inference,Implied,4,t
+5361,1036,110,1,4,19,Locate Detail,Stated,3,t
+5362,1036,110,1,4,20,Inference,Implied,1,f
+5363,1036,110,1,4,21,Application,Beyond Passage,2,t
+5364,1036,110,1,4,22,Locate Detail,Stated,2,t
+5365,1036,110,1,4,23,Author Opinion,Implied,4,t
+5366,1036,110,1,4,24,Local Purpose,Author’s Intent,3,t
+5367,1036,110,1,4,25,Inference,Implied,1,f
+5368,1036,110,1,4,26,Primary Purpose,Big Picture,2,t
+4887,665,110,4,1,1,Main Point,Big Picture,2,t
+4888,665,110,4,1,2,Paragraph Purpose,Author’s Intent,1,t
+4889,665,110,4,1,3,Analogy,Beyond Passage,1,f
+4890,665,110,4,1,4,Application,Beyond Passage,4,t
+4891,665,110,4,1,5,Inference,Implied,3,f
+4892,665,110,4,1,6,Author Opinion,Implied,3,t
+4893,666,110,4,2,7,Non-Author Opinion,Implied,4,t
+4894,666,110,4,2,8,Meaning in Context,Author’s Intent,3,t
+4895,666,110,4,2,9,Non-Author Opinion,Implied,2,t
+4896,666,110,4,2,10,Non-Author Opinion,Implied,3,t
+4897,666,110,4,2,11,Application,Beyond Passage,2,t
+4898,666,110,4,2,12,Non-Author Opinion,Implied,5,t
+4899,666,110,4,2,13,Non-Author Opinion,Implied,2,f
+4900,666,110,4,2,14,Primary Purpose,Big Picture,3,t
+4901,669,110,4,3,15,Main Point,Big Picture,3,t
+4902,669,110,4,3,16,Local Purpose,Author’s Intent,1,t
+4903,669,110,4,3,17,Primary Purpose,Big Picture,3,t
+4904,669,110,4,3,18,Non-Author Opinion,Implied,5,t
+4905,669,110,4,3,19,Meaning in Context,Author’s Intent,4,t
+4906,669,110,4,3,20,Organization,Big Picture,5,t
+4907,669,110,4,3,21,Non-Author Opinion,Implied,4,t
+4908,671,110,4,4,22,Main Point,Big Picture,2,f
+4909,671,110,4,4,23,Author's Attitude,Implied,2,t
+4910,671,110,4,4,24,Analogy,Beyond Passage,2,f
+4911,671,110,4,4,25,Organization,Big Picture,3,t
+4912,671,110,4,4,26,Locate Detail,Stated,1,f
+4913,671,110,4,4,27,Primary Purpose,Big Picture,3,t
+5470,1008,111,2,1,1,Main Point,Big Picture,2,f
+5471,1008,111,2,1,2,Inference,Implied,2,f
+5472,1008,111,2,1,3,Local Purpose,Author’s Intent,1,f
+5473,1008,111,2,1,4,Locate Detail,Stated,1,f
+5474,1008,111,2,1,5,Non-Author Opinion,Implied,3,t
+5475,1008,111,2,1,6,Locate Detail,Stated,4,t
+5476,1009,111,2,2,7,Main Point,Big Picture,2,f
+5477,1009,111,2,2,8,Locate Detail,Stated,4,f
+5478,1009,111,2,2,9,Meaning in Context,Author’s Intent,2,t
+5479,1009,111,2,2,10,Non-Author Opinion,Implied,3,f
+5480,1009,111,2,2,11,Inference,Implied,4,t
+5481,1009,111,2,2,12,Five Questions,Stated,2,f
+5482,1009,111,2,2,13,Locate Detail,Stated,5,t
+5483,1009,111,2,2,14,Author's Attitude,Implied,3,f
+5484,1012,111,2,3,15,Main Point,Big Picture,3,t
+5485,1012,111,2,3,16,Local Purpose,Author’s Intent,5,t
+5486,1012,111,2,3,17,Non-Author Opinion,Implied,2,t
+5487,1012,111,2,3,18,Non-Author Opinion,Implied,3,f
+5488,1012,111,2,3,19,Non-Author Opinion,Implied,3,t
+5489,1012,111,2,3,20,Inference,Implied,3,t
+5490,1015,111,2,4,21,Main Point,Big Picture,2,t
+5491,1015,111,2,4,22,Paragraph Purpose,Author’s Intent,4,t
+5492,1015,111,2,4,23,Author's Attitude,Implied,2,t
+5493,1015,111,2,4,24,Locate Detail,Stated,5,t
+5494,1015,111,2,4,25,Non-Author Opinion,Implied,5,t
+5495,1015,111,2,4,26,Author Opinion,Implied,5,t
+5571,988,112,2,1,1,Main Point,Big Picture,2,t
+5572,988,112,2,1,2,Application,Beyond Passage,2,t
+5573,988,112,2,1,3,Local Purpose,Author’s Intent,1,f
+5574,988,112,2,1,4,Principle,Implied,4,t
+5575,988,112,2,1,5,Paragraph Purpose,Author’s Intent,1,f
+5576,988,112,2,1,6,Weaken,Beyond Passage,3,t
+5577,992,112,2,2,7,Main Point,Big Picture,2,t
+5578,992,112,2,2,8,Inference,Implied,4,t
+5579,992,112,2,2,9,Inference,Implied,3,t
+5580,992,112,2,2,10,Local Purpose,Author’s Intent,1,f
+5581,992,112,2,2,11,Non-Author Opinion,Implied,3,f
+5582,992,112,2,2,12,Inference,Implied,3,t
+5583,992,112,2,2,13,Local Purpose,Author’s Intent,4,t
+5584,992,112,2,2,14,Primary Purpose,Big Picture,2,f
+5585,994,112,2,3,15,Main Point,Big Picture,2,t
+5586,994,112,2,3,16,Local Purpose,Author’s Intent,4,t
+5587,994,112,2,3,17,Inference,Implied,3,t
+5588,994,112,2,3,18,Primary Purpose,Big Picture,2,t
+5589,994,112,2,3,19,Locate Detail,Stated,1,f
+5590,994,112,2,3,20,Locate Detail,Stated,4,t
+5591,997,112,2,4,21,Main Point,Big Picture,4,t
+5592,997,112,2,4,22,Local Purpose,Author’s Intent,1,f
+5593,997,112,2,4,23,Author's Attitude,Implied,1,f
+5594,997,112,2,4,24,Locate Detail,Stated,1,f
+5595,997,112,2,4,25,Organization,Big Picture,1,f
+5596,997,112,2,4,26,Non-Author Opinion,Implied,1,f
+5646,965,113,1,1,1,Main Point,Big Picture,3,f
+5647,965,113,1,1,2,Author's Attitude,Implied,1,f
+5648,965,113,1,1,3,Principle,Implied,4,t
+5649,965,113,1,1,4,Add to the Passage,Beyond Passage,2,t
+5650,965,113,1,1,5,Meaning in Context,Author’s Intent,2,t
+5651,965,113,1,1,6,Locate Detail,Stated,1,f
+5652,965,113,1,1,7,Author Opinion,Implied,2,f
+5653,969,113,1,2,8,Main Point,Big Picture,1,f
+5654,969,113,1,2,9,Author Opinion,Implied,4,t
+5655,969,113,1,2,10,Inference,Implied,5,t
+5656,969,113,1,2,11,Primary Purpose,Big Picture,2,t
+5657,969,113,1,2,12,Paragraph Purpose,Author’s Intent,2,t
+5658,969,113,1,2,13,Meaning in Context,Author’s Intent,5,t
+5659,973,113,1,3,14,Author Opinion,Implied,3,f
+5660,973,113,1,3,15,Non-Author Opinion,Implied,5,t
+5661,973,113,1,3,16,Meaning in Context,Author’s Intent,3,t
+5662,973,113,1,3,17,Paragraph Purpose,Author’s Intent,3,f
+5663,973,113,1,3,18,Locate Detail,Stated,1,f
+5664,973,113,1,3,19,Non-Author Opinion,Implied,2,f
+5665,973,113,1,3,20,Primary Purpose,Big Picture,2,f
+5666,973,113,1,3,21,Five Questions,Stated,5,t
+5667,976,113,1,4,22,Application,Beyond Passage,5,t
+5668,976,113,1,4,23,Local Purpose,Author’s Intent,4,t
+5669,976,113,1,4,24,Author Opinion,Implied,5,t
+5670,976,113,1,4,25,Primary Purpose,Big Picture,3,t
+5671,976,113,1,4,26,Author Opinion,Implied,3,t
+5795,955,114,3,1,1,Main Point,Big Picture,3,f
+5796,955,114,3,1,2,Inference,Implied,2,f
+5797,955,114,3,1,3,Locate Detail,Stated,2,f
+5798,955,114,3,1,4,Locate Detail,Stated,4,t
+5799,955,114,3,1,5,Author Opinion,Implied,3,f
+5800,955,114,3,1,6,Locate Detail,Stated,3,t
+5801,955,114,3,1,7,Meaning in Context,Author’s Intent,4,t
+5802,955,114,3,1,8,Primary Purpose,Big Picture,3,f
+5803,958,114,3,2,9,Main Point,Big Picture,2,f
+5804,958,114,3,2,10,Meaning in Context,Author’s Intent,2,f
+5805,958,114,3,2,11,Weaken,Beyond Passage,3,t
+5806,958,114,3,2,12,Author Opinion,Implied,5,f
+5807,958,114,3,2,13,Local Purpose,Author’s Intent,4,t
+5808,958,114,3,2,14,Author Opinion,Implied,3,t
+5809,960,114,3,3,15,Main Point,Big Picture,5,t
+5810,960,114,3,3,16,Add to the Passage,Beyond Passage,5,t
+5811,960,114,3,3,17,Locate Detail,Stated,3,f
+5812,960,114,3,3,18,Analogy,Beyond Passage,3,t
+5813,960,114,3,3,19,Paragraph Purpose,Author’s Intent,2,t
+5814,960,114,3,3,20,Application,Beyond Passage,1,f
+5815,962,114,3,4,21,Main Point,Big Picture,1,f
+5816,962,114,3,4,22,Meaning in Context,Author’s Intent,3,t
+5817,962,114,3,4,23,Author Opinion,Implied,4,f
+5818,962,114,3,4,24,Primary Purpose,Big Picture,3,t
+5819,962,114,3,4,25,Locate Detail,Stated,3,t
+5820,962,114,3,4,26,Locate Detail,Stated,1,f
+5821,962,114,3,4,27,Author's Attitude,Implied,4,t
+5113,651,115,1,1,1,Locate Detail,Stated,4,t
+5114,651,115,1,1,2,Author Opinion,Implied,5,t
+5115,651,115,1,1,3,Author Opinion,Implied,1,f
+5116,651,115,1,1,4,Locate Detail,Stated,2,f
+5117,651,115,1,1,5,Application,Beyond Passage,3,t
+5118,652,115,1,2,6,Main Point,Big Picture,1,f
+5119,652,115,1,2,7,Inference,Implied,2,f
+5120,652,115,1,2,8,Locate Detail,Stated,2,t
+5121,652,115,1,2,9,Non-Author Opinion,Implied,3,t
+5122,652,115,1,2,10,Locate Detail,Stated,2,f
+5123,652,115,1,2,11,Paragraph Purpose,Author’s Intent,2,f
+5124,652,115,1,2,12,Primary Purpose,Big Picture,2,f
+5125,653,115,1,3,13,Primary Purpose,Big Picture,5,t
+5126,653,115,1,3,14,Author's Attitude,Implied,1,f
+5127,653,115,1,3,15,Inference,Implied,2,t
+5128,653,115,1,3,16,Non-Author Opinion,Implied,3,t
+5129,653,115,1,3,17,Meaning in Context,Author’s Intent,3,t
+5130,653,115,1,3,18,Application,Beyond Passage,3,t
+5131,653,115,1,3,19,Locate Detail,Stated,2,f
+5132,653,115,1,3,20,Local Purpose,Author’s Intent,5,t
+5133,655,115,1,4,21,Main Point,Big Picture,2,t
+5134,655,115,1,4,22,Author Opinion,Implied,3,t
+5135,655,115,1,4,23,Primary Purpose,Big Picture,2,t
+5136,655,115,1,4,24,Locate Detail,Stated,5,t
+5137,655,115,1,4,25,Local Purpose,Author’s Intent,3,t
+5138,655,115,1,4,26,Locate Detail,Stated,4,t
+5139,655,115,1,4,27,Application,Beyond Passage,1,f
+5140,655,115,1,4,28,Analogy,Beyond Passage,4,t
+5895,937,115,3,1,1,Main Point,Big Picture,3,t
+5896,937,115,3,1,2,Local Purpose,Author’s Intent,2,t
+5897,937,115,3,1,3,Author Opinion,Implied,3,t
+5898,937,115,3,1,4,Non-Author Opinion,Implied,3,t
+5899,937,115,3,1,5,Locate Detail,Stated,2,t
+5900,937,115,3,1,6,Strengthen,Beyond Passage,3,t
+5901,937,115,3,1,7,Locate Detail,Stated,2,f
+5902,937,115,3,1,8,Paragraph Purpose,Author’s Intent,2,t
+5903,939,115,3,2,9,Main Point,Big Picture,4,t
+5904,939,115,3,2,10,Inference,Implied,2,t
+5905,939,115,3,2,11,Author's Attitude,Implied,2,f
+5906,939,115,3,2,12,Author Opinion,Implied,3,t
+5907,939,115,3,2,13,Principle,Implied,2,f
+5908,939,115,3,2,14,Locate Detail,Stated,1,f
+5909,939,115,3,2,15,Non-Author Opinion,Implied,4,t
+5910,939,115,3,2,16,Non-Author Opinion,Implied,4,t
+5911,941,115,3,3,17,Main Point,Big Picture,3,t
+5912,941,115,3,3,18,Locate Detail,Stated,2,t
+5913,941,115,3,3,19,Inference,Implied,4,t
+5914,941,115,3,3,20,Author's Attitude,Implied,3,t
+5915,941,115,3,3,21,Five Questions,Stated,5,t
+5916,941,115,3,3,22,Paragraph Purpose,Author’s Intent,2,t
+5917,941,115,3,3,23,Primary Purpose,Big Picture,4,t
+5918,944,115,3,4,24,Main Point,Big Picture,2,t
+5919,944,115,3,4,25,Application,Beyond Passage,3,t
+5920,944,115,3,4,26,Local Purpose,Author’s Intent,2,t
+5921,944,115,3,4,27,Inference,Implied,5,f
+5922,944,115,3,4,28,Non-Author Opinion,Implied,5,t
+6252,809,116,1,1,1,Main Point,Big Picture,1,f
+6253,809,116,1,1,2,Locate Detail,Stated,2,t
+6254,809,116,1,1,3,Author's Attitude,Implied,1,f
+6255,809,116,1,1,4,Meaning in Context,Author’s Intent,5,t
+6256,809,116,1,1,5,Application,Beyond Passage,3,t
+6257,812,116,1,2,6,Main Point,Big Picture,2,f
+6258,812,116,1,2,7,Local Purpose,Author’s Intent,3,f
+6259,812,116,1,2,8,Locate Detail,Stated,4,f
+6260,812,116,1,2,9,Paragraph Purpose,Author’s Intent,2,t
+6261,812,116,1,2,10,Locate Detail,Stated,1,f
+6262,812,116,1,2,11,Author Opinion,Implied,5,t
+6263,812,116,1,2,12,Locate Detail,Stated,5,t
+6264,812,116,1,2,13,Weaken,Beyond Passage,4,t
+6265,816,116,1,3,14,Author's Attitude,Implied,2,t
+6266,816,116,1,3,15,Application,Beyond Passage,3,f
+6267,816,116,1,3,16,Author Opinion,Implied,2,t
+6268,816,116,1,3,17,Locate Detail,Stated,1,f
+6269,816,116,1,3,18,Local Purpose,Author’s Intent,2,f
+6270,816,116,1,3,19,Weaken,Beyond Passage,2,f
+6271,816,116,1,3,20,Local Purpose,Author’s Intent,3,f
+6272,816,116,1,3,21,Inference,Implied,3,f
+6273,819,116,1,4,22,Main Point,Big Picture,4,t
+6274,819,116,1,4,23,Author Opinion,Implied,2,t
+6275,819,116,1,4,24,Locate Detail,Stated,3,t
+6276,819,116,1,4,25,Inference,Implied,2,f
+6277,819,116,1,4,26,Locate Detail,Stated,3,t
+6278,819,116,1,4,27,Local Purpose,Author’s Intent,1,f
+6279,819,116,1,4,28,Inference,Implied,3,t
+5166,1073,116,4,1,1,Main Point,Big Picture,2,f
+5167,1073,116,4,1,2,Author's Attitude,Implied,5,t
+5168,1073,116,4,1,3,Add to the Passage,Beyond Passage,2,t
+5169,1073,116,4,1,4,Locate Detail,Stated,2,t
+5170,1073,116,4,1,5,Organization,Big Picture,3,t
+5171,1073,116,4,1,6,Author Opinion,Implied,2,t
+5172,1073,116,4,1,7,Primary Purpose,Big Picture,2,f
+5173,1077,116,4,2,8,Main Point,Big Picture,3,f
+5174,1077,116,4,2,9,Non-Author Opinion,Implied,5,t
+5175,1077,116,4,2,10,Organization,Big Picture,1,f
+5176,1077,116,4,2,11,Meaning in Context,Author’s Intent,4,t
+5177,1077,116,4,2,12,Application,Beyond Passage,4,t
+5178,1077,116,4,2,13,Weaken,Beyond Passage,4,t
+5179,1088,116,4,3,14,Main Point,Big Picture,5,t
+5180,1088,116,4,3,15,Author's Attitude,Implied,2,f
+5181,1088,116,4,3,16,Meaning in Context,Author’s Intent,5,t
+5182,1088,116,4,3,17,Paragraph Purpose,Author’s Intent,2,t
+5183,1088,116,4,3,18,Local Purpose,Author’s Intent,1,f
+5184,1088,116,4,3,19,Application,Beyond Passage,3,t
+5185,1089,116,4,4,20,Main Point,Big Picture,2,t
+5186,1089,116,4,4,21,Local Purpose,Author’s Intent,2,f
+5187,1089,116,4,4,22,Locate Detail,Stated,3,t
+5188,1089,116,4,4,23,Strengthen,Beyond Passage,2,t
+5189,1089,116,4,4,24,Author Opinion,Implied,4,t
+5190,1089,116,4,4,25,Author's Attitude,Implied,2,f
+5191,1089,116,4,4,26,Primary Purpose,Big Picture,2,t
+5192,1089,116,4,4,27,Inference,Implied,3,t
+6353,797,117,1,1,1,Main Point,Big Picture,3,f
+6354,797,117,1,1,2,Primary Purpose,Big Picture,2,f
+6355,797,117,1,1,3,Locate Detail,Stated,1,f
+6356,797,117,1,1,4,Organization,Big Picture,2,f
+6357,797,117,1,1,5,Inference,Implied,2,t
+6358,797,117,1,1,6,Locate Detail,Stated,4,f
+6359,797,117,1,1,7,Local Purpose,Author’s Intent,5,t
+6360,798,117,1,2,8,Main Point,Big Picture,3,t
+6361,798,117,1,2,9,Local Purpose,Author’s Intent,2,t
+6362,798,117,1,2,10,Locate Detail,Stated,1,f
+6363,798,117,1,2,11,Author Opinion,Implied,3,t
+6364,798,117,1,2,12,Locate Detail,Stated,2,f
+6365,798,117,1,2,13,Inference,Implied,2,f
+6366,798,117,1,2,14,Strengthen,Beyond Passage,4,t
+6367,799,117,1,3,15,Main Point,Big Picture,2,t
+6368,799,117,1,3,16,Author Opinion,Implied,4,t
+6369,799,117,1,3,17,Paragraph Purpose,Author’s Intent,2,f
+6370,799,117,1,3,18,Inference,Implied,4,t
+6371,799,117,1,3,19,Locate Detail,Stated,4,t
+6372,799,117,1,3,20,Inference,Implied,4,t
+6373,802,117,1,4,21,Main Point,Big Picture,1,f
+6374,802,117,1,4,22,Analogy,Beyond Passage,3,t
+6375,802,117,1,4,23,Author's Attitude,Implied,5,f
+6376,802,117,1,4,24,Author Opinion,Implied,2,t
+6377,802,117,1,4,25,Meaning in Context,Author’s Intent,4,t
+6378,802,117,1,4,26,Local Purpose,Author’s Intent,3,t
+6379,802,117,1,4,27,Primary Purpose,Big Picture,1,t
+6479,861,118,2,1,1,Main Point,Big Picture,3,t
+6480,861,118,2,1,2,Application,Beyond Passage,2,t
+6481,861,118,2,1,3,Author Opinion,Implied,1,f
+6482,861,118,2,1,4,Local Purpose,Author’s Intent,1,f
+6483,861,118,2,1,5,Author Opinion,Implied,3,f
+6484,861,118,2,1,6,Inference,Implied,3,t
+6485,863,118,2,2,7,Main Point,Big Picture,3,f
+6486,863,118,2,2,8,Organization,Big Picture,4,t
+6487,863,118,2,2,9,Locate Detail,Stated,1,f
+6488,863,118,2,2,10,Primary Purpose,Big Picture,5,t
+6489,863,118,2,2,11,Add to the Passage,Beyond Passage,4,f
+6490,863,118,2,2,12,Locate Detail,Stated,3,f
+6491,863,118,2,2,13,Author's Attitude,Implied,3,t
+6492,863,118,2,2,14,Primary Purpose,Big Picture,4,t
+6493,867,118,2,3,15,Main Point,Big Picture,2,f
+6494,867,118,2,3,16,Paragraph Purpose,Author’s Intent,1,f
+6495,867,118,2,3,17,Organization,Big Picture,3,t
+6496,867,118,2,3,18,Locate Detail,Stated,2,f
+6497,867,118,2,3,19,Weaken,Beyond Passage,5,t
+6498,872,118,2,4,20,Main Point,Big Picture,2,t
+6499,872,118,2,4,21,Local Purpose,Author’s Intent,3,t
+6500,872,118,2,4,22,Locate Detail,Stated,3,f
+6501,872,118,2,4,23,Author's Attitude,Implied,5,t
+6502,872,118,2,4,24,Author Opinion,Implied,4,t
+6503,872,118,2,4,25,Strengthen,Beyond Passage,2,t
+6504,872,118,2,4,26,Author Opinion,Implied,5,t
+6505,872,118,2,4,27,Primary Purpose,Big Picture,1,f
+6553,785,119,1,1,1,Main Point,Big Picture,2,t
+6554,785,119,1,1,2,Non-Author Opinion,Implied,3,t
+6555,785,119,1,1,3,Author Opinion,Implied,4,t
+6556,785,119,1,1,4,Locate Detail,Stated,2,f
+6557,785,119,1,1,5,Local Purpose,Author’s Intent,2,f
+6558,785,119,1,1,6,Locate Detail,Stated,3,t
+6559,785,119,1,1,7,Primary Purpose,Big Picture,4,t
+6560,787,119,1,2,8,Main Point,Big Picture,1,f
+6562,787,119,1,2,10,Organization,Big Picture,4,f
+6563,787,119,1,2,11,Inference,Implied,2,t
+6564,787,119,1,2,12,Locate Detail,Stated,1,t
+6565,787,119,1,2,13,Locate Detail,Stated,1,f
+6566,787,119,1,2,14,Author Opinion,Implied,5,t
+6567,787,119,1,2,15,Author Opinion,Implied,2,f
+6568,790,119,1,3,16,Main Point,Big Picture,3,t
+6569,790,119,1,3,17,Meaning in Context,Author’s Intent,3,t
+6570,790,119,1,3,18,Inference,Implied,2,t
+6571,790,119,1,3,19,Locate Detail,Stated,1,t
+6572,790,119,1,3,20,Locate Detail,Stated,4,t
+6573,790,119,1,3,21,Inference,Implied,4,t
+6574,792,119,1,4,22,Main Point,Big Picture,4,t
+6575,792,119,1,4,23,Inference,Implied,3,t
+6576,792,119,1,4,24,Author Opinion,Implied,4,t
+6577,792,119,1,4,25,Locate Detail,Stated,3,f
+6578,792,119,1,4,26,Analogy,Beyond Passage,3,t
+6579,792,119,1,4,27,Meaning in Context,Author’s Intent,4,t
+6679,769,120,2,1,1,Author's Attitude,Implied,2,t
+6680,769,120,2,1,2,Locate Detail,Stated,2,f
+6681,769,120,2,1,3,Local Purpose,Author’s Intent,4,t
+6682,769,120,2,1,4,Locate Detail,Stated,2,f
+6683,769,120,2,1,5,Inference,Implied,5,t
+6684,771,120,2,2,6,Main Point,Big Picture,4,t
+6685,771,120,2,2,7,Application,Beyond Passage,1,f
+6686,771,120,2,2,8,Inference,Implied,3,f
+6687,771,120,2,2,9,Author Opinion,Implied,3,t
+6688,771,120,2,2,10,Paragraph Purpose,Author’s Intent,2,f
+6689,771,120,2,2,11,Author Opinion,Implied,5,t
+6690,773,120,2,3,12,Main Point,Big Picture,1,f
+6691,773,120,2,3,13,Local Purpose,Author’s Intent,1,f
+6692,773,120,2,3,14,Analogy,Beyond Passage,1,f
+6693,773,120,2,3,15,Locate Detail,Stated,1,f
+6694,773,120,2,3,16,Author Opinion,Implied,2,t
+6695,773,120,2,3,17,Non-Author Opinion,Implied,3,t
+6696,773,120,2,3,18,Primary Purpose,Big Picture,1,f
+6697,776,120,2,4,19,Main Point,Big Picture,3,t
+6698,776,120,2,4,20,Locate Detail,Stated,3,f
+6699,776,120,2,4,21,Non-Author Opinion,Implied,4,t
+6700,776,120,2,4,22,Inference,Implied,1,f
+6701,776,120,2,4,23,Strengthen,Beyond Passage,2,f
+6702,776,120,2,4,24,Organization,Big Picture,5,t
+6703,776,120,2,4,25,Inference,Implied,4,t
+6704,776,120,2,4,26,Primary Purpose,Big Picture,4,t
+6023,920,121,2,1,1,Main Point,Big Picture,2,t
+6024,920,121,2,1,2,Paragraph Purpose,Author’s Intent,4,f
+6025,920,121,2,1,3,Local Purpose,Author’s Intent,2,f
+6026,920,121,2,1,4,Author's Attitude,Implied,2,f
+6027,920,121,2,1,5,Inference,Implied,3,t
+6028,922,121,2,2,6,Paragraph Purpose,Author’s Intent,1,f
+6029,922,121,2,2,7,Analogy,Beyond Passage,1,f
+6030,922,121,2,2,8,Weaken,Beyond Passage,2,f
+6031,922,121,2,2,9,Locate Detail,Stated,2,f
+6032,922,121,2,2,10,Inference,Implied,2,f
+6033,922,121,2,2,11,Author Opinion,Implied,3,f
+6034,922,121,2,2,12,Inference,Implied,4,t
+6035,923,121,2,3,13,Main Point,Big Picture,2,f
+6036,923,121,2,3,14,Main Point,Big Picture,1,t
+6037,923,121,2,3,15,Author Opinion,Implied,5,t
+6038,923,121,2,3,16,Analogy,Beyond Passage,5,t
+6039,923,121,2,3,17,Author's Attitude,Implied,2,f
+6040,923,121,2,3,18,Meaning in Context,Author’s Intent,4,f
+6041,923,121,2,3,19,Locate Detail,Stated,3,t
+6042,924,121,2,4,20,Main Point,Big Picture,2,t
+6043,924,121,2,4,21,Inference,Implied,4,t
+6044,924,121,2,4,22,Locate Detail,Stated,4,t
+6045,924,121,2,4,23,Analogy,Beyond Passage,3,t
+6046,924,121,2,4,24,Five Questions,Stated,2,t
+6047,924,121,2,4,25,Organization,Big Picture,3,t
+6048,924,121,2,4,26,Author Opinion,Implied,5,t
+6049,924,121,2,4,27,Inference,Implied,3,t
+6801,761,121,3,1,1,Author's Attitude,Implied,3,t
+6802,761,121,3,1,2,Five Questions,Stated,1,f
+6803,761,121,3,1,3,Author Opinion,Implied,3,f
+6804,761,121,3,1,4,Local Purpose,Author’s Intent,1,f
+6805,761,121,3,1,5,Author Opinion,Implied,4,t
+6806,765,121,3,2,6,Main Point,Big Picture,4,t
+6807,765,121,3,2,7,Non-Author Opinion,Implied,3,t
+6808,765,121,3,2,8,Meaning in Context,Author’s Intent,5,t
+6809,765,121,3,2,9,Analogy,Beyond Passage,3,t
+6810,765,121,3,2,10,Locate Detail,Stated,1,f
+6811,765,121,3,2,11,Locate Detail,Stated,2,t
+6812,765,121,3,2,12,Author's Attitude,Implied,4,t
+6813,766,121,3,3,13,Main Point,Big Picture,3,f
+6814,766,121,3,3,14,Meaning in Context,Author’s Intent,4,t
+6815,766,121,3,3,15,Author's Attitude,Implied,3,t
+6816,766,121,3,3,16,Paragraph Purpose,Author’s Intent,2,t
+6817,766,121,3,3,17,Application,Beyond Passage,4,t
+6818,766,121,3,3,18,Inference,Implied,4,t
+6819,766,121,3,3,19,Inference,Implied,3,t
+6820,767,121,3,4,20,Main Point,Big Picture,1,f
+6821,767,121,3,4,21,Author Opinion,Implied,4,t
+6822,767,121,3,4,22,Inference,Implied,2,f
+6823,767,121,3,4,23,Locate Detail,Stated,2,t
+6824,767,121,3,4,24,Meaning in Context,Author’s Intent,2,f
+6825,767,121,3,4,25,Paragraph Purpose,Author’s Intent,2,f
+6826,767,121,3,4,26,Locate Detail,Stated,2,f
+6827,767,121,3,4,27,Primary Purpose,Big Picture,4,t
+6902,739,122,3,1,1,Main Point,Big Picture,3,t
+6903,739,122,3,1,2,Organization,Big Picture,1,t
+6904,739,122,3,1,3,Analogy,Beyond Passage,2,t
+6905,739,122,3,1,4,Author Opinion,Implied,2,f
+6906,739,122,3,1,5,Locate Detail,Stated,2,t
+6907,739,122,3,1,6,Locate Detail,Stated,1,f
+6908,743,122,3,2,7,Main Point,Big Picture,2,t
+6909,743,122,3,2,8,Non-Author Opinion,Implied,4,t
+6910,743,122,3,2,9,Locate Detail,Stated,1,f
+6911,743,122,3,2,10,Primary Purpose,Big Picture,2,t
+6912,743,122,3,2,11,Inference,Implied,3,t
+6913,743,122,3,2,12,Locate Detail,Stated,2,t
+6914,743,122,3,2,13,Meaning in Context,Author’s Intent,4,t
+6915,748,122,3,3,14,Main Point,Big Picture,5,t
+6916,748,122,3,3,15,Locate Detail,Stated,2,f
+6917,748,122,3,3,16,Paragraph Purpose,Author’s Intent,2,t
+6918,748,122,3,3,17,Add to the Passage,Beyond Passage,3,t
+6919,748,122,3,3,18,Author's Attitude,Implied,3,t
+6920,748,122,3,3,19,Local Purpose,Author’s Intent,3,f
+6921,748,122,3,3,20,Inference,Implied,3,t
+6922,751,122,3,4,21,Main Point,Big Picture,3,t
+6923,751,122,3,4,22,Organization,Big Picture,2,f
+6924,751,122,3,4,23,Application,Beyond Passage,3,t
+6925,751,122,3,4,24,Local Purpose,Author’s Intent,5,t
+6926,751,122,3,4,25,Inference,Implied,3,t
+6927,751,122,3,4,26,Author Opinion,Implied,2,t
+6928,751,122,3,4,27,Inference,Implied,4,t
+6125,900,123,1,1,1,Main Point,Big Picture,4,t
+6126,900,123,1,1,2,Local Purpose,Author’s Intent,2,f
+6127,900,123,1,1,3,Non-Author Opinion,Implied,1,f
+6128,900,123,1,1,4,Five Questions,Stated,2,t
+6129,900,123,1,1,5,Analogy,Beyond Passage,3,t
+6130,900,123,1,1,6,Strengthen,Beyond Passage,3,t
+6131,902,123,1,2,7,Main Point,Big Picture,2,t
+6132,902,123,1,2,8,Application,Beyond Passage,5,f
+6133,902,123,1,2,9,Locate Detail,Stated,1,t
+6134,902,123,1,2,10,Inference,Implied,2,f
+6135,902,123,1,2,11,Local Purpose,Author’s Intent,2,f
+6136,902,123,1,2,12,Non-Author Opinion,Implied,3,t
+6137,902,123,1,2,13,Organization,Big Picture,2,t
+6138,905,123,1,3,14,Main Point,Big Picture,3,t
+6139,905,123,1,3,15,Author Opinion,Implied,3,t
+6140,905,123,1,3,16,Locate Detail,Stated,1,f
+6141,905,123,1,3,17,Author's Attitude,Implied,3,f
+6142,905,123,1,3,18,Primary Purpose,Big Picture,2,f
+6143,905,123,1,3,19,Local Purpose,Author’s Intent,3,f
+6144,905,123,1,3,20,Weaken,Beyond Passage,4,t
+6145,907,123,1,4,21,Main Point,Big Picture,2,t
+6146,907,123,1,4,22,Locate Detail,Stated,5,t
+6147,907,123,1,4,23,Author's Attitude,Implied,3,t
+6148,907,123,1,4,24,Primary Purpose,Big Picture,1,t
+6149,907,123,1,4,25,Non-Author Opinion,Implied,4,t
+6150,907,123,1,4,26,Organization,Big Picture,3,t
+679,157,123,4,1,1,Main Point,Big Picture,3,t
+680,157,123,4,1,2,Analogy,Beyond Passage,2,t
+681,157,123,4,1,3,Locate Detail,Stated,3,t
+682,157,123,4,1,4,Author's Attitude,Implied,3,t
+683,157,123,4,1,5,Locate Detail,Stated,2,t
+684,157,123,4,1,6,Local Purpose,Author’s Intent,2,t
+685,157,123,4,1,7,Author Opinion,Implied,5,t
+686,157,123,4,1,8,Inference,Implied,2,t
+687,168,123,4,2,9,Primary Purpose,Big Picture,3,t
+688,168,123,4,2,10,Locate Detail,Stated,5,t
+689,168,123,4,2,11,Author Opinion,Implied,3,t
+690,168,123,4,2,12,Author Opinion,Implied,3,t
+691,168,123,4,2,13,Principle,Implied,5,t
+692,168,123,4,2,14,Method,Big Picture,3,t
+693,172,123,4,3,15,Main Point,Big Picture,5,t
+694,172,123,4,3,16,Meaning in Context,Author’s Intent,2,t
+695,172,123,4,3,17,Author Opinion,Implied,5,t
+696,172,123,4,3,18,Analogy,Beyond Passage,5,t
+697,172,123,4,3,19,Inference,Implied,4,t
+698,172,123,4,3,20,Locate Detail,Stated,3,t
+699,172,123,4,3,21,Local Purpose,Author’s Intent,4,t
+700,172,123,4,3,22,Locate Detail,Stated,5,t
+701,176,123,4,4,23,Main Point,Big Picture,3,t
+702,176,123,4,4,24,Locate Detail,Stated,4,t
+703,176,123,4,4,25,Meaning in Context,Author’s Intent,5,t
+704,176,123,4,4,26,Locate Detail,Stated,4,t
+705,176,123,4,4,27,Paragraph Purpose,Author’s Intent,5,t
+2997,505,124,4,1,1,Main Point,Big Picture,3,t
+2998,505,124,4,1,2,Non-Author Opinion,Implied,3,t
+2999,505,124,4,1,3,Local Purpose,Author’s Intent,4,t
+3000,505,124,4,1,4,Locate Detail,Stated,5,t
+3001,505,124,4,1,5,Local Purpose,Author’s Intent,2,t
+3002,505,124,4,1,6,Author Opinion,Implied,1,t
+3003,507,124,4,2,7,Main Point,Big Picture,3,t
+3004,507,124,4,2,8,Author Opinion,Implied,5,t
+3005,507,124,4,2,9,Application,Beyond Passage,3,t
+3006,507,124,4,2,10,Non-Author Opinion,Implied,3,t
+3007,507,124,4,2,11,Meaning in Context,Author’s Intent,4,t
+3008,507,124,4,2,12,Locate Detail,Stated,2,t
+3009,507,124,4,2,13,Author Opinion,Implied,3,t
+3010,507,124,4,2,14,Primary Purpose,Big Picture,4,t
+3011,510,124,4,3,15,Locate Detail,Stated,2,t
+3012,510,124,4,3,16,Method,Big Picture,1,t
+3013,510,124,4,3,17,Locate Detail,Stated,1,t
+3014,510,124,4,3,18,Inference,Implied,1,t
+3015,510,124,4,3,19,Inference,Implied,3,t
+3016,512,124,4,4,20,Main Point,Big Picture,2,t
+3017,512,124,4,4,21,Principle,Implied,4,t
+3018,512,124,4,4,22,Locate Detail,Stated,1,t
+3019,512,124,4,4,23,Application,Beyond Passage,5,t
+3020,512,124,4,4,24,Author Opinion,Implied,5,t
+3021,512,124,4,4,25,Local Purpose,Author’s Intent,4,t
+3022,512,124,4,4,26,Strengthen,Beyond Passage,3,t
+3023,512,124,4,4,27,Inference,Implied,5,t
+3024,480,125,1,1,1,Main Point,Big Picture,1,t
+3025,480,125,1,1,2,Local Purpose,Author’s Intent,1,t
+3026,480,125,1,1,3,Locate Detail,Stated,2,t
+3027,480,125,1,1,4,Meaning in Context,Author’s Intent,2,t
+3028,480,125,1,1,5,Paragraph Purpose,Author’s Intent,3,t
+3029,483,125,1,2,6,Primary Purpose,Big Picture,4,t
+3030,483,125,1,2,7,Locate Detail,Stated,1,t
+3031,483,125,1,2,8,Inference,Implied,5,t
+3032,483,125,1,2,9,Inference,Implied,4,t
+3033,483,125,1,2,10,Inference,Implied,2,t
+3034,483,125,1,2,11,Strengthen,Beyond Passage,2,t
+3035,483,125,1,2,12,Locate Detail,Stated,1,t
+3036,490,125,1,3,13,Main Point,Big Picture,3,t
+3037,490,125,1,3,14,Local Purpose,Author’s Intent,4,t
+3038,490,125,1,3,15,Analogy,Beyond Passage,3,t
+3039,490,125,1,3,16,Locate Detail,Stated,2,f
+3040,490,125,1,3,17,Author Opinion,Implied,3,f
+3041,490,125,1,3,18,Author Opinion,Implied,5,t
+3042,490,125,1,3,19,Five Questions,Stated,3,t
+3043,491,125,1,4,20,Main Point,Big Picture,2,t
+3044,491,125,1,4,21,Application,Beyond Passage,5,t
+3045,491,125,1,4,22,Strengthen,Beyond Passage,5,t
+3046,491,125,1,4,23,Locate Detail,Stated,2,t
+3047,491,125,1,4,24,Author Opinion,Implied,5,t
+3048,491,125,1,4,25,Locate Detail,Stated,4,t
+3049,491,125,1,4,26,Local Purpose,Author’s Intent,5,t
+3050,491,125,1,4,27,Author Opinion,Implied,5,t
+6200,831,125,3,1,1,Main Point,Big Picture,3,f
+6201,831,125,3,1,2,Local Purpose,Author’s Intent,2,f
+6202,831,125,3,1,3,Analogy,Beyond Passage,3,t
+6203,831,125,3,1,4,Author's Attitude,Implied,4,t
+6204,831,125,3,1,5,Inference,Implied,3,t
+6205,831,125,3,1,6,Author Opinion,Implied,3,f
+6206,831,125,3,1,7,Locate Detail,Stated,1,f
+6207,834,125,3,2,8,Main Point,Big Picture,3,f
+6208,834,125,3,2,9,Author's Attitude,Implied,3,f
+6209,834,125,3,2,10,Local Purpose,Author’s Intent,2,t
+6210,834,125,3,2,11,Application,Beyond Passage,5,t
+6211,834,125,3,2,12,Weaken,Beyond Passage,4,t
+6212,834,125,3,2,13,Primary Purpose,Big Picture,2,t
+6213,834,125,3,2,14,Author Opinion,Implied,4,t
+6214,834,125,3,2,15,Inference,Implied,4,t
+6215,838,125,3,3,16,Locate Detail,Stated,1,f
+6216,838,125,3,3,17,Meaning in Context,Author’s Intent,3,t
+6217,838,125,3,3,18,Local Purpose,Author’s Intent,3,f
+6218,838,125,3,3,19,Author Opinion,Implied,2,t
+6219,838,125,3,3,20,Author Opinion,Implied,3,t
+6220,841,125,3,4,21,Main Point,Big Picture,3,f
+6221,841,125,3,4,22,Author's Attitude,Implied,1,f
+6222,841,125,3,4,23,Locate Detail,Stated,1,t
+6223,841,125,3,4,24,Meaning in Context,Author’s Intent,4,t
+6224,841,125,3,4,25,Organization,Big Picture,2,f
+6225,841,125,3,4,26,Primary Purpose,Big Picture,4,t
+3150,465,126,2,1,1,Main Point,Big Picture,1,t
+3151,465,126,2,1,2,Add to the Passage,Beyond Passage,4,t
+3152,465,126,2,1,3,Primary Purpose,Big Picture,2,t
+3153,465,126,2,1,4,Inference,Implied,3,t
+3154,465,126,2,1,5,Author Opinion,Implied,2,t
+3155,465,126,2,1,6,Locate Detail,Stated,4,t
+3156,468,126,2,2,7,Locate Detail,Stated,2,t
+3157,468,126,2,2,8,Five Questions,Stated,1,f
+3158,468,126,2,2,9,Author Opinion,Implied,4,t
+3159,468,126,2,2,10,Author's Attitude,Implied,2,t
+3160,468,126,2,2,11,Author Opinion,Implied,3,t
+3161,468,126,2,2,12,Method,Big Picture,2,t
+3162,468,126,2,2,13,Strengthen,Beyond Passage,3,t
+3163,471,126,2,3,14,Main Point,Big Picture,2,t
+3164,471,126,2,3,15,Inference,Implied,4,t
+3165,471,126,2,3,16,Meaning in Context,Author’s Intent,5,t
+3166,471,126,2,3,17,Analogy,Beyond Passage,4,t
+3167,471,126,2,3,18,Non-Author Opinion,Implied,3,t
+3168,471,126,2,3,19,Weaken,Beyond Passage,3,t
+3169,471,126,2,3,20,Local Purpose,Author’s Intent,1,t
+3170,471,126,2,3,21,Author's Attitude,Implied,4,t
+3171,472,126,2,4,22,Main Point,Big Picture,1,t
+3172,472,126,2,4,23,Analogy,Beyond Passage,5,t
+3173,472,126,2,4,24,Non-Author Opinion,Implied,4,t
+3174,472,126,2,4,25,Locate Detail,Stated,2,f
+3175,472,126,2,4,26,Paragraph Purpose,Author’s Intent,2,t
+3176,472,126,2,4,27,Meaning in Context,Author’s Intent,4,t
+3298,453,127,4,1,1,Main Point,Big Picture,1,t
+3299,453,127,4,1,2,Application,Beyond Passage,3,t
+3300,453,127,4,1,3,Author's Attitude,Implied,1,t
+3301,453,127,4,1,4,Locate Detail,Stated,1,t
+3302,453,127,4,1,5,Locate Detail,Stated,2,t
+3303,453,127,4,1,6,Local Purpose,Author’s Intent,2,t
+3304,453,127,4,1,7,Primary Purpose,Big Picture,2,t
+3305,456,127,4,2,8,Main Point,Big Picture,3,t
+3306,456,127,4,2,9,Locate Detail,Stated,2,f
+3307,456,127,4,2,10,Author Opinion,Implied,1,f
+3308,456,127,4,2,11,Local Purpose,Author’s Intent,3,t
+3309,456,127,4,2,12,Inference,Implied,3,t
+3310,456,127,4,2,13,Locate Detail,Stated,5,t
+3311,456,127,4,2,14,Inference,Implied,3,t
+3312,456,127,4,2,15,Weaken,Beyond Passage,4,t
+3313,459,127,4,3,16,Main Point,Big Picture,1,f
+3314,459,127,4,3,17,Meaning in Context,Author’s Intent,3,t
+3315,459,127,4,3,18,Locate Detail,Stated,1,f
+3316,459,127,4,3,19,Author's Attitude,Implied,3,t
+3317,459,127,4,3,20,Analogy,Beyond Passage,2,f
+3318,459,127,4,3,21,Principle,Implied,3,t
+3319,463,127,4,4,22,Inference,Implied,3,t
+3320,463,127,4,4,23,Organization,Big Picture,3,t
+3321,463,127,4,4,24,Analogy,Beyond Passage,4,t
+3322,463,127,4,4,25,Locate Detail,Stated,1,t
+3323,463,127,4,4,26,Inference,Implied,2,t
+3324,463,127,4,4,27,Author Opinion,Implied,2,t
+2625,547,128,1,1,1,Main Point,Big Picture,2,t
+2626,547,128,1,1,2,Author Opinion,Implied,5,t
+2627,547,128,1,1,3,Inference,Implied,4,t
+2628,547,128,1,1,4,Five Questions,Stated,3,t
+2629,547,128,1,1,5,Author Opinion,Implied,5,t
+2630,549,128,1,2,6,Main Point,Big Picture,2,t
+2631,549,128,1,2,7,Meaning in Context,Author’s Intent,4,t
+2632,549,128,1,2,8,Author's Attitude,Implied,2,t
+2633,549,128,1,2,9,Primary Purpose,Big Picture,4,t
+2634,549,128,1,2,10,Non-Author Opinion,Implied,4,t
+2635,549,128,1,2,11,Add to the Passage,Beyond Passage,3,t
+2636,549,128,1,2,12,Inference,Implied,2,t
+2637,549,128,1,2,13,Weaken,Beyond Passage,5,t
+2638,553,128,1,3,14,Main Point,Big Picture,4,t
+2639,553,128,1,3,15,Five Questions,Stated,4,t
+2640,553,128,1,3,16,Author's Attitude,Implied,2,t
+2641,553,128,1,3,17,Meaning in Context,Author’s Intent,5,t
+2642,553,128,1,3,18,Non-Author Opinion,Implied,4,t
+2643,553,128,1,3,19,Application,Beyond Passage,5,t
+2644,553,128,1,3,20,Local Purpose,Author’s Intent,5,t
+2645,553,128,1,3,21,Primary Purpose,Big Picture,5,t
+2646,556,128,1,4,22,Main Point,Big Picture,4,t
+2647,556,128,1,4,23,Local Purpose,Author’s Intent,4,t
+2648,556,128,1,4,24,Non-Author Opinion,Implied,4,t
+2649,556,128,1,4,25,Author's Attitude,Implied,5,t
+2650,556,128,1,4,26,Locate Detail,Stated,5,t
+2651,556,128,1,4,27,Meaning in Context,Author’s Intent,4,t
+2652,556,128,1,4,28,Application,Beyond Passage,5,t
+7229,1115,128,4,1,1,Main Point,Big Picture,2,t
+7230,1115,128,4,1,2,Locate Detail,Stated,1,f
+7231,1115,128,4,1,3,Locate Detail,Stated,3,t
+7232,1115,128,4,1,4,Author Opinion,Implied,4,t
+7233,1115,128,4,1,5,Inference,Implied,2,t
+7234,1115,128,4,1,6,Principle,Implied,3,t
+7235,1117,128,4,2,7,Main Point,Big Picture,3,t
+7236,1117,128,4,2,8,Principle,Implied,4,t
+7237,1117,128,4,2,9,Paragraph Purpose,Author’s Intent,2,t
+7238,1117,128,4,2,10,Meaning in Context,Author’s Intent,5,t
+7239,1117,128,4,2,11,Local Purpose,Author’s Intent,2,t
+7240,1117,128,4,2,12,Author Opinion,Implied,2,t
+7241,1119,128,4,3,13,Main Point,Big Picture,4,t
+7242,1119,128,4,3,14,Five Questions,Stated,3,t
+7243,1119,128,4,3,15,Non-Author Opinion,Implied,3,f
+7244,1119,128,4,3,16,Local Purpose,Author’s Intent,5,t
+7245,1119,128,4,3,17,Author Opinion,Implied,2,f
+7246,1119,128,4,3,18,Locate Detail,Stated,3,t
+7247,1119,128,4,3,19,Non-Author Opinion,Implied,1,t
+7248,1121,128,4,4,20,Main Point,Big Picture,2,f
+7249,1121,128,4,4,21,Locate Detail,Stated,1,f
+7250,1121,128,4,4,22,Author's Attitude,Implied,3,t
+7251,1121,128,4,4,23,Analogy,Beyond Passage,1,t
+7252,1121,128,4,4,24,Meaning in Context,Author’s Intent,1,f
+7253,1121,128,4,4,25,Inference,Implied,2,t
+7254,1121,128,4,4,26,Principle,Implied,5,t
+7255,1121,128,4,4,27,Author Opinion,Implied,2,t
+3399,437,129,4,1,1,Main Point,Big Picture,1,t
+3400,437,129,4,1,2,Local Purpose,Author’s Intent,1,t
+3401,437,129,4,1,3,Locate Detail,Stated,3,t
+3402,437,129,4,1,4,Author Opinion,Implied,2,t
+3403,437,129,4,1,5,Inference,Implied,3,t
+3404,441,129,4,2,6,Main Point,Big Picture,1,t
+3405,441,129,4,2,7,Application,Beyond Passage,3,t
+3406,441,129,4,2,8,Author Opinion,Implied,5,t
+3407,441,129,4,2,9,Locate Detail,Stated,1,t
+3408,441,129,4,2,10,Paragraph Purpose,Author’s Intent,2,t
+3409,441,129,4,2,11,Inference,Implied,2,t
+3410,441,129,4,2,12,Meaning in Context,Author’s Intent,4,t
+3411,444,129,4,3,13,Author Opinion,Implied,3,t
+3412,444,129,4,3,14,Locate Detail,Stated,2,t
+3413,444,129,4,3,15,Author Opinion,Implied,2,t
+3414,444,129,4,3,16,Main Point,Big Picture,5,t
+3415,444,129,4,3,17,Author Opinion,Implied,2,t
+3416,444,129,4,3,18,Author Opinion,Implied,3,t
+3417,444,129,4,3,19,Primary Purpose,Big Picture,2,f
+3418,445,129,4,4,20,Main Point,Big Picture,2,t
+3419,445,129,4,4,21,Meaning in Context,Author’s Intent,2,t
+3420,445,129,4,4,22,Application,Beyond Passage,3,t
+3421,445,129,4,4,23,Local Purpose,Author’s Intent,2,t
+3422,445,129,4,4,24,Locate Detail,Stated,2,f
+3423,445,129,4,4,25,Inference,Implied,5,t
+3424,445,129,4,4,26,Non-Author Opinion,Implied,4,t
+3425,445,129,4,4,27,Inference,Implied,3,t
+3452,414,130,2,1,1,Main Point,Big Picture,5,t
+3453,414,130,2,1,2,Author's Attitude,Implied,1,t
+3454,414,130,2,1,3,Locate Detail,Stated,2,t
+3455,414,130,2,1,4,Meaning in Context,Author’s Intent,3,t
+3456,414,130,2,1,5,Primary Purpose,Big Picture,3,t
+3457,414,130,2,1,6,Locate Detail,Stated,2,t
+3458,414,130,2,1,7,Paragraph Purpose,Author’s Intent,2,t
+3459,416,130,2,2,8,Main Point,Big Picture,3,t
+3460,416,130,2,2,9,Locate Detail,Stated,2,t
+3461,416,130,2,2,10,Non-Author Opinion,Implied,2,t
+3462,416,130,2,2,11,Local Purpose,Author’s Intent,3,t
+3463,416,130,2,2,12,Strengthen,Beyond Passage,2,t
+3464,416,130,2,2,13,Inference,Implied,5,t
+3465,418,130,2,3,14,Main Point,Big Picture,2,t
+3466,418,130,2,3,15,Locate Detail,Stated,1,t
+3467,418,130,2,3,16,Five Questions,Stated,4,t
+3468,418,130,2,3,17,Application,Beyond Passage,2,t
+3469,418,130,2,3,18,Non-Author Opinion,Implied,5,t
+3470,418,130,2,3,19,Inference,Implied,4,t
+3471,418,130,2,3,20,Author Opinion,Implied,4,t
+3472,422,130,2,4,21,Locate Detail,Stated,4,t
+3473,422,130,2,4,22,Inference,Implied,1,f
+3474,422,130,2,4,23,Analogy,Beyond Passage,2,t
+3475,422,130,2,4,24,Main Point,Big Picture,2,t
+3476,422,130,2,4,25,Weaken,Beyond Passage,2,f
+3477,422,130,2,4,26,Main Point,Big Picture,1,f
+3478,422,130,2,4,27,Author Opinion,Implied,3,t
+3601,403,131,4,1,1,Main Point,Big Picture,2,t
+3602,403,131,4,1,2,Analogy,Beyond Passage,3,t
+3603,403,131,4,1,3,Author Opinion,Implied,4,t
+3604,403,131,4,1,4,Local Purpose,Author’s Intent,1,t
+3605,403,131,4,1,5,Inference,Implied,2,t
+3606,403,131,4,1,6,Primary Purpose,Big Picture,3,t
+3607,403,131,4,1,7,Meaning in Context,Author’s Intent,2,t
+3608,403,131,4,1,8,Author Opinion,Implied,2,t
+3609,405,131,4,2,9,Main Point,Big Picture,2,t
+3610,405,131,4,2,10,Locate Detail,Stated,1,f
+3611,405,131,4,2,11,Weaken,Beyond Passage,2,t
+3612,405,131,4,2,12,Local Purpose,Author’s Intent,1,t
+3613,405,131,4,2,13,Five Questions,Stated,4,t
+3614,405,131,4,2,14,Author Opinion,Implied,2,f
+3615,405,131,4,2,15,Application,Beyond Passage,5,t
+3616,408,131,4,3,16,Meaning in Context,Author’s Intent,5,t
+3617,408,131,4,3,17,Five Questions,Stated,4,t
+3618,408,131,4,3,18,Author Opinion,Implied,5,t
+3619,408,131,4,3,19,Analogy,Beyond Passage,3,t
+3620,408,131,4,3,20,Inference,Implied,5,t
+3621,408,131,4,3,21,Inference,Implied,5,t
+3622,408,131,4,3,22,Weaken,Beyond Passage,3,t
+3623,410,131,4,4,23,Main Point,Big Picture,3,t
+3624,410,131,4,4,24,Inference,Implied,3,f
+3625,410,131,4,4,25,Primary Purpose,Big Picture,2,t
+3626,410,131,4,4,26,Add to the Passage,Beyond Passage,3,t
+3627,410,131,4,4,27,Author Opinion,Implied,4,t
+1718,337,132,1,1,1,Main Point,Big Picture,2,t
+1719,337,132,1,1,2,Five Questions,Stated,3,t
+1720,337,132,1,1,3,Local Purpose,Author’s Intent,3,t
+1721,337,132,1,1,4,Inference,Implied,5,t
+1722,337,132,1,1,5,Paragraph Purpose,Author’s Intent,1,t
+1723,337,132,1,1,6,Inference,Implied,3,t
+1724,337,132,1,1,7,Locate Detail,Stated,2,t
+1725,337,132,1,1,8,Application,Beyond Passage,4,t
+1726,340,132,1,2,9,Analogy,Beyond Passage,4,t
+1727,340,132,1,2,10,Author Opinion,Implied,3,f
+1728,340,132,1,2,11,Locate Detail,Stated,3,t
+1729,340,132,1,2,12,Locate Detail,Stated,1,f
+1730,340,132,1,2,13,Author's Attitude,Implied,3,t
+1731,340,132,1,2,14,Paragraph Purpose,Author’s Intent,5,t
+1732,343,132,1,3,15,Main Point,Big Picture,5,t
+1733,343,132,1,3,16,Inference,Implied,3,t
+1734,343,132,1,3,17,Inference,Implied,3,t
+1735,343,132,1,3,18,Locate Detail,Stated,5,t
+1736,343,132,1,3,19,Author Opinion,Implied,2,f
+1737,343,132,1,3,20,Inference,Implied,2,t
+1738,343,132,1,3,21,Application,Beyond Passage,4,t
+1739,345,132,1,4,22,Five Questions,Stated,3,t
+1740,345,132,1,4,23,Author Opinion,Implied,3,t
+1741,345,132,1,4,24,Meaning in Context,Author’s Intent,5,t
+1742,345,132,1,4,25,Primary Purpose,Big Picture,2,t
+1743,345,132,1,4,26,Organization,Big Picture,4,t
+1744,345,132,1,4,27,Inference,Implied,3,t
+2750,532,132,3,1,1,Non-Author Opinion,Implied,1,t
+2751,532,132,3,1,2,Locate Detail,Stated,2,t
+2752,532,132,3,1,3,Meaning in Context,Author’s Intent,3,t
+2753,532,132,3,1,4,Locate Detail,Stated,2,t
+2754,532,132,3,1,5,Local Purpose,Author’s Intent,2,t
+2755,532,132,3,1,6,Author Opinion,Implied,3,t
+2756,532,132,3,1,7,Inference,Implied,5,t
+2757,534,132,3,2,8,Main Point,Big Picture,3,t
+2758,534,132,3,2,9,Author's Attitude,Implied,3,t
+2759,534,132,3,2,10,Local Purpose,Author’s Intent,4,t
+2760,534,132,3,2,11,Non-Author Opinion,Implied,5,t
+2761,534,132,3,2,12,Locate Detail,Stated,2,t
+2762,534,132,3,2,13,Strengthen,Beyond Passage,5,t
+2763,537,132,3,3,14,Primary Purpose,Big Picture,4,t
+2764,537,132,3,3,15,Organization,Big Picture,3,t
+2765,537,132,3,3,16,Add to the Passage,Beyond Passage,3,t
+2766,537,132,3,3,17,Local Purpose,Author’s Intent,3,t
+2767,537,132,3,3,18,Inference,Implied,1,t
+2768,537,132,3,3,19,Locate Detail,Stated,3,t
+2769,537,132,3,3,20,Evaluate,Beyond Passage,5,t
+2770,538,132,3,4,21,Main Point,Big Picture,1,t
+2771,538,132,3,4,22,Organization,Big Picture,2,t
+2772,538,132,3,4,23,Primary Purpose,Big Picture,1,t
+2773,538,132,3,4,24,Author Opinion,Implied,4,t
+2774,538,132,3,4,25,Author Opinion,Implied,2,t
+2775,538,132,3,4,26,Inference,Implied,2,t
+2776,538,132,3,4,27,Locate Detail,Stated,2,t
+2777,538,132,3,4,28,Local Purpose,Author’s Intent,2,t
+1894,331,133,4,1,1,Main Point,Big Picture,3,t
+1895,331,133,4,1,2,Non-Author Opinion,Implied,4,t
+1896,331,133,4,1,3,Locate Detail,Stated,4,t
+1897,331,133,4,1,4,Non-Author Opinion,Implied,3,t
+1898,331,133,4,1,5,Inference,Implied,3,t
+1899,331,133,4,1,6,Local Purpose,Author’s Intent,3,t
+1900,331,133,4,1,7,Application,Beyond Passage,4,t
+1901,333,133,4,2,8,Main Point,Big Picture,2,t
+1902,333,133,4,2,9,Non-Author Opinion,Implied,5,t
+1903,333,133,4,2,10,Locate Detail,Stated,3,t
+1904,333,133,4,2,11,Meaning in Context,Author’s Intent,2,t
+1905,333,133,4,2,12,Local Purpose,Author’s Intent,1,t
+1906,333,133,4,2,13,Inference,Implied,3,t
+1907,333,133,4,2,14,Primary Purpose,Big Picture,1,t
+1908,333,133,4,2,15,Inference,Implied,4,t
+1909,334,133,4,3,16,Main Point,Big Picture,4,t
+1910,334,133,4,3,17,Local Purpose,Author’s Intent,2,t
+1911,334,133,4,3,18,Locate Detail,Stated,3,t
+1912,334,133,4,3,19,Inference,Implied,4,t
+1913,334,133,4,3,20,Strengthen,Beyond Passage,4,t
+1914,334,133,4,3,21,Inference,Implied,5,t
+1915,335,133,4,4,22,Primary Purpose,Big Picture,2,t
+1916,335,133,4,4,23,Locate Detail,Stated,3,t
+1917,335,133,4,4,24,Author Opinion,Implied,2,t
+1918,335,133,4,4,25,Author's Attitude,Implied,1,t
+1919,335,133,4,4,26,Local Purpose,Author’s Intent,3,t
+1920,335,133,4,4,27,Method,Big Picture,2,f
+1995,304,134,4,1,1,Main Point,Big Picture,2,t
+1996,304,134,4,1,2,Local Purpose,Author’s Intent,2,t
+1997,304,134,4,1,3,Application,Beyond Passage,3,t
+1998,304,134,4,1,4,Analogy,Beyond Passage,2,t
+1999,304,134,4,1,5,Organization,Big Picture,2,t
+2000,304,134,4,1,6,Author Opinion,Implied,4,t
+2001,305,134,4,2,7,Main Point,Big Picture,2,t
+2002,305,134,4,2,8,Local Purpose,Author’s Intent,3,t
+2003,305,134,4,2,9,Five Questions,Stated,3,t
+2004,305,134,4,2,10,Inference,Implied,2,t
+2005,305,134,4,2,11,Author Opinion,Implied,4,t
+2006,305,134,4,2,12,Inference,Implied,4,t
+2007,308,134,4,3,13,Main Point,Big Picture,2,t
+2008,308,134,4,3,14,Method,Big Picture,5,t
+2009,308,134,4,3,15,Locate Detail,Stated,3,t
+2010,308,134,4,3,16,Locate Detail,Stated,2,t
+2011,308,134,4,3,17,Primary Purpose,Big Picture,3,t
+2012,308,134,4,3,18,Meaning in Context,Author’s Intent,3,t
+2013,308,134,4,3,19,Author Opinion,Implied,5,t
+2014,310,134,4,4,20,Main Point,Big Picture,2,f
+2015,310,134,4,4,21,Application,Beyond Passage,2,t
+2016,310,134,4,4,22,Locate Detail,Stated,3,t
+2017,310,134,4,4,23,Meaning in Context,Author’s Intent,2,t
+2018,310,134,4,4,24,Organization,Big Picture,3,t
+2019,310,134,4,4,25,Non-Author Opinion,Implied,5,t
+2020,310,134,4,4,26,Non-Author Opinion,Implied,4,t
+2021,310,134,4,4,27,Non-Author Opinion,Implied,3,t
+1663,284,135,3,1,1,Main Point,Big Picture,2,t
+1664,284,135,3,1,2,Locate Detail,Stated,1,t
+1665,284,135,3,1,3,Local Purpose,Author’s Intent,2,t
+1666,284,135,3,1,4,Locate Detail,Stated,3,t
+1667,284,135,3,1,5,Author's Attitude,Implied,2,t
+1668,284,135,3,1,6,Meaning in Context,Author’s Intent,3,t
+1669,284,135,3,1,7,Weaken,Beyond Passage,5,t
+1670,285,135,3,2,8,Main Point,Big Picture,1,t
+1671,285,135,3,2,9,Five Questions,Stated,3,f
+1672,285,135,3,2,10,Author Opinion,Implied,3,t
+1673,285,135,3,2,11,Local Purpose,Author’s Intent,3,f
+1674,285,135,3,2,12,Inference,Implied,4,t
+1675,285,135,3,2,13,Author Opinion,Implied,5,t
+1676,290,135,3,3,14,Main Point,Big Picture,2,f
+1677,290,135,3,3,15,Meaning in Context,Author’s Intent,4,t
+1678,290,135,3,3,16,Inference,Implied,5,t
+1679,290,135,3,3,17,Inference,Implied,3,t
+1680,290,135,3,3,18,Inference,Implied,2,f
+1681,290,135,3,3,19,Analogy,Beyond Passage,5,t
+1682,291,135,3,4,20,Main Point,Big Picture,2,f
+1683,291,135,3,4,21,Organization,Big Picture,2,t
+1684,291,135,3,4,22,Locate Detail,Stated,3,f
+1685,291,135,3,4,23,Inference,Implied,5,f
+1686,291,135,3,4,24,Local Purpose,Author’s Intent,3,f
+1687,291,135,3,4,25,Application,Beyond Passage,4,t
+1688,291,135,3,4,26,Inference,Implied,3,f
+1689,291,135,3,4,27,Analogy,Beyond Passage,5,t
+2022,258,136,1,1,1,Main Point,Big Picture,4,t
+2023,258,136,1,1,2,Meaning in Context,Author’s Intent,3,t
+2024,258,136,1,1,3,Author Opinion,Implied,2,t
+2025,258,136,1,1,4,Locate Detail,Stated,1,t
+2026,258,136,1,1,5,Application,Beyond Passage,5,t
+2027,258,136,1,1,6,Author Opinion,Implied,5,t
+2028,258,136,1,1,7,Local Purpose,Author’s Intent,3,t
+2029,260,136,1,2,8,Main Point,Big Picture,1,f
+2030,260,136,1,2,9,Author Opinion,Implied,4,t
+2031,260,136,1,2,10,Inference,Implied,3,t
+2032,260,136,1,2,11,Locate Detail,Stated,2,t
+2033,260,136,1,2,12,Principle,Implied,3,t
+2034,260,136,1,2,13,Locate Detail,Stated,2,f
+2035,260,136,1,2,14,Author's Attitude,Implied,5,t
+2036,262,136,1,3,15,Main Point,Big Picture,5,t
+2037,262,136,1,3,16,Method,Big Picture,3,t
+2038,262,136,1,3,17,Weaken,Beyond Passage,1,t
+2039,262,136,1,3,18,Inference,Implied,2,t
+2040,262,136,1,3,19,Primary Purpose,Big Picture,4,t
+2041,262,136,1,3,20,Author's Attitude,Implied,3,t
+2042,262,136,1,3,21,Author Opinion,Implied,4,t
+2043,262,136,1,3,22,Five Questions,Stated,4,t
+2044,263,136,1,4,23,Primary Purpose,Big Picture,2,f
+2045,263,136,1,4,24,Non-Author Opinion,Implied,2,f
+2046,263,136,1,4,25,Meaning in Context,Author’s Intent,4,t
+2047,263,136,1,4,26,Application,Beyond Passage,3,t
+2048,263,136,1,4,27,Locate Detail,Stated,5,t
+2898,524,136,3,1,1,Main Point,Big Picture,3,t
+2899,524,136,3,1,2,Locate Detail,Stated,1,t
+2900,524,136,3,1,3,Strengthen,Beyond Passage,3,t
+2901,524,136,3,1,4,Inference,Implied,2,t
+2902,524,136,3,1,5,Meaning in Context,Author’s Intent,2,t
+2903,524,136,3,1,6,Locate Detail,Stated,2,t
+2904,526,136,3,2,7,Method,Big Picture,2,t
+2905,526,136,3,2,8,Inference,Implied,2,t
+2906,526,136,3,2,9,Locate Detail,Stated,3,t
+2907,526,136,3,2,10,Method,Big Picture,4,t
+2908,526,136,3,2,11,Meaning in Context,Author’s Intent,3,t
+2909,526,136,3,2,12,Application,Beyond Passage,2,t
+2910,529,136,3,3,13,Main Point,Big Picture,4,t
+2911,529,136,3,3,14,Local Purpose,Author’s Intent,3,t
+2912,529,136,3,3,16,Must be False,Stated,2,t
+2913,529,136,3,3,17,Paragraph Purpose,Author’s Intent,3,t
+2914,529,136,3,3,18,Inference,Implied,5,t
+2915,529,136,3,3,19,Primary Purpose,Big Picture,2,t
+2916,530,136,3,4,20,Main Point,Big Picture,4,t
+2917,530,136,3,4,21,Locate Detail,Stated,2,t
+2918,530,136,3,4,22,Author's Attitude,Implied,4,t
+2919,530,136,3,4,23,Meaning in Context,Author’s Intent,5,t
+2920,530,136,3,4,24,Application,Beyond Passage,1,t
+2921,530,136,3,4,25,Author Opinion,Implied,3,t
+2922,530,136,3,4,26,Local Purpose,Author’s Intent,3,t
+2923,530,136,3,4,27,Primary Purpose,Big Picture,2,t
+2122,239,137,1,1,1,Main Point,Big Picture,2,t
+2123,239,137,1,1,2,Local Purpose,Author’s Intent,3,t
+2124,239,137,1,1,3,Application,Beyond Passage,2,t
+2125,239,137,1,1,4,Author Opinion,Implied,3,t
+2126,239,137,1,1,5,Primary Purpose,Big Picture,2,t
+2127,239,137,1,1,6,Locate Detail,Stated,1,f
+2128,239,137,1,1,7,Inference,Implied,5,t
+2129,241,137,1,2,8,Locate Detail,Stated,4,t
+2130,241,137,1,2,9,Author Opinion,Implied,5,t
+2131,241,137,1,2,10,Meaning in Context,Author’s Intent,5,t
+2132,241,137,1,2,11,Strengthen,Beyond Passage,3,t
+2133,241,137,1,2,12,Meaning in Context,Author’s Intent,4,t
+2134,241,137,1,2,13,Analogy,Beyond Passage,4,f
+2135,241,137,1,2,14,Local Purpose,Author’s Intent,4,t
+2136,243,137,1,3,15,Primary Purpose,Big Picture,1,f
+2137,243,137,1,3,16,Locate Detail,Stated,4,t
+2138,243,137,1,3,17,Author Opinion,Implied,3,t
+2139,243,137,1,3,18,Analogy,Beyond Passage,2,t
+2140,243,137,1,3,19,Method,Big Picture,2,t
+2141,244,137,1,4,20,Main Point,Big Picture,2,f
+2142,244,137,1,4,21,Non-Author Opinion,Implied,3,f
+2143,244,137,1,4,22,Application,Beyond Passage,2,f
+2144,244,137,1,4,23,Principle,Implied,4,t
+2145,244,137,1,4,24,Locate Detail,Stated,5,t
+2146,244,137,1,4,25,Local Purpose,Author’s Intent,3,f
+2147,244,137,1,4,26,Inference,Implied,5,t
+2148,244,137,1,4,27,Author Opinion,Implied,2,f
+2222,225,138,1,1,1,Main Point,Big Picture,2,f
+2223,225,138,1,1,2,Locate Detail,Stated,1,f
+2224,225,138,1,1,3,Inference,Implied,3,t
+2225,225,138,1,1,4,Locate Detail,Stated,3,t
+2226,225,138,1,1,5,Local Purpose,Author’s Intent,2,t
+2227,225,138,1,1,6,Inference,Implied,5,t
+2228,225,138,1,1,7,Author Opinion,Implied,5,t
+2229,227,138,1,2,8,Main Point,Big Picture,3,f
+2230,227,138,1,2,9,Locate Detail,Stated,1,f
+2231,227,138,1,2,10,Local Purpose,Author’s Intent,3,t
+2232,227,138,1,2,11,Inference,Implied,3,t
+2233,227,138,1,2,12,Analogy,Beyond Passage,3,t
+2234,227,138,1,2,13,Inference,Implied,2,t
+2235,227,138,1,2,14,Author Opinion,Implied,5,t
+2236,229,138,1,3,15,Main Point,Big Picture,4,t
+2237,229,138,1,3,16,Author's Attitude,Implied,4,t
+2238,229,138,1,3,17,Paragraph Purpose,Author’s Intent,3,t
+2239,229,138,1,3,18,Inference,Implied,2,t
+2240,229,138,1,3,19,Local Purpose,Author’s Intent,5,t
+2241,229,138,1,3,20,Application,Beyond Passage,2,t
+2242,229,138,1,3,21,Locate Detail,Stated,2,f
+2243,229,138,1,3,22,Weaken,Beyond Passage,5,t
+2244,231,138,1,4,23,Locate Detail,Stated,1,f
+2245,231,138,1,4,24,Inference,Implied,4,t
+2246,231,138,1,4,25,Local Purpose,Author’s Intent,4,t
+2247,231,138,1,4,26,Author Opinion,Implied,5,t
+2248,231,138,1,4,27,Meaning in Context,Author’s Intent,4,t
+3700,386,139,2,1,1,Main Point,Big Picture,3,t
+3701,386,139,2,1,2,Locate Detail,Stated,1,t
+3702,386,139,2,1,3,Non-Author Opinion,Implied,5,t
+3703,386,139,2,1,4,Meaning in Context,Author’s Intent,1,t
+3704,386,139,2,1,5,Weaken,Beyond Passage,4,t
+3705,386,139,2,1,6,Inference,Implied,3,t
+3706,386,139,2,1,7,Non-Author Opinion,Implied,4,t
+3707,389,139,2,2,8,Primary Purpose,Big Picture,3,t
+3708,389,139,2,2,9,Method,Big Picture,2,t
+3709,389,139,2,2,10,Inference,Implied,3,t
+3710,389,139,2,2,11,Author Opinion,Implied,2,t
+3711,389,139,2,2,12,Method,Big Picture,2,t
+3712,390,139,2,3,13,Main Point,Big Picture,3,t
+3713,390,139,2,3,14,Meaning in Context,Author’s Intent,4,t
+3714,390,139,2,3,15,Local Purpose,Author’s Intent,2,t
+3715,390,139,2,3,16,Locate Detail,Stated,2,t
+3716,390,139,2,3,17,Non-Author Opinion,Implied,1,t
+3717,390,139,2,3,18,Author's Attitude,Implied,4,t
+3718,390,139,2,3,19,Inference,Implied,4,t
+3719,390,139,2,3,20,Inference,Implied,5,t
+3720,393,139,2,4,21,Analogy,Beyond Passage,3,t
+3721,393,139,2,4,22,Locate Detail,Stated,5,t
+3722,393,139,2,4,23,Primary Purpose,Big Picture,3,t
+3723,393,139,2,4,24,Locate Detail,Stated,3,t
+3724,393,139,2,4,25,Meaning in Context,Author’s Intent,3,t
+3725,393,139,2,4,26,Locate Detail,Stated,3,t
+3726,393,139,2,4,27,Weaken,Beyond Passage,5,t
+2371,218,139,3,1,1,Main Point,Big Picture,1,f
+2372,218,139,3,1,2,Non-Author Opinion,Implied,2,t
+2373,218,139,3,1,3,Locate Detail,Stated,2,f
+2374,218,139,3,1,4,Primary Purpose,Big Picture,1,t
+2375,218,139,3,1,5,Inference,Implied,5,t
+2376,218,139,3,1,6,Locate Detail,Stated,1,f
+2377,218,139,3,1,7,Inference,Implied,4,t
+2378,220,139,3,2,8,Local Purpose,Author’s Intent,1,t
+2379,220,139,3,2,9,Author's Attitude,Implied,3,t
+2380,220,139,3,2,10,Five Questions,Stated,2,t
+2381,220,139,3,2,11,Primary Purpose,Big Picture,5,t
+2382,220,139,3,2,12,Analogy,Beyond Passage,3,t
+2383,220,139,3,2,13,Non-Author Opinion,Implied,4,t
+2384,220,139,3,2,14,Strengthen,Beyond Passage,5,t
+2385,222,139,3,3,15,Main Point,Big Picture,4,t
+2386,222,139,3,3,16,Locate Detail,Stated,2,f
+2387,222,139,3,3,17,Meaning in Context,Author’s Intent,2,t
+2388,222,139,3,3,18,Method,Big Picture,1,f
+2389,222,139,3,3,19,Author Opinion,Implied,2,t
+2390,222,139,3,3,20,Local Purpose,Author’s Intent,2,f
+2391,222,139,3,3,21,Weaken,Beyond Passage,5,t
+2392,224,139,3,4,22,Main Point,Big Picture,2,t
+2393,224,139,3,4,23,Locate Detail,Stated,5,t
+2394,224,139,3,4,24,Meaning in Context,Author’s Intent,3,t
+2395,224,139,3,4,25,Locate Detail,Stated,4,t
+2396,224,139,3,4,26,Author Opinion,Implied,3,t
+2397,224,139,3,4,27,Author Opinion,Implied,4,t
+1588,14,140,4,1,1,Primary Purpose,Big Picture,3,t
+1589,14,140,4,1,2,Application,Beyond Passage,3,t
+1590,14,140,4,1,3,Local Purpose,Author’s Intent,1,f
+1591,14,140,4,1,4,Author's Attitude,Implied,2,t
+1592,14,140,4,1,5,Locate Detail,Stated,3,t
+1593,14,140,4,1,6,Author Opinion,Implied,5,t
+1594,15,140,4,2,7,Main Point,Big Picture,2,t
+1595,15,140,4,2,8,Local Purpose,Author’s Intent,3,t
+1596,15,140,4,2,9,Author's Attitude,Implied,2,t
+1597,15,140,4,2,10,Analogy,Beyond Passage,3,t
+1598,15,140,4,2,11,Inference,Implied,1,t
+1599,15,140,4,2,12,Primary Purpose,Big Picture,4,t
+1600,15,140,4,2,13,Locate Detail,Stated,5,t
+1601,16,140,4,3,14,Main Point,Big Picture,3,t
+1602,16,140,4,3,15,Paragraph Purpose,Author’s Intent,4,t
+1603,16,140,4,3,16,Inference,Implied,5,t
+1604,16,140,4,3,17,Locate Detail,Stated,1,f
+1605,16,140,4,3,18,Primary Purpose,Big Picture,4,t
+1606,16,140,4,3,19,Locate Detail,Stated,5,t
+1607,18,140,4,4,20,Main Point,Big Picture,5,t
+1608,18,140,4,4,21,Locate Detail,Stated,1,t
+1609,18,140,4,4,22,Locate Detail,Stated,4,t
+1610,18,140,4,4,23,Author Opinion,Implied,4,t
+1611,18,140,4,4,24,Primary Purpose,Big Picture,5,t
+1612,18,140,4,4,25,Author Opinion,Implied,3,t
+1613,18,140,4,4,26,Author Opinion,Implied,5,t
+1614,18,140,4,4,27,Local Purpose,Author’s Intent,5,t
+203,27,141,1,1,1,Main Point,Big Picture,2,t
+204,27,141,1,1,2,Locate Detail,Stated,1,t
+205,27,141,1,1,3,Locate Detail,Stated,1,t
+206,27,141,1,1,4,Author Opinion,Implied,3,t
+207,27,141,1,1,5,Author's Attitude,Implied,3,t
+208,27,141,1,1,6,Paragraph Purpose,Author’s Intent,5,t
+209,27,141,1,1,7,Primary Purpose,Big Picture,3,t
+210,28,141,1,2,8,Main Point,Big Picture,3,t
+211,28,141,1,2,9,Local Purpose,Author’s Intent,3,t
+212,28,141,1,2,10,Strengthen,Beyond Passage,4,t
+213,28,141,1,2,11,Application,Beyond Passage,4,t
+214,28,141,1,2,12,Author Opinion,Implied,4,t
+215,28,141,1,2,13,Inference,Implied,5,t
+216,28,141,1,2,14,Local Purpose,Author’s Intent,4,t
+217,28,141,1,2,15,Primary Purpose,Big Picture,5,t
+218,29,141,1,3,16,Main Point,Big Picture,4,t
+219,29,141,1,3,17,Locate Detail,Stated,2,f
+220,29,141,1,3,18,Paragraph Purpose,Author’s Intent,5,t
+221,29,141,1,3,19,Locate Detail,Stated,5,t
+222,29,141,1,3,20,Meaning in Context,Author’s Intent,4,t
+223,29,141,1,3,21,Add to the Passage,Beyond Passage,5,t
+224,30,141,1,4,22,Primary Purpose,Big Picture,5,t
+225,30,141,1,4,23,Locate Detail,Stated,5,t
+226,30,141,1,4,24,Organization,Big Picture,3,t
+227,30,141,1,4,25,Analogy,Beyond Passage,2,t
+228,30,141,1,4,26,Author Opinion,Implied,5,t
+229,30,141,1,4,27,Method,Big Picture,5,t
+2448,198,141,3,1,1,Main Point,Big Picture,2,t
+2449,198,141,3,1,2,Inference,Implied,1,t
+2450,198,141,3,1,3,Evaluate,Beyond Passage,1,t
+2451,198,141,3,1,4,Inference,Implied,4,t
+2452,198,141,3,1,5,Author Opinion,Implied,2,t
+2453,198,141,3,1,6,Must be False,Stated,3,t
+2454,198,141,3,1,7,Weaken,Beyond Passage,5,t
+2455,200,141,3,2,8,Main Point,Big Picture,2,t
+2456,200,141,3,2,9,Locate Detail,Stated,1,f
+2457,200,141,3,2,10,Non-Author Opinion,Implied,3,t
+2458,200,141,3,2,11,Local Purpose,Author’s Intent,2,t
+2459,200,141,3,2,12,Locate Detail,Stated,4,t
+2460,200,141,3,2,13,Analogy,Beyond Passage,5,t
+2461,200,141,3,2,14,Author Opinion,Implied,5,t
+2462,201,141,3,3,15,Primary Purpose,Big Picture,2,f
+2463,201,141,3,3,16,Author Opinion,Implied,4,f
+2464,201,141,3,3,17,Author Opinion,Implied,5,t
+2465,201,141,3,3,18,Local Purpose,Author’s Intent,5,t
+2466,201,141,3,3,19,Author's Attitude,Implied,5,t
+2467,201,141,3,3,20,Method,Big Picture,5,t
+2468,202,141,3,4,21,Main Point,Big Picture,4,t
+2469,202,141,3,4,22,Locate Detail,Stated,1,t
+2470,202,141,3,4,23,Locate Detail,Stated,3,t
+2471,202,141,3,4,24,Author Opinion,Implied,4,t
+2472,202,141,3,4,25,Meaning in Context,Author’s Intent,5,t
+2473,202,141,3,4,26,Author Opinion,Implied,5,t
+2474,202,141,3,4,27,Author's Attitude,Implied,4,t
+352,84,142,3,1,1,Main Point,Big Picture,4,t
+353,84,142,3,1,2,Application,Beyond Passage,2,t
+354,84,142,3,1,3,Meaning in Context,Author’s Intent,1,f
+355,84,142,3,1,4,Inference,Implied,2,t
+356,84,142,3,1,5,Author Opinion,Implied,2,f
+357,84,142,3,1,6,Analogy,Beyond Passage,3,f
+358,84,142,3,1,7,Inference,Implied,2,t
+359,84,142,3,1,8,Organization,Big Picture,1,f
+360,85,142,3,2,9,Main Point,Big Picture,5,t
+361,85,142,3,2,10,Application,Beyond Passage,1,f
+362,85,142,3,2,11,Locate Detail,Stated,4,t
+363,85,142,3,2,12,Local Purpose,Author’s Intent,1,f
+364,85,142,3,2,13,Author's Attitude,Implied,3,t
+365,85,142,3,2,14,Locate Detail,Stated,2,t
+366,85,142,3,2,15,Meaning in Context,Author’s Intent,2,t
+367,85,142,3,2,16,Inference,Implied,5,t
+368,86,142,3,3,17,Primary Purpose,Big Picture,3,t
+369,86,142,3,3,18,Method,Big Picture,2,t
+370,86,142,3,3,19,Local Purpose,Author’s Intent,2,t
+371,86,142,3,3,20,Author's Attitude,Implied,5,t
+372,86,142,3,3,21,Analogy,Beyond Passage,5,t
+373,87,142,3,4,22,Locate Detail,Stated,2,f
+374,87,142,3,4,23,Non-Author Opinion,Implied,3,t
+375,87,142,3,4,24,Inference,Implied,5,t
+376,87,142,3,4,25,Author Opinion,Implied,5,t
+377,87,142,3,4,26,Locate Detail,Stated,5,t
+378,87,142,3,4,27,Inference,Implied,3,t
+430,108,143,2,1,1,Main Point,Big Picture,1,f
+431,108,143,2,1,2,Non-Author Opinion,Implied,2,f
+432,108,143,2,1,3,Analogy,Beyond Passage,2,t
+433,108,143,2,1,4,Locate Detail,Stated,1,f
+434,108,143,2,1,5,Five Questions,Stated,2,t
+435,108,143,2,1,6,Non-Author Opinion,Implied,1,f
+436,108,143,2,1,7,Meaning in Context,Author’s Intent,3,t
+437,109,143,2,2,8,Locate Detail,Stated,2,f
+438,109,143,2,2,9,Paragraph Purpose,Author’s Intent,2,f
+439,109,143,2,2,10,Author Opinion,Implied,3,f
+440,109,143,2,2,11,Inference,Implied,3,t
+441,109,143,2,2,12,Inference,Implied,3,f
+442,109,143,2,2,13,Application,Beyond Passage,3,t
+443,109,143,2,2,14,Author Opinion,Implied,4,t
+444,110,143,2,3,15,Primary Purpose,Big Picture,1,t
+445,110,143,2,3,16,Locate Detail,Stated,4,t
+446,110,143,2,3,17,Method,Big Picture,5,t
+447,110,143,2,3,18,Author Opinion,Implied,2,f
+448,110,143,2,3,19,Meaning in Context,Author’s Intent,3,t
+449,110,143,2,3,20,Strengthen,Beyond Passage,5,t
+450,112,143,2,4,21,Main Point,Big Picture,2,t
+451,112,143,2,4,22,Five Questions,Stated,3,t
+452,112,143,2,4,23,Author Opinion,Implied,4,t
+453,112,143,2,4,24,Inference,Implied,5,t
+454,112,143,2,4,25,Locate Detail,Stated,4,t
+455,112,143,2,4,26,Analogy,Beyond Passage,2,f
+456,112,143,2,4,27,Inference,Implied,5,t
+505,41,144,1,1,1,Main Point,Big Picture,1,f
+506,41,144,1,1,2,Analogy,Beyond Passage,1,f
+507,41,144,1,1,3,Local Purpose,Author’s Intent,5,t
+508,41,144,1,1,4,Locate Detail,Stated,1,f
+509,41,144,1,1,5,Author Opinion,Implied,2,f
+510,41,144,1,1,6,Author Opinion,Implied,4,t
+511,74,144,1,2,7,Main Point,Big Picture,2,f
+512,74,144,1,2,8,Principle,Implied,1,f
+513,74,144,1,2,9,Locate Detail,Stated,1,t
+514,74,144,1,2,10,Author Opinion,Implied,2,f
+515,74,144,1,2,11,Local Purpose,Author’s Intent,1,t
+516,74,144,1,2,12,Inference,Implied,4,t
+517,74,144,1,2,13,Application,Beyond Passage,3,f
+518,75,144,1,3,14,Main Point,Big Picture,4,t
+519,75,144,1,3,15,Local Purpose,Author’s Intent,1,f
+520,75,144,1,3,16,Paragraph Purpose,Author’s Intent,4,t
+521,75,144,1,3,17,Author Opinion,Implied,3,t
+522,75,144,1,3,18,Inference,Implied,3,t
+523,75,144,1,3,19,Author Opinion,Implied,5,t
+524,78,144,1,4,20,Main Point,Big Picture,4,t
+525,78,144,1,4,21,Locate Detail,Stated,3,t
+526,78,144,1,4,22,Meaning in Context,Author’s Intent,2,t
+527,78,144,1,4,23,Meaning in Context,Author’s Intent,4,t
+528,78,144,1,4,24,Author Opinion,Implied,5,t
+529,78,144,1,4,25,Analogy,Beyond Passage,4,t
+530,78,144,1,4,26,Author Opinion,Implied,3,t
+531,78,144,1,4,27,Analogy,Beyond Passage,3,t
+1211,88,145,1,1,1,Main Point,Big Picture,1,f
+1212,88,145,1,1,2,Locate Detail,Stated,1,f
+1213,88,145,1,1,3,Author Opinion,Implied,1,f
+1214,88,145,1,1,4,Local Purpose,Author’s Intent,2,t
+1215,88,145,1,1,5,Meaning in Context,Author’s Intent,3,t
+1216,88,145,1,1,6,Inference,Implied,1,t
+1217,88,145,1,1,7,Strengthen,Beyond Passage,5,t
+1218,90,145,1,2,8,Main Point,Big Picture,3,f
+1219,90,145,1,2,9,Primary Purpose,Big Picture,1,f
+1220,90,145,1,2,10,Application,Beyond Passage,3,f
+1221,90,145,1,2,11,Non-Author Opinion,Implied,4,t
+1222,90,145,1,2,12,Organization,Big Picture,2,f
+1223,90,145,1,2,13,Non-Author Opinion,Implied,5,t
+1224,92,145,1,3,14,Main Point,Big Picture,1,f
+1225,92,145,1,3,15,Author Opinion,Implied,3,t
+1226,92,145,1,3,16,Locate Detail,Stated,2,f
+1227,92,145,1,3,17,Primary Purpose,Big Picture,4,t
+1228,92,145,1,3,18,Method,Big Picture,2,t
+1229,92,145,1,3,19,Author Opinion,Implied,5,t
+1230,94,145,1,4,20,Main Point,Big Picture,3,t
+1231,94,145,1,4,21,Local Purpose,Author’s Intent,3,t
+1232,94,145,1,4,22,Author's Attitude,Implied,1,f
+1233,94,145,1,4,23,Primary Purpose,Big Picture,3,t
+1234,94,145,1,4,24,Paragraph Purpose,Author’s Intent,4,t
+1235,94,145,1,4,25,Author Opinion,Implied,5,t
+1236,94,145,1,4,26,Strengthen,Beyond Passage,4,t
+1237,94,145,1,4,27,Application,Beyond Passage,5,t
+2524,360,145,3,1,1,Meaning in Context,Author’s Intent,2,f
+2525,360,145,3,1,2,Local Purpose,Author’s Intent,3,t
+2526,360,145,3,1,3,Author's Attitude,Implied,1,f
+2527,360,145,3,1,4,Locate Detail,Stated,2,t
+2528,360,145,3,1,5,Author Opinion,Implied,2,t
+2529,360,145,3,1,6,Application,Beyond Passage,3,t
+2530,361,145,3,2,7,Main Point,Big Picture,2,t
+2531,361,145,3,2,8,Non-Author Opinion,Implied,3,t
+2532,361,145,3,2,9,Local Purpose,Author’s Intent,2,t
+2533,361,145,3,2,10,Analogy,Beyond Passage,3,t
+2534,361,145,3,2,11,Non-Author Opinion,Implied,4,t
+2535,361,145,3,2,12,Inference,Implied,4,t
+2536,361,145,3,2,13,Weaken,Beyond Passage,2,t
+2537,363,145,3,3,14,Primary Purpose,Big Picture,4,t
+2538,363,145,3,3,15,Local Purpose,Author’s Intent,3,t
+2539,363,145,3,3,16,Author Opinion,Implied,4,t
+2540,363,145,3,3,17,Weaken,Beyond Passage,3,t
+2541,363,145,3,3,18,Author Opinion,Implied,3,t
+2542,363,145,3,3,19,Author's Attitude,Implied,4,t
+2543,365,145,3,4,20,Main Point,Big Picture,2,t
+2544,365,145,3,4,21,Meaning in Context,Author’s Intent,3,t
+2545,365,145,3,4,22,Inference,Implied,4,t
+2546,365,145,3,4,23,Application,Beyond Passage,4,t
+2547,365,145,3,4,24,Five Questions,Stated,2,t
+2548,365,145,3,4,25,Author Opinion,Implied,3,t
+2549,365,145,3,4,26,Paragraph Purpose,Author’s Intent,3,t
+2550,365,145,3,4,27,Analogy,Beyond Passage,4,t
+982,96,146,4,1,1,Inference,Implied,2,t
+983,96,146,4,1,2,Author's Attitude,Implied,1,f
+984,96,146,4,1,3,Analogy,Beyond Passage,2,f
+985,96,146,4,1,4,Author Opinion,Implied,3,t
+986,96,146,4,1,5,Author Opinion,Implied,4,t
+987,96,146,4,1,6,Method,Big Picture,1,f
+988,98,146,4,2,7,Main Point,Big Picture,4,t
+989,98,146,4,2,8,Meaning in Context,Author’s Intent,2,t
+990,98,146,4,2,9,Author's Attitude,Implied,3,t
+991,98,146,4,2,10,Locate Detail,Stated,1,t
+992,98,146,4,2,11,Inference,Implied,5,t
+993,98,146,4,2,12,Paragraph Purpose,Author’s Intent,3,t
+994,98,146,4,2,13,Local Purpose,Author’s Intent,3,t
+995,98,146,4,2,14,Non-Author Opinion,Implied,2,t
+996,101,146,4,3,15,Main Point,Big Picture,3,t
+997,101,146,4,3,16,Non-Author Opinion,Implied,4,t
+998,101,146,4,3,17,Locate Detail,Stated,2,f
+999,101,146,4,3,18,Locate Detail,Stated,2,f
+1000,101,146,4,3,19,Meaning in Context,Author’s Intent,2,f
+1001,101,146,4,3,20,Inference,Implied,5,t
+1002,101,146,4,3,21,Author Opinion,Implied,5,t
+1003,101,146,4,3,22,Weaken,Beyond Passage,5,t
+1004,103,146,4,4,23,Five Questions,Stated,3,t
+1005,103,146,4,4,24,Strengthen,Beyond Passage,2,f
+1006,103,146,4,4,25,Inference,Implied,3,t
+1007,103,146,4,4,26,Evaluate,Beyond Passage,5,t
+1008,103,146,4,4,27,Inference,Implied,4,t
+1035,106,147,2,1,1,Primary Purpose,Big Picture,1,f
+1036,106,147,2,1,2,Method,Big Picture,1,f
+1037,106,147,2,1,3,Locate Detail,Stated,2,t
+1038,106,147,2,1,4,Author Opinion,Implied,4,t
+1039,106,147,2,1,5,Inference,Implied,5,t
+1040,106,147,2,1,6,Author Opinion,Implied,3,t
+1041,106,147,2,1,7,Locate Detail,Stated,2,f
+1042,107,147,2,2,8,Main Point,Big Picture,1,t
+1043,107,147,2,2,9,Application,Beyond Passage,4,t
+1044,107,147,2,2,10,Inference,Implied,3,t
+1045,107,147,2,2,11,Five Questions,Stated,4,t
+1046,107,147,2,2,12,Author's Attitude,Implied,4,t
+1047,107,147,2,2,13,Principle,Implied,5,t
+1048,107,147,2,2,14,Author Opinion,Implied,5,t
+1049,121,147,2,3,15,Main Point,Big Picture,2,f
+1050,121,147,2,3,16,Locate Detail,Stated,3,t
+1051,121,147,2,3,17,Strengthen,Beyond Passage,4,t
+1052,121,147,2,3,18,Inference,Implied,2,t
+1053,121,147,2,3,19,Local Purpose,Author’s Intent,2,t
+1054,121,147,2,3,20,Inference,Implied,2,f
+1055,121,147,2,3,21,Meaning in Context,Author’s Intent,5,t
+1056,121,147,2,3,22,Analogy,Beyond Passage,4,t
+1057,125,147,2,4,23,Application,Beyond Passage,4,f
+1058,125,147,2,4,24,Author Opinion,Implied,4,f
+1059,125,147,2,4,25,Primary Purpose,Big Picture,3,t
+1060,125,147,2,4,26,Author Opinion,Implied,3,t
+1061,125,147,2,4,27,Strengthen,Beyond Passage,5,t
+102,19,147,3,1,1,Primary Purpose,Big Picture,1,t
+103,19,147,3,1,2,Meaning in Context,Author’s Intent,2,t
+104,19,147,3,1,3,Add to the Passage,Beyond Passage,4,t
+105,19,147,3,1,4,Local Purpose,Author’s Intent,1,t
+106,19,147,3,1,5,Inference,Implied,4,t
+107,19,147,3,1,6,Author Opinion,Implied,5,t
+108,20,147,3,2,7,Main Point,Big Picture,3,t
+109,20,147,3,2,8,Locate Detail,Stated,1,f
+110,20,147,3,2,9,Local Purpose,Author’s Intent,3,t
+111,20,147,3,2,10,Author Opinion,Implied,3,t
+112,20,147,3,2,11,Author Opinion,Implied,3,f
+113,20,147,3,2,12,Author Opinion,Implied,3,t
+114,20,147,3,2,13,Author's Attitude,Implied,4,t
+115,21,147,3,3,14,Primary Purpose,Big Picture,2,f
+116,21,147,3,3,15,Paragraph Purpose,Author’s Intent,2,t
+117,21,147,3,3,16,Locate Detail,Stated,4,t
+118,21,147,3,3,17,Application,Beyond Passage,5,t
+119,21,147,3,3,18,Main Point,Big Picture,3,t
+120,21,147,3,3,19,Meaning in Context,Author’s Intent,1,f
+121,21,147,3,3,20,Locate Detail,Stated,4,t
+122,21,147,3,3,21,Weaken,Beyond Passage,5,t
+123,22,147,3,4,22,Primary Purpose,Big Picture,2,t
+124,22,147,3,4,23,Method,Big Picture,2,t
+125,22,147,3,4,24,Weaken,Beyond Passage,2,t
+126,22,147,3,4,25,Author Opinion,Implied,4,t
+127,22,147,3,4,26,Author Opinion,Implied,5,t
+128,22,147,3,4,27,Author Opinion,Implied,5,t
+1135,181,148,2,1,1,Locate Detail,Stated,1,t
+1136,181,148,2,1,2,Local Purpose,Author’s Intent,1,t
+1137,181,148,2,1,3,Primary Purpose,Big Picture,3,t
+1138,181,148,2,1,4,Non-Author Opinion,Implied,5,t
+1139,181,148,2,1,5,Author's Attitude,Implied,3,t
+1140,181,148,2,1,6,Weaken,Beyond Passage,5,t
+1141,184,148,2,2,7,Main Point,Big Picture,3,t
+1142,184,148,2,2,8,Locate Detail,Stated,1,t
+1143,184,148,2,2,9,Paragraph Purpose,Author’s Intent,1,t
+1144,184,148,2,2,10,Author Opinion,Implied,3,t
+1145,184,148,2,2,11,Local Purpose,Author’s Intent,2,f
+1146,184,148,2,2,12,Inference,Implied,2,t
+1147,184,148,2,2,13,Strengthen,Beyond Passage,3,f
+1148,185,148,2,3,14,Primary Purpose,Big Picture,1,f
+1149,185,148,2,3,15,Author's Attitude,Implied,1,f
+1150,185,148,2,3,16,Author Opinion,Implied,4,t
+1151,185,148,2,3,17,Application,Beyond Passage,3,f
+1152,185,148,2,3,18,Method,Big Picture,4,t
+1153,185,148,2,3,19,Local Purpose,Author’s Intent,5,t
+1154,186,148,2,4,20,Main Point,Big Picture,3,t
+1155,186,148,2,4,21,Locate Detail,Stated,2,t
+1156,186,148,2,4,22,Author Opinion,Implied,2,t
+1157,186,148,2,4,23,Paragraph Purpose,Author’s Intent,4,t
+1158,186,148,2,4,24,Local Purpose,Author’s Intent,3,t
+1159,186,148,2,4,25,Locate Detail,Stated,1,t
+1160,186,148,2,4,26,Inference,Implied,4,t
+1161,186,148,2,4,27,Analogy,Beyond Passage,5,t
+3956,126,149,2,1,1,Main Point,Big Picture,2,t
+3957,126,149,2,1,2,Inference,Implied,1,f
+3958,126,149,2,1,3,Local Purpose,Author’s Intent,2,t
+3959,126,149,2,1,4,Locate Detail,Stated,2,f
+3960,126,149,2,1,5,Meaning in Context,Author’s Intent,4,t
+3961,127,149,2,2,6,Main Point,Big Picture,4,t
+3962,127,149,2,2,7,Meaning in Context,Author’s Intent,2,t
+3963,127,149,2,2,8,Non-Author Opinion,Implied,2,t
+3964,127,149,2,2,9,Author Opinion,Implied,2,t
+3965,127,149,2,2,10,Paragraph Purpose,Author’s Intent,4,t
+3966,127,149,2,2,11,Author's Attitude,Implied,3,t
+3967,127,149,2,2,12,Analogy,Beyond Passage,2,t
+3968,130,149,2,3,13,Main Point,Big Picture,1,f
+3969,130,149,2,3,14,Locate Detail,Stated,4,t
+3970,130,149,2,3,15,Locate Detail,Stated,3,t
+3971,130,149,2,3,16,Author Opinion,Implied,2,t
+3972,130,149,2,3,17,Inference,Implied,2,t
+3973,130,149,2,3,18,Analogy,Beyond Passage,4,t
+3974,130,149,2,3,19,Author Opinion,Implied,5,t
+3975,130,149,2,3,20,Strengthen,Beyond Passage,4,t
+3976,133,149,2,4,21,Main Point,Big Picture,3,t
+3977,133,149,2,4,22,Inference,Implied,5,t
+3978,133,149,2,4,23,Organization,Big Picture,3,t
+3979,133,149,2,4,24,Locate Detail,Stated,2,t
+3980,133,149,2,4,25,Locate Detail,Stated,5,t
+3981,133,149,2,4,26,Primary Purpose,Big Picture,5,t
+3982,133,149,2,4,27,Non-Author Opinion,Implied,5,t
+4032,136,150,1,1,1,Main Point,Big Picture,3,t
+4033,136,150,1,1,2,Organization,Big Picture,4,t
+4034,136,150,1,1,3,Locate Detail,Stated,1,f
+4035,136,150,1,1,4,Author Opinion,Implied,4,t
+4036,136,150,1,1,5,Local Purpose,Author’s Intent,2,t
+4037,138,150,1,2,6,Main Point,Big Picture,4,t
+4038,138,150,1,2,7,Locate Detail,Stated,1,f
+4039,138,150,1,2,8,Local Purpose,Author’s Intent,5,t
+4040,138,150,1,2,9,Author Opinion,Implied,3,t
+4041,138,150,1,2,10,Inference,Implied,5,t
+4042,138,150,1,2,11,Analogy,Beyond Passage,3,t
+4043,138,150,1,2,12,Author Opinion,Implied,2,t
+4044,139,150,1,3,13,Main Point,Big Picture,2,t
+4045,139,150,1,3,14,Author Opinion,Implied,2,t
+4046,139,150,1,3,15,Author's Attitude,Implied,4,t
+4047,139,150,1,3,16,Method,Big Picture,3,t
+4048,139,150,1,3,17,Author Opinion,Implied,5,t
+4049,139,150,1,3,18,Author Opinion,Implied,5,t
+4050,139,150,1,3,19,Application,Beyond Passage,2,t
+4051,141,150,1,4,20,Main Point,Big Picture,3,t
+4052,141,150,1,4,21,Author Opinion,Implied,2,t
+4053,141,150,1,4,22,Local Purpose,Author’s Intent,1,t
+4054,141,150,1,4,23,Author Opinion,Implied,5,t
+4055,141,150,1,4,24,Organization,Big Picture,3,t
+4056,141,150,1,4,25,Strengthen,Beyond Passage,5,t
+4057,141,150,1,4,26,Inference,Implied,5,t
+4058,141,150,1,4,27,Primary Purpose,Big Picture,5,t
+3729,117,150,4,1,1,Main Point,Big Picture,2,f
+3730,117,150,4,1,2,Meaning in Context,Author’s Intent,2,t
+3731,117,150,4,1,3,Author Opinion,Implied,1,f
+3732,117,150,4,1,4,Analogy,Beyond Passage,3,f
+3733,117,150,4,1,5,Locate Detail,Stated,1,f
+3734,117,150,4,1,6,Author Opinion,Implied,3,t
+3735,117,150,4,1,7,Five Questions,Stated,3,t
+3736,118,150,4,2,8,Main Point,Big Picture,2,t
+3737,118,150,4,2,9,Weaken,Beyond Passage,2,t
+3738,118,150,4,2,10,Author Opinion,Implied,4,t
+3739,118,150,4,2,11,Analogy,Beyond Passage,2,t
+3740,118,150,4,2,12,Locate Detail,Stated,5,t
+3741,118,150,4,2,13,Locate Detail,Stated,4,t
+3742,118,150,4,2,14,Inference,Implied,5,t
+3743,119,150,4,3,15,Paragraph Purpose,Author’s Intent,2,f
+3744,119,150,4,3,16,Locate Detail,Stated,1,f
+3745,119,150,4,3,17,Analogy,Beyond Passage,2,t
+3746,119,150,4,3,18,Author Opinion,Implied,3,f
+3747,119,150,4,3,19,Five Questions,Stated,4,f
+3748,119,150,4,3,20,Inference,Implied,5,t
+3749,120,150,4,4,21,Principle,Implied,4,t
+3750,120,150,4,4,22,Author Opinion,Implied,4,t
+3751,120,150,4,4,23,Meaning in Context,Author’s Intent,3,t
+3752,120,150,4,4,24,Author Opinion,Implied,3,t
+3753,120,150,4,4,25,Meaning in Context,Author’s Intent,4,t
+3754,120,150,4,4,26,Analogy,Beyond Passage,2,t
+3755,120,150,4,4,27,Author's Attitude,Implied,5,t
+4132,569,151,1,1,1,Primary Purpose,Big Picture,1,t
+4133,569,151,1,1,2,Meaning in Context,Author’s Intent,3,t
+4134,569,151,1,1,3,Author's Attitude,Implied,2,f
+4135,569,151,1,1,4,Analogy,Beyond Passage,4,t
+4136,569,151,1,1,5,Local Purpose,Author’s Intent,5,t
+4137,569,151,1,1,6,Principle,Implied,5,t
+4138,576,151,1,2,7,Main Point,Big Picture,2,f
+4139,576,151,1,2,8,Author's Attitude,Implied,3,f
+4140,576,151,1,2,9,Meaning in Context,Author’s Intent,1,t
+4141,576,151,1,2,10,Application,Beyond Passage,4,t
+4142,576,151,1,2,11,Author Opinion,Implied,1,f
+4143,576,151,1,2,12,Local Purpose,Author’s Intent,1,f
+4144,576,151,1,2,13,Organization,Big Picture,5,t
+4145,576,151,1,2,14,Evaluate,Beyond Passage,3,t
+4146,577,151,1,3,15,Primary Purpose,Big Picture,4,t
+4147,577,151,1,3,16,Locate Detail,Stated,3,t
+4148,577,151,1,3,17,Locate Detail,Stated,2,f
+4149,577,151,1,3,18,Author Opinion,Implied,3,t
+4150,577,151,1,3,19,Principle,Implied,4,t
+4151,577,151,1,3,20,Locate Detail,Stated,3,f
+4152,577,151,1,3,21,Author Opinion,Implied,5,t
+4153,581,151,1,4,22,Main Point,Big Picture,3,t
+4154,581,151,1,4,23,Locate Detail,Stated,2,f
+4155,581,151,1,4,24,Weaken,Beyond Passage,4,f
+4156,581,151,1,4,25,Add to the Passage,Beyond Passage,5,t
+4157,581,151,1,4,26,Locate Detail,Stated,4,t
+4158,581,151,1,4,27,Inference,Implied,4,t
+4281,594,152,3,1,1,Main Point,Big Picture,1,f
+4282,594,152,3,1,2,Locate Detail,Stated,1,t
+4283,594,152,3,1,3,Author's Attitude,Implied,1,f
+4284,594,152,3,1,4,Locate Detail,Stated,1,t
+4285,594,152,3,1,5,Author Opinion,Implied,3,t
+4286,594,152,3,1,6,Author Opinion,Implied,3,t
+4287,603,152,3,2,7,Main Point,Big Picture,2,t
+4288,603,152,3,2,8,Locate Detail,Stated,1,t
+4289,603,152,3,2,9,Meaning in Context,Author’s Intent,3,t
+4290,603,152,3,2,10,Organization,Big Picture,4,t
+4291,603,152,3,2,11,Author Opinion,Implied,5,t
+4292,603,152,3,2,12,Application,Beyond Passage,4,t
+4293,603,152,3,2,13,Weaken,Beyond Passage,5,t
+4294,609,152,3,3,14,Main Point,Big Picture,2,t
+4295,609,152,3,3,15,Author's Attitude,Implied,3,f
+4296,609,152,3,3,16,Meaning in Context,Author’s Intent,3,t
+4297,609,152,3,3,17,Author Opinion,Implied,4,t
+4298,609,152,3,3,18,Weaken,Beyond Passage,2,f
+4299,609,152,3,3,19,Application,Beyond Passage,3,t
+4300,614,152,3,4,20,Main Point,Big Picture,5,t
+4301,614,152,3,4,21,Meaning in Context,Author’s Intent,3,t
+4302,614,152,3,4,22,Author's Attitude,Implied,4,t
+4303,614,152,3,4,23,Organization,Big Picture,5,t
+4304,614,152,3,4,24,Local Purpose,Author’s Intent,5,t
+4305,614,152,3,4,25,Primary Purpose,Big Picture,4,t
+4306,614,152,3,4,26,Author Opinion,Implied,5,t
+4332,627,153,1,1,1,Primary Purpose,Big Picture,1,t
+4333,627,153,1,1,2,Locate Detail,Stated,2,t
+4334,627,153,1,1,3,Author Opinion,Implied,3,t
+4335,627,153,1,1,4,Strengthen,Beyond Passage,4,t
+4336,627,153,1,1,5,Author Opinion,Implied,2,t
+4337,627,153,1,1,6,Application,Beyond Passage,5,t
+4338,628,153,1,2,7,Main Point,Big Picture,1,f
+4339,628,153,1,2,8,Five Questions,Stated,3,t
+4340,628,153,1,2,9,Meaning in Context,Author’s Intent,3,t
+4341,628,153,1,2,10,Inference,Implied,3,t
+4342,628,153,1,2,11,Principle,Implied,5,t
+4343,628,153,1,2,12,Author Opinion,Implied,3,t
+4344,628,153,1,2,13,Inference,Implied,5,t
+4345,628,153,1,2,14,Author Opinion,Implied,3,t
+4346,629,153,1,3,15,Main Point,Big Picture,5,t
+4347,629,153,1,3,16,Five Questions,Stated,5,t
+4348,629,153,1,3,17,Author Opinion,Implied,3,t
+4349,629,153,1,3,18,Locate Detail,Stated,1,f
+4350,629,153,1,3,19,Meaning in Context,Author’s Intent,2,f
+4351,629,153,1,3,20,Local Purpose,Author’s Intent,4,t
+4352,629,153,1,3,21,Paragraph Purpose,Author’s Intent,2,f
+4353,631,153,1,4,22,Primary Purpose,Big Picture,3,t
+4354,631,153,1,4,23,Inference,Implied,5,t
+4355,631,153,1,4,24,Author's Attitude,Implied,5,t
+4356,631,153,1,4,25,Locate Detail,Stated,2,f
+4357,631,153,1,4,26,Inference,Implied,3,f
+4358,631,153,1,4,27,Meaning in Context,Author’s Intent,2,f
+3878,169,153,4,1,1,Main Point,Big Picture,2,t
+3879,169,153,4,1,2,Inference,Implied,1,f
+3880,169,153,4,1,3,Five Questions,Stated,2,t
+3881,169,153,4,1,4,Analogy,Beyond Passage,3,t
+3882,169,153,4,1,5,Primary Purpose,Big Picture,1,f
+3883,169,153,4,1,6,Author Opinion,Implied,2,t
+3884,169,153,4,1,7,Inference,Implied,5,t
+3885,175,153,4,2,8,Main Point,Big Picture,3,t
+3886,175,153,4,2,9,Inference,Implied,2,f
+3887,175,153,4,2,10,Local Purpose,Author’s Intent,2,t
+3888,175,153,4,2,11,Author Opinion,Implied,3,t
+3889,175,153,4,2,12,Locate Detail,Stated,2,t
+3890,175,153,4,2,13,Application,Beyond Passage,3,t
+3891,177,153,4,3,14,Primary Purpose,Big Picture,3,t
+3892,177,153,4,3,15,Inference,Implied,3,t
+3893,177,153,4,3,16,Author Opinion,Implied,4,f
+3894,177,153,4,3,17,Principle,Implied,4,f
+3895,177,153,4,3,18,Inference,Implied,5,t
+3896,177,153,4,3,19,Locate Detail,Stated,3,f
+3897,177,153,4,3,20,Author Opinion,Implied,5,t
+3898,177,153,4,3,21,Analogy,Beyond Passage,5,t
+3899,179,153,4,4,22,Main Point,Big Picture,2,t
+3900,179,153,4,4,23,Author's Attitude,Implied,3,t
+3901,179,153,4,4,24,Organization,Big Picture,3,t
+3902,179,153,4,4,25,Local Purpose,Author’s Intent,4,t
+3903,179,153,4,4,26,Locate Detail,Stated,4,t
+3904,179,153,4,4,27,Author Opinion,Implied,5,t
+7002,849,154,3,1,1,Main Point,Big Picture,1,t
+7003,849,154,3,1,2,Locate Detail,Stated,1,f
+7004,849,154,3,1,3,Analogy,Beyond Passage,4,t
+7005,849,154,3,1,4,Author's Attitude,Implied,1,t
+7006,849,154,3,1,5,Locate Detail,Stated,2,t
+7007,849,154,3,1,6,Locate Detail,Stated,2,f
+7008,851,154,3,2,7,Main Point,Big Picture,3,t
+7009,851,154,3,2,8,Method,Big Picture,2,t
+7010,851,154,3,2,9,Locate Detail,Stated,3,t
+7011,851,154,3,2,10,Method,Big Picture,3,t
+7012,851,154,3,2,11,Principle,Implied,4,t
+7013,851,154,3,2,12,Author Opinion,Implied,5,t
+7014,851,154,3,2,13,Meaning in Context,Author’s Intent,3,t
+7015,853,154,3,3,14,Five Questions,Stated,2,t
+7016,853,154,3,3,15,Non-Author Opinion,Implied,2,t
+7017,853,154,3,3,16,Inference,Implied,3,t
+7018,853,154,3,3,17,Application,Beyond Passage,2,t
+7019,853,154,3,3,18,Inference,Implied,5,t
+7020,853,154,3,3,19,Paragraph Purpose,Author’s Intent,4,t
+7021,853,154,3,3,20,Non-Author Opinion,Implied,5,t
+7022,854,154,3,4,21,Main Point,Big Picture,3,t
+7023,854,154,3,4,22,Inference,Implied,2,t
+7024,854,154,3,4,23,Locate Detail,Stated,3,t
+7025,854,154,3,4,24,Paragraph Purpose,Author’s Intent,3,t
+7026,854,154,3,4,25,Author Opinion,Implied,5,t
+7027,854,154,3,4,26,Local Purpose,Author’s Intent,4,t
+7028,854,154,3,4,27,Locate Detail,Stated,5,t
+7104,1102,155,3,1,1,Main Point,Big Picture,5,t
+7105,1102,155,3,1,2,Locate Detail,Stated,1,f
+7106,1102,155,3,1,3,Principle,Implied,3,t
+7107,1102,155,3,1,4,Five Questions,Stated,2,f
+7108,1102,155,3,1,5,Local Purpose,Author’s Intent,4,t
+7109,1102,155,3,1,6,Author Opinion,Implied,4,t
+7110,1102,155,3,1,7,Author Opinion,Implied,5,t
+7111,1104,155,3,2,8,Main Point,Big Picture,1,f
+7112,1104,155,3,2,9,Locate Detail,Stated,1,f
+7113,1104,155,3,2,10,Locate Detail,Stated,3,t
+7114,1104,155,3,2,11,Locate Detail,Stated,3,f
+7115,1104,155,3,2,12,Author Opinion,Implied,4,t
+7116,1104,155,3,2,13,Inference,Implied,5,t
+7117,1104,155,3,2,14,Author's Attitude,Implied,3,f
+7118,1104,155,3,2,15,Meaning in Context,Author’s Intent,3,t
+7119,1105,155,3,3,16,Main Point,Big Picture,4,t
+7120,1105,155,3,3,17,Meaning in Context,Author’s Intent,3,t
+7121,1105,155,3,3,18,Inference,Implied,5,t
+7122,1105,155,3,3,19,Analogy,Beyond Passage,4,t
+7123,1105,155,3,3,20,Local Purpose,Author’s Intent,2,t
+7124,1105,155,3,3,21,Inference,Implied,4,t
+7125,1105,155,3,3,22,Strengthen,Beyond Passage,5,t
+7126,1106,155,3,4,23,Main Point,Big Picture,4,t
+7127,1106,155,3,4,24,Meaning in Context,Author’s Intent,1,t
+7128,1106,155,3,4,25,Method,Big Picture,4,t
+7129,1106,155,3,4,26,Inference,Implied,4,t
+7130,1106,155,3,4,27,Principle,Implied,5,t
+10211,1697,156,1,1,1,Main Point,Big Picture,2,t
+10212,1697,156,1,1,2,Author's Attitude,Implied,2,t
+10213,1697,156,1,1,3,Meaning in Context,Author’s Intent,2,t
+10214,1697,156,1,1,4,Primary Purpose,Big Picture,3,t
+10215,1697,156,1,1,5,Inference,Implied,2,t
+10216,1697,156,1,1,6,Locate Detail,Stated,4,t
+10217,1697,156,1,1,7,Author Opinion,Implied,5,t
+10218,1698,156,1,2,8,Primary Purpose,Big Picture,1,t
+10219,1698,156,1,2,9,Principle,Implied,3,t
+10220,1698,156,1,2,10,Non-Author Opinion,Implied,2,f
+10221,1698,156,1,2,11,Local Purpose,Author’s Intent,2,t
+10222,1698,156,1,2,12,Author Opinion,Implied,5,t
+10223,1698,156,1,2,13,Weaken,Beyond Passage,1,f
+10224,1698,156,1,2,14,Author Opinion,Implied,5,t
+10225,1699,156,1,3,15,Main Point,Big Picture,2,t
+10226,1699,156,1,3,16,Five Questions,Stated,4,t
+10227,1699,156,1,3,17,Meaning in Context,Author’s Intent,2,t
+10228,1699,156,1,3,18,Non-Author Opinion,Implied,5,t
+10229,1699,156,1,3,19,Paragraph Purpose,Author’s Intent,1,t
+10230,1699,156,1,3,20,Author Opinion,Implied,5,t
+10231,1699,156,1,3,21,Application,Beyond Passage,2,t
+10232,1701,156,1,4,22,Main Point,Big Picture,4,t
+10233,1701,156,1,4,23,Locate Detail,Stated,3,f
+10234,1701,156,1,4,24,Analogy,Beyond Passage,4,t
+10235,1701,156,1,4,25,Five Questions,Stated,5,t
+10236,1701,156,1,4,26,Local Purpose,Author’s Intent,2,t
+10237,1701,156,1,4,27,Weaken,Beyond Passage,5,t
+10654,1752,156,3,1,1,Weaken,Beyond Passage,3,f
+10655,1752,156,3,1,2,Meaning in Context,Author’s Intent,2,f
+10656,1752,156,3,1,3,Inference,Implied,2,f
+10657,1752,156,3,1,4,Local Purpose,Author’s Intent,3,f
+10658,1752,156,3,1,5,Locate Detail,Stated,1,f
+10659,1753,156,3,2,6,Primary Purpose,Big Picture,2,f
+10660,1753,156,3,2,7,Author Opinion,Implied,5,f
+10661,1753,156,3,2,8,Local Purpose,Author’s Intent,2,f
+10662,1753,156,3,2,9,Principle,Implied,2,f
+10663,1753,156,3,2,10,Primary Purpose,Big Picture,1,f
+10664,1753,156,3,2,11,Locate Detail,Stated,1,f
+10665,1753,156,3,2,12,Inference,Implied,3,f
+10666,1753,156,3,2,13,Author Opinion,Implied,5,f
+10667,1754,156,3,3,14,Main Point,Big Picture,3,f
+10668,1754,156,3,3,15,Locate Detail,Stated,2,f
+10669,1754,156,3,3,16,Local Purpose,Author’s Intent,3,f
+10670,1754,156,3,3,17,Author Opinion,Implied,2,f
+10671,1754,156,3,3,18,Non-Author Opinion,Implied,5,f
+10672,1754,156,3,3,19,Locate Detail,Stated,5,f
+10673,1754,156,3,3,20,Non-Author Opinion,Implied,4,f
+10674,1754,156,3,3,21,Principle,Implied,5,f
+10675,1755,156,3,4,22,Main Point,Big Picture,3,f
+10676,1755,156,3,4,23,Application,Beyond Passage,3,f
+10677,1755,156,3,4,24,Meaning in Context,Author’s Intent,4,f
+10678,1755,156,3,4,25,Inference,Implied,3,f
+10679,1755,156,3,4,26,Primary Purpose,Big Picture,3,f
+10680,1755,156,3,4,27,Inference,Implied,5,f
+10483,1729,157,1,1,1,Primary Purpose,Big Picture,2,t
+10484,1729,157,1,1,2,Locate Detail,Stated,2,t
+10485,1729,157,1,1,3,Inference,Implied,1,t
+10486,1729,157,1,1,4,Local Purpose,Author’s Intent,2,t
+10487,1729,157,1,1,5,Author Opinion,Implied,2,t
+10488,1730,157,1,2,6,Locate Detail,Stated,1,t
+10489,1730,157,1,2,7,Strengthen,Beyond Passage,5,t
+10490,1730,157,1,2,8,Author Opinion,Implied,4,t
+10491,1730,157,1,2,9,Meaning in Context,Author’s Intent,4,t
+10492,1730,157,1,2,10,Locate Detail,Stated,2,t
+10493,1730,157,1,2,11,Inference,Implied,2,t
+10494,1730,157,1,2,12,Non-Author Opinion,Implied,5,t
+10495,1731,157,1,3,13,Locate Detail,Stated,5,t
+10496,1731,157,1,3,14,Inference,Implied,5,t
+10497,1731,157,1,3,15,Strengthen,Beyond Passage,4,t
+10498,1731,157,1,3,16,Locate Detail,Stated,2,t
+10499,1731,157,1,3,17,Locate Detail,Stated,5,t
+10500,1731,157,1,3,18,Non-Author Opinion,Implied,5,t
+10501,1731,157,1,3,19,Analogy,Beyond Passage,4,t
+10502,1732,157,1,4,20,Main Point,Big Picture,2,t
+10503,1732,157,1,4,21,Inference,Implied,2,t
+10504,1732,157,1,4,22,Author's Attitude,Implied,1,t
+10505,1732,157,1,4,23,Non-Author Opinion,Implied,4,t
+10506,1732,157,1,4,24,Locate Detail,Stated,4,t
+10507,1732,157,1,4,25,Paragraph Purpose,Author’s Intent,3,t
+10508,1732,157,1,4,26,Meaning in Context,Author’s Intent,4,t
+10509,1732,157,1,4,27,Author Opinion,Implied,4,t
+10308,1706,157,4,1,1,Main Point,Big Picture,1,t
+10309,1706,157,4,1,2,Inference,Implied,2,t
+10310,1706,157,4,1,3,Five Questions,Stated,2,t
+10311,1706,157,4,1,4,Author Opinion,Implied,3,t
+10312,1706,157,4,1,5,Locate Detail,Stated,1,f
+10313,1706,157,4,1,6,Meaning in Context,Author’s Intent,2,t
+10314,1706,157,4,1,7,Local Purpose,Author’s Intent,3,t
+10315,1707,157,4,2,8,Primary Purpose,Big Picture,3,t
+10316,1707,157,4,2,9,Primary Purpose,Big Picture,3,t
+10317,1707,157,4,2,10,Author Opinion,Implied,2,t
+10318,1707,157,4,2,11,Analogy,Beyond Passage,4,t
+10319,1707,157,4,2,12,Method,Big Picture,1,f
+10320,1707,157,4,2,13,Application,Beyond Passage,5,t
+10321,1707,157,4,2,14,Analogy,Beyond Passage,5,t
+10322,1708,157,4,3,15,Main Point,Big Picture,2,t
+10323,1708,157,4,3,16,Locate Detail,Stated,4,t
+10324,1708,157,4,3,17,Non-Author Opinion,Implied,4,t
+10325,1708,157,4,3,18,Application,Beyond Passage,5,t
+10326,1708,157,4,3,19,Application,Beyond Passage,4,t
+10327,1708,157,4,3,20,Five Questions,Stated,1,t
+10328,1708,157,4,3,21,Non-Author Opinion,Implied,5,t
+10329,1708,157,4,3,22,Strengthen,Beyond Passage,5,t
+10330,1709,157,4,4,23,Main Point,Big Picture,3,t
+10331,1709,157,4,4,24,Author Opinion,Implied,5,t
+10332,1709,157,4,4,25,Local Purpose,Author’s Intent,2,t
+10333,1709,157,4,4,26,Non-Author Opinion,Implied,5,t
+10334,1709,157,4,4,27,Inference,Implied,5,t
+10087,1680,158,1,1,1,Main Point,Big Picture,2,t
+10088,1680,158,1,1,2,Inference,Implied,2,t
+10089,1680,158,1,1,3,Strengthen,Beyond Passage,3,t
+10090,1680,158,1,1,4,Locate Detail,Stated,2,t
+10091,1680,158,1,1,5,Locate Detail,Stated,2,t
+10092,1680,158,1,1,6,Locate Detail,Stated,3,t
+10093,1680,158,1,1,7,Application,Beyond Passage,5,t
+10094,1681,158,1,2,8,Inference,Implied,2,t
+10095,1681,158,1,2,9,Analogy,Beyond Passage,3,t
+10096,1681,158,1,2,10,Local Purpose,Author’s Intent,2,t
+10097,1681,158,1,2,11,Author Opinion,Implied,5,t
+10098,1681,158,1,2,12,Meaning in Context,Author’s Intent,2,t
+10099,1681,158,1,2,13,Local Purpose,Author’s Intent,3,t
+10100,1682,158,1,3,14,Primary Purpose,Big Picture,2,t
+10101,1682,158,1,3,15,Author Opinion,Implied,5,t
+10102,1682,158,1,3,16,Primary Purpose,Big Picture,5,t
+10103,1682,158,1,3,17,Meaning in Context,Author’s Intent,4,t
+10104,1682,158,1,3,18,Author's Attitude,Implied,4,t
+10105,1682,158,1,3,19,Locate Detail,Stated,4,t
+10106,1682,158,1,3,20,Method,Big Picture,5,t
+10107,1684,158,1,4,21,Main Point,Big Picture,3,t
+10108,1684,158,1,4,22,Local Purpose,Author’s Intent,3,t
+10109,1684,158,1,4,23,Non-Author Opinion,Implied,4,t
+10110,1684,158,1,4,24,Locate Detail,Stated,5,t
+10111,1684,158,1,4,25,Non-Author Opinion,Implied,5,t
+10112,1684,158,1,4,26,Application,Beyond Passage,3,t
+10113,1684,158,1,4,27,Author Opinion,Implied,5,t
+10732,1756,159,2,1,1,Primary Purpose,Big Picture,2,f
+10733,1756,159,2,1,2,Inference,Implied,4,f
+10734,1756,159,2,1,3,Locate Detail,Stated,3,f
+10735,1756,159,2,1,4,Author Opinion,Implied,2,f
+10736,1756,159,2,1,5,Locate Detail,Stated,1,f
+10737,1756,159,2,1,6,Non-Author Opinion,Implied,2,f
+10738,1757,159,2,2,7,Primary Purpose,Big Picture,1,f
+10739,1757,159,2,2,8,Locate Detail,Stated,3,f
+10740,1757,159,2,2,9,Local Purpose,Author’s Intent,1,f
+10741,1757,159,2,2,10,Weaken,Beyond Passage,2,f
+10742,1757,159,2,2,11,Inference,Implied,4,f
+10743,1757,159,2,2,12,Author Opinion,Implied,2,f
+10744,1757,159,2,2,13,Main Point,Big Picture,4,f
+10745,1757,159,2,2,14,Analogy,Beyond Passage,4,f
+10746,1758,159,2,3,15,Main Point,Big Picture,4,f
+10747,1758,159,2,3,16,Locate Detail,Stated,5,f
+10748,1758,159,2,3,17,Paragraph Purpose,Author’s Intent,1,f
+10749,1758,159,2,3,18,Local Purpose,Author’s Intent,3,f
+10750,1758,159,2,3,19,Analogy,Beyond Passage,1,f
+10751,1758,159,2,3,20,Author Opinion,Implied,4,f
+10752,1758,159,2,3,21,Strengthen,Beyond Passage,5,f
+10753,1759,159,2,4,22,Main Point,Big Picture,2,f
+10754,1759,159,2,4,23,Locate Detail,Stated,5,f
+10755,1759,159,2,4,24,Inference,Implied,5,f
+10756,1759,159,2,4,25,Local Purpose,Author’s Intent,3,f
+10757,1759,159,2,4,26,Meaning in Context,Author’s Intent,1,f
+10758,1759,159,2,4,27,Author Opinion,Implied,4,f
+10784,1760,159,4,1,1,Main Point,Big Picture,1,f
+10785,1760,159,4,1,2,Non-Author Opinion,Implied,1,f
+10786,1760,159,4,1,3,Non-Author Opinion,Implied,3,f
+10787,1760,159,4,1,4,Local Purpose,Author’s Intent,2,f
+10788,1760,159,4,1,5,Non-Author Opinion,Implied,2,f
+10789,1760,159,4,1,6,Non-Author Opinion,Implied,3,f
+10790,1761,159,4,2,7,Primary Purpose,Big Picture,2,f
+10791,1761,159,4,2,8,Locate Detail,Stated,1,f
+10792,1761,159,4,2,9,Locate Detail,Stated,1,f
+10793,1761,159,4,2,10,Method,Big Picture,4,f
+10794,1761,159,4,2,11,Author Opinion,Implied,4,f
+10795,1761,159,4,2,12,Principle,Implied,4,f
+10796,1761,159,4,2,13,Author Opinion,Implied,5,f
+10797,1761,159,4,2,14,Application,Beyond Passage,3,f
+10798,1762,159,4,3,15,Main Point,Big Picture,3,f
+10799,1762,159,4,3,16,Local Purpose,Author’s Intent,3,f
+10800,1762,159,4,3,17,Inference,Implied,1,f
+10801,1762,159,4,3,18,Meaning in Context,Author’s Intent,1,f
+10802,1762,159,4,3,19,Author Opinion,Implied,3,f
+10803,1762,159,4,3,20,Strengthen,Beyond Passage,4,f
+10804,1762,159,4,3,21,Principle,Implied,4,f
+10805,1763,159,4,4,22,Primary Purpose,Big Picture,5,t
+10806,1763,159,4,4,23,Inference,Implied,4,f
+10807,1763,159,4,4,24,Analogy,Beyond Passage,4,f
+10808,1763,159,4,4,25,Locate Detail,Stated,1,f
+10809,1763,159,4,4,26,Local Purpose,Author’s Intent,2,t
+10810,1763,159,4,4,27,Inference,Implied,3,f
