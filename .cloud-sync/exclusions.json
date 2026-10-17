@@ -366,5 +366,9 @@
   {
     "path": "verification/reading-center-integrated-2026-10-16/tests.log",
     "reason": "excluded file"
+  },
+  {
+    "path": "verification/rrc-meaning-eval/final-restored-deps-build.log",
+    "reason": "excluded file"
   }
 ]

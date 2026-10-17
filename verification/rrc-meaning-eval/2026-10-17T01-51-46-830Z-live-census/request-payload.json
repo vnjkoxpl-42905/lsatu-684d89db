@@ -1,0 +1,309 @@
+{
+  "classification": "Original authored reference questions",
+  "census": {
+    "sourceSection": "PT105.S2",
+    "items": [
+      {
+        "slug": "PT105_S2_Q1",
+        "chunks": [
+          {
+            "n": 1,
+            "text": "French divers recently found a large cave along the coast of the Mediterranean Sea.",
+            "details": [
+              {
+                "n": 1,
+                "text": "Divers found a cave."
+              },
+              {
+                "n": 2,
+                "text": "The divers were French."
+              },
+              {
+                "n": 3,
+                "text": "The find was recent."
+              },
+              {
+                "n": 4,
+                "text": "The cave is large."
+              },
+              {
+                "n": 5,
+                "text": "The cave is along a coast."
+              },
+              {
+                "n": 6,
+                "text": "The coast is the Mediterranean Sea's."
+              }
+            ]
+          },
+          {
+            "n": 2,
+            "text": "The cave is accessible only through an underwater tunnel.",
+            "details": [
+              {
+                "n": 1,
+                "text": "There is only one way into the cave."
+              },
+              {
+                "n": 2,
+                "text": "The way in is a tunnel."
+              },
+              {
+                "n": 3,
+                "text": "The tunnel is underwater."
+              }
+            ]
+          },
+          {
+            "n": 3,
+            "text": "The interior of the cave is completely filled with seawater and contains numerous large stalagmites,",
+            "details": [
+              {
+                "n": 1,
+                "text": "This is about the inside of the cave."
+              },
+              {
+                "n": 2,
+                "text": "It is filled with water."
+              },
+              {
+                "n": 3,
+                "text": "The water is seawater."
+              },
+              {
+                "n": 4,
+                "text": "It is filled completely."
+              },
+              {
+                "n": 5,
+                "text": "The cave contains stalagmites."
+              },
+              {
+                "n": 6,
+                "text": "The stalagmites are numerous."
+              },
+              {
+                "n": 7,
+                "text": "The stalagmites are large."
+              }
+            ]
+          },
+          {
+            "n": 4,
+            "text": "which are stony pillars that form when drops of water fall repeatedly on a single spot on a cave floor, leaving behind mineral deposits that accumulate over time.",
+            "details": [
+              {
+                "n": 1,
+                "text": "Stalagmites are a kind of pillar."
+              },
+              {
+                "n": 2,
+                "text": "The pillars are made of stone."
+              },
+              {
+                "n": 3,
+                "text": "They form from falling drops of water."
+              },
+              {
+                "n": 4,
+                "text": "The drops fall repeatedly."
+              },
+              {
+                "n": 5,
+                "text": "The drops fall on one single spot."
+              },
+              {
+                "n": 6,
+                "text": "The spot is on a cave floor."
+              },
+              {
+                "n": 7,
+                "text": "The drops leave mineral deposits behind."
+              },
+              {
+                "n": 8,
+                "text": "The deposits build up over time."
+              }
+            ]
+          }
+        ],
+        "the_read": "The cave was not always completely filled with water."
+      },
+      {
+        "slug": "PT105_S2_Q2",
+        "chunks": [
+          {
+            "n": 1,
+            "text": "A director of the Rexx Pharmaceutical Company argued that the development costs for new vaccines that the health department has requested should be subsidized by the government,",
+            "details": [
+              {
+                "n": 1,
+                "text": "A director made an argument."
+              },
+              {
+                "n": 2,
+                "text": "The director is at Rexx Pharmaceutical Company."
+              },
+              {
+                "n": 3,
+                "text": "The argument is about development costs."
+              },
+              {
+                "n": 4,
+                "text": "The costs are for new vaccines."
+              },
+              {
+                "n": 5,
+                "text": "The health department requested those vaccines."
+              },
+              {
+                "n": 6,
+                "text": "He wants the costs subsidized."
+              },
+              {
+                "n": 7,
+                "text": "The government should do the subsidizing."
+              }
+            ]
+          },
+          {
+            "n": 2,
+            "text": "since the marketing of vaccines promised to be less profitable than the marketing of any other pharmaceutical product.",
+            "details": [
+              {
+                "n": 1,
+                "text": "This is his reason."
+              },
+              {
+                "n": 2,
+                "text": "It is about marketing vaccines."
+              },
+              {
+                "n": 3,
+                "text": "Marketing vaccines is expected to be less profitable."
+              },
+              {
+                "n": 4,
+                "text": "The comparison is with marketing any other pharmaceutical product."
+              }
+            ]
+          },
+          {
+            "n": 3,
+            "text": "In support of this claim the director argued that sales of vaccines are likely to be lower since each vaccine is administered to a patient only once,",
+            "details": [
+              {
+                "n": 1,
+                "text": "This is further support for the claim."
+              },
+              {
+                "n": 2,
+                "text": "Vaccine sales are likely to be lower."
+              },
+              {
+                "n": 3,
+                "text": "The reason is how often a vaccine is given."
+              },
+              {
+                "n": 4,
+                "text": "A vaccine is given to a patient only once."
+              }
+            ]
+          },
+          {
+            "n": 4,
+            "text": "whereas medicines that combat diseases and chronic illnesses are administered many times to each patient.",
+            "details": [
+              {
+                "n": 1,
+                "text": "This is the contrast."
+              },
+              {
+                "n": 2,
+                "text": "It is about other medicines."
+              },
+              {
+                "n": 3,
+                "text": "Those medicines fight diseases and chronic illnesses."
+              },
+              {
+                "n": 4,
+                "text": "Those are given many times to each patient."
+              }
+            ]
+          }
+        ],
+        "the_read": "What if it's obligatory for pharmaceutical companies to absorb the costs of developing vaccines as a contribution to the public good? What if the government is not obliged to subsidized less profitable pharmaceutical products?"
+      },
+      {
+        "slug": "PT105_S2_Q3",
+        "chunks": [
+          {
+            "n": 1,
+            "text": "Manager: Our new computer network, the purpose of which is to increase productivity, can be installed during the day,",
+            "details": [
+              {
+                "n": 1,
+                "text": "A manager is speaking."
+              },
+              {
+                "n": 2,
+                "text": "There is a new computer network."
+              },
+              {
+                "n": 3,
+                "text": "Its purpose is to increase productivity."
+              },
+              {
+                "n": 4,
+                "text": "It can be installed during the day."
+              }
+            ]
+          },
+          {
+            "n": 2,
+            "text": "which would disrupt our employees' work, or else at night, which would entail much higher installation charges.",
+            "details": [
+              {
+                "n": 1,
+                "text": "That option would disrupt work."
+              },
+              {
+                "n": 2,
+                "text": "The work disrupted is the employees'."
+              },
+              {
+                "n": 3,
+                "text": "The other option is installing at night."
+              },
+              {
+                "n": 4,
+                "text": "Night installation would cost much more."
+              }
+            ]
+          },
+          {
+            "n": 3,
+            "text": "Since saving money is important, we should have the network installed during the day.",
+            "details": [
+              {
+                "n": 1,
+                "text": "Saving money is important."
+              },
+              {
+                "n": 2,
+                "text": "That is the reason given."
+              },
+              {
+                "n": 3,
+                "text": "The conclusion is to install during the day."
+              }
+            ]
+          }
+        ],
+        "the_read": "What if the monetary value of lost productivity due to daytime installation is greater than the increased cost of evening installation?"
+      }
+    ]
+  },
+  "alteredClaims": []
+}

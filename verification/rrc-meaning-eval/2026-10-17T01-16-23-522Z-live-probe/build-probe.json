@@ -1,0 +1,11 @@
+{
+  "build": "2026-10-16-grounded-meaning",
+  "judge": "lovable-gateway",
+  "sourceSection": "PT105.S2",
+  "rows": [
+    {
+      "slug": "__build_probe_no_transcript__",
+      "skipped": "no model run transcript"
+    }
+  ]
+}

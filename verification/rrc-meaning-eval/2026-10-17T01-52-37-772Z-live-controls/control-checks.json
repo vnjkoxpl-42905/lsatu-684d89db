@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "PT105_S2_Q1",
+    "target": "The only access tunnel is above ground.",
+    "targetFound": true,
+    "targetCarried": false,
+    "targetMaterial": true,
+    "meaningPercent": 75,
+    "decoysCarried": 0,
+    "passed": true
+  },
+  {
+    "slug": "PT105_S2_Q2",
+    "target": "Marketing vaccines is expected to be more profitable.",
+    "targetFound": true,
+    "targetCarried": false,
+    "targetMaterial": true,
+    "meaningPercent": 95,
+    "decoysCarried": 0,
+    "passed": true
+  },
+  {
+    "slug": "PT105_S2_Q3",
+    "target": "That option would not disrupt work.",
+    "targetFound": true,
+    "targetCarried": false,
+    "targetMaterial": true,
+    "meaningPercent": 91,
+    "decoysCarried": 0,
+    "passed": true
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "slug": "PT105_S2_Q1",
+    "groundedQuotes": 21,
+    "invalidQuotes": [],
+    "note": "Each newline-separated quoted unit is checked against stripped student speech. Substring grounding only; semantic support still requires review."
+  },
+  {
+    "slug": "PT105_S2_Q2",
+    "groundedQuotes": 22,
+    "invalidQuotes": [],
+    "note": "Each newline-separated quoted unit is checked against stripped student speech. Substring grounding only; semantic support still requires review."
+  },
+  {
+    "slug": "PT105_S2_Q3",
+    "groundedQuotes": 14,
+    "invalidQuotes": [],
+    "note": "Each newline-separated quoted unit is checked against stripped student speech. Substring grounding only; semantic support still requires review."
+  }
+]

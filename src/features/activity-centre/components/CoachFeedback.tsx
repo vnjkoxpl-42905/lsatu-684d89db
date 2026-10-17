@@ -1,4 +1,4 @@
-import { relationshipExplanation } from "../relationshipPresentation";
+import { relationshipExplanation, relationshipFeedback } from "../relationshipPresentation";
 import { cn } from "@/lib/utils";
 import type { ActivityItem, FeedbackState } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
@@ -23,6 +23,7 @@ interface CoachFeedbackProps {
    */
   secondaryLabel?: string;
   item: ActivityItem;
+  activitySlug?: string;
 }
 
 const DEFAULT_SECONDARY_LABEL = "Also accepted";
@@ -60,9 +61,11 @@ export function CoachFeedback({
   resolved,
   secondaryLabel,
   item,
+  activitySlug,
 }: CoachFeedbackProps) {
-  const isRelationship = !!item.answer_key || /^Rung\s+\d/i.test(item.category ?? "");
-  const explanation = isRelationship ? relationshipExplanation(item) : item.explanation;
+  const isRelationship = activitySlug === "spot-the-relationship";
+  const explanation = isRelationship ? relationshipExplanation(item, activitySlug) : item.explanation;
+  const feedbackText = isRelationship ? relationshipFeedback(feedback) : feedback;
   const style = VERDICT_STYLE[verdict];
   return (
     <div className="space-y-4">
@@ -78,7 +81,7 @@ export function CoachFeedback({
         </span>
       </div>
 
-      {feedback && <p className="text-[15px] leading-relaxed text-foreground">{feedback}</p>}
+      {feedbackText && !(isRelationship && resolved && explanation) && <p className="text-[15px] leading-relaxed text-foreground">{feedbackText}</p>}
 
       {revealed && (
         <div className="rounded-2xl border border-border bg-[hsl(var(--muted)/0.5)] p-4">

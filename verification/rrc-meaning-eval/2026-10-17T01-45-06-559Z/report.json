@@ -1,0 +1,23 @@
+{
+  "mode": "dry-run",
+  "model": "gemini-3.1-flash-lite",
+  "providerRoute": "direct-google-not-production-gateway",
+  "generationConfig": {
+    "temperature": 0,
+    "responseMimeType": "application/json",
+    "maxOutputTokens": 8192,
+    "responseJsonSchema": "per-case shared buildJudgeResponseSchema; see prompts.json"
+  },
+  "fixtureSha256": "014e93896ef097c2c79b671e7f14653153a98ed451369b587170d1119e1950fa",
+  "sharedSourceSha256": "52fa23e022af1be3cb9347098868b95b2ae8f9e7313cd87017328722fa85769e",
+  "cases": 15,
+  "providerCalls": 0,
+  "maxCalls": 15,
+  "outputTokenCap": 8192,
+  "budgetUsd": 0.5,
+  "conservativeReservedUsd": 0.246487,
+  "reservationIsNotABill": true,
+  "modelRunReference": "Not injected: local fixture runner tests source plus transcript; full production walkthrough comparison is separate.",
+  "status": "validated-no-provider-calls",
+  "results": []
+}

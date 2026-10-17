@@ -102,22 +102,30 @@ const first = SEED_ACTIVITIES.find((activity) => activity.slug === "spot-the-rel
 
 describe("Spot feedback disclosure", () => {
   it("shows only the hint before resolution", () => {
-    render(<CoachFeedback item={first} verdict="partial" feedback="Read the second clause again." revealed={false} resolved={false} />);
+    render(<CoachFeedback activitySlug="spot-the-relationship" item={first} verdict="partial" feedback="Read the second clause again." revealed={false} resolved={false} />);
     expect(screen.getByText("Read the second clause again.")).toBeVisible();
     expect(screen.queryByText("Credited answer")).toBeNull();
-    expect(screen.queryByText(relationshipExplanation(first))).toBeNull();
+    expect(screen.queryByText(relationshipExplanation(first, "spot-the-relationship"))).toBeNull();
   });
 
   it("uses corrected presentation for a stale first-item explanation after success", () => {
-    const { container } = render(<CoachFeedback item={{ ...first, explanation: "2 relationships in this sentence. Stale explanation." }} verdict="correct" feedback="" revealed={false} resolved />);
-    expect(container.textContent).toContain(relationshipExplanation(first).replace(/\*/g, ""));
+    const { container } = render(<CoachFeedback activitySlug="spot-the-relationship" item={{ ...first, explanation: "2 relationships in this sentence. Stale explanation." }} verdict="correct" feedback="" revealed={false} resolved />);
+    expect(container.textContent).toContain(relationshipExplanation(first, "spot-the-relationship").replace(/\*/g, ""));
     expect(container.textContent).not.toContain("Stale explanation.");
     expect(screen.queryByText("Credited answer")).toBeNull();
   });
 
   it("reveals the credited answer only when requested", () => {
-    render(<CoachFeedback item={first} verdict="incorrect" feedback="" revealed resolved />);
+    render(<CoachFeedback activitySlug="spot-the-relationship" item={first} verdict="incorrect" feedback="" revealed resolved />);
     expect(screen.getByText("Credited answer")).toBeVisible();
     expect(screen.getByText(first.credited_answers[0])).toBeVisible();
   });
+});
+
+
+it("does not apply Spot presentation to another activity with the same prompt and key", () => {
+  const saved = { ...first, explanation: "1 relationship in this sentence. Another activity's note." };
+  const { container } = render(<CoachFeedback activitySlug="another-activity" item={saved} verdict="correct" feedback="Independent feedback." revealed={false} resolved />);
+  expect(container.textContent).toContain(saved.explanation);
+  expect(container.textContent).toContain("Independent feedback.");
 });

@@ -1,0 +1,303 @@
+{
+  "limitation": "Quote check uses saved full-transcript snapshot; production parser independently requires student-only evidence against its verbatim-read-stripped transcript. A matching substring does not prove semantic justification.",
+  "rows": [
+    {
+      "slug": "PT105_S2_Q1",
+      "scored": true,
+      "details": [
+        {
+          "id": 1,
+          "text": "Divers found a cave.",
+          "carried": true,
+          "evidence": "they recently found this large cave",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 2,
+          "text": "The divers were French.",
+          "carried": true,
+          "evidence": "these French divers",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 3,
+          "text": "The find was recent.",
+          "carried": true,
+          "evidence": "they recently found",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 4,
+          "text": "The cave is large.",
+          "carried": true,
+          "evidence": "this large cave",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 5,
+          "text": "The cave is along a coast.",
+          "carried": true,
+          "evidence": "off the coast of the Mediterranean Sea",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 6,
+          "text": "The coast is the Mediterranean Sea's.",
+          "carried": true,
+          "evidence": "coast of the Mediterranean Sea",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 7,
+          "text": "There is only one way into the cave.",
+          "carried": true,
+          "evidence": "the only way to get to this cave is through an underwater tunnel",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 8,
+          "text": "The way in is a tunnel.",
+          "carried": true,
+          "evidence": "through an underwater tunnel",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 10,
+          "text": "The tunnel is underwater.",
+          "carried": true,
+          "evidence": "underwater tunnel",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 11,
+          "text": "This is about the inside of the cave.",
+          "carried": true,
+          "evidence": "inside this cave",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 12,
+          "text": "It is filled with water.",
+          "carried": true,
+          "evidence": "it's totally filled with water",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 13,
+          "text": "The water is seawater.",
+          "carried": false,
+          "evidence": "",
+          "reason": "The student did not mention the water is seawater.",
+          "quoteInReferenceTranscript": null
+        },
+        {
+          "id": 14,
+          "text": "It is filled completely.",
+          "carried": true,
+          "evidence": "totally filled with water, like floor to ceiling",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 15,
+          "text": "The cave contains stalagmites.",
+          "carried": true,
+          "evidence": "filled with these stalagmites",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 16,
+          "text": "The stalagmites are numerous.",
+          "carried": false,
+          "evidence": "",
+          "reason": "The student did not mention the stalagmites are numerous.",
+          "quoteInReferenceTranscript": null
+        },
+        {
+          "id": 17,
+          "text": "The stalagmites are large.",
+          "carried": true,
+          "evidence": "these stalagmites",
+          "reason": "The student refers to the large stalagmites mentioned in the prompt.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 19,
+          "text": "Stalagmites are a kind of pillar.",
+          "carried": true,
+          "evidence": "little pillars",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 20,
+          "text": "The pillars are made of stone.",
+          "carried": false,
+          "evidence": "",
+          "reason": "The student did not mention the pillars are made of stone.",
+          "quoteInReferenceTranscript": null
+        },
+        {
+          "id": 21,
+          "text": "They form from falling drops of water.",
+          "carried": true,
+          "evidence": "drops keep falling over time",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 22,
+          "text": "The drops fall repeatedly.",
+          "carried": true,
+          "evidence": "drops keep falling",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 23,
+          "text": "The drops fall on one single spot.",
+          "carried": true,
+          "evidence": "keep falling over time",
+          "reason": "The student implies the repetition on a spot by describing the layering process.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 24,
+          "text": "The spot is on a cave floor.",
+          "carried": true,
+          "evidence": "form on the floor",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 25,
+          "text": "The drops leave mineral deposits behind.",
+          "carried": true,
+          "evidence": "deposits, like, layer up",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 26,
+          "text": "The deposits build up over time.",
+          "carried": true,
+          "evidence": "deposits, like, layer up",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        }
+      ]
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "scored": false,
+      "error": "Detail 1 quotes words outside the student's transcript",
+      "details": []
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "scored": true,
+      "details": [
+        {
+          "id": 1,
+          "text": "A manager is speaking.",
+          "carried": true,
+          "evidence": "The manager is saying",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 2,
+          "text": "There is a new computer network.",
+          "carried": true,
+          "evidence": "install this new computer network",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 3,
+          "text": "Its purpose is to increase productivity.",
+          "carried": true,
+          "evidence": "the whole point of this network is to make people more productive",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 5,
+          "text": "It can be installed during the day.",
+          "carried": true,
+          "evidence": "install it during the day",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 6,
+          "text": "That option would disrupt work.",
+          "carried": true,
+          "evidence": "that's gonna disrupt the employee's work",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 7,
+          "text": "The work disrupted is the employees'.",
+          "carried": true,
+          "evidence": "disrupt the employee's work",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 9,
+          "text": "The other option is installing at night.",
+          "carried": true,
+          "evidence": "install it at night",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 10,
+          "text": "Night installation would cost much more.",
+          "carried": true,
+          "evidence": "that would cost a lot more money",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 11,
+          "text": "Saving money is important.",
+          "carried": true,
+          "evidence": "saving money is important",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 12,
+          "text": "That is the reason given.",
+          "carried": true,
+          "evidence": "saving money is important, so therefore, we should install the network during the day",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 13,
+          "text": "The conclusion is to install during the day.",
+          "carried": true,
+          "evidence": "we should install the network during the day",
+          "reason": "",
+          "quoteInReferenceTranscript": true
+        }
+      ]
+    }
+  ]
+}

@@ -3,8 +3,9 @@ import { createHash } from "node:crypto";
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, relative, isAbsolute } from "node:path";
 import { homedir } from "node:os";
-import { buildJudgeEntries, toDetailsByLine, buildJudgePrompt, parseJudgeReply, gradeStimulus } from "../../src/features/activity-centre/recall/grading";
+import { buildJudgeEntries, toDetailsByLine, buildJudgePrompt, buildJudgeResponseSchema, parseJudgeReply, gradeStimulus } from "../../src/features/activity-centre/recall/grading";
 import { checkReciting } from "../../supabase/functions/_shared/rrcOverlap";
+import { applyReviewedMateriality } from "../../supabase/functions/_shared/rrcMeaningKeys";
 
 const MODEL = "gemini-3.1-flash-lite";
 const OUTPUT_CAP = 8192;
@@ -51,23 +52,24 @@ async function main() {
     const content = JSON.parse(sourceBytes.toString()) as { source_section: string; items: Item[] };
     const item = content.items.find(i => i.slug === c.itemSlug);
     if (!item || content.source_section !== c.sourceSection || !c.spoken.trim()) throw new Error(`${c.id}: invalid question/transcript mapping`);
-    const entries = buildJudgeEntries(toDetailsByLine(item.chunks, c.itemSlug), []);
+    const { entries } = applyReviewedMateriality({ stimulus: item.chunks.map(chunk => chunk.text).join(" "), entries: buildJudgeEntries(toDetailsByLine(item.chunks, c.itemSlug), []), slug: c.itemSlug });
     for (const detail of [...c.expected.mustCarryDetails, ...c.expected.mustMissDetails]) {
       if (!entries.some(e => e.text === detail)) throw new Error(`${c.id}: expected detail absent from authored key`);
     }
     const prompt = buildJudgePrompt({ stimulus: item.prompt, entries, spoken: c.spoken, recall: c.recall, theRead: item.the_read });
+    const responseJsonSchema = buildJudgeResponseSchema({ entries, theRead: item.the_read, spoken: c.spoken });
     // Conservative reservation: one token per UTF-8 byte, plus envelope overhead.
     // Output reserve uses the request's explicit output-token cap.
-    const reserve = ((Buffer.byteLength(prompt, "utf8") + 1024) * 0.25 + OUTPUT_CAP * 1.50) / 1_000_000;
-    return { c, entries, stimulus: item.prompt, prompt, reserve };
+    const reserve = ((Buffer.byteLength(prompt, "utf8") + Buffer.byteLength(JSON.stringify(responseJsonSchema), "utf8") + 1024) * 0.25 + OUTPUT_CAP * 1.50) / 1_000_000;
+    return { c, entries, stimulus: item.prompt, prompt, responseJsonSchema, reserve };
   });
   const reservedUsd = jobs.reduce((n, j) => n + j.reserve, 0);
   if (reservedUsd > BUDGET_USD) throw new Error("Conservative batch reservation exceeds $0.50; no calls made");
   const folder = resolve(root, "verification/rrc-meaning-eval", new Date().toISOString().replace(/[:.]/g, "-"));
   mkdirSync(folder, { recursive: true });
-  const report: Record<string, unknown> = { mode: paid ? "run" : "dry-run", model: MODEL, providerRoute: "direct-google-not-production-gateway", generationConfig: { temperature: 0, responseMimeType: "application/json", maxOutputTokens: OUTPUT_CAP }, fixtureSha256: sha(bytes), sharedSourceSha256: sha(readFileSync(resolve(root, "supabase/functions/_shared/rrcGrading.ts"))), cases: jobs.length, providerCalls: 0, maxCalls: 15, outputTokenCap: OUTPUT_CAP, budgetUsd: BUDGET_USD, conservativeReservedUsd: reservedUsd, reservationIsNotABill: true, modelRunReference: "Not injected: local fixture runner tests source plus transcript; full production walkthrough comparison is separate.", status: "validated-no-provider-calls", results: [] };
+  const report: Record<string, unknown> = { mode: paid ? "run" : "dry-run", model: MODEL, providerRoute: "direct-google-not-production-gateway", generationConfig: { temperature: 0, responseMimeType: "application/json", maxOutputTokens: OUTPUT_CAP, responseJsonSchema: "per-case shared buildJudgeResponseSchema; see prompts.json" }, fixtureSha256: sha(bytes), sharedSourceSha256: sha(readFileSync(resolve(root, "supabase/functions/_shared/rrcGrading.ts"))), cases: jobs.length, providerCalls: 0, maxCalls: 15, outputTokenCap: OUTPUT_CAP, budgetUsd: BUDGET_USD, conservativeReservedUsd: reservedUsd, reservationIsNotABill: true, modelRunReference: "Not injected: local fixture runner tests source plus transcript; full production walkthrough comparison is separate.", status: "validated-no-provider-calls", results: [] };
   const save = () => writeFileSync(resolve(folder, "report.json"), JSON.stringify(report, null, 2) + "\n");
-  writeFileSync(resolve(folder, "prompts.json"), JSON.stringify(jobs.map(j => ({ id: j.c.id, itemSlug: j.c.itemSlug, sourceFile: j.c.provenance.sourceFile, sourceSha256: j.c.provenance.sourceFileSha256, promptSha256: sha(j.prompt), prompt: j.prompt })), null, 2) + "\n");
+  writeFileSync(resolve(folder, "prompts.json"), JSON.stringify(jobs.map(j => ({ id: j.c.id, itemSlug: j.c.itemSlug, sourceFile: j.c.provenance.sourceFile, sourceSha256: j.c.provenance.sourceFileSha256, promptSha256: sha(j.prompt), responseSchemaSha256: sha(JSON.stringify(j.responseJsonSchema)), responseJsonSchema: j.responseJsonSchema, prompt: j.prompt })), null, 2) + "\n");
   save();
   if (!paid) { console.log(`Validated ${jobs.length} cases; zero provider calls. Report: ${relative(root, folder)}`); return; }
   const key = keyFromExistingEnv();
@@ -76,7 +78,7 @@ async function main() {
     report.providerCalls = Number(report.providerCalls) + 1;
     save();
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, { method: "POST", signal: AbortSignal.timeout(90000), headers: { "x-goog-api-key": key, "Content-Type": "application/json" }, body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: job.prompt }] }], generationConfig: { temperature: 0, responseMimeType: "application/json", maxOutputTokens: OUTPUT_CAP } }) });
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, { method: "POST", signal: AbortSignal.timeout(90000), headers: { "x-goog-api-key": key, "Content-Type": "application/json" }, body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: job.prompt }] }], generationConfig: { temperature: 0, responseMimeType: "application/json", responseJsonSchema: job.responseJsonSchema, maxOutputTokens: OUTPUT_CAP } }) });
       const body = await response.json();
       if (!response.ok) throw new Error(`Provider HTTP ${response.status}; batch stopped, no retries`);
       const raw = (body.candidates?.[0]?.content?.parts ?? []).filter((p: { thought?: boolean }) => !p.thought).map((p: { text?: string }) => p.text ?? "").join("");

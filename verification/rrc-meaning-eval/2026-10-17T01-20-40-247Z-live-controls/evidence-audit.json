@@ -1,0 +1,563 @@
+{
+  "limitation": "Quote check uses saved full-transcript snapshot; production parser independently requires student-only evidence against its verbatim-read-stripped transcript. A matching substring does not prove semantic justification.",
+  "rows": [
+    {
+      "slug": "PT105_S2_Q1",
+      "scored": true,
+      "details": [
+        {
+          "id": 1,
+          "text": "Divers found a cave.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She stated they found a large cave.",
+          "material": true,
+          "material_reason": "Core event of the stimulus.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 2,
+          "text": "The divers were French.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She explicitly mentioned French divers.",
+          "material": true,
+          "material_reason": "Identifies the actors.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 3,
+          "text": "The find was recent.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She stated they recently found it.",
+          "material": true,
+          "material_reason": "Temporal context.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 4,
+          "text": "The cave is large.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She described it as a large cave.",
+          "material": false,
+          "material_reason": "Incidental descriptor.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 5,
+          "text": "The cave is along a coast.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She mentioned it is off the coast.",
+          "material": true,
+          "material_reason": "Location context.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 6,
+          "text": "The coast is the Mediterranean Sea's.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She specified the Mediterranean Sea.",
+          "material": true,
+          "material_reason": "Specific location.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 7,
+          "text": "There is only one way into the cave.",
+          "carried": true,
+          "evidence": "So the only way to get to this cave is through an underwater tunnel.",
+          "reason": "She stated the only way to get to the cave is through a tunnel.",
+          "material": true,
+          "material_reason": "Constraint on access.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 8,
+          "text": "The way in is a tunnel.",
+          "carried": true,
+          "evidence": "So the only way to get to this cave is through an underwater tunnel.",
+          "reason": "She identified the access as a tunnel.",
+          "material": true,
+          "material_reason": "Nature of access.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 10,
+          "text": "The only access tunnel is above ground.",
+          "carried": false,
+          "evidence": "The cave is successful only through an underwater tunnel.\nSo the only way to get to this cave is through an underwater tunnel.",
+          "reason": "She incorrectly claimed it was an underwater tunnel.",
+          "material": true,
+          "material_reason": "Contradicts the stimulus.",
+          "quoteInReferenceTranscript": false
+        },
+        {
+          "id": 11,
+          "text": "This is about the inside of the cave.",
+          "carried": true,
+          "evidence": "So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with",
+          "reason": "She transitioned to describing the inside.",
+          "material": false,
+          "material_reason": "Structural transition.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 12,
+          "text": "It is filled with water.",
+          "carried": true,
+          "evidence": "So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with",
+          "reason": "She stated it is filled with water.",
+          "material": true,
+          "material_reason": "State of the cave.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 13,
+          "text": "The water is seawater.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not specify seawater.",
+          "material": true,
+          "material_reason": "Specific detail.",
+          "quoteInReferenceTranscript": null
+        },
+        {
+          "id": 14,
+          "text": "It is filled completely.",
+          "carried": true,
+          "evidence": "So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with\nwater, like floor to ceiling.",
+          "reason": "She stated it is totally filled floor to ceiling.",
+          "material": true,
+          "material_reason": "Extent of filling.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 15,
+          "text": "The cave contains stalagmites.",
+          "carried": true,
+          "evidence": "But it's filled with these stalagmites, which is what happens when, like, drops of water I guess, stalactites are the ones that form on",
+          "reason": "She mentioned it is filled with stalagmites.",
+          "material": true,
+          "material_reason": "Content of the cave.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 16,
+          "text": "The stalagmites are numerous.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention they were numerous.",
+          "material": false,
+          "material_reason": "Incidental quantity.",
+          "quoteInReferenceTranscript": null
+        },
+        {
+          "id": 17,
+          "text": "The stalagmites are large.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention they were large.",
+          "material": false,
+          "material_reason": "Incidental descriptor.",
+          "quoteInReferenceTranscript": null
+        },
+        {
+          "id": 19,
+          "text": "Stalagmites are a kind of pillar.",
+          "carried": true,
+          "evidence": "and then there leaves, like, little pillars.",
+          "reason": "She identified them as pillars.",
+          "material": true,
+          "material_reason": "Definition of stalagmites.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 20,
+          "text": "The pillars are made of stone.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention they were made of stone.",
+          "material": true,
+          "material_reason": "Material composition.",
+          "quoteInReferenceTranscript": null
+        },
+        {
+          "id": 21,
+          "text": "They form from falling drops of water.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She stated they form from falling drops of water.",
+          "material": true,
+          "material_reason": "Formation process.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 22,
+          "text": "The drops fall repeatedly.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She stated drops keep falling over time.",
+          "material": true,
+          "material_reason": "Formation process.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 23,
+          "text": "The drops fall on one single spot.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention a single spot.",
+          "material": true,
+          "material_reason": "Formation condition.",
+          "quoteInReferenceTranscript": null
+        },
+        {
+          "id": 24,
+          "text": "The spot is on a cave floor.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She stated they form on the floor.",
+          "material": true,
+          "material_reason": "Formation location.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 25,
+          "text": "The drops leave mineral deposits behind.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She mentioned deposits layer up.",
+          "material": true,
+          "material_reason": "Formation mechanism.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 26,
+          "text": "The deposits build up over time.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She stated they form over time.",
+          "material": true,
+          "material_reason": "Temporal condition.",
+          "quoteInReferenceTranscript": true
+        }
+      ]
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "scored": true,
+      "details": [
+        {
+          "id": 1,
+          "text": "A director made an argument.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She identifies the director and his action.",
+          "material": true,
+          "material_reason": "Identifies the speaker.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 2,
+          "text": "The director is at Rexx Pharmaceutical Company.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She names the Rex Pharmaceutical Company.",
+          "material": true,
+          "material_reason": "Identifies the entity.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 3,
+          "text": "The argument is about development costs.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She mentions the development of vaccines.",
+          "material": true,
+          "material_reason": "Core subject of the argument.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 4,
+          "text": "The costs are for new vaccines.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She mentions new vaccines.",
+          "material": true,
+          "material_reason": "Core subject of the argument.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 5,
+          "text": "The health department requested those vaccines.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She mentions the health department wants them.",
+          "material": true,
+          "material_reason": "Context for the request.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 6,
+          "text": "He wants the costs subsidized.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She states they should be subsidized.",
+          "material": true,
+          "material_reason": "The core proposal.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 8,
+          "text": "The government should do the subsidizing.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She mentions the government.",
+          "material": true,
+          "material_reason": "The entity responsible for the subsidy.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 9,
+          "text": "This is his reason.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She uses 'because' to link the subsidy to the profitability claim.",
+          "material": true,
+          "material_reason": "Logical structure of the argument.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 10,
+          "text": "It is about marketing vaccines.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She mentions marketing vaccines.",
+          "material": true,
+          "material_reason": "Subject of the comparison.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 11,
+          "text": "Marketing vaccines is expected to be more profitable.",
+          "carried": false,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less\nprofitable than marketing other pharmaceutical products like, you know, pills or or medicine like that, which sure.",
+          "reason": "She says it is 'less profitable', whereas the stimulus says 'more profitable'.",
+          "material": true,
+          "material_reason": "Reverses the core premise of the argument.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 12,
+          "text": "The comparison is with marketing any other pharmaceutical product.",
+          "carried": true,
+          "evidence": "profitable than marketing other pharmaceutical products like, you know, pills or or medicine like that, which sure.",
+          "reason": "She compares it to other pharmaceutical products.",
+          "material": true,
+          "material_reason": "Comparison group.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 13,
+          "text": "This is further support for the claim.",
+          "carried": true,
+          "evidence": "So to support his claim that the marketing of the vaccines is gonna be less profitable than the marketing of other pharmaceutical products, This",
+          "reason": "She uses 'to support his claim' to introduce the next section.",
+          "material": true,
+          "material_reason": "Logical structure.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 15,
+          "text": "Vaccine sales are likely to be lower.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She states vaccine sales are lower.",
+          "material": true,
+          "material_reason": "Key premise.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 16,
+          "text": "The reason is how often a vaccine is given.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She links sales to frequency of administration.",
+          "material": true,
+          "material_reason": "Logical link.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 17,
+          "text": "A vaccine is given to a patient only once.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She states a vaccine is given once.",
+          "material": true,
+          "material_reason": "Key premise.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 18,
+          "text": "This is the contrast.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She uses 'but' to contrast vaccines with other medicines.",
+          "material": true,
+          "material_reason": "Logical structure.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 19,
+          "text": "It is about other medicines.",
+          "carried": true,
+          "evidence": "know, you take medicine multiple times.",
+          "reason": "She mentions other medicines.",
+          "material": true,
+          "material_reason": "Comparison group.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 20,
+          "text": "Those medicines fight diseases and chronic illnesses.",
+          "carried": true,
+          "evidence": "Like, you have an infection, you have to take antibiotics every day for a week to make it get better, and then maybe you",
+          "reason": "She mentions infections and antibiotics.",
+          "material": true,
+          "material_reason": "Examples of chronic/disease medicines.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 21,
+          "text": "Those are given many times to each patient.",
+          "carried": true,
+          "evidence": "know, you take medicine multiple times.\nLike, you have an infection, you have to take antibiotics every day for a week to make it get better, and then maybe you\nYou need to take them again.",
+          "reason": "She states they are taken multiple times.",
+          "material": true,
+          "material_reason": "Key premise.",
+          "quoteInReferenceTranscript": false
+        }
+      ]
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "scored": true,
+      "details": [
+        {
+          "id": 1,
+          "text": "A manager is speaking.",
+          "carried": true,
+          "evidence": "The manager is saying that they're trying to install this new computer network at his workplace, and the whole point of this network is",
+          "reason": "She identifies the speaker as the manager.",
+          "material": true,
+          "material_reason": "Identifies the source of the argument.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 2,
+          "text": "There is a new computer network.",
+          "carried": true,
+          "evidence": "The manager is saying that they're trying to install this new computer network at his workplace, and the whole point of this network is",
+          "reason": "She mentions the new computer network.",
+          "material": true,
+          "material_reason": "The subject of the argument.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 3,
+          "text": "Its purpose is to increase productivity.",
+          "carried": true,
+          "evidence": "The manager is saying that they're trying to install this new computer network at his workplace, and the whole point of this network is\nto make people more productive to increase the productivity.",
+          "reason": "She states the purpose is to increase productivity.",
+          "material": true,
+          "material_reason": "The stated goal of the network.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 5,
+          "text": "It can be installed during the day.",
+          "carried": true,
+          "evidence": "And they have two options.\nThey can install it during the day, but that's gonna disrupt the employee's work.",
+          "reason": "She mentions the option to install during the day.",
+          "material": true,
+          "material_reason": "One of the two proposed options.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 6,
+          "text": "That option would not disrupt work.",
+          "carried": false,
+          "evidence": "They can install it during the day, but that's gonna disrupt the employee's work.",
+          "reason": "She explicitly states that daytime installation would disrupt work, contradicting the stimulus claim that it would not.",
+          "material": true,
+          "material_reason": "This is a core premise of the argument.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 7,
+          "text": "The work disrupted is the employees'.",
+          "carried": true,
+          "evidence": "They can install it during the day, but that's gonna disrupt the employee's work.",
+          "reason": "She identifies the employees' work as being disrupted.",
+          "material": true,
+          "material_reason": "Identifies the affected party.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 9,
+          "text": "The other option is installing at night.",
+          "carried": true,
+          "evidence": "Or they can install it at night, but that would cost a lot more money.",
+          "reason": "She mentions the option to install at night.",
+          "material": true,
+          "material_reason": "The second proposed option.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 10,
+          "text": "Night installation would cost much more.",
+          "carried": true,
+          "evidence": "Or they can install it at night, but that would cost a lot more money.\nBut then at night, you've got, like, overtime charges because it's after hours.",
+          "reason": "She notes that night installation costs more.",
+          "material": true,
+          "material_reason": "The cost factor of the second option.",
+          "quoteInReferenceTranscript": false
+        },
+        {
+          "id": 11,
+          "text": "Saving money is important.",
+          "carried": true,
+          "evidence": "So this manager is saying saving money is important, so therefore, we should install the network during the day.",
+          "reason": "She states that saving money is important.",
+          "material": true,
+          "material_reason": "The premise for the conclusion.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 12,
+          "text": "That is the reason given.",
+          "carried": true,
+          "evidence": "So this manager is saying saving money is important, so therefore, we should install the network during the day.",
+          "reason": "She links the importance of saving money to the decision.",
+          "material": true,
+          "material_reason": "The logical basis for the argument.",
+          "quoteInReferenceTranscript": true
+        },
+        {
+          "id": 13,
+          "text": "The conclusion is to install during the day.",
+          "carried": true,
+          "evidence": "So this manager is saying saving money is important, so therefore, we should install the network during the day.",
+          "reason": "She states the conclusion to install during the day.",
+          "material": true,
+          "material_reason": "The final recommendation of the argument.",
+          "quoteInReferenceTranscript": true
+        }
+      ]
+    }
+  ]
+}

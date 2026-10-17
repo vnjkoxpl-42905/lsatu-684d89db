@@ -1,0 +1,206 @@
+{
+  "model": "google/gemini-3.1-flash-lite",
+  "temperature": 0,
+  "max_tokens": 8192,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "rrc_grade",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "verdicts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "enum": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    26
+                  ]
+                },
+                "carried": {
+                  "type": "boolean"
+                },
+                "evidence_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "enum": [
+                      1,
+                      2,
+                      3,
+                      4,
+                      5,
+                      6,
+                      7,
+                      8,
+                      9,
+                      10,
+                      11,
+                      12,
+                      13,
+                      14,
+                      15,
+                      16,
+                      17,
+                      18,
+                      19,
+                      20,
+                      21
+                    ]
+                  },
+                  "minItems": 0,
+                  "maxItems": 21
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "material": {
+                  "type": "boolean"
+                },
+                "material_reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "carried",
+                "evidence_ids",
+                "reason",
+                "material",
+                "material_reason"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 26,
+            "maxItems": 26
+          },
+          "uncertain_details": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "enum": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 26
+          },
+          "reciting": {
+            "type": "boolean"
+          },
+          "reciting_reason": {
+            "type": "string"
+          },
+          "listing": {
+            "type": "boolean"
+          },
+          "listing_reason": {
+            "type": "string"
+          },
+          "coloured": {
+            "type": "boolean"
+          },
+          "colour_specific": {
+            "type": "boolean"
+          },
+          "big_misses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0,
+            "maxItems": 3
+          },
+          "next_time": {
+            "type": "string"
+          },
+          "read_given": {
+            "type": "boolean"
+          },
+          "read_matches": {
+            "type": "boolean"
+          },
+          "read_reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "verdicts",
+          "uncertain_details",
+          "reciting",
+          "reciting_reason",
+          "listing",
+          "listing_reason",
+          "coloured",
+          "colour_specific",
+          "big_misses",
+          "next_time",
+          "read_given",
+          "read_matches",
+          "read_reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "You are grading one stimulus of a memory drill.\n\nThe student read the stimulus one line at a time. She reads a line silently,\nlooks away from the screen, and says that line back out loud in her own words\nfrom memory; then the next line, and so on. When every line is done the text\ndisappears and she restates the whole stimulus from memory. She never reads\naloud. Your job is to decide, for each numbered Detail, whether she carried it.\n\nTHE STIMULUS (context only — see the rule below):\n\"\"\"\nFrench divers recently found a large cave along the coast of the Mediterranean Sea. The cave is accessible only through an underwater tunnel. The interior of the cave is completely filled with seawater and contains numerous large stalagmites, which are stony pillars that form when drops of water fall repeatedly on a single spot on a cave floor, leaving behind mineral deposits that accumulate over time.\n\"\"\"\n\nWHAT SHE SAID (this is your ONLY evidence):\n\"\"\"\nAlright. Okay. So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave. It's like I'm picturing, an underwater cave, where they're you know, maybe it used to be above water, now it's filled in, or maybe it's like a volcano situation. Who knows? Okay. So the only way to get to this cave is through an underwater tunnel. This is like, oh, this is like the Thai soccer team that got trapped in an underwater cave. If you all are too young for this, look up Amy Poehler Thai boys on YouTube. It's very funny. Okay. So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with water, like floor to ceiling. You cannot breathe. You you need a scuba tank. But it's filled with these stalagmites, which is what happens when, like, drops of water I guess, stalactites are the ones that form on the ceiling. These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up, and then there leaves, like, little pillars. So from this, we can infer that it wasn't always totally filled with water because the drops had to, you know, form.\n\"\"\"\n\nSTUDENT EVIDENCE UNITS (verbatim parts of WHAT SHE SAID, not new evidence):\n1. Alright.\n2. Okay.\n3. So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.\n4. It's like I'm picturing, an underwater cave, where they're you know, maybe it used to be above water, now it's filled in, or maybe\n5. it's like a volcano situation.\n6. Who knows?\n7. Okay.\n8. So the only way to get to this cave is through an underwater tunnel.\n9. This is like, oh, this is like the Thai soccer team that got trapped in an underwater cave.\n10. If you all are too young for this, look up Amy Poehler Thai boys on YouTube.\n11. It's very funny.\n12. Okay.\n13. So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with\n14. water, like floor to ceiling.\n15. You cannot breathe.\n16. You you need a scuba tank.\n17. But it's filled with these stalagmites, which is what happens when, like, drops of water I guess, stalactites are the ones that form on\n18. the ceiling.\n19. These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,\n20. and then there leaves, like, little pillars.\n21. So from this, we can infer that it wasn't always totally filled with water because the drops had to, you know, form.\n\n\n\nHOW TO JUDGE EACH KIND:\n- CONTENT — a fact. Carried if she stated it, in any words, in any order. Synonyms and paraphrase count fully. A uniquely identified entity may be named by its role or context instead of its proper name. Equivalent quantity expressions count: \"half\" and \"50 percent\" mean the same. Deduct only a lost or changed claim, not a missing label. A different country, a missing meaningful quantity, all changed to most, and lost negation are real changes. Do not assume an unstated all from \"the staff\".\n\nRULES:\n- Judge ONLY from what she said. NEVER mark a Detail carried because the\n  stimulus contains it. The stimulus is there so you know what a Detail refers\n  to, not as evidence that she said it. This is the most important rule here.\n- Preserve who asserted each claim and what role it plays. A claim mentioned\n  only as her hypothetical example, question, joke or rejected alternative is\n  not evidence that she remembered it as the source's actual claim. Her Read\n  may correctly use a hypothetical to challenge the argument; judge that\n  separately from recalling the argument's own claims.\n- Some of the Details below belong to a DIFFERENT stimulus and she cannot have\n  carried them. Mark those not carried. Do not try to guess which.\n- If unclear or garbled transcription prevents deciding whether a meaning was\n  carried, put that Detail id in uncertain_details. Do not guess a deduction\n  or credit. A clear omission is still a miss, not uncertainty. If speech is\n  clear enough to establish the meaning, judge that meaning normally.\n- Her transcript may contain mangled or clipped words. Judge the substance.\n- Be fair as well as strict. Her own words, her own order and a plainer\n  phrasing all count in full. Only a change of MEANING counts against her: a\n  dropped specific, a lost qualifier, a claim made stronger or weaker than the\n  source, a relationship that vanished. Never mark a Detail missed for style.\n- Mark a Detail missed only for missing or changed MEANING. Before marking it\n  missed, look for an equivalent claim anywhere in WHAT SHE SAID, including\n  pronouns and relationships expressed without the source's labels. For example,\n  \"if music videos are art, TV created art\" carries the conditional position;\n  she need not also say \"anyone with that view insists\". \"Safety committees\n  reduced workplace injuries\" carries both the committees' safety role and\n  the injury outcome without separately naming each role again.\n- Do not demand the source's wording or discourse labels. But never fill in a\n  missing fact from the source or the correct run: changing Sweden to Norway,\n  all to most, likely to certain, or reversing a conditional changes meaning.\n- For each verdict return evidence_ids: the integer ids of the STUDENT EVIDENCE\n  UNITS supporting the judgment. For a carried Detail select units expressing\n  its meaning. For a miss select the closest relevant units and explain what\n  changed in reason; if nothing relevant was said use []. Never invent or\n  rewrite quotes. The server reconstructs the actual words from these ids.\n- Separately mark material and explain the classification in material_reason.\n  Material means its loss or change alters an asserted claim, the argument's\n  reasoning, or a condition needed for the inference. Actors/referents,\n  named places, relationships, comparison direction, negation, modality, complete\n  conditions and relevant quantities are material. Changing a named entity or\n  a logical claim stays material even if a similar conclusion remains possible.\n  A descriptor is incidental ONLY when omitting or changing it\n  leaves those claims and reasoning intact; explain why. Do not classify a real\n  contradiction as harmless merely to improve a score. If unsure, use material\n  true. Determine carried truthfully even for incidental details: incidental\n  is not permission to fill a fact in from the source.\n- A reference such as \"those buildings\" identifies buildings, not their size,\n  colour or quantity. Do not award an attribute solely because the prompt says\n  the referenced objects have it. Any intrinsic or contextual implication must\n  follow from what she actually said, without borrowing facts from the source.\n- Several authored Details may describe the same underlying fact. Treat\n  equivalent meanings consistently, and describe one underlying error only\n  ONCE in big_misses and next_time. Do not invent another error because the\n  same fact has two labels. Still return a verdict for every numbered Detail.\n\nMEANING CALIBRATION (unrelated examples, not evidence for this student's run):\n- Source: \"A local clinic opens at noon and closes at six.\" Retelling: \"That\n  clinic shuts at six; it starts seeing people at twelve.\" Both times and the\n  clinic's identity survive. Different order and equivalent wording are fine.\n- Source: \"The astronomer found an error in her own calculation.\" Retelling:\n  \"She spotted a mistake in the calculation she made.\" In context she uniquely\n  identifies the astronomer; repeating the occupation is unnecessary.\n- Source: \"All the permits expired.\" Retelling: \"Most permits expired.\"\n  The universal claim changed. Do not award all from most.\n- Source: \"The council did not approve the plan.\" Retelling: \"The council\n  approved it.\" Negation changed the claim; this is a genuine error.\n- Source: \"If the alarm sounds, the doors lock.\" Retelling: \"If the doors\n  lock, the alarm sounds.\" The direction reversed; this is a genuine error.\nApply these principles to WHAT SHE SAID, not these examples' facts.\n\nTHE DETAILS:\n1. [content] Divers found a cave.\n2. [content] The divers were French.\n3. [content] The find was recent.\n4. [content] The cave is large.\n5. [content] The cave is along a coast.\n6. [content] The coast is the Mediterranean Sea's.\n7. [content] There is only one way into the cave.\n8. [content] The way in is a tunnel.\n9. [content] A director made an argument.\n10. [content] The tunnel is underwater.\n11. [content] This is about the inside of the cave.\n12. [content] It is filled with water.\n13. [content] The water is seawater.\n14. [content] It is filled completely.\n15. [content] The cave contains stalagmites.\n16. [content] The stalagmites are numerous.\n17. [content] The stalagmites are large.\n18. [content] The director is at Rexx Pharmaceutical Company.\n19. [content] Stalagmites are a kind of pillar.\n20. [content] The pillars are made of stone.\n21. [content] They form from falling drops of water.\n22. [content] The drops fall repeatedly.\n23. [content] The drops fall on one single spot.\n24. [content] The spot is on a cave floor.\n25. [content] The drops leave mineral deposits behind.\n26. [content] The deposits build up over time.\n\nTHE READ she should have arrived at:\n\"\"\"\nThe cave was not always completely filled with water.\n\"\"\"\n\nJudge her Read, from what she said and nothing else:\n- read_given: did she say anything analytical about what the argument is DOING\n  -- its move, its flaw, what turns on it -- as opposed to retelling what it\n  says? Retelling alone is not a Read.\n- read_matches: did what she said amount to the SAME move as THE READ above? A\n  different name for the same move is fine; missing the move is not. She is not\n  expected to use its words, and it may be shorter or messier than the key.\n\nAlso judge the run as a whole:\n- reciting: did she say the stimulus back close to word-for-word rather than\n  retelling it? Full coverage reached by reciting is a failure.\n- listing: did she deliver it as a flat run of facts rather than as a connected\n  argument?\n- coloured: did she react to the stimulus at all — a thought, doubt, example or\n  joke — beyond retelling it?\n- colour_specific: was that reaction specific to THIS stimulus rather than\n  something that would fit any stimulus?\n- big_misses: at most three short phrases naming the most important things she\n  dropped, in plain words she can act on. Empty if she dropped nothing that\n  matters.\n- next_time: one or two sentences, addressed to her, saying the single most\n  useful thing to do differently on a stimulus like this next time -- what to\n  say out loud on purpose, which kind of word she keeps losing, or what her\n  Read should have named. Concrete, about THIS run, no praise and no padding.\n  Leave it EMPTY when there is nothing to fix: every Detail carried, the Read\n  found, the run coloured and in her own words.\n\nReply with JSON only, no prose and no code fence:\n{\"verdicts\":[{\"id\":1,\"carried\":true,\"evidence_ids\":[1],\"reason\":\"\",\"material\":true,\"material_reason\":\"This fact changes the claim.\"}],\"uncertain_details\":[],\"reciting\":false,\"reciting_reason\":\"\",\n\"listing\":false,\"listing_reason\":\"\",\"coloured\":true,\"colour_specific\":true,\n\"big_misses\":[],\"next_time\":\"\",\n\"read_given\":true,\"read_matches\":true,\"read_reason\":\"\"}\n\nReturn exactly one verdict for every id from 1 to 26."
+    }
+  ]
+}

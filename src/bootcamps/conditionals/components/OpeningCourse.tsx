@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, BookOpen, Bookmark, Check, Dumbbell, Menu, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Bookmark, Check, Dumbbell, Home, ListChecks, Menu, NotebookPen, Sparkles } from 'lucide-react';
 import { CourseProgressProvider, useCourseProgress, useDeviceCourseProgress, type CourseProgressStore } from '../courseProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -16,24 +16,26 @@ import './opening-course.css';
 export type OpeningCourseUrl = (destination: string, run?: boolean) => string;
 
 
-export function OpeningCourseNavigation({ view, url }: { view: string; url: OpeningCourseUrl }) {
+export function OpeningCourseNavigation({ view, url, workspaceLinks }: { view: string; url: OpeningCourseUrl; workspaceLinks?: { overview: string; review: string; journal: string; reference: string } }) {
   const [open, setOpen] = useState(false);
   const focusDestination = useRef(false);
   function closeForNavigation() { focusDestination.current = open; setOpen(false); }
   const navigation = <nav aria-label="Conditional course">
-    <p>Intro path</p><Link aria-current={view === 'lessons' || !!openingCourseStep(view) ? 'page' : undefined} to={url('lessons')} onClick={closeForNavigation}><BookOpen size={18}/>Lessons</Link>
-    <p>Practice</p><Link aria-current={view === 'practice' ? 'page' : undefined} to={url('practice')} onClick={closeForNavigation}><Sparkles size={18}/>Practice Drills</Link>
-    <Link aria-current={view === 'labs' ? 'page' : undefined} to={url('labs')} onClick={closeForNavigation}><Dumbbell size={18}/>Drill Lab</Link>
-    <p>Tools</p><Link aria-current={view === 'tools' ? 'page' : undefined} to={url('tools')} onClick={closeForNavigation}><Bookmark size={18}/>Flashcards</Link>
+    <p>Learn</p>{workspaceLinks && <Link aria-current={view === 'overview' ? 'page' : undefined} to={workspaceLinks.overview} onClick={closeForNavigation}><Home size={18}/>Course overview</Link>}
+    <Link aria-current={view === 'lessons' || openingCourseStep(view)?.type === 'note' ? 'page' : undefined} to={url('lessons')} onClick={closeForNavigation}><BookOpen size={18}/>Lessons</Link>
+    <Link aria-current={view === 'practice' || view === 'labs' || openingCourseStep(view)?.type === 'drill' ? 'page' : undefined} to={url('practice')} onClick={closeForNavigation}><Sparkles size={18}/>Practice drills</Link>
+    {workspaceLinks && <><p>Review</p><Link aria-current={view === 'review' ? 'page' : undefined} to={workspaceLinks.review} onClick={closeForNavigation}><ListChecks size={18}/>Review attempts</Link><Link aria-current={view === 'journal' ? 'page' : undefined} to={workspaceLinks.journal} onClick={closeForNavigation}><NotebookPen size={18}/>Journal</Link></>}
+    <p>Resources</p><Link aria-current={view === 'tools' ? 'page' : undefined} to={url('tools')} onClick={closeForNavigation}><Bookmark size={18}/>Flashcards</Link>
+    {workspaceLinks && <Link aria-current={view === 'reference' ? 'page' : undefined} to={workspaceLinks.reference} onClick={closeForNavigation}><BookOpen size={18}/>Reference</Link>}
   </nav>;
   return <>
     <aside className="oc-course-rail"><Link className="oc-back" to="/classroom"><ArrowLeft size={15}/>Classroom</Link><div className="oc-brand">Conditional logic</div>{navigation}</aside>
-    <div className="oc-mobile-nav"><Link to={url('lessons')}>Conditional logic</Link><Sheet open={open} onOpenChange={setOpen}><SheetTrigger asChild><button type="button"><Menu size={18}/>Course menu</button></SheetTrigger><SheetContent side="left" className="oc-course-drawer" aria-describedby={undefined} onCloseAutoFocus={event => {
+    <div className="oc-mobile-nav"><Link to={workspaceLinks?.overview ?? url('lessons')}>Conditional logic</Link><Sheet open={open} onOpenChange={setOpen}><SheetTrigger asChild><button type="button"><Menu size={18}/>Course menu</button></SheetTrigger><SheetContent side="left" className="oc-course-drawer" aria-describedby={undefined} onCloseAutoFocus={event => {
       if (!focusDestination.current) return;
       event.preventDefault();
       focusDestination.current = false;
       requestAnimationFrame(() => {
-        const heading = document.querySelector<HTMLElement>('.oc-course-screen [data-course-heading] h1');
+        const heading = document.querySelector<HTMLElement>('.cb-main h1, .oc-course-screen [data-course-heading] h1');
         if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
       });
     }}><SheetTitle>Conditional logic</SheetTitle>{navigation}</SheetContent></Sheet></div>

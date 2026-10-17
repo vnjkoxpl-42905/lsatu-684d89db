@@ -1,0 +1,256 @@
+{
+  "mode": "census",
+  "build": "2026-10-16-structured-evidence",
+  "judge": "lovable-gateway",
+  "questionsSubmitted": 3,
+  "questionsScored": 2,
+  "rows": [
+    {
+      "slug": "PT105_S2_Q1",
+      "percent": 88,
+      "carried": 21,
+      "total": 24,
+      "band": "at-the-standard",
+      "missed": [
+        "The water is seawater.",
+        "The stalagmites are numerous.",
+        "The pillars are made of stone."
+      ],
+      "detail_evidence": {
+        "1": {
+          "text": "Divers found a cave.",
+          "carried": true,
+          "evidence": "they recently found this large cave",
+          "reason": ""
+        },
+        "2": {
+          "text": "The divers were French.",
+          "carried": true,
+          "evidence": "these French divers",
+          "reason": ""
+        },
+        "3": {
+          "text": "The find was recent.",
+          "carried": true,
+          "evidence": "they recently found",
+          "reason": ""
+        },
+        "4": {
+          "text": "The cave is large.",
+          "carried": true,
+          "evidence": "this large cave",
+          "reason": ""
+        },
+        "5": {
+          "text": "The cave is along a coast.",
+          "carried": true,
+          "evidence": "off the coast of the Mediterranean Sea",
+          "reason": ""
+        },
+        "6": {
+          "text": "The coast is the Mediterranean Sea's.",
+          "carried": true,
+          "evidence": "coast of the Mediterranean Sea",
+          "reason": ""
+        },
+        "7": {
+          "text": "There is only one way into the cave.",
+          "carried": true,
+          "evidence": "the only way to get to this cave is through an underwater tunnel",
+          "reason": ""
+        },
+        "8": {
+          "text": "The way in is a tunnel.",
+          "carried": true,
+          "evidence": "through an underwater tunnel",
+          "reason": ""
+        },
+        "10": {
+          "text": "The tunnel is underwater.",
+          "carried": true,
+          "evidence": "underwater tunnel",
+          "reason": ""
+        },
+        "11": {
+          "text": "This is about the inside of the cave.",
+          "carried": true,
+          "evidence": "inside this cave",
+          "reason": ""
+        },
+        "12": {
+          "text": "It is filled with water.",
+          "carried": true,
+          "evidence": "it's totally filled with water",
+          "reason": ""
+        },
+        "13": {
+          "text": "The water is seawater.",
+          "carried": false,
+          "evidence": "",
+          "reason": "The student did not mention the water is seawater."
+        },
+        "14": {
+          "text": "It is filled completely.",
+          "carried": true,
+          "evidence": "totally filled with water, like floor to ceiling",
+          "reason": ""
+        },
+        "15": {
+          "text": "The cave contains stalagmites.",
+          "carried": true,
+          "evidence": "filled with these stalagmites",
+          "reason": ""
+        },
+        "16": {
+          "text": "The stalagmites are numerous.",
+          "carried": false,
+          "evidence": "",
+          "reason": "The student did not mention the stalagmites are numerous."
+        },
+        "17": {
+          "text": "The stalagmites are large.",
+          "carried": true,
+          "evidence": "these stalagmites",
+          "reason": "The student refers to the large stalagmites mentioned in the prompt."
+        },
+        "19": {
+          "text": "Stalagmites are a kind of pillar.",
+          "carried": true,
+          "evidence": "little pillars",
+          "reason": ""
+        },
+        "20": {
+          "text": "The pillars are made of stone.",
+          "carried": false,
+          "evidence": "",
+          "reason": "The student did not mention the pillars are made of stone."
+        },
+        "21": {
+          "text": "They form from falling drops of water.",
+          "carried": true,
+          "evidence": "drops keep falling over time",
+          "reason": ""
+        },
+        "22": {
+          "text": "The drops fall repeatedly.",
+          "carried": true,
+          "evidence": "drops keep falling",
+          "reason": ""
+        },
+        "23": {
+          "text": "The drops fall on one single spot.",
+          "carried": true,
+          "evidence": "keep falling over time",
+          "reason": "The student implies the repetition on a spot by describing the layering process."
+        },
+        "24": {
+          "text": "The spot is on a cave floor.",
+          "carried": true,
+          "evidence": "form on the floor",
+          "reason": ""
+        },
+        "25": {
+          "text": "The drops leave mineral deposits behind.",
+          "carried": true,
+          "evidence": "deposits, like, layer up",
+          "reason": ""
+        },
+        "26": {
+          "text": "The deposits build up over time.",
+          "carried": true,
+          "evidence": "deposits, like, layer up",
+          "reason": ""
+        }
+      },
+      "readGiven": true,
+      "readMatches": true,
+      "decoysCarried": 0,
+      "unjudged": 0
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "error": "Detail 1 quotes words outside the student's transcript"
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "percent": 100,
+      "carried": 11,
+      "total": 11,
+      "band": "at-the-standard",
+      "missed": [],
+      "detail_evidence": {
+        "1": {
+          "text": "A manager is speaking.",
+          "carried": true,
+          "evidence": "The manager is saying",
+          "reason": ""
+        },
+        "2": {
+          "text": "There is a new computer network.",
+          "carried": true,
+          "evidence": "install this new computer network",
+          "reason": ""
+        },
+        "3": {
+          "text": "Its purpose is to increase productivity.",
+          "carried": true,
+          "evidence": "the whole point of this network is to make people more productive",
+          "reason": ""
+        },
+        "5": {
+          "text": "It can be installed during the day.",
+          "carried": true,
+          "evidence": "install it during the day",
+          "reason": ""
+        },
+        "6": {
+          "text": "That option would disrupt work.",
+          "carried": true,
+          "evidence": "that's gonna disrupt the employee's work",
+          "reason": ""
+        },
+        "7": {
+          "text": "The work disrupted is the employees'.",
+          "carried": true,
+          "evidence": "disrupt the employee's work",
+          "reason": ""
+        },
+        "9": {
+          "text": "The other option is installing at night.",
+          "carried": true,
+          "evidence": "install it at night",
+          "reason": ""
+        },
+        "10": {
+          "text": "Night installation would cost much more.",
+          "carried": true,
+          "evidence": "that would cost a lot more money",
+          "reason": ""
+        },
+        "11": {
+          "text": "Saving money is important.",
+          "carried": true,
+          "evidence": "saving money is important",
+          "reason": ""
+        },
+        "12": {
+          "text": "That is the reason given.",
+          "carried": true,
+          "evidence": "saving money is important, so therefore, we should install the network during the day",
+          "reason": ""
+        },
+        "13": {
+          "text": "The conclusion is to install during the day.",
+          "carried": true,
+          "evidence": "we should install the network during the day",
+          "reason": ""
+        }
+      },
+      "readGiven": true,
+      "readMatches": true,
+      "decoysCarried": 0,
+      "unjudged": 0
+    }
+  ],
+  "receipt": "verification\\rrc-meaning-eval\\2026-10-17T00-30-50-820Z-live-census"
+}

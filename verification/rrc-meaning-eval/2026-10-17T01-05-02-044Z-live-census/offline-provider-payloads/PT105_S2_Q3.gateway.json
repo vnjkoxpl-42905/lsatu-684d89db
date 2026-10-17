@@ -1,0 +1,179 @@
+{
+  "model": "google/gemini-3.1-flash-lite",
+  "temperature": 0,
+  "max_tokens": 8192,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "rrc_grade",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "verdicts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "enum": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13
+                  ]
+                },
+                "carried": {
+                  "type": "boolean"
+                },
+                "evidence_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "enum": [
+                      1,
+                      2,
+                      3,
+                      4,
+                      5,
+                      6,
+                      7,
+                      8,
+                      9,
+                      10,
+                      11,
+                      12,
+                      13,
+                      14,
+                      15,
+                      16,
+                      17,
+                      18,
+                      19,
+                      20
+                    ]
+                  },
+                  "minItems": 0,
+                  "maxItems": 20
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "material": {
+                  "type": "boolean"
+                },
+                "material_reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "carried",
+                "evidence_ids",
+                "reason",
+                "material",
+                "material_reason"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 13,
+            "maxItems": 13
+          },
+          "uncertain_details": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "enum": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 13
+          },
+          "reciting": {
+            "type": "boolean"
+          },
+          "reciting_reason": {
+            "type": "string"
+          },
+          "listing": {
+            "type": "boolean"
+          },
+          "listing_reason": {
+            "type": "string"
+          },
+          "coloured": {
+            "type": "boolean"
+          },
+          "colour_specific": {
+            "type": "boolean"
+          },
+          "big_misses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0,
+            "maxItems": 3
+          },
+          "next_time": {
+            "type": "string"
+          },
+          "read_given": {
+            "type": "boolean"
+          },
+          "read_matches": {
+            "type": "boolean"
+          },
+          "read_reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "verdicts",
+          "uncertain_details",
+          "reciting",
+          "reciting_reason",
+          "listing",
+          "listing_reason",
+          "coloured",
+          "colour_specific",
+          "big_misses",
+          "next_time",
+          "read_given",
+          "read_matches",
+          "read_reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "You are grading one stimulus of a memory drill.\n\nThe student read the stimulus one line at a time. She reads a line silently,\nlooks away from the screen, and says that line back out loud in her own words\nfrom memory; then the next line, and so on. When every line is done the text\ndisappears and she restates the whole stimulus from memory. She never reads\naloud. Your job is to decide, for each numbered Detail, whether she carried it.\n\nTHE STIMULUS (context only — see the rule below):\n\"\"\"\nManager: Our new computer network, the purpose of which is to increase productivity, can be installed during the day, which would disrupt our employees' work, or else at night, which would entail much higher installation charges. Since saving money is important, we should have the network installed during the day.\n\"\"\"\n\nWHAT SHE SAID (this is your ONLY evidence):\n\"\"\"\nOkay. The manager is saying that they're trying to install this new computer network at his workplace, and the whole point of this network is to make people more productive to increase the productivity. And they have two options. They can install it during the day, but that's gonna disrupt the employee's work. Right? Or they can install it at night, but that would cost a lot more money. This makes sense. Right? If you install it during the day, people can't be on their computers during the day, so you basically lost a whole day's work. But then at night, you've got, like, overtime charges because it's after hours. But maybe that's still less money overall than the cost of the lost day's work. Okay. So this manager is saying saving money is important, so therefore, we should install the network during the day. Well, what if the higher installation charges are not as much of a cost to the company than losing a whole day's work from their employees? Or what if just because saving money is important? That doesn't mean it's the most important thing. It's the overriding concern, and that should, you know, you know, be the sole basis on which we make this decision. Sort of an assumed universal goal there.\n\"\"\"\n\nSTUDENT EVIDENCE UNITS (verbatim parts of WHAT SHE SAID, not new evidence):\n1. Okay.\n2. The manager is saying that they're trying to install this new computer network at his workplace, and the whole point of this network is\n3. to make people more productive to increase the productivity.\n4. And they have two options.\n5. They can install it during the day, but that's gonna disrupt the employee's work.\n6. Right?\n7. Or they can install it at night, but that would cost a lot more money.\n8. This makes sense.\n9. Right?\n10. If you install it during the day, people can't be on their computers during the day, so you basically lost a whole day's work.\n11. But then at night, you've got, like, overtime charges because it's after hours.\n12. But maybe that's still less money overall than the cost of the lost day's work.\n13. Okay.\n14. So this manager is saying saving money is important, so therefore, we should install the network during the day.\n15. Well, what if the higher installation charges are not as much of a cost to the company than losing a whole day's work from\n16. their employees?\n17. Or what if just because saving money is important?\n18. That doesn't mean it's the most important thing.\n19. It's the overriding concern, and that should, you know, you know, be the sole basis on which we make this decision.\n20. Sort of an assumed universal goal there.\n\n\n\nHOW TO JUDGE EACH KIND:\n- STRUCTURE — a discourse role, not words. Carried if the relationship is present in HOW she told it; she never has to name it. \"This is a contrast.\" is carried by a \"but\", a \"though\", or \"X is different from Y\". \"This is the conclusion.\" is carried by a \"so\" or \"therefore\" introducing that claim.\n- CONTENT — a fact. Carried if she stated it, in any words, in any order. Synonyms and paraphrase count fully. A uniquely identified entity may be named by its role or context instead of its proper name. Equivalent quantity expressions count: \"half\" and \"50 percent\" mean the same. Deduct only a lost or changed claim, not a missing label. A different country, a missing meaningful quantity, all changed to most, and lost negation are real changes. Do not assume an unstated all from \"the staff\".\n\nRULES:\n- Judge ONLY from what she said. NEVER mark a Detail carried because the\n  stimulus contains it. The stimulus is there so you know what a Detail refers\n  to, not as evidence that she said it. This is the most important rule here.\n- Preserve who asserted each claim and what role it plays. A claim mentioned\n  only as her hypothetical example, question, joke or rejected alternative is\n  not evidence that she remembered it as the source's actual claim. Her Read\n  may correctly use a hypothetical to challenge the argument; judge that\n  separately from recalling the argument's own claims.\n- Some of the Details below belong to a DIFFERENT stimulus and she cannot have\n  carried them. Mark those not carried. Do not try to guess which.\n- If unclear or garbled transcription prevents deciding whether a meaning was\n  carried, put that Detail id in uncertain_details. Do not guess a deduction\n  or credit. A clear omission is still a miss, not uncertainty. If speech is\n  clear enough to establish the meaning, judge that meaning normally.\n- Her transcript may contain mangled or clipped words. Judge the substance.\n- Be fair as well as strict. Her own words, her own order and a plainer\n  phrasing all count in full. Only a change of MEANING counts against her: a\n  dropped specific, a lost qualifier, a claim made stronger or weaker than the\n  source, a relationship that vanished. Never mark a Detail missed for style.\n- Mark a Detail missed only for missing or changed MEANING. Before marking it\n  missed, look for an equivalent claim anywhere in WHAT SHE SAID, including\n  pronouns and relationships expressed without the source's labels. For example,\n  \"if music videos are art, TV created art\" carries the conditional position;\n  she need not also say \"anyone with that view insists\". \"Safety committees\n  reduced workplace injuries\" carries both the committees' safety role and\n  the injury outcome without separately naming each role again.\n- Do not demand the source's wording or discourse labels. But never fill in a\n  missing fact from the source or the correct run: changing Sweden to Norway,\n  all to most, likely to certain, or reversing a conditional changes meaning.\n- For each verdict return evidence_ids: the integer ids of the STUDENT EVIDENCE\n  UNITS supporting the judgment. For a carried Detail select units expressing\n  its meaning. For a miss select the closest relevant units and explain what\n  changed in reason; if nothing relevant was said use []. Never invent or\n  rewrite quotes. The server reconstructs the actual words from these ids.\n- Separately mark material and explain the classification in material_reason.\n  Material means its loss or change alters an asserted claim, the argument's\n  reasoning, or a condition needed for the inference. Actors/referents,\n  named places, relationships, comparison direction, negation, modality, complete\n  conditions and relevant quantities are material. Changing a named entity or\n  a logical claim stays material even if a similar conclusion remains possible.\n  A descriptor is incidental ONLY when omitting or changing it\n  leaves those claims and reasoning intact; explain why. Do not classify a real\n  contradiction as harmless merely to improve a score. If unsure, use material\n  true. Determine carried truthfully even for incidental details: incidental\n  is not permission to fill a fact in from the source.\n- A reference such as \"those buildings\" identifies buildings, not their size,\n  colour or quantity. Do not award an attribute solely because the prompt says\n  the referenced objects have it. Any intrinsic or contextual implication must\n  follow from what she actually said, without borrowing facts from the source.\n- Several authored Details may describe the same underlying fact. Treat\n  equivalent meanings consistently, and describe one underlying error only\n  ONCE in big_misses and next_time. Do not invent another error because the\n  same fact has two labels. Still return a verdict for every numbered Detail.\n\nMEANING CALIBRATION (unrelated examples, not evidence for this student's run):\n- Source: \"A local clinic opens at noon and closes at six.\" Retelling: \"That\n  clinic shuts at six; it starts seeing people at twelve.\" Both times and the\n  clinic's identity survive. Different order and equivalent wording are fine.\n- Source: \"The astronomer found an error in her own calculation.\" Retelling:\n  \"She spotted a mistake in the calculation she made.\" In context she uniquely\n  identifies the astronomer; repeating the occupation is unnecessary.\n- Source: \"All the permits expired.\" Retelling: \"Most permits expired.\"\n  The universal claim changed. Do not award all from most.\n- Source: \"The council did not approve the plan.\" Retelling: \"The council\n  approved it.\" Negation changed the claim; this is a genuine error.\n- Source: \"If the alarm sounds, the doors lock.\" Retelling: \"If the doors\n  lock, the alarm sounds.\" The direction reversed; this is a genuine error.\nApply these principles to WHAT SHE SAID, not these examples' facts.\n\nTHE DETAILS:\n1. [structure] A manager is speaking.\n2. [content] There is a new computer network.\n3. [content] Its purpose is to increase productivity.\n4. [content] Divers found a cave.\n5. [content] It can be installed during the day.\n6. [content] That option would disrupt work.\n7. [content] The work disrupted is the employees'.\n8. [content] The divers were French.\n9. [content] The other option is installing at night.\n10. [content] Night installation would cost much more.\n11. [content] Saving money is important.\n12. [content] That is the reason given.\n13. [content] The conclusion is to install during the day.\n\nTHE READ she should have arrived at:\n\"\"\"\nWhat if the monetary value of lost productivity due to daytime installation is greater than the increased cost of evening installation?\n\"\"\"\n\nJudge her Read, from what she said and nothing else:\n- read_given: did she say anything analytical about what the argument is DOING\n  -- its move, its flaw, what turns on it -- as opposed to retelling what it\n  says? Retelling alone is not a Read.\n- read_matches: did what she said amount to the SAME move as THE READ above? A\n  different name for the same move is fine; missing the move is not. She is not\n  expected to use its words, and it may be shorter or messier than the key.\n\nAlso judge the run as a whole:\n- reciting: did she say the stimulus back close to word-for-word rather than\n  retelling it? Full coverage reached by reciting is a failure.\n- listing: did she deliver it as a flat run of facts rather than as a connected\n  argument?\n- coloured: did she react to the stimulus at all — a thought, doubt, example or\n  joke — beyond retelling it?\n- colour_specific: was that reaction specific to THIS stimulus rather than\n  something that would fit any stimulus?\n- big_misses: at most three short phrases naming the most important things she\n  dropped, in plain words she can act on. Empty if she dropped nothing that\n  matters.\n- next_time: one or two sentences, addressed to her, saying the single most\n  useful thing to do differently on a stimulus like this next time -- what to\n  say out loud on purpose, which kind of word she keeps losing, or what her\n  Read should have named. Concrete, about THIS run, no praise and no padding.\n  Leave it EMPTY when there is nothing to fix: every Detail carried, the Read\n  found, the run coloured and in her own words.\n\nReply with JSON only, no prose and no code fence:\n{\"verdicts\":[{\"id\":1,\"carried\":true,\"evidence_ids\":[1],\"reason\":\"\",\"material\":true,\"material_reason\":\"This fact changes the claim.\"}],\"uncertain_details\":[],\"reciting\":false,\"reciting_reason\":\"\",\n\"listing\":false,\"listing_reason\":\"\",\"coloured\":true,\"colour_specific\":true,\n\"big_misses\":[],\"next_time\":\"\",\n\"read_given\":true,\"read_matches\":true,\"read_reason\":\"\"}\n\nReturn exactly one verdict for every id from 1 to 13."
+    }
+  ]
+}

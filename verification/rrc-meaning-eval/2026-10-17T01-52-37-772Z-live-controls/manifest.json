@@ -1,0 +1,51 @@
+{
+  "mode": "controls",
+  "expectedBuild": "2026-10-16-grounded-meaning-4",
+  "sourceFile": "src\\features\\activity-centre\\content\\read-recall-colour-pt105-s2.json",
+  "sourceSha256": "4706097764f49dc555bdbe2ce04b543eacb882422da12dec85eb1c73702d9288",
+  "payloadSha256": "1e51f7bef9d1d38ae7554788c40a046405b677cbf38055d572bda05856d9fd13",
+  "questionSlugs": [
+    "PT105_S2_Q1",
+    "PT105_S2_Q2",
+    "PT105_S2_Q3"
+  ],
+  "referenceTranscripts": [
+    {
+      "slug": "PT105_S2_Q1",
+      "transcriptSha256": "b1b51629d3a41d82c3dcb2d8275a141a73022697048f32276f7838e733e5c1f4",
+      "transcriptCharacters": 1632,
+      "transcriptWords": 289,
+      "sourceSection": "PT105.S2",
+      "status": "active",
+      "provenance": "Read-only preflight snapshot of saved active model_runs.transcript_text, fetched immediately before census; server independently reads the same table."
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "transcriptSha256": "3385a93a880b6d6f720a7416d423aafbe9e7aa35a12e2a9c431bc60e69b44832",
+      "transcriptCharacters": 1893,
+      "transcriptWords": 319,
+      "sourceSection": "PT105.S2",
+      "status": "active",
+      "provenance": "Read-only preflight snapshot of saved active model_runs.transcript_text, fetched immediately before census; server independently reads the same table."
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "transcriptSha256": "3e8556085b036ca2482eeb8959b6afee2e266e2c5a21cb7cfa07ca396a11adb0",
+      "transcriptCharacters": 1533,
+      "transcriptWords": 266,
+      "sourceSection": "PT105.S2",
+      "status": "active",
+      "provenance": "Read-only preflight snapshot of saved active model_runs.transcript_text, fetched immediately before census; server independently reads the same table."
+    }
+  ],
+  "questionLimit": 3,
+  "noRetry": true,
+  "writesStudentGrades": false,
+  "requestedStudentRegrade": false,
+  "notes": [
+    "Exactly three reference questions submitted; each server judge may use its configured fallback if the gateway fails.",
+    "The server chooses saved active model-run transcripts; no caller transcript replacement.",
+    "Owner designates these recordings 10/10. Detail percentage and separate CLIR are reported as returned, not overridden.",
+    "No independently verified script-to-audio alignment or direct listening is implied."
+  ]
+}

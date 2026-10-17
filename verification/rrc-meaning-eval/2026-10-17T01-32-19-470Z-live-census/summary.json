@@ -1,0 +1,516 @@
+{
+  "mode": "census",
+  "build": "2026-10-16-grounded-meaning-3",
+  "judge": "lovable-gateway",
+  "questionsSubmitted": 3,
+  "questionsScored": 3,
+  "rows": [
+    {
+      "slug": "PT105_S2_Q1",
+      "percent": 83,
+      "carried": 20,
+      "total": 24,
+      "band": "at-the-standard",
+      "meaning_percent": 91,
+      "meaning_carried": 20,
+      "meaning_total": 22,
+      "incidental_misses": [
+        "The stalagmites are numerous.",
+        "The stalagmites are large."
+      ],
+      "reciting": false,
+      "listing": false,
+      "coloured": true,
+      "colour_specific": true,
+      "missed": [
+        "The water is seawater.",
+        "The stalagmites are numerous.",
+        "The stalagmites are large.",
+        "The drops fall on one single spot."
+      ],
+      "detail_evidence": {
+        "1": {
+          "text": "Divers found a cave.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She stated they found a cave.",
+          "material": true,
+          "material_reason": "This is the primary event of the stimulus."
+        },
+        "2": {
+          "text": "The divers were French.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She identified the divers as French.",
+          "material": true,
+          "material_reason": "This identifies the actors."
+        },
+        "3": {
+          "text": "The find was recent.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She mentioned they recently found it.",
+          "material": true,
+          "material_reason": "This establishes the timeline."
+        },
+        "4": {
+          "text": "The cave is large.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She described the cave as large.",
+          "material": true,
+          "material_reason": "This describes the subject."
+        },
+        "5": {
+          "text": "The cave is along a coast.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She stated it is along the coast.",
+          "material": true,
+          "material_reason": "This provides the location."
+        },
+        "6": {
+          "text": "The coast is the Mediterranean Sea's.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "She specified the Mediterranean Sea.",
+          "material": true,
+          "material_reason": "This provides the specific location."
+        },
+        "7": {
+          "text": "There is only one way into the cave.",
+          "carried": true,
+          "evidence": "So the only way to get to this cave is through an underwater tunnel.",
+          "reason": "She stated the only way to get to the cave is through a tunnel.",
+          "material": true,
+          "material_reason": "This is a condition of access."
+        },
+        "8": {
+          "text": "The way in is a tunnel.",
+          "carried": true,
+          "evidence": "So the only way to get to this cave is through an underwater tunnel.",
+          "reason": "She identified the way in as a tunnel.",
+          "material": true,
+          "material_reason": "This describes the access method."
+        },
+        "10": {
+          "text": "The tunnel is underwater.",
+          "carried": true,
+          "evidence": "So the only way to get to this cave is through an underwater tunnel.",
+          "reason": "She specified the tunnel is underwater.",
+          "material": true,
+          "material_reason": "This is a condition of access."
+        },
+        "11": {
+          "text": "This is about the inside of the cave.",
+          "carried": true,
+          "evidence": "So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with",
+          "reason": "She transitioned to describing the inside of the cave.",
+          "material": true,
+          "material_reason": "This sets the scope of the description."
+        },
+        "12": {
+          "text": "It is filled with water.",
+          "carried": true,
+          "evidence": "So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with",
+          "reason": "She stated it is filled with water.",
+          "material": true,
+          "material_reason": "This is a core physical state."
+        },
+        "13": {
+          "text": "The water is seawater.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not specify the water is seawater.",
+          "material": true,
+          "material_reason": "This is a specific descriptive attribute of the water."
+        },
+        "14": {
+          "text": "It is filled completely.",
+          "carried": true,
+          "evidence": "So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with\nwater, like floor to ceiling.",
+          "reason": "She stated it is totally filled, like floor to ceiling.",
+          "material": true,
+          "material_reason": "This describes the extent of the filling."
+        },
+        "15": {
+          "text": "The cave contains stalagmites.",
+          "carried": true,
+          "evidence": "But it's filled with these stalagmites, which is what happens when, like, drops of water I guess, stalactites are the ones that form on",
+          "reason": "She mentioned the cave is filled with stalagmites.",
+          "material": true,
+          "material_reason": "This is a key feature of the cave."
+        },
+        "16": {
+          "text": "The stalagmites are numerous.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention the stalagmites are numerous.",
+          "material": false,
+          "material_reason": "This is an incidental descriptor."
+        },
+        "17": {
+          "text": "The stalagmites are large.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention the stalagmites are large.",
+          "material": false,
+          "material_reason": "This is an incidental descriptor."
+        },
+        "19": {
+          "text": "Stalagmites are a kind of pillar.",
+          "carried": true,
+          "evidence": "and then there leaves, like, little pillars.",
+          "reason": "She described them as little pillars.",
+          "material": true,
+          "material_reason": "This defines the object."
+        },
+        "20": {
+          "text": "The pillars are made of stone.",
+          "carried": true,
+          "evidence": "But it's filled with these stalagmites, which is what happens when, like, drops of water I guess, stalactites are the ones that form on",
+          "reason": "She identified them as stony/mineral deposits.",
+          "material": true,
+          "material_reason": "This defines the composition."
+        },
+        "21": {
+          "text": "They form from falling drops of water.",
+          "carried": true,
+          "evidence": "But it's filled with these stalagmites, which is what happens when, like, drops of water I guess, stalactites are the ones that form on\nThese are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She stated they form from drops of water.",
+          "material": true,
+          "material_reason": "This explains the formation process."
+        },
+        "22": {
+          "text": "The drops fall repeatedly.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She stated the drops keep falling over time.",
+          "material": true,
+          "material_reason": "This explains the formation process."
+        },
+        "23": {
+          "text": "The drops fall on one single spot.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention the drops fall on a single spot.",
+          "material": true,
+          "material_reason": "This is a specific condition for the formation."
+        },
+        "24": {
+          "text": "The spot is on a cave floor.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She stated they form on the floor.",
+          "material": true,
+          "material_reason": "This specifies the location of formation."
+        },
+        "25": {
+          "text": "The drops leave mineral deposits behind.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She stated the deposits layer up.",
+          "material": true,
+          "material_reason": "This explains the formation process."
+        },
+        "26": {
+          "text": "The deposits build up over time.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "She stated they accumulate over time.",
+          "material": true,
+          "material_reason": "This explains the formation process."
+        }
+      },
+      "readGiven": true,
+      "readMatches": true,
+      "decoysCarried": 0,
+      "unjudged": 0
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "percent": 100,
+      "carried": 19,
+      "total": 19,
+      "band": "at-the-standard",
+      "meaning_percent": 100,
+      "meaning_carried": 19,
+      "meaning_total": 19,
+      "incidental_misses": [],
+      "reciting": false,
+      "listing": false,
+      "coloured": true,
+      "colour_specific": true,
+      "missed": [],
+      "detail_evidence": {
+        "1": {
+          "text": "A director made an argument.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She identifies the director making an argument.",
+          "material": true,
+          "material_reason": "Identifies the source of the argument."
+        },
+        "2": {
+          "text": "The director is at Rexx Pharmaceutical Company.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She names the Rex Pharmaceutical Company.",
+          "material": true,
+          "material_reason": "Identifies the entity involved."
+        },
+        "3": {
+          "text": "The argument is about development costs.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She mentions development for vaccines.",
+          "material": true,
+          "material_reason": "Core subject of the argument."
+        },
+        "4": {
+          "text": "The costs are for new vaccines.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She mentions new vaccines.",
+          "material": true,
+          "material_reason": "Core subject of the argument."
+        },
+        "5": {
+          "text": "The health department requested those vaccines.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She mentions the health department wants them.",
+          "material": true,
+          "material_reason": "Context for the request."
+        },
+        "6": {
+          "text": "He wants the costs subsidized.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She states they should be subsidized.",
+          "material": true,
+          "material_reason": "The primary claim of the director."
+        },
+        "8": {
+          "text": "The government should do the subsidizing.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She mentions the government.",
+          "material": true,
+          "material_reason": "The entity requested to provide the subsidy."
+        },
+        "9": {
+          "text": "This is his reason.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She uses 'because' to link the subsidy to profitability.",
+          "material": true,
+          "material_reason": "Connects the claim to its justification."
+        },
+        "10": {
+          "text": "It is about marketing vaccines.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She mentions marketing vaccines.",
+          "material": true,
+          "material_reason": "The subject of the profitability comparison."
+        },
+        "11": {
+          "text": "Marketing vaccines is expected to be less profitable.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less\nprofitable than marketing other pharmaceutical products like, you know, pills or or medicine like that, which sure.",
+          "reason": "She states it is less profitable.",
+          "material": true,
+          "material_reason": "The core reasoning for the subsidy."
+        },
+        "12": {
+          "text": "The comparison is with marketing any other pharmaceutical product.",
+          "carried": true,
+          "evidence": "profitable than marketing other pharmaceutical products like, you know, pills or or medicine like that, which sure.",
+          "reason": "She compares it to other pharmaceutical products.",
+          "material": true,
+          "material_reason": "The basis of the comparison."
+        },
+        "13": {
+          "text": "This is further support for the claim.",
+          "carried": true,
+          "evidence": "So to support his claim that the marketing of the vaccines is gonna be less profitable than the marketing of other pharmaceutical products, This",
+          "reason": "She uses 'So to support his claim' to introduce the next part.",
+          "material": true,
+          "material_reason": "Connects the secondary argument to the main claim."
+        },
+        "15": {
+          "text": "Vaccine sales are likely to be lower.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She states vaccine sales are lower.",
+          "material": true,
+          "material_reason": "A key premise of the argument."
+        },
+        "16": {
+          "text": "The reason is how often a vaccine is given.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She explains it is because of how often they are given.",
+          "material": true,
+          "material_reason": "The mechanism of the argument."
+        },
+        "17": {
+          "text": "A vaccine is given to a patient only once.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She states a vaccine is given one time.",
+          "material": true,
+          "material_reason": "The specific frequency claim."
+        },
+        "18": {
+          "text": "This is the contrast.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She uses 'but' to contrast.",
+          "material": true,
+          "material_reason": "The logical structure of the comparison."
+        },
+        "19": {
+          "text": "It is about other medicines.",
+          "carried": true,
+          "evidence": "know, you take medicine multiple times.",
+          "reason": "She mentions other medicines.",
+          "material": true,
+          "material_reason": "The subject of the contrast."
+        },
+        "20": {
+          "text": "Those medicines fight diseases and chronic illnesses.",
+          "carried": true,
+          "evidence": "Like, you have an infection, you have to take antibiotics every day for a week to make it get better, and then maybe you",
+          "reason": "She mentions infections and antibiotics.",
+          "material": true,
+          "material_reason": "Examples of the medicines being compared."
+        },
+        "21": {
+          "text": "Those are given many times to each patient.",
+          "carried": true,
+          "evidence": "know, you take medicine multiple times.\nLike, you have an infection, you have to take antibiotics every day for a week to make it get better, and then maybe you\nYou need to take them again.",
+          "reason": "She states they are taken multiple times.",
+          "material": true,
+          "material_reason": "The frequency contrast."
+        }
+      },
+      "readGiven": true,
+      "readMatches": true,
+      "decoysCarried": 0,
+      "unjudged": 0
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "percent": 100,
+      "carried": 11,
+      "total": 11,
+      "band": "at-the-standard",
+      "meaning_percent": 100,
+      "meaning_carried": 11,
+      "meaning_total": 11,
+      "incidental_misses": [],
+      "reciting": false,
+      "listing": false,
+      "coloured": true,
+      "colour_specific": true,
+      "missed": [],
+      "detail_evidence": {
+        "1": {
+          "text": "A manager is speaking.",
+          "carried": true,
+          "evidence": "The manager is saying that they're trying to install this new computer network at his workplace, and the whole point of this network is",
+          "reason": "She identifies the speaker as the manager.",
+          "material": true,
+          "material_reason": "Identifies the source of the argument."
+        },
+        "2": {
+          "text": "There is a new computer network.",
+          "carried": true,
+          "evidence": "The manager is saying that they're trying to install this new computer network at his workplace, and the whole point of this network is",
+          "reason": "She mentions the new computer network.",
+          "material": true,
+          "material_reason": "The subject of the argument."
+        },
+        "3": {
+          "text": "Its purpose is to increase productivity.",
+          "carried": true,
+          "evidence": "to make people more productive to increase the productivity.",
+          "reason": "She states the purpose is to increase productivity.",
+          "material": true,
+          "material_reason": "The stated goal of the network."
+        },
+        "5": {
+          "text": "It can be installed during the day.",
+          "carried": true,
+          "evidence": "They can install it during the day, but that's gonna disrupt the employee's work.",
+          "reason": "She mentions the option of daytime installation.",
+          "material": true,
+          "material_reason": "One of the two options presented."
+        },
+        "6": {
+          "text": "That option would disrupt work.",
+          "carried": true,
+          "evidence": "They can install it during the day, but that's gonna disrupt the employee's work.",
+          "reason": "She notes it would disrupt work.",
+          "material": true,
+          "material_reason": "The consequence of the daytime option."
+        },
+        "7": {
+          "text": "The work disrupted is the employees'.",
+          "carried": true,
+          "evidence": "They can install it during the day, but that's gonna disrupt the employee's work.",
+          "reason": "She specifies it disrupts the employees' work.",
+          "material": true,
+          "material_reason": "Identifies who is affected by the disruption."
+        },
+        "9": {
+          "text": "The other option is installing at night.",
+          "carried": true,
+          "evidence": "Or they can install it at night, but that would cost a lot more money.",
+          "reason": "She mentions the option of night installation.",
+          "material": true,
+          "material_reason": "The second option presented."
+        },
+        "10": {
+          "text": "Night installation would cost much more.",
+          "carried": true,
+          "evidence": "Or they can install it at night, but that would cost a lot more money.",
+          "reason": "She notes it would cost more money.",
+          "material": true,
+          "material_reason": "The consequence of the night option."
+        },
+        "11": {
+          "text": "Saving money is important.",
+          "carried": true,
+          "evidence": "So this manager is saying saving money is important, so therefore, we should install the network during the day.",
+          "reason": "She states that saving money is important.",
+          "material": true,
+          "material_reason": "The premise of the manager's argument."
+        },
+        "12": {
+          "text": "That is the reason given.",
+          "carried": true,
+          "evidence": "So this manager is saying saving money is important, so therefore, we should install the network during the day.",
+          "reason": "She links the importance of saving money to the conclusion.",
+          "material": true,
+          "material_reason": "The logical basis for the decision."
+        },
+        "13": {
+          "text": "The conclusion is to install during the day.",
+          "carried": true,
+          "evidence": "So this manager is saying saving money is important, so therefore, we should install the network during the day.",
+          "reason": "She states the conclusion to install during the day.",
+          "material": true,
+          "material_reason": "The final decision proposed."
+        }
+      },
+      "readGiven": true,
+      "readMatches": true,
+      "decoysCarried": 0,
+      "unjudged": 0
+    }
+  ],
+  "receipt": "verification\\rrc-meaning-eval\\2026-10-17T01-32-19-470Z-live-census"
+}

@@ -1,0 +1,30 @@
+{
+  "build": "2026-10-16-meaning-evidence",
+  "judge": "lovable-gateway",
+  "sourceSection": "PT105.S2",
+  "rows": [
+    {
+      "slug": "PT105_S2_Q1",
+      "error": "Detail 1 has no evidence audit"
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "error": "Detail 1 has no evidence audit"
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "percent": 100,
+      "carried": 11,
+      "total": 11,
+      "band": "at-the-standard",
+      "decoysCarried": 0,
+      "unjudged": 0,
+      "readGiven": true,
+      "readMatches": true,
+      "coloured": true,
+      "listing": false,
+      "missed": [],
+      "readAloudWordsCut": 49
+    }
+  ]
+}

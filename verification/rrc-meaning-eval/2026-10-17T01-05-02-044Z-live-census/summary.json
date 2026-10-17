@@ -1,0 +1,22 @@
+{
+  "mode": "census",
+  "build": "2026-10-16-grounded-meaning",
+  "judge": "lovable-gateway",
+  "questionsSubmitted": 3,
+  "questionsScored": 0,
+  "rows": [
+    {
+      "slug": "PT105_S2_Q1",
+      "error": "Gemini 400: {\"error\":{\"code\":400,\"message\":\"Request contains an invalid argument.\",\"status\":\"INVALID_ARGUMENT\"}}"
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "error": "Gemini 400: {\"error\":{\"code\":400,\"message\":\"Request contains an invalid argument.\",\"status\":\"INVALID_ARGUMENT\"}}"
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "error": "Gemini 400: {\"error\":{\"code\":400,\"message\":\"Request contains an invalid argument.\",\"status\":\"INVALID_ARGUMENT\"}}"
+    }
+  ],
+  "receipt": "verification\\rrc-meaning-eval\\2026-10-17T01-05-02-044Z-live-census"
+}

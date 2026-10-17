@@ -1,0 +1,192 @@
+{
+  "model": "google/gemini-3.1-flash-lite",
+  "temperature": 0,
+  "max_tokens": 8192,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "rrc_grade",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "verdicts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "enum": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21
+                  ]
+                },
+                "carried": {
+                  "type": "boolean"
+                },
+                "evidence_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "enum": [
+                      1,
+                      2,
+                      3,
+                      4,
+                      5,
+                      6,
+                      7,
+                      8,
+                      9,
+                      10,
+                      11,
+                      12,
+                      13,
+                      14,
+                      15,
+                      16,
+                      17
+                    ]
+                  },
+                  "minItems": 0,
+                  "maxItems": 17
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "material": {
+                  "type": "boolean"
+                },
+                "material_reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "carried",
+                "evidence_ids",
+                "reason",
+                "material",
+                "material_reason"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 21,
+            "maxItems": 21
+          },
+          "uncertain_details": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "enum": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 21
+          },
+          "reciting": {
+            "type": "boolean"
+          },
+          "reciting_reason": {
+            "type": "string"
+          },
+          "listing": {
+            "type": "boolean"
+          },
+          "listing_reason": {
+            "type": "string"
+          },
+          "coloured": {
+            "type": "boolean"
+          },
+          "colour_specific": {
+            "type": "boolean"
+          },
+          "big_misses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0,
+            "maxItems": 3
+          },
+          "next_time": {
+            "type": "string"
+          },
+          "read_given": {
+            "type": "boolean"
+          },
+          "read_matches": {
+            "type": "boolean"
+          },
+          "read_reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "verdicts",
+          "uncertain_details",
+          "reciting",
+          "reciting_reason",
+          "listing",
+          "listing_reason",
+          "coloured",
+          "colour_specific",
+          "big_misses",
+          "next_time",
+          "read_given",
+          "read_matches",
+          "read_reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "You are grading one stimulus of a memory drill.\n\nThe student read the stimulus one line at a time. She reads a line silently,\nlooks away from the screen, and says that line back out loud in her own words\nfrom memory; then the next line, and so on. When every line is done the text\ndisappears and she restates the whole stimulus from memory. She never reads\naloud. Your job is to decide, for each numbered Detail, whether she carried it.\n\nTHE STIMULUS (context only — see the rule below):\n\"\"\"\nA director of the Rexx Pharmaceutical Company argued that the development costs for new vaccines that the health department has requested should be subsidized by the government, since the marketing of vaccines promised to be less profitable than the marketing of any other pharmaceutical product. In support of this claim the director argued that sales of vaccines are likely to be lower since each vaccine is administered to a patient only once, whereas medicines that combat diseases and chronic illnesses are administered many times to each patient.\n\"\"\"\n\nWHAT SHE SAID (this is your ONLY evidence):\n\"\"\"\nOkay. So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less profitable than marketing other pharmaceutical products like, you know, pills or or medicine like that, which sure. I guess, you know, maybe you take aspirin every single day, but you only get a flu shot once a year. Okay. So to support his claim that the marketing of the vaccines is gonna be less profitable than the marketing of other pharmaceutical products, This Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you know, you take medicine multiple times. Like, you have an infection, you have to take antibiotics every day for a week to make it get better, and then maybe you get another infection. You need to take them again. Okay. Well, what if vaccines are, like, a million dollars per vaccine and pills and other medicines are, like, a cent per medicine? You know? What if, like, per dose, the the profits that you make on a vaccine are way, way higher? So even though you're giving out fewer of them, you're still making more money.\n\"\"\"\n\nSTUDENT EVIDENCE UNITS (verbatim parts of WHAT SHE SAID, not new evidence):\n1. Okay.\n2. So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new\n3. vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less\n4. profitable than marketing other pharmaceutical products like, you know, pills or or medicine like that, which sure.\n5. I guess, you know, maybe you take aspirin every single day, but you only get a flu shot once a year.\n6. Okay.\n7. So to support his claim that the marketing of the vaccines is gonna be less profitable than the marketing of other pharmaceutical products, This\n8. Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you\n9. know, you take medicine multiple times.\n10. Like, you have an infection, you have to take antibiotics every day for a week to make it get better, and then maybe you\n11. get another infection.\n12. You need to take them again.\n13. Okay.\n14. Well, what if vaccines are, like, a million dollars per vaccine and pills and other medicines are, like, a cent per medicine?\n15. You know?\n16. What if, like, per dose, the the profits that you make on a vaccine are way, way higher?\n17. So even though you're giving out fewer of them, you're still making more money.\n\n\n\nHOW TO JUDGE EACH KIND:\n- CONTENT — a fact. Carried if she stated it, in any words, in any order. Synonyms and paraphrase count fully. A uniquely identified entity may be named by its role or context instead of its proper name. Equivalent quantity expressions count: \"half\" and \"50 percent\" mean the same. Deduct only a lost or changed claim, not a missing label. A different country, a missing meaningful quantity, all changed to most, and lost negation are real changes. Do not assume an unstated all from \"the staff\".\n- STRUCTURE — a discourse role, not words. Carried if the relationship is present in HOW she told it; she never has to name it. \"This is a contrast.\" is carried by a \"but\", a \"though\", or \"X is different from Y\". \"This is the conclusion.\" is carried by a \"so\" or \"therefore\" introducing that claim.\n\nRULES:\n- Judge ONLY from what she said. NEVER mark a Detail carried because the\n  stimulus contains it. The stimulus is there so you know what a Detail refers\n  to, not as evidence that she said it. This is the most important rule here.\n- Preserve who asserted each claim and what role it plays. A claim mentioned\n  only as her hypothetical example, question, joke or rejected alternative is\n  not evidence that she remembered it as the source's actual claim. Her Read\n  may correctly use a hypothetical to challenge the argument; judge that\n  separately from recalling the argument's own claims.\n- Some of the Details below belong to a DIFFERENT stimulus and she cannot have\n  carried them. Mark those not carried. Do not try to guess which.\n- If unclear or garbled transcription prevents deciding whether a meaning was\n  carried, put that Detail id in uncertain_details. Do not guess a deduction\n  or credit. A clear omission is still a miss, not uncertainty. If speech is\n  clear enough to establish the meaning, judge that meaning normally.\n- Her transcript may contain mangled or clipped words. Judge the substance.\n- Be fair as well as strict. Her own words, her own order and a plainer\n  phrasing all count in full. Only a change of MEANING counts against her: a\n  dropped specific, a lost qualifier, a claim made stronger or weaker than the\n  source, a relationship that vanished. Never mark a Detail missed for style.\n- Mark a Detail missed only for missing or changed MEANING. Before marking it\n  missed, look for an equivalent claim anywhere in WHAT SHE SAID, including\n  pronouns and relationships expressed without the source's labels. For example,\n  \"if music videos are art, TV created art\" carries the conditional position;\n  she need not also say \"anyone with that view insists\". \"Safety committees\n  reduced workplace injuries\" carries both the committees' safety role and\n  the injury outcome without separately naming each role again.\n- Do not demand the source's wording or discourse labels. But never fill in a\n  missing fact from the source or the correct run: changing Sweden to Norway,\n  all to most, likely to certain, or reversing a conditional changes meaning.\n- For each verdict return evidence_ids: the integer ids of the STUDENT EVIDENCE\n  UNITS supporting the judgment. For a carried Detail select units expressing\n  its meaning. For a miss select the closest relevant units and explain what\n  changed in reason; if nothing relevant was said use []. Never invent or\n  rewrite quotes. The server reconstructs the actual words from these ids.\n- Separately mark material and explain the classification in material_reason.\n  Material means its loss or change alters an asserted claim, the argument's\n  reasoning, or a condition needed for the inference. Actors/referents,\n  named places, relationships, comparison direction, negation, modality, complete\n  conditions and relevant quantities are material. Changing a named entity or\n  a logical claim stays material even if a similar conclusion remains possible.\n  A descriptor is incidental ONLY when omitting or changing it\n  leaves those claims and reasoning intact; explain why. Do not classify a real\n  contradiction as harmless merely to improve a score. If unsure, use material\n  true. Determine carried truthfully even for incidental details: incidental\n  is not permission to fill a fact in from the source.\n- A reference such as \"those buildings\" identifies buildings, not their size,\n  colour or quantity. Do not award an attribute solely because the prompt says\n  the referenced objects have it. Any intrinsic or contextual implication must\n  follow from what she actually said, without borrowing facts from the source.\n- Several authored Details may describe the same underlying fact. Treat\n  equivalent meanings consistently, and describe one underlying error only\n  ONCE in big_misses and next_time. Do not invent another error because the\n  same fact has two labels. Still return a verdict for every numbered Detail.\n\nMEANING CALIBRATION (unrelated examples, not evidence for this student's run):\n- Source: \"A local clinic opens at noon and closes at six.\" Retelling: \"That\n  clinic shuts at six; it starts seeing people at twelve.\" Both times and the\n  clinic's identity survive. Different order and equivalent wording are fine.\n- Source: \"The astronomer found an error in her own calculation.\" Retelling:\n  \"She spotted a mistake in the calculation she made.\" In context she uniquely\n  identifies the astronomer; repeating the occupation is unnecessary.\n- Source: \"All the permits expired.\" Retelling: \"Most permits expired.\"\n  The universal claim changed. Do not award all from most.\n- Source: \"The council did not approve the plan.\" Retelling: \"The council\n  approved it.\" Negation changed the claim; this is a genuine error.\n- Source: \"If the alarm sounds, the doors lock.\" Retelling: \"If the doors\n  lock, the alarm sounds.\" The direction reversed; this is a genuine error.\nApply these principles to WHAT SHE SAID, not these examples' facts.\n\nTHE DETAILS:\n1. [content] A director made an argument.\n2. [content] The director is at Rexx Pharmaceutical Company.\n3. [content] The argument is about development costs.\n4. [content] The costs are for new vaccines.\n5. [content] The health department requested those vaccines.\n6. [content] He wants the costs subsidized.\n7. [content] There is a new computer network.\n8. [content] The government should do the subsidizing.\n9. [structure] This is his reason.\n10. [content] It is about marketing vaccines.\n11. [content] Marketing vaccines is expected to be less profitable.\n12. [content] The comparison is with marketing any other pharmaceutical product.\n13. [structure] This is further support for the claim.\n14. [content] Its purpose is to increase productivity.\n15. [content] Vaccine sales are likely to be lower.\n16. [content] The reason is how often a vaccine is given.\n17. [content] A vaccine is given to a patient only once.\n18. [structure] This is the contrast.\n19. [content] It is about other medicines.\n20. [content] Those medicines fight diseases and chronic illnesses.\n21. [content] Those are given many times to each patient.\n\nTHE READ she should have arrived at:\n\"\"\"\nWhat if it's obligatory for pharmaceutical companies to absorb the costs of developing vaccines as a contribution to the public good? What if the government is not obliged to subsidized less profitable pharmaceutical products?\n\"\"\"\n\nJudge her Read, from what she said and nothing else:\n- read_given: did she say anything analytical about what the argument is DOING\n  -- its move, its flaw, what turns on it -- as opposed to retelling what it\n  says? Retelling alone is not a Read.\n- read_matches: did what she said amount to the SAME move as THE READ above? A\n  different name for the same move is fine; missing the move is not. She is not\n  expected to use its words, and it may be shorter or messier than the key.\n\nAlso judge the run as a whole:\n- reciting: did she say the stimulus back close to word-for-word rather than\n  retelling it? Full coverage reached by reciting is a failure.\n- listing: did she deliver it as a flat run of facts rather than as a connected\n  argument?\n- coloured: did she react to the stimulus at all — a thought, doubt, example or\n  joke — beyond retelling it?\n- colour_specific: was that reaction specific to THIS stimulus rather than\n  something that would fit any stimulus?\n- big_misses: at most three short phrases naming the most important things she\n  dropped, in plain words she can act on. Empty if she dropped nothing that\n  matters.\n- next_time: one or two sentences, addressed to her, saying the single most\n  useful thing to do differently on a stimulus like this next time -- what to\n  say out loud on purpose, which kind of word she keeps losing, or what her\n  Read should have named. Concrete, about THIS run, no praise and no padding.\n  Leave it EMPTY when there is nothing to fix: every Detail carried, the Read\n  found, the run coloured and in her own words.\n\nReply with JSON only, no prose and no code fence:\n{\"verdicts\":[{\"id\":1,\"carried\":true,\"evidence_ids\":[1],\"reason\":\"\",\"material\":true,\"material_reason\":\"This fact changes the claim.\"}],\"uncertain_details\":[],\"reciting\":false,\"reciting_reason\":\"\",\n\"listing\":false,\"listing_reason\":\"\",\"coloured\":true,\"colour_specific\":true,\n\"big_misses\":[],\"next_time\":\"\",\n\"read_given\":true,\"read_matches\":true,\"read_reason\":\"\"}\n\nReturn exactly one verdict for every id from 1 to 21."
+    }
+  ]
+}

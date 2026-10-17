@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 import {
   buildJudgeEntries,
   buildJudgePrompt,
+  buildJudgeResponseSchema,
   gradeStimulus,
   mapWithConcurrency,
   parseJudgeReply,
@@ -13,6 +14,7 @@ import {
 import { checkReciting } from "../_shared/rrcOverlap.ts";
 import { stripVerbatimReads } from "../_shared/rrcReads.ts";
 import { linesFromWords } from "../_shared/rrcLines.ts";
+import { applyReviewedMateriality } from "../_shared/rrcMeaningKeys.ts";
 
 /**
  * Grade one finished Read, Recall, Colour section.
@@ -42,7 +44,7 @@ const corsHeaders = {
 };
 
 /** Bumped when the prompt or the scoring changes, so a re-grade is legible. */
-const GRADER_VERSION = 2;
+const GRADER_VERSION = 5;
 /**
  * Which deploy is answering. Bumped on every change to this function.
  *
@@ -50,7 +52,7 @@ const GRADER_VERSION = 2;
  * this is the only way to prove from outside that a fix is the one running.
  * Returned on the 202 body and on the admin diagnostic below.
  */
-const BUILD = "2026-10-16-meaning-evidence";
+const BUILD = "2026-10-16-grounded-meaning-5";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
@@ -162,7 +164,7 @@ function deadAir(words: Word[], recalling: Segment[]): number {
   return Math.round(worst * 10) / 10;
 }
 
-async function judge(prompt: string): Promise<string> {
+async function judge(prompt: string, schema?: Record<string, unknown>): Promise<string> {
   // Lovable Cloud's gateway is the primary judge backend; the direct Gemini
   // key is the fallback so a grader never stops mid-section if one path is
   // unavailable.
@@ -180,13 +182,14 @@ async function judge(prompt: string): Promise<string> {
         model: "google/gemini-3.1-flash-lite",
         temperature: 0,
         max_tokens: 8192,
+        ...(schema ? { response_format: { type: "json_schema", json_schema: { name: "rrc_grade", strict: true, schema } } } : {}),
         messages: [{ role: "user", content: prompt }],
       }),
     });
     const body = await res.json();
     if (res.ok) return body?.choices?.[0]?.message?.content ?? "";
     if (!direct) throw new Error(`gateway ${res.status}: ${JSON.stringify(body).slice(0, 200)}`);
-    console.error(`judge: gateway ${res.status}; falling back to direct Gemini`);
+    console.error(`judge: gateway ${res.status}; falling back to direct Gemini`, JSON.stringify(body).slice(0, 1000));
   }
 
   if (!direct) throw new Error("no judge backend: set LOVABLE_API_KEY or GEMINI_API_KEY");
@@ -197,7 +200,8 @@ async function judge(prompt: string): Promise<string> {
       headers: { "x-goog-api-key": direct, "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0, responseMimeType: "application/json", maxOutputTokens: 8192 },
+        generationConfig: { temperature: 0, responseMimeType: "application/json", maxOutputTokens: 8192,
+          ...(schema ? { responseJsonSchema: schema } : {}) },
       }),
     },
   );
@@ -420,7 +424,8 @@ serve(async (req) => {
         const other = cItems[(i + 1) % cItems.length];
         const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
         const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
-        const entries = buildJudgeEntries(toDetailsByLine(chunks, slug), decoys);
+        const sourceText = chunks.map((chunk) => chunk.text).join(" ");
+        const { entries } = applyReviewedMateriality({ stimulus: sourceText, entries: buildJudgeEntries(toDetailsByLine(chunks, slug), decoys), slug });
         try {
           const raw = await judge(
             buildJudgePrompt({
@@ -429,11 +434,18 @@ serve(async (req) => {
               spoken,
               theRead: (item.the_read as string | null) ?? null,
             }),
+            buildJudgeResponseSchema({ entries, spoken, theRead: (item.the_read as string | null) ?? null }),
           );
           const g = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id), spoken));
           return {
             slug,
             percent: g.percent,
+            meaning_percent: g.meaning_percent,
+            meaning_key_version: g.meaning_key_version,
+            meaning_key_status: g.meaning_key_status,
+            meaning_carried: g.meaning_carried,
+            meaning_total: g.meaning_total,
+            incidental_misses: g.incidental_misses,
             carried: g.carried,
             total: g.total,
             band: g.band,
@@ -441,9 +453,13 @@ serve(async (req) => {
             unjudged: g.unjudged.length,
             readGiven: g.readGiven,
             readMatches: g.readMatches,
+            read_reason: g.readReason,
             coloured: g.coloured,
+            colour_specific: g.colourSpecific,
+            reciting: g.reciting,
             listing: g.listing,
             missed: g.missed,
+            detail_evidence: g.detail_evidence,
             readAloudWordsCut: read.cut,
           };
         } catch (e) {
@@ -821,7 +837,8 @@ serve(async (req) => {
       const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
       const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
 
-      const entries = buildJudgeEntries(toDetailsByLine(chunks, slug), decoys);
+      const sourceText = chunks.map((chunk) => chunk.text).join(" ");
+      const { entries } = applyReviewedMateriality({ stimulus: sourceText, entries: buildJudgeEntries(toDetailsByLine(chunks, slug), decoys), slug });
 
       /*
        * Her run cut into the lines she was rephrasing.
@@ -883,6 +900,7 @@ serve(async (req) => {
             lines: lineSpans.map((l) => ({ n: l.n, text: l.text, spoken: l.spoken })),
             recall: recallText || null,
           }),
+          buildJudgeResponseSchema({ entries, spoken, theRead: (item.the_read as string | null) ?? null, lines: lineSpans }),
         );
         const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id), spoken), lineSpans);
 
@@ -1040,6 +1058,9 @@ serve(async (req) => {
       within_time: withinTime,
       within_goal: withinTime && uncoloured === 0 && noRead === 0,
       mean_coverage: meanCoverage,
+      mean_meaning: graded.length
+        ? Math.round(graded.reduce((sum, stimulus) => sum + (stimulus.meaning_percent ?? stimulus.percent), 0) / graded.length)
+        : 0,
       stimuli_graded: graded.length,
       stimuli_in_section: expectedSlugs.size || stimuli.length,
       reciting_count: graded.filter((s) => s.reciting).length,

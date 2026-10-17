@@ -1,0 +1,635 @@
+{
+  "mode": "census",
+  "build": "2026-10-16-grounded-meaning-5",
+  "judge": "lovable-gateway",
+  "questionsSubmitted": 3,
+  "questionsScored": 3,
+  "rows": [
+    {
+      "slug": "PT105_S2_Q1",
+      "percent": 83,
+      "carried": 20,
+      "total": 24,
+      "band": "at-the-standard",
+      "meaning_percent": 100,
+      "meaning_carried": 16,
+      "meaning_total": 16,
+      "meaning_key_version": "source-reviewed-2026-10-16-v1",
+      "meaning_key_status": "reviewed",
+      "incidental_misses": [
+        "The water is seawater.",
+        "The stalagmites are numerous.",
+        "The pillars are made of stone.",
+        "The drops fall on one single spot."
+      ],
+      "reciting": false,
+      "listing": false,
+      "coloured": true,
+      "colour_specific": true,
+      "missed": [
+        "The water is seawater.",
+        "The stalagmites are numerous.",
+        "The pillars are made of stone.",
+        "The drops fall on one single spot."
+      ],
+      "detail_evidence": {
+        "1": {
+          "text": "Divers found a cave.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Preserves the discovery event and the object whose history is inferred.",
+          "model_material": true,
+          "model_material_reason": "Preserves the discovery event and the object whose history is inferred."
+        },
+        "2": {
+          "text": "The divers were French.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Preserves the identity of the discoverers rather than substituting another group.",
+          "model_material": true,
+          "model_material_reason": "Preserves the identity of the discoverers rather than substituting another group."
+        },
+        "3": {
+          "text": "The find was recent.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "",
+          "material": false,
+          "material_reason": "The discovery date does not affect whether water drops formed the existing pillars before submersion.",
+          "model_material": false,
+          "model_material_reason": "The discovery date does not affect whether water drops formed the existing pillars before submersion."
+        },
+        "4": {
+          "text": "The cave is large.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "",
+          "material": false,
+          "material_reason": "The cave size does not affect the incompatibility between falling drops and complete submersion.",
+          "model_material": false,
+          "model_material_reason": "The cave size does not affect the incompatibility between falling drops and complete submersion."
+        },
+        "5": {
+          "text": "The cave is along a coast.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Preserves the stated location of the identified cave.",
+          "model_material": true,
+          "model_material_reason": "Preserves the stated location of the identified cave."
+        },
+        "6": {
+          "text": "The coast is the Mediterranean Sea's.",
+          "carried": true,
+          "evidence": "So these French divers, they're diving off the coast of the Mediterranean Sea, and they recently found this large cave.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Preserves the named geographic referent rather than substituting a different sea.",
+          "model_material": true,
+          "model_material_reason": "Preserves the named geographic referent rather than substituting a different sea."
+        },
+        "7": {
+          "text": "There is only one way into the cave.",
+          "carried": true,
+          "evidence": "So the only way to get to this cave is through an underwater tunnel.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Preserves the exclusive access constraint rather than weakening only to an optional route.",
+          "model_material": true,
+          "model_material_reason": "Preserves the exclusive access constraint rather than weakening only to an optional route."
+        },
+        "8": {
+          "text": "The way in is a tunnel.",
+          "carried": true,
+          "evidence": "So the only way to get to this cave is through an underwater tunnel.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Preserves the stated means of access to the identified cave.",
+          "model_material": true,
+          "model_material_reason": "Preserves the stated means of access to the identified cave."
+        },
+        "10": {
+          "text": "The tunnel is underwater.",
+          "carried": true,
+          "evidence": "So the only way to get to this cave is through an underwater tunnel.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Preserves the route being underwater rather than an above-water entrance.",
+          "model_material": true,
+          "model_material_reason": "Preserves the route being underwater rather than an above-water entrance."
+        },
+        "11": {
+          "text": "This is about the inside of the cave.",
+          "carried": true,
+          "evidence": "So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with",
+          "reason": "",
+          "material": false,
+          "material_reason": "This is a topic label repeated by the claims about the cave interior, not another independent premise.",
+          "model_material": false,
+          "model_material_reason": "This is a topic label repeated by the claims about the cave interior, not another independent premise."
+        },
+        "12": {
+          "text": "It is filled with water.",
+          "carried": true,
+          "evidence": "So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with\nwater, like floor to ceiling.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Water in the cave is one side of the contrast with formation by falling drops.",
+          "model_material": true,
+          "model_material_reason": "Water in the cave is one side of the contrast with formation by falling drops."
+        },
+        "13": {
+          "text": "The water is seawater.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not specify the water was seawater.",
+          "material": false,
+          "material_reason": "Salinity is not used in the formation account or in the inference about prior complete submersion; water is the needed category.",
+          "model_material": false,
+          "model_material_reason": "Salinity is not used in the formation account or in the inference about prior complete submersion; water is the needed category."
+        },
+        "14": {
+          "text": "It is filled completely.",
+          "carried": true,
+          "evidence": "So inside this cave that you can only get to through an underwater tunnel off the coast of the Mediterranean, it's totally filled with\nwater, like floor to ceiling.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Complete submersion is essential: partly flooded conditions would not establish the same contrast.",
+          "model_material": true,
+          "model_material_reason": "Complete submersion is essential: partly flooded conditions would not establish the same contrast."
+        },
+        "15": {
+          "text": "The cave contains stalagmites.",
+          "carried": true,
+          "evidence": "But it's filled with these stalagmites, which is what happens when, like, drops of water I guess, stalactites are the ones that form on",
+          "reason": "",
+          "material": true,
+          "material_reason": "The existing formations are the evidence from which the cave history is inferred.",
+          "model_material": true,
+          "model_material_reason": "The existing formations are the evidence from which the cave history is inferred."
+        },
+        "16": {
+          "text": "The stalagmites are numerous.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention the quantity of stalagmites.",
+          "material": false,
+          "material_reason": "How many formations exist does not change the inference from their formation process to earlier non-submersion.",
+          "model_material": false,
+          "model_material_reason": "How many formations exist does not change the inference from their formation process to earlier non-submersion."
+        },
+        "17": {
+          "text": "The stalagmites are large.",
+          "carried": true,
+          "evidence": "But it's filled with these stalagmites, which is what happens when, like, drops of water I guess, stalactites are the ones that form on",
+          "reason": "",
+          "material": false,
+          "material_reason": "The size of the formations is unused in the inference; the formation process supplies the evidence.",
+          "model_material": false,
+          "model_material_reason": "The size of the formations is unused in the inference; the formation process supplies the evidence."
+        },
+        "19": {
+          "text": "Stalagmites are a kind of pillar.",
+          "carried": true,
+          "evidence": "and then there leaves, like, little pillars.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Preserves what the formations are, connecting the described process to the objects in the cave.",
+          "model_material": true,
+          "model_material_reason": "Preserves what the formations are, connecting the described process to the objects in the cave."
+        },
+        "20": {
+          "text": "The pillars are made of stone.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention the material was stone.",
+          "material": false,
+          "material_reason": "The specific stone label is not needed once the deposit-formed pillars and their formation process are preserved.",
+          "model_material": false,
+          "model_material_reason": "The specific stone label is not needed once the deposit-formed pillars and their formation process are preserved."
+        },
+        "21": {
+          "text": "They form from falling drops of water.",
+          "carried": true,
+          "evidence": "But it's filled with these stalagmites, which is what happens when, like, drops of water I guess, stalactites are the ones that form on\nThese are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "",
+          "material": true,
+          "material_reason": "Falling drops are the mechanism that conflicts with complete submersion.",
+          "model_material": true,
+          "model_material_reason": "Falling drops are the mechanism that conflicts with complete submersion."
+        },
+        "22": {
+          "text": "The drops fall repeatedly.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "",
+          "material": true,
+          "material_reason": "Repeated falling is needed for the described accumulation process, rather than a single event.",
+          "model_material": true,
+          "model_material_reason": "Repeated falling is needed for the described accumulation process, rather than a single event."
+        },
+        "23": {
+          "text": "The drops fall on one single spot.",
+          "carried": false,
+          "evidence": "",
+          "reason": "She did not mention the drops fall on a single spot.",
+          "material": false,
+          "material_reason": "The account already preserves repeated drops producing accumulated floor pillars; the exact footprint of accumulation is not used to infer earlier non-submersion.",
+          "model_material": false,
+          "model_material_reason": "The account already preserves repeated drops producing accumulated floor pillars; the exact footprint of accumulation is not used to infer earlier non-submersion."
+        },
+        "24": {
+          "text": "The spot is on a cave floor.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,",
+          "reason": "",
+          "material": true,
+          "material_reason": "The formation is on the floor, preserving the stated location and distinguishing the objects from ceiling formations.",
+          "model_material": true,
+          "model_material_reason": "The formation is on the floor, preserving the stated location and distinguishing the objects from ceiling formations."
+        },
+        "25": {
+          "text": "The drops leave mineral deposits behind.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,\nand then there leaves, like, little pillars.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Deposits left by drops explain the formation rather than merely reporting that pillars exist.",
+          "model_material": true,
+          "model_material_reason": "Deposits left by drops explain the formation rather than merely reporting that pillars exist."
+        },
+        "26": {
+          "text": "The deposits build up over time.",
+          "carried": true,
+          "evidence": "These are the ones that form on the floor where it's like the drops keep falling over time, then the deposits, like, layer up,\nand then there leaves, like, little pillars.",
+          "reason": "",
+          "material": true,
+          "material_reason": "Accumulation over time connects the formations to earlier conditions rather than only their present appearance.",
+          "model_material": true,
+          "model_material_reason": "Accumulation over time connects the formations to earlier conditions rather than only their present appearance."
+        }
+      },
+      "readGiven": true,
+      "readMatches": true,
+      "read_reason": "She correctly identified the logical inference that the presence of stalagmites implies the cave was not always submerged.",
+      "decoysCarried": 0,
+      "unjudged": 0
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "percent": 100,
+      "carried": 19,
+      "total": 19,
+      "band": "at-the-standard",
+      "meaning_percent": 100,
+      "meaning_carried": 18,
+      "meaning_total": 18,
+      "meaning_key_version": "source-reviewed-2026-10-16-v1",
+      "meaning_key_status": "reviewed",
+      "incidental_misses": [],
+      "reciting": false,
+      "listing": false,
+      "coloured": true,
+      "colour_specific": true,
+      "missed": [],
+      "detail_evidence": {
+        "1": {
+          "text": "A director made an argument.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She identifies the director and the argument.",
+          "material": true,
+          "material_reason": "Preserves the actor who advances the subsidy argument.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the actor and the argument."
+        },
+        "2": {
+          "text": "The director is at Rexx Pharmaceutical Company.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She names the Rex Pharmaceutical Company.",
+          "material": true,
+          "material_reason": "Preserves the named affiliation and source of the argument.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the source of the argument."
+        },
+        "3": {
+          "text": "The argument is about development costs.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new",
+          "reason": "She mentions the development of vaccines.",
+          "material": true,
+          "material_reason": "Development costs are the expense the proposed subsidy would cover.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the subject of the costs."
+        },
+        "4": {
+          "text": "The costs are for new vaccines.",
+          "carried": true,
+          "evidence": "So the director of this pharmaceutical company, the Rex Pharmaceutical Company, he's saying that or she is saying that the development for these new\nvaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She identifies the product as new vaccines.",
+          "material": true,
+          "material_reason": "Vaccines are the product whose development costs and profitability are compared.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the product being discussed."
+        },
+        "5": {
+          "text": "The health department requested those vaccines.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She mentions the health department wants them.",
+          "material": true,
+          "material_reason": "Preserves who requested the vaccines and the request relationship.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the requester."
+        },
+        "6": {
+          "text": "He wants the costs subsidized.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She states they should be subsidized.",
+          "material": true,
+          "material_reason": "Subsidizing the costs is the proposed action, not an action already completed.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the proposed action."
+        },
+        "8": {
+          "text": "The government should do the subsidizing.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She mentions the government should subsidize.",
+          "material": true,
+          "material_reason": "The government is the proposed payer; substituting another actor changes the policy claim.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the payer."
+        },
+        "9": {
+          "text": "This is his reason.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She uses 'because' to link the subsidy to profitability.",
+          "material": true,
+          "material_reason": "Preserves that profitability is offered as support for the subsidy proposal.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the structure of the argument."
+        },
+        "10": {
+          "text": "It is about marketing vaccines.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less",
+          "reason": "She mentions marketing vaccines.",
+          "material": true,
+          "material_reason": "The comparison concerns marketing vaccines, not another stage or product.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the scope of the profitability claim."
+        },
+        "11": {
+          "text": "Marketing vaccines is expected to be less profitable.",
+          "carried": true,
+          "evidence": "vaccines that the health department wants them to make, that should be subsidized by the government because marketing these vaccines is gonna be less\nprofitable than marketing other pharmaceutical products like, you know, pills or or medicine like that, which sure.",
+          "reason": "She states it is less profitable.",
+          "material": true,
+          "material_reason": "Lower expected profitability is the premise connecting the product comparison to the proposed subsidy.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the premise."
+        },
+        "12": {
+          "text": "The comparison is with marketing any other pharmaceutical product.",
+          "carried": true,
+          "evidence": "profitable than marketing other pharmaceutical products like, you know, pills or or medicine like that, which sure.",
+          "reason": "She compares it to other pharmaceutical products.",
+          "material": true,
+          "material_reason": "The comparison is with any other pharmaceutical product; narrowing that comparison changes the claim.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the comparison."
+        },
+        "13": {
+          "text": "This is further support for the claim.",
+          "carried": true,
+          "evidence": "So to support his claim that the marketing of the vaccines is gonna be less profitable than the marketing of other pharmaceutical products, This",
+          "reason": "She uses 'to support his claim' to introduce the next point.",
+          "material": true,
+          "material_reason": "Preserves that the following sales claim is support for the preceding profitability claim.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the structure."
+        },
+        "15": {
+          "text": "Vaccine sales are likely to be lower.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She states vaccine sales are lower.",
+          "material": true,
+          "material_reason": "The likelihood and comparative direction of lower vaccine sales must survive.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the sales premise."
+        },
+        "16": {
+          "text": "The reason is how often a vaccine is given.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She links sales to how often they are given.",
+          "material": true,
+          "material_reason": "Dosing frequency is the reason offered for the sales comparison.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the reasoning."
+        },
+        "17": {
+          "text": "A vaccine is given to a patient only once.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you",
+          "reason": "She states a vaccine is given once.",
+          "material": true,
+          "material_reason": "Only once per patient is the stated frequency; repeated vaccination would change the premise.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the frequency premise."
+        },
+        "18": {
+          "text": "This is the contrast.",
+          "carried": true,
+          "evidence": "Rex pharmaceutical company director is saying that vaccine sales are gonna be lower because every single person gets a vaccine one time, but, you\nknow, you take medicine multiple times.",
+          "reason": "She uses 'but' to contrast the frequency.",
+          "material": true,
+          "material_reason": "Preserves the contrast between one administration and repeated administrations.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the structure."
+        },
+        "19": {
+          "text": "It is about other medicines.",
+          "carried": true,
+          "evidence": "know, you take medicine multiple times.",
+          "reason": "She mentions other medicines.",
+          "material": true,
+          "material_reason": "Other medicines are the comparator whose repeated administration supports the sales premise.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the comparator."
+        },
+        "20": {
+          "text": "Those medicines fight diseases and chronic illnesses.",
+          "carried": true,
+          "evidence": "Like, you have an infection, you have to take antibiotics every day for a week to make it get better, and then maybe you\nget another infection.",
+          "reason": "She mentions infections and antibiotics.",
+          "material": false,
+          "material_reason": "The disease categories describe the comparator medicines; the reasoning uses their repeated administration, not the particular diseases they treat.",
+          "model_material": false,
+          "model_material_reason": "Incidental detail about the comparator."
+        },
+        "21": {
+          "text": "Those are given many times to each patient.",
+          "carried": true,
+          "evidence": "know, you take medicine multiple times.\nLike, you have an infection, you have to take antibiotics every day for a week to make it get better, and then maybe you",
+          "reason": "She states they are taken multiple times.",
+          "material": true,
+          "material_reason": "Repeated administrations to each patient are the comparator premise and must not become a single dose.",
+          "model_material": true,
+          "model_material_reason": "Essential to identify the comparator premise."
+        }
+      },
+      "readGiven": true,
+      "readMatches": true,
+      "read_reason": "She correctly identifies that the argument focuses on volume of sales rather than profit margin per dose, which is a valid logical critique of the director's claim.",
+      "decoysCarried": 0,
+      "unjudged": 0
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "percent": 100,
+      "carried": 11,
+      "total": 11,
+      "band": "at-the-standard",
+      "meaning_percent": 100,
+      "meaning_carried": 11,
+      "meaning_total": 11,
+      "meaning_key_version": "source-reviewed-2026-10-16-v1",
+      "meaning_key_status": "reviewed",
+      "incidental_misses": [],
+      "reciting": false,
+      "listing": false,
+      "coloured": true,
+      "colour_specific": true,
+      "missed": [],
+      "detail_evidence": {
+        "1": {
+          "text": "A manager is speaking.",
+          "carried": true,
+          "evidence": "The manager is saying that they're trying to install this new computer network at his workplace, and the whole point of this network is",
+          "reason": "She identifies the manager as the speaker.",
+          "material": true,
+          "material_reason": "Preserves the manager as the source of the recommendation.",
+          "model_material": true,
+          "model_material_reason": "Identifies the source of the recommendation."
+        },
+        "2": {
+          "text": "There is a new computer network.",
+          "carried": true,
+          "evidence": "The manager is saying that they're trying to install this new computer network at his workplace, and the whole point of this network is",
+          "reason": "She mentions the new computer network.",
+          "material": true,
+          "material_reason": "The computer network is the object to be installed, preserving the decision subject.",
+          "model_material": true,
+          "model_material_reason": "The object of the installation."
+        },
+        "3": {
+          "text": "Its purpose is to increase productivity.",
+          "carried": true,
+          "evidence": "to make people more productive to increase the productivity.",
+          "reason": "She states the purpose is to increase productivity.",
+          "material": true,
+          "material_reason": "Increased productivity is the purpose that may be undermined by the daytime choice.",
+          "model_material": true,
+          "model_material_reason": "The stated goal of the network."
+        },
+        "5": {
+          "text": "It can be installed during the day.",
+          "carried": true,
+          "evidence": "They can install it during the day, but that's gonna disrupt the employee's work.",
+          "reason": "She mentions the option of daytime installation.",
+          "material": true,
+          "material_reason": "Daytime installation is one of the alternatives being compared.",
+          "model_material": true,
+          "model_material_reason": "One of the two alternatives."
+        },
+        "6": {
+          "text": "That option would disrupt work.",
+          "carried": true,
+          "evidence": "They can install it during the day, but that's gonna disrupt the employee's work.",
+          "reason": "She notes it will disrupt work.",
+          "material": true,
+          "material_reason": "Work disruption is the cost of the daytime alternative and supports the potential objection.",
+          "model_material": true,
+          "model_material_reason": "The cost of the daytime option."
+        },
+        "7": {
+          "text": "The work disrupted is the employees'.",
+          "carried": true,
+          "evidence": "They can install it during the day, but that's gonna disrupt the employee's work.",
+          "reason": "She specifies it disrupts the employees' work.",
+          "material": true,
+          "material_reason": "The disrupted work belongs to employees, preserving whose productivity is affected.",
+          "model_material": true,
+          "model_material_reason": "Identifies whose work is disrupted."
+        },
+        "9": {
+          "text": "The other option is installing at night.",
+          "carried": true,
+          "evidence": "Or they can install it at night, but that would cost a lot more money.",
+          "reason": "She mentions the option of night installation.",
+          "material": true,
+          "material_reason": "Nighttime installation is the alternative to the chosen daytime installation.",
+          "model_material": true,
+          "model_material_reason": "The alternative to daytime installation."
+        },
+        "10": {
+          "text": "Night installation would cost much more.",
+          "carried": true,
+          "evidence": "Or they can install it at night, but that would cost a lot more money.",
+          "reason": "She notes it costs more money.",
+          "material": true,
+          "material_reason": "The greater nighttime installation charge is the explicit financial reason favoring daytime.",
+          "model_material": true,
+          "model_material_reason": "The cost of the nighttime option."
+        },
+        "11": {
+          "text": "Saving money is important.",
+          "carried": true,
+          "evidence": "So this manager is saying saving money is important, so therefore, we should install the network during the day.",
+          "reason": "She states saving money is important.",
+          "material": true,
+          "material_reason": "Saving money is the stated evaluative premise, not an established overriding objective.",
+          "model_material": true,
+          "model_material_reason": "The premise for the decision."
+        },
+        "12": {
+          "text": "That is the reason given.",
+          "carried": true,
+          "evidence": "So this manager is saying saving money is important, so therefore, we should install the network during the day.",
+          "reason": "She links saving money to the recommendation.",
+          "material": true,
+          "material_reason": "Preserves the support relation between saving money and the chosen installation time.",
+          "model_material": true,
+          "model_material_reason": "The support relation for the conclusion."
+        },
+        "13": {
+          "text": "The conclusion is to install during the day.",
+          "carried": true,
+          "evidence": "So this manager is saying saving money is important, so therefore, we should install the network during the day.",
+          "reason": "She states the conclusion is to install during the day.",
+          "material": true,
+          "material_reason": "Daytime installation is the recommendation; reversing it changes the conclusion.",
+          "model_material": true,
+          "model_material_reason": "The final recommendation."
+        }
+      },
+      "readGiven": true,
+      "readMatches": true,
+      "read_reason": "She correctly identifies that the manager assumes saving money is the overriding concern without considering if the cost of lost productivity outweighs the installation charges.",
+      "decoysCarried": 0,
+      "unjudged": 0
+    }
+  ],
+  "receipt": "verification\\rrc-meaning-eval\\2026-10-17T04-56-54-447Z-live-census"
+}

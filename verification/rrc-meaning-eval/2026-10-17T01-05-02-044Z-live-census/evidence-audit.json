@@ -1,0 +1,23 @@
+{
+  "limitation": "Quote check uses saved full-transcript snapshot; production parser independently requires student-only evidence against its verbatim-read-stripped transcript. A matching substring does not prove semantic justification.",
+  "rows": [
+    {
+      "slug": "PT105_S2_Q1",
+      "scored": false,
+      "error": "Gemini 400: {\"error\":{\"code\":400,\"message\":\"Request contains an invalid argument.\",\"status\":\"INVALID_ARGUMENT\"}}",
+      "details": []
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "scored": false,
+      "error": "Gemini 400: {\"error\":{\"code\":400,\"message\":\"Request contains an invalid argument.\",\"status\":\"INVALID_ARGUMENT\"}}",
+      "details": []
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "scored": false,
+      "error": "Gemini 400: {\"error\":{\"code\":400,\"message\":\"Request contains an invalid argument.\",\"status\":\"INVALID_ARGUMENT\"}}",
+      "details": []
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "mode": "census",
+  "build": "2026-10-16-meaning-evidence",
+  "judge": "lovable-gateway",
+  "questionsSubmitted": 3,
+  "questionsScored": 1,
+  "rows": [
+    {
+      "slug": "PT105_S2_Q1",
+      "error": "Detail 1 has no evidence audit"
+    },
+    {
+      "slug": "PT105_S2_Q2",
+      "error": "Detail 1 has no evidence audit"
+    },
+    {
+      "slug": "PT105_S2_Q3",
+      "percent": 100,
+      "carried": 11,
+      "total": 11,
+      "band": "at-the-standard",
+      "missed": [],
+      "readGiven": true,
+      "readMatches": true,
+      "decoysCarried": 0,
+      "unjudged": 0
+    }
+  ],
+  "receipt": "verification\\rrc-meaning-eval\\2026-10-17T00-13-25-968Z-live-census"
+}
