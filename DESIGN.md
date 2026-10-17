@@ -134,6 +134,14 @@ components:
 
 # Design System: LSAT Academy
 
+## Before designing or rewriting a student page
+
+Read this file and the relevant [.impeccable surface brief](.impeccable/surfaces/src-features-activity-centre.md) before drafting. For teaching copy, also read the vault's wiki/teaching-voice.md, references/lsat-teaching-voice-standard.md and the relevant wiki/COPY-CORRECTIONS.md entries. The context loader reads DESIGN.md but does not automatically load the surface brief. Follow its links rather than assuming the brief has been loaded.
+
+Check the rendered result against the dated visual corrections, not only the CSS. Start with ordinary instructions and a concrete example; give supporting video less space than the task. Read the copy aloud in context. Use Example, not Worked example, and avoid stock slogan pairs such as Name the relationship / Find the words that signal it. Signal is not globally banned; an abstract phrase is not made natural by swapping one synonym. Use a coherent, readable type scale instead of a tiny uppercase title, oversized slogan and small subtitle. Neutral surfaces, dark text and restrained buttons are the default; gold on beige is explicitly rejected for the Spot introduction. Beige is not universally prohibited.
+
+Save the rejected and revised screenshots with the reason for the change. A replacement is a proposed design until Joshua has seen it; passing contrast checks or a model review does not establish his approval. See the [Spot intro visual record](docs/design-evidence/spot-intro-2026-10-16/README.md) and the surface brief for scope and verification. This correction supersedes earlier guidance recommending the formulaic phrase signal it for this task.
+
 ## Overview
 
 **Creative North Star: "LSAT Academy"**
@@ -325,13 +333,25 @@ The RC builder uses Workroom semantic tokens on its entire setup surface. Its in
 
 - Omit keyboard-shortcut helper copy beneath answer inputs by default. Retain keyboard submission, navigation, visible focus and accessible controls.
 - Use ordinary student labels: Sentence and Your answer. Keep internal metaphors, Rung and difficulty categories out of task and feedback UI. Authoring and parser metadata may remain internal; the scoped visual identity does not require metaphorical task labels.
-- Ask the learner to name each relationship and quote the words that signal it. Each answer needs a relationship type and supporting quotation, including every type present in a sentence.
+- Ask for each relationship type and a supporting quotation in ordinary instructions. The later intro correction rejects the stock signal-it slogan; the requirement to identify every type present remains unchanged.
 - Drive the accessible completion bar from resolved questions, separately from question position and accuracy. Entering question 48 with 47 resolved means 47 of 48 completed, not 100%. Only resolution of the final question earns full completion. Revealed or deliberately unjudged completion does not establish correctness or mastery. Expose a meaningful name, range/current value and completed-count text; do not rely on color alone and honor reduced motion.
 - Give a response-specific hint before revealing a first unsuccessful answer. Retain the learner's text and useful hint during retry. Correct responses receive the full authored explanation. Explicit reveal or the existing attempt cap shows the full answer and explanation; the illustration agrees with the shown answer while the earned verdict stays unchanged. Keep full answers and explanations hidden during the first unresolved unsuccessful attempt. Unavailable grading remains honestly unjudged.
 - Place feedback and the full explanation before Next or Finish in reading and keyboard order. Once the question resolves and an authored explanation is available, suppress advice to retry it; preserve the earned verdict.
 - Normalize the exact legacy fallback at the presentation boundary to: Check that each relationship type matches the words you quoted. Reread the whole sentence for any relationship you missed. Do not bring rejected words-create-it wording back through fallback feedback. Keep other grader feedback and all verdicts intact; a presentation correction must not rewrite historical responses, grading keys or earned results.
 
 Verification covers initial, correct, wrong, editing retry, reveal and unavailable states; completion at zero, resume, last unanswered and final resolution; keyboard/screen-reader access, visible focus, computed contrast, reduced motion and narrow/mid-width/wide/docked layouts. Check semantic judgments and teaching feedback separately, including the exact legacy fallback and explanation-before-Next order. See [.impeccable/surfaces/src-features-activity-centre.md](.impeccable/surfaces/src-features-activity-centre.md) for surface-specific behavior. The vault's wiki/COPY-CORRECTIONS.md and bootcamp-builder teaching-preference ledgers retain dated correction history.
+
+### Answer keys and explanations must agree on meaning (2026-10-16)
+
+- Derive the relationships from the whole sentence before checking the authored answer. Classify words by their work in context. A process verb is not automatically a causal indicator; a source verb such as yields can mean different things in different sentences.
+- Define conditionals to cover both sufficient conditions and necessary requirements. Keep if/provided, only if/only where, and unless distinct. Do not explain a sufficient condition with must or infer the converse of an exception.
+- Accept one valid indicator for every distinct type present. Listed alternatives are optional, not cumulative requirements. Include contextual comparisons and causal effects inside qualifications without claiming the qualified event occurred.
+- Accept equivalent type names and exact quotations consistently across the grader and visual feedback. Split comparison indicators need both endpoints in order; wider spans must come from the actual sentence. Preserve type/indicator binding and reject contradictory or invented pairs. A failed instant match refers to Coach judgment; it is not evidence that the answer is wrong.
+- Keep authored answers, structured keys, explanations and diagrams aligned. Remove references to obsolete sentence drafts. Test valid alternatives and partial responses, not only the model answer.
+- Treat everyday wording in a hint separately from disclosure of an unattempted answer. A lexical guard can catch known leaks but does not certify semantic correctness or teaching quality.
+- Scope explanation-only repairs by activity identity and matching prompt/order. Never use presentation repair to silently replace historical grading keys, responses, receipts or earned results. Release revised keys through the content revision process and verify eligible assignments separately.
+
+These principles follow the independent 48-question audit and host arbitration. Verification of implementation and publication remains separate from review approval.
 
 ### Do:
 

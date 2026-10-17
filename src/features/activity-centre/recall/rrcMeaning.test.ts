@@ -1,8 +1,46 @@
 import { describe, expect, it } from "vitest";
-import { buildJudgeEntries, buildJudgePrompt, gradeStimulus, parseJudgeReply, toDetailsByLine, type JudgeEntry } from "./grading";
+import { buildEvidenceUnits, buildJudgeEntries, buildJudgePrompt, buildJudgeResponseSchema, gradeStimulus, parseJudgeReply, toDetailsByLine, type JudgeEntry } from "./grading";
 
 const response = (carried: boolean, evidence: string, reason = "") => JSON.stringify({
   verdicts: [{ id: 1, carried, evidence, reason }],
+});
+
+describe("structured judge response contract", () => {
+  it("uses the actual nonconsecutive Detail ids and requires evidence on every verdict", () => {
+    const schema = buildJudgeResponseSchema({ entries: [{ id: 2 }, { id: 7 }] }) as any;
+    expect(schema.properties.verdicts).toMatchObject({ minItems: 2, maxItems: 2 });
+    expect(schema.properties.verdicts.items.properties.id.enum).toEqual([2, 7]);
+    expect(schema.properties.verdicts.items.required).toEqual(["id", "carried", "evidence", "reason", "material", "material_reason"]);
+    expect(schema.properties.uncertain_details.items.enum).toEqual([2, 7]);
+    expect(schema.required).toContain("uncertain_details");
+    expect(schema.properties).not.toHaveProperty("read_given");
+    expect(schema.properties).not.toHaveProperty("lines");
+    expect(schema.properties).not.toHaveProperty("recall");
+  });
+
+  it("adds only requested Read and line assessments with closed required objects", () => {
+    const schema = buildJudgeResponseSchema({ entries: [{ id: 1 }], theRead: "A mistaken reversal.",
+      lines: [{ n: 1 }, { n: 3 }] }) as any;
+    expect(schema.required).toEqual(expect.arrayContaining(["read_given", "read_matches", "read_reason", "lines", "recall"]));
+    expect(schema.properties.lines).toMatchObject({ minItems: 2, maxItems: 2 });
+    expect(schema.properties.lines.items.properties.n.enum).toEqual([1, 3]);
+    const visit = (node: any) => {
+      if (!node || typeof node !== "object") return;
+      if (node.type === "object") {
+        expect(node.additionalProperties).toBe(false);
+        expect(node.required).toEqual(Object.keys(node.properties));
+      }
+      Object.values(node).forEach((child) => {
+        if (Array.isArray(child)) child.forEach(visit);
+        else if (child && typeof child === "object") visit(child);
+      });
+    };
+    visit(schema);
+  });
+
+  it("refuses an empty Detail contract", () => {
+    expect(() => buildJudgeResponseSchema({ entries: [] })).toThrow("at least one Detail");
+  });
 });
 
 describe("explicit reviewed fact groups", () => {
@@ -166,11 +204,112 @@ it("asks for meaning and student evidence while protecting the instructor refere
     entries: buildJudgeEntries([{ n: 1, text: "All employees work.", kind: "content" }], []),
     modelRun: "Every worker has a job." });
   expect(prompt).toContain("changing Sweden to Norway");
-  expect(prompt).toContain("SHORT EXACT quote from WHAT SHE SAID");
+  expect(prompt).toContain("return evidence_ids");
   expect(prompt).toContain("Do NOT use it as evidence");
   expect(prompt).toContain("Treat\n  equivalent meanings consistently");
   expect(prompt).toContain("Equivalent quantity expressions count");
   expect(prompt).toContain("put that Detail id in uncertain_details");
   expect(prompt).not.toContain("When you are genuinely torn, mark it NOT carried");
   expect(prompt).not.toContain("A dropped proper noun, number or");
+  expect(prompt).toContain("unrelated examples, not evidence");
+  expect(prompt).toContain("The universal claim changed");
+  expect(prompt).toContain("Negation changed the claim");
+  expect(prompt).toContain("The direction reversed");
+  expect(prompt).toContain("ORIGINAL STIMULUS, never against this correct run");
+  expect(prompt).not.toContain("Matching its phrasing closely is a warning sign");
+});
+
+it("uses a general counterfactual materiality rule without teaching the target examples' answers", () => {
+  const prompt = buildJudgePrompt({ stimulus: "A sample claim.", spoken: "My sample retelling.",
+    entries: buildJudgeEntries([{ n: 1, text: "A sample detail.", kind: "content" }], []) });
+  expect(prompt).toContain("counterfactual materiality test");
+  expect(prompt).toContain("broader TRUE category");
+  expect(prompt).toContain("Name exactly what changes in material_reason");
+  expect(prompt).toContain('"process detail" alone is not a materiality explanation');
+  expect(prompt).toContain("Omission is\n  different from contradiction");
+  expect(prompt).toContain("Red was not carried");
+  expect(prompt).toContain("Calling the cart blue instead would contradict the source");
+  expect(prompt).toContain("The mechanism is carried without repeating its technical wording");
+  expect(prompt).not.toMatch(/stalagmites|seawater|single spot|French divers|PT105/);
+});
+
+describe("grounded evidence ids and meaning distinct from factual coverage", () => {
+  const verdict = (id: number, carried: boolean, evidence_ids: number[], material: boolean, reason = "Changed claim.") => ({
+    id, carried, evidence_ids, reason: carried ? "" : reason, material,
+    material_reason: material ? "Needed for the claim." : "An unused descriptor does not change this inference.",
+  });
+
+  it("makes stable verbatim units and a schema containing only valid evidence ids", () => {
+    const spoken = "The clinic opened. It closes at six.";
+    expect(buildEvidenceUnits(spoken)).toEqual([{ id: 1, text: "The clinic opened." }, { id: 2, text: "It closes at six." }]);
+    const schema = buildJudgeResponseSchema({ entries: [{ id: 1 }], spoken }) as any;
+    expect(schema.properties.verdicts.items.properties).not.toHaveProperty("evidence");
+    expect(schema.properties.verdicts.items.properties.evidence_ids).toEqual({
+      type: "array", items: { type: "integer" },
+    });
+  });
+
+  it("reconstructs multiple nonadjacent quotations instead of accepting rewritten model words", () => {
+    const spoken = "The clinic opened. Some unrelated speech. It closes at six.";
+    const reply = parseJudgeReply(JSON.stringify({ verdicts: [{ ...verdict(1, true, [1, 3], true),
+      evidence: "A fabricated replacement" }] }), [1], spoken);
+    expect(reply.detailEvidence?.[1].evidence).toBe("The clinic opened.\nIt closes at six.");
+  });
+
+  it.each([{ evidence_ids: [99] }, { evidence_ids: ["1"] }, { evidence_ids: [1, 1] }])(
+    "rejects invalid evidence selection $evidence_ids", ({ evidence_ids }) => {
+    expect(() => parseJudgeReply(JSON.stringify({ verdicts: [{ ...verdict(1, true, [], true), evidence_ids }] }),
+      [1], "The clinic opened.")).toThrow("invalid student evidence ids");
+    });
+
+  it("keeps a truthful incidental omission in coverage while preserving material meaning", () => {
+    const entries: JudgeEntry[] = [
+      { id: 1, text: "The cave filled completely.", kind: "content", decoy: false },
+      { id: 2, text: "The pillars are stone.", kind: "content", decoy: false },
+    ];
+    const reply = parseJudgeReply(JSON.stringify({ verdicts: [verdict(1, true, [1], true),
+      verdict(2, false, [], false, "Stone was not explicitly stated.")] }), [1, 2], "The cave filled completely.");
+    const grade = gradeStimulus(entries, reply);
+    expect(grade.percent).toBe(50);
+    expect(grade.total).toBe(2);
+    expect(grade.meaning_percent).toBe(100);
+    expect(grade.meaning_total).toBe(1);
+    expect(grade.incidental_misses).toEqual(["The pillars are stone."]);
+    expect(grade.detail_evidence?.[2].carried).toBe(false);
+  });
+
+  it("does not allow model incidental labels to hide quantifiers or structure", () => {
+    const entries: JudgeEntry[] = [
+      { id: 1, text: "All permits expired.", kind: "content", decoy: false },
+      { id: 2, text: "This is the conclusion.", kind: "structure", decoy: false },
+    ];
+    const reply = parseJudgeReply(JSON.stringify({ verdicts: [verdict(1, false, [], false), verdict(2, false, [], false)] }),
+      [1, 2], "Something happened.");
+    const grade = gradeStimulus(entries, reply);
+    expect(grade.meaning_total).toBe(2);
+    expect(grade.meaning_percent).toBe(0);
+    expect(grade.incidental_misses).toEqual([]);
+  });
+
+  it("does not produce perfect meaning when no material judgment exists", () => {
+    const entries: JudgeEntry[] = [{ id: 1, text: "The pillars are stone.", kind: "content", decoy: false }];
+    const reply = parseJudgeReply(JSON.stringify({ verdicts: [verdict(1, false, [], false)] }), [1], "Pillars.");
+    expect(gradeStimulus(entries, reply).meaning_percent).toBeNull();
+  });
+
+  it("keeps a reviewed alias group material if any member is material", () => {
+    const entries: JudgeEntry[] = [
+      { id: 1, text: "The country is Sweden.", kind: "content", decoy: false, coverageGroup: "country" },
+      { id: 2, text: "This is about Sweden.", kind: "content", decoy: false, coverageGroup: "country" },
+    ];
+    const reply = parseJudgeReply(JSON.stringify({ verdicts: [verdict(1, false, [], false), verdict(2, false, [], true)] }),
+      [1, 2], "Norway.");
+    expect(gradeStimulus(entries, reply)).toMatchObject({ total: 1, meaning_total: 1, meaning_percent: 0 });
+  });
+
+  it("rejects a new evidence-id response without a material audit", () => {
+    expect(() => parseJudgeReply(JSON.stringify({ verdicts: [
+      { id: 1, carried: true, evidence_ids: [1], reason: "" },
+    ] }), [1], "Sweden.")).toThrow("no material audit");
+  });
 });

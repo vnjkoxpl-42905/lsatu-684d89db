@@ -113,11 +113,23 @@ sanctioned departure from the wing's surface after the RRC door.
 
 ## Spot the Relationship practice correction (2026-10-16)
 
+### Later introduction correction: writing and hierarchy (2026-10-16)
+
+Joshua rejected the formulaic signal-it slogan, Worked example, What to write, the tiny-title/giant-slogan/small-subtitle stack, and gold controls on beige. This supersedes the earlier signal-it recommendation below. Signal is not prohibited in scientific content or ordinary contextual use; beige is not prohibited everywhere. Do not patch the same sentence by swapping another abstract synonym into it.
+
+Use the actual activity title, ordinary complete instructions and Example. Keep every relationship type and its supporting quotation required, without asking for an extra essay or teaching grader internals. Read the copy aloud against the teaching voice standard. Remove repetition between lead and steps. Keep technical type names consistent.
+
+Written instructions and the example lead the page. A smaller inline video supports them in a side column on wide screens and follows the instructions and Start on narrow/docked screens. Preserve captions, controls, no autoplay, a position-neutral failure message, one Start/resume action, Exit and truthful save/preview status. Do not reintroduce transcripts or attempt-policy paragraphs.
+
+The entry uses existing neutral Workroom semantic variables, established UI sans typography, readable 16px body copy, a restrained title scale, dark primary controls, hairlines and visible focus. No gold-on-beige treatment, brown secondary text, oversized serif slogan or decorative premium effects. The actual Activity Centre pins warm, always-light variables locally. Override those values for this entry with the defined neutral Workroom light values, and verify with activity-centre.css loaded. Dark ancestor tokens must not turn this always-light entry beige or change its light policy. A fixture that omits the host stylesheet is insufficient proof. The Observatory runner and existing film artwork retain their own scope.
+
+See the [visual record](../../docs/design-evidence/spot-intro-2026-10-16/README.md) for rejected/revised screenshots, copy decisions and measured checks. These constraints come from Joshua; the replacement design is not claimed as his approval until he sees it. The DESIGN.md entry checklist links this brief because the context loader does not load surface briefs automatically.
+
 ### Use labels and instructions the student can act on
 
 - Label the prompt Sentence and the response Your answer. Keep The Field, The Figure, Rung, raw difficulty categories and other internal metaphors out of task and feedback UI. Retain authoring/parser metadata internally and preserve the scoped scene identity.
 - Omit shortcut helpers beneath the answer input by default. Retain Command/Control + Enter submission, keyboard navigation, accessible controls and visible focus.
-- Ask the learner to name each relationship and quote the words that signal it. Require a type and supporting quotation for every relationship type present. Use this wording consistently across instructions, placeholders and fallback feedback.
+- Require a type and supporting quotation for every relationship type present. The later Spot intro correction supersedes the recommendation to use signal-it wording. Use ordinary task instructions and retain the complete answer requirement.
 - Explain the sentence's meaning and limits rather than adding editorial classifications. In item 1, reaching 28 degrees is necessary for opening but does not alone guarantee it. Comparison guidance covers equality as well as more/less; item 12's as strong as must not receive a superiority-only caption.
 
 ### Count completed work independently of position and accuracy
@@ -134,6 +146,16 @@ Observatory seals reflect real correct outcomes, including restored outcomes fro
 - Put feedback, the shown answer where applicable, and the explanation before Next or Finish in reading and keyboard order. When a question has resolved and an authored explanation is available, suppress corrective advice to retry; keep its earned verdict visible.
 - Normalize only the exact legacy fallback through relationshipFeedback at the frontend presentation boundary. Use: Check that each relationship type matches the words you quoted. Reread the whole sentence for any relationship you missed. This prevents rejected words-create-it wording from returning through a fallback. Keep other grader feedback and earned verdicts intact. Presentation repairs must not rewrite historical responses, assignment snapshots, grading keys or rubric data.
 - Keep service failure visibly unjudged with a truthful retry/continuation path. Evaluate semantic verdicts and feedback accuracy/helpfulness separately; a lexical disclosure guard alone does not establish teaching quality.
+
+### Keep the answer contract semantic and consistent (2026-10-16)
+
+- Audit all 48 sentences independently of the key. Match each credited type to words that actually express it in context; draws/cure/lags/silted/follows/inflate do not independently express the cross-clause cause in their audited items.
+- Condition explanations must retain direction: provided is sufficient in item 40; only if and only where state requirements; unless introduces an exception with the original main-clause negation preserved. Replace ambiguous temporal Since in item 35 with Because.
+- Include valid alternative comparisons such as larger in item 31, and counteracting causal effects such as offsets in item 46. Do not require all alternatives or imply that an exception actually occurred. Use contains in item 34 to remove the ambiguous yields wording.
+- Align type synonyms, indicator alternatives, split endpoints and exact wider quotations across instant matching, AI keys and the stage. Full spans such as harder stone than must not produce a false not-identified diagnosis. Preserve pair binding, endpoint order and the affirmative-only referral boundary.
+- Keep quoted/singled-out answer disclosure blocked while ordinary more/less in hint prose remains usable. Explicit reveal, correct resolution and unresolved retry retain their separate disclosure rules.
+- Scope canonical explanation overlays to this activity with matching prompt and order; use saved text for unmatched/reworded historical items. Do not overlay keys or earned state. Remove stale flux commentary from item 47. Publish revised content separately from explanation presentation repairs and preserve existing historical work.
+- Add regression cases for removed weak causal indicators, newly valid alternatives, synonyms, split spans, partial stage recognition, hint disclosure and conditional direction. Static review approval is neither a live grader test nor deployment proof.
 
 ### Verify the complete practice state sequence
 

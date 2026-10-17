@@ -28,14 +28,14 @@ describe("Spot the Relationship answer key", () => {
   });
 
   it("separated comparatives record both required halves", () => {
-    for (const n of [25, 34, 39, 40, 43, 48]) {
+    for (const n of [11, 25, 34, 39, 40, 43, 48]) {
       const comp = byOrder(n).answer_key!.relationships.find((r) => r.type === "comparative")!;
       expect(comp.required_parts?.[0].length).toBe(2);
     }
   });
 
   it("contextual comparisons carry their benchmark", () => {
-    for (const n of [10, 29, 35, 36, 47]) expect(byOrder(n).answer_key!.context_benchmark).toBeTruthy();
+    for (const n of [10, 29, 31, 35, 36, 47]) expect(byOrder(n).answer_key!.context_benchmark).toBeTruthy();
   });
 
   it("every connection is complete and every indicator is in the sentence", () => {
@@ -113,5 +113,72 @@ describe("instant grading stays confident-only", () => {
   it("never instant-credits when the key drifts from the credited answer", () => {
     const drifted = { ...i27, answer_key: { ...i27.answer_key!, relationships: i27.answer_key!.relationships.slice(0, 1) } };
     expect(matchesCredited(drifted, correct(i27))).toBe(false);
+  });
+});
+
+
+describe("approved contextual corrections", () => {
+  it.each([[28, "draws", "since"], [30, "cure", "since"], [33, "lags", "because"],
+    [35, "silted", "Because"], [41, "follows", "because"], [42, "inflate", "since"]])(
+    "Q%s credits the causal connective, not the standalone event verb", (order, removed, connective) => {
+      const item = byOrder(Number(order));
+      const causal = item.answer_key!.relationships.find((r) => r.type === "causal")!;
+      expect(causal.indicators).toEqual([connective]);
+      const answer = (quote: string) => item.answer_key!.relationships.map((r) =>
+        `${r.type}, "${r.type === "causal" ? quote : r.indicators[0]}"`).join("; ");
+      expect(matchesCredited(item, answer(String(removed)))).toBe(false);
+      expect(matchesCredited(item, answer(String(connective)))).toBe(true);
+      const clause = item.prompt.slice(item.prompt.toLowerCase().indexOf(String(connective).toLowerCase()));
+      expect(matchesCredited(item, answer(clause))).toBe(true);
+    },
+  );
+
+  it("keeps the Q35 prompt and all authored causal surfaces on Because", () => {
+    expect(byOrder(35).prompt).toMatch(/^Because the mill race silted/);
+    expect(JSON.stringify(byOrder(35))).not.toMatch(/since/i);
+  });
+
+  it("Q31 accepts each comparison independently without inventing the light bell's mould", () => {
+    const item = byOrder(31);
+    for (const quote of ["heavier", "farther than", "larger"])
+      expect(matchesCredited(item, `comparative, "${quote}"; causal, "which is why"`)).toBe(true);
+    expect(item.explanation).toContain("doesn't say which mould was used for the light bell");
+    expect(item.answer_key!.context_benchmark).toContain("smaller alternative mould");
+  });
+
+  it("Q34 describes the quarry and Q46 attributes an effect within the exception", () => {
+    expect(byOrder(34).prompt).toMatch(/^The eastern quarry contains harder stone than the western/);
+    const item = byOrder(46);
+    expect(matchesCredited(item, 'causal, "offsets"; comparative, "higher than"; conditional, "unless"')).toBe(true);
+    expect(item.explanation).toContain("doesn't say subsidence occurred");
+    expect(item.explanation).toContain("does not settle the heights");
+  });
+
+  it("Q47 teaches its actual pressure threshold and feedback loop", () => {
+    const item = byOrder(47);
+    expect(JSON.stringify(item)).not.toMatch(/flux/i);
+    expect(item.explanation).toContain("feedback loop");
+    expect(item.explanation).toContain("does not guarantee fouling");
+  });
+
+  it("Q40 teaches provided as sufficient and does not impose necessity", () => {
+    const item = byOrder(40);
+    expect(item.explanation).toContain("gives a sufficient condition");
+    expect(item.explanation).toContain("if the electrolyte is chloride-free, the stated result follows");
+    expect(item.explanation).toContain("does not establish that chloride-free electrolyte is necessary");
+    expect(item.explanation).not.toContain("electrolyte must be chloride-free");
+    expect(content.instructions.rules[1]).toContain("what follows from a condition or what is required");
+  });
+
+  it("the instructions teach contextual causation, when, only where and unless with limits", () => {
+    const all = [...content.instructions.rules, ...content.instructions.coach.rubric,
+      ...content.instructions.coach.grading_rubric].join(" ");
+    expect(all).toContain("not automatically causal");
+    expect(all).toContain("when merely locates an event in time");
+    expect(all).toContain("A dry surface alone does not guarantee adhesion");
+    expect(all).toContain("not higher -> cannot work");
+    expect(all).toContain("Do not infer a converse or any guarantee from the exception itself");
+    expect(content.instructions.coach.drill).toContain("signal it");
+    expect(content.instructions.coach.drill).not.toContain("create it");
   });
 });
