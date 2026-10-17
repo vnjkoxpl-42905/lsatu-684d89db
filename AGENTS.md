@@ -57,6 +57,10 @@ If an older note says `~/Documents/Obsidian Vault/...` or `~/Documents/Claude/02
 
 On `/drill`, adaptive Smart Drill can show a `currentQuestion` that is not the same as `session.questionQueue[session.currentIndex]`. Any per-question UI state must key off `currentQuestion.qid` unless the code path is explicitly limited to queued drills.
 
+## Publish after every merge to main
+
+Standing rule (Joshua, 2026-10-17): after an authorized change lands on `main`, publish with the free Lovable `deploy_project` (project `53b9a6f2-aba7-4ae4-8dd1-fa5b8aab4d76`) without asking. Check `get_project` `latest_commit_sha` equals the merged HEAD first, then confirm the `index-*` bundle hash on lsatprep.study changed and a commit-only string is present. Not an authorization to merge to `main`, deploy edge functions, or spend credits. Full text: `CLAUDE.md`.
+
 ## Verification (must not skip)
 
 - Any change to `src/components/` or `src/pages/` is not "done" until it has been viewed running in the app (dev server + a browser tool), with a screenshot or DOM check as evidence. Never report a UI change complete on the strength of the diff alone. This is the single biggest recurring failure across past sessions — a hard gate, not a suggestion.

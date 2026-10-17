@@ -14,6 +14,7 @@ After completing any code fix or modification:
 3. **Stage:** `git add <files>` (stage intended changes).
 4. **Commit:** `git commit -m "<descriptive message>"`
 5. **Push:** `git push origin main`
+6. **Publish:** after a change lands on `main`, publish with the free Lovable `deploy_project` (project `53b9a6f2-aba7-4ae4-8dd1-fa5b8aab4d76`) without asking. First check `get_project` `latest_commit_sha` equals the merged HEAD, then confirm the `index-*` bundle hash on lsatprep.study changed and a commit-only string is present. This is not an authorization to merge to `main`, deploy edge functions, or spend credits. Full text: `CLAUDE.md`.
 
 ## Final Reporting Structure
 After every delivery, provide a summary including:
