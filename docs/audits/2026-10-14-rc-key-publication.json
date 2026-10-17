@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-10-15T03:23:09.636Z",
+  "releaseCommit": "ee91cddf0b2b28e28c6ba36c8c0d1ad3a4433e20",
+  "host": "https://lsatprep.study",
+  "banks": [
+    {
+      "path": "/data/rc/RC-PT101.json",
+      "sha256": "82945a68f7df8ef84966777425fed14c26ce64172722530bbb2ecbc03e88dac7",
+      "matches": true
+    },
+    {
+      "path": "/data/rc/RC-PT111.json",
+      "sha256": "f93e9dbd5c710dea17a5accbdf939752e69462d7965e9528d765ebd721d1cc06",
+      "matches": true
+    },
+    {
+      "path": "/data/rc/RC-PT121.json",
+      "sha256": "4ab32142b9d149c41b56d3b65c37764026b43fdba87dba0084a494d2cd45e273",
+      "matches": true
+    },
+    {
+      "path": "/data/rc/RC-PT122.json",
+      "sha256": "3631022adbef2ec34490960e38eced4387f5179912cd521b0d23edd6ab0c6ac2",
+      "matches": true
+    },
+    {
+      "path": "/data/rc/RC-PT128.json",
+      "sha256": "2cb56992cbf6268b4900f4ac927e3be10103d2cb8b6a394904cc42f4ab90f4ee",
+      "matches": true
+    },
+    {
+      "path": "/data/rc/RC-PT153.json",
+      "sha256": "aa0113982e13e1497bec94906eb8748cdb27cd08a65495092fb672f2dcd8e225",
+      "matches": true
+    },
+    {
+      "path": "/data/rc/RC-PT155.json",
+      "sha256": "6f342311dc4561a07d2b9d257658d55e29342eb0a4378b52bc123cfd882b5841",
+      "matches": true
+    },
+    {
+      "path": "/data/rc/RC-PT158.json",
+      "sha256": "32f835708d60c47da8a7694abcecf219914e01c7314b0264b4a68a31ad643c48",
+      "matches": true
+    },
+    {
+      "path": "/data/rc/RC-PT159.json",
+      "sha256": "b8e2b50e92af28e7950c7e550aa514e2c0c749bea37f76afbe2366b9a8ae37f4",
+      "matches": true,
+      "question10733": "D",
+      "flaggedCredit": [
+        "D"
+      ]
+    }
+  ],
+  "mainBundle": "/assets/index-C9yNIW8o.js",
+  "resultsChunk": "RcResults-CXV9uR-Y.js",
+  "historicalGradeMarker": true,
+  "evidenceKind": "fresh public production assets; not signed-in acceptance"
+}

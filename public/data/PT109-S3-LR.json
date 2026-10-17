@@ -1,0 +1,590 @@
+[
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "North American eastern white cedars grow both on cliff faces and in forests. Cedars growing on exposed cliff faces receive very few nutrients, and rarely grow bigger than one-tenth the height of cedars growing in forests, where they benefit from moisture and good soil. Yet few eastern white cedars found in forests are as old as four hundred years, while many on cliff faces are more than five hundred years old.",
+    "questionStem": "Which one of the following, if true, most helps to explain the difference in the ages of the cedars on cliff faces and those in forests?",
+    "answerChoices": {
+      "A": "The conditions on cliff faces are similar to those in most other places where there are few tall trees.",
+      "B": "In areas where eastern white cedars grow, forest fires are relatively frequent, but fires cannot reach cliff faces.",
+      "C": "Trees that are older than a few hundred years start to lose the protective outer layer of their bark.",
+      "D": "The roots of cedars on cliff faces lodge in cracks in the cliff, and once the roots are so large that they fill a crack, the tree is unable to grow any taller.",
+      "E": "Eastern white cedar wood is too soft to be used for firewood or modern buildings, but it is occasionally used to make furniture."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Brewer: All children should be given the opportunity to participate in competitive sports; these activities provide an unsurpassed opportunity to engage children’s emotions and so stimulate them to put maximum effort into attaining high athletic standards. Polanski: I disagree. Competitive athletics does, over time, produce a handful of highly motivated children with a desire to excel at an activity, but many children have no taste for competition, and to make them participate would only cause them to develop an antipathy toward athletics.",
+    "questionStem": "Polanski’s response most strongly supports the contention that Polanski misunderstood Brewer to be asserting that",
+    "answerChoices": {
+      "A": "characteristics acquired by playing competitive sports carry over into the rest of one’s life",
+      "B": "winning at competitive sports is essential to motivation to excel at athletics",
+      "C": "children should put more effort into athletic activities than any other form of activity",
+      "D": "children should be required to participate in competitive sports regardless of their interests",
+      "E": "children cannot be motivated without their emotions being engaged"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Clarification/Misunderstanding"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Paradox EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "The most common bird in Stillwater Marsh is a species of marsh hen, yet this species is rarely seen, even by experienced bird-watchers who seek it. In fact, this bird is seen far less frequently than any other bird inhabiting the marsh, including those that are much smaller and much less abundant.",
+    "questionStem": "Each of the following, if true, helps to reconcile the statements above except:",
+    "answerChoices": {
+      "A": "The coloration of the marsh hen blends in particularly well with the marsh grass where the marsh hen nests.",
+      "B": "The marsh hen’s call is harsh and repetitive, whereas the calls of many other marsh birds are pleasant and melodious.",
+      "C": "Unlike many small marsh birds, which dash along the banks of the marsh, the marsh hen remains completely still for long periods of time.",
+      "D": "Many marsh birds are most active during daylight hours, but the marsh hen is usually most active at night.",
+      "E": "Although many small marsh birds fly in groups to several feeding areas each day, the marsh hen tends to be solitary and flies only when it is in danger."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Limited research indicates that therapeutic intervention before the onset of mental disorders can mitigate factors identified as major contributors to them. But a much more comprehensive research program is needed to verify these results and allow for the design of specific health care measures. Thus, in order to explore a potential means of cost-effectively helping people prone to mental disorders, we should increase funding for intervention research.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Most minor mental disorders are more expensive to treat than other minor health problems.",
+      "B": "Prevention research can be coordinated by drawing together geneticists, neurologists, and behavioral scientists.",
+      "C": "Reducing known risk factors for mental disorders is relatively inexpensive compared to the long-term treatment required.",
+      "D": "Current funding for intervention research is now higher than it has ever been before.",
+      "E": "Once a mental disorder disappears, there is a fair chance that it will recur, given that complete cures are rare."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The radiation absorbed by someone during an ordinary commercial airline flight is no more dangerous than that received during an ordinary dental X-ray. Since a dental X-ray does negligible harm to a person, we can conclude that the radiation absorbed by members of commercial airline flight crews will also do them negligible harm.",
+    "questionStem": "A flaw in the argument is its failure to consider that",
+    "answerChoices": {
+      "A": "there may be many forms of dangerous radiation other than X-rays and the kinds of radiation absorbed by members of commercial airline flight crews",
+      "B": "receiving a dental X-ray may mitigate other health risks, whereas flying does not",
+      "C": "exposure to X-rays of higher intensity than dental X-rays may be harmful",
+      "D": "the longer and the more often one is exposed to radiation, the more radiation one absorbs and the more seriously one is harmed",
+      "E": "flying at high altitude involves risks in addition to exposure to minor radiation"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The recent cleaning of frescoes in the Sistine Chapel has raised important aesthetic issues. Art historians are now acutely aware that the colors of the works they study may differ from the works’ original colors. Art historians have concluded from this that interpretations of the frescoes that seemed appropriate before the frescoes’ restoration may no longer be appropriate.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the art historians’ reasoning?",
+    "answerChoices": {
+      "A": "The appropriateness of an interpretation of an artwork is relative to the general history of the period in which the interpretation is made.",
+      "B": "The restoration of an artwork may alter it such that it will have colors that the artist did not intend for it to have.",
+      "C": "The colors of an artwork are relevant to an appropriate interpretation of that work.",
+      "D": "Art historians are the best judges of the value of an artwork.",
+      "E": "Interpretations of an artwork are appropriate if they originated during the period when the work was created."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Unlike newspapers in the old days, today’s newspapers and televised news programs are full of stories about murders and assaults in our city. One can only conclude from this change that violent crime is now out of control, and, to be safe from personal attack, one should not leave one’s home except for absolute necessities.",
+    "questionStem": "Which one of the following, if true, would cast the most serious doubt on the conclusion?",
+    "answerChoices": {
+      "A": "Newspapers and televised news programs have more comprehensive coverage of violent crime than newspapers did in the old days.",
+      "B": "National data show that violent crime is out of control everywhere, not just in the author’s city.",
+      "C": "Police records show that people experience more violent crimes in their own neighborhoods than they do outside their neighborhoods.",
+      "D": "Murder comprised a larger proportion of violent crimes in the old days than it does today.",
+      "E": "News magazines play a more important role today in informing the public about crime than they did in the old days."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Most people invest in the stock market without doing any research of their own. Some of these people rely solely on their broker’s advice, whereas some others make decisions based merely on hunches. Other people do some research of their own, but just as often rely only on their broker or on hunches. Only a few always do their own research before investing. Nonetheless, a majority of investors in the stock market make a profit.",
+    "questionStem": "If the statements in the passage are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Some people who make a profit on their investments in the stock market do so without doing any research of their own.",
+      "B": "Most people who invest in the stock market either rely solely on their broker or make decisions based merely on hunches.",
+      "C": "Some people who do investment research on their own, while just as often relying on their broker or on hunches, make a profit in the stock market.",
+      "D": "Most people who invest in the stock market without doing any research of their own make a profit.",
+      "E": "Most people who rely solely on their broker rather than on hunches make a profit in the stock market."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "At some point in any discussion of societal justice, the only possible doctrinal defense seems to be “That is the way we do things here.” Different communities that each recognize the dignity and equality of all citizens will, for example, nevertheless settle on somewhat different provisions for the elderly. So we can see that general principles of justice are never sufficient to determine the details of social policies fixed within a particular state.",
+    "questionStem": "Which one of the following statements, if true, most strengthens the argument concerning the general principles of justice?",
+    "answerChoices": {
+      "A": "Although two socialist states each adhered to the same electoral principles, one had a different type of machine for counting ballots in public elections than the other did.",
+      "B": "Two democratic industrial states, both subscribing to capitalistic economic principles, differed markedly in the respective proportions of land they devoted to forestry.",
+      "C": "Although each adhered to its own principles, a democracy and a monarchy each had the same distribution of wealth in its population.",
+      "D": "Two states founded on and adhering to similar principles of justice had different requirements that had to be met in order to be eligible for government-subsidized day care.",
+      "E": "Two societies based on different principles of justice, each adhering to its own principles, had the same unemployment benefits."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Dense Stimulus",
+      "Refute a Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The importance of the ozone layer to terrestrial animals is that it entirely filters out some wavelengths of light but lets others through. Holes in the ozone layer and the dangers associated with these holes are well documented. However, one danger that has not been given sufficient attention is that these holes could lead to severe eye damage for animals of many species.",
+    "questionStem": "Which one of the following is most strongly supported by the statements above, if they are true?",
+    "answerChoices": {
+      "A": "All wavelengths of sunlight that can cause eye damage are filtered out by the ozone layer, where it is intact.",
+      "B": "Few species of animals live on a part of the earth’s surface that is not threatened by holes in the ozone layer.",
+      "C": "Some species of animals have eyes that will not suffer any damage when exposed to unfiltered sunlight.",
+      "D": "A single wavelength of sunlight can cause severe damage to the eyes of most species of animals.",
+      "E": "Some wavelengths of sunlight that cause eye damage are more likely to reach the earth’s surface where there are holes in the ozone layer than where there are not."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Some people claim that the reason herbs are not prescribed as drugs by licensed physicians is that the medical effectiveness of herbs is seriously in doubt. No drug can be offered for sale, however, unless it has regulatory-agency approval for medicinal use in specific illnesses or conditions. It costs about $200 million to get regulatory-agency approval for a drug, and only the holder of a patent can expect to recover such large expenses. Although methods of extracting particular substances from herbs can be patented, herbs themselves and their medicinal uses cannot be. Therefore, under the current system licensed physicians cannot recommend the medicinal use of herbs.",
+    "questionStem": "The argument depends on the assumption that",
+    "answerChoices": {
+      "A": "the medical ineffectiveness of many herbs as treatments for specific illnesses or conditions is well established",
+      "B": "the only time a substance is properly used as a drug is when it is prescribed as a drug by a licensed physician",
+      "C": "a licensed physician cannot recommend the medicinal use of an herb unless that herb is offered for sale as a drug",
+      "D": "some other substances, besides herbs, are not available as drugs because the illnesses they could effectively treat are too uncommon to allow those substances to be marketed profitably as drugs",
+      "E": "the cost of medical care would be substantially reduced if faster ways of obtaining regulatory-agency approval for new drugs could be found"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals",
+      "Missing Link / Idea",
+      "Contrapositive Logic",
+      "Dense Stimulus",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Some people claim that the reason herbs are not prescribed as drugs by licensed physicians is that the medical effectiveness of herbs is seriously in doubt. No drug can be offered for sale, however, unless it has regulatory-agency approval for medicinal use in specific illnesses or conditions. It costs about $200 million to get regulatory-agency approval for a drug, and only the holder of a patent can expect to recover such large expenses. Although methods of extracting particular substances from herbs can be patented, herbs themselves and their medicinal uses cannot be. Therefore, under the current system licensed physicians cannot recommend the medicinal use of herbs.",
+    "questionStem": "Which one of the following most accurately describes the argumentative technique used in the argument?",
+    "answerChoices": {
+      "A": "questioning a claim about why something is the case by supplying an alternative explanation",
+      "B": "attacking the validity of the data on which a competing claim is based",
+      "C": "revealing an inconsistency in the reasoning used to develop an opposing position",
+      "D": "identifying all plausible explanations for why something is the case and arguing that all but one of them can be eliminated",
+      "E": "testing a theory by determining the degree to which a specific situation conforms to the predictions of that theory"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Explain Curious Fact",
+      "Alternatives",
+      "Implied Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Editorialist: Some people argue that ramps and other accommodations for people using wheelchairs are unnecessary in certain business areas because those areas are not frequented by wheelchair users. What happens, however, is that once ramps and other accommodations are installed in these business areas, people who use wheelchairs come there to shop and work.",
+    "questionStem": "Which one of the following is most strongly supported by the editorialist’s statements?",
+    "answerChoices": {
+      "A": "Owners of business areas not frequented by wheelchair users generally are reluctant to make modifications.",
+      "B": "Businesses that install proper accommodations for wheelchair users have greater profits than those that do not.",
+      "C": "Many businesses fail to make a profit because they do not accommodate wheelchair users.",
+      "D": "Most businesses are not modified to accommodate wheelchair users.",
+      "E": "Some business areas are not frequented by wheelchair users because the areas lack proper accommodations."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Argument part",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Many people think that the only way to remedy the problem of crime is by increasing the number of police officers, but recent statistics show that many major cities had similar ratios of police officers to citizens, yet diverged widely in their crime rates.",
+    "questionStem": "The statistics cited function in the argument to",
+    "answerChoices": {
+      "A": "establish that the number of police officers does not need to be increased",
+      "B": "illustrate the need for increasing the number of police officers in major cities",
+      "C": "prove that there are factors other than the number of police officers that are more important in reducing the crime rate",
+      "D": "demonstrate that there is no relation between the number of police officers and the crime rate",
+      "E": "suggest that the number of police officers is not the only influence on the crime rate"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Implied Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Scientists hoping to understand and eventually reverse damage to the fragile ozone layer in the Earth’s upper atmosphere used a spacecraft to conduct crucial experiments. These experiments drew criticism from a group of environmentalists who observed that a single trip by the spacecraft did as much harm to the ozone layer as a year’s pollution by the average factory, and that since the latter was unjustifiable so must be the former.",
+    "questionStem": "The reasoning in the environmentalists’ criticism is questionable because it",
+    "answerChoices": {
+      "A": "treats as similar two cases that are different in a critical respect",
+      "B": "justifies a generalization on the basis of a single instance",
+      "C": "fails to distinguish the goal of reversing harmful effects from the goal of preventing those harmful effects",
+      "D": "attempts to compare two quantities that are not comparable in any way",
+      "E": "presupposes that experiments always do harm to their subjects"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Curator: Since ancient times, the fine arts were developed and sustained with the aid of large subsidies from the aristocracies and religious institutions that were the public sectors of their day; it is doubtful that the arts would have survived without these subsidies. Clearly, contemporary societies should fulfill their obligation as stewards of cultural heritage without the assistance of aristocracies or religious institutions, so governments must help finance the maintenance, advancement, and enrichment of the fine arts today.",
+    "questionStem": "The curator’s argument depends on assuming which one of the following?",
+    "answerChoices": {
+      "A": "The fine arts would be more highly developed now if they had been given greater governmental subsidies in the past.",
+      "B": "If contemporary governments help to maintain and enrich the fine arts, private support for the arts will become unnecessary.",
+      "C": "In contemporary societies, aristocracies and religious institutions are not willing to help finance the fine arts.",
+      "D": "Serving as stewards of cultural heritage requires that contemporary societies help to maintain the fine arts.",
+      "E": "Maintenance, advancement, and enrichment of the fine arts in any era require governmental subsidies."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Dense Stimulus",
+      "New Concept in Conclusion",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "In a business whose owners and employees all belong to one family, the employees can be paid exceptionally low wages. Hence, general operating expenses are much lower than they would be for other business ventures, making profits higher. So a family business is a family’s surest road to financial prosperity.",
+    "questionStem": "The reasoning in the argument is flawed because the argument",
+    "answerChoices": {
+      "A": "ignores the fact that businesses that achieve high levels of customer satisfaction are often profitable even if they pay high wages",
+      "B": "presumes, without providing justification, that businesses that pay the lowest wages have the lowest general operating expenses and thus the highest profits",
+      "C": "ignores the fact that in a family business, paying family members low wages may itself reduce the family’s prosperity",
+      "D": "presumes, without providing justification, that family members are willing to work for low wages in a family business because they believe that doing so promotes the family’s prosperity",
+      "E": "presumes, without providing justification, that only businesses with low general operating expenses can succeed"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Parallel flawed method of reasoning",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Studies have shown that photosynthesis, the process by which plants manufacture life-sustaining proteins from sunlight and carbon, is actually intensified if the level of carbon dioxide in the atmosphere is increased. Since carbon dioxide levels are increased by the burning of fossil fuels and by other human industrial activities, it is obvious that these industrial activities are purely beneficial to agriculture and those of us who depend upon it.",
+    "questionStem": "The flawed reasoning in the argument above is most similar to that in which one of the following?",
+    "answerChoices": {
+      "A": "Because a high fiber diet has been shown to be more healthful than a low fiber diet, a diet in which foods with a low fiber content have been entirely replaced by foods with a high fiber content is bound to be even more healthful.",
+      "B": "Because exercise has been shown to prevent a number of diseases, injuries, and other human ills, clearly no harm, and a lot of good, can come from exercise.",
+      "C": "Consistently consuming more calories than one expends inevitably leads to excessive weight gain, so if one wishes to avoid the health problems associated with this condition, one ought to fast periodically.",
+      "D": "It has been shown that one can obtain more vitamins and minerals from fresh fruits and vegetables than from processed fruits and vegetables. One ought, therefore, to completely abandon consumption of the latter in favor of the former.",
+      "E": "Excessive use of penicillin tends to increase one’s susceptibility to penicillin-resistant infections. The best policy, therefore, is to avoid using penicillin, thereby strengthening the body’s innate ability to resist disease."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Point at Issue",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Raphaela: Forcing people to help others is morally wrong. Therefore, no government has the right to redistribute resources via taxation. Anyone who wants can help others voluntarily. Edward: Governments do have that right, insofar as they give people the freedom to leave and hence not to live under their authority.",
+    "questionStem": "Raphaela and Edward disagree about the truth of which one of the following?",
+    "answerChoices": {
+      "A": "Any government that does not permit emigration would be morally wrong to redistribute resources via taxation.",
+      "B": "Any government that permits emigration has the right to redistribute resources via taxation.",
+      "C": "Every government should allow people to help others voluntarily.",
+      "D": "Any government that redistributes resources via taxation forces people to help others.",
+      "E": "Any government that forces people to help others should permit emigration."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Galanin is a protein found in the brain. In an experiment, rats that consistently chose to eat fatty foods when offered a choice between lean and fatty foods were found to have significantly higher concentrations of galanin in their brains than did rats that consistently chose lean over fatty foods. These facts strongly support the conclusion that galanin causes rats to crave fatty foods.",
+    "questionStem": "Which one of the following, if true, most supports the argument?",
+    "answerChoices": {
+      "A": "The craving for fatty foods does not invariably result in a rat’s choosing those foods over lean foods.",
+      "B": "The brains of the rats that consistently chose to eat fatty foods did not contain significantly more fat than did the brains of rats that consistently chose lean foods.",
+      "C": "The chemical components of galanin are present in both fatty foods and lean foods.",
+      "D": "The rats that preferred fatty foods had the higher concentrations of galanin in their brains before they were offered fatty foods.",
+      "E": "Rats that metabolize fat less efficiently than do other rats develop high concentrations of galanin in their brains."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Defender",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Some government economists view their home countries as immune to outside influence. But economies are always open systems; international trade significantly affects prices and wages. Just as physicists learned the shortcomings of a mechanics based on idealizations such as the postulation of perfectly frictionless bodies, government economists must look beyond national borders if their nations’ economies are to prosper.",
+    "questionStem": "The argument’s conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "A national economy cannot prosper unless every significant influence on it has been examined by that nation’s government economists.",
+      "B": "Economics is weakly analogous to the physical sciences.",
+      "C": "Economic theories relying on idealizations are generally less accurate than economic theories that do not rely on idealizations.",
+      "D": "International trade is the primary significant variable influencing prices and wages.",
+      "E": "Some government economists have been ignoring the effects of international trade on prices and wages."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Parallel method of reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "If relativity theory is correct, no object can travel forward in time at a speed greater than the speed of light. Yet quantum mechanics predicts that the tachyon, a hypothetical subatomic particle, travels faster than light. Thus, if relativity theory is correct, either quantum mechanics’ prediction about tachyons is erroneous or tachyons travel backward in time.",
+    "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "According to a magazine article, the view that present-day English is a descendant of the ancient Proto-Indo-European language is incorrect. Rather, English more likely descended from a Finno-Ugric language, judging from the similarities between English and other languages of Finno-Ugric descent.",
+      "B": "If the defendant committed the crime, then either the defendant had a motive or the defendant is irrational, for only irrational persons act with no motive. If the psychologist is correct, then the defendant is not rational; on the other hand, according to the evidence, the defendant had a strong motive. Thus, since there is no reason to disbelieve the evidence, the defendant is guilty.",
+      "C": "The human brain can survive without oxygen only for a few minutes, according to modern medicine. Surprisingly, a reliable witness reported that a shaman has survived for an entire week buried five feet underground. Thus, if modern medicine is not wrong, either the witness is mistaken or the shaman’s brain did not suffer any lack of oxygen.",
+      "D": "Alexander the Great was buried either in Alexandria or in Siwa, Egypt. However, the burial place is more likely to be Siwa. A limestone table engraved by Ptolemy, Alexander’s lieutenant, was found in Siwa, attesting to Alexander’s burial place.",
+      "E": "If the big bang theory is correct, the universe is currently expanding: the galaxies are moving away from each other and from the center of an original explosion. The same theory also predicts that, eventually, the gravitational forces among galaxies will counterbalance the galaxies’ kinetic energy. It follows that, at some point, the universe will stop expanding."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science",
+      "Contrapositive Logic",
+      "Conditional Conclusion",
+      "Battle of Opinions"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Maria won this year’s local sailboat race by beating Sue, the winner in each of the four previous years. We can conclude from this that Maria trained hard.",
+    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Sue did not train as hard as Maria trained.",
+      "B": "If Maria trained hard, she would win the sailboat race.",
+      "C": "Maria could beat a four-time winner only if she trained hard.",
+      "D": "If Sue trained hard, she would win the sailboat race.",
+      "E": "Sue is usually a faster sailboat racer than Maria."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Dietician: “The French Paradox” refers to the unusual concurrence in the population of France of a low incidence of heart disease and a diet high in fat. The most likely explanation is that the French consume a high quantity of red wine, which mitigates the ill effects of the fat they eat. So North Americans, with nearly the highest rate of heart disease in the world, should take a cue from the French: if you want to be healthier without cutting fat intake, drink more red wine.",
+    "questionStem": "Which one of the following statements, if true, most seriously undermines the conclusion of the dietician’s argument?",
+    "answerChoices": {
+      "A": "French men consume as much red wine as French women do, yet French men have a higher rate of heart disease than do French women.",
+      "B": "A greater intake of red wine among North Americans would likely lead to a higher incidence of liver problems and other illnesses.",
+      "C": "Not all French people have a diet that includes large amounts of fat and a high quantity of red wine.",
+      "D": "All evidence suggests that the healthiest way to decrease the chance of heart disease is to exercise and keep a diet low in fat.",
+      "E": "Many other regions have much lower rates of heart disease than France, though their populations consume even less red wine than do North Americans."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT109",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "We are in a new industrial revolution that requires management trainees to develop “action learning” from real experience within business and industry, rather than getting tied up with theory and academia. Business schools seem unable, on their own, to tear themselves away from their largely academic roots and move closer to the realities of today’s business and industry; too often, trainees in business schools find themselves studying hypothetical cases instead of real ones. Furthermore, business schools have been slow to respond to the needs of business. Therefore, business schools should allow business executives to set curricula for management trainees that could then be taught by academics.",
+    "questionStem": "The argument relies on which one of the following assumptions?",
+    "answerChoices": {
+      "A": "Academics in business schools have no practical business experience that is valuable.",
+      "B": "Academics in business schools deal only with hypothetical situations in their business case studies.",
+      "C": "Academics are not capable of teaching curricula suitable for relevant management training.",
+      "D": "Academic training outside of business schools is more responsive to the needs of business than is training within business schools.",
+      "E": "Today’s business executives have valuable insight into business that academics in business schools do not have."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Defender",
+      "Dense Stimulus",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "date": "2026-09-30",
+  "mechanism": "Managed SQL authenticated role plus explicit tester claims; not HTTP/JWT proof",
+  "expectedAbort": "ZQ999",
+  "persistentRowsCreated": 0,
+  "checks": [
+    {
+      "table": "attempts",
+      "outcome": "PASS-insert-permitted-rolled-back",
+      "variant": "own-owner",
+      "errorClass": "ZQ001",
+      "foreignFixtureExists": true
+    },
+    {
+      "table": "attempts",
+      "outcome": "PASS-insert-permitted-rolled-back",
+      "variant": "own-null",
+      "errorClass": "ZQ001",
+      "foreignFixtureExists": true
+    }
+  ]
+}
