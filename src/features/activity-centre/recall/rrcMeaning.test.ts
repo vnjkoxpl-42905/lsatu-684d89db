@@ -219,6 +219,20 @@ it("asks for meaning and student evidence while protecting the instructor refere
   expect(prompt).not.toContain("Matching its phrasing closely is a warning sign");
 });
 
+it("uses a general counterfactual materiality rule without teaching the target examples' answers", () => {
+  const prompt = buildJudgePrompt({ stimulus: "A sample claim.", spoken: "My sample retelling.",
+    entries: buildJudgeEntries([{ n: 1, text: "A sample detail.", kind: "content" }], []) });
+  expect(prompt).toContain("counterfactual materiality test");
+  expect(prompt).toContain("broader TRUE category");
+  expect(prompt).toContain("Name exactly what changes in material_reason");
+  expect(prompt).toContain('"process detail" alone is not a materiality explanation');
+  expect(prompt).toContain("Omission is\n  different from contradiction");
+  expect(prompt).toContain("Red was not carried");
+  expect(prompt).toContain("Calling the cart blue instead would contradict the source");
+  expect(prompt).toContain("The mechanism is carried without repeating its technical wording");
+  expect(prompt).not.toMatch(/stalagmites|seawater|single spot|French divers|PT105/);
+});
+
 describe("grounded evidence ids and meaning distinct from factual coverage", () => {
   const verdict = (id: number, carried: boolean, evidence_ids: number[], material: boolean, reason = "Changed claim.") => ({
     id, carried, evidence_ids, reason: carried ? "" : reason, material,

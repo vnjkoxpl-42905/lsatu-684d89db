@@ -424,14 +424,25 @@ RULES:
   changed in reason; if nothing relevant was said use []. Never invent or
   rewrite quotes. The server reconstructs the actual words from these ids.
 - Separately mark material and explain the classification in material_reason.
-  Material means its loss or change alters an asserted claim, the argument's
-  reasoning, or a condition needed for the inference. Actors/referents,
+  Apply a counterfactual materiality test: omit the detail, or replace an
+  omitted descriptive subtype with its broader TRUE category. Does this lose
+  an operative claim, a reasoning relationship, or a condition the inference
+  needs? Name exactly what changes in material_reason. "Specific detail",
+  "context" or "process detail" alone is not a materiality explanation.
+  An operative claim is one needed to preserve what is being asserted or how
+  the reasoning works, not every unused descriptive attribute in the source.
+  Actors/referents,
   named places, relationships, comparison direction, negation, modality, complete
   conditions and relevant quantities are material. Changing a named entity or
   a logical claim stays material even if a similar conclusion remains possible.
-  A descriptor is incidental ONLY when omitting or changing it
-  leaves those claims and reasoning intact; explain why. Do not classify a real
-  contradiction as harmless merely to improve a score. If unsure, use material
+  A missing descriptor is incidental ONLY when its omission leaves the same
+  referents, operative claims and reasoning intact; explain why. Omission is
+  different from contradiction: an explicit incompatible replacement is a
+  material error even when the conclusion could still be reached. Never use
+  the broader-category rule to remove a logical qualifier, negation, named
+  identity, complete condition, comparison direction or relevant quantity.
+  Do not classify a real contradiction as harmless merely to improve a score.
+  If unsure, use material
   true. Determine carried truthfully even for incidental details: incidental
   is not permission to fill a fact in from the source.
 - A reference such as "those buildings" identifies buildings, not their size,
@@ -450,6 +461,16 @@ MEANING CALIBRATION (unrelated examples, not evidence for this student's run):
 - Source: "The astronomer found an error in her own calculation." Retelling:
   "She spotted a mistake in the calculation she made." In context she uniquely
   identifies the astronomer; repeating the occupation is unnecessary.
+- Source: "A red cart delivered the sealed packages before noon, so the
+  delivery met the noon deadline." Retelling: "The cart brought the sealed
+  packages before noon, so it was on time." Red was not carried, but its
+  omission is incidental: the same delivery still met the same deadline.
+  Calling the cart blue instead would contradict the source. Losing before
+  noon or changing it to after noon would change the operative timing claim.
+- Source: "Repeated pressure compressed the loose fibres into a firm mat."
+  Retelling: "They kept pushing the fibres together until they made a solid
+  mat." The mechanism is carried without repeating its technical wording.
+  Judge the process she described, not whether she repeated a label for it.
 - Source: "All the permits expired." Retelling: "Most permits expired."
   The universal claim changed. Do not award all from most.
 - Source: "The council did not approve the plan." Retelling: "The council
