@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import relationship from "./content/spot-the-relationship.json";
-import { relationshipExplanation } from "./relationshipPresentation";
+import { RELATIONSHIP_ANSWER_PROMPT, relationshipExplanation } from "./relationshipPresentation";
 import type { ActivityItem } from "./api/types";
 
 const slug = "spot-the-relationship";
@@ -8,6 +8,13 @@ const items = relationship.items as ActivityItem[];
 const plain = (text: string) => text.replace(/^\d+ relationships? in this sentence\.\s*/i, "");
 
 describe("Spot explanation overlay scope and historical state", () => {
+  it("keeps every-type answer requirements in the revised student prompt", () => {
+    expect(RELATIONSHIP_ANSWER_PROMPT).toBe("Give each relationship type and quote the relevant words.");
+    expect(relationship.instructions.task).toBe(RELATIONSHIP_ANSWER_PROMPT);
+    expect(relationship.instructions.answer_placeholder).toBe(RELATIONSHIP_ANSWER_PROMPT);
+    expect(relationship.subtitle).toBe(RELATIONSHIP_ANSWER_PROMPT.slice(0, -1));
+    expect(relationship.instructions.coach.drill).toContain("signal it");
+  });
   it.each(items.map((item) => [item.order, item] as const))(
     "repairs only the explanation for exact prompt/order Q%s", (_order, item) => {
       const saved = JSON.parse(JSON.stringify({ ...item, explanation: "Saved historical explanation.",

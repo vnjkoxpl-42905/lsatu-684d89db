@@ -1,7 +1,7 @@
 {
   "slug": "spot-the-relationship",
   "title": "Spot the Relationship",
-  "subtitle": "Name each relationship and quote the words that signal it",
+  "subtitle": "Give each relationship type and quote the relevant words",
   "item_format": "free-text",
   "instructions": {
     "coach": {
@@ -38,7 +38,7 @@
       ]
     },
     "tagline": "Type plus the exact words. Both halves, every time.",
-    "task": "Name each relationship in the sentence and quote the words that signal it.",
+    "task": "Give each relationship type and quote the relevant words.",
     "rules": [
       "Answer in the game format: type, then the words. Conditional, only if. Causal, caused. Comparative, heavier than.",
       "A conditional states what follows from a condition or what is required. A causal says one thing made another happen. A comparative measures one thing against another.",
@@ -58,7 +58,7 @@
       "explanation": "Only if introduces the necessary condition. A dry wick is required for lighting, which is not the same as saying a dry wick makes the lantern light. That would be causal, and this sentence does not claim it."
     },
     "answer_label": "Your answer",
-    "answer_placeholder": "Name each relationship and quote the words that signal it."
+    "answer_placeholder": "Give each relationship type and quote the relevant words."
   },
   "items": [
     {
