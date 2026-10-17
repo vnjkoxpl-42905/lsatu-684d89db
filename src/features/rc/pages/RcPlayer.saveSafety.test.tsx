@@ -475,12 +475,12 @@ describe('RC account save safety', () => {
     expect(api.recordAttempt).toHaveBeenCalledTimes(1);
     expect(api.completeSession).not.toHaveBeenCalled();
   });
-  it('uses official Question 17 in breadcrumb and details while separately showing Drill 1', async () => {
+  it('uses official Question 17 in breadcrumb and details while separately showing Question 1 of 3', async () => {
     loadedPassages = [{ ...passage, preptest: 140, section: 4, setNumber: 3,
       questions: passage.questions.map((question, index) => ({ ...question, position: index + 17 })) }];
     mount();
     await screen.findByText('Question 1: blank');
-    expect(screen.getByTestId('source-breadcrumb')).toHaveTextContent('Section 4 · Passage 3 · Question 17 · Drill 1 of 3');
+    expect(screen.getByTestId('source-breadcrumb')).toHaveTextContent('Section 4 · Passage 3 · Question 17 (1 of 3)');
     expect(screen.getByTestId('pager-statuses')).toHaveTextContent('PT 140 · Section 4 · Passage 3 · Question 17 · Drill 1: unanswered');
     fireEvent.click(screen.getByRole('button', { name: 'Question details' }));
     expect(screen.getByRole('dialog', { name: 'Question details' })).toHaveTextContent('PT 140 Section 4 Passage 3 Question 17');

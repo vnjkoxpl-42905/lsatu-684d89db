@@ -438,7 +438,7 @@ export default function AcademyMainhub({
             <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} />
           </div>
           <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
-            <RcHubSurface embedded showHistory={false} onCancel={() => changeView("in-progress")} />
+            <RcHubSurface embedded showHistory={false} />
           </section>
         </> : <>
         {/* The address row rides above the hero rather than inside it: the

@@ -11,10 +11,16 @@
  * per-passage budget: `RC_STANDARD_SECONDS_PER_PASSAGE` (525s) across four
  * passages is 2100s — exactly the 35:00 a real section runs.
  */
+import { sectionKey, type SectionFreshness } from '@/lib/sectionFreshness';
+import { getQuestionHistory, listSessions } from '../api/rcProgress';
+import { passageStatus } from './rcAdaptive';
 import {
   RC_STANDARD_SECONDS_PER_PASSAGE,
+  type RcDrillSession,
   type RcIndexPassage,
+  type RcQuestionHistory,
   type RcRevealMode,
+  type RcSessionStatus,
 } from './rcTypes';
 
 export type RcIndexPassageWithPt = RcIndexPassage & { preptest: number };
@@ -160,3 +166,119 @@ export function formatRcSectionClock(
   const secs = total % 60;
   return `${mins}:${String(secs).padStart(2, '0')}`;
 }
+
+/**
+ * Maps a section-launcher timing setting to a protected practice-test pace id,
+ * or returns null when the percentage does not correspond to a supported
+ * protected pace (standard 100%, time-and-a-half 150%, double-time 200%, or
+ * untimed).
+ */
+export function rcProtectedPaceForTiming(
+  timing: { mode: 'timed'; percent: number } | { mode: 'unlimited' },
+): RcSectionPaceId | null {
+  if (timing.mode === 'unlimited') return 'untimed';
+  if (timing.percent === 100) return 'standard';
+  if (timing.percent === 150) return 'time-and-a-half';
+  if (timing.percent === 200) return 'double-time';
+  return null;
+}
+
+export interface RcSectionSessionExposure {
+  passageIds: number[];
+  status: RcSessionStatus;
+  excludedFromAnalytics?: boolean;
+  config?: { timedSectionSittingId?: string };
+  timedSectionSittingId?: string;
+}
+
+/**
+ * Section-level freshness for RC sections built on the T01 passage exposure
+ * rules (`passageStatus(...).state !== 'not_attempted'`), including timed-sitting
+ * sessions while ignoring sessions excluded from analytics.
+ */
+export function buildRcSectionFreshness(
+  sections: RcSection[],
+  passages: RcIndexPassageWithPt[],
+  history: RcQuestionHistory,
+  sessions: RcSectionSessionExposure[] = [],
+): Map<string, SectionFreshness> {
+  const passageById = new Map<number, RcIndexPassageWithPt>();
+  for (const p of passages) {
+    passageById.set(p.passageId, p);
+  }
+
+  const timedSittingPassages = new Set<number>();
+  for (const s of sessions) {
+    if (s.excludedFromAnalytics) continue;
+    if (s.status !== 'in_progress' && s.status !== 'completed' && s.status !== 'abandoned') {
+      continue;
+    }
+    const sittingId = s.timedSectionSittingId ?? s.config?.timedSectionSittingId;
+    if (!sittingId) continue;
+    for (const pid of s.passageIds) {
+      timedSittingPassages.add(pid);
+    }
+  }
+
+  const out = new Map<string, SectionFreshness>();
+  for (const sec of sections) {
+    const total = sec.questionCount;
+    if (total <= 0) continue;
+
+    let unseen = 0;
+    let anyPassageTouched = false;
+
+    for (const pid of sec.passageIds) {
+      const p = passageById.get(pid);
+      if (!p) continue;
+      const qids = p.questionIds ?? [];
+      const status = passageStatus(p, qids, history);
+      const touchedByTimedSitting = timedSittingPassages.has(pid);
+
+      if (status.state !== 'not_attempted' || touchedByTimedSitting) {
+        anyPassageTouched = true;
+      }
+
+      if (touchedByTimedSitting) {
+        continue;
+      }
+
+      if (qids.length > 0) {
+        for (const qid of qids) {
+          if ((history.get(qid)?.attempts ?? 0) === 0) {
+            unseen++;
+          }
+        }
+      } else if (status.state === 'not_attempted') {
+        unseen += p.questionCount;
+      }
+    }
+
+    if (anyPassageTouched && unseen >= total) {
+      unseen = Math.max(0, total - 1);
+    }
+
+    out.set(sectionKey(sec.preptest, sec.section), {
+      pt: sec.preptest,
+      section: sec.section,
+      total,
+      unseen,
+      percentFresh: Math.round((unseen / total) * 100),
+      isFresh: !anyPassageTouched && unseen === total,
+    });
+  }
+  return out;
+}
+
+export async function fetchRcSectionFreshness(
+  sections: RcSection[],
+  passages: RcIndexPassageWithPt[],
+  userId?: string,
+): Promise<Map<string, SectionFreshness>> {
+  const [history, sessions] = await Promise.all([
+    getQuestionHistory(userId),
+    listSessions(),
+  ]);
+  return buildRcSectionFreshness(sections, passages, history, sessions);
+}
+

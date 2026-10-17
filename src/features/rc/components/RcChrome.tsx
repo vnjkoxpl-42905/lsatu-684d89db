@@ -118,6 +118,7 @@ export function RcPager({
   canPrev,
   canNext,
 }: PagerProps) {
+  const questionCount = entries.filter((entry) => entry.kind === 'question').length;
   return (
     <div className="flex flex-wrap items-center gap-3 pb-3">
       <details className="w-full rounded border border-slate-300 bg-white p-2 text-slate-900">
@@ -127,7 +128,7 @@ export function RcPager({
           return <section key={passageId} aria-label={group[0]?.passageLabel ?? `Passage ${passageId}`} className="mt-3 border-t border-slate-300 pt-3">
             <h3 className="rounded bg-slate-100 p-2 text-sm font-semibold">{group[0]?.passageLabel ?? `Passage ${passageId}`}</h3>
             <div className="flex flex-wrap gap-2 py-2">{group.map((entry) => <button type="button" key={entry.questionId} onClick={() => onNavigate(entry.index)} aria-current={entry.index === currentIndex ? 'true' : undefined} className={cn('rounded border px-3 py-2 text-sm', entry.index === currentIndex ? 'border-slate-900 bg-slate-900 text-white' : pillState(entry))}>
-              {entry.sourceLabel ?? `Question ${entry.label}`} · Drill {entry.label}{PILL_STATUS_LABEL[pillStatus(entry)]}{isFlagged(entry) ? ', flagged' : ''}
+              {entry.sourceLabel ? `${entry.sourceLabel} (${entry.label} of ${questionCount})` : `Question ${entry.label} of ${questionCount}`}{PILL_STATUS_LABEL[pillStatus(entry)]}{isFlagged(entry) ? ', flagged' : ''}
             </button>)}</div>
           </section>;
         })}
@@ -149,7 +150,7 @@ export function RcPager({
               key={`q-${entry.questionId}`}
               type="button"
               onClick={() => onNavigate(entry.index)}
-              aria-label={`${entry.sourceLabel ?? `Question ${entry.label}`} · Drill ${entry.label}${PILL_STATUS_LABEL[pillStatus(entry)]}${
+              aria-label={`${entry.sourceLabel ? `${entry.sourceLabel} (${entry.label} of ${questionCount})` : `Question ${entry.label} of ${questionCount}`}${PILL_STATUS_LABEL[pillStatus(entry)]}${
                 isFlagged(entry) ? ', flagged' : ''
               }`}
               aria-current={isCurrent ? 'true' : undefined}

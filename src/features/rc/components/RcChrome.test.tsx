@@ -17,8 +17,8 @@ describe('RC passage-grouped question navigation', () => {
     render(<RcPager {...controls} />);
     const first = screen.getByRole('region', { name: 'PT 140 · Section 4 · Passage 3 · Science' });
     const second = screen.getByRole('region', { name: 'PT 111 · Section 2 · Passage 1 · Law' });
-    expect(within(first).getByRole('button', { name: /Question 17 · Drill 1, answered/ })).toHaveAttribute('aria-current', 'true');
-    const destination = within(second).getByRole('button', { name: /Question 6 · Drill 2, answered, flagged/ });
+    expect(within(first).getByRole('button', { name: /Question 17 \(1 of 2\), answered/ })).toHaveAttribute('aria-current', 'true');
+    const destination = within(second).getByRole('button', { name: /Question 6 \(2 of 2\), answered, flagged/ });
     fireEvent.click(destination);
     expect(controls.onNavigate).toHaveBeenCalledWith(1);
     fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
@@ -30,9 +30,9 @@ describe('RC passage-grouped question navigation', () => {
     const controls = props();
     const view = render(<RcPager {...controls} />);
     expect(screen.queryByRole('button', { name: /, correct|, incorrect/ })).not.toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: /Question 17 · Drill 1, answered/ })).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: /Question 17 \(1 of 2\), answered/ })).toHaveLength(2);
     view.rerender(<RcPager {...controls} pillStatus={(entry) => entry.questionId === 101 ? 'correct' : 'incorrect'} />);
-    expect(screen.getAllByRole('button', { name: /Question 17 · Drill 1, correct/ })).toHaveLength(2);
-    expect(screen.getAllByRole('button', { name: /Question 6 · Drill 2, incorrect, flagged/ })).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: /Question 17 \(1 of 2\), correct/ })).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: /Question 6 \(2 of 2\), incorrect, flagged/ })).toHaveLength(2);
   });
 });

@@ -1180,7 +1180,7 @@ function RcPlayerRunner() {
     { label: 'Reading Comprehension', onClick: () => navigate(exitPath) },
     { label: `The Official LSAT PrepTest ${item.passage.preptest}` },
     {
-      label: `Section ${item.passage.section} · Passage ${item.passage.setNumber} · Question ${item.question.position} · Drill ${item.number} of ${state.items.length}`,
+      label: `Section ${item.passage.section} · Passage ${item.passage.setNumber} · Question ${item.question.position} (${item.number} of ${state.items.length})`,
     },
   ];
 

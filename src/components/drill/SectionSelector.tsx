@@ -23,10 +23,17 @@ import SectionTimingPicker, {
 import { loadAllIndexPassages } from '@/features/rc/lib/rcBank';
 import {
   buildRcSections,
+  fetchRcSectionFreshness,
+  rcProtectedPaceForTiming,
   rcSectionHref,
   type RcSection,
   type RcSectionPaceId,
 } from '@/features/rc/lib/rcSections';
+import {
+  manualSectionCoverage,
+  manualSectionsEnabled,
+  newManualSectionHref,
+} from '@/lib/timedSectionAdoption';
 
 /**
  * Which kind of section a student is sitting. Logical Reasoning sections come
@@ -38,15 +45,17 @@ export type SectionKind = 'lr' | 'rc';
 interface SectionSelectorProps {
   manifest: QuestionManifest;
   onStartSection: (config: FullSectionConfig) => void;
-  /** Starts an RC section by navigating to the link `rcSectionHref` builds. */
+  /** Starts an RC section by navigating to the link `rcSectionHref` or `newManualSectionHref` builds. */
   onStartRcSection?: (href: string) => void;
   /**
    * Which kind the selector opens on. The drill hub's RC section passes 'rc'
    * so a student who has already thrown the LR/RC switch is not asked the same
-   * question twice. Uncontrolled after mount — the selector's own tab strip
+   * question twice. Uncontrolled after mount: the selector's own tab strip
    * still switches it.
    */
   initialKind?: SectionKind;
+  /** Optional initial timing state for testing or pre-selected pace. */
+  initialTiming?: SectionTiming;
   onCancel: () => void;
 }
 
@@ -55,13 +64,14 @@ export function SectionSelector({
   onStartSection,
   onStartRcSection,
   initialKind = 'lr',
+  initialTiming = STANDARD_TIMING,
   onCancel,
 }: SectionSelectorProps) {
   const { settings } = useUserSettings();
   const [kind, setKind] = useState<SectionKind>(initialKind);
   const [selectedPT, setSelectedPT] = useState<number | null>(null);
   const [selectedSection, setSelectedSection] = useState<number | null>(null);
-  const [timing, setTiming] = useState<SectionTiming>(STANDARD_TIMING);
+  const [timing, setTiming] = useState<SectionTiming>(initialTiming);
   // A PrepTest is a consumable, so the first question is which sections are
   // still unspent. Defaults to Fresh, which is what a student wants nine times
   // in ten and the only state that gives a clean read on where they stand.
@@ -74,17 +84,59 @@ export function SectionSelector({
   // the LR bank. Loaded once when the student switches to RC rather than on
   // mount, so an LR-only visit pays nothing for it.
   const [rcSections, setRcSections] = useState<RcSection[] | null>(null);
+  const [rcFreshness, setRcFreshness] = useState<Map<string, SectionFreshness> | null>(null);
+  const [rcFreshnessLoading, setRcFreshnessLoading] = useState(false);
+  const [rcFreshnessError, setRcFreshnessError] = useState<string | null>(null);
   const [rcError, setRcError] = useState<string | null>(null);
+  // Whether an RC start goes through the protected section preflight. The
+  // "clock begins after Start section" copy is only true on that path.
+  const [rcManualEnabled, setRcManualEnabled] = useState<boolean | null>(null);
+  const [starting, setStarting] = useState(false);
+
+  useEffect(() => {
+    if (kind !== 'rc') return;
+    let cancelled = false;
+    manualSectionsEnabled()
+      .then((enabled) => {
+        if (!cancelled) setRcManualEnabled(enabled);
+      })
+      .catch(() => {
+        if (!cancelled) setRcManualEnabled(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [kind]);
 
   useEffect(() => {
     if (kind !== 'rc' || rcSections !== null) return;
     let cancelled = false;
+    setRcFreshnessLoading(true);
     loadAllIndexPassages()
       .then((passages) => {
-        if (!cancelled) setRcSections(buildRcSections(passages));
+        if (cancelled) return;
+        const built = buildRcSections(passages);
+        return fetchRcSectionFreshness(built, passages)
+          .then((freshMap) => {
+            if (cancelled) return;
+            setRcFreshness(freshMap);
+            setRcFreshnessError(null);
+            setRcFreshnessLoading(false);
+            setRcSections(built);
+          })
+          .catch(() => {
+            if (cancelled) return;
+            setRcFreshness(null);
+            setRcFreshnessError("Couldn't check which sections you've already worked.");
+            setRcFreshnessLoading(false);
+            setRcSections(built);
+          });
       })
       .catch(() => {
-        if (!cancelled) setRcError('Reading Comprehension sections could not be loaded.');
+        if (!cancelled) {
+          setRcError('Reading Comprehension sections could not be loaded.');
+          setRcFreshnessLoading(false);
+        }
       });
     return () => {
       cancelled = true;
@@ -92,18 +144,17 @@ export function SectionSelector({
   }, [kind, rcSections]);
 
   /**
-   * The student's own standard clock, in minutes — 35 unless they carry extra
-   * time. Every percentage on the timing control is a percentage of this, so
+   * The student's own standard clock, in minutes (35 unless they carry extra
+   * time). Every percentage on the timing control is a percentage of this, so
    * 100% means "my normal section" for everyone.
    */
   const baseMinutes =
     settings.defaultTimingMode === '52.5' ? 52.5 : settings.defaultTimingMode === '70' ? 70 : 35;
 
   /**
-   * Load every question the student has answered and fold it into per-section
-   * freshness. Only the LR runner writes attempts, so this is LR-only and the
-   * control is hidden for RC rather than reporting every RC section fresh on
-   * the strength of rows that were never written.
+   * Load every question the student has answered in LR and fold it into
+   * per-section freshness. RC freshness is computed separately via T01's
+   * passage-attempt and timed-sitting exposure rules.
    */
   const { classId, loading: classIdLoading } = useClassId();
   useEffect(() => {
@@ -183,6 +234,17 @@ export function SectionSelector({
     [manifest, freshness, freshnessFilter],
   );
 
+  // RC sections surviving the freshness filter. When rcFreshness is null
+  // (signed out or history check failed), matchesFreshness(undefined, ...)
+  // returns true so every RC section stays reachable.
+  const rcSectionsInFilter = useMemo(
+    () =>
+      (rcSections ?? []).filter((s) =>
+        matchesFreshness(rcFreshness?.get(sectionKey(s.preptest, s.section)), freshnessFilter),
+      ),
+    [rcSections, rcFreshness, freshnessFilter],
+  );
+
   /**
    * Every section that can be started right now, as one flat list, newest
    * first. A PrepTest picker feeding a Section picker made the student walk an
@@ -193,10 +255,10 @@ export function SectionSelector({
   const pickableSections = useMemo(() => {
     const rows =
       kind === 'rc'
-        ? (rcSections ?? []).map((s) => ({ pt: s.preptest, section: s.section }))
+        ? rcSectionsInFilter.map((s) => ({ pt: s.preptest, section: s.section }))
         : lrSectionsInFilter.map((s) => ({ pt: s.pt, section: s.section }));
     return rows.sort((a, b) => b.pt - a.pt || a.section - b.section);
-  }, [kind, rcSections, lrSectionsInFilter]);
+  }, [kind, rcSectionsInFilter, lrSectionsInFilter]);
 
   /**
    * The PrepTest step. A student thinks in PrepTests first and a section
@@ -232,10 +294,29 @@ export function SectionSelector({
     if (!stillOffered) setSelectedSection(null);
   }, [pickableSections, selectedPT, selectedSection]);
 
-  const handleStart = () => {
+  const handleStart = async () => {
     if (kind === 'rc') {
-      if (chosenRcSection && onStartRcSection) {
-        onStartRcSection(rcSectionHref(chosenRcSection, rcPaceId));
+      if (chosenRcSection && onStartRcSection && !starting) {
+        setStarting(true);
+        try {
+          const protectedPace = rcProtectedPaceForTiming(timing);
+          const canUseManualSection =
+            protectedPace !== null &&
+            manualSectionCoverage('rc', chosenRcSection.preptest, chosenRcSection.section) &&
+            (await manualSectionsEnabled());
+          const href =
+            canUseManualSection && protectedPace
+              ? newManualSectionHref(
+                  'rc',
+                  chosenRcSection.preptest,
+                  chosenRcSection.section,
+                  protectedPace,
+                )
+              : rcSectionHref(chosenRcSection, rcPaceId);
+          onStartRcSection(href);
+        } finally {
+          setStarting(false);
+        }
       }
       return;
     }
@@ -289,6 +370,16 @@ export function SectionSelector({
 
   const isReadyToStart =
     kind === 'rc' ? Boolean(chosenRcSection) : Boolean(selectedPT && selectedSection);
+
+  // Only an RC start that will really open the preflight screen can promise
+  // that the clock waits for "Start section". LR and the live-drill fallback
+  // keep the older wording because their clock starts as soon as they open.
+  const clockWaitsForStart =
+    kind === 'rc' &&
+    rcManualEnabled === true &&
+    chosenRcSection != null &&
+    rcProtectedPaceForTiming(timing) !== null &&
+    manualSectionCoverage('rc', chosenRcSection.preptest, chosenRcSection.section);
 
   return (
     // No wrapper card and no header. The Testing Centre's panel is the card,
@@ -351,64 +442,62 @@ export function SectionSelector({
 
       {/* PrepTest & Section Selectors */}
       <div className="space-y-8 mb-12">
-        {/* Status — comes before the PrepTest because it decides which
-            PrepTests are even offered. There are 59 of them and no more
-            coming, so "have I already spent this one" is the first
-            question, not a filter bolted on afterwards. RC has no history
-            to read, so it does not get the control. */}
-        {kind === 'lr' && (
-          <div className="space-y-3">
-            <label
-              className="text-xs font-semibold uppercase tracking-wider"
-              htmlFor="status-select"
-              id="status-select-label"
+        {/* Status comes before the PrepTest because it decides which
+            PrepTests are even offered. Both LR and RC sections are consumables,
+            so "have I already spent this one" is the first question. */}
+        <div className="space-y-3">
+          <label
+            className="text-xs font-semibold uppercase tracking-wider"
+            htmlFor="status-select"
+            id="status-select-label"
+          >
+            Status
+          </label>
+          <Select
+            value={freshnessFilter}
+            onValueChange={(val) => setFreshnessFilter(val as FreshnessFilter)}
+          >
+            <SelectTrigger
+              aria-labelledby="status-select-label status-select"
+              className="text-sm"
+              id="status-select"
             >
-              Status
-            </label>
-            <Select
-              value={freshnessFilter}
-              onValueChange={(val) => setFreshnessFilter(val as FreshnessFilter)}
-            >
-              <SelectTrigger
-                aria-labelledby="status-select-label status-select"
-                className="text-sm"
-                id="status-select"
-              >
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="testing-menu">
-                {/* "Fresh" on its own is our word, not the student's, so it
-                    says what it filters to. Single-line, because the
-                    trigger renders the chosen item's children and has to
-                    keep reading straight once the menu closes. "Any" needs
-                    no gloss: it is the absence of the filter, and spelling
-                    that out only makes the pair harder to scan. */}
-                <SelectItem value="fresh" className="text-sm focus:bg-foreground/5">
-                  Fresh · never attempted
-                </SelectItem>
-                <SelectItem value="any" className="text-sm focus:bg-foreground/5">
-                  Any
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            {/* One live region, always present, for the three things the
-                filter can report: still checking, could not check, nothing
-                left. Sighted students watch this line change under the
-                control; a screen reader only hears it if the region was
-                already there when the text arrived. Polite, because none of
-                the three blocks the form — every section stays reachable
-                through Any. */}
-            <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
-              {freshnessLoading
-                ? 'Checking what you have worked…'
-                : freshnessError
-                  ? `${freshnessError} Every section is listed until it can.`
-                  : pickableSections.length === 0
-                    ? 'No untouched LR sections left. Switch to Any to sit one again.'
-                    : null}
-            </p>
-          </div>
-        )}
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="testing-menu">
+              {/* "Fresh" on its own is our word, not the student's, so it
+                  says what it filters to. Single-line, because the
+                  trigger renders the chosen item's children and has to
+                  keep reading straight once the menu closes. "Any" needs
+                  no gloss: it is the absence of the filter, and spelling
+                  that out only makes the pair harder to scan. */}
+              <SelectItem value="fresh" className="text-sm focus:bg-foreground/5">
+                Fresh · never attempted
+              </SelectItem>
+              <SelectItem value="any" className="text-sm focus:bg-foreground/5">
+                Any
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          {/* One live region, always present, for the three things the
+              filter can report: still checking, could not check, nothing
+              left. Sighted students watch this line change under the
+              control; a screen reader only hears it if the region was
+              already there when the text arrived. Polite, because none of
+              the three blocks the form: every section stays reachable
+              through Any. */}
+          <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
+            {(kind === 'rc' ? rcFreshnessLoading : freshnessLoading)
+              ? 'Checking what you have worked…'
+              : (kind === 'rc' ? rcFreshnessError : freshnessError)
+                ? `${kind === 'rc' ? rcFreshnessError : freshnessError} Every section is listed until it can.`
+                : pickableSections.length === 0 && (kind === 'lr' || rcSections !== null)
+                  ? kind === 'rc'
+                    ? 'No untouched RC sections left. Switch to Any to sit one again.'
+                    : 'No untouched LR sections left. Switch to Any to sit one again.'
+                  : null}
+          </p>
+        </div>
 
         {/* PrepTest, then section. Two steps rather than one flat list of
             `PT130.S3` rows: a student picks the test first and the section
@@ -490,7 +579,7 @@ export function SectionSelector({
           questionCount={chosenQuestionCount}
           // Three clocks and no more. 100% is the student's own standard,
           // and the two above it are the accommodations the LSAT actually
-          // grants — +50% and +100%. The old speed-training presets (97%,
+          // grants (+50% and +100%). The old speed-training presets (97%,
           // 94%, 70%) and the custom stepper read as arbitrary numbers on
           // a panel whose job is to start a real section.
           allowedPercents={[100, 150, 200]}
@@ -503,7 +592,7 @@ export function SectionSelector({
           contentClassName="testing-menu"
         />
 
-        {/* Nothing under the control. No counts, no caveats — the clock
+        {/* Nothing under the control. No counts, no caveats: the clock
             is already on it and the panel is four fields and a button. */}
       </div>
 
@@ -522,7 +611,9 @@ export function SectionSelector({
           All {chosenQuestionCount} questions, in their published order.{' '}
           {timing.mode === 'unlimited'
             ? 'No clock, so take as long as you want.'
-            : 'The clock starts straight away.'}{' '}
+            : clockWaitsForStart
+              ? 'The clock begins only after you press Start section.'
+              : 'The clock starts straight away.'}{' '}
           It is scored when you submit, and blind review comes after.
         </p>
       )}
@@ -540,7 +631,7 @@ export function SectionSelector({
         <button
           type="button"
           onClick={handleStart}
-          disabled={!isReadyToStart}
+          disabled={!isReadyToStart || starting}
           className={cn(
             "min-h-[44px] rounded-md px-8 py-3 text-sm font-semibold",
             "transition-colors duration-200",

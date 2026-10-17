@@ -158,9 +158,13 @@ vi.mock("@/components/ui/splite", () => ({
 vi.mock("@/features/rc/components/RcHubSurface", () => ({
   RcHubSurface: ({ onCancel }: { onCancel?: () => void }) => (
     <div role="region" aria-label="RC drill builder">
-      <button type="button" onClick={onCancel}>
-        Cancel RC
-      </button>
+      {onCancel ? (
+        <button type="button" onClick={onCancel}>
+          Cancel RC
+        </button>
+      ) : (
+        <button type="button">Reset filters</button>
+      )}
     </div>
   ),
 }));
@@ -349,7 +353,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByRole("region", { name: "RC drill builder" })).toBeInTheDocument();
   });
 
-  it("keeps legacy builder links working, and Cancel opens RC history", async () => {
+  it("keeps legacy builder links working, shows Reset filters on Create, and keeps In progress reachable through its tab", async () => {
     renderHub("/classroom/drill?section=rc&stage=type-drill&passages=10%2C11&timing=untimed");
     expect(screen.getByRole("region", { name: "RC drill builder" })).toBeInTheDocument();
     expect(url().get("stage")).toBeNull();
@@ -357,8 +361,10 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("passages")).toBe("10,11");
     expect(url().get("timing")).toBe("untimed");
     expect(screen.queryByRole("region", { name: "Assigned work" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Reset filters" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Cancel RC" })).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Cancel RC" }));
+    fireEvent.click(screen.getByRole("button", { name: "In progress" }));
     expect(url().get("stage")).toBeNull();
     expect(url().get("section")).toBe("rc");
     expect(url().get("view")).toBe("in-progress");
