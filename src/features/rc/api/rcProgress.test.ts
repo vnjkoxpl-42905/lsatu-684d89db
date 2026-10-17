@@ -165,6 +165,22 @@ it('acknowledges an attempt already saved under the retry UUID without inserting
   expect(insert).not.toHaveBeenCalled();
 });
 
+it('refuses an answer retry belonging to another signed-in account before inserting', async () => {
+  await expect(recordAttempt({ id: attemptId, userId: 'another-owner', sessionId, questionId: 7, passageId: 3,
+    selected: 'C', isCorrect: true, timeMs: 1000, flagged: false, eliminations: [], isFirstAttempt: false,
+  })).rejects.toThrow('account changed');
+  expect(insert).not.toHaveBeenCalled();
+});
+
+it('refuses reanswers to a completed protected source section', async () => {
+  clock.status = 'completed';
+  clock.config = { ...clock.config, timedSectionSittingId: 'protected-sitting' };
+  await expect(recordAttempt({ id: attemptId, userId: owner, sessionId, questionId: 7, passageId: 3,
+    selected: 'C', isCorrect: true, timeMs: 1000, flagged: false, eliminations: [], isFirstAttempt: false,
+  })).rejects.toThrow('protected source section');
+  expect(insert).not.toHaveBeenCalled();
+});
+
 it('acknowledges clock and question position together while preserving older session settings', async () => {
   await saveSessionClock(sessionId, 19.9, 2);
   expect(clock.config).toEqual(expect.objectContaining({

@@ -30,6 +30,12 @@ const smart = (status: 'in_progress' | 'completed', attempts: number): DrillResu
 } as DrillResumeSession);
 
 describe('buildStandaloneDrillHistory', () => {
+  it('hides completed RC score until an acknowledged reveal, including legacy sessions', () => {
+    const rows = buildStandaloneDrillHistory([], [rc('hidden', { status: 'completed' })], new Map([['hidden', [answer('hidden')]]]));
+    expect(rows[0].detail).toBe('Completed · results hidden until you reveal them');
+    expect(rows[0].detail).not.toContain('correct');
+  });
+
   it('makes unchecked account drafts resumable without scored attempts', () => {
     const draft = { questionId: 33, selected: 'A', attemptId: '12345678-1234-1234-1234-123456789012', flagged: false, eliminations: [] } as const;
     const rows = buildStandaloneDrillHistory([], [rc('draft', { config: {
@@ -44,7 +50,7 @@ describe('buildStandaloneDrillHistory', () => {
     });
     const rows = buildStandaloneDrillHistory(
       [],
-      [rc('done', { status: 'completed', completedAt: '2026-09-30T12:00:00Z' }), rc('open')],
+      [rc('done', { config: { ...rc('base').config, resultsRevealedAt: '2026-10-17T12:00:00Z' }, status: 'completed', completedAt: '2026-09-30T12:00:00Z' }), rc('open')],
       new Map([
         ['done', [graded('done', 1, true), graded('done', 2, false), graded('done', 3, null)]],
         ['open', [answer('open')]],
