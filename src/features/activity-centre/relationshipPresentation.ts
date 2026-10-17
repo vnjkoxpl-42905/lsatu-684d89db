@@ -1,7 +1,7 @@
 import type { ActivityItem } from "./api/types";
 import relationship from "./content/spot-the-relationship.json";
 
-export const RELATIONSHIP_ANSWER_PROMPT = "Name each relationship and quote the words that signal it.";
+export const RELATIONSHIP_ANSWER_PROMPT = "Give each relationship type and quote the relevant words.";
 
 /** Older graders can return this stock hint. Keep student copy current. */
 export function relationshipFeedback(feedback: string): string {

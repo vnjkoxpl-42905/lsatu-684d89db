@@ -113,11 +113,23 @@ sanctioned departure from the wing's surface after the RRC door.
 
 ## Spot the Relationship practice correction (2026-10-16)
 
+### Later introduction correction: writing and hierarchy (2026-10-16)
+
+Joshua rejected the formulaic signal-it slogan, Worked example, What to write, the tiny-title/giant-slogan/small-subtitle stack, and gold controls on beige. This supersedes the earlier signal-it recommendation below. Signal is not prohibited in scientific content or ordinary contextual use; beige is not prohibited everywhere. Do not patch the same sentence by swapping another abstract synonym into it.
+
+Use the actual activity title, ordinary complete instructions and Example. Keep every relationship type and its supporting quotation required, without asking for an extra essay or teaching grader internals. Read the copy aloud against the teaching voice standard. Remove repetition between lead and steps. Keep technical type names consistent.
+
+Written instructions and the example lead the page. A smaller inline video supports them in a side column on wide screens and follows the instructions and Start on narrow/docked screens. Preserve captions, controls, no autoplay, a position-neutral failure message, one Start/resume action, Exit and truthful save/preview status. Do not reintroduce transcripts or attempt-policy paragraphs.
+
+The entry uses existing neutral Workroom semantic variables, established UI sans typography, readable 16px body copy, a restrained title scale, dark primary controls, hairlines and visible focus. No gold-on-beige treatment, brown secondary text, oversized serif slogan or decorative premium effects. The actual Activity Centre pins warm, always-light variables locally. Override those values for this entry with the defined neutral Workroom light values, and verify with activity-centre.css loaded. Dark ancestor tokens must not turn this always-light entry beige or change its light policy. A fixture that omits the host stylesheet is insufficient proof. The Observatory runner and existing film artwork retain their own scope.
+
+See the [visual record](../../docs/design-evidence/spot-intro-2026-10-16/README.md) for rejected/revised screenshots, copy decisions and measured checks. These constraints come from Joshua; the replacement design is not claimed as his approval until he sees it. The DESIGN.md entry checklist links this brief because the context loader does not load surface briefs automatically.
+
 ### Use labels and instructions the student can act on
 
 - Label the prompt Sentence and the response Your answer. Keep The Field, The Figure, Rung, raw difficulty categories and other internal metaphors out of task and feedback UI. Retain authoring/parser metadata internally and preserve the scoped scene identity.
 - Omit shortcut helpers beneath the answer input by default. Retain Command/Control + Enter submission, keyboard navigation, accessible controls and visible focus.
-- Ask the learner to name each relationship and quote the words that signal it. Require a type and supporting quotation for every relationship type present. Use this wording consistently across instructions, placeholders and fallback feedback.
+- Require a type and supporting quotation for every relationship type present. The later Spot intro correction supersedes the recommendation to use signal-it wording. Use ordinary task instructions and retain the complete answer requirement.
 - Explain the sentence's meaning and limits rather than adding editorial classifications. In item 1, reaching 28 degrees is necessary for opening but does not alone guarantee it. Comparison guidance covers equality as well as more/less; item 12's as strong as must not receive a superiority-only caption.
 
 ### Count completed work independently of position and accuracy
