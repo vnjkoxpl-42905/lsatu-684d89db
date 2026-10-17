@@ -14,7 +14,7 @@ import {
 } from '../lib/rcAdaptive';
 import {
   createSession,
-  deleteSession,
+  abandonSession,
   getQuestionHistory,
   getSession,
   getSessionAttempts,
@@ -42,6 +42,7 @@ import {
 } from '../lib/rcBuilderSummary';
 import '../rc.css';
 import { canonicalRcSection, manualSectionsEnabled, newManualSectionHref, timedSectionResumeHref } from '@/lib/timedSectionAdoption';
+import { canRevealRcResults } from '../lib/rcResultsReveal';
 
 const mmss = formatPace;
 
@@ -658,13 +659,18 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     0,
   );
 
+  const [discarding, setDiscarding] = React.useState<string | null>(null);
+  const discardLock = React.useRef(false);
+  const [discardError, setDiscardError] = React.useState<string | null>(null);
   const removeSession = async (id: string) => {
-    const ok = window.confirm(
-      'Delete this drill? Its answers and timings are deleted with it, and that cannot be undone.',
-    );
-    if (!ok) return;
-    await deleteSession(id);
-    setSessions(await listSessions());
+    if (discardLock.current || !window.confirm('Discard this unfinished drill? Your saved answers stay in your history.')) return;
+    discardLock.current = true; setDiscarding(id); setDiscardError(null);
+    try {
+      await abandonSession(id);
+      setSessions(await listSessions());
+    } catch (error) {
+      setDiscardError(error instanceof Error ? error.message : 'The drill could not be discarded. Try again.');
+    } finally { discardLock.current = false; setDiscarding(null); }
   };
 
   return (
@@ -688,6 +694,9 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       {embedded && (
         <div className="rc-actions" style={{ justifyContent: 'space-between', marginBottom: 4 }}>
           <h2 style={{ margin: 0 }}>Build a reading drill</h2>
+          <button type="button" className="rc-chip" onClick={() => navigate('/rc/search')}>
+            Search by question family, type or feature
+          </button>
           {onCancel ? (
             <button type="button" className="rc-chip" onClick={onCancel}>
               Cancel
@@ -713,6 +722,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </button>
         </div>
       )}
+      {discardError && <p className="rc-builder-alert" role="alert">{discardError}</p>}
       {historyStatus === 'loading' && !loadError && <p className="rc-field-hint" role="status">Loading your answer history…</p>}
       {historyStatus === 'failed' && !loadError && (
         <div className="rc-builder-alert" role="status">
@@ -989,7 +999,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
               {handPicked.length} passage{handPicked.length === 1 ? '' : 's'} · {pickedQuestionCount} question{pickedQuestionCount === 1 ? '' : 's'} selected
             </p>
             <ul className="rc-passage-list" aria-label="Available passages">
-              {handPickRows.slice(0, pickerLimit).map(p => {
+              {handPickRows.slice(pickerLimit - RC_PICKER_PAGE, pickerLimit).map(p => {
                 const status = statusOf(p);
                 const picked = handPicked.includes(p.passageId);
                 return (
@@ -1015,10 +1025,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                 );
               })}
             </ul>
-            {handPickRows.length > pickerLimit && (
+            {handPickRows.length > RC_PICKER_PAGE && (
               <div className="rc-actions">
-                <p className="rc-field-hint" role="status">Showing {pickerLimit} of {handPickRows.length} passages.</p>
-                <button type="button" className="rc-chip" onClick={() => setPickerLimit(limit => limit + RC_PICKER_PAGE)}>Show more passages</button>
+                <p className="rc-field-hint" role="status">Showing {pickerLimit - RC_PICKER_PAGE + 1}–{Math.min(pickerLimit, handPickRows.length)} of {handPickRows.length} passages.</p>
+                <button type="button" className="rc-chip" disabled={pickerLimit === RC_PICKER_PAGE} onClick={() => setPickerLimit(limit => limit - RC_PICKER_PAGE)}>Previous passages</button>
+                <button type="button" className="rc-chip" disabled={pickerLimit >= handPickRows.length} onClick={() => setPickerLimit(limit => limit + RC_PICKER_PAGE)}>Next passages</button>
               </div>
             )}
             {handPickRows.length === 0 && <p className="rc-empty">No passages match. Change your search or filters.</p>}
@@ -1144,7 +1155,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           <span className="rc-status-chip">
             {s.status === 'in_progress' ? 'in progress' : s.status}
           </span>
-          {scores.has(s.id) && (
+          {canRevealRcResults(s) && scores.has(s.id) && (
             <span>
               {scores.get(s.id)!.correct} / {scores.get(s.id)!.total}
             </span>
@@ -1168,9 +1179,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                 Results
               </button>
             )}
-            <button type="button" className="rc-chip" onClick={() => removeSession(s.id)}>
-              Delete
-            </button>
+            {s.status === 'in_progress' && !s.config.timedSectionSittingId && !s.config.practiceTestRunId && (
+              <button type="button" className="rc-chip" disabled={discarding !== null} onClick={() => removeSession(s.id)}>
+                {discarding === s.id ? 'Discarding…' : 'Discard'}
+              </button>
+            )}
           </span>
         </div>
       ))}
