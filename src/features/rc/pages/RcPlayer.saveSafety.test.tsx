@@ -480,7 +480,7 @@ describe('RC account save safety', () => {
       questions: passage.questions.map((question, index) => ({ ...question, position: index + 17 })) }];
     mount();
     await screen.findByText('Question 1: blank');
-    expect(screen.getByTestId('source-breadcrumb')).toHaveTextContent('Section 4 · Passage 3 · Question 17 · Question 1 of 3');
+    expect(screen.getByTestId('source-breadcrumb')).toHaveTextContent('Section 4 · Passage 3 · Question 17 (1 of 3)');
     expect(screen.getByTestId('pager-statuses')).toHaveTextContent('PT 140 · Section 4 · Passage 3 · Question 17 · Drill 1: unanswered');
     fireEvent.click(screen.getByRole('button', { name: 'Question details' }));
     expect(screen.getByRole('dialog', { name: 'Question details' })).toHaveTextContent('PT 140 Section 4 Passage 3 Question 17');

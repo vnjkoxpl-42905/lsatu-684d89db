@@ -277,7 +277,7 @@ export async function fetchRcSectionFreshness(
 ): Promise<Map<string, SectionFreshness>> {
   const [history, sessions] = await Promise.all([
     getQuestionHistory(userId),
-    listSessions().catch(() => [] as RcDrillSession[]),
+    listSessions(),
   ]);
   return buildRcSectionFreshness(sections, passages, history, sessions);
 }

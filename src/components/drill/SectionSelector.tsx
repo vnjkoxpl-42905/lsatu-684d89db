@@ -88,6 +88,25 @@ export function SectionSelector({
   const [rcFreshnessLoading, setRcFreshnessLoading] = useState(false);
   const [rcFreshnessError, setRcFreshnessError] = useState<string | null>(null);
   const [rcError, setRcError] = useState<string | null>(null);
+  // Whether an RC start goes through the protected section preflight. The
+  // "clock begins after Start section" copy is only true on that path.
+  const [rcManualEnabled, setRcManualEnabled] = useState<boolean | null>(null);
+  const [starting, setStarting] = useState(false);
+
+  useEffect(() => {
+    if (kind !== 'rc') return;
+    let cancelled = false;
+    manualSectionsEnabled()
+      .then((enabled) => {
+        if (!cancelled) setRcManualEnabled(enabled);
+      })
+      .catch(() => {
+        if (!cancelled) setRcManualEnabled(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [kind]);
 
   useEffect(() => {
     if (kind !== 'rc' || rcSections !== null) return;
@@ -277,22 +296,27 @@ export function SectionSelector({
 
   const handleStart = async () => {
     if (kind === 'rc') {
-      if (chosenRcSection && onStartRcSection) {
-        const protectedPace = rcProtectedPaceForTiming(timing);
-        const canUseManualSection =
-          protectedPace !== null &&
-          manualSectionCoverage('rc', chosenRcSection.preptest, chosenRcSection.section) &&
-          (await manualSectionsEnabled());
-        const href =
-          canUseManualSection && protectedPace
-            ? newManualSectionHref(
-                'rc',
-                chosenRcSection.preptest,
-                chosenRcSection.section,
-                protectedPace,
-              )
-            : rcSectionHref(chosenRcSection, rcPaceId);
-        onStartRcSection(href);
+      if (chosenRcSection && onStartRcSection && !starting) {
+        setStarting(true);
+        try {
+          const protectedPace = rcProtectedPaceForTiming(timing);
+          const canUseManualSection =
+            protectedPace !== null &&
+            manualSectionCoverage('rc', chosenRcSection.preptest, chosenRcSection.section) &&
+            (await manualSectionsEnabled());
+          const href =
+            canUseManualSection && protectedPace
+              ? newManualSectionHref(
+                  'rc',
+                  chosenRcSection.preptest,
+                  chosenRcSection.section,
+                  protectedPace,
+                )
+              : rcSectionHref(chosenRcSection, rcPaceId);
+          onStartRcSection(href);
+        } finally {
+          setStarting(false);
+        }
       }
       return;
     }
@@ -346,6 +370,16 @@ export function SectionSelector({
 
   const isReadyToStart =
     kind === 'rc' ? Boolean(chosenRcSection) : Boolean(selectedPT && selectedSection);
+
+  // Only an RC start that will really open the preflight screen can promise
+  // that the clock waits for "Start section". LR and the live-drill fallback
+  // keep the older wording because their clock starts as soon as they open.
+  const clockWaitsForStart =
+    kind === 'rc' &&
+    rcManualEnabled === true &&
+    chosenRcSection != null &&
+    rcProtectedPaceForTiming(timing) !== null &&
+    manualSectionCoverage('rc', chosenRcSection.preptest, chosenRcSection.section);
 
   return (
     // No wrapper card and no header. The Testing Centre's panel is the card,
@@ -577,7 +611,9 @@ export function SectionSelector({
           All {chosenQuestionCount} questions, in their published order.{' '}
           {timing.mode === 'unlimited'
             ? 'No clock, so take as long as you want.'
-            : 'The clock begins only after you press Start section.'}{' '}
+            : clockWaitsForStart
+              ? 'The clock begins only after you press Start section.'
+              : 'The clock starts straight away.'}{' '}
           It is scored when you submit, and blind review comes after.
         </p>
       )}
@@ -595,7 +631,7 @@ export function SectionSelector({
         <button
           type="button"
           onClick={handleStart}
-          disabled={!isReadyToStart}
+          disabled={!isReadyToStart || starting}
           className={cn(
             "min-h-[44px] rounded-md px-8 py-3 text-sm font-semibold",
             "transition-colors duration-200",
