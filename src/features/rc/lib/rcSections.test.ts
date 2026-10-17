@@ -282,5 +282,13 @@ describe('buildRcSectionFreshness and fetchRcSectionFreshness', () => {
     historySpy.mockRestore();
     sessionsSpy.mockRestore();
   });
+
+  it('rejects instead of reporting every section fresh when the sitting lookup fails', async () => {
+    const historySpy = vi.spyOn(rcProgress, 'getQuestionHistory').mockResolvedValueOnce(new Map());
+    const sessionsSpy = vi.spyOn(rcProgress, 'listSessions').mockRejectedValueOnce(new Error('sessions unavailable'));
+    await expect(fetchRcSectionFreshness([], [])).rejects.toThrow('sessions unavailable');
+    historySpy.mockRestore();
+    sessionsSpy.mockRestore();
+  });
 });
 

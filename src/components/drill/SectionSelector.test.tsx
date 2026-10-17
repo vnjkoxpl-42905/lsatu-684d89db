@@ -214,7 +214,7 @@ describe('SectionSelector', () => {
 
     // 26, from the bank the runner reads, not the manifest's own count.
     const line = await screen.findByText(/All 26 questions, in their published order\./);
-    expect(line.textContent).toMatch(/The clock begins only after you press Start section\./);
+    expect(line.textContent).toMatch(/The clock starts straight away\./);
     expect(line.textContent).toMatch(/blind review comes after/);
   });
 
@@ -388,6 +388,52 @@ describe('SectionSelector', () => {
     expect(onStartRcSection.mock.calls[0][0]).toBe(
       '/rc?passages=14111%2C14112%2C14113%2C14114&reveal=end_of_set&timing=standard&start=1&timedSection=manual-canonical',
     );
+  });
+
+  it.each([
+    [true, /The clock begins only after you press Start section\./],
+    [false, /The clock starts straight away\./],
+  ])('words the RC clock truthfully when manualSectionsEnabled is %s', async (enabled, expected) => {
+    rcTestState.passages = buildRcPassageFixtures(141, 1);
+    rcTestState.freshness = new Map([
+      ['141-1', { pt: 141, section: 1, total: 28, unseen: 28, percentFresh: 100, isFresh: true }],
+    ]);
+    rcTestState.manualEnabled = enabled;
+    rcTestState.coverage = true;
+
+    renderSelector({ initialKind: 'rc', onStartRcSection: vi.fn() });
+    await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
+    await openPrepTests();
+    fireEvent.click(await screen.findByText(/^PrepTest 141$/));
+    await openSelectShowing(/Select a section/);
+    fireEvent.click(await screen.findByText(/^Section 1$/));
+
+    const line = await screen.findByText(/in their published order/);
+    await waitFor(() => expect(line.textContent).toMatch(expected));
+  });
+
+  it('starts an RC section only once when Start is clicked twice quickly', async () => {
+    rcTestState.passages = buildRcPassageFixtures(141, 1);
+    rcTestState.freshness = new Map([
+      ['141-1', { pt: 141, section: 1, total: 28, unseen: 28, percentFresh: 100, isFresh: true }],
+    ]);
+    rcTestState.manualEnabled = true;
+    rcTestState.coverage = true;
+
+    const onStartRcSection = vi.fn();
+    renderSelector({ initialKind: 'rc', onStartRcSection });
+    await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
+    await openPrepTests();
+    fireEvent.click(await screen.findByText(/^PrepTest 141$/));
+    await openSelectShowing(/Select a section/);
+    fireEvent.click(await screen.findByText(/^Section 1$/));
+
+    const start = screen.getByRole('button', { name: /Start Section/i });
+    fireEvent.click(start);
+    fireEvent.click(start);
+    await waitFor(() => expect(onStartRcSection).toHaveBeenCalledTimes(1));
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(onStartRcSection).toHaveBeenCalledTimes(1);
   });
 
   it('falls back to rcSectionHref when the timing pace does not map to a protected pace', async () => {
