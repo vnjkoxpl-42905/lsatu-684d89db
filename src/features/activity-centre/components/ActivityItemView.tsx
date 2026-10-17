@@ -10,6 +10,7 @@ import { ItemPrompt } from "./ItemPrompt";
 
 interface ActivityItemViewProps {
   item: ActivityItem;
+  activitySlug?: string;
   format: ItemFormat;
   isLast: boolean;
   /** This Activity's judging brief, threaded through to the Coach. */
@@ -77,6 +78,7 @@ interface ActivityItemViewProps {
  */
 export function ActivityItemView({
   item,
+  activitySlug,
   format,
   isLast,
   coachSource,
@@ -119,6 +121,8 @@ export function ActivityItemView({
   }, [draftKey, paperChoices, value]);
   const [attempts, setAttempts] = useState(initialAttempts);
   const [result, setResult] = useState<{ verdict: FeedbackState; feedback: string; covered?: number[] } | null>(null);
+  const [retrying, setRetrying] = useState(false);
+  const isRelationship = !!item.answer_key || /^Rung\s+\d/i.test(item.category ?? "");
   const [coachError, setCoachError] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [resolved, setResolved] = useState(false);
@@ -149,6 +153,7 @@ export function ActivityItemView({
       if (!choice) return;
       const verdict = { verdict: choice.verdict, feedback: choice.feedback };
       setAttempts(attemptNo);
+      setRetrying(false);
       setResult(verdict);
       record({
         itemOrder: item.order,
@@ -175,6 +180,7 @@ export function ActivityItemView({
     if (localJudge) {
       const verdict = localJudge(item, value);
       setAttempts(attemptNo);
+      setRetrying(false);
       setResult(verdict);
       record({
         itemOrder: item.order,
@@ -200,6 +206,7 @@ export function ActivityItemView({
     // judged exactly as before.
     if (fastPath?.(item, value)) {
       setAttempts(attemptNo);
+      setRetrying(false);
       setResult({ verdict: "correct", feedback: "" });
       record({
         itemOrder: item.order,
@@ -223,6 +230,7 @@ export function ActivityItemView({
     setAttempts(attemptNo);
 
     const verdict = res.verdict.verdict;
+    setRetrying(false);
     setResult(res.verdict);
     record({
       itemOrder: item.order,
@@ -242,19 +250,15 @@ export function ActivityItemView({
     // else: leave unresolved so the Try again / Show answer affordances show.
   };
 
-  /**
-   * Try again used to empty the box. With a twenty-word answer and a one-word
-   * miss that is a punishment for being close: the student retypes nineteen
-   * words they had right. The text stays and arrives selected, so starting over
-   * is still one keystroke away.
-   */
+  /** Keep the last hint beside a Spot revision without selecting the response. */
   const handleRetry = () => {
-    setResult(null);
+    if (isRelationship) setRetrying(true);
+    else setResult(null);
     requestAnimationFrame(() => {
       const box = answerRef.current;
       if (!box) return;
       box.focus();
-      box.select();
+      if (!isRelationship) box.select();
     });
   };
 
@@ -300,6 +304,7 @@ export function ActivityItemView({
         <button type="button" disabled={judging} className="mt-3 min-h-11 underline" onClick={continueUnjudged}>Continue unjudged and show answer</button>
       </div>}
       <ItemPrompt
+        activitySlug={activitySlug}
         format={format}
         item={item}
         value={value}
@@ -310,6 +315,7 @@ export function ActivityItemView({
         onShowAnswer={handleShowAnswer}
         onNext={onNext}
         judging={judging}
+        retrying={retrying}
         attempts={attempts}
         result={result}
         revealed={revealed}

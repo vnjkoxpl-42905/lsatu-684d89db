@@ -59,6 +59,37 @@
   --aw-display: "Marcellus", Georgia, serif;
 }
 
+/* A compact, readable progress rail, informed by 21st.dev's Progress examples.
+   Completion is separate from question position and from earned accuracy. */
+.relationship-run-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(180px, 320px);
+  align-items: center;
+  gap: 24px;
+  min-height: 86px;
+  padding: 16px 28px;
+  border-bottom: 1px solid hsl(var(--aw-line));
+  background: hsl(var(--aw-page));
+  color: hsl(var(--aw-ink));
+}
+.relationship-run-title { font-size: 15px; font-weight: 600; }
+.relationship-run > .grid { min-height: calc(100svh - 86px); }
+@media (min-width: 768px) {
+  .relationship-run .ac-yard-band { height: calc(100svh - 86px); min-height: 560px; }
+  .relationship-run main, .relationship-run main > .flex { min-height: calc(100svh - 86px); }
+}
+@media (max-width: 767px) {
+  .relationship-run-header { grid-template-columns: auto minmax(0, 1fr); gap: 12px 18px; padding: 16px 20px; }
+  .relationship-progress { grid-column: 1 / -1; }
+  /* The whole sentence must remain visible at phone and docked widths. */
+  .relationship-run .ac-yard-band,
+  .relationship-run .ac-yard-band[data-expanded="false"] { position: relative; max-height: none; overflow: visible; }
+  .relationship-run .ac-yard-band::after,
+  .relationship-run .ac-band-toggle { display: none; }
+  .relationship-run .observatory { min-height: 0; height: auto; gap: 20px; padding: 24px 20px; }
+  .relationship-run .observatory-type { font-size: 20px; }
+}
+
 [data-world="conditional-rephrase"] {
   --aw-page: 214 26% 6%;
   --aw-page-2: 213 22% 10%;

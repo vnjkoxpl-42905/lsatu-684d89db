@@ -23,11 +23,11 @@ it('keeps intro identification faithful: indicators first, then the learner high
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
   expect(screen.queryByRole('textbox')).toBeNull();
   click('if');
-  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '1' } });
+  fireEvent.click(screen.getByRole('radio', { name: /Group 1/ }));
   click('Check this step');
   expect(screen.getByRole('heading', { name: 'That step works.' })).toHaveFocus();
   click('Continue');
-  expect(screen.queryByLabelText(/Which group/)).toBeNull();
+  expect(screen.queryByRole('radio')).toBeNull();
   expect(screen.queryByText('the product is registered within 30 days', { exact: true })).toBeNull();
   expect(screen.queryByRole('textbox')).toBeNull();
   mark(5, 11);
@@ -37,6 +37,8 @@ it('keeps intro identification faithful: indicators first, then the learner high
   click('Continue');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   click('My reasoning matched');
+  expect(screen.getByRole('button', { name: 'Question 1, completed, current' })).toHaveAttribute('aria-current', 'step');
+  expect(screen.getByText('1 reviewed · 27 remaining')).toBeVisible();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
   click('Next');
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
@@ -45,9 +47,9 @@ it('keeps intro identification faithful: indicators first, then the learner high
 it('requires the whole indicator phrase and correct group before advancing, with a hint instead of the key', () => {
   // The former indicator drill now continues Drill 2 from sentence 16.
   run('source-intro-identify');
-  fireEvent.change(screen.getByLabelText('Go to question'), { target: { value: 15 } });
+  fireEvent.click(screen.getByRole('button', { name: /^Question 16,/ }));
   click('Only');
-  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
+  fireEvent.click(screen.getByRole('radio', { name: /Group 2/ }));
   click('Check this step');
   expect(screen.getByRole('heading', { name: 'Make one adjustment.' })).toBeVisible();
   expect(screen.getByText('“Only” is only part of an indicator. Select every word of the phrase.')).toBeVisible();
@@ -55,7 +57,7 @@ it('requires the whole indicator phrase and correct group before advancing, with
   expect(screen.queryByText(/training requirement comes first/)).toBeNull();
   expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
   click('if');
-  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
+  fireEvent.click(screen.getByRole('radio', { name: /Group 2/ }));
   click('Check this step');
   expect(screen.getByText(/Indicators:/)).toBeVisible();
   click('Continue');
@@ -71,7 +73,7 @@ it('carries indicator work from the folded drill into Drill 2 without marking th
   } } }));
   run('source-intro-identify');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
-  fireEvent.change(screen.getByLabelText('Go to question'), { target: { value: 15 } });
+  fireEvent.click(screen.getByRole('button', { name: /^Question 16,/ }));
   expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
   expect(JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-indicators')!).answers['source-indicators-01'].review).toBe('matched');
 });
@@ -98,9 +100,9 @@ it('gives a placement hint without showing the diagram until the placement is ri
 it('keeps every source task reachable and future operations gated', () => {
   for (const set of sourceWorksheetDrills) {
     const view = run(set.id);
-    const navigator = screen.getByLabelText('Go to question');
-    expect(navigator.querySelectorAll('option')).toHaveLength(set.items.length);
-    fireEvent.change(navigator, { target: { value: set.items.length - 1 } });
+    const navigator = screen.getByRole('group', { name: 'Go to question' });
+    expect(within(navigator).getAllByRole('button')).toHaveLength(set.items.length);
+    fireEvent.click(within(navigator).getByRole('button', { name: new RegExp(`^Question ${set.items.length},`) }));
     expect(screen.getByText(`Question ${set.items.length} of ${set.items.length}`)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Bring it together' })).toBeDisabled();
     if (set.taskKind !== 'contrapositive') expect(screen.queryByRole('button', { name: 'Reverse and negate' })).toBeNull();
@@ -113,12 +115,12 @@ it('compares the diagram and checks the contrapositive as each is built, and hol
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
   expect(screen.queryByText('that intern is offered a full-time position', { exact: true })).toBeNull();
   click('All');
-  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
+  fireEvent.click(screen.getByRole('radio', { name: /Group 2/ }));
   click('Check this step');
   expect(screen.getByRole('heading', { name: 'Make one adjustment.' })).toBeVisible();
   expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
   click('Revise this step');
-  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '1' } });
+  fireEvent.click(screen.getByRole('radio', { name: /Group 1/ }));
   click('Check this step');
   click('Continue');
   // The conditions step is checked: an indicator inside the highlight, or the same condition twice, is not accepted.
@@ -221,3 +223,28 @@ it('recovers malformed saved state and links the landing to its run route', () =
   expect(screen.getByRole('link', { name: 'Start practice' })).toHaveAttribute('href', '/?page=source-rephrase&run=1');
 });
 
+
+it('uses native grouped radios and restores their choice through numbered question navigation', () => {
+  const view = run('source-intro-identify');
+  expect(screen.queryByRole('combobox')).toBeNull();
+  expect(screen.queryByText('Intro training')).toBeNull();
+  expect(screen.queryByText('Ready to begin')).toBeNull();
+  click('if');
+  const first = screen.getByRole('radio', { name: 'Group 1: sufficient-condition indicator' });
+  const second = screen.getByRole('radio', { name: 'Group 2: necessary-condition indicator' });
+  expect(first).toHaveAttribute('type', 'radio');
+  expect(first.getAttribute('name')).toBe(second.getAttribute('name'));
+  first.focus();
+  expect(first).toHaveFocus();
+  fireEvent.click(first);
+  expect(first).toBeChecked();
+  expect(second).not.toBeChecked();
+  fireEvent.click(screen.getByRole('button', { name: /^Question 2,/ }));
+  expect(screen.getByRole('button', { name: 'Question 2, not started, current' })).toHaveAttribute('aria-current', 'step');
+  expect(screen.getByRole('button', { name: 'Question 1, in progress' })).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: /^Question 1,/ }));
+  expect(screen.getByRole('radio', { name: 'Group 1: sufficient-condition indicator' })).toBeChecked();
+  view.unmount();
+  run('source-intro-identify');
+  expect(screen.getByRole('radio', { name: 'Group 1: sufficient-condition indicator' })).toBeChecked();
+});

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { stripVerbatimReads } from "./reads";
 import { words } from "./overlap";
+import SOURCE from "../content/read-recall-colour-pt105-s2.json";
+import REFERENCES from "./fixtures/reference-read-boundaries.json";
 
 /**
  * Cutting the reads out before anything is judged.
@@ -68,5 +70,55 @@ describe("what gets cut", () => {
     const spoken = words("she says reassigning people will make them more productive");
     const out = stripVerbatimReads(spoken, [CHUNK, "A second chunk of some length that she never read."]);
     expect(out.kept).toEqual(spoken);
+  });
+});
+
+describe("saved reference read boundaries", () => {
+  const strip = (slug: string) => {
+    const transcript = REFERENCES.rows.find(row => row.slug === slug)!.transcript;
+    const chunks = SOURCE.items.find(item => item.slug === slug)!.chunks.map(chunk => chunk.text);
+    return stripVerbatimReads(transcript.split(/\s+/), chunks).kept.join(" ");
+  };
+  it("preserves the end of the cave retelling's joke without retaining a source fragment", () => {
+    const left = strip("PT105_S2_Q1");
+    expect(left).toContain("It's very funny. Okay. So inside this cave");
+    expect(left).not.toContain("It's very stalagmites");
+    expect(left).not.toContain("contains numerous large stalagmites");
+    expect(left).toContain("from this, we can infer that it wasn't always totally filled with water");
+  });
+  it("preserves once a year rather than attaching the source's patient", () => {
+    const left = strip("PT105_S2_Q2");
+    expect(left).toContain("you only get a flu shot once a year. Okay.");
+    expect(left).not.toContain("once a patient");
+    expect(left).not.toContain("In support of this claim, the director argued");
+    expect(left).toContain("every single person gets a vaccine one time");
+  });
+  it("removes the complete network source sentence without a leftover charges", () => {
+    const left = strip("PT105_S2_Q3");
+    expect(left.startsWith("Okay. The manager is saying")).toBe(true);
+    expect(left).not.toContain("which would entail much higher installation charges");
+    expect(left).toContain("that would cost a lot more money");
+    expect(left).toContain("what if the higher installation charges");
+  });
+});
+
+describe("an aside between comma-split reads", () => {
+  const first = "The city council argued that the proposed new network should be installed during the day to reduce the overall costs,";
+  const second = "because the installation contractors charge much higher fees at night and the council believes that saving money is important.";
+  it.each(["Actually, I disagree.", "actually I disagree"])("preserves her own interruption: %s", aside => {
+    const tokens = `${first} ${aside} ${second} Okay, that argument ignores lost productivity.`.split(/\s+/);
+    const result = stripVerbatimReads(tokens, [first, second]);
+    expect(result.kept.join(" ")).toContain(aside);
+    expect(result.kept.join(" ")).toContain("Okay, that argument ignores lost productivity.");
+    expect(result.kept.join(" ")).not.toContain("The city council argued");
+    expect(result.kept.join(" ")).not.toContain("the installation contractors charge much higher fees");
+  });
+  it("preserves an unpunctuated aside even when every word also occurs in the source", () => {
+    const firstWithCommonWords = "The city council argued that the proposed new network is wrong for this building and should instead be installed elsewhere,";
+    const tokens = `${firstWithCommonWords} that is wrong ${second} Okay, that argument ignores lost productivity.`.split(/\s+/);
+    const result = stripVerbatimReads(tokens, [firstWithCommonWords, second]);
+    expect(result.kept.join(" ")).toContain("that is wrong");
+    expect(result.kept.join(" ")).toContain("Okay, that argument ignores lost productivity.");
+    expect(result.kept.join(" ")).not.toContain("The city council argued");
   });
 });

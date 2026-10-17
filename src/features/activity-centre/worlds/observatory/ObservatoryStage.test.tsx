@@ -68,7 +68,7 @@ describe("the captions", () => {
     const { getByTestId } = render(
       <ObservatoryStage signal={multi} phase="drawn" reading={reading} />,
     );
-    expect(getByTestId("ob-missed").textContent).toContain("causal");
+    expect(getByTestId("ob-missed").textContent).toMatch(/causal/i);
   });
 
   it("captions only what the student actually found", () => {
@@ -230,12 +230,22 @@ describe("the verdict decides what is drawn", () => {
     const { getByTestId } = render(
       world.render({ item, response: "conditional, only when", answered: true, verdict: "partial" })!,
     );
-    expect(getByTestId("ob-missed").textContent).toContain("causal");
+    expect(getByTestId("ob-missed").textContent).toMatch(/causal/i);
   });
 });
 
 describe("earned relationship dials", () => {
   const world = WORLD_BINDINGS.find((w) => w.slug === "spot-the-relationship")!;
+  it("shows the full revealed answer without awarding earned dials", () => {
+    const { getByText, getByTestId, queryByTestId, container } = render(world.render({
+      item: drill.items[28], answered: true, verdict: "partial", revealed: true, response: "conditional, only when",
+    })!);
+    expect(getByText("Answer shown")).toBeInTheDocument();
+    expect(queryByTestId("ob-missed")).toBeNull();
+    expect(getByTestId("ob-captions").querySelectorAll("[data-kind]")).toHaveLength(3);
+    expect(container.textContent).not.toMatch(/the field|the figure|rung|more of this than that/i);
+    for (const kind of ["conditional", "causal", "comparative"]) expect(getByTestId(`ob-seal-${kind}`)).not.toHaveAttribute("data-lit");
+  });
   it("keeps an unearned type dark and restores earned types on the next question", () => {
     const { getByTestId, rerender } = render(world.render({
       item: drill.items[1], answered: false, completedItems: [],
@@ -288,5 +298,19 @@ describe("the entrance", () => {
   it("powers on all three dials", () => {
     const { getAllByTestId } = render(<ObservatoryEntrance onDone={vi.fn()} />);
     expect(getAllByTestId("ob-entrance-seal").length).toBe(3);
+  });
+});
+
+
+describe("valid exact-span comparisons on a partial stage", () => {
+  it.each([[25, "stronger on the eastern array than"], [39, "closer to the C3 range than to"],
+    [40, "thicker oxide layer than"], [43, "faster at ambient temperature than"],
+    [48, "more regionally appropriate than"]])("draws Q%s comparison without falsely reporting it missing", (order, quote) => {
+    const signal = byOrder(order);
+    const reading = readAnswer(signal, `comparison, "${quote}"`);
+    const { getByTestId, queryByTestId, unmount } = render(<ObservatoryStage signal={signal} phase="drawn" reading={reading} />);
+    expect(getByTestId("ob-captions").querySelector('[data-kind="comparative"]')).toBeTruthy();
+    expect(queryByTestId("ob-missed")?.textContent ?? "").not.toMatch(/comparative|comparison/i);
+    unmount();
   });
 });

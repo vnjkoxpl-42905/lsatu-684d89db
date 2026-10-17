@@ -24,6 +24,8 @@
 export type DetailKind = "content" | "structure" | "modality";
 
 export interface Detail {
+  /** Reviewed aliases of one scoring fact; never inferred by the judge. */
+  coverageGroup?: string;
   /** 1-based index within the stimulus, stable across the whole judgement. */
   n: number;
   text: string;
@@ -153,11 +155,24 @@ export function toDetails(texts: string[]): Detail[] {
  * would produce, so ids and scores are identical either way. The only addition
  * is the line number, which no score reads.
  */
-export function toDetailsByLine(lines: { details: { text: string }[] }[]): Detail[] {
+// Assignment items are immutable snapshots. This reviewed identity-specific
+// correction also reaches older snapshots that predate coverageGroup metadata.
+// Match exact authored wording and question identity; never infer aliases.
+const REVIEWED_COVERAGE_GROUPS: Record<string, Record<string, string>> = {
+  PT102_S3_Q24: {
+    "Sweden is one of them.": "country-sweden",
+    "This is about Sweden.": "country-sweden",
+  },
+};
+
+export function toDetailsByLine(lines: { details: { text: string; coverageGroup?: string }[] }[], itemSlug?: string): Detail[] {
   const out: Detail[] = [];
   lines.forEach((line, index) => {
     for (const d of line.details ?? []) {
-      out.push({ n: out.length + 1, text: d.text, kind: classifyDetail(d.text), line: index + 1 });
+      const coverageGroup = d.coverageGroup?.trim() ||
+        (itemSlug ? REVIEWED_COVERAGE_GROUPS[itemSlug]?.[d.text] : undefined);
+      out.push({ n: out.length + 1, text: d.text, kind: classifyDetail(d.text), line: index + 1,
+        ...(coverageGroup ? { coverageGroup } : {}) });
     }
   });
   return out;
@@ -166,6 +181,12 @@ export function toDetailsByLine(lines: { details: { text: string }[] }[]): Detai
 // --- The one model call ------------------------------------------------------
 
 export interface JudgeEntry {
+  coverageGroup?: string;
+  /** Source-only reviewed rubric. Never inferred from this learner's response. */
+  reviewedMaterial?: boolean;
+  reviewedMaterialReason?: string;
+  materialityKeyVersion?: string | null;
+  materialityKeyStatus?: "reviewed" | "fallback";
   id: number;
   text: string;
   kind: DetailKind;
@@ -190,7 +211,8 @@ export interface JudgeEntry {
  * the same prompt and a disagreement between two runs is the model's, not ours.
  */
 export function buildJudgeEntries(details: Detail[], decoyTexts: string[]): JudgeEntry[] {
-  const real = details.map((d) => ({ text: d.text, kind: d.kind, decoy: false, line: d.line }));
+  const real = details.map((d) => ({ text: d.text, kind: d.kind, decoy: false, line: d.line,
+    ...(d.coverageGroup ? { coverageGroup: d.coverageGroup } : {}) }));
   const decoys = decoyTexts.map((text) => ({ text, kind: classifyDetail(text), decoy: true }));
 
   if (decoys.length === 0) return real.map((e, i) => ({ id: i + 1, ...e }));
@@ -234,8 +256,12 @@ export function pickDecoys(details: string[], howMany = 2): string[] {
 const KIND_RULE: Record<DetailKind, string> = {
   content:
     'CONTENT — a fact. Carried if she stated it, in any words, in any order. ' +
-    'Synonyms and paraphrase count fully. A dropped proper noun, number or ' +
-    'quantifier is NOT carried: "all employees" is missed if she said "the staff".',
+    'Synonyms and paraphrase count fully. A uniquely identified entity may be ' +
+    'named by its role or context instead of its proper name. Equivalent ' +
+    'quantity expressions count: "half" and "50 percent" mean the same. ' +
+    'Deduct only a lost or changed claim, not a missing label. A different ' +
+    'country, a missing meaningful quantity, all changed to most, and lost ' +
+    'negation are real changes. Do not assume an unstated all from "the staff".',
   structure:
     'STRUCTURE — a discourse role, not words. Carried if the relationship is ' +
     'present in HOW she told it; she never has to name it. "This is a contrast." ' +
@@ -246,13 +272,29 @@ const KIND_RULE: Record<DetailKind, string> = {
     'A flat assertion where the source hedged is NOT carried.',
 };
 
+/** Verbatim evidence windows; stable ids refer only to this learner transcript. */
+export function buildEvidenceUnits(spoken: string): { id: number; text: string }[] {
+  const words = spoken.trim().split(/\s+/).filter(Boolean);
+  const units: { id: number; text: string }[] = [];
+  let part: string[] = [];
+  for (const word of words) {
+    part.push(word);
+    if (part.length >= 24 || /[.!?]["')\]]*$/.test(word)) {
+      units.push({ id: units.length + 1, text: part.join(" ") });
+      part = [];
+    }
+  }
+  if (part.length) units.push({ id: units.length + 1, text: part.join(" ") });
+  return units;
+}
+
 export function buildJudgePrompt(input: {
   stimulus: string;
   entries: JudgeEntry[];
   spoken: string;
   /**
-   * The analytical takeaway she should have arrived at, authored on every one
-   * of the 1,294 stimuli and, until now, graded by nothing.
+   * An authored analytical takeaway. It is a valid example, not an exhaustive
+   * list of sound stimulus-specific critiques or supported inferences.
    *
    * Coverage answers "did you hold it". The Read answers "did you understand
    * it", and it is the criterion the method is actually built around: the
@@ -298,7 +340,7 @@ export function buildJudgePrompt(input: {
     .map((k) => `- ${KIND_RULE[k]}`)
     .join("\n");
   const list = input.entries
-    .map((e) => `${e.id}. [${e.kind}] ${e.text}`)
+    .map((e) => `${e.id}. [${e.kind}] ${e.text} Fixed rubric: ${e.reviewedMaterial === false ? "incidental" : "essential"}.${e.reviewedMaterialReason ? ` ${e.reviewedMaterialReason}` : ""}`)
     .join("\n");
 
   return `You are grading one stimulus of a memory drill.
@@ -318,6 +360,9 @@ WHAT SHE SAID (this is your ONLY evidence):
 """
 ${input.spoken}
 """
+
+STUDENT EVIDENCE UNITS (verbatim parts of WHAT SHE SAID, not new evidence):
+${buildEvidenceUnits(input.spoken).map((unit) => `${unit.id}. ${unit.text}`).join("\n")}
 ${
     input.lines?.length
       ? `
@@ -327,15 +372,16 @@ ${input.lines
           .join("\n")}
 ${input.recall ? `\nHER FULL RECALL, text off screen:\n"""\n${input.recall}\n"""\n` : ""}
 Judge each line by the same scale every time:
-- strong: the line's claim and its specifics are all there, or at most one
-  small specific (an adjective, a place, a number) is missing.
-- partial: the main claim is there but more than one specific, a quantifier or
-  a qualifier is missing, or one of them came back changed in meaning.
+- strong: the line's important claims, qualifications and relationships are
+  faithfully conveyed. Incidental description can be missing; record that in
+  detail coverage rather than lowering this meaning judgment.
+- partial: the main claim survives but a material supporting fact or
+  qualification is missing or changed.
 - thin: only a fragment of the line survives, or the claim came back with a
   different meaning.
 - skipped: she said nothing for it, or nothing that belongs to it.
-For every line that is not strong, say in one short sentence exactly what was
-dropped or changed, quoting the missing words in plain language. For a strong
+For every line that is not strong, say in one short sentence exactly what
+important meaning was dropped or changed. For a strong
 line the note may be empty. Then judge the full recall on the same scale. The
 split is approximate -- if she clearly covered a line's content while talking
 about a neighbouring line, do not mark it skipped.
@@ -351,21 +397,89 @@ RULES:
 - Judge ONLY from what she said. NEVER mark a Detail carried because the
   stimulus contains it. The stimulus is there so you know what a Detail refers
   to, not as evidence that she said it. This is the most important rule here.
+- Preserve who asserted each claim and what role it plays. A claim mentioned
+  only as her hypothetical example, question, joke or rejected alternative is
+  not evidence that she remembered it as the source's actual claim. Her Read
+  may correctly use a hypothetical to challenge the argument; judge that
+  separately from recalling the argument's own claims.
 - Some of the Details below belong to a DIFFERENT stimulus and she cannot have
   carried them. Mark those not carried. Do not try to guess which.
-- When you are genuinely torn, mark it NOT carried.
+- If unclear or garbled transcription prevents deciding whether a meaning was
+  carried, put that Detail id in uncertain_details. Do not guess a deduction
+  or credit. A clear omission is still a miss, not uncertainty. If speech is
+  clear enough to establish the meaning, judge that meaning normally.
 - Her transcript may contain mangled or clipped words. Judge the substance.
 - Be fair as well as strict. Her own words, her own order and a plainer
   phrasing all count in full. Only a change of MEANING counts against her: a
   dropped specific, a lost qualifier, a claim made stronger or weaker than the
   source, a relationship that vanished. Never mark a Detail missed for style.
+- Mark a Detail missed only for missing or changed MEANING. Before marking it
+  missed, look for an equivalent claim anywhere in WHAT SHE SAID, including
+  pronouns and relationships expressed without the source's labels. For example,
+  "if music videos are art, TV created art" carries the conditional position;
+  she need not also say "anyone with that view insists". "Safety committees
+  reduced workplace injuries" carries both the committees' safety role and
+  the injury outcome without separately naming each role again.
+- Do not demand the source's wording or discourse labels. But never fill in a
+  missing fact from the source or the correct run: changing Sweden to Norway,
+  all to most, likely to certain, or reversing a conditional changes meaning.
+- For each verdict return evidence_ids: the integer ids of the STUDENT EVIDENCE
+  UNITS supporting the judgment. For a carried Detail select units expressing
+  its meaning. For a miss select the closest relevant units and explain what
+  changed in reason; if nothing relevant was said use []. Never invent or
+  rewrite quotes. The server reconstructs the actual words from these ids.
+- Materiality is FIXED by the source-only rubric printed beside each Detail,
+  before this learner's response is seen. Copy essential as material:true and
+  incidental as material:false, and explain the fixed rubric in material_reason.
+  Do not change a Detail's importance because she carried it, omitted it or
+  contradicted it. Every contradiction remains a factual miss in full detail
+  coverage and feedback. Only the fixed essential Details affect operative
+  meaning retained; an incidental factual error does not silently become an
+  essential-meaning deduction. When no reviewed source rubric exists, every
+  Detail is conservatively essential. Do not infer a new denominator.
+  Determine carried truthfully even for incidental Details: incidental is not
+  permission to fill a fact in from the source. In big_misses and next_time,
+  prioritise actual missed essential meaning, not incidental descriptors.
+- A reference such as "those buildings" identifies buildings, not their size,
+  colour or quantity. Do not award an attribute solely because the prompt says
+  the referenced objects have it. Any intrinsic or contextual implication must
+  follow from what she actually said, without borrowing facts from the source.
+- Several authored Details may describe the same underlying fact. Treat
+  equivalent meanings consistently, and describe one underlying error only
+  ONCE in big_misses and next_time. Do not invent another error because the
+  same fact has two labels. Still return a verdict for every numbered Detail.
+
+MEANING CALIBRATION (unrelated examples, not evidence for this student's run):
+- Source: "A local clinic opens at noon and closes at six." Retelling: "That
+  clinic shuts at six; it starts seeing people at twelve." Both times and the
+  clinic's identity survive. Different order and equivalent wording are fine.
+- Source: "The astronomer found an error in her own calculation." Retelling:
+  "She spotted a mistake in the calculation she made." In context she uniquely
+  identifies the astronomer; repeating the occupation is unnecessary.
+- Source: "A red cart delivered the sealed packages before noon, so the
+  delivery met the noon deadline." Retelling: "The cart brought the sealed
+  packages before noon, so it was on time." Red was not carried, but its
+  omission is incidental: the same delivery still met the same deadline.
+  Calling the cart blue instead would contradict the source. Losing before
+  noon or changing it to after noon would change the operative timing claim.
+- Source: "Repeated pressure compressed the loose fibres into a firm mat."
+  Retelling: "They kept pushing the fibres together until they made a solid
+  mat." The mechanism is carried without repeating its technical wording.
+  Judge the process she described, not whether she repeated a label for it.
+- Source: "All the permits expired." Retelling: "Most permits expired."
+  The universal claim changed. Do not award all from most.
+- Source: "The council did not approve the plan." Retelling: "The council
+  approved it." Negation changed the claim; this is a genuine error.
+- Source: "If the alarm sounds, the doors lock." Retelling: "If the doors
+  lock, the alarm sounds." The direction reversed; this is a genuine error.
+Apply these principles to WHAT SHE SAID, not these examples' facts.
 
 THE DETAILS:
 ${list}
 
 ${
     input.theRead
-      ? `THE READ she should have arrived at:
+      ? `ONE AUTHORED READ (a valid example, not an exhaustive answer key):
 """
 ${input.theRead}
 """
@@ -374,9 +488,25 @@ Judge her Read, from what she said and nothing else:
 - read_given: did she say anything analytical about what the argument is DOING
   -- its move, its flaw, what turns on it -- as opposed to retelling what it
   says? Retelling alone is not a Read.
-- read_matches: did what she said amount to the SAME move as THE READ above? A
-  different name for the same move is fine; missing the move is not. She is not
-  expected to use its words, and it may be shorter or messier than the key.
+- read_matches: is her analysis logically valid and specific to THIS stimulus?
+  Accept the authored example OR a different sound analytical observation.
+  There can be more than one genuine gap in an argument. A valid alternative
+  is not wrong merely because the authored example identifies another gap.
+  For a critique, identify the actual premise-to-conclusion link she challenges:
+  her proposed possibility must be consistent with the stated premises and
+  explain why they need not establish that conclusion. Reject a critique that
+  contradicts an explicit premise, invents a claim the author never made, or
+  raises a possibility unrelated to the support for the conclusion.
+  For an inference, her claim must follow from the stated information; being
+  merely possible is not enough. Retelling, a generic doubt, and an unsupported
+  assertion do not pass. Judge her words, not facts supplied by the example.
+  For instance, a causal conclusion drawn only from an association may be
+  challenged by a common cause OR by the reverse causal direction, when each
+  is consistent with the actual premises. These are different possible valid
+  critiques, not facts to assume about this stimulus.
+- read_reason: explain the specific valid link she identified, including when
+  it differs from the example. If invalid, explain the logical problem rather
+  than saying she failed to match the example. A missing Read cannot match.
 
 `
       : ""
@@ -397,7 +527,8 @@ How to use it, and how not to:
   appears here and not in what she said, it is not carried. The verdicts above
   are decided from her words alone.
 - Do NOT reward similarity to it or penalise difference from it. Matching its
-  phrasing closely is a warning sign, not a good score: that is reciting.
+  phrasing neither proves understanding nor proves reciting. Reciting is
+  measured against the ORIGINAL STIMULUS, never against this correct run.
 
 `
       : ""
@@ -421,7 +552,7 @@ How to use it, and how not to:
   found, the run coloured and in her own words.
 
 Reply with JSON only, no prose and no code fence:
-{"verdicts":[{"id":1,"carried":true}],"reciting":false,"reciting_reason":"",
+{"verdicts":[{"id":1,"carried":true,"evidence_ids":[1],"reason":"","material":true,"material_reason":"This fact changes the claim."}],"uncertain_details":[],"reciting":false,"reciting_reason":"",
 "listing":false,"listing_reason":"","coloured":true,"colour_specific":true,
 "big_misses":[],"next_time":""${
     input.theRead ? ',\n"read_given":true,"read_matches":true,"read_reason":""' : ""
@@ -441,7 +572,54 @@ Return exactly one verdict for every id from 1 to ${input.entries.length}.`;
 
 // --- Reading the answer ------------------------------------------------------
 
+/** The same conditional output contract for gateway and direct judge calls.
+ * Exact array lengths and id enums constrain shape; the audited parser still
+ * checks missing/duplicate ids and evidence, which JSON Schema cannot prove.
+ */
+export function buildJudgeResponseSchema(input: {
+  entries: Pick<JudgeEntry, "id">[];
+  spoken?: string;
+  theRead?: string | null;
+  lines?: { n: number }[];
+}): Record<string, unknown> {
+  const ids = [...new Set(input.entries.map((entry) => entry.id))];
+  if (!ids.length) throw new Error("judge response schema needs at least one Detail");
+  const object = (properties: Record<string, unknown>) => ({
+    type: "object", properties, required: Object.keys(properties), additionalProperties: false,
+  });
+  const text = { type: "string" };
+  const flag = { type: "boolean" };
+  const evidenceUnits = input.spoken === undefined ? undefined : buildEvidenceUnits(input.spoken);
+  const evidenceProperties = evidenceUnits === undefined ? { evidence: text } : {
+    // Keep nested generation constraints small. The server validates the ids
+    // against the actual transcript units before reconstructing any quotation.
+    evidence_ids: { type: "array", items: { type: "integer" } },
+  };
+  const verdict = object({
+    id: { type: "integer", enum: ids }, carried: flag, ...evidenceProperties, reason: text,
+    material: flag, material_reason: text,
+  });
+  const properties: Record<string, unknown> = {
+    verdicts: { type: "array", items: verdict, minItems: ids.length, maxItems: ids.length },
+    uncertain_details: { type: "array", items: { type: "integer", enum: ids },
+      minItems: 0, maxItems: ids.length },
+    reciting: flag, reciting_reason: text, listing: flag, listing_reason: text,
+    coloured: flag, colour_specific: flag,
+    big_misses: { type: "array", items: text, minItems: 0, maxItems: 3 }, next_time: text,
+  };
+  if (input.theRead) Object.assign(properties, { read_given: flag, read_matches: flag, read_reason: text });
+  if (input.lines?.length) {
+    const lineIds = [...new Set(input.lines.map((line) => line.n))];
+    const assessment = { verdict: { type: "string", enum: ["strong", "partial", "thin", "skipped"] }, note: text };
+    properties.lines = { type: "array", items: object({ n: { type: "integer", enum: lineIds }, ...assessment }),
+      minItems: lineIds.length, maxItems: lineIds.length };
+    properties.recall = object(assessment);
+  }
+  return object(properties);
+}
+
 export interface JudgeReply {
+  detailEvidence?: Record<number, { evidence: string; reason: string; material?: boolean; material_reason?: string }>;
   verdicts: Record<number, boolean>;
   reciting: boolean;
   recitingReason: string;
@@ -529,19 +707,89 @@ export function extractJson(raw: string): unknown {
   throw new JudgeReplyError("JSON object never closed");
 }
 
-export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply {
+/** Reconstruct quotations from validated unit ids, never model-written text. */
+export function normalizeJudgeEvidence(raw: string, spoken: string): string {
   const obj = extractJson(raw) as Record<string, unknown>;
+  if (!Array.isArray(obj.verdicts)) return JSON.stringify(obj);
+  const units = new Map(buildEvidenceUnits(spoken).map((unit) => [unit.id, unit.text]));
+  for (const row of obj.verdicts) {
+    if (!row || typeof row !== "object" || Array.isArray(row)) continue;
+    const r = row as Record<string, unknown>;
+    if (r.evidence_ids === undefined) continue;
+    if (!Array.isArray(r.evidence_ids) || r.evidence_ids.some((id) =>
+      typeof id !== "number" || !Number.isInteger(id) || !units.has(id)) ||
+      new Set(r.evidence_ids).size !== r.evidence_ids.length) {
+      throw new JudgeReplyError(`Detail ${r.id} has invalid student evidence ids`);
+    }
+    r.evidence = r.evidence_ids.map((id) => units.get(id as number)!).join("\n");
+  }
+  return JSON.stringify(obj);
+}
+
+export function parseJudgeReply(raw: string, expectedIds: number[], spoken?: string): JudgeReply {
+  const obj = extractJson(spoken === undefined ? raw : normalizeJudgeEvidence(raw, spoken)) as Record<string, unknown>;
   const rows = obj.verdicts;
   if (!Array.isArray(rows)) throw new JudgeReplyError("reply has no verdicts array");
+  if (spoken !== undefined && obj.uncertain_details !== undefined) {
+    const uncertain = obj.uncertain_details;
+    if (!Array.isArray(uncertain) || uncertain.some((id) =>
+      typeof id !== "number" || !Number.isInteger(id) || !expectedIds.includes(id))) {
+      throw new JudgeReplyError("malformed uncertain_details");
+    }
+    if (uncertain.length) {
+      throw new JudgeReplyError(`transcript meaning is uncertain for Details ${uncertain.join(", ")}`);
+    }
+  }
 
   const verdicts: Record<number, boolean> = {};
+  const detailEvidence: NonNullable<JudgeReply["detailEvidence"]> = {};
+  const normalizeEvidence = (text: string) => text.normalize("NFKC").toLowerCase()
+    .replace(/[\u2018\u2019]/g, "'").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  const studentWords = spoken === undefined ? undefined : ` ${normalizeEvidence(spoken)} `;
   for (const row of rows) {
+    if (studentWords !== undefined && (row === null || typeof row !== "object" || Array.isArray(row))) {
+      throw new JudgeReplyError("verdict row is not an object");
+    }
     const r = row as Record<string, unknown>;
     const id = typeof r.id === "number" ? r.id : Number(r.id);
     if (!Number.isFinite(id)) continue;
+    if (studentWords !== undefined && expectedIds.includes(id)) {
+      if (id in verdicts) throw new JudgeReplyError(`Detail ${id} has duplicate verdicts`);
+      if (typeof r.carried !== "boolean") throw new JudgeReplyError(`Detail ${id} has no boolean verdict`);
+      if (typeof r.evidence !== "string" || typeof r.reason !== "string") {
+        throw new JudgeReplyError(`Detail ${id} has no evidence audit`);
+      }
+      const evidence = normalizeEvidence(r.evidence);
+      if (r.carried === true && !evidence) {
+        throw new JudgeReplyError(`Detail ${id} was credited without student evidence`);
+      }
+      if (evidence && r.evidence_ids === undefined && !studentWords.includes(` ${evidence} `)) {
+        throw new JudgeReplyError(`Detail ${id} quotes words outside the student's transcript`);
+      }
+      if (r.carried !== true && !r.reason.trim()) {
+        throw new JudgeReplyError(`Detail ${id} was deducted without a meaning explanation`);
+      }
+      if (r.material !== undefined && typeof r.material !== "boolean") {
+        throw new JudgeReplyError(`Detail ${id} has invalid material classification`);
+      }
+      if (r.evidence_ids !== undefined && (typeof r.material !== "boolean" || typeof r.material_reason !== "string")) {
+        throw new JudgeReplyError(`Detail ${id} has no material audit`);
+      }
+      if (r.material === false && (typeof r.material_reason !== "string" || !r.material_reason.trim())) {
+        throw new JudgeReplyError(`Detail ${id} was called incidental without an explanation`);
+      }
+    }
+    if (expectedIds.includes(id) && typeof r.evidence === "string" && typeof r.reason === "string") {
+      detailEvidence[id] = { evidence: r.evidence, reason: r.reason,
+        material: r.material !== false,
+        ...(typeof r.material_reason === "string" ? { material_reason: r.material_reason } : {}) };
+    }
     verdicts[id] = r.carried === true;
   }
   const missingIds = expectedIds.filter((id) => !(id in verdicts));
+  if (studentWords !== undefined && missingIds.length) {
+    throw new JudgeReplyError(`missing verdicts for Details ${missingIds.join(", ")}`);
+  }
   const flag = (k: string) => obj[k] === true;
   const reason = (k: string) => (typeof obj[k] === "string" ? (obj[k] as string) : "");
 
@@ -560,6 +808,7 @@ export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply 
 
   return {
     verdicts,
+    detailEvidence,
     reciting: flag("reciting"),
     recitingReason: reason("reciting_reason"),
     listing: flag("listing"),
@@ -607,6 +856,16 @@ export interface LineGrade {
 }
 
 export interface StimulusGrade {
+  meaning_key_version?: string | null;
+  meaning_key_status?: "reviewed" | "fallback";
+  /** Meaning is a separate metric; factual coverage and its band stay intact. */
+  meaning_percent?: number | null;
+  meaning_carried?: number;
+  meaning_total?: number;
+  incidental_misses?: string[];
+  /** Student-only quotations and explanations returned by this judge call. */
+  detail_evidence?: Record<number, { text: string; carried: boolean; evidence: string; reason: string;
+    material?: boolean; material_reason?: string }>;
   carried: number;
   total: number;
   /** Whole-number percent over the stimulus's OWN Details. */
@@ -644,12 +903,41 @@ export function gradeStimulus(
   /** Her run cut into lines, when it could be. Feedback only, never scored. */
   lineSpans: { n: number; text: string; spoken: string; startMs?: number; endMs?: number }[] = [],
 ): StimulusGrade {
-  const own = entries.filter((e) => !e.decoy);
+  // Semantic aliases require an explicit, reviewed coverageGroup. Otherwise only
+  // equivalent wording (apart from case/spacing) on the SAME line is deduped.
+  // Identical generic labels on different lines may name different claims.
+  const seen = new Map<string, JudgeEntry>();
+  const own = entries.filter((e) => {
+    if (e.decoy) return false;
+    if (!e.coverageGroup && e.line === undefined) return true;
+    const key = e.coverageGroup
+      ? `reviewed-group:${e.coverageGroup}`
+      : `exact:${e.line}:${e.text.trim().toLowerCase().replace(/\s+/g, " ")}`;
+    const previous = seen.get(key);
+    if (previous) {
+      if (reply.verdicts[previous.id] !== reply.verdicts[e.id]) {
+        throw new JudgeReplyError("equivalent Details received conflicting verdicts");
+      }
+      return false;
+    }
+    seen.set(key, e);
+    return true;
+  });
   const carriedEntries = own.filter((e) => reply.verdicts[e.id] === true);
   const total = own.length;
   // Guard the empty stimulus rather than dividing by zero into NaN, which
   // renders as a blank band and looks like a rendering bug.
   const percent = total === 0 ? 0 : Math.round((carriedEntries.length / total) * 100);
+  const isMaterial = (entry: JudgeEntry) => {
+    const aliases = entry.coverageGroup
+      ? entries.filter((e) => !e.decoy && e.coverageGroup === entry.coverageGroup)
+      : [entry];
+    // Only reviewed source metadata can change the denominator. Model audit
+    // fields, absent legacy data and conflicting aliases cannot lower it.
+    return aliases.some((e) => e.reviewedMaterial !== false);
+  };
+  const materialEntries = own.filter(isMaterial);
+  const meaningCarried = materialEntries.filter((e) => reply.verdicts[e.id] === true).length;
 
   const lines: LineGrade[] = lineSpans.map((span) => {
     const forLine = own.filter((e) => e.line === span.n);
@@ -669,6 +957,20 @@ export function gradeStimulus(
   });
 
   return {
+    meaning_key_version: own.length && own.every(e => e.materialityKeyStatus === "reviewed" && e.materialityKeyVersion === own[0].materialityKeyVersion)
+      ? own[0].materialityKeyVersion ?? null : null,
+    meaning_key_status: own.length && own.every(e => e.materialityKeyStatus === "reviewed") ? "reviewed" : "fallback",
+    meaning_percent: materialEntries.length ? Math.round(meaningCarried / materialEntries.length * 100) : null,
+    meaning_carried: meaningCarried,
+    meaning_total: materialEntries.length,
+    incidental_misses: own.filter((e) => !isMaterial(e) && reply.verdicts[e.id] !== true).map((e) => e.text),
+    detail_evidence: Object.fromEntries(entries.filter((e) => !e.decoy && reply.detailEvidence?.[e.id])
+      .map((e) => [e.id, { text: e.text, carried: reply.verdicts[e.id] === true,
+        ...reply.detailEvidence![e.id],
+        model_material: reply.detailEvidence![e.id].material,
+        model_material_reason: reply.detailEvidence![e.id].material_reason,
+        material: isMaterial(e),
+        material_reason: e.reviewedMaterialReason ?? "No reviewed source-only key; conservatively essential." }])),
     carried: carriedEntries.length,
     total,
     percent,

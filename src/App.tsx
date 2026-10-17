@@ -119,14 +119,12 @@ const ConditionalPractice = safeLazy(() => import("./features/activity-centre/co
 const ConditionalPracticeLab = safeLazy(() => import("./features/activity-centre/conditionals/ConditionalPractice").then(module => ({ default: module.ConditionalPracticeLab })));
 const ConditionalIndicatorsRefresher = safeLazy(() => import("./features/conditional-refresher/ConditionalIndicatorsRefresher"));
 const UnlessDrillPage = safeLazy(() => import("./features/quick-drills/unless-drill/UnlessDrillPage"));
-const ActivitySections = safeLazy(() => import("./pages/ActivitySections"));
 const ActivityRunner = safeLazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const TeacherWorkspaceShell = safeLazy(() => import("./pages/teacher/shell/TeacherWorkspaceShell"));
 const TeacherReadingCenter = safeLazy(() => import("./pages/teacher/tools/TeacherReadingCenter"));
 const ReadingCenterApp = safeLazy(() => import("./features/reading-center"));
-import ReadingCenterGate from '@/components/ReadingCenterGate';
 import MyWorkGate from '@/components/MyWorkGate';
 const DeskTodaySurface = safeLazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
 const TeacherPayments = safeLazy(() => import("./pages/teacher/shell/TeacherPayments"));
@@ -170,6 +168,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import {
   ActivityAssignmentGate,
   ActivityLibraryGate,
+  ReadingCenterRrcGate,
   OwnedWorkReviewGate,
   DrillAssignmentGate,
   PracticeTestRunGate,
@@ -485,7 +484,14 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Navigate to="/classroom" replace />} />
 
-                  <Route path="/reading-center/*" element={<ReadingCenterGate><ReadingCenterApp /></ReadingCenterGate>} />
+                  <Route path="/reading-center/rrc/attempt/:assignmentId" element={
+                    <ActivityAssignmentGate rrcOnly>
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ActivityRunner />
+                      </React.Suspense>
+                    </ActivityAssignmentGate>
+                  } />
+                  <Route path="/reading-center/*" element={<ReadingCenterApp />} />
                   {/* Full-screen takeovers: actual LSAT question-doing + activity
                       runner stay OUTSIDE the persistent student shell. */}
                   <Route path="/drill" element={
@@ -561,11 +567,9 @@ const App = () => {
                       a student can pick a section without having been assigned
                       the library. Must sit before :assignmentId. */}
                   <Route path="/activities/sections" element={
-                    <ActivityLibraryGate mode="section-library">
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <ActivitySections />
-                      </React.Suspense>
-                    </ActivityLibraryGate>
+                    <ReadingCenterRrcGate>
+                      <RedirectWithSearch to="/reading-center/rrc" />
+                    </ReadingCenterRrcGate>
                   } />
                   <Route path="/activities/:assignmentId" element={
                     <ActivityAssignmentGate>

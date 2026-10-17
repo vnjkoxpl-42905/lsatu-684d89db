@@ -1,39 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useReadingCenterAccess } from "@/hooks/useReadingCenterAccess";
 import { useDeleteTag, usePreferences, useSaveTag, useTags } from "../hooks/useReadingCenterData";
-import { RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_TAGS_PATH, rcTagPath } from "../lib/routes";
+import { RC_HOME_PATH, RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_RRC_PATH, RC_TAGS_PATH, rcTagPath } from "../lib/routes";
 import type { ReaderTheme, UserTag } from "../lib/types";
 import { Icon, MIcon, type IconName } from "./Icon";
 import { ConfirmDialog, PopMenu, TAG_COLORS, TagColorPicker, TagEditDialog, TagGlyph } from "./Tags";
 import { AddTextScreen } from "./AddText";
 
-/** Spreeder themes the whole app from the reading theme. */
-export function useAppTheme(): void {
+/** The activity workspace stays light; the immersive reader keeps saved appearance. */
+export function useAppTheme(reader = false): void {
   const theme: ReaderTheme = usePreferences().data?.theme ?? "system";
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const apply = () => {
-      const resolved = theme === "system" ? (mq.matches ? "dark" : "light") : theme;
+      const resolved = theme === "high_contrast" ? theme : !reader ? "light"
+        : theme === "system" ? (mq.matches ? "dark" : "light") : theme;
       const root = document.getElementById("reading-center-root");
       if (root) root.dataset.rcTheme = resolved;
     };
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
-  }, [theme]);
+  }, [theme, reader]);
 }
 
 const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
-  { to: RC_LIBRARY_PATH, label: "My Library", icon: "book", end: true },
+  { to: RC_HOME_PATH, label: "Dashboard", icon: "apps", end: true },
+  { to: RC_RRC_PATH, label: "LR Recall", icon: "create", end: true },
+  { to: RC_LIBRARY_PATH, label: "Speed Reading", icon: "book", end: true },
   { to: RC_TAGS_PATH, label: "Tags", icon: "pricetag" },
   { to: RC_PROFILE_PATH, label: "Reading Progress", icon: "statsChart" },
 ];
 
-export function AppShell(): React.ReactElement {
+export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.ReactElement {
   const [narrow, setNarrow] = useState(() => window.innerWidth < 768);
   const [navOpen, setNavOpen] = useState(() => window.innerWidth >= 768);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const drawer = useRef<HTMLElement>(null);
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
     const change = () => { setNarrow(media.matches); setNavOpen(!media.matches); };
@@ -45,18 +51,45 @@ export function AppShell(): React.ReactElement {
   const [screen, setScreen] = useState<"paste" | "import" | null>(null);
   const [creatingTag, setCreatingTag] = useState(false);
   const { is_admin } = useUserPermissions();
+  const access = useReadingCenterAccess(rrcOnly && !is_admin);
+  const fullAccess = !rrcOnly || is_admin || access.allowed;
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const onTags = pathname.startsWith(RC_TAGS_PATH);
   useEffect(() => { if (narrow) setNavOpen(false); }, [pathname, narrow]);
-  // Spreeder collapses the sidenav to a 90px icon rail rather than hiding it.
-  const rail = !navOpen;
+  useEffect(() => {
+    if (!narrow || !navOpen) return;
+    const controls = () => Array.from(drawer.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled])') ?? []);
+    controls()[0]?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { event.preventDefault(); setNavOpen(false); }
+      if (event.key !== 'Tab') return;
+      const items = controls();
+      const first = items[0], last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => { window.removeEventListener('keydown', handleKey); menuButton.current?.focus(); };
+  }, [narrow, navOpen]);
+  // Small screens give the activity the full stage; navigation opens over it.
+  const rail = !narrow && !navOpen;
 
   return (
-    <div className="relative flex min-h-screen" style={{ background: "var(--rc-page)", color: "var(--rc-text)" }}>
+    <div className="relative flex min-h-screen flex-col md:flex-row" style={{ background: "var(--rc-page)", color: "var(--rc-text)" }}>
+      {narrow && <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-3 border-b px-3" style={{ background: "var(--rc-sidenav)", color: "var(--rc-nav-text)" }}>
+        <button ref={menuButton} type="button" aria-label="Open Reading Center menu" aria-expanded={navOpen} aria-controls="reading-center-navigation" onClick={() => setNavOpen(true)} className="flex h-11 w-11 items-center justify-center rounded-lg hover:bg-[var(--rc-nav-hover)]">
+          <Icon name="menu" size={24} />
+        </button>
+        <span className="text-base font-semibold">Reading Center</span>
+      </header>}
       {narrow && navOpen && <button type="button" aria-label="Close menu" onClick={() => setNavOpen(false)} className="fixed inset-0 z-30 bg-black/40" />}
-      {narrow && navOpen && <div className="w-[90px] shrink-0" />}
-      <aside
+      {(!narrow || navOpen) && <aside
+        ref={drawer}
+        id="reading-center-navigation"
+        role={narrow ? 'dialog' : undefined}
+        aria-modal={narrow ? true : undefined}
+        aria-label={narrow ? 'Reading Center navigation' : undefined}
         className={`${narrow && navOpen ? "fixed left-0 z-40" : "sticky"} top-0 h-screen shrink-0 overflow-y-auto transition-[width] duration-200`}
         style={{ width: rail ? 90 : 230, background: "var(--rc-sidenav)", borderRight: "0.8px solid rgba(128,128,128,.15)" }}
       >
@@ -67,7 +100,7 @@ export function AppShell(): React.ReactElement {
           {narrow && <button type="button" aria-label={rail ? "Show menu" : "Hide menu"} onClick={() => setNavOpen((o) => !o)} className="ml-[15px] flex h-8 w-8 shrink-0 items-center justify-center rounded-full hover:bg-[rgba(158,158,158,.2)]" style={{ color: "var(--rc-nav-text)" }}>
             <Icon name="menu" size={24} />
           </button>}
-          <NavLink to={RC_LIBRARY_PATH} aria-label="Reading Center home" title="Reading Center home" onClick={() => { if (narrow) setNavOpen(false); }} className={`${narrow ? "ml-2.5" : "px-5"} flex min-h-11 items-center text-[19px] font-semibold leading-tight tracking-tight`} style={{ color: "var(--rc-nav-text)" }}>
+          <NavLink to={fullAccess ? RC_HOME_PATH : RC_RRC_PATH} aria-label="Reading Center home" title="Reading Center home" onClick={() => { if (narrow) setNavOpen(false); }} className={`${narrow ? "ml-2.5" : "px-5"} flex min-h-11 items-center text-[19px] font-semibold leading-tight tracking-tight`} style={{ color: "var(--rc-nav-text)" }}>
             {rail ? <Icon name="book" size={24} /> : "Reading Center"}
           </NavLink>
         </div>
@@ -75,7 +108,7 @@ export function AppShell(): React.ReactElement {
           <TagsNav rail={rail} onBack={() => navigate(RC_LIBRARY_PATH)} onCreate={() => setCreatingTag(true)} />
         ) : (
           <>
-            <div className="relative px-5 pt-[10px]">
+            {fullAccess && <div className="relative px-5 pt-[10px]">
               <button
                 type="button"
                 aria-label="Add Text"
@@ -96,9 +129,9 @@ export function AppShell(): React.ReactElement {
                   }}
                 />
               )}
-            </div>
+            </div>}
             <nav aria-label="Main" className="mt-[22px] space-y-1 px-5">
-              {NAV.map((n) => (
+              {NAV.filter(n => fullAccess || n.to === RC_RRC_PATH).map((n) => (
                 <NavLink
                   key={n.to}
                   to={n.to}
@@ -124,7 +157,7 @@ export function AppShell(): React.ReactElement {
             </nav>
           </>
         )}
-      </aside>
+      </aside>}
       <div className="min-w-0 flex-1">
         <Outlet />
       </div>

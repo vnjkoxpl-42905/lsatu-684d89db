@@ -6,7 +6,7 @@ import { emptyDraft, emptyProgress, newRun, parseConditionalProgress, type Condi
 import { conditionalOpeningEditionKey } from './openingRevision';
 import type { ResolvedConditionalAssignment } from './assignments';
 
-const state = vi.hoisted(() => ({ progress: null as ConditionalProgress | null, saved: null as ConditionalProgress | null, status: 'saved', updateCalls: 0 }));
+const state = vi.hoisted(() => ({ progress: null as ConditionalProgress | null, saved: null as ConditionalProgress | null, status: 'saved', error: '', retryCalls: 0, updateCalls: 0 }));
 vi.mock('./useConditionalProgress', async () => {
   const { useCallback, useReducer } = await import('react');
   return { useConditionalProgress: () => {
@@ -17,7 +17,7 @@ vi.mock('./useConditionalProgress', async () => {
       if (state.status === 'saved') state.saved = state.progress;
       refresh();
     }, []);
-    return { progress: state.progress, savedProgress: state.saved, status: state.status, error: '', retry: vi.fn(), update };
+    return { progress: state.progress, savedProgress: state.saved, status: state.status, error: state.error, retry: vi.fn(() => { state.retryCalls++; }), update };
   } };
 });
 import { ConditionalBootcampRoutes } from './routes';
@@ -44,7 +44,7 @@ function finishPractice(unitId: string, difficulty: ConditionalAttempt['difficul
   const run = newRun(unit.drills[difficulty].map(question => question.id));
   state.progress!.runs[`practice:${difficulty}:${unit.id}`] = { ...run, index: run.questionIds.length, finished: true };
 }
-beforeEach(() => { state.progress = emptyProgress(); state.saved = state.progress; state.status = 'saved'; state.updateCalls = 0; });
+beforeEach(() => { state.progress = emptyProgress(); state.saved = state.progress; state.status = 'saved'; state.error = ''; state.retryCalls = 0; state.updateCalls = 0; });
 afterEach(cleanup);
 
 it('lands on one current lesson without a curriculum map or teaching rail', () => {
@@ -117,9 +117,28 @@ it('allows teacher preview but uses the same single-work entry', () => {
   expect(screen.getByRole('link', { name: 'Begin lesson' }).getAttribute('href')).toContain('/lessons/group-3');
   expect(document.querySelector('.cb-sequence')).toBeNull();
 });
-it('opens an accessible reference drawer for the current skill', () => {
-  mount(`${base}/activities/group-2`, [skill()]); fireEvent.click(screen.getByRole('button', { name: 'Open reference' }));
-  expect(screen.getByRole('dialog')).toBeTruthy();
+it('keeps destinations in one course navigation and preserves assignment context', () => {
+  const query = '?assignment=skill&start=group-2&unit=group-2&area=translation&level=advanced&path=skill&pathLevel=advanced&phase=conditional&returnTo=%2Fclassroom';
+  mount(`${base}/activities/group-2${query}`, [skill()]);
+  const nav = screen.getByRole('navigation', { name: 'Conditional course' });
+  expect(within(nav).getByRole('link', { name: 'Course overview' })).toHaveAttribute('href', `${base}${query}`);
+  expect(within(nav).getByRole('link', { name: 'Review attempts' })).toHaveAttribute('href', `${base}/review${query}`);
+  expect(within(nav).getByRole('link', { name: 'Journal' })).toHaveAttribute('href', `${base}/journal${query}`);
+  expect(within(nav).getByRole('link', { name: 'Reference' })).toHaveAttribute('href', `${base}/reference${query}`);
+  expect(screen.queryByRole('link', { name: 'Assigned work' })).toBeNull();
+  expect(screen.queryByRole('link', { name: 'Drill Lab' })).toBeNull();
+  expect(document.querySelector('.cb-workspace-bar')!.querySelectorAll('a,button')).toHaveLength(0);
+  fireEvent.click(within(nav).getByRole('link', { name: 'Reference' }));
+  expect(screen.getByRole('heading', { name: 'Your conditional reference.' })).toBeVisible();
+  expect(screen.getByRole('link', { name: 'Reference' })).toHaveAttribute('aria-current', 'page');
+});
+
+it.each([false, true])('marks the preserved lab alias as practice for admin=%s', isAdmin => {
+  mount(`${base}/opening-labs?assignment=course`, [course], isAdmin);
+  const nav = screen.getByRole('navigation', { name: 'Conditional course' });
+  expect(within(nav).getByRole('link', { name: 'Practice drills' })).toHaveAttribute('aria-current', 'page');
+  expect(within(nav).getByRole('link', { name: 'Practice drills' })).toHaveAttribute('href', `${base}/opening-practice?assignment=course`);
+  expect(within(nav).getByRole('link', { name: 'Lessons' })).not.toHaveAttribute('aria-current');
 });
 
 it('resolves a legacy direct link to its matching real assignment', () => {
@@ -565,7 +584,6 @@ it.each(['/lessons', '/opening/mixed-practice?run=1', '/opening-practice', '/ope
 
 it('saves mixed practice progress without recording it as assigned work', () => {
   mount(`${base}/opening/mixed-practice?run=1`);
-  fireEvent.click(screen.getByRole('button', { name: 'Begin practice' }));
   fireEvent.click(screen.getByRole('button', { name: 'Every swimmer training before dawn' }));
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   expect(state.progress!.course?.['mixed-practice']).toMatchObject({ status: 'started', done: 1, total: 24 });
@@ -591,4 +609,14 @@ it.each(['/opening/foundation-practice', '/opening/foundation-practice?run=1'])(
   expect(screen.getByText('Assigned work saved to your account')).toBeVisible();
   expect(state.progress!.lessons).toEqual({});
   if (path.endsWith('run=1')) expect(state.progress!.course?.['foundation-practice']).toMatchObject({ status: 'started', done: 0 });
+});
+
+it('keeps save errors and retry available after navigation consolidation', () => {
+  state.status = 'error';
+  state.error = 'Your changes could not be saved.';
+  mount(`${base}/opening/foundation-practice?run=1`);
+  expect(screen.getByRole('status')).toHaveTextContent('Assigned work is not saved');
+  expect(screen.getByRole('alert')).toHaveTextContent('Your changes could not be saved.');
+  fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+  expect(state.retryCalls).toBe(1);
 });

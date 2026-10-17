@@ -68,18 +68,13 @@ describe("finding the read through the transcript", () => {
     expect(carries(out.kept, "consultant proposes reassign employees")).toBe(false);
   });
 
-  it("cuts a window, so a word or two of hers can go with it, or stay behind", () => {
-    // Stated because it is the shape of the thing rather than a bug in it. The
-    // span is chosen at the chunk's length or a third longer, whichever scores
-    // best, and neither is a sentence boundary. A read interrupted mid-way can
-    // leave its last two words in; one that starts late can take her first two
-    // with it. The corpus aligner the Details were calibrated against cuts the
-    // same way, so the two ears are wrong by the same couple of words.
+  it("keeps the adjacent retelling when a clipped read ends at a sentence boundary", () => {
+    // A fixed-width alignment used to consume the first words of her retell.
+    // The ASR sentence boundary identifies the complete read without them.
     const clipped =
       "consultant proposes that we reassign staff so that all employees are doing both what they like to do and what they do well.";
     const out = stripVerbatimReads(spoken(`${clipped} ${HER_OWN}`), [CHUNK]);
-    const lost = HER_OWN.split(" ").filter((w) => !out.kept.includes(w)).length;
-    expect(lost).toBeLessThanOrEqual(3);
+    expect(out.kept.join(" ")).toBe(HER_OWN);
   });
 
   it("leaves a genuine retelling alone, which is the regression that matters", () => {

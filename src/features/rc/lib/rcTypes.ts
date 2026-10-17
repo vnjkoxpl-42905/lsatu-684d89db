@@ -281,6 +281,8 @@ export function rcHighlightColor(color: string | undefined): string {
   return RC_HIGHLIGHT_COLORS[color as RcHighlightColor] ?? RC_HIGHLIGHT_COLORS.yellow;
 }
 
+export type RcPassageState = 'not_attempted' | 'partial' | 'skipped_only' | 'completed';
+
 export interface RcQuestionHistoryEntry {
   questionId: number;
   attempts: number;
@@ -288,6 +290,15 @@ export interface RcQuestionHistoryEntry {
   incorrectOnLastTake: boolean;
   incorrectCount: number;
   lastSeenAt: string | null;
+  answered?: boolean;
+  firstEverCorrect?: boolean | null;
+  firstTakeCorrect?: boolean | null;
+  unansweredOnFirstTake?: boolean;
+  everCorrect?: boolean;
+  lastFirstTakeIncorrect?: boolean;
+  reviewCorrected?: boolean;
+  completedAnswered?: boolean;
+  completedAnsweredSessionIds?: string[];
 }
 
 export type RcQuestionHistory = Map<number, RcQuestionHistoryEntry>;
