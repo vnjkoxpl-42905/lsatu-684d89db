@@ -172,7 +172,7 @@ function toolError(error) {
     text = "LSAT U write failed";
   }
   return {
-    content: [{ type: "text", text }],
+    content: [Object.freeze({ type: "text", text })],
     isError: true
   };
 }
