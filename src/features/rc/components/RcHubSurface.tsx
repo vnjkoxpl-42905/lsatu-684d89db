@@ -5,6 +5,7 @@ import { loadAllIndexPassages, loadPassages } from '../lib/rcBank';
 import { RcMarkdown } from './RcMarkdown';
 import {
   RC_ADAPTIVE_LABEL,
+  formatPassageStatusLabel,
   passageStatus,
   selectPassages,
   type RcIndexPassageWithPt,
@@ -596,9 +597,9 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       return false;
     if (filters.difficulties.length && (p.difficulty == null || !filters.difficulties.includes(p.difficulty)))
       return false;
-    if (filters.status === 'fresh' && status.attempted) return false;
+    if (filters.status === 'fresh' && status.state !== 'not_attempted') return false;
     if (filters.status === 'incorrect_before' && !status.everIncorrect) return false;
-    if (filters.status === 'incorrect_last' && !status.incorrectOnLastTake) return false;
+    if (filters.status === 'incorrect_last' && !status.lastFirstTakeIncorrect) return false;
     return true;
   }
 
@@ -942,7 +943,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                         {p.format && <span>{p.format.startsWith('Standard') ? 'Single passage' : p.format.startsWith('Comparative') ? 'Comparative' : p.format}</span>}
                         <span>{plural(p.questionCount, 'question')}</span>
                         {p.difficulty != null && <span>Difficulty {p.difficulty}/5</span>}
-                        <span>{!status.attempted ? 'Not attempted' : status.missed > 0 ? `${status.missed} missed` : 'Completed'}</span>
+                        <span>{formatPassageStatusLabel(status)}</span>
                       </div>
                     </div>
                     <button type="button" className={`rc-chip${picked ? ' rc-active' : ''}`}

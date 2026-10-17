@@ -20,6 +20,7 @@ import type {
   RcHighlight,
   RcLetter,
   RcQuestionHistory,
+  RcQuestionHistoryEntry,
   RcSessionStatus,
 } from '../lib/rcTypes';
 import { readRcDraftAnswers } from '../lib/rcTypes';
@@ -370,41 +371,214 @@ async function writeAttemptFlag(
   if (!data?.length || data.some((row: { user_id: string; flagged: boolean }) => row.user_id !== userId || row.flagged !== flagged)) throw new Error('The flag save could not be acknowledged.');
 }
 
+const HISTORY_PAGE_SIZE = 1000;
+
+interface RcHistorySessionRow {
+  id: string;
+  user_id?: string;
+  status: RcSessionStatus | string;
+  excluded_from_analytics: boolean;
+}
+
+interface RcHistoryAttemptRow {
+  id?: string;
+  user_id?: string;
+  session_id?: string;
+  question_id: number;
+  passage_id?: number;
+  selected?: RcLetter | string | null;
+  is_correct: boolean | null;
+  is_first_attempt?: boolean;
+  created_at: string;
+}
+
+async function fetchHistoryPages<T>(
+  readPage: (
+    from: number,
+    to: number,
+  ) => Promise<{ data: T[] | null; error: { code?: string; message?: string } | null }>,
+): Promise<T[]> {
+  const rows: T[] = [];
+  for (let offset = 0; ; offset += HISTORY_PAGE_SIZE) {
+    const { data, error } = await readPage(offset, offset + HISTORY_PAGE_SIZE - 1);
+    raise(error);
+    const batch = data ?? [];
+    rows.push(...batch);
+    if (batch.length < HISTORY_PAGE_SIZE) break;
+  }
+  return rows;
+}
+
 /**
  * Per-question aggregate over the student's whole history, used by the hub's
  * status filters and by adaptive selection.
+ *
+ * Uses a second paged query on `rc_drill_sessions` because the live schema has
+ * two foreign keys between `rc_attempts` and `rc_drill_sessions`
+ * (`rc_attempts_session_id_fkey` and `rc_attempts_session_owner_fk`), which
+ * causes an unqualified PostgREST embed to fail with `PGRST201`.
  */
 export async function getQuestionHistory(userId?: string): Promise<RcQuestionHistory> {
   const uid = userId ?? (await requireUserId());
-  const { data, error } = await rcDb
-    .from(RC_ATTEMPTS_TABLE)
-    .select('question_id, is_correct, created_at')
-    .eq('user_id', uid)
-    .order('created_at', { ascending: true });
-  raise(error);
+
+  const [sessionRows, attemptRows] = await Promise.all([
+    fetchHistoryPages<RcHistorySessionRow>(async (from, to) => {
+      const result = await rcDb
+        .from(RC_SESSIONS_TABLE)
+        .select('id, user_id, status, excluded_from_analytics')
+        .eq('user_id', uid)
+        .order('started_at', { ascending: true })
+        .order('id', { ascending: true })
+        .range(from, to);
+      return result as {
+        data: RcHistorySessionRow[] | null;
+        error: { code?: string; message?: string } | null;
+      };
+    }),
+    fetchHistoryPages<RcHistoryAttemptRow>(async (from, to) => {
+      const result = await rcDb
+        .from(RC_ATTEMPTS_TABLE)
+        .select(
+          'id, user_id, session_id, question_id, passage_id, selected, is_correct, is_first_attempt, created_at',
+        )
+        .eq('user_id', uid)
+        .order('created_at', { ascending: true })
+        .order('id', { ascending: true })
+        .range(from, to);
+      return result as {
+        data: RcHistoryAttemptRow[] | null;
+        error: { code?: string; message?: string } | null;
+      };
+    }),
+  ]);
+
+  const sessionsById = new Map<string, RcHistorySessionRow>();
+  for (const session of sessionRows) {
+    if (!session || typeof session.id !== 'string') continue;
+    if (session.user_id && session.user_id !== uid) continue;
+    sessionsById.set(session.id, session);
+  }
+
+  const seenAttemptIds = new Set<string>();
+  const validAttemptRows: RcHistoryAttemptRow[] = [];
+  for (const row of attemptRows) {
+    if (!row || typeof row.question_id !== 'number') continue;
+    if (row.user_id && row.user_id !== uid) continue;
+    if (row.id) {
+      if (seenAttemptIds.has(row.id)) continue;
+      seenAttemptIds.add(row.id);
+    }
+    validAttemptRows.push(row);
+  }
+
+  validAttemptRows.sort((a, b) => {
+    const ta = Date.parse(a.created_at);
+    const tb = Date.parse(b.created_at);
+    if (Number.isFinite(ta) && Number.isFinite(tb) && ta !== tb) return ta - tb;
+    if (a.created_at !== b.created_at) return a.created_at.localeCompare(b.created_at);
+    return String(a.id ?? '').localeCompare(String(b.id ?? ''));
+  });
 
   const history: RcQuestionHistory = new Map();
-  for (const row of (data ?? []) as Pick<
-    RcAttemptRow,
-    'question_id' | 'is_correct' | 'created_at'
-  >[]) {
-    const existing = history.get(row.question_id) ?? {
+  for (const row of validAttemptRows) {
+    const session = row.session_id ? sessionsById.get(row.session_id) : undefined;
+    if (row.session_id && !session) continue;
+    if (session?.excluded_from_analytics) continue;
+
+    const sessionStatus = session?.status ?? 'completed';
+    if (
+      sessionStatus !== 'completed' &&
+      sessionStatus !== 'in_progress' &&
+      sessionStatus !== 'abandoned'
+    ) {
+      continue;
+    }
+
+    const existing: RcQuestionHistoryEntry = history.get(row.question_id) ?? {
       questionId: row.question_id,
       attempts: 0,
       everIncorrect: false,
       incorrectOnLastTake: false,
       incorrectCount: 0,
-      lastSeenAt: null as string | null,
+      lastSeenAt: null,
+      answered: false,
+      firstEverCorrect: null,
+      firstTakeCorrect: null,
+      unansweredOnFirstTake: false,
+      everCorrect: false,
+      lastFirstTakeIncorrect: false,
+      reviewCorrected: false,
+      completedAnswered: false,
+      completedAnsweredSessionIds: [],
     };
-    const wrong = row.is_correct === false;
-    existing.attempts += 1;
-    if (wrong) {
-      existing.everIncorrect = true;
-      existing.incorrectCount += 1;
+
+    const isFirstTake = row.is_first_attempt !== false;
+    const hasSelected = typeof row.selected === 'string' && row.selected.trim().length > 0;
+    const hasGradedAnswer = hasSelected && typeof row.is_correct === 'boolean';
+
+    if (sessionStatus === 'abandoned') {
+      if (isFirstTake || existing.attempts === 0) {
+        existing.attempts += 1;
+      }
+      if (isFirstTake || !existing.lastSeenAt) {
+        existing.lastSeenAt = row.created_at;
+      }
+      history.set(row.question_id, existing);
+      continue;
     }
-    // rows arrive oldest first, so the last one seen decides the latest take
-    existing.incorrectOnLastTake = wrong;
-    existing.lastSeenAt = row.created_at;
+
+    if (isFirstTake) {
+      existing.attempts += 1;
+      existing.lastSeenAt = row.created_at;
+
+      if (!hasGradedAnswer) {
+        if (!existing.answered) {
+          existing.unansweredOnFirstTake = true;
+          existing.firstEverCorrect = null;
+          existing.firstTakeCorrect = null;
+          existing.lastFirstTakeIncorrect = false;
+          existing.incorrectOnLastTake = false;
+          existing.reviewCorrected = false;
+        }
+      } else {
+        const right = row.is_correct === true;
+        const wrong = row.is_correct === false;
+        existing.answered = true;
+        existing.unansweredOnFirstTake = false;
+        if (existing.firstEverCorrect === null) {
+          existing.firstEverCorrect = right;
+        }
+        existing.firstTakeCorrect = right;
+        existing.reviewCorrected = false;
+        if (right) {
+          existing.everCorrect = true;
+        }
+        if (wrong) {
+          existing.everIncorrect = true;
+          existing.incorrectCount += 1;
+        }
+        existing.lastFirstTakeIncorrect = wrong;
+        existing.incorrectOnLastTake = wrong;
+
+        if (sessionStatus === 'completed') {
+          existing.completedAnswered = true;
+          if (
+            row.session_id &&
+            !existing.completedAnsweredSessionIds!.includes(row.session_id)
+          ) {
+            existing.completedAnsweredSessionIds!.push(row.session_id);
+          }
+        }
+      }
+    } else {
+      if (!existing.lastSeenAt) {
+        existing.lastSeenAt = row.created_at;
+      }
+      if (hasGradedAnswer && existing.lastFirstTakeIncorrect) {
+        existing.reviewCorrected = row.is_correct === true;
+      }
+    }
+
     history.set(row.question_id, existing);
   }
   return history;

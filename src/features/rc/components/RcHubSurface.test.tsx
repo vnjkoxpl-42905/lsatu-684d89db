@@ -777,4 +777,73 @@ describe('RcHubSurface launch truth (#171)', () => {
     expect(progress.listSessions).not.toHaveBeenCalled();
     expect(navigate).not.toHaveBeenCalled();
   });
+
+  it('renders Skipped, Partial, and Not attempted states in the manual picker and filters Fresh and Incorrect on last try accurately', async () => {
+    const progress = await import('../api/rcProgress');
+    vi.mocked(progress.getQuestionHistory).mockResolvedValueOnce(
+      new Map([
+        [
+          11880,
+          {
+            questionId: 11880,
+            attempts: 1,
+            answered: false,
+            firstTakeCorrect: null,
+            unansweredOnFirstTake: true,
+            everCorrect: false,
+            everIncorrect: false,
+            incorrectOnLastTake: false,
+            lastFirstTakeIncorrect: false,
+            incorrectCount: 0,
+            reviewCorrected: false,
+            completedAnswered: false,
+            completedAnsweredSessionIds: [],
+            lastSeenAt: '2026-10-15T12:00:00Z',
+          },
+        ],
+        [
+          12010,
+          {
+            questionId: 12010,
+            attempts: 1,
+            answered: true,
+            firstTakeCorrect: false,
+            unansweredOnFirstTake: false,
+            everCorrect: false,
+            everIncorrect: true,
+            incorrectOnLastTake: true,
+            lastFirstTakeIncorrect: true,
+            incorrectCount: 1,
+            reviewCorrected: true,
+            completedAnswered: false,
+            completedAnsweredSessionIds: [],
+            lastSeenAt: '2026-10-15T12:05:00Z',
+          },
+        ],
+      ]),
+    );
+    mount('/classroom/drill?section=rc&count=1');
+    await screen.findByRole('button', { name: 'Choose passages' });
+    fireEvent.click(screen.getByRole('button', { name: 'Choose passages' }));
+
+    // Default status filter is Fresh: only passage 1202 (not_attempted) matches
+    const list = await screen.findByRole('list', { name: 'Available passages' });
+    expect(within(list).getAllByRole('listitem')).toHaveLength(1);
+    expect(within(list).getByText('Passage 1202')).toBeInTheDocument();
+    expect(within(list).getByText('Not attempted')).toBeInTheDocument();
+
+    // Switch filter to Any: shows Skipped (1188), Partial · 1 missed (1201), and Not attempted (1202)
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Any' }));
+    expect(within(list).getAllByRole('listitem')).toHaveLength(3);
+    expect(within(list).getByText('Skipped')).toBeInTheDocument();
+    expect(within(list).getByText('Partial · 1 missed')).toBeInTheDocument();
+    expect(within(list).getByText('Not attempted')).toBeInTheDocument();
+
+    // Switch filter to Incorrect on last try: passage 1201 still matches even though reviewCorrected is true
+    fireEvent.click(screen.getByRole('button', { name: 'Incorrect on last try' }));
+    expect(within(list).getAllByRole('listitem')).toHaveLength(1);
+    expect(within(list).getByText('Passage 1201')).toBeInTheDocument();
+  });
 });
+

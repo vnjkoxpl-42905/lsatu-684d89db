@@ -8,9 +8,12 @@
  */
 import type {
   RcIndexPassage,
+  RcPassageState,
   RcQuestionHistory,
   RcQuestionHistoryEntry,
 } from './rcTypes';
+
+export type { RcPassageState };
 
 export type RcStatusFilter = 'any' | 'fresh' | 'incorrect_before' | 'incorrect_last';
 
@@ -33,12 +36,50 @@ export const RC_ADAPTIVE_LABEL = 'Adaptive: fresh passages near your level.';
 
 /** Per-passage roll-up of the student's history across its questions. */
 export interface RcPassageStatus {
+  state: RcPassageState;
   attempted: boolean;
   everIncorrect: boolean;
   incorrectOnLastTake: boolean;
+  lastFirstTakeIncorrect: boolean;
+  reviewCorrected: boolean;
   attempts: number;
+  answeredCount: number;
+  questionCount: number;
   lastSeenAt: number | null;
   missed: number;
+}
+
+function isEntryAnswered(entry: RcQuestionHistoryEntry): boolean {
+  if (typeof entry.answered === 'boolean') return entry.answered;
+  if (entry.firstTakeCorrect === null || entry.unansweredOnFirstTake === true) return false;
+  return true;
+}
+
+function isEntryEverIncorrect(entry: RcQuestionHistoryEntry): boolean {
+  if (!isEntryAnswered(entry)) return false;
+  return Boolean(entry.everIncorrect);
+}
+
+function isEntryLastFirstTakeIncorrect(entry: RcQuestionHistoryEntry): boolean {
+  if (typeof entry.lastFirstTakeIncorrect === 'boolean') return entry.lastFirstTakeIncorrect;
+  if (!isEntryAnswered(entry)) return false;
+  return Boolean(entry.incorrectOnLastTake);
+}
+
+function hasCompletedSessionCoveringAllQuestions(entries: RcQuestionHistoryEntry[]): boolean {
+  if (entries.length === 0) return false;
+  const allHaveSessionLists = entries.every((e) => Array.isArray(e.completedAnsweredSessionIds));
+  if (allHaveSessionLists) {
+    const first = entries[0].completedAnsweredSessionIds ?? [];
+    if (first.length === 0) return false;
+    const restSets = entries
+      .slice(1)
+      .map((e) => new Set(e.completedAnsweredSessionIds ?? []));
+    return first.some((sessionId) => restSets.every((set) => set.has(sessionId)));
+  }
+  return entries.every((e) =>
+    typeof e.completedAnswered === 'boolean' ? e.completedAnswered : isEntryAnswered(e),
+  );
 }
 
 export function passageStatus(
@@ -46,35 +87,91 @@ export function passageStatus(
   questionIds: number[],
   history: RcQuestionHistory,
 ): RcPassageStatus {
+  const totalQuestions = questionIds.length > 0 ? questionIds.length : passage.questionCount;
   const entries = questionIds
     .map((id) => history.get(id))
-    .filter(Boolean) as RcQuestionHistoryEntry[];
+    .filter((entry): entry is RcQuestionHistoryEntry => Boolean(entry) && entry.attempts > 0);
+
+  const attempted = entries.length > 0;
+  const answeredEntries = entries.filter(isEntryAnswered);
+  const answeredCount = answeredEntries.length;
+  const allQuestionsSeen = totalQuestions > 0 && entries.length === totalQuestions;
+  const completedInFinishedSession =
+    allQuestionsSeen && hasCompletedSessionCoveringAllQuestions(entries);
+
+  let state: RcPassageState;
+  if (!attempted) {
+    state = 'not_attempted';
+  } else if (completedInFinishedSession) {
+    state = 'completed';
+  } else if (answeredCount === 0 && entries.some((e) => e.unansweredOnFirstTake === true)) {
+    state = 'skipped_only';
+  } else {
+    state = 'partial';
+  }
+
+  const everIncorrect = entries.some(isEntryEverIncorrect);
+  const lastFirstTakeIncorrect = entries.some(isEntryLastFirstTakeIncorrect);
+  const reviewCorrected = entries.some((e) => Boolean(e.reviewCorrected));
+  const missed = entries.filter(isEntryEverIncorrect).length;
 
   return {
-    attempted: entries.length > 0,
-    everIncorrect: entries.some((e) => e.everIncorrect),
-    incorrectOnLastTake: entries.some((e) => e.incorrectOnLastTake),
+    state,
+    attempted,
+    everIncorrect,
+    incorrectOnLastTake: lastFirstTakeIncorrect,
+    lastFirstTakeIncorrect,
+    reviewCorrected,
     attempts: entries.reduce((n, e) => n + e.attempts, 0),
+    answeredCount,
+    questionCount: totalQuestions,
     lastSeenAt: entries.reduce<number | null>((latest, e) => {
       if (!e.lastSeenAt) return latest;
       const t = Date.parse(e.lastSeenAt);
       return latest == null || t > latest ? t : latest;
     }, null),
-    missed: entries.filter((e) => e.everIncorrect).length,
+    missed,
   };
 }
 
+export function formatPassageStatusLabel(status: RcPassageStatus): string {
+  switch (status.state) {
+    case 'not_attempted':
+      return 'Not attempted';
+    case 'skipped_only':
+      return 'Skipped';
+    case 'partial':
+      return status.missed > 0 ? `Partial · ${status.missed} missed` : 'Partial';
+    case 'completed':
+      return status.missed > 0 ? `${status.missed} missed` : 'Completed';
+  }
+}
+
+function hasGradedFirstTake(entry: RcQuestionHistoryEntry): boolean {
+  if (!entry.lastSeenAt || entry.attempts <= 0) return false;
+  if (entry.unansweredOnFirstTake === true) return false;
+  if ('firstTakeCorrect' in entry && entry.firstTakeCorrect === null) return false;
+  if (typeof entry.answered === 'boolean' && !entry.answered) return false;
+  return true;
+}
+
+function isFirstTakeCorrect(entry: RcQuestionHistoryEntry): boolean {
+  if (typeof entry.firstTakeCorrect === 'boolean') return entry.firstTakeCorrect;
+  return !entry.everIncorrect && !entry.incorrectOnLastTake;
+}
+
 /**
- * The student's rolling accuracy over their last 40 first attempts, or fewer.
- * Returns null when they have no history at all.
+ * The student's rolling accuracy over their last 40 graded first-take attempts,
+ * or fewer. Skipped questions, abandoned sessions, and blind-review rows are
+ * excluded. Returns null when they have no graded first-take history.
  */
 export function rollingAccuracy(history: RcQuestionHistory): number | null {
-  const entries = [...history.values()].filter((e) => e.lastSeenAt);
+  const entries = [...history.values()].filter(hasGradedFirstTake);
   if (entries.length === 0) return null;
   const recent = entries
     .sort((a, b) => Date.parse(b.lastSeenAt!) - Date.parse(a.lastSeenAt!))
     .slice(0, 40);
-  const right = recent.filter((e) => !e.everIncorrect).length;
+  const right = recent.filter(isFirstTakeCorrect).length;
   return right / recent.length;
 }
 
@@ -104,13 +201,13 @@ export function matchesFilters(
 
   switch (filters.status) {
     case 'fresh':
-      if (status.attempted) return false;
+      if (status.state !== 'not_attempted') return false;
       break;
     case 'incorrect_before':
       if (!status.everIncorrect) return false;
       break;
     case 'incorrect_last':
-      if (!status.incorrectOnLastTake) return false;
+      if (!status.lastFirstTakeIncorrect) return false;
       break;
     default:
       break;
