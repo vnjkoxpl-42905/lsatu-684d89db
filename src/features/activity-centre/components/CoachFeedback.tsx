@@ -23,6 +23,7 @@ interface CoachFeedbackProps {
    */
   secondaryLabel?: string;
   item: ActivityItem;
+  activitySlug?: string;
 }
 
 const DEFAULT_SECONDARY_LABEL = "Also accepted";
@@ -60,9 +61,10 @@ export function CoachFeedback({
   resolved,
   secondaryLabel,
   item,
+  activitySlug,
 }: CoachFeedbackProps) {
-  const isRelationship = !!item.answer_key || /^Rung\s+\d/i.test(item.category ?? "");
-  const explanation = isRelationship ? relationshipExplanation(item) : item.explanation;
+  const isRelationship = activitySlug === "spot-the-relationship";
+  const explanation = isRelationship ? relationshipExplanation(item, activitySlug) : item.explanation;
   const feedbackText = isRelationship ? relationshipFeedback(feedback) : feedback;
   const style = VERDICT_STYLE[verdict];
   return (

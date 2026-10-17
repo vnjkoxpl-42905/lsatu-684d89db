@@ -333,6 +333,18 @@ The RC builder uses Workroom semantic tokens on its entire setup surface. Its in
 
 Verification covers initial, correct, wrong, editing retry, reveal and unavailable states; completion at zero, resume, last unanswered and final resolution; keyboard/screen-reader access, visible focus, computed contrast, reduced motion and narrow/mid-width/wide/docked layouts. Check semantic judgments and teaching feedback separately, including the exact legacy fallback and explanation-before-Next order. See [.impeccable/surfaces/src-features-activity-centre.md](.impeccable/surfaces/src-features-activity-centre.md) for surface-specific behavior. The vault's wiki/COPY-CORRECTIONS.md and bootcamp-builder teaching-preference ledgers retain dated correction history.
 
+### Answer keys and explanations must agree on meaning (2026-10-16)
+
+- Derive the relationships from the whole sentence before checking the authored answer. Classify words by their work in context. A process verb is not automatically a causal indicator; a source verb such as yields can mean different things in different sentences.
+- Define conditionals to cover both sufficient conditions and necessary requirements. Keep if/provided, only if/only where, and unless distinct. Do not explain a sufficient condition with must or infer the converse of an exception.
+- Accept one valid indicator for every distinct type present. Listed alternatives are optional, not cumulative requirements. Include contextual comparisons and causal effects inside qualifications without claiming the qualified event occurred.
+- Accept equivalent type names and exact quotations consistently across the grader and visual feedback. Split comparison indicators need both endpoints in order; wider spans must come from the actual sentence. Preserve type/indicator binding and reject contradictory or invented pairs. A failed instant match refers to Coach judgment; it is not evidence that the answer is wrong.
+- Keep authored answers, structured keys, explanations and diagrams aligned. Remove references to obsolete sentence drafts. Test valid alternatives and partial responses, not only the model answer.
+- Treat everyday wording in a hint separately from disclosure of an unattempted answer. A lexical guard can catch known leaks but does not certify semantic correctness or teaching quality.
+- Scope explanation-only repairs by activity identity and matching prompt/order. Never use presentation repair to silently replace historical grading keys, responses, receipts or earned results. Release revised keys through the content revision process and verify eligible assignments separately.
+
+These principles follow the independent 48-question audit and host arbitration. Verification of implementation and publication remains separate from review approval.
+
 ### Do:
 
 - **Do** resolve every colour from a token, and treat a token that resolves to nothing as a defect. Verify a new token renders before documenting it.

@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { gradeCoachRequest } from "../../supabase/functions/activity-coach/grading";
-import { hintLeaks, SAFE_FIRST_HINT } from "../../supabase/functions/activity-coach/answerKey";
+import { hintLeaks, SAFE_FIRST_HINT, TYPE_PATTERNS } from "../../supabase/functions/activity-coach/answerKey";
+import { KIND_PATTERNS, matchesCredited } from "../features/activity-centre/worlds/observatory/observatory";
 import content from "../features/activity-centre/content/spot-the-relationship.json";
 
 // Contract checks with a MOCKED provider. They prove what the server sends and
@@ -123,5 +124,57 @@ describe("first-attempt hint boundary", () => {
     const i2 = content.items.find((i) => i.order === 2)!;
     expect(hintLeaks('Check your answer if you are unsure.', 'I am unsure', i2.answer_key as any)).toBe(false);
     expect(hintLeaks('The indicator is `if`.', 'conditional, if', i2.answer_key as any)).toBe(false);
+  });
+});
+
+
+describe("hint guard vocabulary and everyday split words", () => {
+  it("pins backend type vocabulary to local labels and pair boundaries", () => {
+    expect(TYPE_PATTERNS).toEqual(KIND_PATTERNS);
+  });
+
+  it.each(["condition", "conditions", "conditional", "conditionally", "conditionals", "necessary condition",
+    "sufficient conditions", "if-then", "if/then rule", "requirement", "requirements"])(
+    "recognizes %s consistently in local matching and first hints", (label) => {
+      const i = content.items[0];
+      expect(matchesCredited(i, `${label}, only if`)).toBe(true);
+      expect(hintLeaks(`Check the ${label} label.`, "I am unsure", i.answer_key as any)).toBe(true);
+      expect(hintLeaks("Check the requirements label.", `${label}, only if`, i.answer_key as any)).toBe(false);
+    },
+  );
+
+  it.each(["cause", "causes", "caused", "cause and effect", "causal", "causally", "causality", "causation"])(
+    "recognizes %s consistently for causation", (label) => {
+      const i = content.items.find((i) => i.order === 6)!;
+      expect(matchesCredited(i, `${label}, destroyed`)).toBe(true);
+      expect(hintLeaks(`Check the ${label} label.`, "I am unsure", i.answer_key as any)).toBe(true);
+      expect(hintLeaks("Check the causal label.", `${label}, destroyed`, i.answer_key as any)).toBe(false);
+    },
+  );
+
+  it.each(["comparative", "comparatively", "comparison", "comparisons", "compare", "compares", "comparing", "compared"])(
+    "recognizes %s consistently for comparisons", (label) => {
+      const i = content.items.find((i) => i.order === 9)!;
+      expect(matchesCredited(i, `${label}, louder than`)).toBe(true);
+      expect(hintLeaks(`Check the ${label} label.`, "I am unsure", i.answer_key as any)).toBe(true);
+      expect(hintLeaks("Check the comparison label.", `${label}, louder than`, i.answer_key as any)).toBe(false);
+    },
+  );
+
+  it.each([[48, "more"], [11, "less"]])("allows ordinary %s split-word prose while guarding disclosure", (order, word) => {
+    const key = content.items.find((i) => i.order === order)!.answer_key as any;
+    expect(hintLeaks(`Read ${word} hurriedly when you try again.`, "I am unsure", key)).toBe(false);
+    for (const feedback of [`Think about "${word}".`, `The indicator is ${word}.`, `Quote ${word}.`,
+      `Quote the word ${word}.`, `Focus on ${word}.`, `${word} is the indicator.`]) {
+      expect(hintLeaks(feedback, "I am unsure", key), feedback).toBe(true);
+      expect(hintLeaks(feedback, `comparison, ${word}`, key), feedback).toBe(false);
+    }
+  });
+
+  it("still blocks explicit unattempted indicators after the type was attempted", () => {
+    const key = content.items.find((i) => i.order === 48)!.answer_key as any;
+    expect(hintLeaks("Quote more.", "comparison, than", key)).toBe(true);
+    expect(hintLeaks('Quote "than".', "comparison, more", key)).toBe(true);
+    expect(hintLeaks("Use produces.", "comparison, more than", key)).toBe(true);
   });
 });
