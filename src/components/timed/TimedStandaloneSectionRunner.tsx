@@ -13,6 +13,7 @@ import { RcTimedReader } from '@/components/timed/RcTimedReader';
 import { initialState } from '@/features/rc/lib/rcSession';
 import type { RcHighlight, RcHighlightColor } from '@/features/rc/lib/rcTypes';
 import type { HighlightMode } from '@/lib/highlightUtils';
+import { validateRcTimedMarks } from './rcTimedReaderStorage';
 
 export type StandaloneControllerFactory = (owner: string, sitting: string, device: string) => TimedSectionController;
 const factory: StandaloneControllerFactory = (owner, sitting, device) => new TimedSectionController(new TimedSectionClient(owner, sitting), device);
@@ -54,18 +55,31 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
   const [rcMarks, setRcMarks] = React.useState<Record<string, RcHighlight[]>>({});
   const [marksReady, setMarksReady] = React.useState<string | null>(null);
   const marksKey = `lsatu:timed-section-markers:v1:${encodeURIComponent(owner ?? '')}:${encodeURIComponent(sittingId)}`;
+  const [localSaveError, setLocalSaveError] = React.useState<string | null>(null);
+  const [localRetry, setLocalRetry] = React.useState(0);
   React.useEffect(() => {
+    if (!state || state.snapshot.sitting.owner_id !== owner || state.snapshot.sitting.id !== sittingId || marksReady === marksKey) return;
+    setLocalSaveError(null);
+    setRcMarks({}); setFontScale(1); setPassageOnly(false); setFind(''); setMarker('none'); setColor('yellow'); setScrollTops({});
     try {
       const stored = JSON.parse(localStorage.getItem(marksKey) ?? 'null');
-      setRcMarks(stored && stored.ownerId === owner && stored.sittingId === sittingId && stored.rcMarks && typeof stored.rcMarks === 'object' ? stored.rcMarks : {});
-    } catch { setRcMarks({}); }
+      if (stored?.ownerId === owner && stored?.sittingId === sittingId) {
+        setRcMarks(validateRcTimedMarks(stored.rcMarks, state.passages));
+        if ([1, 1.15, 1.3].includes(stored.fontScale)) setFontScale(stored.fontScale);
+        if (typeof stored.passageOnly === 'boolean') setPassageOnly(stored.passageOnly);
+      }
+    } catch { setLocalSaveError('Marks and display settings could not be restored on this device. Account answers are saved separately.'); return; }
     setMarksReady(marksKey);
-  }, [marksKey, owner, sittingId]);
+  }, [marksKey, owner, sittingId, state, marksReady, localRetry]);
   React.useEffect(() => {
     if (marksReady !== marksKey) return;
-    try { localStorage.setItem(marksKey, JSON.stringify({ ownerId: owner, sittingId, rcMarks })); }
-    catch { /* A personal marker failure never acknowledges or alters account answers. */ }
-  }, [marksReady, marksKey, owner, sittingId, rcMarks]);
+    try {
+      localStorage.setItem(marksKey, JSON.stringify({ ownerId: owner, sittingId, rcMarks, fontScale, passageOnly }));
+      setLocalSaveError(null);
+    } catch {
+      setLocalSaveError('Marks and display settings are not saved on this device. Keep this page open and retry. Account answers are saved separately.');
+    }
+  }, [marksReady, marksKey, owner, sittingId, rcMarks, fontScale, passageOnly, localRetry]);
   const rcItems = React.useMemo(() => state?.snapshot.sitting.kind === 'rc' ? initialState(state.passages).items : [], [state?.passages, state?.snapshot.sitting.kind]);
   const apply = React.useCallback((next: TimedSectionState) => {
     if (active.current !== identity || next.snapshot.sitting.owner_id !== owner || next.snapshot.sitting.id !== sittingId) return;
@@ -176,6 +190,8 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
   return <OfficialDrillFrame isPaused={state.snapshot.sitting.phase === 'paused'} onResume={() => void perform('resume')}
     header={<div className="flex flex-wrap gap-3 items-center"><strong>PrepTest {state.snapshot.sitting.pt} · {state.snapshot.sitting.kind.toUpperCase()} section {state.snapshot.sitting.section}</strong><span aria-label="Section time remaining">{clock.remainingMs === 0 && state.snapshot.sitting.kind === 'lr' && regulationAcknowledged.current ? `Overtime +${format(clock.elapsedMs - (state.snapshot.sitting.budget_ms ?? 0))}` : format(clock.remainingMs)}</span>
       <Button variant="outline" disabled={busy || state.snapshot.sitting.phase !== 'running'} onClick={() => void perform('pause')}>Pause</Button><Button variant="outline" disabled={busy} onClick={() => void perform('exit')}>Testing</Button><span role="status">{busy ? 'Saving to your account…' : dirty ? 'Unsaved changes' : 'Account save acknowledged'}</span></div>}>
+    {localSaveError && <div role="alert" className="border-b p-2"><p>{localSaveError}</p><Button size="sm" variant="outline" onClick={() => setLocalRetry(value => value + 1)}>Retry saving marks</Button></div>}
+    {rcItem && !localSaveError && <p className="px-2 text-sm">Marks and display settings are saved on this device only.</p>}
     {confirm && <div role="dialog" aria-label="Finish section" className="p-4 flex flex-wrap gap-3"><p>{Object.values(answers).filter(value => !value.selected).length} unanswered. Finish this section?</p><Button disabled={busy} onClick={() => { setConfirm(false); void perform('finish'); }}>Confirm finish</Button><Button variant="outline" onClick={() => setConfirm(false)}>Keep working</Button></div>}
     {rcItem && <div className="flex flex-wrap items-center gap-2 border-b p-2">
       <label className="text-sm">Text size <select aria-label="Text size" value={fontScale} onChange={event => setFontScale(Number(event.target.value))}><option value={1}>Standard</option><option value={1.15}>Large</option><option value={1.3}>Larger</option></select></label>
@@ -183,9 +199,9 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
       <input aria-label="Find in passage" className="border rounded px-2 w-36" value={find} onChange={event => setFind(event.target.value)} placeholder="Find in passage" />
       <Button size="sm" variant="outline" onClick={() => setPassageOnly(value => !value)}>{passageOnly ? 'Show questions' : 'Passage only'}</Button>
     </div>}
-    {rcItem ? <RcTimedReader item={rcItem} answer={answer} blocked={blocked} fontScale={fontScale} find={find} marker={marker}
+    {rcItem ? <RcTimedReader item={rcItem} answer={answer} blocked={blocked} annotationsDisabled={marksReady !== marksKey} fontScale={fontScale} find={find} marker={marker}
       color={color} onColorChange={setColor} passageOnly={passageOnly}
-      marks={rcMarks[String(rcItem.passage.passageId)] ?? []} onMarksChange={next => setRcMarks(previous => ({ ...previous, [rcItem.passage.passageId]: next }))}
+      marks={marksReady === marksKey ? rcMarks[String(rcItem.passage.passageId)] ?? [] : []} onMarksChange={next => { if (!blocked && marksReady === marksKey) setRcMarks(previous => ({ ...previous, ...validateRcTimedMarks({ [rcItem.passage.passageId]: next }, [rcItem.passage]) })); }}
       scrollTop={scrollTops[rcItem.passage.passageId] ?? 0} onScrollTop={top => setScrollTops(previous => ({ ...previous, [rcItem.passage.passageId]: top }))}
       onSelect={value => change(previous => ({ ...previous, selected: value as TimedLetter, switchCount: previous.switchCount + (previous.selected && previous.selected !== value ? 1 : 0), eliminations: previous.eliminations.filter(letter => letter !== value) }))}
       onToggleElimination={value => change(previous => ({ ...previous, eliminations: previous.eliminations.includes(value as TimedLetter) ? previous.eliminations.filter(letter => letter !== value) : [...previous.eliminations, value as TimedLetter] }))}

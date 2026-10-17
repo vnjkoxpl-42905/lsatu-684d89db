@@ -31,7 +31,7 @@ import {
 } from '../lib/rcTypes';
 import '../rc.css';
 
-const RESULT_LIMIT = 200;
+const RESULT_LIMIT = 40;
 
 const FEATURE_GROUPS: { label: string; names: string[] }[] = (() => {
   const groups = new Map<string, string[]>();
@@ -53,6 +53,12 @@ export default function RcSearch() {
 
   const [query, setQuery] = React.useState('');
   const [filters, setFilters] = React.useState<RcSearchFilters>(DEFAULT_RC_SEARCH_FILTERS);
+  const [passagePage, setPassagePage] = React.useState(0);
+  const [questionPage, setQuestionPage] = React.useState(0);
+  React.useEffect(() => {
+    setPassagePage(0);
+    setQuestionPage(0);
+  }, [query, filters]);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -82,8 +88,10 @@ export default function RcSearch() {
         query,
         filters,
         limit: RESULT_LIMIT,
+        passageOffset: passagePage * RESULT_LIMIT,
+        questionOffset: questionPage * RESULT_LIMIT,
       }),
-    [passages, questions, query, filters],
+    [passages, questions, query, filters, passagePage, questionPage],
   );
 
   const toggle = (
@@ -341,11 +349,7 @@ export default function RcSearch() {
           </table>
         </div>
       )}
-      {result.totalPassages > RESULT_LIMIT && (
-        <p className="rc-page-sub">
-          Showing the first {RESULT_LIMIT} passages — narrow the filters to see the rest.
-        </p>
-      )}
+      <ResultPages label="passages" page={passagePage} total={result.totalPassages} onPage={setPassagePage} />
 
       {/* ---------------------------------------------------------- questions */}
       <h2 style={{ marginTop: 32 }}>Questions</h2>
@@ -417,13 +421,20 @@ export default function RcSearch() {
           </table>
         </div>
       )}
-      {result.totalQuestions > RESULT_LIMIT && (
-        <p className="rc-page-sub">
-          Showing the first {RESULT_LIMIT} questions — narrow the filters to see the rest.
-        </p>
-      )}
+      <ResultPages label="questions" page={questionPage} total={result.totalQuestions} onPage={setQuestionPage} />
     </div>
   );
+}
+
+function ResultPages({ label, page, total, onPage }: {
+  label: string; page: number; total: number; onPage: (page: number) => void;
+}) {
+  if (total <= RESULT_LIMIT) return null;
+  return <nav className="rc-actions" aria-label={`${label} pages`}>
+    <button type="button" className="rc-button" disabled={page === 0} onClick={() => onPage(page - 1)}>Previous {label}</button>
+    <span role="status">{page * RESULT_LIMIT + 1}–{Math.min((page + 1) * RESULT_LIMIT, total)} of {total} {label}</span>
+    <button type="button" className="rc-button" disabled={(page + 1) * RESULT_LIMIT >= total} onClick={() => onPage(page + 1)}>Next {label}</button>
+  </nav>;
 }
 
 function FilterGroup({

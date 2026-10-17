@@ -1,3 +1,4 @@
+import { canRevealRcResults } from '../lib/rcResultsReveal';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteSession, getSessionAttempts, listSessions } from '../api/rcProgress';
@@ -28,7 +29,7 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
       const list = await listSessions();
       if (signal?.cancelled) return;
       setSessions(list);
-      const done = list.filter((x) => x.status === 'completed');
+      const done = list.filter(canRevealRcResults);
       const pairs = await Promise.all(
         done.map(async (x) => {
           const rows = (await getSessionAttempts(x.id)).filter((a) => a.isFirstAttempt);
@@ -97,7 +98,7 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
           <span className="rc-status-chip">
             {s.status === 'in_progress' ? 'in progress' : s.status}
           </span>
-          {scores.has(s.id) && (
+          {canRevealRcResults(s) && scores.has(s.id) && (
             <span>
               {scores.get(s.id)!.correct} / {scores.get(s.id)!.total}
             </span>

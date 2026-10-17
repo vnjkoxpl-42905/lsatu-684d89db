@@ -375,7 +375,7 @@ describe('RcHubSurface autostart', () => {
     expect(createSession).not.toHaveBeenCalled();
   });
 
-  it('draws the manual picker 40 passages at a time and keeps selections across Show more', async () => {
+  it('keeps the picker bounded to forty rows and preserves selections across pages', async () => {
     const many = Array.from({ length: 100 }, (_, i) => ({
       passageId: 3000 + i, preptest: 101 + (i % 40), section: 1, setNumber: 1 + Math.floor(i / 40),
       title: `Many ${3000 + i}`, firstWords: 'Opening', topic: 'Science', format: 'Single', frameworks: [] as string[],
@@ -389,10 +389,12 @@ describe('RcHubSurface autostart', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Choose passages' }));
       const list = screen.getByRole('list', { name: 'Available passages' });
       expect(within(list).getAllByRole('listitem')).toHaveLength(40);
-      expect(screen.getByText('Showing 40 of 100 passages.')).toBeInTheDocument();
+      expect(screen.getByText('Showing 1–40 of 100 passages.')).toBeInTheDocument();
       fireEvent.click(within(list).getByRole('button', { name: 'Add Many 3000' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Show more passages' }));
-      expect(within(list).getAllByRole('listitem')).toHaveLength(80);
+      fireEvent.click(screen.getByRole('button', { name: 'Next passages' }));
+      expect(within(list).getAllByRole('listitem')).toHaveLength(40);
+      expect(within(list).queryByRole('button', { name: 'Remove Many 3000' })).not.toBeInTheDocument();
+      fireEvent.click(screen.getByRole('button', { name: 'Previous passages' }));
       expect(within(list).getByRole('button', { name: 'Remove Many 3000' })).toBeInTheDocument();
       fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'Many 3005' } });
       expect(within(list).getAllByRole('listitem')).toHaveLength(1);

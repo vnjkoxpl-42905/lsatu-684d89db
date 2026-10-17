@@ -110,6 +110,67 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('RC account save safety', () => {
+  it('retains the exact second-answer command until acknowledgment and keeps blind review spoiler-free', async () => {
+    api.getSession.mockResolvedValue({ ...session(), status: 'completed' });
+    api.getSessionAttempts.mockResolvedValue([attempt]);
+    let rejectWrite!: (error: Error) => void;
+    api.recordAttempt.mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectWrite = reject; }));
+    mount('&review=1&q=1');
+    await screen.findByRole('button', { name: 'Show saved answer' });
+    fireEvent.click(screen.getByRole('button', { name: 'Choose C' }));
+    expect(screen.getByRole('button', { name: 'Choose B' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+    expect(screen.getByText('Question 1: B')).toBeInTheDocument();
+    expect(api.recordAttempt).toHaveBeenCalledTimes(1);
+    const command = api.recordAttempt.mock.calls[0][0];
+    expect(command).toMatchObject({ id: expect.any(String), userId: 'student-one', selected: 'C', isFirstAttempt: false });
+    await act(async () => { rejectWrite(new Error('response lost')); });
+    expect(await screen.findByRole('button', { name: 'Retry second answer' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Show saved answer' })).toBeInTheDocument();
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('correct');
+    fireEvent.click(screen.getByRole('button', { name: 'Retry second answer' }));
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Retry second answer' })).not.toBeInTheDocument());
+    expect(api.recordAttempt.mock.calls[1][0]).toEqual(command);
+    expect(screen.queryByRole('button', { name: 'Show saved answer' })).not.toBeInTheDocument();
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('correct');
+  });
+
+  it('does not apply an old second-answer acknowledgment to another session', async () => {
+    api.getSession.mockImplementation(async (id: string) => ({ ...session(), id, status: 'completed' }));
+    api.getSessionAttempts.mockResolvedValue([attempt]);
+    let resolveWrite!: (value: RcAttempt) => void;
+    api.recordAttempt.mockImplementationOnce(() => new Promise(resolve => { resolveWrite = resolve; }));
+    mount('&review=1&q=1');
+    await screen.findByRole('button', { name: 'Show saved answer' });
+    fireEvent.click(screen.getByRole('button', { name: 'Choose C' }));
+    const command = api.recordAttempt.mock.calls[0][0];
+    fireEvent.click(screen.getByRole('button', { name: 'Switch to another drill' }));
+    await waitFor(() => expect(screen.getByTestId('location')).toHaveTextContent('session-two'));
+    await act(async () => { resolveWrite(command); });
+    expect(screen.queryByText('Saving your second answer…')).not.toBeInTheDocument();
+    expect(api.recordAttempt).toHaveBeenCalledTimes(1);
+  });
+
+  it('restores an unacknowledged second answer after refresh with the original retry ID', async () => {
+    api.getSession.mockResolvedValue({ ...session(), status: 'completed' });
+    api.getSessionAttempts.mockResolvedValue([attempt]);
+    api.recordAttempt.mockRejectedValueOnce(new Error('offline'));
+    const first = mount('&review=1&q=1');
+    await screen.findByRole('button', { name: 'Show saved answer' });
+    fireEvent.click(screen.getByRole('button', { name: 'Choose C' }));
+    await screen.findByRole('button', { name: 'Retry second answer' });
+    const command = api.recordAttempt.mock.calls[0][0];
+    first.unmount();
+    mount('&review=1&q=1');
+    await screen.findByRole('button', { name: 'Retry second answer' });
+    expect(api.recordAttempt).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Retry second answer' }));
+    await waitFor(() => expect(api.recordAttempt).toHaveBeenCalledTimes(2));
+    expect(api.recordAttempt.mock.calls[1][0]).toEqual(command);
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Retry second answer' })).not.toBeInTheDocument());
+    expect(localStorage.getItem('lsatu:rc-review-answer:student-one:session-one')).toBeNull();
+  });
+
   it.each(['per_passage', 'per_question'] as const)('restores Q1 and Q2 from account drafts with fresh device storage in %s without confirming them', async (reveal) => {
     let account = session({ reveal });
     api.getSession.mockImplementation(async () => account);
@@ -281,7 +342,8 @@ describe('RC account save safety', () => {
     expect(statuses).toHaveTextContent('Drill 3: unanswered');
     expect(statuses).not.toHaveTextContent('correct');
     fireEvent.click(screen.getByRole('button', { name: 'Show saved answer' }));
-    expect(statuses).toHaveTextContent('Drill 1: incorrect');
+    expect(statuses).toHaveTextContent('Drill 1: answered');
+    expect(statuses).not.toHaveTextContent('correct');
     expect(statuses).toHaveTextContent('Drill 2: answered');
     expect(api.recordAttempt).not.toHaveBeenCalled();
     expect(api.saveSessionClock).not.toHaveBeenCalled();

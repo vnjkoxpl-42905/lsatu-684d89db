@@ -22,6 +22,7 @@ export interface RcTimedReaderProps {
   answer: TimedChildAnswer;
   /** True while the section is saving, paused, expired or otherwise not accepting input. */
   blocked: boolean;
+  annotationsDisabled?: boolean;
   fontScale: number;
   find: string;
   marker: HighlightMode;
@@ -39,22 +40,23 @@ export interface RcTimedReaderProps {
 }
 
 export function RcTimedReader({
-  item, answer, blocked, fontScale, find, marker, color, onColorChange, passageOnly, marks, onMarksChange,
+  item, answer, blocked, annotationsDisabled = false, fontScale, find, marker, color, onColorChange, passageOnly, marks, onMarksChange,
   scrollTop, onScrollTop, onSelect, onToggleElimination, onToggleFlag,
 }: RcTimedReaderProps) {
   const type = rcTypeStyles(fontScale, 0);
+  const marksBlocked = blocked || annotationsDisabled;
   const addMark = (target: RcHighlight['target'], start: number, end: number, c: RcHighlightColor, annotation: 'highlight' | 'underline') =>
-    onMarksChange([...marks, { target, start, end, color: c, kind: annotation }]);
+    !marksBlocked && onMarksChange([...marks, { target, start, end, color: c, kind: annotation }]);
   return <RcExamPane schemeClassName="" passageOnly={passageOnly}
-    passage={<RcPassagePane passage={item.passage} highlights={marks} color={color} onColorChange={onColorChange} highlightMode={marker as RcHighlightMode}
+    passage={<RcPassagePane annotationsDisabled={marksBlocked} passage={item.passage} highlights={marks} color={color} onColorChange={onColorChange} highlightMode={marker as RcHighlightMode}
       findQuery={find} findIndex={0} onFindCount={() => undefined} scrollTop={scrollTop} onScroll={onScrollTop} textStyle={type.passage} passageOnly={passageOnly}
       onAddHighlight={(start, end, c, annotation) => addMark('passage', start, end, c, annotation)}
-      onRemoveHighlight={offset => onMarksChange(marks.filter(value => value.target !== 'passage' || offset < value.start || offset >= value.end))}
-      onRemoveRange={(start, end) => onMarksChange(marks.filter(value => value.target !== 'passage' || value.end <= start || value.start >= end))} />}
-    question={<RcQuestionPane item={item} selected={answer.selected} eliminations={answer.eliminations} flagged={answer.flagged} revealed={false}
+      onRemoveHighlight={offset => !marksBlocked && onMarksChange(marks.filter(value => value.target !== 'passage' || offset < value.start || offset >= value.end))}
+      onRemoveRange={(start, end) => !marksBlocked && onMarksChange(marks.filter(value => value.target !== 'passage' || value.end <= start || value.start >= end))} />}
+    question={<RcQuestionPane annotationsDisabled={marksBlocked} item={item} selected={answer.selected} eliminations={answer.eliminations} flagged={answer.flagged} revealed={false}
       reattemptMode={false} reattemptPick={null} interactionDisabled={blocked} onSelect={onSelect} onToggleElimination={onToggleElimination}
       onToggleFlag={onToggleFlag} onSkipToAnswer={() => undefined} type={type} highlights={marks} color={color} onColorChange={onColorChange}
       highlightMode={marker as RcHighlightMode} onAddHighlight={addMark}
-      onRemoveHighlight={(target, offset) => onMarksChange(marks.filter(value => value.target !== target || offset < value.start || offset >= value.end))}
-      onRemoveRange={(target, start, end) => onMarksChange(marks.filter(value => value.target !== target || value.end <= start || value.start >= end))} />} />;
+      onRemoveHighlight={(target, offset) => !marksBlocked && onMarksChange(marks.filter(value => value.target !== target || offset < value.start || offset >= value.end))}
+      onRemoveRange={(target, start, end) => !marksBlocked && onMarksChange(marks.filter(value => value.target !== target || value.end <= start || value.start >= end))} />} />;
 }

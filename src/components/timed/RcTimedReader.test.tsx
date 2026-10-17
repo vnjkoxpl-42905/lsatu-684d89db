@@ -46,6 +46,20 @@ describe('RcTimedReader', () => {
     expect(onSelect).not.toHaveBeenCalled();
   });
 
+  it('prevents erasing passage annotations while blocked', () => {
+    const onMarksChange = vi.fn();
+    const configuration = props({ marker: 'erase', onMarksChange, marks: [{ target: 'passage', start: 0, end: 5, color: 'yellow', kind: 'highlight' }] });
+    const view = render(<RcTimedReader {...configuration} />);
+    const mark = view.container.querySelector('mark');
+    expect(mark).not.toBeNull();
+    fireEvent.mouseUp(mark!);
+    expect(onMarksChange).toHaveBeenCalledWith([]);
+    onMarksChange.mockClear();
+    view.rerender(<RcTimedReader {...configuration} blocked />);
+    fireEvent.mouseUp(view.container.querySelector('mark')!);
+    expect(onMarksChange).not.toHaveBeenCalled();
+  });
+
   it('hides the question column in passage-only mode', () => {
     render(<RcTimedReader {...props({ passageOnly: true })} />);
     expect(screen.getByText(/First paragraph about risk/)).toBeInTheDocument();

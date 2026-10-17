@@ -240,6 +240,16 @@ describe('passageStatus and formatPassageStatusLabel', () => {
 });
 
 describe('rollingAccuracy and blind-review separation', () => {
+  it('does not promote an old grade into the recent forty after ungraded exposure', () => {
+    const history = new Map(Array.from({ length: 41 }, (_, index) => [index, {
+      questionId: index, attempts: 1, answered: true, everIncorrect: index === 0,
+      incorrectOnLastTake: index === 0, incorrectCount: index === 0 ? 1 : 0,
+      firstTakeCorrect: index !== 0,
+      lastGradedAt: new Date(Date.UTC(2026, 0, 1, 0, index)).toISOString(),
+      lastSeenAt: index === 0 ? '2026-10-17T00:00:00Z' : new Date(Date.UTC(2026, 0, 1, 0, index)).toISOString(),
+    }]));
+    expect(rollingAccuracy(history)).toBe(1);
+  });
   it('excludes skipped and abandoned rows from rollingAccuracy and never counts null is_correct as right', () => {
     const history = makeHistory([
       {

@@ -25,6 +25,7 @@ import { RC_DIRECTIONS, RC_FONT_SCALE_OPTIONS } from '../lib/rcDirections';
 import { readActiveRcAnswerBackups, readRcAnswerBackups, writeRcAnswerBackup, requestRcAnswerBackupSave, clearRcAnswerBackup } from '../lib/rcAnswerBackup';
 import { completedRcDestination, rcReviewRedirect } from '../lib/rcSessionDestination';
 import { safeRcReturnTo } from '../lib/rcReturnTo';
+import { canRevealRcResults } from '../lib/rcResultsReveal';
 import { useRcA11y } from '../hooks/useRcA11y';
 import { useRcHighlights } from '../hooks/useRcHighlights';
 import { useRcFlagPersistence } from '../hooks/useRcFlagPersistence';
@@ -64,7 +65,7 @@ import {
   recordAttempt,
   saveSessionClock,
 } from '../api/rcProgress';
-import type { RcDrillConfig, RcHighlightMode, RcLetter, RcPassage } from '../lib/rcTypes';
+import type { RcAttempt, RcDrillConfig, RcHighlightMode, RcLetter, RcPassage } from '../lib/rcTypes';
 import { readRcDraftAnswers } from '../lib/rcTypes';
 // The player owns player.css; rc.css carries the review layer, which mounts
 // inside the player too, so it must not depend on the hub having been visited.
@@ -79,6 +80,7 @@ const DEFAULT_CONFIG: RcDrillConfig = {
 const isHandoffError = (err: unknown) =>
   err instanceof Error && err.message.includes('another device');
 const clockBackupKey = (sessionId: string) => `lsatu:rc-clock:${sessionId}`;
+const reviewBackupKey = (owner: string, session: string) => `lsatu:rc-review-answer:${owner}:${session}`;
 
 function readClockBackup(sessionId: string): number {
   try {
@@ -145,6 +147,9 @@ function RcPlayerRunner() {
   const attemptIdsRef = React.useRef(new Map<number, string>());
   const draftTimeMsRef = React.useRef(new Map<number, number>());
   const answerWriteGenerationRef = React.useRef(0);
+  const pendingReviewRef = React.useRef<{ attempt: RcAttempt; generation: number } | null>(null);
+  const reviewWriteBusyRef = React.useRef(false);
+  const [reviewSaving, setReviewSaving] = React.useState(false);
 
   const reviewOnly = params.get('review') === '1';
   const protectedReview = reviewOnly && (!!config.timedSectionSittingId || !!config.practiceTestRunId);
@@ -203,6 +208,9 @@ function RcPlayerRunner() {
     attemptIdsRef.current.clear();
     draftTimeMsRef.current.clear();
     pendingSaveRef.current = null;
+    pendingReviewRef.current = null;
+    reviewWriteBusyRef.current = false;
+    setReviewSaving(false);
     navigationInFlightRef.current = false;
     setSavingNavigation(false);
     setSubmitting(false);
@@ -501,6 +509,34 @@ function RcPlayerRunner() {
   const [helpOpen, setHelpOpen] = React.useState(false);
 
   const item = getCurrentItem(state);
+  React.useEffect(() => {
+    if (!reviewOnly || protectedReview || loadingAnswers || !sessionId || sessionOwnerId !== user?.id || pendingReviewRef.current) return;
+    try {
+      const raw = localStorage.getItem(reviewBackupKey(sessionOwnerId, sessionId));
+      if (!raw) return;
+      const attempt = JSON.parse(raw) as RcAttempt;
+      const entry = state.items.find(value => value.question.questionId === attempt.questionId && value.passage.passageId === attempt.passageId);
+      if (!entry || attempt.userId !== sessionOwnerId || attempt.sessionId !== sessionId
+        || typeof attempt.id !== 'string' || !attempt.id || attempt.isFirstAttempt !== false
+        || !entry.question.choices.some(choice => choice.letter === attempt.selected)
+        || attempt.isCorrect !== (attempt.selected === entry.question.correctAnswer)
+        || !Number.isFinite(attempt.timeMs) || attempt.timeMs < 0 || !Array.isArray(attempt.eliminations)) {
+        setSaveError('The saved second answer could not be verified. Keep this page open and contact Joshua.');
+        return;
+      }
+      pendingReviewRef.current = { attempt, generation: answerWriteGenerationRef.current };
+      setSaveError('A second answer is waiting for account confirmation. Retry it before continuing.');
+    } catch {
+      // Storage may be disabled. New writes still retain their exact command in memory.
+    }
+  }, [reviewOnly, protectedReview, loadingAnswers, sessionId, sessionOwnerId, user?.id, state.items]);
+  React.useEffect(() => {
+    const warn = (event: BeforeUnloadEvent) => {
+      if (pendingReviewRef.current) { event.preventDefault(); event.returnValue = ''; }
+    };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, []);
   const type = React.useMemo(
     () => rcTypeStyles(a11y.fontScale, a11y.extraLeading),
     [a11y.fontScale, a11y.extraLeading],
@@ -732,7 +768,7 @@ function RcPlayerRunner() {
   const goTo = React.useCallback(
     async (index: number) => {
       if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
-      if (state.paused || loadingAnswers || answerLoadError || navigationInFlightRef.current || !state.items[index]) return;
+      if (state.paused || loadingAnswers || answerLoadError || navigationInFlightRef.current || reviewWriteBusyRef.current || pendingReviewRef.current || !state.items[index]) return;
       navigationInFlightRef.current = true;
       setSavingNavigation(true);
       const leaving = getCurrentItem(state);
@@ -855,6 +891,7 @@ function RcPlayerRunner() {
   const handleSaveExit = React.useCallback(async () => {
     if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
     if (reviewOnly) {
+      if (pendingReviewRef.current || reviewWriteBusyRef.current) return;
       navigate(exitPath);
       return;
     }
@@ -946,8 +983,34 @@ function RcPlayerRunner() {
     [reviewOnly, protectedReview, state.recorded, reattemptPicks, skippedReattempt],
   );
 
-  const revealed = item ? isRevealed(state, config.reveal, item) : false;
+  const reviewResultsVisible = !reviewOnly || protectedReview || canRevealRcResults({ status: sessionStatus as 'completed', config });
+  const revealed = item ? reviewResultsVisible && isRevealed(state, config.reveal, item) : false;
   const reattemptMode = item ? awaitingReattempt(item.question.questionId) : false;
+
+  const saveReviewAnswer = React.useCallback(async () => {
+    const pending = pendingReviewRef.current;
+    if (!pending || reviewWriteBusyRef.current || pending.generation !== answerWriteGenerationRef.current
+      || pending.attempt.userId !== user?.id || pending.attempt.sessionId !== sessionId) return;
+    reviewWriteBusyRef.current = true;
+    setReviewSaving(true);
+    setSaveError(null);
+    try {
+      await recordAttempt(pending.attempt);
+      if (pending.generation !== answerWriteGenerationRef.current || pendingReviewRef.current !== pending) return;
+      setReattemptPicks(previous => new Map(previous).set(pending.attempt.questionId, pending.attempt.selected!));
+      try { localStorage.removeItem(reviewBackupKey(pending.attempt.userId!, pending.attempt.sessionId)); } catch { /* The acknowledged account answer is authoritative. */ }
+      pendingReviewRef.current = null;
+    } catch {
+      if (pending.generation === answerWriteGenerationRef.current && pendingReviewRef.current === pending) {
+        setSaveError('That second answer did not save. Retry it before continuing.');
+      }
+    } finally {
+      if (pending.generation === answerWriteGenerationRef.current) {
+        reviewWriteBusyRef.current = false;
+        setReviewSaving(false);
+      }
+    }
+  }, [sessionId, user?.id]);
 
   /**
    * The ONE way a choice gets picked.
@@ -961,14 +1024,15 @@ function RcPlayerRunner() {
    */
   const selectLetter = React.useCallback(
     (letter: RcLetter) => {
-      if (protectedReview || !item || state.paused || navigationInFlightRef.current || submitting) return;
+      if (protectedReview || !item || state.paused || navigationInFlightRef.current || submitting || reviewWriteBusyRef.current || pendingReviewRef.current) return;
       const id = item.question.questionId;
       if (!item.question.choices.some((c) => c.letter === letter)) return;
 
       if (awaitingReattempt(id)) {
-        setReattemptPicks((prev) => new Map(prev).set(id, letter));
-        if (!sessionId) return;
-        void recordAttempt({
+        if (!sessionId || !sessionOwnerId || sessionOwnerId !== user?.id) return;
+        pendingReviewRef.current = { generation: answerWriteGenerationRef.current, attempt: {
+          id: crypto.randomUUID(),
+          userId: sessionOwnerId,
           sessionId,
           questionId: id,
           passageId: item.passage.passageId,
@@ -980,11 +1044,9 @@ function RcPlayerRunner() {
           // live in `firstAttemptEliminations` and are never written here.
           eliminations: state.eliminations.get(id) ?? [],
           isFirstAttempt: false,
-        }).catch(() => {
-          // This was fire-and-forget with no catch, so a failed re-attempt
-          // was an unhandled rejection and the student was told nothing.
-          setSaveError('That second answer did not save.');
-        });
+        } };
+        try { localStorage.setItem(reviewBackupKey(sessionOwnerId, sessionId), JSON.stringify(pendingReviewRef.current.attempt)); } catch { /* Keep the mounted command and warn before leaving. */ }
+        void saveReviewAnswer();
         return;
       }
 
@@ -1008,7 +1070,7 @@ function RcPlayerRunner() {
       if (studyAidsEnabled && !reviewOnly && !state.recorded.has(id)) changedCrossOuts.current.add(id);
       dispatch({ type: 'select', questionId: id, letter });
     },
-    [item, awaitingReattempt, revealed, sessionId, sessionOwnerId, reviewOnly, protectedReview, studyAidsEnabled, state.currentIndex, state.flagged, state.eliminations, state.recorded, state.paused, submitting, writeAttempt, failAccountSave],
+    [item, awaitingReattempt, revealed, sessionId, sessionOwnerId, user?.id, saveReviewAnswer, reviewOnly, protectedReview, studyAidsEnabled, state.currentIndex, state.flagged, state.eliminations, state.recorded, state.paused, submitting, writeAttempt, failAccountSave],
   );
 
   /* -------------------------------------------------------- keyboard */
@@ -1110,7 +1172,7 @@ function RcPlayerRunner() {
     // green check beside a question whose banner said "Not quite" — the pill
     // was scoring the first attempt while the banner scored the re-attempt.
     const pick = reattemptPicks.get(entry.questionId) ?? state.answers.get(entry.questionId);
-    const showResult = target ? isRevealed(state, config.reveal, target) : false;
+    const showResult = target ? reviewResultsVisible && isRevealed(state, config.reveal, target) : false;
     if (showResult && pick && target) {
       return pick === target.question.correctAnswer ? 'correct' : 'incorrect';
     }
@@ -1358,7 +1420,7 @@ function RcPlayerRunner() {
               {/* Review material, so it waits for feedback — and it stays shut
                   during a blind re-answer. A summary states the main point, and
                   the first question on most passages asks for exactly that. */}
-              {revealed && !reattemptMode && (
+              {revealed && !reattemptMode && !state.items.some(entry => entry.passage.passageId === item.passage.passageId && awaitingReattempt(entry.question.questionId)) && (
                 <RcPassageSummary summaries={item.passage.summaries} />
               )}
             </RcPassagePane>
@@ -1383,14 +1445,14 @@ function RcPlayerRunner() {
               onToggleFlag={() => toggleFlag(questionId)}
               type={type}
               onSelect={selectLetter}
-              interactionDisabled={protectedReview || state.paused || savingNavigation || submitting}
+              interactionDisabled={protectedReview || state.paused || savingNavigation || submitting || reviewSaving || !!pendingReviewRef.current}
               onToggleElimination={(letter) => {
-                if (protectedReview || navigationInFlightRef.current || submitting || state.paused) return;
+                if (protectedReview || navigationInFlightRef.current || submitting || state.paused || reviewWriteBusyRef.current || pendingReviewRef.current) return;
                 if (!reviewOnly && state.answers.get(questionId) === letter) return;
                 if (studyAidsEnabled && !reviewOnly && !state.recorded.has(questionId)) changedCrossOuts.current.add(questionId);
                 dispatch({ type: 'toggleElimination', questionId, letter });
               }}
-              onSkipToAnswer={() => setSkippedReattempt((prev) => new Set(prev).add(questionId))}
+              onSkipToAnswer={() => { if (!reviewWriteBusyRef.current && !pendingReviewRef.current) setSkippedReattempt((prev) => new Set(prev).add(questionId)); }}
               highlights={highlights.forPassage(item.passage.passageId)}
               color={highlights.color}
               onColorChange={highlights.setColor}
@@ -1412,12 +1474,18 @@ function RcPlayerRunner() {
           <div className="rc-save-error" role="status">Saving your section…</div>
         )}
 
+        {reviewSaving && <div className="rc-save-error" role="status">Saving your second answer…</div>}
+        {reviewOnly && !reviewResultsVisible && <div className="rc-save-error" role="status">
+          Blind review keeps scores and answers hidden.
+          <button type="button" className="rc-skip-link" disabled={reviewSaving || !!pendingReviewRef.current}
+            onClick={() => { if (!reviewWriteBusyRef.current && !pendingReviewRef.current && sessionId) navigate(`/rc/results/${encodeURIComponent(sessionId)}`); }}>Return to results</button>
+        </div>}
         {saveError && (
           <div className="rc-save-error" role="alert">
             {saveError}{reviewOnly ? '' : ' The clock and questions are paused.'}
             {reviewOnly && (
-              <button type="button" className="rc-skip-link" onClick={() => setSaveError(null)}>
-                Dismiss
+              <button type="button" className="rc-skip-link" disabled={reviewSaving} onClick={() => { void saveReviewAnswer(); }}>
+                Retry second answer
               </button>
             )}
           </div>

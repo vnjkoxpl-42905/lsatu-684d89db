@@ -15,7 +15,7 @@ import type { RcLetter, RcQuestion } from '../lib/rcTypes';
 interface Props {
   question: RcQuestion;
   firstPick: RcLetter | null;
-  /** Set only when the student answered again in review and changed their mind. */
+  /** An acknowledged second answer, including when the student kept their choice. */
   secondPick?: RcLetter | null;
 }
 
@@ -38,10 +38,10 @@ export function RcReviewLayer({ question, firstPick, secondPick }: Props) {
           Credited answer {question.correctAnswer}
           {latestPick ? ` · you chose ${latestPick}` : ' · you skipped this one'}
         </span>
-        {secondPick && firstPick && secondPick !== firstPick && (
+        {secondPick && (
           <span className="rc-verdict-detail">
-            <span className="rc-tag-chip rc-tag-outline">1st {firstPick}</span>
-            <span className="rc-tag-chip rc-tag-outline">2nd {secondPick}</span>
+            <span className="rc-tag-chip rc-tag-outline">First answer {firstPick ?? 'skipped'}</span>
+            <span className="rc-tag-chip rc-tag-outline">Review answer {secondPick}</span>
           </span>
         )}
       </div>

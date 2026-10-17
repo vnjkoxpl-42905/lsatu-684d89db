@@ -1,7 +1,7 @@
 {
   "repository": "vnjkoxpl-42905/lsatu-684d89db",
-  "source_head": "5f11722c16506d2a4a21d6569bbccb96b836e45c",
-  "source_branch": "codex/rc-t05-standalone-rc-reader",
+  "source_head": "21bfefd0632e62a34da45b76b8d4a1864ca857da",
+  "source_branch": "codex/rc-t06-review-reliability",
   "snapshot_branch": "codex/local-sync/laptop-le9a083p/lsatu-rc-create",
   "encrypted_original_context": {
     "enabled": true,
