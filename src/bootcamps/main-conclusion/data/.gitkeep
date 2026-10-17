@@ -1,0 +1,3 @@
+# Generated data folder. Files matching *.generated.json are emitted by scripts/import-content.ts.
+# For Lesson 1.1 vertical slice, lessons.generated.json + named-tools.generated.json are
+# hand-authored as the seed; the import script will reproduce them in Step 2 of the build pipeline.

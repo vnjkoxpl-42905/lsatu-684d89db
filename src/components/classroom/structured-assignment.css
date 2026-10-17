@@ -1,0 +1,210 @@
+.classroom-root .classroom-workspace {
+  border-top: 1px solid var(--classroom-line);
+  margin-top: clamp(2rem, 6vw, 4.5rem);
+  padding-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+.classroom-root .classroom-workspace-heading {
+  align-items: flex-end;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.classroom-root .classroom-workspace-heading h2 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0.35rem 0 0;
+}
+
+.classroom-root .classroom-save-state {
+  color: rgb(var(--classroom-meta));
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  opacity: 0.78;
+  text-align: right;
+}
+
+.classroom-root .classroom-workspace-sections {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.classroom-root .classroom-workspace-section {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.classroom-root .classroom-workspace-section-number,
+.classroom-root .classroom-eyebrow {
+  color: rgb(var(--classroom-meta));
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  opacity: 0.78;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-workspace-section-body h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.classroom-root .classroom-workspace-section-body > p {
+  color: rgb(var(--classroom-meta));
+  line-height: 1.65;
+  margin: 0.4rem 0 1rem;
+}
+
+.classroom-root .classroom-workspace-fields {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.classroom-root .classroom-workspace-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.classroom-root .classroom-workspace-field > span {
+  display: flex;
+  font-size: 0.82rem;
+  font-weight: 600;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.classroom-root .classroom-workspace-field small {
+  color: rgb(var(--classroom-meta));
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-workspace-field input,
+.classroom-root .classroom-workspace-field textarea {
+  background: var(--classroom-page);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  box-sizing: border-box;
+  color: var(--classroom-ink);
+  font: inherit;
+  line-height: 1.55;
+  padding: 0.75rem 0.85rem;
+  touch-action: manipulation;
+  width: 100%;
+}
+
+.classroom-root .classroom-workspace-field textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.classroom-root .classroom-workspace-field input:focus,
+.classroom-root .classroom-workspace-field textarea:focus {
+  border-color: var(--classroom-link);
+  outline: 2px solid color-mix(in srgb, var(--classroom-link) 18%, transparent);
+  outline-offset: 1px;
+}
+
+.classroom-root .classroom-workspace-field input:disabled,
+.classroom-root .classroom-workspace-field textarea:disabled {
+  opacity: 0.78;
+}
+
+.classroom-root .classroom-workspace-actions {
+  background: color-mix(in srgb, var(--classroom-page) 94%, transparent);
+  border-top: 1px solid var(--classroom-line);
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding: 0.9rem 0;
+  position: sticky;
+  z-index: 5;
+}
+
+.classroom-root .classroom-draft-notice,
+.classroom-root .classroom-save-error {
+  border-radius: var(--classroom-radius);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  padding: 0.75rem 0.9rem;
+}
+
+.classroom-root .classroom-draft-notice {
+  background: color-mix(in srgb, var(--classroom-link) 10%, var(--classroom-panel));
+  border: 1px solid color-mix(in srgb, var(--classroom-link) 35%, var(--classroom-line));
+}
+
+.classroom-root .classroom-save-error {
+  background: color-mix(in srgb, #b42318 8%, var(--classroom-panel));
+  border: 1px solid color-mix(in srgb, #b42318 45%, var(--classroom-line));
+  display: grid;
+  gap: 0.2rem;
+}
+
+.classroom-root .classroom-submit-warning {
+  color: rgb(var(--classroom-meta));
+  flex-basis: 100%;
+  font-size: 0.76rem;
+  margin: 0;
+  text-align: right;
+}
+
+.classroom-root .classroom-answer-key {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  margin-top: 2rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.classroom-root .classroom-answer-key > p {
+  color: rgb(var(--classroom-meta));
+  line-height: 1.65;
+  margin: 0.65rem 0 0;
+}
+
+.classroom-root .classroom-answer-key.is-open {
+  border-color: color-mix(in srgb, var(--classroom-link) 55%, var(--classroom-line));
+}
+
+@media (max-width: 640px) {
+  .classroom-root .classroom-workspace-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .classroom-root .classroom-save-state {
+    text-align: left;
+  }
+
+  .classroom-root .classroom-workspace-section {
+    grid-template-columns: 1fr;
+  }
+
+  .classroom-root .classroom-workspace-actions {
+    align-items: stretch;
+    flex-direction: column;
+    margin-inline: -0.25rem;
+    padding-inline: 0.25rem;
+  }
+
+  .classroom-root .classroom-submit-warning {
+    text-align: left;
+  }
+}
