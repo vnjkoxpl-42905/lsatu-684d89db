@@ -12,7 +12,7 @@ Date: 2026-10-17. Branch: `codex/rc-t06-review-reliability`, based on `origin/ma
 - Search can continue beyond 200 results. Search tables and the manual picker render bounded pages of 40; manual selections survive page changes. The embedded builder links to question-level search.
 - Timed marks are validated before rendering; local save failures are visible and retryable. Both timed runners use readable frame colors without changing the global theme. Standalone display settings are retained per owner/sitting. Shared timed reader has match counts/navigation and container-responsive passage/question tabs. Comparative Both/A/B preserves original text nodes and annotation offsets.
 - Tutor context becomes an editable Inbox draft with a return link, scoped to the originating account. Existing text is preserved; insertion is explicit when needed. Nothing sends automatically.
-- A PR workflow is prepared in `docs/verification/rc-pr-workflow.patch` to run typecheck, RC/shared tests and build. GitHub refused creation through the current OAuth credential because it lacks workflow scope, so CI is not enabled. The local `.github/workflows/rc-pr.yml` is preserved outside the pushed commit. The structural explanation inventory is separate from teaching-quality review.
+- The PR workflow in `.github/workflows/rc-pr.yml` runs typecheck, RC/shared tests and build without account credentials or deployment. The initial push was rejected for missing OAuth workflow scope; Joshua approved that permission and authentication confirmed it on 2026-10-17. The earlier apply-ready patch is retained as the preparation record. The structural explanation inventory is separate from teaching-quality review.
 
 ## Running Chrome checks
 
