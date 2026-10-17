@@ -8,7 +8,6 @@ import { recordCourseStep, attemptSummary, elapsedSeconds, emptyDraft, markCondi
 import { needsExpandedConditionalLessonReview, CONDITIONAL_OPENING_UNIT_IDS } from './openingRevision';
 import { useConditionalProgress } from './useConditionalProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { getCurriculumDifficulty, getCurriculumUnits } from './curriculumPath';
 import { conditionalAssignmentAllowsAction, type ResolvedConditionalAssignment as ConditionalAssignment } from './assignments';
 import { ConditionalLessonNote } from './components/ConditionalLessonNote';
@@ -194,13 +193,10 @@ function OpeningCourseRoute({ view: surface }: { view?: string }) {
 
 function Shell() {
   const { status, error, retry, progress } = useCourse();
-  const selection = useSelection();
   const location = useLocation();
-  const [params] = useSearchParams();
-  const [referenceOpen, setReferenceOpen] = useState(false);
-  const currentId = location.pathname.match(/\/(?:lessons|activities)\/([^/]+)/)?.[1] ?? params.get('unit');
-  const current = selectedUnits(selection).find(unit => unit.id === currentId);
-  const courseView = location.pathname.includes('/opening/') ? location.pathname.split('/opening/')[1] : location.pathname.endsWith('/opening-practice') ? 'practice' : location.pathname.endsWith('/opening-labs') ? 'labs' : location.pathname.endsWith('/opening-tools') ? 'tools' : 'lessons';
+  const route = location.pathname.slice(BASE.length).replace(/\/$/, '');
+  const courseView = route.startsWith('/opening/') ? route.slice('/opening/'.length) : route === '' ? 'overview' : ['/opening-practice', '/opening-labs', '/practice', '/simulator', '/hard-sentences', '/flashcards'].includes(route) ? 'practice' : route === '/opening-tools' ? 'tools' : ['/review', '/diagnostics'].includes(route) ? 'review' : route === '/journal' ? 'journal' : ['/reference', '/indicators'].includes(route) ? 'reference' : route === '/settings' ? 'settings' : 'lessons';
+  const workspaceLinks = { overview: `${BASE}${location.search}`, review: `${BASE}/review${location.search}`, journal: `${BASE}/journal${location.search}`, reference: `${BASE}/reference${location.search}` };
   const openingSurface = /^\/(?:lessons\/?|opening\/[^/]+\/?|opening-(?:practice|labs|tools)\/?)$/.test(location.pathname.slice(BASE.length));
   const saveMessages = {
     saved: openingSurface ? 'Assigned work saved to your account' : 'Saved to your account',
@@ -209,8 +205,8 @@ function Shell() {
     unsaved: openingSurface ? 'Assigned work waiting to save' : 'Changes waiting to save',
     error: openingSurface ? 'Assigned work is not saved' : 'Changes are not saved',
   };
-  return <div className="cb-shell oc-workspace"><OpeningCourseNavigation view={courseView} url={courseUrl(location.search)}/>
-    <main className="cb-main" id="conditional-main"><header className="cb-workspace-bar"><Link to={pathUrl(selection)}>Assigned work</Link><Link to={`${BASE}/review${location.search}`}>Review attempts</Link><Link to={`${BASE}/journal${location.search}`}>Journal</Link><button onClick={() => setReferenceOpen(true)}><BookOpen size={16} /> Open reference</button><div className="cb-save" role="status">{saveMessages[status]}</div></header>{error && <div className="cb-error" role="alert"><p>{error}</p>{progress ? <button onClick={() => void retry()}>Retry save</button> : <button onClick={() => window.location.reload()}>Reload saved work</button>}</div>}{progress ? <Outlet /> : !error && <p>Loading your work...</p>}</main><Dialog open={referenceOpen} onOpenChange={setReferenceOpen}><DialogContent className="mc-bootcamp conditional-bootcamp cb-reference-dialog" aria-describedby={undefined}><DialogTitle>{current?.title ?? 'Keep the reasoning close'}</DialogTitle>{current ? <><ol>{current.method.map(step => <li key={step}>{step}</li>)}</ol><p>{current.commonMistake.repair}</p><div className="cb-result">{current.workedExample.conclusion}</div></> : <p>Open a skill to keep its method and common mistake beside your work.</p>}<Link to={`${BASE}/reference${location.search}`} onClick={() => setReferenceOpen(false)}>Complete reference</Link></DialogContent></Dialog></div>;
+  return <div className="cb-shell oc-workspace"><OpeningCourseNavigation view={courseView} url={courseUrl(location.search)} workspaceLinks={workspaceLinks}/>
+    <main className="cb-main" id="conditional-main"><header className="cb-workspace-bar cb-workspace-status"><div className="cb-save" role="status">{saveMessages[status]}</div></header>{error && <div className="cb-error" role="alert"><p>{error}</p>{progress ? <button onClick={() => void retry()}>Retry save</button> : <button onClick={() => window.location.reload()}>Reload saved work</button>}</div>}{progress ? <Outlet /> : !error && <p>Loading your work...</p>}</main></div>;
 }
 
 function LearningPath() {

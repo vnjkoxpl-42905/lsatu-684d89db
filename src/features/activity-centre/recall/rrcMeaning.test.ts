@@ -1,8 +1,46 @@
 import { describe, expect, it } from "vitest";
-import { buildJudgeEntries, buildJudgePrompt, gradeStimulus, parseJudgeReply, toDetailsByLine, type JudgeEntry } from "./grading";
+import { buildJudgeEntries, buildJudgePrompt, buildJudgeResponseSchema, gradeStimulus, parseJudgeReply, toDetailsByLine, type JudgeEntry } from "./grading";
 
 const response = (carried: boolean, evidence: string, reason = "") => JSON.stringify({
   verdicts: [{ id: 1, carried, evidence, reason }],
+});
+
+describe("structured judge response contract", () => {
+  it("uses the actual nonconsecutive Detail ids and requires evidence on every verdict", () => {
+    const schema = buildJudgeResponseSchema({ entries: [{ id: 2 }, { id: 7 }] }) as any;
+    expect(schema.properties.verdicts).toMatchObject({ minItems: 2, maxItems: 2 });
+    expect(schema.properties.verdicts.items.properties.id.enum).toEqual([2, 7]);
+    expect(schema.properties.verdicts.items.required).toEqual(["id", "carried", "evidence", "reason"]);
+    expect(schema.properties.uncertain_details.items.enum).toEqual([2, 7]);
+    expect(schema.required).toContain("uncertain_details");
+    expect(schema.properties).not.toHaveProperty("read_given");
+    expect(schema.properties).not.toHaveProperty("lines");
+    expect(schema.properties).not.toHaveProperty("recall");
+  });
+
+  it("adds only requested Read and line assessments with closed required objects", () => {
+    const schema = buildJudgeResponseSchema({ entries: [{ id: 1 }], theRead: "A mistaken reversal.",
+      lines: [{ n: 1 }, { n: 3 }] }) as any;
+    expect(schema.required).toEqual(expect.arrayContaining(["read_given", "read_matches", "read_reason", "lines", "recall"]));
+    expect(schema.properties.lines).toMatchObject({ minItems: 2, maxItems: 2 });
+    expect(schema.properties.lines.items.properties.n.enum).toEqual([1, 3]);
+    const visit = (node: any) => {
+      if (!node || typeof node !== "object") return;
+      if (node.type === "object") {
+        expect(node.additionalProperties).toBe(false);
+        expect(node.required).toEqual(Object.keys(node.properties));
+      }
+      Object.values(node).forEach((child) => {
+        if (Array.isArray(child)) child.forEach(visit);
+        else if (child && typeof child === "object") visit(child);
+      });
+    };
+    visit(schema);
+  });
+
+  it("refuses an empty Detail contract", () => {
+    expect(() => buildJudgeResponseSchema({ entries: [] })).toThrow("at least one Detail");
+  });
 });
 
 describe("explicit reviewed fact groups", () => {
@@ -173,4 +211,10 @@ it("asks for meaning and student evidence while protecting the instructor refere
   expect(prompt).toContain("put that Detail id in uncertain_details");
   expect(prompt).not.toContain("When you are genuinely torn, mark it NOT carried");
   expect(prompt).not.toContain("A dropped proper noun, number or");
+  expect(prompt).toContain("unrelated examples, not evidence");
+  expect(prompt).toContain("The universal claim changed");
+  expect(prompt).toContain("Negation changed the claim");
+  expect(prompt).toContain("The direction reversed");
+  expect(prompt).toContain("ORIGINAL STIMULUS, never against this correct run");
+  expect(prompt).not.toContain("Matching its phrasing closely is a warning sign");
 });
