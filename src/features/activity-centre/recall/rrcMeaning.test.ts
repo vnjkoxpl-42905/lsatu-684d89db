@@ -219,14 +219,13 @@ it("asks for meaning and student evidence while protecting the instructor refere
   expect(prompt).not.toContain("Matching its phrasing closely is a warning sign");
 });
 
-it("uses a general counterfactual materiality rule without teaching the target examples' answers", () => {
+it("uses a fixed source-only rubric without choosing importance from the learner response", () => {
   const prompt = buildJudgePrompt({ stimulus: "A sample claim.", spoken: "My sample retelling.",
     entries: buildJudgeEntries([{ n: 1, text: "A sample detail.", kind: "content" }], []) });
-  expect(prompt).toContain("counterfactual materiality test");
-  expect(prompt).toContain("broader TRUE category");
-  expect(prompt).toContain("Name exactly what changes in material_reason");
-  expect(prompt).toContain('"process detail" alone is not a materiality explanation');
-  expect(prompt).toContain("Omission is\n  different from contradiction");
+  expect(prompt).toContain("Materiality is FIXED by the source-only rubric");
+  expect(prompt).toContain("before this learner's response is seen");
+  expect(prompt).toContain("Every contradiction remains a factual miss");
+  expect(prompt).toContain("Do not infer a new denominator");
   expect(prompt).toContain("Red was not carried");
   expect(prompt).toContain("Calling the cart blue instead would contradict the source");
   expect(prompt).toContain("The mechanism is carried without repeating its technical wording");
@@ -264,8 +263,8 @@ describe("grounded evidence ids and meaning distinct from factual coverage", () 
 
   it("keeps a truthful incidental omission in coverage while preserving material meaning", () => {
     const entries: JudgeEntry[] = [
-      { id: 1, text: "The cave filled completely.", kind: "content", decoy: false },
-      { id: 2, text: "The pillars are stone.", kind: "content", decoy: false },
+      { id: 1, text: "The cave filled completely.", kind: "content", decoy: false, reviewedMaterial: true, materialityKeyVersion: "test-v1", materialityKeyStatus: "reviewed" },
+      { id: 2, text: "The pillars are stone.", kind: "content", decoy: false, reviewedMaterial: false, materialityKeyVersion: "test-v1", materialityKeyStatus: "reviewed" },
     ];
     const reply = parseJudgeReply(JSON.stringify({ verdicts: [verdict(1, true, [1], true),
       verdict(2, false, [], false, "Stone was not explicitly stated.")] }), [1, 2], "The cave filled completely.");
@@ -276,6 +275,8 @@ describe("grounded evidence ids and meaning distinct from factual coverage", () 
     expect(grade.meaning_total).toBe(1);
     expect(grade.incidental_misses).toEqual(["The pillars are stone."]);
     expect(grade.detail_evidence?.[2].carried).toBe(false);
+    expect(grade.meaning_key_version).toBe("test-v1");
+    expect(grade.meaning_key_status).toBe("reviewed");
   });
 
   it("does not allow model incidental labels to hide quantifiers or structure", () => {
@@ -294,17 +295,37 @@ describe("grounded evidence ids and meaning distinct from factual coverage", () 
   it("does not produce perfect meaning when no material judgment exists", () => {
     const entries: JudgeEntry[] = [{ id: 1, text: "The pillars are stone.", kind: "content", decoy: false }];
     const reply = parseJudgeReply(JSON.stringify({ verdicts: [verdict(1, false, [], false)] }), [1], "Pillars.");
-    expect(gradeStimulus(entries, reply).meaning_percent).toBeNull();
+    expect(gradeStimulus(entries, reply)).toMatchObject({ meaning_percent: 0, meaning_total: 1, meaning_key_status: "fallback", meaning_key_version: null });
   });
 
   it("keeps a reviewed alias group material if any member is material", () => {
     const entries: JudgeEntry[] = [
-      { id: 1, text: "The country is Sweden.", kind: "content", decoy: false, coverageGroup: "country" },
-      { id: 2, text: "This is about Sweden.", kind: "content", decoy: false, coverageGroup: "country" },
+      { id: 1, text: "The country is Sweden.", kind: "content", decoy: false, coverageGroup: "country", reviewedMaterial: false },
+      { id: 2, text: "This is about Sweden.", kind: "content", decoy: false, coverageGroup: "country", reviewedMaterial: true },
     ];
     const reply = parseJudgeReply(JSON.stringify({ verdicts: [verdict(1, false, [], false), verdict(2, false, [], true)] }),
       [1, 2], "Norway.");
     expect(gradeStimulus(entries, reply)).toMatchObject({ total: 1, meaning_total: 1, meaning_percent: 0 });
+  });
+
+  it("retains an explicit incidental contradiction as a factual miss without a model-selected meaning penalty", () => {
+    const entries: JudgeEntry[] = [
+      { id: 1, text: "The cart arrived before noon.", kind: "content", decoy: false, reviewedMaterial: true },
+      { id: 2, text: "The cart was red.", kind: "content", decoy: false, reviewedMaterial: false },
+    ];
+    const reply = parseJudgeReply(JSON.stringify({ verdicts: [verdict(1, true, [1], false),
+      verdict(2, false, [2], true, "Blue contradicts red.")] }), [1, 2], "The cart arrived before noon. It was blue.");
+    const grade = gradeStimulus(entries, reply);
+    expect(grade.percent).toBe(50);
+    expect(grade.missed).toEqual(["The cart was red."]);
+    expect(grade.meaning_percent).toBe(100);
+    expect(grade.detail_evidence?.[2].material).toBe(false);
+  });
+
+  it("deducts a reviewed essential contradiction even if the model calls it incidental", () => {
+    const entries: JudgeEntry[] = [{ id: 1, text: "The cart arrived before noon.", kind: "content", decoy: false, reviewedMaterial: true }];
+    const reply = parseJudgeReply(JSON.stringify({ verdicts: [verdict(1, false, [1], false, "After reverses the timing.")] }), [1], "It arrived after noon.");
+    expect(gradeStimulus(entries, reply)).toMatchObject({ percent: 0, meaning_percent: 0, meaning_total: 1 });
   });
 
   it("rejects a new evidence-id response without a material audit", () => {

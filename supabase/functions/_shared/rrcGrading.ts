@@ -182,6 +182,11 @@ export function toDetailsByLine(lines: { details: { text: string; coverageGroup?
 
 export interface JudgeEntry {
   coverageGroup?: string;
+  /** Source-only reviewed rubric. Never inferred from this learner's response. */
+  reviewedMaterial?: boolean;
+  reviewedMaterialReason?: string;
+  materialityKeyVersion?: string | null;
+  materialityKeyStatus?: "reviewed" | "fallback";
   id: number;
   text: string;
   kind: DetailKind;
@@ -335,7 +340,7 @@ export function buildJudgePrompt(input: {
     .map((k) => `- ${KIND_RULE[k]}`)
     .join("\n");
   const list = input.entries
-    .map((e) => `${e.id}. [${e.kind}] ${e.text}`)
+    .map((e) => `${e.id}. [${e.kind}] ${e.text} Fixed rubric: ${e.reviewedMaterial === false ? "incidental" : "essential"}.${e.reviewedMaterialReason ? ` ${e.reviewedMaterialReason}` : ""}`)
     .join("\n");
 
   return `You are grading one stimulus of a memory drill.
@@ -423,28 +428,18 @@ RULES:
   its meaning. For a miss select the closest relevant units and explain what
   changed in reason; if nothing relevant was said use []. Never invent or
   rewrite quotes. The server reconstructs the actual words from these ids.
-- Separately mark material and explain the classification in material_reason.
-  Apply a counterfactual materiality test: omit the detail, or replace an
-  omitted descriptive subtype with its broader TRUE category. Does this lose
-  an operative claim, a reasoning relationship, or a condition the inference
-  needs? Name exactly what changes in material_reason. "Specific detail",
-  "context" or "process detail" alone is not a materiality explanation.
-  An operative claim is one needed to preserve what is being asserted or how
-  the reasoning works, not every unused descriptive attribute in the source.
-  Actors/referents,
-  named places, relationships, comparison direction, negation, modality, complete
-  conditions and relevant quantities are material. Changing a named entity or
-  a logical claim stays material even if a similar conclusion remains possible.
-  A missing descriptor is incidental ONLY when its omission leaves the same
-  referents, operative claims and reasoning intact; explain why. Omission is
-  different from contradiction: an explicit incompatible replacement is a
-  material error even when the conclusion could still be reached. Never use
-  the broader-category rule to remove a logical qualifier, negation, named
-  identity, complete condition, comparison direction or relevant quantity.
-  Do not classify a real contradiction as harmless merely to improve a score.
-  If unsure, use material
-  true. Determine carried truthfully even for incidental details: incidental
-  is not permission to fill a fact in from the source.
+- Materiality is FIXED by the source-only rubric printed beside each Detail,
+  before this learner's response is seen. Copy essential as material:true and
+  incidental as material:false, and explain the fixed rubric in material_reason.
+  Do not change a Detail's importance because she carried it, omitted it or
+  contradicted it. Every contradiction remains a factual miss in full detail
+  coverage and feedback. Only the fixed essential Details affect operative
+  meaning retained; an incidental factual error does not silently become an
+  essential-meaning deduction. When no reviewed source rubric exists, every
+  Detail is conservatively essential. Do not infer a new denominator.
+  Determine carried truthfully even for incidental Details: incidental is not
+  permission to fill a fact in from the source. In big_misses and next_time,
+  prioritise actual missed essential meaning, not incidental descriptors.
 - A reference such as "those buildings" identifies buildings, not their size,
   colour or quantity. Do not award an attribute solely because the prompt says
   the referenced objects have it. Any intrinsic or contextual implication must
@@ -845,6 +840,8 @@ export interface LineGrade {
 }
 
 export interface StimulusGrade {
+  meaning_key_version?: string | null;
+  meaning_key_status?: "reviewed" | "fallback";
   /** Meaning is a separate metric; factual coverage and its band stay intact. */
   meaning_percent?: number | null;
   meaning_carried?: number;
@@ -919,11 +916,9 @@ export function gradeStimulus(
     const aliases = entry.coverageGroup
       ? entries.filter((e) => !e.decoy && e.coverageGroup === entry.coverageGroup)
       : [entry];
-    // Unclassified legacy data and conflicting alias classifications default
-    // to material. Never discard a core fact to make a score look better.
-    return aliases.some((e) => e.kind !== "content" ||
-      /\b(all|every|only|not|none|no|if|unless|must|may|likely|probably|most|some|always|never|any|at least|at most|because)\b/i.test(e.text) ||
-      reply.detailEvidence?.[e.id]?.material !== false);
+    // Only reviewed source metadata can change the denominator. Model audit
+    // fields, absent legacy data and conflicting aliases cannot lower it.
+    return aliases.some((e) => e.reviewedMaterial !== false);
   };
   const materialEntries = own.filter(isMaterial);
   const meaningCarried = materialEntries.filter((e) => reply.verdicts[e.id] === true).length;
@@ -946,13 +941,20 @@ export function gradeStimulus(
   });
 
   return {
+    meaning_key_version: own.length && own.every(e => e.materialityKeyStatus === "reviewed" && e.materialityKeyVersion === own[0].materialityKeyVersion)
+      ? own[0].materialityKeyVersion ?? null : null,
+    meaning_key_status: own.length && own.every(e => e.materialityKeyStatus === "reviewed") ? "reviewed" : "fallback",
     meaning_percent: materialEntries.length ? Math.round(meaningCarried / materialEntries.length * 100) : null,
     meaning_carried: meaningCarried,
     meaning_total: materialEntries.length,
     incidental_misses: own.filter((e) => !isMaterial(e) && reply.verdicts[e.id] !== true).map((e) => e.text),
     detail_evidence: Object.fromEntries(entries.filter((e) => !e.decoy && reply.detailEvidence?.[e.id])
       .map((e) => [e.id, { text: e.text, carried: reply.verdicts[e.id] === true,
-        ...reply.detailEvidence![e.id] }])),
+        ...reply.detailEvidence![e.id],
+        model_material: reply.detailEvidence![e.id].material,
+        model_material_reason: reply.detailEvidence![e.id].material_reason,
+        material: isMaterial(e),
+        material_reason: e.reviewedMaterialReason ?? "No reviewed source-only key; conservatively essential." }])),
     carried: carriedEntries.length,
     total,
     percent,

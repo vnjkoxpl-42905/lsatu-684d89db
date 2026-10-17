@@ -5,6 +5,7 @@ import { resolve, relative, isAbsolute } from "node:path";
 import { homedir } from "node:os";
 import { buildJudgeEntries, toDetailsByLine, buildJudgePrompt, buildJudgeResponseSchema, parseJudgeReply, gradeStimulus } from "../../src/features/activity-centre/recall/grading";
 import { checkReciting } from "../../supabase/functions/_shared/rrcOverlap";
+import { applyReviewedMateriality } from "../../supabase/functions/_shared/rrcMeaningKeys";
 
 const MODEL = "gemini-3.1-flash-lite";
 const OUTPUT_CAP = 8192;
@@ -51,7 +52,7 @@ async function main() {
     const content = JSON.parse(sourceBytes.toString()) as { source_section: string; items: Item[] };
     const item = content.items.find(i => i.slug === c.itemSlug);
     if (!item || content.source_section !== c.sourceSection || !c.spoken.trim()) throw new Error(`${c.id}: invalid question/transcript mapping`);
-    const entries = buildJudgeEntries(toDetailsByLine(item.chunks, c.itemSlug), []);
+    const { entries } = applyReviewedMateriality({ stimulus: item.chunks.map(chunk => chunk.text).join(" "), entries: buildJudgeEntries(toDetailsByLine(item.chunks, c.itemSlug), []), slug: c.itemSlug });
     for (const detail of [...c.expected.mustCarryDetails, ...c.expected.mustMissDetails]) {
       if (!entries.some(e => e.text === detail)) throw new Error(`${c.id}: expected detail absent from authored key`);
     }

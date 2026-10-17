@@ -14,6 +14,7 @@ import {
 import { checkReciting } from "../_shared/rrcOverlap.ts";
 import { stripVerbatimReads } from "../_shared/rrcReads.ts";
 import { linesFromWords } from "../_shared/rrcLines.ts";
+import { applyReviewedMateriality } from "../_shared/rrcMeaningKeys.ts";
 
 /**
  * Grade one finished Read, Recall, Colour section.
@@ -43,7 +44,7 @@ const corsHeaders = {
 };
 
 /** Bumped when the prompt or the scoring changes, so a re-grade is legible. */
-const GRADER_VERSION = 3;
+const GRADER_VERSION = 4;
 /**
  * Which deploy is answering. Bumped on every change to this function.
  *
@@ -51,7 +52,7 @@ const GRADER_VERSION = 3;
  * this is the only way to prove from outside that a fix is the one running.
  * Returned on the 202 body and on the admin diagnostic below.
  */
-const BUILD = "2026-10-16-grounded-meaning-3";
+const BUILD = "2026-10-16-grounded-meaning-4";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
@@ -423,7 +424,8 @@ serve(async (req) => {
         const other = cItems[(i + 1) % cItems.length];
         const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
         const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
-        const entries = buildJudgeEntries(toDetailsByLine(chunks, slug), decoys);
+        const sourceText = chunks.map((chunk) => chunk.text).join(" ");
+        const { entries } = applyReviewedMateriality({ stimulus: sourceText, entries: buildJudgeEntries(toDetailsByLine(chunks, slug), decoys), slug });
         try {
           const raw = await judge(
             buildJudgePrompt({
@@ -439,6 +441,8 @@ serve(async (req) => {
             slug,
             percent: g.percent,
             meaning_percent: g.meaning_percent,
+            meaning_key_version: g.meaning_key_version,
+            meaning_key_status: g.meaning_key_status,
             meaning_carried: g.meaning_carried,
             meaning_total: g.meaning_total,
             incidental_misses: g.incidental_misses,
@@ -832,7 +836,8 @@ serve(async (req) => {
       const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
       const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
 
-      const entries = buildJudgeEntries(toDetailsByLine(chunks, slug), decoys);
+      const sourceText = chunks.map((chunk) => chunk.text).join(" ");
+      const { entries } = applyReviewedMateriality({ stimulus: sourceText, entries: buildJudgeEntries(toDetailsByLine(chunks, slug), decoys), slug });
 
       /*
        * Her run cut into the lines she was rephrasing.
