@@ -1,3 +1,4 @@
+import { canRevealRcResults } from '@/features/rc/lib/rcResultsReveal';
 import type { StandaloneDrillRun } from '@/lib/drillRunLedger';
 import { launchDrill } from '@/lib/drillLaunch';
 import type { RcAttempt, RcDrillSession } from '@/features/rc/lib/rcTypes';
@@ -79,8 +80,9 @@ export function buildStandaloneDrillHistory(
         key: `rc:${session.id}`,
         section: 'rc',
         title: rcCardTitle(session.passageIds, rcPassages),
-        detail: session.status === 'completed' && firstAnswers.length > 0
+        detail: canRevealRcResults(session) && firstAnswers.length > 0
           ? `${rightCount}/${firstAnswers.length} correct · ${Math.round((rightCount / firstAnswers.length) * 100)}%`
+          : session.status === 'completed' ? 'Completed · results hidden until you reveal them'
           : drafts.length > 0 && session.status === 'in_progress'
             ? `${savedCount} answer${savedCount === 1 ? '' : 's'} saved`
             : `${firstAnswers.length} first answer${firstAnswers.length === 1 ? '' : 's'} saved`,

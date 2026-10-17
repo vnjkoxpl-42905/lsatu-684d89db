@@ -148,7 +148,7 @@ export function formatPassageStatusLabel(status: RcPassageStatus): string {
 }
 
 function hasGradedFirstTake(entry: RcQuestionHistoryEntry): boolean {
-  if (!entry.lastSeenAt || entry.attempts <= 0) return false;
+  if (!(entry.lastGradedAt ?? entry.lastSeenAt) || entry.attempts <= 0) return false;
   if (entry.unansweredOnFirstTake === true) return false;
   if ('firstTakeCorrect' in entry && entry.firstTakeCorrect === null) return false;
   if (typeof entry.answered === 'boolean' && !entry.answered) return false;
@@ -169,7 +169,7 @@ export function rollingAccuracy(history: RcQuestionHistory): number | null {
   const entries = [...history.values()].filter(hasGradedFirstTake);
   if (entries.length === 0) return null;
   const recent = entries
-    .sort((a, b) => Date.parse(b.lastSeenAt!) - Date.parse(a.lastSeenAt!))
+    .sort((a, b) => Date.parse(b.lastGradedAt ?? b.lastSeenAt!) - Date.parse(a.lastGradedAt ?? a.lastSeenAt!))
     .slice(0, 40);
   const right = recent.filter(isFirstTakeCorrect).length;
   return right / recent.length;

@@ -73,6 +73,15 @@ const Q12 = question({
 const Q21 = question({ questionId: 21, passageId: 2, preptest: 150, prompt: null });
 
 describe('runRcSearch', () => {
+  it('can page past two hundred results without truncating or repeating the first page', () => {
+    const passages = Array.from({ length: 205 }, (_, index) => passage({ passageId: index + 1, questionIds: [index + 1] }));
+    const questions = passages.map(p => question({ questionId: p.passageId, passageId: p.passageId }));
+    const result = runRcSearch({ passages, questions, query: '', filters: filters({}), limit: 40, passageOffset: 200, questionOffset: 200 });
+    expect(result.totalPassages).toBe(205);
+    expect(result.totalQuestions).toBe(205);
+    expect(result.passages.map(p => p.passage.passageId)).toEqual([201, 202, 203, 204, 205]);
+    expect(result.questions.map(q => q.question.questionId)).toEqual([201, 202, 203, 204, 205]);
+  });
   it('returns everything in the default range when no filters or query are set', () => {
     const result = runRcSearch({
       passages: [P1, P2],

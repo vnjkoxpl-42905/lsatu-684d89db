@@ -127,7 +127,7 @@ export async function createSession(
   }
   if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
   // Reusing drill settings (including Drill your misses) must start fresh work.
-  const { draftAnswers: _draftAnswers, ...freshConfig } = config;
+  const { draftAnswers: _draftAnswers, resultsRevealedAt: _reveal, ...freshConfig } = config;
   const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .insert({
@@ -274,11 +274,35 @@ export async function abandonSession(id: string): Promise<void> {
 }
 
 export async function setSessionExcluded(id: string, excluded: boolean): Promise<void> {
-  const { error } = await rcDb
-    .from(RC_SESSIONS_TABLE)
-    .update({ excluded_from_analytics: excluded })
-    .eq('id', id);
+  const actorId = await requireUserId();
+  const session = await getSession(id, actorId);
+  if (!session || session.userId !== actorId) throw new Error('This drill belongs to another account.');
+  if (session.config.timedSectionSittingId || session.config.practiceTestRunId) throw new Error('Protected sections retain their analytics status.');
+  const { data, error } = await rcDb.from(RC_SESSIONS_TABLE)
+    .update({ excluded_from_analytics: excluded }).eq('id', id).eq('user_id', actorId)
+    .select('id, excluded_from_analytics').maybeSingle();
   raise(error);
+  if (await requireUserId() !== actorId) throw new Error('The signed-in account changed.');
+  if (!data || data.id !== id || data.excluded_from_analytics !== excluded) throw new Error('The analytics change did not reach your account. Try again.');
+}
+
+/** Releases ordinary completed results only after the account acknowledges the write. */
+export async function revealSessionResults(id: string, actorId: string): Promise<RcDrillSession> {
+  const session = await getSession(id, actorId);
+  if (!session || session.userId !== actorId || session.status !== 'completed') throw new Error('This drill is not ready to reveal.');
+  if (session.config.timedSectionSittingId || session.config.practiceTestRunId) throw new Error('Protected results use their section release controls.');
+  const resultsRevealedAt = typeof session.config.resultsRevealedAt === 'string' && Number.isFinite(Date.parse(session.config.resultsRevealedAt))
+    ? session.config.resultsRevealedAt : new Date().toISOString();
+  const { data, error } = await rcDb.from(RC_SESSIONS_TABLE)
+    .update({ config: { ...session.config, resultsRevealedAt } })
+    .eq('id', id).eq('user_id', actorId).eq('status', 'completed')
+    .eq('config', JSON.stringify(session.config)).select().maybeSingle();
+  raise(error);
+  if (await requireUserId() !== actorId) throw new Error('The signed-in account changed.');
+  if (!data) throw new Error('Your results reveal did not reach your account. Try again.');
+  const saved = toSession(data as RcDrillSessionRow);
+  if (saved.id !== id || saved.userId !== actorId || saved.config.resultsRevealedAt !== resultsRevealedAt) throw new Error('Your results reveal could not be verified.');
+  return saved;
 }
 
 export async function deleteSession(id: string): Promise<void> {
@@ -295,7 +319,13 @@ export async function deleteSession(id: string): Promise<void> {
  * never updated, so the original answer stays intact.
  */
 export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
-  const userId = attempt.userId ?? (await requireUserId());
+  const userId = await requireUserId();
+  if (attempt.userId && attempt.userId !== userId) throw new Error('The signed-in account changed.');
+  const source = await getSession(attempt.sessionId, userId);
+  if (!source || source.userId !== userId) throw new Error('This section is not available.');
+  if ((source.config.timedSectionSittingId || source.config.practiceTestRunId) && source.status !== 'in_progress') {
+    throw new Error('Answers in this protected source section cannot be changed.');
+  }
   await assertActivePracticeTestSession(attempt.sessionId);
 
   const existingAttempt = async (): Promise<RcAttempt | null> => {
@@ -314,7 +344,10 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
   // The client keeps this UUID in its device backup. A successful insert whose
   // response was lost must be acknowledged as the same row on retry.
   const alreadySaved = await existingAttempt();
-  if (alreadySaved) return alreadySaved;
+  if (alreadySaved) {
+    if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+    return alreadySaved;
+  }
 
   const { data: prior, error: priorError } = await rcDb
     .from(RC_ATTEMPTS_TABLE)
@@ -325,6 +358,8 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
   raise(priorError);
 
   const isFirstAttempt = (prior ?? []).length === 0;
+
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
 
   const { data, error } = await rcDb
     .from(RC_ATTEMPTS_TABLE)
@@ -345,9 +380,13 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
     .single();
   if (error?.code === '23505') {
     const saved = await existingAttempt();
-    if (saved) return saved;
+    if (saved) {
+      if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+      return saved;
+    }
   }
   raise(error);
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
   return toAttempt(data as RcAttemptRow);
 }
 
@@ -532,6 +571,7 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
       incorrectOnLastTake: false,
       incorrectCount: 0,
       lastSeenAt: null,
+      lastGradedAt: null,
       answered: false,
       firstEverCorrect: null,
       firstTakeCorrect: null,
@@ -580,6 +620,7 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
           existing.firstEverCorrect = right;
         }
         existing.firstTakeCorrect = right;
+        existing.lastGradedAt = row.created_at;
         existing.reviewCorrected = false;
         if (right) {
           existing.everCorrect = true;

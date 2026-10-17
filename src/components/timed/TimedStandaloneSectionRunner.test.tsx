@@ -28,6 +28,8 @@ function state(phase = 'running'): TimedSectionState {
 let controller: Record<string, ReturnType<typeof vi.fn>>;
 beforeEach(() => {
   actor = owner;
+  localStorage.clear();
+  vi.restoreAllMocks();
   controller = { load: vi.fn().mockResolvedValue(state()), clock: vi.fn().mockReturnValue({ writer: 'active', remainingMs: 2100000 }),
     pending: vi.fn().mockReturnValue(null), rejection: vi.fn().mockReturnValue(null), create: vi.fn().mockResolvedValue(state('ready')),
     control: vi.fn().mockResolvedValue(state('paused')), checkpoint: vi.fn().mockResolvedValue(state()), close: vi.fn().mockResolvedValue(state('complete')),
@@ -121,6 +123,58 @@ describe('standalone account section runner', () => {
     mount();
     await screen.findByTestId('rc-reader');
     expect(screen.getByTestId('mark-count')).toHaveTextContent('1');
+  });
+  it('groups and persists supported display settings without adding answer aids', async () => {
+    controller.load.mockResolvedValue(rcState()); const view = mount(); await screen.findByTestId('rc-reader');
+    expect(screen.getByText('Display')).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Line spacing'), { target: { value: '0.4' } });
+    fireEvent.change(screen.getByLabelText('Color scheme'), { target: { value: 'navy' } });
+    fireEvent.click(screen.getByLabelText('Paragraph focus'));
+    view.unmount(); mount(); await screen.findByTestId('rc-reader');
+    expect(screen.getByLabelText('Line spacing')).toHaveValue('0.4');
+    expect(screen.getByLabelText('Color scheme')).toHaveValue('navy');
+    expect(screen.getByLabelText('Paragraph focus')).toBeChecked();
+    expect(controller.checkpoint).not.toHaveBeenCalled();
+  });
+  it('discards malformed or foreign stored marks and restores valid display settings', async () => {
+    const valid = { target: 'passage', start: 0, end: 4, color: 'yellow', kind: 'highlight' };
+    localStorage.setItem(`lsatu:timed-section-markers:v1:${owner}:${work}`, JSON.stringify({ ownerId: owner, sittingId: work,
+      fontScale: 1.3, passageOnly: false, rcMarks: { '7': [valid, null, { ...valid, end: 10000 }, { ...valid, target: 'q999:stem' },
+        { ...valid, color: 'red' }, { ...valid, kind: 'script' }, { ...valid, start: -1 }, { ...valid, end: 0 }, { ...valid, start: 0.5 }], '999': [valid] } }));
+    controller.load.mockResolvedValue(rcState()); mount();
+    await screen.findByTestId('rc-reader');
+    expect(screen.getByTestId('mark-count')).toHaveTextContent('1');
+    expect(screen.getByLabelText('Text size')).toHaveValue('1.3');
+  });
+  it('reports a local save failure separately and retries without checkpointing account answers', async () => {
+    controller.load.mockResolvedValue(rcState()); mount(); await screen.findByTestId('rc-reader');
+    const save = vi.spyOn(localStorage, 'setItem').mockImplementation(() => { throw new Error('Quota exceeded'); });
+    fireEvent.click(screen.getByRole('button', { name: 'Mark text' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Marks and display settings are not saved on this device');
+    expect(screen.getByTestId('mark-count')).toHaveTextContent('1');
+    expect(controller.checkpoint).not.toHaveBeenCalled();
+    save.mockRestore(); fireEvent.click(screen.getByRole('button', { name: 'Retry saving marks' }));
+    await waitFor(() => expect(screen.queryByRole('alert')).toBeNull());
+    expect(JSON.parse(localStorage.getItem(`lsatu:timed-section-markers:v1:${owner}:${work}`)!).rcMarks['7']).toHaveLength(1);
+  });
+  it('does not overwrite unread stored marks when device storage cannot be read', async () => {
+    const read = vi.spyOn(localStorage, 'getItem').mockImplementation(() => { throw new Error('Storage denied'); });
+    const write = vi.spyOn(localStorage, 'setItem');
+    controller.load.mockResolvedValue(rcState()); mount(); await screen.findByTestId('rc-reader');
+    expect(await screen.findByRole('alert')).toHaveTextContent('could not be restored');
+    fireEvent.click(screen.getByRole('button', { name: 'Mark text' }));
+    expect(screen.getByTestId('mark-count')).toHaveTextContent('0');
+    expect(write).not.toHaveBeenCalled();
+    read.mockRestore();
+    fireEvent.click(screen.getByRole('button', { name: 'Retry saving marks' }));
+    await waitFor(() => expect(screen.queryByRole('alert')).toBeNull());
+  });
+  it('refuses annotation callbacks while the account checkpoint is busy', async () => {
+    controller.load.mockResolvedValue(rcState()); controller.checkpoint.mockReturnValue(new Promise(() => {}));
+    mount(); await screen.findByTestId('rc-reader');
+    fireEvent.click(screen.getByRole('button', { name: 'Pause' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Mark text' }));
+    expect(screen.getByTestId('mark-count')).toHaveTextContent('0');
   });
   it('closes RC at its acknowledged budget boundary after saving current answers', async () => {
     const rc = state(); rc.snapshot.sitting.kind = 'rc'; controller.load.mockResolvedValue(rc);

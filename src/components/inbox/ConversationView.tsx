@@ -38,6 +38,7 @@ interface Props {
    * back and identity must be visible at every width.
    */
   layout?: 'panel' | 'stage';
+  contextDraft?: string | null;
 }
 
 const JOSHUA_ROBOT_AVATAR_SRC = '/mainhub/joshua-robot-avatar.png';
@@ -103,6 +104,7 @@ export function ConversationView({
   emptyStateLabel = 'No communication logged',
   studentFacing = false,
   layout = 'panel',
+  contextDraft = null,
 }: Props) {
   const stageLayout = layout === 'stage';
   const { user } = useAuth();
@@ -547,6 +549,7 @@ export function ConversationView({
 
       <div className="shrink-0 border-t border-[var(--msg-line)] bg-[var(--msg-panel)]/95 backdrop-blur-md">
         <MessageComposer
+          contextDraft={contextDraft}
           conversationId={conversation.id}
           onSent={() => { refresh(); onMessageSent?.(); }}
           studentFacing={studentFacing}

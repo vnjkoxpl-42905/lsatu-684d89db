@@ -187,6 +187,8 @@ export function readRcDraftAnswers(value: unknown): RcDraftAnswer[] {
 }
 
 export interface RcDrillConfig {
+  /** Explicit account-acknowledged release of ordinary drill scores and feedback. */
+  resultsRevealedAt?: string;
   reveal: RcRevealMode;
   timing: RcTiming;
   source: 'manual' | 'adaptive' | 'assignment';
@@ -290,6 +292,8 @@ export interface RcQuestionHistoryEntry {
   incorrectOnLastTake: boolean;
   incorrectCount: number;
   lastSeenAt: string | null;
+  /** Latest graded first take, separate from skipped or abandoned exposure. */
+  lastGradedAt?: string | null;
   answered?: boolean;
   firstEverCorrect?: boolean | null;
   firstTakeCorrect?: boolean | null;

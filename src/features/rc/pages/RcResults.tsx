@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { canRevealRcResults } from '../lib/rcResultsReveal';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -18,6 +20,7 @@ import {
   getSession,
   getSessionAttempts,
   setSessionExcluded,
+  revealSessionResults,
 } from '../api/rcProgress';
 import { loadPassages } from '../lib/rcBank';
 import { buildItems, type RcSessionItem } from '../lib/rcSession';
@@ -42,6 +45,14 @@ function signedClock(ms: number): string {
   return (ms >= 0 ? '+' : '-') + clock(Math.abs(ms));
 }
 
+/** JSON comparison ignores object key order and absent optional fields. */
+function canonical(value: unknown): string {
+  if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+  if (value && typeof value === 'object') return '{' + Object.entries(value).filter(([, v]) => v !== undefined)
+    .sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => JSON.stringify(k) + ':' + canonical(v)).join(',') + '}';
+  return JSON.stringify(value);
+}
+
 interface FocusArea {
   qtype: string;
   correct: number;
@@ -51,6 +62,7 @@ interface FocusArea {
 
 export default function RcResults() {
   const { sessionId } = useParams();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   /** Validated internal destination carried from the drill's entry point. */
@@ -65,6 +77,16 @@ export default function RcResults() {
   const [expandedRows, setExpandedRows] = React.useState<Set<number>>(new Set());
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [showAllTypes, setShowAllTypes] = React.useState(false);
+  const [actionError, setActionError] = React.useState<string | null>(null);
+  const [actionBusy, setActionBusy] = React.useState(false);
+  const identity = React.useMemo(() => ({ actorId: user?.id, sessionId }), [user?.id, sessionId]);
+  const activeIdentity = React.useRef<typeof identity | null>(identity);
+  activeIdentity.current = identity;
+  const actionLock = React.useRef<object | null>(null);
+  React.useEffect(() => {
+    activeIdentity.current = identity;
+    return () => { if (activeIdentity.current === identity) activeIdentity.current = null; };
+  }, [identity]);
 
   // Force dark mode, as the drill pages do. This route is mounted outside
   // Drill.tsx, so without it a student on the light theme would get a light
@@ -79,12 +101,15 @@ export default function RcResults() {
   }, []);
 
   React.useEffect(() => {
-    if (!sessionId) return;
+    setSession(null); setError(null); setActionError(null); setActionBusy(false); actionLock.current = null;
+    if (!sessionId || !user?.id) return;
+    const actorId = user.id;
     let cancelled = false;
     (async () => {
       try {
-        const s = await getSession(sessionId);
-        if (!s) throw new Error('That drill could not be found.');
+        const s = await getSession(sessionId, actorId);
+        if (!s || s.id !== sessionId || s.userId !== actorId) throw new Error('That drill could not be found for this account.');
+        if (s.status !== 'completed') throw new Error('This drill is not finished. Return to Practice to continue.');
         const [ps, as] = await Promise.all([
           loadPassages(s.passageIds),
           getSessionAttempts(sessionId),
@@ -101,7 +126,7 @@ export default function RcResults() {
     return () => {
       cancelled = true;
     };
-  }, [sessionId]);
+  }, [sessionId, user?.id]);
 
   const items = React.useMemo(() => buildItems(passages), [passages]);
 
@@ -143,7 +168,7 @@ export default function RcResults() {
     );
   }
 
-  if (!session) {
+  if (!session || session.id !== sessionId || session.userId !== user?.id) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <p className="text-muted-foreground">Loading your results…</p>
@@ -206,17 +231,57 @@ export default function RcResults() {
     ),
   ];
 
-  const drillMisses = async () => {
-    const fresh = await createSession(missedRcConfig(session.config), missedPassageIds);
-    navigate('/rc/drill?sessionId=' + fresh.id);
+  const revealed = canRevealRcResults(session);
+  const runAction = async (operation: (actorId: string, isCurrent: () => boolean) => Promise<void>) => {
+    if (actionLock.current || !user?.id || session.id !== sessionId || session.userId !== user.id) return;
+    const actorId = user.id;
+    const command = {};
+    const isCurrent = () => activeIdentity.current === identity;
+    actionLock.current = command; setActionBusy(true); setActionError(null);
+    try { await operation(actorId, isCurrent); }
+    catch (err) { if (isCurrent()) setActionError(err instanceof Error ? err.message : 'That change did not save. Try again.'); }
+    finally {
+      if (actionLock.current === command) actionLock.current = null;
+      if (isCurrent()) setActionBusy(false);
+    }
   };
-
-  const toggleExcluded = async () => {
+  const drillMisses = () => runAction(async (actorId, isCurrent) => {
+    if (protectedSection) throw new Error('Start a new drill from Practice to retry a protected section.');
+    // The durable command includes its payload, so recovery cannot adopt unrelated work.
+    const key = `lsatu:rc-missed-create:v1:${actorId}:${session.id}`;
+    const { resultsRevealedAt: _reveal, draftAnswers: _drafts, ...config } = missedRcConfig(session.config);
+    const requested = { config, passageIds: missedPassageIds };
+    const stored = localStorage.getItem(key);
+    const pending = stored ? JSON.parse(stored) : { id: crypto.randomUUID(), ...requested };
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pending.id ?? '')
+      || canonical(pending.config) !== canonical(config) || canonical(pending.passageIds) !== canonical(missedPassageIds)) {
+      throw new Error('The saved retry command does not match this drill. Return to Practice to start a new drill.');
+    }
+    if (!stored) localStorage.setItem(key, JSON.stringify(pending));
+    let fresh = await getSession(pending.id, actorId);
+    if (!isCurrent()) return;
+    if (!fresh) {
+      try { fresh = await createSession(config, missedPassageIds, { id: pending.id, actorId }); }
+      catch (err) { if (!isCurrent()) return; fresh = await getSession(pending.id, actorId); if (!fresh) throw err; }
+    }
+    if (!isCurrent()) return;
+    if (fresh.userId !== actorId || fresh.id !== pending.id || fresh.status !== 'in_progress'
+      || canonical(fresh.config) !== canonical(config) || canonical(fresh.passageIds) !== canonical(missedPassageIds)) {
+      throw new Error('The new drill does not match the saved retry command. Return to Practice to check your drills.');
+    }
+    localStorage.removeItem(key);
+    navigate('/rc/drill?sessionId=' + fresh.id);
+  });
+  const toggleExcluded = () => runAction(async (actorId, isCurrent) => {
     if (protectedSection) return;
     const next = !excluded;
-    setExcluded(next);
     await setSessionExcluded(session.id, next);
-  };
+    if (isCurrent()) setExcluded(next);
+  });
+  const revealResults = () => runAction(async (actorId, isCurrent) => {
+    const saved = await revealSessionResults(session.id, actorId);
+    if (isCurrent()) setSession(saved);
+  });
 
   const toggleRow = (id: number) =>
     setExpandedRows((prev) => {
@@ -242,6 +307,7 @@ export default function RcResults() {
             <div className="w-24" />
           </div>
 
+          {revealed && <>
           {/* Score. No PrepTest-equivalent and no percentile: we do not have the
               cohort data those would need. */}
           {items.some(item => {
@@ -405,9 +471,18 @@ export default function RcResults() {
               ))}
             </div>
           </div>
+          </>}
         </div>
       </div>
+      {actionError && <p role="alert" className="mx-auto max-w-7xl px-6 py-3">{actionError}</p>}
+      {!revealed && <section className="mx-auto max-w-3xl px-6 py-10 space-y-4">
+        <h2 className="text-xl font-semibold">Your drill is complete</h2>
+        <p>Your answers are saved. Review them before seeing your score or the credited answers.</p>
+        <Button disabled={actionBusy} onClick={() => navigate(`/rc/drill?sessionId=${session.id}&review=1`)}>Review without answers</Button>
+        <Button variant="outline" disabled={actionBusy} onClick={revealResults}>{actionBusy ? 'Saving…' : 'Reveal score and answers'}</Button>
+      </section>}
 
+      {revealed && <>
       {/* By passage */}
       <div className="mx-auto mt-6 max-w-7xl px-6">
         <h2 className="mb-3 text-xs uppercase tracking-wide text-muted-foreground">By passage</h2>
@@ -415,6 +490,7 @@ export default function RcResults() {
           {perPassage.map((p) => (
             <Card key={p.passage.passageId} className="p-4">
               <div className="mb-2 font-semibold">{p.passage.title}</div>
+              <p className="mb-2 text-sm text-muted-foreground">PT {p.passage.preptest} · S{p.passage.section} · P{p.passage.setNumber}</p>
               <div className="mb-3 flex flex-wrap gap-1.5">
                 {p.passage.topic && (
                   <Badge variant="outline" className="text-xs">
@@ -579,6 +655,7 @@ export default function RcResults() {
         )}
       </div>
 
+      </>}
       {/* Actions */}
       <div className="mx-auto mt-8 flex max-w-7xl flex-wrap gap-3 px-6">
         {/* Inside a practice test the sitting is not over, so getting back to it
@@ -586,6 +663,7 @@ export default function RcResults() {
         {returnTo && (
           <Button onClick={() => navigate(returnTo)}>{session?.config.practiceTestRunId ? 'Back to your practice test' : returnTo.startsWith('/classroom') ? 'Back to classroom' : 'Back to Practice'}</Button>
         )}
+        {revealed && <>
         <Button
           variant={returnTo ? 'outline' : 'default'}
           onClick={() => navigate(`/rc/drill?sessionId=${session.id}&review=1`)}
@@ -594,25 +672,27 @@ export default function RcResults() {
         </Button>
         <Button
           variant="outline"
-          disabled={missedPassageIds.length === 0}
+          disabled={actionBusy || protectedSection || missedPassageIds.length === 0}
           title={
-            missedPassageIds.length === 0 ? 'You did not miss anything in this drill' : undefined
+            protectedSection ? 'Start a new drill from Practice to retry a protected section.' : missedPassageIds.length === 0 ? 'You did not miss anything in this drill' : undefined
           }
           onClick={drillMisses}
         >
           Drill your misses
         </Button>
+        {!protectedSection && <p className="text-sm text-muted-foreground">A new drill includes each passage with a missed question.</p>}
+        </>}
         <Button variant="outline" onClick={() => navigate('/rc')}>
           New drill
         </Button>
         <Button
           variant={excluded ? 'secondary' : 'ghost'}
-          disabled={protectedSection}
+          disabled={actionBusy || protectedSection}
           title={protectedSection ? 'Protected section records retain their saved analytics status.' : undefined}
           aria-pressed={excluded}
           onClick={toggleExcluded}
         >
-          {excluded ? 'Counted in your progress' : 'Exclude from analytics'}
+          {excluded ? 'Include in analytics' : 'Exclude from analytics'}
         </Button>
         {protectedSection && <p className="w-full text-sm text-muted-foreground">This protected section retains its saved analytics status. Section elapsed time comes from the account clock; question averages use recorded question time.</p>}
       </div>

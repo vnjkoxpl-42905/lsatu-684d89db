@@ -220,12 +220,16 @@ export function runRcSearch({
   query,
   filters,
   limit = 200,
+  passageOffset = 0,
+  questionOffset = 0,
 }: {
   passages: RcSearchPassage[];
   questions: RcQuestionIndexEntry[];
   query: string;
   filters: RcSearchFilters;
   limit?: number;
+  passageOffset?: number;
+  questionOffset?: number;
 }): RcSearchResult {
   const address = parseRcSearchAddress(query);
   // An address names one place, so it ignores the text query and the PrepTest
@@ -312,8 +316,8 @@ export function runRcSearch({
   }
 
   return {
-    passages: matchedPassages.slice(0, limit),
-    questions: matchedQuestions.slice(0, limit),
+    passages: matchedPassages.slice(passageOffset, passageOffset + limit),
+    questions: matchedQuestions.slice(questionOffset, questionOffset + limit),
     totalPassages: matchedPassages.length,
     totalQuestions: matchedQuestions.length,
     hiddenReservedPassages,

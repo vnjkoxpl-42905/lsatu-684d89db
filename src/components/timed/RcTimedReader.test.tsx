@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { RcTimedReader, type RcTimedReaderProps } from './RcTimedReader';
 import type { RcSessionItem } from '@/features/rc/lib/rcSession';
+import comparativeBank from '../../../public/data/rc/RC-PT123.json';
 import type { RcPassage } from '@/features/rc/lib/rcTypes';
 
 const passage = {
@@ -44,6 +45,73 @@ describe('RcTimedReader', () => {
     view.rerender(<RcTimedReader {...props({ onSelect, blocked: true })} />);
     fireEvent.click(screen.getByText(/Choice bravo/));
     expect(onSelect).not.toHaveBeenCalled();
+  });
+
+  it('prevents erasing passage annotations while blocked', () => {
+    const onMarksChange = vi.fn();
+    const configuration = props({ marker: 'erase', onMarksChange, marks: [{ target: 'passage', start: 0, end: 5, color: 'yellow', kind: 'highlight' }] });
+    const view = render(<RcTimedReader {...configuration} />);
+    const mark = view.container.querySelector('mark');
+    expect(mark).not.toBeNull();
+    fireEvent.mouseUp(mark!);
+    expect(onMarksChange).toHaveBeenCalledWith([]);
+    onMarksChange.mockClear();
+    view.rerender(<RcTimedReader {...configuration} blocked />);
+    fireEvent.mouseUp(view.container.querySelector('mark')!);
+    expect(onMarksChange).not.toHaveBeenCalled();
+  });
+
+  it('reports zero Find matches and navigates matching occurrences', () => {
+    HTMLElement.prototype.scrollIntoView = vi.fn();
+    const view = render(<RcTimedReader {...props({ find: 'missing phrase' })} />);
+    expect(screen.getByRole('status')).toHaveTextContent('0/0 · No matches');
+    expect(screen.getByRole('button', { name: 'Next match' })).toBeDisabled();
+    view.rerender(<RcTimedReader {...props({ find: 'paragraph' })} />);
+    expect(screen.getByRole('status')).toHaveTextContent('1/2');
+    fireEvent.click(screen.getByRole('button', { name: 'Next match' }));
+    expect(screen.getByRole('status')).toHaveTextContent('2/2');
+    fireEvent.click(screen.getByRole('button', { name: 'Next match' }));
+    expect(screen.getByRole('status')).toHaveTextContent('1/2');
+  });
+
+  it('uses actual source comparative headings without changing annotation text offsets', () => {
+    const text = comparativeBank.passages.find(value => value.passageId === 168)!.text;
+    const comparativeItem = { ...item, passage: { ...passage, text, format: 'Comparative' } };
+    const view = render(<RcTimedReader {...props({ item: comparativeItem })} />);
+    const textContainer = view.container.querySelector('.rc-passage-text')!;
+    const originalText = textContainer.textContent;
+    expect(screen.getByRole('button', { name: 'Passage B' })).toBeEnabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Passage B' }));
+    expect(textContainer.textContent).toBe(originalText);
+    const headings = [...textContainer.querySelectorAll('p')].filter(element => /^Passage [AB]$/.test(element.textContent ?? ''));
+    expect(headings[0]).not.toBeVisible();
+    expect(headings[1]).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Both' }));
+    expect(headings[0]).toBeVisible();
+    expect(textContainer.textContent).toBe(originalText);
+  });
+
+  it('keeps ambiguous comparative content in Both view', () => {
+    const ambiguous = { ...item, passage: { ...passage, format: 'Comparative', text: '**Passage A**\n\nFirst text.\n\n**Passage A**\n\nRepeated heading.\n\n**Passage B**\n\nSecond text.' } };
+    render(<RcTimedReader {...props({ item: ambiguous })} />);
+    expect(screen.getByRole('button', { name: 'Passage A' })).toBeDisabled();
+    expect(screen.getByText(/separate parts could not be verified/)).toBeInTheDocument();
+  });
+
+  it('uses a compact pane switch when the actual container is narrow', () => {
+    vi.stubGlobal('ResizeObserver', class {
+      constructor(private callback: (entries: unknown[]) => void) {}
+      observe() { this.callback([{ contentRect: { width: 620 } }]); }
+      disconnect() {}
+    });
+    try {
+      const view = render(<RcTimedReader {...props()} />);
+      expect(screen.getByRole('group', { name: 'Reader pane' })).toBeInTheDocument();
+      expect(screen.queryByText(/Choice alpha/)).toBeNull();
+      fireEvent.click(screen.getByRole('button', { name: 'Questions' }));
+      expect(screen.getByText(/Choice alpha/)).toBeInTheDocument();
+      expect(view.container.querySelector('.rc-timed-reader')).toHaveAttribute('data-pane-layout', 'single');
+    } finally { vi.unstubAllGlobals(); }
   });
 
   it('hides the question column in passage-only mode', () => {

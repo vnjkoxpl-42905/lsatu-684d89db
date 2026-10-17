@@ -14,6 +14,7 @@ import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { toast } from 'sonner';
 import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
 import { needsReply } from '@/components/inbox/inboxDisplay';
+import { readInboxQuestionContext } from '@/lib/inboxQuestionContext';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
@@ -157,7 +158,8 @@ export default function Inbox() {
     return pickStudentPrimary(conversations, user.id);
   }, [conversations, activeId, is_admin, permsLoading, user]);
 
-  const routeState = location.state as { composeTarget?: string | null } | null;
+  const routeState = location.state as { composeTarget?: string | null; questionContext?: unknown } | null;
+  const questionContext = readInboxQuestionContext(routeState?.questionContext, user?.id);
   const composeTarget = routeState?.composeTarget || null;
   const clearComposeTarget = useCallback(
     () => navigate(location.pathname, { replace: true, state: {} }),
@@ -209,13 +211,13 @@ export default function Inbox() {
     try {
       const id = await startJoshuaConversation();
       await refresh();
-      navigate(`/inbox/${id}`, { replace: true });
+      navigate(`/inbox/${id}`, { replace: true, state: location.state });
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : 'Could not start conversation');
     } finally {
       setStarting(false);
     }
-  }, [starting, refresh, navigate]);
+  }, [starting, refresh, navigate, location.state]);
 
   const selectThread = useCallback((id: string) => navigate(`/inbox/${id}`), [navigate]);
   const clearThread = useCallback(() => {
@@ -232,12 +234,17 @@ export default function Inbox() {
   if (active) {
     return (
       <div className="flex h-full min-h-0 flex-col bg-background">
+        {questionContext && !is_admin && <div className="border-b p-3 text-sm">
+          Question context is ready as an editable draft. Nothing has been sent.
+          <Button size="sm" variant="outline" className="ml-2" onClick={() => navigate(questionContext.returnTo)}>Return to question</Button>
+        </div>}
         <ConversationView
           conversation={active}
           /* Students have nowhere to go back TO, so they get no back button. */
           onBack={is_admin ? clearThread : undefined}
           onMessageSent={refresh}
           layout="stage"
+          contextDraft={!is_admin ? questionContext?.text : null}
         />
       </div>
     );
