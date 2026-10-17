@@ -315,4 +315,103 @@ describe('rollingAccuracy and blind-review separation', () => {
       true,
     );
   });
+
+  it('classifies an abandoned-only passage as partial (Partial) rather than skipped_only (Skipped), while keeping it excluded from Fresh', () => {
+    const history = makeHistory([
+      {
+        questionId: 5001,
+        attempts: 1,
+        answered: false,
+        firstEverCorrect: null,
+        firstTakeCorrect: null,
+        unansweredOnFirstTake: false,
+        everCorrect: false,
+        everIncorrect: false,
+        incorrectOnLastTake: false,
+        lastFirstTakeIncorrect: false,
+        incorrectCount: 0,
+        reviewCorrected: false,
+        completedAnswered: false,
+        completedAnsweredSessionIds: [],
+        lastSeenAt: '2026-10-10T00:00:00Z',
+      },
+    ]);
+    const status = passageStatus(basePassage, [5001, 5002], history);
+    expect(status.state).toBe('partial');
+    expect(formatPassageStatusLabel(status)).toBe('Partial');
+    expect(matchesFilters(basePassage, { ...baseFilters, status: 'fresh' }, status)).toBe(false);
+  });
+
+  it('keeps rollingAccuracy and Incorrect on last try consistent across multi-drill retakes (Drill 1 wrong -> Drill 2 right, and Drill 1 right -> Drill 2 wrong)', () => {
+    // Case A: Drill 1 wrong -> Drill 2 right
+    const wrongThenRight = makeHistory([
+      {
+        questionId: 5001,
+        attempts: 2,
+        answered: true,
+        firstEverCorrect: false,
+        firstTakeCorrect: true,
+        unansweredOnFirstTake: false,
+        everCorrect: true,
+        everIncorrect: true,
+        incorrectOnLastTake: false,
+        lastFirstTakeIncorrect: false,
+        incorrectCount: 1,
+        reviewCorrected: false,
+        completedAnswered: true,
+        completedAnsweredSessionIds: ['drill-1', 'drill-2'],
+        lastSeenAt: '2026-10-12T00:00:00Z',
+      },
+    ]);
+    expect(rollingAccuracy(wrongThenRight)).toBe(1);
+    const statusWrongThenRight = passageStatus(basePassage, [5001, 5002], wrongThenRight);
+    expect(statusWrongThenRight.everIncorrect).toBe(true);
+    expect(statusWrongThenRight.lastFirstTakeIncorrect).toBe(false);
+    expect(
+      matchesFilters(
+        basePassage,
+        { ...baseFilters, status: 'incorrect_last' },
+        statusWrongThenRight,
+      ),
+    ).toBe(false);
+    expect(
+      matchesFilters(
+        basePassage,
+        { ...baseFilters, status: 'incorrect_before' },
+        statusWrongThenRight,
+      ),
+    ).toBe(true);
+
+    // Case B: Drill 1 right -> Drill 2 wrong
+    const rightThenWrong = makeHistory([
+      {
+        questionId: 5001,
+        attempts: 2,
+        answered: true,
+        firstEverCorrect: true,
+        firstTakeCorrect: false,
+        unansweredOnFirstTake: false,
+        everCorrect: true,
+        everIncorrect: true,
+        incorrectOnLastTake: true,
+        lastFirstTakeIncorrect: true,
+        incorrectCount: 1,
+        reviewCorrected: false,
+        completedAnswered: true,
+        completedAnsweredSessionIds: ['drill-1', 'drill-2'],
+        lastSeenAt: '2026-10-12T00:00:00Z',
+      },
+    ]);
+    expect(rollingAccuracy(rightThenWrong)).toBe(0);
+    const statusRightThenWrong = passageStatus(basePassage, [5001, 5002], rightThenWrong);
+    expect(statusRightThenWrong.lastFirstTakeIncorrect).toBe(true);
+    expect(
+      matchesFilters(
+        basePassage,
+        { ...baseFilters, status: 'incorrect_last' },
+        statusRightThenWrong,
+      ),
+    ).toBe(true);
+  });
 });
+

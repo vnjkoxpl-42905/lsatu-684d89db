@@ -104,7 +104,7 @@ export function passageStatus(
     state = 'not_attempted';
   } else if (completedInFinishedSession) {
     state = 'completed';
-  } else if (answeredCount === 0) {
+  } else if (answeredCount === 0 && entries.some((e) => e.unansweredOnFirstTake === true)) {
     state = 'skipped_only';
   } else {
     state = 'partial';

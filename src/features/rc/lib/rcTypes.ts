@@ -291,6 +291,7 @@ export interface RcQuestionHistoryEntry {
   incorrectCount: number;
   lastSeenAt: string | null;
   answered?: boolean;
+  firstEverCorrect?: boolean | null;
   firstTakeCorrect?: boolean | null;
   unansweredOnFirstTake?: boolean;
   everCorrect?: boolean;

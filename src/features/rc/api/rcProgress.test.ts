@@ -647,7 +647,8 @@ it('pages past 1,000 rows and orders deterministically by created_at asc then id
   expect(tracked).toMatchObject({
     questionId: 9999,
     attempts: 2,
-    firstTakeCorrect: true,
+    firstEverCorrect: true,
+    firstTakeCorrect: false,
     everCorrect: true,
     everIncorrect: true,
     lastFirstTakeIncorrect: true,
@@ -695,6 +696,7 @@ it('preserves first-take incorrect status when a missed question is fixed in bli
     questionId: 301,
     attempts: 1,
     answered: true,
+    firstEverCorrect: false,
     firstTakeCorrect: false,
     unansweredOnFirstTake: false,
     everCorrect: false,
@@ -734,6 +736,7 @@ it('counts partial in-progress sessions as exposure and accuracy without marking
     questionId: 401,
     attempts: 1,
     answered: true,
+    firstEverCorrect: true,
     firstTakeCorrect: true,
     everCorrect: true,
     everIncorrect: false,
@@ -781,8 +784,9 @@ it('counts abandoned sessions as exposure only, never as accuracy or misses', as
     questionId: 501,
     attempts: 1,
     answered: false,
+    firstEverCorrect: null,
     firstTakeCorrect: null,
-    unansweredOnFirstTake: true,
+    unansweredOnFirstTake: false,
     everCorrect: false,
     everIncorrect: false,
     incorrectCount: 0,
@@ -795,7 +799,9 @@ it('counts abandoned sessions as exposure only, never as accuracy or misses', as
     questionId: 502,
     attempts: 1,
     answered: false,
+    firstEverCorrect: null,
     firstTakeCorrect: null,
+    unansweredOnFirstTake: false,
     everCorrect: false,
     everIncorrect: false,
   });
@@ -861,4 +867,148 @@ it('never includes rows belonging to another user even when RLS returns foreign 
   expect(history.has(602)).toBe(false);
   expect(history.has(603)).toBe(false);
 });
+
+it('updates firstTakeCorrect to the latest graded first take across multiple drills while preserving firstEverCorrect', async () => {
+  historyStore.sessions = [
+    {
+      id: 'drill-1',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+    {
+      id: 'drill-2',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-02T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    // Question 701: Drill 1 wrong -> Drill 2 right
+    {
+      id: 'att-701-d1',
+      session_id: 'drill-1',
+      user_id: owner,
+      question_id: 701,
+      passage_id: 80,
+      selected: 'B',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+    {
+      id: 'att-701-d2',
+      session_id: 'drill-2',
+      user_id: owner,
+      question_id: 701,
+      passage_id: 80,
+      selected: 'A',
+      is_correct: true,
+      is_first_attempt: true,
+      created_at: '2026-10-02T00:01:00Z',
+    },
+    // Question 702: Drill 1 right -> Drill 2 wrong
+    {
+      id: 'att-702-d1',
+      session_id: 'drill-1',
+      user_id: owner,
+      question_id: 702,
+      passage_id: 80,
+      selected: 'A',
+      is_correct: true,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:02:00Z',
+    },
+    {
+      id: 'att-702-d2',
+      session_id: 'drill-2',
+      user_id: owner,
+      question_id: 702,
+      passage_id: 80,
+      selected: 'C',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-02T00:02:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  expect(history.get(701)).toMatchObject({
+    questionId: 701,
+    attempts: 2,
+    firstEverCorrect: false,
+    firstTakeCorrect: true,
+    everCorrect: true,
+    everIncorrect: true,
+    lastFirstTakeIncorrect: false,
+    incorrectOnLastTake: false,
+  });
+  expect(history.get(702)).toMatchObject({
+    questionId: 702,
+    attempts: 2,
+    firstEverCorrect: true,
+    firstTakeCorrect: false,
+    everCorrect: true,
+    everIncorrect: true,
+    lastFirstTakeIncorrect: true,
+    incorrectOnLastTake: true,
+  });
+});
+
+it('does not erase lastFirstTakeIncorrect when a previously missed question is skipped on a later drill', async () => {
+  historyStore.sessions = [
+    {
+      id: 'drill-miss',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+    {
+      id: 'drill-skip',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-02T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    {
+      id: 'att-801-miss',
+      session_id: 'drill-miss',
+      user_id: owner,
+      question_id: 801,
+      passage_id: 90,
+      selected: 'D',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+    {
+      id: 'att-801-skip',
+      session_id: 'drill-skip',
+      user_id: owner,
+      question_id: 801,
+      passage_id: 90,
+      selected: null,
+      is_correct: null,
+      is_first_attempt: true,
+      created_at: '2026-10-02T00:01:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  expect(history.get(801)).toMatchObject({
+    questionId: 801,
+    attempts: 2,
+    answered: true,
+    firstEverCorrect: false,
+    firstTakeCorrect: false,
+    unansweredOnFirstTake: false,
+    everIncorrect: true,
+    lastFirstTakeIncorrect: true,
+    incorrectOnLastTake: true,
+  });
+});
+
 

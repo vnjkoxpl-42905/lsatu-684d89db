@@ -390,7 +390,6 @@ interface RcHistoryAttemptRow {
   is_correct: boolean | null;
   is_first_attempt?: boolean;
   created_at: string;
-  rc_drill_sessions?: RcHistorySessionRow | RcHistorySessionRow[] | null;
 }
 
 async function fetchHistoryPages<T>(
@@ -454,13 +453,9 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
   ]);
 
   const sessionsById = new Map<string, RcHistorySessionRow>();
-  const foreignSessionIds = new Set<string>();
   for (const session of sessionRows) {
     if (!session || typeof session.id !== 'string') continue;
-    if (session.user_id && session.user_id !== uid) {
-      foreignSessionIds.add(session.id);
-      continue;
-    }
+    if (session.user_id && session.user_id !== uid) continue;
     sessionsById.set(session.id, session);
   }
 
@@ -486,13 +481,7 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
 
   const history: RcQuestionHistory = new Map();
   for (const row of validAttemptRows) {
-    if (row.session_id && foreignSessionIds.has(row.session_id)) continue;
-    const embedded = Array.isArray(row.rc_drill_sessions)
-      ? row.rc_drill_sessions[0]
-      : row.rc_drill_sessions;
-    const session =
-      (row.session_id ? sessionsById.get(row.session_id) : undefined) ?? embedded ?? undefined;
-    if (session?.user_id && session.user_id !== uid) continue;
+    const session = row.session_id ? sessionsById.get(row.session_id) : undefined;
     if (row.session_id && !session) continue;
     if (session?.excluded_from_analytics) continue;
 
@@ -513,6 +502,7 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
       incorrectCount: 0,
       lastSeenAt: null,
       answered: false,
+      firstEverCorrect: null,
       firstTakeCorrect: null,
       unansweredOnFirstTake: false,
       everCorrect: false,
@@ -533,9 +523,6 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
       if (isFirstTake || !existing.lastSeenAt) {
         existing.lastSeenAt = row.created_at;
       }
-      if (!existing.answered) {
-        existing.unansweredOnFirstTake = true;
-      }
       history.set(row.question_id, existing);
       continue;
     }
@@ -543,23 +530,26 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
     if (isFirstTake) {
       existing.attempts += 1;
       existing.lastSeenAt = row.created_at;
-      existing.reviewCorrected = false;
 
       if (!hasGradedAnswer) {
         if (!existing.answered) {
           existing.unansweredOnFirstTake = true;
+          existing.firstEverCorrect = null;
           existing.firstTakeCorrect = null;
+          existing.lastFirstTakeIncorrect = false;
+          existing.incorrectOnLastTake = false;
+          existing.reviewCorrected = false;
         }
-        existing.lastFirstTakeIncorrect = false;
-        existing.incorrectOnLastTake = false;
       } else {
         const right = row.is_correct === true;
         const wrong = row.is_correct === false;
         existing.answered = true;
         existing.unansweredOnFirstTake = false;
-        if (existing.firstTakeCorrect === null) {
-          existing.firstTakeCorrect = right;
+        if (existing.firstEverCorrect === null) {
+          existing.firstEverCorrect = right;
         }
+        existing.firstTakeCorrect = right;
+        existing.reviewCorrected = false;
         if (right) {
           existing.everCorrect = true;
         }
