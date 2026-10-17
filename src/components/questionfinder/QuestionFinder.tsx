@@ -340,7 +340,8 @@ function FinderPanel({
             <BrowseByTest
               tone={tone}
               bank={view === "all" ? undefined : view}
-              disabled={addressIndex.loading || addressIndex.failed}
+              loading={addressIndex.loading}
+              failed={addressIndex.failed}
               onPick={setQuery}
               tests={addressIndex.tests}
               selectedAddress={results.address}
@@ -562,7 +563,8 @@ function Snippet({
 function BrowseByTest({
   tone,
   bank,
-  disabled,
+  loading,
+  failed,
   onPick,
   tests,
   selectedAddress,
@@ -571,13 +573,17 @@ function BrowseByTest({
 }: {
   tone: "light" | "dark";
   bank?: QuestionFinderBank;
-  disabled: boolean;
+  loading: boolean;
+  failed: boolean;
   onPick: (query: string) => void;
   tests: FinderAddressTest[];
   selectedAddress: QuestionAddress | null;
   canOpen: boolean;
   onOpen: () => void;
 }) {
+  /* Still disabled on either state; only the words differ. "Loading…" on a
+     request that already failed sends the student to wait for nothing. */
+  const disabled = loading || failed;
   const [pt, setPt] = React.useState("");
   const [section, setSection] = React.useState("");
   /* The question keeps its choice like the other two. It used to reset itself
@@ -644,7 +650,7 @@ function BrowseByTest({
             pick(event.target.value, "", "");
           }}
         >
-          <option value="">{disabled ? "Loading…" : "PrepTest"}</option>
+          <option value="">{loading ? "Loading…" : failed ? "Couldn't load tests" : "PrepTest"}</option>
           {pts.map((value) => (
             <option key={value} value={value}>
               PT {value}
