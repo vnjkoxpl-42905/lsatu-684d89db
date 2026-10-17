@@ -240,10 +240,11 @@ describe("grounded evidence ids and meaning distinct from factual coverage", () 
     expect(reply.detailEvidence?.[1].evidence).toBe("The clinic opened.\nIt closes at six.");
   });
 
-  it.each([[99], ["1"], [1, 1]])("rejects invalid evidence selection %j", (evidence_ids) => {
+  it.each([{ evidence_ids: [99] }, { evidence_ids: ["1"] }, { evidence_ids: [1, 1] }])(
+    "rejects invalid evidence selection $evidence_ids", ({ evidence_ids }) => {
     expect(() => parseJudgeReply(JSON.stringify({ verdicts: [{ ...verdict(1, true, [], true), evidence_ids }] }),
       [1], "The clinic opened.")).toThrow("invalid student evidence ids");
-  });
+    });
 
   it("keeps a truthful incidental omission in coverage while preserving material meaning", () => {
     const entries: JudgeEntry[] = [
