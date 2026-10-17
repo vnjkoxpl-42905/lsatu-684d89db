@@ -8444,6 +8444,7 @@
         "npm:@hookform/resolvers@^3.10.0",
         "npm:@locator/runtime@~0.5.1",
         "npm:@lovable.dev/cloud-auth-js@^1.0.1",
+        "npm:@lovable.dev/email-js@0.1.0",
         "npm:@lovable.dev/mcp-js@0.20",
         "npm:@paper-design/shaders@^0.0.76",
         "npm:@playwright/test@^1.57.0",
