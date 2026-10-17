@@ -30,5 +30,5 @@ export async function requireAdmin(
 }
 
 export function textResult(text: string, isError = false) {
-  return { content: [{ type: "text" as const, text }], isError };
+  return { content: [Object.freeze({ type: "text", text })], isError };
 }
