@@ -559,9 +559,9 @@ export function buildJudgeResponseSchema(input: {
   const flag = { type: "boolean" };
   const evidenceUnits = input.spoken === undefined ? undefined : buildEvidenceUnits(input.spoken);
   const evidenceProperties = evidenceUnits === undefined ? { evidence: text } : {
-    evidence_ids: { type: "array", items: evidenceUnits.length
-      ? { type: "integer", enum: evidenceUnits.map((unit) => unit.id) } : { type: "integer" },
-      minItems: 0, maxItems: evidenceUnits.length },
+    // Keep nested generation constraints small. The server validates the ids
+    // against the actual transcript units before reconstructing any quotation.
+    evidence_ids: { type: "array", items: { type: "integer" } },
   };
   const verdict = object({
     id: { type: "integer", enum: ids }, carried: flag, ...evidenceProperties, reason: text,

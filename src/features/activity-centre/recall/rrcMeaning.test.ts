@@ -230,7 +230,9 @@ describe("grounded evidence ids and meaning distinct from factual coverage", () 
     expect(buildEvidenceUnits(spoken)).toEqual([{ id: 1, text: "The clinic opened." }, { id: 2, text: "It closes at six." }]);
     const schema = buildJudgeResponseSchema({ entries: [{ id: 1 }], spoken }) as any;
     expect(schema.properties.verdicts.items.properties).not.toHaveProperty("evidence");
-    expect(schema.properties.verdicts.items.properties.evidence_ids.items.enum).toEqual([1, 2]);
+    expect(schema.properties.verdicts.items.properties.evidence_ids).toEqual({
+      type: "array", items: { type: "integer" },
+    });
   });
 
   it("reconstructs multiple nonadjacent quotations instead of accepting rewritten model words", () => {

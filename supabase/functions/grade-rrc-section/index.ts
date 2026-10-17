@@ -51,7 +51,7 @@ const GRADER_VERSION = 3;
  * this is the only way to prove from outside that a fix is the one running.
  * Returned on the 202 body and on the admin diagnostic below.
  */
-const BUILD = "2026-10-16-grounded-meaning";
+const BUILD = "2026-10-16-grounded-meaning-2";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
@@ -188,7 +188,7 @@ async function judge(prompt: string, schema?: Record<string, unknown>): Promise<
     const body = await res.json();
     if (res.ok) return body?.choices?.[0]?.message?.content ?? "";
     if (!direct) throw new Error(`gateway ${res.status}: ${JSON.stringify(body).slice(0, 200)}`);
-    console.error(`judge: gateway ${res.status}; falling back to direct Gemini`);
+    console.error(`judge: gateway ${res.status}; falling back to direct Gemini`, JSON.stringify(body).slice(0, 1000));
   }
 
   if (!direct) throw new Error("no judge backend: set LOVABLE_API_KEY or GEMINI_API_KEY");
