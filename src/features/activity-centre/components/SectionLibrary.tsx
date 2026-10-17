@@ -111,6 +111,9 @@ function attemptLabel(a: ActivityAssignmentSummary, grade: SectionGradeStub | un
     if (waited < 1) return `${date} · marking now`;
     return `${date} · marking for ${waited} ${waited === 1 ? "minute" : "minutes"}`;
   }
+  if (Number.isFinite(grade.section.mean_meaning)) {
+    return `${date} · ${grade.section.mean_meaning}% meaning preserved`;
+  }
   return `${date} · ${grade.section.mean_coverage}% carried`;
 }
 

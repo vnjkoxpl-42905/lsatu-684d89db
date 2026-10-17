@@ -56,7 +56,7 @@ async function main() {
       if (!entries.some(e => e.text === detail)) throw new Error(`${c.id}: expected detail absent from authored key`);
     }
     const prompt = buildJudgePrompt({ stimulus: item.prompt, entries, spoken: c.spoken, recall: c.recall, theRead: item.the_read });
-    const responseJsonSchema = buildJudgeResponseSchema({ entries, theRead: item.the_read });
+    const responseJsonSchema = buildJudgeResponseSchema({ entries, theRead: item.the_read, spoken: c.spoken });
     // Conservative reservation: one token per UTF-8 byte, plus envelope overhead.
     // Output reserve uses the request's explicit output-token cap.
     const reserve = ((Buffer.byteLength(prompt, "utf8") + Buffer.byteLength(JSON.stringify(responseJsonSchema), "utf8") + 1024) * 0.25 + OUTPUT_CAP * 1.50) / 1_000_000;
