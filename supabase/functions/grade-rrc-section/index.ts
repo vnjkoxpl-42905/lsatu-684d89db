@@ -43,7 +43,7 @@ const corsHeaders = {
 };
 
 /** Bumped when the prompt or the scoring changes, so a re-grade is legible. */
-const GRADER_VERSION = 2;
+const GRADER_VERSION = 3;
 /**
  * Which deploy is answering. Bumped on every change to this function.
  *
@@ -51,7 +51,7 @@ const GRADER_VERSION = 2;
  * this is the only way to prove from outside that a fix is the one running.
  * Returned on the 202 body and on the admin diagnostic below.
  */
-const BUILD = "2026-10-16-structured-evidence";
+const BUILD = "2026-10-16-grounded-meaning";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
@@ -432,12 +432,16 @@ serve(async (req) => {
               spoken,
               theRead: (item.the_read as string | null) ?? null,
             }),
-            buildJudgeResponseSchema({ entries, theRead: (item.the_read as string | null) ?? null }),
+            buildJudgeResponseSchema({ entries, spoken, theRead: (item.the_read as string | null) ?? null }),
           );
           const g = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id), spoken));
           return {
             slug,
             percent: g.percent,
+            meaning_percent: g.meaning_percent,
+            meaning_carried: g.meaning_carried,
+            meaning_total: g.meaning_total,
+            incidental_misses: g.incidental_misses,
             carried: g.carried,
             total: g.total,
             band: g.band,
@@ -446,6 +450,8 @@ serve(async (req) => {
             readGiven: g.readGiven,
             readMatches: g.readMatches,
             coloured: g.coloured,
+            colour_specific: g.colourSpecific,
+            reciting: g.reciting,
             listing: g.listing,
             missed: g.missed,
             detail_evidence: g.detail_evidence,
@@ -888,7 +894,7 @@ serve(async (req) => {
             lines: lineSpans.map((l) => ({ n: l.n, text: l.text, spoken: l.spoken })),
             recall: recallText || null,
           }),
-          buildJudgeResponseSchema({ entries, theRead: (item.the_read as string | null) ?? null, lines: lineSpans }),
+          buildJudgeResponseSchema({ entries, spoken, theRead: (item.the_read as string | null) ?? null, lines: lineSpans }),
         );
         const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id), spoken), lineSpans);
 
@@ -1046,6 +1052,9 @@ serve(async (req) => {
       within_time: withinTime,
       within_goal: withinTime && uncoloured === 0 && noRead === 0,
       mean_coverage: meanCoverage,
+      mean_meaning: graded.length
+        ? Math.round(graded.reduce((sum, stimulus) => sum + (stimulus.meaning_percent ?? stimulus.percent), 0) / graded.length)
+        : 0,
       stimuli_graded: graded.length,
       stimuli_in_section: expectedSlugs.size || stimuli.length,
       reciting_count: graded.filter((s) => s.reciting).length,

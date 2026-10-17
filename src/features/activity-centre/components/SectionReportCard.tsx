@@ -76,6 +76,22 @@ const BAND: Record<SectionStimulusGrade["band"], { label: string; mark: string }
  */
 const RECITED = { label: "Said back word for word", mark: "recited" };
 
+function meaningPercent(stimulus: SectionStimulusGrade): number {
+  return Number.isFinite(stimulus.meaning_percent) ? stimulus.meaning_percent! : stimulus.percent;
+}
+
+function meaningLabel(percent: number): string {
+  return percent === 100 ? "Meaning preserved" : "Review meaning changes";
+}
+
+function stimulusStatus(stimulus: SectionStimulusGrade): { label: string; mark: string } {
+  if (stimulus.reciting) return RECITED;
+  if (Number.isFinite(stimulus.meaning_percent)) {
+    return { label: meaningLabel(stimulus.meaning_percent!), mark: stimulus.meaning_percent === 100 ? "at-the-standard" : "thin" };
+  }
+  return BAND[stimulus.band];
+}
+
 function minutes(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = Math.round(seconds % 60);
@@ -417,7 +433,9 @@ export function SectionReportCard({
      * from its own percent, so the headline and the ledger cannot disagree
      * about what 86 means.
      */
-    const band = BAND[bandFor(section.mean_coverage)];
+    const band = Number.isFinite(section.mean_meaning)
+      ? { label: meaningLabel(section.mean_meaning!), mark: section.mean_meaning === 100 ? "at-the-standard" : "thin" }
+      : BAND[bandFor(section.mean_coverage)];
     /*
      * Whether the marking of this run can be trusted, in her terms.
      *
@@ -478,7 +496,15 @@ export function SectionReportCard({
 
   const s = stimuli[Math.min(openStimulus, stimuli.length - 1)];
   const key = `s${openStimulus}`;
-  const band = s ? (s.reciting ? RECITED : BAND[s.band]) : null;
+  const band = s ? stimulusStatus(s) : null;
+  let heldNote = Number.isFinite(section.mean_meaning)
+    ? "of the argument's meaning, in your own words"
+    : "of what was on the page, said back in your own words";
+  if (overall.missingRows > 0 && overall.sectionSize !== undefined) {
+    heldNote = Number.isFinite(section.mean_meaning)
+      ? `${heldNote}, across the ${section.stimuli_graded} of ${overall.sectionSize} that saved`
+      : `said back in your own words, across the ${section.stimuli_graded} of ${overall.sectionSize} that saved`;
+  }
   const clipWindow = s?.recall_window_ms ?? s?.window_ms;
   const model = s ? modelRuns[s.slug] : undefined;
   const pairs = model?.walkthrough ? walkthroughPairs(model.walkthrough) : [];
@@ -519,7 +545,7 @@ export function SectionReportCard({
           </span>
         </h1>
         <p className="mt-2.5 text-sm text-[var(--rc-console-ink-dim)]">
-          {overall.atStandard} of {stimuli.length} at the standard
+          {Number.isFinite(section.mean_meaning) ? "Detail coverage: " : ""}{overall.atStandard} of {stimuli.length} at the standard
           {overall.perfect > 0 ? `, ${overall.perfect} with nothing dropped` : ""}.
         </p>
 
@@ -565,17 +591,20 @@ export function SectionReportCard({
         )}
 
         <div className="rc__console-divider mt-7 grid gap-6 border-t pt-6 sm:grid-cols-3">
+          <div>
           <Figure
-            label="Held"
-            value={`${section.mean_coverage}%`}
+            label={Number.isFinite(section.mean_meaning) ? "Meaning preserved" : "Held"}
+            value={`${Number.isFinite(section.mean_meaning) ? section.mean_meaning : section.mean_coverage}%`}
             /* "across 22 of 22" is noise on a run where everything saved, and
                the one fact she needs on a run where it did not. */
-            note={
-              overall.missingRows > 0 && overall.sectionSize !== undefined
-                ? `said back in your own words, across the ${section.stimuli_graded} of ${overall.sectionSize} that saved`
-                : "of what was on the page, said back in your own words"
-            }
+            note={heldNote}
           />
+          {Number.isFinite(section.mean_meaning) && (
+            <p className="mt-1 text-xs leading-snug text-[var(--rc-console-ink-dim)]">
+              Detail coverage: {section.mean_coverage}%. Details are tracked separately from meaning.
+            </p>
+          )}
+          </div>
           {overall.readMeasured && (
             <Figure
               label="Understood"
@@ -735,7 +764,7 @@ export function SectionReportCard({
             }}
           >
             {stimuli.map((st, i) => {
-              const m = st.ungraded ? "ungraded" : st.reciting ? "recited" : BAND[st.band].mark;
+              const m = st.ungraded ? "ungraded" : stimulusStatus(st).mark;
               return (
                 <button
                   key={st.slug}
@@ -756,11 +785,7 @@ export function SectionReportCard({
                       and both were carried by colour and shape only. */}
                   <span className="sr-only">
                     Stimulus {st.item_order ?? i + 1},{" "}
-                    {st.ungraded
-                      ? "not marked"
-                      : st.reciting
-                        ? "said back word for word"
-                        : BAND[st.band].label}
+                    {st.ungraded ? "not marked" : stimulusStatus(st).label}
                     {i === openStimulus ? ", open" : ""}
                   </span>
                   <span className={cn("rc__mark", `rc__mark--${m}`)} aria-hidden />
@@ -790,8 +815,10 @@ export function SectionReportCard({
                 </h2>
               </div>
               <p className="text-sm text-[var(--rc-ink-muted)]">
-                <span className="tabular-nums text-[var(--rc-ink)]">{s.percent}% held.</span>{" "}
-                {howMuch(s.percent)}
+                <span className="tabular-nums text-[var(--rc-ink)]">
+                  {Number.isFinite(s.meaning_percent) ? `${s.meaning_percent}% meaning preserved.` : `${s.percent}% held.`}
+                </span>{" "}
+                {Number.isFinite(s.meaning_percent) ? `Detail coverage: ${s.percent}%.` : howMuch(s.percent)}
               </p>
             </div>
 
@@ -885,7 +912,12 @@ export function SectionReportCard({
                     * not rendering it. A student who reads one thing here
                     * should read these.
                     */}
-                  <Movement label="What slipped" tone="detail">
+                  <Movement label={Number.isFinite(s.meaning_percent) ? "Detail coverage" : "What slipped"} tone="detail">
+                    {Number.isFinite(s.meaning_percent) && (s.incidental_misses?.length ?? 0) > 0 && (
+                      <p className="mb-3 text-sm leading-relaxed text-[var(--rc-ink-muted)]">
+                        These details do not change the argument's meaning. They are not deducted from meaning.
+                      </p>
+                    )}
                     {s.missed.length === 0 ? (
                       <p className="text-[15px] leading-relaxed text-[var(--rc-ink-muted)]">
                         {s.reciting
@@ -906,7 +938,7 @@ export function SectionReportCard({
                         {s.missed.length > 0 && (
                           <details className="mt-3">
                             <summary className="rc__label rc__summary cursor-pointer">
-                              Everything else that slipped ({s.missed.length})
+                              {Number.isFinite(s.meaning_percent) ? "All details to review" : "Everything else that slipped"} ({s.missed.length})
                             </summary>
                             <ul className="mt-2 space-y-1.5">
                               {s.missed.map((m) => (
@@ -914,7 +946,7 @@ export function SectionReportCard({
                                   key={m}
                                   className="text-sm leading-relaxed text-[var(--rc-ink-muted)]"
                                 >
-                                  {m}
+                                  {m}{s.incidental_misses?.includes(m) ? " (not deducted from meaning)" : ""}
                                 </li>
                               ))}
                             </ul>
@@ -925,7 +957,7 @@ export function SectionReportCard({
                       <ul className="space-y-1.5">
                         {s.missed.map((m) => (
                           <li key={m} className="text-[15px] leading-relaxed text-[var(--rc-ink)]">
-                            {m}
+                            {m}{s.incidental_misses?.includes(m) ? " (not deducted from meaning)" : ""}
                           </li>
                         ))}
                       </ul>
@@ -1364,7 +1396,7 @@ function FocusSetPanel({
             because `i` is an array index and 0-based. */}
         {set.stimuli.map((s, i) => (
           <li key={s.slug} className="rc__chip rc__chip--dropped">
-            Stimulus {s.item_order ?? i + 1} · {s.reciting ? "said back word for word" : `${s.percent}%`}
+            Stimulus {s.item_order ?? i + 1} · {s.reciting ? "said back word for word" : `${meaningPercent(s)}%`}
           </li>
         ))}
       </ul>
