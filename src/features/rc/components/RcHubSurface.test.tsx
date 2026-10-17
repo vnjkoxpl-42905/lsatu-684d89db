@@ -845,5 +845,74 @@ describe('RcHubSurface launch truth (#171)', () => {
     expect(within(list).getAllByRole('listitem')).toHaveLength(1);
     expect(within(list).getByText('Passage 1201')).toBeInTheDocument();
   });
+
+  it('does not show the unresolved launch recovery banner during a normal in-flight start', async () => {
+    let finish!: (value: RcDrillSession) => void;
+    createSession.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    );
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
+    await screen.findByText(/1 passage ·/);
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    fireEvent.click(primary());
+
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(primary()).toHaveTextContent('Starting…');
+    expect(screen.queryByText(/A previous Start is pending for/)).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Retry original launch/ })).not.toBeInTheDocument();
+
+    const [config, passageIds, request] = createSession.mock.calls[0];
+    finish({
+      id: request!.id,
+      userId: request!.actorId,
+      config,
+      passageIds,
+      status: 'in_progress',
+    } as RcDrillSession);
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith(
+        expect.stringContaining('sessionId=' + request!.id),
+        { replace: undefined },
+      ),
+    );
+  });
+
+  it('formats unresolved recovery banner passages with PrepTest, section, and passage numbers instead of raw IDs', async () => {
+    createSession.mockRejectedValueOnce(new Error('network reset'));
+    getSession.mockResolvedValueOnce(null).mockRejectedValueOnce(new Error('offline'));
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
+    await screen.findByText(/1 passage ·/);
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    fireEvent.click(primary());
+
+    await screen.findByText(/A previous Start is pending for/);
+    expect(screen.getByText(/PT 140 · S1 · P1 \(Passage 1188\)/)).toBeInTheDocument();
+    expect(screen.queryByText(/for passages 1188\b/)).not.toBeInTheDocument();
+  });
+
+  it('resets filters, timing, reveal, and manual selection when Reset filters is clicked on embedded Create view', async () => {
+    mount('/classroom/drill?section=rc&count=3&timing=standard&reveal=end_of_set');
+    await screen.findByRole('button', { name: 'Preview drill' });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Incorrect before' }));
+    expect(screen.getByRole('button', { name: 'Incorrect before' })).toHaveClass('rc-active');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Reset filters' }));
+
+    expect(screen.getByRole('button', { name: 'Fresh' })).toHaveClass('rc-active');
+    expect(screen.getByRole('button', { name: 'Untimed' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: /After each passage/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(navigate).not.toHaveBeenCalled();
+  });
 });
+
 
