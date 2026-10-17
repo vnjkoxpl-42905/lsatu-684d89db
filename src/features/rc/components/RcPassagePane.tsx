@@ -70,6 +70,23 @@ export function RcPassagePane({
 }: Props) {
   const paneRef = React.useRef<HTMLDivElement>(null);
   const textRef = React.useRef<HTMLDivElement>(null);
+  const [comparativeView, setComparativeView] = React.useState<'both' | 'A' | 'B'>('both');
+  const [canSeparate, setCanSeparate] = React.useState(false);
+  const sourceHeaders = React.useMemo(() => [...passage.text.matchAll(/^\s*\*{0,4}Passage ([AB])\*{0,4}\s*$/gm)].map(match => match[1]), [passage.text]);
+  const comparative = sourceHeaders.length > 0 || /comparative/i.test(passage.format ?? '') && !/non-comparative/i.test(passage.format ?? '');
+  React.useEffect(() => { setComparativeView('both'); }, [passage.passageId]);
+  const effectiveView = findQuery.trim().length >= 2 ? 'both' : comparativeView;
+  React.useLayoutEffect(() => {
+    const elements = Array.from(textRef.current?.firstElementChild?.children ?? []) as HTMLElement[];
+    const headers = elements.map((element, index) => ({ index, label: element.textContent?.trim().replace(/^\*+|\*+$/g, '') })).filter(entry => /^Passage [AB]$/.test(entry.label ?? ''));
+    const reliable = sourceHeaders.join(',') === 'A,B' && headers.length === 2 && headers[0].label === 'Passage A' && headers[1].label === 'Passage B';
+    setCanSeparate(reliable);
+    for (let index = 0; index < elements.length; index++) {
+      const part = reliable && index >= headers[0].index ? index >= headers[1].index ? 'B' : 'A' : null;
+      // Keep every original text node mounted so stored annotation offsets do not change.
+      elements[index].hidden = Boolean(part && effectiveView !== 'both' && effectiveView !== part);
+    }
+  }, [passage.passageId, passage.text, sourceHeaders, effectiveView]);
   const [anchor, setAnchor] = React.useState<RcSelectionAnchor | null>(null);
 
   // The passage's own marks, kept as the same array while they are the same
@@ -143,6 +160,14 @@ export function RcPassagePane({
       style={textStyle}
       onScroll={(e) => onScroll((e.target as HTMLDivElement).scrollTop)}
     >
+      {comparative && <div className="sticky top-0 z-10 mb-3 rounded border bg-[var(--rc-bg)] p-2" role="group" aria-label="Comparative passage view">
+        {(['both', 'A', 'B'] as const).map(view => <button type="button" key={view} aria-pressed={effectiveView === view}
+          disabled={view !== 'both' && (!canSeparate || findQuery.trim().length >= 2)}
+          className="min-h-11 rounded border px-3 py-2 disabled:opacity-50" onClick={() => { setComparativeView(view); if (paneRef.current) paneRef.current.scrollTop = 0; }}>
+          {view === 'both' ? 'Both' : `Passage ${view}`}</button>)}
+        {!canSeparate && <p className="text-sm">This passage is available in Both view only because its separate parts could not be verified.</p>}
+        {findQuery.trim().length >= 2 && <p className="text-sm">Find searches both passages. Clear Find to view one passage.</p>}
+      </div>}
       {passage.title && <h1 className="rc-passage-title">{passage.title}</h1>}
       <div className="rc-passage-text" ref={textRef}>
         <RcMarkdown>{passage.text}</RcMarkdown>

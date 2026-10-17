@@ -13,6 +13,7 @@ import { RcTimedReader } from '@/components/timed/RcTimedReader';
 import { initialState } from '@/features/rc/lib/rcSession';
 import type { RcHighlight, RcHighlightColor } from '@/features/rc/lib/rcTypes';
 import type { HighlightMode } from '@/lib/highlightUtils';
+import { validateRcTimedMarks } from './rcTimedReaderStorage';
 
 export type StandaloneControllerFactory = (owner: string, sitting: string, device: string) => TimedSectionController;
 const factory: StandaloneControllerFactory = (owner, sitting, device) => new TimedSectionController(new TimedSectionClient(owner, sitting), device);
@@ -48,24 +49,43 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
   // Reader display settings and the student's own marks. Marks are kept on this
   // device only: the sitting has no field for them, so they never touch the
   // account's answer record and a lost marker cannot affect scoring.
+  const [extraLeading, setExtraLeading] = React.useState(0);
+  const [scheme, setScheme] = React.useState('');
+  const [paragraphFocus, setParagraphFocus] = React.useState(false);
   const [fontScale, setFontScale] = React.useState(1); const [find, setFind] = React.useState('');
   const [marker, setMarker] = React.useState<HighlightMode>('none'); const [color, setColor] = React.useState<RcHighlightColor>('yellow');
   const [passageOnly, setPassageOnly] = React.useState(false); const [scrollTops, setScrollTops] = React.useState<Record<string, number>>({});
   const [rcMarks, setRcMarks] = React.useState<Record<string, RcHighlight[]>>({});
   const [marksReady, setMarksReady] = React.useState<string | null>(null);
   const marksKey = `lsatu:timed-section-markers:v1:${encodeURIComponent(owner ?? '')}:${encodeURIComponent(sittingId)}`;
+  const [localSaveError, setLocalSaveError] = React.useState<string | null>(null);
+  const [localRetry, setLocalRetry] = React.useState(0);
   React.useEffect(() => {
+    if (!state || state.snapshot.sitting.owner_id !== owner || state.snapshot.sitting.id !== sittingId || marksReady === marksKey) return;
+    setLocalSaveError(null);
+    setRcMarks({}); setFontScale(1); setExtraLeading(0); setScheme(''); setParagraphFocus(false); setPassageOnly(false); setFind(''); setMarker('none'); setColor('yellow'); setScrollTops({});
     try {
       const stored = JSON.parse(localStorage.getItem(marksKey) ?? 'null');
-      setRcMarks(stored && stored.ownerId === owner && stored.sittingId === sittingId && stored.rcMarks && typeof stored.rcMarks === 'object' ? stored.rcMarks : {});
-    } catch { setRcMarks({}); }
+      if (stored?.ownerId === owner && stored?.sittingId === sittingId) {
+        setRcMarks(validateRcTimedMarks(stored.rcMarks, state.passages));
+        if ([1, 1.15, 1.3].includes(stored.fontScale)) setFontScale(stored.fontScale);
+        if (typeof stored.passageOnly === 'boolean') setPassageOnly(stored.passageOnly);
+        if ([0, 0.2, 0.4].includes(stored.extraLeading)) setExtraLeading(stored.extraLeading);
+        if (['', 'grey', 'purple', 'violet', 'navy', 'black'].includes(stored.scheme)) setScheme(stored.scheme);
+        if (typeof stored.paragraphFocus === 'boolean') setParagraphFocus(stored.paragraphFocus);
+      }
+    } catch { setLocalSaveError('Marks and display settings could not be restored on this device. Account answers are saved separately.'); return; }
     setMarksReady(marksKey);
-  }, [marksKey, owner, sittingId]);
+  }, [marksKey, owner, sittingId, state, marksReady, localRetry]);
   React.useEffect(() => {
     if (marksReady !== marksKey) return;
-    try { localStorage.setItem(marksKey, JSON.stringify({ ownerId: owner, sittingId, rcMarks })); }
-    catch { /* A personal marker failure never acknowledges or alters account answers. */ }
-  }, [marksReady, marksKey, owner, sittingId, rcMarks]);
+    try {
+      localStorage.setItem(marksKey, JSON.stringify({ ownerId: owner, sittingId, rcMarks, fontScale, extraLeading, scheme, paragraphFocus, passageOnly }));
+      setLocalSaveError(null);
+    } catch {
+      setLocalSaveError('Marks and display settings are not saved on this device. Keep this page open and retry. Account answers are saved separately.');
+    }
+  }, [marksReady, marksKey, owner, sittingId, rcMarks, fontScale, extraLeading, scheme, paragraphFocus, passageOnly, localRetry]);
   const rcItems = React.useMemo(() => state?.snapshot.sitting.kind === 'rc' ? initialState(state.passages).items : [], [state?.passages, state?.snapshot.sitting.kind]);
   const apply = React.useCallback((next: TimedSectionState) => {
     if (active.current !== identity || next.snapshot.sitting.owner_id !== owner || next.snapshot.sitting.id !== sittingId) return;
@@ -173,19 +193,30 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     <Button variant="outline" disabled={busy} onClick={() => navigate('/testing')}>Return to Testing</Button>
   </main>;
   const question = state.questions[state.currentIndex]; const answer = answers[question.qid]; const rcItem = rcItems[state.currentIndex];
-  return <OfficialDrillFrame isPaused={state.snapshot.sitting.phase === 'paused'} onResume={() => void perform('resume')}
+  return <div className="light text-slate-900"><OfficialDrillFrame isPaused={state.snapshot.sitting.phase === 'paused'} onResume={() => void perform('resume')}
     header={<div className="flex flex-wrap gap-3 items-center"><strong>PrepTest {state.snapshot.sitting.pt} · {state.snapshot.sitting.kind.toUpperCase()} section {state.snapshot.sitting.section}</strong><span aria-label="Section time remaining">{clock.remainingMs === 0 && state.snapshot.sitting.kind === 'lr' && regulationAcknowledged.current ? `Overtime +${format(clock.elapsedMs - (state.snapshot.sitting.budget_ms ?? 0))}` : format(clock.remainingMs)}</span>
       <Button variant="outline" disabled={busy || state.snapshot.sitting.phase !== 'running'} onClick={() => void perform('pause')}>Pause</Button><Button variant="outline" disabled={busy} onClick={() => void perform('exit')}>Testing</Button><span role="status">{busy ? 'Saving to your account…' : dirty ? 'Unsaved changes' : 'Account save acknowledged'}</span></div>}>
+    {localSaveError && <div role="alert" className="border-b p-2"><p>{localSaveError}</p><Button size="sm" variant="outline" onClick={() => setLocalRetry(value => value + 1)}>Retry saving marks</Button></div>}
+    {rcItem && !localSaveError && <p className="px-2 text-sm">Marks and display settings are saved on this device only.</p>}
     {confirm && <div role="dialog" aria-label="Finish section" className="p-4 flex flex-wrap gap-3"><p>{Object.values(answers).filter(value => !value.selected).length} unanswered. Finish this section?</p><Button disabled={busy} onClick={() => { setConfirm(false); void perform('finish'); }}>Confirm finish</Button><Button variant="outline" onClick={() => setConfirm(false)}>Keep working</Button></div>}
     {rcItem && <div className="flex flex-wrap items-center gap-2 border-b p-2">
-      <label className="text-sm">Text size <select aria-label="Text size" value={fontScale} onChange={event => setFontScale(Number(event.target.value))}><option value={1}>Standard</option><option value={1.15}>Large</option><option value={1.3}>Larger</option></select></label>
+      <details className="relative"><summary className="min-h-11 cursor-pointer rounded border px-3 py-2">Display</summary>
+      <div className="absolute left-0 top-full z-30 w-72 max-w-[80vw] space-y-3 rounded border bg-background p-3 shadow-lg">
+      <label className="block text-sm">Text size <select aria-label="Text size" value={fontScale} onChange={event => setFontScale(Number(event.target.value))}><option value={1}>Standard</option><option value={1.15}>Large</option><option value={1.3}>Larger</option></select></label>
+      <label className="block text-sm">Line spacing <select aria-label="Line spacing" value={extraLeading} onChange={event => setExtraLeading(Number(event.target.value))}><option value={0}>Standard</option><option value={0.2}>Relaxed</option><option value={0.4}>Wide</option></select></label>
+      <label className="block text-sm">Color scheme <select aria-label="Color scheme" value={scheme} onChange={event => setScheme(event.target.value)}>
+        <option value="">Black on white</option><option value="grey">Grey on light grey</option><option value="purple">Purple on light green</option>
+        <option value="violet">Black on violet</option><option value="navy">Yellow on navy</option><option value="black">White on black</option>
+      </select></label>
+      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={paragraphFocus} onChange={event => setParagraphFocus(event.target.checked)} />Paragraph focus</label>
+      </div></details>
       <label className="text-sm">Marker <select aria-label="Marker" value={marker} onChange={event => setMarker(event.target.value as HighlightMode)}><option value="none">Select</option><option value="yellow">Yellow</option><option value="pink">Pink</option><option value="orange">Orange</option><option value="underline">Underline</option><option value="erase">Erase</option></select></label>
       <input aria-label="Find in passage" className="border rounded px-2 w-36" value={find} onChange={event => setFind(event.target.value)} placeholder="Find in passage" />
       <Button size="sm" variant="outline" onClick={() => setPassageOnly(value => !value)}>{passageOnly ? 'Show questions' : 'Passage only'}</Button>
     </div>}
-    {rcItem ? <RcTimedReader item={rcItem} answer={answer} blocked={blocked} fontScale={fontScale} find={find} marker={marker}
+    {rcItem ? <RcTimedReader item={rcItem} answer={answer} blocked={blocked} annotationsDisabled={marksReady !== marksKey} fontScale={fontScale} extraLeading={extraLeading} paragraphFocus={paragraphFocus} schemeClassName={scheme ? `rc-scheme-${scheme}` : ''} find={find} marker={marker}
       color={color} onColorChange={setColor} passageOnly={passageOnly}
-      marks={rcMarks[String(rcItem.passage.passageId)] ?? []} onMarksChange={next => setRcMarks(previous => ({ ...previous, [rcItem.passage.passageId]: next }))}
+      marks={marksReady === marksKey ? rcMarks[String(rcItem.passage.passageId)] ?? [] : []} onMarksChange={next => { if (!blocked && !busyRef.current && marksReady === marksKey) setRcMarks(previous => ({ ...previous, ...validateRcTimedMarks({ [rcItem.passage.passageId]: next }, [rcItem.passage]) })); }}
       scrollTop={scrollTops[rcItem.passage.passageId] ?? 0} onScrollTop={top => setScrollTops(previous => ({ ...previous, [rcItem.passage.passageId]: top }))}
       onSelect={value => change(previous => ({ ...previous, selected: value as TimedLetter, switchCount: previous.switchCount + (previous.selected && previous.selected !== value ? 1 : 0), eliminations: previous.eliminations.filter(letter => letter !== value) }))}
       onToggleElimination={value => change(previous => ({ ...previous, eliminations: previous.eliminations.includes(value as TimedLetter) ? previous.eliminations.filter(letter => letter !== value) : [...previous.eliminations, value as TimedLetter] }))}
@@ -200,5 +231,5 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     <div className="border-t p-3 flex flex-wrap gap-2"><Button variant="outline" disabled={blocked || state.currentIndex === 0} onClick={() => void perform('save', state.currentIndex - 1)}>Previous</Button>
       <nav aria-label="Section questions" className="flex flex-wrap gap-1 flex-1">{state.questions.map((value, index) => <button key={value.qid} aria-current={index === state.currentIndex ? 'step' : undefined} disabled={blocked} onClick={() => void perform('save', index)} className="border rounded px-2 py-1">{index + 1}{answers[value.qid].flagged ? ' ⚑' : ''}{answers[value.qid].selected ? ' •' : ''}</button>)}</nav>
       <Button variant="outline" disabled={blocked || state.currentIndex === state.questions.length - 1} onClick={() => void perform('save', state.currentIndex + 1)}>Next</Button><Button disabled={blocked} onClick={() => setConfirm(true)}>Finish section</Button></div>
-  </OfficialDrillFrame>;
+  </OfficialDrillFrame></div>;
 }

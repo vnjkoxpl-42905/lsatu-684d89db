@@ -19,7 +19,7 @@ function fixture(owner = 'owner'): TimedChildState {
 let current: TimedChildState; let elapsed: number; let remaining: number; let pending: unknown;
 let load: ReturnType<typeof vi.fn>; let checkpoint: ReturnType<typeof vi.fn>; let close: ReturnType<typeof vi.fn>; let retry: ReturnType<typeof vi.fn>; let control: ReturnType<typeof vi.fn>;
 const factory = () => ({ load, checkpoint, close, retry, pending: () => pending, clock: () => ({ writer: 'active', elapsedMs: elapsed, remainingMs: remaining, leaseExpired: false }), control }) as unknown as TimedChildController;
-const ui = () => <MemoryRouter initialEntries={['/testing/test/run/lr/0']}><Routes><Route path="/testing/test/:runId/lr/:legIndex" element={<TimedOfficialChildRunner kind="lr" controllerFactory={factory} />} /><Route path="/testing/test/run" element={<p>PrepTest parent</p>} /></Routes></MemoryRouter>;
+const ui = (kind: 'lr' | 'rc' = 'lr') => <MemoryRouter initialEntries={['/testing/test/run/lr/0']}><Routes><Route path="/testing/test/:runId/lr/:legIndex" element={<TimedOfficialChildRunner kind={kind} controllerFactory={factory} />} /><Route path="/testing/test/run" element={<p>PrepTest parent</p>} /></Routes></MemoryRouter>;
 async function mount() { const result = render(ui()); await act(async () => { await Promise.resolve(); }); return result; }
 beforeEach(() => {
   vi.useFakeTimers(); auth.owner = 'owner'; localStorage.clear(); current = fixture(); elapsed = 0; remaining = 35000; pending = null;
@@ -31,7 +31,7 @@ beforeEach(() => {
   retry = vi.fn(async () => { pending = null; return { ...current, pending: null }; });
   control = vi.fn(async (_state, operation) => ({ ...current, snapshot: { ...current.snapshot, parent: { ...current.snapshot.parent, timed_phase: operation === 'pause' ? 'leg-paused' : 'leg-running' } } }));
 });
-afterEach(() => { vi.useRealTimers(); });
+afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); });
 
 describe('official timed child integration boundaries', () => {
   it('acknowledges the latest checkpoint and account pause before returning to the PrepTest', async () => {
@@ -68,6 +68,40 @@ describe('official timed child integration boundaries', () => {
     await act(async () => { acknowledge({ ...current, answers: { Q1: { ...current.answers.Q1, selected: 'B', timeMs: 0 } } }); await Promise.resolve(); });
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Next' })); await Promise.resolve(); });
     expect(checkpoint.mock.calls[1][2].Q1.timeMs).toBe(2000);
+  });
+  it('validates restored RC marks before rendering the real shared reader', async () => {
+    const passage = { passageId: 7, preptest: 101, section: 1, setNumber: 1, title: 'Synthetic RC passage', text: 'A synthetic passage about research.', summaries: {},
+      questions: [{ questionId: 501, position: 1, prompt: 'Synthetic main point?', correctAnswer: 'A', questionType: 'Main Point', choices: ['A','B','C','D','E'].map(letter => ({ letter, text: `Choice ${letter}` })) }] };
+    const q = { ...current.questions[0], qid: '501' };
+    current = { ...current, snapshot: { ...current.snapshot, parent: { ...current.snapshot.parent, timed_frozen_legs: [{ kind: 'rc' }] } },
+      passages: [passage], questions: [q], answers: { '501': { selected: null, timeMs: 0, flagged: false, switchCount: 0, eliminations: [] } },
+      view: { state: { currentIndex: 0, items: [{ passage, question: passage.questions[0], number: 1, passageIndex: 0 }] }, session: {} } } as unknown as TimedChildState;
+    localStorage.setItem('lsatu:timed-markers:v1:owner:run:0', JSON.stringify({ ownerId: 'owner', runId: 'run', legIndex: 0,
+      rcHighlights: { '7': { malformed: 'not an array' } }, telemetry: { visits: null, trail: 'bad' } }));
+    render(ui('rc')); await act(async () => { await Promise.resolve(); });
+    expect(screen.getByText('Synthetic main point?')).toBeInTheDocument();
+    expect(screen.getByText('A synthetic passage about research.')).toBeInTheDocument();
+  });
+  it('reports local marker write failures separately and retries without an account checkpoint', async () => {
+    await mount();
+    const save = vi.spyOn(localStorage, 'setItem').mockImplementation(() => { throw new Error('Storage full'); });
+    // A local write accompanies an account-answer change, but is not its acknowledgement.
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Choose B' })); await Promise.resolve(); });
+    expect(screen.getByRole('alert')).toHaveTextContent('Marks are not saved on this device');
+    expect(screen.getByRole('status')).toHaveTextContent('Account save acknowledged');
+    const checkpoints = checkpoint.mock.calls.length;
+    save.mockRestore();
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Retry saving marks' })); });
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(checkpoint).toHaveBeenCalledTimes(checkpoints);
+  });
+  it('preserves unread device storage when marker hydration fails', async () => {
+    vi.spyOn(localStorage, 'getItem').mockImplementation(() => { throw new Error('Storage denied'); });
+    const write = vi.spyOn(localStorage, 'setItem');
+    await mount();
+    expect(screen.getByRole('alert')).toHaveTextContent('Marks could not be restored');
+    expect(write).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: 'Choose B' })).toBeEnabled();
   });
   it('ignores delayed replies after the signed-in owner changes', async () => {
     let acknowledge!: (value: TimedChildState) => void;
