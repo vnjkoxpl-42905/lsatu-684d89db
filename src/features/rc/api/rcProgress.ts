@@ -242,6 +242,37 @@ export async function completeSession(id: string): Promise<void> {
   }
 }
 
+/**
+ * Discards an unfinished drill. The session is marked `abandoned`, never
+ * deleted: its saved answers stay on the account and still count as exposure
+ * (see getQuestionHistory); they just stop appearing under In progress.
+ * Protected sections and finished drills cannot be discarded here.
+ */
+export async function abandonSession(id: string): Promise<void> {
+  const userId = await requireUserId();
+  const session = await getSession(id);
+  if (!session || session.userId !== userId) throw new Error('This drill is not available.');
+  if (session.config.practiceTestRunId || session.config.timedSectionSittingId) {
+    throw new Error('A protected section cannot be discarded here.');
+  }
+  if (session.status === 'abandoned') return;
+  if (session.status !== 'in_progress') throw new Error('Only a drill in progress can be discarded.');
+  const { data, error } = await rcDb
+    .from(RC_SESSIONS_TABLE)
+    .update({ status: 'abandoned' })
+    .eq('id', id)
+    .eq('user_id', userId)
+    .eq('status', 'in_progress')
+    .select('id')
+    .maybeSingle();
+  raise(error);
+  if (!data) {
+    const latest = await getSession(id);
+    if (latest?.userId === userId && latest.status === 'abandoned') return;
+    throw new Error('The discard did not reach your account.');
+  }
+}
+
 export async function setSessionExcluded(id: string, excluded: boolean): Promise<void> {
   const { error } = await rcDb
     .from(RC_SESSIONS_TABLE)

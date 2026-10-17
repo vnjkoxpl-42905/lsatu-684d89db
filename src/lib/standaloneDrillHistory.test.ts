@@ -37,6 +37,47 @@ describe('buildStandaloneDrillHistory', () => {
     } })], new Map());
     expect(rows).toMatchObject([{ key: 'rc:draft', section: 'rc', detail: '1 answer saved', continueTo: '/rc/drill?sessionId=draft' }]);
   });
+  it('names RC cards by PrepTest, section, passage and title, and scores finished drills', () => {
+    const names = new Map([[12, { preptest: 139, section: 3, setNumber: 1, title: 'Improving Farm Economics' }]]);
+    const graded = (sessionId: string, questionId: number, isCorrect: boolean | null): RcAttempt => ({
+      ...answer(sessionId), questionId, isCorrect, selected: isCorrect === null ? null : 'A',
+    });
+    const rows = buildStandaloneDrillHistory(
+      [],
+      [rc('done', { status: 'completed', completedAt: '2026-09-30T12:00:00Z' }), rc('open')],
+      new Map([
+        ['done', [graded('done', 1, true), graded('done', 2, false), graded('done', 3, null)]],
+        ['open', [answer('open')]],
+      ]),
+      null,
+      names,
+    );
+    const done = rows.find((row) => row.key === 'rc:done')!;
+    expect(done.title).toBe('PT 139 · S3 · P1 · Improving Farm Economics');
+    expect(done.detail).toBe('1/3 correct · 33%');
+    expect(done.discardId).toBeUndefined();
+    const open = rows.find((row) => row.key === 'rc:open')!;
+    expect(open.title).toBe('PT 139 · S3 · P1 · Improving Farm Economics');
+    expect(open.discardId).toBe('open');
+  });
+
+  it('summarizes multi-passage drills and falls back when a passage is unknown', () => {
+    const names = new Map([
+      [12, { preptest: 139, section: 3, setNumber: 1, title: 'A' }],
+      [13, { preptest: 140, section: 2, setNumber: 3, title: null }],
+      [14, { preptest: 141, section: 1, setNumber: 2, title: 'C' }],
+    ]);
+    const rows = buildStandaloneDrillHistory(
+      [],
+      [rc('many', { passageIds: [12, 13, 14] }), rc('unknown', { passageIds: [12, 99] })],
+      new Map([['many', [answer('many')]], ['unknown', [answer('unknown')]]]),
+      null,
+      names,
+    );
+    expect(rows.find((row) => row.key === 'rc:many')?.title).toBe('RC drill · 3 passages · PT 139 S3 P1, PT 140 S2 P3 +1 more');
+    expect(rows.find((row) => row.key === 'rc:unknown')?.title).toBe('RC drill · 2 passages');
+  });
+
   it('keeps each saved sitting distinct and sorts LR with RC', () => {
     const rows = buildStandaloneDrillHistory(
       [lr('lr-1', 'in_progress', 1), lr('lr-2', 'completed', 1)],
