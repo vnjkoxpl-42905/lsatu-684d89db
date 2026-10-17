@@ -92,6 +92,9 @@ export interface RcHubSurfaceProps {
 }
 
 interface PendingLaunch { id: string; actorId: string; ids: number[]; config: RcDrillConfig; back?: string; replace?: boolean }
+/** Passages the manual picker draws at once; the rest load on request. */
+const RC_PICKER_PAGE = 40;
+
 function pendingKey(actorId: string) { return `lsatu:rc-pending-launch:v1:${actorId}`; }
 function readPending(actorId: string | null): PendingLaunch | null {
   if (!actorId) return null;
@@ -620,12 +623,20 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     return plural(ids.length, 'selected passage');
   };
 
+  const [pickerLimit, setPickerLimit] = React.useState(RC_PICKER_PAGE);
+
   const handPickRows = drillablePassages.filter((p) => {
     const searchable = `${p.title ?? ''} ${p.firstWords ?? ''} PrepTest ${p.preptest} PT ${p.preptest} Section ${p.section} Passage ${p.setNumber}`;
     if (search.trim() && !searchable.toLowerCase().includes(search.trim().toLowerCase()))
       return false;
     return matches(p);
   });
+
+  // A new search or filter starts the list from the top again. Selections live
+  // in `handPicked`, so they are unaffected by how many rows are showing.
+  React.useEffect(() => {
+    setPickerLimit(RC_PICKER_PAGE);
+  }, [search, filters]);
 
   function matches(p: RcIndexPassageWithPt) {
     const status = statusOf(p);
@@ -854,7 +865,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </div>
           <div className="rc-field-hint">
             {indexStatus === 'ready' || passages.length > 0
-              ? historyStatus === 'ready' ? `${plural(preview.poolSize, 'passage')} match your filters` : 'Waiting for your answer history'
+              ? historyStatus === 'ready'
+                ? handPickOpen && search.trim()
+                  ? `${plural(handPickRows.length, 'passage')} match your search, out of ${plural(preview.poolSize, 'passage')} that match your filters`
+                  : `${plural(preview.poolSize, 'passage')} match your filters`
+                : 'Waiting for your answer history'
               : indexStatus === 'loading'
                 ? 'Loading passages…'
                 : 'Passage list unavailable'}
@@ -974,7 +989,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
               {handPicked.length} passage{handPicked.length === 1 ? '' : 's'} · {pickedQuestionCount} question{pickedQuestionCount === 1 ? '' : 's'} selected
             </p>
             <ul className="rc-passage-list" aria-label="Available passages">
-              {handPickRows.map(p => {
+              {handPickRows.slice(0, pickerLimit).map(p => {
                 const status = statusOf(p);
                 const picked = handPicked.includes(p.passageId);
                 return (
@@ -1000,6 +1015,12 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                 );
               })}
             </ul>
+            {handPickRows.length > pickerLimit && (
+              <div className="rc-actions">
+                <p className="rc-field-hint" role="status">Showing {pickerLimit} of {handPickRows.length} passages.</p>
+                <button type="button" className="rc-chip" onClick={() => setPickerLimit(limit => limit + RC_PICKER_PAGE)}>Show more passages</button>
+              </div>
+            )}
             {handPickRows.length === 0 && <p className="rc-empty">No passages match. Change your search or filters.</p>}
           </section>
         )}

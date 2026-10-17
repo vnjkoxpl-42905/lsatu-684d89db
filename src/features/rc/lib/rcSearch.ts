@@ -8,7 +8,9 @@
  * filters only if at least one of its questions matches, so a result is never
  * a passage the student cannot actually drill for that tag.
  */
+import { parseQuestionAddress, type QuestionAddress } from '@/components/questionfinder/questionFinderSearch';
 import {
+  RC_PREPTEST_DEFAULT_MAX,
   RC_PREPTEST_MAX,
   RC_PREPTEST_MIN,
   type RcIndexPassage,
@@ -30,18 +32,45 @@ export interface RcSearchFilters {
   questionDifficulties: number[];
 }
 
+/**
+ * Same window the drill builder opens on (101-148). PrepTests above it are
+ * held back so they stay fresh for timed sections; search shows them only when
+ * the student widens the range, or types an address that names one.
+ */
 export const DEFAULT_RC_SEARCH_FILTERS: RcSearchFilters = {
   topics: [],
   formats: [],
   frameworks: [],
   passageDifficulties: [],
   preptestMin: RC_PREPTEST_MIN,
-  preptestMax: RC_PREPTEST_MAX,
+  preptestMax: RC_PREPTEST_DEFAULT_MAX,
   families: [],
   questionTypes: [],
   features: [],
   questionDifficulties: [],
 };
+
+/** True for the held-back PrepTests (149 and up). */
+export function isReservedPreptest(preptest: number): boolean {
+  return preptest > RC_PREPTEST_DEFAULT_MAX && preptest <= RC_PREPTEST_MAX;
+}
+
+/**
+ * The read-only preview for one question. Search never starts a live drill:
+ * starting happens on the preview page, on an explicit Start.
+ */
+export function rcSearchPreviewHref(
+  passageId: number,
+  questionId: number,
+  returnTo = '/rc/search',
+): string {
+  const params = new URLSearchParams({
+    passage: String(passageId),
+    q: String(questionId),
+    returnTo,
+  });
+  return `/rc/preview?${params.toString()}`;
+}
 
 export interface RcSearchSnippet {
   before: string;
@@ -54,6 +83,11 @@ export interface RcSearchPassageResult {
   /** Questions in this passage matching the question filters and query. */
   matchedQuestionCount: number;
   titleMatched: boolean;
+  /**
+   * The question the preview opens on: the first match, else the passage's
+   * first question. Null only if the question index holds none for it.
+   */
+  previewQuestionId: number | null;
 }
 
 export interface RcSearchQuestionResult {
@@ -67,12 +101,37 @@ export interface RcSearchResult {
   questions: RcSearchQuestionResult[];
   totalPassages: number;
   totalQuestions: number;
+  /**
+   * Passages in held-back PrepTests that would match if the range were wide
+   * enough. Lets the page say what the default is hiding instead of hiding it
+   * silently.
+   */
+  hiddenReservedPassages: number;
 }
 
 const SNIPPET_RADIUS = 52;
 
+/**
+ * Collapses whitespace and drops soft hyphens (U+00AD) so a search for
+ * "cooperate" finds "co\u00adoperate". Used on the strings being compared, never
+ * on stored passage text: saved highlights are character offsets into it.
+ */
 export function normalizeRcSearchText(value: string): string {
-  return value.replace(/\s+/g, ' ').trim();
+  return value.replace(/\u00ad/g, '').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * An exact address ("PT150 S1", "PT150 S1 Q3") typed into the box. A bare
+ * number is NOT treated as an address: "150" is as likely to be part of a
+ * question stem, and search has always matched it as text.
+ */
+export function parseRcSearchAddress(query: string): QuestionAddress | null {
+  const text = normalizeRcSearchText(query);
+  if (!text || /^\d+$/.test(text)) return null;
+  const address = parseQuestionAddress(text);
+  if (!address) return null;
+  if (address.pt < RC_PREPTEST_MIN || address.pt > RC_PREPTEST_MAX) return null;
+  return address;
 }
 
 export function questionFiltersActive(filters: RcSearchFilters): boolean {
@@ -87,8 +146,12 @@ export function questionFiltersActive(filters: RcSearchFilters): boolean {
 export function passageMatchesFilters(
   passage: RcSearchPassage,
   filters: RcSearchFilters,
+  options: { ignoreRange?: boolean } = {},
 ): boolean {
-  if (passage.preptest < filters.preptestMin || passage.preptest > filters.preptestMax)
+  if (
+    !options.ignoreRange &&
+    (passage.preptest < filters.preptestMin || passage.preptest > filters.preptestMax)
+  )
     return false;
   if (filters.topics.length && (!passage.topic || !filters.topics.includes(passage.topic)))
     return false;
@@ -164,7 +227,10 @@ export function runRcSearch({
   filters: RcSearchFilters;
   limit?: number;
 }): RcSearchResult {
-  const q = normalizeRcSearchText(query).toLowerCase();
+  const address = parseRcSearchAddress(query);
+  // An address names one place, so it ignores the text query and the PrepTest
+  // range: a student who types PT150 S1 asked for exactly that section.
+  const q = address ? '' : normalizeRcSearchText(query).toLowerCase();
   const questionLevel = questionFiltersActive(filters);
 
   const byPassage = new Map<number, RcQuestionIndexEntry[]>();
@@ -174,29 +240,69 @@ export function runRcSearch({
     else byPassage.set(question.passageId, [question]);
   }
 
-  const matchedPassages: RcSearchPassageResult[] = [];
   const matchedQuestions: RcSearchQuestionResult[] = [];
 
-  for (const passage of passages) {
-    if (!passageMatchesFilters(passage, filters)) continue;
+  const evaluate = (
+    passage: RcSearchPassage,
+    ignoreRange: boolean,
+  ): { result: RcSearchPassageResult; matching: RcQuestionIndexEntry[] } | null => {
+    if (address) {
+      if (passage.preptest !== address.pt) return null;
+      if (address.section !== undefined && passage.section !== address.section) return null;
+    }
+    if (!passageMatchesFilters(passage, filters, { ignoreRange: ignoreRange || Boolean(address) }))
+      return null;
 
-    const matching = (byPassage.get(passage.passageId) ?? []).filter(
+    const own = byPassage.get(passage.passageId) ?? [];
+    let addressedQuestion: RcQuestionIndexEntry | undefined;
+    if (address?.qnum !== undefined) {
+      addressedQuestion = own.find((question) => question.position === address.qnum);
+      if (!addressedQuestion) return null;
+    }
+
+    const matching = own.filter(
       (question) =>
         questionMatchesFilters(question, filters) &&
-        (!q || (question.prompt ?? '').toLowerCase().includes(q)),
+        (!q || normalizeRcSearchText(question.prompt ?? '').toLowerCase().includes(q)) &&
+        (!addressedQuestion || question.questionId === addressedQuestion.questionId),
     );
 
-    const titleMatched = q.length > 0 && (passage.title ?? '').toLowerCase().includes(q);
+    const titleMatched =
+      q.length > 0 && normalizeRcSearchText(passage.title ?? '').toLowerCase().includes(q);
 
-    if (questionLevel && matching.length === 0) continue;
-    if (q && !titleMatched && matching.length === 0) continue;
+    if (questionLevel && matching.length === 0) return null;
+    if (q && !titleMatched && matching.length === 0) return null;
 
-    matchedPassages.push({
-      passage,
-      matchedQuestionCount: matching.length,
-      titleMatched,
-    });
-    for (const question of matching) {
+    return {
+      result: {
+        passage,
+        matchedQuestionCount: matching.length,
+        titleMatched,
+        previewQuestionId: matching[0]?.questionId ?? own[0]?.questionId ?? null,
+      },
+      matching,
+    };
+  };
+
+  const matchedPassages: RcSearchPassageResult[] = [];
+  let hiddenReservedPassages = 0;
+
+  for (const passage of passages) {
+    const found = evaluate(passage, false);
+    if (!found) {
+      // Would it have matched if the range allowed it? Say so rather than hide it.
+      if (
+        !address &&
+        isReservedPreptest(passage.preptest) &&
+        passage.preptest > filters.preptestMax &&
+        evaluate(passage, true)
+      ) {
+        hiddenReservedPassages += 1;
+      }
+      continue;
+    }
+    matchedPassages.push(found.result);
+    for (const question of found.matching) {
       matchedQuestions.push({
         question,
         passage,
@@ -210,5 +316,6 @@ export function runRcSearch({
     questions: matchedQuestions.slice(0, limit),
     totalPassages: matchedPassages.length,
     totalQuestions: matchedQuestions.length,
+    hiddenReservedPassages,
   };
 }
