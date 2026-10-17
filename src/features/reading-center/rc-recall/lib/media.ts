@@ -49,7 +49,7 @@ export const RC_RECALL_EXAMPLES: ExampleClip[] = [
 ];
 
 export const INSTRUCTION_VIDEO = {
-  title: "How and Why to Do RC Recall",
+  title: "How and Why to Do RC Training",
   stem: "how-and-why-to-do-rc-recall",
 } as const;
 
@@ -62,8 +62,8 @@ export const RC_RECALL_DEMO_CORRECTION = [
 
 /** The names the source lesson uses, so app copy and footage line up. */
 export const SOURCE_NAME_MAP = [
-  { app: "Retell from the beginning", source: "Decaf" },
-  { app: "Check as you go", source: "Cappuccino" },
+  { app: "RC Recall", source: "Decaf" },
+  { app: "RC Flow", source: "Cappuccino" },
 ] as const;
 
 export function mediaBase(env: Record<string, string | undefined> = import.meta.env as Record<string, string | undefined>): string | null {

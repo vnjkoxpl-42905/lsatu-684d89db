@@ -39,11 +39,11 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllEnvs());
 
 describe("RC Recall page", () => {
-  it("uses the RC Training title and plain-language method names", () => {
+  it("uses the RC Training title and approved workout names", () => {
     renderPage();
     expect(screen.getByRole("heading", { level: 1, name: "RC Training" })).toBeInTheDocument();
-    expect(screen.getByRole("radio", { name: /Check as you go/ })).toBeInTheDocument();
-    expect(screen.getByRole("radio", { name: /Retell from the beginning/ })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /RC Flow/ })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /RC Recall/ })).toBeInTheDocument();
   });
 
   it("lists the section even though its passages have no drillable questions", async () => {
@@ -60,7 +60,7 @@ describe("RC Recall page", () => {
     fireEvent.click(screen.getByRole("button", { name: "Read the full instructions" }));
     expect(await screen.findByText(/videos call these methods/i)).toHaveTextContent(/Cappuccino/);
     expect(screen.getByText(/confirm your translation with all the text you have read/i)).toBeVisible();
-    fireEvent.click(screen.getByRole("radio", { name: /Retell from the beginning/ }));
+    fireEvent.click(screen.getByRole("radio", { name: /RC Recall/ }));
     expect(await screen.findByText(/With the text hidden, retell paragraphs 1 and 2 in order/i)).toBeInTheDocument();
     expect(screen.queryByRole("radio", { name: /Only the current passage/ })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Close full instructions" }));

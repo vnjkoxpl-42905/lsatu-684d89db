@@ -33,7 +33,7 @@ describe('Reading Center activity rail', () => {
   it('shows RC Training as its own activity beside the existing LR stage', () => {
     shell(true);
     expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('href', '/reading-center');
-    expect(screen.getByRole('link', { name: 'LR Recall' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'LR Training' })).toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: 'RC Training' })).toHaveAttribute('href', '/reading-center/rc-recall');
     expect(screen.getByRole('link', { name: 'RC Training' })).not.toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: 'Speed Reading' })).toHaveAttribute('href', '/reading-center/speed-reading');
@@ -43,7 +43,7 @@ describe('Reading Center activity rail', () => {
   it('does not send a legacy LR-only student into locked hub destinations', () => {
     state.allowed = false;
     shell(true);
-    expect(screen.getByRole('link', { name: 'LR Recall' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'LR Training' })).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Dashboard' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Speed Reading' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Add Text' })).not.toBeInTheDocument();
@@ -56,11 +56,11 @@ describe('Reading Center activity rail', () => {
     expect(screen.getByRole('heading', { name: 'Existing LR collection' })).toBeInTheDocument();
     const menu = screen.getByRole('button', { name: 'Open Reading Center menu' });
     expect(menu).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByRole('link', { name: 'LR Recall' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'LR Training' })).not.toBeInTheDocument();
     expect(document.getElementById('reading-center-navigation')).toBeNull();
     fireEvent.click(menu);
     expect(menu).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('link', { name: 'LR Recall' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'LR Training' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Close menu' }));
     expect(menu).toHaveAttribute('aria-expanded', 'false');
     expect(document.getElementById('reading-center-navigation')).toBeNull();

@@ -114,16 +114,16 @@ export default function RcRecallPage() {
 
     <div className="rct-content">
       <section className="rct-method-section" aria-labelledby="rct-method-title">
-        <div className="rct-section-heading"><div><h2 id="rct-method-title">Two ways to train.</h2><p>The same standard of recall. A different way to practise it.</p></div><span className="rct-side-note">Choose your method</span></div>
+        <div className="rct-section-heading"><div><h2 id="rct-method-title">Two ways to train.</h2><p>The same standard of recall. A different way to practise it.</p></div><span className="rct-side-note">Choose your workout</span></div>
         <fieldset className="rct-methods">
-          <legend className="sr-only">Choose a method</legend>
+          <legend className="sr-only">Choose a workout</legend>
           {(["rc_recall", "cumulative_recall"] as RecallMode[]).map((m) => <label key={m} className="rct-method" data-selected={mode === m}>
             <input type="radio" name="mode" value={m} checked={mode === m} onChange={() => setMode(m)} />
             <span className="rct-method-top"><span className="rct-method-icon">{m === "rc_recall" ? <BookOpen size={21} aria-hidden="true" /> : <Layers3 size={21} aria-hidden="true" />}</span><span className="rct-selected-indicator" aria-hidden="true">{mode === m && <Check size={15} />}</span></span>
             <span className="rct-method-title">{MODE_LABEL[m]}</span>
             <span className="rct-method-description">{m === "rc_recall" ? "Recall each paragraph, then bring the text back to confirm your translation." : "Recall each paragraph, then retell everything read so far with the text hidden."}</span>
             <span className="rct-method-diagram" aria-hidden="true"><span>Read</span><i>→</i><span>Recall</span><i>→</i><span>{m === "rc_recall" ? "Check the text" : "Retell together"}</span></span>
-            <span className="rct-method-bottom"><Clock3 size={14} aria-hidden="true" />{m === "rc_recall" ? "About 6 min per passage" : "8 min silent · 12 min out loud"}<span>{mode === m ? "Selected" : "Select method"}</span></span>
+            <span className="rct-method-bottom"><Clock3 size={14} aria-hidden="true" />{m === "rc_recall" ? "About 6 min per passage" : "8 min silent · 12 min out loud"}<span>{mode === m ? "Selected" : "Select workout"}</span></span>
           </label>)}
         </fieldset>
       </section>
@@ -149,7 +149,7 @@ export default function RcRecallPage() {
       <section className="rct-start" aria-labelledby="rc-recall-start">
         <div className="rct-start-intro"><span className="rct-section-icon"><BookOpen size={23} aria-hidden="true" /></span><h2 id="rc-recall-start">Start a section</h2><p>{SECTION_PICKER_NOTE}</p><div className="rct-timing"><Clock3 size={17} aria-hidden="true" /><div><strong>{timing.section}</strong><span>Section timing guide, not a limit</span></div></div></div>
         <div className="rct-start-form">
-          <div className="rct-form-method"><span>Your method</span><strong>{MODE_LABEL[mode]}</strong></div>
+          <div className="rct-form-method"><span>Your workout</span><strong>{MODE_LABEL[mode]}</strong></div>
           {index.isPending && <div className="rct-loading" role="status">Loading sections…</div>}
           {index.isError && <p role="alert">The section list could not load. Try reloading the page.</p>}
           {!index.isPending && !index.isError && !sections.length && <p role="status">No complete RC sections are available yet.</p>}
@@ -188,7 +188,7 @@ export default function RcRecallPage() {
       <section className="rct-history" aria-labelledby="rc-recall-history"><div className="rct-section-heading"><div><h2 id="rc-recall-history">Your attempts</h2><p>Each attempt stays here. Starting again never replaces your earlier work.</p></div><History size={23} aria-hidden="true" /></div>
         {history.isPending ? <div role="status" className="rct-loading">Loading your attempts…</div>
           : history.isError ? <p role="alert" className="rct-history-empty">Your attempts could not load. Your saved work has not changed.</p>
-            : !history.data?.attempts.length ? <div className="rct-history-empty"><span className="rct-empty-icon"><BookOpen size={23} aria-hidden="true" /></span><div><h3>Your first section starts here.</h3><p>Choose a method and a section above. Your time and recording status will appear here after you practise.</p></div></div>
+            : !history.data?.attempts.length ? <div className="rct-history-empty"><span className="rct-empty-icon"><BookOpen size={23} aria-hidden="true" /></span><div><h3>Your first section starts here.</h3><p>Choose a workout and a section above. Your time and recording status will appear here after you practise.</p></div></div>
               : <ul className="rct-attempts">{history.data.attempts.map((a) => {
                 const own = history.data.recaps.filter((r) => r.attempt_id === a.id);
                 const sum = summarizeRecordings(own);

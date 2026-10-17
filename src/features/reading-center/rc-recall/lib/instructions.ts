@@ -47,12 +47,12 @@ export const CUMULATIVE_STEPS = [
 
 export const COMPARATIVE_NOTE =
   "In a comparative passage, the source note and the Passage A / Passage B headings are labels, not paragraphs to recall. " +
-  "In Check as you go, choose before you start whether each check covers all the text read so far or only the current passage (A or B in a passage pair). " +
-  "In Retell from the beginning, once you begin Passage B, retell Passage A and Passage B together with the text hidden.";
+  "In RC Flow, choose before you start whether each check covers all the text read so far or only the current passage (A or B in a passage pair). " +
+  "In RC Recall, once you begin Passage B, retell Passage A and Passage B together with the text hidden.";
 
 export const VOICE_NOTE =
   "Do your recaps out loud in the beginning to keep yourself honest about the quality and completeness of the recaps. " +
-  "Move to silent recaps when you feel ready. Paragraph recaps and checks are silent in Check as you go; the optional passage recap can be spoken or silent. " +
+  "Move to silent recaps when you feel ready. Paragraph recaps and checks are silent in RC Flow; the optional passage recap can be spoken or silent. " +
   "Only spoken recaps are recorded.";
 
 export const TIMING = {

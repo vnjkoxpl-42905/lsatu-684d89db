@@ -41,8 +41,8 @@ export interface RecallStep {
 export const RECAP_KINDS: StepKind[] = ["recall", "cumulative", "passage_recap"];
 
 export const MODE_LABEL: Record<RecallMode, string> = {
-  rc_recall: "Check as you go",
-  cumulative_recall: "Retell from the beginning",
+  rc_recall: "RC Flow",
+  cumulative_recall: "RC Recall",
 };
 
 /** Per-passage guidance in minutes, from the source workouts. Guidance only. */
