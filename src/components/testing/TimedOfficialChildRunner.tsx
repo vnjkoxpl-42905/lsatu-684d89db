@@ -8,10 +8,8 @@ import { TimedWorkClient, type TimedLetter, type TimedObject } from '@/lib/timed
 import { TimedChildController, type TimedChildAnswer, type TimedChildState } from '@/lib/timedChildController';
 import { getPracticeTestDeviceId } from '@/lib/practiceTestStore';
 import { captureSelectionAcross, type Highlight, type HighlightMode } from '@/lib/highlightUtils';
-import { RcExamPane, rcTypeStyles } from '@/features/rc/components/RcExamPane';
-import { RcPassagePane } from '@/features/rc/components/RcPassagePane';
-import { RcQuestionPane } from '@/features/rc/components/RcQuestionPane';
-import type { RcHighlight, RcHighlightColor, RcHighlightMode } from '@/features/rc/lib/rcTypes';
+import { RcTimedReader } from '@/components/timed/RcTimedReader';
+import type { RcHighlight, RcHighlightColor } from '@/features/rc/lib/rcTypes';
 import '@/features/rc/rc.css';
 import '@/features/rc/player.css';
 
@@ -181,10 +179,9 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
     {pending && state ? <Button disabled={busy} onClick={() => void perform('retry')}>Retry saved command</Button> : <Button disabled={busy} onClick={retryLoad}>Retry account load</Button>}
     <Button variant="outline" disabled={busy} onClick={back}>Return to PrepTest</Button>
   </div>;
-  const rcView = state.view && 'state' in state.view ? state.view : null; const rcItem = rcView?.state.items[state.currentIndex]; const type = rcTypeStyles(fontScale, 0);
+  const rcView = state.view && 'state' in state.view ? state.view : null; const rcItem = rcView?.state.items[state.currentIndex];
   const rcMarks = rcItem ? rcHighlights[String(rcItem.passage.passageId)] ?? [] : [];
   const updateRcMarks = (next: RcHighlight[]) => rcItem && setRcHighlights(previous => ({ ...previous, [rcItem.passage.passageId]: next }));
-  const addRcMark = (target: RcHighlight['target'], start: number, end: number, c: RcHighlightColor, annotation: 'highlight' | 'underline') => updateRcMarks([...rcMarks, { target, start, end, color: c, kind: annotation }]);
   return <OfficialDrillFrame isPaused={paused} onResume={() => void perform('resume')} header={<div className="flex flex-wrap items-center gap-3">
     <span className="font-semibold">PrepTest {state.snapshot.parent.pt} · {kind.toUpperCase()} section</span><span aria-label="Section time remaining">{kind === 'lr' && clock?.remainingMs === 0 && regulationAcknowledged.current ? `Overtime +${format(clock.elapsedMs - (state.snapshot.parent.section_seconds ?? 0) * 1000)}` : format(clock?.remainingMs ?? null)}</span>
     <Button size="sm" variant="outline" disabled={busy} onClick={() => void perform('exit')}>PrepTest</Button>
@@ -208,17 +205,10 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
         onTextSelection={regions => { if (marker === 'none' || marker === 'erase') return false; const captured = captureSelectionAcross(regions); if (!captured.length) return false;
           setHighlights(previous => ({ ...previous, [question.qid]: [...(previous[question.qid] ?? []), ...captured.map(value => ({ ...value, id: crypto.randomUUID(), color: marker }))] })); window.getSelection()?.removeAllRanges(); return true; }}
         onHighlightClick={id => { if (marker === 'erase') setHighlights(previous => ({ ...previous, [question.qid]: (previous[question.qid] ?? []).filter(value => value.id !== id) })); }} />}
-      {kind === 'rc' && rcItem && answer && <RcExamPane schemeClassName="" passageOnly={passageOnly}
-        passage={<RcPassagePane passage={rcItem.passage} highlights={rcMarks} color={color} onColorChange={setColor} highlightMode={marker as RcHighlightMode} findQuery={find} findIndex={0} onFindCount={() => undefined}
-          scrollTop={scrollTops[rcItem.passage.passageId] ?? 0} onScroll={top => setScrollTops(previous => ({ ...previous, [rcItem.passage.passageId]: top }))} textStyle={type.passage} passageOnly={passageOnly}
-          onAddHighlight={(start, end, c, annotation) => addRcMark('passage', start, end, c, annotation)}
-          onRemoveHighlight={offset => updateRcMarks(rcMarks.filter(value => value.target !== 'passage' || offset < value.start || offset >= value.end))}
-          onRemoveRange={(start, end) => updateRcMarks(rcMarks.filter(value => value.target !== 'passage' || value.end <= start || value.start >= end))} />}
-        question={<RcQuestionPane item={rcItem} selected={answer.selected} eliminations={answer.eliminations} flagged={answer.flagged} revealed={false} reattemptMode={false} reattemptPick={null}
-          interactionDisabled={blocked} onSelect={select} onToggleElimination={toggleElimination} onToggleFlag={() => mutate(previous => ({ ...previous, flagged: !previous.flagged }))} onSkipToAnswer={() => undefined}
-          type={type} highlights={rcMarks} color={color} onColorChange={setColor} highlightMode={marker as RcHighlightMode}
-          onAddHighlight={addRcMark} onRemoveHighlight={(target, offset) => updateRcMarks(rcMarks.filter(value => value.target !== target || offset < value.start || offset >= value.end))}
-          onRemoveRange={(target, start, end) => updateRcMarks(rcMarks.filter(value => value.target !== target || value.end <= start || value.start >= end))} />} />}
+      {kind === 'rc' && rcItem && answer && <RcTimedReader item={rcItem} answer={answer} blocked={blocked} fontScale={fontScale} find={find} marker={marker}
+        color={color} onColorChange={setColor} passageOnly={passageOnly} marks={rcMarks} onMarksChange={updateRcMarks}
+        scrollTop={scrollTops[rcItem.passage.passageId] ?? 0} onScrollTop={top => setScrollTops(previous => ({ ...previous, [rcItem.passage.passageId]: top }))}
+        onSelect={select} onToggleElimination={toggleElimination} onToggleFlag={() => mutate(previous => ({ ...previous, flagged: !previous.flagged }))} />}
     </div>
     <div className="border-t p-2 flex flex-wrap items-center gap-2">
       <Button variant="outline" size="sm" disabled={blocked || state.currentIndex === 0} onClick={() => jump(state.currentIndex - 1)}>Previous</Button>

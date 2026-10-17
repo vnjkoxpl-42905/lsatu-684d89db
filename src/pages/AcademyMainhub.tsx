@@ -4,7 +4,8 @@ import * as React from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { listStandaloneDrillRuns } from "@/lib/drillRunLedger";
-import { getSessionAttempts, listSessions } from "@/features/rc/api/rcProgress";
+import { abandonSession, getSessionAttempts, listSessions } from "@/features/rc/api/rcProgress";
+import { loadAllIndexPassages } from "@/features/rc/lib/rcBank";
 import { buildStandaloneDrillHistory, type StandaloneDrillHistoryItem } from "@/lib/standaloneDrillHistory";
 import { loadDrillResumeSession } from "@/lib/drillResumeSession";
 import {
@@ -205,6 +206,23 @@ export default function AcademyMainhub({
   const [runsLoading, setRunsLoading] = React.useState(false);
   const [runsError, setRunsError] = React.useState<string | null>(null);
   const [runsRevision, refreshRuns] = React.useReducer((value) => value + 1, 0);
+  const [discardingKey, setDiscardingKey] = React.useState<string | null>(null);
+  const [discardBusy, setDiscardBusy] = React.useState(false);
+  const [discardError, setDiscardError] = React.useState<string | null>(null);
+  const discardRun = async (sessionId: string) => {
+    if (discardBusy) return;
+    setDiscardBusy(true);
+    setDiscardError(null);
+    try {
+      await abandonSession(sessionId);
+      setDiscardingKey(null);
+      refreshRuns();
+    } catch (error) {
+      setDiscardError(error instanceof Error ? error.message : "The drill could not be discarded.");
+    } finally {
+      setDiscardBusy(false);
+    }
+  };
 
   React.useEffect(() => {
     if (searchParams.get("finder") !== "open") return;
@@ -227,11 +245,14 @@ export default function AcademyMainhub({
       listStandaloneDrillRuns(user.id),
       listSessions(),
       view === "in-progress" ? loadDrillResumeSession(user.id, "drill::adaptive") : Promise.resolve(null),
-    ]).then(async ([lr, allRc, smartDrill]) => {
+      // Titles are a nicety: if the index is unavailable the cards keep their generic names.
+      loadAllIndexPassages().catch(() => []),
+    ]).then(async ([lr, allRc, smartDrill, indexPassages]) => {
       const rc = allRc.filter((session) => session.userId === user.id && !session.config.practiceTestRunId && !session.config.timedSectionSittingId && session.config.source !== "assignment" &&
         (session.status === "completed" || session.status === "in_progress"));
       const attempts = await Promise.all(rc.map(async (session) => [session.id, await getSessionAttempts(session.id)] as const));
-      return buildStandaloneDrillHistory(lr, rc, new Map(attempts), smartDrill);
+      const names = new Map(indexPassages.map((p) => [p.passageId, { preptest: p.preptest, section: p.section, setNumber: p.setNumber, title: p.title }] as const));
+      return buildStandaloneDrillHistory(lr, rc, new Map(attempts), smartDrill, names);
     }).then(
       (loaded) => { if (active) setRuns(loaded); },
       (error: unknown) => { if (active) setRunsError(error instanceof Error ? error.message : "Drill runs could not be loaded."); },
@@ -418,6 +439,7 @@ export default function AcademyMainhub({
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
             </div>
             <p className="mt-2 text-sm text-muted-foreground">{section === "rc" ? "Your Reading Comprehension drills." : "Your Smart Drill and Logical Reasoning drills."}</p>
+            {discardError && <p className="mt-3 text-sm text-destructive" role="alert">{discardError}</p>}
             {runsLoading ? <p className="mt-6 text-sm text-muted-foreground" role="status">Loading your drills…</p> : runsError ? <p className="mt-6 text-sm text-destructive" role="alert">{runsError}</p> : (() => {
               const selected = runs.filter((run) => run.section === section && run.status === (view === "completed" ? "completed" : "in_progress"));
               return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill and save an answer to see it here."}</p> : (
@@ -427,7 +449,7 @@ export default function AcademyMainhub({
                       <p className="font-medium">{run.title}</p>
                       <p className="mt-1 text-sm text-muted-foreground">{run.detail} · {new Date(run.date).toLocaleDateString()}</p>
                     </div>
-                    {view === "completed" ? <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => navigate(run.resultsTo!)}>Results</Button><Button size="sm" onClick={() => navigate(run.reviewTo!)}>Review</Button></div> : <Button size="sm" onClick={() => navigate(run.continueTo!)}>Continue</Button>}
+                    {view === "completed" ? <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => navigate(run.resultsTo!)}>Results</Button><Button size="sm" onClick={() => navigate(run.reviewTo!)}>Review</Button></div> : <div className="flex flex-wrap items-center gap-2">{run.discardId && discardingKey === run.key ? <><span className="text-sm text-muted-foreground">Discard this drill?</span><Button size="sm" variant="destructive" disabled={discardBusy} onClick={() => void discardRun(run.discardId!)}>{discardBusy ? "Discarding…" : "Confirm discard"}</Button><Button size="sm" variant="outline" disabled={discardBusy} onClick={() => { setDiscardingKey(null); setDiscardError(null); }}>Keep it</Button></> : <>{run.discardId && <Button size="sm" variant="outline" onClick={() => { setDiscardError(null); setDiscardingKey(run.key); }}>Discard</Button>}<Button size="sm" onClick={() => navigate(run.continueTo!)}>Continue</Button></>}</div>}
                   </li>
                 ))}</ul>
               );

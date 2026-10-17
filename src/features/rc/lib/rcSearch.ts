@@ -227,7 +227,10 @@ export function runRcSearch({
   filters: RcSearchFilters;
   limit?: number;
 }): RcSearchResult {
-  const q = normalizeRcSearchText(query).toLowerCase();
+  const address = parseRcSearchAddress(query);
+  // An address names one place, so it ignores the text query and the PrepTest
+  // range: a student who types PT150 S1 asked for exactly that section.
+  const q = address ? '' : normalizeRcSearchText(query).toLowerCase();
   const questionLevel = questionFiltersActive(filters);
 
   const byPassage = new Map<number, RcQuestionIndexEntry[]>();
@@ -237,29 +240,69 @@ export function runRcSearch({
     else byPassage.set(question.passageId, [question]);
   }
 
-  const matchedPassages: RcSearchPassageResult[] = [];
   const matchedQuestions: RcSearchQuestionResult[] = [];
 
-  for (const passage of passages) {
-    if (!passageMatchesFilters(passage, filters)) continue;
+  const evaluate = (
+    passage: RcSearchPassage,
+    ignoreRange: boolean,
+  ): { result: RcSearchPassageResult; matching: RcQuestionIndexEntry[] } | null => {
+    if (address) {
+      if (passage.preptest !== address.pt) return null;
+      if (address.section !== undefined && passage.section !== address.section) return null;
+    }
+    if (!passageMatchesFilters(passage, filters, { ignoreRange: ignoreRange || Boolean(address) }))
+      return null;
 
-    const matching = (byPassage.get(passage.passageId) ?? []).filter(
+    const own = byPassage.get(passage.passageId) ?? [];
+    let addressedQuestion: RcQuestionIndexEntry | undefined;
+    if (address?.qnum !== undefined) {
+      addressedQuestion = own.find((question) => question.position === address.qnum);
+      if (!addressedQuestion) return null;
+    }
+
+    const matching = own.filter(
       (question) =>
         questionMatchesFilters(question, filters) &&
-        (!q || (question.prompt ?? '').toLowerCase().includes(q)),
+        (!q || normalizeRcSearchText(question.prompt ?? '').toLowerCase().includes(q)) &&
+        (!addressedQuestion || question.questionId === addressedQuestion.questionId),
     );
 
-    const titleMatched = q.length > 0 && (passage.title ?? '').toLowerCase().includes(q);
+    const titleMatched =
+      q.length > 0 && normalizeRcSearchText(passage.title ?? '').toLowerCase().includes(q);
 
-    if (questionLevel && matching.length === 0) continue;
-    if (q && !titleMatched && matching.length === 0) continue;
+    if (questionLevel && matching.length === 0) return null;
+    if (q && !titleMatched && matching.length === 0) return null;
 
-    matchedPassages.push({
-      passage,
-      matchedQuestionCount: matching.length,
-      titleMatched,
-    });
-    for (const question of matching) {
+    return {
+      result: {
+        passage,
+        matchedQuestionCount: matching.length,
+        titleMatched,
+        previewQuestionId: matching[0]?.questionId ?? own[0]?.questionId ?? null,
+      },
+      matching,
+    };
+  };
+
+  const matchedPassages: RcSearchPassageResult[] = [];
+  let hiddenReservedPassages = 0;
+
+  for (const passage of passages) {
+    const found = evaluate(passage, false);
+    if (!found) {
+      // Would it have matched if the range allowed it? Say so rather than hide it.
+      if (
+        !address &&
+        isReservedPreptest(passage.preptest) &&
+        passage.preptest > filters.preptestMax &&
+        evaluate(passage, true)
+      ) {
+        hiddenReservedPassages += 1;
+      }
+      continue;
+    }
+    matchedPassages.push(found.result);
+    for (const question of found.matching) {
       matchedQuestions.push({
         question,
         passage,
@@ -273,5 +316,6 @@ export function runRcSearch({
     questions: matchedQuestions.slice(0, limit),
     totalPassages: matchedPassages.length,
     totalQuestions: matchedQuestions.length,
+    hiddenReservedPassages,
   };
 }

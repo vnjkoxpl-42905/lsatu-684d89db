@@ -107,7 +107,7 @@ vi.mock('./rcSupabase.types', () => ({
   },
 }));
 
-import { createSession, getQuestionHistory, getSession, listSessions, recordAttempt, saveSessionClock, loadAnnotations, saveAnnotationsNow, setAttemptFlag } from './rcProgress';
+import { abandonSession, createSession, getQuestionHistory, getSession, listSessions, recordAttempt, saveSessionClock, loadAnnotations, saveAnnotationsNow, setAttemptFlag } from './rcProgress';
 
 beforeEach(() => {
   localStorage.clear();
@@ -174,6 +174,25 @@ it('acknowledges clock and question position together while preserving older ses
   const query = update.mock.results[0].value;
   expect(query.eq).toHaveBeenCalledWith('user_id', owner);
   expect(query.eq).toHaveBeenCalledWith('status', 'in_progress');
+});
+
+it('discards a drill in progress by marking it abandoned, scoped to the owner and the in-progress state', async () => {
+  await abandonSession(sessionId);
+  expect(update).toHaveBeenCalledTimes(1);
+  expect(update.mock.calls[0][0]).toEqual({ status: 'abandoned' });
+  const query = update.mock.results[0].value;
+  expect(query.eq).toHaveBeenCalledWith('id', sessionId);
+  expect(query.eq).toHaveBeenCalledWith('user_id', owner);
+  expect(query.eq).toHaveBeenCalledWith('status', 'in_progress');
+});
+
+it('refuses to discard a finished drill or a protected section and writes nothing', async () => {
+  clock.status = 'completed';
+  await expect(abandonSession(sessionId)).rejects.toThrow('Only a drill in progress can be discarded.');
+  clock.status = 'in_progress';
+  clock.config = { ...clock.config, timedSectionSittingId: 'sitting-1' };
+  await expect(abandonSession(sessionId)).rejects.toThrow('A protected section cannot be discarded here.');
+  expect(update).not.toHaveBeenCalled();
 });
 
 it('keeps the acknowledged question position during a later clock-only heartbeat', async () => {

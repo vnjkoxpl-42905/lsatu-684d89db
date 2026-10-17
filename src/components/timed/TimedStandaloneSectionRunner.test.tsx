@@ -10,6 +10,14 @@ let actor = owner;
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: actor } }) }));
 vi.mock('@/lib/practiceTestStore', () => ({ getPracticeTestDeviceId: () => 'device-a' }));
 vi.mock('@/components/drill/official/OfficialDrillFrame', () => ({ default: ({ header, children, isPaused, onResume }: { header: React.ReactNode; children: React.ReactNode; isPaused: boolean; onResume(): void }) => <div>{header}{isPaused ? <button onClick={onResume}>Resume section</button> : children}</div> }));
+vi.mock('@/components/timed/RcTimedReader', () => ({
+  RcTimedReader: (props: { item: { passage: { text: string }; question: { questionId: number } }; marks: unknown[]; onMarksChange(next: unknown[]): void; onSelect(letter: string): void; blocked: boolean }) =>
+    <div data-testid="rc-reader">{props.item.passage.text}
+      <span data-testid="mark-count">{props.marks.length}</span>
+      <button disabled={props.blocked} onClick={() => props.onSelect('B')}>Pick B</button>
+      <button onClick={() => props.onMarksChange([...props.marks, { target: 'passage', start: 0, end: 4, color: 'yellow', kind: 'highlight' }])}>Mark text</button>
+    </div>,
+}));
 vi.mock('@/components/drill/official/OfficialQuestionPane', () => ({ default: ({ question, onAnswerSelect, interactionLocked }: { question: { questionStem: string }; onAnswerSelect(answer: string): void; interactionLocked: boolean }) => <div>{question.questionStem}<button disabled={interactionLocked} onClick={() => onAnswerSelect('A')}>Select A</button></div> }));
 function state(phase = 'running'): TimedSectionState {
   return { snapshot: { sitting: { id: work, owner_id: owner, pt: 140, section: 1, kind: 'lr', phase, budget_ms: 2100000 }, pending: null },
@@ -71,6 +79,48 @@ describe('standalone account section runner', () => {
   it('rejects malformed creation and arbitrary custom durations', () => {
     expect(standaloneCreationRequest(new URLSearchParams('kind=lr&pt=140&section=1&pace=custom'))).toBeNull();
     expect(standaloneCreationRequest(new URLSearchParams('kind=rc&pt=140x&section=1&pace=standard'))).toBeNull();
+  });
+  function rcState(): TimedSectionState {
+    const rc = state(); rc.snapshot.sitting.kind = 'rc';
+    rc.questions = [{ ...rc.questions[0], qid: '501', qtype: 'RC' }];
+    rc.answers = { '501': { selected: null, timeMs: 0, flagged: false, switchCount: 0, eliminations: [], attemptId: 'attempt-501' } };
+    rc.passages = [{ passageId: 7, preptest: 140, section: 1, setNumber: 1, title: 'T', topic: null, format: null, frameworks: [], difficulty: null,
+      text: 'Passage body text for the reader.', summaries: {}, questions: [{ questionId: 501, position: 1, questionType: 'Main Point', questionTypeFamily: 'x', difficulty: null,
+        prompt: 'Which one best states the main point?', correctAnswer: 'A', hasWrittenExplanation: false, explanationBlocks: null, totalResponses: null, features: [],
+        choices: [{ letter: 'A', text: 'a' }, { letter: 'B', text: 'b' }, { letter: 'C', text: 'c' }, { letter: 'D', text: 'd' }, { letter: 'E', text: 'e' }] }] }] as never;
+    return rc;
+  }
+  it('mounts the RC reader with display controls for an RC sitting, and still checkpoints answers to the account', async () => {
+    const rc = rcState(); controller.load.mockResolvedValue(rc);
+    mount();
+    expect((await screen.findByTestId('rc-reader')).textContent).toContain('Passage body text for the reader.');
+    expect(screen.getByLabelText('Text size')).toBeInTheDocument();
+    expect(screen.getByLabelText('Find in passage')).toBeInTheDocument();
+    expect(screen.getByLabelText('Marker')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Passage only' })).toBeInTheDocument();
+    expect(screen.queryByText('Select A')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Pick B' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Pause' }));
+    await waitFor(() => expect(controller.checkpoint).toHaveBeenCalled());
+    expect(controller.checkpoint).toHaveBeenCalledWith(expect.anything(), 0, expect.objectContaining({ '501': expect.objectContaining({ selected: 'B' }) }), undefined);
+  });
+  it('keeps RC marks on this device only: stored locally, never sent in the account checkpoint', async () => {
+    localStorage.clear();
+    controller.load.mockResolvedValue(rcState());
+    const view = mount();
+    await screen.findByTestId('rc-reader');
+    fireEvent.click(screen.getByRole('button', { name: 'Mark text' }));
+    expect(screen.getByTestId('mark-count')).toHaveTextContent('1');
+    const key = Array.from({ length: localStorage.length }, (_, i) => localStorage.key(i)!).find((name) => name.startsWith('lsatu:timed-section-markers:v1:'));
+    expect(key).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem(key!)!).rcMarks['7']).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Pause' }));
+    await waitFor(() => expect(controller.checkpoint).toHaveBeenCalled());
+    expect(JSON.stringify(controller.checkpoint.mock.calls[0][2])).not.toContain('"target":"passage"');
+    view.unmount();
+    mount();
+    await screen.findByTestId('rc-reader');
+    expect(screen.getByTestId('mark-count')).toHaveTextContent('1');
   });
   it('closes RC at its acknowledged budget boundary after saving current answers', async () => {
     const rc = state(); rc.snapshot.sitting.kind = 'rc'; controller.load.mockResolvedValue(rc);

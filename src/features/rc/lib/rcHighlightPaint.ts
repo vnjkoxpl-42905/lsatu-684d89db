@@ -175,17 +175,34 @@ export function paintRcAnnotations(container: HTMLElement, highlights: RcHighlig
   );
 }
 
-/** Case-insensitive matches of `query` in the container's rendered text. */
+/**
+ * Case-insensitive matches of `query` in the container's rendered text.
+ *
+ * Soft hyphens (U+00AD) are invisible but sit inside some stored words, so a
+ * search for "cooperate" has to find "co­operate". Matching runs on a copy
+ * with them removed, and every range is mapped back to offsets in the ORIGINAL
+ * text, because saved highlights and the painter both count those offsets.
+ */
 export function findMatches(container: HTMLElement, query: string): RcTextRange[] {
-  if (query.trim().length < 2) return [];
-  const haystack = (container.textContent ?? '').toLowerCase();
-  const needle = query.toLowerCase();
+  const needle = query.replace(/­/g, '').toLowerCase();
+  if (query.trim().length < 2 || needle.length === 0) return [];
+  const text = container.textContent ?? '';
+  let haystack = '';
+  const origin: number[] = [];
+  for (let i = 0; i < text.length; i += 1) {
+    if (text[i] === '­') continue;
+    // Lowercasing can widen one character into several; keep one origin per unit.
+    for (const unit of text[i].toLowerCase()) {
+      haystack += unit;
+      origin.push(i);
+    }
+  }
   const matches: RcTextRange[] = [];
   let from = 0;
   for (;;) {
     const at = haystack.indexOf(needle, from);
     if (at === -1) break;
-    matches.push({ start: at, end: at + needle.length });
+    matches.push({ start: origin[at], end: origin[at + needle.length - 1] + 1 });
     from = at + needle.length;
   }
   return matches;
