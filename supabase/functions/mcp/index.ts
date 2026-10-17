@@ -408,7 +408,7 @@ async function requireAdmin(ctx) {
   return { supabase, userId, error: null };
 }
 function textResult(text, isError = false) {
-  return { content: [{ type: "text", text }], isError };
+  return { content: [Object.freeze({ type: "text", text })], isError };
 }
 
 // src/lib/mcp/tools/list-students.ts
