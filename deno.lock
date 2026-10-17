@@ -8513,6 +8513,7 @@
         "npm:html2canvas@^1.4.1",
         "npm:idb@8",
         "npm:input-otp@^1.4.2",
+        "npm:ionicons@^7.4.0",
         "npm:jsdom@^20.0.3",
         "npm:jspdf@^4.2.1",
         "npm:jszip@^3.10.1",
