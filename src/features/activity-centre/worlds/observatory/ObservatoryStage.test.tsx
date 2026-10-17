@@ -300,3 +300,17 @@ describe("the entrance", () => {
     expect(getAllByTestId("ob-entrance-seal").length).toBe(3);
   });
 });
+
+
+describe("valid exact-span comparisons on a partial stage", () => {
+  it.each([[25, "stronger on the eastern array than"], [39, "closer to the C3 range than to"],
+    [40, "thicker oxide layer than"], [43, "faster at ambient temperature than"],
+    [48, "more regionally appropriate than"]])("draws Q%s comparison without falsely reporting it missing", (order, quote) => {
+    const signal = byOrder(order);
+    const reading = readAnswer(signal, `comparison, "${quote}"`);
+    const { getByTestId, queryByTestId, unmount } = render(<ObservatoryStage signal={signal} phase="drawn" reading={reading} />);
+    expect(getByTestId("ob-captions").querySelector('[data-kind="comparative"]')).toBeTruthy();
+    expect(queryByTestId("ob-missed")?.textContent ?? "").not.toMatch(/comparative|comparison/i);
+    unmount();
+  });
+});

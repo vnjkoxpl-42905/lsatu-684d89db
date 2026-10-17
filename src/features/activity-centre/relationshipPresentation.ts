@@ -11,9 +11,15 @@ export function relationshipFeedback(feedback: string): string {
   return feedback;
 }
 
-/** Presentation only. Stored answers, earned results and grading keys stay intact. */
-export function relationshipExplanation(item: ActivityItem): string {
-  const first = relationship.items[0];
-  const text = item.prompt === first.prompt ? first.explanation : item.explanation;
-  return (text ?? "").replace(/^\d+ relationships? in this sentence\.\s*/i, "");
+/** Presentation only. The caller must supply the activity identity. Historical
+ * keys, responses, scores, hashes and completion are never replaced or mutated.
+ * An explanation overlay cannot repair an old grading key. */
+export function relationshipExplanation(item: ActivityItem, activitySlug?: string): string {
+  if (activitySlug !== relationship.slug) return item.explanation ?? "";
+  const canonical = relationship.items.find((candidate) =>
+    candidate.order === item.order && candidate.prompt === item.prompt,
+  );
+  // Reworded or unmatched snapshots retain their own authored explanation.
+  if (!canonical) return item.explanation ?? "";
+  return canonical.explanation.replace(/^\d+ relationships? in this sentence\.\s*/i, "");
 }

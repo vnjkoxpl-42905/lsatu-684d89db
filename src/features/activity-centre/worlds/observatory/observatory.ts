@@ -1,27 +1,5 @@
-// The Signal Observatory draws the relationship hiding in a statement as a
-// figure between the statement's own words.
-//
-// This is the most machine-readable bank in the Centre, and the world leans on
-// that rather than on judgment. Measured across its 48 items:
-//
-// - All 48 credited answers parse as `type, "indicator"` groups, including the
-//   multi-relationship form (`conditional, "Only if"; causal, "because" and
-//   "accelerates"`).
-// - All 109 indicator words anchor to real words in their own statement, so
-//   every figure is drawn from text the student can see rather than from a
-//   position I chose. Three shapes of indicator needed handling to get there:
-//   a quote carrying a trailing period ("lags."), a split comparative
-//   ("more … than"), and a separated pair ("stronger than" appearing as
-//   "stronger ... than").
-// - The authored relationship count agrees with the parsed group count on all
-//   48. Item 40 once declared four and listed three; the content was fixed, and
-//   the parse still follows the credited answer, because that is what the
-//   student is graded against.
-//
-// What this module does NOT do is decide which words are jargon. The Rung 4
-// dimming is still an open question on the drill's README and would need a
-// technical-vocabulary list nobody has written; dimming words by my own guess
-// at what looks technical would show a student my judgment as his teaching.
+// Relationship figures and affirmative-only matching use the item's own key.
+// Historical snapshots keep their own indicators; no canonical bank is substituted.
 
 import type { ActivityItem } from "../../api/types";
 
@@ -126,7 +104,9 @@ export function parseSignal(item: ActivityItem): Signal | null {
     const indicators = [...m[2].matchAll(QUOTED)].map((q) => q[1]);
     if (!indicators.length) continue;
 
-    const anchors = indicators.flatMap((ind) => anchorsFor(ind, item.prompt));
+    const anchors = indicators.flatMap((ind) => anchorsFor(ind, item.prompt))
+      .filter((anchor, index, all) => all.findIndex((a) => a.start === anchor.start && a.end === anchor.end) === index)
+      .sort((a, b) => a.start - b.start);
     relations.push({ kind, indicators, anchors });
   }
   if (!relations.length) return null;
@@ -214,14 +194,16 @@ export interface Reading {
  * "Comparison", so that has to count; so do the textbook names a student brings
  * from elsewhere ("necessary condition", "if-then", "cause and effect").
  */
-const KIND_WORDS: [RegExp, RelationKind][] = [
-  [
-    /\bconditional(?:s|ly)?\b|\b(?:necessary|sufficient)\s+condition\b|\bif\s*[-/]?\s*then\b|\brequirement\b/gi,
-    "conditional",
-  ],
-  [/\bcausal(?:ity|ly)?\b|\bcausation\b|\bcause[sd]?\b/gi, "causal"],
-  [/\bcomparat(?:ive|ively)\b|\bcomparisons?\b|\bcompar(?:e|es|ing|ed)\b/gi, "comparative"],
-];
+// Keep labels, pair boundaries and type recognition on the same vocabulary.
+// The Edge Function has a runtime-local copy, pinned by parity tests.
+export const KIND_PATTERNS: Record<RelationKind, string> = {
+  conditional: String.raw`conditional(?:s|ly)?|(?:necessary|sufficient)\s+conditions?|conditions?|if\s*[-/]?\s*then(?:\s+rule)?|requirements?`,
+  causal: String.raw`causal(?:ity|ly)?|causation|cause[sd]?(?:\s+and\s+effect)?`,
+  comparative: String.raw`comparat(?:ive|ively)|comparisons?|compar(?:e|es|ing|ed)`,
+};
+const KIND_WORDS = Object.entries(KIND_PATTERNS).map(([kind, pattern]) =>
+  [new RegExp(`\\b(?:${pattern})\\b`, "gi"), kind as RelationKind] as const,
+);
 
 /**
  * "Conditional, requires (not causal)" rules causal OUT. Counting that as a
@@ -284,21 +266,6 @@ function normalize(text: string): string {
  */
 const LONGER_FORM = /\b(?:only|even|as|not)\s+$/;
 
-function quotes(indicator: string, answer: string): boolean {
-  const parts = normalize(indicator.replace(/[.,]+$/, ""))
-    .split(/…|\.\.\./)
-    .map((p) => p.trim())
-    .filter(Boolean);
-  if (!parts.length) return false;
-  return parts.every((part) => {
-    const re = new RegExp(`\\b${escape(part)}\\b`, "g");
-    for (const m of answer.matchAll(re)) {
-      if (!LONGER_FORM.test(answer.slice(0, m.index))) return true;
-    }
-    return false;
-  });
-}
-
 /**
  * True when an answer is the credited answer in substance: it names exactly the
  * types the sentence carries, none it does not, and quotes at least one
@@ -312,7 +279,8 @@ function answerPairs(response: string) {
   // Confirm each type/indicator pair locally. A bag of words cannot distinguish
   // "causal, since; comparative, more evenly than" from the swapped labels.
   // Unstructured prose stays with the Coach rather than being guessed correct.
-  return response.split(/[;\n]+|,\s*(?=(?:conditional|causal|causation|comparative|comparison|necessary condition|sufficient condition)\b)/i).filter((part) => part.trim()).map((part) => ({
+  const boundary = new RegExp(`[,](?=\\s*(?:(?:a|an)\\s+)?(?:${Object.values(KIND_PATTERNS).join("|")})\\b)|[;\\n]+`, "i");
+  return response.split(boundary).filter((part) => part.trim()).map((part) => ({
     named: namedKinds(part),
     answer: normalize(part),
   }));
@@ -323,7 +291,7 @@ function matchedKinds(signal: Signal, response: string): RelationKind[] {
   return signal.relations.filter((r) => {
     const claimed = pairs.filter((pair) => pair.named.has(r.kind));
     return claimed.length > 0 && claimed.every((pair) =>
-      pair.named.size === 1 && confidentPair(r, pair.answer),
+      pair.named.size === 1 && confidentPair(r, pair.answer, signal.statement),
     );
   }).map((r) => r.kind);
 }
@@ -345,29 +313,67 @@ export function keyAgreesWithCredited(item: ActivityItem): boolean {
   });
 }
 
-function indicatorQuoted(r: Relation, answer: string): boolean {
-  if (!r.requiredParts?.length) return r.indicators.some((indicator) => quotes(indicator, answer));
-  // A split comparative counts only with both halves, quoted together or apart.
-  return r.requiredParts.some((parts) => parts.every((part) => quotes(part, answer)));
+const PAIR_LABEL = Object.fromEntries(Object.entries(KIND_PATTERNS).map(([kind, pattern]) =>
+  [kind, new RegExp(`^(?:a\\s+|an\\s+)?(?:${pattern})\\b[\\s,:().]*`, "i")],
+)) as Record<RelationKind, RegExp>;
+
+/** Ordered endpoints, never a bag of words. A wider quotation must be text
+ * from this statement; explicitly split answers must use the keyed parts. */
+function indicatorIn(indicator: string, answer: string): boolean {
+  const parts = normalize(indicator.replace(/[.,]+$/, "")).split(/…|\.\.\./).map((p) => p.trim()).filter(Boolean);
+  if (!parts.length) return false;
+  const re = new RegExp(parts.map((p) => `\\b${escape(p)}\\b`).join("[\\s\\S]*?"), "g");
+  for (const m of answer.matchAll(re)) {
+    if (!LONGER_FORM.test(answer.slice(0, m.index))) return true;
+  }
+  return false;
 }
 
-const PAIR_LABEL: Record<RelationKind, RegExp> = {
-  conditional: /^(?:a\s+|an\s+)?(?:conditional(?:s|ly)?|(?:necessary|sufficient)\s+condition|if\s+then(?:\s+rule)?|requirement)\b[\s,:().]*/i,
-  causal: /^(?:a\s+|an\s+)?(?:causal(?:ity|ly)?|causation|cause(?:\s+and\s+effect)?)\b[\s,:().]*/i,
-  comparative: /^(?:a\s+|an\s+)?(?:comparative(?:ly)?|comparisons?|compar(?:e|es|ing|ed))\b[\s,:().]*/i,
-};
-
-/** Instant credit is for positive type/indicator pairs, not prose that merely
- * contains the key. Any unexplained words or extra indicators need the Coach. */
-function confidentPair(r: Relation, answer: string): boolean {
+/** Positive pairs only. Unknown prose and contradictory extras go to Coach.
+ * Every consumed quotation is either an authored split or an exact source span
+ * containing a credited indicator. No arbitrary gaps or reordered endpoints. */
+function confidentPair(r: Relation, answer: string, statement: string): boolean {
   const cleaned = answer.replace(/\(\s*(?:not|no|never)\s+(?:a\s+|an\s+|the\s+)?(?:conditional|causal|comparative|comparison)\s*\)/gi, " ").trim();
   const label = PAIR_LABEL[r.kind];
-  if (!label.test(cleaned) || !indicatorQuoted(r, cleaned)) return false;
-  let remainder = cleaned.replace(label, "");
-  const parts = [...r.indicators.flatMap((indicator) => normalize(indicator.replace(/[.,]+$/, "")).split(/…|\.\.\./)),
-    ...(r.requiredParts ?? []).flat()].map((part) => part.trim()).filter(Boolean).sort((a, b) => b.length - a.length);
-  for (const part of parts) remainder = remainder.replace(new RegExp(`\\b${escape(part)}\\b`, "gi"), " ");
-  return remainder.replace(/\band\b/g, " ").replace(/[\s,:.'"`…()[\]{}]/g, "") === "";
+  if (!label.test(cleaned)) return false;
+  const remainder = cleaned.replace(label, "").trim();
+  if (!remainder) return false;
+  const source = normalize(statement);
+  const indicators = r.indicators.map((i) => normalize(i.replace(/[.,]+$/, "")).trim());
+  // Required parts document equivalent split forms, but never make an optional
+  // second indicator mandatory (for example Q11's contiguous less time than).
+  const splits = [...indicators.filter((i) => /…|\.\.\./.test(i)),
+    ...(r.requiredParts ?? []).map((parts) => parts.map((p) => normalize(p).trim()).join(" ... "))];
+  const trim = (text: string) => text.replace(/^[\s,:.]+|[\s,:.]+$/g, "");
+  const validUnit = (text: string): boolean => {
+    const unit = trim(text);
+    if (!unit) return false;
+    if (splits.some((split) => {
+      const parts = split.split(/…|\.\.\./).map((part) => part.trim());
+      const forms = [parts.join(" ... "), parts.join(" "), parts.join(" and "), parts.join(", ")];
+      const candidate = unit.replace(/\s*(?:…|\.\.\.)\s*/g, " ... ").replace(/\s*,\s*/g, ", ");
+      return forms.includes(candidate) && indicatorIn(split, source);
+    })) return true;
+    return new RegExp(`\\b${escape(unit)}\\b`).test(source)
+      && indicators.some((indicator) => indicatorIn(indicator, unit));
+  };
+  // Try complete spans before separating alternatives: an exact quotation can
+  // itself contain commas or 'and'. Memoization bounds ambiguous partitions.
+  const memo = new Map<string, boolean>();
+  const consume = (raw: string): boolean => {
+    const rest = trim(raw);
+    if (memo.has(rest)) return memo.get(rest)!;
+    if (validUnit(rest)) return true;
+    memo.set(rest, false);
+    for (const m of rest.matchAll(/\s+and\s+|\s*,\s*/g)) {
+      if (validUnit(rest.slice(0, m.index)) && consume(rest.slice(m.index! + m[0].length))) {
+        memo.set(rest, true);
+        return true;
+      }
+    }
+    return false;
+  };
+  return consume(remainder);
 }
 
 export function matchesCredited(item: ActivityItem, response: string): boolean {
@@ -378,7 +384,7 @@ export function matchesCredited(item: ActivityItem, response: string): boolean {
   const real = new Set(signal.relations.map((r) => r.kind));
   if (named.size !== real.size || [...named].some((k) => !real.has(k))) return false;
   if (!answerPairs(response).every((pair) => pair.named.size === 1 && signal.relations.some((r) =>
-    pair.named.has(r.kind) && confidentPair(r, pair.answer),
+    pair.named.has(r.kind) && confidentPair(r, pair.answer, signal.statement),
   ))) return false;
   const matched = matchedKinds(signal, response);
   return signal.relations.every((r) => matched.includes(r.kind));
