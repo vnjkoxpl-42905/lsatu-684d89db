@@ -2,13 +2,17 @@
  * `/rc/search` — find passages and questions across the whole RC bank by
  * keyword, passage tags (topic, format, framework, difficulty, PrepTest), and
  * question tags (family, type, feature, difficulty). Read-only: every result
- * opens the passage in the player as an ad-hoc drill.
+ * opens the read-only preview, where starting a drill is an explicit button.
+ * PrepTests above the builder's default window (149 and up) are held back until
+ * the student includes them, or types an address that names one.
  */
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loadAllIndexPassages, loadRcQuestionIndex } from '../lib/rcBank';
 import {
   DEFAULT_RC_SEARCH_FILTERS,
+  isReservedPreptest,
+  rcSearchPreviewHref,
   runRcSearch,
   type RcSearchFilters,
   type RcSearchPassage,
@@ -17,6 +21,7 @@ import {
   RC_FEATURES,
   RC_FORMATS,
   RC_FRAMEWORKS,
+  RC_PREPTEST_DEFAULT_MAX,
   RC_PREPTEST_MAX,
   RC_PREPTEST_MIN,
   RC_QUESTION_TYPES,
@@ -98,14 +103,23 @@ export default function RcSearch() {
         : [...f[key], value],
     }));
 
-  const open = (passageId: number) => navigate(`/rc/drill?passage=${passageId}`);
+  const open = (passageId: number, questionId: number | null) => {
+    if (questionId == null) return;
+    navigate(rcSearchPreviewHref(passageId, questionId));
+  };
+
+  const includeReserved = filters.preptestMax >= RC_PREPTEST_MAX;
+  const setIncludeReserved = (include: boolean) =>
+    setFilters((f) => ({ ...f, preptestMax: include ? RC_PREPTEST_MAX : RC_PREPTEST_DEFAULT_MAX }));
 
   return (
     <div className="rc-page">
       <h1>Search Reading Comprehension</h1>
       <p className="rc-page-sub">
-        Find passages and questions across PrepTests {RC_PREPTEST_MIN}–{RC_PREPTEST_MAX} by tag,
-        feature, or keyword.
+        Find passages and questions across PrepTests {RC_PREPTEST_MIN}–{RC_PREPTEST_DEFAULT_MAX} by
+        tag, feature, or keyword. PrepTests {RC_PREPTEST_DEFAULT_MAX + 1}–{RC_PREPTEST_MAX} are held
+        back for timed sections; include them below, or type an address such as PT150 S1. Results
+        open a preview first, and nothing starts until you press Start there.
       </p>
 
       {loadError && <p className="rc-page-sub">{loadError}</p>}
@@ -182,6 +196,14 @@ export default function RcSearch() {
           <span>
             {filters.preptestMin}–{filters.preptestMax}
           </span>
+          <label className="rc-field-hint" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <input
+              type="checkbox"
+              checked={includeReserved}
+              onChange={(e) => setIncludeReserved(e.target.checked)}
+            />
+            Include held-back PrepTests ({RC_PREPTEST_DEFAULT_MAX + 1}–{RC_PREPTEST_MAX})
+          </label>
         </div>
 
         <FilterGroup
@@ -231,6 +253,14 @@ export default function RcSearch() {
             {result.totalPassages} passage{result.totalPassages === 1 ? '' : 's'} ·{' '}
             {result.totalQuestions} question{result.totalQuestions === 1 ? '' : 's'}
           </span>
+          {result.hiddenReservedPassages > 0 && (
+            <span className="rc-hero-meta" role="status">
+              {result.hiddenReservedPassages} more in held-back PrepTests.{' '}
+              <button type="button" className="rc-chip" onClick={() => setIncludeReserved(true)}>
+                Include them
+              </button>
+            </span>
+          )}
           <button
             type="button"
             className="rc-button"
@@ -267,9 +297,16 @@ export default function RcSearch() {
               </tr>
             </thead>
             <tbody>
-              {result.passages.map(({ passage: p, matchedQuestionCount }) => (
+              {result.passages.map(({ passage: p, matchedQuestionCount, previewQuestionId }) => (
                 <tr key={p.passageId}>
-                  <td>{p.preptest}</td>
+                  <td>
+                    {p.preptest}
+                    {isReservedPreptest(p.preptest) && (
+                      <span className="rc-status-chip" style={{ marginLeft: 4 }} title="Held back for timed sections">
+                        Held back
+                      </span>
+                    )}
+                  </td>
                   <td>{p.section}</td>
                   <td>{p.setNumber}</td>
                   <td>{p.title}</td>
@@ -288,8 +325,14 @@ export default function RcSearch() {
                   </td>
                   <td>{'•'.repeat(p.difficulty ?? 0)}</td>
                   <td>
-                    <button type="button" className="rc-chip" onClick={() => open(p.passageId)}>
-                      Open
+                    <button
+                      type="button"
+                      className="rc-chip"
+                      disabled={previewQuestionId == null}
+                      aria-label={`Preview ${p.title ?? `passage ${p.setNumber}`}`}
+                      onClick={() => open(p.passageId, previewQuestionId)}
+                    >
+                      Preview
                     </button>
                   </td>
                 </tr>
@@ -325,7 +368,14 @@ export default function RcSearch() {
             <tbody>
               {result.questions.map(({ question: q, passage: p, snippet }) => (
                 <tr key={q.questionId}>
-                  <td>{q.preptest}</td>
+                  <td>
+                    {q.preptest}
+                    {isReservedPreptest(q.preptest) && (
+                      <span className="rc-status-chip" style={{ marginLeft: 4 }} title="Held back for timed sections">
+                        Held back
+                      </span>
+                    )}
+                  </td>
                   <td>{q.section}</td>
                   <td>{q.position}</td>
                   <td style={{ maxWidth: 340 }}>
@@ -352,8 +402,13 @@ export default function RcSearch() {
                   </td>
                   <td>{'•'.repeat(q.difficulty ?? 0)}</td>
                   <td>
-                    <button type="button" className="rc-chip" onClick={() => open(p.passageId)}>
-                      Open
+                    <button
+                      type="button"
+                      className="rc-chip"
+                      aria-label={`Preview question ${q.position} of PrepTest ${q.preptest} section ${q.section}`}
+                      onClick={() => open(p.passageId, q.questionId)}
+                    >
+                      Preview
                     </button>
                   </td>
                 </tr>

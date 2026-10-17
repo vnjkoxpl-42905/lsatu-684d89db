@@ -375,6 +375,37 @@ describe('RcHubSurface autostart', () => {
     expect(createSession).not.toHaveBeenCalled();
   });
 
+  it('draws the manual picker 40 passages at a time and keeps selections across Show more', async () => {
+    const many = Array.from({ length: 100 }, (_, i) => ({
+      passageId: 3000 + i, preptest: 101 + (i % 40), section: 1, setNumber: 1 + Math.floor(i / 40),
+      title: `Many ${3000 + i}`, firstWords: 'Opening', topic: 'Science', format: 'Single', frameworks: [] as string[],
+      difficulty: 3, questionCount: 2, questionIds: [3000 + i * 2, 3001 + i * 2],
+    }));
+    const bank = await import('../lib/rcBank');
+    vi.mocked(bank.loadAllIndexPassages).mockResolvedValue(many as never);
+    try {
+      mount('/classroom/drill?section=rc&count=1');
+      await screen.findByRole('button', { name: 'Preview drill' });
+      fireEvent.click(screen.getByRole('button', { name: 'Choose passages' }));
+      const list = screen.getByRole('list', { name: 'Available passages' });
+      expect(within(list).getAllByRole('listitem')).toHaveLength(40);
+      expect(screen.getByText('Showing 40 of 100 passages.')).toBeInTheDocument();
+      fireEvent.click(within(list).getByRole('button', { name: 'Add Many 3000' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Show more passages' }));
+      expect(within(list).getAllByRole('listitem')).toHaveLength(80);
+      expect(within(list).getByRole('button', { name: 'Remove Many 3000' })).toBeInTheDocument();
+      fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'Many 3005' } });
+      expect(within(list).getAllByRole('listitem')).toHaveLength(1);
+      expect(screen.getByText(/1 passage match your search, out of 100 passages that match your filters/)).toBeInTheDocument();
+    } finally {
+      vi.mocked(bank.loadAllIndexPassages).mockReset().mockImplementation(async () =>
+        [1188, 1201, 1202].map((passageId, i) => ({
+          passageId, preptest: 140 + i, section: 1, setNumber: 1, title: `Passage ${passageId}`, firstWords: 'Some opening words',
+          topic: 'Science', format: 'Single', frameworks: [], difficulty: 3, questionCount: 5, questionIds: [passageId * 10, passageId * 10 + 1],
+        })) as never);
+    }
+  });
+
   it('requires a manual selection and previews only the passages added from the searchable list', async () => {
     mount('/classroom/drill?section=rc&count=3');
     await screen.findByRole('button', { name: 'Preview drill' });
