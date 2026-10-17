@@ -44,7 +44,7 @@ const corsHeaders = {
 };
 
 /** Bumped when the prompt or the scoring changes, so a re-grade is legible. */
-const GRADER_VERSION = 4;
+const GRADER_VERSION = 5;
 /**
  * Which deploy is answering. Bumped on every change to this function.
  *
@@ -52,7 +52,7 @@ const GRADER_VERSION = 4;
  * this is the only way to prove from outside that a fix is the one running.
  * Returned on the 202 body and on the admin diagnostic below.
  */
-const BUILD = "2026-10-16-grounded-meaning-4";
+const BUILD = "2026-10-16-grounded-meaning-5";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
@@ -453,6 +453,7 @@ serve(async (req) => {
             unjudged: g.unjudged.length,
             readGiven: g.readGiven,
             readMatches: g.readMatches,
+            read_reason: g.readReason,
             coloured: g.coloured,
             colour_specific: g.colourSpecific,
             reciting: g.reciting,

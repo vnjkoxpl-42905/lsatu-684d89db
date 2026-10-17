@@ -293,8 +293,8 @@ export function buildJudgePrompt(input: {
   entries: JudgeEntry[];
   spoken: string;
   /**
-   * The analytical takeaway she should have arrived at, authored on every one
-   * of the 1,294 stimuli and, until now, graded by nothing.
+   * An authored analytical takeaway. It is a valid example, not an exhaustive
+   * list of sound stimulus-specific critiques or supported inferences.
    *
    * Coverage answers "did you hold it". The Read answers "did you understand
    * it", and it is the criterion the method is actually built around: the
@@ -479,7 +479,7 @@ ${list}
 
 ${
     input.theRead
-      ? `THE READ she should have arrived at:
+      ? `ONE AUTHORED READ (a valid example, not an exhaustive answer key):
 """
 ${input.theRead}
 """
@@ -488,9 +488,25 @@ Judge her Read, from what she said and nothing else:
 - read_given: did she say anything analytical about what the argument is DOING
   -- its move, its flaw, what turns on it -- as opposed to retelling what it
   says? Retelling alone is not a Read.
-- read_matches: did what she said amount to the SAME move as THE READ above? A
-  different name for the same move is fine; missing the move is not. She is not
-  expected to use its words, and it may be shorter or messier than the key.
+- read_matches: is her analysis logically valid and specific to THIS stimulus?
+  Accept the authored example OR a different sound analytical observation.
+  There can be more than one genuine gap in an argument. A valid alternative
+  is not wrong merely because the authored example identifies another gap.
+  For a critique, identify the actual premise-to-conclusion link she challenges:
+  her proposed possibility must be consistent with the stated premises and
+  explain why they need not establish that conclusion. Reject a critique that
+  contradicts an explicit premise, invents a claim the author never made, or
+  raises a possibility unrelated to the support for the conclusion.
+  For an inference, her claim must follow from the stated information; being
+  merely possible is not enough. Retelling, a generic doubt, and an unsupported
+  assertion do not pass. Judge her words, not facts supplied by the example.
+  For instance, a causal conclusion drawn only from an association may be
+  challenged by a common cause OR by the reverse causal direction, when each
+  is consistent with the actual premises. These are different possible valid
+  critiques, not facts to assume about this stimulus.
+- read_reason: explain the specific valid link she identified, including when
+  it differs from the example. If invalid, explain the logical problem rather
+  than saying she failed to match the example. A missing Read cannot match.
 
 `
       : ""

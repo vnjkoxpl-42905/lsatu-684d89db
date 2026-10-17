@@ -232,6 +232,31 @@ it("uses a fixed source-only rubric without choosing importance from the learner
   expect(prompt).not.toMatch(/stalagmites|seawater|single spot|French divers|PT105/);
 });
 
+describe("The Read allows sound alternative analysis", () => {
+  it("treats the authored Read as one example while requiring a premise-grounded alternative", () => {
+    const prompt = buildJudgePrompt({ stimulus: "People attending a workshop improved, so the workshop caused improvement.",
+      spoken: "Could the participants already be practising more?", theRead: "Perhaps improvement led them to attend.",
+      entries: buildJudgeEntries([{ n: 1, text: "The workshop is said to cause improvement.", kind: "content" }], []) });
+    expect(prompt).toContain("ONE AUTHORED READ (a valid example, not an exhaustive answer key)");
+    expect(prompt).toContain("Accept the authored example OR a different sound analytical observation");
+    expect(prompt).toContain("consistent with the stated premises");
+    expect(prompt).toContain("contradicts an explicit premise");
+    expect(prompt).toContain("merely possible is not enough");
+    expect(prompt).toContain("rather\n  than saying she failed to match the example");
+    expect(prompt).not.toContain("the SAME move as THE READ above");
+    expect(prompt).not.toMatch(/vaccine|subsid|per.dose|profit margin/i);
+  });
+
+  it("keeps a valid Read separate from credit for facts the learner never carried", () => {
+    const entries = buildJudgeEntries([{ n: 1, text: "All participants improved.", kind: "content" }], []);
+    const reply = parseJudgeReply(JSON.stringify({ verdicts: [{ id: 1, carried: false }],
+      read_given: true, read_matches: true, read_reason: "A different source-consistent causal gap was identified." }), [1]);
+    expect(gradeStimulus(entries, reply)).toMatchObject({ percent: 0, readGiven: true, readMatches: true });
+    reply.readGiven = false;
+    expect(gradeStimulus(entries, reply).readMatches).toBe(false);
+  });
+});
+
 describe("grounded evidence ids and meaning distinct from factual coverage", () => {
   const verdict = (id: number, carried: boolean, evidence_ids: number[], material: boolean, reason = "Changed claim.") => ({
     id, carried, evidence_ids, reason: carried ? "" : reason, material,
