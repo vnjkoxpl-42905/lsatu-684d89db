@@ -403,6 +403,21 @@ RULES:
   ONCE in big_misses and next_time. Do not invent another error because the
   same fact has two labels. Still return a verdict for every numbered Detail.
 
+MEANING CALIBRATION (unrelated examples, not evidence for this student's run):
+- Source: "A local clinic opens at noon and closes at six." Retelling: "That
+  clinic shuts at six; it starts seeing people at twelve." Both times and the
+  clinic's identity survive. Different order and equivalent wording are fine.
+- Source: "The astronomer found an error in her own calculation." Retelling:
+  "She spotted a mistake in the calculation she made." In context she uniquely
+  identifies the astronomer; repeating the occupation is unnecessary.
+- Source: "All the permits expired." Retelling: "Most permits expired."
+  The universal claim changed. Do not award all from most.
+- Source: "The council did not approve the plan." Retelling: "The council
+  approved it." Negation changed the claim; this is a genuine error.
+- Source: "If the alarm sounds, the doors lock." Retelling: "If the doors
+  lock, the alarm sounds." The direction reversed; this is a genuine error.
+Apply these principles to WHAT SHE SAID, not these examples' facts.
+
 THE DETAILS:
 ${list}
 
@@ -440,7 +455,8 @@ How to use it, and how not to:
   appears here and not in what she said, it is not carried. The verdicts above
   are decided from her words alone.
 - Do NOT reward similarity to it or penalise difference from it. Matching its
-  phrasing closely is a warning sign, not a good score: that is reciting.
+  phrasing neither proves understanding nor proves reciting. Reciting is
+  measured against the ORIGINAL STIMULUS, never against this correct run.
 
 `
       : ""
@@ -483,6 +499,44 @@ Return exactly one verdict for every id from 1 to ${input.entries.length}.`;
 
 
 // --- Reading the answer ------------------------------------------------------
+
+/** The same conditional output contract for gateway and direct judge calls.
+ * Exact array lengths and id enums constrain shape; the audited parser still
+ * checks missing/duplicate ids and evidence, which JSON Schema cannot prove.
+ */
+export function buildJudgeResponseSchema(input: {
+  entries: Pick<JudgeEntry, "id">[];
+  theRead?: string | null;
+  lines?: { n: number }[];
+}): Record<string, unknown> {
+  const ids = [...new Set(input.entries.map((entry) => entry.id))];
+  if (!ids.length) throw new Error("judge response schema needs at least one Detail");
+  const object = (properties: Record<string, unknown>) => ({
+    type: "object", properties, required: Object.keys(properties), additionalProperties: false,
+  });
+  const text = { type: "string" };
+  const flag = { type: "boolean" };
+  const verdict = object({
+    id: { type: "integer", enum: ids }, carried: flag, evidence: text, reason: text,
+  });
+  const properties: Record<string, unknown> = {
+    verdicts: { type: "array", items: verdict, minItems: ids.length, maxItems: ids.length },
+    uncertain_details: { type: "array", items: { type: "integer", enum: ids },
+      minItems: 0, maxItems: ids.length },
+    reciting: flag, reciting_reason: text, listing: flag, listing_reason: text,
+    coloured: flag, colour_specific: flag,
+    big_misses: { type: "array", items: text, minItems: 0, maxItems: 3 }, next_time: text,
+  };
+  if (input.theRead) Object.assign(properties, { read_given: flag, read_matches: flag, read_reason: text });
+  if (input.lines?.length) {
+    const lineIds = [...new Set(input.lines.map((line) => line.n))];
+    const assessment = { verdict: { type: "string", enum: ["strong", "partial", "thin", "skipped"] }, note: text };
+    properties.lines = { type: "array", items: object({ n: { type: "integer", enum: lineIds }, ...assessment }),
+      minItems: lineIds.length, maxItems: lineIds.length };
+    properties.recall = object(assessment);
+  }
+  return object(properties);
+}
 
 export interface JudgeReply {
   detailEvidence?: Record<number, { evidence: string; reason: string }>;

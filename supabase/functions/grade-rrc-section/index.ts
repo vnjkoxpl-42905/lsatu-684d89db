@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 import {
   buildJudgeEntries,
   buildJudgePrompt,
+  buildJudgeResponseSchema,
   gradeStimulus,
   mapWithConcurrency,
   parseJudgeReply,
@@ -50,7 +51,7 @@ const GRADER_VERSION = 2;
  * this is the only way to prove from outside that a fix is the one running.
  * Returned on the 202 body and on the admin diagnostic below.
  */
-const BUILD = "2026-10-16-meaning-evidence";
+const BUILD = "2026-10-16-structured-evidence";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
@@ -162,7 +163,7 @@ function deadAir(words: Word[], recalling: Segment[]): number {
   return Math.round(worst * 10) / 10;
 }
 
-async function judge(prompt: string): Promise<string> {
+async function judge(prompt: string, schema?: Record<string, unknown>): Promise<string> {
   // Lovable Cloud's gateway is the primary judge backend; the direct Gemini
   // key is the fallback so a grader never stops mid-section if one path is
   // unavailable.
@@ -180,6 +181,7 @@ async function judge(prompt: string): Promise<string> {
         model: "google/gemini-3.1-flash-lite",
         temperature: 0,
         max_tokens: 8192,
+        ...(schema ? { response_format: { type: "json_schema", json_schema: { name: "rrc_grade", strict: true, schema } } } : {}),
         messages: [{ role: "user", content: prompt }],
       }),
     });
@@ -197,7 +199,8 @@ async function judge(prompt: string): Promise<string> {
       headers: { "x-goog-api-key": direct, "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0, responseMimeType: "application/json", maxOutputTokens: 8192 },
+        generationConfig: { temperature: 0, responseMimeType: "application/json", maxOutputTokens: 8192,
+          ...(schema ? { responseJsonSchema: schema } : {}) },
       }),
     },
   );
@@ -429,6 +432,7 @@ serve(async (req) => {
               spoken,
               theRead: (item.the_read as string | null) ?? null,
             }),
+            buildJudgeResponseSchema({ entries, theRead: (item.the_read as string | null) ?? null }),
           );
           const g = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id), spoken));
           return {
@@ -444,6 +448,7 @@ serve(async (req) => {
             coloured: g.coloured,
             listing: g.listing,
             missed: g.missed,
+            detail_evidence: g.detail_evidence,
             readAloudWordsCut: read.cut,
           };
         } catch (e) {
@@ -883,6 +888,7 @@ serve(async (req) => {
             lines: lineSpans.map((l) => ({ n: l.n, text: l.text, spoken: l.spoken })),
             recall: recallText || null,
           }),
+          buildJudgeResponseSchema({ entries, theRead: (item.the_read as string | null) ?? null, lines: lineSpans }),
         );
         const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id), spoken), lineSpans);
 
