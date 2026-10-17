@@ -6,7 +6,7 @@ import {
   type AttemptRow, type RecapRow, type RecordingState,
 } from "./lib/attempts";
 import {
-  MODE_LABEL, STEP_TITLE, buildSectionSteps, passageGuidanceMinutes, stepInstruction,
+  MODE_LABEL, STEP_TITLE, buildSectionSteps, stepInstruction,
   type ConfirmScope, type RecallMode, type Voice,
 } from "./lib/sequence";
 import type { SegmentedPassage } from "./lib/segment";
@@ -33,9 +33,10 @@ interface Props {
   attempt: AttemptRow;
   studentId: string;
   onExit: () => void;
+  showElapsedTimer?: boolean;
 }
 
-export default function RcRecallRunner({ mode, scope, passages, segmented, attempt, studentId, onExit }: Props) {
+export default function RcRecallRunner({ mode, scope, passages, segmented, attempt, studentId, onExit, showElapsedTimer = true }: Props) {
   const steps = useMemo(() => buildSectionSteps(mode, segmented, scope), [mode, segmented, scope]);
   const [index, setIndex] = useState(0);
   const [voice, setVoice] = useState<Voice>("spoken");
@@ -46,6 +47,8 @@ export default function RcRecallRunner({ mode, scope, passages, segmented, attem
   const [finished, setFinished] = useState<null | { completed: boolean; seconds: number; error: string | null }>(null);
   const [elapsed, setElapsed] = useState(0);
   const startedAt = useRef(Date.now());
+  const passageStartedAt = useRef(startedAt.current);
+  const [passageElapsed, setPassageElapsed] = useState(0);
   const completionSeconds = useRef<number | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const recorder = useRecapRecorder();
@@ -53,7 +56,11 @@ export default function RcRecallRunner({ mode, scope, passages, segmented, attem
 
   useEffect(() => {
     if (finished) return;
-    const id = window.setInterval(() => setElapsed(Math.floor((Date.now() - startedAt.current) / 1000)), 1000);
+    const id = window.setInterval(() => {
+      const now = Date.now();
+      setElapsed(Math.floor((now - startedAt.current) / 1000));
+      setPassageElapsed(Math.floor((now - passageStartedAt.current) / 1000));
+    }, 1000);
     return () => window.clearInterval(id);
   }, [finished]);
 
@@ -125,7 +132,13 @@ export default function RcRecallRunner({ mode, scope, passages, segmented, attem
   };
 
   const advance = () => {
-    if (index + 1 < steps.length) setIndex(index + 1);
+    if (index + 1 < steps.length) {
+      if (steps[index + 1].passage !== step.passage) {
+        passageStartedAt.current = Date.now();
+        setPassageElapsed(0);
+      }
+      setIndex(index + 1);
+    }
     else void complete(true);
   };
 
@@ -168,7 +181,7 @@ export default function RcRecallRunner({ mode, scope, passages, segmented, attem
   };
 
   if (finished) {
-    return <FinishedPanel mode={mode} finished={finished} recaps={recaps} onExit={onExit}
+    return <FinishedPanel mode={mode} showElapsedTimer={showElapsedTimer} finished={finished} recaps={recaps} onExit={onExit}
       onRetry={() => { void complete(finished.completed); }} busy={busy} />;
   }
 
@@ -177,12 +190,19 @@ export default function RcRecallRunner({ mode, scope, passages, segmented, attem
   const isRecap = step.recapKey !== null;
   const recalling = isRecap && phase === "recalling";
   const passage = segmented[step.passage];
+  const recallScope = step.kind === "passage_recap" ? "the whole passage" : step.kind === "cumulative" ? `paragraphs 1 to ${step.paragraph + 1}` : `paragraph ${step.paragraph + 1}`;
+  const nextStep = steps[index + 1];
+  const nextAction = !nextStep ? "finish section" : nextStep.passage !== step.passage ? "start next passage" : nextStep.kind === "read" ? "read next paragraph" : nextStep.kind === "passage_recap" ? "optional passage recap" : nextStep.kind === "confirm" ? "check the text" : "recall everything so far";
 
   return <div className="rct-run" data-testid="rc-recall-runner">
     <header className="rct-run-header">
-      <div><p className="rct-run-eyebrow">RC Training <span>/</span> {MODE_LABEL[mode]}</p>
+      <div><p className="rct-run-eyebrow">RC Training{mode !== "rc_recall" && <> <span>/</span> {MODE_LABEL[mode]}</>}</p>
         <p className="rct-run-location">Passage {step.passage + 1} <span>of {passages.length}</span></p></div>
-      <div className="rct-run-clock"><Clock3 size={16} aria-hidden="true" /><span aria-label="Elapsed time" className="tabular-nums">{formatClock(elapsed)}</span><span className="rct-run-clock-label">elapsed</span></div>
+      {showElapsedTimer && <div className="rct-run-clocks" aria-label="Elapsed timers">
+        <div className="rct-run-clock"><Clock3 size={16} aria-hidden="true" /><span className="rct-run-clock-label">This passage</span><span aria-label="Passage elapsed time" className="tabular-nums">{formatClock(passageElapsed)}</span></div>
+        <div className="rct-run-clock"><span className="rct-run-clock-label">Section total</span><span aria-label="Section elapsed time" className="tabular-nums">{formatClock(elapsed)}</span></div>
+        <span className="rct-run-clock-label">Counting up. No time limit.</span>
+      </div>}
     </header>
     <div className="rct-run-section-progress" aria-label="Passage progress">
       {passages.map((_, position) => <div key={position} className={`rct-run-passage ${position === step.passage ? "is-current" : position < step.passage ? "is-done" : ""}`} aria-current={position === step.passage ? "step" : undefined}>
@@ -199,11 +219,11 @@ export default function RcRecallRunner({ mode, scope, passages, segmented, attem
         <h2 ref={heading} tabIndex={-1} className="rct-run-title outline-none">{STEP_TITLE[step.kind]}</h2>
         <p className="rct-run-instruction" role="status">{stepInstruction(step, mode, scope)}</p>
         <div className="rct-run-paragraph-progress" aria-label="Paragraph progress">{passage.paragraphs.map((_, position) => <span key={position} className={position <= step.paragraph ? "is-reached" : ""} />)}</div>
-        <p className="rct-run-guidance">Guidance: {passageGuidanceMinutes(mode)} per passage. A guide, not a limit.</p>
+        <p className="rct-run-guidance">Take the time you need to recall every detail.</p>
       </aside>
       <section className={`rct-run-paper ${hidden ? "is-hidden" : ""}`} aria-label={hidden ? "Passage text hidden" : "Passage text"}>
-        <div className="rct-run-paper-heading"><span>{hidden ? "Recall workspace" : step.kind === "confirm" ? "Check your translation" : "The passage"}</span><span>{hidden ? "Text hidden" : `Paragraph ${step.paragraph + 1}`}</span></div>
-        {hidden ? <div className="rct-run-recall-space"><div className={`rct-run-recall-symbol ${recalling ? "is-active" : ""}`}>{recalling && effectiveVoice === "spoken" ? <Mic size={32} aria-hidden="true" /> : <EyeOff size={32} aria-hidden="true" />}</div><p className="rct-run-recall-heading">{recalling ? "Tell it in your own words." : "Make the passage your own."}</p><p className="rct-run-hidden-note">The text is hidden while you recall. Do not look back.</p>{recalling && <span className="rct-run-active-status"><span />{effectiveVoice === "spoken" ? "Recording this recap only" : "Silent recap in progress"}</span>}</div>
+        <div className="rct-run-paper-heading"><span>{hidden ? `Recall ${recallScope}${step.optional ? " (optional)" : ""}` : step.kind === "confirm" ? "Check your translation" : "The passage"}</span><span>{hidden ? "Text hidden" : `Paragraph ${step.paragraph + 1}`}</span></div>
+        {hidden ? <div className="rct-run-recall-space"><div className={`rct-run-recall-symbol ${recalling ? "is-active" : ""}`}>{recalling && effectiveVoice === "spoken" ? <Mic size={32} aria-hidden="true" /> : <EyeOff size={32} aria-hidden="true" />}</div><p className="rct-run-recall-heading">{`${effectiveVoice === "silent" ? "Silently retell" : "Retell"} ${recallScope} in your own words.`}</p><p className="rct-run-hidden-note">The text is hidden while you recall. Do not look back.</p>{recalling && <span className="rct-run-active-status"><span />{effectiveVoice === "spoken" ? "Recording this recap only" : "Silent recap in progress"}</span>}</div>
           : <div className="rct-run-passage-body">{step.visible.map((i) => <div key={i} className="rct-run-paragraph">
             {passage.paragraphs[i].labels.map((label) => <p key={label} className="rct-run-passage-label">{label}</p>)}
             <p>{passage.paragraphs[i].text}</p>
@@ -228,22 +248,23 @@ export default function RcRecallRunner({ mode, scope, passages, segmented, attem
 
     <div className="rct-run-actions">
       {!isRecap && <button type="button" className={button} style={primary} disabled={busy} onClick={advance}>
-        {step.kind === "confirm" ? "Confirmed, continue" : "Done reading, continue"}<ArrowRight size={16} aria-hidden="true" />
+        {step.kind === "confirm" ? `Confirmed, ${nextAction}` : `Done reading, recall paragraph ${step.paragraph + 1}`}<ArrowRight size={16} aria-hidden="true" />
       </button>}
       {isRecap && !recalling && <button type="button" className={button} style={primary} disabled={busy} onClick={() => void startRecap()}>
         {effectiveVoice === "spoken" ? "Start recording the recap" : "Start the recap"}
       </button>}
       {recalling && <button type="button" className={button} style={primary} disabled={busy} onClick={() => void finishRecap()}>
-        {effectiveVoice === "spoken" ? "Finish recap and stop recording" : "Finish recap"}
+        {effectiveVoice === "spoken" ? `Finish recap and stop recording, ${nextAction}` : `Finish recap, ${nextAction}`}
       </button>}
-      {step.optional && !recalling && <button type="button" className={button} style={secondary} disabled={busy} onClick={advance}>Skip this recap</button>}
+      {step.optional && !recalling && <button type="button" className={button} style={secondary} disabled={busy} onClick={advance}>Skip this recap, {nextAction}</button>}
       <button type="button" className={`${button} ml-auto`} style={secondary} disabled={busy} onClick={() => { if (window.confirm("End this attempt now? It will be saved as not completed.")) void complete(false); }}>End attempt</button>
     </div>
     {recalling && effectiveVoice === "spoken" && <p className="mt-2 text-sm" role="status">Recording this recap only.</p>}
   </div>;
 }
 
-function FinishedPanel({ mode, finished, recaps, onExit, onRetry, busy }: {
+function FinishedPanel({ mode, finished, recaps, onExit, onRetry, busy, showElapsedTimer }: {
+  showElapsedTimer: boolean;
   mode: RecallMode; finished: { completed: boolean; seconds: number; error: string | null };
   recaps: RecapProgress[]; onExit: () => void; onRetry: () => void; busy: boolean;
 }) {
@@ -253,10 +274,10 @@ function FinishedPanel({ mode, finished, recaps, onExit, onRetry, busy }: {
   const pending = spoken.filter((r) => r.state === "pending").length;
   const failedSilent = recaps.filter((r) => r.voice === "silent" && r.state === "failed").length;
   return <div className="rct-run rct-run-finished" data-testid="rc-recall-finished">
-    <div className="rct-run-finish-banner"><span className="rct-run-stage-icon">{finished.completed ? <CheckCircle2 size={28} aria-hidden="true" /> : <BookOpen size={28} aria-hidden="true" />}</span><p className="rct-run-eyebrow">RC Training / {MODE_LABEL[mode]}</p>
-      <h2>{finished.completed ? `${MODE_LABEL[mode]} section complete` : "Attempt ended early"}</h2>
+    <div className="rct-run-finish-banner"><span className="rct-run-stage-icon">{finished.completed ? <CheckCircle2 size={28} aria-hidden="true" /> : <BookOpen size={28} aria-hidden="true" />}</span><p className="rct-run-eyebrow">RC Training{mode !== "rc_recall" && ` / ${MODE_LABEL[mode]}`}</p>
+      <h2>{finished.completed ? `${mode === "rc_recall" ? "RC Training" : MODE_LABEL[mode]} section complete` : "Attempt ended early"}</h2>
       <p>{finished.completed ? "Every paragraph and passage was worked in order." : finished.error ? "This attempt is not completed. Try saving it again below." : "Saved as not completed."}</p>
-      <div className="rct-run-finish-time"><Clock3 size={18} aria-hidden="true" /><span>{formatClock(finished.seconds)}</span><span>total time</span></div>
+      {showElapsedTimer && <div className="rct-run-finish-time"><Clock3 size={18} aria-hidden="true" /><span>{formatClock(finished.seconds)}</span><span>total time</span></div>}
     </div>
     {finished.error && <div role="alert" className="mt-3 text-sm" style={{ color: "var(--rc-danger, #b3261e)" }}>
       <p>{finished.error}</p>

@@ -119,9 +119,9 @@ export function buildSectionSteps(
 }
 
 export const STEP_TITLE: Record<StepKind, string> = {
-  read: "Read, translate and quip",
-  recall: "Recall the full translation",
-  confirm: "Confirm with the text",
+  read: "Read the paragraph",
+  recall: "Recall the paragraph",
+  confirm: "Check your recall",
   cumulative: "Recall everything so far",
   passage_recap: "Recall the whole passage (optional)",
 };
@@ -131,20 +131,20 @@ export function stepInstruction(step: RecallStep, mode: RecallMode, scope: Confi
   const n = step.paragraph + 1;
   switch (step.kind) {
     case "read":
-      return `Read, translate and quip paragraph ${n}. Include every detail, as you would on LR, and quip after every translation.`;
+      return `Read all of paragraph ${n}. Put each idea into your own words and add a brief reaction, such as why it matters. Keep the details. You will recall the whole paragraph next.`;
     case "recall":
-      return `Look away from paragraph ${n} and recap its full translation. Not a summary or gist: keep the names, dates and lists, and tell it as a story in your own words.`;
+      return `With the text hidden, ${mode === "rc_recall" ? "silently " : ""}tell back all of paragraph ${n} in your own words. Keep names, dates, lists and qualifications, and explain how the ideas connect.`;
     case "confirm":
       return step.paragraph === 0
-        ? "Take a few seconds to confirm your translation with the paragraph you just read. You are checking the translation you already have, not rereading from scratch."
-        : scope === "current_sub_passage"
-          ? "Take a few seconds to confirm your translation with the text of this sub-passage so far. You are checking, not rereading from scratch."
-          : "Take a few seconds to confirm your translation with all the text you have read of the passage so far. You are checking, not rereading from scratch.";
+        ? "Briefly check the paragraph against what you recalled. Look for details or connections you missed or changed. Check the meaning you remember instead of starting a fresh read."
+        : scope === "current_sub_passage" && step.covers[0] > 0
+          ? "Briefly check the paragraphs shown from Passage B against what you remember. Look for details or connections you missed or changed. Check your existing understanding instead of starting a fresh read."
+          : "Briefly check all the paragraphs you have read so far against what you remember. Look for details or connections you missed or changed. Check your existing understanding instead of starting a fresh read.";
     case "cumulative":
       return step.paragraph === 1
         ? "With the text hidden, retell paragraphs 1 and 2 in order."
         : `With the text hidden, retell paragraphs 1 to ${n} in order.`;
     case "passage_recap":
-      return "Optional: With the text hidden, retell the full passage aloud or silently. Try it at the start, then every so often to check your recall.";
+      return "Optional: With the text hidden, tell back the whole passage aloud or silently. Keep its details and connections. Try this when you first learn the workout and occasionally afterward, or skip it and continue.";
   }
 }

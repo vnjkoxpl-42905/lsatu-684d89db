@@ -39,11 +39,15 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllEnvs());
 
 describe("RC Recall page", () => {
-  it("uses the RC Training title and approved workout names", () => {
+  it("offers one paragraph workout and an optional elapsed timer", () => {
     renderPage();
     expect(screen.getByRole("heading", { level: 1, name: "RC Training" })).toBeInTheDocument();
-    expect(screen.getByRole("radio", { name: /RC Flow/ })).toBeInTheDocument();
-    expect(screen.getByRole("radio", { name: /RC Recall/ })).toBeInTheDocument();
+    expect(screen.queryByRole("radio", { name: /RC Flow|RC Recall/ })).not.toBeInTheDocument();
+    const timer = screen.getByRole("checkbox", { name: /Show elapsed time/ });
+    expect(timer).toBeChecked();
+    fireEvent.click(timer);
+    expect(timer).not.toBeChecked();
+    expect(screen.getByText("Untimed")).toBeInTheDocument();
   });
 
   it("lists the section even though its passages have no drillable questions", async () => {
@@ -54,17 +58,15 @@ describe("RC Recall page", () => {
     await waitFor(() => expect(screen.getByRole("button", { name: /start section/i })).toBeEnabled());
   });
 
-  it("shows the full instructions and the source-name mapping for the chosen mode", async () => {
+  it("opens the paragraph instructions from the hero", async () => {
     renderPage();
-    expect(screen.getByText(/videos call these methods/i)).not.toBeVisible();
-    fireEvent.click(screen.getByRole("button", { name: "Read the full instructions" }));
-    expect(await screen.findByText(/videos call these methods/i)).toHaveTextContent(/Cappuccino/);
-    expect(screen.getByText(/confirm your translation with all the text you have read/i)).toBeVisible();
-    fireEvent.click(screen.getByRole("radio", { name: /RC Recall/ }));
-    expect(await screen.findByText(/With the text hidden, retell paragraphs 1 and 2 in order/i)).toBeInTheDocument();
-    expect(screen.queryByRole("radio", { name: /Only the current passage/ })).not.toBeInTheDocument();
+    const source = screen.getByText(/follows the method called Cappuccino/);
+    expect(source).not.toBeVisible();
+    fireEvent.click(screen.getByRole("link", { name: "Instructions" }));
+    expect(source).toBeVisible();
+    expect(screen.getByRole("button", { name: "Close full instructions" })).toHaveAttribute("aria-expanded", "true");
     fireEvent.click(screen.getByRole("button", { name: "Close full instructions" }));
-    expect(screen.getByText(/With the text hidden, retell paragraphs 1 and 2 in order/i)).not.toBeVisible();
+    expect(source).not.toBeVisible();
   });
 
   it("hides every video player and Watch Instructions when no media base is set", async () => {
@@ -87,11 +89,12 @@ describe("RC Recall page", () => {
     expect(document.querySelector("track")?.getAttribute("label")).toMatch(/auto-generated/);
   });
 
-  it("offers Watch Instructions only once verification is declared", async () => {
+  it("does not expose the mixed-method instruction video even with its legacy flag", async () => {
     vi.stubEnv("VITE_RC_RECALL_MEDIA_BASE", "http://127.0.0.1:8787");
     vi.stubEnv("VITE_RC_RECALL_INSTRUCTIONS_VERIFIED", "true");
     renderPage();
-    expect(await screen.findByRole("button", { name: /watch instructions/i })).toBeInTheDocument();
+    await screen.findByRole("combobox", { name: "Section" });
+    expect(screen.queryByRole("button", { name: /watch instructions/i })).not.toBeInTheDocument();
   });
 
   it("starts nothing and saves nothing when the loaded section does not match", async () => {

@@ -7,29 +7,24 @@
 export const SECTION_PICKER_NOTE = "Choose a full RC section below. You work all four of its passages, in order, inside the app.";
 
 export const RECAP_STANDARD = [
-  "The recap is not a summary, gist, or main point.",
-  "It should not omit names, dates, and lists.",
-  "It should not be a shopping list of information. It should be a story in your own words.",
-  "It is encouraged to mix up the order of the sentences and ideas.",
-  "This standard applies to every paragraph (or collection of paragraphs) you ever recap on RC.",
+  "Tell back the whole paragraph in your own words, including its details and how the ideas connect.",
+  "Keep names, dates, lists and qualifications. A main point alone leaves too much out.",
+  "You can change the order of the ideas as long as you keep their meaning and connections.",
 ];
 
 export const READ_STANDARD = [
-  "All the details are included, just like they would be on LR.",
-  "Quip after every translation.",
-  "This standard applies to every paragraph you ever translate on RC.",
+  "As you read, put each idea into your own words without dropping details.",
+  "Add a brief reaction to each idea, such as why it matters or what surprises you. This is a quip.",
+  "Finish the whole paragraph before hiding the text to recall it.",
 ];
 
 export const RC_RECALL_STEPS = [
-  "Read, translate, and quip paragraph 1. Do it just like LR.",
-  "Look away from paragraph 1 and recap the full translation of paragraph 1 silently.",
-  "Take a few seconds to confirm your translation with the paragraph you just read. You are not rereading from scratch. You are confirming the translation you already have is right.",
-  "Read, translate, and quip paragraph 2. Do it just like LR.",
-  "Look away from paragraph 2 and recap the full translation of paragraph 2 silently.",
-  "Take a few seconds to confirm your translation with all the text you have read of the passage so far. This confirmation includes every paragraph you have read so far.",
-  "Repeat this pattern for all remaining paragraphs.",
-  "Optional: look away and recap the full translation of the passage, aloud or silently. Try it when you start, then again every so often to check your recall.",
-  "Complete this same process on all remaining passages in the section.",
+  "Read one paragraph. Put its ideas into your own words as you go, and add a brief reaction to each idea.",
+  "Hide the text. Silently tell back the whole paragraph from memory, keeping its details and connections.",
+  "Show the text. Briefly check your recall against all the paragraphs you have read so far. Look for anything you missed or changed instead of starting a fresh read.",
+  "Continue with the next paragraph. Recall that paragraph, then check all the text read so far again.",
+  "At the end, you can choose to recall the whole passage with the text hidden, aloud or silently. This is optional. Try it when you first learn the workout and occasionally afterward.",
+  "Repeat for the remaining passages in the section.",
 ];
 
 export const CUMULATIVE_STEPS = [
@@ -46,14 +41,15 @@ export const CUMULATIVE_STEPS = [
 ];
 
 export const COMPARATIVE_NOTE =
-  "In a comparative passage, the source note and the Passage A / Passage B headings are labels, not paragraphs to recall. " +
-  "In RC Flow, choose before you start whether each check covers all the text read so far or only the current passage (A or B in a passage pair). " +
-  "In RC Recall, once you begin Passage B, retell Passage A and Passage B together with the text hidden.";
+  "For a passage pair, recall one paragraph at a time in Passage A, then Passage B. Headings and source notes are not paragraphs to recall. " +
+  "By default, checks include all the text read so far, including Passage A while you work through Passage B. " +
+  "If you choose to check each passage separately, checks in Passage B include only the paragraphs of B you have read.";
 
 export const VOICE_NOTE =
-  "Do your recaps out loud in the beginning to keep yourself honest about the quality and completeness of the recaps. " +
-  "Move to silent recaps when you feel ready. Paragraph recaps and checks are silent in RC Flow; the optional passage recap can be spoken or silent. " +
+  "Recall each paragraph silently. At the end of the passage, the optional whole-passage recall can be spoken or silent. " +
   "Only spoken recaps are recorded.";
+
+export const TIMING_NOTE = "Choose Untimed to practise without a clock, or Elapsed timer to see how long each passage takes. There is no time limit. Keep the details and connections before trying to go faster.";
 
 export const TIMING = {
   rc_recall: { perPassage: "6 minutes", section: "24+ minutes" },

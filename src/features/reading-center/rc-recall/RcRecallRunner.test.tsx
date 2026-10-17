@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { RcPassage } from "@/features/rc/lib/rcTypes";
 import { segmentPassage } from "./lib/segment";
 import type { AttemptRow } from "./lib/attempts";
@@ -24,11 +24,14 @@ const segmented = bodies.map(segmentPassage);
 const passages = bodies.map((text, i) => ({ passageId: i + 1, setNumber: i + 1, text }) as RcPassage);
 const attempt = { id: "att-1", student_id: "s1" } as AttemptRow;
 
-const renderRunner = (mode: "rc_recall" | "cumulative_recall") => render(
-  <RcRecallRunner mode={mode} scope="all_read" passages={passages} segmented={segmented} attempt={attempt} studentId="s1" onExit={vi.fn()} />,
+const renderRunner = (mode: "rc_recall" | "cumulative_recall", showElapsedTimer = true) => render(
+  <RcRecallRunner showElapsedTimer={showElapsedTimer} mode={mode} scope="all_read" passages={passages} segmented={segmented} attempt={attempt} studentId="s1" onExit={vi.fn()} />,
 );
 /** Buttons appear after async saves, so wait for each one. */
-const click = async (name: RegExp) => { fireEvent.click(await screen.findByRole("button", { name })); };
+const click = async (name: RegExp) => {
+  const button = await screen.findByRole("button", { name });
+  await act(async () => { fireEvent.click(button); });
+};
 const step = (name: RegExp) => screen.findByRole("heading", { name });
 
 beforeEach(() => {
@@ -42,7 +45,45 @@ beforeEach(() => {
   api.markRecapFailed.mockResolvedValue(undefined);
 });
 
+afterEach(() => { vi.useRealTimers(); });
+
 describe("RC Recall runner", () => {
+  it("resets the passage clock without resetting section time", async () => {
+    vi.useFakeTimers({ toFake: ["Date", "setInterval", "clearInterval"] });
+    renderRunner("rc_recall");
+    act(() => vi.advanceTimersByTime(12000));
+    expect(screen.getByLabelText("Passage elapsed time")).toHaveTextContent("0:12");
+    for (let para = 0; para < 2; para++) {
+      await click(/done reading/i); await click(/start the recap/i); await click(/finish recap/i); await click(/confirmed,/i);
+    }
+    await click(/skip this recap/i);
+    expect(screen.getByLabelText("Passage elapsed time")).toHaveTextContent("0:00");
+    expect(screen.getByLabelText("Section elapsed time")).toHaveTextContent("0:12");
+    act(() => vi.advanceTimersByTime(3000));
+    expect(screen.getByLabelText("Passage elapsed time")).toHaveTextContent("0:03");
+    expect(screen.getByLabelText("Section elapsed time")).toHaveTextContent("0:15");
+  });
+
+  it("hides timers but still saves elapsed time", async () => {
+    vi.useFakeTimers({ toFake: ["Date", "setInterval", "clearInterval"] });
+    window.confirm = vi.fn(() => true);
+    renderRunner("rc_recall", false);
+    act(() => vi.advanceTimersByTime(9000));
+    expect(screen.queryByLabelText("Elapsed timers")).not.toBeInTheDocument();
+    await click(/end attempt/i);
+    expect(api.finalizeAttempt).toHaveBeenCalledWith(expect.objectContaining({ elapsedSeconds: 9 }));
+    expect(await screen.findByTestId("rc-recall-finished")).not.toHaveTextContent("total time");
+  });
+
+  it("names the current paragraph during hidden recall and separates the optional passage recap", async () => {
+    renderRunner("rc_recall");
+    for (let para = 0; para < 2; para++) {
+      await click(/done reading/i);
+      expect(screen.getByText(`Silently retell paragraph ${para + 1} in your own words.`)).toBeInTheDocument();
+      await click(/start the recap/i); await click(/finish recap, check the text/i); await click(/confirmed,/i);
+    }
+    expect(screen.getByText("Recall the whole passage (optional)", { selector: "span" })).toBeInTheDocument();
+  });
   it("shows the text to read, hides it during recall, and shows it again to confirm", async () => {
     renderRunner("rc_recall");
     expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
@@ -51,7 +92,7 @@ describe("RC Recall runner", () => {
     expect(screen.queryByText("P0 first paragraph.")).not.toBeInTheDocument();
     await click(/start the recap/i);
     await click(/finish recap/i);
-    expect(await step(/confirm with the text/i)).toBeInTheDocument();
+    expect(await step(/check your recall/i)).toBeInTheDocument();
     expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
   });
 
@@ -62,7 +103,7 @@ describe("RC Recall runner", () => {
         await click(/done reading/i);
         await click(/start the recap/i);
         await click(/finish recap/i);
-        await click(/confirmed, continue/i);
+        await click(/confirmed,/i);
       }
       await step(/whole passage \(optional\)/i);
       await click(/skip this recap/i);
@@ -78,7 +119,7 @@ describe("RC Recall runner", () => {
   it("offers the optional passage recap, spoken or silent", async () => {
     renderRunner("rc_recall");
     for (let para = 0; para < 2; para++) {
-      await click(/done reading/i); await click(/start the recap/i); await click(/finish recap/i); await click(/confirmed, continue/i);
+      await click(/done reading/i); await click(/start the recap/i); await click(/finish recap/i); await click(/confirmed,/i);
     }
     expect(await step(/whole passage \(optional\)/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/out loud/i)).toBeInTheDocument();
@@ -145,7 +186,7 @@ describe("RC Recall runner", () => {
     await click(/done reading/i);
     fireEvent.click(screen.getByLabelText(/silent \(not recorded\)/i));
     await click(/start the recap/i); await click(/finish recap/i);
-    await step(/read, translate and quip/i);
+    await step(/read the paragraph/i);
     await click(/done reading/i); await click(/start the recap/i); await click(/finish recap/i);
     expect(await step(/recall everything so far/i)).toBeInTheDocument();
     expect(screen.queryByText(/P0 (first|second) paragraph/)).not.toBeInTheDocument();

@@ -5,40 +5,40 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { loadAllIndexPassages, loadPassages } from "@/features/rc/lib/rcBank";
 import type { RcPassage } from "@/features/rc/lib/rcTypes";
 import ExamplePlayer from "./ExamplePlayer";
-import { ArrowDown, ArrowUpRight, BookOpen, Check, Clock3, Headphones, History, Layers3 } from "lucide-react";
+import { ArrowDown, ArrowUpRight, BookOpen, Clock3, Headphones, History } from "lucide-react";
 import RcTrainingDemo from "./RcTrainingDemo";
 import "./RcTraining.css";
 import RcRecallRunner, { formatClock } from "./RcRecallRunner";
 import { recoverRcRecallBackups } from "./lib/backup";
 import { createAttempt, listAttempts, summarizeRecordings, uploadRecording, type AttemptRow } from "./lib/attempts";
 import {
-  COMPARATIVE_NOTE, CUMULATIVE_STEPS, READ_STANDARD, RECAP_STANDARD, RC_RECALL_STEPS,
-  SECTION_PICKER_NOTE, TIMING, VOICE_NOTE,
+  COMPARATIVE_NOTE, READ_STANDARD, RECAP_STANDARD, RC_RECALL_STEPS,
+  SECTION_PICKER_NOTE, VOICE_NOTE,
 } from "./lib/instructions";
 import {
-  CUMULATIVE_EXAMPLES, INSTRUCTION_VIDEO, RC_RECALL_DEMO_CORRECTION, RC_RECALL_EXAMPLES, RC_RECALL_NOTE,
-  SOURCE_NAME_MAP, instructionsVerified, mediaBase, mediaUrls,
+  RC_RECALL_DEMO_CORRECTION, RC_RECALL_EXAMPLES, RC_RECALL_NOTE,
+  mediaBase,
 } from "./lib/media";
 import { buildRecallSections, sectionLabel, verifyLoadedSection, type RecallSection } from "./lib/sections";
 import { MODE_LABEL, type ConfirmScope, type RecallMode } from "./lib/sequence";
 import type { SegmentedPassage } from "./lib/segment";
 
 
-interface Running { mode: RecallMode; scope: ConfirmScope; passages: RcPassage[]; segmented: SegmentedPassage[]; attempt: AttemptRow }
+interface Running { mode: RecallMode; scope: ConfirmScope; passages: RcPassage[]; segmented: SegmentedPassage[]; attempt: AttemptRow; showElapsedTimer: boolean }
 
 const dateLabel = (v: string) => new Date(v).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 
 export default function RcRecallPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const [mode, setMode] = useState<RecallMode>("rc_recall");
+  const mode: RecallMode = "rc_recall";
+  const [showElapsedTimer, setShowElapsedTimer] = useState(true);
   const [scope, setScope] = useState<ConfirmScope>("all_read");
   const [preptest, setPreptest] = useState<number | null>(null);
   const [sectionNumber, setSectionNumber] = useState<number | null>(null);
   const [running, setRunning] = useState<Running | null>(null);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
-  const [showVideo, setShowVideo] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const base = mediaBase();
 
@@ -77,7 +77,7 @@ export default function RcRecallPage() {
         studentId: user.id, mode, preptest: selected.preptest, section: selected.section,
         passageIds: selected.passageIds, confirmationScope: mode === "rc_recall" ? scope : null,
       });
-      setRunning({ mode, scope, passages, segmented, attempt });
+      setRunning({ mode, scope, passages, segmented, attempt, showElapsedTimer });
     } catch (err) {
       setStartError(err instanceof Error && err.message
         ? `This section could not be started: ${err.message} Nothing was saved.`
@@ -92,66 +92,29 @@ export default function RcRecallPage() {
     }} />;
   }
 
-  const instructionUrls = instructionsVerified() ? mediaUrls(INSTRUCTION_VIDEO.stem) : null;
-  const examples = mode === "rc_recall" ? RC_RECALL_EXAMPLES : CUMULATIVE_EXAMPLES;
-  const timing = TIMING[mode];
-
   return <main className="rct-page" data-reading-activity="rc-recall">
     <header className="rct-hero">
       <div className="rct-hero-copy">
         <span className="rct-hero-tag"><BookOpen size={15} aria-hidden="true" /> Reading comprehension</span>
         <h1>RC Training</h1>
-        <p className="rct-hero-lead">Read closely.<br /> Retell completely.</p>
-        <p className="rct-hero-description">Build the passage in your own words, one paragraph at a time. Keep the details. Keep the connections.</p>
+        <p className="rct-hero-lead">Recall one whole paragraph at a time.</p>
+        <p className="rct-hero-description">Read a paragraph. Hide it and retell it silently in your own words. Check the text, then move to the next paragraph.</p>
         <div className="rct-hero-actions">
           <a href="#rc-recall-start" className="rct-button rct-button-light">Choose a section <ArrowDown size={16} aria-hidden="true" /></a>
-          <a href="#rc-recall-how" className="rct-hero-link">Learn the method</a>
+          <a href="#rc-recall-how" className="rct-hero-link" onClick={() => setShowInstructions(true)}>Instructions</a>
         </div>
         <div className="rct-hero-foot"><span>4 passages, in order</span><span>Your recall is not graded</span></div>
       </div>
-      <RcTrainingDemo key={mode} mode={mode} />
+      <RcTrainingDemo />
     </header>
 
     <div className="rct-content">
-      <section className="rct-method-section" aria-labelledby="rct-method-title">
-        <div className="rct-section-heading"><div><h2 id="rct-method-title">Two ways to train.</h2><p>The same standard of recall. A different way to practise it.</p></div><span className="rct-side-note">Choose your workout</span></div>
-        <fieldset className="rct-methods">
-          <legend className="sr-only">Choose a workout</legend>
-          {(["rc_recall", "cumulative_recall"] as RecallMode[]).map((m) => <label key={m} className="rct-method" data-selected={mode === m}>
-            <input type="radio" name="mode" value={m} checked={mode === m} onChange={() => setMode(m)} />
-            <span className="rct-method-top"><span className="rct-method-icon">{m === "rc_recall" ? <BookOpen size={21} aria-hidden="true" /> : <Layers3 size={21} aria-hidden="true" />}</span><span className="rct-selected-indicator" aria-hidden="true">{mode === m && <Check size={15} />}</span></span>
-            <span className="rct-method-title">{MODE_LABEL[m]}</span>
-            <span className="rct-method-description">{m === "rc_recall" ? "Recall each paragraph, then bring the text back to confirm your translation." : "Recall each paragraph, then retell everything read so far with the text hidden."}</span>
-            <span className="rct-method-diagram" aria-hidden="true"><span>Read</span><i>→</i><span>Recall</span><i>→</i><span>{m === "rc_recall" ? "Check the text" : "Retell together"}</span></span>
-            <span className="rct-method-bottom"><Clock3 size={14} aria-hidden="true" />{m === "rc_recall" ? "About 6 min per passage" : "8 min silent · 12 min out loud"}<span>{mode === m ? "Selected" : "Select workout"}</span></span>
-          </label>)}
-        </fieldset>
-      </section>
-
-      <section className="rct-learn" aria-labelledby="rc-recall-how" id="rct-learn">
-        <div className="rct-section-heading"><div><h2 id="rc-recall-how">How {MODE_LABEL[mode]} works</h2><p>A complete translation in your own words, with every detail connected.</p></div></div>
-        <ol className="rct-process">
-          <li><span className="rct-process-number">1</span><h3>Read &amp; translate</h3><p>Read one paragraph. Translate all of it into your own words, then quip.</p></li>
-          <li><span className="rct-process-number">2</span><h3>Look away &amp; recall</h3><p>{mode === "rc_recall" ? "With the text hidden, silently retell the paragraph. Include the full translation." : "With the text hidden, retell the paragraph you just read. Include the full translation."}</p></li>
-          <li><span className="rct-process-number">3</span><h3>{mode === "rc_recall" ? "Check & continue" : "Connect & repeat"}</h3><p>{mode === "rc_recall" ? "Briefly confirm your translation against the text read so far. Then read the next paragraph." : "From paragraph 2 onward, retell everything read so far in order. Then read the next paragraph."}</p></li>
-        </ol>
-        <div className="rct-learn-footer"><p>Keep names, dates, lists, and the reasoning between them. Tell the whole story in your own words.</p><button type="button" className="rct-text-button" aria-expanded={showInstructions} aria-controls="rct-full-instructions" onClick={() => setShowInstructions(!showInstructions)}>{showInstructions ? "Close full instructions" : "Read the full instructions"}<ArrowDown size={15} aria-hidden="true" /></button></div>
-        <div id="rct-full-instructions" hidden={!showInstructions} className="rct-full-instructions">
-          <p className="rct-source-map">The videos call these methods Decaf and Cappuccino: {SOURCE_NAME_MAP.map((m) => `${m.source} = ${m.app}`).join("; ")}.</p>
-          <div className="rct-instruction-columns"><div><h3>The standards</h3><ul>{READ_STANDARD.map((t) => <li key={t}>{t}</li>)}{RECAP_STANDARD.map((t) => <li key={t}>{t}</li>)}</ul></div><div><h3>The steps</h3><ol>{(mode === "rc_recall" ? RC_RECALL_STEPS : CUMULATIVE_STEPS).map((t) => <li key={t}>{t}</li>)}</ol></div></div>
-          <p>{VOICE_NOTE}</p><p>{COMPARATIVE_NOTE}</p>
-        </div>
-        {instructionUrls && <div className="rct-instruction-video"><button type="button" className="rct-button rct-button-secondary" aria-expanded={showVideo} onClick={() => setShowVideo((v) => !v)}>{showVideo ? "Hide instructions video" : "Watch Instructions"}</button>
-          {showVideo && <ExamplePlayer base={base} heading={INSTRUCTION_VIDEO.title} clip={{ id: "instructions", mode, kind: "example", stem: INSTRUCTION_VIDEO.stem, title: INSTRUCTION_VIDEO.title, sourceTitle: "How and Why to Do Decaf RC Translation and How and Why to Do Cappuccino RC Translation" }} />}
-        </div>}
-      </section>
-
       <section className="rct-start" aria-labelledby="rc-recall-start">
-        <div className="rct-start-intro"><span className="rct-section-icon"><BookOpen size={23} aria-hidden="true" /></span><h2 id="rc-recall-start">Start a section</h2><p>{SECTION_PICKER_NOTE}</p><div className="rct-timing"><Clock3 size={17} aria-hidden="true" /><div><strong>{timing.section}</strong><span>Section timing guide, not a limit</span></div></div></div>
+        <div className="rct-start-intro"><span className="rct-section-icon"><BookOpen size={23} aria-hidden="true" /></span><h2 id="rc-recall-start">Start a section</h2><p>{SECTION_PICKER_NOTE}</p><div className="rct-timing"><Clock3 size={17} aria-hidden="true" /><div><strong>Untimed</strong><span>No countdown or time limit. Work at your own pace.</span></div></div></div>
         <div className="rct-start-form">
-          <div className="rct-form-method"><span>Your workout</span><strong>{MODE_LABEL[mode]}</strong></div>
+          <a className="rct-text-button" href="#rc-recall-how" onClick={() => setShowInstructions(true)}>Read the instructions <ArrowDown size={15} aria-hidden="true" /></a>
           {index.isPending && <div className="rct-loading" role="status">Loading sections…</div>}
-          {index.isError && <p role="alert">The section list could not load. Try reloading the page.</p>}
+          {index.isError && <div role="alert"><p>The section list could not load.</p><button className="rct-text-button" onClick={() => void index.refetch()}>Try loading sections again</button></div>}
           {!index.isPending && !index.isError && !sections.length && <p role="status">No complete RC sections are available yet.</p>}
           {sections.length > 0 && <div className="rct-section-fields">
             <div className="rct-section-field">
@@ -173,22 +136,39 @@ export default function RcRecallPage() {
               </Select>
             </div>
           </div>}
-          {mode === "rc_recall" && <fieldset className="rct-scope"><legend>What you check</legend><label><input type="radio" name="scope" checked={scope === "all_read"} onChange={() => setScope("all_read")} /> Everything read so far</label><label><input type="radio" name="scope" checked={scope === "current_sub_passage"} onChange={() => setScope("current_sub_passage")} /> Only the current passage (A or B in a passage pair)</label></fieldset>}
+          <label className="rct-timer-choice"><input type="checkbox" checked={showElapsedTimer} onChange={(event) => setShowElapsedTimer(event.target.checked)} /> Show elapsed time for this passage and section</label>
+          <p className="rct-timer-note">Your total section time is saved either way.</p>
+          <details className="rct-check-options"><summary>Passage-pair check options</summary><fieldset className="rct-scope"><legend>What you check</legend><label><input type="radio" name="scope" checked={scope === "all_read"} onChange={() => setScope("all_read")} /> Everything read so far</label><label><input type="radio" name="scope" checked={scope === "current_sub_passage"} onChange={() => setScope("current_sub_passage")} /> Only the current passage (A or B in a passage pair)</label></fieldset></details>
           <button type="button" className="rct-button rct-button-primary rct-start-button" disabled={!selected || starting} onClick={() => void start()}>{starting ? "Starting…" : "Start section"}<ArrowUpRight size={18} aria-hidden="true" /></button>
           {startError && <p role="alert" className="rct-error">{startError}</p>}
           <p className="rct-save-note"><Headphones size={14} aria-hidden="true" />Your time and spoken recordings are saved. Your recall is not graded.</p>
         </div>
       </section>
 
-      {base && <section className="rct-examples" aria-labelledby="rc-recall-examples"><div className="rct-section-heading"><div><h2 id="rc-recall-examples">{MODE_LABEL[mode]} worked examples</h2><p>Watch the method unfold, then try a full section yourself.</p></div></div>
-        {mode === "rc_recall" && <div className="rct-example-note"><h3>Read this before the examples</h3><ul>{RC_RECALL_DEMO_CORRECTION.map((t) => <li key={t}>{t}</li>)}</ul><ExamplePlayer clip={RC_RECALL_NOTE} /></div>}
-        <div className="rct-example-grid">{examples.map((clip) => <ExamplePlayer key={clip.id} clip={clip} />)}</div>
+      <section className="rct-learn" aria-labelledby="rc-recall-how" id="rct-learn">
+        <div className="rct-section-heading"><div><h2 id="rc-recall-how">How to practise</h2><p>Recall the meaning of the whole paragraph, including its details and reasoning.</p></div></div>
+        <ol className="rct-process">
+          <li><span className="rct-process-number">1</span><h3>Read the paragraph</h3><p>Read the whole paragraph. Put each idea into your own words and notice how the ideas connect.</p></li>
+          <li><span className="rct-process-number">2</span><h3>Look away &amp; recall</h3><p>Silently retell the paragraph with the text hidden. Include the details, not just its main point.</p></li>
+          <li><span className="rct-process-number">3</span><h3>Check & continue</h3><p>Briefly check your recall against the text read so far. Then repeat with the next paragraph.</p></li>
+        </ol>
+        <div className="rct-learn-footer"><p>Keep the details and explain how the ideas connect. Tell the whole story in your own words.</p><button type="button" className="rct-text-button" aria-expanded={showInstructions} aria-controls="rct-full-instructions" onClick={() => setShowInstructions(!showInstructions)}>{showInstructions ? "Close full instructions" : "Read the full instructions"}<ArrowDown size={15} aria-hidden="true" /></button></div>
+        <div id="rct-full-instructions" hidden={!showInstructions} className="rct-full-instructions">
+          <p className="rct-source-map">This paragraph-by-paragraph practice follows the method called Cappuccino RC Translation in the source lessons.</p>
+          <div className="rct-instruction-columns"><div><h3>The standards</h3><ul>{READ_STANDARD.map((t) => <li key={t}>{t}</li>)}{RECAP_STANDARD.map((t) => <li key={t}>{t}</li>)}</ul></div><div><h3>The steps</h3><ol>{RC_RECALL_STEPS.map((t) => <li key={t}>{t}</li>)}</ol></div></div>
+          <p>{VOICE_NOTE}</p><p>{COMPARATIVE_NOTE}</p>
+        </div>
+      </section>
+
+      {base && <section className="rct-examples" aria-labelledby="rc-recall-examples"><div className="rct-section-heading"><div><h2 id="rc-recall-examples">Worked examples</h2><p>Watch the method unfold, then try a full section yourself.</p></div></div>
+        <div className="rct-example-note"><h3>Read this before the examples</h3><ul>{RC_RECALL_DEMO_CORRECTION.map((t) => <li key={t}>{t}</li>)}</ul><ExamplePlayer clip={RC_RECALL_NOTE} /></div>
+        <div className="rct-example-grid">{RC_RECALL_EXAMPLES.map((clip) => <ExamplePlayer key={clip.id} clip={clip} />)}</div>
       </section>}
 
       <section className="rct-history" aria-labelledby="rc-recall-history"><div className="rct-section-heading"><div><h2 id="rc-recall-history">Your attempts</h2><p>Each attempt stays here. Starting again never replaces your earlier work.</p></div><History size={23} aria-hidden="true" /></div>
         {history.isPending ? <div role="status" className="rct-loading">Loading your attempts…</div>
-          : history.isError ? <p role="alert" className="rct-history-empty">Your attempts could not load. Your saved work has not changed.</p>
-            : !history.data?.attempts.length ? <div className="rct-history-empty"><span className="rct-empty-icon"><BookOpen size={23} aria-hidden="true" /></span><div><h3>Your first section starts here.</h3><p>Choose a workout and a section above. Your time and recording status will appear here after you practise.</p></div></div>
+          : history.isError ? <div role="alert" className="rct-history-empty"><p>Your attempts could not load. Your saved work has not changed.</p><button type="button" className="rct-text-button" onClick={() => void history.refetch()}>Try loading attempts again</button></div>
+            : !history.data?.attempts.length ? <div className="rct-history-empty"><span className="rct-empty-icon"><BookOpen size={23} aria-hidden="true" /></span><div><h3>Your first section starts here.</h3><p>Choose a section above. Your time and recording status will appear here after you practise.</p></div></div>
               : <ul className="rct-attempts">{history.data.attempts.map((a) => {
                 const own = history.data.recaps.filter((r) => r.attempt_id === a.id);
                 const sum = summarizeRecordings(own);

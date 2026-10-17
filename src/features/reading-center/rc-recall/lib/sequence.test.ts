@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildPassageSteps, buildSectionSteps, confirmationIndices, type RecallStep } from "./sequence";
+import { buildPassageSteps, buildSectionSteps, confirmationIndices, stepInstruction, type RecallStep } from "./sequence";
 import { segmentPassage } from "./segment";
 import { COMPARATIVE, STANDARD } from "./fixtures";
 
@@ -51,6 +51,17 @@ describe("Cumulative Recall sequence", () => {
 });
 
 describe("comparative passages", () => {
+  it("confirmation instructions describe the actual text scope for standard and paired passages", () => {
+    const standardCheck = buildPassageSteps("rc_recall", standard, 0, "current_sub_passage")
+      .find((step) => step.kind === "confirm" && step.paragraph === 2)!;
+    expect(stepInstruction(standardCheck, "rc_recall", "current_sub_passage")).toContain("all the paragraphs you have read so far");
+    const separateCheck = buildPassageSteps("rc_recall", comparative, 0, "current_sub_passage")
+      .find((step) => step.kind === "confirm" && step.paragraph === 4)!;
+    expect(stepInstruction(separateCheck, "rc_recall", "current_sub_passage")).toContain("paragraphs shown from Passage B");
+    const allReadCheck = buildPassageSteps("rc_recall", comparative, 0)
+      .find((step) => step.kind === "confirm" && step.paragraph === 4)!;
+    expect(stepInstruction(allReadCheck, "rc_recall")).toContain("all the paragraphs you have read so far");
+  });
   it("RC Recall default scope confirms all text read so far, including Passage A in Passage B", () => {
     expect(confirmationIndices(comparative, 4, "all_read")).toEqual([0, 1, 2, 3, 4]);
   });
