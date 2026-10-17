@@ -1,5 +1,8 @@
 {
   "nodeModulesDir": "auto",
+  "imports": {
+    "@lovable.dev/email-js": "npm:@lovable.dev/email-js@0.1.0"
+  },
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "npm:react@18.3.1",
