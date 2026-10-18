@@ -79,6 +79,16 @@ beforeAll(() => {
 afterEach(() => window.getSelection()?.removeAllRanges());
 
 describe('RcChoiceRow text surface', () => {
+  it.each([{}, { selected: true }, { eliminated: true }, { disabled: true }, { revealed: true }])(
+    'associates the full answer text with its keyboard control in state %j', overrides => {
+      renderRow(overrides);
+      const badge = screen.getByRole('button', { name: 'Choice B' });
+      expect(badge).toHaveAccessibleDescription(choice.text);
+      const described = document.getElementById(badge.getAttribute('aria-describedby')!);
+      expect(described).toHaveAttribute('data-rc-mark-surface');
+      expect(described).toHaveTextContent(choice.text);
+    },
+  );
   it('keeps answer choices usable when annotation hydration disables marking', () => {
     const { onSelect, onAnchor, text } = renderRow({ annotationsDisabled: true, highlightMode: 'yellow' });
     fireEvent.mouseUp(text); fireEvent.click(text);

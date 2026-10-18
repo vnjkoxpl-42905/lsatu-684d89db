@@ -1,0 +1,1511 @@
+{
+  "version": 1,
+  "corrections": [
+    {
+      "preptest": 101,
+      "passageId": 1188,
+      "path": [
+        "passages",
+        0,
+        "summaries",
+        "standard"
+      ],
+      "before": "**Passage Summary**\n\n**Topic**\n\nWhat \"risk communication\" should mean and how it should be designed, given how lay people actually process information about technological risks.\n\n**Framework**\n\nHighlight Noteworthy. The author critiques a common (persuasion-oriented) approach to risk communication and proposes a different one based on how people process information.\n\n**Main Point**\n\nRisk communication shouldn't mean persuading the public to dismiss risks; it should help people make informed decisions, which requires understanding how the public perceives risk and recognizing that people interpret new information through their existing beliefs — so messages must be designed accordingly.\n\n**P1: The wrong view of risk communication**\n\nMany technology developers treat \"risk communication\" as persuasion: they argue lay people misjudge exotic vs. mundane hazards. As a result, lay people see \"risk communication\" as expert brainwashing.\n\n**P2: A better view of how lay people perceive risk**\n\nThe actual goal should be enabling informed decisions, which requires understanding lay perception. Lay definitions reflect ethical concerns more than experts' do — for example, lay people weight risks to children more heavily than risks to consenting adults. But asked to rank annual fatalities directly, lay people give reasonable estimates. Studies that claim lay people misjudge exotic risks often use questionable methods. A recent study found lay people, given facts and time, understood electromagnetic field risks well enough to make informed decisions.\n\n**P3: How to design risk communication**\n\nRisk communication should be based on the principle that people process new information in the context of existing beliefs. People who know nothing about a topic find messages incomprehensible; those with mistaken beliefs are likely to misconstrue messages. Communicators must know recipients' knowledge and beliefs to design messages that aren't dismissed or misinterpreted. A radon study showed that brochures designed using interviews and questionnaires beat a government brochure written without that preparation. Careful preparation lets communicators produce balanced material.",
+      "after": "**Passage Summary**\n\n**Topic**\n\nWhat \"risk communication\" should mean and how it should be designed, given how lay people actually process information about technological risks.\n\n**Framework**\n\nHighlight Noteworthy. The author critiques a common (persuasion-oriented) approach to risk communication and proposes a different one based on how people process information.\n\n**Main Point**\n\nRisk communication shouldn't mean persuading the public to dismiss risks; it should help people make informed decisions, which requires understanding how the public perceives risk and recognizing that people interpret new information through their existing beliefs — so messages must be designed accordingly.\n\n**P1: The wrong view of risk communication**\n\nMany technology developers treat \"risk communication\" as persuasion: they argue lay people misjudge exotic vs. mundane hazards. As a result, many lay people see \"risk communication\" as expert brainwashing.\n\n**P2: A better view of how lay people perceive risk**\n\nThe actual goal should be enabling informed decisions, which requires understanding lay perception. Lay definitions reflect ethical concerns more than experts' do — for example, lay people weight risks to children more heavily than risks to consenting adults. But asked to rank annual fatalities directly, lay people give reasonable estimates. Studies that claim lay people misjudge exotic risks often use questionable methods. A recent study found lay people, given facts and time, understood electromagnetic field risks well enough to make informed decisions.\n\n**P3: How to design risk communication**\n\nRisk communication should be based on the principle that people process new information in the context of existing beliefs. People who know nothing about a topic find messages incomprehensible; those with mistaken beliefs are likely to misconstrue messages. Communicators must know recipients' knowledge and beliefs to design messages that aren't dismissed or misinterpreted. A radon study showed that brochures designed using interviews and questionnaires beat a government brochure written using a different approach. Careful preparation lets communicators produce balanced material."
+    },
+    {
+      "preptest": 101,
+      "passageId": 1188,
+      "path": [
+        "passages",
+        0,
+        "summaries",
+        "brief"
+      ],
+      "before": "**Passage Summary**\n\n**Topic**\n\nHow risk communication should work — designed around how lay people actually process information.\n\n**Framework**\n\nHighlight Noteworthy.\n\n**Main Point**\n\nRisk communication should enable informed decisions; messages must be designed around how recipients already think.\n\n**P1: The persuasion view is wrong**\n\nTreating risk communication as persuasion makes the public see it as brainwashing.\n\n**P2: Lay people understand risk reasonably**\n\nLay definitions reflect ethical concerns, but lay people can rank fatalities accurately and understand specific risks given facts and time.\n\n**P3: Design for existing beliefs**\n\nPeople with mistaken beliefs misconstrue messages; communicators must know recipients' beliefs. A radon brochure built on interviews outperformed a generic one.",
+      "after": "**Passage Summary**\n\n**Topic**\n\nHow risk communication should work — designed around how lay people actually process information.\n\n**Framework**\n\nHighlight Noteworthy.\n\n**Main Point**\n\nRisk communication should enable informed decisions; messages must be designed around how recipients already think.\n\n**P1: The persuasion view is wrong**\n\nTreating risk communication as persuasion helps explain why many lay people see it as brainwashing.\n\n**P2: Lay people understand risk reasonably**\n\nLay definitions reflect ethical concerns, but lay people give reasonable estimates when ranking annual fatalities and understand specific risks given facts and time.\n\n**P3: Design for existing beliefs**\n\nPeople with mistaken beliefs misconstrue messages; communicators must know recipients' beliefs. A radon brochure built on interviews outperformed a generic one."
+    },
+    {
+      "preptest": 101,
+      "passageId": 1188,
+      "questionId": 7660,
+      "path": [
+        "passages",
+        0,
+        "questions",
+        0,
+        "explanationBlocks"
+      ],
+      "before": [
+        {
+          "heading": "Anticipate",
+          "body": "The central topic of the passage is *risk communication*.\n\nWhy is the author talking about it? What is her purpose? What framework did we use? What would be the one sentence she would want us to know about risk communication?\n\nWe might have used a *Problem / Solution* framework, since the first paragraph seems to be mentioning problematic aspects of the current status quo surrounding risk communication:\n- risk communicators think of their jobs as \"persuade the public that the risks of new technologies are small and should be ignored\".\n- they don't think lay people are actually good at analyzing risk\n- lay people understand this and think that risk communication is a condescending attempt to brainwash them\n\nNaturally, if there's a *Solution* offered in a *Problem / Solution* passage, then the solution instantly becomes our main point.\n\nThe beginning of the 2nd paragraph has our classic Purpose Pivot (but, yet, **however**, recently), it sounds like our author's voice, and it is a recommendation. So this will probably be the main point (unless something trumps this later).\n\nIt's suggesting that the *Solution* to this problem is for risk communicators to do a better job of understanding how lay people perceive risk.\n\nThe 3rd paragraph opens with another recommendation (\"should\") and author conclusion (\"therefore\"). It basically builds on the previous recommendation, because it's saying that, \"Once risk communicators better understand how lay people think or risk, they can do a better job of meeting people where they are, and speaking to them in ways that are constructive and don't feel like condescending brainstorming."
+        },
+        {
+          "heading": "Goal",
+          "body": "Let's look for something like, \"Risk communicators need a clear understanding of how the public perceives risk, so that risk communication can take into account how people process new information in the context of preexisting beliefs.\""
+        }
+      ],
+      "after": [
+        {
+          "heading": "Anticipate",
+          "body": "The central topic of the passage is *risk communication*.\n\nWhy is the author talking about it? What is her purpose? What framework did we use? What would be the one sentence she would want us to know about risk communication?\n\nWe might have used a *Problem / Solution* framework, since the first paragraph seems to be mentioning problematic aspects of the current status quo surrounding risk communication:\n- risk communicators think of their jobs as \"persuade the public that the risks of new technologies are small and should be ignored\".\n- they don't think lay people are actually good at analyzing risk\n- lay people understand this and think that risk communication is a condescending attempt to brainwash them\n\nA proposed solution is a useful candidate for the main point. We still need to check whether it expresses the author's overall recommendation and covers the passage, rather than treating the presence of a solution as an automatic rule.\n\nThe beginning of the 2nd paragraph has our classic Purpose Pivot (but, yet, **however**, recently), it sounds like our author's voice, and it is a recommendation. So this will probably be the main point (unless something trumps this later).\n\nIt's suggesting that the *Solution* to this problem is for risk communicators to do a better job of understanding how lay people perceive risk.\n\nThe 3rd paragraph opens with another recommendation (\"should\") and author conclusion (\"therefore\"). It basically builds on the previous recommendation, because it's saying that, \"Once risk communicators better understand how lay people think about risk, they can do a better job of meeting people where they are, and speaking to them in ways that are constructive and don't feel like condescending persuasion."
+        },
+        {
+          "heading": "Goal",
+          "body": "Let's look for something like, \"Risk communicators need a clear understanding of how the public perceives risk, so that risk communication can take into account how people process new information in the context of preexisting beliefs.\""
+        }
+      ]
+    },
+    {
+      "preptest": 101,
+      "passageId": 1188,
+      "questionId": 7660,
+      "letter": "E",
+      "path": [
+        "passages",
+        0,
+        "questions",
+        0,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "The main point of this passage is a *Solution*, a recommendation for risk communicators to follow.\n\nThis answer choice doesn't mention risk communicators at all, so we know it can't be the main point.",
+      "after": "This answer makes lay people's subjective concerns sound like an undue influence. The author instead treats ethical concerns as an important part of understanding risk perception and recommends designing communication around recipients' knowledge and beliefs. The answer misses that recommendation and misrepresents the treatment of ethical concerns. An answer's failure to repeat a particular noun would not, by itself, rule it out."
+    },
+    {
+      "preptest": 101,
+      "passageId": 1188,
+      "questionId": 7664,
+      "letter": "E",
+      "path": [
+        "passages",
+        0,
+        "questions",
+        4,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "This is something the authors emphasized in the 2nd paragraph:\n\n.... *a clear understanding about how the public perceives risk is needed. Lay people's definitions of \"risk\" are more likely to reflect subjective ethical concerns than are experts' decisions.*\n\nThis pair of sentences implies that risk communicators are not currently taking this into consideration. By saying, \"A clear understanding about X is needed. X is more likely to do Y\", it's implying that we currently lack a sufficient appreciation of the fact that X is more likely to do Y.\n\nA couple sentences later, the authors reiterate that, \"If you ask lay people to rank hazards **without reference to ethical judgments**, they provide quite reasonable estimates\".\n\nThis goes against risk communicators' notion that lay people aren't good at assessing risks.",
+      "after": "This is something the authors emphasized in the 2nd paragraph:\n\n.... *a clear understanding about how the public perceives risk is needed. Lay people's definitions of \"risk\" are more likely to reflect subjective ethical concerns than are experts' definitions.*\n\nThis pair of sentences implies that risk communicators are not currently taking this into consideration. By saying, \"A clear understanding about X is needed. X is more likely to do Y\", it's implying that we currently lack a sufficient appreciation of the fact that X is more likely to do Y.\n\nA couple sentences later, the authors reiterate that, \"If you ask lay people to rank hazards **without reference to ethical judgments**, they provide quite reasonable estimates\".\n\nThis goes against risk communicators' notion that lay people aren't good at assessing risks."
+    },
+    {
+      "preptest": 110,
+      "passageId": 1034,
+      "questionId": 5355,
+      "letter": "A",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        0,
+        "choices",
+        0,
+        "tag"
+      ],
+      "before": "Opposite",
+      "after": "Missing inheritance claim"
+    },
+    {
+      "preptest": 110,
+      "passageId": 1034,
+      "questionId": 5355,
+      "letter": "A",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        0,
+        "choices",
+        0,
+        "explanation"
+      ],
+      "before": "This idea comes from Lamarck, in the first sentence. For many years, biologists rejected this idea. By the end of this passage, we're saying \"this new research ... may eventually prove Lamarck's hypothesis to be correct\".\n\nThis is an idea that biologists used to reject, but are starting to accept.\n\nBut the question stem wants something biologists used to accept but are now starting to reject.",
+      "after": "This answer concerns an organ's development, without saying that a change is inherited by offspring. The passage says biologists rejected the inheritance of acquired characteristics because they could not find a mechanism. That does not establish that they rejected the simpler claim that using an organ can affect its development. We need a former belief challenged by the new evidence; the claim that all genes are inherited vertically fits that task."
+    },
+    {
+      "preptest": 110,
+      "passageId": 1034,
+      "questionId": 5355,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        0,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "Biologists used to, but no longer believe, that an organism could never inherit a trait their parent acquired during its life.\n\nThey believed that the offspring only inherited the genetic code the parent was born with. If something changed the parents genes (a horizontal change like a virus or bacteria), that change couldn't be inherited by the offspring.\n\nBut now they see examples of an acquired trait being passed down.\n\nThe beginning of the last paragraph says,\n*The **new** evidence suggests that ... most genes are inherited \"vertically\", but some, however, seem to have been acquired \"horizontally\".*\n\nAnd the final sentence of the passage says,\n*Some horizontal transmission may well be the mechanism for inheritance of acquired characteristics that has long eluded biologists*.\n\nBiologists long believed that there was no way to inherit acquired characteristics, but now that they are aware of the mechanism of horizontal transmission of genes, they are reconsidering.\n\nThus, they no longer believe that all genes are transmitted vertically.\n\nIn framework language, if we were using *Old / New*, then we would have thought of vertical transmission as the Old idea and horizontal as the New idea.",
+      "after": "The final paragraph contrasts most genes inherited from ancestors with some acquired from environmental agents. That evidence challenges an exclusively vertical account of inheritance. The relevant distinction is the source of the genetic material: ancestors or environmental agents. We do not need the stronger claim that parents can transmit only the exact genetic code they had at birth."
+    },
+    {
+      "preptest": 110,
+      "passageId": 1034,
+      "questionId": 5358,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        3,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "This doesn't have anything to do with \"how they use an organ gets passed on to their kids\".\n\nThe different behavior in pups of hunting dogs isn't resulting from how their parents used or disused an organ.\n\nIt's resulting from the fact that humans are selectively breeding dogs with temperaments better suited to the discipline of hunting.",
+      "after": "This compares aggression in two groups of pups. It does not connect the parents' use or disuse of an organ to that organ's development in their offspring. The answer does not explain what caused the difference in aggression, and we should not supply a selective-breeding explanation ourselves."
+    },
+    {
+      "preptest": 110,
+      "passageId": 1034,
+      "questionId": 5359,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        4,
+        "choices",
+        1,
+        "tag"
+      ],
+      "before": "Too Broad",
+      "after": "Wrong process"
+    },
+    {
+      "preptest": 110,
+      "passageId": 1034,
+      "questionId": 5359,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        4,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "It may help to explain ****the surprisingly fast rate**** of natural selection at times, but not the entire process.",
+      "after": "The passage suggests that acquiring genetic material may help explain how evolution can proceed more quickly than it would through random mutation and natural selection alone. That is different from explaining the process of natural selection itself."
+    },
+    {
+      "preptest": 120,
+      "passageId": 776,
+      "path": [
+        "passages",
+        3,
+        "summaries",
+        "standard"
+      ],
+      "before": "**Passage Summary**\n\n**Topic**\n\nWhy some pathogens are unusually virulent (harmful to hosts), and how their transmission method explains this.\n\n**Framework**\n\nAnswer / Explain\n\n**Main Point**\n\nThe main point is that a pathogen's mode of transmission helps explain its level of virulence; specifically, pathogens that are transmitted by vectors or can survive long outside a host tend to be more virulent because they can spread even after disabling their host.\n**Most Valuable Sentence:** \"One implication of this perspective is that a pathogen’s virulence—its capacity to overcome a host’s defenses and incapacitate it—is a function of its mode of transmission.\" (Paragraph 2, first sentence)\n\n**P1: The Puzzle of Pathogen Virulence**\n\nWhy do some pathogens harm or kill their hosts when you’d expect them to try not to? The classic view is that parasites thrive best when their hosts thrive, but recent biologists challenge this, showing that a pathogen might still win (evolutionarily speaking) if it spreads fast enough to new hosts—even if it makes current hosts very sick.\n\n**P2: Transmission Mode as the Key Factor**\n\nHow contagious a pathogen is depends on how it spreads. For example, common cold viruses need victims to be up and about to infect others, so they can't afford to debilitate their hosts too much—otherwise, they die with the bedridden person.\n\n**P3: The Vector-Borne Exception**\n\nWhen pathogens hitch a ride on another organism (like mosquitoes), all bets are off. They can make the host really sick, even immobilize them, and still spread, because their vector does all the work. The sicker the host, the more virus there is for the mosquito to pick up and transport to new victims.\n\n**P4: Sit-and-Wait Pathogens, Another Lethal Exception**\n\nMost vector-transmitted pathogens are more virulent, but some directly transmitted pathogens (like diphtheria and tuberculosis) are also highly dangerous. That's because they can sit and wait outside a host for ages, remaining infectious until a new victim comes along—making them a big threat even without vectors.",
+      "after": "**Passage Summary**\n\n**Topic**\n\nHow pathogens can achieve evolutionary success even when they incapacitate their hosts.\n\n**Main Point**\n\nA pathogen can still succeed if transmission into new hosts exceeds the loss of pathogens caused by the current host becoming incapacitated. Mode of transmission helps explain virulence: vector-borne pathogens tend to be more virulent than directly transmitted ones, with exceptions among directly transmitted pathogens that survive for long periods outside a host.\n\n**P1: A modification to the prevailing view**\n\nThe prevailing view is that host and parasite generally develop a benign coexistence. Some biologists explain exceptions by comparing transmission into new hosts with the loss of pathogens from an incapacitated host.\n\n**P2: Direct transmission**\n\nRhinoviruses require physical proximity. If a solitary host becomes too sick to leave home for a day, newly produced rhinoviruses die before transmission. This helps explain why the common cold is unlikely to disable its victims. Virulence concerns harm to the host, rather than simply how contagious a pathogen is.\n\n**P3: Vector transmission**\n\nA mosquito can obtain a high dose of a pathogen from an immobilized host and carry it to another host. In this situation, extensive reproduction can increase transmission even while making the current host gravely sick.\n\n**P4: Exceptions among directly transmitted pathogens**\n\nMedical literature generally supports the transmission-virulence relationship. However, some directly transmitted pathogens, including diphtheria and tuberculosis bacteria, can remain alive outside a host for weeks or months. These sit-and-wait pathogens can therefore be lethal without relying on a vector."
+    },
+    {
+      "preptest": 120,
+      "passageId": 776,
+      "questionId": 6697,
+      "letter": "D",
+      "path": [
+        "passages",
+        3,
+        "questions",
+        0,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "This makes the New idea out to be, \"some pathogens are able to achieve reproductive success **unless** their reproduction causes the death of the host\".\n\nThe main point was really, \"some pathogens are able to achieve reproductive success **even if** their reproduction causes the death of the host\", as long as they're being transmitted by a vector and so the level of transmission into new hosts exceeds the loss of pathogens resulting from the old host's death.",
+      "after": "The new hypothesis allows evolutionary success even when a pathogen causes its host's death. What matters is whether transmission into new hosts exceeds pathogen loss from the incapacitated host. Vectors provide one way to continue transmission; survival outside a host provides another. The answer incorrectly treats the host's death as ruling success out."
+    },
+    {
+      "preptest": 120,
+      "passageId": 776,
+      "questionId": 6699,
+      "letter": "D",
+      "path": [
+        "passages",
+        3,
+        "questions",
+        2,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "The biologists would say, \"the prevailing view that a parasite achieves evolutionary success best by developing a benign relationship with the host where the host thrives *ignores the possibility that* a parasite could achieve evolutionary success alternatively by replicating in new hosts, even if it kills its hosts, as long as the rate of replication exceeded the rate of killing hosts.\"\n\nThus, they'd say that the prevailing view is ignoring the possibility that parasites can still achieve evolutionary success even if they do not develop a benign coexistence with hosts, even if the host does not thrive.",
+      "after": "The biologists offer another route to evolutionary success. A pathogen can incapacitate its host and still succeed if transmission into new hosts exceeds the loss of pathogens resulting from that incapacitation. The comparison is between transmission and pathogen loss, rather than between a replication rate and a rate of killing hosts. The prevailing view overlooks this alternative to benign coexistence."
+    },
+    {
+      "preptest": 120,
+      "passageId": 776,
+      "questionId": 6703,
+      "letter": "B",
+      "path": [
+        "passages",
+        3,
+        "questions",
+        6,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "This is fancy science language for \"they need to be mild enough that the host still leaves the house / if they made the host bedridden, they wouldn't be able to spread to new hosts\".\n\nThe 2nd paragraph communicated the idea that rhinoviruses need direct, face-to-face transmission. So common sense would tell us that the sick-air someone breathes out doesn't just hang in the room forever. It dissipates. Those rhinoviruses can't survive in the air or on a surface for very long. That's why it needs to be face-to-face transmission.\n\nBut, sneakily, the final sentence of the passage, where \"rhinovirus\" is also uttered, talks about rhinoviruses' outside endurance usually being a life span of only hours. That helps combine with what we know from the 2nd paragraph to make this answer make sense.",
+      "after": "Use both the second and final paragraphs. Rhinoviruses require physical proximity, and new viruses produced while a solitary host is too sick to leave home will die before transmission. The final paragraph adds that an average rhinovirus survives outside a host for hours, unlike the sit-and-wait pathogens that can survive for weeks or months. Those details support this answer without an outside assumption about how long viruses remain in the air or on surfaces."
+    },
+    {
+      "preptest": 123,
+      "passageId": 168,
+      "questionId": 687,
+      "letter": "C",
+      "path": [
+        "passages",
+        5,
+        "questions",
+        0,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "This is supported in the highlighted passage in the last paragraph of passage A and the highlighted passage in the first paragraph of passage B.",
+      "after": "Passage A asks whether music and language originated separately or together, then argues that music likely evolved alongside language. Passage B proposes an evolutionary origin in mother-infant bonding. Both therefore address the evolutionary origins of the ability to make music."
+    },
+    {
+      "preptest": 123,
+      "passageId": 168,
+      "questionId": 687,
+      "letter": "D",
+      "path": [
+        "passages",
+        5,
+        "questions",
+        0,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "This is only addressed in passage A (first paragraph) and is not the main point of passage A.",
+      "after": "Passage A, paragraph 2 discusses a shared neurological system. That evidence supports its account of music's origins; the shared-system question is not the primary concern of both passages."
+    },
+    {
+      "preptest": 123,
+      "passageId": 168,
+      "questionId": 687,
+      "letter": "E",
+      "path": [
+        "passages",
+        5,
+        "questions",
+        0,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "This topic is only addressed in passage A (third paragraph) and no answer to this particular question is stated.",
+      "after": "Passage A, paragraph 2 contrasts performance in language and music. The passage uses that contrast in its evolutionary argument, but neither passage is primarily trying to explain differences in individual musical ability."
+    },
+    {
+      "preptest": 123,
+      "passageId": 168,
+      "questionId": 688,
+      "letter": "B",
+      "path": [
+        "passages",
+        5,
+        "questions",
+        1,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "This is discussed in the highlighted passage of paragraph 1 and in the highlighted passage of paragraph 4.",
+      "after": "Passage A, paragraph 1 says music and language use intonation and rhythm to communicate emotions. Passage B, paragraph 1 connects music with emotional bonds between mothers and infants. Each explicitly relates music to human emotion."
+    },
+    {
+      "preptest": 123,
+      "passageId": 168,
+      "questionId": 689,
+      "letter": "D",
+      "path": [
+        "passages",
+        5,
+        "questions",
+        2,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "The author of passage A would say that the capacity to produce music does not have adaptive value (third paragraph), while the author of passage B would say that it does (sixth paragraph).",
+      "after": "Passage A, paragraph 3 says music had little adaptive value of its own and most likely developed on the coattails of language. Passage B, paragraph 3 argues that premusical mother-infant interactions would have conferred considerable evolutionary advantage. Those positions support disagreement about great adaptive value; A need not deny every possible adaptive benefit."
+    },
+    {
+      "preptest": 125,
+      "passageId": 483,
+      "questionId": 3031,
+      "letter": "E",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        2,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "Passage A doesn't even mention the ocean or any other body of water. Passage B comes closer, but there's no way to derive that \"the entire time drilling is happening, mud is simultaneously being discharged into the sea\".\n\nIt says that drilling mud is released \"only during the drilling phase\", but that means:\ndrilling phase → mud released\nnot\ndrilling phase → mud released",
+      "after": "Passage B says the discharges are normally released only during the drilling phase. Normally, a release therefore implies the drilling phase; being in the drilling phase does not imply release throughout that phase. Preserve normally: this is not stated as an exceptionless rule. The description of recycling WBM and later dumping a batch also gives no support for continuous discharge."
+    },
+    {
+      "preptest": 125,
+      "passageId": 483,
+      "questionId": 3032,
+      "letter": "E",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        3,
+        "choices",
+        4,
+        "tag"
+      ],
+      "before": "Unsupported Causal Relationship",
+      "after": "Unsupported counterfactual"
+    },
+    {
+      "preptest": 125,
+      "passageId": 483,
+      "questionId": 3032,
+      "letter": "E",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        3,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "Passage A never mentions cuttings or specific harm to the environment, so we would never be pulling something from passage A to support this.\n\nMoreover, Passage B has not identified cuttings as inherently harmful, so drilling that did NOT generate cuttings wouldn't be LESS harmful. It's the OBMs that are still stuck on the cuttings, after the cuttings have been sieved, that are potentially causing harm.",
+      "after": "Passage A mentions cuttings: drilling fluids lift rock chips to the surface. Passage B itself discusses discharging cuttings and the potentially harmful OBM residues attached to them. Any support for the proposed environmental benefit therefore comes from B's own discussion, rather than depending on information that must be combined from both passages. The stem requires an inference supported by the two together but not by either alone."
+    },
+    {
+      "preptest": 125,
+      "passageId": 483,
+      "questionId": 3033,
+      "letter": "C",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        4,
+        "choices",
+        2,
+        "tag"
+      ],
+      "before": "Supported by Passage B",
+      "after": "Supported by Passage A"
+    },
+    {
+      "preptest": 125,
+      "passageId": 483,
+      "questionId": 3033,
+      "letter": "C",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        4,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "This goes back to our correct answer on Q8. We know that barite is used as a food filler and is given to people before they get their gut X-rayed. Again, the language there doesn't guarantee that barite isn't toxic, but if we're using it as a food filler one would assume/hope that it's not toxic to humans.",
+      "after": "Passage A describes barite as an inert filler in some foods and as a substance administered before X-raying the digestive tract. Those uses support the limited claim that it is not toxic to humans in certain quantities. Passage B supplies the possible harm to marine organisms, not the food and medical examples."
+    },
+    {
+      "preptest": 125,
+      "passageId": 483,
+      "questionId": 3035,
+      "letter": "B",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        6,
+        "choices",
+        1,
+        "tag"
+      ],
+      "before": "Opposite",
+      "after": "Unsupported comparison"
+    },
+    {
+      "preptest": 125,
+      "passageId": 483,
+      "questionId": 3035,
+      "letter": "B",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        6,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "They have greater concentrations of barite, not bentonite.",
+      "after": "The passage identifies greater concentrations of barite in OBMs. It gives no corresponding comparison for bentonite, and it does not identify increased bentonite as the cause of greater environmental damage."
+    },
+    {
+      "preptest": 129,
+      "passageId": 444,
+      "path": [
+        "passages",
+        2,
+        "summaries",
+        "standard"
+      ],
+      "before": "**Passage Summary**\n\n**P1 (A): Cather’s Admiration for Russian Writers & Their Influence**\n\nCather looked up to Russian authors like Turgenev and Tolstoy for their storytelling. She copied their indirect way of showing characters’ emotions through actions rather than telling us directly. Turgenev’s advice was to pick just the right details and not over-explain, and Cather followed this, focusing on what’s typical and revealing.\n\n**P2 (A): Connecting Cather to Impressionistic Aesthetics**\n\nThe author links Turgenev’s “secret knowledge” to Cather’s idea of “the thing not named”—creating feelings on the page without spelling them out. Both writers think art should simplify and select, combining setting, action, and mood to create an emotional effect.\n\n**P1 (B): The “Novel” vs. “Narrative” Debate & Modern Theory**\n\nCather herself wasn’t super attached to calling her books “novels.” She liked “narrative” better, which actually lines up with later literary theorists (“narratologists”) who care more about storytelling than traditional novel rules. This approach, the author says, fits Cather’s style well.\n\n**P2 (B): Criticisms and Appreciation of Cather’s Impressionistic Approach**\n\nSome critics have knocked Cather for not fitting the mold of a classic novelist, complaining her structure is weak or inconclusive. But the author argues these so-called “failures”—like her unusual narrative time, ambiguous endings, and bold, stylized characters—are part of what makes Cather’s style unique, expressing deeper emotional conflicts in her stories.",
+      "after": "**Passage Summary**\n\n**P1 (A): Cather’s Admiration for Russian Writers & Their Influence**\n\nCather looked up to Russian authors like Turgenev and Tolstoy for their storytelling. Wilson describes her as following Turgenev’s indirect way of showing characters’ emotions through actions. The passage does not attribute this technique to Tolstoy as well. Turgenev’s advice was to pick just the right details and not over-explain, and Cather followed this, focusing on what’s typical and revealing.\n\n**P2 (A): Connecting Cather to Impressionistic Aesthetics**\n\nThe author links Turgenev’s “secret knowledge” to Cather’s idea of “the thing not named”—creating feelings on the page without spelling them out. Both writers think art should simplify and select, combining setting, action, and mood to create an emotional effect.\n\n**P1 (B): The “Novel” vs. “Narrative” Debate & Modern Theory**\n\nCather herself wasn’t super attached to calling her books “novels.” She liked “narrative” better, which actually lines up with later literary theorists (“narratologists”) who care more about storytelling than traditional novel rules. This approach, the author says, fits Cather’s style well.\n\n**P2 (B): Criticisms and Appreciation of Cather’s Impressionistic Approach**\n\nSome critics have knocked Cather for not fitting the mold of a classic novelist, complaining her structure is weak or inconclusive. But the author argues these so-called “failures”—like her unusual narrative time, ambiguous endings, and bold, stylized characters—are part of what makes Cather’s style unique, expressing deeper emotional conflicts in her stories."
+    },
+    {
+      "preptest": 129,
+      "passageId": 444,
+      "questionId": 3411,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        0,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "Passage A never talks about critics at all, nor alludes to whether Cather's work was heralded or misunderstood by critics.\n\nPassage A never suggested that some of Cather's work ventured in the realm of unsuccessful experimentalism, whereas other works were more aesthetically complete.\n\nSo we don't have any support for this claim.",
+      "after": "Passage A includes Wilson's observation about Cather's technique. It does not divide her works into failed experiments and more successful novels, or say that critics ignored the latter. Those missing claims prevent this answer from describing what A's author would likely agree with."
+    },
+    {
+      "preptest": 129,
+      "passageId": 444,
+      "questionId": 3412,
+      "letter": "C",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        1,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "This super soft language draws us in (\"at least one\").\n\nIn the opening sentence, Cather said about *Death Comes for the Archbishop*, \"Many [reviewers] assert vehemently that it is not a novel. Myself, I prefer to call it a narrative\".\n\nSo she would agree that this work does not fit straight forwardly into the category of the novel. Even though the passage refers to it as \"her novel\", if *she* would rather call it **a narrative** and if many reviewers *strongly* assert that it is not a novel, then whether or not it's *technically* a novel, it's definitely fair to say it's not *obviously* a novel.\n\nIf something fit straight forwardly into the novel category, you probably would have lots of critics testifying that it's not a novel.",
+      "after": "This super soft language draws us in (\"at least one\").\n\nIn the opening sentence, Cather said about *Death Comes for the Archbishop*, \"Many [reviewers] assert vehemently that it is not a novel. Myself, I prefer to call it a narrative\".\n\nSo she would agree that this work does not fit straight forwardly into the category of the novel. Even though the passage refers to it as \"her novel\", if *she* would rather call it **a narrative** and if many reviewers *strongly* assert that it is not a novel, then whether or not it's *technically* a novel, it's definitely fair to say it's not *obviously* a novel.\n\nIf something fit straight forwardly into the novel category, you would not expect the dispute and preference reported here."
+    },
+    {
+      "preptest": 129,
+      "passageId": 444,
+      "questionId": 3413,
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "explanationBlocks"
+      ],
+      "before": [
+        {
+          "heading": "Anticipate",
+          "body": "The support we have for \"Cather's narrative technique\" from Passage B seems to come from the end of the last paragraph:\n\n*some of the central features of Cather's impressionistic technique:*\n*- unusual treatment of narrative time*\n*- unexpected focus*\n*- ambiguous conclusions,*\n*- a preference for the bold, simple, and stylized in character as well as in landscape*\n\nIf I were just reading B first and then trying to eliminate answers on this question, I would go answer choice shopping with this grocery list, and I would find nothing, because the answers are actually testing something else in passage B.\n\nDoes passage A mention any of the things that passage B listed?\n\n*- unusual treatment of narrative time*\n*- unexpected focus*\n*- ambiguous conclusions,*\n*- a preference for the bold, simple, and stylized in character as well as in landscape*\n\nYes, passage A's last paragraph refers to the 2nd and 4th thing, by talking about importance of selection (unexpected focus) and simplification (a preference for the simple).\n\nBut ultimately what is being tested in the correct answer comes from passage A's 2nd sentence:\n*Cather .. not depicting her characters' emotions* *****directly***** *but telling us how they behave and letting their 'inner blaze of glory shine through the simple recital'.*\n\nThis overlaps with the end of passage B's first paragraph, in which we're told that narratologists like Cather do ****not**** do stuff like\n- ****direct**** psychological characterization\n\nIn short, what we would usually anticipate on this question would end up being un-helpful. What is being tested in the correct answer pulls support for less expected places of A and B, so getting this question right would usually require finding out none of the answers are what we thought they would be, and then looking elsewhere in the passages for what else was an overlap that this question could be testing."
+        }
+      ],
+      "after": [
+        {
+          "heading": "Research",
+          "body": "Passage A describes Cather showing how characters behave and letting their emotions emerge indirectly. Passage B contrasts the realistic novel's direct psychological characterization with Cather's impressionistic technique, whose structures indirectly articulate forces of desire. Look for a physical detail that suggests a mental or emotional state instead of naming it directly."
+        }
+      ]
+    },
+    {
+      "preptest": 129,
+      "passageId": 444,
+      "questionId": 3413,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "Once we start seeing that every answer choice structured in the form of \"X is used to suggest Y\", we have to really start re-evaluating what we think we're looking for, because nothing in B's list of ...\n*- unusual treatment of narrative time*\n*- unexpected focus*\n*- ambiguous conclusions,*\n*- a preference for the bold, simple, and stylized in character as well as in landscape*\n\n... would give us any way to support the idea that \"X is used to suggest Y\".\n\nUltimately what's being tested is the overlap between psg A and B: they both mention that narratologists like Cather would ****avoid**** *direct* psychological characterization.\n\nSo what does *indirect* psychological characterization mean? It means that we learn about people's psychology, their mental lives, without direct access to their thoughts.\n\nThus, this answer's notion that the author provides an account of a character's *emotional scars* would mean that we have access to this character's tortured memories.\n\nThat is direct, not indirect, psychological characterization.",
+      "after": "This answer gives an account of a character's emotional scars to explain effects on the family. That presents the psychological background directly. C is a better match for the indirect method: an observable physical detail lets the reader infer the emotion. Passage B does not identify Cather as a narratologist; it says the later critical model is appropriate to her work."
+    },
+    {
+      "preptest": 129,
+      "passageId": 444,
+      "questionId": 3413,
+      "letter": "C",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "This qualifies as ****indirect**** psychological characterization. She's not *telling* us the character is timid. She's telling us how this character behaves (quivering hand) and letting their inner blaze of [timidity] shine through.\n\nIn passage B, it not only reinforces the idea that narratologists didn't mess around with direct psychological characterization, but it probably also qualifies as \"unexpected focus\", to zoom in on a description of a slightly quivering drink.",
+      "after": "The quivering drink is an observable detail. The reader uses that detail to infer timidity; the writer does not directly narrate the character's anxious thoughts. That matches A's behavior-first account and B's description of indirect expression through impressionistic technique."
+    },
+    {
+      "preptest": 129,
+      "passageId": 444,
+      "questionId": 3415,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        4,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "Passage A explains how Cather (like Turgenev) use an impressionistic aesthetic:\n\n*avoid overloading the work with unnecessary detail, concentrating instead on what is characteristic and typical*\n\nCather didn't depict her characters' emotions directly. She would just explain how they behave and let their inner blaze of glory shine through.\n\nPassage B talks about Cather's \"impressionistic technique\", including \"a preference for the bold, simple, and stylized in character as well as in landscape.\"\n\nEarlier in Passage B, we heard that Cather is a narratologist, and narratologists avoid direct psychological portrayals of characters.\n\nUltimately, the textual support from each passage for this is thin, if you go looking for one line. This is definitely a case of \"Best Available Answer\" and trusting the gist of the passages. At least both passages *do* attest to Cather having an **impressionistic** style.\n\n(Impressionism was an art movement that didn't go for realism or detail ... it went for the general impression of a realistic scene ... it was about conveying the mood of a scene, not all the specific details)",
+      "after": "Passage A says Cather lets emotions emerge through characters' behavior instead of naming them directly. It then connects this method with an impressionistic aesthetic. Passage B calls her technique impressionistic and says its structures indirectly articulate the forces of desire in her fiction. Both authors therefore connect impressionistic technique with the portrayal of characters' psychology. Cather is not identified as a narratologist: her preference for narrative anticipated that later critical approach."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "path": [
+        "passages",
+        2,
+        "summaries",
+        "brief"
+      ],
+      "before": "**Passage Summary**\n\n**Topic**\n\nDental caries and the agriculture transition.\n\n**Framework**\n\nDual Passage.\n\n**Main Point**\n\nThe prevailing caries-agriculture link is real but has exceptions; Ban Chiang shows caries decreasing despite increasing agriculture.\n\n**Passage A: The prevailing view**\n\nMore agriculture = more caries (Leigh's Sioux/Zuni study). Exceptions exist (acorn-flour, pinyon nuts).\n\n**Passage B: Ban Chiang anomaly**\n\nDiet stayed varied; yams (cariogenic) shifted toward rice (less cariogenic). Caries dropped despite increased agriculture.",
+      "after": "**Passage Summary**\n\n**Topic**\n\nDental caries and the agriculture transition.\n\n**Framework**\n\nDual Passage.\n\n**Main Point**\n\nThe prevailing caries-agriculture link is real but has exceptions; Ban Chiang shows caries decreasing despite increasing agriculture.\n\n**Passage A: The prevailing view**\n\nMore agriculture = more caries (Leigh's Sioux/Zuni study). Exceptions exist (acorn-flour, pinyon nuts).\n\n**Passage B: Ban Chiang anomaly**\n\nThe author suggests that the diet remained varied and that there may have been a shift from yams toward less cariogenic rice. Caries dropped despite increased agriculture."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "path": [
+        "passages",
+        2,
+        "summaries",
+        "anotherWay"
+      ],
+      "before": "**Passage Summary**\n\n**Topic**\n\nThe author of each passage is examining a long-running idea: that switching to agriculture (with all its carbohydrates) is bad for your teeth. Passage A reviews the evidence; Passage B looks at a site that doesn't fit the pattern.\n\n**Framework**\n\nDual Passage.\n\n**Main Point**\n\nThe simpler version: in general, when populations shift from hunting and gathering to farming, they get more cavities — sticky carb-heavy foods are bad for teeth. But it's not absolute. Passage A flags some hunter-gatherer populations who got plenty of cavities anyway (acorn flour, pinyon nuts). Passage B looks at Ban Chiang, where you'd expect cavities to rise as agriculture rose — but they actually went slightly down. The likely reasons: the diet stayed varied (no one food took over), and people seem to have shifted from yams (sticky and sweet) toward rice (less so).\n\n**Passage A: The general rule and its exceptions**\n\nCavity rates correlate with carb-heavy agricultural diets. Leigh's comparison: meat-eating Sioux had almost no cavities, maize-eating Zuni had 75%. But some hunter-gatherers ate stuff that caused plenty of cavities anyway — like processed acorn flour and pinyon nuts.\n\n**Passage B: A site that doesn't fit**\n\nBan Chiang in Thailand transitioned from a mixed economy toward more agriculture over 2,000 years. Theory says cavities should have risen. They actually fell slightly. Tooth-wear can't explain it. The best guesses: the diet stayed varied (not dominated by sticky carbs), and the carb mix shifted from yams (more cavity-causing) to rice (less so).",
+      "after": "**Passage Summary**\n\n**Topic**\n\nThe author of each passage is examining a long-running idea: that switching to agriculture (with all its carbohydrates) is bad for your teeth. Passage A reviews the evidence; Passage B looks at a site that doesn't fit the pattern.\n\n**Framework**\n\nDual Passage.\n\n**Main Point**\n\nThe simpler version: in general, when populations shift from hunting and gathering to farming, they get more cavities — sticky carb-heavy foods are bad for teeth. But it's not absolute. Passage A flags some hunter-gatherer populations who got plenty of cavities anyway (acorn flour, pinyon nuts). Passage B looks at Ban Chiang, where you'd expect cavities to rise as agriculture rose — but they actually went slightly down. The likely reasons: the diet stayed varied (no one food took over), and there may have been a shift from sweeter yams toward less cariogenic rice.\n\n**Passage A: The general rule and its exceptions**\n\nCavity rates correlate with carb-heavy agricultural diets. Leigh's comparison: meat-eating Sioux had almost no cavities, maize-eating Zuni had 75%. But some hunter-gatherers ate stuff that caused plenty of cavities anyway — like processed acorn flour and pinyon nuts.\n\n**Passage B: A site that doesn't fit**\n\nBan Chiang in Thailand transitioned from a mixed economy toward more agriculture over 2,000 years. Theory says cavities should have risen. They actually fell slightly. Tooth-wear can't explain it. The best guesses: the diet stayed varied (not dominated by sticky carbs), and the carb mix may have shifted from yams toward less cariogenic rice."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1734,
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "explanationBlocks"
+      ],
+      "before": [
+        {
+          "heading": "Research",
+          "body": "We hear about \"fiber and grit\" in paragraph 2 of B:\n\n*A reduction of fiber or grit in a diet may diminish tooth wear, thus increasing caries frequency.*\n\nSo, the less fiber/grit we eat, the less we're wearing down our teeth, and thus the more likely we are to get caries.\n\nIt might seem weird that we're *more* likely to get caries the *less* we're wearing down our teeth, because it sounds like a good thing to not wear down your teeth too much, but the previous sentence said:\n\n*the wearing down of tooth crown surfaces reduces caries formation by removing fissures that can trap food particles.*\n\nSo we could probably also infer that the more fiber/grit we eat, the more we wear down tooth crown surfaces, the fewer fissures there are were food particles can get trapped, and thus the less risk of caries."
+        },
+        {
+          "heading": "Goal",
+          "body": "Let's look for an answer we can support from the second half of B's 2nd paragraph."
+        }
+      ],
+      "after": [
+        {
+          "heading": "Research",
+          "body": "Read the whole tooth-wear discussion in B's second paragraph. Wearing down crown surfaces can remove fissures that trap food particles, reducing caries. A reduction of fiber or grit may reduce that wear and increase caries. But severe wear can expose the pulp cavity and also cause caries. The effect is not a simple rule that more fiber and grit always means fewer cavities."
+        },
+        {
+          "heading": "Goal",
+          "body": "Look for an answer that allows fiber and grit to have different effects depending on their prevalence and the resulting degree of tooth wear."
+        }
+      ]
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1734,
+      "letter": "A",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "choices",
+        0,
+        "explanation"
+      ],
+      "before": "This probably isn't super tempting on a first look. The idea that fiber/grit can *promote* caries formation is in line with what we researched.\n\n*A **reduction** of fiber/grit in a diet increases (i.e. promotes) caries frequency*\n\nSo if the prevalence of fiber/grit in a diet is low, it can promote caries formation.\n\nBut we can seemingly flip this upside down to get the other part of this answer. If we have a high prevalence of fiber/grit in the diet, then we will wear down tooth crown surfaces, removing fissures that can trap food particles, thereby *limiting* caries formation.",
+      "after": "Fiber and grit can contribute to tooth wear. Enough wear can remove food-trapping fissures and limit caries; severe wear can expose the pulp cavity and promote caries. Reduced fiber or grit can also leave more fissures. The whole paragraph therefore supports a variable effect, rather than an unrestricted inference that more fiber and grit must reduce cavities."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1734,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "There's nothing about \"agriculture\" connected to what we're told about fiber and grit. This is just attempting a Word Salad where they toss together different concepts that appeared in different parts of the passage.\n\nThis also goes against common sense. Agriculture gives us starchy-sticky stuff like rice and yams, which are not very fibrous or gritty.\n\nEating nuts and meat (a pre-agricultural diet) would likely involve more fiber and grit.",
+      "after": "The passage does not tell us that fiber and grit are typically consumed in greater quantities as agriculture is adopted. It discusses their relationship to tooth wear, without establishing this change in consumption. We do not need to import assumptions about the fiber or grit in particular diets."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1734,
+      "letter": "C",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "We know so little about \"fiber and grit\", and it's all contained in the second half of B's 2nd paragraph. It doesn't say anything there like \"fiber and grit have **no** nutritional value\" or \"have a negative effect on overall health\".\n\nThe one thing we learn about fiber and grit is that having them in your diet helps to prevent caries formation.",
+      "after": "No statement says fiber and grit have no nutritional value or are harmful to overall health. The passage discusses their effects on tooth wear and caries, including both protective wear and harmful severe wear."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1735,
+      "path": [
+        "passages",
+        2,
+        "questions",
+        3,
+        "explanationBlocks"
+      ],
+      "before": [
+        {
+          "heading": "Research",
+          "body": "The prevailing view is that carbohydrate-rich diets produce more caries.\n\nPassage A: states the prevailing view and supports it with Leigh's study (Sioux meat-eaters had almost no caries; Zuni maize-dependent had 75%). Does maize have carbs? Yes, we can infer that from context, because this study is cited as demonstrating the link between carbs and caries.\n\nPassage B: the evidence here is much more murky. Both the Early and Late Ban Chiang Groups ate some cultivated starchy crops. Theoretically, the Late group was more dependent on agriculture but had less caries frequency, which they attribute to switching from more yams in the Early period to more rice in the Late period.\n\nDo yams have more carbs than rice? We're just told that yams are sweeter and that rice is a less cariogenic carb. So the evidence is saying, \"during the Early period, they ate a more cariogenic carb, and thus had more caries\"."
+        },
+        {
+          "heading": "Goal",
+          "body": "Since we're trying to find an overlapping idea, what is in common between \"the maize caused higher rates of caries\" and \"the more cariogenic yams caused higher rates of caries\"?\n\nThey're both supporting the carbs -> caries connection by citing some cultivated crop that a population ate."
+        }
+      ],
+      "after": [
+        {
+          "heading": "Research",
+          "body": "Passage A cites Leigh's meat-consuming Sioux sample with almost no caries, contrasted with the maize-dependent Zuni sample. Passage B explicitly says studies show dental caries is uncommon in pre-agricultural populations. Those are the shared pieces of evidence; Ban Chiang's later anomaly is a separate issue."
+        },
+        {
+          "heading": "Goal",
+          "body": "Look for the relatively low incidence of caries in nonagricultural populations."
+        }
+      ]
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1735,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        3,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "This is pretty gross as a correct answer, but our best available choice.\n\nBoth passages cite the relatively low incidence of caries among nonagricultural populations. Flipping that, there is higher incidence of caries among agricultural populations.\n\nOkay, but is that support for the idea that **carbs** lead to caries? Can we do a term swap with \"more agriculture = more carbs\"?\n\nYes, from the general context that's reasonable. The meat-hunting people were thought to have more robust teeth. The advent of agriculture is giving us that starchy-sticky stuff (rice / corn / yams are all starches).",
+      "after": "Passage A reports almost no caries in the Sioux sample that primarily consumed meat. Passage B says studies show caries is uncommon in pre-agricultural populations. Both use the relatively low incidence of caries in those populations to support the prevailing relationship. The later exceptions qualify that relationship without removing this shared evidence."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1737,
+      "letter": "A",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        0,
+        "tag"
+      ],
+      "before": "Opposite of Passage A / Unsupported Passage B",
+      "after": "Unsupported comparison"
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1737,
+      "letter": "A",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        0,
+        "explanation"
+      ],
+      "before": "In the final sentence of Passage A, it talks about ****wild**** carbs such as pinyon nuts and tubers that have ****high**** cariogenic potential.\n\nPassage B doesn't even really comment on cultivated vs. wild varieties of carbs.",
+      "after": "Passage A identifies some wild plants with high cariogenic potential. That does not establish a comparison between cultivated and wild varieties as groups. Passage B also does not compare their cariogenic potential."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1737,
+      "letter": "C",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "This is somewhat close to our predicted overlap: *both passages linked carb-rich foods to higher rates of caries*.\n\nIn Passage A, the final sentence provides support. If we identify certain wild plants (such as pinyon nuts and wild tubers) as having ****high**** cariogenic potential, then we're implying that there is a variety to the cariogenic potential of foods.\n\nIn passage B, the final sentence says that the Ban Chiang group shifted from yams toward rice, which is a ****less cariogenic**** carb.\n\nSo once again, the comparative modifier is telling us that carbs can vary in terms of their potential to cause caries.\n\n*p.s.*\n*Carcinogenic = cancer-causing*\n*Cariogenic = caries-causing*",
+      "after": "Passage A singles out wild plant species with high cariogenic potential, suggesting variation among carbohydrate-rich foods. Passage B explicitly describes rice as less cariogenic than yams. That comparison is evidence of different tendencies to cause caries. The possible dietary shift at Ban Chiang remains a hypothesis, not a confirmed change."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1737,
+      "letter": "D",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        3,
+        "tag"
+      ],
+      "before": "Opposite, if anything",
+      "after": "Not established in both passages"
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1737,
+      "letter": "D",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "We thought the overlap was that both passages linked carb-rich foods to an ****increased**** potential for caries. This answer is saying some carb-rich foods ****reduce**** caries formation.\n\nIn the 2nd paragraph of Passage A, they're saying that as people started eating more sticky carbs, they had ****less**** fiber/grit in their diet, so their teeth didn't wear down as much, which is why it was easier for caries (cavities / little spaces) in their teeth to form.",
+      "after": "Passage A does not discuss fiber, tooth wear, or a protective effect from fiber in carbohydrate-rich foods. Passage B discusses how fiber or grit may affect tooth wear, but it does not identify a carbohydrate-rich food whose fiber reduces caries. We cannot support the claim from both passages."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1737,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        4,
+        "tag"
+      ],
+      "before": "Unsupported Passage B / Opposite Passage A",
+      "after": "Unsupported causal comparison"
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1737,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "This seems like functionally the same idea as answer choice (A). And once again, we would say that Passage B never makes a wild vs. cultivated distinction.\n\nAnd in Passage A, the only time they talk about wild carbs is to provide an example of a food with ****high**** caries potential (whereas this answer choice is saying wild carbs should have less cariogenic potential).",
+      "after": "Neither passage compares the same variety in cultivated and gathered forms. Wild plants with high cariogenic potential in A do not establish that cultivation increases or decreases that potential."
+    },
+    {
+      "preptest": 132,
+      "passageId": 343,
+      "questionId": 1738,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        6,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "Generalizations aren't the same as universals. A universal is a specific type of general claim that allows for no exceptions.\n\nBut a generalization is just saying that something is \"generally\" true. It's generally colder on Christmas than it is on Easter, in the Northern Hemisphere. But that doesn't have to be true all the time. If there's one year where Christmas is warmer than Easter, that doesn't **disprove** that Christmas is *generally* colder than Easter.\n\nAnother way to know this answer must be wrong is that if it were right, then (D) would also be right.\n\nIf the evidence disproved a generalization, then it clearly failed to conform to the generalization. We can never pick an answer that would also imply another answer.\n\nBan Chiang's evidence does not fit the *general* connection between dependence on agriculture and higher rates of caries, but it doesn't disprove that generalization.\n\nSimilarly, the existence of an NBA player that's only 5'10\" doesn't disprove the generalization that \"in general, NBA players are taller than 6 feet\".",
+      "after": "Passage A's claim is a general tendency: greater dependence on agriculture generally goes with higher caries rates. Ban Chiang does not follow that tendency, but one exception does not establish that the general relationship is false. That is why 'does not conform' fits better than 'disproves.' We can distinguish these answers through the strength of the claim, without a blanket rule that answer choices can never overlap logically."
+    },
+    {
+      "preptest": 139,
+      "passageId": 389,
+      "path": [
+        "passages",
+        1,
+        "summaries",
+        "standard"
+      ],
+      "before": "**Passage Summary**\n\n**Topic**\n\nCommunication among animals—especially the mechanisms, symbolism, and interpretation of honeybee dances, and examples of symbolic animal communication more broadly.\n\n**Framework**\n\nAnswer / Explain (both passages focus on explaining how honeybees communicate the location of food sources, while Passage B also situates this in the broader context of animal symbolic communication)\n\n**Main Point**\n\n**Passage A:** The main point is that researchers have uncovered that honeybees communicate the location of food sources to nestmates through dancing that utilizes low-frequency sounds, rather than odors, to convey information. (Best encapsulated in the final sentences: “Finally, using a honeybee robot to simulate the forager’s dance, Kirchner and Michelsen showed that sounds emitted during the forager’s dance do indeed play an essential role in conveying information about the food’s location.”) Passage B: The main point is that some animals, such as bees and vervet monkeys, communicate symbolically (with bees’ dance conveying complex info about food), but animals do not blindly follow symbolic signals—they interpret them in context. (The Most Valuable Sentence is: \"He found that hive members ignored the foragers’ instructions, presumably because no pollinating flowers grow in such a place.\")\n\n**P1 (Passage A): Early Discoveries about Bee Communication**\n\nScientists have been fascinated by how bees communicate food locations since ancient Greece, with Aristotle observing dancing bees. Later, in the 1940s, von Frisch cracked the dance code, realizing bees were conveying specific information, but the details of *how* they transmitted this info were still unclear.\n\n**P2 (Passage A): Search for the Physical Mechanism—Sound or Smell?**\n\nThe 1960s brought discoveries about the actual signals bees use: researchers noticed bees make low-frequency sounds while dancing. Although initially dismissed (since many believed bees couldn't hear), Wenner suggested odors, not sounds, might be the crucial info source. The debate was unresolved.\n\n**P3 (Passage A): Evidence for the Importance of Sound, Not Odor**\n\nFurther research proved bees can direct nestmates to food sources they themselves hadn't visited—impossible if scent was necessary. Experiments with a dancing honeybee robot confirmed that dance-emitted sounds are indeed essential for communicating food locations.\n\n**P1 (Passage B): Symbolic Communication Across Animal Species**\n\nAll animals communicate, but some (including bees and vervets) communicate symbolically. In an experiment, vervet monkeys responded to different alarm calls with appropriate reactions, suggesting that their calls symbolically represent different kinds of predators.\n\n**P2 (Passage B): Honeybee Dance as Symbolic Language; Olfactory Debate**\n\nVon Frisch described the bee dance as a form of symbolic language, conveying info about where and how good a food source is. Some researchers thought bees used smell in addition to dance, but that's not supported by evidence.\n\n**P3 (Passage B): Animal Communication Is Not Blindly Followed**\n\nBees don't just automatically act on all information given — in a clever experiment, bees were told (via dancer) about food in a lake, but the hive ignored the advice since flowers don’t grow on lakes. This shows bees use judgment, not just reflex, when responding to communication.",
+      "after": "**Passage Summary**\n\n**Topic**\n\nCommunication among animals—especially the mechanisms, symbolism, and interpretation of honeybee dances, and examples of symbolic animal communication more broadly.\n\n**Framework**\n\nAnswer / Explain (both passages focus on explaining how honeybees communicate the location of food sources, while Passage B also situates this in the broader context of animal symbolic communication)\n\n**Main Point**\n\n**Passage A:** The main point is that researchers have uncovered that honeybees communicate the location of food sources to nestmates through dancing that utilizes low-frequency sounds, rather than odors, to convey information. (Best encapsulated in the final sentences: “Finally, using a honeybee robot to simulate the forager’s dance, Kirchner and Michelsen showed that sounds emitted during the forager’s dance do indeed play an essential role in conveying information about the food’s location.”) Passage B: The main point is that some animals, such as bees and vervet monkeys, communicate symbolically (with bees’ dance conveying complex info about food), and the bee experiment suggests that bees do not automatically follow every signal. (The Most Valuable Sentence is: \"He found that hive members ignored the foragers’ instructions, presumably because no pollinating flowers grow in such a place.\")\n\n**P1 (Passage A): Early Discoveries about Bee Communication**\n\nScientists have been fascinated by how bees communicate food locations since ancient Greece, with Aristotle observing dancing bees. Later, in the 1940s, von Frisch cracked the dance code, realizing bees were conveying specific information, but the details of *how* they transmitted this info were still unclear.\n\n**P2 (Passage A): Search for the Physical Mechanism—Sound or Smell?**\n\nThe 1960s brought discoveries about the actual signals bees use: researchers noticed bees make low-frequency sounds while dancing. Although initially dismissed (since many believed bees couldn't hear), Wenner suggested odors, not sounds, might be the crucial info source. The debate was unresolved.\n\n**P3 (Passage A): Evidence for the Importance of Sound, Not Odor**\n\nFurther research proved bees can direct nestmates to food sources they themselves hadn't visited—impossible if scent was necessary. Experiments with a dancing honeybee robot confirmed that dance-emitted sounds are indeed essential for communicating food locations.\n\n**P1 (Passage B): Symbolic Communication Across Animal Species**\n\nAll animals communicate, but some (including bees and vervets) communicate symbolically. In an experiment, vervet monkeys responded to different alarm calls with appropriate reactions, suggesting that their calls symbolically represent different kinds of predators.\n\n**P2 (Passage B): Honeybee Dance as Symbolic Language; Olfactory Debate**\n\nVon Frisch described the bee dance as a form of symbolic language, conveying info about where and how good a food source is. Some researchers thought bees used smell in addition to dance, but that's not supported by evidence.\n\n**P3 (Passage B): Animal Communication Is Not Blindly Followed**\n\nBees don't just automatically act on all information given — in a clever experiment, bees were told (via dancer) about food in a lake, but the hive ignored the directions, presumably because pollinating flowers do not grow there. That is the author’s proposed explanation; the experiment does not directly reveal the bees’ thoughts."
+    },
+    {
+      "preptest": 139,
+      "passageId": 389,
+      "questionId": 3709,
+      "letter": "A",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        2,
+        "choices",
+        0,
+        "explanation"
+      ],
+      "before": "The Gould experiment in psg A showed that bees *would* follow the forager's directions, even when the forager was covered in odor from the site (even when they weren't communicating olfactory information).\n\n*olfactory = sense of smell*",
+      "after": "In Passage A, Gould showed that foragers could dispatch bees to sites they had not visited. The foragers therefore did not need to convey odors collected at those sites. This undermines the proposed dependence on olfactory information. It does not show that bees will often disregard such directions and choose their own sites."
+    },
+    {
+      "preptest": 139,
+      "passageId": 389,
+      "questionId": 3709,
+      "letter": "D",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        2,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "The first half of this is supported by Passage A, in which Gould proved that foragers could lead other bees to site they hadn't visited.\n\nThe second half of this is supported by Passage B, in which Gould showed that foragers who *had* visited flowers on a boat in the middle of a lake failed to get other honeybees to follow those directions.",
+      "after": "Passage A reports that foragers can dispatch bees to sites they have not visited. Passage B reports that foragers trained to find food on a boat failed to recruit hive members to that location. The boat held food; the passage does not say flowers were growing there. Together, the experiments support both halves of this answer."
+    },
+    {
+      "preptest": 139,
+      "passageId": 389,
+      "questionId": 3711,
+      "letter": "B",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        4,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "If the phenomenon in question were \"symbolic communication\", then we could say that Passage A only gives one example (honeybees), whereas Passage B gives several examples (honeybees, vervet monkeys, ants, fish)",
+      "after": "Passage A concentrates on honeybee communication. Passage B discusses honeybees and vervet monkeys as examples of symbolic communication. Its opening also mentions ants and fish as examples of communication in general, without identifying those examples as symbolic. This answer reverses the relative scope of the passages."
+    },
+    {
+      "preptest": 139,
+      "passageId": 218,
+      "path": [
+        "passages",
+        4,
+        "summaries",
+        "standard"
+      ],
+      "before": "**Topic**\n\nA new approach for small farms to survive and thrive—Booker T. Whatley’s strategy for making small-scale farming profitable despite tough economic odds.\n\n**Framework**\n\nProblem / Solution\n\n**Main Point**\n\nBooker T. Whatley offers a comprehensive, innovative approach that enables small farms to remain profitable and competitive by focusing on diverse crops, creating direct relationships with customers, and minimizing operational costs. (The “Most Valuable Sentence” appears at the end of the last paragraph: “Adhering to this plan, Whatley contends, will allow small farms to exist as a viable alternative to sprawling corporate farms while providing top-quality agricultural goods to consumers in most urban areas.”)\n\n**P1: The Problem and Introduction of Whatley’s Counter-Approach**\n\nSmall farms are being squeezed out by big, industrial agriculture, mainly because they can’t keep up with the financial demands. Booker T. Whatley presents an alternative system to help small farmers survive and succeed, despite these challenges.\n\n**P2: Whatley’s Guidelines for Year-Round Profitability**\n\nWhatley suggests that small farms should grow lots of different crops to avoid disaster if one fails, and minimize risky borrowing. He introduces the idea of a “clientele membership club” (CMC), where customers pay ahead of time and pick their own produce, ensuring a stable market and consistent income for the farm.\n\n**P3: Cost-Saving Benefits and Direct Sales Model**\n\nA big bonus of Whatley’s pick-your-own system is that it slashes half the usual harvesting costs, letting farmers charge less than supermarkets but still turn a profit. It also cuts out distributors by selling directly to consumers. Whatley recommends building a large club of city-dwellers who want fresh produce.\n\n**P4: Practical Considerations and Ultimate Goal**\n\nSuccess depends on strategic location (close to a city, good soil, plenty of water, liability insurance). With these requirements met, Whatley claims this plan lets small farms compete with huge corporate ones—and gives city folk better food options.",
+      "after": "**Topic**\n\nA new approach for small farms to survive and thrive—Booker T. Whatley’s strategy for making small-scale farming profitable despite tough economic odds.\n\n**Framework**\n\nProblem / Solution\n\n**Main Point**\n\nBooker T. Whatley proposes that small farms can operate profitably by combining his guidelines with smart management and hard work. The guidelines include diverse crops, advance-paying customers who harvest their own produce, suitable location and growing conditions. (The “Most Valuable Sentence” appears at the end of the last paragraph: “Adhering to this plan, Whatley contends, will allow small farms to exist as a viable alternative to sprawling corporate farms while providing top-quality agricultural goods to consumers in most urban areas.”)\n\n**P1: The Problem and Introduction of Whatley’s Counter-Approach**\n\nSmall farms are being squeezed out by big, industrial agriculture, mainly because they can’t keep up with the financial demands. Booker T. Whatley presents an alternative system to help small farmers survive and succeed, despite these challenges.\n\n**P2: Whatley’s Guidelines for Year-Round Profitability**\n\nWhatley suggests that small farms should grow lots of different crops to avoid disaster if one fails, and minimize risky borrowing. He introduces the idea of a “clientele membership club” (CMC), where customers pay ahead of time and pick their own produce, ensuring a stable market and consistent income for the farm.\n\n**P3: Cost-Saving Benefits and Direct Sales Model**\n\nWhatley says harvesting accounts for 50 percent of production costs. Having customers harvest their own produce allows farmers to charge 60 percent of supermarket prices and still operate profitably. It also cuts out distributors by selling directly to consumers. Whatley recommends building a large club of city-dwellers who want fresh produce.\n\n**P4: Practical Considerations and Ultimate Goal**\n\nSuccess depends on strategic location (close to a city, good soil, plenty of water, liability insurance). With these requirements met, Whatley claims this plan lets small farms compete with huge corporate ones—and gives city folk better food options."
+    },
+    {
+      "preptest": 139,
+      "passageId": 218,
+      "questionId": 2375,
+      "letter": "B",
+      "path": [
+        "passages",
+        4,
+        "questions",
+        4,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "If small farms raised their prices to match what supermarkets charge, then the small farms would probably lose a lot of business.\n\nSupermarkets offer convenience. They're in your neighborhood. The food is already off the vine.\n\nSmall farms offer better produce and better prices, but at the considerable downside of needing to drive 40 miles to get there and to harvest your own produce once you arrive.\n\nIf the prices weren't cheaper, city folk would be more inclined to buy produce from their local supermarket, so matching the prices of supermarkets could be bad for small farms in the long term.",
+      "after": "The passage does not establish the long-term profit effect of matching supermarket prices. A higher price might increase revenue per sale, but we are not told how demand, costs, or total sales would change. The supported plan permits a lower price while retaining a profit; it does not establish this hypothetical outcome."
+    },
+    {
+      "preptest": 139,
+      "passageId": 218,
+      "questionId": 2375,
+      "letter": "C",
+      "path": [
+        "passages",
+        4,
+        "questions",
+        4,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "We have no way to compare the likelihood of a rural consumer joining a CMC to that of a city consumer joining a CMC.\n\nWhatley's plan recommends being close to a population center of at least 50,000 people, not because city folk are more likely to join a CMC than are country folk, but just because the CMC needs about 1,000 people to be viable and so the dense populations of cities allow a farm to set up near more potential customers.\n\nBut you can imagine, if you lived in a rural area that was also within a 40 min drive of the small farm, you'd have just as much incentive as a city dweller would to drive to the farm and harvest your own produce so that you can get higher quality produce at a lower-than-supermarket price.",
+      "after": "The plan needs a sufficiently large nearby market, but the passage does not compare rural and metropolitan consumers' willingness to join. A recommendation to locate within 40 miles of a population center does not show which group is generally more inclined to join."
+    },
+    {
+      "preptest": 139,
+      "passageId": 218,
+      "questionId": 2377,
+      "letter": "C",
+      "path": [
+        "passages",
+        4,
+        "questions",
+        6,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "This is saying that ****most**** population centers of 50,000 should be able to support 25-acre CMC’s. We have no evidence for that big claim. What if most population centers of 50,000 people are located in climates too cold or dry to farm?\n\nWhatley mentioned 25-acres at one point as a random, arbitrary example number. And Whatley is recommending that these farms be within 40 miles of a 50,000 population center. If you’re trying to start a 25-acre farm, and all of the cities within 40 miles of you have ****less**** than 50,000 people then you probably shouldn’t start the farm there. But that doesn’t mean that ****most**** 50,000 cities are good contenders for small farms, that they “should be able to support 25-acre farms”.",
+      "after": "The passage gives about 1,000 members as a requirement for one 25-acre farm and recommends a nearby population center of at least 50,000. It does not say every resident would join a CMC, that a city could supply fifty separate memberships, or that enough suitable farms exist. Dividing the population by 1,000 does not establish that the center should support at least fifty farms."
+    },
+    {
+      "preptest": 145,
+      "passageId": 92,
+      "questionId": 1229,
+      "letter": "A",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        0,
+        "tag"
+      ],
+      "before": "Out of Scope: historical mainstream",
+      "after": "Unsupported degree of integration"
+    },
+    {
+      "preptest": 145,
+      "passageId": 92,
+      "questionId": 1229,
+      "letter": "A",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        0,
+        "explanation"
+      ],
+      "before": "Passage A never spoke about how much women's history was or wasn't in the historical mainstream, so we can't support this with anything.\n\nThe passage talks more about what was or is in the mainstream within the world of women's history.",
+      "after": "Passage A explicitly says the 1990s saw a dramatic integration of women's history into the historical mainstream. But neither A nor the example in B establishes that this integration is far from complete. A's concern is that a focus on gender structures can obscure individual women, which is a different issue."
+    },
+    {
+      "preptest": 145,
+      "passageId": 92,
+      "questionId": 1229,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "This answer supports the complimentary half of Passage A's evaluation of the new gender relations focus.\n\nThe 2nd paragraph of A says, *this scholarship demonstrates the* *****explanatory potential***** *embedded in general* (it's an analytical tool that can shed light).\n\nWhat do we mean by \"this scholarship\"?\n\nWe mean the preceding sentence, the final sentence of A's first paragraph:\n*articles about women gave way to explorations of how an imagined domesticity, or separate sphere for women, shaped culture and politics.*\n\nSo since the author of A said that this scholarship about how domesticity shaped culture and politics demonstrates the explanatory potential embedded in gender, we can support this answer.",
+      "after": "Passage A says the scholarship demonstrates the explanatory potential embedded in gender. Passage B uses women's domestic roles to explain Augustus's laws, political language, and artistic imagery. A's author can therefore recognize this explanatory success while still worrying that the analysis overlooks particular women."
+    },
+    {
+      "preptest": 149,
+      "passageId": 130,
+      "questionId": 3969,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        1,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "This answer is a little frustrating because there's more *explicit* discussion in Passage A.\n\nThe 2nd paragraph of A is talking about how creative output would suffer if intellectual property does not enjoy formal legal protection. And then the 3rd paragraph reveals that social norms substitute for intellectual property law. So the impact of social norms on creative output is seemingly similar to that formal legal protection.\n\nPassage B implies the exact same sentiment about the impact of norms on safeguarding intellectual property relating to recipes. It sounds like chefs, in absence of realistic formal legal protection, do not see their creative output go down, because social norms play the role of upholding their intellectual property rights.\n\nEven though it seems like Passage A more explicitly discusses create output (\"scant production of creative works\"), it never spells out the impact of social norms on creative output. We can infer what impact those norms would presumably have, but we can make the same inference in Passage B.\n\nMeanwhile, with the correct answer, we're explicitly told about enforcement of norms in comedy and we don't have any way to infer how norms in cooking are enforced.",
+      "after": "Passage A explicitly connects the norms system with maintaining substantial incentives to invest in new material. Passage B describes norms protecting chefs' recipe innovations in ways analogous to intellectual property law, which supports a similar protective role. This answer therefore does not isolate the difference as cleanly as C: A specifies enforcement sanctions, while B does not explain how violations are punished. Do not confuse the absence of enforcement details in B with an absence of protection for creative work."
+    },
+    {
+      "preptest": 149,
+      "passageId": 130,
+      "questionId": 3971,
+      "letter": "D",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        3,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "The author of Passage A seems to be impressed by the effectiveness of the system of social norms, whereas this answer choice makes it sound he's disappointed in it.\n\nThe final sentence of Passage A says that \"Using this informal system (of social norms), comedians are able to .... maintain substantial incentives to invest in new material\", which indicates that they *are* properly compensated for their expenses in developing new material.",
+      "after": "The final sentence says social norms allow comedians to maintain substantial incentives to invest in new material. That conflicts with this answer's dismissal of the system's effectiveness. It supports the possibility of recovering costs, rather than a guarantee that every comedian is properly compensated."
+    },
+    {
+      "preptest": 149,
+      "passageId": 130,
+      "questionId": 3974,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        6,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "The author sympathizes in the first paragraph with why comedians would find the existing copyright law system an impractical source of remedy, both because the money you have to spend to bring a lawsuit outweighs the amount of money comedians are typically making, and because it's very hard to *prove* someone stole your joke.\n\nBut she's not necessarily blaming the existing copyright law system or suggesting that it should be changed to cater to comedians.",
+      "after": "Passage A identifies high enforcement costs and legal hurdles that make success difficult and uncertain. It does not prescribe a change to copyright law. The problem description does not, by itself, establish this recommendation, and we should not add particular facts about comedians' earnings or the precise legal hurdle."
+    },
+    {
+      "preptest": 151,
+      "passageId": 577,
+      "questionId": 4146,
+      "letter": "D",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        0,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "Passage A has a definitive answer in his last sentence: the aesthetic value of an opera depends ****not**** on words but on music. So this author would say, \"words are ****not important**** to the artistic effectiveness (aesthetic value) of opera\".\n\nMeanwhile Passage B is stressing how the words and music are an inextricable pairing in opera. Opera's unique character comes from the fact that words and music \"are as united as hydrogen and oxygen are united in water\".\n\nSo this author would say that words are as important to the artistic effectiveness of opera as Oxygen is to the molecular essence of water. (i.e. VERY important)",
+      "after": "Passage A says opera is largely independent of words and locates its aesthetic value in an emotional range dominated by music. That makes words subordinate, rather than establishing that they have no importance whatsoever. Passage B stresses that words and music must be assessed together. Both passages therefore address how important words are to opera's artistic effectiveness."
+    },
+    {
+      "preptest": 151,
+      "passageId": 577,
+      "questionId": 4147,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        1,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "Both authors think that music is a crucial part of opera and would thus say that when the music of the opera is combined with the words of the opera, the music is affected. It becomes more than it previously was.\n\nPassage B says, \"True, the elements of music and poetry may be considered separately, but ... in actuality these elements are as united as hydrogen and oxygen. This union results is opera's unique character.\"",
+      "after": "Passage A says combining music and words can produce a striking effect at the expense of each art's purity and emotional power. Passage B treats their union as central to opera's distinctive character. Both address the effect of combining them, although their evaluations differ."
+    },
+    {
+      "preptest": 151,
+      "passageId": 577,
+      "questionId": 4147,
+      "letter": "D",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        1,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "The end of B's first paragraph addresses this:\n\n*Theoretically, it would seem that there should be a third kind of opera, in which the music is subordinated to the other features ...*\n\nSince those word-dominant operas has limited appeal, the author B suggests that there **shouldn't** be operas where music is subordinated to words.",
+      "after": "Passage B discusses the earliest operas, in which music was subordinated to other features. Their limited appeal and the need for fuller musical participation to establish opera address the role of subordinated music. This does not establish a universal rule that no individual opera of that kind could ever be artistically successful. The question only asks whether the issue is addressed."
+    },
+    {
+      "preptest": 151,
+      "passageId": 577,
+      "questionId": 4150,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        4,
+        "choices",
+        1,
+        "tag"
+      ],
+      "before": "Too Strong for B: most important / Passage A agrees",
+      "after": "Passage A likely agrees"
+    },
+    {
+      "preptest": 151,
+      "passageId": 577,
+      "questionId": 4150,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        4,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "We couldn't infer this from passage B. The author never ranks which is *more* important: words or music.\n\nAnd passage A would agree with this.",
+      "after": "Passage B explicitly calls music the most important factor even in the type of opera with relative parity among its elements. This answer therefore fits B. But A also treats music as the dominant source of opera's emotional range and aesthetic value, so A would likely agree. The question requires a principle B accepts that A would reject."
+    },
+    {
+      "preptest": 151,
+      "passageId": 577,
+      "questionId": 4152,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        6,
+        "choices",
+        4,
+        "tag"
+      ],
+      "before": "Wrong Viewpoint",
+      "after": "Unsupported equality and requirement"
+    },
+    {
+      "preptest": 151,
+      "passageId": 577,
+      "questionId": 4152,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        6,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "This answer is reinforcing Passage B's point of view. She was the one stressing the delicate balance of many factors that goes into an opera (it's the sentence prior to the highlighted one).",
+      "after": "Passage B describes relative parity in one type of opera, while still calling music the most important factor. It does not treat all elements as equal, or require every opera to use that arrangement. Passage A likewise emphasizes music's dominant role. This answer does not express the lesson A would draw from the limited appeal of music-subordinate opera."
+    },
+    {
+      "preptest": 155,
+      "passageId": 1106,
+      "path": [
+        "passages",
+        3,
+        "summaries",
+        "standard"
+      ],
+      "before": "**Passage Summary**\n\n**Topic**\n\nHow language influences thought—specifically, the relationship between language and conceptual understanding (e.g., perception, gender, numbers).\n\n**Framework**\n\nPresent Debate (both passages present evidence and arguments about how language impacts cognition, engaging with Whorfian and non-Whorfian perspectives)\n\n**Main Point**\n\nWhile early claims suggested that language restricts what we can think (Whorfian hypothesis), more recent evidence shows that language shapes, but does not entirely determine, how we perceive and categorize the world—especially in terms of objects’ gender (Passage A) and understanding of numbers (Passage B). - The Most Valuable Sentence for Passage A: End of P2: \"new research suggests that in reality its influence consists in what it obliges us to think about.\" - The Most Valuable Sentence for Passage B: End of P2: \"Thus, the reports suggest that learning number words either creates a concept of exact numerical equality (a strong Whorfian hypothesis), or mediates the expansion of such a concept (a weaker Whorfian hypothesis), or directs attention to such a concept (a non-Whorfian hypothesis).\"\n\n**P1 (Passage A): The Origins and Issues with Whorf's Hypothesis**\n\nWhorf claimed that our language limits our thoughts and that speakers of different languages inhabit different realities, but later it turned out there was no strong evidence for this.\n\n**P2 (Passage A): Rethinking the Influence of Language**\n\nToday, research suggests that language doesn’t prevent certain thoughts, but rather forces us to pay attention to specific things, like gender distinctions in German.\n\n**P3 (Passage A): Language Shapes Associations and Perceptions**\n\nGrammatical gender can influence our sense of what objects are like: studies showed that German and Spanish speakers attribute different qualities to objects based on whether those objects are masculine or feminine in their language.\n\n**P1 (Passage B): Evidence from Non-Numerate Languages**\n\nStudies of Amazonian languages (Pirahã and Mundurukú) show that people without number words still have a basic sense of quantity but lack precise number concepts, indicating some concept of number can exist without language for counting.\n\n**P2 (Passage B): What Learning Number Words Adds**\n\nEven though everyone has a sense of \"more or less,\" only people with number words develop a precise sense of exact number equality, suggesting that learning certain language features (like number words) can create or reshape specific concepts, though it’s debated how direct or strong this effect is.",
+      "after": "**Passage Summary**\n\n**Topic**\n\nHow language influences thought—specifically, the relationship between language and conceptual understanding (e.g., perception, gender, numbers).\n\n**Framework**\n\nPresent Debate (both passages present evidence and arguments about how language impacts cognition, engaging with Whorfian and non-Whorfian perspectives)\n\n**Main Point**\n\nPassage A argues that language can direct attention and shape associations without preventing particular thoughts. Passage B finds evidence of approximate numerical concepts without verbal counting, but leaves open whether number words create, expand, or direct attention to exact numerical equality. - The Most Valuable Sentence for Passage A: End of P2: \"new research suggests that in reality its influence consists in what it obliges us to think about.\" - The Most Valuable Sentence for Passage B: End of P2: \"Thus, the reports suggest that learning number words either creates a concept of exact numerical equality (a strong Whorfian hypothesis), or mediates the expansion of such a concept (a weaker Whorfian hypothesis), or directs attention to such a concept (a non-Whorfian hypothesis).\"\n\n**P1 (Passage A): The Origins and Issues with Whorf's Hypothesis**\n\nWhorf claimed that our language limits our thoughts and that speakers of different languages inhabit different realities, but later it turned out there was no strong evidence for this.\n\n**P2 (Passage A): Rethinking the Influence of Language**\n\nToday, research suggests that language doesn’t prevent certain thoughts, but rather forces us to pay attention to specific things, like gender distinctions in German.\n\n**P3 (Passage A): Language Shapes Associations and Perceptions**\n\nGrammatical gender can influence our sense of what objects are like: studies showed that German and Spanish speakers attribute different qualities to objects based on whether those objects are masculine or feminine in their language.\n\n**P1 (Passage B): Evidence from Non-Numerate Languages**\n\nThe studied subjects lack a verbal counting system and may lack true number words. Their performance suggests an imprecise nonverbal sense of quantity. Their errors on exact numerical tasks contrast with the responses of numerate controls, without settling whether they entirely lack the concept of exact equality.\n\n**P2 (Passage B): What Learning Number Words Adds**\n\nThe studied innumerate subjects show an indifference to exact numerical equality not seen in numerate controls. Learning number words might create that concept, expand it, or direct attention to a concept already present. The author does not decide among these three explanations or establish that only people with number words can possess exact numerical equality."
+    },
+    {
+      "preptest": 155,
+      "passageId": 1106,
+      "questionId": 7128,
+      "letter": "B",
+      "path": [
+        "passages",
+        3,
+        "questions",
+        2,
+        "choices",
+        1,
+        "tag"
+      ],
+      "before": "Out of Scope: grammatical structure / Passage A has grammar",
+      "after": "Reverses the relevant emphasis"
+    },
+    {
+      "preptest": 155,
+      "passageId": 1106,
+      "questionId": 7128,
+      "letter": "B",
+      "path": [
+        "passages",
+        3,
+        "questions",
+        2,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "Both authors are talking about language influencing thought by means of vocabulary, not structure.\n\nIf we count feminizing or masculinizing nouns as *grammatical*, then we could say that Passage A deals with grammatical structure.\n\nBut that's still more like conjugation of a noun, not the grammatical structure of a sentence. And this answer is saying that grammatical concerns only showed up in Passage B, when what we're talking about right now comes from Passage A.",
+      "after": "Passage A explicitly discusses grammatical genders and the associations they can shape. Passage B focuses on number words and the absence of a verbal counting system. The answer puts the grammatical-structure emphasis in B, where it does not belong. We do not need to deny that grammatical gender is grammatical structure."
+    },
+    {
+      "preptest": 155,
+      "passageId": 1106,
+      "questionId": 7130,
+      "letter": "C",
+      "path": [
+        "passages",
+        3,
+        "questions",
+        4,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "This is talking about a case in a language, like some Eskimo languages for example, have unique concepts (like 20 different words for \"snow\").\n\nAs an native English speaker, I don't have 20 different concepts of snow. If I am able to learn Eskimo language, then according to this principle, my native English did not prevent me from possessing this concept.\n\nIf this was in either passage, it would be more in Psg A, where we were spending more time discussing whether or not a language can *prevent* you from having certain concepts.\n\nPsg B was more about whether your language *enables* you to have certain concepts or whether they are there innately even if you don't have a word for it.",
+      "after": "Neither passage argues from the ability to learn a second language to a conclusion about concepts in a first language. Passage A discusses what a mother tongue obliges speakers to attend to; B considers approximate number concepts and possible explanations of exact equality. We do not need an outside example or a claim about how many words any language has for snow."
+    },
+    {
+      "preptest": 157,
+      "passageId": 1730,
+      "questionId": 10493,
+      "letter": "B",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        5,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "The passage never says descriptivists endorse any prescriptive efforts, let alone ones based on word origins. Descriptivists oppose prescriptivism across the board.",
+      "after": "The passage does not say descriptivists endorse prescriptions based on word origins. The data example contrasts the prescriptivists' appeal to origins with the descriptivists' acceptance of changed usage. The specific endorsement and the only-if condition in this choice are unsupported."
+    },
+    {
+      "preptest": 157,
+      "passageId": 1730,
+      "questionId": 10493,
+      "letter": "E",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        5,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "The passage never says prescriptivists rely on descriptivists' investigations to measure their success. These are opposing schools, not collaborators.",
+      "after": "Nothing in the passage says prescriptivists wait for descriptivists' investigations before judging a prescription successful. The choice adds a dependency between the schools that the passage never establishes."
+    },
+    {
+      "preptest": 157,
+      "passageId": 1730,
+      "questionId": 10494,
+      "letter": "E",
+      "path": [
+        "passages",
+        1,
+        "questions",
+        6,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "The passage never suggests prescriptivists claim that descriptivists' observations support prescriptivist views. These are opposing schools with different conclusions.",
+      "after": "The passage does not attribute this view to prescriptivists. It never says they believe descriptivists' empirical observations generally support prescriptivist views. Their disagreement does not by itself establish what either school thinks about all of the other's evidence."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1680,
+      "path": [
+        "passages",
+        0,
+        "summaries",
+        "anotherWay"
+      ],
+      "before": "**Passage Summary**\n\nPicture this: toxic waste is expensive to deal with properly, so industries found a cheaper option — just pump it deep underground and hope for the best. The author is here to explain why \"hope for the best\" is a terrible plan. Wells can leak, humans make mistakes when building them, and underground water is a free spirit that flows wherever pressure gradients push it, including straight toward the aquifer your town drinks from. Despite all this, the practice keeps growing because it is cheap and nobody has come up with a better affordable alternative.\n\n**Topic**\n\nWhy pumping toxic waste underground is a ticking time bomb for drinking water. The author lays out the case that deep-well injection is a gamble we are increasingly losing.\n\n**Framework**\n\nProblem / Solution gone wrong. The passage sets up a classic \"here is a clever workaround\" story and then pulls the rug out: the workaround might be worse than the original problem. Think of it as an infomercial that starts with \"Tired of expensive waste disposal?\" and ends with \"Now your drinking water glows in the dark.\"\n\n**Main Point**\n\nDeep-well injection sounds like a neat trick — pump the bad stuff far underground and forget about it. But wells leak, humans botch the construction, and underground water wanders wherever it pleases. The author's verdict: this is a risky gamble, and we are doubling down on it because the alternative costs more. The money sentence is in the last paragraph: uncertainty plus mechanical failure plus human error equals a bad time.\n\n**P1: Introduction to Deep-Well Injection and Its Controversy**\n\nThe opening paragraph is the \"how we got here\" story. Toxic waste is piling up, landfills and incinerators are expensive and drowning in red tape, so industries said \"what if we just... put it underground?\" The catch: more and more communities drink from those same underground water sources. Controversy ensues. The paragraph ends by promising three problems, which is the author's way of saying \"buckle up.\"\n\n**P2: Mechanical Failures and Human Error**\n\nProblems one and two arrive together. In a perfect world, waste sits in salty rock behind impermeable barriers and never bothers anyone. In the real world, wells spring leaks and construction crews leave gaps in the casing. One spectacular example: a single gap nearly poisoned the water supply for 100,000 people, and nobody noticed for ages. The takeaway: the system works great until a human touches it.\n\n**P3: Unpredictable Movement of Underground Waste**\n\nProblem three is the big one — the author's nightmare scenario. Underground water does not politely flow downhill like a river. It follows pressure gradients, snaking sideways and even upward through cracks and fissures in the rock. It can travel enormous distances in directions nobody predicted. Trying to track where your injected waste ends up is like trying to predict where a dropped marble will roll inside a maze you have never seen.\n\n**P4: Conclusion — Continued Risks but Ongoing Use**\n\nThe passage wraps up with a grim shrug. All three problems add up to one conclusion: deep-well injection is risky. But here is the kicker — nobody is stopping. Waste keeps increasing, the method is cheap and efficient, and industries are not exactly lining up to volunteer for more expensive options. The author is not calling for a ban; she is giving you the facts and letting you lie awake at night.",
+      "after": "**Passage Summary**\n\nDeep-well injection puts liquid hazardous waste into underground rock containing salt water. It can save money, but the author identifies three risks: leaks, human error, and waste moving in directions that are difficult to predict.\n\n**Topic**\n\nThe risks of disposing of hazardous waste through deep-well injection.\n\n**Framework**\n\nProblem / Solution. A cheaper way to handle waste creates risks for drinking water.\n\n**Main Point**\n\nDeep-well injection is risky because wells may fail, workers may make mistakes, and underground waste movement is difficult to predict. The author nevertheless expects industry to rely on it increasingly because it is relatively cheap and efficient.\n\n**P1: Why industries use deep-well injection**\n\nWaste production is increasing, while regulations and the costs of landfills and incinerators have increased. Some industries use deep-well injection to save time and money. Greater reliance on underground drinking water makes its risks controversial.\n\n**P2: Leaks and mistakes can threaten drinking water**\n\nWaste is meant to stay separated from drinkable water by impermeable rock. A leak or construction mistake can break that separation. In the example, a gap in a well casing allowed waste to escape at a depth that threatened a regional aquifer. The passage does not say that the aquifer was contaminated. It adds that underground accidents can remain undiscovered for a long time.\n\n**P3: Underground waste is difficult to track**\n\nUnderground water follows pressure gradients, rather than moving only under gravity. Waste can travel in different directions through faults and porous rock, sometimes thousands of meters per year. That makes its destination difficult to predict.\n\n**P4: A risky method that the author expects to grow**\n\nThe conclusion brings the three risks together. Even so, increasing waste and the method's relative cost and efficiency lead the author to predict greater industrial reliance on it."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "path": [
+        "passages",
+        2,
+        "summaries",
+        "brief"
+      ],
+      "before": "**Passage Summary**\n\nPassage A (Ricks) attacks Rosenthal's historicist study of plagiarism for collapsing moral distinctions between plagiarism, imitation, and originality. Passage B (Kewes) agrees Rosenthal is flawed but argues the real problem is projecting modern values onto the past, and that historical analysis itself remains valuable.\n\n**Topic**\n\nWhether plagiarism should be understood as a moral failing or as a historically relative concept shaped by power and context.\n\n**Framework**\n\nPresent Debate\n\n**Main Point**\n\nRicks warns that historicizing plagiarism erases moral categories we need; Kewes counters that bad historical analysis is no argument against history itself.\n\n**P1: Passage A — Critique of Postmodern Approach**\n\nRicks argues Rosenthal's history of plagiarism erases the differences between plagiarism, imitation, and originality, reducing everything to power dynamics.\n\n**P2: Passage A — Political vs. Moral Dimensions**\n\nRicks complains that Rosenthal's \"political\" approach ignores honest/dishonest distinctions, focusing only on context and power structures.\n\n**P3: Passage A — Loss of Morality in Historical Analysis**\n\nRicks claims that treating morality as mere power-play demeans moral thinking and that even non-universal moral standards should not be dismissed.\n\n**P1: Passage B — Plagiarism's Evolving Standards**\n\nKewes notes that ideas about plagiarism have always changed, with societies judging similar behaviors differently at different times.\n\n**P2: Passage B — Ricks's Caution about Relativism**\n\nKewes summarizes Ricks's wariness toward relativistic approaches that threaten to excuse plagiarism by making it a matter of shifting opinion.\n\n**P3: Passage B — Defense of Historical Analysis**\n\nKewes acknowledges poor historical analyses exist but defends historical context as valuable — bad history is no argument against history itself.",
+      "after": "**Passage Summary**\n\nRicks criticizes Rosenthal's treatment of plagiarism because, in his view, it removes important moral distinctions. Kewes agrees that reducing morality to power is mistaken, but argues that studying historical attitudes does not necessarily excuse those attitudes.\n\n**Topic**\n\nWhether a historical approach to plagiarism must undermine moral judgment.\n\n**Framework**\n\nPresent Debate.\n\n**Main Point**\n\nPassage A argues that the historical approach it criticizes degrades moral thought. Passage B distinguishes bad historical analysis from historical study itself: reconstructing past attitudes does not necessarily vindicate them.\n\n**Passage A**\n\nRicks presents Rosenthal's project, criticizes the removal of honesty and dishonesty from the discussion, and defends the value of moral conventions even when they are not universal.\n\n**Passage B**\n\nKewes describes changing judgments of plagiarism, presents Ricks's concern about moral relativism, and defends careful historical reconstruction. She does not identify Rosenthal's book as an example of shoddy scholarship."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "path": [
+        "passages",
+        2,
+        "summaries",
+        "anotherWay"
+      ],
+      "before": "**Passage Summary**\n\nTwo scholars review the same book on plagiarism and both give it a thumbs-down — but for completely different reasons. Passage A (Ricks) is the fire-and-brimstone reviewer: Rosenthal's historicist approach is a wrecking ball that demolishes every moral distinction between plagiarism, imitation, and adaptation. Passage B (Kewes) is the methodologist: Rosenthal got the history wrong by stamping modern values onto the past. Kewes wants better history, not the abandonment of historical study, and she quietly suggests Ricks's all-or-nothing framing is itself too simple.\n\n**Topic**\n\nIs plagiarism a timeless moral wrong, or just whatever each era decides it is? Both reviewers are wrestling with this question through the lens of a book they both dislike — think of Ricks as the moral philosopher and Kewes as the careful historian.\n\n**Framework**\n\nPresent Debate — imagine a three-way argument at an academic conference: Rosenthal (the absent defendant), Ricks (the prosecutor), and Kewes (the judge who thinks both sides oversimplify).\n\n**Main Point**\n\nRicks says: \"If you historicize plagiarism, you kill morality.\" Kewes says: \"Rosenthal did history badly, but that doesn't mean we should stop doing history.\" They agree the book is broken; they disagree about what good scholarship looks like.\n\n**P1: Passage A — Critique of Postmodern Approach**\n\nRicks opens by accusing Rosenthal of running a bulldozer through the landscape of literary ethics. Plagiarism, imitation, originality — Rosenthal treats them all as interchangeable products of power dynamics. Ricks is horrified: if everything is just politics, nothing means anything.\n\n**P2: Passage A — Political vs. Moral Dimensions**\n\nHere Ricks gets to the heart of his complaint: Rosenthal is so busy analyzing power structures that he cannot tell the difference between borrowing and stealing. The word \"political\" is doing heavy lifting — Ricks means ideologically driven, not related to elections. Think manifesto energy, not ballot-box energy.\n\n**P3: Passage A — Loss of Morality in Historical Analysis**\n\nRicks delivers his closing argument: even if moral standards vary across time, that does not make them worthless. Dismissing morality as \"mere power-play\" is not progressive scholarship — it is intellectual vandalism. Ricks would rather have imperfect moral standards than no moral standards at all.\n\n**P1: Passage B — Plagiarism's Evolving Standards**\n\nKewes enters the conversation like the calm historian who actually did the research. She points out that attitudes toward plagiarism have always been in flux — different eras, different communities, different rules. This is not news to anyone who has studied the topic carefully, which is exactly her point: the history is more interesting and complicated than either Rosenthal or Ricks makes it look.\n\n**P2: Passage B — Ricks's Caution about Relativism**\n\nKewes gives Ricks a fair hearing — she summarizes his worry that historical approaches let plagiarism off the moral hook. But notice the respectful distance: she is reporting his position, not endorsing it. She is setting up her own, more nuanced take.\n\n**P3: Passage B — Defense of Historical Analysis**\n\nKewes drops her thesis like a mic: \"Bad history is no argument against history itself.\" Rosenthal did sloppy historical work? Fine — do better historical work. But do not throw out the entire enterprise just because one scholar botched it. Kewes is the voice of \"yes, and\" in a debate between two \"yes, but\" positions.",
+      "after": "**Passage Summary**\n\nThe disagreement turns on a distinction: explaining what people thought in the past does not automatically mean approving of it.\n\nRicks thinks the approach he criticizes loses that distinction. He argues that Rosenthal's treatment of plagiarism reduces moral judgments to expressions of power. For him, the fact that a moral standard is not universal does not make it worthless.\n\nKewes agrees that reducing morality to power is a mistake. She also acknowledges that some historical scholarship wrongly projects modern ideologies onto the past. But she does not name Rosenthal in this discussion. Her point is that bad history does not discredit historical inquiry itself.\n\n**How the passages relate**\n\nPassage A defends moral judgment against the particular historical approach it criticizes. Passage B argues that historical reconstruction can preserve the distinction between understanding an attitude and endorsing it. Do not turn this into two reviewers condemning the same book: only Passage A discusses Rosenthal's book directly."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "questionId": 10100,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        0,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "We could actually get this right having only read Passage A!\n\nThe author of Passage A is mad at Rosenthal for making it seem like plagiarism is indecipherable from harmless things like adaptation, repetition, and originality, and like people just switch to using the harsh pejorative \"plagiarism\" as a political power move to negatively brand something they don't like.\n\nThe author of A thinks it's dumb to talk about plagiarism without acknowledging that it is an immoral, dishonest act.\n\nA's final sentence is saying that the extirpation (elimination, removal) of moral considerations from political histories is a sad loss to political history, so we know that the author of A would say political history ****should be**** understanding plagiarism with a moral dimension as well.\n\nThe final paragraph of B is also saying that even if we *now* see plagiarism with our enlightened modern eyes, when we talk about how it historically, we shouldn't use our postmodern relativistic amoral language. We should use the moral language of how that time period saw plagiarism.",
+      "after": "Passage A criticizes an account that removes moral distinctions from the history of plagiarism. Passage B acknowledges moral objections while defending the reconstruction of changing historical attitudes. Both address how to understand plagiarism's moral dimension historically. B distinguishes understanding past attitudes from vindicating them; it does not instruct us to adopt those attitudes or their moral vocabulary."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "questionId": 10102,
+      "letter": "A",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "choices",
+        0,
+        "explanation"
+      ],
+      "before": "While both passages allude to people who have studied the historical development of plagiarism, neither of these passages do that.\n\nThey both spend more time alerting the reader to the potential danger of studying the historical development of plagiarism. They're worried that the people who **do** trace the historical development will end up making plagiarism seem like an arbitrary term, rather than a moral failing.",
+      "after": "The passages discuss ways of studying the history of plagiarism, but neither primarily traces the idea through a sequence of historical developments. Passage A criticizes a particular approach; Passage B defends careful historical reconstruction while distinguishing it from moral endorsement. Do not treat B as warning against historical study itself."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "questionId": 10102,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "Both passages are calling out the problem of approaching plagiarism by considering its myriad meanings and interpretations through the ages.\n\nA point made in both passages was, \"If you get too relativistic about *plagiarism*, then you risk losing an essential piece of how we should think about it:",
+      "after": "Passage A finds fault with an approach that reduces moral distinctions to expressions of power. Passage B agrees that this reduction is mistaken and criticizes projecting modern ideologies onto past controversies, while also finding fault with using bad history to discredit historical inquiry itself. Both criticize ways of approaching the topic. B does not reject studying changing historical meanings."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "questionId": 10102,
+      "letter": "C",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        2,
+        "choices",
+        2,
+        "explanation"
+      ],
+      "before": "Passage A talks about Rosenthal's scholarly attitude towards plagiarism, and then it pivots to the author's view.\n\nThere isn't any shift in how scholars view plagiarism that's addressed in passage A.\n\nPassage B never talks about scholars at all, other than Christopher Ricks. So it also has no discussion of how scholars have shifted their attitudes in regards to plagiarism.",
+      "after": "The passages evaluate scholarly approaches, rather than primarily charting changes in scholars' attitudes over time. Passage A contrasts Rosenthal's approach with Ricks's criticism. Passage B discusses Ricks and acknowledges shoddy historical scholarship, so it is incorrect to say it mentions no other scholarship. Its central purpose is to distinguish sound historical reconstruction from the flawed approaches it criticizes, not to trace a chronological shift in scholarly attitudes."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "questionId": 10105,
+      "letter": "A",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        0,
+        "explanation"
+      ],
+      "before": "Passage A does not claim Rosenthal concludes political history must avoid moral issues. The critique is that her approach collapses moral distinctions, not that she excludes morality.",
+      "after": "Ricks does criticize the exclusion of moral considerations in Passage A, paragraph 2. But the question asks for the answer to the question about the differences between plagiarism, imitation, and adaptation, raised in paragraph 1. This choice addresses a different part of his criticism."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "questionId": 10105,
+      "letter": "B",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        1,
+        "explanation"
+      ],
+      "before": "This is supported in the second and third paragraphs of Passage A, where Ricks argues Rosenthal's approach dangerously erases the distinctions between plagiarism, imitation, and adaptation.",
+      "after": "Passage A, paragraph 1 gives this answer directly: Ricks says the required postmodern answer is that there is no difference between plagiarism, imitation, adaptation, repetition, and originality, apart from the use of power to label disliked work plagiarism."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "questionId": 10105,
+      "letter": "D",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        3,
+        "explanation"
+      ],
+      "before": "Passage A attributes the \"fluidity\" observation to Rosenthal's historical approach but does not present it as the inevitable answer to her central question.",
+      "after": "The observation about fluidity in applying the charge of plagiarism appears in Passage B, paragraph 1. It is not Passage A's stated answer to the question raised in Rosenthal's book."
+    },
+    {
+      "preptest": 158,
+      "passageId": 1682,
+      "questionId": 10105,
+      "letter": "E",
+      "path": [
+        "passages",
+        2,
+        "questions",
+        5,
+        "choices",
+        4,
+        "explanation"
+      ],
+      "before": "This idea about \"bad history\" is not presented in Passage A as Rosenthal's answer to any question. It mischaracterizes the focus of Passage A's critique.",
+      "after": "This is Kewes's point in Passage B, paragraph 3. It is not Passage A's answer to the question about the differences between plagiarism, imitation, and adaptation."
+    }
+  ],
+  "baselineCommit": "94e76565b7b7c7c3924d2caa4a0dd8cdf94271d2"
+}

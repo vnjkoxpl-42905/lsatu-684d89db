@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RcExplanationBlocks } from './RcExplanationBlocks';
+import { RcExplanationMedia } from './RcExplanationMedia';
 import type { RcLetter, RcQuestion } from '../lib/rcTypes';
 
 /**
@@ -84,6 +85,7 @@ export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, ac
           </button>
         </div>
       )}
+      {question.explanationMedia?.length ? <RcExplanationMedia media={question.explanationMedia} /> : null}
     </div>
   );
 }

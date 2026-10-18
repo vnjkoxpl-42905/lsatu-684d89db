@@ -2,6 +2,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { RcPassageSummary } from './RcPassageSummary';
 describe('RC passage summary source changes', () => {
+  it('keeps a legacy video unavailable until accessibility assets exist and preserves the prose', () => {
+    const view = render(<RcPassageSummary summaries={{ standard: 'https://assets.example.test/explanation.mp4\n\nWritten summary remains readable.', brief: null, anotherWay: null }} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Show passage summary' }));
+    expect(screen.getByText('Written summary remains readable.')).toBeInTheDocument();
+    expect(screen.getByText(/Media explanation unavailable/)).toHaveTextContent('transcript and captions');
+    expect(view.container.querySelector('video')).toBeNull();
+    expect(screen.queryByText('https://assets.example.test/explanation.mp4')).toBeNull();
+  });
   it('announces absent prose instead of rendering an unexplained gap', () => {
     render(<RcPassageSummary summaries={{ standard: '  ', brief: null, anotherWay: null }} />);
     expect(screen.getByText(/No passage summary has been authored/)).toBeInTheDocument();
