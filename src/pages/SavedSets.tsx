@@ -205,17 +205,18 @@ export default function SavedSets() {
                         size="sm"
                         variant="outline"
                         onClick={() => setInspectingId(set.id)}
+                        aria-label={`View questions in ${set.name}`}
                         disabled={!user || set.user_id !== user.id}
                         className="min-h-11 gap-1.5"
                       >
-                        <Eye className="h-3.5 w-3.5" aria-hidden /> Inspect
+                        <Eye className="h-3.5 w-3.5" aria-hidden /> View questions
                       </Button>
                       <Button
                         size="sm"
                         onClick={() => launch(set.id, set.question_ids)}
-                        className="gap-1.5"
+                        className="min-h-11 gap-1.5"
                       >
-                        <Play className="h-3.5 w-3.5" aria-hidden /> Launch
+                        <Play className="h-3.5 w-3.5" aria-hidden /> Start drill
                       </Button>
                       <Button
                         size="icon"
@@ -254,9 +255,9 @@ export default function SavedSets() {
       <Dialog open={!!inspectingSet} onOpenChange={(open) => !open && setInspectingId(null)}>
         <DialogContent className="max-w-3xl max-h-[85vh] flex flex-col overflow-hidden [&>button]:right-1 [&>button]:top-1 [&>button]:flex [&>button]:h-11 [&>button]:w-11 [&>button]:items-center [&>button]:justify-center">
           <DialogHeader className="pr-10">
-            <DialogTitle>Inspect {inspectingSet?.name}</DialogTitle>
+            <DialogTitle>{inspectingSet?.name}</DialogTitle>
             <DialogDescription>
-              These are the exact questions saved in this set, in order. Inspecting does not start a drill or record practice.
+              Your saved questions, in order.
             </DialogDescription>
           </DialogHeader>
           {questionsLoading ? (

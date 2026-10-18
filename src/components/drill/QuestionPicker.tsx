@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import './lr-builder.css';
 import {
   parseSpec,
   parseExactRefs,
@@ -105,36 +106,22 @@ const ALL_DIFFICULTIES = [1, 2, 3, 4, 5] as const;
  * Type must clear a ~92px badge, so 128 is its floor, not a preference.
  */
 const COL = {
-  select: 56,
-  pt: 60,
-  sectionQ: 76,
+  select: 48,
+  pt: 84,
+  sectionQ: 104,
   type: 128,
-  level: 60,
-  attempts: 60,
+  level: 92,
+  attempts: 84,
 } as const;
 
-const FIXED_COLS_WIDTH = 440; // sum of COL
+const FIXED_COLS_WIDTH = Object.values(COL).reduce((sum, width) => sum + width, 0);
 const STEM_MIN_WIDTH = 204;
 
 /**
  * Narrowest the table may get before it scrolls rather than crushing the stem.
  */
-const TABLE_MIN_WIDTH = FIXED_COLS_WIDTH + STEM_MIN_WIDTH; // 644
+const TABLE_MIN_WIDTH = FIXED_COLS_WIDTH + STEM_MIN_WIDTH;
 
-/**
- * Container width at which the summary rail moves beside the table.
- *
- * Derived from measurement, and the measurement is the whole point. The
- * container is capped by `.drill-observatory-canvas` (max-width 1140) less the
- * launcher's 56px of padding, so it can never exceed ~1084px — and on a 1440px
- * laptop it is only ~1008px, because the canvas is viewport-constrained well
- * before its max-width. The old 1140px threshold was above even the ceiling,
- * which is why the rail never once appeared beside the table.
- *
- * 644 + 320 + 16 = 980 fits inside 1008, so the split now engages on a 1440px
- * screen. Keep the `@[980px]` utilities below aligned with these dimensions;
- * Tailwind needs the literal at build time.
- */
 const reasoningTypeLabel = (value: string): string => REASONING_TYPE_LABELS[value] ?? value;
 
 /**
@@ -142,9 +129,8 @@ const reasoningTypeLabel = (value: string): string => REASONING_TYPE_LABELS[valu
  * practice-set path (fixed queue, stopwatch, optional Show Answer, results at
  * the end). The builder has no Test or timed choice, so it claims none.
  */
-const LR_SET_MODE_LABEL = 'Training set, not a timed test';
 const LR_SET_MODE_DETAIL =
-  'No time limit; a clock records your time. Answers stay hidden unless you choose Show Answer, and results come at the end.';
+  'No time limit. Your time is recorded. Reveal answers when you choose, or review them after finishing.';
 
 function getSearchMode(value: string): 'text' | 'exact' | 'range' {
   const text = value.trim();
@@ -165,6 +151,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   // Filter state
   const [filters, setFilters] = useState<FilterState>(() => createEmptyLRDrillFilters());
   const [discoverySearch, setDiscoverySearch] = useState('');
+  const [specificQuestionsOpen, setSpecificQuestionsOpen] = useState(false);
+  const [moreFiltersOpen, setMoreFiltersOpen] = useState(false);
   
   // Selection state
   const [selectedQids, setSelectedQids] = useState<Set<string>>(new Set());
@@ -193,6 +181,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   /* Set synchronously on launch: a double click lands before the parent
      navigates away, and each call would start its own run. */
   const launchingRef = useRef(false);
+  const viewQuestionsRef = useRef<HTMLButtonElement>(null);
+  const pendingPreviewFocusRef = useRef(false);
+  const pendingEditFocusRef = useRef(false);
+  const questionSearchRef = useRef<HTMLInputElement>(null);
 
   // Drawer state — single qid open at a time
   const [drawerQid, setDrawerQid] = useState<string | null>(null);
@@ -505,15 +497,27 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     );
     if (!sample) {
       toast({
-        title: "This set needs an adjustment",
+        title: "Adjust your drill",
         description: generateHint ?? "Check the selected questions and filters.",
         variant: "destructive",
       });
       return;
     }
     launchingRef.current = false;
+    pendingPreviewFocusRef.current = true;
     setPreviewSnapshot({ key: compositionKey, qids: sample.map((q) => q.qid) });
   };
+
+  useEffect(() => {
+    if (specificQuestionsOpen && pendingEditFocusRef.current) {
+      pendingEditFocusRef.current = false;
+      questionSearchRef.current?.focus();
+    }
+    if (previewedQids && pendingPreviewFocusRef.current) {
+      pendingPreviewFocusRef.current = false;
+      viewQuestionsRef.current?.focus();
+    }
+  }, [previewedQids, specificQuestionsOpen]);
 
   // Convert the current preview into an editable selection (qids land in selectedQids)
   const handleEditPreview = () => {
@@ -533,7 +537,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       previewQuestions.some((question) => !question) ||
       new Set(previewedQids).size !== previewQuestions.length
     ) {
-      toast({ title: 'Preview the set first', description: 'Create a set preview before starting.', variant: 'destructive' });
+      toast({ title: 'Preview your drill first', description: 'Preview your questions before starting.', variant: 'destructive' });
       return;
     }
     const questionsToUse = previewQuestions as LRQuestion[];
@@ -592,60 +596,6 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   };
   
   // Before preview, these are candidate-pool statistics, not a promised mix.
-  const summary = useMemo(() => {
-    let mode: 'preview' | 'pool' = 'pool';
-    let source: LRQuestion[];
-    if (previewedQids && previewedQids.length > 0) {
-      mode = 'preview';
-      source = previewedQids
-        .map(qid => questionBank.getQuestion(qid))
-        .filter(Boolean) as LRQuestion[];
-    } else {
-      source = [
-        ...Array.from(selectedQids).map((qid) => questionBank.getQuestion(qid)).filter(Boolean) as LRQuestion[],
-        ...filteredQuestions.filter((question) => !selectedQids.has(question.qid)),
-      ];
-    }
-
-    const qtypeCounts = new Map<string, number>();
-    const diffBucket = { easy: 0, med: 0, hard: 0 };
-    let minPT = Infinity;
-    let maxPT = -Infinity;
-    let attempted = 0;
-
-    for (const q of source) {
-      qtypeCounts.set(q.qtype, (qtypeCounts.get(q.qtype) || 0) + 1);
-      if (q.difficulty <= 2) diffBucket.easy++;
-      else if (q.difficulty === 3) diffBucket.med++;
-      else diffBucket.hard++;
-      if (q.pt < minPT) minPT = q.pt;
-      if (q.pt > maxPT) maxPT = q.pt;
-      if ((attemptCounts.get(q.qid) || 0) > 0) attempted++;
-    }
-
-    const qtypeMix = Array.from(qtypeCounts.entries())
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 4)
-      .map(([type, n]) => `${n} ${type}`)
-      .join(' · ');
-
-    return {
-      total: source.length,
-      qtypeMix: qtypeMix || 'None',
-      difficulty: `Easy ${diffBucket.easy} · Med ${diffBucket.med} · Hard ${diffBucket.hard}`,
-      ptRange:
-        source.length === 0
-          ? 'None'
-          : minPT === maxPT
-          ? `PT ${minPT}`
-          : `PT ${minPT}–${maxPT}`,
-      attempted,
-      unseen: source.length - attempted,
-      mode,
-      isFromPreview: mode === 'preview',
-    };
-  }, [selectedQids, previewedQids, filteredQuestions, attemptCounts]);
-
   const hasPreview = !!previewedQids && previewedQids.length > 0;
 
   // Get first 6-7 words of stem
@@ -655,261 +605,30 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   };
   
   return (
-    <div className="@container flex flex-col h-full">
-      {/* Header */}
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <div className="min-w-0">
-          <h1 className="text-3xl font-bold tracking-[-0.025em]">Set up an LR drill</h1>
-        </div>
-        <Button variant="ghost" onClick={onCancel} className="gap-2">
-          <ArrowLeft className="h-4 w-4" aria-hidden /> Back to practice options
-        </Button>
-      </div>
-
-      {/* Container query, not `lg:` — this picker no longer owns a full page.
-          It renders inside the drill hub's deck, so the viewport can be wide
-          while the panel is not. Keying the split to the viewport put a
-          `1fr + 320px` grid inside an ~795px box and the table column, whose
-          min-content floor is the table itself, overflowed and got clipped by
-          the deck's `overflow: hidden`. `minmax(0,1fr)` lets that column
-          shrink instead of blowing the grid out.
-
-          THE THRESHOLD MUST BE REACHABLE. The previous value was 1140px, but
-          this container is capped by the classroom shell at ~1084px, so the
-          query never matched at any viewport size. The summary rail — the
-          whole live-feedback loop plus the primary CTA — always rendered
-          full-width *below* a 25-row table, ~2400px down a 3400px document.
-          It was never once seen beside the table in production.
-
-          980px is derived, not guessed — see SPLIT_AT. The table was narrowed
-          to reach it; its min-content used to be ~880px, which no threshold
-          could have fitted inside a container that peaks at ~1084px and is only
-          ~1008px on a 1440px laptop. Above 980 the table keeps its 644px floor;
-          below, the rail stacks and the table scrolls inside its own wrapper. */}
-      <div className="flex-1 min-h-0 @[980px]:grid @[980px]:grid-cols-[minmax(0,1fr)_320px] @[980px]:gap-4">
-        <div className="flex flex-col min-h-0">
-      {/* Filter Bar */}
-      <Card className="mb-5 overflow-visible border-border/70 bg-card/80 shadow-[0_16px_40px_rgba(0,0,0,0.18)]">
-        <div>
-          <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1" aria-live="polite">
-              <p className="text-lg font-semibold tracking-[-0.015em]">Choose your questions</p>
-              <p className="text-sm tabular-nums text-muted-foreground">
-                {filteredQuestions.length.toLocaleString()} matching {filteredQuestions.length === 1 ? 'question' : 'questions'}
-              </p>
-            </div>
-            {hasAnyFilter && (
-              <Button variant="ghost" size="sm" className="h-9 px-3" onClick={clearAllFilters}>
-                Clear all
-              </Button>
-            )}
+    <div className="lr-builder @container flex flex-col h-full">
+      <header className="lr-builder-header">
+        <h1>Build an LR drill</h1>
+        <Button variant="ghost" onClick={onCancel} className="gap-2"><ArrowLeft className="h-4 w-4" aria-hidden /> Back to practice</Button>
+      </header>
+      <div className="lr-builder-layout">
+        <Card className="lr-builder-filters">
+          <div className="lr-builder-section-heading">
+            <h2>Choose your questions</h2>
+            {hasAnyFilter && <Button variant="ghost" size="sm" onClick={clearAllFilters}>Clear filters</Button>}
           </div>
-          {/* One field searches the table and accepts pasted references. The
-              address controls below provide a visual route to exact picks. */}
-          <div className="space-y-4 border-t border-border/60 px-5 py-4">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-sm font-semibold text-foreground">Find a question</h2>
-                <span className="text-xs tabular-nums text-muted-foreground">{selectedQids.size} added to set</span>
-              </div>
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-4 top-3.5 h-4 w-4 text-white/65" aria-hidden />
-                <Input
-                  type="search"
-                  placeholder="Find a question"
-                  value={discoverySearch}
-                  onChange={(event) => {
-                    setDiscoverySearch(event.target.value);
-                    setSearchIssues([]);
-                    setCurrentPage(1);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' && searchMode !== 'text') {
-                      event.preventDefault();
-                      applySearchInput();
-                    }
-                  }}
-                  className="drill-setup-search h-11 pl-11 pr-11 text-sm"
-                  aria-label="Find questions by text or PrepTest reference"
-                  aria-invalid={searchIssues.length > 0}
-                  aria-describedby={searchIssues.length > 0 ? 'search-errors' : undefined}
-                />
-                {discoverySearch && (
-                  <button
-                    type="button"
-                    className="absolute right-1 top-0.5 inline-flex h-10 w-10 items-center justify-center rounded-full text-white/75 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                    onClick={() => { setDiscoverySearch(''); setSearchIssues([]); }}
-                    aria-label="Clear question search"
-                  >
-                    <X className="h-4 w-4" aria-hidden />
-                  </button>
-                )}
-              </div>
-              {searchMode !== 'text' && (
-                <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
-                  <span>{searchMode === 'exact' ? 'Add these exact questions to your set.' : 'Use this range to narrow the question bank.'}</span>
-                  <Button type="button" variant="outline" size="sm" onClick={applySearchInput}>
-                    {searchMode === 'exact'
-                      ? exactSearch?.ok && exactSearch.refs.length === 1 ? 'Add question' : 'Add questions'
-                      : 'Filter bank'}
-                  </Button>
-                </div>
-              )}
-              {searchIssues.length > 0 && (
-                <div id="search-errors" role="alert" className="space-y-1 text-xs text-destructive">
-                  {searchIssues.map((issue, index) => <p key={`${issue.token}-${index}`}>{issue.message}</p>)}
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-2 border-t border-border/50 pt-4">
-              <p className="text-xs text-muted-foreground">Check a search result below, paste question IDs above, or choose by PrepTest, section, and number.</p>
-              <div className="grid min-w-0 gap-2 sm:grid-cols-3">
-            {/* PrepTest Filter */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" aria-label={`PrepTest selector, ${filters.prepTests.length ? filters.prepTests.join(', ') : 'any'}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  {filters.prepTests.length === 1 ? `PT ${filters.prepTests[0]}` : `PrepTest${filters.prepTests.length > 1 ? `s (${filters.prepTests.length})` : ''}`}
-                  <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              {/* A chip grid, not a checkbox column. Sixty PTs in a 400px-tall
-                  scrolling list showed about ten at a time, so picking a spread
-                  meant scrolling and hunting. Five across fits the whole bank
-                  in one glance. */}
-              <PopoverContent className="drill-observatory-launcher-panel w-[344px]" align="start">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-2 pb-1">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      PrepTests
-                    </span>
-                    {/* One action, not All + Clear. An empty selection already
-                        means every PT, so "All" and "Clear" would do the same
-                        thing under different names. */}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 px-2 text-xs"
-                      disabled={filters.prepTests.length === 0}
-                      onClick={() => clearArrayFilter('prepTests')}
-                    >
-                      Any PT
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-5 gap-1.5 max-h-[320px] overflow-y-auto pr-1">
-                    {visiblePTs.map(pt => {
-                      const active = filters.prepTests.includes(pt);
-                      const count = contextualCounts.prepTests.get(pt) ?? 0;
-                      return (
-                        <button
-                          key={pt}
-                          id={`pt-${pt}`}
-                          type="button"
-                          role="checkbox"
-                          aria-checked={active}
-                          aria-label={`PT${pt}, ${count} questions`}
-                          title={`PT${pt} · ${count} questions`}
-                          onClick={() => toggleFilter('prepTests', pt)}
-                          className={cn(
-                            'h-9 rounded-md border text-xs tabular-nums transition-colors',
-                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                            active
-                              ? 'border-primary bg-primary text-primary-foreground font-semibold'
-                              : count === 0
-                              ? 'border-border/40 text-muted-foreground/40'
-                              : 'border-border text-foreground hover:bg-accent',
-                          )}
-                        >
-                          {pt}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
-
-            {/* Section Filter (moved earlier per Item D) */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" aria-label={`Section selector, ${filters.sections.length ? filters.sections.join(', ') : 'any'}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  {filters.sections.length === 1 ? `Section ${filters.sections[0]}` : `Section${filters.sections.length > 1 ? `s (${filters.sections.length})` : ''}`}
-                  <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="drill-observatory-launcher-panel w-56" align="start">
-                <div className="space-y-2">
-                  <FilterMenuHeader
-                    title="Select Sections"
-                    activeCount={filters.sections.length}
-                    onClear={() => clearArrayFilter('sections')}
-                  />
-                  {visibleSections.map((s) => (
-                    <div key={s} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`section-${s}`}
-                        checked={filters.sections.includes(s)}
-                        onCheckedChange={() => toggleFilter('sections', s)}
-                      />
-                      <label htmlFor={`section-${s}`} className="text-sm cursor-pointer flex-1">
-                        Section {s} ({contextualCounts.sections.get(s) ?? 0})
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
-
-            <Select
-              value=""
-              disabled={addressNumbers.length === 0}
-              onValueChange={(value) => {
-                const question = questionByAddress.get(`${filters.prepTests[0]}.${filters.sections[0]}.${value}`);
-                if (question) setSelectedQids((previous) => new Set([...previous, question.qid]));
-              }}
-            >
-              <SelectTrigger className="h-11 w-full text-sm" aria-label="Question number">
-                <SelectValue placeholder="Question number" />
-              </SelectTrigger>
-              <SelectContent className="drill-observatory-launcher-panel">
-                {addressNumbers.map((number) => (
-                  <SelectItem key={number} value={String(number)}>Question {number}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-              </div>
-              {selectedQids.size > 0 && (
-                <div className="flex flex-wrap items-center gap-2 pt-1" aria-label="Questions added to the set">
-                  {Array.from(selectedQids).map((qid) => {
-                    const question = questionBank.getQuestion(qid);
-                    if (!question) return null;
-                    return (
-                      <button key={qid} type="button" className="inline-flex h-8 items-center gap-1 rounded-md border border-border px-2 text-xs hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground" onClick={() => toggleQuestion(qid)} aria-label={`Remove PT${question.pt} section ${question.section} question ${question.qnum}`}>
-                        PT{question.pt} · S{question.section} · Q{question.qnum}<X className="h-3 w-3" aria-hidden />
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-
-            <div className="space-y-3 border-t border-border/50 pt-4">
-              <h2 className="text-sm font-semibold text-foreground">Narrow the rest</h2>
-              <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2">
+          <div className="lr-builder-primary-filters">
             {/* Question Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  Question Type {filters.questionTypes.length > 0 && `(${filters.questionTypes.length})`}
+                  Question type {filters.questionTypes.length > 0 && `(${filters.questionTypes.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="drill-observatory-launcher-panel w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
+              <PopoverContent className="drill-observatory-launcher-panel lr-builder-panel w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
                 <div className="space-y-3">
                   <FilterMenuHeader
-                    title="Select Question Types"
+                    title="Question types"
                     activeCount={filters.questionTypes.length}
                     onClear={() => clearArrayFilter('questionTypes')}
                   />
@@ -918,7 +637,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <div className="relative">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Search types..."
+                      placeholder="Search types…"
+                      aria-label="Search question types"
                       value={qtypeSearch}
                       onChange={(e) => setQtypeSearch(e.target.value)}
                       className="pl-8 h-9"
@@ -989,25 +709,61 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </PopoverContent>
             </Popover>
             
+            {/* Difficulty Filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
+                  Difficulty {filters.difficulties.length > 0 && `(${filters.difficulties.length})`}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="drill-observatory-launcher-panel lr-builder-panel w-64" align="start">
+                <div className="space-y-2">
+                  <FilterMenuHeader
+                    title="Difficulty"
+                    activeCount={filters.difficulties.length}
+                    onClear={() => clearArrayFilter('difficulties')}
+                  />
+                  {visibleDifficulties.map(diff => (
+                    <div key={diff} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`diff-${diff}`}
+                        checked={filters.difficulties.includes(diff)}
+                        onCheckedChange={() => toggleFilter('difficulties', diff)}
+                      />
+                      <label htmlFor={`diff-${diff}`} className="text-sm cursor-pointer flex-1">
+                        Level {diff} ({contextualCounts.difficulties.get(diff) ?? 0})
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+          <button type="button" className="lr-builder-disclosure" aria-expanded={moreFiltersOpen} aria-controls="lr-more-filters" onClick={() => setMoreFiltersOpen((open) => !open)}>
+            <span>More filters{filters.reasoningTypes.length + filters.questionFeatures.length > 0 ? ` (${filters.reasoningTypes.length + filters.questionFeatures.length})` : ''}</span><ChevronDown className="h-4 w-4" aria-hidden />
+          </button>
+          {moreFiltersOpen && <div id="lr-more-filters" className="lr-builder-primary-filters">
             {/* Reasoning Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  Reasoning Types {filters.reasoningTypes.length > 0 && `(${filters.reasoningTypes.length})`}
+                  Reasoning {filters.reasoningTypes.length > 0 && `(${filters.reasoningTypes.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="drill-observatory-launcher-panel w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
+              <PopoverContent className="drill-observatory-launcher-panel lr-builder-panel w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
                 <div className="space-y-3">
                   <FilterMenuHeader
-                    title="Select Reasoning Types"
+                    title="Reasoning"
                     activeCount={filters.reasoningTypes.length}
                     onClear={() => clearArrayFilter('reasoningTypes')}
                   />
                   <div className="relative">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Search..."
+                      placeholder="Search reasoning…"
+                      aria-label="Search reasoning"
                       value={reasoningSearch}
                       onChange={(e) => setReasoningSearch(e.target.value)}
                       className="pl-8 h-9"
@@ -1050,21 +806,22 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  Question Features {filters.questionFeatures.length > 0 && `(${filters.questionFeatures.length})`}
+                  Question features {filters.questionFeatures.length > 0 && `(${filters.questionFeatures.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="drill-observatory-launcher-panel w-96 max-h-[520px] flex flex-col z-[1000] bg-popover" align="start">
+              <PopoverContent className="drill-observatory-launcher-panel lr-builder-panel w-96 max-h-[520px] flex flex-col z-[1000] bg-popover" align="start">
                 <div className="space-y-3">
                   <FilterMenuHeader
-                    title="Select Question Features"
+                    title="Question features"
                     activeCount={filters.questionFeatures.length}
                     onClear={() => clearArrayFilter('questionFeatures')}
                   />
                   <div className="relative">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Search features..."
+                      placeholder="Search features…"
+                      aria-label="Search question features"
                       value={featureSearch}
                       onChange={(e) => setFeatureSearch(e.target.value)}
                       className="pl-8 h-9"
@@ -1131,41 +888,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </PopoverContent>
             </Popover>
 
-            {/* Difficulty Filter */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  Levels {filters.difficulties.length > 0 && `(${filters.difficulties.length})`}
-                  <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="drill-observatory-launcher-panel w-64" align="start">
-                <div className="space-y-2">
-                  <FilterMenuHeader
-                    title="Select Levels"
-                    activeCount={filters.difficulties.length}
-                    onClear={() => clearArrayFilter('difficulties')}
-                  />
-                  {visibleDifficulties.map(diff => (
-                    <div key={diff} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`diff-${diff}`}
-                        checked={filters.difficulties.includes(diff)}
-                        onCheckedChange={() => toggleFilter('difficulties', diff)}
-                      />
-                      <label htmlFor={`diff-${diff}`} className="text-sm cursor-pointer flex-1">
-                        Level {diff} ({contextualCounts.difficulties.get(diff) ?? 0})
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
-            
-              </div>
-            </div>
-          </div>
-          
+          </div>}
           {/* Active Filters */}
           {(filters.prepTests.length > 0 ||
             filters.questionTypes.length > 0 ||
@@ -1240,11 +963,235 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 </Badge>
               )}
             </div>
-          )}
-        </div>
-      </Card>
-      
-      <>
+          )}        </Card>
+        <aside className="lr-builder-summary" data-testid="summary-rail" aria-label="Your drill">
+          <Card className="lr-builder-summary-card">
+            <h2>Your drill{hasPreview ? ' is ready' : ''}</h2>
+            <div className="lr-builder-count">
+              <label htmlFor="drill-set-size">Questions</label>
+              <Select value={setSize.toString()} onValueChange={(value) => setSetSize(Number(value))}>
+                <SelectTrigger id="drill-set-size" className="w-24" aria-label="Number of questions"><SelectValue /></SelectTrigger>
+                <SelectContent className="drill-observatory-launcher-panel lr-builder-panel">
+                  {setSizeOptions.map((number) => <SelectItem key={number} value={String(number)}>{number}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <p className="lr-builder-pool" role="status">
+              {filteredQuestions.length.toLocaleString()} matching {filteredQuestions.length === 1 ? 'question' : 'questions'}
+              {selectedQids.size > 0 && <span className="block mt-1">{selectedQids.size} added by you · {remainingPlaces} from filters</span>}
+            </p>
+            {selectedQids.size > 0 && <Button variant="ghost" size="sm" onClick={clearSelection}>Clear added questions</Button>}
+            {selectedOutsideFilters > 0 && <p className="lr-builder-note">Your {selectedOutsideFilters} added {selectedOutsideFilters === 1 ? 'question is' : 'questions are'} kept outside these filters.</p>}
+            {previewIsStale && <p className="lr-builder-note" role="status">Your drill changed, so the earlier preview was cleared. Preview it again before starting.</p>}
+            <p className="lr-builder-note" data-testid="lr-set-mode">{LR_SET_MODE_DETAIL}</p>
+            {hasPreview ? (
+              <div className="lr-builder-actions">
+                <Button onClick={handleLaunch} className="w-full">Start drill ({previewedQids!.length})</Button>
+                <Button ref={viewQuestionsRef} type="button" variant="outline" className="w-full" onClick={() => setPreviewDialogOpen(true)}>View questions ({previewedQids!.length})</Button>
+                <div className="lr-builder-secondary-actions">
+                  <Button variant="ghost" onClick={handleGeneratePreview}>Choose again</Button>
+                  <Button variant="ghost" onClick={() => { setSaveDialogName(''); setSaveDialogOpen(true); }}><Bookmark className="h-4 w-4" aria-hidden /> Save set</Button>
+                </div>
+                <Button variant="ghost" onClick={() => { pendingEditFocusRef.current = true; handleEditPreview(); setSpecificQuestionsOpen(true); }}>Edit questions</Button>
+              </div>
+            ) : <Button onClick={handleGeneratePreview} disabled={!canGenerate} className="w-full">Preview drill ({setSize})</Button>}
+            {generateHint && <p className="lr-builder-note" role="status">{generateHint}</p>}
+          </Card>
+        </aside>
+        <section className="lr-builder-specific">
+          <button type="button" className="lr-builder-disclosure" aria-expanded={specificQuestionsOpen} aria-controls="lr-specific-questions" onClick={() => setSpecificQuestionsOpen((open) => !open)}>
+            <span>Add specific questions{selectedQids.size > 0 ? ` (${selectedQids.size} added)` : ''}</span><ChevronDown className="h-4 w-4" aria-hidden />
+          </button>
+          {specificQuestionsOpen && <div id="lr-specific-questions" className="lr-builder-specific-content">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-sm font-semibold text-foreground">Find questions</h2>
+                <span className="text-xs tabular-nums text-muted-foreground">{selectedQids.size} added by you</span>
+              </div>
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-4 top-3.5 h-4 w-4 text-white/65" aria-hidden />
+                <Input
+                  ref={questionSearchRef}
+                  type="search"
+                  placeholder="Find a question"
+                  value={discoverySearch}
+                  onChange={(event) => {
+                    setDiscoverySearch(event.target.value);
+                    setSearchIssues([]);
+                    setCurrentPage(1);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' && searchMode !== 'text') {
+                      event.preventDefault();
+                      applySearchInput();
+                    }
+                  }}
+                  className="drill-setup-search h-11 pl-11 pr-11 text-sm"
+                  aria-label="Find questions by text or PrepTest reference"
+                  aria-invalid={searchIssues.length > 0}
+                  aria-describedby={searchIssues.length > 0 ? 'search-errors' : undefined}
+                />
+                {discoverySearch && (
+                  <button
+                    type="button"
+                    className="absolute right-0 top-0 inline-flex h-11 w-11 items-center justify-center rounded-full text-white/75 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    onClick={() => { setDiscoverySearch(''); setSearchIssues([]); }}
+                    aria-label="Clear question search"
+                  >
+                    <X className="h-4 w-4" aria-hidden />
+                  </button>
+                )}
+              </div>
+              {searchMode !== 'text' && (
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+                  <span>{searchMode === 'exact' ? 'Add these exact questions to your set.' : 'Use this range to narrow the question bank.'}</span>
+                  <Button type="button" variant="outline" size="sm" onClick={applySearchInput}>
+                    {searchMode === 'exact'
+                      ? exactSearch?.ok && exactSearch.refs.length === 1 ? 'Add question' : 'Add questions'
+                      : 'Filter bank'}
+                  </Button>
+                </div>
+              )}
+              {searchIssues.length > 0 && (
+                <div id="search-errors" role="alert" className="space-y-1 text-xs text-destructive">
+                  {searchIssues.map((issue, index) => <p key={`${issue.token}-${index}`}>{issue.message}</p>)}
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-2 border-t border-border/50 pt-4">
+              <p className="text-xs text-muted-foreground">Search by words or choose a PrepTest and section, then add a question.</p>
+              <div className="grid min-w-0 gap-2 sm:grid-cols-3">
+            {/* PrepTest Filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" aria-label={`PrepTest selector, ${filters.prepTests.length ? filters.prepTests.join(', ') : 'any'}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
+                  {filters.prepTests.length === 1 ? `PT ${filters.prepTests[0]}` : `PrepTest${filters.prepTests.length > 1 ? `s (${filters.prepTests.length})` : ''}`}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              {/* A chip grid, not a checkbox column. Sixty PTs in a 400px-tall
+                  scrolling list showed about ten at a time, so picking a spread
+                  meant scrolling and hunting. Five across fits the whole bank
+                  in one glance. */}
+              <PopoverContent className="drill-observatory-launcher-panel lr-builder-panel w-[344px]" align="start">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2 pb-1">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      PrepTests
+                    </span>
+                    {/* One action, not All + Clear. An empty selection already
+                        means every PT, so "All" and "Clear" would do the same
+                        thing under different names. */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 px-2 text-xs"
+                      disabled={filters.prepTests.length === 0}
+                      onClick={() => clearArrayFilter('prepTests')}
+                    >
+                      Any PT
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-5 gap-1.5 max-h-[320px] overflow-y-auto pr-1">
+                    {visiblePTs.map(pt => {
+                      const active = filters.prepTests.includes(pt);
+                      const count = contextualCounts.prepTests.get(pt) ?? 0;
+                      return (
+                        <button
+                          key={pt}
+                          id={`pt-${pt}`}
+                          type="button"
+                          role="checkbox"
+                          aria-checked={active}
+                          aria-label={`PT${pt}, ${count} questions`}
+                          title={`PT${pt} · ${count} questions`}
+                          onClick={() => toggleFilter('prepTests', pt)}
+                          className={cn(
+                            'h-9 rounded-md border text-xs tabular-nums transition-colors',
+                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                            active
+                              ? 'border-primary bg-primary text-primary-foreground font-semibold'
+                              : count === 0
+                              ? 'border-border/40 text-muted-foreground/40'
+                              : 'border-border text-foreground hover:bg-accent',
+                          )}
+                        >
+                          {pt}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            {/* Section Filter (moved earlier per Item D) */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" aria-label={`Section selector, ${filters.sections.length ? filters.sections.join(', ') : 'any'}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
+                  {filters.sections.length === 1 ? `Section ${filters.sections[0]}` : `Section${filters.sections.length > 1 ? `s (${filters.sections.length})` : ''}`}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="drill-observatory-launcher-panel lr-builder-panel w-56" align="start">
+                <div className="space-y-2">
+                  <FilterMenuHeader
+                    title="Sections"
+                    activeCount={filters.sections.length}
+                    onClear={() => clearArrayFilter('sections')}
+                  />
+                  {visibleSections.map((s) => (
+                    <div key={s} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`section-${s}`}
+                        checked={filters.sections.includes(s)}
+                        onCheckedChange={() => toggleFilter('sections', s)}
+                      />
+                      <label htmlFor={`section-${s}`} className="text-sm cursor-pointer flex-1">
+                        Section {s} ({contextualCounts.sections.get(s) ?? 0})
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            <Select
+              value=""
+              disabled={addressNumbers.length === 0}
+              onValueChange={(value) => {
+                const question = questionByAddress.get(`${filters.prepTests[0]}.${filters.sections[0]}.${value}`);
+                if (question) setSelectedQids((previous) => new Set([...previous, question.qid]));
+              }}
+            >
+              <SelectTrigger className="h-11 w-full text-sm" aria-label="Question number">
+                <SelectValue placeholder="Question number" />
+              </SelectTrigger>
+              <SelectContent className="drill-observatory-launcher-panel lr-builder-panel">
+                {addressNumbers.map((number) => (
+                  <SelectItem key={number} value={String(number)}>Question {number}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+              </div>
+              {selectedQids.size > 0 && (
+                <div className="flex flex-wrap items-center gap-2 pt-1" aria-label="Questions added to the set">
+                  {Array.from(selectedQids).map((qid) => {
+                    const question = questionBank.getQuestion(qid);
+                    if (!question) return null;
+                    return (
+                      <button key={qid} type="button" className="inline-flex h-8 items-center gap-1 rounded-md border border-border px-2 text-xs hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground" onClick={() => toggleQuestion(qid)} aria-label={`Remove PT${question.pt} section ${question.section} question ${question.qnum}`}>
+                        PT {question.pt} · Section {question.section} · Question {question.qnum}<X className="h-3 w-3" aria-hidden />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+
       {/* Results header — Item J: groups page-size with the table not the filters. */}
       <div className="mb-3 flex items-center justify-between gap-3 text-sm">
         <div className="text-muted-foreground">
@@ -1265,7 +1212,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           <SelectTrigger className="w-28 h-8 text-xs">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="drill-observatory-launcher-panel">
+          <SelectContent className="drill-observatory-launcher-panel lr-builder-panel">
             <SelectItem value="10">Show 10</SelectItem>
             <SelectItem value="25">Show 25</SelectItem>
             <SelectItem value="50">Show 50</SelectItem>
@@ -1275,7 +1222,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       </div>
 
       {/* Results Table */}
-      <Card className="flex-1 overflow-hidden flex flex-col mb-20">
+      <Card className="flex-1 overflow-hidden flex flex-col mb-0">
         <div className="flex-1 min-h-0 flex flex-col">
           {/* One scroller, not two. `Table` already wraps itself in an
               `overflow-auto` div, so the extra `overflow-x-auto` here meant two
@@ -1322,19 +1269,19 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     }}
                   />
                 </TableHead>
-                <TableHead>PT</TableHead>
+                <TableHead>PrepTest</TableHead>
                 {/* Sec and Q# merged. Two headers cost ~112px to show four
                     characters of data; one column shows the same as `2 · 14`. */}
-                <TableHead>S/Q</TableHead>
-                <TableHead>Stem</TableHead>
+                <TableHead>Section / question</TableHead>
+                <TableHead>Question</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead
                   title="1 = easiest · 5 = hardest. Blue / green / yellow / orange / red."
                   className="cursor-help"
                 >
-                  Lvl
+                  Difficulty
                 </TableHead>
-                <TableHead>Att</TableHead>
+                <TableHead>Attempts</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -1373,9 +1320,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     <TableCell className="py-0 text-sm">
                       {/* The column is the clamp now; a fixed max-width here
                           would stop the stem growing with the table. */}
-                      <span className="block truncate" title={q.questionStem}>
+                      <button type="button" className="block w-full truncate text-left" title={q.questionStem} aria-label={`Preview PT ${q.pt} section ${q.section} question ${q.qnum}`} onClick={(event) => { event.stopPropagation(); setDrawerQid(q.qid); }}>
                         {getStemPreview(q.questionStem)}
-                      </span>
+                      </button>
                     </TableCell>
                     <TableCell className="py-0">
                       <Badge
@@ -1437,256 +1384,12 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           </div>
         )}
       </Card>
-      </>
-
-        </div>
-
-        {/* Right rail — sticky summary.
-            Item G (Wave 4) — empty until a filter is applied, then renders
-            a tiered hierarchy: tier 1 composition headline (largest, gold),
-            tier 2 type + difficulty (body), tier 3 PT range + history (muted). */}
-        {/* Rail and tray are one decision, so they key off the same container
-            condition. They used to disagree — `lg:` on both — which meant a wide
-            viewport around a narrow panel could show both or neither. */}
-        <aside className="hidden @[980px]:block" data-testid="summary-rail">
-          <div className="sticky top-4">
-            <Card className="p-4 space-y-3">
-              <div className="font-semibold text-sm">{hasPreview ? 'Your set is ready' : 'Your set'}</div>
-
-              {/* No empty state here. The rail is the feedback loop, so it
-                  always shows real numbers — unfiltered, those describe the
-                  full bank, which is exactly what Generate would draw from. */}
-              {(
-                <>
-                  {/* Set size is the first thing to confirm before launching. */}
-                  <div className="rounded-md bg-primary/[0.06] border border-primary/15 px-3 py-3">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">
-                      {summary.isFromPreview ? 'Preview' : 'Set size'}
-                    </div>
-                    <div className="mt-1 text-2xl font-bold text-primary tabular-nums">
-                      {setSize} questions
-                    </div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">
-                      {selectedQids.size} guaranteed · {remainingPlaces} from filters
-                    </div>
-                  </div>
-                  <div className="text-xs text-muted-foreground" role="status">
-                    {availability.availableCount} available from filters for {remainingPlaces} remaining {remainingPlaces === 1 ? 'place' : 'places'}.
-                    {selectedOutsideFilters > 0 && ` ${selectedOutsideFilters} chosen ${selectedOutsideFilters === 1 ? 'question stays' : 'questions stay'} in the set outside these filters.`}
-                  </div>
-                  {previewIsStale && (
-                    <p className="text-xs text-foreground" role="status">
-                      Your set changed, so the earlier preview was cleared. Create a new preview to see the exact questions.
-                    </p>
-                  )}
-
-                  {/* Tier 2: type + difficulty */}
-                  <div className="space-y-2 text-xs">
-                    <div>
-                      <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1">
-                        {hasPreview ? 'Question types' : 'Available question types'}
-                      </div>
-                      <div className="font-medium text-foreground">{summary.qtypeMix}</div>
-                    </div>
-                    <div>
-                      <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1">
-                        {hasPreview ? 'Difficulty' : 'Available difficulty'}
-                      </div>
-                      <div className="font-medium text-foreground">{summary.difficulty}</div>
-                    </div>
-                  </div>
-
-                  {/* Tier 3: PT range + history */}
-                  <div className="space-y-1.5 text-[11px] text-muted-foreground pt-1 border-t border-border/60">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span>PT range</span>
-                      <span className="font-medium text-foreground/70 tabular-nums">{summary.ptRange}</span>
-                    </div>
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span>History</span>
-                      <span className="font-medium text-foreground/70 tabular-nums">
-                        {summary.attempted} attempted · {summary.unseen} unseen
-                      </span>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {hasPreview && previewedQids && (
-                <div className="pt-2 border-t space-y-1">
-                  <div className="text-xs text-muted-foreground">Preview</div>
-                  <ul className="text-xs space-y-0.5">
-                    {previewedQids.slice(0, 5).map((qid) => {
-                      const q = questionBank.getQuestion(qid);
-                      if (!q) return null;
-                      return (
-                        <li key={qid} className="flex items-baseline gap-2">
-                          <span className="font-medium tabular-nums">PT{q.pt}·Q{q.qnum}</span>
-                          <span className="text-muted-foreground truncate">
-                            {q.qtype} · L{q.difficulty}
-                          </span>
-                        </li>
-                      );
-                    })}
-                    {previewedQids.length > 5 && (
-                      <li className="text-muted-foreground italic">
-                        and {previewedQids.length - 5} more…
-                      </li>
-                    )}
-                  </ul>
-                  <Button type="button" variant="ghost" size="sm" className="w-full" onClick={() => setPreviewDialogOpen(true)}>
-                    Inspect all {previewedQids.length} questions
-                  </Button>
-                </div>
-              )}
-
-              <div className="pt-2 border-t space-y-1" data-testid="lr-set-mode">
-                <div className="text-xs font-semibold text-foreground">{LR_SET_MODE_LABEL}</div>
-                <p className="text-xs text-muted-foreground">{LR_SET_MODE_DETAIL}</p>
-              </div>
-
-              <div className="pt-2 border-t space-y-2">
-                <div className="flex items-center justify-between gap-2">
-                  <label className="text-xs text-muted-foreground">Set size</label>
-                  <Select
-                    value={setSize.toString()}
-                    onValueChange={(v) => setSetSize(parseInt(v))}
-                  >
-                    <SelectTrigger className="w-24 h-8">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="drill-observatory-launcher-panel">
-                      {setSizeOptions.map((n) => (
-                        <SelectItem key={n} value={n.toString()}>
-                          {n}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {hasPreview ? (
-                  <div className="space-y-2">
-                    <Button onClick={handleLaunch} className="w-full">
-                      Start this drill ({previewedQids!.length})
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setSaveDialogName('');
-                        setSaveDialogOpen(true);
-                      }}
-                      className="w-full gap-2"
-                    >
-                      <Bookmark className="h-3.5 w-3.5" aria-hidden /> Save set
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={handleGeneratePreview}
-                      className="w-full"
-                    >
-                      Create a different set
-                    </Button>
-                    <button
-                      type="button"
-                      onClick={handleEditPreview}
-                      className="text-xs text-muted-foreground hover:text-foreground underline w-full text-center"
-                    >
-                      Edit in table
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    <Button onClick={handleGeneratePreview} disabled={!canGenerate} className="w-full">
-                      Create set preview ({setSize})
-                    </Button>
-                    {generateHint && (
-                      <div className="text-xs text-muted-foreground">{generateHint}</div>
-                    )}
-                  </>
-                )}
-              </div>
-            </Card>
-          </div>
-        </aside>
+          </div>}
+        </section>
       </div>
-
-      {/* Selection tray — the narrow-container counterpart to the summary rail.
-          Stays viewport-fixed on purpose: a sticky element cannot be pulled
-          above its normal flow position, and this renders after the whole
-          table, so sticky would only appear once you had scrolled past every
-          row. Converting it properly means restructuring the scroll container,
-          which is its own change. */}
-      <div
-        data-testid="selection-tray"
-        className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-lg z-50 @[980px]:hidden"
-      >
-        <div className="mx-auto max-w-7xl space-y-2 px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-sm">
-              <div className="font-medium">{selectedQids.size} chosen · {setSize} in set</div>
-              {selectedQids.size > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearSelection}
-                >
-                  Clear
-                </Button>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <label htmlFor="drill-set-size-mobile" className="text-xs text-muted-foreground">Set size</label>
-              <Select
-                value={setSize.toString()}
-                onValueChange={(v) => setSetSize(parseInt(v))}
-              >
-                <SelectTrigger id="drill-set-size-mobile" className="w-20 h-9">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="drill-observatory-launcher-panel">
-                  {setSizeOptions.map((n) => (
-                    <SelectItem key={n} value={n.toString()}>{n}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-            </div>
-          </div>
-          <p className="text-xs text-muted-foreground" role="status">
-            {availability.availableCount} available from filters for {remainingPlaces} remaining {remainingPlaces === 1 ? 'place' : 'places'}.
-            {selectedOutsideFilters > 0 && ` ${selectedOutsideFilters} chosen ${selectedOutsideFilters === 1 ? 'question stays' : 'questions stay'} outside the filters.`}
-          </p>
-          {previewIsStale && (
-            <p className="text-xs text-foreground" role="status">
-              Your set changed, so the earlier preview was cleared. Create a new preview.
-            </p>
-          )}
-          {hasPreview && (
-            <p className="text-xs text-muted-foreground">
-              <span className="font-semibold text-foreground">{LR_SET_MODE_LABEL}.</span> No time limit; answers stay hidden unless you choose Show Answer.
-            </p>
-          )}
-          {hasPreview ? (
-            <div className="space-y-2">
-              <Button type="button" variant="outline" onClick={() => setPreviewDialogOpen(true)} className="w-full">
-                Inspect all {previewedQids!.length} questions in this set
-              </Button>
-              <div className="flex gap-2">
-                <Button variant="outline" onClick={handleGeneratePreview} className="min-w-0 flex-1">Create another</Button>
-                <Button onClick={handleLaunch} className="min-w-0 flex-1">Start drill ({setSize})</Button>
-              </div>
-            </div>
-          ) : (
-            <Button onClick={handleGeneratePreview} disabled={!canGenerate} className="w-full">Create set preview ({setSize})</Button>
-          )}
-          {generateHint && <p role="status" className="text-xs text-muted-foreground">{generateHint}</p>}
-        </div>
-      </div>
-
       {/* Question Preview Drawer */}
       <Sheet open={!!drawerQid} onOpenChange={(open) => !open && setDrawerQid(null)}>
-        <SheetContent side="right" className="w-full sm:max-w-[480px] overflow-y-auto">
+        <SheetContent side="right" className="drill-observatory-launcher-panel lr-builder-panel w-full sm:max-w-[480px] overflow-y-auto">
           {(() => {
             if (!drawerQid) return null;
             const q = questionBank.getQuestion(drawerQid);
@@ -1703,7 +1406,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               <>
                 <SheetHeader>
                   <SheetTitle className="text-base">
-                    PT{q.pt} · S{q.section} · Q{q.qnum}
+                    PT {q.pt} · Section {q.section} · Question {q.qnum}
                   </SheetTitle>
                   <div className="flex flex-wrap gap-2 pt-1">
                     <Badge variant="outline">{q.qtype}</Badge>
@@ -1733,7 +1436,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
 
                   <div className="space-y-2">
                     <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                      Answer Choices
+                      Answer choices
                     </div>
                     {(['A','B','C','D','E'] as const).map((letter) => {
                       const isCorrect = q.correctAnswer === letter;
@@ -1807,12 +1510,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       </Sheet>
 
       <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
-        <DialogContent className="drill-observatory-launcher-panel max-w-3xl max-h-[85vh] overflow-y-auto flex flex-col [&>button]:right-1 [&>button]:top-1 [&>button]:flex [&>button]:h-11 [&>button]:w-11 [&>button]:items-center [&>button]:justify-center">
+        <DialogContent onCloseAutoFocus={(event) => { event.preventDefault(); viewQuestionsRef.current?.focus(); }} className="drill-observatory-launcher-panel lr-builder-panel max-w-3xl max-h-[85vh] overflow-y-auto flex flex-col [&>button]:right-1 [&>button]:top-1 [&>button]:flex [&>button]:h-11 [&>button]:w-11 [&>button]:items-center [&>button]:justify-center">
           <DialogHeader>
-            <DialogTitle>Your set: {previewedQids?.length ?? 0} questions</DialogTitle>
+            <DialogTitle>Your drill: {previewedQids?.length ?? 0} questions</DialogTitle>
             <DialogDescription>
-              These are the exact questions that will appear when you start this drill. Chosen questions are guaranteed; the other places come from your filters. Inspecting does not record practice.
-              <span className="mt-2 block"><span className="font-semibold text-foreground">{LR_SET_MODE_LABEL}.</span> {LR_SET_MODE_DETAIL}</span>
+              Your questions, in order. Open a question to read it.
             </DialogDescription>
           </DialogHeader>
           {/* The list keeps a floor so large text or a short screen cannot
@@ -1823,7 +1525,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setPreviewDialogOpen(false)}>Back to setup</Button>
-            <Button type="button" onClick={handleLaunch}>Start this drill ({previewedQids?.length ?? 0})</Button>
+            <Button type="button" onClick={handleLaunch}>Start drill ({previewedQids?.length ?? 0})</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -1832,12 +1534,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           current set's question_ids + filter_state to user_saved_sets via
           the savedSets service. Saved sets surface in /practice/sets. */}
       <Dialog open={saveDialogOpen} onOpenChange={setSaveDialogOpen}>
-        <DialogContent className="drill-observatory-launcher-panel">
+        <DialogContent className="drill-observatory-launcher-panel lr-builder-panel">
           <DialogHeader>
             <DialogTitle>Save this set</DialogTitle>
             <DialogDescription>
-              Give your set a name. You'll find it under "My Sets" on the
-              Practice Hub.
+              Name this set to find it in My Sets.
             </DialogDescription>
           </DialogHeader>
           <Input
