@@ -1,3 +1,4 @@
+import { DrillProgress } from './DrillProgress';
 import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
 import { Check, X } from 'lucide-react';
@@ -185,9 +186,10 @@ function StagedRun({ items, storageKey, stepId }: { items: Item[]; storageKey: s
   function next() { if (step < item.stages.length - 1) setStep(step + 1); else if (index < items.length - 1) move(index + 1); else setFinished(true); }
   return <section className="sr-run" aria-label="Step-by-step reasoning practice">
     {storageFailed && <p role="status" className="sr-storage-error">Your browser could not save this practice. Keep this page open to retain your work.</p>}
-    <header className="sr-header"><span>YOUR PROGRESS</span><strong>{Math.round(completed / items.length * 100)}<small>%</small></strong><div role="progressbar" aria-label="Questions completed" aria-valuenow={completed} aria-valuemin={0} aria-valuemax={items.length}><i style={{ width: `${completed / items.length * 100}%` }}/></div></header>
+    <DrillProgress completed={completed} total={items.length} current={index} completedIndices={items.flatMap((q, i) => q.stages.every((_, stage) => answers[`${i}:${stage}`]?.accepted) ? [i] : [])} label="Questions completed"/>
+
     {finished ? <div className="sr-results"><Check size={32}/><h2 ref={heading} tabIndex={-1}>You worked through the set.</h2><p>{completed} of {items.length} questions completed. Your written rewrites were checked for their meaning.</p><div className="sr-review">{items.map((q, i) => <button key={i} onClick={() => move(i)}>Question {i + 1}</button>)}</div></div> : <>
-    <div className="sr-scene"><aside className="sr-statement"><p className="sr-counter" aria-label={`Question ${index + 1} of ${items.length}`}><b key={index}>{String(index + 1).padStart(2, '0')}</b><small>/ {items.length}</small></p><blockquote>{item.sentence}</blockquote></aside>
+    <div className="sr-scene"><aside className="sr-statement"><blockquote>{item.sentence}</blockquote></aside>
     <div className="sr-work"><ol className="sr-stages" aria-label="Steps for this rule" style={{ '--sr-p': step / Math.max(1, item.stages.length - 1) } as React.CSSProperties}>{item.stages.map((s, i) => <li key={i} aria-current={step === i ? 'step' : undefined} data-done={answers[`${index}:${i}`]?.accepted}><span>{answers[`${index}:${i}`]?.accepted ? <Check size={13}/> : i + 1}</span>{s.name}</li>)}</ol>
     <div className="sr-active" key={key}><p className="sr-step-label">STEP {step + 1} OF {item.stages.length}</p><h2 ref={heading} tabIndex={-1}>{stage.prompt}</h2>
     {objective ? <div className="sr-options" role="group" aria-label="Answer choices">{stage.options!.map((option, i) => <button key={i} aria-pressed={answer.choice === i} data-state={answer.checked ? (answer.choice === i ? (correct ? 'right' : 'wrong') : 'dim') : undefined} disabled={answer.checked} onClick={() => update({ choice: i, checked: false, accepted: false })}><span>{answer.checked && answer.choice === i ? (correct ? <Check size={14} aria-hidden/> : <X size={14} aria-hidden/>) : String.fromCharCode(65 + i)}</span>{option}</button>)}</div> : <label className="sr-writing">{stage.label ?? 'Your explanation'}<textarea rows={4} value={answer.writing} disabled={answer.checked || grading} onChange={e => { setGradingError(''); update({ writing: e.target.value, accepted: false, grade: undefined }); }}/></label>}

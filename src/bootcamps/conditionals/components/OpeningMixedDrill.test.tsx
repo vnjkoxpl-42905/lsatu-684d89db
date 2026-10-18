@@ -102,7 +102,8 @@ it('freezes first checks and treats a repaired fresh answer differently from an 
   choose(completeConditionItems[0].options[0]);
   for (let index = 0; index < 24; index++) { solve(index); next(); }
   const fresh = confirmationItemsByError.qualification[0];
-  expect(screen.getByText('24 main questions completed')).toBeVisible();
+  expect(screen.getByText('Fresh check 1 of 1')).toBeVisible();
+  expect(screen.getByRole('progressbar', { name: 'Fresh checks completed' })).toHaveAttribute('aria-valuenow', '0');
   expect(screen.getByText('Fresh check 1 of 1')).toBeVisible();
   expect(screen.getByText(fresh.sentence)).toBeVisible();
   expect(screen.queryByText(completeConditionItems[0].sentence)).not.toBeVisible();
