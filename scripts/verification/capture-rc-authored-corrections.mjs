@@ -17,8 +17,12 @@ const after = files.map(file => JSON.parse(readFileSync(`public/data/rc/${file}`
 // This validates every changed field before replacing the overlay. It does not
 // rewrite bank content, approve prose, or infer a new baseline from moving main.
 if (baselineCommit !== sourceCorrection.baselineCommit) throw new Error('Official source correction requires its pinned baseline.');
-applySourceCorrection(before);
-applySourceCorrection(after);
+// Only a deliberately applied, exact reviewed candidate may be normalized.
+const sourceBank = after.find(bank => bank.preptest === 156);
+if (sourceBank?.passages?.[4]?.questions?.[1]?.prompt === sourceCorrection.after) {
+  applySourceCorrection(before);
+  applySourceCorrection(after);
+}
 const captured = captureAuthoredCorrections(before, after);
 writeFileSync(destination, JSON.stringify({ ...captured, baselineCommit }, null, 2) + '\n');
 console.log(JSON.stringify({ baselineCommit, corrections: captured.corrections.length, destination }));

@@ -1,4 +1,3 @@
-import { questionForOriginalAuthority } from './rc-source-correction.mjs';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,7 +19,7 @@ if (corrections.audit) {
   if (expected.size !== audit.records.length || expected.size !== corrections.audit.verifiedQuestions) throw new Error('Duplicate/missing audited RC keys');
   for (const bank of banks) for (const p of bank.passages) for (const q of p.questions) {
     const row = expected.get(q.questionId);
-    if (!row || row.error || q.correctAnswer !== row.publishedCredit || questionIdentity(bank.preptest, p, questionForOriginalAuthority(bank.preptest, p, q)) !== row.identitySha256) throw new Error(`RC question ${q.questionId}: published credit/identity differs from reviewed authority report`);
+    if (!row || row.error || q.correctAnswer !== row.publishedCredit || questionIdentity(bank.preptest, p, q) !== row.identitySha256) throw new Error(`RC question ${q.questionId}: published credit/identity differs from reviewed authority report`);
     expected.delete(q.questionId);
   }
   if (expected.size) throw new Error('Authority report contains stale RC questions');
