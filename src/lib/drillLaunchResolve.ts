@@ -1,3 +1,4 @@
+import { isRcSavedState } from '@/features/rc/lib/rcSavedSetCodec';
 /**
  * Turning a Drill Launch's *name* into the questions it stands for.
  *
@@ -70,6 +71,7 @@ export async function resolveDrillLaunch(
       if (!set) {
         throw new DeadDrillLinkError('That saved set no longer exists.');
       }
+      if (isRcSavedState(set.filter_state)) throw new DeadDrillLinkError('Open this RC set from the Reading Comprehension builder.');
       if (set.question_ids.length === 0) {
         throw new DeadDrillLinkError('That saved set has no questions in it.');
       }

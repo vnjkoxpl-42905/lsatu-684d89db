@@ -1,4 +1,6 @@
-import { describe, it, expect } from 'vitest';
+vi.mock('@/lib/savedSets', () => ({ listSavedSets: vi.fn(async () => []) }));
+import { listSavedSets } from './savedSets';
+import { describe, it, expect, vi } from 'vitest';
 
 import { resolveDrillLaunch, DeadDrillLinkError } from './drillLaunchResolve';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
@@ -58,4 +60,9 @@ describe('resolving a launch that names static data', () => {
       resolveDrillLaunch({ kind: 'saved-set', setId: 's1' }, undefined),
     ).rejects.toBeInstanceOf(DeadDrillLinkError);
   });
+  it('refuses RC saved definitions even when another caller supplies them to LR resolution', async () => {
+    vi.mocked(listSavedSets).mockResolvedValue([{ id: 'rc-set', user_id: 'user_1', name: 'RC saved', filter_state: { kind: 'rc-builder', version: 1 }, question_ids: ['RC-Q70'], created_at: '2026-10-17' }]);
+    await expect(resolveDrillLaunch({ kind: 'saved-set', setId: 'rc-set' }, 'user_1')).rejects.toThrow('RC set');
+  });
+
 });

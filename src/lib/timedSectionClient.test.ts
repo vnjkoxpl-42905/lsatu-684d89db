@@ -56,6 +56,27 @@ beforeEach(() => {
   client = create();
 });
 describe('isolated standalone section transport', () => {
+  it.each([
+    ['standard', 2100000], ['time-and-a-half', 3150000], ['double-time', 4200000], ['untimed', null],
+  ] as const)('reads the exact acknowledged RC %s budget without changing it', async (pace, budget) => {
+    const sitting = { ...state(2, 'rc'), pace, budget_ms: budget };
+    rpc.mockImplementation(async name => ({ data: name.includes('capability') ? capability : authority(sitting), error: null }));
+    const loaded = await client.refresh();
+    expect(loaded.sitting.pace).toBe(pace);
+    expect(loaded.sitting.budget_ms).toBe(budget);
+    expect(loaded.child?.kind).toBe('rc');
+    expect(client.readPending()).toBeNull();
+    expect(rpc).toHaveBeenCalledWith('read_timed_section_v1', { p_work_id: work });
+    expect(rpc.mock.calls.every(([name]) => name === 'read_timed_section_v1' || name.includes('capability'))).toBe(true);
+  });
+  it.each(['standard', 'time-and-a-half', 'double-time', 'untimed'] as const)(
+    'rejects an RC %s response with a different frozen budget', async pace => {
+      const sitting = { ...state(2, 'rc'), pace, budget_ms: 1 };
+      rpc.mockImplementation(async name => ({ data: name.includes('capability') ? capability : authority(sitting), error: null }));
+      await expect(client.refresh()).rejects.toMatchObject({ kind: 'contract' });
+      expect(client.readAuthoritativeSitting()).toBeNull();
+    },
+  );
   it('acknowledges only the new ordinary-auth section contract', async () => {
     const pending = await client.prepare('pause', {}, 'device-a', state());
     const acknowledged = await client.retry();

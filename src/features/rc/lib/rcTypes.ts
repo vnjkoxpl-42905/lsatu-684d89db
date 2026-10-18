@@ -32,6 +32,15 @@ export interface RcFeature {
   group: string | null;
 }
 
+/** Optional reviewed media. Video requires captions; all media requires a transcript. */
+export interface RcExplanationMedia {
+  kind: 'video' | 'audio';
+  src: string;
+  title: string;
+  transcript: string;
+  captions?: { src: string; language: string; label: string };
+}
+
 export interface RcQuestion {
   questionId: number;
   /** Official 1-based question number across the full RC section. */
@@ -48,6 +57,7 @@ export interface RcQuestion {
   totalResponses: number | null;
   features: RcFeature[];
   choices: RcChoice[];
+  explanationMedia?: RcExplanationMedia[];
 }
 
 export interface RcSummaries {
@@ -187,6 +197,8 @@ export function readRcDraftAnswers(value: unknown): RcDraftAnswer[] {
 }
 
 export interface RcDrillConfig {
+  /** A launch-time ledger observation, not proof of historically unseen material. */
+  passageExposureAtStart?: Record<string, 'no-recorded-exposure' | 'recorded-exposure' | 'unknown'>;
   /** Explicit account-acknowledged release of ordinary drill scores and feedback. */
   resultsRevealedAt?: string;
   reveal: RcRevealMode;

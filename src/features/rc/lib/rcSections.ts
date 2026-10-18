@@ -13,6 +13,7 @@
  */
 import { sectionKey, type SectionFreshness } from '@/lib/sectionFreshness';
 import { getQuestionHistory, listSessions } from '../api/rcProgress';
+import { getRcExposureHistory } from '../api/rcExposure';
 import { passageStatus } from './rcAdaptive';
 import {
   RC_STANDARD_SECONDS_PER_PASSAGE,
@@ -201,6 +202,7 @@ export function buildRcSectionFreshness(
   passages: RcIndexPassageWithPt[],
   history: RcQuestionHistory,
   sessions: RcSectionSessionExposure[] = [],
+  recordedExposures: ReadonlySet<number> = new Set(),
 ): Map<string, SectionFreshness> {
   const passageById = new Map<number, RcIndexPassageWithPt>();
   for (const p of passages) {
@@ -233,7 +235,7 @@ export function buildRcSectionFreshness(
       if (!p) continue;
       const qids = p.questionIds ?? [];
       const status = passageStatus(p, qids, history);
-      const touchedByTimedSitting = timedSittingPassages.has(pid);
+      const touchedByTimedSitting = timedSittingPassages.has(pid) || recordedExposures.has(pid);
 
       if (status.state !== 'not_attempted' || touchedByTimedSitting) {
         anyPassageTouched = true;
@@ -275,10 +277,11 @@ export async function fetchRcSectionFreshness(
   passages: RcIndexPassageWithPt[],
   userId?: string,
 ): Promise<Map<string, SectionFreshness>> {
-  const [history, sessions] = await Promise.all([
+  const [history, sessions, exposures] = await Promise.all([
     getQuestionHistory(userId),
     listSessions(),
+    getRcExposureHistory(userId),
   ]);
-  return buildRcSectionFreshness(sections, passages, history, sessions);
+  return buildRcSectionFreshness(sections, passages, history, sessions, exposures);
 }
 

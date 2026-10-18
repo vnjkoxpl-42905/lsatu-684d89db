@@ -4,7 +4,7 @@ Generated from checked-in content by `node scripts/verification/inventory-rc-exp
 
 Source: 59 PrepTest JSON files, PT 101–159; 320 passages; 2150 questions.
 
-Source SHA-256 (numeric filename order, filename + LF + file bytes + LF): `bd6c7674ed1ce3d3213ea517a2d8dc1222d2cbcbce64f80d863846cda1adf732`.
+Source SHA-256 (numeric filename order, filename + LF + file bytes + LF): `cb4de7d7374771503c199fb43bb3f2c0d1b38b928399c36e4681c21a77ae9358`.
 
 Presence does not certify correctness, teaching quality, completeness, tone, answer-key consistency or safe rendering. Tag-only content is not counted as explanation prose. Heading-only blocks are not counted as prose. Existing summaries need pedagogical review before they can be called approved.
 
@@ -15,7 +15,7 @@ Presence does not certify correctness, teaching quality, completeness, tone, ans
 | Passage summary: standard | 316 | 4 |
 | Passage summary: brief | 47 | 273 |
 | Passage summary: anotherWay | 47 | 273 |
-| Questions with walkthrough block prose | 1242 | 908 |
+| Questions with walkthrough block prose | 1240 | 910 |
 | Questions with any choice explanation prose | 1594 | 556 |
 | Questions with any explanation prose | 1594 | 556 |
 | Questions with all five choice explanations | 1591 | 559 |
@@ -28,7 +28,7 @@ Counts are literal source presence. Summary columns show standard / brief / anot
 
 | PT | Passages | Summaries | Walkthrough prose | Any explanation prose | Missing-prose question IDs |
 |---|---:|---|---:|---:|---|
-| 101 | 8 | 8 / 1 / 1 | 32/54 | 36/54 | 7661, 7663, 7665, 7670, 7672, 7675, 7676, 7679, 7684, 7685, 7686, 8416, 8417, 8418, 8419, 8421, 8427, 8438 |
+| 101 | 8 | 8 / 1 / 1 | 30/54 | 36/54 | 7661, 7663, 7665, 7670, 7672, 7675, 7676, 7679, 7684, 7685, 7686, 8416, 8417, 8418, 8419, 8421, 8427, 8438 |
 | 102 | 4 | 4 / 0 / 0 | 20/26 | 20/26 | 7562, 7563, 7565, 7567, 7572, 7574 |
 | 103 | 4 | 4 / 0 / 0 | 18/27 | 19/27 | 4509, 4510, 4517, 4520, 4527, 4528, 4529, 4530 |
 | 104 | 8 | 8 / 0 / 0 | 36/52 | 38/52 | 8299, 8305, 8307, 8309, 8311, 8312, 8313, 4585, 4587, 4599, 4600, 4606, 4607, 4609 |

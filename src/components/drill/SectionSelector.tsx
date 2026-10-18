@@ -472,7 +472,7 @@ export function SectionSelector({
                   no gloss: it is the absence of the filter, and spelling
                   that out only makes the pair harder to scan. */}
               <SelectItem value="fresh" className="text-sm focus:bg-foreground/5">
-                Fresh · never attempted
+                {kind === 'rc' ? 'No recorded attempt or exposure' : 'Fresh · never attempted'}
               </SelectItem>
               <SelectItem value="any" className="text-sm focus:bg-foreground/5">
                 Any
@@ -497,6 +497,7 @@ export function SectionSelector({
                     : 'No untouched LR sections left. Switch to Any to sit one again.'
                   : null}
           </p>
+          {kind === 'rc' && <p className="text-xs text-muted-foreground">Exposure tracking covers recorded previews and practice. Earlier untracked reading cannot be ruled out.</p>}
         </div>
 
         {/* PrepTest, then section. Two steps rather than one flat list of

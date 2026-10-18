@@ -1,3 +1,4 @@
+import { RcSavedSetsPanel } from '@/features/rc/components/RcSavedSetsPanel';
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Bookmark, Copy, Eye, Pencil, Play, Trash2 } from "lucide-react";
@@ -130,6 +131,8 @@ export default function SavedSets() {
       </header>
 
       <main className="mx-auto max-w-5xl px-4 sm:px-6 py-8">
+        <RcSavedSetsPanel />
+        <h2 className="mb-3 text-lg font-semibold">Saved LR sets</h2>
         {isLoading ? (
           <div className="rounded-xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
             Loading your saved sets…
@@ -137,7 +140,7 @@ export default function SavedSets() {
         ) : sets.length === 0 ? (
           <div className="rounded-xl border border-dashed border-border bg-card/40 p-10 text-center space-y-3">
             <Bookmark className="h-6 w-6 text-muted-foreground mx-auto" aria-hidden />
-            <h2 className="text-base font-semibold">No saved sets yet</h2>
+            <h2 className="text-base font-semibold">No saved LR sets yet</h2>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
               Build a set you want to revisit, then save it from the Set Summary panel.
               It'll show up here.

@@ -107,7 +107,7 @@ vi.mock('./rcSupabase.types', () => ({
   },
 }));
 
-import { abandonSession, createSession, getQuestionHistory, getSession, listSessions, recordAttempt, saveSessionClock, loadAnnotations, saveAnnotationsNow, setAttemptFlag } from './rcProgress';
+import { abandonSession, createSession, getQuestionHistory, getRcHistorySnapshot, getSession, listSessions, recordAttempt, saveSessionClock, loadAnnotations, saveAnnotationsNow, setAttemptFlag } from './rcProgress';
 
 beforeEach(() => {
   localStorage.clear();
@@ -153,6 +153,51 @@ it('shows only the signed-in admin own drills when RLS also grants access to stu
   const sessions = await listSessions();
   expect(sessions.map(session => session.id)).toEqual([sessionId]);
   expect(personalList.filters).toHaveBeenCalledWith('user_id', owner);
+});
+
+it('preserves exposure and completed state while withholding unrevealed correctness from display history', async () => {
+  historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', excluded_from_analytics: false, config: { ...clock.config } }];
+  historyStore.attempts = [{ id: attemptId, user_id: owner, session_id: sessionId, question_id: 7, selected: 'C', is_correct: false, is_first_attempt: true, created_at: '2026-10-17T10:00:00Z' }];
+  const snapshot = await getRcHistorySnapshot(owner);
+  expect(snapshot.hasHiddenGradedResults).toBe(true);
+  expect(snapshot.history.get(7)).toMatchObject({ firstTakeCorrect: false, everIncorrect: true });
+  expect(snapshot.displayHistory.get(7)).toMatchObject({ attempts: 1, answered: true, completedAnswered: true, firstTakeCorrect: null, everIncorrect: false });
+  expect((await getQuestionHistory(owner, { correctness: 'released-only' })).get(7)?.firstTakeCorrect).toBeNull();
+  historyStore.sessions[0].config = { ...clock.config, resultsRevealedAt: '2026-10-17T11:00:00Z' };
+  expect((await getRcHistorySnapshot(owner)).hasHiddenGradedResults).toBe(false);
+  expect((await getQuestionHistory(owner, { correctness: 'released-only' })).get(7)?.firstTakeCorrect).toBe(false);
+});
+
+it.each(['config', 'column'])('keeps full-test correctness hidden despite an ordinary reveal marker (%s parent identity)', async location => {
+  historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', excluded_from_analytics: false,
+    ...(location === 'column' ? { practice_test_run_id: 'parent-exam' } : {}),
+    config: { ...clock.config, resultsRevealedAt: '2026-10-17T11:00:00Z', ...(location === 'config' ? { practiceTestRunId: 'parent-exam' } : {}) } }];
+  historyStore.attempts = [{ id: attemptId, user_id: owner, session_id: sessionId, question_id: 7, selected: 'C', is_correct: false, is_first_attempt: true, created_at: '2026-10-17T10:00:00Z' }];
+  const snapshot = await getRcHistorySnapshot(owner);
+  expect(snapshot.hasHiddenGradedResults).toBe(true);
+  expect(snapshot.history.get(7)).toMatchObject({ firstTakeCorrect: false, everIncorrect: true });
+  expect(snapshot.displayHistory.get(7)).toMatchObject({ attempts: 1, answered: true, firstTakeCorrect: null, everIncorrect: false });
+});
+
+it('keeps the earliest first take within a sitting while a different later sitting still updates recent performance', async () => {
+  historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', excluded_from_analytics: false },
+    { id: 'later-sitting', user_id: owner, status: 'completed', excluded_from_analytics: false }];
+  const original = { id: 'original', user_id: owner, session_id: sessionId, question_id: 7, selected: 'B', is_correct: false, is_first_attempt: true, created_at: '2026-10-17T10:00:00Z' };
+  historyStore.attempts = [original, { ...original, id: 'duplicate-first', selected: 'C', is_correct: true, created_at: '2026-10-17T10:01:00Z' }];
+  expect((await getQuestionHistory(owner)).get(7)).toMatchObject({ attempts: 1, firstEverCorrect: false, firstTakeCorrect: false, incorrectCount: 1 });
+  historyStore.attempts.push({ ...original, id: 'later-first', session_id: 'later-sitting', selected: 'C', is_correct: true, created_at: '2026-10-17T11:00:00Z' });
+  expect((await getQuestionHistory(owner)).get(7)).toMatchObject({ attempts: 2, firstEverCorrect: false, firstTakeCorrect: true, incorrectCount: 1, lastGradedAt: '2026-10-17T11:00:00Z' });
+});
+
+it('retries a concurrent config change without overwriting acknowledged learning metadata', async () => {
+  const original = update.getMockImplementation()!;
+  update.mockImplementationOnce(() => ({ eq() { return this; }, select() { return this; }, async maybeSingle() {
+    clock.config = { ...clock.config, learning: [{ id: 'reflection-one' }] } as RcDrillConfig;
+    return { data: null, error: null };
+  } })).mockImplementation(original);
+  await saveSessionClock(sessionId, 19, 1);
+  expect(clock.config).toMatchObject({ learning: [{ id: 'reflection-one' }], clockElapsedSeconds: 19, currentQuestionIndex: 1 });
+  expect(update).toHaveBeenCalledTimes(2);
 });
 
 it('acknowledges an attempt already saved under the retry UUID without inserting another row', async () => {
@@ -318,9 +363,11 @@ it('inserts the stable client launch UUID and verifies its account acknowledgeme
 });
 it('does not carry another session draft answers into a newly created drill', async () => {
   insert.mockImplementationOnce((payload) => ({ select: () => ({ single: async () => ({ data: { ...payload, status: 'in_progress', started_at: '2026-10-02T00:00:00Z' }, error: null }) }) }));
-  const saved = await createSession({ ...clock.config, draftAnswers: [draft] } as RcDrillConfig, [3]);
+  const saved = await createSession({ ...clock.config, draftAnswers: [draft], resultsRevealedAt: '2026-10-17T10:00:00Z', learningRecords: [{ id: 'old-reflection' }] } as RcDrillConfig, [3]);
   expect(insert.mock.calls.at(-1)[0].config.draftAnswers).toBeUndefined();
   expect(saved.config.draftAnswers).toBeUndefined();
+  expect(insert.mock.calls.at(-1)[0].config.learningRecords).toBeUndefined();
+  expect(saved.config.resultsRevealedAt).toBeUndefined();
 });
 it('rejects an actor switch before inserting a launch', async () => {
   getUser.mockResolvedValueOnce({ data: { user: { id: owner } } }).mockResolvedValueOnce({ data: { user: { id: 'another-owner' } } });
@@ -590,7 +637,7 @@ it('ignores attempts from sessions with excluded_from_analytics = true', async (
   });
 });
 
-it('treats skipped rows with selected null and is_correct null as unanswered exposure, never correct', async () => {
+it.each([null, false])('treats skipped rows with selected null and is_correct %s as unanswered exposure, never graded', async correctness => {
   historyStore.sessions = [
     {
       id: 'session-completed',
@@ -608,7 +655,7 @@ it('treats skipped rows with selected null and is_correct null as unanswered exp
       question_id: 201,
       passage_id: 20,
       selected: null,
-      is_correct: null,
+      is_correct: correctness,
       is_first_attempt: true,
       created_at: '2026-10-01T00:01:00Z',
     },
@@ -642,6 +689,7 @@ it('pages past 1,000 rows and orders deterministically by created_at asc then id
     },
   ];
   const sharedTimestamp = '2026-10-05T12:00:00Z';
+  historyStore.sessions.push({ ...historyStore.sessions[0], id: 'session-bulk-retake' });
   const rows: Record<string, unknown>[] = [];
   // Insert 2,500 rows with identical created_at. Question 9999 appears on the first and last id.
   for (let i = 2499; i >= 0; i--) {
@@ -649,7 +697,7 @@ it('pages past 1,000 rows and orders deterministically by created_at asc then id
     const isTrackedQuestion = i === 0 || i === 2499;
     rows.push({
       id,
-      session_id: 'session-bulk',
+      session_id: i === 2499 ? 'session-bulk-retake' : 'session-bulk',
       user_id: owner,
       question_id: isTrackedQuestion ? 9999 : 1000 + i,
       passage_id: 30,
@@ -1047,3 +1095,11 @@ it('does not erase lastFirstTakeIncorrect when a previously missed question is s
 });
 
 
+
+it('refuses answers and flag changes in discarded ordinary drills without mutating records', async () => {
+  clock.status = 'abandoned';
+  await expect(recordAttempt({ id: attemptId, userId: owner, sessionId, questionId: 7, passageId: 3, selected: 'C', isCorrect: true, timeMs: 1000, flagged: false, eliminations: [], isFirstAttempt: false })).rejects.toThrow('discarded');
+  await expect(setAttemptFlag(sessionId, 7, true, owner)).rejects.toThrow('discarded');
+  expect(insert).not.toHaveBeenCalled();
+  expect(update).not.toHaveBeenCalled();
+});

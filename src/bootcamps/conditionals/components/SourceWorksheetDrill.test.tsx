@@ -75,6 +75,9 @@ it('carries checked indicator work into the current recognition flow while prese
 
 it('gives a placement hint without showing the diagram until the placement is right', () => {
   run('source-roles');
+  expect(screen.getByText('Which condition is enough to guarantee the other? Choose it first, then choose what it requires.')).toBeVisible();
+  expect(screen.getByText('What is enough?')).toBeVisible();
+  expect(screen.getByText('What is required?')).toBeVisible();
   const left = screen.getByRole('group', { name: 'Left: sufficient condition' });
   const right = screen.getByRole('group', { name: 'Right: necessary condition' });
   fireEvent.click(within(left).getByRole('button', { name: 'those employees complete training' }));

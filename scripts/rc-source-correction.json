@@ -1,0 +1,19 @@
+{
+  "preptest": 156,
+  "passageId": 1752,
+  "questionId": 10655,
+  "path": [
+    "passages",
+    4,
+    "questions",
+    1,
+    "prompt"
+  ],
+  "before": "Which one of the following most accurately expresses the message the author intends to convey in using the phrase in the final sentence of the passage?",
+  "after": "Which one of the following most accurately expresses the message the author intends to convey in using the phrase “misguided project” in the final sentence of the passage?",
+  "correctAnswer": "E",
+  "sourceUrl": "https://www.lsac.org/document-library/810",
+  "sourceSha256": "95b5c8e8595148d045175935adb02264546a3e10145f5855ca39962bafccecdf",
+  "sourcePage": 20,
+  "baselineCommit": "94e76565b7b7c7c3924d2caa4a0dd8cdf94271d2"
+}

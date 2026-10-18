@@ -21,6 +21,7 @@ interface Props {
 }
 
 export function RcExplanationBlocks({ blocks, openFirst, resetKey }: Props) {
+  const disclosureId = React.useId();
   const [open, setOpen] = React.useState<Set<number>>(() => new Set(openFirst ? [0] : []));
 
   React.useEffect(() => {
@@ -48,6 +49,7 @@ export function RcExplanationBlocks({ blocks, openFirst, resetKey }: Props) {
               type="button"
               className="rc-block-toggle"
               aria-expanded={isOpen}
+              aria-controls={`${disclosureId}-${index}`}
               onClick={() => toggle(index)}
             >
               <ChevronRight
@@ -61,7 +63,7 @@ export function RcExplanationBlocks({ blocks, openFirst, resetKey }: Props) {
               {heading}
             </button>
             {isOpen && (
-              <div className="rc-block-body">
+              <div id={`${disclosureId}-${index}`} className="rc-block-body">
                 <RcMarkdown>{block.body}</RcMarkdown>
               </div>
             )}

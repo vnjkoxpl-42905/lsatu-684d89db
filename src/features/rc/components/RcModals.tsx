@@ -85,6 +85,9 @@ export function RcTextSettings({
 }) {
   return (
     <>
+      <Section label="Line spacing" />
+      {RC_LINE_HEIGHTS.map(option => <OptionRow key={option.value} label={`${option.label} · ${option.percent}%`} selected={settings.lineHeight === option.value}
+        onClick={() => onChange({ lineHeight: option.value })} />)}
       <Section label="Reading focus" />
       <OptionRow label="Paragraph focus" selected={settings.paragraphFocus}
         onClick={() => onChange({ paragraphFocus: !settings.paragraphFocus })} />

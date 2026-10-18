@@ -332,7 +332,7 @@ describe('SectionSelector', () => {
       .filter((t): t is string => Boolean(t?.startsWith('PrepTest')));
     expect(freshTests).toEqual(['PrepTest 141']);
 
-    await openSelectShowing(/Fresh · never attempted/);
+    await openSelectShowing(/No recorded attempt or exposure/);
     fireEvent.click(await screen.findByText(/^Any$/));
 
     await openPrepTests();

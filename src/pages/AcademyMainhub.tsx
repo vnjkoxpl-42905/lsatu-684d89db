@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { listStandaloneDrillRuns } from "@/lib/drillRunLedger";
 import { abandonSession, getSessionAttempts, listSessions } from "@/features/rc/api/rcProgress";
 import { loadAllIndexPassages } from "@/features/rc/lib/rcBank";
-import { buildStandaloneDrillHistory, type StandaloneDrillHistoryItem } from "@/lib/standaloneDrillHistory";
+import { buildStandaloneDrillHistory, RC_TAKE_LABELS, type StandaloneDrillHistoryItem } from "@/lib/standaloneDrillHistory";
 import { loadDrillResumeSession } from "@/lib/drillResumeSession";
 import {
   ArrowRight,
@@ -203,9 +203,12 @@ export default function AcademyMainhub({
   const viewParam = searchParams.get("view");
   const view = viewParam === "in-progress" || viewParam === "completed" || viewParam === "saved" ? viewParam : "create";
   const [runs, setRuns] = React.useState<StandaloneDrillHistoryItem[]>([]);
+  const [runsOwner, setRunsOwner] = React.useState<string | null>(null);
   const [runsLoading, setRunsLoading] = React.useState(false);
   const [runsError, setRunsError] = React.useState<string | null>(null);
   const [runsRevision, refreshRuns] = React.useReducer((value) => value + 1, 0);
+  const [rcTimingFilter, setRcTimingFilter] = React.useState<'any' | 'timed' | 'untimed' | 'unknown'>('any');
+  const [rcTakeFilter, setRcTakeFilter] = React.useState<'any' | 'first-recorded' | 'repeat' | 'mixed' | 'unknown'>('any');
   const [discardingKey, setDiscardingKey] = React.useState<string | null>(null);
   const [discardBusy, setDiscardBusy] = React.useState(false);
   const [discardError, setDiscardError] = React.useState<string | null>(null);
@@ -250,13 +253,14 @@ export default function AcademyMainhub({
     ]).then(async ([lr, allRc, smartDrill, indexPassages]) => {
       const rc = allRc.filter((session) => session.userId === user.id && !session.config.practiceTestRunId && !session.config.timedSectionSittingId && session.config.source !== "assignment" &&
         (session.status === "completed" || session.status === "in_progress"));
-      const attempts = await Promise.all(rc.map(async (session) => [session.id, await getSessionAttempts(session.id)] as const));
+      const ownedRc = allRc.filter(session => session.userId === user.id);
+      const attempts = await Promise.all(ownedRc.map(async (session) => [session.id, await getSessionAttempts(session.id)] as const));
       const names = new Map(indexPassages.map((p) => [p.passageId, { preptest: p.preptest, section: p.section, setNumber: p.setNumber, title: p.title }] as const));
-      return buildStandaloneDrillHistory(lr, rc, new Map(attempts), smartDrill, names);
+      return buildStandaloneDrillHistory(lr, rc, new Map(attempts), smartDrill, names, ownedRc);
     }).then(
       (loaded) => { if (active) setRuns(loaded); },
       (error: unknown) => { if (active) setRunsError(error instanceof Error ? error.message : "Drill runs could not be loaded."); },
-    ).finally(() => { if (active) setRunsLoading(false); });
+    ).finally(() => { if (active) { setRunsLoading(false); setRunsOwner(user.id); } });
     return () => { active = false; };
   }, [user?.id, view, runsRevision]);
 
@@ -439,15 +443,23 @@ export default function AcademyMainhub({
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
             </div>
             <p className="mt-2 text-sm text-muted-foreground">{section === "rc" ? "Your Reading Comprehension drills." : "Your Smart Drill and Logical Reasoning drills."}</p>
+            {section === 'rc' && <div className="mt-4 flex flex-wrap gap-4 text-sm">
+              <label>Timing <select aria-label="Filter RC history by timing" className="ml-2 rounded border bg-background p-2" value={rcTimingFilter} onChange={event => setRcTimingFilter(event.target.value as typeof rcTimingFilter)}><option value="any">Any timing</option><option value="timed">Timed</option><option value="untimed">Untimed</option><option value="unknown">Timing unknown</option></select></label>
+              <label>Take history <select aria-label="Filter RC history by exposure" className="ml-2 rounded border bg-background p-2" value={rcTakeFilter} onChange={event => setRcTakeFilter(event.target.value as typeof rcTakeFilter)}><option value="any">Any take history</option><option value="first-recorded">No recorded exposure at start</option><option value="repeat">Repeated passages</option><option value="mixed">Some passages repeated</option><option value="unknown">Exposure before take unknown</option></select></label>
+              <p className="w-full text-muted-foreground">Earlier previews were not tracked. Missing exposure information stays Unknown; it does not mean fresh.</p>
+            </div>}
             {discardError && <p className="mt-3 text-sm text-destructive" role="alert">{discardError}</p>}
-            {runsLoading ? <p className="mt-6 text-sm text-muted-foreground" role="status">Loading your drills…</p> : runsError ? <p className="mt-6 text-sm text-destructive" role="alert">{runsError}</p> : (() => {
-              const selected = runs.filter((run) => run.section === section && run.status === (view === "completed" ? "completed" : "in_progress"));
-              return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill and save an answer to see it here."}</p> : (
+            {runsLoading || runsOwner !== user?.id ? <p className="mt-6 text-sm text-muted-foreground" role="status">Loading your drills…</p> : runsError ? <p className="mt-6 text-sm text-destructive" role="alert">{runsError}</p> : (() => {
+              const selected = runs.filter((run) => run.section === section && run.status === (view === "completed" ? "completed" : "in_progress")
+                && (section !== 'rc' || (rcTimingFilter === 'any' || (run.rcTiming ?? 'unknown') === rcTimingFilter)
+                  && (rcTakeFilter === 'any' || (run.rcTake ?? 'unknown') === rcTakeFilter)));
+              return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill to see it here."}</p> : (
                 <ul className="mt-5 space-y-3">{selected.map((run) => (
                   <li key={run.key} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
                     <div className="min-w-0">
                       <p className="font-medium">{run.title}</p>
                       <p className="mt-1 text-sm text-muted-foreground">{run.detail} · {new Date(run.date).toLocaleDateString()}</p>
+                      {run.section === 'rc' && <p className="mt-1 text-sm text-muted-foreground">{run.rcTiming === 'timed' ? 'Timed' : run.rcTiming === 'untimed' ? 'Untimed' : 'Timing unknown'} · {RC_TAKE_LABELS[run.rcTake ?? 'unknown']}{run.rcExcluded ? ' · Excluded from analytics' : ''}</p>}
                     </div>
                     {view === "completed" ? <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => navigate(run.resultsTo!)}>Results</Button><Button size="sm" onClick={() => navigate(run.reviewTo!)}>Review</Button></div> : <div className="flex flex-wrap items-center gap-2">{run.discardId && discardingKey === run.key ? <><span className="text-sm text-muted-foreground">Discard this drill?</span><Button size="sm" variant="destructive" disabled={discardBusy} onClick={() => void discardRun(run.discardId!)}>{discardBusy ? "Discarding…" : "Confirm discard"}</Button><Button size="sm" variant="outline" disabled={discardBusy} onClick={() => { setDiscardingKey(null); setDiscardError(null); }}>Keep it</Button></> : <>{run.discardId && <Button size="sm" variant="outline" onClick={() => { setDiscardError(null); setDiscardingKey(run.key); }}>Discard</Button>}<Button size="sm" onClick={() => navigate(run.continueTo!)}>Continue</Button></>}</div>}
                   </li>

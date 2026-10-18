@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { canRevealRcResults } from '../lib/rcResultsReveal';
+import { assertRcParentReleased } from '../api/rcProtectedRelease';
+import { RcReviewSuggestions } from '../components/RcReviewSuggestions';
+import { firstRcAttempts, rcRetryPassageIds } from '../lib/rcRetrySelection';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -74,6 +77,7 @@ export default function RcResults() {
   const [attempts, setAttempts] = React.useState<RcAttempt[]>([]);
   const [error, setError] = React.useState<string | null>(null);
   const [excluded, setExcluded] = React.useState(false);
+  const [includeSkipped, setIncludeSkipped] = React.useState(false);
   const [expandedRows, setExpandedRows] = React.useState<Set<number>>(new Set());
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [showAllTypes, setShowAllTypes] = React.useState(false);
@@ -101,7 +105,7 @@ export default function RcResults() {
   }, []);
 
   React.useEffect(() => {
-    setSession(null); setError(null); setActionError(null); setActionBusy(false); actionLock.current = null;
+    setSession(null); setIncludeSkipped(false); setError(null); setActionError(null); setActionBusy(false); actionLock.current = null;
     if (!sessionId || !user?.id) return;
     const actorId = user.id;
     let cancelled = false;
@@ -110,6 +114,7 @@ export default function RcResults() {
         const s = await getSession(sessionId, actorId);
         if (!s || s.id !== sessionId || s.userId !== actorId) throw new Error('That drill could not be found for this account.');
         if (s.status !== 'completed') throw new Error('This drill is not finished. Return to Practice to continue.');
+        await assertRcParentReleased(s, actorId);
         const [ps, as] = await Promise.all([
           loadPassages(s.passageIds),
           getSessionAttempts(sessionId),
@@ -131,11 +136,7 @@ export default function RcResults() {
   const items = React.useMemo(() => buildItems(passages), [passages]);
 
   /** Scoring uses first attempts only, so a review re-answer never inflates it. */
-  const firstAttempts = React.useMemo(() => {
-    const map = new Map<number, RcAttempt>();
-    for (const a of attempts) if (a.isFirstAttempt) map.set(a.questionId, a);
-    return map;
-  }, [attempts]);
+  const firstAttempts = React.useMemo(() => firstRcAttempts(attempts), [attempts]);
 
   /** Accuracy per question type, weakest first — the same rollup LR uses. */
   const allFocusAreas: FocusArea[] = React.useMemo(() => {
@@ -223,15 +224,10 @@ export default function RcResults() {
     return true;
   });
 
-  const missedPassageIds = [
-    ...new Set(
-      items
-        .filter((i) => firstAttempts.get(i.question.questionId)?.isCorrect === false)
-        .map((i) => i.passage.passageId),
-    ),
-  ];
+  const missedPassageIds = rcRetryPassageIds(items, firstAttempts, includeSkipped);
 
-  const revealed = canRevealRcResults(session);
+  // A session enters state only after the account parent-release guard succeeds.
+  const revealed = canRevealRcResults(session, true);
   const runAction = async (operation: (actorId: string, isCurrent: () => boolean) => Promise<void>) => {
     if (actionLock.current || !user?.id || session.id !== sessionId || session.userId !== user.id) return;
     const actorId = user.id;
@@ -474,6 +470,7 @@ export default function RcResults() {
           </>}
         </div>
       </div>
+      {!protectedSection && <RcReviewSuggestions key={`${user!.id}:${session.id}`} actorId={user!.id} sessionId={session.id} items={items} firstAttempts={firstAttempts} />}
       {actionError && <p role="alert" className="mx-auto max-w-7xl px-6 py-3">{actionError}</p>}
       {!revealed && <section className="mx-auto max-w-3xl px-6 py-10 space-y-4">
         <h2 className="text-xl font-semibold">Your drill is complete</h2>
@@ -680,7 +677,13 @@ export default function RcResults() {
         >
           Drill your misses
         </Button>
-        {!protectedSection && <p className="text-sm text-muted-foreground">A new drill includes each passage with a missed question.</p>}
+        {!protectedSection && <div className="w-full text-sm text-muted-foreground">
+          <label className="flex min-h-11 items-center gap-2">
+            <input type="checkbox" checked={includeSkipped} disabled={actionBusy} onChange={event => setIncludeSkipped(event.target.checked)} />
+            Include unanswered questions
+          </label>
+          <p>A new drill includes every question in each selected passage. {includeSkipped ? 'Passages with unanswered questions are included.' : 'Only passages with an incorrect answered question are included.'}</p>
+        </div>}
         </>}
         <Button variant="outline" onClick={() => navigate('/rc')}>
           New drill
@@ -689,11 +692,11 @@ export default function RcResults() {
           variant={excluded ? 'secondary' : 'ghost'}
           disabled={actionBusy || protectedSection}
           title={protectedSection ? 'Protected section records retain their saved analytics status.' : undefined}
-          aria-pressed={excluded}
           onClick={toggleExcluded}
         >
           {excluded ? 'Include in analytics' : 'Exclude from analytics'}
         </Button>
+        {!protectedSection && <p className="w-full text-sm text-muted-foreground" role="status">{excluded ? 'This sitting is excluded from analytics.' : 'This sitting is included in analytics.'}</p>}
         {protectedSection && <p className="w-full text-sm text-muted-foreground">This protected section retains its saved analytics status. Section elapsed time comes from the account clock; question averages use recorded question time.</p>}
       </div>
     </div>

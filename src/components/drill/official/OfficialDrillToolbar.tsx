@@ -118,6 +118,8 @@ interface Props {
    * line height and color scheme here so text settings stay in one control.
    */
   a11yExtraSections?: React.ReactNode;
+  /** RC groups all reading preferences under one visible Display control. */
+  displayLabel?: string;
   /**
    * LR ⇄ RC section switch shown at the far left of the toolbar. Lets a student
    * jump straight from a Logical Reasoning drill into the RC passages and back.
@@ -154,6 +156,7 @@ export default function OfficialDrillToolbar({
   highlightToolsVisible = true,
   fontScaleOptions = FONT_SCALES,
   a11yExtraSections,
+  displayLabel = 'Text size',
   sectionToggle,
   studyTools,
 }: Props) {
@@ -297,8 +300,8 @@ export default function OfficialDrillToolbar({
                 <button
                   ref={aaTriggerRef}
                   type="button"
-                  aria-label="Text size"
-                  title={`Text size: ${currentFontLabel}`}
+                  aria-label={displayLabel}
+                  title={`${displayLabel}: ${currentFontLabel}`}
                   className={cn(
                     "px-2 py-1 rounded-sm text-slate-900 flex items-baseline transition-colors",
                     aaOpen
@@ -308,6 +311,7 @@ export default function OfficialDrillToolbar({
                 >
                   <span aria-hidden className="text-[20px] font-bold leading-none">A</span>
                   <span aria-hidden className="text-[13px] font-bold leading-none">a</span>
+                  {displayLabel !== 'Text size' && <span className="ml-1 text-sm">{displayLabel}</span>}
                 </button>
               </PopoverTrigger>
               <PopoverContent aria-label="Reading preferences" align="end" sideOffset={6} collisionPadding={12}

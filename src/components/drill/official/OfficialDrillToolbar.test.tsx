@@ -29,6 +29,14 @@ describe('OfficialDrillToolbar reading preferences', () => {
     expect(screen.getByText('Current size: Large (125%)')).toBeInTheDocument();
   });
 
+  it('labels the RC reading preferences as Display while keeping its grouped controls', () => {
+    render(<OfficialDrillToolbar highlightMode="none" setHighlightMode={vi.fn()} timerLabel=""
+      searchTerm="" setSearchTerm={vi.fn()} fontScale={1} setFontScale={vi.fn()} displayLabel="Display"
+      a11yExtraSections={<p>Paragraph focus and color scheme</p>} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Display' }));
+    expect(screen.getByRole('dialog', { name: 'Reading preferences' })).toBeInTheDocument();
+    expect(screen.getByText('Paragraph focus and color scheme')).toBeInTheDocument();
+  });
   it('preserves the shared LR default font choices', () => {
     render(<OfficialDrillToolbar highlightMode="none" setHighlightMode={vi.fn()} timerLabel=""
       searchTerm="" setSearchTerm={vi.fn()} fontScale={1} setFontScale={vi.fn()} />);

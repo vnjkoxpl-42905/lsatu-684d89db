@@ -167,8 +167,8 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
       <CourseTracker steps={list}/>
       {view === 'lessons' && <CourseContinue steps={list} url={url}/>}
       {view === 'practice' && recordedPractice}
-      {[...new Set(list.map(step => step.part ?? 1))].map(part => <section className="oc-course-part" key={part} aria-label={`Part ${part}`}>
-        <h2 className="oc-part-title">Part {part}</h2>
+      {[...new Set(list.map(step => step.part ?? 1))].map(part => <section className="oc-course-part" key={part} aria-label={`Chapter ${part}`}>
+        <h2 className="oc-part-title">Chapter {part}</h2>
         <ol className="oc-course-path">{list.filter(step => (step.part ?? 1) === part).map(step => <CourseCard key={step.id} step={step} url={url}/>)}</ol>
       </section>)}
       {!list.length && <p>No opening lessons are available in this work.</p>}
@@ -177,7 +177,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
     {current?.type === 'drill' && !run && <DrillEntry step={current} url={url} storageScope={storageScope}/>}
     {current && (current.type === 'note' || run) && <div className={current.type === 'note' ? 'oc-course-note' : 'oc-drill-run-header'}>
       <div data-course-heading>{current.type === 'note' ? <header className="mb-10">
-        {current.lessonNumber && <p className="oc-label">Part {current.part ?? 1} · Lesson {current.lessonNumber}</p>}
+        {current.lessonNumber && <p className="oc-label">Chapter {current.part ?? 1} · Lesson {current.lessonNumber}</p>}
         <h1 className="font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]">{current.title}</h1>
         <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>
       </header> : <header><p className="oc-label">{openingDrillNumber(current.id) ? `Drill ${openingDrillNumber(current.id)}` : 'Practice'}</p><h1>{current.title}</h1></header>}</div>

@@ -47,10 +47,10 @@ function finishPractice(unitId: string, difficulty: ConditionalAttempt['difficul
 beforeEach(() => { state.progress = emptyProgress(); state.saved = state.progress; state.status = 'saved'; state.error = ''; state.retryCalls = 0; state.updateCalls = 0; });
 afterEach(cleanup);
 
-it.each(['', '/lessons'])('opens the same numbered Part 1 course at %s', path => {
+it.each(['', '/lessons'])('opens the same numbered Chapter 1 course at %s', path => {
   state.progress!.lessons.orientation = '2026-10-01T12:00:00.000Z';
   mount(`${base}${path}`);
-  expect(screen.getByText('Part 1')).toBeVisible();
+  expect(screen.getByText('Chapter 1')).toBeVisible();
   expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
   expect(screen.getByText('1.5')).toBeVisible();
   expect(screen.queryByRole('link', { name: 'Begin lesson' })).toBeNull();
@@ -63,10 +63,10 @@ it('shows only actual assigned course content and ignores forged broader query g
   expect(screen.queryByText('1.1')).toBeNull();
   expect(screen.queryByRole('heading', { name: 'The Sufficient Condition' })).toBeNull();
 });
-it('retains additional assigned skills outside Part 1 without recommending unassigned material', () => {
+it('retains additional assigned skills outside Chapter 1 without recommending unassigned material', () => {
   const mixed = { ...course, id: 'mixed', unitIds: ['orientation', 'group-3'] };
   mount(`${base}?assignment=mixed`, [mixed]);
-  expect(screen.getByText('Part 1')).toBeVisible();
+  expect(screen.getByText('Chapter 1')).toBeVisible();
   const extra = screen.getByText('Additional assigned material').closest('details')!;
   fireEvent.click(screen.getByText('Additional assigned material'));
   const continuation = within(extra).getByRole('link', { name: /^Continue:/ });
@@ -74,7 +74,7 @@ it('retains additional assigned skills outside Part 1 without recommending unass
   expect(continuation.getAttribute('href')).toContain('assignment=mixed');
   expect(within(extra).queryByRole('link', { name: /Group 4/ })).toBeNull();
 });
-it('does not recycle Part 1 as additional work after the assigned later skill is complete', () => {
+it('does not recycle Chapter 1 as additional work after the assigned later skill is complete', () => {
   reviewed('group-3'); finishPractice('group-3', 'beginner');
   mount(`${base}?assignment=mixed`, [{ ...course, id: 'mixed', unitIds: ['orientation', 'group-3'] }]);
   const extra = screen.getByText('Additional assigned material').closest('details')!;
