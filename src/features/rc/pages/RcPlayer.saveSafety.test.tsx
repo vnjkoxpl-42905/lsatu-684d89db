@@ -110,6 +110,22 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('RC account save safety', () => {
+  it('restores acknowledged review answers as history and offers a fresh blind answer without changing the first take', async () => {
+    api.getSession.mockResolvedValue({ ...session(), status: 'completed' });
+    api.getSessionAttempts.mockResolvedValue([attempt, { ...attempt, id: 'saved-review', selected: 'C', isFirstAttempt: false, createdAt: '2026-10-17T12:00:00Z' }]);
+    mount('&review=1&q=1');
+    expect(await screen.findByText('Saved review answers')).toBeInTheDocument();
+    expect(screen.getByText('Review 1: C · 2026-10-17')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Show saved answer' })).toBeNull();
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('correct');
+    fireEvent.click(screen.getByRole('button', { name: 'Answer again blind' }));
+    expect(screen.getByRole('button', { name: 'Show saved answer' })).toBeInTheDocument();
+    expect(screen.getByText('Question 1: B')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    await waitFor(() => expect(api.recordAttempt).toHaveBeenCalledWith(expect.objectContaining({ isFirstAttempt: false, selected: 'B' })));
+    expect(screen.getByText('Question 1: B')).toBeInTheDocument();
+  });
   it('retains the exact second-answer command until acknowledgment and keeps blind review spoiler-free', async () => {
     api.getSession.mockResolvedValue({ ...session(), status: 'completed' });
     api.getSessionAttempts.mockResolvedValue([attempt]);

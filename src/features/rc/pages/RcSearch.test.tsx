@@ -56,6 +56,12 @@ const renderSearch = () =>
   );
 
 describe('RcSearch', () => {
+  it('searches question text without revealing it in result rows', async () => {
+    renderSearch();
+    await screen.findAllByRole('table');
+    expect(screen.queryByText('Which one of the following best expresses the main point?')).toBeNull();
+    expect(screen.getAllByText(/Question text stays hidden/).length).toBeGreaterThan(0);
+  });
   it('opens the read-only preview with the question id, never a live drill', async () => {
     renderSearch();
     const table = (await screen.findAllByRole('table'))[0];

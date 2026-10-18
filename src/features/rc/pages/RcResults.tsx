@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { canRevealRcResults } from '../lib/rcResultsReveal';
+import { RcReviewSuggestions } from '../components/RcReviewSuggestions';
+import { firstRcAttempts, rcRetryPassageIds } from '../lib/rcRetrySelection';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -74,6 +76,7 @@ export default function RcResults() {
   const [attempts, setAttempts] = React.useState<RcAttempt[]>([]);
   const [error, setError] = React.useState<string | null>(null);
   const [excluded, setExcluded] = React.useState(false);
+  const [includeSkipped, setIncludeSkipped] = React.useState(false);
   const [expandedRows, setExpandedRows] = React.useState<Set<number>>(new Set());
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [showAllTypes, setShowAllTypes] = React.useState(false);
@@ -101,7 +104,7 @@ export default function RcResults() {
   }, []);
 
   React.useEffect(() => {
-    setSession(null); setError(null); setActionError(null); setActionBusy(false); actionLock.current = null;
+    setSession(null); setIncludeSkipped(false); setError(null); setActionError(null); setActionBusy(false); actionLock.current = null;
     if (!sessionId || !user?.id) return;
     const actorId = user.id;
     let cancelled = false;
@@ -131,11 +134,7 @@ export default function RcResults() {
   const items = React.useMemo(() => buildItems(passages), [passages]);
 
   /** Scoring uses first attempts only, so a review re-answer never inflates it. */
-  const firstAttempts = React.useMemo(() => {
-    const map = new Map<number, RcAttempt>();
-    for (const a of attempts) if (a.isFirstAttempt) map.set(a.questionId, a);
-    return map;
-  }, [attempts]);
+  const firstAttempts = React.useMemo(() => firstRcAttempts(attempts), [attempts]);
 
   /** Accuracy per question type, weakest first — the same rollup LR uses. */
   const allFocusAreas: FocusArea[] = React.useMemo(() => {
@@ -223,13 +222,7 @@ export default function RcResults() {
     return true;
   });
 
-  const missedPassageIds = [
-    ...new Set(
-      items
-        .filter((i) => firstAttempts.get(i.question.questionId)?.isCorrect === false)
-        .map((i) => i.passage.passageId),
-    ),
-  ];
+  const missedPassageIds = rcRetryPassageIds(items, firstAttempts, includeSkipped);
 
   const revealed = canRevealRcResults(session);
   const runAction = async (operation: (actorId: string, isCurrent: () => boolean) => Promise<void>) => {
@@ -474,6 +467,7 @@ export default function RcResults() {
           </>}
         </div>
       </div>
+      {!protectedSection && <RcReviewSuggestions key={`${user!.id}:${session.id}`} actorId={user!.id} sessionId={session.id} items={items} firstAttempts={firstAttempts} />}
       {actionError && <p role="alert" className="mx-auto max-w-7xl px-6 py-3">{actionError}</p>}
       {!revealed && <section className="mx-auto max-w-3xl px-6 py-10 space-y-4">
         <h2 className="text-xl font-semibold">Your drill is complete</h2>

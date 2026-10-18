@@ -37,6 +37,7 @@ export async function getRecentExposureSet(
     .from("question_exposures")
     .select("question_id")
     .eq("user_id", userId)
+    .not("question_id", "like", "rc:%")
     .order("shown_at", { ascending: false })
     .limit(windowSize);
   if (error) {

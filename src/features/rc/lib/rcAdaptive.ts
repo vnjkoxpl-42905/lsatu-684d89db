@@ -15,7 +15,7 @@ import type {
 
 export type { RcPassageState };
 
-export type RcStatusFilter = 'any' | 'fresh' | 'incorrect_before' | 'incorrect_last';
+export type RcStatusFilter = 'any' | 'fresh' | 'strict_no_exposure' | 'incorrect_before' | 'incorrect_last';
 
 export interface RcSelectionFilters {
   topics: string[];
@@ -25,6 +25,8 @@ export interface RcSelectionFilters {
   /** Empty means Adaptive: pick the target from the student's own accuracy. */
   difficulties: number[];
   status: RcStatusFilter;
+  /** Explicitly permit earlier exposure that LSAT U cannot establish. */
+  includeUnknownExposure?: boolean;
   preptestMin: number;
   preptestMax: number;
 }
@@ -32,7 +34,7 @@ export interface RcSelectionFilters {
 export type RcIndexPassageWithPt = RcIndexPassage & { preptest: number };
 
 /** The label used anywhere this behavior is named. Nothing grander. */
-export const RC_ADAPTIVE_LABEL = 'Adaptive: fresh passages near your level.';
+export const RC_ADAPTIVE_LABEL = 'Adaptive: difficulty from recent first-take accuracy.';
 
 /** Per-passage roll-up of the student's history across its questions. */
 export interface RcPassageStatus {
@@ -200,6 +202,9 @@ export function matchesFilters(
     return false;
 
   switch (filters.status) {
+    case 'strict_no_exposure':
+      if (filters.includeUnknownExposure !== true || status.state !== 'not_attempted') return false;
+      break;
     case 'fresh':
       if (status.state !== 'not_attempted') return false;
       break;

@@ -362,7 +362,7 @@ export default function RcSearch() {
                 <th>PT</th>
                 <th>S</th>
                 <th>Q</th>
-                <th>Stem</th>
+                <th>Passage</th>
                 <th>Type</th>
                 <th>Features</th>
                 <th>Difficulty</th>
@@ -370,7 +370,7 @@ export default function RcSearch() {
               </tr>
             </thead>
             <tbody>
-              {result.questions.map(({ question: q, passage: p, snippet }) => (
+              {result.questions.map(({ question: q, passage: p }) => (
                 <tr key={q.questionId}>
                   <td>
                     {q.preptest}
@@ -383,15 +383,8 @@ export default function RcSearch() {
                   <td>{q.section}</td>
                   <td>{q.position}</td>
                   <td style={{ maxWidth: 340 }}>
-                    {snippet ? (
-                      <>
-                        {snippet.before}
-                        <mark>{snippet.match}</mark>
-                        {snippet.after}
-                      </>
-                    ) : (
-                      (q.prompt ?? '—')
-                    )}
+                    {`Source passage: ${p.title ?? 'Untitled passage'}`}
+                    <div className="rc-field-hint">Question text stays hidden until you reveal it in Preview.</div>
                   </td>
                   <td>
                     {q.questionType}
