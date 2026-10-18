@@ -1,12 +1,15 @@
 import { ContrapositiveLecture, DoubleNegativeDemo, FlipAndNegateDemo, Neg, PopQuizTitle, PulseWord, PunchWord, RuleDrill, ThreeMoves } from './ContrapositiveVisuals';
-import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
+import { Children, cloneElement, Fragment, isValidElement, useContext, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
 import { StagedReasoningDrill } from './StagedReasoningDrill';
 import { DrillOneExperience, type DrillOneQuestion } from './DrillOneExperience';
+import { Link } from 'react-router-dom';
+import { CourseFlashcardUrl, flashcardUrl } from './FlashcardTools';
 import './must-arrow-note.css';
 import './missing-requirement-note.css';
 import { MustArrowPractice } from './MustArrowPractice';
+import { SufficientConditionFilm } from './SufficientConditionFilm';
 
 type ContentSection = ReactElement<{ id?: string; number?: number; title?: string; children?: ReactNode; dark?: boolean; 'data-reference-boundary'?: boolean }>;
 
@@ -25,8 +28,8 @@ function reference(number: number): ContentSection {
   return section;
 }
 
-function groupSections(group: 'group-1' | 'group-2') {
-  return sections(GroupLessons({ id: group }).props.children);
+function groupSections(group: 'group-1' | 'group-2', integratedOverview = false) {
+  return sections(GroupLessons({ id: group, integratedOverview }).props.children);
 }
 
 function groupSection(group: 'group-1' | 'group-2', title: string) {
@@ -45,9 +48,14 @@ function ReferenceBody({ number, omitTransition = false }: { number: number; omi
   const children = Children.toArray(source.props.children);
   // These source sections end in navigation prose for the former ordering.
   // The course shell now owns transitions; the teaching stays in its source.
+  const body = omitTransition ? children.slice(0, -1).map(child => {
+    if (!isValidElement<{ children?: ReactNode }>(child)) return child;
+    const retained = Children.toArray(child.props.children).filter(part => !isValidElement<{ className?: string }>(part) || part.props.className !== 'cr-sufficient-bridge');
+    return cloneElement(child, undefined, retained);
+  }) : children;
   return <section className={`co-section cr-course-section ${source.props.dark ? 'cr-dark' : ''}`} data-reference-source={number}>
     <div className="co-section-heading"><h2>{source.props.title}</h2></div>
-    <div className="cr-step-body">{omitTransition ? children.slice(0, -1) : children}</div>
+    <div className="cr-step-body">{body}</div>
   </section>;
 }
 
@@ -88,21 +96,21 @@ function CompleteConditionNote() {
     <blockquote><strong>The only people admitted</strong> are members.</blockquote>
     <p>The only what? People admitted. An admitted person must be a member, so <strong>Person admitted → Person is a member</strong>. Keep the whole phrase together; the rule does not promise admission to every member.</p>
     <ReferenceQuestion prompt="The only notebooks kept on this shelf are hardback. Which condition is sufficient?" options={['Notebook is hardback', 'Notebook is kept on this shelf', 'Notebook']} correct={1} feedback={['Being hardback does not guarantee a place on this shelf. The rule tells us about the notebooks kept here.', 'A notebook kept on this shelf must be hardback. Kept on this shelf is the complete sufficient condition.', 'Notebook alone would cover every notebook. Keep the restriction: kept on this shelf.']}/>
-    <p>In the next drill, find the indicator, select the complete condition, place it beside the arrow and check that your diagram keeps the rule's meaning.</p>
+    <p>Find the indicator, select the complete condition, place it beside the arrow and check that your diagram keeps the rule's meaning.</p>
   </NoteSection>;
 }
 
-function MissingRequirementNote() {
+function MissingRequirementNote({ integrated = false }: { integrated?: boolean }) {
   const [attempted, setAttempted] = useState(false);
   return <>
     <NoteSection title="What if someone is not a student?">
-      <p>Keep the rule from the last lesson:</p>
+      <p>Return to the law-school rule:</p>
       <blockquote>If you are enrolled in law school, then you are a student.</blockquote>
       <p>Now you learn that Maya is <strong>not a student</strong>. Think about what enrollment would require before choosing.</p>
       <ReferenceQuestion prompt="Could Maya be enrolled in law school while this rule holds?" options={['Yes, she could still be enrolled.', 'No, she cannot be enrolled.', 'The rule leaves her enrollment unknown.']} correct={1} onAttempt={choice => setAttempted(choice !== null)} feedback={['Enrollment would require Maya to be a student. That conflicts with the fact that she is not a student.', 'If Maya were enrolled, she would have to be a student. She is not a student, so she cannot be enrolled under this rule.', 'This fact settles enrollment. An enrolled person who is not a student would break the rule.']}/>
       {attempted && <div className="cr-discovery-reasoning">
         <h3>The missing requirement rules out enrollment</h3>
-        <p>That is the <strong>contrapositive</strong>: <strong>if the necessary condition is false, the sufficient condition must be false too.</strong></p>
+        {!integrated && <p>That is the <strong>contrapositive</strong>: <strong>if the necessary condition is false, the sufficient condition must be false too.</strong></p>}
         <p>Being a student is required for enrollment. When that requirement is missing, enrollment is ruled out. We have not added a new rule; this follows from the rule we already had.</p>
         <figure className="cr-contrapositive-pair">
           <figcaption>Two ways to read the same rule</figcaption>
@@ -112,7 +120,7 @@ function MissingRequirementNote() {
         <p>This is different from simply reversing the arrow. <strong>Being a student does not prove enrollment.</strong> A student could be studying history instead. The contrapositive starts with <strong>not being a student</strong>.</p>
       </div>}
     </NoteSection>
-    {attempted && <ReferenceBody number={7} omitTransition/>}
+    {attempted && !integrated && <ReferenceBody number={7} omitTransition/>}
   </>;
 }
 
@@ -155,13 +163,13 @@ function ContrapositiveNote() {
   </>;
 }
 
-function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
+function IndicatorNote({ group, integrated = false }: { group: 'group-1' | 'group-2'; integrated?: boolean }) {
   const [selected, setSelected] = useState(0);
   const [opened, setOpened] = useState<number[]>([0]);
   const [focusPanel, setFocusPanel] = useState(false);
   const panels = useRef<(HTMLDivElement | null)[]>([]);
   const id = useId();
-  const content = groupSections(group);
+  const content = groupSections(group, integrated);
   const expressions = content.slice(2, 9);
   const names = expressions.map(section => section.props.title?.split(':')[0]);
   useEffect(() => {
@@ -183,7 +191,7 @@ function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
     <p className="co-kicker" role="status">Indicator {selected + 1} of {expressions.length} · {opened.length} of {expressions.length} opened</p>
     {expressions.map((section, index) => <div key={section.props.title} id={`${id}-${index}`} hidden={selected !== index} tabIndex={-1} ref={element => { panels.current[index] = element; }}>{section}</div>)}
     <div className="co-choices">{last
-      ? <p>That was the last of the seven indicators. Choose any of them to read it again, or recall them with the cards below.</p>
+      ? <p>That was the last of the seven indicators. Choose any of them to read it again, or continue with the complete-condition practice below.</p>
       : <button type="button" className="co-primary" onClick={() => choose(selected + 1, true)}>Next indicator: {names[selected + 1]}</button>}</div>
     {group === 'group-2' && <><OnlyAndOnlyIf/><OnlyAfter/></>}
     <FamilySupplement group={group}/>
@@ -360,6 +368,59 @@ function FoundationPractice() {
   return <DrillOneExperience key={foundationPracticeQuestions.length} questions={foundationPracticeQuestions} order={FOUNDATION_ORDER} legacyOrder={foundationLegacyOrder(foundationConceptQuestions.length, ruleAndFact.length)}/>;
 }
 
+// The legacy translation note remains available, while its distinct teaching
+// belongs beside the concept it develops in the main lesson sequence.
+function WholeMeaningSections({ titles }: { titles: string[] }) {
+  return <>{sections(WholeMeaningNote().props.children).filter(section => titles.includes(section.props.title ?? '')).map(section => cloneElement(section, { key: section.props.title, title: section.props.title?.replace(/^Check \d: /, '') }))}</>;
+}
+
+function IndicatorFlashcards({ group, from }: { group: 'group-1' | 'group-2'; from: 'sufficient' | 'necessary' }) {
+  const url = useContext(CourseFlashcardUrl);
+  if (!url) return null;
+  return <Link className="oc-action" to={flashcardUrl(url, group, undefined, from)}>Go to flashcards</Link>;
+}
+
+function SufficientNote() {
+  return <>
+    <ReferenceBody number={2} omitTransition/>
+    <IndicatorNote group="group-1" integrated/>
+    {groupSection('group-1', 'condition-practice')}
+    {groupSection('group-1', 'Keep the whole condition')}
+    <CompleteConditionNote/>
+    <IndicatorFlashcards group="group-1" from="sufficient"/>
+  </>;
+}
+
+function NecessaryNote() {
+  const scope = sections(WholeMeaningNote().props.children).find(section => section.props.title === 'Can, should and must keep their meaning');
+  const onlyComparison = groupSection('group-2', 'Compare only with the only');
+  const onlyCheck = Children.toArray(onlyComparison.props.children).find(child => isValidElement<{ prompt?: string }>(child) && child.props.prompt === 'Only registered guests receive wristbands. What follows from receiving a wristband?');
+  return <>
+    <ReferenceBody number={4} omitTransition/>
+    <IndicatorNote group="group-2" integrated/>
+    {groupSection('group-2', 'condition-practice')}
+    {groupSection('group-2', 'Keep the whole condition')}
+    <WholeMeaningSections titles={['Check 1: find the whole group, wherever it sits']}/>
+    <NoteSection title="Only limits who receives a wristband">{onlyCheck}</NoteSection>
+    {scope && <NoteSection title="Keep time limits and every part of the requirement">{Children.toArray(scope.props.children).slice(-1)}</NoteSection>}
+    <PermissionBoundary/>
+    <IndicatorFlashcards group="group-2" from="necessary"/>
+  </>;
+}
+
+function CombinedContrapositiveNote() {
+  const [openedLawSchoolExample, setOpenedLawSchoolExample] = useState(false);
+  return <>
+    <MissingRequirementNote integrated/>
+    <ContrapositiveNote/>
+    <details className="co-practical-note" onToggle={event => { if (event.currentTarget.open) setOpenedLawSchoolExample(true); }}>
+      <summary>See the law-school example</summary>
+      {openedLawSchoolExample && <SufficientConditionFilm ariaLabel="Law-school rule video examples"/>}
+    </details>
+    <FourRules/>
+  </>;
+}
+
 function PermissionBoundary() {
   const boundary = sections(conditionalReferenceContent().props.children).find(section => section.props['data-reference-boundary'] !== undefined);
   if (!boundary) throw new Error('Missing approved permission and instruction boundary');
@@ -369,14 +430,14 @@ function PermissionBoundary() {
 function Content({ id }: { id: string }) {
   switch (id) {
     case 'meaning': return <ReferenceBody number={1} omitTransition/>;
-    case 'sufficient': return <ReferenceBody number={2} omitTransition/>;
-    case 'necessary': return <ReferenceBody number={4} omitTransition/>;
-    case 'must-arrow': return <MustArrowNote/>;
+    case 'sufficient': return <SufficientNote/>;
+    case 'necessary': return <NecessaryNote/>;
+    case 'must-arrow': return <><MustArrowNote/><WholeMeaningSections titles={['Short symbols stand for complete conditions', 'Check 4: try the rule from the inside']}/></>;
     case 'sufficient-words': return <><IndicatorNote group="group-1"/><CompleteConditionNote/></>;
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;
     case 'missing-requirement': return <MissingRequirementNote/>;
-    case 'contrapositive': return <><ContrapositiveNote/><FourRules/></>;
+    case 'contrapositive': return <CombinedContrapositiveNote/>;
     case 'foundation-practice': return <FoundationPractice/>;
     case 'sufficient-practice': return <StagedReasoningDrill mode="sufficient"/>;
     case 'mixed-practice': return <StagedReasoningDrill mode="mixed"/>;

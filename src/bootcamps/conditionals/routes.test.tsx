@@ -47,18 +47,40 @@ function finishPractice(unitId: string, difficulty: ConditionalAttempt['difficul
 beforeEach(() => { state.progress = emptyProgress(); state.saved = state.progress; state.status = 'saved'; state.error = ''; state.retryCalls = 0; state.updateCalls = 0; });
 afterEach(cleanup);
 
-it('lands on one current lesson without a curriculum map or teaching rail', () => {
-  mount(base);
-  expect(screen.getByRole('link', { name: 'Begin lesson' }).getAttribute('href')).toContain('/lessons?');
-  expect(screen.queryByText('Teaching sequence')).toBeNull();
-  expect(document.querySelector('.cb-curriculum-rail')).toBeNull();
-  expect(document.querySelector('.cb-sequence')).toBeNull();
-  expect(screen.queryAllByRole('combobox')).toHaveLength(0);
+it.each(['', '/lessons'])('opens the same numbered Part 1 course at %s', path => {
+  state.progress!.lessons.orientation = '2026-10-01T12:00:00.000Z';
+  mount(`${base}${path}`);
+  expect(screen.getByText('Part 1')).toBeVisible();
+  expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
+  expect(screen.getByText('1.5')).toBeVisible();
+  expect(screen.queryByRole('link', { name: 'Begin lesson' })).toBeNull();
+  expect(state.updateCalls).toBe(0);
 });
-it('shows only actual assignments and ignores forged broader query groups', () => {
+it('shows only actual assigned course content and ignores forged broader query groups', () => {
   mount(`${base}?start=orientation&path=course&level=beginner`, [skill()]);
-  expect(screen.getByRole('link', { name: 'Begin lesson' }).getAttribute('href')).toContain('/lessons?');
-  expect(screen.getByRole('link', { name: 'Begin lesson' }).getAttribute('href')).toContain('assignment=skill');
+  expect(screen.getByRole('heading', { name: 'The Necessary Condition' })).toBeVisible();
+  expect(screen.getByText('1.3')).toBeVisible();
+  expect(screen.queryByText('1.1')).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'The Sufficient Condition' })).toBeNull();
+});
+it('retains additional assigned skills outside Part 1 without recommending unassigned material', () => {
+  const mixed = { ...course, id: 'mixed', unitIds: ['orientation', 'group-3'] };
+  mount(`${base}?assignment=mixed`, [mixed]);
+  expect(screen.getByText('Part 1')).toBeVisible();
+  const extra = screen.getByText('Additional assigned material').closest('details')!;
+  fireEvent.click(screen.getByText('Additional assigned material'));
+  const continuation = within(extra).getByRole('link', { name: /^Continue:/ });
+  expect(continuation.getAttribute('href')).toContain('/lessons/group-3');
+  expect(continuation.getAttribute('href')).toContain('assignment=mixed');
+  expect(within(extra).queryByRole('link', { name: /Group 4/ })).toBeNull();
+});
+it('does not recycle Part 1 as additional work after the assigned later skill is complete', () => {
+  reviewed('group-3'); finishPractice('group-3', 'beginner');
+  mount(`${base}?assignment=mixed`, [{ ...course, id: 'mixed', unitIds: ['orientation', 'group-3'] }]);
+  const extra = screen.getByText('Additional assigned material').closest('details')!;
+  fireEvent.click(screen.getByText('Additional assigned material'));
+  expect(within(extra).getByText('You have worked through the selected steps.')).toBeTruthy();
+  expect(within(extra).queryByRole('link', { name: /^Continue:/ })).toBeNull();
 });
 it('rejects a directly requested unassigned lesson', () => {
   mount(`${base}/lessons/group-1?path=course`, [skill()]);
@@ -112,18 +134,18 @@ it('fails closed when no assignments are available', () => {
   expect(screen.getByRole('heading', { name: 'No conditional work is available yet.' })).toBeTruthy();
   expect(screen.queryByRole('link', { name: 'Begin lesson' })).toBeNull();
 });
-it('allows teacher preview but uses the same single-work entry', () => {
+it('allows teacher preview through the same numbered course entry', () => {
   mount(`${base}?unit=group-3&level=advanced`, [], true);
-  expect(screen.getByRole('link', { name: 'Begin lesson' }).getAttribute('href')).toContain('/lessons/group-3');
+  expect(screen.getByRole('link', { name: /Start lesson 1.1/ }).getAttribute('href')).toContain('/opening/meaning');
   expect(document.querySelector('.cb-sequence')).toBeNull();
 });
 it('keeps destinations in one course navigation and preserves assignment context', () => {
   const query = '?assignment=skill&start=group-2&unit=group-2&area=translation&level=advanced&path=skill&pathLevel=advanced&phase=conditional&returnTo=%2Fclassroom';
   mount(`${base}/activities/group-2${query}`, [skill()]);
   const nav = screen.getByRole('navigation', { name: 'Conditional course' });
-  expect(within(nav).getByRole('link', { name: 'Course overview' })).toHaveAttribute('href', `${base}${query}`);
-  expect(within(nav).getByRole('link', { name: 'Review attempts' })).toHaveAttribute('href', `${base}/review${query}`);
-  expect(within(nav).getByRole('link', { name: 'Journal' })).toHaveAttribute('href', `${base}/journal${query}`);
+  expect(within(nav).getByRole('link', { name: 'Course' })).toHaveAttribute('href', `${base}${query}`);
+  expect(within(nav).queryByRole('link', { name: 'Review attempts' })).toBeNull();
+  expect(within(nav).queryByRole('link', { name: 'Journal' })).toBeNull();
   expect(within(nav).getByRole('link', { name: 'Reference' })).toHaveAttribute('href', `${base}/reference${query}`);
   expect(screen.queryByRole('link', { name: 'Assigned work' })).toBeNull();
   expect(screen.queryByRole('link', { name: 'Drill Lab' })).toBeNull();
@@ -138,7 +160,7 @@ it.each([false, true])('marks the preserved lab alias as practice for admin=%s',
   const nav = screen.getByRole('navigation', { name: 'Conditional course' });
   expect(within(nav).getByRole('link', { name: 'Practice drills' })).toHaveAttribute('aria-current', 'page');
   expect(within(nav).getByRole('link', { name: 'Practice drills' })).toHaveAttribute('href', `${base}/opening-practice?assignment=course`);
-  expect(within(nav).getByRole('link', { name: 'Lessons' })).not.toHaveAttribute('aria-current');
+  expect(within(nav).getByRole('link', { name: 'Course' })).not.toHaveAttribute('aria-current');
 });
 
 it('resolves a legacy direct link to its matching real assignment', () => {
@@ -530,8 +552,9 @@ it.each([false, true])('excludes edition metadata from acknowledged lesson total
 
 it('filters the new course index by existing teacher authorization', () => {
   mount(`${base}/lessons?assignment=skill&level=advanced`, [skill()]);
-  expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(2);
-  expect(screen.getByRole('heading', { name: 'Necessary-condition words' })).toBeVisible();
+  expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(1);
+  expect(screen.getByRole('heading', { name: 'The Necessary Condition' })).toBeVisible();
+  expect(screen.getByText('1.3')).toBeVisible();
   expect(screen.queryByRole('heading', { name: 'The sufficient condition' })).toBeNull();
   expect(state.updateCalls).toBe(0);
 });
@@ -547,8 +570,8 @@ it('rejects an unassigned new note and does not widen practice-only assignments'
 
 it('keeps assignment context without recording legacy completion on new course navigation', () => {
   mount(`${base}/opening/necessary-words?assignment=skill&level=advanced&path=skill&start=group-2`, [skill()]);
-  fireEvent.click(screen.getByRole('link', { name: /Next lesson Keep the whole meaning/ }));
-  fireEvent.click(screen.getByRole('link', { name: /Next drill Drill 2: Find both conditions/ }));
+  fireEvent.click(screen.getByRole('link', { name: 'Return to course' }));
+  fireEvent.click(screen.getByRole('heading', { name: 'Drill 2: Find both conditions' }).closest('li')!.querySelector('a')!);
   expect(screen.getByRole('heading', { level: 1, name: 'Drill 2: Find both conditions' })).toBeVisible();
   const next = screen.getByRole('link', { name: /Start practice/ }).getAttribute('href')!;
   expect(next).toContain('assignment=skill');
@@ -570,7 +593,7 @@ it('keeps orientation-only contraposition material out of a sufficient-necessary
 
 it('keeps root-entry query context when opening the revised Lessons index', () => {
   mount(`${base}?assignment=skill&level=advanced&path=skill&start=group-2&unit=group-2`, [skill()]);
-  const entry = screen.getByRole('link', { name: 'Begin lesson' }).getAttribute('href')!;
+  const entry = screen.getByRole('link', { name: 'Course' }).getAttribute('href')!;
   for (const field of ['assignment=skill', 'level=advanced', 'path=skill', 'start=group-2', 'unit=group-2']) expect(entry).toContain(field);
 });
 
@@ -619,4 +642,25 @@ it('keeps save errors and retry available after navigation consolidation', () =>
   expect(screen.getByRole('alert')).toHaveTextContent('Your changes could not be saved.');
   fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
   expect(state.retryCalls).toBe(1);
+});
+
+it('preserves an authorized legacy note URL without adding it to the course index', () => {
+  const legacy = mount(`${base}/opening/necessary-words?assignment=skill`, [skill()]);
+  expect(screen.getByRole('heading', { level: 1, name: 'Necessary-condition words' })).toBeVisible();
+  expect(state.progress!.course?.['necessary-words']?.status).toBe('started');
+  legacy.unmount();
+  mount(`${base}/lessons?assignment=skill`, [skill()]);
+  expect(screen.queryByRole('heading', { name: 'Necessary-condition words' })).toBeNull();
+  expect(state.progress!.course?.['necessary-words']?.status).toBe('started');
+});
+
+it.each(['orientation', 'sufficient-necessary'])('opens the Group 1 deck linked from the canonical sufficient lesson for %s work', unitId => {
+ mount(`${base}/opening-tools?deck=group-1`, [assignedSkill(unitId, 'beginner')]);
+ expect(screen.getByRole('heading', { level: 1, name: 'Group 1 words' })).toBeVisible();
+ expect(screen.getByText('Card 1 of 13')).toBeVisible();
+});
+it('does not expose a Group 2 deck to Group 1-only work', () => {
+ mount(`${base}/opening-tools?deck=group-2`, [assignedSkill('group-1', 'beginner')]);
+ expect(screen.queryByRole('heading', { name: 'Group 2 words' })).toBeNull();
+ expect(screen.getByRole('heading', { level: 1, name: 'Flashcards' })).toBeVisible();
 });
