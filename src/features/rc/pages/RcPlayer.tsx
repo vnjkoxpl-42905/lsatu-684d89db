@@ -839,7 +839,7 @@ function RcPlayerRunner() {
         }
       }
     },
-    [answerWriteGeneration, state, config, writeAttempt, loadingAnswers, answerLoadError, reviewOnly, sessionId, failAccountSave],
+    [trainingCommandRef, answerWriteGeneration, state, config, writeAttempt, loadingAnswers, answerLoadError, reviewOnly, sessionId, failAccountSave],
   );
 
   const handleSubmit = React.useCallback(async () => {
@@ -906,7 +906,7 @@ function RcPlayerRunner() {
         navigationInFlightRef.current = false;
       }
     }
-  }, [answerWriteGeneration, state, writeAttempt, sessionId, sessionOwnerId, navigate, returnTo, config.practiceTestRunId, failAccountSave, submitting]);
+  }, [trainingCommandRef, answerWriteGeneration, state, writeAttempt, sessionId, sessionOwnerId, navigate, returnTo, config.practiceTestRunId, failAccountSave, submitting]);
 
   const handleSaveExit = React.useCallback(async () => {
     if (trainingCommandRef.current) return;
@@ -970,7 +970,7 @@ function RcPlayerRunner() {
     } finally {
       if (answerWriteGenerationRef.current === answerWriteGeneration) navigationInFlightRef.current = false;
     }
-  }, [answerWriteGeneration, reviewOnly, navigate, exitPath, sessionId, sessionOwnerId, config, state, writeAttempt, failAccountSave]);
+  }, [trainingCommandRef, answerWriteGeneration, reviewOnly, navigate, exitPath, sessionId, sessionOwnerId, config, state, writeAttempt, failAccountSave]);
 
   const toggleFlag = React.useCallback(
     (questionId: number) => {

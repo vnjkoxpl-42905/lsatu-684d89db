@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-const store = vi.hoisted(() => ({ actor: 'owner', row: {} as Record<string, any>, race: false, lost: false, switchActor: false, updates: 0, tables: [] as string[] }));
+interface FixtureConfig { source: string; clockElapsedSeconds?: number; learningRecords?: unknown[]; timedSectionSittingId?: string; [key: string]: unknown }
+interface FixtureRow { id: string; user_id: string; status: string; passage_ids: number[]; config: FixtureConfig }
+const store = vi.hoisted(() => ({ actor: 'owner', row: {} as FixtureRow, race: false, lost: false, switchActor: false, updates: 0, tables: [] as string[] }));
 vi.mock('../api/rcSupabase.types', () => ({ RC_SESSIONS_TABLE: 'rc_drill_sessions', rcDb: {
   auth: { getUser: async () => ({ data: { user: { id: store.actor } } }) },
   from: (table: string) => {
-    store.tables.push(table); let payload: Record<string, any> | null = null; const filters: Record<string, unknown> = {};
-    const query = { select: () => query, update: (next: Record<string, any>) => { payload = next; return query; }, eq: (field: string, value: unknown) => { filters[field] = value; return query; },
+    store.tables.push(table); let payload: { config: FixtureConfig } | null = null; const filters: Record<string, unknown> = {};
+    const query = { select: () => query, update: (next: { config: FixtureConfig }) => { payload = next; return query; }, eq: (field: string, value: unknown) => { filters[field] = value; return query; },
       maybeSingle: async () => {
         if (!payload) { const copy = JSON.parse(JSON.stringify(store.row)); if (store.switchActor) store.actor = 'other'; return { data: copy, error: null }; }
         store.updates++;
