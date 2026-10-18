@@ -147,3 +147,44 @@
   .relationship-start { width: 100%; }
   .relationship-launch { flex-direction: column; align-items: stretch; }
 }
+
+/* The same mounted player moves into the top layer; only its shell transforms. */
+.relationship-video-slot { aspect-ratio: 16 / 9; width: 100%; }
+.relationship-intro .relationship-video-shell {
+  position: static;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  border: 0;
+  background: var(--relationship-video-ground);
+  color: var(--relationship-ink);
+  border-radius: 8px;
+  overflow: visible;
+  transform-origin: top left;
+}
+.relationship-intro .relationship-video-shell[data-expanded] {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(960px, calc(100vw - 32px), calc((100dvh - 112px) * 16 / 9));
+  height: fit-content;
+}
+.relationship-video-shell::backdrop { background: hsl(0 0% 0% / .75); }
+.relationship-intro .relationship-video-expand,
+.relationship-intro .relationship-video-close {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--relationship-border);
+  border-radius: 6px;
+  background: var(--relationship-card);
+  color: var(--relationship-ink);
+  font: inherit;
+  cursor: pointer;
+}
+.relationship-video-expand { margin-top: 12px; }
+.relationship-video-close { position: absolute; bottom: calc(100% + 8px); right: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .relationship-video-shell { animation: none; transition: none; }
+}

@@ -40,3 +40,8 @@ The source change and independent review are not publication proof or Joshua's v
 ## Integration correction
 
 The final after-size matrix was regenerated after importing activity-centre.css and overriding its local warm tokens for this entry. [Always-light activity beneath dark ancestor tokens, with resume](after-host-root-resume.png). The older after-root-dark-resume.png is intentionally retained with the limitation above. A fixed dark video backdrop avoids a white letterbox; the intro focus rule suppresses the inherited emerald halo while retaining a clear neutral outline.
+
+## 2026-10-18: expand video on click
+
+Video now expands from its small inline position over 450ms to a native modal, capped at 960px and fitted to the viewport. Close button, Escape, backdrop dismissal, reduced motion, and return focus are supported. Same mounted video preserves its playback position. Browser checked at 390, 658, 768 and 1280 pixels with no horizontal overflow; actual playback observed advancing. Screenshot: video-expanded-2026-10-18.png. Local preview only; not deployed.
+

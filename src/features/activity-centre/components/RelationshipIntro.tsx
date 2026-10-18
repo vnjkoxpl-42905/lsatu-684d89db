@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { ActivityIntroProps } from "./ActivityEditorialIntro";
 import "../relationship-intro.css";
@@ -6,6 +6,60 @@ import "../relationship-intro.css";
 /** Keep the launch instructions current even for an older assignment snapshot. */
 export function RelationshipIntro({ title, resumeAt = 1, preview, canSaveProgress = false, onStart, onExit }: ActivityIntroProps) {
   const [videoFailed, setVideoFailed] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const slotRef = useRef<HTMLDivElement>(null);
+  const expandRef = useRef<HTMLButtonElement>(null);
+  const animationRef = useRef<Animation>();
+  const closingRef = useRef(false);
+  const focusFrameRef = useRef<number>();
+  const [expanded, setExpanded] = useState(false);
+  useEffect(() => () => {
+    animationRef.current?.cancel();
+    if (focusFrameRef.current !== undefined) cancelAnimationFrame(focusFrameRef.current);
+  }, []);
+
+  const animateBetween = (from: DOMRect, to: DOMRect, reverse = false) => {
+    const shell = dialogRef.current!;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || !shell.animate || !to.width || !to.height) return;
+    const small = { transform: `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})` };
+    return shell.animate(reverse ? [{ transform: "none" }, small] : [small, { transform: "none" }], {
+      duration: 450, easing: "cubic-bezier(.22, 1, .36, 1)", fill: "both",
+    });
+  };
+  const expandVideo = () => {
+    const shell = dialogRef.current!;
+    if (expanded || closingRef.current) return;
+    if (focusFrameRef.current !== undefined) cancelAnimationFrame(focusFrameRef.current);
+    const from = shell.getBoundingClientRect();
+    shell.close();
+    shell.dataset.expanded = "true";
+    shell.showModal();
+    setExpanded(true);
+    animationRef.current = animateBetween(from, shell.getBoundingClientRect());
+    const opening = animationRef.current;
+    opening?.finished.then(() => opening.cancel()).catch(() => {});
+  };
+  const closeVideo = async () => {
+    const shell = dialogRef.current!;
+    if (!expanded || closingRef.current) return;
+    closingRef.current = true;
+    animationRef.current?.cancel();
+    const animation = animateBetween(slotRef.current!.getBoundingClientRect(), shell.getBoundingClientRect(), true);
+    animationRef.current = animation;
+    if (animation) await animation.finished.catch(() => {});
+    animation?.cancel();
+    shell.close();
+    delete shell.dataset.expanded;
+    shell.setAttribute("open", "");
+    setExpanded(false);
+    closingRef.current = false;
+    expandRef.current?.focus();
+    // Native dialog teardown can restore its own focus after close() returns.
+    focusFrameRef.current = requestAnimationFrame(() => {
+      expandRef.current?.focus();
+      focusFrameRef.current = undefined;
+    });
+  };
   return (
     <div className="relationship-intro" data-testid="relationship-intro">
       {onExit && <button type="button" className="relationship-exit" onClick={onExit}><ArrowLeft size={16} aria-hidden="true" />Exit</button>}
@@ -54,6 +108,15 @@ export function RelationshipIntro({ title, resumeAt = 1, preview, canSaveProgres
 
         <aside className="relationship-video" aria-labelledby="relationship-video-title">
           <h2 id="relationship-video-title">Video instructions</h2>
+          <div className="relationship-video-slot" ref={slotRef}>
+          <dialog open ref={dialogRef} className="relationship-video-shell" aria-label="Video instructions"
+            onCancel={(event) => { event.preventDefault(); void closeVideo(); }}
+            onClick={(event) => {
+              if (event.target !== event.currentTarget || !expanded) return;
+              const rect = event.currentTarget.getBoundingClientRect();
+              if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) void closeVideo();
+            }}>
+          {expanded && <button type="button" className="relationship-video-close" autoFocus onClick={() => void closeVideo()}>Close video</button>}
           <video
             controls
             preload="none"
@@ -61,11 +124,16 @@ export function RelationshipIntro({ title, resumeAt = 1, preview, canSaveProgres
             poster="/media/spot-the-relationship/how-to-play-v1.webp"
             src="/media/spot-the-relationship/how-to-play-v1.mp4"
             aria-label="How to play Spot the Relationship"
+            onClick={() => { if (!expanded) expandVideo(); }}
+            onLoadedData={() => setVideoFailed(false)}
             onError={() => setVideoFailed(true)}
           >
             <track kind="captions" src="/media/spot-the-relationship/how-to-play-v1.vtt" srcLang="en" label="English" default />
             Your browser cannot play this video. Read the written instructions on this page.
           </video>
+          </dialog>
+          </div>
+          <button ref={expandRef} type="button" className="relationship-video-expand" aria-haspopup="dialog" aria-expanded={expanded} onClick={expandVideo}>Expand video</button>
           {videoFailed && <p className="relationship-video-fallback" role="status">The video could not load. You can use the written instructions on this page.</p>}
         </aside>
       </div>
