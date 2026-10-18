@@ -107,7 +107,7 @@ vi.mock('./rcSupabase.types', () => ({
   },
 }));
 
-import { abandonSession, createSession, getQuestionHistory, getSession, listSessions, recordAttempt, saveSessionClock, loadAnnotations, saveAnnotationsNow, setAttemptFlag } from './rcProgress';
+import { abandonSession, createSession, getQuestionHistory, getRcHistorySnapshot, getSession, listSessions, recordAttempt, saveSessionClock, loadAnnotations, saveAnnotationsNow, setAttemptFlag } from './rcProgress';
 
 beforeEach(() => {
   localStorage.clear();
@@ -155,6 +155,30 @@ it('shows only the signed-in admin own drills when RLS also grants access to stu
   expect(personalList.filters).toHaveBeenCalledWith('user_id', owner);
 });
 
+it('preserves exposure and completed state while withholding unrevealed correctness from display history', async () => {
+  historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', excluded_from_analytics: false, config: { ...clock.config } }];
+  historyStore.attempts = [{ id: attemptId, user_id: owner, session_id: sessionId, question_id: 7, selected: 'C', is_correct: false, is_first_attempt: true, created_at: '2026-10-17T10:00:00Z' }];
+  const snapshot = await getRcHistorySnapshot(owner);
+  expect(snapshot.hasHiddenGradedResults).toBe(true);
+  expect(snapshot.history.get(7)).toMatchObject({ firstTakeCorrect: false, everIncorrect: true });
+  expect(snapshot.displayHistory.get(7)).toMatchObject({ attempts: 1, answered: true, completedAnswered: true, firstTakeCorrect: null, everIncorrect: false });
+  expect((await getQuestionHistory(owner, { correctness: 'released-only' })).get(7)?.firstTakeCorrect).toBeNull();
+  historyStore.sessions[0].config = { ...clock.config, resultsRevealedAt: '2026-10-17T11:00:00Z' };
+  expect((await getRcHistorySnapshot(owner)).hasHiddenGradedResults).toBe(false);
+  expect((await getQuestionHistory(owner, { correctness: 'released-only' })).get(7)?.firstTakeCorrect).toBe(false);
+});
+
+it('retries a concurrent config change without overwriting acknowledged learning metadata', async () => {
+  const original = update.getMockImplementation()!;
+  update.mockImplementationOnce(() => ({ eq() { return this; }, select() { return this; }, async maybeSingle() {
+    clock.config = { ...clock.config, learning: [{ id: 'reflection-one' }] } as RcDrillConfig;
+    return { data: null, error: null };
+  } })).mockImplementation(original);
+  await saveSessionClock(sessionId, 19, 1);
+  expect(clock.config).toMatchObject({ learning: [{ id: 'reflection-one' }], clockElapsedSeconds: 19, currentQuestionIndex: 1 });
+  expect(update).toHaveBeenCalledTimes(2);
+});
+
 it('acknowledges an attempt already saved under the retry UUID without inserting another row', async () => {
   const saved = await recordAttempt({
     id: attemptId, sessionId, questionId: 7, passageId: 3, selected: 'C',
@@ -162,6 +186,22 @@ it('acknowledges an attempt already saved under the retry UUID without inserting
   });
   expect(saved.id).toBe(attemptId);
   expect(saved.isFirstAttempt).toBe(true);
+  expect(insert).not.toHaveBeenCalled();
+});
+
+it('refuses an answer retry belonging to another signed-in account before inserting', async () => {
+  await expect(recordAttempt({ id: attemptId, userId: 'another-owner', sessionId, questionId: 7, passageId: 3,
+    selected: 'C', isCorrect: true, timeMs: 1000, flagged: false, eliminations: [], isFirstAttempt: false,
+  })).rejects.toThrow('account changed');
+  expect(insert).not.toHaveBeenCalled();
+});
+
+it('refuses reanswers to a completed protected source section', async () => {
+  clock.status = 'completed';
+  clock.config = { ...clock.config, timedSectionSittingId: 'protected-sitting' };
+  await expect(recordAttempt({ id: attemptId, userId: owner, sessionId, questionId: 7, passageId: 3,
+    selected: 'C', isCorrect: true, timeMs: 1000, flagged: false, eliminations: [], isFirstAttempt: false,
+  })).rejects.toThrow('protected source section');
   expect(insert).not.toHaveBeenCalled();
 });
 
@@ -302,9 +342,11 @@ it('inserts the stable client launch UUID and verifies its account acknowledgeme
 });
 it('does not carry another session draft answers into a newly created drill', async () => {
   insert.mockImplementationOnce((payload) => ({ select: () => ({ single: async () => ({ data: { ...payload, status: 'in_progress', started_at: '2026-10-02T00:00:00Z' }, error: null }) }) }));
-  const saved = await createSession({ ...clock.config, draftAnswers: [draft] } as RcDrillConfig, [3]);
+  const saved = await createSession({ ...clock.config, draftAnswers: [draft], resultsRevealedAt: '2026-10-17T10:00:00Z', learningRecords: [{ id: 'old-reflection' }] } as RcDrillConfig, [3]);
   expect(insert.mock.calls.at(-1)[0].config.draftAnswers).toBeUndefined();
   expect(saved.config.draftAnswers).toBeUndefined();
+  expect(insert.mock.calls.at(-1)[0].config.learningRecords).toBeUndefined();
+  expect(saved.config.resultsRevealedAt).toBeUndefined();
 });
 it('rejects an actor switch before inserting a launch', async () => {
   getUser.mockResolvedValueOnce({ data: { user: { id: owner } } }).mockResolvedValueOnce({ data: { user: { id: 'another-owner' } } });

@@ -127,7 +127,7 @@ export async function createSession(
   }
   if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
   // Reusing drill settings (including Drill your misses) must start fresh work.
-  const { draftAnswers: _draftAnswers, resultsRevealedAt: _reveal, ...freshConfig } = config;
+  const { draftAnswers: _draftAnswers, resultsRevealedAt: _reveal, learningRecords: _learning, ...freshConfig } = config as RcDrillConfig & { learningRecords?: unknown };
   const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .insert({
@@ -188,35 +188,36 @@ async function writeSessionClock(id: string, elapsedSeconds: number, currentQues
   }
   const userId = await requireUserId();
   if (drafts && drafts.actorId !== userId) throw new Error('The signed-in account changed.');
-  const session = await getSession(id);
-  if (!session || session.userId !== userId || session.status !== 'in_progress') {
-    throw new Error('The section is no longer available to save.');
-  }
-  await assertActivePracticeTestSession(id);
   const answers = drafts ? readRcDraftAnswers(drafts.answers) : undefined;
-  if (drafts && (session.config.timedSectionSittingId || session.config.practiceTestRunId
-    || !Array.isArray(drafts.answers) || answers.length !== drafts.answers.length)) {
-    throw new Error('These reading drafts could not be saved.');
+  let rejectedConfig: string | null = null;
+  for (let retry = 0; retry < 3; retry++) {
+    const read = await rcDb.from(RC_SESSIONS_TABLE).select().eq('id', id).maybeSingle();
+    raise(read.error);
+    const row = read.data as RcDrillSessionRow | null;
+    const session = row ? toSession(row) : null;
+    if (!session || session.userId !== userId || session.status !== 'in_progress') throw new Error('The section is no longer available to save.');
+    if (rejectedConfig === JSON.stringify(row!.config)) throw new Error('The section clock did not reach your account.');
+    await assertActivePracticeTestSession(id);
+    if (drafts && (session.config.timedSectionSittingId || session.config.practiceTestRunId
+      || !Array.isArray(drafts.answers) || answers.length !== drafts.answers.length)) throw new Error('These reading drafts could not be saved.');
+    if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+    const seconds = Math.max(session.config.clockElapsedSeconds ?? 0, Math.floor(elapsedSeconds));
+    const { data, error } = await rcDb.from(RC_SESSIONS_TABLE).update({ config: {
+      ...(row!.config as RcDrillConfig),
+      ...(answers === undefined ? {} : { draftAnswers: answers }),
+      clockElapsedSeconds: seconds,
+      ...(currentQuestionIndex === undefined ? {} : { currentQuestionIndex }),
+      lastActiveAt: new Date().toISOString(),
+    } }).eq('id', id).eq('user_id', userId).eq('status', 'in_progress')
+      .eq('config', JSON.stringify(row!.config)).select('id').maybeSingle();
+    raise(error);
+    if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+    if (data) return;
+    rejectedConfig = JSON.stringify(row!.config);
+    // A concurrently acknowledged training/reflection field must survive a heartbeat.
+    // Retry from its new raw config rather than overwriting the whole document.
   }
-  const seconds = Math.max(session.config.clockElapsedSeconds ?? 0, Math.floor(elapsedSeconds));
-  const { data, error } = await rcDb
-    .from(RC_SESSIONS_TABLE)
-    .update({
-      config: {
-        ...session.config,
-        ...(answers === undefined ? {} : { draftAnswers: answers }),
-        clockElapsedSeconds: seconds,
-        ...(currentQuestionIndex === undefined ? {} : { currentQuestionIndex }),
-        lastActiveAt: new Date().toISOString(),
-      },
-    })
-    .eq('id', id)
-    .eq('user_id', userId)
-    .eq('status', 'in_progress')
-    .select('id')
-    .maybeSingle();
-  raise(error);
-  if (!data) throw new Error('The section clock did not reach your account.');
+  throw new Error('The section clock did not reach your account. Retry after the other save finishes.');
 }
 
 export async function completeSession(id: string): Promise<void> {
@@ -291,7 +292,8 @@ export async function revealSessionResults(id: string, actorId: string): Promise
   const session = await getSession(id, actorId);
   if (!session || session.userId !== actorId || session.status !== 'completed') throw new Error('This drill is not ready to reveal.');
   if (session.config.timedSectionSittingId || session.config.practiceTestRunId) throw new Error('Protected results use their section release controls.');
-  const resultsRevealedAt = session.config.resultsRevealedAt ?? new Date().toISOString();
+  const resultsRevealedAt = typeof session.config.resultsRevealedAt === 'string' && Number.isFinite(Date.parse(session.config.resultsRevealedAt))
+    ? session.config.resultsRevealedAt : new Date().toISOString();
   const { data, error } = await rcDb.from(RC_SESSIONS_TABLE)
     .update({ config: { ...session.config, resultsRevealedAt } })
     .eq('id', id).eq('user_id', actorId).eq('status', 'completed')
@@ -447,6 +449,9 @@ interface RcHistorySessionRow {
   user_id?: string;
   status: RcSessionStatus | string;
   excluded_from_analytics: boolean;
+  config?: RcDrillConfig;
+  practice_test_run_id?: string | null;
+  timed_section_sitting_id?: string | null;
 }
 
 interface RcHistoryAttemptRow {
@@ -487,14 +492,27 @@ async function fetchHistoryPages<T>(
  * (`rc_attempts_session_id_fkey` and `rc_attempts_session_owner_fk`), which
  * causes an unqualified PostgREST embed to fail with `PGRST201`.
  */
-export async function getQuestionHistory(userId?: string): Promise<RcQuestionHistory> {
+export interface RcHistorySnapshot {
+  /** Locked T01 calculation, for adaptive ordering only until results are released. */
+  history: RcQuestionHistory;
+  /** Exposure/completion is retained; unreleased correctness is withheld. */
+  displayHistory: RcQuestionHistory;
+  hasHiddenGradedResults: boolean;
+}
+
+export async function getQuestionHistory(userId?: string, options?: { correctness: 'all' | 'released-only' }): Promise<RcQuestionHistory> {
+  const snapshot = await getRcHistorySnapshot(userId);
+  return options?.correctness === 'released-only' ? snapshot.displayHistory : snapshot.history;
+}
+
+export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySnapshot> {
   const uid = userId ?? (await requireUserId());
 
   const [sessionRows, attemptRows] = await Promise.all([
     fetchHistoryPages<RcHistorySessionRow>(async (from, to) => {
       const result = await rcDb
         .from(RC_SESSIONS_TABLE)
-        .select('id, user_id, status, excluded_from_analytics')
+        .select('id, user_id, status, excluded_from_analytics, config, practice_test_run_id, timed_section_sitting_id')
         .eq('user_id', uid)
         .order('started_at', { ascending: true })
         .order('id', { ascending: true })
@@ -549,6 +567,7 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
   });
 
   const history: RcQuestionHistory = new Map();
+  const hiddenQuestions = new Set<number>();
   for (const row of validAttemptRows) {
     const session = row.session_id ? sessionsById.get(row.session_id) : undefined;
     if (row.session_id && !session) continue;
@@ -585,6 +604,11 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
     const isFirstTake = row.is_first_attempt !== false;
     const hasSelected = typeof row.selected === 'string' && row.selected.trim().length > 0;
     const hasGradedAnswer = hasSelected && typeof row.is_correct === 'boolean';
+    // Generic builder analytics cannot establish a protected parent test's seal.
+    // Keep those grades private unless an explicit disclosure marker exists.
+    const released = sessionStatus === 'completed' && typeof session?.config?.resultsRevealedAt === 'string'
+      && Number.isFinite(Date.parse(session.config.resultsRevealedAt));
+    if (sessionStatus !== 'abandoned' && hasGradedAnswer && !released) hiddenQuestions.add(row.question_id);
 
     if (sessionStatus === 'abandoned') {
       if (isFirstTake || existing.attempts === 0) {
@@ -652,7 +676,12 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
 
     history.set(row.question_id, existing);
   }
-  return history;
+  const displayHistory: RcQuestionHistory = new Map([...history].map(([id, entry]) => [id, hiddenQuestions.has(id) ? {
+    ...entry, firstEverCorrect: null, firstTakeCorrect: null, lastGradedAt: null,
+    everIncorrect: false, incorrectOnLastTake: false, incorrectCount: 0,
+    lastFirstTakeIncorrect: false, everCorrect: false, reviewCorrected: false,
+  } : { ...entry }]));
+  return { history, displayHistory, hasHiddenGradedResults: hiddenQuestions.size > 0 };
 }
 
 /* -------------------------------------------------------------- annotations */

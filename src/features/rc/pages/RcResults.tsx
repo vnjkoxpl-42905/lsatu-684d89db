@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { canRevealRcResults } from '../lib/rcResultsReveal';
+import { RcReviewSuggestions } from '../components/RcReviewSuggestions';
+import { firstRcAttempts, rcRetryPassageIds } from '../lib/rcRetrySelection';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -45,6 +47,14 @@ function signedClock(ms: number): string {
   return (ms >= 0 ? '+' : '-') + clock(Math.abs(ms));
 }
 
+/** JSON comparison ignores object key order and absent optional fields. */
+function canonical(value: unknown): string {
+  if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+  if (value && typeof value === 'object') return '{' + Object.entries(value).filter(([, v]) => v !== undefined)
+    .sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => JSON.stringify(k) + ':' + canonical(v)).join(',') + '}';
+  return JSON.stringify(value);
+}
+
 interface FocusArea {
   qtype: string;
   correct: number;
@@ -66,14 +76,20 @@ export default function RcResults() {
   const [attempts, setAttempts] = React.useState<RcAttempt[]>([]);
   const [error, setError] = React.useState<string | null>(null);
   const [excluded, setExcluded] = React.useState(false);
+  const [includeSkipped, setIncludeSkipped] = React.useState(false);
   const [expandedRows, setExpandedRows] = React.useState<Set<number>>(new Set());
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [showAllTypes, setShowAllTypes] = React.useState(false);
   const [actionError, setActionError] = React.useState<string | null>(null);
   const [actionBusy, setActionBusy] = React.useState(false);
-  const actionLock = React.useRef(false);
-  const actorRef = React.useRef(user?.id);
-  actorRef.current = user?.id;
+  const identity = React.useMemo(() => ({ actorId: user?.id, sessionId }), [user?.id, sessionId]);
+  const activeIdentity = React.useRef<typeof identity | null>(identity);
+  activeIdentity.current = identity;
+  const actionLock = React.useRef<object | null>(null);
+  React.useEffect(() => {
+    activeIdentity.current = identity;
+    return () => { if (activeIdentity.current === identity) activeIdentity.current = null; };
+  }, [identity]);
 
   // Force dark mode, as the drill pages do. This route is mounted outside
   // Drill.tsx, so without it a student on the light theme would get a light
@@ -88,14 +104,14 @@ export default function RcResults() {
   }, []);
 
   React.useEffect(() => {
-    setSession(null); setError(null); setActionError(null); setActionBusy(false);
+    setSession(null); setIncludeSkipped(false); setError(null); setActionError(null); setActionBusy(false); actionLock.current = null;
     if (!sessionId || !user?.id) return;
     const actorId = user.id;
     let cancelled = false;
     (async () => {
       try {
         const s = await getSession(sessionId, actorId);
-        if (!s || s.userId !== actorId) throw new Error('That drill could not be found for this account.');
+        if (!s || s.id !== sessionId || s.userId !== actorId) throw new Error('That drill could not be found for this account.');
         if (s.status !== 'completed') throw new Error('This drill is not finished. Return to Practice to continue.');
         const [ps, as] = await Promise.all([
           loadPassages(s.passageIds),
@@ -118,11 +134,7 @@ export default function RcResults() {
   const items = React.useMemo(() => buildItems(passages), [passages]);
 
   /** Scoring uses first attempts only, so a review re-answer never inflates it. */
-  const firstAttempts = React.useMemo(() => {
-    const map = new Map<number, RcAttempt>();
-    for (const a of attempts) if (a.isFirstAttempt) map.set(a.questionId, a);
-    return map;
-  }, [attempts]);
+  const firstAttempts = React.useMemo(() => firstRcAttempts(attempts), [attempts]);
 
   /** Accuracy per question type, weakest first — the same rollup LR uses. */
   const allFocusAreas: FocusArea[] = React.useMemo(() => {
@@ -155,7 +167,7 @@ export default function RcResults() {
     );
   }
 
-  if (!session || session.userId !== user?.id) {
+  if (!session || session.id !== sessionId || session.userId !== user?.id) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <p className="text-muted-foreground">Loading your results…</p>
@@ -210,47 +222,58 @@ export default function RcResults() {
     return true;
   });
 
-  const missedPassageIds = [
-    ...new Set(
-      items
-        .filter((i) => firstAttempts.get(i.question.questionId)?.isCorrect === false)
-        .map((i) => i.passage.passageId),
-    ),
-  ];
+  const missedPassageIds = rcRetryPassageIds(items, firstAttempts, includeSkipped);
 
   const revealed = canRevealRcResults(session);
-  const runAction = async (operation: (actorId: string) => Promise<void>) => {
-    if (actionLock.current || !user?.id || session.userId !== user.id) return;
+  const runAction = async (operation: (actorId: string, isCurrent: () => boolean) => Promise<void>) => {
+    if (actionLock.current || !user?.id || session.id !== sessionId || session.userId !== user.id) return;
     const actorId = user.id;
-    actionLock.current = true; setActionBusy(true); setActionError(null);
-    try { await operation(actorId); }
-    catch (err) { if (actorRef.current === actorId) setActionError(err instanceof Error ? err.message : 'That change did not save. Try again.'); }
-    finally { actionLock.current = false; if (actorRef.current === actorId) setActionBusy(false); }
-  };
-  const drillMisses = () => runAction(async actorId => {
-    // Keep the same create command across lost replies, retries and reloads.
-    const key = `lsatu:rc-missed-create:v1:${actorId}:${session.id}`;
-    let id = localStorage.getItem(key);
-    if (!id || !/^[0-9a-f-]{36}$/i.test(id)) { id = crypto.randomUUID(); localStorage.setItem(key, id); }
-    let fresh = await getSession(id, actorId);
-    if (!fresh) {
-      try { fresh = await createSession(missedRcConfig(session.config), missedPassageIds, { id, actorId }); }
-      catch (err) { fresh = await getSession(id, actorId); if (!fresh) throw err; }
+    const command = {};
+    const isCurrent = () => activeIdentity.current === identity;
+    actionLock.current = command; setActionBusy(true); setActionError(null);
+    try { await operation(actorId, isCurrent); }
+    catch (err) { if (isCurrent()) setActionError(err instanceof Error ? err.message : 'That change did not save. Try again.'); }
+    finally {
+      if (actionLock.current === command) actionLock.current = null;
+      if (isCurrent()) setActionBusy(false);
     }
-    if (fresh.userId !== actorId || fresh.id !== id) throw new Error('The new drill could not be verified. Try again.');
-    if (actorRef.current !== actorId) return;
+  };
+  const drillMisses = () => runAction(async (actorId, isCurrent) => {
+    if (protectedSection) throw new Error('Start a new drill from Practice to retry a protected section.');
+    // The durable command includes its payload, so recovery cannot adopt unrelated work.
+    const key = `lsatu:rc-missed-create:v1:${actorId}:${session.id}`;
+    const { resultsRevealedAt: _reveal, draftAnswers: _drafts, ...config } = missedRcConfig(session.config);
+    const requested = { config, passageIds: missedPassageIds };
+    const stored = localStorage.getItem(key);
+    const pending = stored ? JSON.parse(stored) : { id: crypto.randomUUID(), ...requested };
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pending.id ?? '')
+      || canonical(pending.config) !== canonical(config) || canonical(pending.passageIds) !== canonical(missedPassageIds)) {
+      throw new Error('The saved retry command does not match this drill. Return to Practice to start a new drill.');
+    }
+    if (!stored) localStorage.setItem(key, JSON.stringify(pending));
+    let fresh = await getSession(pending.id, actorId);
+    if (!isCurrent()) return;
+    if (!fresh) {
+      try { fresh = await createSession(config, missedPassageIds, { id: pending.id, actorId }); }
+      catch (err) { if (!isCurrent()) return; fresh = await getSession(pending.id, actorId); if (!fresh) throw err; }
+    }
+    if (!isCurrent()) return;
+    if (fresh.userId !== actorId || fresh.id !== pending.id || fresh.status !== 'in_progress'
+      || canonical(fresh.config) !== canonical(config) || canonical(fresh.passageIds) !== canonical(missedPassageIds)) {
+      throw new Error('The new drill does not match the saved retry command. Return to Practice to check your drills.');
+    }
     localStorage.removeItem(key);
     navigate('/rc/drill?sessionId=' + fresh.id);
   });
-  const toggleExcluded = () => runAction(async actorId => {
+  const toggleExcluded = () => runAction(async (actorId, isCurrent) => {
     if (protectedSection) return;
     const next = !excluded;
     await setSessionExcluded(session.id, next);
-    if (actorRef.current === actorId) setExcluded(next);
+    if (isCurrent()) setExcluded(next);
   });
-  const revealResults = () => runAction(async actorId => {
+  const revealResults = () => runAction(async (actorId, isCurrent) => {
     const saved = await revealSessionResults(session.id, actorId);
-    if (actorRef.current === actorId) setSession(saved);
+    if (isCurrent()) setSession(saved);
   });
 
   const toggleRow = (id: number) =>
@@ -444,6 +467,7 @@ export default function RcResults() {
           </>}
         </div>
       </div>
+      {!protectedSection && <RcReviewSuggestions key={`${user!.id}:${session.id}`} actorId={user!.id} sessionId={session.id} items={items} firstAttempts={firstAttempts} />}
       {actionError && <p role="alert" className="mx-auto max-w-7xl px-6 py-3">{actionError}</p>}
       {!revealed && <section className="mx-auto max-w-3xl px-6 py-10 space-y-4">
         <h2 className="text-xl font-semibold">Your drill is complete</h2>
@@ -460,6 +484,7 @@ export default function RcResults() {
           {perPassage.map((p) => (
             <Card key={p.passage.passageId} className="p-4">
               <div className="mb-2 font-semibold">{p.passage.title}</div>
+              <p className="mb-2 text-sm text-muted-foreground">PT {p.passage.preptest} · S{p.passage.section} · P{p.passage.setNumber}</p>
               <div className="mb-3 flex flex-wrap gap-1.5">
                 {p.passage.topic && (
                   <Badge variant="outline" className="text-xs">
@@ -641,15 +666,15 @@ export default function RcResults() {
         </Button>
         <Button
           variant="outline"
-          disabled={actionBusy || missedPassageIds.length === 0}
+          disabled={actionBusy || protectedSection || missedPassageIds.length === 0}
           title={
-            missedPassageIds.length === 0 ? 'You did not miss anything in this drill' : undefined
+            protectedSection ? 'Start a new drill from Practice to retry a protected section.' : missedPassageIds.length === 0 ? 'You did not miss anything in this drill' : undefined
           }
           onClick={drillMisses}
         >
           Drill your misses
         </Button>
-        <p className="text-sm text-muted-foreground">A new drill includes each passage with a missed question.</p>
+        {!protectedSection && <p className="text-sm text-muted-foreground">A new drill includes each passage with a missed question.</p>}
         </>}
         <Button variant="outline" onClick={() => navigate('/rc')}>
           New drill

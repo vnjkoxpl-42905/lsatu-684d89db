@@ -15,7 +15,7 @@ import type {
 
 export type { RcPassageState };
 
-export type RcStatusFilter = 'any' | 'fresh' | 'incorrect_before' | 'incorrect_last';
+export type RcStatusFilter = 'any' | 'fresh' | 'strict_no_exposure' | 'incorrect_before' | 'incorrect_last';
 
 export interface RcSelectionFilters {
   topics: string[];
@@ -32,7 +32,7 @@ export interface RcSelectionFilters {
 export type RcIndexPassageWithPt = RcIndexPassage & { preptest: number };
 
 /** The label used anywhere this behavior is named. Nothing grander. */
-export const RC_ADAPTIVE_LABEL = 'Adaptive: fresh passages near your level.';
+export const RC_ADAPTIVE_LABEL = 'Adaptive: difficulty from recent first-take accuracy.';
 
 /** Per-passage roll-up of the student's history across its questions. */
 export interface RcPassageStatus {
@@ -201,6 +201,7 @@ export function matchesFilters(
 
   switch (filters.status) {
     case 'fresh':
+    case 'strict_no_exposure': // The caller additionally supplies the acknowledged exposure-filtered pool.
       if (status.state !== 'not_attempted') return false;
       break;
     case 'incorrect_before':

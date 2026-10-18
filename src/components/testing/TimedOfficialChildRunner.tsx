@@ -9,6 +9,7 @@ import { TimedChildController, type TimedChildAnswer, type TimedChildState } fro
 import { getPracticeTestDeviceId } from '@/lib/practiceTestStore';
 import { captureSelectionAcross, type Highlight, type HighlightMode } from '@/lib/highlightUtils';
 import { RcTimedReader } from '@/components/timed/RcTimedReader';
+import { validateRcTimedMarks } from '@/components/timed/rcTimedReaderStorage';
 import type { RcHighlight, RcHighlightColor } from '@/features/rc/lib/rcTypes';
 import '@/features/rc/rc.css';
 import '@/features/rc/player.css';
@@ -42,7 +43,10 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
   const [color, setColor] = React.useState<RcHighlightColor>('yellow'); const [scrollTops, setScrollTops] = React.useState<Record<string, number>>({});
   const telemetry = React.useRef<{ visits: Record<string, number>; trail: Record<string, { answer: string; atMs: number }[]> }>({ visits: {}, trail: {} });
   const regulation = React.useRef<string[] | undefined>(undefined); const regulationAcknowledged = React.useRef(false);
+  const validRcHighlights = React.useMemo(() => validateRcTimedMarks(rcHighlights, state?.passages ?? []), [rcHighlights, state?.passages]);
   const [markersReady, setMarkersReady] = React.useState<string | null>(null);
+  const [localMarkerError, setLocalMarkerError] = React.useState<string | null>(null);
+  const [markerRetry, setMarkerRetry] = React.useState(0);
   const markerKey = `lsatu:timed-markers:v1:${encodeURIComponent(ownerId ?? '')}:${encodeURIComponent(runId)}:${legIndex}`;
 
   const apply = React.useCallback((next: TimedChildState, draft?: Record<string, TimedChildAnswer>) => {
@@ -79,20 +83,37 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
     return () => { cancelled = true; generationGuard.current++; };
   }, [controller, loadRevision, apply, fail]);
   React.useEffect(() => {
+    if (markersReady === markerKey) return;
+    setHighlights({}); setRcHighlights({}); telemetry.current = { visits: {}, trail: {} }; setLocalMarkerError(null);
     try {
       const stored = JSON.parse(localStorage.getItem(markerKey) ?? 'null');
       if (stored?.ownerId === ownerId && stored?.runId === runId && stored?.legIndex === legIndex) {
-        setHighlights(stored.highlights ?? {}); setRcHighlights(stored.rcHighlights ?? {});
-        if (stored.telemetry) telemetry.current = stored.telemetry;
-      } else { setHighlights({}); setRcHighlights({}); telemetry.current = { visits: {}, trail: {} }; }
-    } catch { setHighlights({}); setRcHighlights({}); }
+        const record = (value: unknown) => value && typeof value === 'object' && !Array.isArray(value);
+        setHighlights(record(stored.highlights) ? stored.highlights : {});
+        setRcHighlights(record(stored.rcHighlights) ? stored.rcHighlights : {});
+        // Restore only structural telemetry that the reader can safely append to.
+        if (record(stored.telemetry?.visits) && record(stored.telemetry?.trail)) {
+          telemetry.current = {
+            visits: Object.fromEntries(Object.entries(stored.telemetry.visits).filter(([, value]) => typeof value === 'number' && Number.isFinite(value) && value >= 0)),
+            trail: Object.fromEntries(Object.entries(stored.telemetry.trail).filter(([, value]) => Array.isArray(value)).map(([qid, value]) => [qid,
+              (value as { answer?: unknown; atMs?: unknown }[]).filter(event => event && ['A', 'B', 'C', 'D', 'E'].includes(String(event.answer)) && typeof event.atMs === 'number' && Number.isFinite(event.atMs) && event.atMs >= 0),
+            ])),
+          } as typeof telemetry.current;
+        }
+      }
+    } catch {
+      setLocalMarkerError('Marks could not be restored on this device. Account answers are saved separately.');
+      return;
+    }
     setMarkersReady(markerKey);
-  }, [markerKey, ownerId, runId, legIndex]);
+  }, [markerKey, ownerId, runId, legIndex, markersReady, markerRetry]);
   React.useEffect(() => {
     if (markersReady !== markerKey) return;
-    try { localStorage.setItem(markerKey, JSON.stringify({ ownerId, runId, legIndex, highlights, rcHighlights, telemetry: telemetry.current })); }
-    catch { /* Personal marker failure does not acknowledge or alter account answers. */ }
-  }, [markersReady, markerKey, ownerId, runId, legIndex, highlights, rcHighlights, answers]);
+    try {
+      localStorage.setItem(markerKey, JSON.stringify({ ownerId, runId, legIndex, highlights, rcHighlights, telemetry: telemetry.current }));
+      setLocalMarkerError(null);
+    } catch { setLocalMarkerError('Marks are not saved on this device. Keep this page open and retry. Account answers are saved separately.'); }
+  }, [markersReady, markerKey, ownerId, runId, legIndex, highlights, rcHighlights, answers, markerRetry]);
 
   const perform = React.useCallback(async (action: 'save' | 'pause' | 'resume' | 'finish' | 'retry' | 'exit', target?: number, draft?: Record<string, TimedChildAnswer>) => {
     const current = stateRef.current;
@@ -111,7 +132,7 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
           apply(next, submitted);
         }
         if (action === 'pause' || (action === 'exit' && next.snapshot.parent.timed_phase === 'leg-running')) next = await controller.control(next, 'pause');
-        if (action === 'finish') next = await controller.close(next, submitted, JSON.parse(JSON.stringify({ ...telemetry.current, highlights, rcHighlights })) as TimedObject);
+        if (action === 'finish') next = await controller.close(next, submitted, JSON.parse(JSON.stringify({ ...telemetry.current, highlights, rcHighlights: validRcHighlights })) as TimedObject);
       }
       if (stillCurrent()) {
         apply(next, action === 'retry' ? undefined : submitted);
@@ -119,7 +140,7 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
       }
     } catch (reason) { if (stillCurrent()) fail(reason); }
     finally { if (stillCurrent()) { busyRef.current = false; setBusy(false); } }
-  }, [controller, apply, fail, highlights, rcHighlights, identity, navigate, runId]);
+  }, [controller, apply, fail, highlights, validRcHighlights, identity, navigate, runId]);
 
   React.useEffect(() => {
     const timer = window.setInterval(() => {
@@ -180,9 +201,9 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
     <Button variant="outline" disabled={busy} onClick={back}>Return to PrepTest</Button>
   </div>;
   const rcView = state.view && 'state' in state.view ? state.view : null; const rcItem = rcView?.state.items[state.currentIndex];
-  const rcMarks = rcItem ? rcHighlights[String(rcItem.passage.passageId)] ?? [] : [];
-  const updateRcMarks = (next: RcHighlight[]) => rcItem && setRcHighlights(previous => ({ ...previous, [rcItem.passage.passageId]: next }));
-  return <OfficialDrillFrame isPaused={paused} onResume={() => void perform('resume')} header={<div className="flex flex-wrap items-center gap-3">
+  const rcMarks = rcItem && markersReady === markerKey ? validRcHighlights[String(rcItem.passage.passageId)] ?? [] : [];
+  const updateRcMarks = (next: RcHighlight[]) => { if (rcItem && !blocked && !busyRef.current && markersReady === markerKey) setRcHighlights(previous => ({ ...previous, ...validateRcTimedMarks({ [rcItem.passage.passageId]: next }, [rcItem.passage]) })); };
+  return <div className="light text-slate-900"><OfficialDrillFrame isPaused={paused} onResume={() => void perform('resume')} header={<div className="flex flex-wrap items-center gap-3">
     <span className="font-semibold">PrepTest {state.snapshot.parent.pt} · {kind.toUpperCase()} section</span><span aria-label="Section time remaining">{kind === 'lr' && clock?.remainingMs === 0 && regulationAcknowledged.current ? `Overtime +${format(clock.elapsedMs - (state.snapshot.parent.section_seconds ?? 0) * 1000)}` : format(clock?.remainingMs ?? null)}</span>
     <Button size="sm" variant="outline" disabled={busy} onClick={() => void perform('exit')}>PrepTest</Button>
   </div>}>
@@ -195,6 +216,7 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
       {kind === 'rc' && <Button size="sm" variant="outline" onClick={() => setPassageOnly(value => !value)}>{passageOnly ? 'Show questions' : 'Passage only'}</Button>}
       <span role="status" className="text-xs ml-auto">{busy ? 'Saving to your account…' : 'Account save acknowledged'}</span>
     </div>
+    {localMarkerError && <div role="alert" className="border-b p-2"><p>{localMarkerError}</p><Button size="sm" variant="outline" onClick={() => setMarkerRetry(value => value + 1)}>Retry saving marks</Button></div>}
     {directions && <div className="border-b p-3 text-sm">Choose the best answer to each question. You can revisit questions and change your answers before finishing. Answers and explanations appear after the PrepTest is complete.</div>}
     {finishConfirm && <div role="dialog" aria-label="Finish section" className="border-b p-3 flex flex-wrap gap-3 items-center"><p>{state.questions.filter(value => !answers[value.qid]?.selected).length} unanswered. Finish this section?</p><Button disabled={busy} onClick={() => { setFinishConfirm(false); void perform('finish'); }}>Confirm finish</Button><Button variant="outline" onClick={() => setFinishConfirm(false)}>Keep working</Button></div>}
     <div className="flex-1 min-h-0 flex flex-col">
@@ -202,10 +224,10 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
         selectedAnswer={answer.selected ?? ''} eliminatedAnswers={new Set(answer.eliminations)} isFlagged={answer.flagged} interactionLocked={blocked}
         highlights={highlights[question.qid] ?? []} highlightMode={marker} searchTerm={find} fontScale={fontScale}
         onAnswerSelect={value => select(value as TimedLetter)} onEliminate={value => toggleElimination(value as TimedLetter)} onToggleFlag={() => mutate(previous => ({ ...previous, flagged: !previous.flagged }))}
-        onTextSelection={regions => { if (marker === 'none' || marker === 'erase') return false; const captured = captureSelectionAcross(regions); if (!captured.length) return false;
+        onTextSelection={regions => { if (blocked || busyRef.current || markersReady !== markerKey || marker === 'none' || marker === 'erase') return false; const captured = captureSelectionAcross(regions); if (!captured.length) return false;
           setHighlights(previous => ({ ...previous, [question.qid]: [...(previous[question.qid] ?? []), ...captured.map(value => ({ ...value, id: crypto.randomUUID(), color: marker }))] })); window.getSelection()?.removeAllRanges(); return true; }}
-        onHighlightClick={id => { if (marker === 'erase') setHighlights(previous => ({ ...previous, [question.qid]: (previous[question.qid] ?? []).filter(value => value.id !== id) })); }} />}
-      {kind === 'rc' && rcItem && answer && <RcTimedReader item={rcItem} answer={answer} blocked={blocked} fontScale={fontScale} find={find} marker={marker}
+        onHighlightClick={id => { if (!blocked && !busyRef.current && markersReady === markerKey && marker === 'erase') setHighlights(previous => ({ ...previous, [question.qid]: (previous[question.qid] ?? []).filter(value => value.id !== id) })); }} />}
+      {kind === 'rc' && rcItem && answer && <RcTimedReader item={rcItem} answer={answer} blocked={blocked} annotationsDisabled={markersReady !== markerKey} fontScale={fontScale} find={find} marker={marker}
         color={color} onColorChange={setColor} passageOnly={passageOnly} marks={rcMarks} onMarksChange={updateRcMarks}
         scrollTop={scrollTops[rcItem.passage.passageId] ?? 0} onScrollTop={top => setScrollTops(previous => ({ ...previous, [rcItem.passage.passageId]: top }))}
         onSelect={select} onToggleElimination={toggleElimination} onToggleFlag={() => mutate(previous => ({ ...previous, flagged: !previous.flagged }))} />}
@@ -218,5 +240,5 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
       <Button variant="outline" size="sm" disabled={blocked || state.currentIndex === state.questions.length - 1} onClick={() => jump(state.currentIndex + 1)}>Next</Button>
       <Button size="sm" disabled={blocked} onClick={() => setFinishConfirm(true)}>Finish section</Button>
     </div>
-  </OfficialDrillFrame>;
+  </OfficialDrillFrame></div>;
 }

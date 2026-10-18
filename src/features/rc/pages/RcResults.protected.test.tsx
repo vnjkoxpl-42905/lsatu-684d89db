@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 const saved = vi.hoisted(() => ({ create: vi.fn(async (_config: unknown, _ids: number[]) => ({ id: 'fresh-custom' })), navigate: vi.fn(), historical: false }));
@@ -19,17 +19,14 @@ vi.mock('../lib/rcBank', () => ({ loadPassages: async () => [1188,1190,1192,1195
     correctAnswer: saved.historical && index === 0 ? 'D' : 'A', questionType: 'Main point', difficulty: 3, choices: [{ letter: 'A', text: 'Right' }, { letter: 'B', text: 'Wrong' }] }] })) }));
 import RcResults from './RcResults';
 describe('protected RC retry boundary', () => {
-  it('Drill your misses creates a fresh custom drill without inheriting the protected clock or sitting', async () => {
+  it('refuses a retry from a protected source section', async () => {
     saved.historical = false;
     render(<MemoryRouter initialEntries={['/rc/results/protected-child']}><Routes><Route path="/rc/results/:sessionId" element={<RcResults />} /></Routes></MemoryRouter>);
-    fireEvent.click(await screen.findByRole('button', { name: 'Drill your misses' }));
+    const button = await screen.findByRole('button', { name: 'Drill your misses' });
+    expect(button).toBeDisabled(); fireEvent.click(button);
+    expect(saved.create).not.toHaveBeenCalled();
     expect(screen.getByRole('button', { name: 'Exclude from analytics' })).toBeDisabled();
     expect(screen.getByText('Section elapsed time').previousElementSibling).toHaveTextContent('1:07');
-    expect(screen.getByText('Avg recorded question time')).toBeInTheDocument();
-    expect(screen.getByText(/Section elapsed time comes from the account clock/)).toBeInTheDocument();
-    await waitFor(() => expect(saved.create).toHaveBeenCalledWith({ reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 525 }, source: 'manual' }, [1188]));
-    expect(saved.create.mock.calls[0][0]).not.toHaveProperty('timedSectionSittingId');
-    expect(saved.navigate).toHaveBeenCalledWith(expect.stringMatching(/^\/rc\/drill\?sessionId=[0-9a-f-]{36}$/));
   });
   it('discloses a corrected key while retaining the recorded historical score and protected controls', async () => {
     saved.historical = true;

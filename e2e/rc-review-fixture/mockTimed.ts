@@ -1,3 +1,5 @@
+import type { TimedChildController, TimedChildState } from '@/lib/timedChildController';
+import { initialState } from '@/features/rc/lib/rcSession';
 import type { TimedSectionController, TimedSectionState } from '@/lib/timedSectionController';
 import type { RcPassage } from '@/features/rc/lib/rcTypes';
 export const sittingId = '20000000-0000-4000-8000-000000000001';
@@ -18,3 +20,20 @@ export const syntheticTimedController = {
   close: async () => { current = { ...current, snapshot: { ...current.snapshot, sitting: { ...current.snapshot.sitting, phase: 'complete' } } }; return current; },
   reportHref: () => '/timed-fixture-report',
 } as unknown as TimedSectionController;
+
+let child: TimedChildState;
+export const syntheticChildController = {
+  load: async () => {
+    child = { questions: current.questions, passages: [passage], answers: current.answers, currentIndex: 0, pending: null,
+      snapshot: { parent: { id: 'synthetic-run', user_id: 'synthetic-owner', pt: 140, current_leg: 0, timed_phase: 'leg-running',
+        timed_frozen_legs: [{ kind: 'rc' }], section_seconds: 2100 }, observedAt: 0 },
+      view: { state: initialState([passage]), session: { id: 'synthetic-child-session' } },
+    } as unknown as TimedChildState;
+    return child;
+  },
+  pending: () => null,
+  clock: () => ({ writer: 'active', remainingMs: 2100000, elapsedMs: 0, leaseExpired: false }),
+  checkpoint: async (_state: TimedChildState, index: number, answers: TimedChildState['answers']) => { child = { ...child, currentIndex: index, answers }; return child; },
+  control: async (_state: TimedChildState, operation: string) => { child = { ...child, snapshot: { ...child.snapshot, parent: { ...child.snapshot.parent, timed_phase: operation === 'pause' ? 'leg-paused' : 'leg-running' } } }; return child; },
+  close: async () => { child = { ...child, snapshot: { ...child.snapshot, parent: { ...child.snapshot.parent, current_leg: 1 } }, view: null }; return child; },
+} as unknown as TimedChildController;

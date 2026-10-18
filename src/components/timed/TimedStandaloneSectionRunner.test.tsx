@@ -124,6 +124,18 @@ describe('standalone account section runner', () => {
     await screen.findByTestId('rc-reader');
     expect(screen.getByTestId('mark-count')).toHaveTextContent('1');
   });
+  it('groups and persists supported display settings without adding answer aids', async () => {
+    controller.load.mockResolvedValue(rcState()); const view = mount(); await screen.findByTestId('rc-reader');
+    expect(screen.getByText('Display')).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Line spacing'), { target: { value: '0.4' } });
+    fireEvent.change(screen.getByLabelText('Color scheme'), { target: { value: 'navy' } });
+    fireEvent.click(screen.getByLabelText('Paragraph focus'));
+    view.unmount(); mount(); await screen.findByTestId('rc-reader');
+    expect(screen.getByLabelText('Line spacing')).toHaveValue('0.4');
+    expect(screen.getByLabelText('Color scheme')).toHaveValue('navy');
+    expect(screen.getByLabelText('Paragraph focus')).toBeChecked();
+    expect(controller.checkpoint).not.toHaveBeenCalled();
+  });
   it('discards malformed or foreign stored marks and restores valid display settings', async () => {
     const valid = { target: 'passage', start: 0, end: 4, color: 'yellow', kind: 'highlight' };
     localStorage.setItem(`lsatu:timed-section-markers:v1:${owner}:${work}`, JSON.stringify({ ownerId: owner, sittingId: work,

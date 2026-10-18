@@ -1,8 +1,14 @@
+import { RcSavedSetsPanel } from './RcSavedSetsPanel';
+import { getRcSavedSet } from '../api/rcSavedSets';
+import type { RcSavedPayload } from '../lib/rcSavedSetCodec';
 import * as React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { loadAllIndexPassages, loadPassages } from '../lib/rcBank';
-import { RcMarkdown } from './RcMarkdown';
+import { RcExposurePreview } from './RcExposurePreview';
+import { RcAdaptiveSummary } from './RcAdaptiveSummary';
+import { buildRcAdaptiveSummary } from '../lib/rcAdaptiveSummary';
+import { getRcExposureHistory } from '../api/rcExposure';
 import {
   RC_ADAPTIVE_LABEL,
   formatPassageStatusLabel,
@@ -14,8 +20,8 @@ import {
 } from '../lib/rcAdaptive';
 import {
   createSession,
-  deleteSession,
-  getQuestionHistory,
+  abandonSession,
+  getRcHistorySnapshot,
   getSession,
   getSessionAttempts,
   listSessions,
@@ -42,6 +48,7 @@ import {
 } from '../lib/rcBuilderSummary';
 import '../rc.css';
 import { canonicalRcSection, manualSectionsEnabled, newManualSectionHref, timedSectionResumeHref } from '@/lib/timedSectionAdoption';
+import { canRevealRcResults } from '../lib/rcResultsReveal';
 
 const mmss = formatPace;
 
@@ -61,7 +68,8 @@ const REVEAL_OPTIONS: { id: RcRevealMode; label: string; caption: string }[] = [
 
 const STATUS_OPTIONS: { id: RcStatusFilter; label: string }[] = [
   { id: 'any', label: 'Any' },
-  { id: 'fresh', label: 'Fresh' },
+  { id: 'fresh', label: 'Not attempted' },
+  { id: 'strict_no_exposure', label: 'No recorded exposure' },
   { id: 'incorrect_before', label: 'Incorrect before' },
   { id: 'incorrect_last', label: 'Incorrect on last try' },
 ];
@@ -144,6 +152,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
 
   const [passages, setPassages] = React.useState<RcIndexPassageWithPt[]>([]);
   const [history, setHistory] = React.useState<RcQuestionHistory>(new Map());
+  const [displayHistory, setDisplayHistory] = React.useState<RcQuestionHistory>(new Map());
+  const [hiddenResults, setHiddenResults] = React.useState(false);
+  const [exposures, setExposures] = React.useState<Set<number>>(new Set());
+  const [exposureStatus, setExposureStatus] = React.useState<'loading' | 'ready' | 'failed'>('loading');
   const [sessions, setSessions] = React.useState<RcDrillSession[]>([]);
   const [scores, setScores] = React.useState<Map<string, { correct: number; total: number }>>(
     new Map(),
@@ -170,6 +182,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   const [starting, setStarting] = React.useState(false);
   const [autoStart, setAutoStart] = React.useState(false);
   const [inspecting, setInspecting] = React.useState(false);
+  const [restoredSavedQuery, setRestoredSavedQuery] = React.useState<string | null>(null);
+  const [savedSnapshot, setSavedSnapshot] = React.useState<RcSavedPayload | null>(null);
   const [selectedSet, setSelectedSet] = React.useState<{
     key: string;
     ids: number[];
@@ -194,6 +208,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     let cancelled = false;
     setLoadError(null);
     setHistoryStatus('loading');
+    setExposureStatus('loading');
     setIndexStatus('loading');
     (async () => {
       try {
@@ -216,13 +231,16 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
          builder does not draw — and the RC practice bay mounts
          RcSessionHistory for it anyway, so loading it here would fetch the
          same rows twice plus one attempts query per completed drill. */
-      const [historyRead, sessionsRead] = await Promise.allSettled([
-        getQuestionHistory(),
+      const [historyRead, sessionsRead, exposuresRead] = await Promise.allSettled([
+        getRcHistorySnapshot(actorId ?? undefined),
         showHistory ? listSessions() : Promise.resolve([] as RcDrillSession[]),
+        actorId ? getRcExposureHistory(actorId) : Promise.reject(new Error('Sign in to check exposure.')),
       ]);
       if (cancelled) return;
       if (historyRead.status === 'fulfilled') {
-        setHistory(historyRead.value);
+        setHistory(historyRead.value.history);
+        setDisplayHistory(historyRead.value.displayHistory);
+        setHiddenResults(historyRead.value.hasHiddenGradedResults);
         refreshEligibility();
         setHistoryStatus('ready');
       } else {
@@ -231,6 +249,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
            every passage as unseen; say so instead. */
         setHistoryStatus('failed');
       }
+      if (exposuresRead.status === 'fulfilled') { setExposures(exposuresRead.value); setExposureStatus('ready'); }
+      else setExposureStatus('failed');
       if (sessionsRead.status !== 'fulfilled') return;
       const s = sessionsRead.value;
       setSessions(s);
@@ -348,21 +368,26 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
 
   const statusOf = React.useCallback(
     (p: RcIndexPassageWithPt) =>
-      passageStatus(p, questionIdsByPassage.get(p.passageId) ?? [], history),
-    [questionIdsByPassage, history],
+      passageStatus(p, questionIdsByPassage.get(p.passageId) ?? [], displayHistory),
+    [questionIdsByPassage, displayHistory],
   );
+
+  const correctnessFilterBlocked = hiddenResults && (filters.status === 'incorrect_before' || filters.status === 'incorrect_last');
+  const selectionPool = React.useMemo(() => correctnessFilterBlocked ? [] : filters.status === 'strict_no_exposure'
+    ? exposureStatus === 'ready' ? passages.filter(passage => !exposures.has(passage.passageId)) : [] : passages,
+  [correctnessFilterBlocked, filters.status, exposureStatus, passages, exposures]);
 
   const preview = React.useMemo(
     () =>
       selectPassages({
-        pool: passages,
+        pool: selectionPool,
         questionIdsByPassage,
         filters,
         history,
         count,
         seed: 1,
       }),
-    [passages, questionIdsByPassage, filters, history, count],
+    [selectionPool, questionIdsByPassage, filters, history, count],
   );
 
   const drillablePassages = passages.filter((p) => p.questionCount > 0);
@@ -378,8 +403,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         : 0;
   /* Empty history is valid only after a successful read. New previews and
      launches wait for both eligibility inputs and a custom pace that parses. */
+  const savedQuery = params.has('saved') ? params.toString() : null;
   const builderReady = indexStatus === 'ready' && historyStatus === 'ready'
-    && selectionQuery === params.toString() && !customInvalid;
+    && !correctnessFilterBlocked && (filters.status !== 'strict_no_exposure' || exposureStatus === 'ready')
+    && selectionQuery === params.toString() && !customInvalid && (savedQuery === null || restoredSavedQuery === savedQuery);
 
   const ptRun = params.get('ptRun');
   const ptLeg = params.get('ptLeg');
@@ -396,6 +423,30 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     practiceTestRunId: practiceTestLegIndex !== undefined ? ptRun ?? undefined : undefined,
     practiceTestLegIndex,
   };
+
+  React.useEffect(() => {
+    const id = params.get('saved');
+    if (!id) { setSavedSnapshot(null); setRestoredSavedQuery(null); return; }
+    if (!actorId || indexStatus !== 'ready') return;
+    let current = true;
+    setAutoStart(false); setSelectedSet(null); setAcceptedShortfall(null); setSavedSnapshot(null); setRestoredSavedQuery(null);
+    if (['assignment', 'assignmentId', 'ptRun', 'ptLeg', 'timedSection', 'start'].some(key => params.has(key))) {
+      setNotice('Open saved RC work on its own. It cannot replace an assignment or protected section.'); return;
+    }
+    void getRcSavedSet(actorId, id).then(saved => {
+      if (!current) return;
+      if (!saved.payload) throw new Error(saved.problem ?? 'This saved RC set could not be verified.');
+      const payload = saved.payload;
+      if (payload.mode === 'fixed' && payload.passageIds.some(id => !passages.some(p => p.passageId === id && p.questionCount > 0))) throw new Error('A passage in this saved set is unavailable. The saved selection has been kept.');
+      setFilters(payload.filters); setCount(payload.count); setReveal(payload.config.reveal);
+      if (payload.config.timing.mode === 'unlimited') setTiming('untimed');
+      else { setTiming('custom'); setCustomSeconds(payload.config.timing.secondsPerPassage); setCustomText(mmss(payload.config.timing.secondsPerPassage)); }
+      setHandPicked(payload.mode === 'fixed' ? payload.passageIds : []); setHandPickOpen(payload.mode === 'fixed');
+      setSavedSnapshot(payload.mode === 'fixed' ? payload : null); setRestoredSavedQuery(params.toString());
+      setNotice(`Opened ${saved.name}. Preview the current passages before starting. No drill has started.`);
+    }).catch(err => { if (current) setNotice(err instanceof Error ? err.message : 'This saved RC set could not be loaded.'); });
+    return () => { current = false; };
+  }, [actorId, params, indexStatus, passages]);
 
   // A change to any launch setting makes an inspected set stale. The same IDs
   // are used for both the read-only inspection and the eventual session.
@@ -433,7 +484,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       const ids = handPicked.length > 0
         ? [...handPicked]
         : selectPassages({
-            pool: passages,
+            pool: selectionPool,
             questionIdsByPassage,
             filters,
             history,
@@ -455,6 +506,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       if (full.some((passage) => passage.questions.length === 0)) {
         setNotice('A passage in this set loaded without its questions. Choose different passages.');
         return;
+      }
+      if (savedSnapshot && savedSnapshot.passageIds.join(',') === ids.join(',')
+        && savedSnapshot.questionIds.join(',') !== full.flatMap(p => p.questions.map(q => q.questionId)).join(',')) {
+        setNotice('The questions in this fixed set have changed. Its saved snapshot has been kept; choose a new selection before starting.'); return;
       }
       const inspected = { key, ids, passages: full };
       setSelectedSet(inspected);
@@ -639,6 +694,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   }, [search, filters]);
 
   function matches(p: RcIndexPassageWithPt) {
+    if (correctnessFilterBlocked) return false;
     const status = statusOf(p);
     if (p.preptest < filters.preptestMin || p.preptest > filters.preptestMax) return false;
     if (filters.topics.length && (!p.topic || !filters.topics.includes(p.topic))) return false;
@@ -648,6 +704,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     if (filters.difficulties.length && (p.difficulty == null || !filters.difficulties.includes(p.difficulty)))
       return false;
     if (filters.status === 'fresh' && status.state !== 'not_attempted') return false;
+    if (filters.status === 'strict_no_exposure' && (exposureStatus !== 'ready' || exposures.has(p.passageId) || status.state !== 'not_attempted')) return false;
     if (filters.status === 'incorrect_before' && !status.everIncorrect) return false;
     if (filters.status === 'incorrect_last' && !status.lastFirstTakeIncorrect) return false;
     return true;
@@ -658,13 +715,18 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     0,
   );
 
+  const [discarding, setDiscarding] = React.useState<string | null>(null);
+  const discardLock = React.useRef(false);
+  const [discardError, setDiscardError] = React.useState<string | null>(null);
   const removeSession = async (id: string) => {
-    const ok = window.confirm(
-      'Delete this drill? Its answers and timings are deleted with it, and that cannot be undone.',
-    );
-    if (!ok) return;
-    await deleteSession(id);
-    setSessions(await listSessions());
+    if (discardLock.current || !window.confirm('Discard this unfinished drill? Your saved answers stay in your history.')) return;
+    discardLock.current = true; setDiscarding(id); setDiscardError(null);
+    try {
+      await abandonSession(id);
+      setSessions(await listSessions());
+    } catch (error) {
+      setDiscardError(error instanceof Error ? error.message : 'The drill could not be discarded. Try again.');
+    } finally { discardLock.current = false; setDiscarding(null); }
   };
 
   return (
@@ -716,11 +778,12 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </button>
         </div>
       )}
+      {discardError && <p className="rc-builder-alert" role="alert">{discardError}</p>}
       {historyStatus === 'loading' && !loadError && <p className="rc-field-hint" role="status">Loading your answer history…</p>}
       {historyStatus === 'failed' && !loadError && (
         <div className="rc-builder-alert" role="status">
           <span>
-            Your answer history could not be loaded, so the Fresh and Incorrect filters cannot tell
+            Your answer history could not be loaded, so the Not attempted and Incorrect filters cannot tell
             which passages you have already done. Retry before previewing or starting a new drill.
           </span>
           <button type="button" className="rc-chip" onClick={retryLoad} disabled={indexStatus === 'loading'}>
@@ -730,6 +793,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       )}
       {pendingLoad.error && <p className="rc-page-sub" role="alert">{pendingLoad.error}</p>}
       {notice && <p className="rc-page-sub" role="status">{notice}</p>}
+      {exposureStatus !== 'ready' && <div className="rc-field-hint" role="status">{exposureStatus === 'loading' ? 'Checking recorded exposure…' : <>Recorded exposure could not be checked. Exposure is unknown; No recorded exposure is unavailable. <button type="button" className="rc-chip" onClick={() => retryLoad()}>Retry recorded exposure</button></>}</div>}
+      <p className="rc-field-hint">Not attempted checks saved answer history. No recorded exposure also checks text reveals recorded by LSAT U. Earlier previews were not tracked, so it cannot prove you have never seen a passage.</p>
+      {correctnessFilterBlocked && <p className="rc-field-hint" role="status">Reveal your saved results or choose another status before filtering by correctness.</p>}
+      {historyStatus === 'ready' && <RcAdaptiveSummary summary={buildRcAdaptiveSummary({ history, displayHistory, hasHiddenGradedResults: hiddenResults })} />}
       {!starting && recoveryPending && <div className="rc-builder-alert" role="status">
         <span>A previous Start is pending for {describePendingPassages(recoveryPending.ids)}. Retry checks that original saved drill with its original timing and answer settings; your current edits will not start another drill.</span>
         <button type="button" className="rc-chip" disabled={starting} onClick={() => void start()}>Retry original launch</button>
@@ -924,6 +991,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                   key={option.id}
                   type="button"
                   className={`rc-chip${filters.status === option.id ? ' rc-active' : ''}`}
+                  disabled={(hiddenResults && (option.id === 'incorrect_before' || option.id === 'incorrect_last')) || (option.id === 'strict_no_exposure' && exposureStatus !== 'ready')}
                   onClick={() => setFilters((f) => ({ ...f, status: option.id }))}
                 >
                   {option.label}
@@ -1007,6 +1075,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                         <span>{plural(p.questionCount, 'question')}</span>
                         {p.difficulty != null && <span>Difficulty {p.difficulty}/5</span>}
                         <span>{formatPassageStatusLabel(status)}</span>
+                        {status.reviewCorrected && <span title="A missed first answer was corrected during review. The original result stays unchanged.">Corrected in review</span>}
                       </div>
                     </div>
                     <button type="button" className={`rc-chip${picked ? ' rc-active' : ''}`}
@@ -1032,25 +1101,9 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         {activeSet && (
           <section className="rc-drill-preview" aria-label="Selected reading set">
             <h2>Drill preview</h2>
-            <p className="rc-field-hint">These exact passages and questions will appear in your drill. Answers and explanations are hidden.</p>
+            <p className="rc-field-hint">These exact passages and questions will appear in your drill. Text stays hidden until you explicitly reveal it and record exposure. Answers and explanations stay hidden.</p>
             {activeSet.passages.map((passage, index) => (
-              <details key={passage.passageId} style={{ marginTop: 16 }}>
-                <summary style={{ cursor: 'pointer' }}>
-                  {index + 1}. PT {passage.preptest} · {passage.title || `Passage ${passage.setNumber}`} · {passage.questions.length} questions
-                </summary>
-                <div style={{ maxHeight: 560, overflowY: 'auto', padding: '12px 4px' }}>
-                  <RcMarkdown>{passage.text}</RcMarkdown>
-                  {passage.questions.map((question) => (
-                    <div key={question.questionId} style={{ marginTop: 24 }}>
-                      <strong>Question {question.position}</strong>
-                      <RcMarkdown>{question.prompt}</RcMarkdown>
-                      <div>
-                        {question.choices.map((choice) => <div key={choice.letter} style={{ display: 'flex', gap: 8, marginTop: 8 }}><strong>{choice.letter}.</strong><RcMarkdown>{choice.text}</RcMarkdown></div>)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </details>
+              <RcExposurePreview key={`${activeSet.key}:${passage.passageId}`} actorId={actorId} passage={passage} index={index} onExposed={id => setExposures(previous => new Set(previous).add(id))} />
             ))}
           </section>
         )}
@@ -1132,6 +1185,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         </div>
       </div>
 
+      <RcSavedSetsPanel
+        recipe={builderReady && count <= 8 && !handPickOpen && !params.has('assignment') && !params.has('assignmentId') && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'recipe', config: { reveal, timing: config.timing }, filters, count, passageIds: [], questionIds: [] } : null}
+        fixed={builderReady && activeSet && !params.has('assignment') && !params.has('assignmentId') && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'fixed', config: { reveal, timing: config.timing }, filters, count: activeSet.ids.length, passageIds: activeSet.ids, questionIds: activeSet.passages.flatMap(p => p.questions.map(q => q.questionId)) } : null}
+      />
       {/* ---------------------------------------------------------- history */}
       {showHistory && <h2 style={{ marginTop: 32 }}>Your drills</h2>}
       {showHistory && sessions.length === 0 && <p className="rc-empty">No drills yet.</p>}
@@ -1148,7 +1205,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           <span className="rc-status-chip">
             {s.status === 'in_progress' ? 'in progress' : s.status}
           </span>
-          {scores.has(s.id) && (
+          {canRevealRcResults(s) && scores.has(s.id) && (
             <span>
               {scores.get(s.id)!.correct} / {scores.get(s.id)!.total}
             </span>
@@ -1172,9 +1229,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                 Results
               </button>
             )}
-            <button type="button" className="rc-chip" onClick={() => removeSession(s.id)}>
-              Delete
-            </button>
+            {s.status === 'in_progress' && !s.config.timedSectionSittingId && !s.config.practiceTestRunId && (
+              <button type="button" className="rc-chip" disabled={discarding !== null} onClick={() => removeSession(s.id)}>
+                {discarding === s.id ? 'Discarding…' : 'Discard'}
+              </button>
+            )}
           </span>
         </div>
       ))}

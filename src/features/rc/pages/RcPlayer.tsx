@@ -14,12 +14,14 @@ import { RcPager, RcToolbarButton, RcToolbarIcon, formatClock } from '../compone
 import { RcExamPane, rcTypeStyles } from '../components/RcExamPane';
 import { RcPassagePane } from '../components/RcPassagePane';
 import { RcQuestionPane } from '../components/RcQuestionPane';
+import { useRcPlayerExposure } from '../hooks/useRcPlayerExposure';
+import { useRcTraining } from '../hooks/useRcTraining';
+import { RcTrainingPanel, RcLearningStatus, RcParagraphTrainingControls } from '../components/RcTraining';
 import { RcPassageSummary } from '../components/RcPassageSummary';
 import {
   RcQuestionDetails,
   RcSubmitConfirm,
   RcTextSettings,
-  RcLineSpacingMenu,
 } from '../components/RcModals';
 import { RC_DIRECTIONS, RC_FONT_SCALE_OPTIONS } from '../lib/rcDirections';
 import { readActiveRcAnswerBackups, readRcAnswerBackups, writeRcAnswerBackup, requestRcAnswerBackupSave, clearRcAnswerBackup } from '../lib/rcAnswerBackup';
@@ -217,6 +219,7 @@ function RcPlayerRunner() {
     setRetryingSave(false);
     setSaveError(null);
     setReattemptPicks(new Map());
+    setPriorReviewAttempts(new Map());
     setSkippedReattempt(new Set());
     setFirstAttemptEliminations(new Map());
     setScrollTops(new Map());
@@ -450,6 +453,12 @@ function RcPlayerRunner() {
         // review. It is display only: the array written with a re-attempt is
         // built from what they do on this visit, not from this.
         setFirstAttemptEliminations(hydrated.eliminations);
+        if (reviewOnly && !config.timedSectionSittingId && !config.practiceTestRunId) {
+          const validHistory = new Map([...hydrated.reviewAttempts].map(([id, rows]) => [id, rows.filter(row =>
+            row.selected && seeded.items.find(entry => entry.question.questionId === id)?.question.choices.some(choice => choice.letter === row.selected))]));
+          setPriorReviewAttempts(validHistory);
+          setReattemptPicks(new Map([...validHistory].flatMap(([id, rows]) => rows.length ? [[id, rows.at(-1)!.selected!] as [number, RcLetter]] : [])));
+        }
         setLoadingAnswers(false);
       })
       .catch(() => {
@@ -479,6 +488,7 @@ function RcPlayerRunner() {
   const [modal, setModal] = React.useState<'details' | 'submit' | null>(null);
   // Full-width reflow may clamp scrollTop. Keep the split position separately.
   const [scrollTops, setScrollTops] = React.useState<Map<string, number>>(new Map());
+  const [priorReviewAttempts, setPriorReviewAttempts] = React.useState<Map<number, RcAttempt[]>>(new Map());
   const [reattemptPicks, setReattemptPicks] = React.useState<Map<number, RcLetter>>(new Map());
   const [skippedReattempt, setSkippedReattempt] = React.useState<Set<number>>(new Set());
   /**
@@ -509,6 +519,12 @@ function RcPlayerRunner() {
   const [helpOpen, setHelpOpen] = React.useState(false);
 
   const item = getCurrentItem(state);
+  const canPredict = !reviewOnly && !!item && !state.recorded.has(item.question.questionId) && !state.answers.has(item.question.questionId);
+  const training = useRcTraining({ actorId: user?.id, sessionId, passageId: item?.passage.passageId, questionId: item?.question.questionId,
+    enabled: studyAidsEnabled && ['manual', 'adaptive'].includes(config.source) && !loadingAnswers && !answerLoadError && sessionOwnerId === user?.id,
+    canPredict });
+  const trainingCommandRef = training.pendingRequest;
+  const playerExposure = useRcPlayerExposure(user?.id, sessionId, !!sessionId && sessionOwnerId === user?.id && !loadingAnswers && !answerLoadError);
   React.useEffect(() => {
     if (!reviewOnly || protectedReview || loadingAnswers || !sessionId || sessionOwnerId !== user?.id || pendingReviewRef.current) return;
     try {
@@ -517,10 +533,12 @@ function RcPlayerRunner() {
       const attempt = JSON.parse(raw) as RcAttempt;
       const entry = state.items.find(value => value.question.questionId === attempt.questionId && value.passage.passageId === attempt.passageId);
       if (!entry || attempt.userId !== sessionOwnerId || attempt.sessionId !== sessionId
-        || typeof attempt.id !== 'string' || !attempt.id || attempt.isFirstAttempt !== false
+        || typeof attempt.id !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(attempt.id) || attempt.isFirstAttempt !== false
         || !entry.question.choices.some(choice => choice.letter === attempt.selected)
         || attempt.isCorrect !== (attempt.selected === entry.question.correctAnswer)
-        || !Number.isFinite(attempt.timeMs) || attempt.timeMs < 0 || !Array.isArray(attempt.eliminations)) {
+        || !Number.isFinite(attempt.timeMs) || attempt.timeMs < 0 || typeof attempt.flagged !== 'boolean'
+        || !Array.isArray(attempt.eliminations) || attempt.eliminations.some(letter => !entry.question.choices.some(choice => choice.letter === letter))
+        || new Set(attempt.eliminations).size !== attempt.eliminations.length || attempt.eliminations.includes(attempt.selected!)) {
         setSaveError('The saved second answer could not be verified. Keep this page open and contact Joshua.');
         return;
       }
@@ -768,7 +786,7 @@ function RcPlayerRunner() {
   const goTo = React.useCallback(
     async (index: number) => {
       if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
-      if (state.paused || loadingAnswers || answerLoadError || navigationInFlightRef.current || reviewWriteBusyRef.current || pendingReviewRef.current || !state.items[index]) return;
+      if (trainingCommandRef.current || state.paused || loadingAnswers || answerLoadError || navigationInFlightRef.current || reviewWriteBusyRef.current || pendingReviewRef.current || !state.items[index]) return;
       navigationInFlightRef.current = true;
       setSavingNavigation(true);
       const leaving = getCurrentItem(state);
@@ -824,7 +842,7 @@ function RcPlayerRunner() {
 
   const handleSubmit = React.useCallback(async () => {
     if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
-    if (navigationInFlightRef.current || submitting) return;
+    if (trainingCommandRef.current || navigationInFlightRef.current || submitting) return;
     navigationInFlightRef.current = true;
     setSubmitting(true);
     const targets = state.items.filter((target) => !state.recorded.has(target.question.questionId));
@@ -889,6 +907,7 @@ function RcPlayerRunner() {
   }, [answerWriteGeneration, state, writeAttempt, sessionId, sessionOwnerId, navigate, returnTo, config.practiceTestRunId, failAccountSave, submitting]);
 
   const handleSaveExit = React.useCallback(async () => {
+    if (trainingCommandRef.current) return;
     if (answerWriteGenerationRef.current !== answerWriteGeneration) return;
     if (reviewOnly) {
       if (pendingReviewRef.current || reviewWriteBusyRef.current) return;
@@ -998,6 +1017,7 @@ function RcPlayerRunner() {
       await recordAttempt(pending.attempt);
       if (pending.generation !== answerWriteGenerationRef.current || pendingReviewRef.current !== pending) return;
       setReattemptPicks(previous => new Map(previous).set(pending.attempt.questionId, pending.attempt.selected!));
+      setPriorReviewAttempts(previous => new Map(previous).set(pending.attempt.questionId, [...(previous.get(pending.attempt.questionId) ?? []), pending.attempt]));
       try { localStorage.removeItem(reviewBackupKey(pending.attempt.userId!, pending.attempt.sessionId)); } catch { /* The acknowledged account answer is authoritative. */ }
       pendingReviewRef.current = null;
     } catch {
@@ -1024,7 +1044,7 @@ function RcPlayerRunner() {
    */
   const selectLetter = React.useCallback(
     (letter: RcLetter) => {
-      if (protectedReview || !item || state.paused || navigationInFlightRef.current || submitting || reviewWriteBusyRef.current || pendingReviewRef.current) return;
+      if (training.choicesHidden || protectedReview || !item || state.paused || navigationInFlightRef.current || submitting || reviewWriteBusyRef.current || pendingReviewRef.current) return;
       const id = item.question.questionId;
       if (!item.question.choices.some((c) => c.letter === letter)) return;
 
@@ -1042,7 +1062,7 @@ function RcPlayerRunner() {
           flagged: state.flagged.has(id),
           // What they cross out on THIS visit. The first attempt's cross-outs
           // live in `firstAttemptEliminations` and are never written here.
-          eliminations: state.eliminations.get(id) ?? [],
+          eliminations: (state.eliminations.get(id) ?? []).filter(value => value !== letter),
           isFirstAttempt: false,
         } };
         try { localStorage.setItem(reviewBackupKey(sessionOwnerId, sessionId), JSON.stringify(pendingReviewRef.current.attempt)); } catch { /* Keep the mounted command and warn before leaving. */ }
@@ -1050,7 +1070,7 @@ function RcPlayerRunner() {
         return;
       }
 
-      if (revealed) return;
+      if (reviewOnly || revealed) return;
       if (sessionId && sessionOwnerId && !reviewOnly) {
         const attemptId = crypto.randomUUID();
         attemptIdsRef.current.set(id, attemptId);
@@ -1070,7 +1090,7 @@ function RcPlayerRunner() {
       if (studyAidsEnabled && !reviewOnly && !state.recorded.has(id)) changedCrossOuts.current.add(id);
       dispatch({ type: 'select', questionId: id, letter });
     },
-    [item, awaitingReattempt, revealed, sessionId, sessionOwnerId, user?.id, saveReviewAnswer, reviewOnly, protectedReview, studyAidsEnabled, state.currentIndex, state.flagged, state.eliminations, state.recorded, state.paused, submitting, writeAttempt, failAccountSave],
+    [training.choicesHidden, item, awaitingReattempt, revealed, sessionId, sessionOwnerId, user?.id, saveReviewAnswer, reviewOnly, protectedReview, studyAidsEnabled, state.currentIndex, state.flagged, state.eliminations, state.recorded, state.paused, submitting, writeAttempt, failAccountSave],
   );
 
   /* -------------------------------------------------------- keyboard */
@@ -1248,7 +1268,7 @@ function RcPlayerRunner() {
 
   return (
     <>
-      {protectedReview && <p role="status" className="border-b bg-muted px-4 py-3 text-sm">This protected section keeps its saved answers and flags unchanged. Personal highlights and reading preferences are separate from the original attempt. Use Drill your misses from the report for a new attempt.</p>}
+      {protectedReview && <p role="status" className="border-b bg-muted px-4 py-3 text-sm">This protected section keeps its saved answers and flags unchanged. Personal highlights and reading preferences are separate from the original attempt. Return to Practice to start separate practice.</p>}
       <div className="flex flex-wrap gap-3 border-b bg-white px-4 py-2 text-sm text-slate-900">
         {highlights.loadError ? <span role="alert">Passage marks could not be loaded. Editing is unavailable. <button type="button" onClick={highlights.retryLoad}>Retry loading marks</button></span> : !highlights.loaded ? <span role="status">Loading passage marks…</span> : (() => {
           const status = highlights.statusForPassage(item.passage.passageId);
@@ -1297,6 +1317,7 @@ function RcPlayerRunner() {
           fontScale={a11y.fontScale}
           setFontScale={(n) => a11y.update({ fontSize: Math.round(n * 100) })}
           fontScaleOptions={RC_FONT_SCALE_OPTIONS}
+          displayLabel="Display"
           a11yExtraSections={<RcTextSettings settings={a11y.settings} onChange={a11y.update} />}
           timerLabel={`${budget != null && clockSeconds < 0 ? '+' : ''}${formatClock(Math.abs(clockSeconds))}`}
           /* No timer in review. A stopwatch running while you read your own
@@ -1313,7 +1334,6 @@ function RcPlayerRunner() {
            */
           rightTools={
             <>
-              <RcLineSpacingMenu settings={a11y.settings} onChange={a11y.update} />
               {findCount > 0 ? (
                 <>
                   <span className="px-1 text-[13px] tabular-nums text-slate-700">
@@ -1332,7 +1352,7 @@ function RcPlayerRunner() {
                     <ChevronDown size={18} />
                   </RcToolbarIcon>
                 </>
-            ) : null}
+            ) : findQuery.trim().length >= 2 ? <span className="px-1 text-[13px] tabular-nums text-slate-700" role="status">0/0 · No matches</span> : null}
             </>
           }
           /* No REVIEW badge here. The toolbar's left group is where the
@@ -1382,11 +1402,29 @@ function RcPlayerRunner() {
           }
         />
 
+        {playerExposure.error && <div role="alert" className="border-b bg-white p-2 text-sm text-slate-900">This passage is shown, but its exposure has not reached your account. Freshness is unknown.<button type="button" className="min-h-11 px-3 underline" onClick={playerExposure.retry}>Retry exposure save</button></div>}
+        <RcLearningStatus training={training} />
+        {reviewOnly && !protectedReview && (priorReviewAttempts.get(questionId)?.length ?? 0) > 0 && <div className="border-b bg-white p-2 text-slate-900">
+          <details><summary className="cursor-pointer text-sm">Saved review answers</summary>
+            <ul className="text-sm">{priorReviewAttempts.get(questionId)!.map((attempt, index) => <li key={attempt.id ?? index}>Review {index + 1}: {attempt.selected}{attempt.createdAt ? ` · ${attempt.createdAt.slice(0, 10)}` : ''}</li>)}</ul>
+          </details>
+          <button type="button" className="min-h-11 rounded border px-3 text-sm" disabled={reviewSaving || !!pendingReviewRef.current} onClick={() => {
+            if (reviewWriteBusyRef.current || pendingReviewRef.current) return;
+            if (awaitingReattempt(questionId)) setReattemptPicks(previous => new Map(previous).set(questionId, priorReviewAttempts.get(questionId)!.at(-1)!.selected!));
+            else { setReattemptPicks(previous => { const next = new Map(previous); next.delete(questionId); return next; }); setSkippedReattempt(previous => { const next = new Set(previous); next.delete(questionId); return next; }); }
+          }}>{awaitingReattempt(questionId) ? 'Use latest saved review answer' : 'Answer again blind'}</button>
+        </div>}
         <RcExamPane
+          passageFocusKey={findQuery.trim().length >= 2 ? `${findQuery}:${findIndex}` : ''}
+          responsive
           schemeClassName={a11y.className}
           passageOnly={passageOnly}
           passage={
             <RcPassagePane
+              onContentShown={playerExposure.onShown}
+              paragraphLimit={training.enabled && training.segmented ? training.paragraphLimit : undefined}
+              onParagraphCount={training.setParagraphCount}
+              readingControls={<RcParagraphTrainingControls training={training} findActive={findQuery.trim().length >= 2} />}
               paragraphFocus={a11y.settings.paragraphFocus}
               annotationsDisabled={!highlights.loaded}
               passage={item.passage}
@@ -1427,6 +1465,9 @@ function RcPlayerRunner() {
           }
           question={
             <RcQuestionPane
+              actorId={user?.id}
+              choicesHidden={training.choicesHidden}
+              trainingControls={<RcTrainingPanel training={training} questionId={questionId} canPredict={canPredict} allowReflection={revealed && !reattemptMode} />}
               annotationsDisabled={!highlights.loaded}
               item={item}
               selected={selected}
@@ -1445,7 +1486,7 @@ function RcPlayerRunner() {
               onToggleFlag={() => toggleFlag(questionId)}
               type={type}
               onSelect={selectLetter}
-              interactionDisabled={protectedReview || state.paused || savingNavigation || submitting || reviewSaving || !!pendingReviewRef.current}
+              interactionDisabled={training.choicesHidden || protectedReview || state.paused || savingNavigation || submitting || reviewSaving || !!pendingReviewRef.current}
               onToggleElimination={(letter) => {
                 if (protectedReview || navigationInFlightRef.current || submitting || state.paused || reviewWriteBusyRef.current || pendingReviewRef.current) return;
                 if (!reviewOnly && state.answers.get(questionId) === letter) return;

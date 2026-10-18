@@ -1,17 +1,18 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-const mocks = vi.hoisted(() => ({ session: {} as any, reveal: vi.fn(), exclude: vi.fn(), create: vi.fn(), get: vi.fn(), navigate: vi.fn() }));
+import type { RcDrillSession } from '../lib/rcTypes';
+const mocks = vi.hoisted(() => ({ session: {} as RcDrillSession, reveal: vi.fn(), exclude: vi.fn(), create: vi.fn(), get: vi.fn(), navigate: vi.fn(), route: 'done' }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'owner' } }) }));
-vi.mock('react-router-dom', async () => ({ ...await vi.importActual('react-router-dom'), useNavigate: () => mocks.navigate }));
+vi.mock('react-router-dom', async () => ({ ...await vi.importActual('react-router-dom'), useNavigate: () => mocks.navigate, useParams: () => ({ sessionId: mocks.route }) }));
 vi.mock('@/components/drill/ScoreRing', () => ({ default: () => <span>Score ring</span> }));
 vi.mock('../api/rcProgress', () => ({ getSession: (...args: unknown[]) => mocks.get(...args), getSessionAttempts: async () => [{ questionId: 10, selected: 'B', isCorrect: false, isFirstAttempt: true, timeMs: 1000 }], revealSessionResults: (...args: unknown[]) => mocks.reveal(...args), setSessionExcluded: (...args: unknown[]) => mocks.exclude(...args), createSession: (...args: unknown[]) => mocks.create(...args) }));
-vi.mock('../lib/rcBank', () => ({ loadPassages: async () => [{ passageId: 7, title: 'Saved passage', frameworks: [], difficulty: 3, questions: [{ questionId: 10, position: 1, correctAnswer: 'A', questionType: 'Main point', difficulty: 3, choices: [{ letter: 'A', text: 'Alpha' }, { letter: 'B', text: 'Beta' }] }] }] }));
+vi.mock('../lib/rcBank', () => ({ loadPassages: async () => [{ passageId: 7, preptest: 139, section: 3, setNumber: 1, title: 'Saved passage', frameworks: [], difficulty: 3, questions: [{ questionId: 10, position: 1, correctAnswer: 'A', questionType: 'Main point', difficulty: 3, choices: [{ letter: 'A', text: 'Alpha' }, { letter: 'B', text: 'Beta' }] }] }] }));
 import RcResults from './RcResults';
 const show = () => render(<MemoryRouter initialEntries={['/rc/results/done']}><Routes><Route path="/rc/results/:sessionId" element={<RcResults />} /></Routes></MemoryRouter>);
 beforeEach(() => {
-  vi.clearAllMocks(); localStorage.clear();
-  mocks.session = { id: 'done', userId: 'owner', status: 'completed', passageIds: [7], excludedFromAnalytics: false, config: { source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' } } };
+  vi.clearAllMocks(); localStorage.clear(); mocks.route = 'done';
+  mocks.session = { id: 'done', userId: 'owner', status: 'completed', startedAt: '2026-10-17T12:00:00Z', completedAt: '2026-10-17T12:01:00Z', passageIds: [7], excludedFromAnalytics: false, config: { source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' } } };
   mocks.get.mockImplementation(async (id: string) => id === 'done' ? mocks.session : null);
   mocks.exclude.mockResolvedValue(undefined);
 });
@@ -53,12 +54,46 @@ describe('RC results release', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Drill your misses' }));
     await screen.findByRole('alert');
     const request = mocks.create.mock.calls[0][2];
-    expect(localStorage.getItem('lsatu:rc-missed-create:v1:owner:done')).toBe(request.id);
+    expect(JSON.parse(localStorage.getItem('lsatu:rc-missed-create:v1:owner:done')!).id).toBe(request.id);
     view.unmount();
-    mocks.get.mockImplementation(async (id: string) => id === 'done' ? mocks.session : { id, userId: 'owner' });
+    mocks.get.mockImplementation(async (id: string) => id === 'done' ? mocks.session : { id, userId: 'owner', status: 'in_progress', config: { source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' } }, passageIds: [7] });
     show();
     fireEvent.click(await screen.findByRole('button', { name: 'Drill your misses' }));
     await waitFor(() => expect(mocks.navigate).toHaveBeenCalledWith('/rc/drill?sessionId=' + request.id));
     expect(mocks.create).toHaveBeenCalledTimes(1);
   });
+  it('does not apply a delayed reveal from another session in the same account', async () => {
+    let acknowledge!: (value: unknown) => void;
+    mocks.reveal.mockImplementation(() => new Promise(resolve => { acknowledge = resolve; }));
+    const view = show();
+    fireEvent.click(await screen.findByRole('button', { name: 'Reveal score and answers' }));
+    mocks.route = 'other';
+    mocks.get.mockImplementation(async (id: string) => ({ ...mocks.session, id }));
+    view.rerender(<MemoryRouter><Routes><Route path="*" element={<RcResults />} /></Routes></MemoryRouter>);
+    await screen.findByRole('button', { name: 'Review without answers' });
+    acknowledge({ ...mocks.session, config: { ...mocks.session.config, resultsRevealedAt: '2026-10-17T12:00:00Z' } });
+    await waitFor(() => expect(screen.queryByText('Score ring')).toBeNull());
+    expect(screen.getByRole('button', { name: 'Review without answers' })).toBeInTheDocument();
+  });
+  it('refuses a recovered UUID belonging to a different payload', async () => {
+    mocks.session.config.resultsRevealedAt = '2026-10-17T12:00:00Z';
+    const id = '11111111-1111-4111-8111-111111111111';
+    const config = { source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' } };
+    localStorage.setItem('lsatu:rc-missed-create:v1:owner:done', JSON.stringify({ id, config, passageIds: [7] }));
+    mocks.get.mockImplementation(async (key: string) => key === 'done' ? mocks.session : { id, userId: 'owner', status: 'in_progress', config, passageIds: [99] });
+    show();
+    expect(await screen.findByText('PT 139 · S3 · P1')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Drill your misses' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('does not match');
+    expect(mocks.create).not.toHaveBeenCalled(); expect(mocks.navigate).not.toHaveBeenCalled();
+  });
+  it('rejects a malformed UUID without looking up or creating work', async () => {
+    mocks.session.config.resultsRevealedAt = '2026-10-17T12:00:00Z';
+    localStorage.setItem('lsatu:rc-missed-create:v1:owner:done', JSON.stringify({ id: '-'.repeat(36), config: {}, passageIds: [] }));
+    show(); fireEvent.click(await screen.findByRole('button', { name: 'Drill your misses' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('does not match');
+    expect(mocks.create).not.toHaveBeenCalled();
+    expect(mocks.get).toHaveBeenCalledTimes(1);
+  });
+
 });

@@ -15,20 +15,39 @@ import { DrillSplit } from '@/components/drill/DrillSplit';
 interface Props {
   /** rc-scheme-* class, or empty for the default black-on-white. */
   schemeClassName: string;
+  responsive?: boolean;
+  passageFocusKey?: string;
   /** Passage Only View: the passage takes the full width and reflows. */
   passageOnly: boolean;
   passage: React.ReactNode;
   question: React.ReactNode;
 }
 
-export function RcExamPane({ schemeClassName, passageOnly, passage, question }: Props) {
+export function RcExamPane({ schemeClassName, passageOnly, passage, question, responsive = false, passageFocusKey = '' }: Props) {
+  const container = React.useRef<HTMLDivElement>(null);
+  const [compact, setCompact] = React.useState(() => typeof window !== 'undefined' && window.innerWidth < 900);
+  const [focusedPane, setFocusedPane] = React.useState<'passage' | 'question'>('passage');
+  React.useEffect(() => {
+    const element = container.current;
+    if (!responsive || !element || typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(entries => { const width = entries[0]?.contentRect.width; if (width > 0) setCompact(width < 900); });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [responsive]);
+  React.useEffect(() => { if (passageFocusKey) setFocusedPane('passage'); }, [passageFocusKey]);
+  const compactLayout = responsive && compact && !passageOnly;
   return (
-    <div className={cn('rc-exam relative flex h-full min-h-0 flex-col', schemeClassName)}>
+    <div ref={container} className={cn('rc-exam relative flex h-full min-h-0 flex-col', schemeClassName)}>
+      {compactLayout && <div role="group" aria-label="Reader pane" className="flex gap-2 border-b bg-[var(--rc-bg)] p-2 text-[var(--rc-fg)]">
+        <button type="button" aria-pressed={focusedPane === 'passage'} className="min-h-11 rounded border px-3" onClick={() => setFocusedPane('passage')}>Passage</button>
+        <button type="button" aria-pressed={focusedPane === 'question'} className="min-h-11 rounded border px-3" onClick={() => setFocusedPane('question')}>Questions</button>
+      </div>}
       <DrillSplit
         ratio="passage-weighted"
         maxWidthClassName={null}
-        left={passage}
-        right={passageOnly ? undefined : question}
+        className={responsive && !compact && !passageOnly ? '!grid-cols-[minmax(0,53fr)_minmax(0,47fr)]' : undefined}
+        left={compactLayout && focusedPane === 'question' ? question : passage}
+        right={passageOnly || compactLayout ? undefined : question}
       />
     </div>
   );

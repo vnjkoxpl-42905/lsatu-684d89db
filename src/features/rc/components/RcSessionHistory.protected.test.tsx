@@ -37,7 +37,8 @@ describe('actual native RC history row shapes', () => {
       config: { mode: 'section', source: 'manual', reveal: 'end_of_set', timerSeconds: 3150, clockElapsedSeconds: 80 } }];
     mount();
     await waitFor(() => expect(screen.getAllByText(/4 passages · timed/)).toHaveLength(2));
-    expect(screen.getAllByRole('button', { name: 'Delete' }).every(button => button.hasAttribute('disabled'))).toBe(true);
+    expect(screen.queryByRole('button', { name: 'Delete' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Discard' })).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Resume' }));
     expect(screen.getByTestId('history-destination')).toHaveTextContent(`/testing/sections/${sitting}`);
     expect(state.deletes).not.toHaveBeenCalled();

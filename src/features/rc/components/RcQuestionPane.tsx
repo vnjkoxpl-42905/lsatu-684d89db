@@ -22,6 +22,9 @@ import {
 } from '../lib/rcTypes';
 
 interface Props {
+  actorId?: string | null;
+  choicesHidden?: boolean;
+  trainingControls?: React.ReactNode;
   annotationsDisabled?: boolean;
   item: RcSessionItem;
   selected: RcLetter | null;
@@ -65,6 +68,9 @@ interface Popover {
 }
 
 export function RcQuestionPane({
+  actorId,
+  choicesHidden = false,
+  trainingControls,
   item,
   selected,
   eliminations,
@@ -205,15 +211,19 @@ export function RcQuestionPane({
         </button>
       </div>
 
+      {trainingControls}
+      {choicesHidden && <p className="my-2 text-sm" role="status">Choices are hidden while you make a prediction. Open Training options to continue.</p>}
       {showFeedback && (
         <RcReviewLayer
           question={question}
           firstPick={selected}
           secondPick={reattemptPick ?? undefined}
+          sourceLabel={`PrepTest ${item.passage.preptest} · Section ${item.passage.section} · Passage ${item.passage.setNumber} · Question ${question.position}`}
+          actorId={actorId}
         />
       )}
 
-      <ul className="mt-3 space-y-1">
+      <ul hidden={choicesHidden} className="mt-3 space-y-1">
         {question.choices.map((choice) => {
           /* Blind means blind. `reattemptPick ?? selected` fell back to the
              original answer while the student was being asked to answer again,
@@ -239,15 +249,15 @@ export function RcQuestionPane({
                 !reattemptMode && !isPicked && eliminations.includes(choice.letter)
               }
               revealed={showFeedback}
-              disabled={showFeedback || interactionDisabled}
-              eliminationDisabled={reattemptMode || interactionDisabled}
+              disabled={showFeedback || interactionDisabled || choicesHidden}
+              eliminationDisabled={reattemptMode || interactionDisabled || choicesHidden}
               onSelect={onSelect}
               onToggleElimination={onToggleElimination}
               textStyle={type.choiceText}
               badgeStyle={type.choiceBadge}
               highlights={highlights}
               color={color}
-              annotationsDisabled={annotationsDisabled}
+              annotationsDisabled={annotationsDisabled || choicesHidden}
               highlightMode={highlightMode}
               onAddHighlight={onAddHighlight}
               onRemoveHighlight={onRemoveHighlight}

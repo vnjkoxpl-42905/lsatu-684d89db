@@ -1,13 +1,13 @@
 import { canRevealRcResults } from '../lib/rcResultsReveal';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteSession, getSessionAttempts, listSessions } from '../api/rcProgress';
+import { abandonSession, getSessionAttempts, listSessions } from '../api/rcProgress';
 import { REVEAL_LABELS, type RcDrillSession } from '../lib/rcTypes';
 import { timedSectionResumeHref } from '@/lib/timedSectionAdoption';
 
 /**
  * A student's RC drills: resume an unfinished one, open the results of a
- * finished one, delete either. Self-loading, because it is mounted in two
+ * finished one, or discard unfinished ordinary work while keeping its answers. Self-loading, because it is mounted in two
  * places (the standalone /rc surface and the drill hub's RC practice bay) and
  * threading sessions through both callers would give the two a way to disagree
  * about what has been drilled.
@@ -23,12 +23,15 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
   );
   const [loaded, setLoaded] = React.useState(false);
   const [error, setError] = React.useState(false);
+  const [discardError, setDiscardError] = React.useState<string | null>(null);
+  const [discarding, setDiscarding] = React.useState<string | null>(null);
+  const discardLock = React.useRef(false);
 
   const load = React.useCallback(async (signal?: { cancelled: boolean }) => {
     try {
       const list = await listSessions();
       if (signal?.cancelled) return;
-      setSessions(list);
+      setSessions(list.filter(s => s.status === 'in_progress' || s.status === 'completed'));
       const done = list.filter(canRevealRcResults);
       const pairs = await Promise.all(
         done.map(async (x) => {
@@ -58,17 +61,18 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
     };
   }, [load]);
 
-  const remove = async (id: string) => {
-    const ok = window.confirm(
-      'Delete this drill? Its answers and timings are deleted with it, and that cannot be undone.',
-    );
-    if (!ok) return;
+  const discard = async (id: string) => {
+    if (discardLock.current) return;
+    const session = sessions.find(s => s.id === id);
+    if (!session || session.status !== 'in_progress' || session.config.timedSectionSittingId || session.config.practiceTestRunId) return;
+    if (!window.confirm('Discard this unfinished drill? Your saved answers and timings stay on your account.')) return;
+    discardLock.current = true; setDiscarding(id); setDiscardError(null);
     try {
-      await deleteSession(id);
-      setSessions(await listSessions());
-    } catch {
-      setError(true);
-    }
+      await abandonSession(id);
+      setSessions(previous => previous.filter(s => s.id !== id));
+    } catch (err) {
+      setDiscardError(err instanceof Error ? err.message : 'The drill could not be discarded. Try again.');
+    } finally { discardLock.current = false; setDiscarding(null); }
   };
 
   if (error) {
@@ -85,6 +89,7 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
 
   return (
     <div className={tone === 'dark' ? 'rc-history rc-embedded' : 'rc-history'}>
+      {discardError && <p role="alert">{discardError}</p>}
       {sessions.map((s) => (
         <div
           key={s.id}
@@ -122,9 +127,11 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
                 Results
               </button>
             )}
-            <button type="button" className="rc-chip" disabled={!!s.config.timedSectionSittingId || !!s.config.practiceTestRunId} title={s.config.timedSectionSittingId || s.config.practiceTestRunId ? 'Protected section records retain their saved answers and timings.' : undefined} onClick={() => remove(s.id)}>
-              Delete
-            </button>
+            {s.status === 'in_progress' && !s.config.timedSectionSittingId && !s.config.practiceTestRunId && (
+              <button type="button" className="rc-chip" disabled={!!discarding} onClick={() => void discard(s.id)}>
+                {discarding === s.id ? 'Discarding…' : 'Discard'}
+              </button>
+            )}
           </span>
         </div>
       ))}

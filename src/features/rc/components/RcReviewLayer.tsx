@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { RcExplanationBlocks } from './RcExplanationBlocks';
 import type { RcLetter, RcQuestion } from '../lib/rcTypes';
 
@@ -17,18 +17,34 @@ interface Props {
   firstPick: RcLetter | null;
   /** An acknowledged second answer, including when the student kept their choice. */
   secondPick?: RcLetter | null;
+  sourceLabel?: string;
+  actorId?: string | null;
 }
 
-export function RcReviewLayer({ question, firstPick, secondPick }: Props) {
+export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, actorId }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const askJoshua = () => {
+    const params = new URLSearchParams(location.search);
+    const sessionId = params.get('sessionId');
+    if (!actorId || !sessionId) { navigate('/inbox'); return; }
+    const returnTo = `/rc/drill?${new URLSearchParams({ sessionId, review: '1', q: String(question.questionId) })}`;
+    const text = `I have a question about ${sourceLabel ?? `RC question ${question.position}`}.
+\nSource session: ${sessionId}\nReturn to this question: ${returnTo}
+\nQuestion: ${question.prompt?.slice(0, 2200) || 'The question text is not available.'}
+\nMy first answer: ${firstPick ?? 'skipped'}${secondPick ? `\nMy review answer: ${secondPick}` : ''}
+\nMy question:`;
+    navigate('/inbox', { state: { questionContext: { actorId, text: text.slice(0, 4000), returnTo } } });
+  };
   const blocks = question.explanationBlocks ?? [];
   const latestPick = secondPick ?? firstPick;
   const gotItRight = latestPick === question.correctAnswer;
 
   // Tag-only questions carry a record but no prose. If there is nothing authored
   // anywhere, say so plainly rather than rendering an empty shell.
-  const hasChoiceProse = question.choices.some((c) => c.explanation || c.tag);
-  const hasAnything = blocks.length > 0 || hasChoiceProse;
+  const hasChoiceProse = question.choices.some((c) => Boolean(c.explanation?.trim()));
+  const hasWalkthrough = blocks.some((block) => Boolean(block.body.trim()));
+  const hasAnything = hasWalkthrough || hasChoiceProse;
 
   return (
     <div className="rc-review">
@@ -46,16 +62,17 @@ export function RcReviewLayer({ question, firstPick, secondPick }: Props) {
         )}
       </div>
 
-      {hasAnything ? (
+      {hasWalkthrough && (
         <RcExplanationBlocks
           blocks={blocks}
           openFirst={!gotItRight}
           resetKey={question.questionId}
         />
-      ) : (
+      )}
+      {!hasAnything && (
         <div className="rc-tutor-fallback">
           <p>No written walkthrough for this one yet. Ask the tutor and we'll work it together.</p>
-          <button type="button" className="rc-button" onClick={() => navigate('/inbox')}>
+          <button type="button" className="rc-button" onClick={askJoshua}>
             Ask Joshua about this question
           </button>
         </div>
