@@ -861,6 +861,31 @@ describe('RC account save safety', () => {
     expect(api.saveSessionClock).not.toHaveBeenCalled();
   });
 
+  it('catches up a reload clock only after acknowledgement and preserves saved learning through the next reload', async () => {
+    const learningRecords = [{ id: 'saved-prediction', kind: 'prediction', value: 'Explain the disagreement.' }];
+    let account = { ...session(), config: { ...session().config, learningRecords } };
+    api.getSession.mockImplementation(async () => account);
+    api.getSessionAttempts.mockResolvedValue([attempt]);
+    localStorage.setItem('lsatu:rc-clock:session-one', '23');
+    let acknowledge!: () => void;
+    api.saveSessionClock.mockImplementationOnce((_id: string, seconds: number, index: number) => new Promise<void>(resolve => {
+      acknowledge = () => { account = { ...account, config: { ...account.config, clockElapsedSeconds: seconds, currentQuestionIndex: index } }; resolve(); };
+    }));
+    mount();
+    expect(await screen.findByRole('alertdialog')).toHaveTextContent('Your saved clock still needs to reach your account');
+    fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+    expect(screen.getByRole('alertdialog')).toBeInTheDocument();
+    expect(screen.getByTestId('clock')).toHaveTextContent('77');
+    await act(async () => acknowledge());
+    await waitFor(() => expect(screen.queryByRole('alertdialog')).toBeNull());
+    expect(account.config.learningRecords).toEqual(learningRecords);
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    cleanup(); mount();
+    await screen.findByText('Question 2: blank');
+    expect(screen.queryByRole('alertdialog')).toBeNull();
+    expect(account.config.learningRecords).toEqual(learningRecords);
+  });
+
   it('leaves completed review navigation read-only', async () => {
     api.getSession.mockResolvedValue({ ...session({ currentQuestionIndex: 2 }), status: 'completed' });
     api.getSessionAttempts.mockResolvedValue([attempt]);

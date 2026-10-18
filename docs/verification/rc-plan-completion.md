@@ -42,8 +42,23 @@ Used the isolated Vite fixture at `127.0.0.1:8098`, real React components with s
 
 Using the app's configured public connection, `question_exposures?select=id&limit=0` and `user_saved_sets?select=id&limit=0` both returned HTTP 200. No row content or credential was printed. This establishes endpoint availability, not owner write acknowledgement, RLS completeness, migration equivalence or two-device acceptance.
 
+## Authorized signed-in backend acceptance
+
+Joshua explicitly authorized clearly labelled test RC work in his own account, including one test timed section, and requested the Codex in-app browser. The full PR branch runs locally on port 8099 against the live backend; this is not a frontend publication.
+
+- Confirmed the signed-in UI identifies Joshua Fisseha.
+- Saved `[RC QA 2026-10-17] Recipe`, refreshed, and reopened it into configuration without starting work. Saved `[RC QA 2026-10-17] Fixed PT139` with the exact seven-question snapshot.
+- Used previously completed PT139 S3 P1, Improving Farm Economics, rather than reserved material. Full-text preview waited for account exposure acknowledgement.
+- Created ordinary test sitting `6ca71bac-0813-453e-b3b3-d6bbe466ee68`. A labelled prediction saved, survived refresh, and restored from the account. Confidence, fingerprinted evidence note and observed timing checkpoint also acknowledged.
+- Refresh found local elapsed time ahead of the account checkpoint and opened the intentional clock-recovery guard. Awaited Retry saved and resumed successfully. This was initially described as a suspected defect; source and live retry establish that it is the existing safety policy. An added regression covers learning metadata, delayed clock acknowledgement and a clean subsequent reload.
+- Completed with one test answer and six unanswered questions. Neutral results concealed score/credited answers. Set exclusion; on return the action read **Include in analytics**, confirming the excluded state.
+- Saved a separate blind-review answer, refreshed, opened its exact question and found Saved review answers plus Answer again blind; no credited answer, verdict or score was shown.
+- A subsequent backend fetch interruption returned the tab to sign-in. Reveal persistence and timed-section acceptance were not yet completed at this checkpoint. Existing records were retained; do not create a replacement test sitting on retry.
+
+CI run `39084186061` passed on head `4bcf597d`. Subsequent evidence/test-only follow-ups require their own head check before merge.
+
 ## Acceptance still required
 
-Signed-in backend save/retry/refresh/account-switch/two-device cases; real section clock, pause, expiry, reconnect and accommodations; protected seal and feature-off journeys; actual screen-reader speech, 200% zoom and physical devices; learner and equivalent competitor tasks. T09 content inventory still contains 556 questions without explanatory prose. Content presence is not teaching-quality approval. Missing media production remains separate.
+Remaining signed-in backend/reveal/reconnect/account-switch/two-device cases; real section clock, pause, expiry and accommodations; protected seal and feature-off journeys; actual screen-reader speech, 200% zoom and physical devices; learner and equivalent competitor tasks. T09 content inventory still contains 556 questions without explanatory prose. Content presence is not teaching-quality approval. Missing media production remains separate.
 
 Do not mark the full plan complete from this candidate, unit counts or synthetic browser evidence. No new merge, frontend publish, backend deployment or Lovable credit spend has occurred for this branch.
