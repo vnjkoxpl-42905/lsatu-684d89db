@@ -626,7 +626,7 @@ it('ignores attempts from sessions with excluded_from_analytics = true', async (
   });
 });
 
-it('treats skipped rows with selected null and is_correct null as unanswered exposure, never correct', async () => {
+it.each([null, false])('treats skipped rows with selected null and is_correct %s as unanswered exposure, never graded', async correctness => {
   historyStore.sessions = [
     {
       id: 'session-completed',
@@ -644,7 +644,7 @@ it('treats skipped rows with selected null and is_correct null as unanswered exp
       question_id: 201,
       passage_id: 20,
       selected: null,
-      is_correct: null,
+      is_correct: correctness,
       is_first_attempt: true,
       created_at: '2026-10-01T00:01:00Z',
     },
