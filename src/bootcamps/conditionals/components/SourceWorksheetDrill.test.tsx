@@ -1,10 +1,12 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { afterEach, beforeEach, expect, it } from 'vitest';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { SourceWorksheetDrill } from './SourceWorksheetDrill';
+import { gradeConditionalRewrite } from '@/lib/conditionalRewriteGrader';
+vi.mock('@/lib/conditionalRewriteGrader', () => ({ gradeConditionalRewrite: vi.fn() }));
 import { sourceWorksheetDrills } from '../content/sourceWorksheetDrills';
 
-beforeEach(() => localStorage.clear());
+beforeEach(() => { localStorage.clear(); vi.mocked(gradeConditionalRewrite).mockReset(); vi.mocked(gradeConditionalRewrite).mockResolvedValue({ correct: true, feedback: 'Unused provider prose.' }); });
 afterEach(cleanup);
 const run = (setId: string) => render(<SourceWorksheetDrill setId={setId} run/>);
 const write = (name: string, value: string) => fireEvent.change(screen.getByLabelText(name), { target: { value } });
@@ -19,16 +21,15 @@ it('checks indicators and reviews directly without a condition-highlighting step
   fireEvent.click(screen.getByRole('radio', { name: /Group 1/ }));
   click('Check this step');
   expect(screen.getByRole('heading', { name: 'That step works.' })).toHaveFocus();
-  click('Continue');
+  click('Next step');
   expect(screen.queryByRole('radio')).toBeNull();
   expect(screen.queryByRole('group', { name: /first and last word/ })).toBeNull();
   expect(screen.getByRole('heading', { name: 'Bring it together' })).toBeVisible();
-  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
-  click('My reasoning matched');
-  expect(screen.getByRole('button', { name: 'Question 1, completed, current' })).toHaveAttribute('aria-current', 'step');
-  expect(screen.getByText('1 reviewed · 27 remaining')).toBeVisible();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
-  click('Next');
+  expect(screen.getByRole('button', { name: 'Question 1, completed, current' })).toHaveAttribute('aria-current', 'step');
+  expect(screen.queryByText(/reviewed · .*remaining/)).toBeNull();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
+  click('Next question');
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
 });
 
@@ -43,16 +44,16 @@ it('requires the whole indicator phrase and correct group before advancing, with
   expect(screen.getByText('“Only” is only part of an indicator. Select every word of the phrase.')).toBeVisible();
   expect(screen.queryByText(/Indicators:/)).toBeNull();
   expect(screen.queryByText(/training requirement comes first/)).toBeNull();
-  expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Next step' })).toBeNull();
   click('if');
   fireEvent.click(screen.getByRole('radio', { name: /Group 2/ }));
   click('Check this step');
   expect(screen.getByText(/Indicators:/)).toBeVisible();
-  click('Continue');
+  click('Next step');
   expect(screen.getByRole('heading', { name: 'Bring it together' })).toBeVisible();
 });
 
-it('carries indicator work from the folded drill into Drill 2 without marking the rule reviewed', () => {
+it('carries checked indicator work into the current recognition flow while preserving its old record', () => {
   const folded = sourceWorksheetDrills.find(s => s.id === 'source-intro-identify')!.items.find(i => i.id === 'source-indicators-01')!;
   const fingerprint = JSON.stringify([folded.statement, folded.sufficient, folded.necessary, folded.indicators, folded.contrapositiveWords]);
   localStorage.setItem('conditional-worksheet-v1:source-indicators', JSON.stringify({ current: 0, answers: { 'source-indicators-01': {
@@ -60,7 +61,7 @@ it('carries indicator work from the folded drill into Drill 2 without marking th
     stage: 1, passed: ['indicators'], revealed: true, review: 'matched',
   } } }));
   run('source-intro-identify');
-  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
   fireEvent.click(screen.getByRole('button', { name: /^Question 16,/ }));
   expect(screen.getByRole('heading', { name: 'Bring it together' })).toBeVisible();
   expect(JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-indicators')!).answers['source-indicators-01'].review).toBe('matched');
@@ -94,7 +95,7 @@ it('keeps every source task reachable and future operations gated', () => {
   }
 });
 
-it('compares the diagram and checks the contrapositive as each is built, and holds the written readbacks to the end', () => {
+it('checks shortened phrases, diagram direction and both written readbacks without self-rating', async () => {
   run('source-full-translation');
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
   expect(screen.queryByText('that intern is offered a full-time position', { exact: true })).toBeNull();
@@ -102,42 +103,41 @@ it('compares the diagram and checks the contrapositive as each is built, and hol
   fireEvent.click(screen.getByRole('radio', { name: /Group 2/ }));
   click('Check this step');
   expect(screen.getByRole('heading', { name: 'Make one adjustment.' })).toBeVisible();
-  expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Next step' })).toBeNull();
   click('Revise this step');
   fireEvent.click(screen.getByRole('radio', { name: /Group 1/ }));
   click('Check this step');
-  click('Continue');
-  expect(screen.getByRole('heading', { name: 'Define your symbols' })).toBeVisible();
+  click('Next step');
+  expect(screen.getByRole('heading', { name: 'Shorten the conditions' })).toBeVisible();
   expect(screen.queryByRole('group', { name: /first and last word/ })).toBeNull();
-  write('First condition’s symbol', 'I');
-  write('Second condition’s symbol', 'I');
-  expect(screen.getByRole('button', { name: 'Save and continue' })).toBeDisabled();
-  write('First condition’s symbol', 'O');
-  click('Save and continue');
+  write('First condition’s short version', 'Intern offered full-time position');
+  write('Second condition’s short version', 'Intern completes program');
+  click('Next step');
+  await waitFor(() => expect(screen.getByRole('heading', { name: 'Build the diagram' })).toBeVisible());
   const ours = sourceWorksheetDrills.find(s => s.id === 'source-full-translation')!.items[0];
   const left = () => screen.getByRole('group', { name: 'Left: sufficient condition' });
   const right = () => screen.getByRole('group', { name: 'Right: necessary condition' });
-  fireEvent.click(within(left()).getByRole('button', { name: 'O' }));
-  fireEvent.click(within(right()).getByRole('button', { name: 'I' }));
+  fireEvent.click(within(left()).getByRole('button', { name: 'Intern offered full-time position' }));
+  fireEvent.click(within(right()).getByRole('button', { name: 'Intern completes program' }));
   click('Check this step');
   expect(screen.getByText('Which condition is enough to prove the other? That one goes on the left.')).toBeVisible();
   expect(screen.queryByText(ours.diagram)).toBeNull();
-  fireEvent.click(within(left()).getByRole('button', { name: 'I' }));
-  fireEvent.click(within(right()).getByRole('button', { name: 'O' }));
+  fireEvent.click(within(left()).getByRole('button', { name: 'Intern completes program' }));
+  fireEvent.click(within(right()).getByRole('button', { name: 'Intern offered full-time position' }));
   click('Check this step');
   expect(screen.getByText(ours.diagram)).toBeVisible();
-  click('Continue');
+  click('Next step');
   const contraLeft = () => screen.getByRole('group', { name: 'Left side' });
   const contraRight = () => screen.getByRole('group', { name: 'Right side' });
-  fireEvent.click(within(contraLeft()).getByRole('button', { name: 'I' }));
-  fireEvent.click(within(contraRight()).getByRole('button', { name: 'O' }));
+  fireEvent.click(within(contraLeft()).getByRole('button', { name: 'Intern completes program' }));
+  fireEvent.click(within(contraRight()).getByRole('button', { name: 'Intern offered full-time position' }));
   fireEvent.click(screen.getByLabelText('NOT on the left side'));
   fireEvent.click(screen.getByLabelText('NOT on the right side'));
   click('Check this step');
   expect(screen.getByText('Start with the right side of your original diagram. It becomes the new left side.')).toBeVisible();
   expect(screen.queryByText(ours.contrapositive)).toBeNull();
-  fireEvent.click(within(contraLeft()).getByRole('button', { name: 'NOT O' }));
-  fireEvent.click(within(contraRight()).getByRole('button', { name: 'NOT I' }));
+  fireEvent.click(within(contraLeft()).getByRole('button', { name: 'NOT Intern offered full-time position' }));
+  fireEvent.click(within(contraRight()).getByRole('button', { name: 'NOT Intern completes program' }));
   fireEvent.click(screen.getByLabelText('NOT on the right side'));
   click('Check this step');
   expect(screen.getByText('The order is right. Now negate each whole side once.')).toBeVisible();
@@ -145,28 +145,28 @@ it('compares the diagram and checks the contrapositive as each is built, and hol
   click('Check this step');
   expect(screen.getByText(ours.contrapositive)).toBeVisible();
   expect(screen.queryByText(ours.contrapositiveWords)).toBeNull();
-  click('Continue');
+  click('Next step');
   write('Write this rule as an if/then sentence.', 'If an intern completes the program, then they are offered a full-time position.');
-  click('Save and continue');
+  click('Next step');
+  await waitFor(() => expect(screen.getByRole('heading', { name: 'Read the contrapositive' })).toBeVisible());
   write('Write the contrapositive in ordinary language.', 'If that intern is not offered the position, then they did not complete the program.');
-  expect(screen.queryByText('Compare with our version')).toBeNull();
-  click('Save and continue');
-  expect(screen.getByText('Compare with our version')).toBeVisible();
-  expect(screen.getByText('I → O', { exact: true })).toBeVisible();
-  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
-  click('Needs another look');
+  click('Next step');
+  await waitFor(() => expect(screen.getByRole('heading', { name: 'Checks passed.' })).toBeVisible());
+  expect(screen.getByText('Intern completes program → Intern offered full-time position', { exact: true })).toBeVisible();
+  expect(screen.queryByRole('button', { name: 'My reasoning matched' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'I compared my wording' })).toBeNull();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
 });
 
-it('begins rephrasing with writing before any supplied diagram or condition choices', () => {
+it('begins rephrasing with checked writing before any supplied diagram or condition choices', async () => {
   run('source-rephrase');
   expect(screen.getByRole('heading', { name: 'Rewrite the rule' })).toBeVisible();
   expect(screen.queryByText('a person is a runner in a marathon', { exact: true })).toBeNull();
   write('Write this rule as an if/then sentence.', 'If a person runs the marathon, they must hydrate beforehand.');
-  expect(screen.getByText('Our version stays hidden until you have completed the whole translation.')).toBeVisible();
-  click('Save and continue');
+  expect(screen.getByRole('button', { name: 'Next step' })).toBeEnabled();
+  click('Next step');
   expect(screen.queryByText(/If a person is a runner in a marathon/)).toBeNull();
-  expect(screen.getByRole('heading', { name: 'Find the indicators' })).toBeVisible();
+  await waitFor(() => expect(screen.getByRole('heading', { name: 'Find the indicators' })).toBeVisible());
 });
 
 it('restores a partially written stage and invalidates stale source checks without discarding drafts', () => {
@@ -243,14 +243,14 @@ it('resumes an old removed condition stage at review and keeps earlier work stor
   } } }));
   run(set.id);
   expect(screen.getByRole('heading', { name: 'Bring it together' })).toBeVisible();
-  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
   const saved = JSON.parse(localStorage.getItem(key)!).answers[item.id];
   expect(saved.spans).toEqual([[0, 3]]);
   expect(saved.writing).toBe('Earlier draft');
-  expect(saved.flowVersion).toBe(2);
+  expect(saved.flowVersion).toBe(4);
 });
 
-it('keeps saved symbol meanings and diagram stage when migrating an older highlighted run', () => {
+it('preserves old letter drafts but requires shortening anew before a saved diagram can count', () => {
   const set = sourceWorksheetDrills.find(set => set.id === 'source-intro-diagrams')!;
   const item = set.items[0];
   const fingerprint = JSON.stringify([item.statement, item.sufficient, item.necessary, item.indicators, item.contrapositiveWords]);
@@ -261,12 +261,80 @@ it('keeps saved symbol meanings and diagram stage when migrating an older highli
     stage: 2, passed: ['conditions', 'symbols'], spans: [[0, 3], [5, 11]], review: null,
   } } }));
   const view = run(set.id);
-  expect(screen.getByRole('heading', { name: 'Build the diagram' })).toBeVisible();
-  expect(screen.getByText('A warranty is valid', { exact: false, selector: '.sw-learner-legend p' })).toHaveTextContent('W = A warranty is valid');
-  click('Check this step');
-  expect(screen.getByRole('heading', { name: 'That step works.' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Shorten the conditions' })).toBeVisible();
+  expect(screen.getByLabelText('First condition’s short version')).toHaveValue('W');
+  expect(screen.getByLabelText('Second condition’s short version')).toHaveValue('R');
+  expect(screen.getByRole('button', { name: 'Next step' })).toBeDisabled();
   view.unmount();
   run(set.id);
-  expect(screen.getByRole('heading', { name: 'Build the diagram' })).toBeVisible();
-  expect(JSON.parse(localStorage.getItem(key)!).answers[item.id].spans).toEqual([[0, 3], [5, 11]]);
+  expect(screen.getByRole('heading', { name: 'Shorten the conditions' })).toBeVisible();
+  const migrated = JSON.parse(localStorage.getItem(key)!).answers[item.id];
+  expect(migrated.spans).toEqual([[0, 3], [5, 11]]);
+  expect(migrated.symbolOne).toBe('W');
+  expect(migrated.passed).not.toContain('symbols');
+});
+
+
+it('accepts exact full-condition identity locally but never accepts arbitrary letter codes', async () => {
+  run('source-intro-diagrams');
+  write('First condition’s short version', 'W');
+  write('Second condition’s short version', 'R');
+  expect(screen.getByRole('button', { name: 'Next step' })).toBeDisabled();
+  const item = sourceWorksheetDrills.find(set => set.id === 'source-intro-diagrams')!.items[0];
+  write('First condition’s short version', item.necessary);
+  write('Second condition’s short version', item.sufficient);
+  click('Next step');
+  await waitFor(() => expect(screen.getByRole('heading', { name: 'Build the diagram' })).toBeVisible());
+  expect(gradeConditionalRewrite).not.toHaveBeenCalled();
+});
+
+it('requires a semantic verdict for shortened phrases and blocks an omitted deadline', async () => {
+  vi.mocked(gradeConditionalRewrite).mockResolvedValueOnce({ correct: true, feedback: 'provider diagnosis must not appear' }).mockResolvedValueOnce({ correct: false, feedback: 'provider diagnosis must not appear' });
+  run('source-intro-diagrams');
+  write('First condition’s short version', 'Warranty valid');
+  write('Second condition’s short version', 'Product registered');
+  click('Next step');
+  await waitFor(() => expect(gradeConditionalRewrite).toHaveBeenCalledTimes(2));
+  await waitFor(() => expect(screen.getByText(/Compare “Product registered”/)).toBeVisible());
+  expect(screen.getByRole('heading', { name: 'Shorten the conditions' })).toBeVisible();
+  expect(screen.queryByText('provider diagnosis must not appear')).toBeNull();
+  expect(gradeConditionalRewrite).toHaveBeenCalledWith(expect.objectContaining({ expected: expect.stringContaining('within 30 days'), studentResponse: 'Product registered', task: 'explanation' }));
+});
+
+it('does not partially pass or advance when a condition check fails to return', async () => {
+  vi.mocked(gradeConditionalRewrite).mockResolvedValueOnce({ correct: true, feedback: 'ok' }).mockRejectedValueOnce(new Error('offline'));
+  run('source-intro-diagrams');
+  write('First condition’s short version', 'Warranty valid');
+  write('Second condition’s short version', 'Product registered within 30 days');
+  click('Next step');
+  expect(await screen.findByRole('alert')).toHaveTextContent('have not been checked');
+  expect(screen.getByRole('heading', { name: 'Shorten the conditions' })).toBeVisible();
+});
+
+it('ignores a semantic verdict returned after navigating to another question', async () => {
+  let resolve!: (value: { correct: boolean; feedback: string }) => void;
+  vi.mocked(gradeConditionalRewrite).mockImplementation(() => new Promise(done => { resolve = done; }));
+  run('source-intro-diagrams');
+  write('First condition’s short version', 'Warranty valid');
+  const item = sourceWorksheetDrills.find(set => set.id === 'source-intro-diagrams')!.items[0];
+  write('Second condition’s short version', item.sufficient);
+  click('Next step');
+  fireEvent.click(screen.getByRole('button', { name: /^Question 2,/ }));
+  await act(async () => { resolve({ correct: true, feedback: 'late' }); });
+  expect(screen.getByRole('heading', { name: 'Shorten the conditions' })).toBeVisible();
+  const saved = JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-intro-diagrams')!);
+  expect(saved.answers[item.id].condensation).toBeUndefined();
+});
+
+
+it('does not complete a written rewrite on an incorrect or failed semantic check', async () => {
+  vi.mocked(gradeConditionalRewrite).mockResolvedValueOnce({ correct: false, feedback: 'The guarantee changed.' }).mockRejectedValueOnce(new Error('offline'));
+  run('source-rephrase');
+  write('Write this rule as an if/then sentence.', 'If runners hydrate, they must run a marathon.');
+  click('Next step');
+  expect(await screen.findByRole('status')).toHaveTextContent('The guarantee changed.');
+  expect(screen.getByRole('heading', { name: 'Rewrite the rule' })).toBeVisible();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  click('Next step');
+  expect(await screen.findByRole('alert')).toHaveTextContent('has not been checked');
 });

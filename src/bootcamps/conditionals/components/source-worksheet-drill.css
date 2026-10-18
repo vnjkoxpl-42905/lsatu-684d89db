@@ -109,3 +109,17 @@
 .dark .sw-experience .sw-active-task button.sw-primary { background:#c5dfd1; color:#173544!important; border-color:#c5dfd1; }
 .dark .sw-experience .sw-active-task button.sw-primary:disabled { background:#304950; color:#bfcdcb!important; border-color:#50636a; }
 .sw-group-card input:focus-visible { outline:none; }
+
+/* The complete phrases remain readable within two distinct diagram positions. */
+.sw-experience .sw-arrow-row { grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr); gap:14px; align-items:stretch; }
+.sw-experience .sw-arrow-row > :first-child,.sw-experience .sw-arrow-row > :last-child { min-width:0; padding:18px 14px; border:1px solid var(--sw-line); border-radius:12px; background:color-mix(in srgb,var(--sw-paper) 92%,#254d65 8%); }
+.sw-experience .sw-arrow-row > :last-child { background:color-mix(in srgb,var(--sw-paper) 92%,#176556 8%); }
+.sw-experience .sw-arrow { align-self:center; font-size:36px; font-weight:600; color:var(--sw-ink); }
+.sw-experience .sw-choice-slot legend { float:left; width:100%; padding:0 0 12px; font-size:.875rem; }
+.sw-experience .sw-choice-slot button { flex:0 0 auto; width:100%; white-space:normal; word-break:normal; overflow-wrap:anywhere; line-height:1.6; padding:13px 12px; font-size:1rem; }
+.sw-experience .sw-symbol-slot button span { font-family:inherit; font-size:1rem; font-weight:500; text-align:left; white-space:normal; overflow-wrap:anywhere; }
+@media(max-width:600px) {
+ .sw-experience .sw-arrow-row { grid-template-columns:minmax(0,1fr); gap:12px; }
+ .sw-experience .sw-arrow { transform:rotate(90deg); justify-self:center; font-size:32px; line-height:1; padding:0 8px; }
+ .sw-experience .sw-arrow-row > :first-child,.sw-experience .sw-arrow-row > :last-child { padding:16px; }
+}
