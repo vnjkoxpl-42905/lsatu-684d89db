@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { applySourceCorrection } from './rc-source-correction.mjs';
 /**
  * Build the static RC question bank served from public/data/rc/.
  *
@@ -254,13 +253,7 @@ for (const p of passagesCsv) {
 for (const passages of byPreptest.values()) passages.sort((a, b) => a.section - b.section || a.setNumber - b.setNumber);
 applyCorrections([...byPreptest].map(([preptest, passages]) => ({ preptest, passages })),
   JSON.parse(readFileSync(join(ROOT, 'src/features/rc/lib/rcAnswerKeyCorrections.json'), 'utf8')));
-// Validate both overlays on a clone before either touches generated banks.
-const correctedBanks = [...byPreptest].map(([preptest, passages]) => ({ preptest, passages }));
-const checkedBanks = structuredClone(correctedBanks);
-applySourceCorrection(checkedBanks);
-applyAuthoredCorrections(checkedBanks, JSON.parse(readFileSync(join(ROOT, 'scripts/rc-authored-corrections.json'), 'utf8')));
-applySourceCorrection(correctedBanks);
-applyAuthoredCorrections(correctedBanks,
+applyAuthoredCorrections([...byPreptest].map(([preptest, passages]) => ({ preptest, passages })),
   JSON.parse(readFileSync(join(ROOT, 'scripts/rc-authored-corrections.json'), 'utf8')));
 mkdirSync(OUT, { recursive: true });
 for (const f of readdirSync(OUT)) {

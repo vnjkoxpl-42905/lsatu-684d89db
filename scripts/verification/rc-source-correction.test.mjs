@@ -7,7 +7,7 @@ import { captureAuthoredCorrections } from '../rc-authored-corrections.mjs';
 const fixture = () => [JSON.parse(readFileSync('public/data/rc/RC-PT156.json', 'utf8'))];
 test('official correction restores only missing quotation and is idempotent', () => {
   const banks = fixture(); const question = banks[0].passages[4].questions[1]; question.prompt = sourceCorrection.before;
-  const expected = fixture(); assert.deepEqual(applySourceCorrection(banks), expected);
+  const expected = fixture(); expected[0].passages[4].questions[1].prompt = sourceCorrection.after; assert.deepEqual(applySourceCorrection(banks), expected);
   assert.deepEqual(applySourceCorrection(banks), expected);
   assert.equal(question.correctAnswer, 'E');
 });
@@ -32,7 +32,7 @@ test('integrity exception matches only exact official change', () => {
 });
 
 test('retained authority binds only the exact quotation restoration and preserves other identity inputs', () => {
-  const bank = fixture()[0]; const p = bank.passages[4]; const q = p.questions[1];
+  const bank = fixture()[0]; const p = bank.passages[4]; const q = { ...p.questions[1], prompt: sourceCorrection.after };
   const original = { ...q, prompt: sourceCorrection.before };
   const identity = questionIdentity(156, p, original);
   assert.equal(questionIdentity(156, p, questionForOriginalAuthority(156, p, q)), identity);
