@@ -10,6 +10,8 @@ const api = vi.hoisted(() => ({
   saveSessionClock: vi.fn(), completeSession: vi.fn(),
   setAttemptFlag: vi.fn(),
 }));
+const parentRelease = vi.hoisted(() => ({ check: vi.fn() }));
+vi.mock('../api/rcProtectedRelease', () => ({ assertRcParentReleased: parentRelease.check }));
 vi.mock('../api/rcProgress', () => ({ ...api, createSession: vi.fn() }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'student-one' } }) }));
 vi.mock('../lib/rcBank', () => ({ loadPassages: async () => loadedPassages, loadPassage: vi.fn() }));
@@ -100,6 +102,9 @@ function LocationProbe() {
 beforeEach(() => {
   localStorage.clear();
   vi.clearAllMocks();
+  parentRelease.check.mockReset().mockImplementation(async (value: RcDrillSession) => {
+    if (value.config.practiceTestRunId) throw new Error('Parent release must be supplied by this test.');
+  });
   loadedPassages = [passage];
   api.getSession.mockResolvedValue(session());
   api.getSessionAttempts.mockResolvedValue([]);
@@ -661,11 +666,14 @@ describe('RC account save safety', () => {
     { timedSectionSittingId: '10000000-0000-4000-8000-000000000001' },
     { practiceTestRunId: 'full-test', practiceTestLegIndex: 1 },
   ])('reviews protected completed answers and flags read-only without legacy source writes: %o', async marker => {
+    // This fixture represents a child of an account-owned, completed parent.
+    parentRelease.check.mockResolvedValueOnce(undefined);
     api.getSession.mockResolvedValue({ ...session(marker), status: 'completed' });
     api.getSessionAttempts.mockResolvedValue([attempt]);
     mount('&review=1&q=1');
     await screen.findByText(/keeps its saved answers and flags unchanged/);
     await screen.findByText('Question 1: B');
+    expect(parentRelease.check).toHaveBeenCalledWith(expect.objectContaining({ userId: 'student-one', status: 'completed', config: expect.objectContaining(marker) }), 'student-one');
     expect(screen.getByRole('button', { name: 'Choose B' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Toggle question flag' })).toBeDisabled();
     fireEvent.click(screen.getByRole('button', { name: 'Toggle question flag' }));

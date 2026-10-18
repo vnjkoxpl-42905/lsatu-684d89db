@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { RcMarkdown } from './RcMarkdown';
+import { RcExplanationMedia } from './RcExplanationMedia';
 import type { RcSummaries } from '../lib/rcTypes';
 
 /**
@@ -18,13 +19,13 @@ const STYLES: { key: keyof RcSummaries; label: string }[] = [
 ];
 
 export function RcPassageSummary({ summaries }: { summaries: RcSummaries }) {
-  const available = STYLES.filter(({ key }) => Boolean(summaries[key]?.trim()));
+  const available = React.useMemo(() => STYLES.filter(({ key }) => Boolean(summaries[key]?.trim())), [summaries]);
   const summaryId = React.useId();
   const tabRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState<keyof RcSummaries>(available[0]?.key ?? 'standard');
 
-  React.useEffect(() => { setOpen(false); setActive(available[0]?.key ?? 'standard'); }, [summaries]);
+  React.useEffect(() => { setOpen(false); setActive(available[0]?.key ?? 'standard'); }, [summaries, available]);
   const activeStyle = available.some(style => style.key === active) ? active : available[0]?.key ?? 'standard';
   if (available.length === 0) return <p className="rc-summary-toggle">No passage summary has been authored for this passage yet.</p>;
 
@@ -69,7 +70,10 @@ export function RcPassageSummary({ summaries }: { summaries: RcSummaries }) {
             </div>
           )}
           <div className="rc-summary-body" id={`${summaryId}-panel`} role={available.length > 1 ? 'tabpanel' : undefined} aria-labelledby={available.length > 1 ? `${summaryId}-${activeStyle}` : undefined}>
-            <RcMarkdown>{summaries[activeStyle]}</RcMarkdown>
+            <RcMarkdown>{summaries[activeStyle]?.replace(/^https:\/\/[^\s]+\.(?:mp4|webm|mp3)(?:\?[^\s]*)?\s*/i, '')}</RcMarkdown>
+            {/^https:\/\/[^\s]+\.(?:mp4|webm|mp3)(?:\?[^\s]*)?/i.test(summaries[activeStyle] ?? '') && <RcExplanationMedia media={[{
+              kind: 'video', src: summaries[activeStyle]!.split(/\s/)[0], title: 'Imported passage explanation', transcript: '',
+            }]} />}
           </div>
         </>
       )}

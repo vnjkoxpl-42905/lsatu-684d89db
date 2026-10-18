@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RcExplanationBlocks } from './RcExplanationBlocks';
+import { RcExplanationMedia } from './RcExplanationMedia';
 import type { RcLetter, RcQuestion } from '../lib/rcTypes';
 
 /**
@@ -36,7 +37,7 @@ export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, ac
 \nMy question:`;
     navigate('/inbox', { state: { questionContext: { actorId, text: text.slice(0, 4000), returnTo } } });
   };
-  const blocks = question.explanationBlocks ?? [];
+  const blocks = (question.explanationBlocks ?? []).filter(block => Boolean(block.body.trim()));
   const latestPick = secondPick ?? firstPick;
   const gotItRight = latestPick === question.correctAnswer;
 
@@ -45,6 +46,7 @@ export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, ac
   const hasChoiceProse = question.choices.some((c) => Boolean(c.explanation?.trim()));
   const hasWalkthrough = blocks.some((block) => Boolean(block.body.trim()));
   const hasAnything = hasWalkthrough || hasChoiceProse;
+  const missingChoiceLetters = question.choices.filter(choice => !choice.explanation?.trim()).map(choice => choice.letter);
 
   return (
     <div className="rc-review">
@@ -69,6 +71,12 @@ export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, ac
           resetKey={question.questionId}
         />
       )}
+      {hasAnything && missingChoiceLetters.length > 0 && (
+        <div className="rc-tutor-fallback">
+          <p>Written explanations are not available for choices {missingChoiceLetters.join(', ')} yet.</p>
+          <button type="button" className="rc-button" onClick={askJoshua}>Ask Joshua about this question</button>
+        </div>
+      )}
       {!hasAnything && (
         <div className="rc-tutor-fallback">
           <p>No written walkthrough for this one yet. Ask the tutor and we'll work it together.</p>
@@ -77,6 +85,7 @@ export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, ac
           </button>
         </div>
       )}
+      {question.explanationMedia?.length ? <RcExplanationMedia media={question.explanationMedia} /> : null}
     </div>
   );
 }

@@ -112,11 +112,12 @@ describe('buildStandaloneDrillHistory', () => {
     expect(rows.find((row) => row.key === 'lr:lr-2')?.resultsTo).toBe('/practice/drills/runs/lr-2?view=results');
   });
 
-  it('requires saved work for in-progress rows and excludes test and assigned RC', () => {
+  it('includes started unanswered ordinary RC while excluding protected, assigned and abandoned sessions', () => {
     const rows = buildStandaloneDrillHistory(
       [lr('empty', 'in_progress', 0), lr('finished', 'completed', 0)],
       [
         rc('empty-rc'),
+        rc('abandoned-rc', { status: 'abandoned' }),
         rc('pt-rc', { config: { source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' }, practiceTestRunId: 'test' } }),
         rc('assigned-rc', { config: { source: 'assignment', reveal: 'end_of_set', timing: { mode: 'unlimited' } } }),
         rc('section-rc', { config: { source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' }, timedSectionSittingId: 'sitting' } }),
@@ -124,7 +125,12 @@ describe('buildStandaloneDrillHistory', () => {
       ],
       new Map([['pt-rc', [answer('pt-rc')]], ['assigned-rc', [answer('assigned-rc')]], ['section-rc', [answer('section-rc')]]]),
     );
-    expect(rows.map((row) => row.key)).toEqual(['lr:finished', 'rc:finished-rc']);
+    expect(rows.map((row) => row.key)).toEqual(['lr:finished', 'rc:empty-rc', 'rc:finished-rc']);
+    expect(rows.find(row => row.key === 'rc:empty-rc')).toMatchObject({
+      status: 'in_progress', detail: '0 first answers saved', discardId: 'empty-rc',
+      continueTo: '/rc/drill?sessionId=empty-rc',
+    });
+    expect(rows.every(row => !['pt-rc', 'assigned-rc', 'section-rc', 'abandoned-rc'].includes(row.discardId ?? ''))).toBe(true);
   });
 
   it('shows a saved Smart Drill as one resumable row, never as completed history', () => {

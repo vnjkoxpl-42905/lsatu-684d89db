@@ -15,6 +15,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'csv-parse/sync';
 import { applyCorrections, resolveCredit } from './rc-answer-keys.mjs';
+import { applyAuthoredCorrections } from './rc-authored-corrections.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'scripts/rc-source/data');
@@ -249,8 +250,11 @@ for (const p of passagesCsv) {
 // ------------------------------------------------------------------- write out
 // Keep immutable recovery captures intact; apply only address/text-bound,
 // independently documented corrections before any generated output is written.
+for (const passages of byPreptest.values()) passages.sort((a, b) => a.section - b.section || a.setNumber - b.setNumber);
 applyCorrections([...byPreptest].map(([preptest, passages]) => ({ preptest, passages })),
   JSON.parse(readFileSync(join(ROOT, 'src/features/rc/lib/rcAnswerKeyCorrections.json'), 'utf8')));
+applyAuthoredCorrections([...byPreptest].map(([preptest, passages]) => ({ preptest, passages })),
+  JSON.parse(readFileSync(join(ROOT, 'scripts/rc-authored-corrections.json'), 'utf8')));
 mkdirSync(OUT, { recursive: true });
 for (const f of readdirSync(OUT)) {
   if (f.startsWith('RC-PT') || f === 'rc-index.json') {

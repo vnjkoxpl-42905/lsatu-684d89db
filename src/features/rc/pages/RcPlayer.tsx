@@ -29,6 +29,7 @@ import { readActiveRcAnswerBackups, readRcAnswerBackups, writeRcAnswerBackup, re
 import { completedRcDestination, rcReviewRedirect } from '../lib/rcSessionDestination';
 import { safeRcReturnTo } from '../lib/rcReturnTo';
 import { canRevealRcResults } from '../lib/rcResultsReveal';
+import { assertRcParentReleased } from '../api/rcProtectedRelease';
 import { useRcA11y } from '../hooks/useRcA11y';
 import { useRcHighlights } from '../hooks/useRcHighlights';
 import { useRcFlagPersistence } from '../hooks/useRcFlagPersistence';
@@ -244,7 +245,10 @@ function RcPlayerRunner() {
         if (existingId) {
           const session = await getSession(existingId);
           if (!session) throw new Error('That drill could not be found.');
+          if (session.status === 'abandoned') throw new Error('This drill was discarded. Start a new drill from Practice.');
           if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
+          if (reviewOnly) await assertRcParentReleased(session, user.id);
+          if (cancelled) return;
           if (session.config.timedSectionSittingId && !reviewOnly) {
             if (!cancelled) navigate(timedSectionResumeHref(session.config.timedSectionSittingId), { replace: true });
             return;
@@ -289,14 +293,16 @@ function RcPlayerRunner() {
         if (routed.passageIds?.length) {
           if (reviewOnly && !routed.sessionId) throw new Error('A saved drill is needed for review.');
           const nextConfig = routed.config ?? DEFAULT_CONFIG;
-          const loaded = await loadPassages(routed.passageIds);
           const session =
             routed.sessionId
               ? await getSession(routed.sessionId)
               : await createSession(nextConfig, routed.passageIds);
           if (cancelled) return;
           if (!session) throw new Error('That drill could not be found.');
+          if (session.status === 'abandoned') throw new Error('This drill was discarded. Start a new drill from Practice.');
           if (session && (!user || session.userId !== user.id)) throw new Error('This drill belongs to another account.');
+          if (reviewOnly && user) await assertRcParentReleased(session, user.id);
+          if (cancelled) return;
           if (session.config.timedSectionSittingId && !reviewOnly) {
             navigate(timedSectionResumeHref(session.config.timedSectionSittingId), { replace: true });
             return;
@@ -311,6 +317,8 @@ function RcPlayerRunner() {
             navigate(completedRcDestination(session.id, returnTo, session.config.practiceTestRunId), { replace: true });
             return;
           }
+          const loaded = await loadPassages(routed.passageIds);
+          if (cancelled) return;
           setConfig(session?.config ?? nextConfig);
           if (session) {
             setSessionOwnerId(session.userId);

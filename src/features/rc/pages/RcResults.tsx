@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { canRevealRcResults } from '../lib/rcResultsReveal';
+import { assertRcParentReleased } from '../api/rcProtectedRelease';
 import { RcReviewSuggestions } from '../components/RcReviewSuggestions';
 import { firstRcAttempts, rcRetryPassageIds } from '../lib/rcRetrySelection';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -113,6 +114,7 @@ export default function RcResults() {
         const s = await getSession(sessionId, actorId);
         if (!s || s.id !== sessionId || s.userId !== actorId) throw new Error('That drill could not be found for this account.');
         if (s.status !== 'completed') throw new Error('This drill is not finished. Return to Practice to continue.');
+        await assertRcParentReleased(s, actorId);
         const [ps, as] = await Promise.all([
           loadPassages(s.passageIds),
           getSessionAttempts(sessionId),
@@ -224,7 +226,8 @@ export default function RcResults() {
 
   const missedPassageIds = rcRetryPassageIds(items, firstAttempts, includeSkipped);
 
-  const revealed = canRevealRcResults(session);
+  // A session enters state only after the account parent-release guard succeeds.
+  const revealed = canRevealRcResults(session, true);
   const runAction = async (operation: (actorId: string, isCurrent: () => boolean) => Promise<void>) => {
     if (actionLock.current || !user?.id || session.id !== sessionId || session.userId !== user.id) return;
     const actorId = user.id;
