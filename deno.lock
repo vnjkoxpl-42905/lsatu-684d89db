@@ -8428,6 +8428,7 @@
     "https://deno.land/std@0.168.0/async/retry.ts": "e8e5173623915bbc0ddc537698fa418cf875456c347eda1ed453528645b42e67",
     "https://deno.land/std@0.168.0/async/tee.ts": "3a47cc4e9a940904fd4341f0224907e199121c80b831faa5ec2b054c6d2eff5e",
     "https://deno.land/std@0.168.0/http/server.ts": "e99c1bee8a3f6571ee4cdeb2966efad465b8f6fe62bec1bdb59c1f007cc4d155",
+    "https://esm.sh/@supabase/supabase-js@2.49.4": "d52c4d06946766d328fdd0ac2e007f52bb6d2ef7ce6103ad9f0f57d92b73e978",
     "https://esm.sh/@supabase/supabase-js@2.75.0": "2560166a94e3385c37b1c4fa943ee9c729a44e92fc9c61c03037852dc494853e"
   },
   "workspace": {
@@ -8513,6 +8514,7 @@
         "npm:html2canvas@^1.4.1",
         "npm:idb@8",
         "npm:input-otp@^1.4.2",
+        "npm:ionicons@^7.4.0",
         "npm:jsdom@^20.0.3",
         "npm:jspdf@^4.2.1",
         "npm:jszip@^3.10.1",

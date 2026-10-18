@@ -8,12 +8,23 @@ const owner = '11111111-1111-4111-8111-111111111111';
 const sessionId = '22222222-2222-4222-8222-222222222222';
 const attemptId = '33333333-3333-4333-8333-333333333333';
 
-const { insert, update, clock, getUser, personalList, annotations, upsert, deviceActive } = vi.hoisted(() => ({
+const { insert, update, clock, getUser, personalList, historyStore, annotations, upsert, deviceActive } = vi.hoisted(() => ({
   insert: vi.fn(), update: vi.fn(), getUser: vi.fn(), upsert: vi.fn(),
   annotations: { rows: [] as Record<string, unknown>[], filters: vi.fn(), error: null as { message: string } | null },
   clock: { config: {} as Partial<RcDrillConfig>, status: 'in_progress' },
   deviceActive: vi.fn(),
   personalList: { rows: [] as Record<string, unknown>[], filters: vi.fn() },
+  historyStore: {
+    sessions: [] as Record<string, unknown>[],
+    attempts: [] as Record<string, unknown>[],
+    bypassEqFilter: false,
+    sessionFilters: vi.fn(),
+    attemptFilters: vi.fn(),
+    sessionOrders: [] as Array<{ column: string; ascending?: boolean }>,
+    attemptOrders: [] as Array<{ column: string; ascending?: boolean }>,
+    sessionRanges: [] as Array<[number, number]>,
+    attemptRanges: [] as Array<[number, number]>,
+  },
 }));
 vi.mock('@/lib/practiceTestStore', () => ({ isActivePracticeTestDevice: deviceActive }));
 
@@ -33,9 +44,48 @@ vi.mock('./rcSupabase.types', () => ({
       select: () => ({
         order: async () => ({ data: personalList.rows, error: null }),
         eq: (column: string, value: string) => column === 'user_id' ? {
-          order: async () => {
-            personalList.filters(column, value);
-            return { data: personalList.rows.filter(row => row[column] === value), error: null };
+          order: (orderCol: string, opts?: { ascending?: boolean }) => {
+            const isAttempts = _table === 'rc_attempts';
+            const orders = isAttempts ? historyStore.attemptOrders : historyStore.sessionOrders;
+            orders.push({ column: orderCol, ascending: opts?.ascending });
+            if (isAttempts) {
+              historyStore.attemptFilters(column, value);
+            } else {
+              personalList.filters(column, value);
+              historyStore.sessionFilters(column, value);
+            }
+            const firstOrderResult = {
+              then: (onFulfilled?: (val: { data: Record<string, unknown>[]; error: null }) => unknown, onRejected?: (err: unknown) => unknown) =>
+                Promise.resolve({
+                  data: personalList.rows.filter(row => row[column] === value),
+                  error: null,
+                }).then(onFulfilled, onRejected),
+              order: (secondCol: string, secondOpts?: { ascending?: boolean }) => {
+                orders.push({ column: secondCol, ascending: secondOpts?.ascending });
+                return {
+                  range: async (from: number, to: number) => {
+                    const ranges = isAttempts ? historyStore.attemptRanges : historyStore.sessionRanges;
+                    ranges.push([from, to]);
+                    const sourceRows = isAttempts
+                      ? historyStore.attempts
+                      : (historyStore.sessions.length > 0 ? historyStore.sessions : personalList.rows);
+                    const filtered = historyStore.bypassEqFilter
+                      ? [...sourceRows]
+                      : sourceRows.filter(row => row[column] === value);
+                    filtered.sort((a, b) => {
+                      const av1 = String(a[orderCol] ?? '');
+                      const bv1 = String(b[orderCol] ?? '');
+                      if (av1 !== bv1) return av1.localeCompare(bv1);
+                      const av2 = String(a[secondCol] ?? '');
+                      const bv2 = String(b[secondCol] ?? '');
+                      return av2.localeCompare(bv2);
+                    });
+                    return { data: filtered.slice(from, to + 1), error: null };
+                  },
+                };
+              },
+            };
+            return firstOrderResult;
           },
         } : ({
           eq: () => ({ maybeSingle: async () => ({ data: {
@@ -57,7 +107,7 @@ vi.mock('./rcSupabase.types', () => ({
   },
 }));
 
-import { createSession, getSession, listSessions, recordAttempt, saveSessionClock, loadAnnotations, saveAnnotationsNow, setAttemptFlag } from './rcProgress';
+import { abandonSession, createSession, getQuestionHistory, getSession, listSessions, recordAttempt, saveSessionClock, loadAnnotations, saveAnnotationsNow, setAttemptFlag } from './rcProgress';
 
 beforeEach(() => {
   localStorage.clear();
@@ -68,6 +118,15 @@ beforeEach(() => {
   insert.mockClear();
   personalList.filters.mockClear();
   personalList.rows = [];
+  historyStore.sessions = [];
+  historyStore.attempts = [];
+  historyStore.bypassEqFilter = false;
+  historyStore.sessionFilters.mockClear();
+  historyStore.attemptFilters.mockClear();
+  historyStore.sessionOrders = [];
+  historyStore.attemptOrders = [];
+  historyStore.sessionRanges = [];
+  historyStore.attemptRanges = [];
   annotations.rows = [];
   annotations.error = null;
   annotations.filters.mockClear();
@@ -106,6 +165,22 @@ it('acknowledges an attempt already saved under the retry UUID without inserting
   expect(insert).not.toHaveBeenCalled();
 });
 
+it('refuses an answer retry belonging to another signed-in account before inserting', async () => {
+  await expect(recordAttempt({ id: attemptId, userId: 'another-owner', sessionId, questionId: 7, passageId: 3,
+    selected: 'C', isCorrect: true, timeMs: 1000, flagged: false, eliminations: [], isFirstAttempt: false,
+  })).rejects.toThrow('account changed');
+  expect(insert).not.toHaveBeenCalled();
+});
+
+it('refuses reanswers to a completed protected source section', async () => {
+  clock.status = 'completed';
+  clock.config = { ...clock.config, timedSectionSittingId: 'protected-sitting' };
+  await expect(recordAttempt({ id: attemptId, userId: owner, sessionId, questionId: 7, passageId: 3,
+    selected: 'C', isCorrect: true, timeMs: 1000, flagged: false, eliminations: [], isFirstAttempt: false,
+  })).rejects.toThrow('protected source section');
+  expect(insert).not.toHaveBeenCalled();
+});
+
 it('acknowledges clock and question position together while preserving older session settings', async () => {
   await saveSessionClock(sessionId, 19.9, 2);
   expect(clock.config).toEqual(expect.objectContaining({
@@ -115,6 +190,25 @@ it('acknowledges clock and question position together while preserving older ses
   const query = update.mock.results[0].value;
   expect(query.eq).toHaveBeenCalledWith('user_id', owner);
   expect(query.eq).toHaveBeenCalledWith('status', 'in_progress');
+});
+
+it('discards a drill in progress by marking it abandoned, scoped to the owner and the in-progress state', async () => {
+  await abandonSession(sessionId);
+  expect(update).toHaveBeenCalledTimes(1);
+  expect(update.mock.calls[0][0]).toEqual({ status: 'abandoned' });
+  const query = update.mock.results[0].value;
+  expect(query.eq).toHaveBeenCalledWith('id', sessionId);
+  expect(query.eq).toHaveBeenCalledWith('user_id', owner);
+  expect(query.eq).toHaveBeenCalledWith('status', 'in_progress');
+});
+
+it('refuses to discard a finished drill or a protected section and writes nothing', async () => {
+  clock.status = 'completed';
+  await expect(abandonSession(sessionId)).rejects.toThrow('Only a drill in progress can be discarded.');
+  clock.status = 'in_progress';
+  clock.config = { ...clock.config, timedSectionSittingId: 'sitting-1' };
+  await expect(abandonSession(sessionId)).rejects.toThrow('A protected section cannot be discarded here.');
+  expect(update).not.toHaveBeenCalled();
 });
 
 it('keeps the acknowledged question position during a later clock-only heartbeat', async () => {
@@ -442,3 +536,514 @@ it('keeps a remounted flag true/false/true intent recoverable after older replie
   expect(final.result.current.pendingFlags.get(7)).toBe(true);
   expect(final.result.current.statusForQuestion(7)).toBe('recovered');
 });
+
+it('ignores attempts from sessions with excluded_from_analytics = true', async () => {
+  historyStore.sessions = [
+    {
+      id: 'session-excluded',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: true,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+    {
+      id: 'session-included',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-02T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    {
+      id: 'att-excluded',
+      session_id: 'session-excluded',
+      user_id: owner,
+      question_id: 101,
+      passage_id: 10,
+      selected: 'A',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+    {
+      id: 'att-included',
+      session_id: 'session-included',
+      user_id: owner,
+      question_id: 102,
+      passage_id: 10,
+      selected: 'B',
+      is_correct: true,
+      is_first_attempt: true,
+      created_at: '2026-10-02T00:01:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  expect(history.has(101)).toBe(false);
+  expect(history.get(102)).toMatchObject({
+    questionId: 102,
+    attempts: 1,
+    answered: true,
+    firstTakeCorrect: true,
+    everIncorrect: false,
+    lastFirstTakeIncorrect: false,
+  });
+});
+
+it('treats skipped rows with selected null and is_correct null as unanswered exposure, never correct', async () => {
+  historyStore.sessions = [
+    {
+      id: 'session-completed',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    {
+      id: 'att-skipped',
+      session_id: 'session-completed',
+      user_id: owner,
+      question_id: 201,
+      passage_id: 20,
+      selected: null,
+      is_correct: null,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  const entry = history.get(201);
+  expect(entry).toBeDefined();
+  expect(entry).toMatchObject({
+    questionId: 201,
+    attempts: 1,
+    answered: false,
+    firstTakeCorrect: null,
+    unansweredOnFirstTake: true,
+    everCorrect: false,
+    everIncorrect: false,
+    incorrectOnLastTake: false,
+    lastFirstTakeIncorrect: false,
+    completedAnswered: false,
+    completedAnsweredSessionIds: [],
+  });
+});
+
+it('pages past 1,000 rows and orders deterministically by created_at asc then id asc across 2,500 rows with the same created_at', async () => {
+  historyStore.sessions = [
+    {
+      id: 'session-bulk',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+  ];
+  const sharedTimestamp = '2026-10-05T12:00:00Z';
+  const rows: Record<string, unknown>[] = [];
+  // Insert 2,500 rows with identical created_at. Question 9999 appears on the first and last id.
+  for (let i = 2499; i >= 0; i--) {
+    const id = `att-${String(i).padStart(4, '0')}`;
+    const isTrackedQuestion = i === 0 || i === 2499;
+    rows.push({
+      id,
+      session_id: 'session-bulk',
+      user_id: owner,
+      question_id: isTrackedQuestion ? 9999 : 1000 + i,
+      passage_id: 30,
+      selected: i === 0 ? 'B' : 'A',
+      is_correct: i === 0 ? true : false,
+      is_first_attempt: true,
+      created_at: sharedTimestamp,
+    });
+  }
+  historyStore.attempts = rows;
+
+  const history = await getQuestionHistory();
+  expect(historyStore.attemptRanges).toEqual([
+    [0, 999],
+    [1000, 1999],
+    [2000, 2999],
+  ]);
+  expect(historyStore.attemptOrders).toEqual([
+    { column: 'created_at', ascending: true },
+    { column: 'id', ascending: true },
+    { column: 'created_at', ascending: true },
+    { column: 'id', ascending: true },
+    { column: 'created_at', ascending: true },
+    { column: 'id', ascending: true },
+  ]);
+  // 2,498 distinct single-attempt questions + question 9999 (attempted twice) = 2,499 entries
+  expect(history.size).toBe(2499);
+  // For question 9999, id att-0000 was correct (first) and id att-2499 was incorrect (last)
+  const tracked = history.get(9999);
+  expect(tracked).toMatchObject({
+    questionId: 9999,
+    attempts: 2,
+    firstEverCorrect: true,
+    firstTakeCorrect: false,
+    everCorrect: true,
+    everIncorrect: true,
+    lastFirstTakeIncorrect: true,
+    incorrectOnLastTake: true,
+    incorrectCount: 1,
+  });
+});
+
+it('preserves first-take incorrect status when a missed question is fixed in blind review (is_first_attempt = false)', async () => {
+  historyStore.sessions = [
+    {
+      id: 'session-br',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    {
+      id: 'att-1-miss',
+      session_id: 'session-br',
+      user_id: owner,
+      question_id: 301,
+      passage_id: 40,
+      selected: 'D',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+    {
+      id: 'att-2-review-fix',
+      session_id: 'session-br',
+      user_id: owner,
+      question_id: 301,
+      passage_id: 40,
+      selected: 'A',
+      is_correct: true,
+      is_first_attempt: false,
+      created_at: '2026-10-01T00:10:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  expect(history.get(301)).toMatchObject({
+    questionId: 301,
+    attempts: 1,
+    answered: true,
+    firstEverCorrect: false,
+    firstTakeCorrect: false,
+    unansweredOnFirstTake: false,
+    everCorrect: false,
+    everIncorrect: true,
+    incorrectCount: 1,
+    lastFirstTakeIncorrect: true,
+    incorrectOnLastTake: true,
+    reviewCorrected: true,
+  });
+});
+
+it('counts partial in-progress sessions as exposure and accuracy without marking completedAnswered', async () => {
+  historyStore.sessions = [
+    {
+      id: 'session-in-progress',
+      user_id: owner,
+      status: 'in_progress',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    {
+      id: 'att-ip-1',
+      session_id: 'session-in-progress',
+      user_id: owner,
+      question_id: 401,
+      passage_id: 50,
+      selected: 'A',
+      is_correct: true,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  expect(history.get(401)).toMatchObject({
+    questionId: 401,
+    attempts: 1,
+    answered: true,
+    firstEverCorrect: true,
+    firstTakeCorrect: true,
+    everCorrect: true,
+    everIncorrect: false,
+    completedAnswered: false,
+    completedAnsweredSessionIds: [],
+  });
+});
+
+it('counts abandoned sessions as exposure only, never as accuracy or misses', async () => {
+  historyStore.sessions = [
+    {
+      id: 'session-abandoned',
+      user_id: owner,
+      status: 'abandoned',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    {
+      id: 'att-abandoned-wrong',
+      session_id: 'session-abandoned',
+      user_id: owner,
+      question_id: 501,
+      passage_id: 60,
+      selected: 'E',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+    {
+      id: 'att-abandoned-right',
+      session_id: 'session-abandoned',
+      user_id: owner,
+      question_id: 502,
+      passage_id: 60,
+      selected: 'A',
+      is_correct: true,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:02:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  expect(history.get(501)).toMatchObject({
+    questionId: 501,
+    attempts: 1,
+    answered: false,
+    firstEverCorrect: null,
+    firstTakeCorrect: null,
+    unansweredOnFirstTake: false,
+    everCorrect: false,
+    everIncorrect: false,
+    incorrectCount: 0,
+    lastFirstTakeIncorrect: false,
+    incorrectOnLastTake: false,
+    completedAnswered: false,
+    completedAnsweredSessionIds: [],
+  });
+  expect(history.get(502)).toMatchObject({
+    questionId: 502,
+    attempts: 1,
+    answered: false,
+    firstEverCorrect: null,
+    firstTakeCorrect: null,
+    unansweredOnFirstTake: false,
+    everCorrect: false,
+    everIncorrect: false,
+  });
+});
+
+it('never includes rows belonging to another user even when RLS returns foreign sessions or attempts', async () => {
+  historyStore.bypassEqFilter = true;
+  historyStore.sessions = [
+    {
+      id: 'owner-session',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+    {
+      id: 'foreign-session',
+      user_id: 'other-student-id',
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    {
+      id: 'owner-att',
+      session_id: 'owner-session',
+      user_id: owner,
+      question_id: 601,
+      passage_id: 70,
+      selected: 'A',
+      is_correct: true,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+    {
+      id: 'foreign-att-1',
+      session_id: 'foreign-session',
+      user_id: 'other-student-id',
+      question_id: 602,
+      passage_id: 70,
+      selected: 'B',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:02:00Z',
+    },
+    {
+      id: 'foreign-att-in-foreign-session',
+      session_id: 'foreign-session',
+      user_id: owner,
+      question_id: 603,
+      passage_id: 70,
+      selected: 'C',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:03:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  expect(historyStore.sessionFilters).toHaveBeenCalledWith('user_id', owner);
+  expect(historyStore.attemptFilters).toHaveBeenCalledWith('user_id', owner);
+  expect([...history.keys()]).toEqual([601]);
+  expect(history.has(602)).toBe(false);
+  expect(history.has(603)).toBe(false);
+});
+
+it('updates firstTakeCorrect to the latest graded first take across multiple drills while preserving firstEverCorrect', async () => {
+  historyStore.sessions = [
+    {
+      id: 'drill-1',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+    {
+      id: 'drill-2',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-02T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    // Question 701: Drill 1 wrong -> Drill 2 right
+    {
+      id: 'att-701-d1',
+      session_id: 'drill-1',
+      user_id: owner,
+      question_id: 701,
+      passage_id: 80,
+      selected: 'B',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+    {
+      id: 'att-701-d2',
+      session_id: 'drill-2',
+      user_id: owner,
+      question_id: 701,
+      passage_id: 80,
+      selected: 'A',
+      is_correct: true,
+      is_first_attempt: true,
+      created_at: '2026-10-02T00:01:00Z',
+    },
+    // Question 702: Drill 1 right -> Drill 2 wrong
+    {
+      id: 'att-702-d1',
+      session_id: 'drill-1',
+      user_id: owner,
+      question_id: 702,
+      passage_id: 80,
+      selected: 'A',
+      is_correct: true,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:02:00Z',
+    },
+    {
+      id: 'att-702-d2',
+      session_id: 'drill-2',
+      user_id: owner,
+      question_id: 702,
+      passage_id: 80,
+      selected: 'C',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-02T00:02:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  expect(history.get(701)).toMatchObject({
+    questionId: 701,
+    attempts: 2,
+    firstEverCorrect: false,
+    firstTakeCorrect: true,
+    everCorrect: true,
+    everIncorrect: true,
+    lastFirstTakeIncorrect: false,
+    incorrectOnLastTake: false,
+  });
+  expect(history.get(702)).toMatchObject({
+    questionId: 702,
+    attempts: 2,
+    firstEverCorrect: true,
+    firstTakeCorrect: false,
+    everCorrect: true,
+    everIncorrect: true,
+    lastFirstTakeIncorrect: true,
+    incorrectOnLastTake: true,
+  });
+});
+
+it('does not erase lastFirstTakeIncorrect when a previously missed question is skipped on a later drill', async () => {
+  historyStore.sessions = [
+    {
+      id: 'drill-miss',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-01T00:00:00Z',
+    },
+    {
+      id: 'drill-skip',
+      user_id: owner,
+      status: 'completed',
+      excluded_from_analytics: false,
+      started_at: '2026-10-02T00:00:00Z',
+    },
+  ];
+  historyStore.attempts = [
+    {
+      id: 'att-801-miss',
+      session_id: 'drill-miss',
+      user_id: owner,
+      question_id: 801,
+      passage_id: 90,
+      selected: 'D',
+      is_correct: false,
+      is_first_attempt: true,
+      created_at: '2026-10-01T00:01:00Z',
+    },
+    {
+      id: 'att-801-skip',
+      session_id: 'drill-skip',
+      user_id: owner,
+      question_id: 801,
+      passage_id: 90,
+      selected: null,
+      is_correct: null,
+      is_first_attempt: true,
+      created_at: '2026-10-02T00:01:00Z',
+    },
+  ];
+  const history = await getQuestionHistory();
+  expect(history.get(801)).toMatchObject({
+    questionId: 801,
+    attempts: 2,
+    answered: true,
+    firstEverCorrect: false,
+    firstTakeCorrect: false,
+    unansweredOnFirstTake: false,
+    everIncorrect: true,
+    lastFirstTakeIncorrect: true,
+    incorrectOnLastTake: true,
+  });
+});
+
+

@@ -794,18 +794,18 @@ export function Fundamentals() {
   </>;
 }
 
-export function GroupLessons({ id }: { id: string }) {
+export function GroupLessons({ id, integratedOverview = false }: { id: string; integratedOverview?: boolean }) {
   const group = GROUPS.find(item => item.id === (id === 'group-1' ? 'g1' : 'g2'))!;
   const first = id === 'group-1';
   return <>
     <Section title={first ? 'Find the sufficient idea' : 'Find what is required'}>
-      <p>{first
+      {!integratedOverview && <p>{first
         ? "A sufficient condition gives you enough information to prove the other condition. Group 1 helps you recognize that job in several kinds of sentence. For example, all registered guests covers the registered guests. It doesn't cover every guest who happens to be nearby. We'll check which people or situations each indicator includes."
-        : "A necessary condition is something the other condition requires. Group 2 helps us recognize what must be true when that other condition holds. The requirement belongs on the right because the left condition cannot hold without it. Having the requirement, though, leaves the left condition unknown unless something else settles it."}</p>
-      <div className="co-vocabulary">{group.words.map(word => <span key={word}>{word}</span>)}</div>
+        : "A necessary condition is something the other condition requires. Group 2 helps us recognize what must be true when that other condition holds. The requirement belongs on the right because the left condition cannot hold without it. Having the requirement, though, leaves the left condition unknown unless something else settles it."}</p>}
+      {!integratedOverview && <div className="co-vocabulary">{group.words.map(word => <span key={word}>{word}</span>)}</div>}
       <p>An <strong>indicator</strong> is a word or phrase that helps us recognize the rule. What it <strong>points to</strong> is the complete idea. For example, in “All registered guests receive a wristband,” all points to registered guests. Leaving out registered would make the rule apply to guests it never covered.</p>
       <p>Before looking for a word, ask what the rule says. Does it give a rule, cover every member of a group, promise a result, or name something required? Each can tell us that if one condition holds, another must hold. A sentence about what usually happens leaves room for exceptions; a conditional rule makes its consequence certain whenever its sufficient condition holds.</p>
-      <p>Read the arrow as <strong>must</strong>. The sufficient condition goes on the left. The necessary condition goes on the right. If the left condition is true, the right condition must be true too. The arrow doesn't say which event happened first, and it doesn't prove that one event caused the other.</p>
+      {!integratedOverview && <p>Read the arrow as <strong>must</strong>. The sufficient condition goes on the left. The necessary condition goes on the right. If the left condition is true, the right condition must be true too. The arrow doesn't say which event happened first, and it doesn't prove that one event caused the other.</p>}
     </Section>
     <Section title={first ? 'Different wording can make the same rule' : 'Read it as a requirement'}>
       {first ? <>

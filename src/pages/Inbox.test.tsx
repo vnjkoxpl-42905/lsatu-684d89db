@@ -46,8 +46,8 @@ vi.mock("@/hooks/useInbox", () => ({
 // The surface under test is which pane renders, not how either pane draws, so
 // both are stubbed down to a marker.
 vi.mock("@/components/inbox/ConversationView", () => ({
-  ConversationView: ({ onBack }: { onBack?: () => void }) => (
-    <div data-testid="conversation">{onBack ? "has-back" : "no-back"}</div>
+  ConversationView: ({ onBack, contextDraft }: { onBack?: () => void; contextDraft?: string | null }) => (
+    <div data-testid="conversation" data-context-draft={contextDraft ?? ''}>{onBack ? "has-back" : "no-back"}</div>
   ),
 }));
 
@@ -76,6 +76,16 @@ function renderInbox(entry: string) {
 }
 
 describe("Inbox", () => {
+  it('carries an account-scoped question draft into the student thread without sending', () => {
+    currentUserId = STUDENT_ID;
+    isAdmin = false;
+    render(<MemoryRouter initialEntries={[{ pathname: '/inbox', state: { questionContext: {
+      actorId: STUDENT_ID, text: 'Question about PT120 S1 Q2', returnTo: '/rc/drill?sessionId=session&review=1&q=2',
+    } } }]}><Routes><Route path="/inbox/*" element={<Inbox />} /></Routes></MemoryRouter>);
+    expect(screen.getByTestId('conversation').getAttribute('data-context-draft')).toBe('Question about PT120 S1 Q2');
+    expect(screen.getByRole('button', { name: 'Return to question' })).toBeInTheDocument();
+    expect(screen.getByText(/Nothing has been sent/)).toBeInTheDocument();
+  });
   it("gives a student the admin thread itself, with no list and no URL bounce", () => {
     currentUserId = STUDENT_ID;
     isAdmin = false;

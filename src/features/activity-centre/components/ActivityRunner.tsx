@@ -1188,6 +1188,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             </div>;
           })() : (
           <ActivityQuestionStack
+            activitySlug={world?.slug}
             showQuestionNumber={!isGeneral}
             diagramSeconds={timedGeneral ? generalPhase.seconds ?? undefined : undefined}
             paperDeadline={assignedPaper?.key === assignedPaperKey ? assignedPaper.deadline : undefined}

@@ -47,6 +47,7 @@ import {
   validateInboxAttachment,
 } from '@/lib/inboxAttachments';
 import './inbox-thread.css';
+import { appendQuestionContext, seedQuestionContext } from '@/lib/inboxQuestionContext';
 
 const QUICK_EMOJIS = [
   '😀', '😁', '😂', '🙂', '😊', '😍', '😎', '🤔',
@@ -76,6 +77,7 @@ interface MessageComposerProps {
   onConversationResolved?: (conversationId: string) => void;
   studentFacing?: boolean;
   seed?: ComposerSeed | null;
+  contextDraft?: string | null;
   pendingHandlers?: PendingHandlers;
   onTyping?: () => void;
   onTypingStop?: () => void;
@@ -120,6 +122,7 @@ export function MessageComposer({
   onConversationResolved,
   studentFacing = false,
   seed = null,
+  contextDraft = null,
   pendingHandlers,
   onTyping,
   onTypingStop,
@@ -184,6 +187,10 @@ export function MessageComposer({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seed?.nonce]);
+
+  useEffect(() => {
+    if (contextDraft) setBody(current => seedQuestionContext(current, contextDraft));
+  }, [contextDraft]);
 
   const addDriveFiles = (picks: DriveFileRow[]) => {
     setDriveAttachments((prev) => {
@@ -491,6 +498,10 @@ export function MessageComposer({
   return (
     <div className={cn('msgs-scope shrink-0 bg-transparent', isAdmin ? 'px-3 py-3 sm:px-5' : 'px-4 py-4 sm:px-6')}>
       <div className={cn('mx-auto space-y-3', isAdmin ? 'max-w-5xl' : 'max-w-3xl')}>
+      {contextDraft && !body.includes(contextDraft) && <div className="rounded border p-3 text-sm" role="status">
+        Your existing draft has been kept. Add the question details when you are ready.
+        <Button type="button" variant="outline" size="sm" className="ml-2" onClick={() => setBody(current => appendQuestionContext(current, contextDraft))}>Insert question context</Button>
+      </div>}
       {file && (
         <div className="flex flex-col gap-0 overflow-hidden rounded-2xl border border-[var(--msg-line)] bg-[var(--msg-panel)] shadow-[var(--msg-shadow)]">
           <div className="flex items-center gap-3 px-4 py-2.5 text-sm">

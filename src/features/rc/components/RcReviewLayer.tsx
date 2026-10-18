@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { RcExplanationBlocks } from './RcExplanationBlocks';
 import type { RcLetter, RcQuestion } from '../lib/rcTypes';
 
@@ -15,12 +15,27 @@ import type { RcLetter, RcQuestion } from '../lib/rcTypes';
 interface Props {
   question: RcQuestion;
   firstPick: RcLetter | null;
-  /** Set only when the student answered again in review and changed their mind. */
+  /** An acknowledged second answer, including when the student kept their choice. */
   secondPick?: RcLetter | null;
+  sourceLabel?: string;
+  actorId?: string | null;
 }
 
-export function RcReviewLayer({ question, firstPick, secondPick }: Props) {
+export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, actorId }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const askJoshua = () => {
+    const params = new URLSearchParams(location.search);
+    const sessionId = params.get('sessionId');
+    if (!actorId || !sessionId) { navigate('/inbox'); return; }
+    const returnTo = `/rc/drill?${new URLSearchParams({ sessionId, review: '1', q: String(question.questionId) })}`;
+    const text = `I have a question about ${sourceLabel ?? `RC question ${question.position}`}.
+\nSource session: ${sessionId}\nReturn to this question: ${returnTo}
+\nQuestion: ${question.prompt?.slice(0, 2200) || 'The question text is not available.'}
+\nMy first answer: ${firstPick ?? 'skipped'}${secondPick ? `\nMy review answer: ${secondPick}` : ''}
+\nMy question:`;
+    navigate('/inbox', { state: { questionContext: { actorId, text: text.slice(0, 4000), returnTo } } });
+  };
   const blocks = question.explanationBlocks ?? [];
   const latestPick = secondPick ?? firstPick;
   const gotItRight = latestPick === question.correctAnswer;
@@ -38,10 +53,10 @@ export function RcReviewLayer({ question, firstPick, secondPick }: Props) {
           Credited answer {question.correctAnswer}
           {latestPick ? ` · you chose ${latestPick}` : ' · you skipped this one'}
         </span>
-        {secondPick && firstPick && secondPick !== firstPick && (
+        {secondPick && (
           <span className="rc-verdict-detail">
-            <span className="rc-tag-chip rc-tag-outline">1st {firstPick}</span>
-            <span className="rc-tag-chip rc-tag-outline">2nd {secondPick}</span>
+            <span className="rc-tag-chip rc-tag-outline">First answer {firstPick ?? 'skipped'}</span>
+            <span className="rc-tag-chip rc-tag-outline">Review answer {secondPick}</span>
           </span>
         )}
       </div>
@@ -55,7 +70,7 @@ export function RcReviewLayer({ question, firstPick, secondPick }: Props) {
       ) : (
         <div className="rc-tutor-fallback">
           <p>No written walkthrough for this one yet. Ask the tutor and we'll work it together.</p>
-          <button type="button" className="rc-button" onClick={() => navigate('/inbox')}>
+          <button type="button" className="rc-button" onClick={askJoshua}>
             Ask Joshua about this question
           </button>
         </div>

@@ -114,6 +114,13 @@ function stim(n: number, over: Partial<SectionStimulusGrade> = {}): SectionStimu
 
 /** Twenty-two, shaped like a real run rather than twenty-two of the same one. */
 function stimuli(kind: string): SectionStimulusGrade[] {
+  if (kind === "meaning") {
+    return [stim(1, { percent: 64, band: "thin", meaning_percent: 100,
+      meaning_carried: 10, meaning_total: 10,
+      missed: ["The office walls were blue."],
+      incidental_misses: ["The office walls were blue."],
+      bigMisses: [], nextTime: "", readReason: "", lines: undefined })];
+  }
   if (kind === "clean")
     return Array.from({ length: 22 }, (_, i) =>
       stim(i + 1, {
@@ -176,6 +183,7 @@ const grade: SectionGrade = {
     within_time: state !== "clean",
     within_goal: state === "clean",
     mean_coverage: state === "clean" ? 96 : 82,
+    ...(state === "meaning" ? { mean_coverage: 64, mean_meaning: 100 } : {}),
     stimuli_graded: list.length,
     stimuli_in_section: 22,
     // A clean run has to look clean, or the harness cannot show what one looks
@@ -192,6 +200,11 @@ const grade: SectionGrade = {
     dead_air_threshold_seconds: 4,
     decoy_failures: 0,
     clock: {},
+    ...(state === "meaning" ? {
+      stimuli_in_section: 1, reciting_count: 0, listing_count: 0,
+      uncoloured_count: 0, read_given_count: 1, read_matched_count: 1,
+      no_read_count: 0, chunks_read_aloud: 0, worst_dead_air_seconds: 0.4,
+    } : {}),
   },
 };
 

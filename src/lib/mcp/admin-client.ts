@@ -46,7 +46,7 @@ export function toolError(error: unknown) {
     text = "LSAT U write failed";
   }
   return {
-    content: [{ type: "text" as const, text }],
+    content: [Object.freeze({ type: "text", text })],
     isError: true,
   };
 }

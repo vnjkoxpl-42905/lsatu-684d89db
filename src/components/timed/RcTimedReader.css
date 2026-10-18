@@ -1,0 +1,3 @@
+.rc-timed-reader[data-pane-layout="split"] .rc-exam > .grid {
+  grid-template-columns: minmax(0, 53fr) minmax(0, 47fr);
+}

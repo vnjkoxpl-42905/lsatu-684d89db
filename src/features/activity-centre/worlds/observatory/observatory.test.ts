@@ -98,7 +98,7 @@ describe("anchoring the figures", () => {
    * The property the whole world rests on. Every figure is drawn between
    * anchors, so an indicator with no anchor is a figure with no position.
    */
-  it("anchors all 109 indicator words to real words in their own statement", () => {
+  it("anchors every indicator to real words in its own statement", () => {
     let total = 0;
     for (const s of signals) {
       for (const r of s.relations) {
@@ -291,4 +291,82 @@ describe("every credited answer reads clean", () => {
       expect(r.quotedIndicators, `item ${s.order}`).toBe(true);
     }
   });
+});
+
+
+describe("split quotations and local pair vocabulary", () => {
+  const item = (order: number) => drill.items.find((i) => i.order === order)!;
+  const pairs = (order: number, comparison: string) => item(order).answer_key!.relationships.map((r) =>
+    `${r.type}, "${r.type === "comparative" ? comparison : r.indicators[0]}"`).join("; ");
+
+  it.each([
+    [11, "less time than"], [11, "less ... than"], [25, "stronger ... than"],
+    [25, "stronger on the eastern array than"], [34, "harder stone than"],
+    [39, "closer ... than"], [39, "closer to ... than"], [39, "closer to ... than to"],
+    [39, "closer to the C3 range than to"], [40, "thicker oxide layer than"],
+    [43, "faster at ambient temperature than"], [48, "more regionally appropriate than"], [48, "more ... than"],
+  ])("Q%s confirms the valid split or exact span %s in both paths", (order, quote) => {
+    const answer = pairs(order, quote);
+    expect(matchesCredited(item(order), answer)).toBe(true);
+    const reading = readAnswer(byOrder(order), answer);
+    expect(reading.drawn).toContain("comparative");
+    expect(reading.missed).toEqual([]);
+    // The stage must credit a comparison even when other pairs remain missing.
+    expect(readAnswer(byOrder(order), `comparison, "${quote}"`).drawn).toEqual(["comparative"]);
+  });
+
+  it.each([
+    [11, "less"], [25, "stronger"], [25, "than ... stronger"],
+    [25, "stronger invented words than"], [25, "stronger on the western than"],
+    [39, "closer to"], [39, "than to ... closer to"], [40, "thicker oxide than"],
+    [43, "faster at an invented temperature than"], [48, "more"], [48, "than ... more"],
+  ])("Q%s refers missing/reversed/invented span %s to Coach", (order, quote) => {
+    expect(matchesCredited(item(order), pairs(order, quote))).toBe(false);
+    expect(readAnswer(byOrder(order), `comparison, "${quote}"`).drawn).toEqual([]);
+  });
+
+  it("binds comma-separated synonyms to their own indicator", () => {
+    for (const condition of ["condition", "conditions", "requirement", "requirements", "necessary condition",
+      "sufficient conditions", "if-then", "if/then rule", "conditional", "conditionally", "conditionals"]) {
+      for (const cause of ["causal", "cause", "causes", "caused", "cause and effect", "causation", "causally", "causality"]) {
+        const answer = `${condition}, only if, ${cause}, because`;
+        expect(matchesCredited(item(27), answer), answer).toBe(true);
+        expect(readAnswer(byOrder(27), answer).missed, answer).toEqual([]);
+        expect(matchesCredited(item(27), `${condition}, because, ${cause}, only if`)).toBe(false);
+      }
+    }
+    for (const comparison of ["comparative", "comparatively", "comparison", "comparisons", "compare", "compares", "comparing", "compared"])
+      expect(matchesCredited(item(29), `condition, only when, ${comparison}, lower than, cause, expands`)).toBe(true);
+  });
+
+  it("rejects extra types and contradictory duplicate pairs even with a valid wider span", () => {
+    const answer = pairs(40, "thicker oxide layer than");
+    expect(matchesCredited(item(40), `${answer}; comparison, provided`)).toBe(false);
+    expect(readAnswer(byOrder(40), `${answer}; comparison, provided`).drawn).not.toContain("comparative");
+    expect(matchesCredited(item(25), 'comparison, "stronger on the eastern array than"; conditions, on')).toBe(false);
+  });
+});
+
+
+describe("split endpoints quoted apart", () => {
+  it.each([
+    [11, '"less" and "than"'], [25, '"stronger", "than"'], [25, '"stronger" and "than"'],
+    [39, '"closer to" and "than to"'], [40, '"thicker", "than"'],
+    [43, '"faster" and "than"'], [48, '"more" and "than"'], [48, '"more", "than"'],
+  ])("Q%s accepts only the ordered keyed endpoints %s", (order, quotation) => {
+    const item = drill.items.find((i) => i.order === order)!;
+    const answer = item.answer_key!.relationships.map((r) =>
+      `${r.type}, ${r.type === "comparative" ? quotation : `"${r.indicators[0]}"`}`).join("; ");
+    expect(matchesCredited(item, answer)).toBe(true);
+    expect(readAnswer(parseSignal(item)!, `comparison, ${quotation}`).drawn).toEqual(["comparative"]);
+  });
+  it.each(['"than" and "more"', '"more", "because", "than"', '"more" and arbitrary prose and "than"',
+    '"more" and "than" and "because"', '"more" and "than" is not the indicator'])(
+    "refers non-keyed or reversed endpoint sequences to Coach: %s", (quotation) => {
+      const item = drill.items.find((i) => i.order === 48)!;
+      const answer = `conditional, only if; comparative, ${quotation}; causal, produces`;
+      expect(matchesCredited(item, answer)).toBe(false);
+      expect(readAnswer(parseSignal(item)!, answer).drawn).not.toContain("comparative");
+    },
+  );
 });

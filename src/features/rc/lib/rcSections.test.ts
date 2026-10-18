@@ -1,14 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
+  buildRcSectionFreshness,
   buildRcSections,
+  fetchRcSectionFreshness,
   formatRcSectionClock,
   RC_FULL_SECTION_MIN_QUESTIONS,
+  rcProtectedPaceForTiming,
   rcSectionHref,
   rcSectionPreptests,
   rcSectionsForPreptest,
   rcSectionTotalSeconds,
   type RcIndexPassageWithPt,
 } from './rcSections';
+import type { RcDrillSession, RcQuestionHistory } from './rcTypes';
+import * as rcProgress from '../api/rcProgress';
 
 function passage(
   preptest: number,
@@ -16,11 +21,12 @@ function passage(
   setNumber: number,
   questionCount: number,
 ): RcIndexPassageWithPt {
+  const passageId = preptest * 100 + section * 10 + setNumber;
   return {
     preptest,
     section,
     setNumber,
-    passageId: preptest * 100 + section * 10 + setNumber,
+    passageId,
     title: `PT${preptest} S${section} P${setNumber}`,
     topic: 'Science',
     format: 'Standard (Non-Comparative)',
@@ -28,7 +34,7 @@ function passage(
     difficulty: 3,
     questionCount,
     explainedCount: questionCount,
-    questionIds: [],
+    questionIds: Array.from({ length: questionCount }, (_, idx) => passageId * 10 + idx + 1),
     firstWords: '',
   } as RcIndexPassageWithPt;
 }
@@ -129,6 +135,15 @@ describe('section timing', () => {
     expect(rcSectionTotalSeconds(section, 'untimed')).toBeNull();
     expect(formatRcSectionClock(section, 'untimed')).toBeNull();
   });
+
+  it('maps timing selections to protected paces only when exact', () => {
+    expect(rcProtectedPaceForTiming({ mode: 'timed', percent: 100 })).toBe('standard');
+    expect(rcProtectedPaceForTiming({ mode: 'timed', percent: 150 })).toBe('time-and-a-half');
+    expect(rcProtectedPaceForTiming({ mode: 'timed', percent: 200 })).toBe('double-time');
+    expect(rcProtectedPaceForTiming({ mode: 'unlimited' })).toBe('untimed');
+    expect(rcProtectedPaceForTiming({ mode: 'timed', percent: 125 })).toBeNull();
+    expect(rcProtectedPaceForTiming({ mode: 'timed', percent: 94 })).toBeNull();
+  });
 });
 
 describe('rcSectionHref', () => {
@@ -155,3 +170,125 @@ describe('rcSectionHref', () => {
     expect(href).not.toContain('secondsPerPassage');
   });
 });
+
+describe('buildRcSectionFreshness and fetchRcSectionFreshness', () => {
+  const passages = [
+    ...fullSection(101, 1),
+    ...fullSection(102, 1),
+    ...fullSection(103, 1),
+    ...fullSection(104, 1),
+  ];
+  const sections = buildRcSections(passages);
+
+  it('classifies a fresh section, a partial section, an excluded session, and a timed-sitting session', async () => {
+    // PT 101 S1: untouched -> isFresh: true
+    // PT 102 S1: one question attempted on passage 10211 -> partial, isFresh: false
+    // PT 103 S1: session excludedFromAnalytics = true (and excluded from getQuestionHistory) -> isFresh: true
+    // PT 104 S1: timed-sitting session present even with zero question attempts -> isFresh: false
+    const partialQuestionId = passages.find((p) => p.passageId === 10211)!.questionIds[0];
+    const history: RcQuestionHistory = new Map([
+      [
+        partialQuestionId,
+        {
+          questionId: partialQuestionId,
+          attempts: 1,
+          answered: true,
+          firstEverCorrect: true,
+          firstTakeCorrect: true,
+          unansweredOnFirstTake: false,
+          everCorrect: true,
+          everIncorrect: false,
+          incorrectOnLastTake: false,
+          lastFirstTakeIncorrect: false,
+          incorrectCount: 0,
+          reviewCorrected: false,
+          completedAnswered: false,
+          completedAnsweredSessionIds: [],
+          lastSeenAt: '2026-10-16T12:00:00Z',
+        },
+      ],
+    ]);
+
+    const sessions: RcDrillSession[] = [
+      {
+        id: 'excluded-sitting',
+        userId: 'user-1',
+        config: {
+          source: 'manual',
+          reveal: 'end_of_set',
+          timing: { mode: 'per_passage_budget', secondsPerPassage: 525 },
+          timedSectionSittingId: 'sitting-excluded',
+        },
+        passageIds: [10311, 10312, 10313, 10314],
+        status: 'in_progress',
+        excludedFromAnalytics: true,
+        startedAt: '2026-10-16T10:00:00Z',
+        completedAt: null,
+      },
+      {
+        id: 'active-sitting',
+        userId: 'user-1',
+        config: {
+          source: 'manual',
+          reveal: 'end_of_set',
+          timing: { mode: 'per_passage_budget', secondsPerPassage: 525 },
+          timedSectionSittingId: 'sitting-active',
+        },
+        passageIds: [10411, 10412, 10413, 10414],
+        status: 'in_progress',
+        excludedFromAnalytics: false,
+        startedAt: '2026-10-16T11:00:00Z',
+        completedAt: null,
+      },
+    ];
+
+    const map = buildRcSectionFreshness(sections, passages, history, sessions);
+    expect(map.get('101-1')).toMatchObject({
+      pt: 101,
+      section: 1,
+      total: 28,
+      unseen: 28,
+      isFresh: true,
+    });
+    expect(map.get('102-1')).toMatchObject({
+      pt: 102,
+      section: 1,
+      total: 28,
+      unseen: 27,
+      isFresh: false,
+    });
+    expect(map.get('103-1')).toMatchObject({
+      pt: 103,
+      section: 1,
+      total: 28,
+      unseen: 28,
+      isFresh: true,
+    });
+    expect(map.get('104-1')).toMatchObject({
+      pt: 104,
+      section: 1,
+      total: 28,
+      unseen: 0,
+      isFresh: false,
+    });
+
+    const historySpy = vi.spyOn(rcProgress, 'getQuestionHistory').mockResolvedValueOnce(history);
+    const sessionsSpy = vi.spyOn(rcProgress, 'listSessions').mockResolvedValueOnce(sessions);
+    const fetched = await fetchRcSectionFreshness(sections, passages);
+    expect(fetched.get('101-1')?.isFresh).toBe(true);
+    expect(fetched.get('102-1')?.isFresh).toBe(false);
+    expect(fetched.get('103-1')?.isFresh).toBe(true);
+    expect(fetched.get('104-1')?.isFresh).toBe(false);
+    historySpy.mockRestore();
+    sessionsSpy.mockRestore();
+  });
+
+  it('rejects instead of reporting every section fresh when the sitting lookup fails', async () => {
+    const historySpy = vi.spyOn(rcProgress, 'getQuestionHistory').mockResolvedValueOnce(new Map());
+    const sessionsSpy = vi.spyOn(rcProgress, 'listSessions').mockRejectedValueOnce(new Error('sessions unavailable'));
+    await expect(fetchRcSectionFreshness([], [])).rejects.toThrow('sessions unavailable');
+    historySpy.mockRestore();
+    sessionsSpy.mockRestore();
+  });
+});
+

@@ -7,10 +7,10 @@ import AcademyMainhub from "./AcademyMainhub";
 vi.mock("@/lib/drillRunLedger", () => ({ listStandaloneDrillRuns: vi.fn(async () => []) }));
 vi.mock("@/lib/drillResumeSession", async (importOriginal) => ({ ...await importOriginal<typeof import("@/lib/drillResumeSession")>(), loadDrillResumeSession: vi.fn(async () => null) }));
 vi.mock("@/features/rc/api/rcProgress", () => ({
-  listSessions: vi.fn(async () => []), getSessionAttempts: vi.fn(async () => []),
+  listSessions: vi.fn(async () => []), getSessionAttempts: vi.fn(async () => []), abandonSession: vi.fn(async () => undefined),
 }));
 vi.mock("@/lib/standaloneDrillHistory", () => ({ buildStandaloneDrillHistory: () => [
-  { key: "rc:active", section: "rc", title: "RC active sitting", detail: "2 answers saved", date: "2026-10-15", status: "in_progress", continueTo: "/rc/drill?sessionId=active" },
+  { key: "rc:active", section: "rc", title: "RC active sitting", detail: "2 answers saved", date: "2026-10-15", status: "in_progress", continueTo: "/rc/drill?sessionId=active", discardId: "active" },
   { key: "rc:done", section: "rc", title: "RC finished sitting", detail: "7 answers saved", date: "2026-10-14", status: "completed", resultsTo: "/rc/results/done", reviewTo: "/rc/drill?sessionId=done&review=1" },
   { key: "lr:active", section: "lr", title: "LR active sitting", detail: "1 answer saved", date: "2026-10-15", status: "in_progress", continueTo: "/drill?run=active" },
 ] }));
@@ -158,9 +158,13 @@ vi.mock("@/components/ui/splite", () => ({
 vi.mock("@/features/rc/components/RcHubSurface", () => ({
   RcHubSurface: ({ onCancel }: { onCancel?: () => void }) => (
     <div role="region" aria-label="RC drill builder">
-      <button type="button" onClick={onCancel}>
-        Cancel RC
-      </button>
+      {onCancel ? (
+        <button type="button" onClick={onCancel}>
+          Cancel RC
+        </button>
+      ) : (
+        <button type="button">Reset filters</button>
+      )}
     </div>
   ),
 }));
@@ -349,7 +353,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByRole("region", { name: "RC drill builder" })).toBeInTheDocument();
   });
 
-  it("keeps legacy builder links working, and Cancel opens RC history", async () => {
+  it("keeps legacy builder links working, shows Reset filters on Create, and keeps In progress reachable through its tab", async () => {
     renderHub("/classroom/drill?section=rc&stage=type-drill&passages=10%2C11&timing=untimed");
     expect(screen.getByRole("region", { name: "RC drill builder" })).toBeInTheDocument();
     expect(url().get("stage")).toBeNull();
@@ -357,8 +361,10 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("passages")).toBe("10,11");
     expect(url().get("timing")).toBe("untimed");
     expect(screen.queryByRole("region", { name: "Assigned work" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Reset filters" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Cancel RC" })).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Cancel RC" }));
+    fireEvent.click(screen.getByRole("button", { name: "In progress" }));
     expect(url().get("stage")).toBeNull();
     expect(url().get("section")).toBe("rc");
     expect(url().get("view")).toBe("in-progress");
@@ -385,6 +391,24 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("section")).toBe("rc");
     fireEvent.keyDown(rcSwitch(), { key: "ArrowLeft" });
     expect(url().get("section")).toBe("lr");
+  });
+
+  it("discards an RC drill in progress only after a confirmation, and keeps LR cards without the button", async () => {
+    const progress = await import("@/features/rc/api/rcProgress");
+    vi.mocked(progress.abandonSession).mockClear();
+    renderHub("/practice/drills?section=rc&view=in-progress");
+    await screen.findByText("RC active sitting");
+    fireEvent.click(screen.getByRole("button", { name: "Discard" }));
+    expect(progress.abandonSession).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Keep it" }));
+    expect(screen.getByRole("button", { name: "Discard" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Discard" }));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm discard" }));
+    await vi.waitFor(() => expect(progress.abandonSession).toHaveBeenCalledWith("active"));
+    expect(progress.abandonSession).toHaveBeenCalledTimes(1);
+    fireEvent.click(lrSwitch());
+    await screen.findByText("LR active sitting");
+    expect(screen.queryByRole("button", { name: "Discard" })).not.toBeInTheDocument();
   });
 
   it("isolates RC history by status and keeps that view when switching to LR", async () => {

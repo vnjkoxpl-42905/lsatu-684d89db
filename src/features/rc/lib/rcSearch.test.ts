@@ -2,6 +2,9 @@ import { describe, expect, it } from 'vitest';
 import {
   DEFAULT_RC_SEARCH_FILTERS,
   buildRcSearchSnippet,
+  isReservedPreptest,
+  parseRcSearchAddress,
+  rcSearchPreviewHref,
   questionFiltersActive,
   runRcSearch,
   type RcSearchFilters,
@@ -70,15 +73,95 @@ const Q12 = question({
 const Q21 = question({ questionId: 21, passageId: 2, preptest: 150, prompt: null });
 
 describe('runRcSearch', () => {
-  it('returns everything when no filters or query are set', () => {
+  it('can page past two hundred results without truncating or repeating the first page', () => {
+    const passages = Array.from({ length: 205 }, (_, index) => passage({ passageId: index + 1, questionIds: [index + 1] }));
+    const questions = passages.map(p => question({ questionId: p.passageId, passageId: p.passageId }));
+    const result = runRcSearch({ passages, questions, query: '', filters: filters({}), limit: 40, passageOffset: 200, questionOffset: 200 });
+    expect(result.totalPassages).toBe(205);
+    expect(result.totalQuestions).toBe(205);
+    expect(result.passages.map(p => p.passage.passageId)).toEqual([201, 202, 203, 204, 205]);
+    expect(result.questions.map(q => q.question.questionId)).toEqual([201, 202, 203, 204, 205]);
+  });
+  it('returns everything in the default range when no filters or query are set', () => {
     const result = runRcSearch({
       passages: [P1, P2],
       questions: [Q11, Q12, Q21],
       query: '',
       filters: filters({}),
     });
+    // P2 is PT150, held back by the default 101-148 window, and search says so.
+    expect(result.totalPassages).toBe(1);
+    expect(result.totalQuestions).toBe(2);
+    expect(result.hiddenReservedPassages).toBe(1);
+  });
+
+  it('shows held-back PrepTests once the range is widened', () => {
+    const result = runRcSearch({
+      passages: [P1, P2],
+      questions: [Q11, Q12, Q21],
+      query: '',
+      filters: filters({ preptestMax: 159 }),
+    });
     expect(result.totalPassages).toBe(2);
-    expect(result.totalQuestions).toBe(3);
+    expect(result.hiddenReservedPassages).toBe(0);
+  });
+
+  it('finds a held-back PrepTest by exact address without widening the range', () => {
+    const result = runRcSearch({
+      passages: [P1, P2],
+      questions: [Q11, Q12, Q21],
+      query: 'PT150 S1',
+      filters: filters({}),
+    });
+    expect(result.passages.map((r) => r.passage.passageId)).toEqual([2]);
+    expect(result.hiddenReservedPassages).toBe(0);
+  });
+
+  it('opens the preview on the addressed question', () => {
+    const result = runRcSearch({
+      passages: [P1],
+      questions: [Q11, Q12],
+      query: 'PT101 S1 Q2',
+      filters: filters({}),
+    });
+    expect(result.passages).toHaveLength(1);
+    expect(result.passages[0].previewQuestionId).toBe(12);
+    expect(result.passages[0].matchedQuestionCount).toBe(1);
+  });
+
+  it('treats a bare number as text, not as an address', () => {
+    expect(parseRcSearchAddress('150')).toBeNull();
+    expect(parseRcSearchAddress('PT150 S1')).toEqual({ pt: 150, section: 1 });
+    expect(parseRcSearchAddress('PT90 S1')).toBeNull();
+  });
+
+  it('matches through soft hyphens without changing the stored text', () => {
+    const soft = question({ questionId: 31, passageId: 1, prompt: 'Which co­operative approach is described?' });
+    const result = runRcSearch({
+      passages: [P1],
+      questions: [soft],
+      query: 'cooperative',
+      filters: filters({}),
+    });
+    expect(result.totalQuestions).toBe(1);
+    expect(soft.prompt).toContain('­');
+  });
+
+  it('points a passage with no filter match at its first question for the preview', () => {
+    const result = runRcSearch({
+      passages: [P1],
+      questions: [Q11, Q12],
+      query: '',
+      filters: filters({}),
+    });
+    expect(result.passages[0].previewQuestionId).toBe(11);
+  });
+
+  it('builds a read-only preview link and flags reserved PrepTests', () => {
+    expect(rcSearchPreviewHref(2, 21)).toBe('/rc/preview?passage=2&q=21&returnTo=%2Frc%2Fsearch');
+    expect(isReservedPreptest(148)).toBe(false);
+    expect(isReservedPreptest(149)).toBe(true);
+    expect(isReservedPreptest(159)).toBe(true);
   });
 
   it('filters passages by topic and PrepTest range', () => {
@@ -86,7 +169,7 @@ describe('runRcSearch', () => {
       passages: [P1, P2],
       questions: [Q11, Q12, Q21],
       query: '',
-      filters: filters({ topics: ['Law'] }),
+      filters: filters({ topics: ['Law'], preptestMax: 159 }),
     });
     expect(byTopic.passages.map((r) => r.passage.passageId)).toEqual([2]);
 
@@ -94,7 +177,7 @@ describe('runRcSearch', () => {
       passages: [P1, P2],
       questions: [Q11, Q12, Q21],
       query: '',
-      filters: filters({ preptestMin: 120 }),
+      filters: filters({ preptestMin: 120, preptestMax: 159 }),
     });
     expect(byRange.passages.map((r) => r.passage.passageId)).toEqual([2]);
   });
@@ -126,7 +209,7 @@ describe('runRcSearch', () => {
       passages: [P1, P2],
       questions: [Q11, Q12, Q21],
       query: 'comparative law',
-      filters: filters({}),
+      filters: filters({ preptestMax: 159 }),
     });
     expect(result.passages.map((r) => r.passage.passageId)).toEqual([2]);
     expect(result.passages[0].titleMatched).toBe(true);

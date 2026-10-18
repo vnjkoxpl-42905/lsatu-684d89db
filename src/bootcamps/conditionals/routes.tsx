@@ -108,7 +108,7 @@ export function ConditionalBootcampRoutes({ userId, isAdmin = false, assignments
   const active = params.has('assignment') ? assignments.find(item => item.id === params.get('assignment')) : matching ?? assignments[0];
   const selection = isAdmin ? pathSelection(params, /\/(practice|simulator|hard-sentences)$/.test(location.pathname)) : active ? assignmentSelection(active) : { scope: 'course' as const, allowedUnits: [], difficulty: 'beginner' as const };
   return <Context.Provider value={course}><WorkContext.Provider value={{ selection, assignments, active, isAdmin, userId }}><Routes><Route element={<Shell />}>
-    <Route index element={<LearningPath />} />
+    <Route index element={<CourseLanding />} />
     <Route path="lessons" element={<OpeningCourseRoute view="lessons"/>} />
     <Route path="opening/:stepId" element={<OpeningCourseRoute/>} />
     <Route path="opening-practice" element={<OpeningCourseRoute view="practice"/>} />
@@ -183,7 +183,9 @@ function OpeningCourseRoute({ view: surface }: { view?: string }) {
   const { progress, update } = useCourse();
   const saveStep = useCallback((stepId: string, patch: Parameters<typeof recordCourseStep>[2]) => update(prior => recordCourseStep(prior, stepId, patch)), [update]);
   const progressStore = useMemo(() => ({ steps: progress?.course ?? {}, save: saveStep }), [progress?.course, saveStep]);
-  const steps = OPENING_COURSE_PATH.filter(step => isAdmin || !!active && openingStepAccessUnits(step).some(unitId => conditionalAssignmentAllowsAction(active, {
+  const requestedStep = openingCourseStep(stepId);
+  const candidates = requestedStep && !OPENING_COURSE_PATH.some(step => step.id === requestedStep.id) ? [...OPENING_COURSE_PATH, requestedStep] : OPENING_COURSE_PATH;
+  const steps = candidates.filter(step => isAdmin || !!active && openingStepAccessUnits(step).some(unitId => conditionalAssignmentAllowsAction(active, {
     unitId, action: step.type === 'note' ? 'lesson' : 'guided', difficulty: active.difficulty ?? getCurriculumDifficulty(unitId),
   })));
   const units = selectedUnits(selection).filter(unit => CONDITIONAL_OPENING_UNIT_IDS.some(id => id === unit.id));
@@ -195,7 +197,7 @@ function Shell() {
   const { status, error, retry, progress } = useCourse();
   const location = useLocation();
   const route = location.pathname.slice(BASE.length).replace(/\/$/, '');
-  const courseView = route.startsWith('/opening/') ? route.slice('/opening/'.length) : route === '' ? 'overview' : ['/opening-practice', '/opening-labs', '/practice', '/simulator', '/hard-sentences', '/flashcards'].includes(route) ? 'practice' : route === '/opening-tools' ? 'tools' : ['/review', '/diagnostics'].includes(route) ? 'review' : route === '/journal' ? 'journal' : ['/reference', '/indicators'].includes(route) ? 'reference' : route === '/settings' ? 'settings' : 'lessons';
+  const courseView = route.startsWith('/opening/') ? route.slice('/opening/'.length) : route === '' ? 'lessons' : ['/opening-practice', '/opening-labs', '/practice', '/simulator', '/hard-sentences', '/flashcards'].includes(route) ? 'practice' : route === '/opening-tools' ? 'tools' : ['/review', '/diagnostics'].includes(route) ? 'review' : route === '/journal' ? 'journal' : ['/reference', '/indicators'].includes(route) ? 'reference' : route === '/settings' ? 'settings' : 'lessons';
   const workspaceLinks = { overview: `${BASE}${location.search}`, review: `${BASE}/review${location.search}`, journal: `${BASE}/journal${location.search}`, reference: `${BASE}/reference${location.search}` };
   const openingSurface = /^\/(?:lessons\/?|opening\/[^/]+\/?|opening-(?:practice|labs|tools)\/?)$/.test(location.pathname.slice(BASE.length));
   const saveMessages = {
@@ -207,6 +209,18 @@ function Shell() {
   };
   return <div className="cb-shell oc-workspace"><OpeningCourseNavigation view={courseView} url={courseUrl(location.search)} workspaceLinks={workspaceLinks}/>
     <main className="cb-main" id="conditional-main"><header className="cb-workspace-bar cb-workspace-status"><div className="cb-save" role="status">{saveMessages[status]}</div></header>{error && <div className="cb-error" role="alert"><p>{error}</p>{progress ? <button onClick={() => void retry()}>Retry save</button> : <button onClick={() => window.location.reload()}>Reload saved work</button>}</div>}{progress ? <Outlet /> : !error && <p>Loading your work...</p>}</main></div>;
+}
+
+function CourseLanding() {
+  const { active, assignments, isAdmin, selection } = useWork();
+  // Keep independently assigned legacy skills reachable until their authored
+  // material is integrated into the numbered course.
+  const hasCourseSteps = isAdmin || !!active && OPENING_COURSE_PATH.some(step => openingStepAccessUnits(step).some(unitId => conditionalAssignmentAllowsAction(active, {
+    unitId, action: step.type === 'note' ? 'lesson' : 'guided', difficulty: active.difficulty ?? getCurriculumDifficulty(unitId),
+  })));
+  if (!hasCourseSteps) return <LearningPath/>;
+  const additionalUnits = !isAdmin && active ? selectedUnits(selection).filter(unit => !CONDITIONAL_OPENING_UNIT_IDS.some(id => id === unit.id)) : [];
+  return <><OpeningCourseRoute view="lessons"/>{additionalUnits.length > 0 && <details className="cb-other-work"><summary>Additional assigned material</summary><p>This material remains available from your assignment, outside the numbered Part 1 course.</p><RecommendedForward selection={{ ...selection, allowedUnits: additionalUnits.map(unit => unit.id) }}/></details>}{assignments.length > 1 && !isAdmin && <section className="cb-other-work"><h2>Your other work</h2>{assignments.filter(item => item.id !== active?.id).map(item => <p key={item.id}><Link to={`${BASE}?assignment=${encodeURIComponent(item.id)}`}>{item.title}</Link></p>)}</section>}</>;
 }
 
 function LearningPath() {
@@ -344,7 +358,7 @@ function Reference({ indicators = false }: { indicators?: boolean }) {
   const selection = useSelection();
   const scoped = selectedUnits(selection);
   const units = indicators ? scoped.filter(unit => /group [1-4]/i.test(unit.title)) : scoped;
-  return <><span className="cb-label">Keep the reasoning close</span><h1>{indicators ? 'Four language groups. One direction to keep.' : 'Your conditional reference.'}</h1><p>{indicators ? 'An indicator helps identify the relation. Keep the complete condition and check what the rule actually says.' : 'Review the method, a worked example, and the mistake to avoid. Open the lesson or practice the exact skill.'}</p>{units.map(unit => <section className="cb-card" key={unit.id}><h2>{unit.title}</h2><p>{unit.goal}</p><ol>{unit.method.map((step, index) => <li key={index}>{step}</li>)}</ol><div className="cb-reason"><p>{unit.workedExample.statements.join(' ')}</p><strong>{unit.workedExample.conclusion}</strong></div><p><strong>Watch for: </strong>{unit.commonMistake.mistake}</p><p>{unit.commonMistake.repair}</p><div className="cb-actions">{!selection.practiceOnly && <Link className="cb-button" to={actionUrl(unit, 'lesson', { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) })}>Full lesson</Link>}<Link className="cb-button" to={actionUrl(unit, 'practice', { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) })}>Practice this skill</Link></div></section>)}</>;
+  return <><span className="cb-label">Quick reference</span><h1>{indicators ? 'Four language groups. One direction to keep.' : 'Conditional logic reference'}</h1><p>{indicators ? 'An indicator helps identify the relation. Keep the complete condition and check what the rule actually says.' : 'Look up a method, an example, or a common mistake. Follow Course to work through the lessons in order.'}</p>{units.map(unit => <section className="cb-card" key={unit.id}><h2>{unit.title}</h2><p>{unit.goal}</p><ol>{unit.method.map((step, index) => <li key={index}>{step}</li>)}</ol><div className="cb-reason"><p>{unit.workedExample.statements.join(' ')}</p><strong>{unit.workedExample.conclusion}</strong></div><p><strong>Watch for: </strong>{unit.commonMistake.mistake}</p><p>{unit.commonMistake.repair}</p><div className="cb-actions">{!selection.practiceOnly && <Link className="cb-button" to={actionUrl(unit, 'lesson', { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) })}>Full lesson</Link>}<Link className="cb-button" to={actionUrl(unit, 'practice', { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) })}>Practice this skill</Link></div></section>)}</>;
 }
 
 function Flashcards() {

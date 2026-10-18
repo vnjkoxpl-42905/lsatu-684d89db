@@ -439,6 +439,11 @@ export interface SectionStimulusGrade {
   carried: number;
   total: number;
   percent: number;
+  /** Meaning-based scoring, absent on historical grades. Detail coverage stays in percent. */
+  meaning_percent?: number;
+  meaning_carried?: number;
+  meaning_total?: number;
+  incidental_misses?: string[];
   band: "at-the-standard" | "nearly-there" | "thin" | "lost-it";
   /** The Details she did not carry, as authored. */
   missed: string[];
@@ -528,6 +533,8 @@ export interface SectionGradeSummary {
   /** Inside the clock AND with every stimulus coloured and given a Read. */
   within_goal: boolean;
   mean_coverage: number;
+  /** Meaning-based average, absent on historical grades. */
+  mean_meaning?: number;
   stimuli_graded: number;
   /** Number of stimuli in the assignment snapshot, including any whose response row never arrived. */
   stimuli_in_section?: number;

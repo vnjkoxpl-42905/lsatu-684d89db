@@ -59,16 +59,20 @@ export function readGradingRubric(raw: unknown): string[] | null {
   return raw as string[];
 }
 
-const TYPE_WORDS: Record<RelationshipType, RegExp> = {
-  conditional: /\bcondition(?:al|s)?\b|\bif\s*[-/]?\s*then\b/i,
-  causal: /\bcaus(?:al|e|es|ation|ality)\b/i,
-  comparative: /\bcompar(?:ative|ison|isons|e)\b/i,
+// Runtime-local vocabulary; parity tests pin it to the Observatory labels.
+export const TYPE_PATTERNS: Record<RelationshipType, string> = {
+  conditional: String.raw`conditional(?:s|ly)?|(?:necessary|sufficient)\s+conditions?|conditions?|if\s*[-/]?\s*then(?:\s+rule)?|requirements?`,
+  causal: String.raw`causal(?:ity|ly)?|causation|cause[sd]?(?:\s+and\s+effect)?`,
+  comparative: String.raw`comparat(?:ive|ively)|comparisons?|compar(?:e|es|ing|ed)`,
 };
+const TYPE_WORDS = Object.fromEntries(Object.entries(TYPE_PATTERNS).map(([kind, pattern]) =>
+  [kind, new RegExp(`\\b(?:${pattern})\\b`, "i")],
+)) as Record<RelationshipType, RegExp>;
 const norm = (s: string) => s.toLowerCase().replace(/[‘’“”"'`*]/g, " ").replace(/[-_/]/g, " ").replace(/\s+/g, " ");
 const has = (hay: string, needle: string) => new RegExp(`\\b${needle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(hay);
 
 // Everyday words ("so", "if") leak when quoted or explicitly singled out.
-const COMMON = new Set(["so", "if", "when", "since", "as", "than", "because", "unless", "whenever"]);
+const COMMON = new Set(["so", "if", "when", "since", "as", "than", "because", "unless", "whenever", "more", "less"]);
 const quoted = (raw: string, p: string) => new RegExp("[\"'‘“*`]\\s*" + p + "\\s*[\"'’”*`]", "i").test(raw);
 // Common words are harmless in ordinary prose, but naming one as the answer
 // discloses it even without quotation marks.

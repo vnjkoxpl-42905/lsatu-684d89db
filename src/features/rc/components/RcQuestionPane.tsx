@@ -22,6 +22,7 @@ import {
 } from '../lib/rcTypes';
 
 interface Props {
+  actorId?: string | null;
   annotationsDisabled?: boolean;
   item: RcSessionItem;
   selected: RcLetter | null;
@@ -65,6 +66,7 @@ interface Popover {
 }
 
 export function RcQuestionPane({
+  actorId,
   item,
   selected,
   eliminations,
@@ -210,6 +212,8 @@ export function RcQuestionPane({
           question={question}
           firstPick={selected}
           secondPick={reattemptPick ?? undefined}
+          sourceLabel={`PrepTest ${item.passage.preptest} · Section ${item.passage.section} · Passage ${item.passage.setNumber} · Question ${question.position}`}
+          actorId={actorId}
         />
       )}
 

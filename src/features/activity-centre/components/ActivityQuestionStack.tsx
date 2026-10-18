@@ -5,6 +5,7 @@ import { ActivityItemView } from "./ActivityItemView";
 
 interface ActivityQuestionStackProps {
   items: ActivityItem[];
+  activitySlug?: string;
   format: ItemFormat;
   /** This Activity's judging brief, threaded through to the Coach. */
   coach?: ActivityCoach;
@@ -53,6 +54,7 @@ interface ActivityQuestionStackProps {
 /** Single-question page. Advancing swaps the active item instead of showing a preview stack. */
 export function ActivityQuestionStack({
   items,
+  activitySlug,
   format,
   coach,
   coachSource,
@@ -101,6 +103,7 @@ export function ActivityQuestionStack({
           <ActivityItemView
             key={activeItem.order}
             item={activeItem}
+            activitySlug={activitySlug}
             format={format}
             coach={coach}
             coachSource={coachSource}

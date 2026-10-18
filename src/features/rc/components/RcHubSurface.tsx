@@ -5,6 +5,7 @@ import { loadAllIndexPassages, loadPassages } from '../lib/rcBank';
 import { RcMarkdown } from './RcMarkdown';
 import {
   RC_ADAPTIVE_LABEL,
+  formatPassageStatusLabel,
   passageStatus,
   selectPassages,
   type RcIndexPassageWithPt,
@@ -13,7 +14,7 @@ import {
 } from '../lib/rcAdaptive';
 import {
   createSession,
-  deleteSession,
+  abandonSession,
   getQuestionHistory,
   getSession,
   getSessionAttempts,
@@ -41,6 +42,7 @@ import {
 } from '../lib/rcBuilderSummary';
 import '../rc.css';
 import { canonicalRcSection, manualSectionsEnabled, newManualSectionHref, timedSectionResumeHref } from '@/lib/timedSectionAdoption';
+import { canRevealRcResults } from '../lib/rcResultsReveal';
 
 const mmss = formatPace;
 
@@ -91,6 +93,9 @@ export interface RcHubSurfaceProps {
 }
 
 interface PendingLaunch { id: string; actorId: string; ids: number[]; config: RcDrillConfig; back?: string; replace?: boolean }
+/** Passages the manual picker draws at once; the rest load on request. */
+const RC_PICKER_PAGE = 40;
+
 function pendingKey(actorId: string) { return `lsatu:rc-pending-launch:v1:${actorId}`; }
 function readPending(actorId: string | null): PendingLaunch | null {
   if (!actorId) return null;
@@ -182,6 +187,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
    */
   const [pendingLoad] = React.useState(() => { try { return { request: readPending(actorId), error: null }; } catch { return { request: null, error: 'The pending reading drill could not be verified. Reload before starting another drill.' }; } });
   const uncertainStart = React.useRef<PendingLaunch | null>(pendingLoad.request);
+  const [recoveryPending, setRecoveryPending] = React.useState<PendingLaunch | null>(pendingLoad.request);
   /** The inspected-set key whose smaller-than-requested size was accepted. */
   const [acceptedShortfall, setAcceptedShortfall] = React.useState<string | null>(null);
 
@@ -534,18 +540,25 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           if (!mounted.current) return;
           try { saved = await getSession(request.id, request.actorId); }
           catch { throw new Error('We could not confirm whether the drill was created. Press Start again to retry this exact launch.'); }
-          if (!saved) throw err;
+          if (!saved) {
+            sessionStorage.removeItem(pendingKey(request.actorId));
+            uncertainStart.current = null;
+            setRecoveryPending(null);
+            throw err;
+          }
         }
       }
       if (!mounted.current) return;
       verify(saved);
       sessionStorage.removeItem(pendingKey(request.actorId));
       uncertainStart.current = null;
+      setRecoveryPending(null);
       const testLeg = request.config.practiceTestRunId && request.config.practiceTestLegIndex !== undefined
         ? '&ptRun=' + encodeURIComponent(request.config.practiceTestRunId) + '&ptLeg=' + request.config.practiceTestLegIndex : '';
       navigate('/rc/drill?sessionId=' + saved.id + testLeg + (request.back ? '&returnTo=' + encodeURIComponent(request.back) : ''), { replace: request.replace });
     } catch (err) {
       if (!mounted.current) return;
+      setRecoveryPending(uncertainStart.current);
       setNotice(err instanceof Error ? err.message : 'The drill could not be started.');
       startingRef.current = false;
       setStarting(false);
@@ -580,12 +593,51 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         : [...f.difficulties, value],
     }));
 
+  const resetFilters = () => {
+    setFilters(DEFAULT_FILTERS);
+    setSearch('');
+    setHandPicked([]);
+    setHandPickOpen(false);
+    setCount(1);
+    setTiming('untimed');
+    setCustomSeconds(RC_STANDARD_SECONDS_PER_PASSAGE);
+    setCustomText(mmss(RC_STANDARD_SECONDS_PER_PASSAGE));
+    setReveal('per_passage');
+    setSelectedSet(null);
+    setAcceptedShortfall(null);
+    setNotice(null);
+  };
+
+  const describePendingPassages = (ids: number[]): string => {
+    const labels = ids
+      .map((id) => {
+        const p =
+          passages.find((item) => item.passageId === id) ??
+          selectedSet?.passages.find((item) => item.passageId === id);
+        if (!p) return null;
+        return `PT ${p.preptest} · S${p.section} · P${p.setNumber}${p.title ? ` (${p.title})` : ''}`;
+      })
+      .filter((label): label is string => Boolean(label));
+    if (labels.length === ids.length && labels.length > 0) {
+      return labels.join(', ');
+    }
+    return plural(ids.length, 'selected passage');
+  };
+
+  const [pickerLimit, setPickerLimit] = React.useState(RC_PICKER_PAGE);
+
   const handPickRows = drillablePassages.filter((p) => {
     const searchable = `${p.title ?? ''} ${p.firstWords ?? ''} PrepTest ${p.preptest} PT ${p.preptest} Section ${p.section} Passage ${p.setNumber}`;
     if (search.trim() && !searchable.toLowerCase().includes(search.trim().toLowerCase()))
       return false;
     return matches(p);
   });
+
+  // A new search or filter starts the list from the top again. Selections live
+  // in `handPicked`, so they are unaffected by how many rows are showing.
+  React.useEffect(() => {
+    setPickerLimit(RC_PICKER_PAGE);
+  }, [search, filters]);
 
   function matches(p: RcIndexPassageWithPt) {
     const status = statusOf(p);
@@ -596,9 +648,9 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       return false;
     if (filters.difficulties.length && (p.difficulty == null || !filters.difficulties.includes(p.difficulty)))
       return false;
-    if (filters.status === 'fresh' && status.attempted) return false;
+    if (filters.status === 'fresh' && status.state !== 'not_attempted') return false;
     if (filters.status === 'incorrect_before' && !status.everIncorrect) return false;
-    if (filters.status === 'incorrect_last' && !status.incorrectOnLastTake) return false;
+    if (filters.status === 'incorrect_last' && !status.lastFirstTakeIncorrect) return false;
     return true;
   }
 
@@ -607,13 +659,18 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     0,
   );
 
+  const [discarding, setDiscarding] = React.useState<string | null>(null);
+  const discardLock = React.useRef(false);
+  const [discardError, setDiscardError] = React.useState<string | null>(null);
   const removeSession = async (id: string) => {
-    const ok = window.confirm(
-      'Delete this drill? Its answers and timings are deleted with it, and that cannot be undone.',
-    );
-    if (!ok) return;
-    await deleteSession(id);
-    setSessions(await listSessions());
+    if (discardLock.current || !window.confirm('Discard this unfinished drill? Your saved answers stay in your history.')) return;
+    discardLock.current = true; setDiscarding(id); setDiscardError(null);
+    try {
+      await abandonSession(id);
+      setSessions(await listSessions());
+    } catch (error) {
+      setDiscardError(error instanceof Error ? error.message : 'The drill could not be discarded. Try again.');
+    } finally { discardLock.current = false; setDiscarding(null); }
   };
 
   return (
@@ -634,12 +691,21 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </div>
         </>
       )}
-      {embedded && onCancel && (
+      {embedded && (
         <div className="rc-actions" style={{ justifyContent: 'space-between', marginBottom: 4 }}>
           <h2 style={{ margin: 0 }}>Build a reading drill</h2>
-          <button type="button" className="rc-chip" onClick={onCancel}>
-            Cancel
+          <button type="button" className="rc-chip" onClick={() => navigate('/rc/search')}>
+            Search by question family, type or feature
           </button>
+          {onCancel ? (
+            <button type="button" className="rc-chip" onClick={onCancel}>
+              Cancel
+            </button>
+          ) : (
+            <button type="button" className="rc-chip" onClick={resetFilters}>
+              Reset filters
+            </button>
+          )}
         </div>
       )}
 
@@ -656,6 +722,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </button>
         </div>
       )}
+      {discardError && <p className="rc-builder-alert" role="alert">{discardError}</p>}
       {historyStatus === 'loading' && !loadError && <p className="rc-field-hint" role="status">Loading your answer history…</p>}
       {historyStatus === 'failed' && !loadError && (
         <div className="rc-builder-alert" role="status">
@@ -670,8 +737,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       )}
       {pendingLoad.error && <p className="rc-page-sub" role="alert">{pendingLoad.error}</p>}
       {notice && <p className="rc-page-sub" role="status">{notice}</p>}
-      {uncertainStart.current && <div className="rc-builder-alert" role="status">
-        <span>A previous Start is pending for passage IDs {uncertainStart.current.ids.join(', ')}. Retry checks that original saved drill with its original timing and answer settings; your current edits will not start another drill.</span>
+      {!starting && recoveryPending && <div className="rc-builder-alert" role="status">
+        <span>A previous Start is pending for {describePendingPassages(recoveryPending.ids)}. Retry checks that original saved drill with its original timing and answer settings; your current edits will not start another drill.</span>
         <button type="button" className="rc-chip" disabled={starting} onClick={() => void start()}>Retry original launch</button>
       </div>}
 
@@ -808,7 +875,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </div>
           <div className="rc-field-hint">
             {indexStatus === 'ready' || passages.length > 0
-              ? historyStatus === 'ready' ? `${plural(preview.poolSize, 'passage')} match your filters` : 'Waiting for your answer history'
+              ? historyStatus === 'ready'
+                ? handPickOpen && search.trim()
+                  ? `${plural(handPickRows.length, 'passage')} match your search, out of ${plural(preview.poolSize, 'passage')} that match your filters`
+                  : `${plural(preview.poolSize, 'passage')} match your filters`
+                : 'Waiting for your answer history'
               : indexStatus === 'loading'
                 ? 'Loading passages…'
                 : 'Passage list unavailable'}
@@ -928,7 +999,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
               {handPicked.length} passage{handPicked.length === 1 ? '' : 's'} · {pickedQuestionCount} question{pickedQuestionCount === 1 ? '' : 's'} selected
             </p>
             <ul className="rc-passage-list" aria-label="Available passages">
-              {handPickRows.map(p => {
+              {handPickRows.slice(pickerLimit - RC_PICKER_PAGE, pickerLimit).map(p => {
                 const status = statusOf(p);
                 const picked = handPicked.includes(p.passageId);
                 return (
@@ -942,7 +1013,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                         {p.format && <span>{p.format.startsWith('Standard') ? 'Single passage' : p.format.startsWith('Comparative') ? 'Comparative' : p.format}</span>}
                         <span>{plural(p.questionCount, 'question')}</span>
                         {p.difficulty != null && <span>Difficulty {p.difficulty}/5</span>}
-                        <span>{!status.attempted ? 'Not attempted' : status.missed > 0 ? `${status.missed} missed` : 'Completed'}</span>
+                        <span>{formatPassageStatusLabel(status)}</span>
                       </div>
                     </div>
                     <button type="button" className={`rc-chip${picked ? ' rc-active' : ''}`}
@@ -954,6 +1025,13 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                 );
               })}
             </ul>
+            {handPickRows.length > RC_PICKER_PAGE && (
+              <div className="rc-actions">
+                <p className="rc-field-hint" role="status">Showing {pickerLimit - RC_PICKER_PAGE + 1}–{Math.min(pickerLimit, handPickRows.length)} of {handPickRows.length} passages.</p>
+                <button type="button" className="rc-chip" disabled={pickerLimit === RC_PICKER_PAGE} onClick={() => setPickerLimit(limit => limit - RC_PICKER_PAGE)}>Previous passages</button>
+                <button type="button" className="rc-chip" disabled={pickerLimit >= handPickRows.length} onClick={() => setPickerLimit(limit => limit + RC_PICKER_PAGE)}>Next passages</button>
+              </div>
+            )}
             {handPickRows.length === 0 && <p className="rc-empty">No passages match. Change your search or filters.</p>}
           </section>
         )}
@@ -1043,7 +1121,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           <button
             type="button"
             className="rc-button rc-button-primary"
-            disabled={starting || inspecting || uncertainStart.current !== null || !builderReady || (handPickOpen && handPicked.length === 0) || (activeSet !== null && needsShortfallAck)}
+            disabled={starting || inspecting || recoveryPending !== null || uncertainStart.current !== null || !builderReady || (handPickOpen && handPicked.length === 0) || (activeSet !== null && needsShortfallAck)}
             onClick={() => void (activeSet ? start() : inspectSet())}
           >
             {starting ? 'Starting…' : inspecting ? 'Loading preview…' : activeSet ? 'Start this drill' : 'Preview drill'}
@@ -1077,7 +1155,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           <span className="rc-status-chip">
             {s.status === 'in_progress' ? 'in progress' : s.status}
           </span>
-          {scores.has(s.id) && (
+          {canRevealRcResults(s) && scores.has(s.id) && (
             <span>
               {scores.get(s.id)!.correct} / {scores.get(s.id)!.total}
             </span>
@@ -1101,9 +1179,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                 Results
               </button>
             )}
-            <button type="button" className="rc-chip" onClick={() => removeSession(s.id)}>
-              Delete
-            </button>
+            {s.status === 'in_progress' && !s.config.timedSectionSittingId && !s.config.practiceTestRunId && (
+              <button type="button" className="rc-chip" disabled={discarding !== null} onClick={() => removeSession(s.id)}>
+                {discarding === s.id ? 'Discarding…' : 'Discard'}
+              </button>
+            )}
           </span>
         </div>
       ))}

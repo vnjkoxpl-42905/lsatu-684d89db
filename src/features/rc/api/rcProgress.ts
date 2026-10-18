@@ -20,6 +20,7 @@ import type {
   RcHighlight,
   RcLetter,
   RcQuestionHistory,
+  RcQuestionHistoryEntry,
   RcSessionStatus,
 } from '../lib/rcTypes';
 import { readRcDraftAnswers } from '../lib/rcTypes';
@@ -126,7 +127,7 @@ export async function createSession(
   }
   if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
   // Reusing drill settings (including Drill your misses) must start fresh work.
-  const { draftAnswers: _draftAnswers, ...freshConfig } = config;
+  const { draftAnswers: _draftAnswers, resultsRevealedAt: _reveal, ...freshConfig } = config;
   const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .insert({
@@ -241,12 +242,67 @@ export async function completeSession(id: string): Promise<void> {
   }
 }
 
-export async function setSessionExcluded(id: string, excluded: boolean): Promise<void> {
-  const { error } = await rcDb
+/**
+ * Discards an unfinished drill. The session is marked `abandoned`, never
+ * deleted: its saved answers stay on the account and still count as exposure
+ * (see getQuestionHistory); they just stop appearing under In progress.
+ * Protected sections and finished drills cannot be discarded here.
+ */
+export async function abandonSession(id: string): Promise<void> {
+  const userId = await requireUserId();
+  const session = await getSession(id);
+  if (!session || session.userId !== userId) throw new Error('This drill is not available.');
+  if (session.config.practiceTestRunId || session.config.timedSectionSittingId) {
+    throw new Error('A protected section cannot be discarded here.');
+  }
+  if (session.status === 'abandoned') return;
+  if (session.status !== 'in_progress') throw new Error('Only a drill in progress can be discarded.');
+  const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
-    .update({ excluded_from_analytics: excluded })
-    .eq('id', id);
+    .update({ status: 'abandoned' })
+    .eq('id', id)
+    .eq('user_id', userId)
+    .eq('status', 'in_progress')
+    .select('id')
+    .maybeSingle();
   raise(error);
+  if (!data) {
+    const latest = await getSession(id);
+    if (latest?.userId === userId && latest.status === 'abandoned') return;
+    throw new Error('The discard did not reach your account.');
+  }
+}
+
+export async function setSessionExcluded(id: string, excluded: boolean): Promise<void> {
+  const actorId = await requireUserId();
+  const session = await getSession(id, actorId);
+  if (!session || session.userId !== actorId) throw new Error('This drill belongs to another account.');
+  if (session.config.timedSectionSittingId || session.config.practiceTestRunId) throw new Error('Protected sections retain their analytics status.');
+  const { data, error } = await rcDb.from(RC_SESSIONS_TABLE)
+    .update({ excluded_from_analytics: excluded }).eq('id', id).eq('user_id', actorId)
+    .select('id, excluded_from_analytics').maybeSingle();
+  raise(error);
+  if (await requireUserId() !== actorId) throw new Error('The signed-in account changed.');
+  if (!data || data.id !== id || data.excluded_from_analytics !== excluded) throw new Error('The analytics change did not reach your account. Try again.');
+}
+
+/** Releases ordinary completed results only after the account acknowledges the write. */
+export async function revealSessionResults(id: string, actorId: string): Promise<RcDrillSession> {
+  const session = await getSession(id, actorId);
+  if (!session || session.userId !== actorId || session.status !== 'completed') throw new Error('This drill is not ready to reveal.');
+  if (session.config.timedSectionSittingId || session.config.practiceTestRunId) throw new Error('Protected results use their section release controls.');
+  const resultsRevealedAt = typeof session.config.resultsRevealedAt === 'string' && Number.isFinite(Date.parse(session.config.resultsRevealedAt))
+    ? session.config.resultsRevealedAt : new Date().toISOString();
+  const { data, error } = await rcDb.from(RC_SESSIONS_TABLE)
+    .update({ config: { ...session.config, resultsRevealedAt } })
+    .eq('id', id).eq('user_id', actorId).eq('status', 'completed')
+    .eq('config', JSON.stringify(session.config)).select().maybeSingle();
+  raise(error);
+  if (await requireUserId() !== actorId) throw new Error('The signed-in account changed.');
+  if (!data) throw new Error('Your results reveal did not reach your account. Try again.');
+  const saved = toSession(data as RcDrillSessionRow);
+  if (saved.id !== id || saved.userId !== actorId || saved.config.resultsRevealedAt !== resultsRevealedAt) throw new Error('Your results reveal could not be verified.');
+  return saved;
 }
 
 export async function deleteSession(id: string): Promise<void> {
@@ -263,7 +319,13 @@ export async function deleteSession(id: string): Promise<void> {
  * never updated, so the original answer stays intact.
  */
 export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
-  const userId = attempt.userId ?? (await requireUserId());
+  const userId = await requireUserId();
+  if (attempt.userId && attempt.userId !== userId) throw new Error('The signed-in account changed.');
+  const source = await getSession(attempt.sessionId, userId);
+  if (!source || source.userId !== userId) throw new Error('This section is not available.');
+  if ((source.config.timedSectionSittingId || source.config.practiceTestRunId) && source.status !== 'in_progress') {
+    throw new Error('Answers in this protected source section cannot be changed.');
+  }
   await assertActivePracticeTestSession(attempt.sessionId);
 
   const existingAttempt = async (): Promise<RcAttempt | null> => {
@@ -282,7 +344,10 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
   // The client keeps this UUID in its device backup. A successful insert whose
   // response was lost must be acknowledged as the same row on retry.
   const alreadySaved = await existingAttempt();
-  if (alreadySaved) return alreadySaved;
+  if (alreadySaved) {
+    if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+    return alreadySaved;
+  }
 
   const { data: prior, error: priorError } = await rcDb
     .from(RC_ATTEMPTS_TABLE)
@@ -293,6 +358,8 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
   raise(priorError);
 
   const isFirstAttempt = (prior ?? []).length === 0;
+
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
 
   const { data, error } = await rcDb
     .from(RC_ATTEMPTS_TABLE)
@@ -313,9 +380,13 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
     .single();
   if (error?.code === '23505') {
     const saved = await existingAttempt();
-    if (saved) return saved;
+    if (saved) {
+      if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+      return saved;
+    }
   }
   raise(error);
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
   return toAttempt(data as RcAttemptRow);
 }
 
@@ -370,41 +441,216 @@ async function writeAttemptFlag(
   if (!data?.length || data.some((row: { user_id: string; flagged: boolean }) => row.user_id !== userId || row.flagged !== flagged)) throw new Error('The flag save could not be acknowledged.');
 }
 
+const HISTORY_PAGE_SIZE = 1000;
+
+interface RcHistorySessionRow {
+  id: string;
+  user_id?: string;
+  status: RcSessionStatus | string;
+  excluded_from_analytics: boolean;
+}
+
+interface RcHistoryAttemptRow {
+  id?: string;
+  user_id?: string;
+  session_id?: string;
+  question_id: number;
+  passage_id?: number;
+  selected?: RcLetter | string | null;
+  is_correct: boolean | null;
+  is_first_attempt?: boolean;
+  created_at: string;
+}
+
+async function fetchHistoryPages<T>(
+  readPage: (
+    from: number,
+    to: number,
+  ) => Promise<{ data: T[] | null; error: { code?: string; message?: string } | null }>,
+): Promise<T[]> {
+  const rows: T[] = [];
+  for (let offset = 0; ; offset += HISTORY_PAGE_SIZE) {
+    const { data, error } = await readPage(offset, offset + HISTORY_PAGE_SIZE - 1);
+    raise(error);
+    const batch = data ?? [];
+    rows.push(...batch);
+    if (batch.length < HISTORY_PAGE_SIZE) break;
+  }
+  return rows;
+}
+
 /**
  * Per-question aggregate over the student's whole history, used by the hub's
  * status filters and by adaptive selection.
+ *
+ * Uses a second paged query on `rc_drill_sessions` because the live schema has
+ * two foreign keys between `rc_attempts` and `rc_drill_sessions`
+ * (`rc_attempts_session_id_fkey` and `rc_attempts_session_owner_fk`), which
+ * causes an unqualified PostgREST embed to fail with `PGRST201`.
  */
 export async function getQuestionHistory(userId?: string): Promise<RcQuestionHistory> {
   const uid = userId ?? (await requireUserId());
-  const { data, error } = await rcDb
-    .from(RC_ATTEMPTS_TABLE)
-    .select('question_id, is_correct, created_at')
-    .eq('user_id', uid)
-    .order('created_at', { ascending: true });
-  raise(error);
+
+  const [sessionRows, attemptRows] = await Promise.all([
+    fetchHistoryPages<RcHistorySessionRow>(async (from, to) => {
+      const result = await rcDb
+        .from(RC_SESSIONS_TABLE)
+        .select('id, user_id, status, excluded_from_analytics')
+        .eq('user_id', uid)
+        .order('started_at', { ascending: true })
+        .order('id', { ascending: true })
+        .range(from, to);
+      return result as {
+        data: RcHistorySessionRow[] | null;
+        error: { code?: string; message?: string } | null;
+      };
+    }),
+    fetchHistoryPages<RcHistoryAttemptRow>(async (from, to) => {
+      const result = await rcDb
+        .from(RC_ATTEMPTS_TABLE)
+        .select(
+          'id, user_id, session_id, question_id, passage_id, selected, is_correct, is_first_attempt, created_at',
+        )
+        .eq('user_id', uid)
+        .order('created_at', { ascending: true })
+        .order('id', { ascending: true })
+        .range(from, to);
+      return result as {
+        data: RcHistoryAttemptRow[] | null;
+        error: { code?: string; message?: string } | null;
+      };
+    }),
+  ]);
+
+  const sessionsById = new Map<string, RcHistorySessionRow>();
+  for (const session of sessionRows) {
+    if (!session || typeof session.id !== 'string') continue;
+    if (session.user_id && session.user_id !== uid) continue;
+    sessionsById.set(session.id, session);
+  }
+
+  const seenAttemptIds = new Set<string>();
+  const validAttemptRows: RcHistoryAttemptRow[] = [];
+  for (const row of attemptRows) {
+    if (!row || typeof row.question_id !== 'number') continue;
+    if (row.user_id && row.user_id !== uid) continue;
+    if (row.id) {
+      if (seenAttemptIds.has(row.id)) continue;
+      seenAttemptIds.add(row.id);
+    }
+    validAttemptRows.push(row);
+  }
+
+  validAttemptRows.sort((a, b) => {
+    const ta = Date.parse(a.created_at);
+    const tb = Date.parse(b.created_at);
+    if (Number.isFinite(ta) && Number.isFinite(tb) && ta !== tb) return ta - tb;
+    if (a.created_at !== b.created_at) return a.created_at.localeCompare(b.created_at);
+    return String(a.id ?? '').localeCompare(String(b.id ?? ''));
+  });
 
   const history: RcQuestionHistory = new Map();
-  for (const row of (data ?? []) as Pick<
-    RcAttemptRow,
-    'question_id' | 'is_correct' | 'created_at'
-  >[]) {
-    const existing = history.get(row.question_id) ?? {
+  for (const row of validAttemptRows) {
+    const session = row.session_id ? sessionsById.get(row.session_id) : undefined;
+    if (row.session_id && !session) continue;
+    if (session?.excluded_from_analytics) continue;
+
+    const sessionStatus = session?.status ?? 'completed';
+    if (
+      sessionStatus !== 'completed' &&
+      sessionStatus !== 'in_progress' &&
+      sessionStatus !== 'abandoned'
+    ) {
+      continue;
+    }
+
+    const existing: RcQuestionHistoryEntry = history.get(row.question_id) ?? {
       questionId: row.question_id,
       attempts: 0,
       everIncorrect: false,
       incorrectOnLastTake: false,
       incorrectCount: 0,
-      lastSeenAt: null as string | null,
+      lastSeenAt: null,
+      lastGradedAt: null,
+      answered: false,
+      firstEverCorrect: null,
+      firstTakeCorrect: null,
+      unansweredOnFirstTake: false,
+      everCorrect: false,
+      lastFirstTakeIncorrect: false,
+      reviewCorrected: false,
+      completedAnswered: false,
+      completedAnsweredSessionIds: [],
     };
-    const wrong = row.is_correct === false;
-    existing.attempts += 1;
-    if (wrong) {
-      existing.everIncorrect = true;
-      existing.incorrectCount += 1;
+
+    const isFirstTake = row.is_first_attempt !== false;
+    const hasSelected = typeof row.selected === 'string' && row.selected.trim().length > 0;
+    const hasGradedAnswer = hasSelected && typeof row.is_correct === 'boolean';
+
+    if (sessionStatus === 'abandoned') {
+      if (isFirstTake || existing.attempts === 0) {
+        existing.attempts += 1;
+      }
+      if (isFirstTake || !existing.lastSeenAt) {
+        existing.lastSeenAt = row.created_at;
+      }
+      history.set(row.question_id, existing);
+      continue;
     }
-    // rows arrive oldest first, so the last one seen decides the latest take
-    existing.incorrectOnLastTake = wrong;
-    existing.lastSeenAt = row.created_at;
+
+    if (isFirstTake) {
+      existing.attempts += 1;
+      existing.lastSeenAt = row.created_at;
+
+      if (!hasGradedAnswer) {
+        if (!existing.answered) {
+          existing.unansweredOnFirstTake = true;
+          existing.firstEverCorrect = null;
+          existing.firstTakeCorrect = null;
+          existing.lastFirstTakeIncorrect = false;
+          existing.incorrectOnLastTake = false;
+          existing.reviewCorrected = false;
+        }
+      } else {
+        const right = row.is_correct === true;
+        const wrong = row.is_correct === false;
+        existing.answered = true;
+        existing.unansweredOnFirstTake = false;
+        if (existing.firstEverCorrect === null) {
+          existing.firstEverCorrect = right;
+        }
+        existing.firstTakeCorrect = right;
+        existing.lastGradedAt = row.created_at;
+        existing.reviewCorrected = false;
+        if (right) {
+          existing.everCorrect = true;
+        }
+        if (wrong) {
+          existing.everIncorrect = true;
+          existing.incorrectCount += 1;
+        }
+        existing.lastFirstTakeIncorrect = wrong;
+        existing.incorrectOnLastTake = wrong;
+
+        if (sessionStatus === 'completed') {
+          existing.completedAnswered = true;
+          if (
+            row.session_id &&
+            !existing.completedAnsweredSessionIds!.includes(row.session_id)
+          ) {
+            existing.completedAnsweredSessionIds!.push(row.session_id);
+          }
+        }
+      }
+    } else {
+      if (!existing.lastSeenAt) {
+        existing.lastSeenAt = row.created_at;
+      }
+      if (hasGradedAnswer && existing.lastFirstTakeIncorrect) {
+        existing.reviewCorrected = row.is_correct === true;
+      }
+    }
+
     history.set(row.question_id, existing);
   }
   return history;

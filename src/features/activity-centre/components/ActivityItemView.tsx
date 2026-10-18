@@ -10,6 +10,7 @@ import { ItemPrompt } from "./ItemPrompt";
 
 interface ActivityItemViewProps {
   item: ActivityItem;
+  activitySlug?: string;
   format: ItemFormat;
   isLast: boolean;
   /** This Activity's judging brief, threaded through to the Coach. */
@@ -77,6 +78,7 @@ interface ActivityItemViewProps {
  */
 export function ActivityItemView({
   item,
+  activitySlug,
   format,
   isLast,
   coachSource,
@@ -302,6 +304,7 @@ export function ActivityItemView({
         <button type="button" disabled={judging} className="mt-3 min-h-11 underline" onClick={continueUnjudged}>Continue unjudged and show answer</button>
       </div>}
       <ItemPrompt
+        activitySlug={activitySlug}
         format={format}
         item={item}
         value={value}

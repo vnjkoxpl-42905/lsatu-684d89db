@@ -1,5 +1,7 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, expect, it } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+import { CourseFlashcardUrl } from './FlashcardTools';
 import { OpeningCourseContent } from './OpeningCourseContent';
 import { MixedFamilyPractice, mixedFamilyItems } from './MixedFamilyPractice';
 
@@ -37,9 +39,9 @@ it('teaches necessity before the visual and distinguishes a requirement from a g
   });
 });
 
-it('keeps the sufficient page short: definition, indicators, demo, video, Pop Quiz, then the necessity bridge', () => {
+it('keeps the sufficient definition and media before its indicator and complete-condition practice', () => {
   const { rerender } = render(<OpeningCourseContent id="sufficient"/>);
-  expect(screen.getByRole('heading', { name: 'Next: The Necessary Condition' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Next: The Necessary Condition' })).toBeNull();
   expect(screen.getByRole('heading', { name: 'Pop Quiz' })).toBeVisible();
   expect(screen.queryByText(/raffle|bicycle|100%|breathing/i)).toBeNull();
   expect(screen.queryByText(/The fact|Enough for what\?/i)).toBeNull();
@@ -48,9 +50,9 @@ it('keeps the sufficient page short: definition, indicators, demo, video, Pop Qu
   const film = screen.getByRole('region', { name: 'Short explanations of sufficiency' });
   const demo = document.querySelector('.sc-experience')!;
   const quiz = screen.getByRole('heading', { name: 'Pop Quiz' });
-  const bridge = screen.getByRole('heading', { name: 'Next: The Necessary Condition' });
+  const completePractice = screen.getByRole('heading', { name: 'Which reports does this rule cover?' });
   const before = (first: Element, second: Element) => expect(first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  before(indicators, demo); before(demo, film); before(film, quiz); before(quiz, bridge);
+  before(indicators, demo); before(demo, film); before(film, quiz); before(quiz, completePractice);
   expect(film.querySelector('video')).toHaveAttribute('controls');
   expect(film.querySelector('video')).not.toHaveAttribute('autoplay');
   fireEvent.click(within(film).getByRole('button', { name: 'What stays open' }));
@@ -288,7 +290,7 @@ it('opens with one raffle question, then tests fresh cases with reasoned feedbac
     fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
     explanations.add(question.querySelector('.d1-feedback')?.textContent || '');
     expect(explanations.size).toBe(choices.length);
-    if (index === 0) expect(within(question).getByText(/a promise about a possible case, not a report that the case happened/)).toBeVisible();
+    if (index === 0) expect(within(question).getByText(/We have no weather fact for Saturday/)).toBeVisible();
     if (index < 3) fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   }
 });
@@ -334,7 +336,7 @@ it('teaches meaning checks, modal strength and symbol definitions before workshe
 it('starts the unified mixed route with one question rather than stacked activity rounds', () => {
   render(<OpeningCourseContent id="mixed-practice"/>);
   expect(screen.getByRole('heading', { name: 'What does the rule cover?' })).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Begin practice' }));
+  expect(screen.queryByRole('button', { name: 'Begin practice' })).toBeNull();
   expect(screen.getByText('Question 1 of 24')).toBeVisible();
   expect(screen.getByRole('heading', { name: 'What does the rule cover?' })).toBeVisible();
   expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
@@ -451,4 +453,35 @@ it('shows a rule that already has a not, and its double negative turning positiv
   const chips = [...demo.querySelectorAll('.ct-chip')].map(chip => (chip as HTMLElement).dataset.struck);
   expect(chips).toEqual(['true', 'false']);
   expect(within(demo).getByRole('status').textContent).toMatch(/the two cancel and it turns positive/);
+});
+
+
+it.each([['sufficient', 'group-1'], ['necessary', 'group-2']] as const)('links %s to its dedicated indicator flashcards and preserves its lesson media', (page, group) => {
+  const url = (id: string) => `/dev/conditional-opening-preview?page=${id}`;
+  render(<MemoryRouter><CourseFlashcardUrl.Provider value={url}><OpeningCourseContent id={page}/></CourseFlashcardUrl.Provider></MemoryRouter>);
+  const link = screen.getByRole('link', { name: 'Go to flashcards' });
+  expect(link).toHaveAttribute('href', `/dev/conditional-opening-preview?page=tools&deck=${group}&from=${page}`);
+  expect(document.querySelectorAll('.sc-indicator-list')).toHaveLength(1);
+  expect(screen.getByRole('group', { name: 'Choose an indicator' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: page === 'sufficient' ? 'Which reports does this rule cover?' : 'What kind of pass does entry require?' })).toBeVisible();
+  expect(document.querySelector('.co-vocabulary')).toBeNull();
+  expect(screen.getByRole('region', { name: page === 'sufficient' ? 'Short explanations of sufficiency' : 'Short explanation of necessity' }).querySelector('video')).toHaveAttribute('controls');
+});
+
+
+it('keeps the law-school film available in the combined contrapositive lesson without repeating the four-case activity', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  const summary = screen.getByText('See the law-school example');
+  const disclosure = summary.closest('details')!;
+  expect(disclosure).not.toHaveAttribute('open');
+  expect(screen.queryByRole('region', { name: 'Law-school rule video examples' })).toBeNull();
+  expect(document.querySelector('video source')).toHaveAttribute('src', '/media/conditionals/contrapositive/lecture.mp4');
+  disclosure.open = true;
+  fireEvent(disclosure, new Event('toggle'));
+  const film = screen.getByRole('region', { name: 'Law-school rule video examples' });
+  expect(film.querySelector('video')).toHaveAttribute('controls');
+  expect(film.querySelector('track[kind="captions"]')).not.toBeNull();
+  expect(within(film).getByText('Read the video explanation')).toBeVisible();
+  expect(document.querySelector('video source')).toHaveAttribute('src', '/media/conditionals/contrapositive/lecture.mp4');
+  expect(screen.queryByText('One rule. Four starting facts.')).toBeNull();
 });

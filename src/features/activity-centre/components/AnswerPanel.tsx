@@ -8,6 +8,7 @@ import { CoachFeedback } from "./CoachFeedback";
 
 interface AnswerPanelProps {
   item: ActivityItem;
+  activitySlug?: string;
   /** So the item can put the cursor back in the box on Try again and on Next. */
   answerRef?: React.RefObject<HTMLTextAreaElement>;
   value: string;
@@ -42,6 +43,7 @@ const emeraldBtn =
 /** Right panel: textarea, submit, and the coach feedback / retry / reveal flow. */
 export function AnswerPanel({
   item,
+  activitySlug,
   answerRef,
   value,
   onChange,
@@ -159,6 +161,7 @@ export function AnswerPanel({
             resolved={resolved}
             secondaryLabel={creditedSecondaryLabel}
             item={item}
+            activitySlug={activitySlug}
           />
         </div>
       )}

@@ -197,6 +197,57 @@ export function locateRead(needle: string[], hay: string[]): ReadSpan | null {
 }
 
 /**
+ * A fuzzy fixed-width window can begin in the previous spoken sentence and
+ * end one word before the read finishes. Snap only to nearby ASR sentence
+ * boundaries when the entire sentence still meets the calibrated read test.
+ * This preserves her neighbouring words instead of splicing them together
+ * with a leftover word from the source. Unpunctuated or mid-sentence chunks
+ * retain the existing locator behaviour.
+ */
+function sentenceBoundedRead(
+  span: ReadSpan, needle: string[], hay: string[], source: number[], spoken: string[],
+): ReadSpan {
+  const first = source[span.start];
+  const last = source[Math.min(span.end, source.length) - 1];
+  const terminal = (token: string) => /[.!?]["'\u2019\u201d)]*$/.test(token);
+  const starts: number[] = [];
+  const ends: number[] = [];
+  for (let token = Math.max(0, first - 4); token <= Math.min(spoken.length - 1, first + 4); token++) {
+    if (token === 0 || terminal(spoken[token - 1])) {
+      const at = source.indexOf(token);
+      if (at !== -1) starts.push(at);
+    }
+  }
+  for (let token = Math.max(0, last - 4); token <= Math.min(spoken.length - 1, last + 4); token++) {
+    if (terminal(spoken[token])) {
+      const next = source.indexOf(token + 1);
+      ends.push(next === -1 ? hay.length : next);
+    }
+  }
+  let bounded: ReadSpan | null = null;
+  for (const start of starts) for (const end of ends) {
+    if (end <= start) continue;
+    const ratio = alignmentRatio(needle, hay.slice(start, end));
+    if (ratio >= Math.max(MIN_READ_RATIO, span.ratio) && (!bounded || ratio > bounded.ratio)) bounded = { start, end, ratio };
+  }
+  return bounded ?? span;
+}
+
+/** Refine early-stopped fuzzy windows to nearby exact source edge words. */
+function edgeAnchoredRead(span: ReadSpan, needle: string[], hay: string[]): ReadSpan {
+  let best = span;
+  for (let start = Math.max(0, span.start - 4); start <= Math.min(hay.length - 1, span.start + 4); start++) {
+    if (hay[start] !== needle[0]) continue;
+    for (let end = Math.max(start + 1, span.end - 4); end <= Math.min(hay.length, span.end + 4); end++) {
+      if (hay[end - 1] !== needle[needle.length - 1]) continue;
+      const ratio = alignmentRatio(needle, hay.slice(start, end));
+      if (ratio > best.ratio) best = { start, end, ratio };
+    }
+  }
+  return best;
+}
+
+/**
  * Remove each chunk's read-aloud from the words spoken while the text was up.
  *
  * `spokenWorking` arrives as the engine wrote it -- "Thus," and "Hot" and
@@ -237,7 +288,49 @@ export function stripVerbatimReads(spokenWorking: string[], chunks: string[]): S
     const needle = readWords(chunk);
     if (needle.length < MIN_CHUNK_WORDS) return null;
     const best = locateRead(needle, hay);
-    return best && best.ratio >= MIN_READ_RATIO ? best : null;
+    if (!best || best.ratio < MIN_READ_RATIO) return null;
+    const anchored = edgeAnchoredRead(best, needle, hay);
+    return /[.!?]["'\u2019\u201d)]*$/.test(chunk)
+      ? sentenceBoundedRead(anchored, needle, hay, source, spokenWorking)
+      : anchored;
+  });
+
+  // Authored chunks can split one source sentence at a comma. Matching each
+  // half with a fixed-width window can eat her preceding sentence and leave
+  // the read's last noun behind. Prefer one continuous sentence-level match
+  // when it exists; if she paused to retell between chunks it will not meet
+  // the same read threshold, and the individual candidates remain available.
+  let sentenceStart = 0;
+  chunks.forEach((chunk, index) => {
+    if (!/[.!?]["'\u2019\u201d)]*$/.test(chunk)) return;
+    if (index > sentenceStart) {
+      const needle = readWords(chunks.slice(sentenceStart, index + 1).join(" "));
+      const best = locateRead(needle, hay);
+      if (best && best.ratio >= MIN_READ_RATIO) {
+        const bounded = sentenceBoundedRead(best, needle, hay, source, spokenWorking);
+        const first = source[bounded.start];
+        const last = source[bounded.end - 1];
+        const speakerLabel = /^[A-Za-z]+:/.test(chunks[sentenceStart]);
+        const interrupted = spokenWorking.slice(first, last).some((token, offset) =>
+          /[.!?]["'\u2019\u201d)]*$/.test(token) && !(offset === 0 && speakerLabel));
+        // A genuine aside between two reads must survive even without ASR
+        // punctuation. The independent matches locate the gap; a new word in
+        // that gap is not part of the authored source sentence.
+        const sourceWords = new Set(needle);
+        let aside = false;
+        for (let i = sentenceStart; i < index; i++) {
+          const before = candidates[i];
+          const after = candidates[i + 1];
+          if (before && after && after.start > before.end &&
+            hay.slice(before.end, after.start).some(word => !sourceWords.has(word))) aside = true;
+        }
+        const individualConfidence = Math.max(...candidates.slice(sentenceStart, index + 1).map(span => span?.ratio ?? 0));
+        if (!interrupted && !aside && bounded.ratio >= individualConfidence) {
+          for (let i = sentenceStart; i <= index; i++) candidates[i] = bounded;
+        }
+      }
+    }
+    sentenceStart = index + 1;
   });
 
   // Confident matches first: they are the anchors the rest are ordered against.

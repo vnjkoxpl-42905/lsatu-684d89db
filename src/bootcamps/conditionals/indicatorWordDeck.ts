@@ -55,12 +55,12 @@ export function shuffleSpread(cards: IndicatorWordCard[], rng: () => number = Ma
   return order;
 }
 
-export function newRound(previous?: DeckState, rng: () => number = Math.random): DeckState {
+export function newRound(previous?: DeckState, rng: () => number = Math.random, cards = indicatorWordCards): DeckState {
   return {
     v: 1, round: previous ? previous.round + 1 : 1,
-    queue: shuffleSpread(indicatorWordCards, rng).map(card => ({ id: card.id, retry: false })),
+    queue: shuffleSpread(cards, rng).map(card => ({ id: card.id, retry: false })),
     index: 0, picked: null, results: {},
-    earlier: previous ? [...previous.earlier, { right: summarize(previous).right, total: indicatorWordCards.length }] : [],
+    earlier: previous ? [...previous.earlier, { right: summarize(previous).right, total: cards.length }] : [],
   };
 }
 
@@ -91,12 +91,12 @@ export function summarize(state: DeckState) {
 }
 
 /** Accepts only a state that still matches the deck; anything else starts a fresh round rather than resuming into a broken one. */
-export function readDeckState(raw: unknown): DeckState | null {
+export function readDeckState(raw: unknown, cards = indicatorWordCards): DeckState | null {
   const value = raw as Partial<DeckState> | null;
   if (!value || typeof value !== 'object' || value.v !== 1 || !Number.isInteger(value.round) || !Number.isInteger(value.index)) return null;
   if (!Array.isArray(value.queue) || !value.queue.every(entry => entry && typeof entry.id === 'string' && byId.has(entry.id) && typeof entry.retry === 'boolean')) return null;
   const firstPass = value.queue.filter(entry => !entry.retry);
-  if (firstPass.length !== indicatorWordCards.length || new Set(firstPass.map(entry => entry.id)).size !== indicatorWordCards.length) return null;
+  if (firstPass.length !== cards.length || new Set(firstPass.map(entry => entry.id)).size !== cards.length || !value.queue.every(entry => cards.some(card => card.id === entry.id))) return null;
   if (value.index! < 0 || value.index! > value.queue.length) return null;
   if (value.picked !== null && value.picked !== 1 && value.picked !== 2) return null;
   if (value.picked !== null && value.index === value.queue.length) return null;

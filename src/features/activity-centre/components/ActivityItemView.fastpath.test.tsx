@@ -1,5 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import content from "../content/spot-the-relationship.json";
+import { ActivityQuestionStack } from "./ActivityQuestionStack";
+import { matchesCredited } from "../worlds/observatory/observatory";
 import { ActivityItemView } from "./ActivityItemView";
 import type { ActivityItem } from "../api/types";
 
@@ -133,5 +136,36 @@ describe("the local fast path", () => {
     type(item.credited_answers[0]);
     await waitFor(() => expect(invoke).toHaveBeenCalled());
     expect(onResolved).not.toHaveBeenCalled();
+  });
+});
+
+
+describe("activity identity reaches the resolved explanation", () => {
+  beforeEach(() => invoke.mockReset());
+
+  it.each(["spot-the-relationship", "another-activity"])("threads %s through the actual answer component chain", async (activitySlug) => {
+    const original = content.items.find((i) => i.order === 40)!;
+    const saved = { ...original, explanation: "Saved historical teaching." } as ActivityItem;
+    const before = JSON.stringify(saved);
+    const onRecord = vi.fn().mockResolvedValue(undefined);
+    const onResolved = vi.fn();
+    const { container } = render(<ActivityQuestionStack items={[saved]} format="free-text" activeIndex={0}
+      activitySlug={activitySlug} fastPath={matchesCredited}
+      coachSource={{ sourceKind: "assignment", sourceId: "12345678-1234-4123-8123-123456789012" }}
+      onResolved={onResolved} onRecord={onRecord} onNext={vi.fn()} />);
+    const answer = 'causal, so; comparative, "thicker", "than"; conditional, provided';
+    type(answer);
+    await waitFor(() => expect(onResolved).toHaveBeenCalledWith(40, "correct"));
+    if (activitySlug === "spot-the-relationship") {
+      expect(container.textContent).toContain("gives a sufficient condition");
+      expect(container.textContent).toContain("does not establish that chloride-free electrolyte is necessary");
+      expect(container.textContent).not.toContain(saved.explanation);
+    } else {
+      expect(container.textContent).toContain(saved.explanation);
+      expect(container.textContent).not.toContain("gives a sufficient condition");
+    }
+    expect(onRecord).toHaveBeenCalledWith(expect.objectContaining({ responseText: answer, judgeSource: "fast-path" }));
+    expect(JSON.stringify(saved)).toBe(before);
+    expect(invoke).not.toHaveBeenCalled();
   });
 });

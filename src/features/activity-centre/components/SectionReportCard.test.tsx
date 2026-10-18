@@ -85,6 +85,34 @@ const grade: SectionGrade = {
   },
 };
 
+describe("meaning scores and detail coverage", () => {
+  it("shows preserved meaning without hiding omitted incidental details", () => {
+    const updated: SectionGrade = {
+      ...grade,
+      grader_version: 3,
+      section: { ...grade.section, mean_coverage: 64, mean_meaning: 100, decoy_failures: 0,
+        stimuli_graded: 1, stimuli_in_section: 2 },
+      stimuli: [stimulus({ percent: 64, band: "thin", meaning_percent: 100,
+        meaning_carried: 10, meaning_total: 10,
+        missed: ["The office walls were blue."],
+        incidental_misses: ["The office walls were blue."] })],
+    };
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={updated} />);
+    expect(screen.getAllByText("Meaning preserved").length).toBeGreaterThan(0);
+    expect(screen.getByText("100% meaning preserved.")).toBeInTheDocument();
+    expect(screen.getAllByText(/Detail coverage: 64%/).length).toBeGreaterThan(0);
+    expect(screen.getByText("The office walls were blue. (not deducted from meaning)")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Stimulus 1, Meaning preserved/ })).toBeInTheDocument();
+  });
+
+  it("does not invent meaning scores for historical grades", () => {
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={grade} />);
+    expect(screen.queryByText("Meaning preserved")).not.toBeInTheDocument();
+    expect(screen.getByText("86% held.")).toBeInTheDocument();
+    expect(screen.queryByText(/not deducted from meaning/)).not.toBeInTheDocument();
+  });
+});
+
 /**
  * One tick in the ledger, by its position.
  *

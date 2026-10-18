@@ -187,6 +187,8 @@ export function readRcDraftAnswers(value: unknown): RcDraftAnswer[] {
 }
 
 export interface RcDrillConfig {
+  /** Explicit account-acknowledged release of ordinary drill scores and feedback. */
+  resultsRevealedAt?: string;
   reveal: RcRevealMode;
   timing: RcTiming;
   source: 'manual' | 'adaptive' | 'assignment';
@@ -281,6 +283,8 @@ export function rcHighlightColor(color: string | undefined): string {
   return RC_HIGHLIGHT_COLORS[color as RcHighlightColor] ?? RC_HIGHLIGHT_COLORS.yellow;
 }
 
+export type RcPassageState = 'not_attempted' | 'partial' | 'skipped_only' | 'completed';
+
 export interface RcQuestionHistoryEntry {
   questionId: number;
   attempts: number;
@@ -288,6 +292,17 @@ export interface RcQuestionHistoryEntry {
   incorrectOnLastTake: boolean;
   incorrectCount: number;
   lastSeenAt: string | null;
+  /** Latest graded first take, separate from skipped or abandoned exposure. */
+  lastGradedAt?: string | null;
+  answered?: boolean;
+  firstEverCorrect?: boolean | null;
+  firstTakeCorrect?: boolean | null;
+  unansweredOnFirstTake?: boolean;
+  everCorrect?: boolean;
+  lastFirstTakeIncorrect?: boolean;
+  reviewCorrected?: boolean;
+  completedAnswered?: boolean;
+  completedAnsweredSessionIds?: string[];
 }
 
 export type RcQuestionHistory = Map<number, RcQuestionHistoryEntry>;

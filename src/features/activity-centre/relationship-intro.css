@@ -1,56 +1,149 @@
+/* Only the entry page uses these grounds; the Observatory runner keeps its world. */
 .activity-centre.act-home[data-world="spot-the-relationship"] {
-  background: #f4efe7;
-  color: #1b1713;
+  /* Activity Centre pins a warm palette locally. Use the existing Workroom
+   * light values here explicitly; ancestor semantic values are not neutral. */
+  color-scheme: light;
+  --background: 0 0% 99%;
+  --foreground: 0 0% 7%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 7%;
+  --border: 0 0% 88%;
+  --primary: 0 0% 7%;
+  --primary-foreground: 0 0% 99%;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
 }
 .relationship-intro {
+  --relationship-page: hsl(var(--background));
+  --relationship-ink: hsl(var(--foreground));
+  --relationship-card: hsl(var(--card));
+  --relationship-border: hsl(var(--border));
+  --relationship-primary: hsl(var(--primary));
+  --relationship-on-primary: hsl(var(--primary-foreground));
+  --relationship-video-ground: hsl(0 0% 4%);
   box-sizing: border-box;
+  container-type: inline-size;
   width: min(100%, 1080px);
   margin-inline: auto;
-  padding: clamp(20px, 4vw, 48px);
-  color: #1b1713;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  line-height: 1.55;
+  padding: clamp(20px, 3vw, 36px);
+  background: var(--relationship-page);
+  color: var(--relationship-ink);
+  font-family: Lexend, Outfit, ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 .relationship-intro * { box-sizing: border-box; }
-.relationship-exit {
-  display: inline-flex; align-items: center; gap: 8px;
-  min-height: 44px; padding: 8px 0; color: #42382e;
-  background: transparent; border: 0; font: inherit;
+.relationship-intro .relationship-exit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--relationship-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--relationship-ink);
+  font: inherit;
+  cursor: pointer;
 }
-.relationship-heading { margin: 20px 0 28px; }
-.relationship-eyebrow { margin: 0 0 10px; color: #605329; font-size: .82rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
-.relationship-heading h1 { margin: 0; color: #1b1713; font-family: Georgia, serif; font-weight: 400; font-size: clamp(1.85rem, 3.8vw, 3rem); line-height: 1.15; letter-spacing: -.025em; }
-.relationship-heading > p:last-child { margin: 14px 0 0; color: #51463c; max-width: 60ch; }
-.relationship-intro .relationship-video { margin-bottom: 28px; }
-.relationship-intro .relationship-video video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; background: #1b1713; }
-.relationship-intro .relationship-video-fallback { color: #42382e; margin: 12px 0 0; }
-.relationship-launch-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; }
-.relationship-intro h2 { margin: 0 0 16px; color: #1b1713; font-size: 1.15rem; line-height: 1.35; }
-.relationship-instructions ol { margin: 0; padding-left: 1.4rem; list-style: decimal; }
-.relationship-instructions li { padding-left: 6px; margin-bottom: 16px; color: #42382e; }
-.relationship-instructions li::marker { color: #605329; font-weight: 650; }
-.relationship-instructions strong { color: #1b1713; }
-.relationship-example { min-width: 0; padding: 22px; border: 1px solid #d9cfbf; border-radius: 16px; background: #fffaf2; }
-.relationship-example-label { margin: 14px 0 5px; color: #625542; font-size: .8rem; font-weight: 650; }
-.relationship-example-sentence { margin: 0; color: #1b1713; font-size: 1.05rem; }
-.relationship-example-answer { margin: 0; color: #1b1713; font-weight: 650; }
-.relationship-example-reason { margin: 14px 0 0; color: #51463c; font-size: .93rem; }
-.relationship-guide { margin-top: 24px; padding-block: 16px; border-block: 1px solid #d9cfbf; color: #42382e; }
-.relationship-guide summary { min-height: 28px; color: #42382e; cursor: pointer; font-weight: 600; }
-.relationship-guide dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 16px 0 4px; }
-.relationship-guide dt { color: #1b1713; font-weight: 650; margin-bottom: 6px; }
-.relationship-guide dd { margin: 0; font-size: .93rem; }
-.relationship-launch { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 22px; }
-.relationship-run-notes { max-width: 68ch; color: #51463c; font-size: .9rem; }
-.relationship-run-notes p { margin: 0 0 8px; }
-.relationship-run-notes p:last-child { margin-bottom: 0; }
-.relationship-start { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; gap: 14px; min-height: 48px; padding: 12px 22px; border: 1px solid #d2ad35; border-radius: 10px; background: #f2d36d; color: #221d0d; font: inherit; font-weight: 650; cursor: pointer; }
-.relationship-start:hover { background: #e9c65a; }
-.relationship-intro :focus-visible { outline: 3px solid #356c91; outline-offset: 4px; }
-@media (max-width: 700px) {
-  .relationship-launch-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-  .relationship-heading { margin-top: 12px; }
-  .relationship-guide dl { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .relationship-launch { align-items: stretch; flex-direction: column; gap: 18px; }
+.relationship-intro .relationship-exit:hover { background: var(--relationship-card); }
+.relationship-heading { margin: 20px 0 24px; }
+.relationship-intro .relationship-heading h1 {
+  margin: 0;
+  color: var(--relationship-ink);
+  font: inherit;
+  font-size: clamp(28px, 3vw, 34px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.025em;
+}
+.relationship-heading > p { margin: 12px 0 0; max-width: 60ch; }
+.relationship-launch-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 620px) minmax(0, 320px);
+  gap: 32px;
+  align-items: start;
+}
+.relationship-written { min-width: 0; }
+.relationship-intro h2 {
+  margin: 0 0 16px;
+  color: var(--relationship-ink);
+  font: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.relationship-instructions ol { margin: 0; padding-left: 24px; list-style: decimal; }
+.relationship-instructions li { padding-left: 4px; margin-bottom: 16px; }
+.relationship-instructions li::marker { font-weight: 600; }
+.relationship-intro strong { color: inherit; font-weight: 600; }
+.relationship-example {
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid var(--relationship-border);
+  border-radius: 8px;
+  background: var(--relationship-card);
+}
+.relationship-example-label { margin: 16px 0 4px; font-weight: 500; }
+.relationship-example-sentence, .relationship-example-answer { margin: 0; }
+.relationship-example-answer { font-weight: 600; }
+.relationship-example-reason { margin: 16px 0 0; }
+.relationship-guide { margin-top: 24px; padding-block: 8px; border-block: 1px solid var(--relationship-border); }
+.relationship-guide summary { min-height: 44px; padding-block: 8px; cursor: pointer; font-weight: 500; }
+.relationship-guide dl { display: grid; gap: 16px; margin: 16px 0; }
+.relationship-guide dt { font-weight: 600; margin-bottom: 4px; }
+.relationship-guide dd { margin: 0; }
+.relationship-launch { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 24px; }
+.relationship-run-notes { min-width: 0; }
+.relationship-run-notes p { margin: 0; }
+.relationship-intro .relationship-start {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 12px;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid var(--relationship-primary);
+  border-radius: 6px;
+  background: var(--relationship-primary);
+  color: var(--relationship-on-primary);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+.relationship-intro .relationship-start:hover { background: hsl(var(--primary) / .9); }
+.relationship-intro .relationship-start svg, .relationship-intro .relationship-exit svg { flex-shrink: 0; }
+.relationship-intro .relationship-video { width: 100%; max-width: 340px; min-width: 0; }
+.relationship-intro .relationship-video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--relationship-border);
+  border-radius: 8px;
+  background: var(--relationship-video-ground);
+}
+.relationship-intro .relationship-video-fallback { margin: 12px 0 0; }
+.relationship-intro :focus-visible,
+.activity-centre .relationship-intro :focus-visible {
+  outline: 2px solid var(--relationship-ink);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+/* Container width also handles a docked shell on a wide viewport. */
+@container (max-width: 800px) {
+  .relationship-launch-grid { grid-template-columns: minmax(0, 1fr); }
+  .relationship-heading { margin-top: 16px; }
   .relationship-start { width: 100%; }
+  .relationship-launch { flex-direction: column; align-items: stretch; }
+}
+/* Deliberate fallback for browsers without container queries. The container
+ * rule above also handles a narrow dock inside a wide viewport. */
+@media (max-width: 800px) {
+  .relationship-launch-grid { grid-template-columns: minmax(0, 1fr); }
+  .relationship-heading { margin-top: 16px; }
+  .relationship-start { width: 100%; }
+  .relationship-launch { flex-direction: column; align-items: stretch; }
 }
