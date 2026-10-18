@@ -20,7 +20,7 @@ const REQUIRE_WORD = (pick: string) => `“${pick}” introduces what is require
 const FROM_REQUIREMENT = 'That is what the rule requires. Which condition is enough to guarantee it?';
 const BACKWARDS = 'That arrow starts from the requirement. Start from the condition that guarantees the result.';
 function hintFor(stage: Stage, choice: number) { return stage.hints?.[choice] || 'Not this one. Reread the rule and ask what it guarantees.'; }
-function reading(model: string, explanation: string): Stage { return { name: 'Write it in English', prompt: 'Rewrite this conditional in your own words.', explanation, model, label: 'Your rewrite' }; }
+function reading(model: string, explanation: string): Stage { return { name: 'Write it in English', prompt: 'Rewrite this conditional as if/then.', explanation, model, label: 'Your rewrite' }; }
 
 /** One fresh everyday sentence per Group 1 indicator. None repeats a lesson example. */
 type IndicatorItem = { word: string; sentence: string; left: string; right: string; partial?: string; readback: string; why: string; indicators: string[]; indicatorHints: Record<string, string> };

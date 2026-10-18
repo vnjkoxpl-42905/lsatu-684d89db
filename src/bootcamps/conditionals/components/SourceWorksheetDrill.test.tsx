@@ -11,14 +11,7 @@ const write = (name: string, value: string) => fireEvent.change(screen.getByLabe
 const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }));
 const compare = () => click('Compare this step');
 const confirm = () => click('I compared the meaning');
-// Highlights a condition by the position of its first and last word in the rule.
-const mark = (from: number, to: number) => {
-  const words = within(screen.getByRole('group', { name: /Click the first and last word/ })).getAllByRole('button');
-  fireEvent.click(words[from]);
-  fireEvent.click(words[to]);
-};
-
-it('keeps intro identification faithful: indicators first, then the learner highlights both conditions', () => {
+it('checks indicators and reviews directly without a condition-highlighting step', () => {
   run('source-intro-identify');
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
   expect(screen.queryByRole('textbox')).toBeNull();
@@ -28,13 +21,8 @@ it('keeps intro identification faithful: indicators first, then the learner high
   expect(screen.getByRole('heading', { name: 'That step works.' })).toHaveFocus();
   click('Continue');
   expect(screen.queryByRole('radio')).toBeNull();
-  expect(screen.queryByText('the product is registered within 30 days', { exact: true })).toBeNull();
-  expect(screen.queryByRole('textbox')).toBeNull();
-  mark(5, 11);
-  mark(0, 3);
-  click('Check this step');
-  expect(screen.getByText('the product is registered within 30 days', { selector: 'li' })).toBeVisible();
-  click('Continue');
+  expect(screen.queryByRole('group', { name: /first and last word/ })).toBeNull();
+  expect(screen.getByRole('heading', { name: 'Bring it together' })).toBeVisible();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   click('My reasoning matched');
   expect(screen.getByRole('button', { name: 'Question 1, completed, current' })).toHaveAttribute('aria-current', 'step');
@@ -61,7 +49,7 @@ it('requires the whole indicator phrase and correct group before advancing, with
   click('Check this step');
   expect(screen.getByText(/Indicators:/)).toBeVisible();
   click('Continue');
-  expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Bring it together' })).toBeVisible();
 });
 
 it('carries indicator work from the folded drill into Drill 2 without marking the rule reviewed', () => {
@@ -74,16 +62,12 @@ it('carries indicator work from the folded drill into Drill 2 without marking th
   run('source-intro-identify');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   fireEvent.click(screen.getByRole('button', { name: /^Question 16,/ }));
-  expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Bring it together' })).toBeVisible();
   expect(JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-indicators')!).answers['source-indicators-01'].review).toBe('matched');
 });
 
 it('gives a placement hint without showing the diagram until the placement is right', () => {
   run('source-roles');
-  mark(2, 4);
-  mark(6, 9);
-  click('Check this step');
-  click('Continue');
   const left = screen.getByRole('group', { name: 'Left: sufficient condition' });
   const right = screen.getByRole('group', { name: 'Right: necessary condition' });
   fireEvent.click(within(left).getByRole('button', { name: 'those employees complete training' }));
@@ -123,23 +107,12 @@ it('compares the diagram and checks the contrapositive as each is built, and hol
   fireEvent.click(screen.getByRole('radio', { name: /Group 1/ }));
   click('Check this step');
   click('Continue');
-  // The conditions step is checked: an indicator inside the highlight, or the same condition twice, is not accepted.
-  mark(0, 5);
-  mark(7, 9);
-  click('Check this step');
-  expect(screen.getByText(/not a complete condition/)).toBeVisible();
-  expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
-  click('Revise this step');
-  // Clicking inside a highlight removes it.
-  fireEvent.click(within(screen.getByRole('group', { name: /Click the first and last word/ })).getAllByRole('button')[0]);
-  mark(1, 5);
-  click('Check this step');
-  expect(screen.getByRole('heading', { name: 'That step works.' })).toBeVisible();
-  click('Continue');
+  expect(screen.getByRole('heading', { name: 'Define your symbols' })).toBeVisible();
+  expect(screen.queryByRole('group', { name: /first and last word/ })).toBeNull();
   write('First condition’s symbol', 'I');
   write('Second condition’s symbol', 'I');
   expect(screen.getByRole('button', { name: 'Save and continue' })).toBeDisabled();
-  write('Second condition’s symbol', 'O');
+  write('First condition’s symbol', 'O');
   click('Save and continue');
   const ours = sourceWorksheetDrills.find(s => s.id === 'source-full-translation')!.items[0];
   const left = () => screen.getByRole('group', { name: 'Left: sufficient condition' });
@@ -247,4 +220,53 @@ it('uses native grouped radios and restores their choice through numbered questi
   view.unmount();
   run('source-intro-identify');
   expect(screen.getByRole('radio', { name: 'Group 1: sufficient-condition indicator' })).toBeChecked();
+});
+
+
+it.each(sourceWorksheetDrills.map(set => [set.id]))('never presents condition highlighting in %s entry or active steps', (setId) => {
+  const view = render(<SourceWorksheetDrill setId={setId}/>);
+  expect(document.body.textContent).not.toMatch(/highlight|first and last word/i);
+  click('Start practice');
+  expect(screen.queryByRole('button', { name: 'Keep the complete ideas' })).toBeNull();
+  expect(screen.queryByRole('group', { name: /first and last word/ })).toBeNull();
+  view.unmount();
+});
+
+it('resumes an old removed condition stage at review and keeps earlier work stored', () => {
+  const set = sourceWorksheetDrills.find(set => set.id === 'source-intro-identify')!;
+  const item = set.items[0];
+  const fingerprint = JSON.stringify([item.statement, item.sufficient, item.necessary, item.indicators, item.contrapositiveWords]);
+  const key = `conditional-worksheet-v1:${set.id}`;
+  localStorage.setItem(key, JSON.stringify({ current: 0, answers: { [item.id]: {
+    groups: { '4': '1' }, fingerprint, words: [4], left: '', right: '', contraLeft: '', contraRight: '', writing: 'Earlier draft',
+    stage: 1, passed: ['indicators'], spans: [[0, 3]], conditionOne: 'A warranty is valid', conditionTwo: '', review: null,
+  } } }));
+  run(set.id);
+  expect(screen.getByRole('heading', { name: 'Bring it together' })).toBeVisible();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  const saved = JSON.parse(localStorage.getItem(key)!).answers[item.id];
+  expect(saved.spans).toEqual([[0, 3]]);
+  expect(saved.writing).toBe('Earlier draft');
+  expect(saved.flowVersion).toBe(2);
+});
+
+it('keeps saved symbol meanings and diagram stage when migrating an older highlighted run', () => {
+  const set = sourceWorksheetDrills.find(set => set.id === 'source-intro-diagrams')!;
+  const item = set.items[0];
+  const fingerprint = JSON.stringify([item.statement, item.sufficient, item.necessary, item.indicators, item.contrapositiveWords]);
+  const key = `conditional-worksheet-v1:${set.id}`;
+  localStorage.setItem(key, JSON.stringify({ current: 0, answers: { [item.id]: {
+    groups: {}, fingerprint, words: [], left: '2', right: '1', contraLeft: '', contraRight: '', writing: '',
+    conditionOne: 'A warranty is valid', conditionTwo: 'the product is registered within 30 days.', symbolOne: 'W', symbolTwo: 'R',
+    stage: 2, passed: ['conditions', 'symbols'], spans: [[0, 3], [5, 11]], review: null,
+  } } }));
+  const view = run(set.id);
+  expect(screen.getByRole('heading', { name: 'Build the diagram' })).toBeVisible();
+  expect(screen.getByText('A warranty is valid', { exact: false, selector: '.sw-learner-legend p' })).toHaveTextContent('W = A warranty is valid');
+  click('Check this step');
+  expect(screen.getByRole('heading', { name: 'That step works.' })).toBeVisible();
+  view.unmount();
+  run(set.id);
+  expect(screen.getByRole('heading', { name: 'Build the diagram' })).toBeVisible();
+  expect(JSON.parse(localStorage.getItem(key)!).answers[item.id].spans).toEqual([[0, 3], [5, 11]]);
 });
