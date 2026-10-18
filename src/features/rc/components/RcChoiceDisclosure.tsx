@@ -59,7 +59,7 @@ export function RcChoiceDisclosure({ choice, isPicked, open, onToggle }: Props) 
           </span>
         ))}
         {choice.percent != null && (
-          <span className="rc-disclosure-percent">{choice.percent}% of students</span>
+          <span className="rc-disclosure-percent">{choice.percent}% imported answer share</span>
         )}
         {isPicked && <span className="rc-tag-chip rc-tag-outline">Your answer</span>}
       </div>

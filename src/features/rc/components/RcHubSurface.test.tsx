@@ -1,3 +1,4 @@
+vi.mock('../api/rcSavedSets', () => ({ listRcSavedSets: vi.fn(async () => []), getRcSavedSet: vi.fn(), saveRcSet: vi.fn(), renameRcSet: vi.fn() }));
 import type { RcDrillSession } from '../lib/rcTypes';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useSearchParams } from 'react-router-dom';
@@ -56,6 +57,7 @@ const loadPassages = vi.fn(async (ids: number[]) => ids.map((passageId) => ({
   }],
 })));
 vi.mock('../api/rcProgress', () => ({
+  getRcHistorySnapshot: vi.fn(async () => { const history = await (await import('../api/rcProgress')).getQuestionHistory(); return { history, displayHistory: history, hasHiddenGradedResults: false }; }),
   createSession: (config: RcDrillConfig, passageIds: number[], request?: { id: string; actorId: string }) =>
     createSession(config, passageIds, request),
   getSession: (id: string, actor?: string) => getSession(id, actor),
@@ -65,6 +67,7 @@ vi.mock('../api/rcProgress', () => ({
   getSessionAttempts: vi.fn(async () => []),
   listSessions: vi.fn(async () => adoption.sessions),
 }));
+vi.mock('../api/rcExposure', async () => ({ ...(await vi.importActual('../api/rcExposure')), getRcExposureHistory: vi.fn(async () => new Set<number>()), recordRcPassageExposure: vi.fn(async () => undefined) }));
 
 /** Three drillable passages, enough for the adaptive selector to return one. */
 vi.mock('../lib/rcBank', () => ({
@@ -88,9 +91,12 @@ vi.mock('../lib/rcBank', () => ({
 }));
 
 import { RcHubSurface } from './RcHubSurface';
+import { getRcSavedSet } from '../api/rcSavedSets';
+import type { RcSavedPayload } from '../lib/rcSavedSetCodec';
 import type { RcDrillConfig } from '../lib/rcTypes';
 
 beforeEach(async () => {
+  localStorage.clear();
   const progress = await import('../api/rcProgress');
   vi.mocked(progress.getQuestionHistory).mockReset().mockResolvedValue(new Map());
 });
@@ -146,6 +152,149 @@ describe('RcHubSurface autostart', () => {
     adoption.sessions = [];
   });
 
+  it('keeps exposure unknown on a failed ledger read while legacy not-attempted selection remains available', async () => {
+    const exposure = await import('../api/rcExposure');
+    vi.mocked(exposure.getRcExposureHistory).mockRejectedValueOnce(new Error('offline'));
+    mount('/classroom/drill?section=rc');
+    await screen.findByText(/Recorded exposure could not be checked/);
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    expect(screen.getByRole('button', { name: 'No recorded exposure' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Not attempted' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
+  });
+
+  it('excludes full-text exposure independently from the legacy answer-history filter', async () => {
+    const exposure = await import('../api/rcExposure');
+    vi.mocked(exposure.getRcExposureHistory).mockResolvedValueOnce(new Set([1188]));
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    fireEvent.click(screen.getByRole('button', { name: 'No recorded exposure' }));
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Include passages whose earlier exposure is unknown' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    expect(loadPassages.mock.calls[0][0]).not.toContain(1188);
+    expect(screen.queryByText('What is the main point?')).not.toBeInTheDocument();
+  });
+
+  it('withholds outcome filters and adaptive numbers while saved results remain hidden', async () => {
+    const progress = await import('../api/rcProgress');
+    vi.mocked(progress.getRcHistorySnapshot).mockResolvedValueOnce({ history: new Map(), displayHistory: new Map(), hasHiddenGradedResults: true });
+    mount('/classroom/drill?section=rc');
+    await screen.findByText(/Some saved results are still hidden/);
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    expect(screen.getByRole('button', { name: 'Incorrect before' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Incorrect on last try' })).toBeDisabled();
+    expect(screen.queryByText(/% correct/)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
+  });
+  it('does not let an unrevealed high grade change the selected difficulty', async () => {
+    const progress = await import('../api/rcProgress');
+    const bank = await import('../lib/rcBank');
+    const passages = await bank.loadAllIndexPassages();
+    vi.mocked(bank.loadAllIndexPassages).mockResolvedValueOnce(passages.map((passage, index) => ({ ...passage, difficulty: [2, 4, 5][index] })));
+    const hiddenEntry = { questionId: 11880, attempts: 1, everIncorrect: false, incorrectOnLastTake: false, incorrectCount: 0,
+      lastSeenAt: '2026-10-17T12:00:00Z', lastGradedAt: '2026-10-17T12:00:00Z', answered: true, firstEverCorrect: true, firstTakeCorrect: true };
+    vi.mocked(progress.getRcHistorySnapshot).mockResolvedValueOnce({ history: new Map([[11880, hiddenEntry]]),
+      displayHistory: new Map([[11880, { ...hiddenEntry, firstTakeCorrect: null, firstEverCorrect: null, lastGradedAt: null }]]), hasHiddenGradedResults: true });
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Any' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    expect(loadPassages.mock.calls[0][0]).toEqual([1188]);
+  });
+
+  it('restores a fixed saved selection without starting and verifies its exact question snapshot', async () => {
+    const payload: RcSavedPayload = { kind: 'rc-builder', version: 1, mode: 'fixed', count: 1, passageIds: [1188], questionIds: [999], config: { reveal: 'per_question', timing: { mode: 'unlimited' } }, filters: { topics: [], formats: [], frameworks: [], families: [], difficulties: [], status: 'any', preptestMin: 101, preptestMax: 148 } };
+    vi.mocked(getRcSavedSet).mockResolvedValue({ id: 'saved-fixed', userId: 'owner', name: 'Fixed passages', createdAt: '2026-10-17', payload, problem: null });
+    mount('/classroom/drill?saved=saved-fixed');
+    await screen.findByText(/Opened Fixed passages/);
+    expect(createSession).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: /After each question/ })).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByText(/questions in this fixed set have changed/);
+    expect(screen.queryByRole('button', { name: 'Start this drill' })).toBeNull();
+    expect(createSession).not.toHaveBeenCalled();
+  });
+  it('restores recipe filters and timing but requires a new inspection before Start', async () => {
+    const payload: RcSavedPayload = { kind: 'rc-builder', version: 1, mode: 'recipe', count: 2, passageIds: [], questionIds: [], config: { reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 600 } }, filters: { topics: ['Science'], formats: [], frameworks: [], families: [], difficulties: [], status: 'fresh', preptestMin: 101, preptestMax: 148 } };
+    vi.mocked(getRcSavedSet).mockResolvedValue({ id: 'saved-recipe', userId: 'owner', name: 'Science recipe', createdAt: '2026-10-17', payload, problem: null });
+    mount('/classroom/drill?saved=saved-recipe');
+    await screen.findByText(/Opened Science recipe/);
+    expect(createSession).not.toHaveBeenCalled();
+    expect(screen.getByRole('textbox', { name: 'Minutes and seconds per passage' })).toHaveValue('10:00');
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' })); await screen.findByRole('button', { name: 'Start this drill' });
+    expect(createSession).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][0]).toMatchObject({ source: 'adaptive', reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 600 } });
+  });
+  it('configures intent presets without creating work', async () => {
+    mount('/classroom/drill'); await screen.findByRole('button', { name: 'Preview drill' });
+    fireEvent.click(screen.getByRole('button', { name: 'Four passages, then review' }));
+    expect(screen.getByRole('button', { name: /At the end/ })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: /Standard pace/ })).toHaveAttribute('aria-pressed', 'true');
+    expect(createSession).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'One passage with feedback' }));
+    expect(screen.getByRole('button', { name: 'Untimed' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: /After each passage/ })).toHaveAttribute('aria-pressed', 'true');
+  });
+  it('restores an owner timing default but explicit links win', async () => {
+    localStorage.setItem('lsatu:rc-timing-default:v1:owner', JSON.stringify({ mode: 'custom', seconds: 600 }));
+    const view = mount('/classroom/drill');
+    expect(await screen.findByRole('textbox', { name: 'Minutes and seconds per passage' })).toHaveValue('10:00'); view.unmount();
+    mount('/classroom/drill?timing=untimed'); await screen.findByRole('button', { name: 'Preview drill' });
+    expect(screen.getByRole('button', { name: 'Untimed' })).toHaveAttribute('aria-pressed', 'true');
+  });
+  it('saves timing only when requested and makes failed defaults honest', async () => {
+    localStorage.setItem('lsatu:rc-timing-default:v1:owner', 'broken');
+    mount('/classroom/drill'); await screen.findByText(/timing default could not be read/);
+    fireEvent.click(screen.getByRole('button', { name: /Standard pace/ }));
+    expect(localStorage.getItem('lsatu:rc-timing-default:v1:owner')).toBe('broken');
+    fireEvent.click(screen.getByRole('button', { name: 'Save timing default on this device' }));
+    expect(JSON.parse(localStorage.getItem('lsatu:rc-timing-default:v1:owner')!)).toEqual({ mode: 'standard', seconds: 525 });
+  });
+  it('clears just passage filters without resetting the drill timing', async () => {
+    mount('/classroom/drill?timing=standard'); await screen.findByRole('button', { name: 'Preview drill' });
+    fireEvent.click(screen.getByRole('button', { name: 'Remove status filter' }));
+    expect(screen.queryByRole('button', { name: 'Remove status filter' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Clear passage filters' }));
+    expect(screen.getByRole('button', { name: /Standard pace/ })).toHaveAttribute('aria-pressed', 'true');
+  });
+  it('sorts manual passages and reorders the actual inspected selection', async () => {
+    mount('/classroom/drill?passages=1188,1201'); await screen.findByRole('button', { name: 'Move Passage 1201 earlier' });
+    fireEvent.change(screen.getByRole('combobox', { name: 'Sort passages' }), { target: { value: 'title' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Move Passage 1201 earlier' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('button', { name: 'Start this drill' });
+    expect(loadPassages).toHaveBeenLastCalledWith([1201, 1188]);
+    expect(createSession).not.toHaveBeenCalled();
+  });
+  it('requires explicit inclusion of unknown earlier exposure for strict selection', async () => {
+    mount('/classroom/drill'); await screen.findByRole('button', { name: 'Preview drill' });
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    fireEvent.click(screen.getByRole('button', { name: 'No recorded exposure' }));
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    const permission = screen.getByRole('checkbox', { name: 'Include passages whose earlier exposure is unknown' });
+    expect(permission).not.toBeChecked(); fireEvent.click(permission);
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
+  });
+  it('rechecks exposure at Start and preserves the selection instead of silently substituting', async () => {
+    const exposure = await import('../api/rcExposure');
+    mount('/classroom/drill'); await screen.findByRole('button', { name: 'Preview drill' });
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    fireEvent.click(screen.getByRole('button', { name: 'No recorded exposure' }));
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Include passages whose earlier exposure is unknown' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('button', { name: 'Start this drill' });
+    const selected = loadPassages.mock.calls.at(-1)![0];
+    vi.mocked(exposure.getRcExposureHistory).mockResolvedValueOnce(new Set(selected));
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
+    await screen.findByText(/A selected passage now has recorded exposure/);
+    expect(createSession).not.toHaveBeenCalled();
+  });
   it('REPLACES the launcher URL when a link starts the drill itself', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=1&timing=untimed&reveal=per_passage&start=1');
 
@@ -358,8 +507,9 @@ describe('RcHubSurface autostart', () => {
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(loadPassages).toHaveBeenCalledWith([1188, 1201]);
     expect(createSession).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByText(/PT 140 · Passage 1188/));
-    expect(screen.getAllByText('What is the main point?')).toHaveLength(2);
+    expect(screen.queryByText('What is the main point?')).not.toBeInTheDocument();
+    for (const button of screen.getAllByRole('button', { name: 'Reveal passage and questions' })) fireEvent.click(button);
+    await waitFor(() => expect(screen.getAllByText('What is the main point?')).toHaveLength(2));
     expect(screen.queryByText('Secret explanation')).not.toBeInTheDocument();
     expect(screen.queryByText('Secret reason')).not.toBeInTheDocument();
     fireEvent.click(screen.getAllByRole('button', { name: 'Start this drill' })[0]);
@@ -461,7 +611,7 @@ describe('RcHubSurface launch truth (#171)', () => {
   const primary = () => screen.getAllByRole('button', { name: /^(Preview drill|Start this drill|Loading preview…|Starting…)$/ })[0];
   const launchSummary = () => screen.getByRole('region', { name: 'Launch summary' });
 
-  it.each(['Fresh', 'Incorrect before', 'Incorrect on last try', 'Any'])(
+  it.each(['Not attempted', 'Incorrect before', 'Incorrect on last try', 'Any'])(
     'waits for acknowledged history before previewing with %s and adaptive difficulty', async status => {
       const progress = await import('../api/rcProgress');
       let release!: () => void;
@@ -939,7 +1089,7 @@ describe('RcHubSurface launch truth (#171)', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Reset filters' }));
 
-    expect(screen.getByRole('button', { name: 'Fresh' })).toHaveClass('rc-active');
+    expect(screen.getByRole('button', { name: 'Not attempted' })).toHaveClass('rc-active');
     expect(screen.getByRole('button', { name: 'Untimed' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('button', { name: /After each passage/ })).toHaveAttribute(
       'aria-pressed',
