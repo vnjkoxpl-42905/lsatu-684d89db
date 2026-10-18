@@ -31,6 +31,8 @@ function Fixture() {
       <RcExplanationMedia media={[{ kind: 'video', src: '/no-fixture-file.mp4', title: 'No captions fixture', transcript: 'Fixture transcript remains readable when caption metadata is missing.' }]} />
       <h2>Synthetic native media controls</h2>
       <RcExplanationMedia media={[{ kind: 'video', src: '/scripts/verification/fixtures/rc-media-test.webm', title: 'Synthetic accessibility fixture, not an LSAT explanation', transcript: 'Synthetic accessibility fixture. A two-second test video used only to verify native controls.', captions: { src: '/scripts/verification/fixtures/rc-media-test.vtt', language: 'en', label: 'English fixture captions' } }]} />
+      <h2>Caption-load failure</h2>
+      <RcExplanationMedia media={[{ kind: 'video', src: '/scripts/verification/fixtures/rc-media-test.webm', title: 'Synthetic caption failure', transcript: 'Readable alternative after a caption-load failure.', captions: { src: '/scripts/verification/fixtures/missing-caption.vtt', language: 'en', label: 'Missing fixture captions' } }]} />
     </main>
   </MemoryRouter>;
 }

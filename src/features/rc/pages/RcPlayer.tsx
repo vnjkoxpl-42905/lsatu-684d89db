@@ -29,6 +29,7 @@ import { readActiveRcAnswerBackups, readRcAnswerBackups, writeRcAnswerBackup, re
 import { completedRcDestination, rcReviewRedirect } from '../lib/rcSessionDestination';
 import { safeRcReturnTo } from '../lib/rcReturnTo';
 import { canRevealRcResults } from '../lib/rcResultsReveal';
+import { assertRcParentReleased } from '../api/rcProtectedRelease';
 import { useRcA11y } from '../hooks/useRcA11y';
 import { useRcHighlights } from '../hooks/useRcHighlights';
 import { useRcFlagPersistence } from '../hooks/useRcFlagPersistence';
@@ -245,6 +246,8 @@ function RcPlayerRunner() {
           const session = await getSession(existingId);
           if (!session) throw new Error('That drill could not be found.');
           if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
+          if (reviewOnly) await assertRcParentReleased(session, user.id);
+          if (cancelled) return;
           if (session.config.timedSectionSittingId && !reviewOnly) {
             if (!cancelled) navigate(timedSectionResumeHref(session.config.timedSectionSittingId), { replace: true });
             return;
@@ -297,6 +300,8 @@ function RcPlayerRunner() {
           if (cancelled) return;
           if (!session) throw new Error('That drill could not be found.');
           if (session && (!user || session.userId !== user.id)) throw new Error('This drill belongs to another account.');
+          if (reviewOnly && user) await assertRcParentReleased(session, user.id);
+          if (cancelled) return;
           if (session.config.timedSectionSittingId && !reviewOnly) {
             navigate(timedSectionResumeHref(session.config.timedSectionSittingId), { replace: true });
             return;

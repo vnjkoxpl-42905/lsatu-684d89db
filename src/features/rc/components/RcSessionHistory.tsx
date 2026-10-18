@@ -32,7 +32,7 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
       const list = await listSessions();
       if (signal?.cancelled) return;
       setSessions(list.filter(s => s.status === 'in_progress' || s.status === 'completed'));
-      const done = list.filter(canRevealRcResults);
+      const done = list.filter(session => canRevealRcResults(session));
       const pairs = await Promise.all(
         done.map(async (x) => {
           const rows = (await getSessionAttempts(x.id)).filter((a) => a.isFirstAttempt);

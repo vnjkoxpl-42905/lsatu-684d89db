@@ -4,7 +4,7 @@ Prepared 2026-10-18. This is an execution checklist, not evidence that the check
 
 ## Preserve account work
 
-Use Joshua's existing labelled test work. Ordinary sitting `6ca71bac-0813-453e-b3b3-d6bbe466ee68` is completed, revealed and excluded from analytics. Protected sitting `4b0b9a21-7905-4190-a923-40efeb325538` was left paused at 34:43 with no answers. Do not complete, discard or overwrite unrelated sittings. New clocks and new accounts need their own scope; the prior authorization covered one test section clock.
+Use Joshua's existing labelled test work. Ordinary sitting `6ca71bac-0813-453e-b3b3-d6bbe466ee68` is completed, revealed and excluded from analytics. Protected sitting `4b0b9a21-7905-4190-a923-40efeb325538` reached real expiry on 2026-10-18 with no answers; its completed RC child is `8c5eba0b-27f0-4ab7-b1d0-4e6e8c3b8c6a`. This supersedes the earlier paused checkpoint. Do not complete, discard or overwrite unrelated sittings. New clocks and new accounts need their own scope; the prior authorization covered one test section clock.
 
 ## Record evidence for each check
 

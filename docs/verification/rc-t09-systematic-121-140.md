@@ -12,8 +12,19 @@ Reviewer work in progress, 2026-10-18. This ledger records actual complete readi
 | 124 | 505, 507, 510, 512 | 27 | All read; confirmed authored defects repaired |
 | 125 | 480, 483, 490, 491, 831, 834, 838, 841 | 53 | Seven newly read; reused complete review of483; confirmed authored defects repaired |
 | 126 | 465, 468, 471, 472 | 27 | All read; confirmed authored defects repaired |
+| 127 | 453, 456, 459, 463 | 27 | All read; confirmed authored defects repaired |
+| 128 | 547, 549, 553, 556, 1115, 1117, 1119, 1121 | 55 | All read; confirmed authored defects repaired |
+| 129 | 437, 441, 444, 445 | 27 | All read; confirmed authored defects repaired (reused earlier full review of 444) |
+| 130 | 414, 416, 418, 422 | 27 | All read; confirmed authored defects repaired |
+| 131 | 403, 405, 408, 410 | 27 | All read; confirmed authored defects repaired |
+| 132 | 337, 340, 343, 345, 532, 534, 537, 538 | 55 | Seven newly read; reused complete review of 343; confirmed authored defects repaired |
+| 133 | 331, 333, 334, 335 | 27 | All read; confirmed authored defects repaired |
+| 134 | 304, 305, 308, 310 | 27 | All read; confirmed authored defects repaired |
+| 135 | 284, 285, 290, 291 | 27 | All read; confirmed authored defects repaired |
+| 136 | 258, 260, 262, 263, 524, 526, 529, 530 | 54 | All read; confirmed authored defects repaired |
+| 137 | 239, 241, 243, 244 | 27 | All read; confirmed authored defects repaired |
 
-Current completed block: 36 passages, 241 questions, 1,205 choices. Thirty-four passages were newly read in this systematic pass; two reuse documented full reviews (168 and483). Earlier independent sample coverage is recorded separately in `rc-t09-reasoning-sample.md`; it must be unioned by passage ID rather than added blindly. This file does not yet certify PT127–140.
+Current completed block: 92 passages, 621 questions, 3,105 choices. Four passages reuse documented full reviews (168, 483, 444 and 343). Earlier independent sample coverage must be unioned by passage ID rather than added blindly. PT138-140 remain pending.
 
 ## PT121 repairs
 
@@ -76,3 +87,111 @@ Continue complete reading from PT127 through PT140, one passage at a time. Reuse
 - 468: research for Q3158/Q3159/Q3162 distinguishes B's critique of environmental rhetoric and economic motivations from a denial of all actual ecological harm. Q3159 B and Q3160 B/E preserve those limits. Q3161 D does not invent a policy B advocates or an absolute rejection of integrated control. Q3162 B/E distinguishes unclear timing/native-habitat facts from direct evidence about North American harm and motivation.
 - 471: AnotherWay no longer says Kingston is not a print author. Q3163 C rejects overgeneralization rather than denying all ethnic-literature criticism. Q3168 A/C/D distinguishes compatibility from strong support and a weakened example from total disproof. Q3169 E repairs an unrelated copied explanation. Q3170 C fixes a missing negative; D/E grounds the attitude in sophistication and longevity rather than inventing a survey of ancient sources or song-specific praise.
 - 472: Q3171 C repairs a serious definitional error: rising and falling prices alone do not establish a speculative bubble. Q3172 research and Q3173 B preserve rational possible returns without asserting every buyer knew the outcome or profited. Q3173 C does not generalize from this account to every nonbubble price. E no longer imports unsupported claims about named contemporary investments. Summary corrects Garber's name.
+
+## PT127 complete
+
+All four passages (453, 456, 459, 463), all 27 questions (3298-3324), all 135 choices, every available explanation and summary read against the complete source. Missing explanations remain absent.
+
+- 453: Q3298 A/B/E grounds uniqueness in the explicit singular retellings and fixes a false strongest-folktale-writer reading; C and Q3301 A/C avoid inventing critics ignorance of familiar source tales. Q3299 E no longer infers an omniscient voice occurs only at the ending. Q3303 A preserves originality in delivery while distinguishing borrowed subjects.
+- 456: summary distinguishes more deadly infection from greater probability of infection. Q3305 B avoids exact-count interpretation of as various; C grounds rejection in the actual scope, not first-noun matching. Q3308 avoids guaranteed starvation and preserves lower probability of sparing kin. B acknowledges the salamander case. Q3310 D distinguishes beginning inquiry from completing explanation. Q3312 A removes invented numerical meaning of many.
+- 459: summary preserves some stateless Roma. Q3314 and Q3318 correctly identify citizenship as the fifth element (four empirical plus one legal). Q3316 E grounds the special problem in the described unusual circumstances rather than treating can as proof of atypicality. Q3318 Goal no longer claims that differing conclusions prevent a common supporting principle.
+- 463: Q3319 B/C removes invented historical-awareness assumptions and grounds economic equality in abolition of fees. Q3320 A acknowledges the discussion of limitations while identifying the omitted eventual-reform relationship. Q3322 C/E avoids lifelong-learning and religious-toleration claims. Q3323 D does not infer reform priority from failure of enactment. Q3324 locates the proposal limitation in paragraph 2.
+
+Checkpoint total through PT127: 40 passages, 268 questions, 1340 choices (including two previously reviewed passages reused as documented). PT128-140 remain pending.
+
+## PT128 in progress
+
+Passages 547, 549, 553 and 556 fully read, including all 28 questions (2625-2652), all 140 choices, every available explanation and summary variant. Remaining PT128 passages 1115, 1117, 1119 and 1121 are not yet reviewed.
+
+- 547: repairs invented claims that Mexican American writing is itself a major establishment; unsupported comparative historical importance; claims of no stylistic discussion despite bilingual style; and inference from identity creation to an institutional goal. Q2625 C cites actual paragraphs, not unavailable highlights.
+- 549: repairs treating narrow/unsupported statements as contradictions, compare as necessarily neutral, automatic opposition to every future legal change, claims about creditors surprise, attribution of negligence to all employees, and a weakening option wrongly classified as strengthening despite no specified bankruptcy approach. Summary preserves primarily remedial rather than wholly nonpunitive law.
+- 553: fixes Q2639 support location; Q2641 C invented desire to seem paternal/liked; Q2642 E false denial that historical construction furthers dominance; Q2643 A/B wrong rejection merely because ceremony belongs to colonizers; Q2644 D false statement that imperial example crosses no boundaries, and E unsupported authenticity comparison.
+- 556: preserves can in sensitivity/replication summary; Q2647 identifies uncertainty rather than inventing a model/fractal-irregularity distinction; Q2648 A separates detecting irregularity from predicting motion; Q2650 B correctly uses chaos and E does not infer different results from truly identical conditions; Q2651 A/B/C/E distinguishes a common receiving body from predictability, absence of irregularity or identical precise endpoint.
+
+## PT128 completed second half
+
+Remaining passages 1115, 1117, 1119 and 1121 now fully read: questions 7229-7255 (27), all 135 choices and all available explanations and summary variants. PT128 is complete: eight passages /55 questions /275 choices. Total through PT128:48 passages /323 questions /1615 choices.
+
+- 1115: Q7231 does not exclude an author claim from according-to-the-passage questions merely because it is opinion. Q7233 C does not invent an absolute wool-value ranking or company outreach policy. Q7234 B/C/E removes invented common-knowledge status, recognizes explicit raw-unit-cost reduction, and avoids assuming current methods equal 1950s methods.
+- 1117: Q7236 Anticipate teaches the actual outcome-attitude bridge rather than declaring a supporting principle impossible. Q7237 recognizes explicit similar-to language, the paragraph 2 recurring suffering-as-art contention and paragraph 3 support; B no longer claims qualify and exception are identical answer choices that cancel each other.
+- 1119: AnotherWay preserves most astronomers rather than everyone, reexamination rather than immediate disproof, and improved fusion understanding without claiming Einstein equation arrived afterward. Q7241 A/D and Q7246 B fix mechanism attribution and 90-percent-hydrogen versus hydrogen-plus-helium errors. Q7244 C gives the actual earlier reason for reexamination.
+- 1121: Q7250 C no longer treats technical as the opposite of abstract. Q7253 B avoids conflating all judicial discretion with cosmic justice. Q7254 A/D distinguishes complete information from the ability to pass any judgment. Q7255 A/C/D/E separates limited consideration of disadvantages from perfect cosmic assessment, and fixes a serious reversal that equated B traditional justice with consequences despite B explicitly defining it as impartial process regardless of outcome.
+
+## PT129 complete
+
+All four passages /27 questions /135 choices reviewed, including reuse of the already fully reviewed p444 Willa Cather. Newly read p437 (Q3399-3403), p441 (Q3404-3410) and p445 (Q3418-3425), all available explanations and summary variants. Total through PT129:52 passages /350 questions /1750 choices.
+
+- 437: AnotherWay fixes appeal chronology: first court appeal won a hearing, then FCC granted renewal; it was not a lost first lawsuit. Broadcaster-only statements now preserve all economically interested parties. Q3403 E attributes prior exclusion to FCC rather than courts.
+- 441: Q3405 B/D corrects claims of no practical-needs discussion and locates the humanists spiritual-element claim in paragraph 2. Q3406 E preserves the conditional optimism about collaboration. Q3407 C does not assert actual influence of reductionism when source reports a mistaken view.
+- 445: Q3418 E recognizes existing proven theorems; Q3421 B calls Koch construction rule-based rather than random. Q3423 A fixes the finite-stage count versus infinite-limit confusion. Q3424 B/E preserves a limited overlap inference and commonly self-similar rather than all fractals. Q3425 D now grounds absent precise definition in the explicit first paragraph instead of confusing undefined subject matter with unknown future applications.
+
+## PT130 complete
+
+All four passages /27 questions (3452-3478) /135 choices, every available explanation and all summary variants read against complete source. Total through PT130:56 passages /377 questions /1885 choices.
+
+- 414: Q3454 A/B recognizes archaic terminology and explicitly discussed isotope tracing while distinguishing reconstruction; Q3457 D corrects paragraph/source-role; Q3458 B acknowledges neglected fragments/weights while preserving the actual obstacle/progress purpose. AnotherWay no longer claims all cloth vanished or nobody understands any old words.
+- 416: Q3460 A removes unsupported claim about the readers device architecture. Q3461 C teaches increasing versus most without treating most as an automatic answer killer. Q3463 B/D removes the false rule that some is unattractive in strengthening. Q3464 research corrects sequential computers were used but inadequate, rather than never used.
+- 418: summary includes both central objections, including the more important conception-versus-physical-copy case. Q3465 E correctly says theory avoids ownership of ideas. Q3466 D distinguishes the proponents position from the authors challenge. Q3469 C preserves rights constraints; Q3470 C teaches compatible transfer without inferring some exceptions from typical; E avoids inventing computer-program doctrine.
+- 422: Q3472 D removes invented implications about improvisation; Q3475 D removes an unsupported innate-preferences claim. Q3478 A attributes excessive complexity to A, C avoids invented artistic-value ranking, and D fixes the missing negative/invalid causal-reversal teaching while grounding the probabilistic inference in both sources.
+
+## PT131 complete
+
+All four passages /27 questions (3601-3627) /135 choices, all available explanations and summary variants read.
+
+- 403: corrects comparative-passage paragraph references; Q3605 B distinguishes suitability from implementation, and Q3608 C does not infer absence of all variable limits from many-element capacity.
+- 405: Q3612 B acknowledges explicit discussion of law professors while isolating missing why; Q3613 A does not infer zero synthesis benefit from case analysis, B removes unsupported importance ranking, E does not teach a looser evidence standard from stem wording. Summary locates thesis in opening sentence.
+- 408: preserves the expensive-gold exception in Brief/AnotherWay. Q3616 distinguishes durable reflection from technical sculptural suitability and removes oversimplified oxidation terminology. Q3618 D grounds comparative interest in the contextual evidence rather than a generic action-to-preference rule.
+- 410: summary map now follows the actual four paragraphs and avoids absolute inability to control emotion. Q3625 A/D avoids treating survey as automatically neutral or less compelling as impossible. Q3626 E avoids inventing every proposers private fairness belief. Q3627 C recognizes that keeping secrets is explicitly discussed, but in the other explanation.
+
+## PT132 complete
+
+All eight passages /55 questions /275 choices, seven newly read plus reuse of p343 full review.
+
+- 337: Q1718 E/Q1725 B preserve best use within 500 years rather than absolute limit. Q1720 E separates initial colonization from slow growth. Q1723 B does not invent impossibility of radiation measurement. Q1725 A removes invented guaranteed destruction by all floods.
+- 340: Q1726 B removes an unsupported general map-versus-verbal-detail comparison. Q1730 A recognizes judges explicitly mentioned; C grounds expert accuracy in their evidentiary role rather than simply lack of criticism.
+- 345: Q1741 B removes an unrelated diagnostic analogy. Q1743 A preserves may contribute rather than rejecting historical explanations. Q1744 D removes invented female-protagonist motives and the false general rule that differing causes cannot explain a shared feature.
+- 532: Q2753 B distinguishes presentation under a label from changing autobiographical content. Q2755 B recognizes the author does defend genre blending, but as a means to the message. Q2752 E grounds the implied reservation without a formal invalid inference from not-sole-requirements. Q2754 B does not attribute Mphahleles view to all novelists.
+- 534: Q2757 E removes unavailable highlight references. Q2758 B restores the crucial without in plentiful-evidence caution. Q2760 E removes invented quantitative disagreement; Q2759/AnotherWay preserve survive rather than first arise.
+- 537: AnotherWay preserves rare threats rather than never. Q2763 B preserves little or no evidence. Q2764 C/E distinguishes hypothetical new models from a proved replacement and compromise. Q2767 D does not equate some access with abundant access.
+- 538: Q2770 E does not treat limited computer benefit as contradicted by autonomous-reasoning failures. Q2773 C restores missing not. Q2774 C avoids invented necessity of rule additions; Q2775 A distinguishes case relevance from storage; Q2776 B avoids claiming no unavailable precedents ever.
+
+## PT133 complete
+
+- 331: summary distinguishes types commonly produced before 1972 from only actual old items. Q1894 D recognizes historical testimony while preserving one-concept scope; Q1896/1900 avoid invented continuous dates and exact living-memory span. Q1899 D does not invent Russian seal hunters or population causes.
+- 333: summary avoids implying Chopin adopted sentimental style, or source claims most of her personal reading was sentimental. Q1903 E removes married-not-lonely inference; Q1906 E does not define impressionism as necessarily less unity; Q1908 D grounds the innovation-to-new-experience link in the explicit New Women sentence.
+- 334: Q1911 research/A uses direct youngest-rock support without inventing reversal frequency, electrical charge or modern-vent timelines. Q1912 A does not infer no compass distortion from normal polarity. Q1913 B teaches independent verification strengthens the premise without requiring a new evidence type or absolute proof. Q1914 E preserves recurring polarity as distinct from unique timestamp.
+- 335: Q1917 E grounds absence of disagreement in both passages rather than asserting universal human agreement. All remaining source/questions/available prose read.
+
+## PT134 complete
+
+- 304: Q1997 E no longer claims losing a job eliminates economic expectations; the missing calculation, not unemployment alone, makes the assault the least fitting economic-choice example.
+- 305: Q2004 D recognizes explicit Spanish-language transmission while distinguishing intentional language instruction. Q2005 A/C treats Spanish route and European origin as overlapping rather than disjoint majority/minority pools; B preserves the actual proverb-instruction comparison; D removes an unsupported religious-stereotype example and teaches the tentative norm concern directly.
+- 308: summary does not infer free will or individual learning from the genetic-development hypothesis. Q2012 uses the source definition of hidden interest instead of unrelated sensational examples. Q2013 does not teach that assumptions are always logical opposites of objections.
+- 310: Q2019 A/C avoids inventing first-position fantasy requirements or narrowing Dostoyevskys reality to nonfantastical everyday subjects. Q2016 B distinguishes opposition to a mandatory purpose from inability of a method to serve that purpose. All questions/choices/available authored prose read.
+
+## PT135 complete
+
+- 284: Q1663 D acknowledges author approval of effective genre mixing while rejecting narrow scope. Q1665 A removes the false claim that an innovative work cannot belong to a type. Q1664 B accurately describes the missing avoidance intention. Summary preserves for-the-most-part qualifier.
+- 285: summary removes invented causal explanation that historic works vanished solely because value went unrecognized. Q1670 C does not attribute a broad belief to many archivists from examples. Q1672 A avoids ruling out every future noncomputer method. Q1674 B removes fabricated 30-percent threshold for much; D preserves instability versus fixed photographic lifespan.
+- 290: summary preserves both legitimate-purpose and public-authority-interest conditions. Q1678 A/E and Q1679 A remain passage-relative, recognize Roman disclosure exceptions, and remove unsupported blanket present-law claims about all true disclosures. Q1681 C does not teach that North American speech is unlimited except for blackmail.
+- 291: Q1683 B does not define hypotheses as necessarily retrospective. Q1689 consistently identifies protected native plants rather than corn (the control crop), and teaches the indirect protection-of-rivals structure. All source/questions/available authored material read.
+
+## PT136 complete
+
+- 258: Q2022 E and Q2026 D avoid unsupported assumptions about device presentation and equal demand for editing/design jobs. Q2028 A/C recognize the explicit caution sentence without inventing a recap or a ban on single-sentence arguments.
+- 260: Q2033 B/C/E explain the actual shared standards requirement without denying shared conditional principles or treating a necessary condition as sufficient. Q2030 C corrects paragraph location; Q2035 D/E remove assumptions about judicial tone and an invented direction/probability of coincidental matching. Summary attributes low error-rate testimony rather than independently certifying it.
+- 262: Q2039 B corrects the reversed lengthy-solo interpretation. Q2041 D does not define improvisation as sloppy. Q2042 A/D/E distinguishes earlier attempts, literal narrative person from musical analogy, and unsupported concealment intentions.
+- 263: Q2046 B/C/D preserve the broad accumulated evidence without unsupported exclusions. Q2048 A/B distinguish theoretical possibility from experiment-specific skepticism; C correctly attributes 1938 identification to Hahn, not Frisch; D removes unsupported element comparisons. Neutrons corrected in authored prose; source remains untouched.
+- 524: Q2900 B does not infer that a technique's presence in other traditions weakens this particular influence; uniqueness was not claimed. Summary preserves reach to literate and nonliterate viewers rather than all people. Q2898 A and Q2903 C correct paragraph references; Q2902 E teaches contextual transformation.
+- 526: Q2904 C does not claim B believes creative professional writing impossible. Q2905 D/E distinguish unsupported dual membership from contradiction. Authored references use the relevant passage's own paragraph numbering; Q2906 C and Q2909 D point to the actual source locations.
+- 529: summary compares instinct to classical game theory, not the species-specific ritual model. Q2910 E recognizes Riechert actually makes predictions but distinguishes territorial conflict from general site selection. Q2913 B identifies missing controversial status and test-prediction purpose. Q2915 C/D remove false universal rules about evidence evaluation and the assertion that no data appears.
+- 530: Q2918 B grounds acceptance in reasoning rather than an attribution-count shortcut. Q2919 B/D remove the false opposition of intuition and evidence and a false impossibility of conflicting claims on different topics. Q2920 A/C teach the cited harm duty without unsupported moral judgments. Q2923 E recognizes proponents are discussed but no admission of defects is given.
+
+PT135 cross-review follow-up: p290 Q1678 C, Q1679 C, Q1681 A/B/D now preserve both Roman exception conditions, distinguish no special category from no applicable law, and avoid treating all personal gain as prohibited disclosure. Corrected newly authored possessives in the same passage.
+
+## PT137 complete
+
+- 239: Q2124 E preserves for-the-most-part verification policy. Q2128 D removes erroneous civil-law guilt/conviction exposition and teaches ten of twenty directly; A avoids assuming unexamined means obscure films. Q2125 A removes unsupported popular-market claims. Q2123 and summary do not invent an evidence proportion or transfer Tucker's collecting activity to the author.
+- 241: Q2131 C removes unsupported human-prehistory statistics; authored 54-percent reference is accurate. Q2132 A does not define empathy as requiring shared personal experience. Q2133 explanation/C/E and Q2135 anticipation teach collaborative narrative shaping without disparaging Nisa's life or inventing a mandatory climax structure or universal exposition timing.
+- 243: summary preserves primarily vulnerable rather than only vulnerable. Q2138 E does not invent an increased biodiversity result for the Everglades. Q2139 D reads can-only-benefit correctly as excluding harm rather than making borrowing the only path to improvement. Q2140 B recognizes A challenges an old assumption but B does not defend that assumption. Q2137 B avoids defining all inconsistent criteria as formal contradiction.
+- 244: Q2144 and related prose do not claim the 1688 settlement created Parliament. Q2147 preparation/A/D distinguish the Crown's improved borrowing terms from Parliament's own borrowing or commercial attitudes. Q2145 C removes invented numerical histories of rich subjects' rates. Summary preserves not-necessarily-solved rather than claiming all constitutions only relocate the paradox.
