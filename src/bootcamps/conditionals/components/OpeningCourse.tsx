@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, BookOpen, Bookmark, Check, Dumbbell, Menu, Spark
 import { CourseProgressProvider, useCourseProgress, useDeviceCourseProgress, type CourseProgressStore } from '../courseProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { OPENING_COURSE_PATH, openingCourseStep, type OpeningCourseStep } from '../openingCoursePath';
+import { OPENING_COURSE_PATH, openingCourseStep, openingDrillNumber, type OpeningCourseStep } from '../openingCoursePath';
 import { OpeningCourseContent } from './OpeningCourseContent';
 import { CourseFlashcardUrl, FlashcardTools } from './FlashcardTools';
 import { DrillOneEntry } from './DrillOneExperience';
@@ -47,7 +47,7 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
   const count = drill ? getSourceWorksheetDrill(step.id)?.items.length : undefined;
   return <li className={`oc-path-card${drill ? ' oc-drill-card' : ''}`} data-progress={saved?.status ?? 'new'} data-kind={step.type}>
     <span className="oc-timeline-node" aria-hidden="true">{drill ? <Dumbbell size={20}/> : <BookOpen size={20}/>}</span>
-    <span className="oc-label">{drill ? 'Drill' : <>Lesson <span>{step.lessonNumber}</span></>}</span><CardStatus saved={saved} drill={drill}/><h3>{step.title}</h3><p>{step.description}</p>
+    <span className="oc-label">{drill ? `Drill ${openingDrillNumber(step.id) ?? ''}`.trim() : <>Lesson <span>{step.lessonNumber}</span></>}</span><CardStatus saved={saved} drill={drill}/><h3>{step.title}</h3><p>{step.description}</p>
     <div className="oc-card-foot"><Link className="oc-action" to={url(step.id)}>{drill ? <Dumbbell size={16}/> : <BookOpen size={16}/>} {saved?.status === 'started' ? 'Continue' : saved?.status === 'done' ? (drill ? 'Review drill' : 'Read again') : drill ? 'View drill' : 'Read lesson'}</Link>{count !== undefined && <span className="oc-card-count">{count} questions</span>}</div>
   </li>;
 }
@@ -180,7 +180,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
         {current.lessonNumber && <p className="oc-label">Part {current.part ?? 1} · Lesson {current.lessonNumber}</p>}
         <h1 className="font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]">{current.title}</h1>
         <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>
-      </header> : <header><p className="oc-label">Practice</p><h1>{current.title}</h1></header>}</div>
+      </header> : <header><p className="oc-label">{openingDrillNumber(current.id) ? `Drill ${openingDrillNumber(current.id)}` : 'Practice'}</p><h1>{current.title}</h1></header>}</div>
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions</Link>}
     </div>}
     <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}>{getSourceWorksheetDrill(step.id) ? <SourceWorksheetDrill setId={step.id} run startUrl={url(step.id, true)} storageScope={storageScope}/> : <OpeningCourseContent id={step.id}/>}</CourseFlashcardUrl.Provider></div>)}</div>

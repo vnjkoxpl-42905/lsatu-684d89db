@@ -571,8 +571,8 @@ it('rejects an unassigned new note and does not widen practice-only assignments'
 it('keeps assignment context without recording legacy completion on new course navigation', () => {
   mount(`${base}/opening/necessary-words?assignment=skill&level=advanced&path=skill&start=group-2`, [skill()]);
   fireEvent.click(screen.getByRole('link', { name: 'Return to course' }));
-  fireEvent.click(screen.getByRole('heading', { name: 'Drill 2: Find both conditions' }).closest('li')!.querySelector('a')!);
-  expect(screen.getByRole('heading', { level: 1, name: 'Drill 2: Find both conditions' })).toBeVisible();
+  fireEvent.click(screen.getByRole('heading', { name: 'Find the indicators' }).closest('li')!.querySelector('a')!);
+  expect(screen.getByRole('heading', { level: 1, name: 'Find the indicators' })).toBeVisible();
   const next = screen.getByRole('link', { name: /Start practice/ }).getAttribute('href')!;
   expect(next).toContain('assignment=skill');
   expect(next).toContain('level=advanced');
@@ -663,4 +663,12 @@ it('does not expose a Group 2 deck to Group 1-only work', () => {
  mount(`${base}/opening-tools?deck=group-2`, [assignedSkill('group-1', 'beginner')]);
  expect(screen.queryByRole('heading', { name: 'Group 2 words' })).toBeNull();
  expect(screen.getByRole('heading', { level: 1, name: 'Flashcards' })).toBeVisible();
+});
+
+it('retains the retired roles drill URL and saved draft without recommending it', () => {
+ state.progress!.course = { 'source-roles': { status: 'started', updatedAt: '2026-10-17', state: { retainedDraft: 'original work' } } };
+ mount(`${base}/opening/source-roles`, [skill()]);
+ expect(screen.getByRole('heading', { level: 1, name: 'Place the conditions' })).toBeVisible();
+ expect(state.progress!.course['source-roles'].state).toEqual({ retainedDraft: 'original work' });
+ expect(screen.queryByRole('link', { name: /Continue drill.*Place the conditions/ })).toBeNull();
 });

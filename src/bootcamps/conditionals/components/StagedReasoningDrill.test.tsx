@@ -26,7 +26,7 @@ it('uses one fresh sentence per Group 1 indicator, none copied from a lesson, pl
   for (const item of indicatorItems) {
     const [indicator, , , write] = item.stages;
     indicator.options!.forEach((_, i) => { if (i !== indicator.correct) expect(indicator.hints![i]).toBeTruthy(); });
-    expect(write).toMatchObject({ name: 'Write it in English', prompt: 'Rewrite this conditional in your own words.', label: 'Your rewrite' });
+    expect(write).toMatchObject({ name: 'Write it in English', prompt: 'Rewrite this conditional as if/then.', label: 'Your rewrite' });
     expect(write.model).toMatch(/^If .*, then /);
   }
   expect(contrapositiveStagedItems).toHaveLength(9);
@@ -68,7 +68,7 @@ it('grades the exact submitted rewrite before allowing progress', async () => {
     fireEvent.click(screen.getByRole('button', { name: 'Check this step' }));
     fireEvent.click(screen.getByRole('button', { name: 'Next step' }));
   }
-  expect(screen.getByRole('heading', { name: 'Rewrite this conditional in your own words.' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Rewrite this conditional as if/then.' })).toBeVisible();
   expect(screen.getByRole('textbox', { name: 'Your rewrite' })).toBeVisible();
   expect(screen.getByRole('button', { name: 'Check my rewrite' })).toBeDisabled();
   fireEvent.change(screen.getByRole('textbox'), { target: { value: 'My reading.' } });

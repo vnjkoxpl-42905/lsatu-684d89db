@@ -1,25 +1,25 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import { afterEach, expect, it } from 'vitest';
-import { OPENING_COURSE_PATH, LEGACY_OPENING_COURSE_STEPS, openingCourseStep } from '../openingCoursePath';
+import { OPENING_COURSE_PATH, LEGACY_OPENING_COURSE_STEPS, openingCourseStep, openingDrillNumber } from '../openingCoursePath';
 import { OpeningCourseNavigation, OpeningCourseScreen } from './OpeningCourse';
 
 const url = (id: string, run = false) => `/course/${id}${run ? '?run=1' : ''}`;
 afterEach(cleanup);
 
-it('offers five numbered lessons in Part 1 and twelve interleaved drill entries', () => {
+it('offers five numbered lessons in Part 1 and eleven interleaved drill entries', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
   const list = document.querySelector<HTMLElement>('ol.oc-course-path')!;
-  expect(list.children).toHaveLength(17);
+  expect(list.children).toHaveLength(16);
   expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
-  expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(12);
+  expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(11);
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'contrapositive', 'foundation-practice']);
 });
 
 it('shows the rule count in plain words and never says statements or practise', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
-  const card = screen.getByRole('heading', { name: /Drill 2: Find both conditions/ }).closest('li')!;
+  const card = screen.getByRole('heading', { name: /Find the indicators/ }).closest('li')!;
   expect(within(card).getByText('28 questions')).toBeVisible();
   expect(within(card).queryByRole('list')).toBeNull();
   expect(document.querySelector('ol.oc-course-path')!.textContent).not.toMatch(/statements|Practise/i);
@@ -28,7 +28,7 @@ it('shows the rule count in plain words and never says statements or practise', 
 it('teaches each prerequisite before the source drills that use it', () => {
   const position = (id: string) => OPENING_COURSE_PATH.findIndex(step => step.id === id);
   expect(position('necessary')).toBeLessThan(position('source-intro-identify'));
-  expect(position('source-roles')).toBeLessThan(position('source-intro-diagrams'));
+  expect(OPENING_COURSE_PATH.some(step => step.id === 'source-roles')).toBe(false);
   expect(position('necessary')).toBeLessThan(position('source-rephrase'));
   expect(position('necessary')).toBeLessThan(position('source-intro-identify'));
   expect(position('contrapositive')).toBeLessThan(position('source-full-translation'));
@@ -167,7 +167,7 @@ it('distinguishes lesson and drill timeline nodes with text and icons', () => {
  const lesson = document.querySelector('[data-kind="note"]')!;
  const drill = document.querySelector('[data-kind="drill"]')!;
  expect(within(lesson as HTMLElement).getByText('Lesson')).toBeVisible();
- expect(within(drill as HTMLElement).getByText('Drill')).toBeVisible();
+ expect(within(drill as HTMLElement).getByText('Drill 1')).toBeVisible();
  expect(lesson.querySelector('.oc-timeline-node svg')).not.toBeNull();
  expect(drill.querySelector('.oc-timeline-node svg')).not.toBeNull();
 });
@@ -192,4 +192,15 @@ it('shows 100 percent only after all available course steps are done', () => {
  render(<MemoryRouter><OpeningCourseScreen steps={[step]} progressStore={progressStore} url={url}/></MemoryRouter>);
  expect(screen.getByRole('progressbar', { name: 'Course completion' })).toHaveAttribute('aria-valuenow', '100');
  expect(screen.getByText((_, node) => node?.tagName === 'STRONG' && node.textContent === '100% complete')).toBeVisible();
+});
+
+it('numbers the eleven active drills once and preserves the retired roles destination', () => {
+ const drills = OPENING_COURSE_PATH.filter(step => step.type === 'drill');
+ expect(drills.map(step => openingDrillNumber(step.id))).toEqual([1,2,3,4,5,6,7,8,9,10,11]);
+ expect(drills.every(step => !/Drill \d/.test(step.title))).toBe(true);
+ expect(openingCourseStep('source-roles')?.title).toBe('Place the conditions');
+ expect(openingDrillNumber('source-roles')).toBeUndefined();
+ render(<MemoryRouter><OpeningCourseScreen steps={[drills[3]]} url={url}/></MemoryRouter>);
+ expect(screen.getByText('Drill 4')).toBeVisible();
+ expect(screen.queryByRole('heading', { name: 'Place the conditions' })).toBeNull();
 });
