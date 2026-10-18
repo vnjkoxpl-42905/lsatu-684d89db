@@ -127,3 +127,22 @@
  .sw-experience .sw-arrow { transform:rotate(90deg); justify-self:center; font-size:32px; line-height:1; padding:0 8px; }
  .sw-experience .sw-arrow-row > :first-child,.sw-experience .sw-arrow-row > :last-child { padding:16px; }
 }
+
+/* Respond to the actual work area, including a narrow panel beside the course rail. */
+.sw-work { container-type:inline-size; container-name:worksheet-work; }
+.sw-experience .sw-diagram-question { margin:0 0 22px; font-size:1.125rem; font-weight:500; color:var(--sw-ink); line-height:1.65; }
+.sw-experience .sw-choice-slot { --sw-choice-accent:#254d65; }
+.sw-experience .sw-choice-slot[data-side=right],.sw-experience .sw-choice-slot[data-side=contraRight] { --sw-choice-accent:#176556; }
+.sw-experience .sw-choice-slot legend { float:none; color:var(--sw-ink); font-size:.9375rem; padding-bottom:8px; }
+.sw-experience .sw-choice-slot .sw-side-help { margin:0 0 10px; font-size:.875rem; line-height:1.5; color:var(--sw-soft); }
+.sw-experience .sw-choice-slot button { min-height:52px; border:1.5px solid #879ca6; background:var(--sw-paper)!important; color:var(--sw-ink)!important; font-weight:500; gap:10px; border-radius:8px; box-shadow:none; }
+.sw-experience .sw-choice-slot button:hover { border-color:var(--sw-choice-accent); box-shadow:0 0 0 1px var(--sw-choice-accent); }
+.sw-experience .sw-choice-slot button[aria-pressed=true] { background:var(--sw-choice-accent)!important; color:#fffdf6!important; border-color:var(--sw-choice-accent); box-shadow:0 0 0 1px var(--sw-choice-accent); }
+.sw-experience .sw-choice-slot button[aria-pressed=true] svg { color:currentColor!important; }
+.sw-experience .sw-arrow { width:40px; min-height:40px; border-radius:50%; background:var(--sw-paper); border:1px solid var(--sw-line); }
+@container worksheet-work (max-width:560px) {
+ .sw-experience .sw-arrow-row { grid-template-columns:minmax(0,1fr); gap:14px; }
+ .sw-experience .sw-arrow { transform:rotate(90deg); justify-self:center; font-size:30px; line-height:1; padding:0; }
+ .sw-experience .sw-arrow-row > :first-child,.sw-experience .sw-arrow-row > :last-child { padding:18px; }
+ .sw-experience .sw-choice-slot button { padding:14px; font-size:1rem; }
+}

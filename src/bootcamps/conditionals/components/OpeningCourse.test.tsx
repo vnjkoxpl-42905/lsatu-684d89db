@@ -7,8 +7,11 @@ import { OpeningCourseNavigation, OpeningCourseScreen } from './OpeningCourse';
 const url = (id: string, run = false) => `/course/${id}${run ? '?run=1' : ''}`;
 afterEach(cleanup);
 
-it('offers five numbered lessons in Part 1 and eleven interleaved drill entries', () => {
+it('offers five numbered lessons in Chapter 1 and eleven interleaved drill entries', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
+  expect(screen.getByRole('region', { name: 'Chapter 1' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Chapter 1' })).toBeVisible();
+  expect(screen.queryByText('Part 1')).toBeNull();
   const list = document.querySelector<HTMLElement>('ol.oc-course-path')!;
   expect(list.children).toHaveLength(16);
   expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
@@ -40,6 +43,7 @@ it('teaches each prerequisite before the source drills that use it', () => {
 it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an old reader index', async step => {
   render(<MemoryRouter><OpeningCourseScreen view={step.id} run={step.type === 'drill'} url={url}/></MemoryRouter>);
   expect(screen.getByRole('heading', { level: 1, name: step.title })).toBeVisible();
+  if (step.lessonNumber) expect(screen.getByText(`Chapter 1 · Lesson ${step.lessonNumber}`)).toBeVisible();
   await waitFor(() => expect(document.querySelector('.opening-course-content')).not.toBeNull());
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(screen.getByRole('navigation', { name: 'Course navigation' })).toBeVisible();
