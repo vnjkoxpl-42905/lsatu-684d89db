@@ -324,6 +324,7 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
   if (attempt.userId && attempt.userId !== userId) throw new Error('The signed-in account changed.');
   const source = await getSession(attempt.sessionId, userId);
   if (!source || source.userId !== userId) throw new Error('This section is not available.');
+  if (source.status === 'abandoned') throw new Error('This drill was discarded.');
   if ((source.config.timedSectionSittingId || source.config.practiceTestRunId) && source.status !== 'in_progress') {
     throw new Error('Answers in this protected source section cannot be changed.');
   }
@@ -427,6 +428,7 @@ async function writeAttemptFlag(
   if (expectedActorId && userId !== expectedActorId) throw new Error('The signed-in account changed.');
   const session = await getSession(sessionId, userId);
   if (!session || session.userId !== userId) throw new Error('This section is not available.');
+  if (session.status === 'abandoned') throw new Error('This drill was discarded.');
   if ((session.config.practiceTestRunId || session.config.timedSectionSittingId) && session.status !== 'in_progress') throw new Error('Flags in this protected source section cannot be changed.');
   await assertActivePracticeTestSession(sessionId);
   if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
@@ -613,9 +615,10 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
     const isFirstTake = row.is_first_attempt !== false;
     const hasSelected = typeof row.selected === 'string' && row.selected.trim().length > 0;
     const hasGradedAnswer = hasSelected && typeof row.is_correct === 'boolean';
-    // Generic builder analytics cannot establish a protected parent test's seal.
-    // Keep those grades private unless an explicit disclosure marker exists.
-    const released = sessionStatus === 'completed' && typeof session?.config?.resultsRevealedAt === 'string'
+    // Generic builder analytics cannot establish a full-test parent's release.
+    // Other completed sessions require an explicit disclosure marker here.
+    const fullTestChild = Boolean(session?.practice_test_run_id || session?.config?.practiceTestRunId);
+    const released = !fullTestChild && sessionStatus === 'completed' && typeof session?.config?.resultsRevealedAt === 'string'
       && Number.isFinite(Date.parse(session.config.resultsRevealedAt));
     if (sessionStatus !== 'abandoned' && hasGradedAnswer && !released) hiddenQuestions.add(row.question_id);
 

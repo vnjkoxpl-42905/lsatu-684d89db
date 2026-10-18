@@ -1,6 +1,20 @@
 # RC T09 content review, 2026-10-18
 
-This review completes a bank-wide structural pass and a bounded substantive review. It does not certify every existing explanation or fill the missing bank with generated reasoning. Passage text, question wording, answer keys and student records remain unchanged by this work.
+## Systematic review supersedes the initial sample
+
+The expanded source/teaching review covered all 59 PrepTest banks: 320 passages, 2,150 questions and 10,750 choices. Reviewers read each source passage, every stem and choice, and all supplied summaries and explanation prose. Previously documented complete passage reviews were reused explicitly rather than counted twice. Missing prose was retained. The primary coverage ledger validates exact passage IDs and question counts; it does not independently prove reading or teaching quality.
+
+Primary reviews were split into PT101–120 (104 passages / 694 questions), PT121–140 (108 / 728), and PT141–159 (108 / 728). Separate reviewers cross-checked changed authored fields against full source passages and affected questions. Their identified findings were repaired and read back. This is not a claim that every unchanged explanation received two complete teaching reviews. Exact methods, findings and dispositions are in the three `rc-t09-systematic-*` ledgers and `rc-systematic-review-coverage.md`.
+
+The final correction overlay contains 1,898 authored leaf changes against pinned baseline `94e76565b7b7c7c3924d2caa4a0dd8cdf94271d2`. Source-integrity validation reports zero protected-field changes across every bank. Official text, source identities, question wording, choice text/order, answer keys and imported statistics are preserved. Four overlay tests passed, including exact reconstruction, idempotence and fail-closed rejection. No bank regeneration was run.
+
+Remaining production/source gaps are explicit: 556 questions lack substantive prose; four lack standard passage summaries; eight provider flags disagree with actual prose but are not consumed by current student-facing filters/counts. Review derives availability from nonblank prose. No missing instructional explanations or videos were mass-generated. Two official-source discrepancies require upstream/original verification and remain documented in `rc-source-discrepancies.md`; the supplied assessment text and keys were preserved.
+
+Structured partial-choice and missing-walkthrough states, accessible optional media, caption-failure recovery and the legacy-video fallback were verified separately. Synthetic playback does not certify real instructional media coverage. T10 browser, test and human-acceptance boundaries are recorded in the `rc-t10-*` reports. This report does not mark the entire plan accepted or authorize merge/publication.
+
+## Initial structural and diagnostic review
+
+The material below preserves the initial structural pass and bounded diagnostic sample. Its sample limits and correction counts are historical; the systematic review above supersedes its scope. It did not fill missing content with generated reasoning or change official source fields.
 
 ## Source and method
 

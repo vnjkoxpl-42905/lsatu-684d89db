@@ -67,7 +67,7 @@ function rcCardTitle(passageIds: number[], names: Map<number, RcCardPassage> | u
   return `RC drill · ${known.length} passages · ${shown}${known.length > 2 ? ` +${known.length - 2} more` : ''}`;
 }
 
-/** Account-owned sittings, including repeated sets; an unfinished run needs saved work. */
+/** Account-owned sittings, including started RC drills with no answers yet. */
 export function buildStandaloneDrillHistory(
   lrRuns: StandaloneDrillRun[],
   rcSessions: RcDrillSession[],
@@ -98,8 +98,6 @@ export function buildStandaloneDrillHistory(
   const rc: StandaloneDrillHistoryItem[] = rcSessions
     .filter((session) => !session.config.practiceTestRunId && !session.config.timedSectionSittingId && session.config.source !== 'assignment' &&
       (session.status === 'completed' || session.status === 'in_progress'))
-    .filter((session) => session.status === 'completed' || (rcAttempts.get(session.id)?.length ?? 0) > 0
-      || readRcDraftAnswers(session.config.draftAnswers).length > 0)
     .map((session) => {
       const firstAnswers = [...firstRcAttempts(rcAttempts.get(session.id) ?? []).values()];
       const drafts = readRcDraftAnswers(session.config.draftAnswers);

@@ -2,7 +2,17 @@
 
 Reviewed 2026-10-18. This report distinguishes deterministic source/test evidence from real account, device and learner acceptance. It does not certify the full plan complete.
 
-## Regression execution
+## Expanded regression execution
+
+The final local integrated command passed 813 tests across 80 files, including the new owner-scoped full-test parent guard, delayed-review cancellation, ordinary-marker privacy, unanswered history and abandoned-session regressions. Typecheck and production build passed. Four Node overlay tests passed against the final 1,898-correction manifest. The build verified 2,150 bank/search/Finder identities, applied no answer-key correction and passed the postbuild content-isolation check. Exact committed-head CI is tracked on PR #222 separately; an earlier head (`43c0f603`) passed 808 tests, typecheck, overlay tests and build.
+
+Live QA exposed two ordinary-session defects after the initial regression: unanswered started drills were omitted from In progress, and discarded drills still opened through an old URL. Both were repaired and independently reviewed. The adapter preserves active ordinary sessions with zero first answers while excluding protected, assigned and abandoned rows. Both player entry paths reject abandoned sessions before hydration, and answer/flag writers reject their persisted abandoned status. Focused checks passed 11 history, 55 API and nine player tests; these overlap the integrated total and are not added again. The exact live record and confirmation/cancel/reload sequence are in the browser report. This is client behavior proof, not a new claim of atomic backend enforcement against a concurrent discard.
+
+The source/fixture follow-up for protected preflight passed 40 tests (18 section-freshness and 22 standalone-runner tests), already included in broader coverage rather than added again. Merely opening the protected URL is read-only; Prepare creates a ready sitting with no RC child; commit Start creates the child and changes the sitting to running. Fresh checks history, RC children and exposure records, not ready sittings. The runner returns the ready preflight before rendering the reader, and the client rejects a child attached to a ready response. Thus the checked-in protected path preserves Fresh until Start, including an eventual all-skipped section once started. The disabled capability's legacy fallback is a different path and is not called protected preflight here.
+
+This conclusion traces `rcSections.ts`, the standalone writer SQL artifact, the standalone runner and client contract. It is not a readback of the deployed function definition. No new sitting or clock was created for this follow-up. The deployed backend parity check remains distinct from source/fixture proof.
+
+## Initial focused regression execution
 
 196 tests passed across nine files:
 

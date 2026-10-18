@@ -8,7 +8,7 @@ const baseline = process.argv[2] ?? 'origin/main';
 const baseSha = execFileSync('git', ['rev-parse', baseline], { encoding: 'utf8' }).trim();
 const directory = 'public/data/rc';
 const files = readdirSync(directory).filter(name => /^RC-PT\d+\.json$/.test(name)).sort();
-const baselineFiles = execFileSync('git', ['ls-tree', '-r', '--name-only', baseline, '--', directory], { encoding: 'utf8' })
+const baselineFiles = execFileSync('git', ['ls-tree', '-r', '--name-only', baseSha, '--', directory], { encoding: 'utf8' })
   .trim().split('\n').filter(name => /\/RC-PT\d+\.json$/.test(name));
 const errors = [];
 const changes = [];
@@ -18,7 +18,7 @@ const workingHash = createHash('sha256');
 const baselineHash = createHash('sha256');
 let passages = 0;
 let questions = 0;
-const authored = path => /^passages\[\d+\]\.summaries(?:\.|$)/.test(path)
+const authored = path => /^passages\[\d+\]\.summaries\.(?:standard|brief|anotherWay)$/.test(path)
   || /^passages\[\d+\]\.questions\[\d+\]\.(?:explanationBlocks|hasWrittenExplanation)(?:\.|\[|$)/.test(path)
   || /^passages\[\d+\]\.questions\[\d+\]\.choices\[\d+\]\.(?:tag|explanation)(?:\.|$)/.test(path);
 function diff(before, after, path, file) {
@@ -38,7 +38,7 @@ for (const file of files) {
   const path = `${directory}/${file}`;
   if (!baselineFiles.includes(path)) { errors.push(`${path}: no baseline file`); continue; }
   const raw = readFileSync(path, 'utf8');
-  const previous = execFileSync('git', ['show', `${baseline}:${path}`], { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
+  const previous = execFileSync('git', ['show', `${baseSha}:${path}`], { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
   workingHash.update(`${path}\0${raw}\0`); baselineHash.update(`${path}\0${previous}\0`);
   const bank = JSON.parse(raw); const original = JSON.parse(previous);
   diff(original, bank, '', path);

@@ -168,6 +168,17 @@ it('preserves exposure and completed state while withholding unrevealed correctn
   expect((await getQuestionHistory(owner, { correctness: 'released-only' })).get(7)?.firstTakeCorrect).toBe(false);
 });
 
+it.each(['config', 'column'])('keeps full-test correctness hidden despite an ordinary reveal marker (%s parent identity)', async location => {
+  historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', excluded_from_analytics: false,
+    ...(location === 'column' ? { practice_test_run_id: 'parent-exam' } : {}),
+    config: { ...clock.config, resultsRevealedAt: '2026-10-17T11:00:00Z', ...(location === 'config' ? { practiceTestRunId: 'parent-exam' } : {}) } }];
+  historyStore.attempts = [{ id: attemptId, user_id: owner, session_id: sessionId, question_id: 7, selected: 'C', is_correct: false, is_first_attempt: true, created_at: '2026-10-17T10:00:00Z' }];
+  const snapshot = await getRcHistorySnapshot(owner);
+  expect(snapshot.hasHiddenGradedResults).toBe(true);
+  expect(snapshot.history.get(7)).toMatchObject({ firstTakeCorrect: false, everIncorrect: true });
+  expect(snapshot.displayHistory.get(7)).toMatchObject({ attempts: 1, answered: true, firstTakeCorrect: null, everIncorrect: false });
+});
+
 it('keeps the earliest first take within a sitting while a different later sitting still updates recent performance', async () => {
   historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', excluded_from_analytics: false },
     { id: 'later-sitting', user_id: owner, status: 'completed', excluded_from_analytics: false }];
@@ -1084,3 +1095,11 @@ it('does not erase lastFirstTakeIncorrect when a previously missed question is s
 });
 
 
+
+it('refuses answers and flag changes in discarded ordinary drills without mutating records', async () => {
+  clock.status = 'abandoned';
+  await expect(recordAttempt({ id: attemptId, userId: owner, sessionId, questionId: 7, passageId: 3, selected: 'C', isCorrect: true, timeMs: 1000, flagged: false, eliminations: [], isFirstAttempt: false })).rejects.toThrow('discarded');
+  await expect(setAttemptFlag(sessionId, 7, true, owner)).rejects.toThrow('discarded');
+  expect(insert).not.toHaveBeenCalled();
+  expect(update).not.toHaveBeenCalled();
+});
