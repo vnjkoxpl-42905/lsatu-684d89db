@@ -35,6 +35,7 @@ Used the isolated Vite fixture at `127.0.0.1:8098`, real React components with s
 ## Automated checks
 
 - Final integrated regression command, matching the expanded RC PR workflow: **770 tests passed across 77 files**.
+- After the signed-in acceptance repairs, the repeated complete command passed **773 tests across 77 files**; typecheck/build and targeted Results/retry lint passed.
 - Typecheck passed. Production build passed, including answer-key/search-address validation and the postbuild canonical-content check. Existing bundle-size and dependency-data warnings remain.
 - Independent cross-owner reviews covered saved command recovery, exposure/history masking, clock/config conflicts, protected training boundaries, evidence fingerprint validation, observation semantics and the strict Start recheck. The pending-save rename issue identified in review was repaired and regression tested.
 
@@ -54,6 +55,9 @@ Joshua explicitly authorized clearly labelled test RC work in his own account, i
 - Completed with one test answer and six unanswered questions. Neutral results concealed score/credited answers. Set exclusion; on return the action read **Include in analytics**, confirming the excluded state.
 - Saved a separate blind-review answer, refreshed, opened its exact question and found Saved review answers plus Answer again blind; no credited answer, verdict or score was shown.
 - A subsequent backend fetch interruption returned the tab to sign-in. Reveal persistence and timed-section acceptance were not yet completed at this checkpoint. Existing records were retained; do not create a replacement test sitting on retry.
+- Joshua signed back in. Resumed the same completed sitting, acknowledged explicit reveal, refreshed, and verified the persisted 1/7 result and Q1 original A. The later review B did not overwrite it; exclusion remained saved.
+- Live review caught a missing Include unanswered questions control. Added it and tested the correct-plus-skipped case; repaired a legacy null-selected/false-grade helper edge case. The same account result now enables whole-passage retry only when unanswered questions are opted in. No extra retry sitting was created. Analytics now uses a current included/excluded status beside an ordinary action button, avoiding a changing action label with contradictory pressed semantics.
+- Prepared new protected RC sitting `4b0b9a21-7905-4190-a923-40efeb325538`, PT101 S1, standard. Ready UI said 27 verified questions, 35:00, account acknowledged, clock not started. Explicit Start rendered the shared RC reader and countdown. Pause acknowledged; refresh preserved 34:45 paused; Resume continued. Find displayed `0/0 · No matches`. Paused again and left it paused with no section answers entered. Training options were absent. Other unfinished sections were not opened or changed.
 
 CI run `39084186061` passed on head `4bcf597d`. Subsequent evidence/test-only follow-ups require their own head check before merge.
 

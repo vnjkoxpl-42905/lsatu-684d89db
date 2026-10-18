@@ -15,4 +15,9 @@ describe('RC retry selection', () => {
   it('includes skipped and missing answers only after the learner opts in', () => {
     expect(rcRetryPassageIds(items, attempts, true)).toEqual([7, 8, 10]);
   });
+  it('does not treat a legacy false grade on an unanswered row as an answered miss', () => {
+    const legacy = new Map(attempts); legacy.set(12, { selected: null, isCorrect: false } as RcAttempt);
+    expect(rcRetryPassageIds(items, legacy, false)).toEqual([7]);
+    expect(rcRetryPassageIds(items, legacy, true)).toEqual([7, 8, 10]);
+  });
 });
