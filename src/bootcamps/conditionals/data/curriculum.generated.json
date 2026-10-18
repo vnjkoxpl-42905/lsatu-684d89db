@@ -2106,7 +2106,7 @@
     "method": [
       "Identify the conditional indicator and Group 3, checking its meaning and group.",
       "Identify the two complete ideas, including existing negatives, subjects and any time boundary.",
-      "Assign symbols to the complete ideas without dropping their qualifiers.",
+      "Write a short phrase for each complete idea without dropping its qualifiers.",
       "Apply the Group 3 rule: negate one idea on the left and keep the other unchanged on the right; cancel any resulting double negative.",
       "Find the equivalent contrapositive by reversing and negating both complete conditions.",
       "Translate both forms back to English and check that neither invents a guarantee from the exception."
@@ -2313,7 +2313,7 @@
     "method": [
       "Identify the exclusion indicator and Group 4, checking exactly what coexistence is forbidden.",
       "Identify the two complete conditions that cannot coexist, keeping subjects, qualifiers and existing negatives.",
-      "Assign symbols to those complete conditions.",
+      "Write a short phrase for each complete condition.",
       "Apply the Group 4 rule: keep one unchanged on the left and negate the other on the right; cancel any resulting double negative.",
       "Find the equivalent contrapositive by reversing and negating both complete conditions.",
       "Translate both forms back to English and check that the rule excludes coexistence without inventing existence or an exactly-one requirement."
@@ -2518,7 +2518,7 @@
     "method": [
       "Identify the indicator and group, using the What Test when its group is unclear.",
       "Identify both complete ideas, keeping subjects, scope and existing negatives.",
-      "Assign symbols to the complete ideas.",
+      "Write a short phrase for each complete idea.",
       "Apply the matching group translation rule; use a “Put yourself in it” check to check the meaning.",
       "Find the contrapositive, reversing and negating each complete condition.",
       "Recall and Rephrase: put the guide aside, write both forms in English, then compare with the original and explain any correction."

@@ -1,3 +1,4 @@
+import { DrillProgress } from './DrillProgress';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, CircleCheck, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -74,7 +75,6 @@ export function DrillOneExperience({ questions, order = 1, legacyOrder }: { ques
   // A wrong answer gets a hint for the chosen option only; nothing reveals the key until it is answered correctly.
   const solved = answer.checked && answer.selected === question.correct;
   const answered = answers.filter(item => item.first !== null).length;
-  const completion = Math.round(answered / questions.length * 100);
   const correctFirst = answers.filter((item, index) => item.first === questions[index].correct).length;
   useEffect(() => {
     record?.({ state: { order, current, answers, finished, seenResults }, done: answers.filter(item => item.first !== null).length, total: questions.length, ...(seenResults ? { status: 'done' as const } : {}) });
@@ -110,12 +110,7 @@ export function DrillOneExperience({ questions, order = 1, legacyOrder }: { ques
   }
 
   return <section className="d1-experience" aria-label="Spot the condition questions">
-    {/* Segmented progress adapted from Jatin Yadav's 21st.dev Progress Bar.
-        https://21st.dev/@jatin-yadav05/components/progress-bar */}
-    <header className="d1-run-progress">
-      <div className="d1-run-progress-labels"><strong>{finished ? 'Practice complete' : `Question ${current + 1} of ${questions.length}`}</strong><span>{answered} of {questions.length} answered</span></div>
-      <div className="d1-segmented-progress" role="progressbar" aria-label="Questions answered" aria-valuenow={answered} aria-valuemin={0} aria-valuemax={questions.length} aria-valuetext={`${completion}% complete. ${answered} of ${questions.length} questions answered.`}>{answers.map((item, index) => <span key={index} data-answered={item.first !== null} data-current={!finished && index === current} aria-hidden="true"/>)}</div>
-    </header>
+    <DrillProgress completed={answered} total={questions.length} current={current} completedIndices={answers.flatMap((item, index) => item.first !== null ? [index] : [])} finished={finished} label="Questions answered"/>
     {finished ? <div className="d1-completion">
       <div className="d1-completion-mark" aria-hidden="true"><Check size={32}/></div>
       <p className="d1-eyebrow">You worked through every question</p><h2 ref={heading} tabIndex={-1}>Spot the condition complete.</h2>

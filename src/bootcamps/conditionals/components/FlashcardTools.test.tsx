@@ -10,18 +10,18 @@ function Harness() {
   const location = useLocation();
   return <OpeningCourseScreen view={new URLSearchParams(location.search).get('page') || 'lessons'} url={url}/>;
 }
-it('keeps flashcards out of the lessons', () => {
+it('links the matching indicator deck from each definition lesson', () => {
   render(<MemoryRouter initialEntries={[url('sufficient')]}><Harness/></MemoryRouter>);
-  expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
+  expect(screen.getByRole('link', { name: 'Go to flashcards' })).toHaveAttribute('href', flashcardUrl(url, 'group-1', undefined, 'sufficient'));
   cleanup();
   render(<MemoryRouter initialEntries={[url('necessary')]}><Harness/></MemoryRouter>);
-  expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
+  expect(screen.getByRole('link', { name: 'Go to flashcards' })).toHaveAttribute('href', flashcardUrl(url, 'group-2', undefined, 'necessary'));
 });
-it('lists one mixed word deck beside the concept cards, and old group links open it', () => {
+it('lists the mixed deck and distinct group decks beside the concept cards', () => {
   render(<MemoryRouter initialEntries={[url('tools')]}><Harness/></MemoryRouter>);
   expect(screen.getByRole('heading', { name: 'Sufficient and necessary' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
-  expect(screen.queryByRole('heading', { name: /Group [12] words/ })).toBeNull();
+  expect(screen.getAllByRole('heading', { name: /Group [12] words/ })).toHaveLength(2);
   cleanup();
   for (const deck of ['indicators', 'group-1', 'group-2']) {
     render(<MemoryRouter initialEntries={[`${url('tools')}&deck=${deck}`]}><Harness/></MemoryRouter>);
@@ -43,4 +43,14 @@ it('turns a key-term card with one tap and moves on', () => {
   expect(screen.getByRole('button', { name: /Sufficient condition It goes on the left of the arrow/ })).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Next' }));
   expect(screen.getByText('Card 2 of 4')).toBeVisible();
+});
+
+it.each([1, 2])('keeps Group %s cards and saved progress separate from the mixed deck', group => {
+ const mixed = JSON.stringify({ untouched: true });
+ localStorage.setItem('conditional-indicator-words-v1', mixed);
+ render(<MemoryRouter initialEntries={[`${url('tools')}&deck=group-${group}`]}><Harness/></MemoryRouter>);
+ const saved = JSON.parse(localStorage.getItem(`conditional-indicator-words-v1-group-${group}`)!);
+ expect(saved.queue.length).toBeGreaterThan(0);
+ expect(saved.queue.every((entry: { id: string }) => entry.id.startsWith(`g${group}-`))).toBe(true);
+ expect(localStorage.getItem('conditional-indicator-words-v1')).toBe(mixed);
 });

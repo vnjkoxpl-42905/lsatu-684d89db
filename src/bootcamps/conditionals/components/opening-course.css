@@ -53,7 +53,7 @@
 .oc-course-path { list-style:none; padding:0; margin:0; display:grid; gap:40px; }
 .oc-path-card { padding:32px; background:var(--oc-surface); border:1px solid var(--oc-line); border-radius:4px; box-shadow:var(--oc-shadow-subtle); }
 .oc-label { font-size:.875rem; text-transform:uppercase; letter-spacing:.1em; color:var(--oc-muted); }
-.oc-path-card h2,.oc-drill-entry h2 { font-family:Georgia,serif; font-style:italic; font-weight:400; font-size:1.875rem; line-height:1.2; margin:16px 0; }
+.oc-path-card h3,.oc-drill-entry h2 { font-family:Georgia,serif; font-style:italic; font-weight:400; font-size:1.875rem; line-height:1.2; margin:16px 0; }
 .oc-path-card p,.oc-drill-entry p,.oc-drill-entry li { color:var(--oc-muted); font-size:1.125rem; line-height:1.7; }
 .oc-path-card p { margin:0 0 28px; max-width:62ch; }
 .oc-action { display:inline-flex; align-items:center; justify-content:center; gap:12px; padding:14px 22px; min-height:48px; background:var(--oc-ink); color:var(--oc-canvas); text-decoration:none; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; }
@@ -148,7 +148,7 @@
   .oc-course-index>div[data-course-heading] { margin-bottom:36px; }
   .oc-course-path { gap:24px; }
   .oc-path-card { padding:24px 20px; }
-  .oc-path-card h2 { font-size:1.6875rem; }
+  .oc-path-card h3 { font-size:1.6875rem; }
   .oc-path-card p { font-size:1.0625rem; }
   .oc-course-body .co-section { padding:28px 18px; }
   .oc-course-body .co-lab,.oc-course-body .co-check { padding:16px; }
@@ -244,3 +244,46 @@
 .oc-course-rail nav a:hover,.oc-course-drawer nav a:hover { background:var(--oc-hover); color:var(--oc-ink); }
 .oc-course-rail nav a svg,.oc-course-drawer nav a svg { flex-shrink:0; }
 @media(max-width:600px) { .cb-shell.oc-workspace .cb-workspace-status { padding:10px 20px; } }
+
+/* Lesson numbers describe the course order and remain readable on every card. */
+.oc-path-card > .oc-card-num { position:static; display:inline-block; margin-right:12px; font-family:inherit; font-style:normal; font-size:1rem; font-weight:700; line-height:1.4; letter-spacing:0; color:var(--oc-ink); user-select:auto; }
+
+.oc-course-continue { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 28px; max-width:100%; }
+.oc-course-continue span { font-weight:400; }
+
+.oc-part-title { margin:30px 0 18px; font-size:1.4rem; font-weight:600; color:var(--oc-ink); }
+
+
+/* Open learning timeline: labels and icons distinguish teaching from practice. */
+.oc-course-rail { display:flex; flex-direction:column; }
+.oc-classroom-footer { display:flex; align-items:center; gap:9px; margin-top:auto; padding:24px 10px 4px; min-height:44px; color:var(--oc-muted); font-size:.875rem; text-decoration:none; }
+.oc-course-drawer { display:flex; flex-direction:column; }
+.oc-course-index .oc-course-path { display:grid; grid-template-columns:1fr; gap:0; padding:0; margin:0; list-style:none; }
+.oc-course-index .oc-path-card { --oc-kind:#245b91; position:relative; display:grid; grid-template-columns:42px minmax(0,1fr) auto; align-items:center; gap:6px 18px; padding:22px 0; min-height:0; background:transparent; border:0; border-radius:0; box-shadow:none; }
+.oc-course-index .oc-path-card[data-kind=drill] { --oc-kind:#087d75; }
+.oc-course-index .oc-path-card::before { content:""; position:absolute; left:20px; top:0; bottom:0; width:2px; background:var(--oc-line); }
+.oc-course-index .oc-path-card:first-child::before { top:40px; }
+.oc-course-index .oc-path-card:last-child::before { bottom:calc(100% - 40px); }
+.oc-timeline-node { grid-column:1; grid-row:1 / 4; align-self:start; position:relative; z-index:1; display:grid; place-items:center; width:42px; height:42px; border-radius:50%; background:var(--oc-canvas); color:var(--oc-kind); border:2px solid currentColor; }
+.oc-course-index .oc-path-card > .oc-label { grid-column:2; grid-row:1; color:var(--oc-kind); font-size:.75rem; font-weight:700; }
+.oc-course-index .oc-path-card > .oc-status { grid-column:3; grid-row:1; justify-self:end; }
+.oc-course-index .oc-path-card h3 { grid-column:2; grid-row:2; margin:0; font-family:inherit; font-style:normal; font-size:1.15rem; font-weight:600; line-height:1.35; }
+.oc-course-index .oc-path-card > p { grid-column:2; grid-row:3; margin:0; font-size:.925rem; line-height:1.45; }
+.oc-course-index .oc-card-foot { grid-column:3; grid-row:2 / 4; margin:0; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.oc-course-index .oc-card-foot .oc-action { color:var(--oc-kind); background:transparent; border:0; box-shadow:none; text-decoration:underline; text-underline-offset:4px; font-size:.875rem; padding:7px 0 7px 12px; }
+.oc-course-index .oc-drill-card:hover { transform:none; box-shadow:none; background:transparent; }
+.oc-completion-rail { height:7px; overflow:hidden; border-radius:9px; background:var(--oc-line); margin-top:14px; }
+.oc-completion-rail > span { display:block; height:100%; border-radius:inherit; background:#087d75; }
+@media(max-width:640px) { .oc-course-rail { display:none; } }
+@media(max-width:640px) {
+ .oc-course-index .oc-path-card { grid-template-columns:36px minmax(0,1fr); gap:7px 12px; padding:18px 0; }
+ .oc-timeline-node { width:36px; height:36px; }
+ .oc-course-index .oc-path-card::before { left:17px; }
+ .oc-course-index .oc-path-card > .oc-status { grid-column:2; grid-row:4; justify-self:start; }
+ .oc-course-index .oc-card-foot { grid-column:2; grid-row:5; align-items:flex-start; }
+ .oc-course-index .oc-card-foot .oc-action { padding-left:0; }
+}
+
+.oc-course-index .oc-tracker { padding:16px 0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.dark .oc-course-index .oc-path-card { --oc-kind:#91c4f5; }
+.dark .oc-course-index .oc-path-card[data-kind=drill] { --oc-kind:#7cd9cb; }

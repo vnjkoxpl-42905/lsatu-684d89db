@@ -1,3 +1,4 @@
+import { DrillProgress } from './DrillProgress';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { DiagramDrills } from '@/features/conditional-refresher/ConditionalIndicatorsRefresher';
 import { openingActivityExplanations, openingActivityItems } from '../content/openingActivityItems';
@@ -201,8 +202,8 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
       <button type="button" className="omd-primary" onClick={() => { setFinished(false); move(0); }}>Review my answers</button>
     </div>
     <div hidden={finished}>
-    <div className="omd-progress-heading"><p>{question.stage < 5 ? `Stage ${question.stage + 1} of 5` : `${baselineQuestions.length} main questions completed`}</p><p>{question.stage < 5 ? `Question ${current + 1} of ${baselineQuestions.length}` : `Fresh check ${current - baselineQuestions.length + 1} of ${questions.length - baselineQuestions.length}`}</p></div>
-    <div className="omd-progress" role="progressbar" aria-label={question.stage < 5 ? 'Main questions completed' : 'Fresh checks completed'} aria-valuemin={0} aria-valuemax={question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length} aria-valuenow={questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length}><span style={{ width: `${questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length / (question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length) * 100}%` }}/></div>
+    <DrillProgress completed={questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length} total={question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length} current={question.stage < 5 ? current : current - baselineQuestions.length} completedIndices={questions.filter(item => (item.stage === 5) === (question.stage === 5)).flatMap((item, index) => results[item.id]?.correct ? [index] : [])} positionLabel={question.stage < 5 ? undefined : `Fresh check ${current - baselineQuestions.length + 1} of ${questions.length - baselineQuestions.length}`} label={question.stage < 5 ? 'Main questions completed' : 'Fresh checks completed'}/>
+
     <h2 ref={!finished ? heading : undefined} tabIndex={-1}>{stage.title}</h2>
     </div>
     {questions.filter(item => visited.includes(item.id)).map(item => <div key={item.id} hidden={finished || item.id !== question.id} data-mixed-question={item.id}><RetainedQuestion question={item} record={record}/></div>)}

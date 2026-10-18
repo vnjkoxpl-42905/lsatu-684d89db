@@ -167,7 +167,8 @@ it('answers practical writing questions before group reading and the “Put your
   const note = within(faq).getByRole('heading', { name: 'Why this practice asks for both' });
   const lastFAQ = faq.querySelectorAll('details')[4];
   expect(note.compareDocumentPosition(lastFAQ) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  expect(faq.textContent).toMatch(/no fixed letter limit/);
+  expect(faq.textContent).toMatch(/Use short phrases/);
+  expect(faq.textContent).toMatch(/Current pass keeps the restriction/);
   expect(step(10).compareDocumentPosition(step(11)) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(step(11).compareDocumentPosition(step(12)) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(step(12).compareDocumentPosition(step(13)) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
