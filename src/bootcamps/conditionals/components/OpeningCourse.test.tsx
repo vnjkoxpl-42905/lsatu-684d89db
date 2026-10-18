@@ -145,7 +145,7 @@ it('offers one course destination and keeps optional review routes out of primar
   expect(within(navigation).getByRole('link', { name: 'Course' })).toHaveAttribute('href', '/course');
   expect(within(navigation).getByRole('link', { name: 'Course' })).toHaveAttribute('aria-current', 'page');
   expect(within(navigation).queryByRole('link', { name: /Lessons|Course overview|Review attempts|Journal/ })).toBeNull();
-  expect(within(navigation).getByRole('link', { name: 'Reference' })).toHaveAttribute('href', '/reference');
+  expect(within(navigation).getByRole('link', { name: 'Quick reference' })).toHaveAttribute('href', '/reference');
 });
 
 it('continues the first unfinished course step without skipping prerequisites for a later draft', () => {
@@ -153,4 +153,43 @@ it('continues the first unfinished course step without skipping prerequisites fo
   render(<MemoryRouter><OpeningCourseScreen url={url} progressStore={progressStore}/></MemoryRouter>);
   expect(screen.getByRole('link', { name: /Start lesson 1.2/ })).toHaveAttribute('href', '/course/sufficient');
   expect(progressStore.steps['sufficient-practice'].state.draft).toBe('retained');
+});
+
+it('shows completion as a percentage of the available steps', () => {
+ const steps = OPENING_COURSE_PATH.slice(0, 3);
+ const progressStore = { steps: { meaning: { status: 'done' as const, updatedAt: '2026-10-17' } }, save: () => {} };
+ render(<MemoryRouter><OpeningCourseScreen steps={steps} progressStore={progressStore} url={url}/></MemoryRouter>);
+ expect(screen.getByRole('progressbar', { name: 'Course completion' })).toHaveAttribute('aria-valuenow', '33');
+ expect(screen.getByText((_, node) => node?.tagName === 'STRONG' && node.textContent === '33% complete')).toBeVisible();
+});
+it('distinguishes lesson and drill timeline nodes with text and icons', () => {
+ render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
+ const lesson = document.querySelector('[data-kind="note"]')!;
+ const drill = document.querySelector('[data-kind="drill"]')!;
+ expect(within(lesson as HTMLElement).getByText('Lesson')).toBeVisible();
+ expect(within(drill as HTMLElement).getByText('Drill')).toBeVisible();
+ expect(lesson.querySelector('.oc-timeline-node svg')).not.toBeNull();
+ expect(drill.querySelector('.oc-timeline-node svg')).not.toBeNull();
+});
+it('places Classroom after the course resources in the rail and mobile drawer', () => {
+ render(<MemoryRouter><OpeningCourseNavigation view="lessons" url={url}/></MemoryRouter>);
+ expect(document.querySelector('.oc-course-rail')!.lastElementChild).toHaveTextContent('Classroom');
+ fireEvent.click(screen.getByRole('button', { name: 'Course menu' }));
+ const dialog = screen.getByRole('dialog');
+ expect(within(dialog).getByRole('link', { name: 'Classroom' }).previousElementSibling?.tagName).toBe('NAV');
+});
+
+it.each([[0, 200, '0% complete'], [66, 200, '33% complete'], [199, 200, '99% complete'], [200, 200, '99% complete']] as const)('shows honest partial drill percentage for %s of %s', (done, total, label) => {
+ const step = OPENING_COURSE_PATH.find(step => step.id === 'foundation-practice')!;
+ const progressStore = { steps: { [step.id]: { status: 'started' as const, updatedAt: '2026-10-17', done, total } }, save: () => {} };
+ render(<MemoryRouter><OpeningCourseScreen steps={[step]} progressStore={progressStore} url={url}/></MemoryRouter>);
+ expect(screen.getByText(label)).toBeVisible();
+ expect(screen.getByRole('progressbar', { name: 'Course completion' })).toHaveAttribute('aria-valuenow', '0');
+});
+it('shows 100 percent only after all available course steps are done', () => {
+ const step = OPENING_COURSE_PATH[0];
+ const progressStore = { steps: { [step.id]: { status: 'done' as const, updatedAt: '2026-10-17' } }, save: () => {} };
+ render(<MemoryRouter><OpeningCourseScreen steps={[step]} progressStore={progressStore} url={url}/></MemoryRouter>);
+ expect(screen.getByRole('progressbar', { name: 'Course completion' })).toHaveAttribute('aria-valuenow', '100');
+ expect(screen.getByText((_, node) => node?.tagName === 'STRONG' && node.textContent === '100% complete')).toBeVisible();
 });

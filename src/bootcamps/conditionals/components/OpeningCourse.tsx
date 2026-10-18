@@ -24,10 +24,11 @@ export function OpeningCourseNavigation({ view, url, workspaceLinks }: { view: s
     <p>Learn</p><Link aria-current={view === 'overview' || view === 'lessons' || openingCourseStep(view)?.type === 'note' ? 'page' : undefined} to={workspaceLinks?.overview ?? url('lessons')} onClick={closeForNavigation}><BookOpen size={18}/>Course</Link>
     <Link aria-current={view === 'practice' || view === 'labs' || openingCourseStep(view)?.type === 'drill' ? 'page' : undefined} to={url('practice')} onClick={closeForNavigation}><Sparkles size={18}/>Practice drills</Link>
     <p>Resources</p><Link aria-current={view === 'tools' ? 'page' : undefined} to={url('tools')} onClick={closeForNavigation}><Bookmark size={18}/>Flashcards</Link>
-    {workspaceLinks && <Link aria-current={view === 'reference' ? 'page' : undefined} to={workspaceLinks.reference} onClick={closeForNavigation}><BookOpen size={18}/>Reference</Link>}
+    {workspaceLinks && <Link aria-current={view === 'reference' ? 'page' : undefined} to={workspaceLinks.reference} onClick={closeForNavigation}><BookOpen size={18}/>Quick reference</Link>}
   </nav>;
+  const classroom = <Link className="oc-classroom-footer" to="/classroom" onClick={closeForNavigation}><ArrowLeft size={15}/>Classroom</Link>;
   return <>
-    <aside className="oc-course-rail"><Link className="oc-back" to="/classroom"><ArrowLeft size={15}/>Classroom</Link><div className="oc-brand">Conditional logic</div>{navigation}</aside>
+    <aside className="oc-course-rail"><div className="oc-brand">Conditional logic</div>{navigation}{classroom}</aside>
     <div className="oc-mobile-nav"><Link to={workspaceLinks?.overview ?? url('lessons')}>Conditional logic</Link><Sheet open={open} onOpenChange={setOpen}><SheetTrigger asChild><button type="button"><Menu size={18}/>Course menu</button></SheetTrigger><SheetContent side="left" className="oc-course-drawer" aria-describedby={undefined} onCloseAutoFocus={event => {
       if (!focusDestination.current) return;
       event.preventDefault();
@@ -36,7 +37,7 @@ export function OpeningCourseNavigation({ view, url, workspaceLinks }: { view: s
         const heading = document.querySelector<HTMLElement>('.cb-main h1, .oc-course-screen [data-course-heading] h1');
         if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
       });
-    }}><SheetTitle>Conditional logic</SheetTitle>{navigation}</SheetContent></Sheet></div>
+    }}><SheetTitle>Conditional logic</SheetTitle>{navigation}{classroom}</SheetContent></Sheet></div>
   </>;
 }
 
@@ -44,9 +45,9 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
   const saved = useCourseProgress()?.steps[step.id];
   const drill = step.type === 'drill';
   const count = drill ? getSourceWorksheetDrill(step.id)?.items.length : undefined;
-  return <li className={`oc-path-card${drill ? ' oc-drill-card' : ''}`} data-progress={saved?.status ?? 'new'}>
-    {step.lessonNumber && <span className="oc-card-num">{step.lessonNumber}</span>}
-    <span className="oc-label">{drill ? 'Drill' : 'Lesson'}</span><CardStatus saved={saved} drill={drill}/><h3>{step.title}</h3><p>{step.description}</p>
+  return <li className={`oc-path-card${drill ? ' oc-drill-card' : ''}`} data-progress={saved?.status ?? 'new'} data-kind={step.type}>
+    <span className="oc-timeline-node" aria-hidden="true">{drill ? <Dumbbell size={20}/> : <BookOpen size={20}/>}</span>
+    <span className="oc-label">{drill ? 'Drill' : <>Lesson <span>{step.lessonNumber}</span></>}</span><CardStatus saved={saved} drill={drill}/><h3>{step.title}</h3><p>{step.description}</p>
     <div className="oc-card-foot"><Link className="oc-action" to={url(step.id)}>{drill ? <Dumbbell size={16}/> : <BookOpen size={16}/>} {saved?.status === 'started' ? 'Continue' : saved?.status === 'done' ? (drill ? 'Review drill' : 'Read again') : drill ? 'View drill' : 'Read lesson'}</Link>{count !== undefined && <span className="oc-card-count">{count} questions</span>}</div>
   </li>;
 }
@@ -92,16 +93,17 @@ function DrillEntry({ step, url, storageScope }: { step: OpeningCourseStep; url:
 function CardStatus({ saved, drill }: { saved?: CourseProgressStore['steps'][string]; drill: boolean }) {
   if (!saved) return <span className="oc-status oc-status-new">Not started</span>;
   if (saved.status === 'done') return <span className="oc-status oc-status-done"><Check size={13} aria-hidden/>Done</span>;
-  const partial = drill && saved.total ? <>{saved.done ?? 0} / {saved.total}<span className="oc-status-bar" aria-hidden><i style={{ width: `${(saved.done ?? 0) / saved.total * 100}%` }}/></span></> : 'In progress';
+  const partial = drill && saved.total ? <>{Math.min(99, Math.round((saved.done ?? 0) / saved.total * 100))}% complete<span className="oc-status-bar" aria-hidden><i style={{ width: `${Math.min(99, (saved.done ?? 0) / saved.total * 100)}%` }}/></span></> : 'In progress';
   return <span className="oc-status oc-status-started">{partial}</span>;
 }
 
 function CourseTracker({ steps }: { steps: OpeningCourseStep[] }) {
   const saved = useCourseProgress()?.steps ?? {};
   const done = steps.filter(step => saved[step.id]?.status === 'done').length;
+  const percent = steps.length ? Math.min(done === steps.length ? 100 : 99, Math.round(done / steps.length * 100)) : 0;
   return <div className="oc-tracker" role="group" aria-label="Your progress">
-    <div className="oc-tracker-top"><span>Your progress</span><strong>{done} <small>of {steps.length} done</small></strong></div>
-    <div className="oc-tracker-steps">{steps.map(step => <i key={step.id} data-progress={saved[step.id]?.status ?? 'new'} data-type={step.type} title={step.title}/>)}</div>
+    <div className="oc-tracker-top"><span>Your progress</span><strong>{percent}% <small>complete</small></strong></div>
+    <div className="oc-completion-rail" role="progressbar" aria-label="Course completion" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-valuetext={`${percent}% complete, ${done} of ${steps.length} steps done`}><span style={{ width: `${percent}%` }}/></div>
   </div>;
 }
 

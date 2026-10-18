@@ -253,19 +253,37 @@
 
 .oc-part-title { margin:30px 0 18px; font-size:1.4rem; font-weight:600; color:var(--oc-ink); }
 
-/* The course is a readable sequence rather than a gallery of landing cards. */
-.oc-course-index .oc-course-path { display:grid; grid-template-columns:1fr; gap:10px; }
-.oc-course-index .oc-path-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:6px 14px; padding:18px 22px; min-height:0; }
-.oc-course-index .oc-path-card > .oc-card-num { grid-column:1; grid-row:1 / 4; margin:0; min-width:2.2em; }
-.oc-course-index .oc-path-card > .oc-label { grid-column:2; grid-row:1; font-size:.75rem; }
+
+/* Open learning timeline: labels and icons distinguish teaching from practice. */
+.oc-course-rail { display:flex; flex-direction:column; }
+.oc-classroom-footer { display:flex; align-items:center; gap:9px; margin-top:auto; padding:24px 10px 4px; min-height:44px; color:var(--oc-muted); font-size:.875rem; text-decoration:none; }
+.oc-course-drawer { display:flex; flex-direction:column; }
+.oc-course-index .oc-course-path { display:grid; grid-template-columns:1fr; gap:0; padding:0; margin:0; list-style:none; }
+.oc-course-index .oc-path-card { --oc-kind:#245b91; position:relative; display:grid; grid-template-columns:42px minmax(0,1fr) auto; align-items:center; gap:6px 18px; padding:22px 0; min-height:0; background:transparent; border:0; border-radius:0; box-shadow:none; }
+.oc-course-index .oc-path-card[data-kind=drill] { --oc-kind:#087d75; }
+.oc-course-index .oc-path-card::before { content:""; position:absolute; left:20px; top:0; bottom:0; width:2px; background:var(--oc-line); }
+.oc-course-index .oc-path-card:first-child::before { top:40px; }
+.oc-course-index .oc-path-card:last-child::before { bottom:calc(100% - 40px); }
+.oc-timeline-node { grid-column:1; grid-row:1 / 4; align-self:start; position:relative; z-index:1; display:grid; place-items:center; width:42px; height:42px; border-radius:50%; background:var(--oc-canvas); color:var(--oc-kind); border:2px solid currentColor; }
+.oc-course-index .oc-path-card > .oc-label { grid-column:2; grid-row:1; color:var(--oc-kind); font-size:.75rem; font-weight:700; }
 .oc-course-index .oc-path-card > .oc-status { grid-column:3; grid-row:1; justify-self:end; }
 .oc-course-index .oc-path-card h3 { grid-column:2; grid-row:2; margin:0; font-family:inherit; font-style:normal; font-size:1.15rem; font-weight:600; line-height:1.35; }
 .oc-course-index .oc-path-card > p { grid-column:2; grid-row:3; margin:0; font-size:.925rem; line-height:1.45; }
 .oc-course-index .oc-card-foot { grid-column:3; grid-row:2 / 4; margin:0; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
-.oc-course-index .oc-card-foot .oc-action { font-size:.875rem; padding:7px 10px; }
-.oc-course-index .oc-drill-card:hover { transform:none; }
+.oc-course-index .oc-card-foot .oc-action { color:var(--oc-kind); background:transparent; border:0; box-shadow:none; text-decoration:underline; text-underline-offset:4px; font-size:.875rem; padding:7px 0 7px 12px; }
+.oc-course-index .oc-drill-card:hover { transform:none; box-shadow:none; background:transparent; }
+.oc-completion-rail { height:7px; overflow:hidden; border-radius:9px; background:var(--oc-line); margin-top:14px; }
+.oc-completion-rail > span { display:block; height:100%; border-radius:inherit; background:#087d75; }
+@media(max-width:640px) { .oc-course-rail { display:none; } }
 @media(max-width:640px) {
- .oc-course-index .oc-path-card { grid-template-columns:auto 1fr; padding:16px; gap:7px 10px; }
+ .oc-course-index .oc-path-card { grid-template-columns:36px minmax(0,1fr); gap:7px 12px; padding:18px 0; }
+ .oc-timeline-node { width:36px; height:36px; }
+ .oc-course-index .oc-path-card::before { left:17px; }
  .oc-course-index .oc-path-card > .oc-status { grid-column:2; grid-row:4; justify-self:start; }
  .oc-course-index .oc-card-foot { grid-column:2; grid-row:5; align-items:flex-start; }
+ .oc-course-index .oc-card-foot .oc-action { padding-left:0; }
 }
+
+.oc-course-index .oc-tracker { padding:16px 0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.dark .oc-course-index .oc-path-card { --oc-kind:#91c4f5; }
+.dark .oc-course-index .oc-path-card[data-kind=drill] { --oc-kind:#7cd9cb; }

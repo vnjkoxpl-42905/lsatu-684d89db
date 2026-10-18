@@ -146,13 +146,13 @@ it('keeps destinations in one course navigation and preserves assignment context
   expect(within(nav).getByRole('link', { name: 'Course' })).toHaveAttribute('href', `${base}${query}`);
   expect(within(nav).queryByRole('link', { name: 'Review attempts' })).toBeNull();
   expect(within(nav).queryByRole('link', { name: 'Journal' })).toBeNull();
-  expect(within(nav).getByRole('link', { name: 'Reference' })).toHaveAttribute('href', `${base}/reference${query}`);
+  expect(within(nav).getByRole('link', { name: 'Quick reference' })).toHaveAttribute('href', `${base}/reference${query}`);
   expect(screen.queryByRole('link', { name: 'Assigned work' })).toBeNull();
   expect(screen.queryByRole('link', { name: 'Drill Lab' })).toBeNull();
   expect(document.querySelector('.cb-workspace-bar')!.querySelectorAll('a,button')).toHaveLength(0);
-  fireEvent.click(within(nav).getByRole('link', { name: 'Reference' }));
-  expect(screen.getByRole('heading', { name: 'Your conditional reference.' })).toBeVisible();
-  expect(screen.getByRole('link', { name: 'Reference' })).toHaveAttribute('aria-current', 'page');
+  fireEvent.click(within(nav).getByRole('link', { name: 'Quick reference' }));
+  expect(screen.getByRole('heading', { name: 'Conditional logic reference' })).toBeVisible();
+  expect(screen.getByRole('link', { name: 'Quick reference' })).toHaveAttribute('aria-current', 'page');
 });
 
 it.each([false, true])('marks the preserved lab alias as practice for admin=%s', isAdmin => {
