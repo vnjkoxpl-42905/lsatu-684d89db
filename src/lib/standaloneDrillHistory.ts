@@ -4,6 +4,13 @@ import { launchDrill } from '@/lib/drillLaunch';
 import type { RcAttempt, RcDrillSession } from '@/features/rc/lib/rcTypes';
 import { readRcDraftAnswers } from '@/features/rc/lib/rcTypes';
 import type { DrillResumeSession } from '@/lib/drillResumeSession';
+import { firstRcAttempts } from '@/features/rc/lib/rcRetrySelection';
+
+export type RcHistoryTiming = 'timed' | 'untimed' | 'unknown';
+export type RcHistoryTake = 'first-recorded' | 'repeat' | 'mixed' | 'unknown';
+export const RC_TAKE_LABELS: Record<RcHistoryTake, string> = {
+  'first-recorded': 'No recorded exposure at start', repeat: 'Repeated passages', mixed: 'Some passages repeated', unknown: 'Exposure before take unknown',
+};
 
 export type StandaloneDrillHistoryItem = {
   key: string;
@@ -17,7 +24,28 @@ export type StandaloneDrillHistoryItem = {
   reviewTo: string;
   /** RC only: the session an unfinished card can discard. */
   discardId?: string;
+  rcTiming?: RcHistoryTiming;
+  rcTake?: RcHistoryTake;
+  rcExcluded?: boolean;
 };
+
+/** Earlier previews cannot be reconstructed from legacy answer history. */
+export function classifyRcHistoryTake(session: RcDrillSession, sessions: RcDrillSession[], attempts: Map<string, RcAttempt[]>): RcHistoryTake {
+  const started = Date.parse(session.startedAt);
+  if (!Number.isFinite(started) || session.passageIds.length === 0) return 'unknown';
+  const recorded = (session.config as RcDrillSession['config'] & { passageExposureAtStart?: Record<string, string> }).passageExposureAtStart;
+  const states = session.passageIds.map(passageId => {
+    const repeated = sessions.some(earlier => earlier.id !== session.id && earlier.userId === session.userId && !earlier.excludedFromAnalytics
+      && (attempts.get(earlier.id) ?? []).some(attempt => attempt.sessionId === earlier.id && (!attempt.userId || attempt.userId === session.userId) && attempt.passageId === passageId
+        && (attempt.createdAt ? Date.parse(attempt.createdAt) < started : !!earlier.completedAt && Date.parse(earlier.completedAt) < started)));
+    if (repeated || recorded?.[String(passageId)] === 'recorded-exposure') return 'repeat';
+    if (recorded?.[String(passageId)] === 'no-recorded-exposure') return 'first-recorded';
+    return 'unknown';
+  });
+  if (states.every(state => state === 'repeat')) return 'repeat';
+  if (states.every(state => state === 'first-recorded')) return 'first-recorded';
+  return states.some(state => state === 'repeat') ? 'mixed' : 'unknown';
+}
 
 /** What a card needs to name a passage the way the student knows it. */
 export type RcCardPassage = { preptest: number; section: number; setNumber: number; title: string | null };
@@ -46,6 +74,7 @@ export function buildStandaloneDrillHistory(
   rcAttempts: Map<string, RcAttempt[]>,
   smartDrill: DrillResumeSession | null = null,
   rcPassages?: Map<number, RcCardPassage>,
+  exposureSessions: RcDrillSession[] = rcSessions,
 ): StandaloneDrillHistoryItem[] {
   const lr: StandaloneDrillHistoryItem[] = lrRuns
     .filter((run) => !run.source_key.startsWith('guided::'))
@@ -72,7 +101,7 @@ export function buildStandaloneDrillHistory(
     .filter((session) => session.status === 'completed' || (rcAttempts.get(session.id)?.length ?? 0) > 0
       || readRcDraftAnswers(session.config.draftAnswers).length > 0)
     .map((session) => {
-      const firstAnswers = (rcAttempts.get(session.id) ?? []).filter((answer) => answer.isFirstAttempt);
+      const firstAnswers = [...firstRcAttempts(rcAttempts.get(session.id) ?? []).values()];
       const drafts = readRcDraftAnswers(session.config.draftAnswers);
       const rightCount = firstAnswers.filter((answer) => answer.isCorrect === true).length;
       const savedCount = new Set([...firstAnswers.map((answer) => answer.questionId), ...drafts.map((draft) => draft.questionId)]).size;
@@ -91,6 +120,9 @@ export function buildStandaloneDrillHistory(
         continueTo: `/rc/drill?sessionId=${encodeURIComponent(session.id)}`,
         resultsTo: `/rc/results/${encodeURIComponent(session.id)}`,
         reviewTo: `/rc/drill?sessionId=${encodeURIComponent(session.id)}&review=1`,
+        rcTiming: session.config.timing?.mode === 'unlimited' ? 'untimed' as const : session.config.timing?.mode === 'per_passage_budget' ? 'timed' as const : 'unknown' as const,
+        rcTake: classifyRcHistoryTake(session, exposureSessions, rcAttempts),
+        rcExcluded: session.excludedFromAnalytics,
         ...(session.status === 'in_progress' ? { discardId: session.id } : {}),
       };
     });

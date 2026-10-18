@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { RcPassagePane } from '@/features/rc/components/RcPassagePane';
 import { RcTimedReader, type RcTimedReaderProps } from './RcTimedReader';
 import type { RcSessionItem } from '@/features/rc/lib/rcSession';
 import comparativeBank from '../../../public/data/rc/RC-PT123.json';
@@ -112,6 +113,22 @@ describe('RcTimedReader', () => {
       expect(screen.getByText(/Choice alpha/)).toBeInTheDocument();
       expect(view.container.querySelector('.rc-timed-reader')).toHaveAttribute('data-pane-layout', 'single');
     } finally { vi.unstubAllGlobals(); }
+  });
+
+  it('reveals paragraph blocks reversibly while retaining the original mounted text and offsets', () => {
+    HTMLElement.prototype.scrollIntoView = vi.fn();
+    const onParagraphCount = vi.fn();
+    const pane = (limit: number | undefined, findQuery = '') => <RcPassagePane passage={passage} highlights={[]} color="yellow" onColorChange={vi.fn()}
+      highlightMode="none" findQuery={findQuery} findIndex={0} onFindCount={vi.fn()} scrollTop={0} onScroll={vi.fn()} textStyle={{}}
+      onAddHighlight={vi.fn()} onRemoveHighlight={vi.fn()} onRemoveRange={vi.fn()} paragraphLimit={limit} onParagraphCount={onParagraphCount} />;
+    const view = render(pane(1));
+    const text = view.container.querySelector('.rc-passage-text')!;
+    const original = text.textContent; const paragraphs = [...text.querySelectorAll('p')];
+    expect(onParagraphCount).toHaveBeenCalledWith(2);
+    expect(paragraphs[0]).toBeVisible(); expect(paragraphs[1]).not.toBeVisible();
+    view.rerender(pane(2)); expect(paragraphs[1]).toBeVisible(); expect(text.textContent).toBe(original);
+    view.rerender(pane(1, 'trust')); expect(paragraphs[1]).toBeVisible();
+    view.rerender(pane(undefined)); expect(paragraphs[1]).toBeVisible(); expect(text.textContent).toBe(original);
   });
 
   it('hides the question column in passage-only mode', () => {

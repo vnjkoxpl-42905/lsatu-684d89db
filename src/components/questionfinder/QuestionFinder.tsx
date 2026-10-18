@@ -467,7 +467,7 @@ function FinderPanel({
                         <span className="qf-row-title">
                           {hit.title ?? hit.topic ?? `Passage ${hit.setNumber}`}
                         </span>
-                        <Snippet snippet={hit.snippet} />
+                        <span className="qf-snippet">Open Preview to reveal passage and question text.</span>
                       </span>
                       <span className="qf-row-meta">
                         <span className="qf-count">

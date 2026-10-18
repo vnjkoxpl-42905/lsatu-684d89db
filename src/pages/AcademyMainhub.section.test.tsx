@@ -9,8 +9,8 @@ vi.mock("@/lib/drillResumeSession", async (importOriginal) => ({ ...await import
 vi.mock("@/features/rc/api/rcProgress", () => ({
   listSessions: vi.fn(async () => []), getSessionAttempts: vi.fn(async () => []), abandonSession: vi.fn(async () => undefined),
 }));
-vi.mock("@/lib/standaloneDrillHistory", () => ({ buildStandaloneDrillHistory: () => [
-  { key: "rc:active", section: "rc", title: "RC active sitting", detail: "2 answers saved", date: "2026-10-15", status: "in_progress", continueTo: "/rc/drill?sessionId=active", discardId: "active" },
+vi.mock("@/lib/standaloneDrillHistory", async () => ({ ...await vi.importActual<typeof import('@/lib/standaloneDrillHistory')>('@/lib/standaloneDrillHistory'), buildStandaloneDrillHistory: () => [
+  { key: "rc:active", section: "rc", title: "RC active sitting", detail: "2 answers saved", date: "2026-10-15", status: "in_progress", continueTo: "/rc/drill?sessionId=active", discardId: "active", rcTiming: 'timed', rcTake: 'repeat' },
   { key: "rc:done", section: "rc", title: "RC finished sitting", detail: "7 answers saved", date: "2026-10-14", status: "completed", resultsTo: "/rc/results/done", reviewTo: "/rc/drill?sessionId=done&review=1" },
   { key: "lr:active", section: "lr", title: "LR active sitting", detail: "1 answer saved", date: "2026-10-15", status: "in_progress", continueTo: "/drill?run=active" },
 ] }));
@@ -409,6 +409,21 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     fireEvent.click(lrSwitch());
     await screen.findByText("LR active sitting");
     expect(screen.queryByRole("button", { name: "Discard" })).not.toBeInTheDocument();
+  });
+
+  it('filters RC history by configured timing and recorded exposure without exposing scores', async () => {
+    renderHub('/practice/drills?section=rc&view=in-progress');
+    await screen.findByText('RC active sitting');
+    expect(screen.getByText('Timed · Repeated passages')).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'Filter RC history by timing' }), { target: { value: 'untimed' } });
+    expect(screen.queryByText('RC active sitting')).not.toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'Filter RC history by timing' }), { target: { value: 'timed' } });
+    expect(screen.getByText('RC active sitting')).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'Filter RC history by exposure' }), { target: { value: 'unknown' } });
+    expect(screen.queryByText('RC active sitting')).not.toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'Filter RC history by exposure' }), { target: { value: 'repeat' } });
+    expect(screen.getByText('RC active sitting')).toBeInTheDocument();
+    expect(screen.queryByText(/% correct/)).not.toBeInTheDocument();
   });
 
   it("isolates RC history by status and keeps that view when switching to LR", async () => {

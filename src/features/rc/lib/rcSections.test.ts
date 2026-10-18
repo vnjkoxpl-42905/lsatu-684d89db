@@ -14,6 +14,7 @@ import {
 } from './rcSections';
 import type { RcDrillSession, RcQuestionHistory } from './rcTypes';
 import * as rcProgress from '../api/rcProgress';
+import * as rcExposure from '../api/rcExposure';
 
 function passage(
   preptest: number,
@@ -274,6 +275,7 @@ describe('buildRcSectionFreshness and fetchRcSectionFreshness', () => {
 
     const historySpy = vi.spyOn(rcProgress, 'getQuestionHistory').mockResolvedValueOnce(history);
     const sessionsSpy = vi.spyOn(rcProgress, 'listSessions').mockResolvedValueOnce(sessions);
+    const exposureSpy = vi.spyOn(rcExposure, 'getRcExposureHistory').mockResolvedValueOnce(new Set());
     const fetched = await fetchRcSectionFreshness(sections, passages);
     expect(fetched.get('101-1')?.isFresh).toBe(true);
     expect(fetched.get('102-1')?.isFresh).toBe(false);
@@ -281,14 +283,32 @@ describe('buildRcSectionFreshness and fetchRcSectionFreshness', () => {
     expect(fetched.get('104-1')?.isFresh).toBe(false);
     historySpy.mockRestore();
     sessionsSpy.mockRestore();
+    exposureSpy.mockRestore();
   });
 
   it('rejects instead of reporting every section fresh when the sitting lookup fails', async () => {
+    const exposureSpy = vi.spyOn(rcExposure, 'getRcExposureHistory').mockResolvedValueOnce(new Set());
     const historySpy = vi.spyOn(rcProgress, 'getQuestionHistory').mockResolvedValueOnce(new Map());
     const sessionsSpy = vi.spyOn(rcProgress, 'listSessions').mockRejectedValueOnce(new Error('sessions unavailable'));
     await expect(fetchRcSectionFreshness([], [])).rejects.toThrow('sessions unavailable');
     historySpy.mockRestore();
     sessionsSpy.mockRestore();
+    exposureSpy.mockRestore();
+  });
+
+  it('a recorded preview disqualifies a section even without an answer', () => {
+    const passages = fullSection(101, 1);
+    const sections = buildRcSections(passages);
+    const result = buildRcSectionFreshness(sections, passages, new Map(), [], new Set([passages[0].passageId]));
+    expect(result.get('101-1')).toMatchObject({ isFresh: false, unseen: 21 });
+  });
+
+  it('does not certify freshness when the exposure ledger is unavailable', async () => {
+    const historySpy = vi.spyOn(rcProgress, 'getQuestionHistory').mockResolvedValueOnce(new Map());
+    const sessionsSpy = vi.spyOn(rcProgress, 'listSessions').mockResolvedValueOnce([]);
+    const exposureSpy = vi.spyOn(rcExposure, 'getRcExposureHistory').mockRejectedValueOnce(new Error('exposure unavailable'));
+    await expect(fetchRcSectionFreshness([], [])).rejects.toThrow('exposure unavailable');
+    historySpy.mockRestore(); sessionsSpy.mockRestore(); exposureSpy.mockRestore();
   });
 });
 

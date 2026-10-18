@@ -31,6 +31,14 @@ function recoveredQuestion(): RcQuestion {
 describe('a recovered RC question in review', () => {
   const question = recoveredQuestion();
 
+  it('does not mistake answer tags or blank blocks for explanatory prose', () => {
+    render(<MemoryRouter><RcReviewLayer question={{ ...question,
+      explanationBlocks: [{ heading: 'Walkthrough', body: '  ' }],
+      choices: question.choices.map(choice => ({ ...choice, tag: 'Too Strong', explanation: null })),
+    }} firstPick="B" /></MemoryRouter>);
+    expect(screen.getByRole('button', { name: 'Ask Joshua about this question' })).toBeInTheDocument();
+  });
+
   it('handles a missing question stem honestly in the tutor draft', () => {
     function ContextProbe() { return <output data-testid="missing-stem-context">{JSON.stringify(useLocation().state)}</output>; }
     render(<MemoryRouter initialEntries={['/rc/drill?sessionId=saved-session&review=1']}>

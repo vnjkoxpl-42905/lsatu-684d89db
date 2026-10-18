@@ -5,6 +5,9 @@ const app = path.resolve(__dirname, '../..');
 export default defineConfig({ root: __dirname, envFile: false,
   plugins: [{ name: 'isolated-rc-data', enforce: 'pre', resolveId(source, importer) {
     if (!importer?.includes('src/')) return;
+    if (source === '../api/rcExposure') return path.resolve(__dirname, 'mockExposure.ts');
+    if (source === '../api/rcSavedSets' || source === '@/features/rc/api/rcSavedSets') return path.resolve(__dirname, 'mockSavedSets.ts');
+    if (source === '../lib/rcLearning') return path.resolve(__dirname, 'mockLearning.ts');
     if (source === '../api/rcProgress') return path.resolve(__dirname, 'mockProgress.ts');
     if (source === '../lib/rcBank') return path.resolve(__dirname, 'mockBank.ts');
     if (source === '../hooks/useRcHighlights') return path.resolve(__dirname, 'mockHighlights.ts');

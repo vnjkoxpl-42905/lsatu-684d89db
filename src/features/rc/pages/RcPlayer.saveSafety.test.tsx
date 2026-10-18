@@ -110,6 +110,22 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('RC account save safety', () => {
+  it('restores acknowledged review answers as history and offers a fresh blind answer without changing the first take', async () => {
+    api.getSession.mockResolvedValue({ ...session(), status: 'completed' });
+    api.getSessionAttempts.mockResolvedValue([attempt, { ...attempt, id: 'saved-review', selected: 'C', isFirstAttempt: false, createdAt: '2026-10-17T12:00:00Z' }]);
+    mount('&review=1&q=1');
+    expect(await screen.findByText('Saved review answers')).toBeInTheDocument();
+    expect(screen.getByText('Review 1: C · 2026-10-17')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Show saved answer' })).toBeNull();
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('correct');
+    fireEvent.click(screen.getByRole('button', { name: 'Answer again blind' }));
+    expect(screen.getByRole('button', { name: 'Show saved answer' })).toBeInTheDocument();
+    expect(screen.getByText('Question 1: B')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    await waitFor(() => expect(api.recordAttempt).toHaveBeenCalledWith(expect.objectContaining({ isFirstAttempt: false, selected: 'B' })));
+    expect(screen.getByText('Question 1: B')).toBeInTheDocument();
+  });
   it('retains the exact second-answer command until acknowledgment and keeps blind review spoiler-free', async () => {
     api.getSession.mockResolvedValue({ ...session(), status: 'completed' });
     api.getSessionAttempts.mockResolvedValue([attempt]);
@@ -843,6 +859,31 @@ describe('RC account save safety', () => {
     expect(screen.queryByRole('alertdialog')).toBeNull();
     expect(screen.getByRole('button', { name: 'Choose B' })).not.toBeDisabled();
     expect(api.saveSessionClock).not.toHaveBeenCalled();
+  });
+
+  it('catches up a reload clock only after acknowledgement and preserves saved learning through the next reload', async () => {
+    const learningRecords = [{ id: 'saved-prediction', kind: 'prediction', value: 'Explain the disagreement.' }];
+    let account = { ...session(), config: { ...session().config, learningRecords } };
+    api.getSession.mockImplementation(async () => account);
+    api.getSessionAttempts.mockResolvedValue([attempt]);
+    localStorage.setItem('lsatu:rc-clock:session-one', '23');
+    let acknowledge!: () => void;
+    api.saveSessionClock.mockImplementationOnce((_id: string, seconds: number, index: number) => new Promise<void>(resolve => {
+      acknowledge = () => { account = { ...account, config: { ...account.config, clockElapsedSeconds: seconds, currentQuestionIndex: index } }; resolve(); };
+    }));
+    mount();
+    expect(await screen.findByRole('alertdialog')).toHaveTextContent('Your saved clock still needs to reach your account');
+    fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+    expect(screen.getByRole('alertdialog')).toBeInTheDocument();
+    expect(screen.getByTestId('clock')).toHaveTextContent('77');
+    await act(async () => acknowledge());
+    await waitFor(() => expect(screen.queryByRole('alertdialog')).toBeNull());
+    expect(account.config.learningRecords).toEqual(learningRecords);
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    cleanup(); mount();
+    await screen.findByText('Question 2: blank');
+    expect(screen.queryByRole('alertdialog')).toBeNull();
+    expect(account.config.learningRecords).toEqual(learningRecords);
   });
 
   it('leaves completed review navigation read-only', async () => {

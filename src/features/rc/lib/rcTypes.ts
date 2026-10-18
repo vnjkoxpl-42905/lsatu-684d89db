@@ -187,6 +187,8 @@ export function readRcDraftAnswers(value: unknown): RcDraftAnswer[] {
 }
 
 export interface RcDrillConfig {
+  /** A launch-time ledger observation, not proof of historically unseen material. */
+  passageExposureAtStart?: Record<string, 'no-recorded-exposure' | 'recorded-exposure' | 'unknown'>;
   /** Explicit account-acknowledged release of ordinary drill scores and feedback. */
   resultsRevealedAt?: string;
   reveal: RcRevealMode;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildStandaloneDrillHistory } from './standaloneDrillHistory';
+import { buildStandaloneDrillHistory, classifyRcHistoryTake } from './standaloneDrillHistory';
 import type { StandaloneDrillRun } from './drillRunLedger';
 import type { RcAttempt, RcDrillSession } from '@/features/rc/lib/rcTypes';
 import type { DrillResumeSession } from './drillResumeSession';
@@ -30,6 +30,22 @@ const smart = (status: 'in_progress' | 'completed', attempts: number): DrillResu
 } as DrillResumeSession);
 
 describe('buildStandaloneDrillHistory', () => {
+  it('distinguishes observed repeats from unknown legacy exposure and preserves explicit start snapshots', () => {
+    const earlier = rc('earlier', { status: 'completed', startedAt: '2026-09-01T12:00:00Z', completedAt: '2026-09-01T13:00:00Z' });
+    const later = rc('later');
+    const attempts = new Map([['earlier', [answer('earlier')]]]);
+    expect(classifyRcHistoryTake(later, [earlier, later], attempts)).toBe('repeat');
+    expect(classifyRcHistoryTake(earlier, [earlier, later], attempts)).toBe('unknown');
+    const snapshotted = rc('snapshot', { config: { ...later.config, passageExposureAtStart: { 12: 'no-recorded-exposure' } } as RcDrillSession['config'] });
+    expect(classifyRcHistoryTake(snapshotted, [snapshotted], new Map())).toBe('first-recorded');
+    expect(classifyRcHistoryTake(rc('mixed', { passageIds: [12, 13] }), [earlier], attempts)).toBe('mixed');
+    expect(classifyRcHistoryTake(later, [{ ...earlier, userId: 'another-account' }], attempts)).toBe('unknown');
+  });
+  it('exposes timing mode as history metadata without unsealing correctness', () => {
+    const timed = rc('timed', { status: 'completed', config: { ...rc('base').config, timing: { mode: 'per_passage_budget', secondsPerPassage: 525 } } });
+    const rows = buildStandaloneDrillHistory([], [timed], new Map([['timed', [answer('timed')]]]));
+    expect(rows[0]).toMatchObject({ rcTiming: 'timed', rcTake: 'unknown', detail: 'Completed · results hidden until you reveal them' });
+  });
   it('hides completed RC score until an acknowledged reveal, including legacy sessions', () => {
     const rows = buildStandaloneDrillHistory([], [rc('hidden', { status: 'completed' })], new Map([['hidden', [answer('hidden')]]]));
     expect(rows[0].detail).toBe('Completed · results hidden until you reveal them');

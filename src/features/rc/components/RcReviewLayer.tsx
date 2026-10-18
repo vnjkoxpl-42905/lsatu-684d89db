@@ -42,8 +42,9 @@ export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, ac
 
   // Tag-only questions carry a record but no prose. If there is nothing authored
   // anywhere, say so plainly rather than rendering an empty shell.
-  const hasChoiceProse = question.choices.some((c) => c.explanation || c.tag);
-  const hasAnything = blocks.length > 0 || hasChoiceProse;
+  const hasChoiceProse = question.choices.some((c) => Boolean(c.explanation?.trim()));
+  const hasWalkthrough = blocks.some((block) => Boolean(block.body.trim()));
+  const hasAnything = hasWalkthrough || hasChoiceProse;
 
   return (
     <div className="rc-review">
@@ -61,13 +62,14 @@ export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, ac
         )}
       </div>
 
-      {hasAnything ? (
+      {hasWalkthrough && (
         <RcExplanationBlocks
           blocks={blocks}
           openFirst={!gotItRight}
           resetKey={question.questionId}
         />
-      ) : (
+      )}
+      {!hasAnything && (
         <div className="rc-tutor-fallback">
           <p>No written walkthrough for this one yet. Ask the tutor and we'll work it together.</p>
           <button type="button" className="rc-button" onClick={askJoshua}>

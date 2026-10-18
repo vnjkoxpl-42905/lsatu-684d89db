@@ -1,3 +1,4 @@
+vi.mock('@/features/rc/api/rcSavedSets', () => ({ listRcSavedSets: vi.fn(async () => []), getRcSavedSet: vi.fn(), saveRcSet: vi.fn(), renameRcSet: vi.fn() }));
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -64,8 +65,9 @@ describe("Saved Sets Inspect", () => {
     state.mutate.mockClear();
   });
 
-  it("shows the stored questions in order without launching or writing practice data", () => {
+  it("shows the stored questions in order without launching or writing practice data", async () => {
     render(<MemoryRouter initialEntries={["/practice/sets"]}><SavedSets /><Location /></MemoryRouter>);
+    await screen.findByText("No saved RC sets or recipes yet.");
 
     fireEvent.click(screen.getByRole("button", { name: "Inspect" }));
     const dialog = screen.getByRole("dialog", { name: "Inspect Causal reasoning" });
@@ -79,9 +81,10 @@ describe("Saved Sets Inspect", () => {
     expect(state.mutate).not.toHaveBeenCalled();
   });
 
-  it("keeps Inspect unavailable for a set owned by another account", () => {
+  it("keeps Inspect unavailable for a set owned by another account", async () => {
     state.userId = "student-2";
     render(<MemoryRouter><SavedSets /></MemoryRouter>);
+    await screen.findByText("No saved RC sets or recipes yet.");
     expect(screen.getByRole("button", { name: "Inspect" })).toBeDisabled();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
