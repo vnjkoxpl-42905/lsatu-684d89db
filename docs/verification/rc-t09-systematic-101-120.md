@@ -1,5 +1,7 @@
 # Systematic RC content review: PT101–120
 
+Repair notes are chronological. Where before/after excerpts are included, later cross-review refinements may supersede them. The final correction overlay and integrity report specify exact final field values; readback dispositions record closure.
+
 Status: PT101–120 complete. Every passage, question, choice and supplied authored explanation/summary in this range received a source-relative review; missing prose remains explicitly outside authored coverage. Independent cross-review of PT126–140 complete; all identified corrections read back and verified.
 
 Method: read every source passage, stem, all five choices, every supplied explanation and all nonempty summary variants before disposition. Missing prose is recorded, not filled. Correct only confirmed source-grounding or reasoning defects. Preserve source assessment fields.
@@ -64,7 +66,7 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - Before: The focal point of the passage is the Union that came from Korea to the U.S., who were supported by Korean Americans.  This answer, like (A) and (B), doesn't reference the main cha
   - After: The Pico workers visited the United States to seek a settlement; they are not identified as recent immigrants. Recent working-class immigrants are a separate group discussed as par
 - `/passages/1/questions/0/choices/4/explanation`
-  - Before: The focal point of the passage is the Union that came from Korea to the U.S., who were supported by Korean Americans.  This answer, like the other wrong answers, doesn't reference 
+  - Before: The focal point of the passage is the Union that came from Korea to the U.S., who were supported by Korean Americans.  This answer, like the other wrong answers, doesn't reference
   - After: Politicization of young second-generation Korean Americans is one effect. The topic also includes working-class immigrants, cultural identity and alliances beyond the community, al
 - `/passages/1/questions/2/explanationBlocks`
   - Before: [{'heading': 'Topic', 'body': 'The cause of a massive die-off of bottlenose dolphins on the Atlantic coast in 1987–1988.'}, {'heading': 'Framework', 'body': 'Answer / Explain'}, {'
@@ -79,7 +81,7 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - Before: This paragraph doesn't discuss at all whether an ethnic community becoming politicized would affect other groups within the larger society. This would seemingly be referring to the
   - After: The second paragraph explicitly reports new alliances with progressive labor and social-justice groups in the larger society. This example works against the claim that politicizati
 - `/passages/1/questions/5/choices/0/explanation`
-  - Before: This passage is telling a story about something that happened in 1990 that affected the Korean American community.  Does that count as "a recent development in the Korean American 
+  - Before: This passage is telling a story about something that happened in 1990 that affected the Korean American community.  Does that count as "a recent development in the Korean American
   - After: The passage reports a campaign's effects on the Korean American community and draws a potential lesson for other immigrant communities. It does not establish that developments in t
 - `/passages/2/summaries/standard`
   - Before: **Passage Summary**  **Topic**  The use of social science tools to analyze court opinions, especially in sex discrimination cases in higher education.  **Framework**  Challenge Pos
@@ -95,7 +97,7 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - After: The author says certain approaches assist litigants in assessing cases. That does not establish prediction with considerable certainty. The choice turns qualified usefulness into a
 - `/passages/2/questions/4/choices/1/explanation`
   - Before: Whenever we're doing an Analogy / Parallel task, it's a big red flag when the answer seems to be coming from a very similar world in terms of topic.  The plaintiffs are thinking to
-  - After: The lawyers rely on having many cases so that some will succeed. The plaintiffs instead expect to prevail in their own cases despite unfavorable aggregate evidence. The difference 
+  - After: The lawyers rely on having many cases so that some will succeed. The plaintiffs instead expect to prevail in their own cases despite unfavorable aggregate evidence. The difference
 - `/passages/2/questions/4/choices/2/explanation`
   - Before: The people in this answer choice don't expect to win. They just want to run for office anyway to make a statement (like Andrew Yang).  The plaintiffs, meanwhile, *do* expect to win
   - After: These candidates prioritize making a statement over winning. The plaintiffs, by contrast, believe they will prevail. Continuing despite poor odds is not the same as accepting anoth
@@ -103,8 +105,8 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - Before: We're not told that the latter approach looks at more cases. Common sense would suggest, though, that the latter approach would make it through a smaller number of cases.  It's eas
   - After: The passage distinguishes judicial opinions from complete transcripts. It does not compare the number of cases analyzed. We cannot infer sample size from how detailed a source is.
 - `/passages/3/summaries/standard`
-  - Before: **Passage Summary**  **Topic**  The various meanings and considerations of what makes an artwork a "fake" or "authentic," as explored in Mark Jones’s *Fake? The Art of Deception*  
-  - After: **Passage Summary**  **Topic**  The various meanings and considerations of what makes an artwork a "fake" or "authentic," as explored in Mark Jones’s *Fake? The Art of Deception*  
+  - Before: **Passage Summary**  **Topic**  The various meanings and considerations of what makes an artwork a "fake" or "authentic," as explored in Mark Jones’s *Fake? The Art of Deception*
+  - After: **Passage Summary**  **Topic**  The various meanings and considerations of what makes an artwork a "fake" or "authentic," as explored in Mark Jones’s *Fake? The Art of Deception*
 - `/passages/3/questions/1/choices/0/explanation`
   - Before: This was said more or less in the beginning of the 2nd paragraph, but it doesn't convey the deeper theme that the concept of Fake vs. Original is a tricky one that is defined diffe
   - After: The passage surveys several eras and cultures, but does not establish faking throughout history and virtually every culture. It describes medieval European faking as virtually none
@@ -118,11 +120,11 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - Before: [{'heading': 'Research', 'body': 'If we CTRL + F or scan for "traditional", we see it in the final paragraph:\n\n*Her determination to leave areas of ambiguity in the solution of t
   - After: [{'heading': 'Research', 'body': "The final paragraph contrasts James's ambiguous solutions and distribution of guilt with traditional detective fiction's neatness. That supports s
 - `/passages/5/summaries/standard`
-  - Before: **Passage Summary**  **Topic**  Legal challenges and considerations regarding Native American claims to ancestral graves and artifacts excavated by archaeologists and displayed in 
-  - After: **Passage Summary**  **Topic**  Legal challenges and considerations regarding Native American claims to ancestral graves and artifacts excavated by archaeologists and displayed in 
+  - Before: **Passage Summary**  **Topic**  Legal challenges and considerations regarding Native American claims to ancestral graves and artifacts excavated by archaeologists and displayed in
+  - After: **Passage Summary**  **Topic**  Legal challenges and considerations regarding Native American claims to ancestral graves and artifacts excavated by archaeologists and displayed in
 - `/passages/5/questions/1/explanationBlocks`
   - Before: [{'heading': 'Research', 'body': "In the first paragraph, we're told that\n\n*In disinterment cases, courts have traditionally **affirmed** the standing of three classes of plainti
-  - After: [{'heading': 'Research', 'body': "Traditional classes include heirs, landowners and parties with a clear preservation interest. The passage contrasts recent graves associated with 
+  - After: [{'heading': 'Research', 'body': "Traditional classes include heirs, landowners and parties with a clear preservation interest. The passage contrasts recent graves associated with
 - `/passages/5/questions/1/choices/0/explanation`
   - Before: This presents one of the four cases where standing traditionally *is* granted, since it involves an heir to an estate.  1. **you're the heir of the deceased** 2. you own the proper
   - After: This beneficiary has the heir connection identified by the passage.
@@ -157,8 +159,8 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - Before: There is some support for this claim in the 3rd-to-last sentence of the 1st paragraph: *in cases where the grave is ancient and located where NA's have not recently lived, they are
   - After: The passage describes ancient graves combined with a lack of recent community residence. It does not establish that each additional year makes standing harder. The choice also omit
 - `/passages/6/summaries/standard`
-  - Before: **Passage Summary**  **Topic**  The increase in species diversity from poles to equator: why there are more species in the tropics than at higher latitudes.  **Framework**  Answer 
-  - After: **Passage Summary**  **Topic**  The increase in species diversity from poles to equator: why there are more species in the tropics than at higher latitudes.  **Framework**  Answer 
+  - Before: **Passage Summary**  **Topic**  The increase in species diversity from poles to equator: why there are more species in the tropics than at higher latitudes.  **Framework**  Answer
+  - After: **Passage Summary**  **Topic**  The increase in species diversity from poles to equator: why there are more species in the tropics than at higher latitudes.  **Framework**  Answer
 - `/passages/6/questions/0/choices/4/explanation`
   - Before: Again, we have an answer that isn't conveying anything resembling the big payoff idea, "X is the most promising explanation for the puzzling fact we've been discussing".  This answ
   - After: The author notes an untested mechanism when discussing the species-energy hypothesis, but never identifies testability as the most important criterion across all hypotheses. The ma
@@ -181,14 +183,14 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - Before: [{'heading': 'Anticipate', 'body': 'The **central topic** of the passage are the two studies about Britain\'s abolition of the slave trade.\n\nWhy is the author writing about them?
   - After: [{'heading': 'Research', 'body': "Both newer studies challenge parts of Williams's economic account. Drescher emphasizes broad support not explained by economic interest alone; Elt
 - `/passages/7/questions/0/choices/0/explanation`
-  - Before: The main clause of this answer says, "Drescher and Eltis both concede that moral persuasion by abolitionists was a significant factor".  Drescher felt that way, but Eltis rejected 
+  - Before: The main clause of this answer says, "Drescher and Eltis both concede that moral persuasion by abolitionists was a significant factor".  Drescher felt that way, but Eltis rejected
   - After: Drescher explicitly rejects interpretations based on the moral vision of abolitionists as well as purely economic interest. This shared concession is therefore unsupported. Eltis e
 - `/passages/7/questions/0/choices/1/explanation`
   - Before: The opening clause of this answer conveys that we have these two new points of view that are countering Williams' take on Britain's abolition of slavery. So it captures our central
   - After: Both studies question Williams's analysis, while Eltis partly supports the conclusion that economic motives mattered. The final sentences make that limited agreement explicit.
 - `/passages/7/questions/0/choices/2/explanation`
   - Before: This answer makes it seem like our author said that Drescher won out over Eltis.  The author didn't take any explicit side when it comes to Drescher vs. Eltis, but there's an impli
-  - After: The author does not declare Drescher more persuasive than Eltis. It identifies a gap in Drescher's explanation and introduces Eltis's answer. Use those statements, not a rule that 
+  - After: The author does not declare Drescher more persuasive than Eltis. It identifies a gap in Drescher's explanation and introduces Eltis's answer. Use those statements, not a rule that
 - `/passages/7/questions/2/choices/2/explanation`
   - Before: This language relates more to Eltis's alternative-economic explanation for the end of slavery. It appeared in the 3rd paragraph, while our support window is the 1st paragraph.
   - After: Williams cites debt, depleted soil and inefficient coerced labor as making the colonies an impediment to economic progress. The passage does not attribute to him this specific clai
@@ -205,7 +207,7 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - Before: **Passage Summary**  **Topic**  The privacy (or lack thereof) of electronic mail in the workplace and government, and the complex legal and ethical issues surrounding it.  **Framew
   - After: **Passage Summary**  **Topic**  The privacy (or lack thereof) of electronic mail in the workplace and government, and the complex legal and ethical issues surrounding it.  **Framew
 - `/passages/0/questions/0/explanationBlocks`
-  - Before: [{'heading': 'Anticipate', 'body': 'We seem to get the author\'s thesis and our best *Framework* clue in the final sentence of the first paragraph:\n\n*the question of how private 
+  - Before: [{'heading': 'Anticipate', 'body': 'We seem to get the author\'s thesis and our best *Framework* clue in the final sentence of the first paragraph:\n\n*the question of how private
   - After: [{'heading': 'Research', 'body': 'The passage introduces complicated legal questions about workplace email, then examines government records and private-sector monitoring. The endi
 - `/passages/0/questions/0/choices/1/explanation`
   - Before: This answer also implies that the author offered an answer / solution to this tough, complicated problem.  If we treated email privacy like private conversations or telephone calls
@@ -238,7 +240,7 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - Before: [{'heading': 'Anticipate', 'body': 'On Local Purpose questions (in order to / serves to / primarily to), we expect the correct answer to sound like language in the bigger claim tha
   - After: [{'heading': 'Research', 'body': 'The Pope quotation occurs at the end of the first paragraph. The author says the observations seemed as applicable in 1970 as when Pope wrote them
 - `/passages/1/questions/3/choices/4/explanation`
-  - Before: The point of the Pope quote is to indicate that critics get too distracted. They talk about side issues rather than actually critiquing / studying the poetry itself.  The last two 
+  - Before: The point of the Pope quote is to indicate that critics get too distracted. They talk about side issues rather than actually critiquing / studying the poetry itself.  The last two
   - After: The author uses Pope to illustrate an earlier instance of criticism focused on peripheral matters. The passage does not establish how often poets and critics disagree about interpr
 - `/passages/1/questions/5/choices/1/explanation`
   - Before: A *hypothesis* is an attempt to explain a phenomenon.  Why do dogs hate being forced into the shower? My hypothesis is that falling water reminds them of rain, and their evolutiona
@@ -250,14 +252,14 @@ The excerpts below identify concrete source leaves. They include prior coordinat
   - Before: The author never talks about Pan-Indian theorists saying bad things about Native Americans' "cultural borrowing". Cultural borrowing is cited in the 4th paragraph (an example was g
   - After: The author challenges the theory's prediction and unsupported assumption, not a clear value judgment by its proponents about borrowing. The passage does not establish whether those
 - `/passages/2/questions/5/choices/2/explanation`
-  - Before: This style of correct answer we sometimes call "Flip the Causal Difference-Maker". If we are told in a passage that "using flashcards really helped Timmy get better at conditional 
+  - Before: This style of correct answer we sometimes call "Flip the Causal Difference-Maker". If we are told in a passage that "using flashcards really helped Timmy get better at conditional
   - After: The final paragraph says intertribal activities reinforce Native American identity where outside influences threaten it. This supports the qualified claim that preserving the disti
 - `/passages/2/questions/5/choices/4/explanation`
   - Before: The author thinks that proponents of Pan-Indianism are exaggerating the sense in which a rise in intertribal activities signals a decline in specific tribal identities.  But the au
   - After: The author explicitly accepts increasing intertribal diffusion of styles, outfits and songs. It does not accuse the theorists of exaggerating urbanization, communication or politic
 - `/passages/3/questions/0/choices/4/explanation`
   - Before: Overall, this answer feels too narrow in targeting language from the middle of the final paragraph. There, we were saying that "in criticizing the analytic method, organicists ****
-  - After: The final paragraph says organicists never argued that the laws and initial conditions could not be discovered. This answer does relate to that criticism, but it omits the earlier 
+  - After: The final paragraph says organicists never argued that the laws and initial conditions could not be discovered. This answer does relate to that criticism, but it omits the earlier
 - `/passages/3/questions/4/choices/4/explanation`
   - Before: If we contrapose this, we get:  *theory studies parts of the not an* *system in isolation from the → acceptable* *system as a whole method*  But that trigger doesn't match internal
   - After: The passage says proponents of the analytic method did not study parts in full isolation: they first determined laws and initial conditions of the whole. This proposed principle th
@@ -287,11 +289,11 @@ PT103: 23 changed authored leaves.
   - Before: At first, I would have rejected this answer, thinking "We don't have any idea what opinions the *opponents of compulsory service* have when it comes to tax revenue!"  But then I wo
   - After: Protecting national secrets has a direct national benefit and relates to defense. The passage does not suggest these opponents must reject such spending. The author also treats the
 - `/passages/0/questions/4/choices/1/explanation`
-  - Before: We're trying to apply what we know about how these opponents feel about compulsory national service to tax revenues: *it's at odds with liberal principles and we should only do it 
+  - Before: We're trying to apply what we know about how these opponents feel about compulsory national service to tax revenues: *it's at odds with liberal principles and we should only do it
   - After: Relief for people in other nations lacks the direct benefit to the opponents' own national community emphasized throughout the passage. Compared with the domestic defense, infrastr
 - `/passages/0/questions/4/choices/2/explanation`
-  - Before: We're trying to apply what we know about how these opponents feel about compulsory national service to tax revenues: *it's at odds with liberal principles and we should only do it 
-  - After: Maintaining the nation's army serves national defense, which the passage treats as an accepted governmental responsibility. It is less likely to provoke the objection than funding 
+  - Before: We're trying to apply what we know about how these opponents feel about compulsory national service to tax revenues: *it's at odds with liberal principles and we should only do it
+  - After: Maintaining the nation's army serves national defense, which the passage treats as an accepted governmental responsibility. It is less likely to provoke the objection than funding
 - `/passages/1/questions/0/choices/2/explanation`
   - Before: This answer says that Porter is noteworthy because he was the first person to exclusively profile African-American artists (it sounds more like his professor Locke was the first pe
   - After: This answer says that Porter is noteworthy because he was the first person to exclusively profile African-American artists (it sounds more like his colleague Locke was the first pe
@@ -302,16 +304,16 @@ PT103: 23 changed authored leaves.
   - Before: On Local Purpose, we want our correct answer to sound like either/both of the "bookend" ideas (the Framing Idea preceding a detail or the Takeaway that follows it).  The only previ
   - After: The passage says the two earlier books devoted exclusively to African-American artists were Locke's, and neither addressed African precursors. Porter's book did. That contrast esta
 - `/passages/1/questions/1/choices/3/explanation`
-  - Before: We could say that the info on Locke supports the claim that Porter was not the first to **publish a book** on the accomplishments of African American artists.  But no one was ever 
+  - Before: We could say that the info on Locke supports the claim that Porter was not the first to **publish a book** on the accomplishments of African American artists.  But no one was ever
   - After: The opening explicitly identifies Porter as the first scholar to identify African influence on visual art in the Americas. Locke's books surveyed African-American artists but did n
 - `/passages/1/questions/1/choices/4/explanation`
   - Before: It would be hard to pick this over (A), or vice versa, so the two kind of cancel each other out. They are both taking the fact that Locke and Porter are mentioned near each other a
-  - After: The passage says Locke wrote earlier books and taught at the same university. It does not say his example motivated Porter to publish. Similar causal distractors do not cancel one 
+  - After: The passage says Locke wrote earlier books and taught at the same university. It does not say his example motivated Porter to publish. Similar causal distractors do not cancel one
 - `/passages/1/questions/5/choices/0/explanation`
   - Before: This answer is saying that X's were influenced by Y's and Z's, but in blending Y and Z, they have come up with something different and unique.  In the passage, we just had X's infl
   - After: This observation emphasizes a unique blend of two source traditions, African and French. Porter's stated discovery concerns shared iconographic characteristics linking African-Amer
 - `/passages/1/questions/5/choices/1/explanation`
-  - Before: As soon as we see this answer deals with African traditions, we should probably be deeply suspicious.  Most Analogy and Parallel questions have a trap answer that tries to bait us 
+  - Before: As soon as we see this answer deals with African traditions, we should probably be deeply suspicious.  Most Analogy and Parallel questions have a trap answer that tries to bait us
   - After: This answer includes influence in the reverse direction, from American music back to Africa. Porter's stated discovery concerns African influence retained in African-American craft
 - `/passages/1/questions/5/choices/4/explanation`
   - Before: In this answer, Mexicans react against an outside influence (Spain) by consciously imitating native people of Mexico.  In the passage, African-American people aren't reacting again
@@ -321,7 +323,7 @@ PT103: 23 changed authored leaves.
   - After: [{'heading': 'Research', 'body': 'The final sentence of the second paragraph says Porter consciously maintained African-artisan ties in his paintings and that many combined genre p
 - `/passages/1/questions/6/choices/3/explanation`
   - Before: We're told that Porter's paintings (because they consciously tried to maintain ties to African art) led to him being good at writing art history that recognized the ties to African
-  - After: The passage describes maintaining African ties in Porter's paintings and tentatively connects that practice to his scholarly sensitivity. It does not establish a deliberate effort 
+  - After: The passage describes maintaining African ties in Porter's paintings and tentatively connects that practice to his scholarly sensitivity. It does not establish a deliberate effort
 - `/passages/2/summaries/standard`
   - Before: **Topic**  The cause of a massive die-off of bottlenose dolphins on the Atlantic coast in 1987–1988.  **Framework**  Answer / Explain  **Main Point**  The passage examines why a se
   - After: **Topic**  The cause of a massive die-off of bottlenose dolphins on the Atlantic coast in 1987–1988.  **Framework**  Answer / Explain  **Main Point**  The passage examines why a se
@@ -332,13 +334,13 @@ PT103: 23 changed authored leaves.
   - Before: This answer is saying that the author named various separate marine pollutants and then ranked their relative effects on dolphin mortality.  We might be able to say that PCB and br
   - After: The passage evaluates rival explanations of this particular die-off, not the relative mortality effects of several pollutants generally. It explicitly says brevetoxin's specific ef
 - `/passages/2/questions/2/explanationBlocks`
-  - Before: [{'heading': 'Anticipate', 'body': 'The question is asking us about the approach taken by *the author* to the research described in the 3rd paragraph.\n\nWithin the 3rd paragraph, 
+  - Before: [{'heading': 'Anticipate', 'body': 'The question is asking us about the approach taken by *the author* to the research described in the 3rd paragraph.\n\nWithin the 3rd paragraph,
   - After: [{'heading': 'Research', 'body': "The author accepts the reported observations but challenges the researchers' causal interpretation: the Gulf comparison, timing of deaths and know
 - `/passages/2/questions/3/explanationBlocks`
   - Before: [{'heading': 'Anticipate', 'body': 'Usually *Organization* questions are about the entire passage, and we break up the passage into 3 or 4 functional chunks, describing them with a
   - After: [{'heading': 'Research', 'body': 'The research team gives its causal interpretation in the third paragraph. The fourth and final paragraph criticizes it with First, Second and Fina
 - `/passages/2/questions/3/choices/0/explanation`
-  - Before: Sure, this works. The author criticizes the brevetoxin explanation concluded by the research team: "This explanation is not plausible: First, Second, Finally"  And then the author 
+  - Before: Sure, this works. The author criticizes the brevetoxin explanation concluded by the research team: "This explanation is not plausible: First, Second, Finally"  And then the author
   - After: The final paragraph gives reasons the researchers' explanation is not entirely plausible and then proposes a pollutant-centered alternative. Preserve the author's qualified critici
 - `/passages/2/questions/4/choices/3/explanation`
   - Before: One of our two support lines from the 4th paragraph said, "Although brevetoxin may have been a contributing factor", so the author definitely thinks that brevetoxin ****could have*
@@ -357,15 +359,15 @@ PT104: 43 changed authored leaves.
 
 - `/passages/0/questions/1/choices/0/explanation`
   - Before: Miles's NYC group was the seedbed for *what would grow into* the "West Coast cool" style. But we have no idea if he ever had a popular song in West Coast style.  But the person/gro
-  - After: The New York group supplied innovations from which West Coast cool grew. The passage does not identify Davis as the person who made the style widely popular. Popularizing need not 
+  - After: The New York group supplied innovations from which West Coast cool grew. The passage does not identify Davis as the person who made the style widely popular. Popularizing need not
 - `/passages/0/questions/2/choices/0/explanation`
   - Before: This is another way of saying "bebop".  In the final sentence of the 2nd paragraph, we heard that Davis was playing *****slowed down***** *tempos and ensemble playing* *****as much
   - After: The group's slower tempos and increased emphasis on ensemble playing are described as a direct reaction to bebop, which Davis had studied before1948. That contextual contrast suppo
 - `/passages/0/questions/3/choices/1/explanation`
-  - Before: We're looking for something like "a genius with an astonishingly productive career".  That is not a *neutral* assessment. (in fact, as far as we can remember, there has never been 
+  - Before: We're looking for something like "a genius with an astonishingly productive career".  That is not a *neutral* assessment. (in fact, as far as we can remember, there has never been
   - After: The author calls the career astonishingly productive and Davis a genius who has not received his due. Those explicit judgments rule out neutrality here. There is no need for an uns
 - `/passages/0/questions/5/choices/2/explanation`
-  - Before: Jazz purists *were* upset when Davis started using electronic instruments, so this answer seems to go against that somewhat.  But the author's main idea is that critics were upset 
+  - Before: Jazz purists *were* upset when Davis started using electronic instruments, so this answer seems to go against that somewhat.  But the author's main idea is that critics were upset
   - After: This concerns musicians who remain exclusively electronic, not musicians repeatedly changing style. It therefore does not test the author's proposed explanation as directly as B. T
 - `/passages/0/questions/5/choices/3/explanation`
   - Before: The author thinks that Davis's long career is what made him a target of critics (by having a long career that gave him time to switch genres multiple times).  So it's compatible th
@@ -380,7 +382,7 @@ PT104: 43 changed authored leaves.
   - Before: Nothing in these two available sentences supports the idea that church lawyers were more likely to try to bust their colleagues than were civil lawyers.  In fact, it says "there we
   - After: The passage reports more disciplinary actions in civil courts, but does not compare how often colleagues initiated those actions. The number of proceedings does not establish who i
 - `/passages/1/questions/1/choices/4/explanation`
-  - Before: Nothing in these two available sentences supports the idea that church courts kept richer records.  In fact, it says "there were many more examples of disciplinary actions against 
+  - Before: Nothing in these two available sentences supports the idea that church courts kept richer records.  In fact, it says "there were many more examples of disciplinary actions against
   - After: The fourth paragraph calls English medieval church records extraordinarily rich. It does not compare their richness or thoroughness with civil records. More recorded disciplinary a
 - `/passages/1/questions/3/choices/2/explanation`
   - Before: This sounds like "support the idea that canon lawyers were indeed misbehaving".  At the end of the 3rd paragraph, the author is saying, "We can interpret it this way, ****or,**** w
@@ -407,14 +409,14 @@ PT104: 43 changed authored leaves.
   - Before: This is more strongly worded than we'd expect ("ultimately impossible"), but this is the answer we can best support with the available text.  The author is saying amenable to Lowe'
   - After: The author says reconstructions can be tested only against the best available evidence, whose accuracy as a picture of past activity is itself uncertain. New data could overturn th
 - `/passages/4/summaries/standard`
-  - Before: **Passage Summary**  **Topic**  The challenges of ensuring impartial juries in the age of mass media coverage of crime.  **Framework**  Problem / Solution  **Main Point**  Because 
-  - After: **Passage Summary**  **Topic**  The challenges of ensuring impartial juries in the age of mass media coverage of crime.  **Framework**  Problem / Solution  **Main Point**  Because 
+  - Before: **Passage Summary**  **Topic**  The challenges of ensuring impartial juries in the age of mass media coverage of crime.  **Framework**  Problem / Solution  **Main Point**  Because
+  - After: **Passage Summary**  **Topic**  The challenges of ensuring impartial juries in the age of mass media coverage of crime.  **Framework**  Problem / Solution  **Main Point**  Because
 - `/passages/4/questions/3/choices/4/explanation`
   - Before: This answer is frustratingly appealing, on a common sense level.  How could someone who *doesn't* know the facts of a case be more opinionated than someone who does?  Well, just th
   - After: The opening reports a general belief that knowing the facts makes someone more likely to hold an opinion. That differs from having a stronger degree of opinionatedness, and it is n
 - `/passages/4/questions/4/explanationBlocks`
   - Before: [{'heading': 'Research', 'body': 'If we\'re taking a Flex test, we can CTRL / Command + F "mass media" and we\'ll find that it\'s mentioned in the very first sentence of the passag
-  - After: [{'heading': 'Research', 'body': "The final paragraph says a truly impartial jury should represent the community's collective experience, which today includes mass-media exposure. 
+  - After: [{'heading': 'Research', 'body': "The final paragraph says a truly impartial jury should represent the community's collective experience, which today includes mass-media exposure.
 - `/passages/4/questions/4/choices/4/explanation`
   - Before: Nothing in those last few sentences matches up with *awareness* of personal bias. We know that the author thinks that mass exposure is helping a jury to be "truly impartial", but t
   - After: Nothing says mass-media exposure makes individual jurors more aware of their biases. The author distinguishes collective deliberation from an individual juror's state of mind. Opin
@@ -434,7 +436,7 @@ PT104: 43 changed authored leaves.
   - Before: **Central Topic / Purpose**  *significance of Hopi Names* / *Clarify Misconception* *(*or *Highlight Something Overlooked)*  **Main Point**  Unlike Mill's point of view (that names
   - After: **Central Topic / Purpose**  *significance of Hopi Names* / *Clarify Misconception* *(*or *Highlight Something Overlooked)*  **Main Point**  Unlike Mill's point of view (that names
 - `/passages/5/questions/0/choices/2/explanation`
-  - Before: The subject of this sentence is "European thinkers". Were *they* the central topic of the passage?  No they were just a setup in order to discuss Hopi names, which was the central 
+  - Before: The subject of this sentence is "European thinkers". Were *they* the central topic of the passage?  No they were just a setup in order to discuss Hopi names, which was the central
   - After: The passage criticizes narrow characterizations and explains Hopi names' meaningful and aesthetic functions. It does not establish the specific causal explanation that European thi
 - `/passages/5/questions/1/choices/3/explanation`
   - Before: I would find this tempting. It seems true to say that this reference to Western Apache place names demonstrates that other names besides Hopi names have semantic content.  This los
@@ -449,10 +451,10 @@ PT104: 43 changed authored leaves.
   - Before: Again, this seems to better describe the third paragraph, where the framing idea at its beginning is "more often, the name giver has in mind a specific event ..."  There is nothing
   - After: The second paragraph does mention events in recipients' lives: birth, childhood initiation and puberty are naming occasions. But its main function is to show how names acquire mean
 - `/passages/5/questions/3/choices/2/explanation`
-  - Before: The second paragraph isn't making an argument against anything and certainly isn't trying to refute anyone. It's just neutrally providing information about when and how Hopi names 
+  - Before: The second paragraph isn't making an argument against anything and certainly isn't trying to refute anyone. It's just neutrally providing information about when and how Hopi names
   - After: Receiving several names is described, not used by itself as a refutation. The meaningful references come from features such as the child's characteristics and the name giver's clan
 - `/passages/5/questions/3/choices/3/explanation`
-  - Before: This is the answer via elimination, but certainly not any wording I would predict.  We wouldn't be able to infer this purpose from what is said within paragraph 2, so this is more 
+  - Before: This is the answer via elimination, but certainly not any wording I would predict.  We wouldn't be able to infer this purpose from what is said within paragraph 2, so this is more
   - After: The example little rabbit combines a child's size with the totem animal of the name giver's clan. That directly illustrates semantic content: the name communicates something. The s
 - `/passages/5/questions/3/choices/4/explanation`
   - Before: Again, we have an answer that seems to describe the 3rd paragraph. To be fair, it would be too strong for the 3rd paragraph (the author isn't ever saying that literal translation *
@@ -500,7 +502,7 @@ PT105: 23 changed authored leaves.
   - Before: Anticipate
   - After: Research
 - `/passages/1/questions/0/explanationBlocks/0/body`
-  - Before: The main TOPIC of this passage was "appropriate punishments". The PURPOSE of the passage seemed to be to consider answers to the question, "how do we decide what is an appropriate 
+  - Before: The main TOPIC of this passage was "appropriate punishments". The PURPOSE of the passage seemed to be to consider answers to the question, "how do we decide what is an appropriate
   - After: The third paragraph initially favors a retributive account of appropriateness. The final paragraph then argues that this intuition may itself arise from balancing benefit to societ
 - `/passages/1/questions/0/choices/1/explanation`
   - Before: The author does not argue for the retributivist rationale. It seems like we're forced to accept that rationale in the 3rd paragraph, but then in the 4th paragraph the author rescue
@@ -519,7 +521,7 @@ PT105: 23 changed authored leaves.
   - After: The second rationale bases justification on crime severity independently of benefit. Critics question justification in the absence of societal benefit. This matches the stated reas
 - `/passages/1/questions/2/explanationBlocks/0/body`
   - Before: When we look in the fourth paragraph, the reference to "retributive nature" is talking about the retributive nature **disappearing**.  The previous sentence said, "X.", and then th
-  - After: Paragraph2 directly defines the second rationale: punishment is justified by the severity of the crime independently of benefit to society. That is the retributive character asked 
+  - After: Paragraph2 directly defines the second rationale: punishment is justified by the severity of the crime independently of benefit to society. That is the retributive character asked
 - `/passages/1/questions/2/choices/1/explanation`
   - Before: Does the 2nd rationale regard punishment as justified by the severity of the crime?  Yes, in the 2nd paragraph we're told  *the second rationale is that a punishment is justified b
   - After: This repeats the defining feature: justification by crime severity, independent of societal benefit. The surrounding definition supplies that independence, so the answer need not a
@@ -530,7 +532,7 @@ PT105: 23 changed authored leaves.
   - Before: The choice introduces an idea of reconciliation between social benefit and harm, which isn't discussed in the passage. The passage focuses on the imbalance, not a reconciliation at
   - After: The final paragraph does discuss balancing social benefit against harm when explaining a just punishment. This stem asks why an overly harsh punishment seems unjust: harm exceeds b
 - `/passages/1/questions/6/choices/1/explanation`
-  - Before: This seems incredibly close to (A), so we would mainly choose based on the difference. Both of them are trying to pull support from the final sentence of the 2nd paragraph.  Do we 
+  - Before: This seems incredibly close to (A), so we would mainly choose based on the difference. Both of them are trying to pull support from the final sentence of the 2nd paragraph.  Do we
   - After: The second rationale appeals to whether punishment is just or appropriate, not merely to what society happens to approve. The passage does not equate public opinion with inherent f
 - `/passages/2/summaries/standard`
   - Before: **Passage Summary**  **Topic**  The tension in Hispanic-American literature between two competing impulses: cosmopolitanism (engaging the European/mainstream tradition) and nativis

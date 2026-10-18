@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { applySourceCorrection, sourceCorrection } from '../rc-source-correction.mjs';
 import { captureAuthoredCorrections } from '../rc-authored-corrections.mjs';
 
 const destination = 'scripts/rc-authored-corrections.json';
@@ -15,6 +16,9 @@ const before = files.map(file => JSON.parse(execFileSync('git', ['show', `${base
 const after = files.map(file => JSON.parse(readFileSync(`public/data/rc/${file}`, 'utf8')));
 // This validates every changed field before replacing the overlay. It does not
 // rewrite bank content, approve prose, or infer a new baseline from moving main.
+if (baselineCommit !== sourceCorrection.baselineCommit) throw new Error('Official source correction requires its pinned baseline.');
+applySourceCorrection(before);
+applySourceCorrection(after);
 const captured = captureAuthoredCorrections(before, after);
 writeFileSync(destination, JSON.stringify({ ...captured, baselineCommit }, null, 2) + '\n');
 console.log(JSON.stringify({ baselineCommit, corrections: captured.corrections.length, destination }));

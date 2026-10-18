@@ -1,5 +1,7 @@
 # Systematic RC teaching review, PT141 through PT159
 
+Repair notes are chronological. Where before/after excerpts are included, later cross-review refinements may supersede them. The final correction overlay and integrity report specify exact final field values; readback dispositions record closure.
+
 Review date: 2026-10-18. Scope is source-grounded teaching review, not answer-key revision or new writeup generation. The full assigned range has now received a source/teaching pass. Independent cross-review and repository validation are recorded separately.
 
 For each completed passage below, the reviewer read the original passage, every summary variant, every question stem and choice, and all existing question blocks and choice explanations. Truncated tool output was reread in smaller question slices. Missing writeups remained missing; official passage text, source metadata, prompts, choices, answer letters and order were preserved.

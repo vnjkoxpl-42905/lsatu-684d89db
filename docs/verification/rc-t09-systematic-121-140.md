@@ -1,5 +1,7 @@
 # T09 systematic source review: PT121–140
 
+Repair notes are chronological. Where before/after excerpts are included, later cross-review refinements may supersede them. The final correction overlay and integrity report specify exact final field values; readback dispositions record closure.
+
 Source review complete, 2026-10-18; independent cross-review through PT140 cleared after repairs and readback. This ledger records actual complete reading, not inferred coverage. Each completed passage was read with its source text, every question stem and all five choices, every available explanation block and choice explanation, and every nonempty summary variant. Missing prose is not filled from keys. Protected source fields remain unchanged.
 
 ## Completed in this systematic pass
@@ -267,4 +269,3 @@ Full source passages, changed authored fields, and affected question stems/all c
 | 108 | 1280, 1286, 1290, 1294, 1160, 1162, 1164, 1166 | 53 | Changed reasoning clear; cleanup-history aside removal repaired by owner and read back; clear |
 | 109 | 1045, 1051, 1057, 1059 | 28 | Changed reasoning clear; cleanup-history aside removals repaired by owner and read back; clear |
 | 110 | 1027, 1031, 1034, 1036, 665, 666, 669, 671 | 53 | Residual tags inconsistent with repaired prose and cleanup-history asides repaired by owner and read back; clear |
-
