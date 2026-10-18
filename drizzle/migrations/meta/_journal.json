@@ -225,6 +225,13 @@
       "when": 1792037826505,
       "tag": "0031_return_teacher_missed_session_credit",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1792308999241,
+      "tag": "0032_booking_pass_paused_status",
+      "breakpoints": true
     }
   ]
 }
