@@ -48,10 +48,17 @@ export async function saveRcSet(owner: string, name: string, raw: RcSavedPayload
   if (saved.id !== id || saved.name !== name.trim() || JSON.stringify(saved.payload) !== JSON.stringify(payload)) throw new Error('The saved RC set did not match this request. Its stored contents have been kept.');
   return saved;
 }
-export async function renameRcSet(owner: string, id: string, name: string): Promise<void> {
+export async function renameRcSet(owner: string, id: string, name: string, expectedName: string): Promise<void> {
   await actor(owner);
+  if (typeof expectedName !== 'string' || !expectedName.trim()) throw new Error('The previous name could not be verified. Refresh saved RC sets before renaming.');
   if (!name.trim() || name.trim().length > 100) throw new Error('Enter a name of 100 characters or fewer.');
-  const { data, error } = await supabase.from('user_saved_sets').update({ name: name.trim() }).eq('id', id).eq('user_id', owner).eq('filter_state->>kind', 'rc-builder').select('id,name').maybeSingle();
+  const { data, error } = await supabase.from('user_saved_sets').update({ name: name.trim() }).eq('name', expectedName).eq('id', id).eq('user_id', owner).eq('filter_state->>kind', 'rc-builder').select('id,name').maybeSingle();
   await actor(owner);
-  if (error || !data || data.id !== id || data.name !== name.trim()) throw new Error('The new name did not reach your account. Try again.');
+  if (data && !error && data.id === id && data.name === name.trim()) return;
+  // A lost acknowledgement may already have committed this exact desired name.
+  let current: RcSavedDefinition;
+  try { current = await getRcSavedSet(owner, id); } catch { throw new Error('The new name did not reach your account. Refresh saved RC sets and retry.'); }
+  if (current.name === name.trim()) return;
+  if (current.name === expectedName) throw new Error('The new name did not save. Your previous name is unchanged. Retry the rename.');
+  throw new Error('This saved set changed on another device. Refresh saved RC sets, review its current name, then retry.');
 }

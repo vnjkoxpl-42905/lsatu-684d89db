@@ -17,4 +17,4 @@ export async function saveRcSet(actor: string, name: string, payload: RcSavedPay
   const row = existing ?? { id, userId: actor, name, createdAt: '2026-10-17T12:00:00Z', payload: decoded.value, problem: null };
   rows.set(id, row); return structuredClone(row);
 }
-export async function renameRcSet(actor: string, id: string, name: string) { owner(actor); if (failWrites) throw new Error('Synthetic rename failed.'); const row = rows.get(id); if (!row) throw new Error('Synthetic saved RC set unavailable.'); rows.set(id, { ...row, name }); }
+export async function renameRcSet(actor: string, id: string, name: string, expectedName: string) { owner(actor); if (failWrites) throw new Error('Synthetic rename failed.'); const row = rows.get(id); if (!row) throw new Error('Synthetic saved RC set unavailable.'); if (row.name !== expectedName && row.name !== name) throw new Error('This saved set changed on another device. Refresh saved RC sets, review its current name, then retry.'); rows.set(id, { ...row, name }); }

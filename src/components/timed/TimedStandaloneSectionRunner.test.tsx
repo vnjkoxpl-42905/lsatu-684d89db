@@ -184,6 +184,38 @@ describe('standalone account section runner', () => {
     await waitFor(() => expect(controller.close).toHaveBeenCalledTimes(1), { timeout: 2000 });
     expect(controller.checkpoint.mock.invocationCallOrder[0]).toBeLessThan(controller.close.mock.invocationCallOrder[0]);
   });
+  it.each([3150000, 4200000, 2400000])('uses the acknowledged RC budget %i when expiring without overtime', async budgetMs => {
+    const rc = rcState(); rc.snapshot.sitting.budget_ms = budgetMs;
+    rc.answers[rc.questions[0].qid].selected = 'B';
+    controller.load.mockResolvedValue(rc);
+    controller.clock.mockReturnValue({ writer: 'active', remainingMs: 0, elapsedMs: budgetMs });
+    controller.checkpoint.mockResolvedValue(rc);
+    const done = { ...rc, snapshot: { ...rc.snapshot, sitting: { ...rc.snapshot.sitting, phase: 'complete' } } };
+    controller.close.mockImplementation(async () => { controller.clock.mockReturnValue({ writer: 'terminal', remainingMs: 0, elapsedMs: budgetMs }); return done; });
+    mount();
+    await screen.findByRole('button', { name: 'View section report' });
+    expect(controller.checkpoint).toHaveBeenCalledWith(expect.objectContaining({ snapshot: expect.objectContaining({ sitting: expect.objectContaining({ budget_ms: budgetMs }) }) }), 0, expect.objectContaining({ [rc.questions[0].qid]: expect.objectContaining({ selected: 'B' }) }), undefined);
+    expect(controller.checkpoint.mock.invocationCallOrder[0]).toBeLessThan(controller.close.mock.invocationCallOrder[0]);
+    expect(controller.control).not.toHaveBeenCalled();
+    expect(screen.queryByText(/Overtime/)).toBeNull();
+  });
+  it('withholds automatic RC close after expiry save failure and resumes only after retained-command acknowledgement', async () => {
+    const rc = rcState(); controller.load.mockResolvedValue(rc);
+    controller.clock.mockReturnValue({ writer: 'active', remainingMs: 0, elapsedMs: rc.snapshot.sitting.budget_ms });
+    controller.checkpoint.mockImplementationOnce(async () => { controller.pending.mockReturnValue({ operation: 'checkpoint' }); throw new Error('Expiry checkpoint lost'); }).mockResolvedValue(rc);
+    controller.retry.mockImplementation(async () => { controller.pending.mockReturnValue(null); return rc; });
+    const done = { ...rc, snapshot: { ...rc.snapshot, sitting: { ...rc.snapshot.sitting, phase: 'complete' } } };
+    controller.close.mockImplementation(async () => { controller.clock.mockReturnValue({ writer: 'terminal', remainingMs: 0 }); return done; });
+    mount();
+    expect(await screen.findByRole('alert')).toHaveTextContent('Expiry checkpoint lost');
+    expect(controller.close).not.toHaveBeenCalled();
+    expect(screen.queryByRole('button', { name: 'View section report' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Retry saved command' }));
+    await screen.findByRole('button', { name: 'View section report' });
+    expect(controller.retry).toHaveBeenCalledTimes(1);
+    expect(controller.retry.mock.invocationCallOrder[0]).toBeLessThan(controller.close.mock.invocationCallOrder[0]);
+    expect(controller.close).toHaveBeenCalledTimes(1);
+  });
   it('freezes LR regulation answers before permitting overtime answers', async () => {
     const lr = state(); lr.answers.q1.selected = 'A'; controller.load.mockResolvedValue(lr);
     controller.clock.mockReturnValue({ writer: 'active', remainingMs: 0, elapsedMs: 2100001 });
