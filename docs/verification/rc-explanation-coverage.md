@@ -4,7 +4,7 @@ Generated from checked-in content by `node scripts/verification/inventory-rc-exp
 
 Source: 59 PrepTest JSON files, PT 101–159; 320 passages; 2150 questions.
 
-Source SHA-256 (numeric filename order, filename + LF + file bytes + LF): `bd6c7674ed1ce3d3213ea517a2d8dc1222d2cbcbce64f80d863846cda1adf732`.
+Source SHA-256 (numeric filename order, filename + LF + file bytes + LF): `b80ed3bc1c179e9daf6194a7db5ca551048d54e36f3315fe60ec2f998d8c058d`.
 
 Presence does not certify correctness, teaching quality, completeness, tone, answer-key consistency or safe rendering. Tag-only content is not counted as explanation prose. Heading-only blocks are not counted as prose. Existing summaries need pedagogical review before they can be called approved.
 
