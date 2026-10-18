@@ -1,6 +1,6 @@
 # Systematic RC content review: PT101–120
 
-Status: in progress. This ledger certifies only explicitly completed PrepTests below. No claim is made for unreviewed tests.
+Status: PT101–120 complete. Every passage, question, choice and supplied authored explanation/summary in this range received a source-relative review; missing prose remains explicitly outside authored coverage. Independent cross-review of PT126–140 complete; all identified corrections read back and verified.
 
 Method: read every source passage, stem, all five choices, every supplied explanation and all nonempty summary variants before disposition. Missing prose is recorded, not filled. Correct only confirmed source-grounding or reasoning defects. Preserve source assessment fields.
 
@@ -27,8 +27,9 @@ Method: read every source passage, stem, all five choices, every supplied explan
 | 117 | 797, 798, 799, 802 | 27 | 11 | Reviewed; grounded authored repairs; source keys retained |
 | 118 | 861, 863, 867, 872 | 27 | 12 | Reviewed; grounded authored repairs; source keys retained |
 | 119 | 785, 787, 790, 792 | 26 | 7 | Reviewed; grounded authored repairs; source keys retained |
+| 120 | 769, 771, 773, 776 | 26 | 13 | Reviewed; grounded authored repairs; source keys retained |
 
-PT101 passage1188 reuses the prior complete review. All seven remaining PT101 passages and all passages in PT102–119 were read in this systematic pass. Checkpoint total after PT119: 100 passages, 668 questions, 3340 choices.
+PT101 passage1188 reuses the prior complete review. All seven remaining PT101 passages and all passages in PT102–120 were read in this systematic pass. Final range total: 104 passages, 694 questions, 3470 choices.
 
 ## Confirmed defects and repairs
 
@@ -615,3 +616,37 @@ Four passages, 27 questions and 135 choices complete. p861 preserves sometimes-i
 ## PT119 completed
 
 Four passages, 26 questions and 130 choices complete, including all three p790 summary variants. p785 removes invented property-value mechanism. Q6553 removes noun-presence shortcut and unsupported future-prospects reframe; Q6558 corrects denial of explicit income/location comparison and removes invented cites/makes lexical rule; Q6559 avoids assuming opposed schools cannot interact. Q6563 restores surrogate family involvement in final stage; Q6566 grounds religious critique without outside historical narrative. p790 preserves plausible hypothesis rather than best-established explanation, and sculpin absence from populations rather than species extinction. Q6568 removes invented general prey-speed law and noun-presence shortcuts; Q6569 removes hypothesis-must-be-causal definition and ancestral-organism extinction rule; Q6570 limits duration inference; Q6572 distinguishes no threat from no carnivores and corrects paragraph locations without universal herding law. Q6575 grounds rational consent without capacity-law analogy; Q6576 corrects complexity comparison. Missing prose retained.
+
+## PT120 completed
+
+Four passages, 26 questions and 130 choices complete; p776 was also directly reread despite earlier sample review. Q6679 corrects denial of explicit participants and removes unsupported relative excitement about legislation. Q6681 preserves continued political channels alongside new tactics; Q6683 removes invented impossibility of later similar campaigns and answer-entailment cancellation rule. Q6684 preserves Revolutionary Realism predating the Cultural Revolution rather than calling it an aftermath movement; Q6687 avoids turning irony into proof of the opposite universal policy comparison; Q6689 removes several-must-mean-three rule. p773/Q6695 preserve a rights-protection goal rather than guaranteed success and remove invented specific precedent; Q6694 uses source evidence for participant attitudes without a litigation winner-loser assumption. Q6697 removes majority-pathogen inference; Q6702 corrects paragraph location; Q6704 removes unrelated Omicron reference and acknowledges sit-and-wait consistency with the broader explanation. Missing prose retained.
+
+## Independent cross-review of PT126–140 changes
+
+As a separate check, compared every changed authored explanation/summary field with its complete source passage and relevant official stem/choices in PT126–140. PT128, PT132, PT136 and PT139 were read in halves to avoid truncated output; the truncated middle of PT128 was reread explicitly. PT140 was cross-reviewed after the owner's final freeze. This is a review of changed authored fields, not a second all-prose certification.
+
+Findings sent to the owning reviewer for correction: PT126 p472 removes unsupported author endorsement merely from Garber having the last word; PT128 p1119 substitutes inadequately understood physics for nonexistent physics; PT129 p437 preserves more-likely FCC motive; PT130 p414 narrows the collection-history claim to preservation before textile-history research; PT131 p403 corrects A/B paragraph references and nonexistent B paragraph 5; PT132 p537 retains little-or-no research qualifier; PT133 Q1896 corrects late-1709s typo to late1700s; PT136 p524 retains likely attribution of binary oppositions; PT137 Q2144B removes a false denial of constitutional-settlement description and p243 retains often rather than usually. No additional actionable changed-field issue found in PT127, PT134, PT135, PT138 or PT139. All listed owner corrections were read back from disk and verified against the source on 2026-10-18. No unresolved cross-review findings through PT139. PT140 findings sent for final correction: p15 summary/ Q1595 C–D preserve ordinary virtual-trade exemption and intentionally commodified sale exception, p15 preserves predicted popular intuition, and p16 Framework preserves rare exceptions to ten-year training. PT140 corrections were read back on 2026-10-18 and preserve all stated conditions. No unresolved cross-review findings remain in PT126–140 changed authored fields.
+
+Final structural coverage check: `node scripts/verification/audit-rc-review-coverage.mjs` exited 0 with no ledger errors; global coverage at that checkpoint was 57 PrepTests /308 passages /2069 questions, with PT158–159 still owned by the other review range. This validates ledger coverage only, not explanation correctness.
+
+## Independent follow-up on PT111
+
+The independent reviewer found no high-priority changed-field defect but requested two source/voice refinements: p1012 Brief now preserves the possibility that contingency is integral, and Q5489 E omits an irrelevant review-history aside. Both were applied on 2026-10-18; source fields and keys remain intact.
+
+Independent PT106 follow-up: Q4720 D/E tags now identify the wrong feedback pattern, preserving that both describe loops. Q4721 anticipation no longer teaches implicit author endorsement of every presented view; it uses the reported cooling estimates and regional amplification. Applied on 2026-10-18, protected source unchanged.
+
+Independent PT107–108 follow-up: Q4772 C preserves incorporation rather than replacement; p673/Q4768 normal spacing repaired; Q4787 D tag now identifies wrong sources/aim; Q7532 A removes an irrelevant discarded-error aside. Applied on 2026-10-18, protected source unchanged.
+
+Independent PT109 follow-up: Q5269 D removes an irrelevant reference to the discarded donation example. Applied on 2026-10-18.
+
+Independent PT112–116 follow-up: reviewer found no further substantive source/reasoning defect. Removed history-only clauses from Q5132 C (discarded analogy), Q5174 B (mind-reading rule) and Q5171 C (plea-negotiation error). PT109 Q5291 also omits a discarded-terminology aside. Applied on 2026-10-18.
+
+Independent PT110/PT118 follow-up: corrected residual tags at Q5363 A/Q5364 B/Q5365 C/Q4896 D/Q4913 A/B/E to agree with source-relative explanations. Removed review-history asides Q4890 E/Q4896 C/Q4904 E. PT118 p861 P1 now preserves sometimes-ineffective scope consistently with its main point. Applied on 2026-10-18.
+
+## Final freeze and independent-readback receipt
+
+PT101–120 primary authored review is frozen. Independent reviewers completed changed-field source comparison of PT106–110 and PT111–120 and verified every requested follow-up; no identified authored finding remains unresolved. Earlier independent PT101–105 follow-ups are recorded above.
+
+The initial independent PT121–125 findings were explicitly read back and cleared: p920 separates Cold War rivalry and conflict risk from actual war; p480 narrows the Internet-cutoff claim to denial of specific materials and control of individual transmissions; Q6213 anticipation uses paragraph 3 as well as paragraph 2. PT126–140 final corrections were already verified. Additional independent PT152–155 changed-field review found and resolved unsupported author endorsement at Q4300, spoken-word skill ranking in p631, source-scope errors at Q3885 A/D, and premature completion of dual-crystal peptide design in p1105. All were independently read back. No additional changes planned. Official-source discrepancies remain in their separate report and are not silently resolved by this authored review.
+
+Final initial-disposition closure: p1359 Q8437 A/B and Q8440 blocks/B now consistently distinguish Drescher's populist account from both economic-interest and abolitionist-moral-vision explanations. Q8439 removes unsupported claims about supporters' jobs and restricting their economic activity; Q8440 A explains common popular-support premise without invented slave testimony. Q8431 explicitly separates time-theory assertion from the author's arctic rebuttal. p1325 P3 and Q8306 preserve same-age-group-or-sex aggregation and do not recast the63/62 sample as adults only. Applied on 2026-10-18 for independent readback.

@@ -2,9 +2,9 @@
 
 This validates reviewer ledger addresses/counts against the bank. It cannot prove reasoning quality or independently establish that reading occurred. Completed rows are reviewer attestations; unlisted PrepTests remain open.
 
-Completed PrepTests: 41/59; passages: 220/320; questions: 1477/2150.
+Completed PrepTests: 59/59; passages: 320/320; questions: 2150/2150.
 
-Open PrepTests: 116, 117, 118, 119, 120, 135, 136, 137, 138, 139, 140, 153, 154, 155, 156, 157, 158, 159.
+Open PrepTests: none.
 
 Ledger consistency errors: 0.
 
@@ -26,6 +26,11 @@ Ledger consistency errors: 0.
 | 113 | 4 | 26 | rc-t09-systematic-101-120.md |
 | 114 | 4 | 27 | rc-t09-systematic-101-120.md |
 | 115 | 8 | 56 | rc-t09-systematic-101-120.md |
+| 116 | 8 | 55 | rc-t09-systematic-101-120.md |
+| 117 | 4 | 27 | rc-t09-systematic-101-120.md |
+| 118 | 4 | 27 | rc-t09-systematic-101-120.md |
+| 119 | 4 | 26 | rc-t09-systematic-101-120.md |
+| 120 | 4 | 26 | rc-t09-systematic-101-120.md |
 | 121 | 8 | 54 | rc-t09-systematic-121-140.md |
 | 122 | 4 | 27 | rc-t09-systematic-121-140.md |
 | 123 | 8 | 53 | rc-t09-systematic-121-140.md |
@@ -40,6 +45,12 @@ Ledger consistency errors: 0.
 | 132 | 8 | 55 | rc-t09-systematic-121-140.md |
 | 133 | 4 | 27 | rc-t09-systematic-121-140.md |
 | 134 | 4 | 27 | rc-t09-systematic-121-140.md |
+| 135 | 4 | 27 | rc-t09-systematic-121-140.md |
+| 136 | 8 | 53 | rc-t09-systematic-121-140.md |
+| 137 | 4 | 27 | rc-t09-systematic-121-140.md |
+| 138 | 4 | 27 | rc-t09-systematic-121-140.md |
+| 139 | 8 | 54 | rc-t09-systematic-121-140.md |
+| 140 | 4 | 27 | rc-t09-systematic-121-140.md |
 | 141 | 8 | 54 | rc-t09-systematic-141-159.md |
 | 142 | 4 | 27 | rc-t09-systematic-141-159.md |
 | 143 | 4 | 27 | rc-t09-systematic-141-159.md |
@@ -52,3 +63,10 @@ Ledger consistency errors: 0.
 | 150 | 8 | 54 | rc-t09-systematic-141-159.md |
 | 151 | 4 | 27 | rc-t09-systematic-141-159.md |
 | 152 | 4 | 26 | rc-t09-systematic-141-159.md |
+| 153 | 8 | 54 | rc-t09-systematic-141-159.md |
+| 154 | 4 | 27 | rc-t09-systematic-141-159.md |
+| 155 | 4 | 27 | rc-t09-systematic-141-159.md |
+| 156 | 8 | 54 | rc-t09-systematic-141-159.md |
+| 157 | 8 | 54 | rc-t09-systematic-141-159.md |
+| 158 | 4 | 27 | rc-t09-systematic-141-159.md |
+| 159 | 8 | 54 | rc-t09-systematic-141-159.md |

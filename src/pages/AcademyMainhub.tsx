@@ -453,7 +453,7 @@ export default function AcademyMainhub({
               const selected = runs.filter((run) => run.section === section && run.status === (view === "completed" ? "completed" : "in_progress")
                 && (section !== 'rc' || (rcTimingFilter === 'any' || (run.rcTiming ?? 'unknown') === rcTimingFilter)
                   && (rcTakeFilter === 'any' || (run.rcTake ?? 'unknown') === rcTakeFilter)));
-              return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill and save an answer to see it here."}</p> : (
+              return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill to see it here."}</p> : (
                 <ul className="mt-5 space-y-3">{selected.map((run) => (
                   <li key={run.key} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
                     <div className="min-w-0">

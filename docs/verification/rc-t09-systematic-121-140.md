@@ -1,6 +1,6 @@
 # T09 systematic source review: PT121–140
 
-Reviewer work in progress, 2026-10-18. This ledger records actual complete reading, not inferred coverage. Each completed passage was read with its source text, every question stem and all five choices, every available explanation block and choice explanation, and every nonempty summary variant. Missing prose is not filled from keys. Protected source fields remain unchanged.
+Source review complete, 2026-10-18; independent cross-review through PT140 cleared after repairs and readback. This ledger records actual complete reading, not inferred coverage. Each completed passage was read with its source text, every question stem and all five choices, every available explanation block and choice explanation, and every nonempty summary variant. Missing prose is not filled from keys. Protected source fields remain unchanged.
 
 ## Completed in this systematic pass
 
@@ -21,10 +21,13 @@ Reviewer work in progress, 2026-10-18. This ledger records actual complete readi
 | 133 | 331, 333, 334, 335 | 27 | All read; confirmed authored defects repaired |
 | 134 | 304, 305, 308, 310 | 27 | All read; confirmed authored defects repaired |
 | 135 | 284, 285, 290, 291 | 27 | All read; confirmed authored defects repaired |
-| 136 | 258, 260, 262, 263, 524, 526, 529, 530 | 54 | All read; confirmed authored defects repaired |
+| 136 | 258, 260, 262, 263, 524, 526, 529, 530 | 53 | All read; confirmed authored defects repaired |
 | 137 | 239, 241, 243, 244 | 27 | All read; confirmed authored defects repaired |
+| 138 | 225, 227, 229, 231 | 27 | All read; confirmed authored defects repaired |
+| 139 | 386, 389, 390, 393, 218, 220, 222, 224 | 54 | Six newly read; reused complete reviews of 389 and 218; confirmed authored defects repaired |
+| 140 | 14, 15, 16, 18 | 27 | All read; confirmed authored defects repaired |
 
-Current completed block: 92 passages, 621 questions, 3,105 choices. Four passages reuse documented full reviews (168, 483, 444 and 343). Earlier independent sample coverage must be unioned by passage ID rather than added blindly. PT138-140 remain pending.
+Current completed block: 108 passages, 728 questions, 3,640 choices. Six passages reuse documented full reviews (168, 483, 444, 343, 389 and 218). Earlier independent sample coverage must be unioned by passage ID rather than added blindly. PT121-140 source review is complete.
 
 ## PT121 repairs
 
@@ -195,3 +198,73 @@ PT135 cross-review follow-up: p290 Q1678 C, Q1679 C, Q1681 A/B/D now preserve bo
 - 241: Q2131 C removes unsupported human-prehistory statistics; authored 54-percent reference is accurate. Q2132 A does not define empathy as requiring shared personal experience. Q2133 explanation/C/E and Q2135 anticipation teach collaborative narrative shaping without disparaging Nisa's life or inventing a mandatory climax structure or universal exposition timing.
 - 243: summary preserves primarily vulnerable rather than only vulnerable. Q2138 E does not invent an increased biodiversity result for the Everglades. Q2139 D reads can-only-benefit correctly as excluding harm rather than making borrowing the only path to improvement. Q2140 B recognizes A challenges an old assumption but B does not defend that assumption. Q2137 B avoids defining all inconsistent criteria as formal contradiction.
 - 244: Q2144 and related prose do not claim the 1688 settlement created Parliament. Q2147 preparation/A/D distinguish the Crown's improved borrowing terms from Parliament's own borrowing or commercial attitudes. Q2145 C removes invented numerical histories of rich subjects' rates. Summary preserves not-necessarily-solved rather than claiming all constitutions only relocate the paradox.
+
+## PT138 complete
+
+- 225: Q2224 A/C/D removes unsupported claims about current tourism/newspapers and corrects song hero versus singer. Q2228 C/E avoids speculative Spanish imagery and a false inference from perhaps to another clearer marker.
+- 227: summary preserves no-known-internal-role and insect-specific dietary specialization. Q2231 C/D avoids an absolute local-window rule and confusing universal presence with little chemical diversity. Q2232 B/D reads most-plants quantification and independent origin across plants correctly. Q2233 B preserves protective benefits of secondary substances. Q2235 B/E removes faulty seed-dispersal and unsupported bloodstream definitions.
+- 229: summary distinguishes de-emphasis from ignoring and mathematical expression from proof. Q2237 preparation does not infer author confusion from a rhetorical question. Q2238 D separates the conceptual tension from the mathematical reason for theoretical dominance. Q2241 A avoids opposing specialization to relaxed standards. Q2243 C/E preserves monopoly power by a few firms and does not invent turnover motives.
+- 231: summary correctly gives 231,000 customers and avoids an unstated fairness comparison. Q2245 D grounds inference in long-term delinquencies plus the proposed response, rather than a universal planning-means-never-before rule. Q2247 D does not infer a blanket opposition to liens. Q2248 preparation preserves the explicit not-rare concession about capricious enforcement.
+
+## PT139 complete
+
+- 386: Q3700 C does not invent a majority preference concession. Q3705 B/D removes unsupported apartment-mix and zoning-coordination predictions. Q3706 A preserves the qualified affordability assumption without fixed price/class mappings.
+- 389: reused documented earlier full source/questions/choices/authored review.
+- 390: Q3712 A recognizes prior artistic influences. Q3713 D distinguishes collaboration from contextual immediacy. Q3714 C does not assert author opposition to effectiveness. Q3716 D points to actual recruitment/improvisation support; Q3717 E distinguishes author's acknowledged European influence from Broyles-Gonzalez's unavailable view.
+- 393: Q3720 C removes all-risk/100-percent proceeds inference. Q3721 D/E applies the general diligence rationale and distinguishes percent-of-fee from percent-of-damages. Q3724 preparation/A/B includes assumed risk without universal percentage or guaranteed fairness. Q3722 C recognizes the stated compensation aim without inventing an overall worse-than-before verdict.
+- 218: reused colleague's documented complete source/questions/choices/authored review, including summary harvest-cost and Q2375 corrections.
+- 220: Q2378 B removes unsupported reasoning about technology difficulty and advanced-method aversion. Q2379 C distinguishes an ironic contrast from ridicule without treating all irony as contempt. Q2383 E does not convert primarily into a numerical share of aesthetic value.
+- 222: summary preserves one defense and perceived inconsistency rather than sole defense and actual contradiction. Q2385 E and Q2389 preparation/A remove invented internal-only audience/apology. Q2389 D does not equate criticism of patents with advocacy of infringement. Q2391 C/D teach motives versus effects and the stated economic incentive without blanket weak-word rules or outside patent terms.
+- 224: Q2392 preparation preserves ongoing acute decline while recognizing continued reproduction. Q2392 E removes a universal causal-to-counterfactual shortcut. Q2393 preparation treats sidelight as secondary research, not hobby. Q2397 B does not claim a controlled abrasion/germination comparison that was not reported.
+
+Cross-review follow-ups completed through PT130: p472 removes last-word author-endorsement shortcut; p1119 AnotherWay preserves inadequately understood physics; p437 AnotherWay preserves more-likely FCC motive; p414 AnotherWay states preservation before textile-history research without invented neglect.
+
+## PT140 complete
+
+- 14: summary corrects the quoted conclusion to paragraph 3 and preserves explicitly political representation rather than all political significance. Q1588 A does not reduce the work to refusing politics. Q1593 B/E distinguishes real-life inspiration from literal representation and resistance from a blanket rule about expectations.
+- 15: Standard main point and Q1596 preparation preserve taxable in-game sales in intentionally commodified games. Q1595 B focuses on effort-based acquisition rather than pleasure and preserves the sale distinction; related paragraph references corrected. Q1598 A recognizes law-journal recommendations rather than denying the article's normative claims.
+- 16: summary preserves extremely rare exception to ten-year practice, avoids guaranteeing anyone a virtuoso outcome, and compares motivation specifically to innate talent rather than all predictors. Q1601 A/B identifies unsupported motivation changes and preserves may-suffice. Q1602 B removes an absolute anti-demonstrate heuristic. Q1603 A does not teach ignoring perhaps. Q1605 C correctly identifies superior performers, versus random population samples, as the particular class of cases.
+- 18: summary distinguishes an observer-dependent account of appearances from physical mirror behavior. Q1609 E removes unsupported claims about overemphasis. Q1610 B recognizes that the account relies on mental constructs while excluding the observer. Q1613 B derives the contrast from actual explanations, not a false most-notable-means-unique rule. Q1614 E focuses on no modification of object shape rather than an unsupported account of voluntary eye focusing.
+
+## Final integrity check
+
+- Recursive comparison of PT121-140 against HEAD, stripping only allowed authored keys (summaries, explanationBlocks, hasWrittenExplanation, explanation, tag): all protected fields unchanged.
+- Exact source counts read back from bank: 108 passages, 728 questions, 3,640 choices. PT136 has 53 questions, not 54; table and cumulative total corrected.
+- Independent cross-review of changed fields through PT140 cleared by reviewer content_review_t09 after requested repairs and readback. No unresolved authored source/reasoning findings in this range.
+
+## Independent review of colleague's later banks
+
+This is a cross-review of changed authored fields against full source passages and affected question stems/all choices, separate from the colleague's complete first-pass coverage. No edits to colleague-owned banks.
+
+| PT | Passage IDs read | Result |
+|---|---|---|
+| 141 | 27, 28, 29, 30, 198, 200, 201, 202 | Initial cross-review complete; p198 reproduction/immune-tolerance causal distinction and p200 Q2457 C negation correction independently read back against full sources |
+| 142 | 84, 85, 86, 87 | Initial cross-review complete; p85 all variants retain the scarcity exception, lawyer attribution and qualified framing/backfire account; final repairs independently read back |
+| 143 | 108, 109, 110, 112 | Initial changed-field/source cross-review clear; no unresolved initial disposition |
+| 144 | 41, 74, 75, 78 | Initial changed-field/source cross-review clear; no unresolved initial disposition |
+| 145 | 88, 90, 92, 94, 360, 361, 363, 365 | Initial changed-field/source cross-review clear; no unresolved initial disposition |
+| 146 | 96, 98, 101, 103 | Changed reasoning clear; owner removed two cleanup-history asides in Q986 E and Q1006 E |
+| 147 | 106, 107, 121, 125, 19, 20, 21, 22 | Changed source/reasoning fields clear |
+| 148 | 181, 184, 185, 186 | p186 summary now states activity in both control and on-task conditions; repair read back; remainder clear |
+| 149 | 126, 127, 130, 133 | Changed source/reasoning fields clear |
+| 150 | 136, 138, 139, 141, 117, 118, 119, 120 | p138 ideal-technique and false-confidence claims now preserve suggests/may; repair read back; remainder clear |
+| 151 | 569, 576, 577, 581 | Changed source/reasoning fields clear |
+| 156 | 1697, 1698, 1699, 1701, 1752, 1753, 1754, 1755 | p1701 skeletal fossils and proposed clay/rain mechanism qualifiers repaired and read back; remainder clear |
+| 157 | 1729, 1730, 1731, 1732, 1706, 1707, 1708, 1709 | p1731 Brief/Standard preserve enhancement and necessary scientific excavation exception; repairs read back; remainder clear |
+| 158 | 1680, 1681, 1682, 1684 | Changed source/reasoning fields clear; Q10100/10102 final corrections independently rechecked |
+| 159 | 1756, 1757, 1758, 1759, 1760, 1761, 1762, 1763 | Changed source/reasoning fields clear |
+
+PT152-155 independent cross-review is assigned to content_review_t09. All initial PT141-145 findings have been reconciled with the owner's disposition record and repaired fields read back. The rows above have no unresolved source/reasoning findings after owner readback; this does not substitute for another reviewer's assigned ranges.
+
+## Independent review of PT106-110
+
+Full source passages, changed authored fields, and affected question stems/all choices read. This is a second review of the changed fields, not a second reading of every unchanged explanation. Exact bank size: 28 passages, 187 questions.
+
+| PT | Passage IDs read | Questions | Disposition |
+|---|---|---:|---|
+| 106 | 703, 706, 707, 710 | 26 | Residual loop tags and unsupported author-attribution shortcut repaired by owner and read back; clear |
+| 107 | 673, 676, 679, 680 | 27 | Incorporation/replacement distinction, unrelated tag and spacing repaired by owner and read back; clear |
+| 108 | 1280, 1286, 1290, 1294, 1160, 1162, 1164, 1166 | 53 | Changed reasoning clear; cleanup-history aside removal repaired by owner and read back; clear |
+| 109 | 1045, 1051, 1057, 1059 | 28 | Changed reasoning clear; cleanup-history aside removals repaired by owner and read back; clear |
+| 110 | 1027, 1031, 1034, 1036, 665, 666, 669, 671 | 53 | Residual tags inconsistent with repaired prose and cleanup-history asides repaired by owner and read back; clear |
+

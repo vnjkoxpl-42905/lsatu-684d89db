@@ -2,7 +2,15 @@
 
 Reviewed 2026-10-18. This report distinguishes deterministic source/test evidence from real account, device and learner acceptance. It does not certify the full plan complete.
 
-## Regression execution
+## Expanded regression execution
+
+The final local integrated command passed 810 tests across 80 files, including the new owner-scoped full-test parent guard, delayed-review cancellation and ordinary-marker privacy regressions. Typecheck passed. Exact committed-head CI must be recorded separately after the last authored correction and overlay capture; an earlier head (`43c0f603`) passed 808 tests, typecheck, overlay tests and build.
+
+The source/fixture follow-up for protected preflight passed 40 tests (18 section-freshness and 22 standalone-runner tests), already included in broader coverage rather than added again. Merely opening the protected URL is read-only; Prepare creates a ready sitting with no RC child; commit Start creates the child and changes the sitting to running. Fresh checks history, RC children and exposure records, not ready sittings. The runner returns the ready preflight before rendering the reader, and the client rejects a child attached to a ready response. Thus the checked-in protected path preserves Fresh until Start, including an eventual all-skipped section once started. The disabled capability's legacy fallback is a different path and is not called protected preflight here.
+
+This conclusion traces `rcSections.ts`, the standalone writer SQL artifact, the standalone runner and client contract. It is not a readback of the deployed function definition. No new sitting or clock was created for this follow-up. The deployed backend parity check remains distinct from source/fixture proof.
+
+## Initial focused regression execution
 
 196 tests passed across nine files:
 

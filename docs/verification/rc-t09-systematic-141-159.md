@@ -1,6 +1,6 @@
 # Systematic RC teaching review, PT141 through PT159
 
-Review date: 2026-10-18. Scope is source-grounded teaching review, not answer-key revision or new writeup generation. This is a progress ledger, not a declaration that the assigned range is complete.
+Review date: 2026-10-18. Scope is source-grounded teaching review, not answer-key revision or new writeup generation. The full assigned range has now received a source/teaching pass. Independent cross-review and repository validation are recorded separately.
 
 For each completed passage below, the reviewer read the original passage, every summary variant, every question stem and choice, and all existing question blocks and choice explanations. Truncated tool output was reread in smaller question slices. Missing writeups remained missing; official passage text, source metadata, prompts, choices, answer letters and order were preserved.
 
@@ -23,7 +23,10 @@ For each completed passage below, the reviewer read the original passage, every 
 | 153 | 627, 628, 629, 631, 169, 175, 177, 179 | 54 | Complete source/teaching pass; confirmed defects repaired |
 | 154 | 849, 851, 853, 854 | 27 | Complete source/teaching pass; confirmed defects repaired |
 | 155 | 1102, 1104, 1105, 1106 | 27 | Complete source/teaching pass; confirmed defects repaired |
-| 156-159 | Not yet systematically reviewed in this pass | 0 | Open; earlier sampled IDs do not establish whole-PrepTest coverage |
+| 156 | 1697, 1698, 1699, 1701, 1752, 1753, 1754, 1755 | 54 | Complete source/teaching pass; confirmed defects repaired |
+| 157 | 1729, 1730, 1731, 1732, 1706, 1707, 1708, 1709 | 54 | Complete source/teaching pass; confirmed defects repaired |
+| 158 | 1680, 1681, 1682, 1684 | 27 | Complete source/teaching pass; confirmed defects repaired |
+| 159 | 1756, 1757, 1758, 1759, 1760, 1761, 1762, 1763 | 54 | Complete source/teaching pass; confirmed defects repaired |
 
 ## Confirmed defects repaired
 
@@ -145,3 +148,72 @@ Before release, recapture the authored overlay, rerun the protected-source integ
 - Passage 1104: summary preserves risk of conflict rather than inevitable conflict. Q7113B uses codification in context without treating guidelines as enacted statutes or importing unrelated current legal history; D recognizes the later discussion of high-use countries but preserves purpose. Q7115C rejects an unsupported diagnosis rather than a supported need for improvement. Q7116B distinguishes future regional precipitation effects from an established worldwide trend.
 - Passage 1105: summaries preserve much rather than most DNA research and design work in progress. Q7119A removes an answer-letter heuristic. Q7120D removes an invented electron-microscope technique. Q7121 A/D separates unknown from absent in nature and unsupported earlier use from contradiction. Q7122C preserves the actual analogy sequence. Q7123E removes the false claim that predictions cannot be tested. Q7124D avoids a universal as-to-causation rule. Q7125 A/C avoids assuming exclusive competition or too few binders from relative counts.
 - Passage 1106: Q7128A no longer treats different grammatical genders as incompatible realities; Q7129D does not infer indifference to truth from leaving explanations open. Q7130E preserves all three hypotheses about exact equality rather than implying the evidence rules out language-independent possession. Previously corrected core summary and grammatical-structure explanations were reread against the full source and retained.
+
+
+## PT156 confirmed repairs
+
+- Passage 1697: summary preserves not always. Q10211 B/E removes invented crop-failure history and recognizes the explicit local-yield selection rather than falsely calling it contradicted. Q10212E removes an invented large-farm employment destination; Q10216 C/D does not present unsupported lower yields or adaptation difficulty as established facts.
+- Passage 1698: Q10221A removes invented taxpayer consensus. Q10222D and Q10224 D/E do not infer impossibility from an even-if concession or infer failure of each conjunct from failure of a combined requirement. Q10224A avoids inventing a majority preference.
+- Passage 1699: summary preserves significantly affected. Q10227C explains scope without a spurious rule about legal commands and consequences. Q10230 C/D/E removes complexity-to-inefficiency certainty and unrelated student-loan claims, and grounds financing-cost inference in the stated credit-cost mechanism.
+- Passage 1701: summary preserves a proposed explanation and plant life/rain without inferring a generally wet environment. Q10232E fixes a tag falsely claiming no fossil reference. Q10235E removes present-tense proof and outside medical-history claims. Q10237 A/D preserves ancient/modern distinctions without asserting all modern Gobi slides impossible or a fully known five-million-year landscape.
+- Passage 1752: summary preserves a reasonable degree of equality and may perpetuate rather than certain perpetuation. Protected prompt Q10655 appears to omit its target phrase; reported to root for source discrepancy tracking, not altered.
+- Passage 1753: summary preserves generally near the reductionist extreme rather than identifying every skeptic as a reductionist.
+- Passages 1754 and 1755: full source, summaries, stems and choices reviewed; no confirmed authored reasoning defect repaired. All missing question writeups in the second section remain missing.
+
+
+## PT157 confirmed repairs
+
+- Passage 1729: Q10484 A/D preserves indirect context rather than denying any historical link or inventing a defined growth-period start. Q10485C avoids converting clearest turning point into a precise importance ranking. Q10487D does not imply violent reprisals caused no harm.
+- Passage 1730: Standard summary no longer invents author neutrality or an endorsement of both objections' merit; Another Way preserves elite attributes versus inclusive aim. Q10489C avoids aggregate variation proving no educational effect. Q10492D distinguishes unlike physical laws from no governing laws at all.
+- Passage 1731: repaired fabricated destructive-salvage framing, identical-commodity status, absolute preservation rules, and human-made-only definition in summaries. Q10495 B/D uses historical context rather than current-year subtraction. Q10496 B/E distinguishes specific agreement terms from general law and new precedent from absence of all restrictions. Q10497 C/D does not assume private collections imply purchases or nonscientists imply for-profit work. Q10500A tests the convention's actual position rather than misidentifying the company's view.
+- Passage 1732: summaries preserve uncertain extent rather than merely absence of inevitable harm, and remove an invented half-data quantity. Q10507A recognizes that possible benefit is discussed while not the main purpose. Q10508D preserves environmental health as central rather than claiming every example exclusively concerns it.
+- Passage 1706: Q10308 A/D removes keyword-only elimination and focuses unsupported generalization/overdue credit. Q10314 A/C/D removes invented parent-and-grandparent attendance and unchanging-method claims; retains direct-versus-traditional influence distinction.
+- Passage 1707: summary removes unsupported superiority to experts. Q10315 C/D preserves skepticism versus total inability to yield information and seriousness versus truth. Q10320 D/E avoids inventing ultimate election results or population-wide opinion. Q10321B corrects false thermostat operation and teaches active correction versus passive measurement.
+- Passage 1708: summaries preserve more closely related versus unrelated, all degrees versus infinity, and probable protection need. Q10323B recognizes late Sibley. Q10324C avoids an invented complexity ranking. Q10326 A/B/C/D/E correctly distinguishes stork and vulture comparisons, removes cancellation and total-unrelatedness reasoning. Q10327E does not infer ornithology-only applicability. Q10329 blocks/E removes invalid contraposition of less likely and a fabricated universal population threshold/automatic legal protection rule.
+- Passage 1709: summary preserves some versus vocal minority. Q10330B corrects a reversed patent recommendation. Q10331D distinguishes remedy disagreement from risk-severity claims; Q10333E removes invented increasing-copycat beliefs. Q10334A grounds both protection distinctions in the passage without unsupported slogan copyright claims.
+
+
+## PT158 confirmed repairs
+
+- Passage 1680: brief preserves nearly impossible. Q10088B separates comparison with other disposal from an unsupported exact-depth cost comparison. Q10090B fixes meters/feet and preserves unknown groundwater depth. Q10091 C/D recognizes containment as an immediate purpose and avoids asserting all monitoring impossible. Q10093 blocks/B/D separates permeable receiving layer from impermeable barrier, avoids a no-leak guarantee, and fixes less-than-depth interpretation.
+- Passage 1681: Q10094 and Q10098 blocks remove invented universal desire for the picaro's lifestyle. Q10095 blocks/D preserves comparison versus conflation and avoids a false evergreen inference. Q10097 Goal/C/E separates characters' flaws from society, removes invented critic expertise stereotypes and irrelevant analogies, and grounds incomplete understanding in functions.
+- Passage 1682: full source and all existing prose reread, retaining prior sampled corrections. Q10103 blocks/C removes political-correctness invention and keyword-repetition heuristic. Q10104E correctly interprets reprehensible as blameworthy rather than hated. Q10106 B/C preserves the specific criticism without claiming author awareness is necessary for relevance.
+- Passage 1684: Another Way summary replaces invented absolute remedial exclusivity, air-pollution scenario, moral-scarlet-letter ranking and universal corporate-culture deterrence with the actual four-part argument. Q10107C distinguishes weaker deterrence from none. Q10108 blocks/C preserves rejection of exclusive individual targeting rather than all prosecution, and identifies the actual corporate-cost claim. Q10109 A/C/D fixes attribution/paragraph references, removes unrelated government-censure claims and teaches the combined evidence. Q10110C incorporates the author's explicit main-function statement. Q10111E fixes paragraph attribution. Q10113C does not infer relative frequency from well established.
+
+
+## PT159 confirmed repairs and range totals
+
+- Passage 1756: summary preserves almost-certain historical priority and the explicit comparison of the comic form with improvisational artistry.
+- Passage 1758: summary fixes the main-point sentence location and preserves easier testability versus a promised near-future resolution.
+- Passage 1763: Q10809 A/C tags now distinguish a too-narrow linear-only description from an opposite claim; the source's faucet example begins with linear flow and then demonstrates nonlinear transition.
+- Passages 1757, 1759, 1760, 1761, and 1762: full source, summaries when present, stems and choices reviewed without confirmed authored changes. PT159 has no substantive written question explanations, including the few items with tags or a true hasWrittenExplanation flag. Missing material was not generated.
+
+All 19 PrepTests in this range are covered: **108 passages and 728 questions**. PT152 contains 26 questions in the bank; other single sections contain 27. There are **198 questions with no substantive explanation blocks or choice explanations**, preserved as missing. Counts by PT141 through PT159: 4, 7, 10, 9, 12, 7, 11, 5, 3, 10, 9, 4, 13, 2, 6, 30, 2, 0, 54. Passage summaries are entirely absent for PT159 passages 1760, 1761, 1762, and 1763. Structural flags and tags alone do not count as substantive written explanations.
+
+Cross-review follow-ups applied: PT146 Q986E/Q1006E removed cleanup-history asides; PT148 p186 narrowed whole-brain activity to control/on-task conditions; PT150 p138 narrowed ideal-technique and confidence claims to the source's may/research qualification.
+
+
+## Independent cross-review of PT111–120
+
+This is an independent second review of changed authored fields against baseline 94e76565b7b7c7c3924d2caa4a0dd8cdf94271d2, not an additional primary content inventory. Every full source passage, affected official stem and all choices were read alongside the changed summaries, blocks and choice explanations. Primary ownership remained with the PT101–120 reviewer.
+
+| PT | Passage IDs | Passages | Questions in source sections | Status |
+|---|---|---:|---:|---|
+| 111 | 1008, 1009, 1012, 1015 | 4 | 26 | Complete |
+| 112 | 988, 992, 994, 997 | 4 | 26 | Complete |
+| 113 | 965, 969, 973, 976 | 4 | 26 | Complete |
+| 114 | 955, 958, 960, 962 | 4 | 27 | Complete |
+| 115 | 651, 652, 653, 655, 937, 939, 941, 944 | 8 | 56 | Complete |
+| 116 | 809, 812, 816, 819, 1073, 1077, 1088, 1089 | 8 | 55 | Complete |
+| 117 | 797, 798, 799, 802 | 4 | 27 | Complete |
+| 118 | 861, 863, 867, 872 | 4 | 27 | Complete |
+| 119 | 785, 787, 790, 792 | 4 | 26 | Complete |
+| 120 | 769, 771, 773, 776 | 4 | 26 | Complete |
+
+No remaining actionable source-grounding or reasoning defect was found in the changed fields. Cross-review corrections were requested from the owner and read back: PT111 p1012 Brief preserves a possibility rather than asserting the proposed contingency view; Q5489E removes a review-history aside. PT115 Q5132C and PT116 Q5171C/Q5174B remove review-history-only clauses while preserving source reasoning. PT118 p861 Standard P1 now says relief has sometimes been ineffective or harmful. PT112–114, PT117, PT119 and PT120 required no additional changes from this second review. Missing explanations were not filled.
+
+Final primary-range cross-review readback: the independent reviewer cleared PT146–151 and PT156–159 after the p138 and p1731 qualifications. Q10334A trailing duplicate period was repaired and PT157 refrozen. PT152–155 was independently cleared by the other content reviewer after identified corrections.
+
+Final PT142 p85 disposition: Standard and Another Way scarcity accounts retain the source exception for evidence of overriding consequence. Brief preserves lawyer attribution and may-effective/may-create qualifications. Another Way P3 now says early disclosure may create a negative impression. These are confirmed cross-review repairs; no protected fields changed.
+
+Final initial PT101–105 disposition readback completed: Drescher attribution in Q8437/Q8439/Q8440 follows the express rejection of moral-vision accounts and avoids invented employment motives; Q8431 distinguishes the time-theory claim from the Arctic rebuttal, and Q8432 preserves extinction modality. Dolphin data remain almost all animals tested. PT104 p1325/Q8306 distinguish the separate 57/75 and same-age-group-or-sex 63/62 aggregates rather than treating the latter as adult-only. Homing-pigeon explanations preserve occasional magnetic effects and the unperformed combined experiment. Together with the PT111–120 readback above, no confirmed cross-review finding remains unresolved in these assigned independent ranges. These dispositions do not imply a second review of every untouched explanation.

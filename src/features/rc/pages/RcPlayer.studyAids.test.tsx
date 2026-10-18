@@ -227,3 +227,13 @@ describe('RC study aids in the mounted player', () => {
     expect(api.createSession).not.toHaveBeenCalled();
   });
 });
+
+it.each(['url', 'routed state'])('blocks a discarded drill through %s before loading answers or exposing editing controls', async (entry) => {
+  api.getSession.mockResolvedValue({ ...session, status: 'abandoned' });
+  render(entry === 'url' ? tree() : <MemoryRouter initialEntries={[{ pathname: '/rc/drill', state: { sessionId: session.id, passageIds: session.passageIds } }]}><RcPlayer /></MemoryRouter>);
+  expect(await screen.findByText('This drill was discarded. Start a new drill from Practice.')).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Select C' })).not.toBeInTheDocument();
+  expect(api.getSessionAttempts).not.toHaveBeenCalled();
+  expect(api.recordAttempt).not.toHaveBeenCalled();
+  expect(api.saveSessionClock).not.toHaveBeenCalled();
+});
