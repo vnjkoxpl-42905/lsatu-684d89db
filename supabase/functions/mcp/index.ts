@@ -2,7 +2,594 @@
 // To take ownership, delete this banner line; the plugin then leaves the file alone.
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
+// src/lib/mcp/index.ts
+import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.20.0";
+
+// src/lib/mcp/tools/echo.ts
+import { defineTool } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z } from "npm:zod@^3.23.8";
+var echo_default = defineTool({
+  name: "echo",
+  title: "Echo",
+  description: "Echo the input text back. Useful to verify the LSAT U MCP connection is live.",
+  inputSchema: { text: z.string().min(1).describe("Text to echo back.") },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: ({ text }) => ({ content: [{ type: "text", text }] })
+});
+
+// src/lib/mcp/tools/get-my-profile.ts
+import { createClient } from "npm:@supabase/supabase-js@^2.101.1";
+import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.20.0";
+function supabaseForUser(ctx) {
+  return createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+      auth: { persistSession: false, autoRefreshToken: false }
+    }
+  );
+}
+var get_my_profile_default = defineTool2({
+  name: "get_my_profile",
+  title: "Get my LSAT U profile",
+  description: "Return the signed-in user's LSAT U profile: display name, level, streak, XP and layout preferences.",
+  inputSchema: {},
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (_input, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
+    const { data, error } = await supabase.from("profiles").select(
+      "class_id, display_name, level, xp_total, streak_current, longest_streak, daily_goal_questions, daily_goal_streak, last_practice_date, layout_prefs"
+    ).eq("class_id", ctx.getUserId()).maybeSingle();
+    if (error) {
+      return { content: [{ type: "text", text: error.message }], isError: true };
+    }
+    return {
+      content: [{ type: "text", text: JSON.stringify(data ?? {}, null, 2) }],
+      structuredContent: { profile: data ?? null }
+    };
+  }
+});
+
+// src/lib/mcp/tools/list-my-homework.ts
+import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.101.1";
+import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z2 } from "npm:zod@^3.23.8";
+function supabaseForUser2(ctx) {
+  return createClient2(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+      auth: { persistSession: false, autoRefreshToken: false }
+    }
+  );
+}
+var list_my_homework_default = defineTool3({
+  name: "list_my_homework",
+  title: "List my homework assignments",
+  description: "List homework assignments for the signed-in student, newest first. Optionally filter by status.",
+  inputSchema: {
+    status: z2.enum(["assigned", "in_progress", "completed"]).optional().describe("Optional status filter."),
+    limit: z2.number().int().positive().optional().describe("Max rows to return. Defaults to 25.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ status, limit }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser2(ctx);
+    let query = supabase.from("homework_assignments").select("id, set_title, set_description, status, created_at, started_at, completed_at").eq("student_id", ctx.getUserId()).order("created_at", { ascending: false }).limit(Math.min(limit ?? 25, 100));
+    if (status) query = query.eq("status", status);
+    const { data, error } = await query;
+    if (error) {
+      return { content: [{ type: "text", text: error.message }], isError: true };
+    }
+    return {
+      content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
+      structuredContent: { assignments: data ?? [] }
+    };
+  }
+});
+
+// src/lib/mcp/tools/list-my-classroom-items.ts
+import { createClient as createClient3 } from "npm:@supabase/supabase-js@^2.101.1";
+import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z3 } from "npm:zod@^3.23.8";
+function supabaseForUser3(ctx) {
+  return createClient3(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+      auth: { persistSession: false, autoRefreshToken: false }
+    }
+  );
+}
+var list_my_classroom_items_default = defineTool4({
+  name: "list_my_classroom_items",
+  title: "List my classroom items",
+  description: "List classroom items (notes, drills, bootcamp modules, homework) shared with the signed-in student by their instructor.",
+  inputSchema: {
+    limit: z3.number().int().positive().optional().describe("Max items to return. Defaults to 25.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ limit }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser3(ctx);
+    const { data, error } = await supabase.from("classroom_items").select("id, type, title, description, status, created_at, metadata_json").eq("student_id", ctx.getUserId()).eq("visible_to_student", true).order("created_at", { ascending: false }).limit(Math.min(limit ?? 25, 100));
+    if (error) {
+      return { content: [{ type: "text", text: error.message }], isError: true };
+    }
+    return {
+      content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
+      structuredContent: { items: data ?? [] }
+    };
+  }
+});
+
+// src/lib/mcp/tools/find-students.ts
+import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z4 } from "npm:zod@^3.23.8";
+
+// src/lib/mcp/admin-client.ts
+import { createClient as createClient4 } from "npm:@supabase/supabase-js@^2.101.1";
+function authenticatedSupabase(ctx) {
+  if (!ctx.isAuthenticated()) {
+    throw new Error("Not authenticated");
+  }
+  return createClient4(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+      auth: { persistSession: false, autoRefreshToken: false }
+    }
+  );
+}
+async function adminRpc(client, functionName, args) {
+  return client.rpc(functionName, args);
+}
+function toolError(error) {
+  let text;
+  if (error instanceof Error) {
+    text = error.message;
+  } else if (error && typeof error === "object") {
+    const e = error;
+    const parts = [
+      e.message ? `message: ${e.message}` : null,
+      e.code ? `code: ${e.code}` : null,
+      e.details ? `details: ${e.details}` : null,
+      e.hint ? `hint: ${e.hint}` : null
+    ].filter(Boolean);
+    text = parts.length > 0 ? parts.join(" | ") : JSON.stringify(error);
+  } else {
+    text = "LSAT U write failed";
+  }
+  return {
+    content: [Object.freeze({ type: "text", text })],
+    isError: true
+  };
+}
+
+// src/lib/mcp/tools/find-students.ts
+var find_students_default = defineTool5({
+  name: "find_students",
+  title: "Find LSAT U students",
+  description: "Admin-only. Resolve a student name or email to the exact LSAT U student ID before posting anything.",
+  inputSchema: {
+    query: z4.string().min(2).max(160).describe("Student name or email fragment."),
+    limit: z4.number().int().min(1).max(25).optional()
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ query, limit }, ctx) => {
+    try {
+      const supabase = authenticatedSupabase(ctx);
+      const { data, error } = await adminRpc(supabase, "mcp_find_students", {
+        p_query: query,
+        p_limit: limit ?? 10
+      });
+      if (error) throw error;
+      const students = data ?? [];
+      return {
+        content: [{ type: "text", text: JSON.stringify(students, null, 2) }],
+        structuredContent: { students }
+      };
+    } catch (error) {
+      return toolError(error);
+    }
+  }
+});
+
+// src/lib/mcp/tools/post-classroom-note.ts
+import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z5 } from "npm:zod@^3.23.8";
+
+// src/lib/mcp/notify-email.ts
+async function sendNotifyEmail(client, params) {
+  const { studentId, title, route, description, assignmentType } = params;
+  try {
+    const { data, error } = await client.functions.invoke("send-assignment-email", {
+      body: {
+        studentId,
+        title,
+        route,
+        description,
+        assignmentType: assignmentType ?? "assignment"
+      }
+    });
+    if (error) return { ok: false, error: error.message };
+    if (data && typeof data === "object" && "ok" in data && data.ok === true) {
+      return { ok: true };
+    }
+    const errMsg = data && typeof data === "object" && "error" in data ? String(data.error) : "email failed";
+    return { ok: false, error: errMsg };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "email failed" };
+  }
+}
+
+// src/lib/mcp/tools/post-classroom-note.ts
+var post_classroom_note_default = defineTool6({
+  name: "post_classroom_note",
+  title: "Post a Classroom note",
+  description: "Admin-only. Post a student-facing note under Notes and recaps, with optional bell and inbox notification. Resolve the student first.",
+  inputSchema: {
+    student_id: z5.string().uuid(),
+    title: z5.string().min(1).max(160),
+    content_html: z5.string().min(1).max(5e5),
+    description: z5.string().max(500).optional(),
+    notify: z5.boolean().optional().describe("Defaults to true."),
+    idempotency_key: z5.string().min(8).max(160).describe("Stable unique key for this exact post. Reuse it only when retrying.")
+  },
+  annotations: { readOnlyHint: false, idempotentHint: true, openWorldHint: false },
+  handler: async (input, ctx) => {
+    try {
+      const supabase = authenticatedSupabase(ctx);
+      const { data, error } = await adminRpc(supabase, "mcp_post_classroom_note", {
+        p_student_id: input.student_id,
+        p_title: input.title,
+        p_content_html: input.content_html,
+        p_idempotency_key: input.idempotency_key,
+        p_description: input.description ?? null,
+        p_notify: input.notify ?? true
+      });
+      if (error) throw error;
+      const notify = input.notify ?? true;
+      let out = data;
+      if (notify && out?.ok === true && out?.reused !== true && typeof out?.route === "string") {
+        const email = await sendNotifyEmail(supabase, {
+          studentId: input.student_id,
+          title: input.title,
+          route: out.route,
+          description: input.description,
+          assignmentType: "note"
+        });
+        out = { ...out, email_ok: email.ok, ...email.error ? { email_error: email.error } : {} };
+      }
+      return {
+        content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+        structuredContent: out
+      };
+    } catch (error) {
+      return toolError(error);
+    }
+  }
+});
+
+// src/lib/mcp/tools/assign-passage-map-homework.ts
+import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z6 } from "npm:zod@^3.23.8";
+var responseField = z6.object({
+  id: z6.string().min(1).max(100),
+  label: z6.string().min(1).max(200),
+  kind: z6.enum(["short", "long"]).optional(),
+  rows: z6.number().int().min(1).max(16).optional(),
+  placeholder: z6.string().max(300).optional(),
+  required: z6.boolean().optional()
+});
+var responseSection = z6.object({
+  id: z6.string().min(1).max(100),
+  title: z6.string().min(1).max(200),
+  instructions: z6.string().max(1e3).optional(),
+  fields: z6.array(responseField).min(1).max(80)
+});
+var assign_passage_map_homework_default = defineTool7({
+  name: "assign_passage_map_homework",
+  title: "Assign passage-map homework",
+  description: "Admin-only. Publish structured passage-map homework under Assigned work. Student responses save in the Classroom; the attached answer key stays hidden until submission.",
+  inputSchema: {
+    student_id: z6.string().uuid(),
+    title: z6.string().min(1).max(160),
+    content_html: z6.string().min(1).max(5e5),
+    response_schema: z6.object({
+      version: z6.literal(1),
+      sections: z6.array(responseSection).min(1).max(30)
+    }),
+    answer_key_html: z6.string().min(1).max(5e5),
+    notify: z6.boolean().optional().describe("Defaults to true."),
+    idempotency_key: z6.string().min(8).max(160).describe("Stable unique key for this exact assignment. Reuse it only when retrying.")
+  },
+  annotations: { readOnlyHint: false, idempotentHint: true, openWorldHint: false },
+  handler: async (input, ctx) => {
+    try {
+      const supabase = authenticatedSupabase(ctx);
+      const { data, error } = await adminRpc(
+        supabase,
+        "mcp_assign_passage_map_homework",
+        {
+          p_student_id: input.student_id,
+          p_title: input.title,
+          p_content_html: input.content_html,
+          p_response_schema: input.response_schema,
+          p_answer_key_html: input.answer_key_html,
+          p_idempotency_key: input.idempotency_key,
+          p_notify: input.notify ?? true
+        }
+      );
+      if (error) throw error;
+      const notify = input.notify ?? true;
+      let out = data;
+      if (notify && out?.ok === true && out?.reused !== true && typeof out?.route === "string") {
+        const email = await sendNotifyEmail(supabase, {
+          studentId: input.student_id,
+          title: input.title,
+          route: out.route,
+          assignmentType: "homework"
+        });
+        out = { ...out, email_ok: email.ok, ...email.error ? { email_error: email.error } : {} };
+      }
+      return {
+        content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+        structuredContent: out
+      };
+    } catch (error) {
+      return toolError(error);
+    }
+  }
+});
+
+// src/lib/mcp/tools/get-assignment-status.ts
+import { defineTool as defineTool8 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z7 } from "npm:zod@^3.23.8";
+var get_assignment_status_default = defineTool8({
+  name: "get_assignment_status",
+  title: "Get assignment status",
+  description: "Admin-only. Verify that a structured LSAT U assignment exists and report its view, save, submission, and answer-key state.",
+  inputSchema: {
+    assignment_id: z7.string().uuid()
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ assignment_id }, ctx) => {
+    try {
+      const supabase = authenticatedSupabase(ctx);
+      const { data, error } = await adminRpc(supabase, "mcp_get_assignment_status", {
+        p_assignment_id: assignment_id
+      });
+      if (error) throw error;
+      return {
+        content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
+        structuredContent: data
+      };
+    } catch (error) {
+      return toolError(error);
+    }
+  }
+});
+
+// src/lib/mcp/tools/list-students.ts
+import { defineTool as defineTool9 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z8 } from "npm:zod@^3.23.8";
+
+// src/lib/mcp/tools/_shared.ts
+import { createClient as createClient5 } from "npm:@supabase/supabase-js@^2.101.1";
+function supabaseForUser4(ctx) {
+  return createClient5(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+      auth: { persistSession: false, autoRefreshToken: false }
+    }
+  );
+}
+async function requireAdmin(ctx) {
+  if (!ctx.isAuthenticated()) return { supabase: null, userId: null, error: "Not authenticated" };
+  const supabase = supabaseForUser4(ctx);
+  const userId = ctx.getUserId();
+  const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle();
+  if (error) return { supabase: null, userId: null, error: error.message };
+  if (!data) return { supabase: null, userId: null, error: "Admin role required to use this tool." };
+  return { supabase, userId, error: null };
+}
+function textResult(text, isError = false) {
+  return { content: [Object.freeze({ type: "text", text })], isError };
+}
+
+// src/lib/mcp/tools/list-students.ts
+var list_students_default = defineTool9({
+  name: "list_students",
+  title: "List students (admin)",
+  description: "Admin only. List LSAT U students, optionally filtered by a case-insensitive name substring. Returns id (class_id = user_id) and display_name \u2014 use the id when calling assign_homework or send_note.",
+  inputSchema: {
+    query: z8.string().trim().min(1).optional().describe("Optional case-insensitive name substring."),
+    limit: z8.number().int().positive().max(200).optional().describe("Max rows (default 50).")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ query, limit }, ctx) => {
+    const admin = await requireAdmin(ctx);
+    if (admin.error) return textResult(admin.error, true);
+    let q = admin.supabase.from("profiles").select("class_id, display_name").order("display_name", { ascending: true }).limit(Math.min(limit ?? 50, 200));
+    if (query) q = q.ilike("display_name", `%${query}%`);
+    const { data, error } = await q;
+    if (error) return textResult(error.message, true);
+    const students = (data ?? []).map((r) => ({ id: r.class_id, display_name: r.display_name }));
+    return {
+      content: [{ type: "text", text: JSON.stringify(students, null, 2) }],
+      structuredContent: { students }
+    };
+  }
+});
+
+// src/lib/mcp/tools/list-homework-sets.ts
+import { defineTool as defineTool10 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z9 } from "npm:zod@^3.23.8";
+var list_homework_sets_default = defineTool10({
+  name: "list_homework_sets",
+  title: "List homework sets (admin)",
+  description: "Admin only. List homework sets you have created. Use a set's id when calling assign_homework.",
+  inputSchema: {
+    query: z9.string().trim().min(1).optional().describe("Optional case-insensitive title substring."),
+    limit: z9.number().int().positive().max(200).optional().describe("Max rows (default 50).")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ query, limit }, ctx) => {
+    const admin = await requireAdmin(ctx);
+    if (admin.error) return textResult(admin.error, true);
+    let q = admin.supabase.from("homework_sets").select("id, title, description, created_at, question_qids").eq("created_by", admin.userId).order("created_at", { ascending: false }).limit(Math.min(limit ?? 50, 200));
+    if (query) q = q.ilike("title", `%${query}%`);
+    const { data, error } = await q;
+    if (error) return textResult(error.message, true);
+    const sets = (data ?? []).map((s) => ({
+      id: s.id,
+      title: s.title,
+      description: s.description,
+      question_count: Array.isArray(s.question_qids) ? s.question_qids.length : 0,
+      created_at: s.created_at
+    }));
+    return {
+      content: [{ type: "text", text: JSON.stringify(sets, null, 2) }],
+      structuredContent: { sets }
+    };
+  }
+});
+
+// src/lib/mcp/tools/assign-homework.ts
+import { defineTool as defineTool11 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z10 } from "npm:zod@^3.23.8";
+var assign_homework_default = defineTool11({
+  name: "assign_homework",
+  title: "Assign homework set to a student (admin)",
+  description: "Admin only. Assign an existing homework set to a student and notify them (bell + inbox + email). Creates a homework_assignments row and a Classroom feed item. Get the set id from list_homework_sets and the student id from list_students.",
+  inputSchema: {
+    set_id: z10.string().uuid().describe("homework_sets.id to assign."),
+    student_id: z10.string().uuid().describe("Target student's id (profiles.class_id / auth user id).")
+  },
+  annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
+  handler: async ({ set_id, student_id }, ctx) => {
+    try {
+      const supabase = authenticatedSupabase(ctx);
+      const idempotencyKey = `assign_homework_set-${set_id}-${student_id}`;
+      const { data, error } = await adminRpc(supabase, "mcp_assign_homework_set", {
+        p_set_id: set_id,
+        p_student_id: student_id,
+        p_idempotency_key: idempotencyKey,
+        p_notify: true
+      });
+      if (error) throw error;
+      let out = data;
+      if (out?.ok === true && out?.reused !== true && out?.already_assigned !== true && typeof out?.route === "string") {
+        const email = await sendNotifyEmail(supabase, {
+          studentId: student_id,
+          title: typeof out.title === "string" ? out.title : "New homework",
+          route: out.route,
+          assignmentType: "homework"
+        });
+        out = { ...out, email_ok: email.ok, ...email.error ? { email_error: email.error } : {} };
+      }
+      return {
+        content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+        structuredContent: out
+      };
+    } catch (error) {
+      return toolError(error);
+    }
+  }
+});
+
+// src/lib/mcp/tools/send-note.ts
+import { defineTool as defineTool12 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { z as z11 } from "npm:zod@^3.23.8";
+function textToHtml(text) {
+  const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return escaped.split(/\n{2,}/).map((para) => `<p>${para.replace(/\n/g, "<br>")}</p>`).join("");
+}
+var send_note_default = defineTool12({
+  name: "send_note",
+  title: "Send a classroom note to a student (admin)",
+  description: "Admin only. Post a plain-text note to a student's Classroom feed and notify them (bell + inbox + email). Line breaks are preserved. For rich HTML notes use post_classroom_note.",
+  inputSchema: {
+    student_id: z11.string().uuid().describe("Target student's id (profiles.class_id / auth user id)."),
+    title: z11.string().trim().min(1).max(160).describe("Short note title."),
+    body_markdown: z11.string().trim().min(1).max(2e4).describe("Note body (plain text; line breaks preserved).")
+  },
+  annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
+  handler: async ({ student_id, title, body_markdown }, ctx) => {
+    try {
+      const supabase = authenticatedSupabase(ctx);
+      const idempotencyKey = `send_note-${crypto.randomUUID()}`;
+      const { data, error } = await adminRpc(supabase, "mcp_post_classroom_note", {
+        p_student_id: student_id,
+        p_title: title,
+        p_content_html: textToHtml(body_markdown),
+        p_idempotency_key: idempotencyKey,
+        p_description: body_markdown.slice(0, 240),
+        p_notify: true
+      });
+      if (error) throw error;
+      let out = data;
+      if (out?.ok === true && typeof out?.route === "string") {
+        const email = await sendNotifyEmail(supabase, {
+          studentId: student_id,
+          title,
+          route: out.route,
+          description: body_markdown.slice(0, 240),
+          assignmentType: "note"
+        });
+        out = { ...out, email_ok: email.ok, ...email.error ? { email_error: email.error } : {} };
+      }
+      return {
+        content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+        structuredContent: out
+      };
+    } catch (error) {
+      return toolError(error);
+    }
+  }
+});
+
+// src/lib/mcp/index.ts
+var projectRef = "atrcqxpmqrynmtvvyjju";
+var mcp_default = defineMcp({
+  name: "lsat-u-mcp",
+  title: "LSAT U",
+  version: "0.3.0",
+  instructions: "Tools for LSAT U (Aspiring Attorneys). Students can read their own profile, homework, and classroom items. Admins can list and resolve students, inspect homework sets, assign standard or structured passage-map homework, publish Classroom notes, and verify assignment status. Always resolve the student first and use stable idempotency keys for structured writes.",
+  auth: auth.oauth.issuer({
+    issuer: `https://${projectRef}.supabase.co/auth/v1`,
+    acceptedAudiences: "authenticated"
+  }),
+  tools: [
+    echo_default,
+    get_my_profile_default,
+    list_my_homework_default,
+    list_my_classroom_items_default,
+    find_students_default,
+    post_classroom_note_default,
+    assign_passage_map_homework_default,
+    get_assignment_status_default,
+    list_students_default,
+    list_homework_sets_default,
+    assign_homework_default,
+    send_note_default
+  ]
+});
+
 // lovable-mcp-supabase-entry.ts
-import mcp from "npm:C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-drill-focus\\src\\lib\\mcp\\index.ts";
 import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.20.0/stacks/supabase";
-Deno.serve(createSupabaseHandler(mcp, { functionName: "mcp" }));
+Deno.serve(createSupabaseHandler(mcp_default, { functionName: "mcp" }));

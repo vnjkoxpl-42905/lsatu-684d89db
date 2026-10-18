@@ -109,6 +109,10 @@
 .dark .sw-experience .sw-active-task button.sw-primary { background:#c5dfd1; color:#173544!important; border-color:#c5dfd1; }
 .dark .sw-experience .sw-active-task button.sw-primary:disabled { background:#304950; color:#bfcdcb!important; border-color:#50636a; }
 .sw-group-card input:focus-visible { outline:none; }
+.sw-final-review .sw-finish-mark { float:left; width:32px; height:32px; margin:0 12px 14px 0; }
+.sw-final-review h3 { display:flex; align-items:center; min-height:32px; margin:0 0 16px; font-family:inherit; font-size:1.05rem; font-weight:600; line-height:1.5; }
+.sw-final-review .sw-answer-diagram { clear:both; }
+.sw-final-review details { margin-top:20px; }
 
 /* The complete phrases remain readable within two distinct diagram positions. */
 .sw-experience .sw-arrow-row { grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr); gap:14px; align-items:stretch; }

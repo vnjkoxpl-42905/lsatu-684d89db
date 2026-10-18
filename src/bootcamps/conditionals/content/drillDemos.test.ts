@@ -3,7 +3,7 @@ import { OPENING_COURSE_PATH } from '../openingCoursePath';
 import { drillDemos } from './drillDemos';
 import { getSourceWorksheetDrill } from './sourceWorksheetDrills';
 
-const stagesFor: Record<string, number> = { identify: 2, roles: 2, forward: 3, rephrase: 3, contrapositive: 7 };
+const stagesFor: Record<string, number> = { identify: 1, roles: 1, forward: 2, rephrase: 3, contrapositive: 6 };
 
 describe('drill instruction walkthroughs', () => {
   const drills = OPENING_COURSE_PATH.filter(step => step.type === 'drill');
