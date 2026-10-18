@@ -4,7 +4,7 @@ export function RcAdaptiveSummary({ summary }: { summary: RcAdaptiveSummaryData 
   if (summary.hiddenResults) return <section className="rc-card" aria-label="How Adaptive chooses passages">
     <h3>How Adaptive chooses passages</h3>
     <p>Some saved results are still hidden. Accuracy, sample details, and the target difficulty stay hidden until those results are revealed.</p>
-    <p>Adaptive keeps using your saved first-take history. A review correction is not a new first take.</p>
+    <p>While results remain hidden, Adaptive uses only disclosed first-take grades. If none are available, it uses the starting level. A review correction is not a new first take.</p>
   </section>;
   return <section className="rc-card" aria-label="How Adaptive chooses passages">
     <h3>How Adaptive chooses passages</h3>

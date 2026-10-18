@@ -19,7 +19,8 @@ describe('saved RC controls', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save RC recipe' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Reply lost');
     const firstId = m.save.mock.calls[0][3];
-    fireEvent.click(screen.getByRole('button', { name: 'Save RC recipe' }));
+    expect(screen.getByRole('button', { name: 'Save RC recipe' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Retry original RC save' }));
     await screen.findByText(/Saved to your account/);
     expect(m.save.mock.calls[1][3]).toBe(firstId);
   });
@@ -46,6 +47,19 @@ describe('saved RC controls', () => {
     mount(); fireEvent.click(await screen.findByRole('button', { name: 'Retry original RC save' }));
     await screen.findByText(/Saved to your account/);
     expect(m.save.mock.calls[1]).toEqual(['owner', 'Science practice', recipe, id]);
+  });
+
+  it('blocks rename and duplicate while recovering an unconfirmed original save', async () => {
+    m.save.mockRejectedValueOnce(new Error('Reply lost'));
+    const view = mount(); await screen.findByText('No saved RC sets or recipes yet.');
+    fireEvent.change(screen.getByRole('textbox', { name: 'Saved RC name' }), { target: { value: saved.name } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save RC recipe' }));
+    await screen.findByRole('alert'); view.unmount(); m.list.mockResolvedValue([saved]); mount();
+    const rename = await screen.findByRole('button', { name: 'Rename Science practice' });
+    expect(rename).toBeDisabled(); expect(screen.getByRole('button', { name: 'Duplicate Science practice' })).toBeDisabled();
+    fireEvent.click(rename); expect(screen.queryByRole('textbox', { name: 'New name for Science practice' })).toBeNull();
+    expect(m.rename).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: 'Retry original RC save' })).toBeEnabled();
   });
 
 });

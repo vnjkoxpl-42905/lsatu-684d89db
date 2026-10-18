@@ -5,7 +5,13 @@ import { rcReviewRecommendations } from '../lib/rcReviewRecommendations';
 import type { RcSessionItem } from '../lib/rcSession';
 import type { RcAttempt } from '../lib/rcTypes';
 
-export function RcReviewSuggestions({ actorId, sessionId, items, firstAttempts }: { actorId: string; sessionId: string; items: RcSessionItem[]; firstAttempts: ReadonlyMap<number, RcAttempt> }) {
+type RcReviewSuggestionsProps = { actorId: string; sessionId: string; items: RcSessionItem[]; firstAttempts: ReadonlyMap<number, RcAttempt> };
+
+export function RcReviewSuggestions(props: RcReviewSuggestionsProps) {
+  return <ActorRcReviewSuggestions key={`${props.actorId}:${props.sessionId}`} {...props} />;
+}
+
+function ActorRcReviewSuggestions({ actorId, sessionId, items, firstAttempts }: RcReviewSuggestionsProps) {
   const navigate = useNavigate();
   const [flagged, setFlagged] = React.useState(true); const [unanswered, setUnanswered] = React.useState(true);
   const [lowConfidence, setLowConfidence] = React.useState(false); const [timeThreshold, setTimeThreshold] = React.useState('');
@@ -19,7 +25,7 @@ export function RcReviewSuggestions({ actorId, sessionId, items, firstAttempts }
     return () => { current = false; };
   }, [actorId, sessionId, lowConfidence, revision]);
   const suggestions = rcReviewRecommendations(items, firstAttempts, learning, { flagged, unanswered, lowConfidence, timeThresholdMs: timeThreshold ? Number(timeThreshold) * 1000 : null });
-  return <details className="mx-auto max-w-7xl rounded border p-4" key={`${actorId}:${sessionId}`}>
+  return <details className="mx-auto max-w-7xl rounded border p-4">
     <summary className="min-h-11 cursor-pointer py-2 font-semibold">Review suggestions</summary>
     <p className="text-sm">Choose your own reasons to review. These suggestions use your flags, answers, recorded time and optional confidence, and do not reveal correctness.</p>
     <div className="my-3 flex flex-wrap gap-3">

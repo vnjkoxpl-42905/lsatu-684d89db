@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { RcSessionItem } from '../lib/rcSession';
@@ -31,5 +31,19 @@ describe('configurable RC review suggestions', () => {
     fireEvent.change(screen.getByLabelText('Recorded question time threshold'), { target: { value: '60' } });
     await waitFor(() => expect(screen.getByText(/No questions match/)).toBeInTheDocument());
     expect(api.get).not.toHaveBeenCalled();
+  });
+  it('resets confidence on an account change and ignores the old pending read', async () => {
+    let resolveOld!: (events: unknown[]) => void;
+    api.get.mockImplementationOnce(() => new Promise(resolve => { resolveOld = resolve; }));
+    const view = show(); fireEvent.click(screen.getByText('Review suggestions'));
+    fireEvent.click(screen.getByLabelText('Low confidence'));
+    view.rerender(<MemoryRouter><RcReviewSuggestions actorId="other-owner" sessionId="other-session" items={items} firstAttempts={answers} /></MemoryRouter>);
+    fireEvent.click(screen.getByText('Review suggestions'));
+    expect(screen.getByLabelText('Low confidence')).not.toBeChecked();
+    await act(async () => resolveOld([{ actorId: 'owner', sessionId: 'saved-session', passageId: 7, questionId: 1, kind: 'confidence', value: 'low', createdAt: '2026-10-17T00:00:00Z' }]));
+    expect(screen.queryByText(/Low confidence \(your report\)/)).toBeNull();
+    fireEvent.click(screen.getByLabelText('Low confidence'));
+    await waitFor(() => expect(api.get).toHaveBeenLastCalledWith('other-owner', 'other-session'));
+    expect(screen.queryByText(/Low confidence \(your report\)/)).toBeNull();
   });
 });

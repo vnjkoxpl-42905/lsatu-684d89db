@@ -17,13 +17,14 @@ interface Props {
   schemeClassName: string;
   responsive?: boolean;
   passageFocusKey?: string;
+  onPaneMode?: (mode: 'passage' | 'question' | 'shared') => void;
   /** Passage Only View: the passage takes the full width and reflows. */
   passageOnly: boolean;
   passage: React.ReactNode;
   question: React.ReactNode;
 }
 
-export function RcExamPane({ schemeClassName, passageOnly, passage, question, responsive = false, passageFocusKey = '' }: Props) {
+export function RcExamPane({ schemeClassName, passageOnly, passage, question, responsive = false, passageFocusKey = '', onPaneMode }: Props) {
   const container = React.useRef<HTMLDivElement>(null);
   const [compact, setCompact] = React.useState(() => typeof window !== 'undefined' && window.innerWidth < 900);
   const [focusedPane, setFocusedPane] = React.useState<'passage' | 'question'>('passage');
@@ -36,6 +37,7 @@ export function RcExamPane({ schemeClassName, passageOnly, passage, question, re
   }, [responsive]);
   React.useEffect(() => { if (passageFocusKey) setFocusedPane('passage'); }, [passageFocusKey]);
   const compactLayout = responsive && compact && !passageOnly;
+  React.useEffect(() => { onPaneMode?.(passageOnly ? 'passage' : compactLayout ? focusedPane : 'shared'); }, [passageOnly, compactLayout, focusedPane, onPaneMode]);
   return (
     <div ref={container} className={cn('rc-exam relative flex h-full min-h-0 flex-col', schemeClassName)}>
       {compactLayout && <div role="group" aria-label="Reader pane" className="flex gap-2 border-b bg-[var(--rc-bg)] p-2 text-[var(--rc-fg)]">

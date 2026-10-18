@@ -16,7 +16,8 @@ import { RcPassagePane } from '../components/RcPassagePane';
 import { RcQuestionPane } from '../components/RcQuestionPane';
 import { useRcPlayerExposure } from '../hooks/useRcPlayerExposure';
 import { useRcTraining } from '../hooks/useRcTraining';
-import { RcTrainingPanel, RcLearningStatus, RcParagraphTrainingControls } from '../components/RcTraining';
+import { useRcPaneObservation } from '../hooks/useRcPaneObservation';
+import { RcTrainingPanel, RcLearningStatus, RcParagraphTrainingControls, RcEvidenceNotes, RcPaneObservationControl } from '../components/RcTraining';
 import { RcPassageSummary } from '../components/RcPassageSummary';
 import {
   RcQuestionDetails,
@@ -524,6 +525,7 @@ function RcPlayerRunner() {
     enabled: studyAidsEnabled && ['manual', 'adaptive'].includes(config.source) && !loadingAnswers && !answerLoadError && sessionOwnerId === user?.id,
     canPredict });
   const trainingCommandRef = training.pendingRequest;
+  const paneObservation = useRcPaneObservation(`${user?.id ?? ''}:${sessionId ?? ''}:${item?.question.questionId ?? ''}`, training.enabled && !reviewOnly, state.paused);
   const playerExposure = useRcPlayerExposure(user?.id, sessionId, !!sessionId && sessionOwnerId === user?.id && !loadingAnswers && !answerLoadError);
   React.useEffect(() => {
     if (!reviewOnly || protectedReview || loadingAnswers || !sessionId || sessionOwnerId !== user?.id || pendingReviewRef.current) return;
@@ -837,7 +839,7 @@ function RcPlayerRunner() {
         }
       }
     },
-    [answerWriteGeneration, state, config, writeAttempt, loadingAnswers, answerLoadError, reviewOnly, sessionId, failAccountSave],
+    [trainingCommandRef, answerWriteGeneration, state, config, writeAttempt, loadingAnswers, answerLoadError, reviewOnly, sessionId, failAccountSave],
   );
 
   const handleSubmit = React.useCallback(async () => {
@@ -904,7 +906,7 @@ function RcPlayerRunner() {
         navigationInFlightRef.current = false;
       }
     }
-  }, [answerWriteGeneration, state, writeAttempt, sessionId, sessionOwnerId, navigate, returnTo, config.practiceTestRunId, failAccountSave, submitting]);
+  }, [trainingCommandRef, answerWriteGeneration, state, writeAttempt, sessionId, sessionOwnerId, navigate, returnTo, config.practiceTestRunId, failAccountSave, submitting]);
 
   const handleSaveExit = React.useCallback(async () => {
     if (trainingCommandRef.current) return;
@@ -968,7 +970,7 @@ function RcPlayerRunner() {
     } finally {
       if (answerWriteGenerationRef.current === answerWriteGeneration) navigationInFlightRef.current = false;
     }
-  }, [answerWriteGeneration, reviewOnly, navigate, exitPath, sessionId, sessionOwnerId, config, state, writeAttempt, failAccountSave]);
+  }, [trainingCommandRef, answerWriteGeneration, reviewOnly, navigate, exitPath, sessionId, sessionOwnerId, config, state, writeAttempt, failAccountSave]);
 
   const toggleFlag = React.useCallback(
     (questionId: number) => {
@@ -1415,6 +1417,7 @@ function RcPlayerRunner() {
           }}>{awaitingReattempt(questionId) ? 'Use latest saved review answer' : 'Answer again blind'}</button>
         </div>}
         <RcExamPane
+          onPaneMode={paneObservation.setPane}
           passageFocusKey={findQuery.trim().length >= 2 ? `${findQuery}:${findIndex}` : ''}
           responsive
           schemeClassName={a11y.className}
@@ -1424,7 +1427,7 @@ function RcPlayerRunner() {
               onContentShown={playerExposure.onShown}
               paragraphLimit={training.enabled && training.segmented ? training.paragraphLimit : undefined}
               onParagraphCount={training.setParagraphCount}
-              readingControls={<RcParagraphTrainingControls training={training} findActive={findQuery.trim().length >= 2} />}
+              readingControls={<><RcParagraphTrainingControls training={training} findActive={findQuery.trim().length >= 2} /><RcEvidenceNotes key={`${user?.id}:${sessionId}:${item.passage.passageId}:${questionId}`} training={training} source={item.passage.text} /></>}
               paragraphFocus={a11y.settings.paragraphFocus}
               annotationsDisabled={!highlights.loaded}
               passage={item.passage}
@@ -1467,7 +1470,7 @@ function RcPlayerRunner() {
             <RcQuestionPane
               actorId={user?.id}
               choicesHidden={training.choicesHidden}
-              trainingControls={<RcTrainingPanel training={training} questionId={questionId} canPredict={canPredict} allowReflection={revealed && !reattemptMode} />}
+              trainingControls={<><RcTrainingPanel training={training} questionId={questionId} canPredict={canPredict} allowReflection={revealed && !reattemptMode} />{!reviewOnly && <RcPaneObservationControl training={training} snapshot={paneObservation.snapshot} />}</>}
               annotationsDisabled={!highlights.loaded}
               item={item}
               selected={selected}

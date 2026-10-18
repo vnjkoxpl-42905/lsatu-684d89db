@@ -82,8 +82,8 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null;
     {!owner && <p>Sign in to save and reopen RC work.</p>}
     {owner && (recipe || fixed) && <div className="flex flex-wrap gap-2">
       <input aria-label="Saved RC name" maxLength={100} value={name} onChange={e => setName(e.target.value)} placeholder="Name this RC set or recipe" className="rounded border px-3 py-2" />
-      <button type="button" className="rc-chip" disabled={busy || !name.trim() || !fixed} onClick={() => fixed && void save(fixed, name)}>Save fixed RC set</button>
-      <button type="button" className="rc-chip" disabled={busy || !name.trim() || !recipe} onClick={() => recipe && void save(recipe, name)}>Save RC recipe</button>
+      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !fixed} onClick={() => fixed && void save(fixed, name)}>Save fixed RC set</button>
+      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !recipe} onClick={() => recipe && void save(recipe, name)}>Save RC recipe</button>
     </div>}
     {pendingVisible && <div role="status"><p>A previous RC save still needs account confirmation. Retry that original name and selection before saving another item.</p>
       <button type="button" className="rc-chip" disabled={busy} onClick={() => {
@@ -97,13 +97,13 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null;
     {notice && <p role="status">{notice}</p>}
     {!loading && !error && owner && rows.length === 0 && <p>No saved RC sets or recipes yet.</p>}
     <ul className="space-y-3">{rows.map(row => <li key={row.id} className="rounded border p-3">
-      <strong>{row.name}</strong><p className="text-sm">{row.payload ? row.payload.mode === 'fixed' ? `Fixed RC set · ${row.payload.passageIds.length} passages · ${row.payload.questionIds.length} questions` : `RC recipe · ${row.payload.count} passage${row.payload.count === 1 ? '' : 's'} requested` : row.problem}</p>
+      <strong>{row.name}</strong><p className="text-sm">{row.payload ? row.payload.mode === 'fixed' ? `Fixed RC set · ${row.payload.passageIds.length} passage${row.payload.passageIds.length === 1 ? '' : 's'} · ${row.payload.questionIds.length} question${row.payload.questionIds.length === 1 ? '' : 's'}` : `RC recipe · ${row.payload.count} passage${row.payload.count === 1 ? '' : 's'} requested` : row.problem}</p>
       <div className="flex flex-wrap gap-2">
         <button type="button" className="rc-chip" disabled={busy || !row.payload} onClick={() => void open(row.id)}>Open {row.name}</button>
-        <button type="button" className="rc-chip" disabled={busy || !row.payload} onClick={() => { setRenaming(row.id); setNewName(row.name); }}>Rename {row.name}</button>
-        <button type="button" className="rc-chip" disabled={busy || !row.payload} onClick={() => row.payload && void save(row.payload, `${row.name.slice(0, 93)} (copy)`)}>Duplicate {row.name}</button>
+        <button type="button" className="rc-chip" disabled={busy || pendingVisible || !row.payload} onClick={() => { if (pendingVisible) return; setRenaming(row.id); setNewName(row.name); }}>Rename {row.name}</button>
+        <button type="button" className="rc-chip" disabled={busy || pendingVisible || !row.payload} onClick={() => !pendingVisible && row.payload && void save(row.payload, `${row.name.slice(0, 93)} (copy)`)}>Duplicate {row.name}</button>
       </div>
-      {renaming === row.id && <div className="flex flex-wrap gap-2"><input aria-label={`New name for ${row.name}`} maxLength={100} value={newName} onChange={e => setNewName(e.target.value)} /><button type="button" className="rc-chip" disabled={busy || !newName.trim()} onClick={() => void perform(async () => { if (!owner) return; await renameRcSet(owner, row.id, newName); if (alive.current) { setRenaming(null); retry(); } })}>Save RC name</button><button type="button" className="rc-chip" onClick={() => setRenaming(null)}>Cancel rename</button></div>}
+      {renaming === row.id && <div className="flex flex-wrap gap-2"><input aria-label={`New name for ${row.name}`} maxLength={100} value={newName} onChange={e => setNewName(e.target.value)} /><button type="button" className="rc-chip" disabled={busy || pendingVisible || !newName.trim()} onClick={() => void perform(async () => { if (!owner || pendingVisible) return; await renameRcSet(owner, row.id, newName); if (alive.current) { setRenaming(null); retry(); } })}>Save RC name</button><button type="button" className="rc-chip" onClick={() => setRenaming(null)}>Cancel rename</button></div>}
     </li>)}</ul>
   </section>;
 }

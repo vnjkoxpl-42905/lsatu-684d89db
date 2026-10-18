@@ -25,6 +25,8 @@ export interface RcSelectionFilters {
   /** Empty means Adaptive: pick the target from the student's own accuracy. */
   difficulties: number[];
   status: RcStatusFilter;
+  /** Explicitly permit earlier exposure that LSAT U cannot establish. */
+  includeUnknownExposure?: boolean;
   preptestMin: number;
   preptestMax: number;
 }
@@ -200,8 +202,10 @@ export function matchesFilters(
     return false;
 
   switch (filters.status) {
+    case 'strict_no_exposure':
+      if (filters.includeUnknownExposure !== true || status.state !== 'not_attempted') return false;
+      break;
     case 'fresh':
-    case 'strict_no_exposure': // The caller additionally supplies the acknowledged exposure-filtered pool.
       if (status.state !== 'not_attempted') return false;
       break;
     case 'incorrect_before':

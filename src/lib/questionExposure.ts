@@ -16,7 +16,7 @@ function isMissingRelationError(err: unknown): boolean {
 export async function recordExposures(userId: string, qids: string[]): Promise<void> {
   if (!userId || qids.length === 0) return;
   const rows = qids.map((qid) => ({ user_id: userId, question_id: qid }));
-  const { error } = await (supabase as any).from("question_exposures").insert(rows);
+  const { error } = await supabase.from("question_exposures").insert(rows);
   if (error) {
     if (isMissingRelationError(error)) {
       console.warn("[questionExposure] question_exposures table not deployed yet; skipping insert");
@@ -33,7 +33,7 @@ export async function getRecentExposureSet(
   windowSize = 500,
 ): Promise<Set<string>> {
   if (!userId) return new Set();
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from("question_exposures")
     .select("question_id")
     .eq("user_id", userId)

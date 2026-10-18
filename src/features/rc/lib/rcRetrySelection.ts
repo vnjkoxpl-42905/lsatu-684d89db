@@ -5,7 +5,7 @@ import type { RcAttempt } from './rcTypes';
 export function rcRetryPassageIds(items: RcSessionItem[], firstAttempts: ReadonlyMap<number, RcAttempt>, includeSkipped: boolean): number[] {
   return [...new Set(items.filter(item => {
     const attempt = firstAttempts.get(item.question.questionId);
-    return attempt?.isCorrect === false || includeSkipped && !attempt?.selected;
+    return !!attempt?.selected && attempt.isCorrect === false || includeSkipped && !attempt?.selected;
   }).map(item => item.passage.passageId))];
 }
 

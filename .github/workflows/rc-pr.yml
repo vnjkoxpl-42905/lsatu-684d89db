@@ -16,6 +16,10 @@ on:
       - 'src/lib/timed*/**'
       - 'src/lib/practiceTest*'
       - 'src/lib/drill*'
+      - 'src/lib/savedSets*'
+      - 'src/lib/questionExposure*'
+      - 'src/pages/SavedSets*'
+      - 'src/components/drill/official/OfficialDrillToolbar*'
       - 'src/contexts/AuthContext*'
       - 'src/lib/standaloneDrillHistory*'
       - 'src/pages/AcademyMainhub*'
@@ -54,5 +58,5 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - name: Test RC and its shared runners
-        run: npx vitest run src/features/rc src/components/timed src/components/testing src/lib/timedSection src/lib/standaloneDrillHistory.test.ts src/components/drill/SectionSelector.test.tsx src/pages/AcademyMainhub src/components/questionfinder src/pages/Inbox.test.tsx src/components/inbox src/lib/inboxQuestionContext.test.ts
+        run: npx vitest run src/features/rc src/components/timed src/components/testing src/lib/timedSection src/lib/standaloneDrillHistory.test.ts src/components/drill/SectionSelector.test.tsx src/components/drill/official/OfficialDrillToolbar.test.tsx src/pages/AcademyMainhub src/components/questionfinder src/pages/Inbox.test.tsx src/components/inbox src/lib/inboxQuestionContext.test.ts src/lib/savedSets.rcIsolation.test.ts src/lib/drillLaunchResolve.test.ts src/pages/SavedSets.inspect.test.tsx
       - run: npm run build

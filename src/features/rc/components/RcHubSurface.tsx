@@ -179,6 +179,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   const [handPickOpen, setHandPickOpen] = React.useState(false);
   const [handPicked, setHandPicked] = React.useState<number[]>([]);
   const [search, setSearch] = React.useState('');
+  const [pickerSort, setPickerSort] = React.useState<'address' | 'difficulty' | 'title'>('address');
+  const [timingDefaultNotice, setTimingDefaultNotice] = React.useState<string | null>(null);
   const [starting, setStarting] = React.useState(false);
   const [autoStart, setAutoStart] = React.useState(false);
   const [inspecting, setInspecting] = React.useState(false);
@@ -284,10 +286,13 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   // params from an already-mounted /rc does not remount this route, so a plain
   // "have I run yet" ref would ignore the second link.
   const appliedFor = React.useRef<string | null>(null);
+  const localTimingReadFailed = React.useRef(false);
   React.useEffect(() => {
     const key = params.toString();
     if (appliedFor.current === key) return;
     appliedFor.current = key;
+    localTimingReadFailed.current = false;
+    setTimingDefaultNotice(null);
     setNotice(null);
 
     const revealParam = params.get('reveal');
@@ -313,6 +318,23 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       setCustomText(mmss(Math.round(secondsParam)));
     } else {
       setTiming(timingParam === 'standard' ? 'standard' : 'untimed');
+      const explicit = ['timing', 'secondsPerPassage', 'saved', 'assignment', 'assignmentId', 'ptRun', 'ptLeg', 'timedSection'].some(name => params.has(name));
+      if (!explicit && actorId) {
+        try {
+          const stored = localStorage.getItem(`lsatu:rc-timing-default:v1:${actorId}`);
+          if (stored) {
+            const preference = JSON.parse(stored) as { mode?: unknown; seconds?: unknown };
+            if (!['untimed', 'standard', 'custom'].includes(String(preference.mode)) || !Number.isSafeInteger(preference.seconds) || Number(preference.seconds) < 60 || Number(preference.seconds) > 3600) throw new Error('invalid preference');
+            setTiming(preference.mode as 'untimed' | 'standard' | 'custom');
+            if (preference.mode === 'custom') { setCustomSeconds(Number(preference.seconds)); setCustomText(mmss(Number(preference.seconds))); }
+            setTimingDefaultNotice('Your timing default was loaded from this device. Changes below apply to this drill unless you save a new default.');
+          }
+        } catch {
+          localTimingReadFailed.current = true;
+          setAutoStart(false);
+          setTimingDefaultNotice('Your timing default could not be read on this device. Choose timing for this drill before starting.');
+        }
+      }
     }
 
     // The quick-build tile on the drill home sends a passage count and asks the
@@ -321,8 +343,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     if (Number.isFinite(countParam) && countParam >= 1) {
       setCount(Math.min(8, Math.round(countParam)));
     }
-    setAutoStart(params.get('start') === '1');
-  }, [params]);
+    setAutoStart(params.get('start') === '1' && !(localTimingReadFailed.current));
+  }, [params, actorId]);
 
   // Apply URL settings before the passage index loads so a later index reply
   // cannot reset reveal/timing choices the student already made. Only linked
@@ -373,9 +395,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   );
 
   const correctnessFilterBlocked = hiddenResults && (filters.status === 'incorrect_before' || filters.status === 'incorrect_last');
+  // Selected difficulty is itself observable. Hidden grades must not steer it.
+  const selectionHistory = hiddenResults ? displayHistory : history;
   const selectionPool = React.useMemo(() => correctnessFilterBlocked ? [] : filters.status === 'strict_no_exposure'
-    ? exposureStatus === 'ready' ? passages.filter(passage => !exposures.has(passage.passageId)) : [] : passages,
-  [correctnessFilterBlocked, filters.status, exposureStatus, passages, exposures]);
+    ? exposureStatus === 'ready' && filters.includeUnknownExposure === true ? passages.filter(passage => !exposures.has(passage.passageId)) : [] : passages,
+  [correctnessFilterBlocked, filters.status, filters.includeUnknownExposure, exposureStatus, passages, exposures]);
 
   const preview = React.useMemo(
     () =>
@@ -383,11 +407,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         pool: selectionPool,
         questionIdsByPassage,
         filters,
-        history,
+        history: selectionHistory,
         count,
         seed: 1,
       }),
-    [selectionPool, questionIdsByPassage, filters, history, count],
+    [selectionPool, questionIdsByPassage, filters, selectionHistory, count],
   );
 
   const drillablePassages = passages.filter((p) => p.questionCount > 0);
@@ -405,7 +429,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
      launches wait for both eligibility inputs and a custom pace that parses. */
   const savedQuery = params.has('saved') ? params.toString() : null;
   const builderReady = indexStatus === 'ready' && historyStatus === 'ready'
-    && !correctnessFilterBlocked && (filters.status !== 'strict_no_exposure' || exposureStatus === 'ready')
+    && !correctnessFilterBlocked && (filters.status !== 'strict_no_exposure' || exposureStatus === 'ready' && filters.includeUnknownExposure === true)
     && selectionQuery === params.toString() && !customInvalid && (savedQuery === null || restoredSavedQuery === savedQuery);
 
   const ptRun = params.get('ptRun');
@@ -487,7 +511,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
             pool: selectionPool,
             questionIdsByPassage,
             filters,
-            history,
+            history: selectionHistory,
             count,
             seed: Date.now() % 2147483647,
           }).selected.map((p) => p.passageId);
@@ -568,10 +592,19 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         return;
       }
       if (!actorId || !mounted.current) throw new Error('You need to be signed in to drill.');
+      let launchExposures: Set<number> | null = null;
+      if (!uncertainStart.current) {
+        try { launchExposures = await getRcExposureHistory(actorId); }
+        catch { if (filters.status === 'strict_no_exposure') throw new Error('Recorded exposure could not be checked. Retry before starting this exposure-filtered drill.'); }
+        if (!mounted.current || inspected!.key !== selectionKeyRef.current) throw new Error('Your settings changed. Preview the drill again before starting.');
+        if (filters.status === 'strict_no_exposure' && chosen.some(id => launchExposures?.has(id))) {
+          throw new Error('A selected passage now has recorded exposure, including any text you revealed in Preview. Choose another status or inspect a different selection before starting.');
+        }
+      }
       // An unresolved save owns its immutable UUID and settings, even if the
       // student edits or inspects another set while reconnecting.
       const request = uncertainStart.current ?? {
-        id: crypto.randomUUID(), actorId, ids: [...chosen], config: structuredClone(config),
+        id: crypto.randomUUID(), actorId, ids: [...chosen], config: { ...structuredClone(config), passageExposureAtStart: Object.fromEntries(chosen.map(id => [String(id), launchExposures === null ? 'unknown' as const : launchExposures.has(id) ? 'recorded-exposure' as const : 'no-recorded-exposure' as const])) },
         back: safeReturnTo(params.get('returnTo')), replace: replace || undefined,
       };
       uncertainStart.current = request;
@@ -685,13 +718,17 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     if (search.trim() && !searchable.toLowerCase().includes(search.trim().toLowerCase()))
       return false;
     return matches(p);
+  }).sort((a, b) => {
+    const address = () => a.preptest - b.preptest || a.section - b.section || a.setNumber - b.setNumber || a.passageId - b.passageId;
+    return pickerSort === 'difficulty' ? (a.difficulty ?? 99) - (b.difficulty ?? 99) || address()
+      : pickerSort === 'title' ? (a.title ?? '').localeCompare(b.title ?? '') || address() : address();
   });
 
   // A new search or filter starts the list from the top again. Selections live
   // in `handPicked`, so they are unaffected by how many rows are showing.
   React.useEffect(() => {
     setPickerLimit(RC_PICKER_PAGE);
-  }, [search, filters]);
+  }, [search, filters, pickerSort]);
 
   function matches(p: RcIndexPassageWithPt) {
     if (correctnessFilterBlocked) return false;
@@ -709,6 +746,27 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     if (filters.status === 'incorrect_last' && !status.lastFirstTakeIncorrect) return false;
     return true;
   }
+
+  const configurePreset = (wholeSection: boolean) => {
+    setAutoStart(false); setCount(wholeSection ? 4 : 1); setReveal(wholeSection ? 'end_of_set' : 'per_passage');
+    setTiming(wholeSection ? 'standard' : 'untimed'); setHandPicked([]); setHandPickOpen(false); setSavedSnapshot(null); setSelectedSet(null);
+    setNotice(wholeSection ? 'Four passages at standard pace, with answers after the set. Preview before starting.' : 'One untimed passage, with feedback after the passage. Preview before starting.');
+  };
+  const saveTimingDefault = () => {
+    if (!actorId || customInvalid) return;
+    try {
+      const key = `lsatu:rc-timing-default:v1:${actorId}`;
+      const value = JSON.stringify({ mode: timing, seconds: timing === 'custom' ? customSeconds : RC_STANDARD_SECONDS_PER_PASSAGE });
+      localStorage.setItem(key, value);
+      if (localStorage.getItem(key) !== value) throw new Error('not acknowledged');
+      setTimingDefaultNotice('Timing default saved for this account on this device. Links and saved sets can override it.');
+    } catch { setTimingDefaultNotice('Your timing default did not save on this device. This drill keeps the timing you chose.'); }
+  };
+  const moveSelected = (index: number, direction: -1 | 1) => setHandPicked(previous => {
+    const target = index + direction;
+    if (target < 0 || target >= previous.length) return previous;
+    const next = [...previous]; [next[index], next[target]] = [next[target], next[index]]; return next;
+  });
 
   const pickedQuestionCount = handPicked.reduce(
     (n, id) => n + (passages.find((p) => p.passageId === id)?.questionCount ?? 0),
@@ -795,6 +853,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       {notice && <p className="rc-page-sub" role="status">{notice}</p>}
       {exposureStatus !== 'ready' && <div className="rc-field-hint" role="status">{exposureStatus === 'loading' ? 'Checking recorded exposure…' : <>Recorded exposure could not be checked. Exposure is unknown; No recorded exposure is unavailable. <button type="button" className="rc-chip" onClick={() => retryLoad()}>Retry recorded exposure</button></>}</div>}
       <p className="rc-field-hint">Not attempted checks saved answer history. No recorded exposure also checks text reveals recorded by LSAT U. Earlier previews were not tracked, so it cannot prove you have never seen a passage.</p>
+      {filters.status === 'strict_no_exposure' && <div className="rc-builder-alert">
+        <p>{handPickRows.length} matching passages have no recorded exposure. Earlier exposure is unknown because past previews were not tracked. None is certified never seen.</p>
+        <label><input type="checkbox" checked={filters.includeUnknownExposure === true} disabled={exposureStatus !== 'ready'} onChange={event => setFilters(previous => ({ ...previous, includeUnknownExposure: event.target.checked }))} /> Include passages whose earlier exposure is unknown</label>
+        {filters.includeUnknownExposure !== true && <p>Choose whether to include these passages before previewing or starting.</p>}
+      </div>}
       {correctnessFilterBlocked && <p className="rc-field-hint" role="status">Reveal your saved results or choose another status before filtering by correctness.</p>}
       {historyStatus === 'ready' && <RcAdaptiveSummary summary={buildRcAdaptiveSummary({ history, displayHistory, hasHiddenGradedResults: hiddenResults })} />}
       {!starting && recoveryPending && <div className="rc-builder-alert" role="status">
@@ -809,6 +872,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
             as a nesting mistake. */}
         {!embedded && <h2>Build a drill</h2>}
 
+        <div className="rc-actions" aria-label="RC practice presets">
+          <button type="button" className="rc-chip" onClick={() => configurePreset(false)}>One passage with feedback</button>
+          <button type="button" className="rc-chip" onClick={() => configurePreset(true)}>Four passages, then review</button>
+        </div>
         <div className="rc-builder-settings">
           <div className="rc-field rc-builder-count">
             <div className="rc-field-label" id="rc-passage-count-label">Passages</div>
@@ -840,6 +907,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
 
           <div className="rc-field">
             <div className="rc-field-label">Timing</div>
+            <button type="button" className="rc-chip" disabled={!actorId || customInvalid} onClick={saveTimingDefault}>Save timing default on this device</button>
+            {timingDefaultNotice && <p className="rc-field-hint" role="status">{timingDefaultNotice}</p>}
             <div className="rc-segmented">
               <button
                 type="button"
@@ -957,6 +1026,13 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </div>
         </div>
 
+        <div className="rc-chip-row" aria-label="Applied passage filters">
+          {(['topics', 'formats', 'frameworks', 'families'] as const).flatMap(group => filters[group].map(value => <button type="button" className="rc-chip rc-active" key={`${group}:${value}`} aria-label={`Remove ${group} filter: ${value}`} onClick={() => setFilters(previous => ({ ...previous, [group]: previous[group].filter(item => item !== value) }))}>{value} ×</button>))}
+          {filters.difficulties.map(value => <button type="button" className="rc-chip rc-active" key={`difficulty:${value}`} aria-label={`Remove difficulty filter: ${value}`} onClick={() => setFilters(previous => ({ ...previous, difficulties: previous.difficulties.filter(item => item !== value) }))}>Difficulty {value} ×</button>)}
+          {filters.status !== 'any' && <button type="button" className="rc-chip rc-active" aria-label="Remove status filter" onClick={() => setFilters(previous => ({ ...previous, status: 'any' }))}>{STATUS_OPTIONS.find(option => option.id === filters.status)?.label} ×</button>}
+          {(filters.preptestMin !== RC_PREPTEST_MIN || filters.preptestMax !== RC_PREPTEST_MAX) && <button type="button" className="rc-chip rc-active" aria-label="Remove PrepTest range filter" onClick={() => setFilters(previous => ({ ...previous, preptestMin: RC_PREPTEST_MIN, preptestMax: RC_PREPTEST_MAX }))}>PT {filters.preptestMin}–{filters.preptestMax} ×</button>}
+          <button type="button" className="rc-chip" onClick={() => setFilters({ ...DEFAULT_FILTERS, status: 'any', preptestMax: RC_PREPTEST_MAX })}>Clear passage filters</button>
+        </div>
         {customizeOpen && (
           <div className="rc-field rc-builder-filters" id="rc-passage-filters">
             <FilterGroup label="Topic" values={[...RC_TOPICS]} active={filters.topics} onToggle={(v) => toggle('topics', v)} />
@@ -1040,18 +1116,19 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         {handPickOpen && (
           <section className="rc-passage-picker" aria-label="Choose your passages">
             <label className="rc-field-label" htmlFor="rc-passage-search">Find a passage</label>
+            <label className="rc-field-label">Sort passages <select aria-label="Sort passages" value={pickerSort} onChange={event => setPickerSort(event.target.value as typeof pickerSort)}><option value="address">PrepTest and passage</option><option value="difficulty">Difficulty</option><option value="title">Title</option></select></label>
             <input id="rc-passage-search" type="search" className="rc-segment rc-passage-search"
               placeholder="Search title, opening words or PrepTest" value={search}
               onChange={(e) => setSearch(e.target.value)} />
             {handPicked.length > 0 && (
               <div className="rc-picked-passages" aria-label="Selected passages">
-                {handPicked.map(id => {
+                {handPicked.map((id, index) => {
                   const p = passages.find(passage => passage.passageId === id);
-                  return <button key={id} type="button" className="rc-chip rc-active"
+                  return <span key={id} className="inline-flex gap-1"><button type="button" className="rc-chip rc-active"
                     aria-label={`Remove ${p?.title || `passage ${id}`}`}
                     onClick={() => setHandPicked(prev => prev.filter(value => value !== id))}>
                     {p?.title || `Passage ${id}`} <span aria-hidden="true">×</span>
-                  </button>;
+                  </button><button type="button" className="rc-chip" aria-label={`Move ${p?.title || `passage ${id}`} earlier`} disabled={index === 0} onClick={() => moveSelected(index, -1)}>↑</button><button type="button" className="rc-chip" aria-label={`Move ${p?.title || `passage ${id}`} later`} disabled={index === handPicked.length - 1} onClick={() => moveSelected(index, 1)}>↓</button></span>;
                 })}
                 <button type="button" className="rc-chip" onClick={() => setHandPicked([])}>Clear selection</button>
               </div>

@@ -2,6 +2,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import RcPlayer from '../../src/features/rc/pages/RcPlayer';
 import { allowFixtureLearningSave } from './mockLearning';
 import { allowFixtureAnswerSave } from './mockProgress';
+import { trainingFixtureSessionId } from './fixtureIdentity';
 
 /** The fixture's Vite aliases replace every account writer with synthetic data. */
 export function ReviewFixture() {
@@ -18,7 +19,7 @@ export function TrainingFixture() {
   return <><div className="border-b bg-amber-50 p-2 text-slate-900">Synthetic ordinary practice. No live account writes.
     <button className="ml-2 underline" onClick={allowFixtureAnswerSave}>Allow fixture answer save</button>
     <button className="ml-2 underline" onClick={allowFixtureLearningSave}>Allow fixture learning save</button>
-  </div><MemoryRouter initialEntries={['/rc/drill?sessionId=fixture-session']}><Routes>
+  </div><MemoryRouter initialEntries={[`/rc/drill?sessionId=${encodeURIComponent(trainingFixtureSessionId)}`]}><Routes>
     <Route path="/rc/drill" element={<RcPlayer />} />
     <Route path="*" element={<p>Synthetic training exited. No student work was changed.</p>} />
   </Routes></MemoryRouter></>;

@@ -168,6 +168,16 @@ it('preserves exposure and completed state while withholding unrevealed correctn
   expect((await getQuestionHistory(owner, { correctness: 'released-only' })).get(7)?.firstTakeCorrect).toBe(false);
 });
 
+it('keeps the earliest first take within a sitting while a different later sitting still updates recent performance', async () => {
+  historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', excluded_from_analytics: false },
+    { id: 'later-sitting', user_id: owner, status: 'completed', excluded_from_analytics: false }];
+  const original = { id: 'original', user_id: owner, session_id: sessionId, question_id: 7, selected: 'B', is_correct: false, is_first_attempt: true, created_at: '2026-10-17T10:00:00Z' };
+  historyStore.attempts = [original, { ...original, id: 'duplicate-first', selected: 'C', is_correct: true, created_at: '2026-10-17T10:01:00Z' }];
+  expect((await getQuestionHistory(owner)).get(7)).toMatchObject({ attempts: 1, firstEverCorrect: false, firstTakeCorrect: false, incorrectCount: 1 });
+  historyStore.attempts.push({ ...original, id: 'later-first', session_id: 'later-sitting', selected: 'C', is_correct: true, created_at: '2026-10-17T11:00:00Z' });
+  expect((await getQuestionHistory(owner)).get(7)).toMatchObject({ attempts: 2, firstEverCorrect: false, firstTakeCorrect: true, incorrectCount: 1, lastGradedAt: '2026-10-17T11:00:00Z' });
+});
+
 it('retries a concurrent config change without overwriting acknowledged learning metadata', async () => {
   const original = update.getMockImplementation()!;
   update.mockImplementationOnce(() => ({ eq() { return this; }, select() { return this; }, async maybeSingle() {
@@ -668,6 +678,7 @@ it('pages past 1,000 rows and orders deterministically by created_at asc then id
     },
   ];
   const sharedTimestamp = '2026-10-05T12:00:00Z';
+  historyStore.sessions.push({ ...historyStore.sessions[0], id: 'session-bulk-retake' });
   const rows: Record<string, unknown>[] = [];
   // Insert 2,500 rows with identical created_at. Question 9999 appears on the first and last id.
   for (let i = 2499; i >= 0; i--) {
@@ -675,7 +686,7 @@ it('pages past 1,000 rows and orders deterministically by created_at asc then id
     const isTrackedQuestion = i === 0 || i === 2499;
     rows.push({
       id,
-      session_id: 'session-bulk',
+      session_id: i === 2499 ? 'session-bulk-retake' : 'session-bulk',
       user_id: owner,
       question_id: isTrackedQuestion ? 9999 : 1000 + i,
       passage_id: 30,

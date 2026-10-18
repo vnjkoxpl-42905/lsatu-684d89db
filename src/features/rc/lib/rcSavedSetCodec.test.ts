@@ -25,4 +25,10 @@ describe('RC saved definition codec', () => {
     expect(decodeRcSavedSet({ ...recipe, filters: { ...recipe.filters, preptestMin: 149, preptestMax: 148 } }).status).toBe('invalid');
     expect(decodeRcSavedSet({ ...recipe, config: { reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 0 } } }).status).toBe('invalid');
   });
+  it('preserves explicit unknown-exposure inclusion and rejects malformed permission', () => {
+    const value = { ...recipe, filters: { ...recipe.filters, status: 'strict_no_exposure', includeUnknownExposure: true } };
+    expect(decodeRcSavedSet(value)).toEqual({ status: 'ok', value });
+    expect(decodeRcSavedSet({ ...value, filters: { ...value.filters, includeUnknownExposure: 'yes' } }).status).toBe('invalid');
+  });
+
 });

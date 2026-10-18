@@ -16,9 +16,16 @@ function map(row: Row, owner: string): RcSavedDefinition {
 }
 export async function listRcSavedSets(owner: string): Promise<RcSavedDefinition[]> {
   await actor(owner);
-  const { data, error } = await supabase.from('user_saved_sets').select('*').eq('user_id', owner).eq('filter_state->>kind', 'rc-builder').order('created_at', { ascending: false });
-  if (error) throw new Error('Your saved RC sets could not be loaded. Try again.');
-  await actor(owner); return (data ?? []).map(row => map(row, owner));
+  const rows = new Map<string, RcSavedDefinition>();
+  for (let offset = 0; ; offset += 1000) {
+    const { data, error } = await supabase.from('user_saved_sets').select('*').eq('user_id', owner).eq('filter_state->>kind', 'rc-builder')
+      .order('created_at', { ascending: false }).order('id', { ascending: false }).range(offset, offset + 999);
+    if (error) throw new Error('Your saved RC sets could not be loaded. Try again.');
+    await actor(owner);
+    for (const row of data ?? []) { const saved = map(row, owner); if (!rows.has(saved.id)) rows.set(saved.id, saved); }
+    if ((data?.length ?? 0) < 1000) break;
+  }
+  return [...rows.values()];
 }
 export async function getRcSavedSet(owner: string, id: string): Promise<RcSavedDefinition> {
   await actor(owner);

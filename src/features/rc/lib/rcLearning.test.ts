@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-const store = vi.hoisted(() => ({ actor: 'owner', row: {} as Record<string, any>, race: false, lost: false, switchActor: false, updates: 0, tables: [] as string[] }));
+interface FixtureConfig { source: string; clockElapsedSeconds?: number; learningRecords?: unknown[]; timedSectionSittingId?: string; [key: string]: unknown }
+interface FixtureRow { id: string; user_id: string; status: string; passage_ids: number[]; config: FixtureConfig }
+const store = vi.hoisted(() => ({ actor: 'owner', row: {} as FixtureRow, race: false, lost: false, switchActor: false, updates: 0, tables: [] as string[] }));
 vi.mock('../api/rcSupabase.types', () => ({ RC_SESSIONS_TABLE: 'rc_drill_sessions', rcDb: {
   auth: { getUser: async () => ({ data: { user: { id: store.actor } } }) },
   from: (table: string) => {
-    store.tables.push(table); let payload: Record<string, any> | null = null; const filters: Record<string, unknown> = {};
-    const query = { select: () => query, update: (next: Record<string, any>) => { payload = next; return query; }, eq: (field: string, value: unknown) => { filters[field] = value; return query; },
+    store.tables.push(table); let payload: { config: FixtureConfig } | null = null; const filters: Record<string, unknown> = {};
+    const query = { select: () => query, update: (next: { config: FixtureConfig }) => { payload = next; return query; }, eq: (field: string, value: unknown) => { filters[field] = value; return query; },
       maybeSingle: async () => {
         if (!payload) { const copy = JSON.parse(JSON.stringify(store.row)); if (store.switchActor) store.actor = 'other'; return { data: copy, error: null }; }
         store.updates++;
@@ -17,8 +19,9 @@ vi.mock('../api/rcSupabase.types', () => ({ RC_SESSIONS_TABLE: 'rc_drill_session
     }; return query;
   },
 } }));
-vi.mock('./rcBank', () => ({ loadPassage: async () => ({ passageId: 7, questions: [{ questionId: 10 }] }) }));
+vi.mock('./rcBank', () => ({ loadPassage: async () => ({ passageId: 7, text: 'Original evidence text.', questions: [{ questionId: 10 }] }) }));
 import { createRcLearningEvent, getRcLearningEvents, readRcLearningEvent, recordRcLearningEvent } from './rcLearning';
+import { rcEvidenceFingerprint } from './rcEvidenceFingerprint';
 beforeEach(() => { store.actor = 'owner'; store.row = { id: 'session', user_id: 'owner', status: 'in_progress', passage_ids: [7], config: { source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' }, draftAnswers: [{ questionId: 10, selected: 'B' }], clockElapsedSeconds: 12 } }; store.race = false; store.lost = false; store.switchActor = false; store.updates = 0; store.tables = []; });
 const request = () => createRcLearningEvent('owner', 'session', 7, 10, 'prediction', 'The answer should describe the disagreement.');
 describe('separate RC learning records', () => {
@@ -52,5 +55,20 @@ describe('separate RC learning records', () => {
   it('reads only this actor and session learning events', async () => {
     const event = request(); store.row.config.learningRecords = [event, { ...event, actorId: 'other', id: crypto.randomUUID() }, { ...event, sessionId: 'other', id: crypto.randomUUID() }];
     expect(await getRcLearningEvents('owner', 'session')).toEqual([event]);
+  });
+  it('validates evidence coordinates against unchanged source before writing', async () => {
+    const evidence = { target: 'passage', sourceAlgorithm: 'sha256', sourceFingerprint: await rcEvidenceFingerprint('Original evidence text.'), start: 9, end: 17, quote: 'evidence', note: 'This supports the claim.' };
+    const event = createRcLearningEvent('owner', 'session', 7, 10, 'evidence-note', JSON.stringify(evidence));
+    await recordRcLearningEvent(event);
+    expect(store.row.config.learningRecords).toEqual([event]);
+    await expect(recordRcLearningEvent({ ...event, id: crypto.randomUUID(), value: JSON.stringify({ ...evidence, start: 0, end: 8 }) })).rejects.toThrow('original passage');
+    await expect(recordRcLearningEvent({ ...event, id: crypto.randomUUID(), value: JSON.stringify({ ...evidence, sourceFingerprint: '0'.repeat(64) }) })).rejects.toThrow('original passage');
+    expect(store.updates).toBe(1);
+  });
+  it('rejects inferred or malformed pane observations', () => {
+    const event = request();
+    expect(readRcLearningEvent({ ...event, kind: 'pane-observation', value: JSON.stringify({ passageMs: 10, questionMs: 20, sharedMs: 30 }) })).not.toBeNull();
+    expect(readRcLearningEvent({ ...event, kind: 'pane-observation', value: JSON.stringify({ passageMs: -1, questionMs: 20, sharedMs: 30 }) })).toBeNull();
+    expect(readRcLearningEvent({ ...event, kind: 'evidence-note', value: JSON.stringify({ start: 0, end: 8, quote: 'wrong', note: 'A note' }) })).toBeNull();
   });
 });

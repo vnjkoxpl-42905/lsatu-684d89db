@@ -568,6 +568,7 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
 
   const history: RcQuestionHistory = new Map();
   const hiddenQuestions = new Set<number>();
+  const firstTakeSessions = new Set<string>();
   for (const row of validAttemptRows) {
     const session = row.session_id ? sessionsById.get(row.session_id) : undefined;
     if (row.session_id && !session) continue;
@@ -580,6 +581,14 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
       sessionStatus !== 'abandoned'
     ) {
       continue;
+    }
+
+    // Historical races could insert multiple rows marked first for one sitting.
+    // The earliest row is the immutable original, including an original skip.
+    if (row.is_first_attempt !== false && row.session_id) {
+      const firstTakeKey = `${row.session_id}:${row.question_id}`;
+      if (firstTakeSessions.has(firstTakeKey)) continue;
+      firstTakeSessions.add(firstTakeKey);
     }
 
     const existing: RcQuestionHistoryEntry = history.get(row.question_id) ?? {

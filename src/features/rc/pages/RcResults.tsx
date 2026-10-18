@@ -674,7 +674,13 @@ export default function RcResults() {
         >
           Drill your misses
         </Button>
-        {!protectedSection && <p className="text-sm text-muted-foreground">A new drill includes each passage with a missed question.</p>}
+        {!protectedSection && <div className="w-full text-sm text-muted-foreground">
+          <label className="flex min-h-11 items-center gap-2">
+            <input type="checkbox" checked={includeSkipped} disabled={actionBusy} onChange={event => setIncludeSkipped(event.target.checked)} />
+            Include unanswered questions
+          </label>
+          <p>A new drill includes every question in each selected passage. {includeSkipped ? 'Passages with unanswered questions are included.' : 'Only passages with an incorrect answered question are included.'}</p>
+        </div>}
         </>}
         <Button variant="outline" onClick={() => navigate('/rc')}>
           New drill
@@ -683,11 +689,11 @@ export default function RcResults() {
           variant={excluded ? 'secondary' : 'ghost'}
           disabled={actionBusy || protectedSection}
           title={protectedSection ? 'Protected section records retain their saved analytics status.' : undefined}
-          aria-pressed={excluded}
           onClick={toggleExcluded}
         >
           {excluded ? 'Include in analytics' : 'Exclude from analytics'}
         </Button>
+        {!protectedSection && <p className="w-full text-sm text-muted-foreground" role="status">{excluded ? 'This sitting is excluded from analytics.' : 'This sitting is included in analytics.'}</p>}
         {protectedSection && <p className="w-full text-sm text-muted-foreground">This protected section retains its saved analytics status. Section elapsed time comes from the account clock; question averages use recorded question time.</p>}
       </div>
     </div>

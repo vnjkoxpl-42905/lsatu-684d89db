@@ -1,9 +1,11 @@
 import { attempts, session } from './data';
+import { fixtureRun, trainingFixtureSessionId } from './fixtureIdentity';
 const training = new URLSearchParams(location.search).get('fixture') === 'training';
-const attemptKey = training ? 'rc-fixture-training-attempts' : 'rc-fixture-review-attempts';
-const sessionKey = new URLSearchParams(location.search).get('fixture') === 'review' ? 'rc-fixture-review-session' : training ? 'rc-fixture-training-session' : 'rc-fixture-session';
+const attemptKey = training ? `rc-fixture-training-attempts:${fixtureRun}` : 'rc-fixture-review-attempts';
+const sessionKey = new URLSearchParams(location.search).get('fixture') === 'review' ? 'rc-fixture-review-session' : training ? `rc-fixture-training-session:${fixtureRun}` : 'rc-fixture-session';
+const initial = () => structuredClone(training ? { ...session, id: trainingFixtureSessionId, status: 'in_progress', completedAt: null } : session);
 const read = () => {
-  try { return JSON.parse(localStorage.getItem(sessionKey) || 'null') ?? (training ? { ...session, status: 'in_progress', completedAt: null } : session); } catch { return session; }
+  try { return JSON.parse(localStorage.getItem(sessionKey) || 'null') ?? initial(); } catch { return initial(); }
 };
 const fail = () => { if (new URLSearchParams(location.search).has('fail')) throw new Error('Fixture save failed. Your answer has not reached the account.'); };
 export const getSession = async () => read();

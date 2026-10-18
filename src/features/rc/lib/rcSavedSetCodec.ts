@@ -26,13 +26,14 @@ export function decodeRcSavedSet(raw: unknown): RcSavedDecode {
     || raw.mode === 'recipe' && (raw.passageIds.length > 0 || raw.questionIds.length > 0 || Number(raw.count) > 8)
     || !['topics', 'formats', 'frameworks', 'families'].every(key => strings(f[key]))
     || !Array.isArray(f.difficulties) || !f.difficulties.every(n => Number.isInteger(n) && n >= 1 && n <= 5)
+    || f.includeUnknownExposure !== undefined && typeof f.includeUnknownExposure !== 'boolean'
     || !['any', 'fresh', 'strict_no_exposure', 'incorrect_before', 'incorrect_last'].includes(String(f.status))
     || !Number.isInteger(f.preptestMin) || !Number.isInteger(f.preptestMax)
     || Number(f.preptestMin) < 101 || Number(f.preptestMax) > 159 || Number(f.preptestMin) > Number(f.preptestMax)) return { status: 'invalid' };
   return { status: 'ok', value: {
     kind: RC_SAVED_KIND, version: 1, mode: raw.mode as RcSavedPayload['mode'],
     config: { reveal: config.reveal as RcDrillConfig['reveal'], timing: config.timing.mode === 'unlimited' ? { mode: 'unlimited' } : { mode: 'per_passage_budget', secondsPerPassage: Number(config.timing.secondsPerPassage) } },
-    filters: { topics: [...f.topics as string[]], formats: [...f.formats as string[]], frameworks: [...f.frameworks as string[]], families: [...f.families as string[]], difficulties: [...f.difficulties as number[]], status: f.status as RcSelectionFilters['status'], preptestMin: Number(f.preptestMin), preptestMax: Number(f.preptestMax) },
+    filters: { ...(typeof f.includeUnknownExposure === 'boolean' ? { includeUnknownExposure: f.includeUnknownExposure } : {}), topics: [...f.topics as string[]], formats: [...f.formats as string[]], frameworks: [...f.frameworks as string[]], families: [...f.families as string[]], difficulties: [...f.difficulties as number[]], status: f.status as RcSelectionFilters['status'], preptestMin: Number(f.preptestMin), preptestMax: Number(f.preptestMax) },
     count: Number(raw.count), passageIds: [...raw.passageIds], questionIds: [...raw.questionIds],
   } };
 }
