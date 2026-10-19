@@ -349,6 +349,17 @@ function ClassroomSidebar({
             </div>
           ))}
 
+          {!permissions.loading && permissions.is_admin ? (
+            <div className="classroom-nav-group">
+              <button
+                type="button"
+                className={navClass(location.pathname.startsWith('/reading-center'))}
+                aria-current={location.pathname.startsWith('/reading-center') ? 'page' : undefined}
+                onClick={() => go('/reading-center')}
+              >Reading Center</button>
+            </div>
+          ) : null}
+
           <div className="classroom-nav-group classroom-nav-shortcuts">
             <b>Quick access</b>
             {/* aria-disabled rather than disabled: a disabled button drops out
