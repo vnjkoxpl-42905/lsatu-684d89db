@@ -133,7 +133,7 @@ describe("RC Training page: entry", () => {
     renderPage();
     await waitFor(async () => expect(await startButton()).toBeEnabled());
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("list", { name: "Available passages" })).getAllByRole("button")).toHaveLength(4);
+    expect(within(screen.getByRole("list", { name: "Available passages" })).getAllByRole("button", { name: /^Start PT/ })).toHaveLength(4);
     expect(screen.queryByRole("radio", { name: "No clock" })).not.toBeInTheDocument();
   });
   it("finds a passage by title or PrepTest and keeps full sections available", async () => {
@@ -192,6 +192,66 @@ describe("persistence availability", () => {
 });
 
 describe("starting a section", () => {
+  it("places Reset passage below Start on each single-passage card, not full sections", async () => {
+    renderPage();
+    await startButton();
+    const cards = within(screen.getByRole("list", { name: "Available passages" })).getAllByRole("listitem");
+    expect(cards).toHaveLength(4);
+    for (const card of cards) {
+      const actions = within(card).getAllByRole("button");
+      expect(actions[0]).toHaveTextContent("Start passage");
+      expect(actions[1]).toHaveTextContent("Reset passage");
+      expect(actions[1].parentElement).toBe(actions[0].parentElement);
+    }
+    fireEvent.click(screen.getByRole("radio", { name: /Full section/ }));
+    expect(screen.queryByRole("button", { name: /^Reset PT/ })).not.toBeInTheDocument();
+  });
+
+  it("resets the selected passage into a fresh attempt while preserving earlier work", async () => {
+    const earlier = attemptRow(1, { passage_ids: [140043], finished_at: null, completed: false, elapsed_seconds: null });
+    data.all = [earlier, attemptRow(2, { passage_ids: [140043] })];
+    saveCheckpoint({ version: 1, studentId: "s1", attemptId: earlier.id, attempt: earlier,
+      contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds: [140043] }), scope: "all_read",
+      stepIndex: 1, stepId: "p1-para1-recall", recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
+    const savedPlaces = listCheckpoints("s1");
+    vi.mocked(createAttempt).mockResolvedValue(attemptRow(3, { id: "fresh", passage_ids: [140043], finished_at: null, completed: false }));
+    renderPage();
+    expect(await screen.findByText("Resume practice")).toBeInTheDocument();
+    const reset = await screen.findByRole("button", { name: "Reset PT140 · Section 4 · Passage 3" });
+    await waitFor(() => expect(reset).toBeEnabled());
+    fireEvent.click(reset);
+    expect(await screen.findByTestId("runner")).toHaveTextContent("new fresh");
+    expect(createAttempt).toHaveBeenCalledOnce();
+    expect(createAttempt).toHaveBeenCalledWith(expect.objectContaining({ passageIds: [140043], confirmationScope: "all_read" }));
+    expect(vi.mocked(createAttempt).mock.calls[0][0].id).not.toBe(earlier.id);
+    expect(data.loadPassages).toHaveBeenCalledWith([140043]);
+    expect(listCheckpoints("s1")).toEqual(savedPlaces);
+    expect(data.all).toEqual([earlier, attemptRow(2, { passage_ids: [140043] })]);
+  });
+
+  it("guards repeated reset clicks and retries an uncertain create with its original id", async () => {
+    let rejectCreate!: (reason: Error) => void;
+    vi.mocked(createAttempt).mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectCreate = reject; }))
+      .mockResolvedValueOnce(attemptRow(1, { id: "fresh", passage_ids: [140042], finished_at: null }));
+    renderPage();
+    const reset = await screen.findByRole("button", { name: "Reset PT140 · Section 4 · Passage 2" });
+    await waitFor(() => expect(reset).toBeEnabled());
+    fireEvent.click(reset);
+    fireEvent.click(reset);
+    await waitFor(() => expect(createAttempt).toHaveBeenCalledOnce());
+    expect(reset).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Start PT140 · Section 4 · Passage 2" })).toBeDisabled();
+    rejectCreate(new AttemptOutcomeUnknownError("unknown", new Error("offline")));
+    const alert = await screen.findByRole("alert");
+    expect(alert.closest("li")).toBe(reset.closest("li"));
+    await waitFor(() => expect(reset).toBeEnabled());
+    fireEvent.click(reset);
+    expect(await screen.findByTestId("runner")).toHaveTextContent("new fresh");
+    const ids = vi.mocked(createAttempt).mock.calls.map(([input]) => input.id);
+    expect(ids).toHaveLength(2);
+    expect(ids[1]).toBe(ids[0]);
+  });
+
   it("launches the default single passage with its actual identity", async () => {
     vi.mocked(createAttempt).mockResolvedValue(attemptRow(1, { passage_ids: [140041], finished_at: null }));
     renderPage();

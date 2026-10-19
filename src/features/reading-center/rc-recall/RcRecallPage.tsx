@@ -243,7 +243,10 @@ function AccountRecallPage() {
               <div>{recommended && <span className="rct-attempt-note">{passageCount === 1 ? "The passage used in the example" : "Includes the example passage"}</span>}<h3>{title}</h3><p>{label}</p>
                 {passageProgress.data && <PassageCompletionNote ids={selection.passageIds} progress={passageProgress.data} />}
               </div>
-              <button type="button" className="rct-button rct-button-primary" aria-label={`Start ${label}`} disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>{starting && startSelection === contentKeyFor(selection) ? "Starting…" : passageCount === 1 ? "Start passage" : "Start section"}<ArrowUpRight size={18} aria-hidden="true" /></button>
+              <div className="rct-passage-actions">
+                <button type="button" className="rct-button rct-button-primary" aria-label={`Start ${label}`} disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>{starting && startSelection === contentKeyFor(selection) ? "Starting…" : passageCount === 1 ? "Start passage" : "Start section"}<ArrowUpRight size={18} aria-hidden="true" /></button>
+                {passageCount === 1 && <button type="button" className="rct-text-button rct-reset-passage" aria-label={`Reset ${label}`} title="Start again from paragraph 1. Your earlier attempts stay saved." disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>Reset passage</button>}
+              </div>
               {startError && startSelection === contentKeyFor(selection) && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error" style={{ flexBasis: "100%", width: "100%" }}>{startError}</p>}
             </li>)}
           </ul>
