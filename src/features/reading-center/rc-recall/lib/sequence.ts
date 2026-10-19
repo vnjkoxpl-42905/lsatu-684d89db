@@ -119,6 +119,11 @@ export function buildSectionSteps(
   return passages.flatMap((p, position) => buildPassageSteps(mode, p, position, scope));
 }
 
+/** Version-2 paragraph practice: full paragraph read, then hidden recall. */
+export function buildParagraphTrainingSteps(passages: SegmentedPassage[]): RecallStep[] {
+  return passages.flatMap((passage, position) => buildPassageSteps("rc_recall", passage, position).filter((step) => step.kind === "read" || step.kind === "recall"));
+}
+
 export const STEP_TITLE: Record<StepKind, string> = {
   read: "Read the paragraph",
   recall: "Recall the paragraph",

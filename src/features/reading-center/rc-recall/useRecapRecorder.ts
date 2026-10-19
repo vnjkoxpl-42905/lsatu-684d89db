@@ -67,11 +67,54 @@ export function useRecapRecorder() {
   const lifecycle = useRef(0);
   const [backupHealth, setBackupHealth] = useState<BackupHealth | null>(null);
   const [interruption, setInterruption] = useState<string | null>(null);
+  const [micLevel, setMicLevel] = useState(0);
+  const [micAvailable, setMicAvailable] = useState(false);
+  const meterCleanup = useRef<(() => void) | null>(null);
+  const stopMeter = useCallback(() => {
+    meterCleanup.current?.(); meterCleanup.current = null;
+    if (mounted.current) { setMicLevel(0); setMicAvailable(false); }
+  }, []);
+  const startMeter = useCallback((stream: MediaStream) => {
+    stopMeter();
+    if (typeof AudioContext === "undefined" || typeof requestAnimationFrame === "undefined") return;
+    let context: AudioContext | null = null;
+    let source: MediaStreamAudioSourceNode | null = null;
+    let analyser: AnalyserNode | null = null;
+    let frame = 0; let stopped = false; let lastSample = -Infinity;
+    const dispose = () => {
+      stopped = true; cancelAnimationFrame(frame);
+      try { source?.disconnect(); analyser?.disconnect(); } catch { /* Meter cleanup must not interrupt capture. */ }
+      if (context && context.state !== "closed") void context.close().catch(() => undefined);
+    };
+    meterCleanup.current = dispose;
+    try {
+      context = new AudioContext(); source = context.createMediaStreamSource(stream); analyser = context.createAnalyser();
+      analyser.fftSize = 256; source.connect(analyser);
+      const samples = new Uint8Array(analyser.fftSize);
+      const sample = (now: number) => {
+        if (stopped || !mounted.current) return;
+        if (now - lastSample >= 80) {
+          lastSample = now;
+          try {
+            if (context!.state === "running") {
+              analyser!.getByteTimeDomainData(samples);
+              const rms = Math.sqrt(samples.reduce((sum, value) => sum + ((value - 128) / 128) ** 2, 0) / samples.length);
+              setMicLevel(Math.min(1, rms * 4)); setMicAvailable(true);
+            } else { setMicLevel(0); setMicAvailable(false); }
+          } catch { stopMeter(); return; }
+        }
+        frame = requestAnimationFrame(sample);
+      };
+      if (context.state === "suspended") void context.resume().catch(() => undefined);
+      frame = requestAnimationFrame(sample);
+    } catch { stopMeter(); }
+  }, [stopMeter]);
 
   const cleanup = useCallback(() => {
+    stopMeter();
     active.current?.stream.getTracks().forEach((t) => t.stop());
     active.current = null;
-  }, []);
+  }, [stopMeter]);
 
   useEffect(() => {
     mounted.current = true;
@@ -139,6 +182,7 @@ export function useRecapRecorder() {
         offsetStart: performance.now(), backupFailure: begun.ok === false ? begun.reason : null, interrupted: false, getChunkCount: () => seq,
       };
       const interrupted = () => {
+        stopMeter();
         run.interrupted = true;
         setInterruption("Recording stopped unexpectedly. Save your place and leave, then open Your attempts to recover any partial audio kept on this device. Interrupted audio is not used for automatic feedback.");
         run.stream.getTracks().forEach((track) => track.stop());
@@ -159,16 +203,18 @@ export function useRecapRecorder() {
       };
       active.current = run;
       recorder.start(5000);
+      startMeter(stream);
       return { ok: true, path, backup: begun.ok === false ? { ok: false, reason: begun.reason } : { ok: true } };
     } catch {
       // Preserve any audio, but seal the failed start so an empty run can be retried.
+      stopMeter();
       if (backupCreated) await markStopped(meta.recapId, 0, active.current?.getChunkCount() ?? 0);
       active.current = null;
       stream.getTracks().forEach((t) => t.stop());
       releaseLock?.();
       return { ok: false, reason: "Recording could not start. Try again or choose a silent recall instead." };
     }
-  }, []);
+  }, [startMeter, stopMeter]);
 
   const stop = useCallback((): Promise<RecordedRecap | null> => new Promise((resolve) => {
     const run = active.current;
@@ -204,5 +250,5 @@ export function useRecapRecorder() {
     return result;
   }, []);
 
-  return { backupHealth, interruption, prepare, start, stop, forget, getOffset: () => active.current ? Math.max(0, Math.round(performance.now() - active.current.offsetStart)) : 0, isRecording: () => active.current !== null, activeRecapId: () => active.current?.recapId ?? null };
+  return { micLevel, micAvailable, backupHealth, interruption, prepare, start, stop, forget, getOffset: () => active.current ? Math.max(0, Math.round(performance.now() - active.current.offsetStart)) : 0, isRecording: () => active.current !== null, activeRecapId: () => active.current?.recapId ?? null };
 }

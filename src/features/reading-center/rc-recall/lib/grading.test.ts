@@ -11,15 +11,31 @@ import { getRcGrades, gradeRcRecap } from "./grading";
 const file = { preptest: 140, passages: [{ passageId: 15, preptest: 140, section: 4, text: "Passage A\n\nSome artists may disagree.\n\nPassage B\n\nOthers need evidence." }] };
 const attempt = { mode: "rc_recall", preptest: 140, section: 4, passage_ids: [15] };
 describe("RC grader authoritative scope", () => {
+  it("binds version 2 recap keys to repaired source while absent version retains historical source", () => {
+    const bank = JSON.parse(readFileSync(resolve("public/data/rc/RC-PT141.json"), "utf8"));
+    const selected = { mode: "rc_recall", preptest: 141, section: bank.passages.find((p: { passageId: number }) => p.passageId === 30).section, passage_ids: [30] };
+    const recap = { recap_key: "p1-para2-recall", passage_position: 1, kind: "recall" };
+    const old = canonicalSource(bank, selected, recap);
+    const modern = canonicalSource(bank, { ...selected, segmentation_version: 2 }, recap);
+    expect(old.text).not.toContain("1. A person who acquires");
+    expect(modern.text).toContain("1. A person who acquires");
+    expect(modern.text).toContain("3. No one is entitled");
+    expect(modern.passageId).toBe(30);
+    expect(modern.paragraphIndex).toBe(1);
+  });
   it("matches client paragraph segmentation for every bank passage", () => {
     const dir = resolve("public/data/rc"); let count = 0;
     for (const name of readdirSync(dir).filter(n => /^RC-PT\d+\.json$/.test(n))) {
       const bank = JSON.parse(readFileSync(resolve(dir, name), "utf8"));
       for (const passage of bank.passages) {
-        expect(segmentRcSource(passage.text), `${name} passage ${passage.passageId}`).toEqual(segmentPassage(passage.text).paragraphs.map(p => p.text)); count++;
+        for (const version of [1, 2] as const) {
+          const identity = { preptest: bank.preptest, passageId: passage.passageId };
+          expect(segmentRcSource(passage.text, version, identity), `${name} passage ${passage.passageId} v${version}`).toEqual(segmentPassage(passage.text, version, identity).paragraphs.map(p => p.text));
+        }
+        count++;
       }
     }
-    expect(count).toBeGreaterThan(100);
+    expect(count).toBe(320);
   });
   it("binds paragraph position to the saved single-passage selection", () => {
     expect(canonicalSource(file, attempt, { recap_key: "p1-para2-recall", passage_position: 1, kind: "recall" })).toEqual({ text: "Others need evidence.", passageId: 15, paragraphIndex: 1 });

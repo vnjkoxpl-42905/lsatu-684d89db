@@ -61,11 +61,11 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
     void loadPassages(attempt.passage_ids).then((passages) => {
       if (!active) return;
       const labels: Record<number, SegmentedPassage> = {};
-      attempt.passage_ids.forEach((id, index) => { const passage = passages.find((item) => item.passageId === id); if (passage?.text) labels[index + 1] = segmentPassage(passage.text); });
+      attempt.passage_ids.forEach((id, index) => { const passage = passages.find((item) => item.passageId === id); if (passage?.text) labels[index + 1] = segmentPassage(passage.text, attempt.segmentation_version ?? 1, { preptest: attempt.preptest, passageId: id }); });
       setSources(labels);
     }).catch(() => { /* Existing saved labels remain available when the bank cannot load. */ });
     return () => { active = false; };
-  }, [feedbackOpen, recapsOpen, attempt.passage_ids]);
+  }, [feedbackOpen, recapsOpen, attempt.passage_ids, attempt.segmentation_version]);
   const displayLabels = Object.fromEntries(entry.recaps.map((recap) => [recap.id, recapLabel(recap, sources[recap.passage_position], attempt.passage_ids.length)]));
   const spoken = entry.recaps.filter((r) => r.voice === "spoken");
   const duration = attempt.finished_at ? formatDuration(attempt.elapsed_seconds ?? 0) : entry.pendingFinalization ? formatDuration(entry.pendingFinalization.seconds) : null;

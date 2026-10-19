@@ -17,7 +17,7 @@ import { recapLabel, type HistoryEntry } from "./lib/history";
 import { loadPassageCompletions } from "./lib/passageProgress";
 import { retryPendingFinalization } from "./lib/pending";
 import { buildRecallSections, restoreRecallPractice, selectRecallPractice, sectionLabel, verifyLoadedSection, type RecallSection } from "./lib/sections";
-import { buildSectionSteps, type ConfirmScope, type RecallMode } from "./lib/sequence";
+import { buildSectionSteps, buildParagraphTrainingSteps, type ConfirmScope, type RecallMode } from "./lib/sequence";
 import type { SegmentedPassage } from "./lib/segment";
 
 interface Running {
@@ -114,15 +114,15 @@ function AccountRecallPage() {
     setStartError(null);
     try {
       const loaded = await loadPassages(selected.passageIds);
-      const { passages, segmented } = verifyLoadedSection(selected, loaded);
+      const { passages, segmented } = verifyLoadedSection(selected, loaded, 2);
       const createKey = `${contentKeyFor(selected)}:${scope}`;
       if (pendingCreate.current?.key !== createKey) pendingCreate.current = { key: createKey, id: newId() };
       const attempt = await createAttempt({
         id: pendingCreate.current.id, studentId: user.id, mode, preptest: selected.preptest, section: selected.section,
-        passageIds: selected.passageIds, confirmationScope: scope,
+        passageIds: selected.passageIds, confirmationScope: scope, segmentationVersion: 2,
       });
       pendingCreate.current = null;
-      setRunning({ mode, scope, passages, segmented, attempt, showElapsedTimer, resume: null, contentKey: contentKeyFor(selected) });
+      setRunning({ mode, scope, passages, segmented, attempt, showElapsedTimer, resume: null, contentKey: `${contentKeyFor(selected)}:v2` });
     } catch (err) {
       setStartError(err instanceof AttemptOutcomeUnknownError
         ? "We could not confirm whether this practice was saved. Try again. We will check first, so it will not be saved twice."
@@ -151,10 +151,11 @@ function AccountRecallPage() {
       const original = available.find((s) => s.preptest === a.preptest && s.section === a.section);
       if (!original) throw new Error("The saved section is no longer available.");
       const section = restoreRecallPractice(original, a.passage_ids);
-      const { passages, segmented } = verifyLoadedSection(section, await loadPassages(a.passage_ids));
+      const { passages, segmented } = verifyLoadedSection(section, await loadPassages(a.passage_ids), a.segmentation_version ?? 1);
       const scopeUsed: ConfirmScope = a.confirmation_scope ?? "all_read";
-      const steps = buildSectionSteps(a.mode, segmented, scopeUsed);
-      const loaded = loadCheckpoint({ studentId: user.id, attemptId: a.id, contentKey: contentKeyFor(section), stepIds: steps.map((s) => s.id) });
+      const steps = a.segmentation_version === 2 ? buildParagraphTrainingSteps(segmented) : buildSectionSteps(a.mode, segmented, scopeUsed);
+      const checkpointKey = `${contentKeyFor(section)}${a.segmentation_version === 2 ? ":v2" : ""}`;
+      const loaded = loadCheckpoint({ studentId: user.id, attemptId: a.id, contentKey: checkpointKey, stepIds: steps.map((s) => s.id) });
       if (loaded.ok === false) { setHistoryMessage(`${REJECTION_MESSAGE[loaded.reason]} This attempt can't be resumed here.`); return; }
       const reconciled = new Map(loaded.checkpoint.recaps.map((r) => [r.key, r]));
       for (const row of fresh?.recaps ?? entry.recaps) {
@@ -162,7 +163,7 @@ function AccountRecallPage() {
       }
       setRunning({
         mode: a.mode, scope: scopeUsed, passages, segmented, attempt: a, showElapsedTimer: loaded.checkpoint.showElapsedTimer,
-        resume: { ...loaded.checkpoint, recaps: [...reconciled.values()] }, contentKey: contentKeyFor(section),
+        resume: { ...loaded.checkpoint, recaps: [...reconciled.values()] }, contentKey: checkpointKey,
       });
     } catch {
       setHistoryMessage("This practice could not be opened. Your saved place has not changed. Try again.");
@@ -225,7 +226,7 @@ function AccountRecallPage() {
 
     <div className="rct-content">
       <section className="rct-start" aria-labelledby="rc-recall-start">
-        <div className="rct-list-heading"><h2 id="rc-recall-start" tabIndex={-1}>{passageCount === 1 ? "Choose a passage" : "Choose a full section"}</h2><p>{passageCount === 1 ? "Read, hide the text and recall, then check. Start any passage below." : "Practise four passages in order, using the same paragraph-by-paragraph routine."}</p></div>
+        <div className="rct-list-heading"><h2 id="rc-recall-start" tabIndex={-1}>{passageCount === 1 ? "Choose a passage" : "Choose a full section"}</h2><p>{passageCount === 1 ? "Read one paragraph, retell it from memory, then move to the next. Start any passage below." : "Practise four passages in order, using the same paragraph-by-paragraph routine."}</p></div>
         <div className="rct-start-form">
           {latestSession && <section className="rct-continue-card" aria-labelledby="rc-continue-title">
             <div className="rct-continue-main">

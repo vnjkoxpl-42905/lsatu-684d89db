@@ -15,11 +15,11 @@ vi.mock("./lib/attempts", () => ({ newId: () => `id-${++api.count}`, insertRecap
 vi.mock("./lib/backup", () => ({ discard: api.discard }));
 vi.mock("./useRecapRecorder", () => ({ useRecapRecorder: () => ({ prepare: api.prepare, start: api.start, stop: api.stop, getOffset: () => api.offset, interruption: api.interruption }) }));
 vi.mock("./LegacyRcRecallRunner", () => ({ default: () => <div>Legacy exercise</div>, formatClock: (n: number) => String(n) }));
-vi.mock("./RcTrainingFeedback", () => ({ default: ({ enabled }: { enabled: boolean }) => <div data-testid="feedback" data-enabled={String(enabled)} /> }));
+vi.mock("./RcTrainingFeedback", () => ({ default: ({ enabled, autoReview }: { enabled: boolean; autoReview?: boolean }) => <div data-testid="feedback" data-enabled={String(enabled)} data-auto={String(autoReview)} /> }));
 import Runner from "./RcRecallRunner";
 const bodies = ["First paragraph.\n\nSecond paragraph."];
 const attempt = { id: "a1", student_id: "s1", preptest: 140, section: 4, passage_ids: [1] } as AttemptRow;
-const props = { mode: "rc_recall" as const, scope: "all_read" as const, passages: bodies.map((text) => ({ text }) as RcPassage), segmented: bodies.map(segmentPassage), attempt, studentId: "s1", onExit: vi.fn() };
+const props = { mode: "rc_recall" as const, scope: "all_read" as const, passages: bodies.map((text) => ({ text }) as RcPassage), segmented: bodies.map(text => segmentPassage(text)), attempt, studentId: "s1", onExit: vi.fn() };
 const click = async (name: RegExp) => { if ((name.test("Pause and return to passages") || name.test("Finish early")) && !screen.queryByRole("button", { name })) fireEvent.click(screen.getByText("Practice options")); await waitFor(() => expect(screen.getByRole("button", { name })).toBeEnabled()); await act(async () => { fireEvent.click(screen.getByRole("button", { name })); }); };
 const space = async (repeat = false) => { await act(async () => { fireEvent.keyDown(document, { code: "Space", repeat }); }); };
 beforeEach(() => {
@@ -38,6 +38,46 @@ beforeEach(() => {
   api.finalizeAttempt.mockResolvedValue({ completed: true, elapsed_seconds: 10 });
 });
 describe("continuous RC recording", () => {
+  it("runs each complete v2 paragraph read then hidden retell and reviews only after final save", async () => {
+    render(<Runner {...props} attempt={{ ...attempt, segmentation_version: 2 }} />);
+    await click(/Start exercise/);
+    expect(screen.getByText("First paragraph.")).toBeInTheDocument();
+    api.offset = 1000; await click(/Retell paragraph/);
+    expect(screen.queryByText("First paragraph.")).not.toBeInTheDocument();
+    expect(screen.getByText("Explain the whole paragraph in your own words.")).toBeInTheDocument();
+    expect(screen.queryByTestId("feedback")).not.toBeInTheDocument();
+    api.offset = 2500; await click(/Next paragraph/);
+    expect(api.saveCaptureWindow).toHaveBeenLastCalledWith(expect.objectContaining({ recapKey: "p1-para1-recall", startMs: 1000, endMs: 2500 }));
+    expect(screen.getByText("Second paragraph.")).toBeInTheDocument();
+    expect(screen.queryByText("First paragraph.")).not.toBeInTheDocument();
+    expect(api.finalizeAttempt).not.toHaveBeenCalled();
+    api.offset = 4000; await click(/Retell paragraph/);
+    api.offset = 6000; await click(/Finish passage/);
+    expect(api.saveCaptureWindow).toHaveBeenLastCalledWith(expect.objectContaining({ recapKey: "p1-para2-recall", startMs: 4000, endMs: 6000 }));
+    expect(api.savePassageProgress).toHaveBeenCalledWith(expect.objectContaining({ completed: true, passagePosition: 1 }));
+    expect(api.finalizeAttempt).toHaveBeenCalledOnce();
+    expect(api.uploadCapture).toHaveBeenCalledOnce();
+    expect(screen.getByTestId("feedback")).toHaveAttribute("data-auto", "true");
+    expect(screen.queryByText(/optional recall/i)).not.toBeInTheDocument();
+  });
+
+  it("waits until all four v2 passages are finished before enabling automatic review", async () => {
+    const passages = Array.from({ length: 4 }, (_, i) => ({ text: `Complete passage ${i + 1}.` }) as RcPassage);
+    render(<Runner {...props} passages={passages} segmented={passages.map(p => segmentPassage(p.text))} attempt={{ ...attempt, passage_ids: [1,2,3,4], segmentation_version: 2 }} />);
+    await click(/Start exercise/);
+    for (let i = 0; i < 4; i++) {
+      expect(screen.getByText(`Complete passage ${i + 1}.`)).toBeInTheDocument();
+      api.offset += 1000; await click(/Retell paragraph/);
+      expect(screen.queryByText(`Complete passage ${i + 1}.`)).not.toBeInTheDocument();
+      expect(screen.queryByTestId("feedback")).not.toBeInTheDocument();
+      api.offset += 1000; await click(i === 3 ? /Finish section/ : /Next passage/);
+      if (i < 3) expect(api.finalizeAttempt).not.toHaveBeenCalled();
+    }
+    expect(api.saveCaptureWindow).toHaveBeenCalledTimes(4);
+    expect(api.finalizeAttempt).toHaveBeenCalledOnce();
+    expect(screen.getByTestId("feedback")).toHaveAttribute("data-auto", "true");
+  });
+
   it("presents all eight complete bank paragraphs with local A/B numbering and unchanged recall identities", async () => {
     const file: RcPreptestFile = JSON.parse(readFileSync(resolve(process.cwd(), "public/data/rc/RC-PT140.json"), "utf8"));
     const source = file.passages.find((item) => item.passageId === 15)!;
@@ -308,7 +348,7 @@ it("restores passage timing from the server and always shows its active timer", 
 it("keeps four passage clocks separate, freezes completed time and continues the practice total", async () => {
   let now = 1000; vi.spyOn(Date, "now").mockImplementation(() => now);
   const fullBodies = [1, 2, 3, 4].map((id) => `Passage ${id} body.`);
-  const full = { ...props, passages: fullBodies.map((text) => ({ text }) as RcPassage), segmented: fullBodies.map(segmentPassage), attempt: { ...attempt, passage_ids: [1, 2, 3, 4] } };
+  const full = { ...props, passages: fullBodies.map((text) => ({ text }) as RcPassage), segmented: fullBodies.map(text => segmentPassage(text)), attempt: { ...attempt, passage_ids: [1, 2, 3, 4] } };
   const view = render(<Runner {...full} />); await click(/Start exercise/);
   now += 5000; api.offset = 1000; await space(); api.offset = 2000; await space(); await click(/Finish passage/);
   expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 5");
