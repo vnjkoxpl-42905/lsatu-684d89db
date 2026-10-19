@@ -147,7 +147,7 @@ it("offers the list rather than a dead-end retry when there is no complete audio
   render(<Runner {...props} />); await click(/Start exercise/); await finishParagraphs(); await click(/Skip optional recall/);
   expect(screen.getByText(/No complete recording is available to upload/)).toHaveTextContent(/any partial audio this device may have kept/);
   expect(screen.queryByRole("button", { name: /Try saving again|Refresh recording status/ })).not.toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Back to RC Training" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Choose another passage" })).toBeInTheDocument();
   expect(screen.getByTestId("feedback")).toHaveAttribute("data-enabled", "true");
   expect(api.finalizeAttempt).toHaveBeenCalledOnce(); expect(api.uploadCapture).not.toHaveBeenCalled();
 });

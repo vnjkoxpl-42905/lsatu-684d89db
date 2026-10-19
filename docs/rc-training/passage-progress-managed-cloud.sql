@@ -1,4 +1,5 @@
--- REVIEW DRAFT ONLY. Not deployed. Same statements as portable migration; transaction wrappers omitted for the managed SQL runner.
+-- Historical deployment draft applied as managed drizzle0037 on 2026-10-19, with grant ordering adapted before RLS.
+-- Keep the original RPC body below; subsequent repairs belong in additive migrations.
 -- Active practice time and completion per selected passage. No auth-schema FK:
 -- Lovable Cloud owns authentication; auth.uid() and RLS enforce the owner.
 create table if not exists public.rc_recall_passage_progress (
