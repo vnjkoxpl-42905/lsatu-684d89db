@@ -230,6 +230,10 @@ body:has(.rc-root[data-rc-theme]:not([data-rc-theme="light"])) .rct-section-menu
 .rct-passage-choice p { color: var(--rc-text-2); font-size: 12px; line-height: 1.6; margin-top: 5px; }
 .rct-passage-choice .rct-attempt-note { display: block; color: #5b4779; margin-bottom: 5px; }
 .rct-passage-choice .rct-button { flex-shrink: 0; border-radius: 9px; }
+.rct-passage-actions { display: flex; flex-direction: column; align-items: stretch; flex-shrink: 0; gap: 2px; }
+.rct-passage-actions .rct-reset-passage { min-height: 44px; padding: 0 12px; color: var(--rc-text-2); font-size: 12px; font-weight: 500; border-radius: 6px; }
+.rct-passage-actions .rct-reset-passage:hover:not(:disabled) { color: var(--rc-text); text-decoration: underline; text-underline-offset: 3px; }
+.rct-passage-actions .rct-reset-passage:disabled { opacity: .45; cursor: not-allowed; }
 .rct-demo-progress { display: flex; list-style: none; gap: 8px; padding: 14px 18px 0; margin: 0; }
 .rct-demo-progress li { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 6px; border-radius: 8px; color: #766886; font-size: 12px; }
 .rct-demo-progress li span { display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid #dcd4e7; border-radius: 50%; font-size: 11px; }
