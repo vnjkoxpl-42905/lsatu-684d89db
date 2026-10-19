@@ -56,6 +56,7 @@ function AccountRecallPage() {
   const startingRef = useRef(false);
   const [startError, setStartError] = useState<string | null>(null);
   const [startSelection, setStartSelection] = useState<string | null>(null);
+  const [resettingSession, setResettingSession] = useState(false);
   const startErrorRef = useRef<HTMLParagraphElement>(null);
   const [historyMessage, setHistoryMessage] = useState<string | null>(null);
   const [busyAttemptId, setBusyAttemptId] = useState<string | null>(null);
@@ -104,11 +105,12 @@ function AccountRecallPage() {
     target.focus({ preventScroll: true });
   }, [location.hash, location.key]);
 
-  const start = async (selected: RecallSection) => {
-    if (!user || !savingReady || recovery.running || startingRef.current) return;
+  const start = async (selected: RecallSection, fromSession = false) => {
+    if (!user || !savingReady || recovery.running || busyAttemptId !== null || startingRef.current) return;
     startingRef.current = true;
     setStarting(true);
     setStartSelection(contentKeyFor(selected));
+    setResettingSession(fromSession);
     setStartError(null);
     try {
       const loaded = await loadPassages(selected.passageIds);
@@ -195,6 +197,17 @@ function AccountRecallPage() {
   const hasActivity = (entry: HistoryEntry) => entry.recaps.length > 0 || (savedPlaces.get(entry.attempt.id)?.stepIndex ?? 0) > 0 || (savedPlaces.get(entry.attempt.id)?.recaps.length ?? 0) > 0;
   const inProgress = history.entries.filter((e) => e.status === "in_progress" && e.resumable).sort((a, b) => Number(hasActivity(b)) - Number(hasActivity(a)) || b.attempt.started_at.localeCompare(a.attempt.started_at));
   const latestSession = inProgress[0];
+  const resetSession = () => {
+    if (!latestSession || startingRef.current || busyAttemptId !== null || recovery.running || !savingReady) return;
+    try {
+      const original = sections.find((section) => section.preptest === latestSession.attempt.preptest && section.section === latestSession.attempt.section);
+      if (!original) throw new Error("The saved passage is no longer available. Try loading passages again.");
+      void start(restoreRecallPractice(original, latestSession.attempt.passage_ids), true);
+    } catch (error) {
+      setResettingSession(true);
+      setStartError(error instanceof Error ? error.message : "This practice could not be restarted. Your saved work has not changed.");
+    }
+  };
   const sessionTitle = (entry: HistoryEntry) => entry.attempt.passage_ids.length === 1
     ? index.data?.find((passage) => passage.passageId === entry.attempt.passage_ids[0])?.title || sectionLabel(entry.attempt)
     : sectionLabel(entry.attempt);
@@ -218,8 +231,12 @@ function AccountRecallPage() {
             <div className="rct-continue-main">
               <span className="rct-continue-icon" aria-hidden="true"><BookOpen size={21} /></span>
               <div className="rct-continue-copy"><p className="rct-continue-caption">Resume practice</p><h3 id="rc-continue-title">{sessionTitle(latestSession)}</h3><p>{sessionMeta(latestSession)}</p></div>
-              <button type="button" className="rct-button rct-button-primary" disabled={recovery.running || busyAttemptId !== null || starting} onClick={() => void resume(latestSession)}>{busyAttemptId === latestSession.attempt.id ? "Opening…" : "Resume"}</button>
+              <div className="rct-passage-actions rct-continue-actions">
+                <button type="button" className="rct-button rct-button-primary" disabled={recovery.running || busyAttemptId !== null || starting} onClick={() => void resume(latestSession)}>{busyAttemptId === latestSession.attempt.id ? "Opening…" : "Resume"}</button>
+                <button type="button" className="rct-text-button rct-reset-passage" disabled={recovery.running || busyAttemptId !== null || starting || !savingReady || index.isPending || index.isError} onClick={resetSession} title="Start again from the beginning. Your earlier attempts stay saved.">{starting && resettingSession ? "Starting…" : latestSession.attempt.passage_ids.length === 1 ? "Reset passage" : "Reset section"}</button>
+              </div>
             </div>
+            {startError && resettingSession && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error rct-continue-error">{startError}</p>}
             {inProgress.length > 1 && <footer className="rct-continue-footer"><details className="rct-other-sessions"><summary>Other unfinished sessions ({inProgress.length - 1})</summary><ul>{inProgress.slice(1).map((entry) => <li key={entry.attempt.id}><div><strong>{sessionTitle(entry)}</strong><p>{sessionMeta(entry)}</p></div><button type="button" className="rct-text-button" disabled={recovery.running || busyAttemptId !== null || starting} onClick={() => void resume(entry)} aria-label={`Resume ${sessionTitle(entry)}, started ${sessionDate(entry)}`}>{busyAttemptId === entry.attempt.id ? "Opening…" : "Resume"}</button></li>)}</ul></details>
             </footer>}
           </section>}
@@ -247,7 +264,7 @@ function AccountRecallPage() {
                 <button type="button" className="rct-button rct-button-primary" aria-label={`Start ${label}`} disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>{starting && startSelection === contentKeyFor(selection) ? "Starting…" : passageCount === 1 ? "Start passage" : "Start section"}<ArrowUpRight size={18} aria-hidden="true" /></button>
                 {passageCount === 1 && <button type="button" className="rct-text-button rct-reset-passage" aria-label={`Reset ${label}`} title="Start again from paragraph 1. Your earlier attempts stay saved." disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>Reset passage</button>}
               </div>
-              {startError && startSelection === contentKeyFor(selection) && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error" style={{ flexBasis: "100%", width: "100%" }}>{startError}</p>}
+              {startError && !resettingSession && startSelection === contentKeyFor(selection) && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error" style={{ flexBasis: "100%", width: "100%" }}>{startError}</p>}
             </li>)}
           </ul>
           {!index.isPending && !index.isError && choices.length > 0 && matching.length === 0 && <p role="status">No passages match that search. Try a PrepTest number or another word.</p>}
