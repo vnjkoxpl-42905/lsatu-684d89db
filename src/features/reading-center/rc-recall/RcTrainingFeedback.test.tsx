@@ -10,6 +10,18 @@ const ready = (id: string): RcGradeItem => ({ ...pending(id), status: "ready", r
 } });
 beforeEach(() => vi.resetAllMocks());
 describe("RC recall feedback", () => {
+  it("automatically reviews once after completion and never automatically retries failed or cached grades", async () => {
+    const failed = { ...pending("failed"), status: "failed" as const, retryable: true };
+    vi.mocked(getRcGrades).mockResolvedValue({ attemptId: "attempt", items: [pending("1"), ready("cached"), failed] });
+    vi.mocked(gradeRcRecap).mockResolvedValue({ attemptId: "attempt", items: [ready("1")] });
+    const view = render(<RcTrainingFeedback attemptId="attempt" enabled={false} autoReview />);
+    expect(gradeRcRecap).not.toHaveBeenCalled();
+    view.rerender(<RcTrainingFeedback attemptId="attempt" enabled autoReview />);
+    expect(await screen.findByText("Kept the meaning in 1.")).toBeInTheDocument();
+    view.rerender(<RcTrainingFeedback attemptId="attempt" enabled autoReview displayLabels={{ "1": "Paragraph 1 of 2" }} />);
+    expect(gradeRcRecap).toHaveBeenCalledExactlyOnceWith("attempt", "1");
+  });
+
   it("uses source-aware display labels by recap id and keeps server labels as fallback", async () => {
     vi.mocked(getRcGrades).mockResolvedValue({ attemptId: "attempt", items: [pending("5"), pending("other")] });
     render(<RcTrainingFeedback attemptId="attempt" enabled displayLabels={{ "5": "Passage B · Paragraph 1 of 4" }} />);

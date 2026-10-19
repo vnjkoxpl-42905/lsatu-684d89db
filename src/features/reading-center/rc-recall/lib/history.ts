@@ -2,8 +2,8 @@
  * What each saved RC Training attempt is, in words that do not overstate it.
  *
  * Status comes from the stored attempt, its recaps and, for this device only, any
- * unsaved local work. There is no score here: RC Training recall is self-checked
- * and never graded, and nothing in this file turns time or completion into one.
+ * unsaved local work. Grades are loaded separately; completion and time alone
+ * never establish recall accuracy.
  */
 import type { AttemptRow, RecapRow } from "./attempts";
 import { paragraphDisplayLabel, type SegmentedPassage } from "./segment";
@@ -22,9 +22,8 @@ export const STATUS_LABEL: Record<RcAttemptStatus, string> = {
 };
 
 /**
- * Labels describe the stored procedure family. rc_recall has no stored version,
- * so it cannot establish whether an attempt used the old RC Flow presentation
- * or current RC Training. Do not infer a release date or current voice defaults.
+ * Labels describe the stored procedure family. The attempt's segmentation
+ * version separately selects its paragraph boundaries and workflow.
  */
 export const PROCEDURE_LABEL: Record<RecallMode, string> = {
   rc_recall: "RC paragraph recall",

@@ -26,7 +26,7 @@ vi.mock("./RcTrainingFeedback", () => ({ default: ({ enabled }: { enabled: boole
 import RcRecallRunner from "./LegacyRcRecallRunner";
 
 const bodies = [0, 1, 2, 3].map((p) => `P${p} first paragraph.\n\nP${p} second paragraph.`);
-const segmented = bodies.map(segmentPassage);
+const segmented = bodies.map(text => segmentPassage(text));
 const passages = bodies.map((text, i) => ({ passageId: i + 1, setNumber: i + 1, text }) as RcPassage);
 const attempt = { id: "att-1", student_id: "s1", preptest: 140, section: 4, passage_ids: [1, 2, 3, 4] } as AttemptRow;
 

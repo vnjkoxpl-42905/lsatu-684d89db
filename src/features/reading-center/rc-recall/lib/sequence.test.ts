@@ -1,10 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { buildPassageSteps, buildSectionSteps, confirmationIndices, stepInstruction, type RecallStep } from "./sequence";
+import { buildPassageSteps, buildSectionSteps, buildParagraphTrainingSteps, confirmationIndices, stepInstruction, type RecallStep } from "./sequence";
 import { segmentPassage } from "./segment";
 import { COMPARATIVE, STANDARD } from "./fixtures";
 
 const standard = segmentPassage(STANDARD);
 const comparative = segmentPassage(COMPARATIVE);
+it("version 2 builds only whole-paragraph read/recall pairs with stable standard recap identities", () => {
+  const steps = buildParagraphTrainingSteps([standard, comparative]);
+  expect(steps).toHaveLength((standard.paragraphs.length + comparative.paragraphs.length) * 2);
+  for (let index = 0; index < steps.length; index += 2) {
+    const read = steps[index], recall = steps[index + 1];
+    expect(read.kind).toBe("read"); expect(recall.kind).toBe("recall");
+    expect(read.visible).toEqual([read.paragraph]); expect(recall.visible).toEqual([]);
+    expect(recall.recapKey).toBe(`p${read.passage + 1}-para${read.paragraph + 1}-recall`);
+  }
+});
 const brief = (steps: RecallStep[]) => steps.map((s) => `${s.kind}:${s.paragraph + 1}:${s.visible.map((i) => i + 1).join("+") || "hidden"}:${s.covers.map((i) => i + 1).join("+")}`);
 const upTo = (steps: RecallStep[], paragraph: number) => steps.filter((s) => s.paragraph === paragraph);
 

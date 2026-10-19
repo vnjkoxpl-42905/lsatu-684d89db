@@ -6,7 +6,7 @@
  * no drillable questions does not exclude it: this activity never asks one.
  */
 import type { RcIndexPassage, RcPassage } from "@/features/rc/lib/rcTypes";
-import { isSegmentable, segmentPassage, type SegmentedPassage } from "./segment";
+import { isSegmentable, segmentPassage, type SegmentedPassage, type SegmentationVersion } from "./segment";
 
 export type RecallIndexPassage = RcIndexPassage & { preptest: number };
 
@@ -80,7 +80,7 @@ export class SectionIntegrityError extends Error {}
  * reordered or empty passage fails visibly; it is never dropped to shorten the
  * section.
  */
-export function verifyLoadedSection(section: RecallSection, loaded: RcPassage[]): { passages: RcPassage[]; segmented: SegmentedPassage[] } {
+export function verifyLoadedSection(section: RecallSection, loaded: RcPassage[], version: SegmentationVersion = 1): { passages: RcPassage[]; segmented: SegmentedPassage[] } {
   if (![1, 4].includes(section.passageIds.length)) throw new SectionIntegrityError("Choose one passage or a complete four-passage section.");
   if (loaded.length !== section.passageIds.length) {
     throw new SectionIntegrityError(`Expected ${section.passageIds.length} passages but loaded ${loaded.length}.`);
@@ -91,5 +91,5 @@ export function verifyLoadedSection(section: RecallSection, loaded: RcPassage[])
     if (loaded[i].setNumber !== position) throw new SectionIntegrityError(`Passage ${i + 1} is out of order.`);
     if (!isSegmentable(loaded[i].text)) throw new SectionIntegrityError(`Passage ${i + 1} has no text to recall.`);
   });
-  return { passages: loaded, segmented: loaded.map((p) => segmentPassage(p.text)) };
+  return { passages: loaded, segmented: loaded.map((p) => segmentPassage(p.text, version, { preptest: section.preptest, passageId: p.passageId })) };
 }
