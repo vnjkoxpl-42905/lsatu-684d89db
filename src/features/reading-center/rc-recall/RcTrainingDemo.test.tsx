@@ -5,8 +5,8 @@ import RcTrainingDemo from "./RcTrainingDemo";
 const P1 = /Millions of people worldwide play multiplayer online games/;
 const P2 = /The economist Edward Castronova noticed something curious/;
 const go = (tab: RegExp) => fireEvent.click(screen.getByRole("button", { name: tab }));
-const firstCheck = () => { go(/Hide paragraph/); go(/Check recall/); };
-const finishExample = () => { firstCheck(); go(/Next paragraph/); go(/Hide paragraph/); go(/Check recall/); go(/Finish the example/); };
+const nextParagraph = () => { go(/Retell paragraph/); go(/Next paragraph/); };
+const finishExample = () => { nextParagraph(); go(/Retell paragraph/); go(/Finish the example/); };
 
 describe("RC Training demonstration", () => {
   it("starts with paragraph 1 and does not mention paragraph 2 yet", () => {
@@ -17,59 +17,42 @@ describe("RC Training demonstration", () => {
 
   it("hides the text for recall and gives no answer while the learner is being tested", () => {
     render(<RcTrainingDemo />);
-    go(/Hide paragraph/);
+    go(/Retell paragraph/);
     expect(screen.queryByText(P1)).not.toBeInTheDocument();
     expect(document.querySelector("blockquote")).toBeNull();
     expect(screen.getByText("Your turn")).toBeVisible();
     expect(screen.getByRole("status")).toHaveTextContent(/Your microphone is off/);
   });
 
-  it("holds illustrative automatic feedback until the end, then explains changed qualifications", () => {
+  it("holds illustrative feedback until both complete paragraphs are retold", () => {
     render(<RcTrainingDemo />);
-    firstCheck();
+    nextParagraph();
     expect(document.querySelector("blockquote")).toBeNull();
-    expect(screen.getByText(/Automatic feedback comes at the end of practice/)).toBeVisible();
-    go(/Next paragraph/);
-    go(/Hide paragraph/);
-    go(/Check recall/);
+    expect(screen.getByText(P2)).toBeVisible();
+    expect(screen.queryByText(P1)).not.toBeInTheDocument();
+    go(/Retell paragraph/);
+    expect(screen.queryByText(P2)).not.toBeInTheDocument();
+    expect(screen.getByText(/Retell paragraph 2 only, out loud/)).toBeVisible();
     go(/Finish the example/);
-    expect(screen.getByText("Instructor modelling")).toBeVisible();
     expect(screen.getByText("Illustrative feedback, not a real attempt")).toBeVisible();
     expect(screen.getByText(/They all play as warriors/)).toBeVisible();
     expect(screen.getByText("might band together")).toBeVisible();
-    const repair = screen.getByText(/the recall makes two details too strong/);
-    expect(repair).toHaveTextContent(/one possible character/);
-    expect(repair).toHaveTextContent(/players might team up/);
-    expect(repair).toHaveTextContent(/does not say they all do/);
+    expect(screen.getByText(/Feedback starts automatically after/)).toBeVisible();
   });
 
-  it("recalls paragraph 2 alone, then confirms both paragraphs", () => {
-    render(<RcTrainingDemo />);
-    firstCheck();
-    go(/Next paragraph/);
-    expect(screen.getByText(P2)).toBeVisible();
-    go(/Hide paragraph/);
-    expect(screen.getByText(/Retell paragraph 2 only, out loud/)).toBeVisible();
-    expect(screen.queryByText(P2)).not.toBeInTheDocument();
-    go(/Check recall/);
-    expect(screen.getByText(P1)).toBeVisible();
-    expect(screen.getByText(P2)).toBeVisible();
-  });
-
-  it("ends with an optional passage recall, not another paragraph, and can restart", () => {
-    render(<RcTrainingDemo />);
+  it("restarts without adding check or optional whole-passage steps", () => {
+    const { container } = render(<RcTrainingDemo />);
     finishExample();
-    expect(screen.getByText(/whole-passage recall is optional/)).toBeVisible();
-    expect(screen.getByText(/not automatically graded/)).toBeVisible();
+    expect(container.textContent).not.toMatch(/Check recall|whole-passage recall is optional|Get feedback on my recall/);
     fireEvent.click(screen.getByRole("button", { name: /Try the example again/i }));
     expect(screen.getByText(P1)).toBeVisible();
   });
 
   it("uses no em dashes in its teaching copy", () => {
     const { container } = render(<RcTrainingDemo />);
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 5; i++) {
       expect(container.textContent).not.toContain("—");
-      if (i < 6) fireEvent.click(container.querySelector<HTMLButtonElement>(".rct-demo-controls > button:not(.rct-demo-back)")!);
+      if (i < 4) fireEvent.click(container.querySelector<HTMLButtonElement>(".rct-demo-controls > button:not(.rct-demo-back)")!);
     }
   });
 
@@ -92,7 +75,7 @@ describe("RC Training demonstration", () => {
       go(/Pause demo/);
       act(() => vi.advanceTimersByTime(60000));
       expect(screen.queryByText(P1)).not.toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Check recall/ })).toBeVisible();
+      expect(screen.getByRole("button", { name: /Next paragraph/ })).toBeVisible();
     } finally { vi.useRealTimers(); }
   });
 });

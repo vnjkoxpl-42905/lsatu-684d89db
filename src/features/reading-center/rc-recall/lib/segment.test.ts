@@ -1,10 +1,40 @@
 import { describe, expect, it } from "vitest";
 import { isSegmentable, PassageSegmentError, segmentPassage, paragraphDisplayLabel } from "./segment";
 import { recapLabel } from "./history";
+import { readFileSync, readdirSync } from "node:fs";
+import { resolve } from "node:path";
 
 import { COMPARATIVE, STANDARD } from "./fixtures";
 
 describe("segmentPassage", () => {
+  it("repairs only editorial notes, bare backticks and the two confirmed dependent lists in version 2", () => {
+    const dir = resolve("public/data/rc");
+    const passages = readdirSync(dir).filter((name) => /^RC-PT\d+\.json$/.test(name)).flatMap((name) => JSON.parse(readFileSync(resolve(dir, name), "utf8")).passages);
+    let removedNotes = 0;
+    for (const source of passages) {
+      const before = segmentPassage(source.text);
+      const after = segmentPassage(source.text, 2, source);
+      expect(after.comparative).toBe(before.comparative);
+      const leadingNote = before.paragraphs[0].text;
+      if (/^\*[^*][\s\S]*\*$/.test(leadingNote)) {
+        removedNotes++;
+        expect(after.paragraphs.some((item) => item.text === leadingNote)).toBe(false);
+      }
+      expect(after.paragraphs.some((item) => /^`+$/.test(item.text))).toBe(false);
+      if (source.preptest === 141 && [30, 201].includes(source.passageId)) {
+        const prefix = source.passageId === 30 ? "Given such principles" : "Now consider the phenomenon of rivalry";
+        const combined = after.paragraphs.find((item) => item.text.startsWith(prefix))!;
+        expect(combined).toBeDefined();
+        for (const block of before.paragraphs.filter((item) => /^(?:[123]\. |[AB]\. You earn)/.test(item.text))) expect(combined.text).toContain(block.text);
+        expect(after.paragraphs).toHaveLength(before.paragraphs.length - (source.passageId === 30 ? 3 : 2));
+      } else {
+        expect(after.paragraphs.map((item) => item.text)).toEqual(before.paragraphs.filter((item) => item.text !== leadingNote || !/^\*[^*][\s\S]*\*$/.test(leadingNote)).filter((item) => !/^`+$/.test(item.text)).map((item) => item.text));
+      }
+    }
+    expect(passages).toHaveLength(320);
+    expect(removedNotes).toBe(26);
+    expect(segmentPassage("*An italic claim remains body prose.*\n\nNext paragraph.", 2).paragraphs).toHaveLength(2);
+  });
   it("shares comparative local numbering with saved recall labels without changing global keys", () => {
     const source = segmentPassage("Passage A\n\nA first.\n\nA second.\n\nPassage B\n\nB first.");
     expect(paragraphDisplayLabel(source, 2)).toBe("Passage B · Paragraph 1 of 1");

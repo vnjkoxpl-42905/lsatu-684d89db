@@ -6,6 +6,8 @@
  * attached to the paragraph that follows them, never recall units of their own.
  */
 
+import { rcSourceBlocks, type RcSourceIdentity, type SegmentationVersion } from "../../../../../supabase/functions/_shared/rcParagraphSource";
+export type { SegmentationVersion, RcSourceIdentity } from "../../../../../supabase/functions/_shared/rcParagraphSource";
 export type SubPassage = "A" | "B";
 
 export interface RecallParagraph {
@@ -36,8 +38,8 @@ const ITALIC_NOTE = /^\*[^*][\s\S]*\*$/;
 
 export class PassageSegmentError extends Error {}
 
-export function segmentPassage(text: string): SegmentedPassage {
-  const blocks = text.replace(/\r\n?/g, "\n").split(/\n{2,}/).map((b) => b.trim()).filter(Boolean);
+export function segmentPassage(text: string, version: SegmentationVersion = 1, identity?: RcSourceIdentity): SegmentedPassage {
+  const blocks = rcSourceBlocks(text, version, identity);
   const paragraphs: RecallParagraph[] = [];
   let pending: string[] = [];
   let sub: SubPassage | null = null;

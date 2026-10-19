@@ -28,6 +28,8 @@ export interface AttemptRow {
   finished_at: string | null;
   elapsed_seconds: number | null;
   completed: boolean;
+  /** Missing on pre-versioning records; those always use historical version 1. */
+  segmentation_version?: 1 | 2;
 }
 
 export interface RecapRow {
@@ -134,6 +136,7 @@ async function readAttempt(id: string, studentId: string): Promise<{ ok: boolean
 export async function createAttempt(input: {
   studentId: string; mode: RecallMode; preptest: number; section: number;
   passageIds: number[]; confirmationScope: ConfirmScope | null;
+  segmentationVersion?: 1 | 2;
   /** Keep the same id across retries so a lost response cannot create a second attempt. */
   id?: string;
 }): Promise<AttemptRow> {
@@ -145,13 +148,14 @@ export async function createAttempt(input: {
     section: input.section,
     passage_ids: input.passageIds,
     confirmation_scope: input.mode === "rc_recall" ? input.confirmationScope ?? "all_read" : null,
+    ...(input.segmentationVersion ? { segmentation_version: input.segmentationVersion } : {}),
   };
   let failure: unknown = null;
   try {
     const { data, error } = await table("rc_recall_attempts").insert(row).select().single();
     if (!error) {
       const saved = data as AttemptRow | null;
-      if (!saved || saved.id !== row.id || saved.student_id !== input.studentId) throw new Error("The attempt could not be verified.");
+      if (!saved || saved.id !== row.id || saved.student_id !== input.studentId || (input.segmentationVersion && (saved.segmentation_version ?? 1) !== input.segmentationVersion)) throw new Error("The attempt could not be verified.");
       return saved;
     }
     failure = error;
@@ -163,7 +167,10 @@ export async function createAttempt(input: {
   // already be taken by an earlier try. Read it back before saying anything.
   if (classifyFailure(failure) === "missing_table") throw failure;
   const read = await readAttempt(row.id, input.studentId);
-  if (read.row) return read.row;
+  if (read.row) {
+    if (input.segmentationVersion && (read.row.segmentation_version ?? 1) !== input.segmentationVersion) throw new Error("The attempt could not be verified.");
+    return read.row;
+  }
   if (read.ok) throw failure;
   throw new AttemptOutcomeUnknownError(row.id, failure);
 }

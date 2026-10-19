@@ -24,7 +24,9 @@ describe("RC Training instructions", () => {
     expect(screen.getByRole("heading", { name: "Watch the one-minute demo" })).toBeInTheDocument();
     expect(entry.compareDocumentPosition(screen.getByLabelText("RC Training demonstration")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(container.textContent).toContain("in your head");
-    expect(container.textContent).toContain("Get feedback on my recall");
+    expect(container.textContent).toContain("feedback starts automatically");
+    expect(container.textContent).toContain("Retell paragraph");
+    expect(container.textContent).not.toMatch(/Check recall|Hide paragraph|whole-passage recall/);
     expect(container.textContent).not.toMatch(/No clock|Show elapsed time|Decaf|Cappuccino/);
   });
 });

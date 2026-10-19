@@ -17,7 +17,7 @@ import { recapLabel, type HistoryEntry } from "./lib/history";
 import { loadPassageCompletions } from "./lib/passageProgress";
 import { retryPendingFinalization } from "./lib/pending";
 import { buildRecallSections, restoreRecallPractice, selectRecallPractice, sectionLabel, verifyLoadedSection, type RecallSection } from "./lib/sections";
-import { buildSectionSteps, type ConfirmScope, type RecallMode } from "./lib/sequence";
+import { buildSectionSteps, buildParagraphTrainingSteps, type ConfirmScope, type RecallMode } from "./lib/sequence";
 import type { SegmentedPassage } from "./lib/segment";
 
 interface Running {
@@ -56,6 +56,7 @@ function AccountRecallPage() {
   const startingRef = useRef(false);
   const [startError, setStartError] = useState<string | null>(null);
   const [startSelection, setStartSelection] = useState<string | null>(null);
+  const [resettingSession, setResettingSession] = useState(false);
   const startErrorRef = useRef<HTMLParagraphElement>(null);
   const [historyMessage, setHistoryMessage] = useState<string | null>(null);
   const [busyAttemptId, setBusyAttemptId] = useState<string | null>(null);
@@ -104,23 +105,24 @@ function AccountRecallPage() {
     target.focus({ preventScroll: true });
   }, [location.hash, location.key]);
 
-  const start = async (selected: RecallSection) => {
-    if (!user || !savingReady || recovery.running || startingRef.current) return;
+  const start = async (selected: RecallSection, fromSession = false) => {
+    if (!user || !savingReady || recovery.running || busyAttemptId !== null || startingRef.current) return;
     startingRef.current = true;
     setStarting(true);
     setStartSelection(contentKeyFor(selected));
+    setResettingSession(fromSession);
     setStartError(null);
     try {
       const loaded = await loadPassages(selected.passageIds);
-      const { passages, segmented } = verifyLoadedSection(selected, loaded);
+      const { passages, segmented } = verifyLoadedSection(selected, loaded, 2);
       const createKey = `${contentKeyFor(selected)}:${scope}`;
       if (pendingCreate.current?.key !== createKey) pendingCreate.current = { key: createKey, id: newId() };
       const attempt = await createAttempt({
         id: pendingCreate.current.id, studentId: user.id, mode, preptest: selected.preptest, section: selected.section,
-        passageIds: selected.passageIds, confirmationScope: scope,
+        passageIds: selected.passageIds, confirmationScope: scope, segmentationVersion: 2,
       });
       pendingCreate.current = null;
-      setRunning({ mode, scope, passages, segmented, attempt, showElapsedTimer, resume: null, contentKey: contentKeyFor(selected) });
+      setRunning({ mode, scope, passages, segmented, attempt, showElapsedTimer, resume: null, contentKey: `${contentKeyFor(selected)}:v2` });
     } catch (err) {
       setStartError(err instanceof AttemptOutcomeUnknownError
         ? "We could not confirm whether this practice was saved. Try again. We will check first, so it will not be saved twice."
@@ -149,10 +151,11 @@ function AccountRecallPage() {
       const original = available.find((s) => s.preptest === a.preptest && s.section === a.section);
       if (!original) throw new Error("The saved section is no longer available.");
       const section = restoreRecallPractice(original, a.passage_ids);
-      const { passages, segmented } = verifyLoadedSection(section, await loadPassages(a.passage_ids));
+      const { passages, segmented } = verifyLoadedSection(section, await loadPassages(a.passage_ids), a.segmentation_version ?? 1);
       const scopeUsed: ConfirmScope = a.confirmation_scope ?? "all_read";
-      const steps = buildSectionSteps(a.mode, segmented, scopeUsed);
-      const loaded = loadCheckpoint({ studentId: user.id, attemptId: a.id, contentKey: contentKeyFor(section), stepIds: steps.map((s) => s.id) });
+      const steps = a.segmentation_version === 2 ? buildParagraphTrainingSteps(segmented) : buildSectionSteps(a.mode, segmented, scopeUsed);
+      const checkpointKey = `${contentKeyFor(section)}${a.segmentation_version === 2 ? ":v2" : ""}`;
+      const loaded = loadCheckpoint({ studentId: user.id, attemptId: a.id, contentKey: checkpointKey, stepIds: steps.map((s) => s.id) });
       if (loaded.ok === false) { setHistoryMessage(`${REJECTION_MESSAGE[loaded.reason]} This attempt can't be resumed here.`); return; }
       const reconciled = new Map(loaded.checkpoint.recaps.map((r) => [r.key, r]));
       for (const row of fresh?.recaps ?? entry.recaps) {
@@ -160,7 +163,7 @@ function AccountRecallPage() {
       }
       setRunning({
         mode: a.mode, scope: scopeUsed, passages, segmented, attempt: a, showElapsedTimer: loaded.checkpoint.showElapsedTimer,
-        resume: { ...loaded.checkpoint, recaps: [...reconciled.values()] }, contentKey: contentKeyFor(section),
+        resume: { ...loaded.checkpoint, recaps: [...reconciled.values()] }, contentKey: checkpointKey,
       });
     } catch {
       setHistoryMessage("This practice could not be opened. Your saved place has not changed. Try again.");
@@ -195,6 +198,17 @@ function AccountRecallPage() {
   const hasActivity = (entry: HistoryEntry) => entry.recaps.length > 0 || (savedPlaces.get(entry.attempt.id)?.stepIndex ?? 0) > 0 || (savedPlaces.get(entry.attempt.id)?.recaps.length ?? 0) > 0;
   const inProgress = history.entries.filter((e) => e.status === "in_progress" && e.resumable).sort((a, b) => Number(hasActivity(b)) - Number(hasActivity(a)) || b.attempt.started_at.localeCompare(a.attempt.started_at));
   const latestSession = inProgress[0];
+  const resetSession = () => {
+    if (!latestSession || startingRef.current || busyAttemptId !== null || recovery.running || !savingReady) return;
+    try {
+      const original = sections.find((section) => section.preptest === latestSession.attempt.preptest && section.section === latestSession.attempt.section);
+      if (!original) throw new Error("The saved passage is no longer available. Try loading passages again.");
+      void start(restoreRecallPractice(original, latestSession.attempt.passage_ids), true);
+    } catch (error) {
+      setResettingSession(true);
+      setStartError(error instanceof Error ? error.message : "This practice could not be restarted. Your saved work has not changed.");
+    }
+  };
   const sessionTitle = (entry: HistoryEntry) => entry.attempt.passage_ids.length === 1
     ? index.data?.find((passage) => passage.passageId === entry.attempt.passage_ids[0])?.title || sectionLabel(entry.attempt)
     : sectionLabel(entry.attempt);
@@ -212,14 +226,18 @@ function AccountRecallPage() {
 
     <div className="rct-content">
       <section className="rct-start" aria-labelledby="rc-recall-start">
-        <div className="rct-list-heading"><h2 id="rc-recall-start" tabIndex={-1}>{passageCount === 1 ? "Choose a passage" : "Choose a full section"}</h2><p>{passageCount === 1 ? "Read, hide the text and recall, then check. Start any passage below." : "Practise four passages in order, using the same paragraph-by-paragraph routine."}</p></div>
+        <div className="rct-list-heading"><h2 id="rc-recall-start" tabIndex={-1}>{passageCount === 1 ? "Choose a passage" : "Choose a full section"}</h2><p>{passageCount === 1 ? "Read one paragraph, retell it from memory, then move to the next. Start any passage below." : "Practise four passages in order, using the same paragraph-by-paragraph routine."}</p></div>
         <div className="rct-start-form">
           {latestSession && <section className="rct-continue-card" aria-labelledby="rc-continue-title">
             <div className="rct-continue-main">
               <span className="rct-continue-icon" aria-hidden="true"><BookOpen size={21} /></span>
               <div className="rct-continue-copy"><p className="rct-continue-caption">Resume practice</p><h3 id="rc-continue-title">{sessionTitle(latestSession)}</h3><p>{sessionMeta(latestSession)}</p></div>
-              <button type="button" className="rct-button rct-button-primary" disabled={recovery.running || busyAttemptId !== null || starting} onClick={() => void resume(latestSession)}>{busyAttemptId === latestSession.attempt.id ? "Opening…" : "Resume"}</button>
+              <div className="rct-passage-actions rct-continue-actions">
+                <button type="button" className="rct-button rct-button-primary" disabled={recovery.running || busyAttemptId !== null || starting} onClick={() => void resume(latestSession)}>{busyAttemptId === latestSession.attempt.id ? "Opening…" : "Resume"}</button>
+                <button type="button" className="rct-text-button rct-reset-passage" disabled={recovery.running || busyAttemptId !== null || starting || !savingReady || index.isPending || index.isError} onClick={resetSession} title="Start again from the beginning. Your earlier attempts stay saved.">{starting && resettingSession ? "Starting…" : latestSession.attempt.passage_ids.length === 1 ? "Reset passage" : "Reset section"}</button>
+              </div>
             </div>
+            {startError && resettingSession && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error rct-continue-error">{startError}</p>}
             {inProgress.length > 1 && <footer className="rct-continue-footer"><details className="rct-other-sessions"><summary>Other unfinished sessions ({inProgress.length - 1})</summary><ul>{inProgress.slice(1).map((entry) => <li key={entry.attempt.id}><div><strong>{sessionTitle(entry)}</strong><p>{sessionMeta(entry)}</p></div><button type="button" className="rct-text-button" disabled={recovery.running || busyAttemptId !== null || starting} onClick={() => void resume(entry)} aria-label={`Resume ${sessionTitle(entry)}, started ${sessionDate(entry)}`}>{busyAttemptId === entry.attempt.id ? "Opening…" : "Resume"}</button></li>)}</ul></details>
             </footer>}
           </section>}
@@ -247,7 +265,7 @@ function AccountRecallPage() {
                 <button type="button" className="rct-button rct-button-primary" aria-label={`Start ${label}`} disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>{starting && startSelection === contentKeyFor(selection) ? "Starting…" : passageCount === 1 ? "Start passage" : "Start section"}<ArrowUpRight size={18} aria-hidden="true" /></button>
                 {passageCount === 1 && <button type="button" className="rct-text-button rct-reset-passage" aria-label={`Reset ${label}`} title="Start again from paragraph 1. Your earlier attempts stay saved." disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>Reset passage</button>}
               </div>
-              {startError && startSelection === contentKeyFor(selection) && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error" style={{ flexBasis: "100%", width: "100%" }}>{startError}</p>}
+              {startError && !resettingSession && startSelection === contentKeyFor(selection) && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error" style={{ flexBasis: "100%", width: "100%" }}>{startError}</p>}
             </li>)}
           </ul>
           {!index.isPending && !index.isError && choices.length > 0 && matching.length === 0 && <p role="status">No passages match that search. Try a PrepTest number or another word.</p>}

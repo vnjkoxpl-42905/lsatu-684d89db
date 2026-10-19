@@ -6,6 +6,46 @@ import { listRuns } from "./lib/backup";
 
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
+it("meters the existing stream, follows real samples and releases analyser resources without another microphone request", async () => {
+  let frame!: FrameRequestCallback;
+  let sampleValue = 128;
+  const cancel = vi.fn(); const sourceDisconnect = vi.fn(); const analyserDisconnect = vi.fn(); const close = vi.fn().mockResolvedValue(undefined);
+  const source = { connect: vi.fn(), disconnect: sourceDisconnect };
+  const analyser = { fftSize: 256, getByteTimeDomainData: (samples: Uint8Array) => samples.fill(sampleValue), disconnect: analyserDisconnect };
+  const createSource = vi.fn(() => source);
+  class Context { state = "running"; createMediaStreamSource = createSource; createAnalyser = () => analyser; close = close; }
+  class Recorder { state = "inactive"; onstop: (() => void) | null = null; start() { this.state = "recording"; } stop() { this.state = "inactive"; this.onstop?.(); } }
+  const getUserMedia = vi.fn(); const trackStop = vi.fn();
+  const stream = { getTracks: () => [{ stop: trackStop }] } as unknown as MediaStream;
+  vi.stubGlobal("AudioContext", Context); vi.stubGlobal("MediaRecorder", Recorder);
+  vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => { frame = callback; return 7; });
+  vi.stubGlobal("cancelAnimationFrame", cancel); vi.stubGlobal("navigator", { mediaDevices: { getUserMedia } });
+  const { result, unmount } = renderHook(() => useRecapRecorder());
+  await act(async () => { expect((await result.current.start({ recapId: "meter", attemptId: "a", studentId: "meter-test", recapKey: "k" }, { ok: true, stream, mimeType: "audio/webm" })).ok).toBe(true); });
+  expect(createSource).toHaveBeenCalledWith(stream);
+  expect(getUserMedia).not.toHaveBeenCalled();
+  act(() => frame(0));
+  expect(result.current.micAvailable).toBe(true); expect(result.current.micLevel).toBe(0);
+  sampleValue = 160; act(() => frame(100));
+  expect(result.current.micLevel).toBe(1);
+  await act(async () => { await result.current.stop(); });
+  expect(result.current.micAvailable).toBe(false); expect(result.current.micLevel).toBe(0);
+  expect(sourceDisconnect).toHaveBeenCalledOnce(); expect(analyserDisconnect).toHaveBeenCalledOnce(); expect(close).toHaveBeenCalledOnce(); expect(cancel).toHaveBeenCalledWith(7);
+  expect(trackStop).toHaveBeenCalledOnce();
+  unmount(); expect(trackStop).toHaveBeenCalledOnce();
+});
+
+it("keeps recording available when Web Audio cannot initialize", async () => {
+  class Context { constructor() { throw new Error("Audio context unavailable"); } }
+  class Recorder { state = "inactive"; onstop: (() => void) | null = null; start() { this.state = "recording"; } stop() { this.state = "inactive"; this.onstop?.(); } }
+  vi.stubGlobal("AudioContext", Context); vi.stubGlobal("MediaRecorder", Recorder);
+  const stream = { getTracks: () => [{ stop: vi.fn() }] } as unknown as MediaStream;
+  const { result } = renderHook(() => useRecapRecorder());
+  await act(async () => { expect((await result.current.start({ recapId: "meter-fallback", attemptId: "a", studentId: "meter-fallback", recapKey: "k" }, { ok: true, stream, mimeType: "audio/webm" })).ok).toBe(true); });
+  expect(result.current.isRecording()).toBe(true); expect(result.current.micAvailable).toBe(false);
+  await act(async () => { await result.current.stop(); });
+});
+
 it("stops microphone permission that arrives after the recorder hook unmounts", async () => {
   let permit!: (stream: MediaStream) => void;
   const stop = vi.fn();

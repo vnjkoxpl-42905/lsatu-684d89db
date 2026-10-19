@@ -1,3 +1,5 @@
+import { rcSourceBlocks, type RcSourceIdentity, type SegmentationVersion } from "./rcParagraphSource.ts";
+
 export const RC_GRADER_VERSION = 2;
 export const RC_GRADE_MODEL = "google/gemini-3.1-flash-lite";
 export const RC_ASR_ENGINE = "deepgram/nova-3";
@@ -34,8 +36,8 @@ export function validGradeRequest(value: unknown): value is { attemptId: string;
 }
 
 /** Mirrors the client segmentation; parity is checked against every published RC bank passage. */
-export function segmentRcSource(text: string): string[] {
-  const blocks = text.replace(/\r\n?/g, "\n").split(/\n{2,}/).map(b => b.trim()).filter(Boolean);
+export function segmentRcSource(text: string, version: SegmentationVersion = 1, identity?: RcSourceIdentity): string[] {
+  const blocks = rcSourceBlocks(text, version, identity);
   const paragraphs: string[] = []; let pending = false;
   for (const block of blocks) {
     if (/^\W*Passage\s+([AB])\W*$/i.test(block)) { pending = true; continue; }
@@ -46,7 +48,7 @@ export function segmentRcSource(text: string): string[] {
   return paragraphs;
 }
 
-export interface GradeAttempt { mode: string; preptest: number; section: number; passage_ids: number[] }
+export interface GradeAttempt { mode: string; preptest: number; section: number; passage_ids: number[]; segmentation_version?: SegmentationVersion }
 export interface GradeRecap { recap_key: string; passage_position: number; kind: string }
 export function canonicalSource(file: unknown, attempt: GradeAttempt, recap: GradeRecap): { text: string; passageId: number; paragraphIndex: number | null } {
   if (attempt.mode !== "rc_recall" || ![1, 4].includes(attempt.passage_ids.length)) throw new Error("unsupported_attempt");
@@ -57,7 +59,7 @@ export function canonicalSource(file: unknown, attempt: GradeAttempt, recap: Gra
   const passageId = attempt.passage_ids[position - 1];
   const matches = value.passages.filter(p => p.passageId === passageId && p.preptest === attempt.preptest && p.section === attempt.section);
   if (matches.length !== 1 || typeof matches[0].text !== "string") throw new Error("invalid_source");
-  const paragraphs = segmentRcSource(matches[0].text);
+  const paragraphs = segmentRcSource(matches[0].text, attempt.segmentation_version ?? 1, { preptest: attempt.preptest, passageId });
   if (recap.kind === "passage_recap" && recap.recap_key === `p${position}-passage-recap`) {
     return { text: paragraphs.join("\n\n"), passageId, paragraphIndex: null };
   }

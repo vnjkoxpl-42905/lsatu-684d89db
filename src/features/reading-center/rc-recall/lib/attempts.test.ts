@@ -97,6 +97,14 @@ describe("probeAttemptsBackend", () => {
 });
 
 describe("createAttempt", () => {
+  it("persists explicit version 2 but leaves historical default behavior unchanged", async () => {
+    db.replies["rc_recall_attempts:insert"] = echoInsert;
+    const modern = await createAttempt({ ...base, segmentationVersion: 2 });
+    expect(modern.segmentation_version).toBe(2);
+    expect(inserted()[0].payload).toMatchObject({ segmentation_version: 2 });
+    await createAttempt(base);
+    expect(inserted()[1].payload).not.toHaveProperty("segmentation_version");
+  });
   it("inserts a UUID attempt for the student and verifies it", async () => {
     db.replies["rc_recall_attempts:insert"] = echoInsert;
     const row = await createAttempt({ ...base, confirmationScope: "current_sub_passage" });
