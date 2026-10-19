@@ -14,6 +14,13 @@ import { SpeedGauge } from "../components/SpeedGauge";
 import { DialogHeader, Dropdown, Modal } from "../components/spreeder-ui";
 import { PreferencesDialog } from "../components/ReaderDialogs";
 import { LrRecallProgress } from "../components/LrRecallProgress";
+import { RcTrainingProgress } from "../components/RcTrainingProgress";
+
+type ProgressActivity = "lr-recall" | "rc-training" | "speed-reading";
+/** In the same order as the sidebar. */
+const ACTIVITIES: readonly (readonly [ProgressActivity, string])[] = [
+  ["lr-recall", "LR Training"], ["rc-training", "RC Training"], ["speed-reading", "Speed Reading"],
+];
 
 type Metric = ReadingMetric;
 const METRICS: { value: Metric; label: string }[] = [
@@ -87,7 +94,8 @@ function MetricCard({ title, metric, initial }: { title: string; metric: Metric;
 
 export default function ProfilePage(): React.ReactElement {
   const [params, setParams] = useSearchParams();
-  const activity = params.get("activity") === "speed-reading" ? "speed-reading" : "lr-recall";
+  const requested = params.get("activity");
+  const activity: ProgressActivity = ACTIVITIES.some(([value]) => value === requested) ? (requested as ProgressActivity) : "lr-recall";
   const selectActivity = (value: string) => setParams(current => { const next = new URLSearchParams(current); next.set("activity", value); return next; });
   return <div className="min-h-screen">
     <TopBar />
@@ -95,13 +103,15 @@ export default function ProfilePage(): React.ReactElement {
       <h1 className="text-2xl font-semibold">Reading Progress</h1>
       <p className="mt-2 text-sm" style={{ color: "var(--rc-text-2)" }}>Explore your saved practice and results for each activity.</p>
       <div role="tablist" aria-label="Reading activity" className="my-5 flex flex-wrap gap-2">
-        {([['lr-recall', 'LR Recall'], ['speed-reading', 'Speed Reading']] as const).map(([value, label]) =>
+        {ACTIVITIES.map(([value, label], position) =>
           <button key={value} type="button" role="tab" id={`progress-tab-${value}`} aria-controls="reading-progress-panel" aria-selected={activity === value} tabIndex={activity === value ? 0 : -1}
             className="min-h-11 rounded-lg px-4 text-sm font-medium" style={{ background: activity === value ? "var(--rc-nav-active-bg)" : "var(--rc-card)", color: "var(--rc-text)" }}
             onKeyDown={event => {
               if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
               event.preventDefault();
-              const next = event.key === "Home" ? "lr-recall" : event.key === "End" ? "speed-reading" : value === "lr-recall" ? "speed-reading" : "lr-recall";
+              const last = ACTIVITIES.length - 1;
+              const target = event.key === "Home" ? 0 : event.key === "End" ? last : event.key === "ArrowRight" ? Math.min(position + 1, last) : Math.max(position - 1, 0);
+              const next = ACTIVITIES[target][0];
               selectActivity(next);
               document.getElementById(`progress-tab-${next}`)?.focus();
             }}
@@ -109,7 +119,9 @@ export default function ProfilePage(): React.ReactElement {
       </div>
     </header>
     <div role="tabpanel" id="reading-progress-panel" aria-labelledby={`progress-tab-${activity}`}>
-      {activity === "lr-recall" ? <div className="px-5 pb-10 sm:px-[26px]"><LrRecallProgress /></div> : <SpeedReadingProgress />}
+      {activity === "lr-recall" ? <div className="px-5 pb-10 sm:px-[26px]"><LrRecallProgress /></div>
+        : activity === "rc-training" ? <div className="px-5 pb-10 sm:px-[26px]"><RcTrainingProgress /></div>
+          : <SpeedReadingProgress />}
     </div>
   </div>;
 }

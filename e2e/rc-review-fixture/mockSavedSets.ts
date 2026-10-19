@@ -5,6 +5,22 @@ let failWrites = false;
 let lastCommand = '';
 export function setFixtureSavedFailure(value: boolean) { failWrites = value; }
 export function savedFixtureState() { return { count: rows.size, failWrites, lastCommand }; }
+/** Optional browser-only seed. Normal saved-mode acceptance still starts empty. */
+export function seedFixtureSavedRows() {
+  const common = { kind: 'rc-builder' as const, version: 1 as const,
+    config: { reveal: 'per_passage' as const, timing: { mode: 'unlimited' as const } },
+    filters: { topics: [], formats: [], frameworks: [], families: [], difficulties: [], status: 'any' as const, preptestMin: 101, preptestMax: 159 },
+  };
+  const examples: [string, string, RcSavedPayload][] = [
+    ['synthetic-fixed', '[Synthetic] One passage practice', { ...common, mode: 'fixed', count: 1, passageIds: [7], questionIds: [1, 2] }],
+    ['synthetic-recipe', '[Synthetic] Four passage practice', { ...common, mode: 'recipe', count: 4, passageIds: [], questionIds: [] }],
+  ];
+  for (const [id, name, payload] of examples) {
+    const decoded = decodeRcSavedSet(payload);
+    if (decoded.status !== 'ok') throw new Error('Invalid synthetic saved-set seed.');
+    if (!rows.has(id)) rows.set(id, { id, userId: 'synthetic-owner', name, createdAt: '2026-10-19T12:00:00Z', payload: decoded.value, problem: null });
+  }
+}
 const owner = (actor: string) => { if (actor !== 'synthetic-owner') throw new Error('Synthetic account mismatch.'); };
 export async function listRcSavedSets(actor: string) { owner(actor); return [...rows.values()].map(row => structuredClone(row)); }
 export async function getRcSavedSet(actor: string, id: string) { owner(actor); const row = rows.get(id); if (!row) throw new Error('Synthetic saved RC set unavailable.'); return structuredClone(row); }

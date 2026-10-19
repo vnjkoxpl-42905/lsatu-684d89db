@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import ProfilePage from "./ProfilePage";
 vi.mock("../components/AppShell", () => ({ TopBar: () => <div>Reading Center navigation</div> }));
 vi.mock("../components/LrRecallProgress", () => ({ LrRecallProgress: () => <p>Detailed LR history</p> }));
+vi.mock("../components/RcTrainingProgress", () => ({ RcTrainingProgress: () => <p>Detailed RC history</p> }));
 vi.mock("../hooks/useReadingCenterData", () => ({
   usePreferences: () => ({ data: undefined, isLoading: false }),
   useSavePreferences: () => ({ mutate: vi.fn() }),
@@ -16,7 +17,7 @@ const setup = (path = "/reading-center/profile") => render(<MemoryRouter initial
 describe("Reading Progress activity selection", () => {
   it("opens LR history by default and switches to the preserved Speed Reading charts", () => {
     setup();
-    expect(screen.getByRole("tab", { name: "LR Recall" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "LR Training" })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByText("Detailed LR history")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("tab", { name: "Speed Reading" }));
     expect(screen.getByRole("button", { name: "Overview" })).toBeInTheDocument();
@@ -25,21 +26,30 @@ describe("Reading Progress activity selection", () => {
     expect(screen.queryByText("Detailed LR history")).not.toBeInTheDocument();
     expect(screen.getByTestId("url")).toHaveTextContent("activity=speed-reading");
   });
+  it("includes RC Training between LR Training and Speed Reading, without mixing in LR grading", () => {
+    setup();
+    expect(screen.getAllByRole("tab").map((tab) => tab.textContent)).toEqual(["LR Training", "RC Training", "Speed Reading"]);
+    fireEvent.click(screen.getByRole("tab", { name: "RC Training" }));
+    expect(screen.getByText("Detailed RC history")).toBeInTheDocument();
+    expect(screen.queryByText("Detailed LR history")).not.toBeInTheDocument();
+    expect(screen.getByTestId("url")).toHaveTextContent("activity=rc-training");
+  });
   it("honours direct links and supports arrow, home and end tab navigation", () => {
     setup("/reading-center/profile?activity=speed-reading&from=dashboard");
-    const lr = screen.getByRole("tab", { name: "LR Recall" });
+    const lr = screen.getByRole("tab", { name: "LR Training" });
+    const rc = screen.getByRole("tab", { name: "RC Training" });
     const speed = screen.getByRole("tab", { name: "Speed Reading" });
     expect(speed).toHaveAttribute("tabindex", "0");
     fireEvent.keyDown(speed, { key: "ArrowLeft" });
-    expect(lr).toHaveFocus();
-    expect(lr).toHaveAttribute("aria-selected", "true");
+    expect(rc).toHaveFocus();
+    expect(rc).toHaveAttribute("aria-selected", "true");
     expect(screen.getByTestId("url")).toHaveTextContent("from=dashboard");
-    fireEvent.keyDown(lr, { key: "End" });
+    fireEvent.keyDown(rc, { key: "End" });
     expect(speed).toHaveFocus();
     expect(speed).toHaveAttribute("aria-selected", "true");
     fireEvent.keyDown(speed, { key: "Home" });
     expect(lr).toHaveFocus();
     fireEvent.keyDown(lr, { key: "ArrowRight" });
-    expect(speed).toHaveFocus();
+    expect(rc).toHaveFocus();
   });
 });

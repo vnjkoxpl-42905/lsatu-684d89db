@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ReadingCenterGate from "@/components/ReadingCenterGate";
@@ -12,7 +12,19 @@ import CoursesPage from "./pages/CoursesPage";
 import AdminPassagesPage from "./pages/AdminPassagesPage";
 import ReadingCenterHome from "./pages/ReadingCenterHome";
 import RrcPage from "./pages/RrcPage";
+import RcRecallPage from "./rc-recall/RcRecallPage";
+import RcTrainingInstructions from "./rc-recall/RcTrainingInstructions";
 import "./reading-center.css";
+
+/** Hub pages are gated by the Reading Center grant, inside the shared shell. */
+const hub = (page: ReactNode) => <ReadingCenterGate embedded>{page}</ReadingCenterGate>;
+
+function RcTrainingEntry() {
+  const { hash } = useLocation();
+  return hash === "#rc-recall-start" || hash === "#rc-recall-history"
+    ? <Navigate to={`/reading-center/rc-recall/passages${hash}`} replace />
+    : <RcTrainingInstructions />;
+}
 
 export default function ReadingCenter() {
   const { pathname } = useLocation();
@@ -27,18 +39,21 @@ export default function ReadingCenter() {
   return (
     <div id="reading-center-root" className="rc-root" data-rc-theme="light">
       <Routes>
-        <Route element={<ReadingCenterGate><AppShell /></ReadingCenterGate>}>
-          <Route index element={<ReadingCenterHome />} />
-          <Route path="speed-reading" element={<LibraryPage />} />
-          <Route path="tags" element={<TagsPage />} />
-          <Route path="tags/:tag" element={<LibraryPage />} />
-          <Route path="courses" element={<CoursesPage />} />
-          <Route path="profile" element={<ProfilePage />} />
+        {/* One shell for every destination, so moving between LR and RC keeps the sidebar in place.
+            Each page keeps its own access check; sharing the shell grants nothing. */}
+        <Route element={<AppShell />}>
+          <Route index element={hub(<ReadingCenterHome />)} />
+          <Route path="rc-recall" element={hub(<RcTrainingEntry />)} />
+          <Route path="rc-recall/passages" element={hub(<RcRecallPage />)} />
+          <Route path="rc-recall/instructions" element={hub(<RcTrainingInstructions />)} />
+          <Route path="speed-reading" element={hub(<LibraryPage />)} />
+          <Route path="tags" element={hub(<TagsPage />)} />
+          <Route path="tags/:tag" element={hub(<LibraryPage />)} />
+          <Route path="courses" element={hub(<CoursesPage />)} />
+          <Route path="profile" element={hub(<ProfilePage />)} />
           <Route path="stats" element={<Navigate to="../profile" replace />} />
-          <Route path="manage" element={<ProtectedRoute requireAdmin><AdminPassagesPage /></ProtectedRoute>} />
-        </Route>
-        <Route element={<ReadingCenterRrcGate><AppShell rrcOnly /></ReadingCenterRrcGate>}>
-          <Route path="rrc" element={<RrcPage />} />
+          <Route path="manage" element={hub(<ProtectedRoute requireAdmin><AdminPassagesPage /></ProtectedRoute>)} />
+          <Route path="rrc" element={<ReadingCenterRrcGate embedded><RrcPage /></ReadingCenterRrcGate>} />
         </Route>
         <Route path="read/:slug" element={<ReadingCenterGate><ReaderPage /></ReadingCenterGate>} />
         <Route path="*" element={<Navigate to="/reading-center" replace />} />

@@ -38,18 +38,18 @@ export function LrRecallProgress() {
   }, [recall.data, user?.id]);
   const loadGrades = useCallback(async () => grades, [grades]);
 
-  if (!user) return <p role="status">Sign in to see your LR Recall history.</p>;
-  if (recall.isLoading) return <p role="status">Loading your LR Recall history…</p>;
+  if (!user) return <p role="status">Sign in to see your LR Training history.</p>;
+  if (recall.isLoading) return <p role="status">Loading your LR Training history…</p>;
   if (recall.isError) return <div role="alert" className="rounded-2xl border p-5" style={{ borderColor: "var(--rc-outline-2)" }}>
-    <p>Your LR Recall history could not load. Your saved work has not changed.</p>
+    <p>Your LR Training history could not load. Your saved work has not changed.</p>
     <button type="button" className="mt-3 min-h-11 underline" onClick={() => void recall.refetch()}>Try again</button>
   </div>;
-  return <section aria-label="LR Recall progress" className="max-w-5xl" style={preferences.data?.theme === "high_contrast" ? highContrastTheme : recallTheme}>
+  return <section aria-label="LR Training progress" className="max-w-5xl" style={preferences.data?.theme === "high_contrast" ? highContrastTheme : recallTheme}>
     <p className="mb-4 text-sm leading-6" style={{ color: "var(--rc-text-2)" }}>Recall coverage across your graded runs, followed by your saved reports. Open a section to review its attempts, transcript and feedback.</p>
     <SectionProgress key={`${user.id}:${recall.dataUpdatedAt}`} loadGrades={loadGrades}
-      heading="LR Recall history" initiallyExpanded
-      emptyMessage="No graded runs yet. Complete an LR Recall section, then return here for your marked reports and progress."
+      heading="LR Training history" initiallyExpanded
+      emptyMessage="No graded runs yet. Complete an LR Training section, then return here for your marked reports and progress."
       onOpen={id => navigate(`${RC_RRC_PATH}/attempt/${encodeURIComponent(id)}`)} />
-    <Link to={RC_RRC_PATH} className="mt-4 inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4">Practise LR Recall</Link>
+    <Link to={RC_RRC_PATH} className="mt-4 inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4">Practise LR Training</Link>
   </section>;
 }

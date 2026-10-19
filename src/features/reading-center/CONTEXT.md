@@ -1,6 +1,6 @@
 # Reading Center
 
-Reading practice hub with a Dashboard, LR Recall and Speed Reading. Spec: ai-os
+Reading practice hub with a Dashboard, LR Recall, RC Training and Speed Reading. Spec: ai-os
 brainstorms/2026-10-12-reading-center-build-spec.md.
 
 - lib/: pure logic (tokenize, timing, constants, types). No React, no Supabase. Unit tested.
@@ -17,7 +17,21 @@ lib/tokenize.ts and must stay stable for a given passage body.
 - LR Recall is the existing Read, Recall, Colour section activity. Its collection,
   runner, recordings and grading remain owned by `activity-centre`.
 - Speed Reading keeps the general passage collection. It is separate from LR
-  sections; there is no RC Recall collection or navigation item yet.
+  sections.
+- RC Training (`rc-recall/`, `/reading-center/rc-recall`, hub members only) runs a
+  full four-passage section from the existing RC bank. Students read, silently
+  recall each paragraph and check the text, with an optional whole-passage recap.
+  It has its own tables (`rc_recall_attempts`,
+  `rc_recall_recaps`), private bucket (`rc-recall-recordings`) and IndexedDB
+  backup (`rc-recall-backup`); none of it touches LR recording, recovery or
+  grading. Attempts are append-only. It saves objective facts only and never
+  scores recall. The Dashboard and Reading Progress show its saved attempts,
+  completion and time separately from LR grading. Instructions, examples and
+  recall practice share one RC Training destination in the activity rail and
+  Dashboard. The existing question-practice testing centre remains separate.
+  Example and instruction
+  videos render only when `VITE_RC_RECALL_MEDIA_BASE` is set (see
+  `scripts/rc-recall-media/README.md`).
 - `hooks/useRecallDashboard.ts` reads assignment summaries and report metadata
   with explicit `student_id` filters even for admins. Query keys include the user.
   All Dashboard inputs are paginated beyond the 1,000-row API cap. Passage labels

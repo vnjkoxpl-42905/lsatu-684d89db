@@ -92,13 +92,15 @@ describe("classroom rail access", () => {
     expect(railButton(/^My Work/)).toBeUndefined();
     expect(railButton(/^Reading Center$/)).toBeUndefined();
   });
-  it('does not infer a Reading Center launcher from broad Classroom or admin access', async () => {
+  it('keeps student access assignment-based and gives teachers a direct Reading Center launcher', async () => {
     permissions.has_classroom_access = true; await renderShell('/classroom');
     expect(railButton(/^Reading Center$/)).toBeUndefined();
-    cleanup(); permissions.is_admin = true; readingCenter.allowed = true;
+    cleanup(); permissions.is_admin = true;
     await renderShell('/teacher/students');
-    expect(railButton(/^Reading Center$/)).toBeUndefined();
+    expect(railButton(/^Reading Center$/)).toBeInTheDocument();
     expect(railButton(/^Teacher Workspace/)).toBeInTheDocument();
+    fireEvent.click(railButton(/^Reading Center$/));
+    expect(screen.getByTestId('where')).toHaveTextContent('/reading-center');
   });
   it('holds the Reading Center link while assignment access is unknown', async () => {
     readingCenter.isPending = true; await renderShell('/classroom');

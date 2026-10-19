@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDashboardPassages, useDashboardProgress, useDashboardSessions, useRecallDashboard } from "../hooks/useRecallDashboard";
 import { readingDashboard, recordedTime } from "../lib/dashboard";
 import { RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_RRC_PATH } from "../lib/routes";
+import { RcTrainingProgress } from "../components/RcTrainingProgress";
 
 const panel = { background: "var(--rc-card)", borderColor: "var(--rc-outline-2)" };
 const muted = { color: "var(--rc-text-2)" };
@@ -73,9 +74,10 @@ export default function ReadingCenterHome() {
     <p className="mt-3 text-xs leading-5" style={muted}>All-time totals. Practice time excludes pauses and LR runs that have not been graded.</p>
     {(recall.isError || sessions.isError || progress.isError) && <button type="button" className={actionClass} onClick={() => { void recall.refetch(); void sessions.refetch(); void progress.refetch(); }}>Retry unavailable totals</button>}
     <div className="mt-6 grid min-w-0 gap-5 xl:grid-cols-2">
-      <Trend title="LR Recall" description="How much of the original detail survived in your recall." unit="%" points={dashboard.recallTrend} loading={recall.isLoading} failed={recall.isError} empty="No graded LR runs yet. Complete a section to start your recall graph." to={RC_RRC_PATH} retry={() => { void recall.refetch(); }} />
+      <Trend title="LR Training" description="How much of the original detail survived in your recall." unit="%" points={dashboard.recallTrend} loading={recall.isLoading} failed={recall.isError} empty="No graded LR runs yet. Complete a section to start your recall graph." to={RC_RRC_PATH} retry={() => { void recall.refetch(); }} />
       <Trend title="Speed Reading" description="Recorded pace, calculated from words read and active reading time." unit="WPM" points={dashboard.speedTrend} loading={sessions.isLoading} failed={sessions.isError} empty="No recorded reading sessions yet. Read a passage to start your pace graph." to={RC_LIBRARY_PATH} retry={() => { void sessions.refetch(); }} />
     </div>
+    <div className="mt-6"><RcTrainingProgress compact /></div>
     <section className="mt-6 rounded-2xl border p-5 sm:p-6" style={panel} aria-label="Recent practice">
       <h2 className="text-lg font-semibold">Recent practice</h2>
       <p className="mt-1 text-sm" style={muted}>Resume a drill, open its results or return to a passage.</p>
@@ -88,7 +90,7 @@ export default function ReadingCenterHome() {
             </Link>
           </li>)}</ul> : !recentLoading && !recentFailed ? <p className="py-8 text-sm leading-7" style={muted}>Your practice will appear here after you start an LR section or read a passage.</p> : null}
       <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
-        <Link to={RC_RRC_PATH} className={actionClass}>Open LR Recall <ArrowRight size={16} aria-hidden="true" /></Link>
+        <Link to={RC_RRC_PATH} className={actionClass}>Open LR Training <ArrowRight size={16} aria-hidden="true" /></Link>
         <Link to={RC_LIBRARY_PATH} className={actionClass}>Open Speed Reading <ArrowRight size={16} aria-hidden="true" /></Link>
         <Link to={RC_PROFILE_PATH} className={actionClass}>Reading progress <ArrowRight size={16} aria-hidden="true" /></Link>
       </div>

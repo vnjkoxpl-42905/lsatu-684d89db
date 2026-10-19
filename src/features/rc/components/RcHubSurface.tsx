@@ -852,14 +852,13 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       {pendingLoad.error && <p className="rc-page-sub" role="alert">{pendingLoad.error}</p>}
       {notice && <p className="rc-page-sub" role="status">{notice}</p>}
       {exposureStatus !== 'ready' && <div className="rc-field-hint" role="status">{exposureStatus === 'loading' ? 'Checking recorded exposure…' : <>Recorded exposure could not be checked. Exposure is unknown; No recorded exposure is unavailable. <button type="button" className="rc-chip" onClick={() => retryLoad()}>Retry recorded exposure</button></>}</div>}
-      <p className="rc-field-hint">Not attempted checks saved answer history. No recorded exposure also checks text reveals recorded by LSAT U. Earlier previews were not tracked, so it cannot prove you have never seen a passage.</p>
       {filters.status === 'strict_no_exposure' && <div className="rc-builder-alert">
         <p>{handPickRows.length} matching passages have no recorded exposure. Earlier exposure is unknown because past previews were not tracked. None is certified never seen.</p>
         <label><input type="checkbox" checked={filters.includeUnknownExposure === true} disabled={exposureStatus !== 'ready'} onChange={event => setFilters(previous => ({ ...previous, includeUnknownExposure: event.target.checked }))} /> Include passages whose earlier exposure is unknown</label>
         {filters.includeUnknownExposure !== true && <p>Choose whether to include these passages before previewing or starting.</p>}
       </div>}
       {correctnessFilterBlocked && <p className="rc-field-hint" role="status">Reveal your saved results or choose another status before filtering by correctness.</p>}
-      {historyStatus === 'ready' && <RcAdaptiveSummary summary={buildRcAdaptiveSummary({ history, displayHistory, hasHiddenGradedResults: hiddenResults })} />}
+      {historyStatus === 'ready' && hiddenResults && <RcAdaptiveSummary summary={buildRcAdaptiveSummary({ history, displayHistory, hasHiddenGradedResults: hiddenResults })} />}
       {!starting && recoveryPending && <div className="rc-builder-alert" role="status">
         <span>A previous Start is pending for {describePendingPassages(recoveryPending.ids)}. Retry checks that original saved drill with its original timing and answer settings; your current edits will not start another drill.</span>
         <button type="button" className="rc-chip" disabled={starting} onClick={() => void start()}>Retry original launch</button>
@@ -1060,7 +1059,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
               ))}
             </div>
 
+            {historyStatus === 'ready' && !hiddenResults && <RcAdaptiveSummary summary={buildRcAdaptiveSummary({ history, displayHistory, hasHiddenGradedResults: hiddenResults })} />}
+
             <div className="rc-field-label" style={{ marginTop: 14 }}>Status</div>
+            <p className="rc-field-hint">Not attempted checks saved answer history. No recorded exposure also checks text reveals recorded by LSAT U. Earlier previews were not tracked, so it cannot prove you have never seen a passage.</p>
             <div className="rc-chip-row">
               {STATUS_OPTIONS.map((option) => (
                 <button
@@ -1263,6 +1265,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       </div>
 
       <RcSavedSetsPanel
+        presentation="save"
         recipe={builderReady && count <= 8 && !handPickOpen && !params.has('assignment') && !params.has('assignmentId') && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'recipe', config: { reveal, timing: config.timing }, filters, count, passageIds: [], questionIds: [] } : null}
         fixed={builderReady && activeSet && !params.has('assignment') && !params.has('assignmentId') && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'fixed', config: { reveal, timing: config.timing }, filters, count: activeSet.ids.length, passageIds: activeSet.ids, questionIds: activeSet.passages.flatMap(p => p.questions.map(q => q.questionId)) } : null}
       />
