@@ -1,0 +1,3000 @@
+{
+ "slug": "read-recall-colour-pt104-s1",
+ "title": "Read, Recall, Colour \u00b7 PT104 Section 1",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT104.S1",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT104_S1_Q1",
+   "prompt": "Powell: Private waste-removal companies spend 60 percent of what public waste-removal companies spend per customer, yet give their customers at least as good service. Private waste-removal companies, therefore, work more efficiently.\n\nFreeman: Your conclusion is unwarranted. Different customers have different waste-removal needs. Since private companies, unlike their public counterparts, can select which customers to serve, they choose to exclude the potential customers whom they judge to be the most costly to serve.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Powell is the first speaker. \u00b7 Private waste-removal companies spend a fraction of what public ones spend. \u00b7 That fraction is 60 percent. \u00b7 The spending is measured per customer. \u00b7 This is a contrast. \u00b7 Private companies give service at least as good. \u00b7 The service goes to their own customers. (2) This is the conclusion. \u00b7 It is about private waste-removal companies. \u00b7 Those companies work more efficiently. (3) Freeman is the second speaker. \u00b7 Freeman replies to Powell's conclusion. \u00b7 Freeman says that conclusion is unwarranted. (4) This is about customers. \u00b7 Customers are different from one another. \u00b7 Their needs are different too. \u00b7 The needs in question are waste-removal needs. (5) This part gives a reason. \u00b7 It is about private companies. \u00b7 Private companies can select which customers to serve. \u00b7 Their public counterparts cannot select. (6) This is about the private companies. \u00b7 They choose to exclude certain potential customers. \u00b7 The excluded ones are judged most costly to serve. \u00b7 The companies make that judgment themselves.",
+   "category": "Controversy",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Powell: Private waste-removal companies spend 60 percent of what public waste-removal companies spend per customer, yet give their customers at least as good service.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Powell is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "Private waste-removal companies spend a fraction of what public ones spend."
+      },
+      {
+       "n": 3,
+       "text": "That fraction is 60 percent."
+      },
+      {
+       "n": 4,
+       "text": "The spending is measured per customer."
+      },
+      {
+       "n": 5,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 6,
+       "text": "Private companies give service at least as good."
+      },
+      {
+       "n": 7,
+       "text": "The service goes to their own customers."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Private waste-removal companies, therefore, work more efficiently.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about private waste-removal companies."
+      },
+      {
+       "n": 3,
+       "text": "Those companies work more efficiently."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Freeman: Your conclusion is unwarranted.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Freeman is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "Freeman replies to Powell's conclusion."
+      },
+      {
+       "n": 3,
+       "text": "Freeman says that conclusion is unwarranted."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Different customers have different waste-removal needs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about customers."
+      },
+      {
+       "n": 2,
+       "text": "Customers are different from one another."
+      },
+      {
+       "n": 3,
+       "text": "Their needs are different too."
+      },
+      {
+       "n": 4,
+       "text": "The needs in question are waste-removal needs."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Since private companies, unlike their public counterparts, can select which customers to serve,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This part gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "It is about private companies."
+      },
+      {
+       "n": 3,
+       "text": "Private companies can select which customers to serve."
+      },
+      {
+       "n": 4,
+       "text": "Their public counterparts cannot select."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "they choose to exclude the potential customers whom they judge to be the most costly to serve.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the private companies."
+      },
+      {
+       "n": 2,
+       "text": "They choose to exclude certain potential customers."
+      },
+      {
+       "n": 3,
+       "text": "The excluded ones are judged most costly to serve."
+      },
+      {
+       "n": 4,
+       "text": "The companies make that judgment themselves."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over why private waste-removal companies are able to offer comparable service at a lower price when compared to public companies.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q1",
+     "qnum": 1,
+     "question_type": "Controversy",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT104_S1_Q2",
+   "prompt": "Although 90 percent of the population believes itself to be well informed about health care, only 20 percent knows enough about DNA to understand a news story about DNA. So apparently at least 80 percent of the population does not know enough about medical concepts to make well-informed personal medical choices or to make good public policy decisions about health care.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is a concession. \u00b7 Most of the population believes it is well informed. \u00b7 That share is 90 percent. \u00b7 What they feel informed about is health care. \u00b7 A smaller share knows enough about DNA. \u00b7 That share is only 20 percent. \u00b7 Knowing that much would let them understand a news story. \u00b7 The news story is about DNA. (2) This is the conclusion. \u00b7 The conclusion is hedged with apparently. \u00b7 Part of the population does not know enough about medical concepts. \u00b7 That part is at least 80 percent. \u00b7 They could not make well-informed personal medical choices. \u00b7 They could not make good public policy decisions. \u00b7 Those decisions are about health care.",
+   "category": "Gap Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Although 90 percent of the population believes itself to be well informed about health care, only 20 percent knows enough about DNA to understand a news story about DNA.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a concession."
+      },
+      {
+       "n": 2,
+       "text": "Most of the population believes it is well informed."
+      },
+      {
+       "n": 3,
+       "text": "That share is 90 percent."
+      },
+      {
+       "n": 4,
+       "text": "What they feel informed about is health care."
+      },
+      {
+       "n": 5,
+       "text": "A smaller share knows enough about DNA."
+      },
+      {
+       "n": 6,
+       "text": "That share is only 20 percent."
+      },
+      {
+       "n": 7,
+       "text": "Knowing that much would let them understand a news story."
+      },
+      {
+       "n": 8,
+       "text": "The news story is about DNA."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "So apparently at least 80 percent of the population does not know enough about medical concepts to make well-informed personal medical choices or to make good public policy decisions about health care.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The conclusion is hedged with apparently."
+      },
+      {
+       "n": 3,
+       "text": "Part of the population does not know enough about medical concepts."
+      },
+      {
+       "n": 4,
+       "text": "That part is at least 80 percent."
+      },
+      {
+       "n": 5,
+       "text": "They could not make well-informed personal medical choices."
+      },
+      {
+       "n": 6,
+       "text": "They could not make good public policy decisions."
+      },
+      {
+       "n": 7,
+       "text": "Those decisions are about health care."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if people don't need to know anything about DNA in order to make well-informed personal medical choices or health policy?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q2",
+     "qnum": 2,
+     "question_type": "Gap Flaw",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT104_S1_Q3",
+   "prompt": "In Yasukawa's month-long study of blackbirds, the percentage of smaller birds that survived the duration of the study exceeded the percentage of larger birds that survived. However, Yasukawa's conclusion that size is a determinant of a blackbird's chances of survival over a month-long period is probably mistaken, since smaller blackbirds are generally younger than larger ones.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Yasukawa conducted a study. \u00b7 The study was of blackbirds. \u00b7 The study lasted a month. \u00b7 A percentage of smaller birds survived the study. \u00b7 A percentage of larger birds survived as well. \u00b7 The percentage for the smaller birds was higher. (2) This is a contrast. \u00b7 Yasukawa drew a conclusion. \u00b7 The conclusion was that size is a determinant. \u00b7 What size would determine is a blackbird's chances of survival. \u00b7 The survival is over a month-long period. \u00b7 That conclusion is probably mistaken. (3) This gives a reason. \u00b7 It is about smaller blackbirds. \u00b7 Smaller blackbirds are younger than larger ones. \u00b7 This is generally the case.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In Yasukawa's month-long study of blackbirds, the percentage of smaller birds that survived the duration of the study exceeded the percentage of larger birds that survived.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Yasukawa conducted a study."
+      },
+      {
+       "n": 2,
+       "text": "The study was of blackbirds."
+      },
+      {
+       "n": 3,
+       "text": "The study lasted a month."
+      },
+      {
+       "n": 4,
+       "text": "A percentage of smaller birds survived the study."
+      },
+      {
+       "n": 5,
+       "text": "A percentage of larger birds survived as well."
+      },
+      {
+       "n": 6,
+       "text": "The percentage for the smaller birds was higher."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "However, Yasukawa's conclusion that size is a determinant of a blackbird's chances of survival over a month-long period is probably mistaken,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Yasukawa drew a conclusion."
+      },
+      {
+       "n": 3,
+       "text": "The conclusion was that size is a determinant."
+      },
+      {
+       "n": 4,
+       "text": "What size would determine is a blackbird's chances of survival."
+      },
+      {
+       "n": 5,
+       "text": "The survival is over a month-long period."
+      },
+      {
+       "n": 6,
+       "text": "That conclusion is probably mistaken."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "since smaller blackbirds are generally younger than larger ones.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "It is about smaller blackbirds."
+      },
+      {
+       "n": 3,
+       "text": "Smaller blackbirds are younger than larger ones."
+      },
+      {
+       "n": 4,
+       "text": "This is generally the case."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Yasukawa only studied birds that were the same age?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q3",
+     "qnum": 3,
+     "question_type": "Inference",
+     "correct_answer": "D"
+    },
+    {
+     "citation": "PT104.S1.Q4",
+     "qnum": 4,
+     "question_type": "Weaken",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT104_S1_Q5",
+   "prompt": "During the 1980s, Japanese collectors were very active in the market for European art, especially as purchasers of nineteenth-century Impressionist paintings. This striking pattern surely reflects a specific preference on the part of many Japanese collectors for certain aesthetic attributes they found in nineteenth-century Impressionist paintings.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about the 1980s. \u00b7 Japanese collectors were active in a market. \u00b7 They were very active in it. \u00b7 The market was for European art. \u00b7 They were especially active as purchasers. \u00b7 What they purchased was Impressionist paintings. \u00b7 Those paintings were nineteenth-century ones. (2) This is the conclusion. \u00b7 The pattern just described is striking. \u00b7 The pattern reflects a preference. \u00b7 The claim is made with certainty. \u00b7 The preference is a specific one. \u00b7 Many Japanese collectors hold that preference. \u00b7 The preference is for certain aesthetic attributes. \u00b7 They found those attributes in nineteenth-century Impressionist paintings.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "During the 1980s, Japanese collectors were very active in the market for European art, especially as purchasers of nineteenth-century Impressionist paintings.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the 1980s."
+      },
+      {
+       "n": 2,
+       "text": "Japanese collectors were active in a market."
+      },
+      {
+       "n": 3,
+       "text": "They were very active in it."
+      },
+      {
+       "n": 4,
+       "text": "The market was for European art."
+      },
+      {
+       "n": 5,
+       "text": "They were especially active as purchasers."
+      },
+      {
+       "n": 6,
+       "text": "What they purchased was Impressionist paintings."
+      },
+      {
+       "n": 7,
+       "text": "Those paintings were nineteenth-century ones."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This striking pattern surely reflects a specific preference on the part of many Japanese collectors for certain aesthetic attributes they found in nineteenth-century Impressionist paintings.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The pattern just described is striking."
+      },
+      {
+       "n": 3,
+       "text": "The pattern reflects a preference."
+      },
+      {
+       "n": 4,
+       "text": "The claim is made with certainty."
+      },
+      {
+       "n": 5,
+       "text": "The preference is a specific one."
+      },
+      {
+       "n": 6,
+       "text": "Many Japanese collectors hold that preference."
+      },
+      {
+       "n": 7,
+       "text": "The preference is for certain aesthetic attributes."
+      },
+      {
+       "n": 8,
+       "text": "They found those attributes in nineteenth-century Impressionist paintings."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Japanese collectors bought nineteenth-century Impressionist paintings for some reason other than aesthetic pleasure?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q5",
+     "qnum": 5,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT104_S1_Q6",
+   "prompt": "Frankie: If jelly makers were given incentives to make a certain percentage of their jellies from cloudberries, income for cloudberry gatherers would increase.\n\nAnna: That plan would fail. Cacao, like cloudberries, was once harvested from wild plants. When chocolate became popular in Europe, the cacao gatherers could not supply enough to meet the increased demand, and farmers began to grow large quantities of it at low cost. Now all cacao used in commercial chocolate production is grown on farms. Likewise, if the demand for cloudberries increases, domesticated berries grown on farms will completely supplant berries gathered in the wild.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Frankie is the first speaker. \u00b7 This is a conditional proposal. \u00b7 Jelly makers would be given incentives. \u00b7 The incentives concern a certain percentage of their jellies. \u00b7 Those jellies would be made from cloudberries. \u00b7 Income would increase under that condition. \u00b7 The income belongs to cloudberry gatherers. (2) Anna is the second speaker. \u00b7 Anna refers to Frankie's plan. \u00b7 Anna says the plan would fail. (3) This is about cacao. \u00b7 Cacao was harvested from wild plants. \u00b7 That was once the case. \u00b7 Cloudberries are like cacao in this respect. (4) This is about a time in Europe. \u00b7 Chocolate became popular there. \u00b7 The cacao gatherers could not supply enough. \u00b7 What they could not meet was the increased demand. \u00b7 Farmers began to grow cacao. \u00b7 They grew large quantities of it. \u00b7 They grew it at low cost. (5) This is about the present. \u00b7 Cacao is grown on farms. \u00b7 All of that cacao is grown there. \u00b7 The cacao is used in chocolate production. \u00b7 That production is commercial. (6) This is a parallel case. \u00b7 The demand for cloudberries might increase. \u00b7 Domesticated berries would supplant other berries. \u00b7 The domesticated berries are grown on farms. \u00b7 The supplanting would be complete. \u00b7 The other berries are gathered in the wild.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Frankie: If jelly makers were given incentives to make a certain percentage of their jellies from cloudberries, income for cloudberry gatherers would increase.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Frankie is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "This is a conditional proposal."
+      },
+      {
+       "n": 3,
+       "text": "Jelly makers would be given incentives."
+      },
+      {
+       "n": 4,
+       "text": "The incentives concern a certain percentage of their jellies."
+      },
+      {
+       "n": 5,
+       "text": "Those jellies would be made from cloudberries."
+      },
+      {
+       "n": 6,
+       "text": "Income would increase under that condition."
+      },
+      {
+       "n": 7,
+       "text": "The income belongs to cloudberry gatherers."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Anna: That plan would fail.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Anna is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "Anna refers to Frankie's plan."
+      },
+      {
+       "n": 3,
+       "text": "Anna says the plan would fail."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Cacao, like cloudberries, was once harvested from wild plants.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about cacao."
+      },
+      {
+       "n": 2,
+       "text": "Cacao was harvested from wild plants."
+      },
+      {
+       "n": 3,
+       "text": "That was once the case."
+      },
+      {
+       "n": 4,
+       "text": "Cloudberries are like cacao in this respect."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "When chocolate became popular in Europe, the cacao gatherers could not supply enough to meet the increased demand, and farmers began to grow large quantities of it at low cost.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a time in Europe."
+      },
+      {
+       "n": 2,
+       "text": "Chocolate became popular there."
+      },
+      {
+       "n": 3,
+       "text": "The cacao gatherers could not supply enough."
+      },
+      {
+       "n": 4,
+       "text": "What they could not meet was the increased demand."
+      },
+      {
+       "n": 5,
+       "text": "Farmers began to grow cacao."
+      },
+      {
+       "n": 6,
+       "text": "They grew large quantities of it."
+      },
+      {
+       "n": 7,
+       "text": "They grew it at low cost."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Now all cacao used in commercial chocolate production is grown on farms.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the present."
+      },
+      {
+       "n": 2,
+       "text": "Cacao is grown on farms."
+      },
+      {
+       "n": 3,
+       "text": "All of that cacao is grown there."
+      },
+      {
+       "n": 4,
+       "text": "The cacao is used in chocolate production."
+      },
+      {
+       "n": 5,
+       "text": "That production is commercial."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "Likewise, if the demand for cloudberries increases, domesticated berries grown on farms will completely supplant berries gathered in the wild.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a parallel case."
+      },
+      {
+       "n": 2,
+       "text": "The demand for cloudberries might increase."
+      },
+      {
+       "n": 3,
+       "text": "Domesticated berries would supplant other berries."
+      },
+      {
+       "n": 4,
+       "text": "The domesticated berries are grown on farms."
+      },
+      {
+       "n": 5,
+       "text": "The supplanting would be complete."
+      },
+      {
+       "n": 6,
+       "text": "The other berries are gathered in the wild."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether an increased demand for cloudberries would increase pay for cloudberry gatherers.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q6",
+     "qnum": 6,
+     "question_type": "Method",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT104_S1_Q7",
+   "prompt": "Because of the recent recession in Country A, most magazines published there have experienced decreases in advertising revenue, so much so that the survival of the most widely read magazines is in grave doubt. At the same time, however, more people in Country A are reading more magazines than ever before, and the number of financially successful magazines in Country A is greater than ever.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This gives a cause. \u00b7 Country A had a recession. \u00b7 The recession was recent. \u00b7 Magazines experienced decreases in advertising revenue. \u00b7 Most of the magazines did. \u00b7 Those magazines are published in Country A. (2) This states a result. \u00b7 The survival of some magazines is in doubt. \u00b7 The doubt is grave. \u00b7 Those magazines are the most widely read ones. (3) This is a contrast. \u00b7 It holds at the same time. \u00b7 More people are reading magazines. \u00b7 Those people are in Country A. \u00b7 They are reading more magazines than ever before. (4) This is an additional point. \u00b7 Some magazines are financially successful. \u00b7 Their number is greater than ever. \u00b7 Those magazines are in Country A.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Because of the recent recession in Country A, most magazines published there have experienced decreases in advertising revenue,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a cause."
+      },
+      {
+       "n": 2,
+       "text": "Country A had a recession."
+      },
+      {
+       "n": 3,
+       "text": "The recession was recent."
+      },
+      {
+       "n": 4,
+       "text": "Magazines experienced decreases in advertising revenue."
+      },
+      {
+       "n": 5,
+       "text": "Most of the magazines did."
+      },
+      {
+       "n": 6,
+       "text": "Those magazines are published in Country A."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "so much so that the survival of the most widely read magazines is in grave doubt.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This states a result."
+      },
+      {
+       "n": 2,
+       "text": "The survival of some magazines is in doubt."
+      },
+      {
+       "n": 3,
+       "text": "The doubt is grave."
+      },
+      {
+       "n": 4,
+       "text": "Those magazines are the most widely read ones."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "At the same time, however, more people in Country A are reading more magazines than ever before,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "It holds at the same time."
+      },
+      {
+       "n": 3,
+       "text": "More people are reading magazines."
+      },
+      {
+       "n": 4,
+       "text": "Those people are in Country A."
+      },
+      {
+       "n": 5,
+       "text": "They are reading more magazines than ever before."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "and the number of financially successful magazines in Country A is greater than ever.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "Some magazines are financially successful."
+      },
+      {
+       "n": 3,
+       "text": "Their number is greater than ever."
+      },
+      {
+       "n": 4,
+       "text": "Those magazines are in Country A."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if many small magazines have found popularity with niche audiences, and support their operations by charging fees rather than selling advertisements?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q7",
+     "qnum": 7,
+     "question_type": "Resolution",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT104_S1_Q8",
+   "prompt": "The gray squirrel, introduced into local woodlands ten years ago, threatens the indigenous population of an endangered owl species, because the squirrels' habitual stripping of tree bark destroys the trees in which the owls nest. Some local officials have advocated setting out poison for the gray squirrels. The officials argue that this measure, while eliminating the squirrels, would pose no threat to the owl population, since the poison would be placed in containers accessible only to squirrels and other rodents.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about the gray squirrel. \u00b7 The gray squirrel was introduced into local woodlands. \u00b7 The introduction happened ten years ago. \u00b7 The squirrel threatens a population of owls. \u00b7 That population is indigenous. \u00b7 The owl species is endangered. (2) This gives the reason. \u00b7 The squirrels strip tree bark. \u00b7 The stripping is habitual. \u00b7 The stripping destroys trees. \u00b7 The owls nest in those trees. (3) This is about local officials. \u00b7 Some of them have advocated a measure. \u00b7 The measure is setting out poison. \u00b7 The poison is for the gray squirrels. (4) This is the officials' argument. \u00b7 The measure would eliminate the squirrels. \u00b7 The measure would pose no threat. \u00b7 What it would not threaten is the owl population. (5) This gives their reason. \u00b7 The poison would be placed in containers. \u00b7 The containers would be accessible to squirrels. \u00b7 They would also be accessible to other rodents. \u00b7 Nothing else could reach them.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The gray squirrel, introduced into local woodlands ten years ago, threatens the indigenous population of an endangered owl species,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the gray squirrel."
+      },
+      {
+       "n": 2,
+       "text": "The gray squirrel was introduced into local woodlands."
+      },
+      {
+       "n": 3,
+       "text": "The introduction happened ten years ago."
+      },
+      {
+       "n": 4,
+       "text": "The squirrel threatens a population of owls."
+      },
+      {
+       "n": 5,
+       "text": "That population is indigenous."
+      },
+      {
+       "n": 6,
+       "text": "The owl species is endangered."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "because the squirrels' habitual stripping of tree bark destroys the trees in which the owls nest.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason."
+      },
+      {
+       "n": 2,
+       "text": "The squirrels strip tree bark."
+      },
+      {
+       "n": 3,
+       "text": "The stripping is habitual."
+      },
+      {
+       "n": 4,
+       "text": "The stripping destroys trees."
+      },
+      {
+       "n": 5,
+       "text": "The owls nest in those trees."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Some local officials have advocated setting out poison for the gray squirrels.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about local officials."
+      },
+      {
+       "n": 2,
+       "text": "Some of them have advocated a measure."
+      },
+      {
+       "n": 3,
+       "text": "The measure is setting out poison."
+      },
+      {
+       "n": 4,
+       "text": "The poison is for the gray squirrels."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "The officials argue that this measure, while eliminating the squirrels, would pose no threat to the owl population,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the officials' argument."
+      },
+      {
+       "n": 2,
+       "text": "The measure would eliminate the squirrels."
+      },
+      {
+       "n": 3,
+       "text": "The measure would pose no threat."
+      },
+      {
+       "n": 4,
+       "text": "What it would not threaten is the owl population."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "since the poison would be placed in containers accessible only to squirrels and other rodents.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives their reason."
+      },
+      {
+       "n": 2,
+       "text": "The poison would be placed in containers."
+      },
+      {
+       "n": 3,
+       "text": "The containers would be accessible to squirrels."
+      },
+      {
+       "n": 4,
+       "text": "They would also be accessible to other rodents."
+      },
+      {
+       "n": 5,
+       "text": "Nothing else could reach them."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the owls eat the rodents, so will be eating poisoned food?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q8",
+     "qnum": 8,
+     "question_type": "Weaken",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT104_S1_Q9",
+   "prompt": "Sales manager: Last year the total number of meals sold in our company's restaurants was much higher than it was the year before. Obviously consumers find our meals desirable.\n\nAccountant: If you look at individual restaurants, however, you find that the number of meals sold actually decreased substantially at every one of our restaurants that was in operation both last year and the year before. The desirability of our meals to consumers has clearly decreased, given that this group of restaurants\u2014the only ones for which we have sales figures that permit a comparison between last year and the year before\u2014demonstrates a trend toward fewer sales.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The sales manager is the first speaker. \u00b7 This is about last year. \u00b7 A total number of meals was sold. \u00b7 The meals were sold in the company's restaurants. \u00b7 That total was higher than the year before. \u00b7 It was much higher. (2) This is the sales manager's conclusion. \u00b7 Consumers find the meals desirable. \u00b7 The meals belong to the company. \u00b7 The conclusion is treated as obvious. (3) The accountant is the second speaker. \u00b7 This is a contrast. \u00b7 It asks you to look at restaurants. \u00b7 Those restaurants are taken individually. (4) This is what you find. \u00b7 The number of meals sold decreased. \u00b7 The decrease was substantial. \u00b7 This happened at every one of those restaurants. \u00b7 Those restaurants were in operation last year. \u00b7 They were in operation the year before too. (5) This is the accountant's conclusion. \u00b7 The desirability of the meals has decreased. \u00b7 The desirability is to consumers. \u00b7 This is stated as clear. (6) This gives the reason. \u00b7 It is about that group of restaurants. \u00b7 The group demonstrates a trend. \u00b7 The trend is toward fewer sales. \u00b7 The company has sales figures for only those restaurants. \u00b7 Those figures permit a comparison. \u00b7 The comparison is between last year and the year before.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Sales manager: Last year the total number of meals sold in our company's restaurants was much higher than it was the year before.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The sales manager is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "This is about last year."
+      },
+      {
+       "n": 3,
+       "text": "A total number of meals was sold."
+      },
+      {
+       "n": 4,
+       "text": "The meals were sold in the company's restaurants."
+      },
+      {
+       "n": 5,
+       "text": "That total was higher than the year before."
+      },
+      {
+       "n": 6,
+       "text": "It was much higher."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Obviously consumers find our meals desirable.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the sales manager's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Consumers find the meals desirable."
+      },
+      {
+       "n": 3,
+       "text": "The meals belong to the company."
+      },
+      {
+       "n": 4,
+       "text": "The conclusion is treated as obvious."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Accountant: If you look at individual restaurants, however,",
+     "details": [
+      {
+       "n": 1,
+       "text": "The accountant is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 3,
+       "text": "It asks you to look at restaurants."
+      },
+      {
+       "n": 4,
+       "text": "Those restaurants are taken individually."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "you find that the number of meals sold actually decreased substantially at every one of our restaurants that was in operation both last year and the year before.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is what you find."
+      },
+      {
+       "n": 2,
+       "text": "The number of meals sold decreased."
+      },
+      {
+       "n": 3,
+       "text": "The decrease was substantial."
+      },
+      {
+       "n": 4,
+       "text": "This happened at every one of those restaurants."
+      },
+      {
+       "n": 5,
+       "text": "Those restaurants were in operation last year."
+      },
+      {
+       "n": 6,
+       "text": "They were in operation the year before too."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "The desirability of our meals to consumers has clearly decreased,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the accountant's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The desirability of the meals has decreased."
+      },
+      {
+       "n": 3,
+       "text": "The desirability is to consumers."
+      },
+      {
+       "n": 4,
+       "text": "This is stated as clear."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "given that this group of restaurants\u2014the only ones for which we have sales figures that permit a comparison between last year and the year before\u2014demonstrates a trend toward fewer sales.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason."
+      },
+      {
+       "n": 2,
+       "text": "It is about that group of restaurants."
+      },
+      {
+       "n": 3,
+       "text": "The group demonstrates a trend."
+      },
+      {
+       "n": 4,
+       "text": "The trend is toward fewer sales."
+      },
+      {
+       "n": 5,
+       "text": "The company has sales figures for only those restaurants."
+      },
+      {
+       "n": 6,
+       "text": "Those figures permit a comparison."
+      },
+      {
+       "n": 7,
+       "text": "The comparison is between last year and the year before."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether desire for the restaurant's meals has decreased.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q9",
+     "qnum": 9,
+     "question_type": "Inference",
+     "correct_answer": "A"
+    },
+    {
+     "citation": "PT104.S1.Q10",
+     "qnum": 10,
+     "question_type": "Weaken",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT104_S1_Q11",
+   "prompt": "A local chemical plant produces pesticides that can cause sterility in small mammals such as otters. Soon after the plant began operating, the incidence of sterility among the otters that swim in a nearby river increased dramatically. Therefore, pesticides are definitely contaminating the river.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A chemical plant is local. \u00b7 The plant produces pesticides. \u00b7 The pesticides can cause sterility. \u00b7 The sterility would occur in small mammals. \u00b7 Otters are an example of such mammals. (2) The plant began operating. \u00b7 Something happened soon after that. \u00b7 The incidence of sterility increased. \u00b7 The increase was dramatic. \u00b7 The sterility was among otters. \u00b7 Those otters swim in a river. \u00b7 The river is nearby. (3) This is the conclusion. \u00b7 Pesticides are contaminating the river. \u00b7 The claim is made with certainty.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A local chemical plant produces pesticides that can cause sterility in small mammals such as otters.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A chemical plant is local."
+      },
+      {
+       "n": 2,
+       "text": "The plant produces pesticides."
+      },
+      {
+       "n": 3,
+       "text": "The pesticides can cause sterility."
+      },
+      {
+       "n": 4,
+       "text": "The sterility would occur in small mammals."
+      },
+      {
+       "n": 5,
+       "text": "Otters are an example of such mammals."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Soon after the plant began operating, the incidence of sterility among the otters that swim in a nearby river increased dramatically.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The plant began operating."
+      },
+      {
+       "n": 2,
+       "text": "Something happened soon after that."
+      },
+      {
+       "n": 3,
+       "text": "The incidence of sterility increased."
+      },
+      {
+       "n": 4,
+       "text": "The increase was dramatic."
+      },
+      {
+       "n": 5,
+       "text": "The sterility was among otters."
+      },
+      {
+       "n": 6,
+       "text": "Those otters swim in a river."
+      },
+      {
+       "n": 7,
+       "text": "The river is nearby."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, pesticides are definitely contaminating the river.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Pesticides are contaminating the river."
+      },
+      {
+       "n": 3,
+       "text": "The claim is made with certainty."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's no causal relationship between the pesticides and the otter sterility? What if the river is also being contaminated by a nearby oil refinery, and fossil fuels also make otters sterile?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q11",
+     "qnum": 11,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT104_S1_Q12",
+   "prompt": "Clothes made from natural fibers such as cotton, unlike clothes made from artificial fibers such as polyester, often shrink when washed at high temperatures. The reason for this shrinkage is that natural fibers are tightly curled in their original state. Since the manufacture of cloth requires straight fibers, natural fibers are artificially straightened prior to being made into cloth. High temperatures cause all fibers in cloth to return to their original states.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about clothes made from natural fibers. \u00b7 Cotton is an example of a natural fiber. \u00b7 Those clothes shrink when washed. \u00b7 The washing is at high temperatures. \u00b7 The shrinking happens often. \u00b7 Clothes made from artificial fibers do not do this. \u00b7 Polyester is an example of an artificial fiber. (2) This gives the reason for the shrinkage. \u00b7 Natural fibers are curled. \u00b7 The curling is tight. \u00b7 That is their original state. (3) This gives a reason. \u00b7 The manufacture of cloth requires straight fibers. \u00b7 Natural fibers are straightened. \u00b7 The straightening is artificial. \u00b7 It happens before they are made into cloth. (4) This is about high temperatures. \u00b7 High temperatures cause fibers to return to their original states. \u00b7 This applies to all fibers in cloth.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Clothes made from natural fibers such as cotton, unlike clothes made from artificial fibers such as polyester, often shrink when washed at high temperatures.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about clothes made from natural fibers."
+      },
+      {
+       "n": 2,
+       "text": "Cotton is an example of a natural fiber."
+      },
+      {
+       "n": 3,
+       "text": "Those clothes shrink when washed."
+      },
+      {
+       "n": 4,
+       "text": "The washing is at high temperatures."
+      },
+      {
+       "n": 5,
+       "text": "The shrinking happens often."
+      },
+      {
+       "n": 6,
+       "text": "Clothes made from artificial fibers do not do this."
+      },
+      {
+       "n": 7,
+       "text": "Polyester is an example of an artificial fiber."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The reason for this shrinkage is that natural fibers are tightly curled in their original state.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason for the shrinkage."
+      },
+      {
+       "n": 2,
+       "text": "Natural fibers are curled."
+      },
+      {
+       "n": 3,
+       "text": "The curling is tight."
+      },
+      {
+       "n": 4,
+       "text": "That is their original state."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since the manufacture of cloth requires straight fibers, natural fibers are artificially straightened prior to being made into cloth.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "The manufacture of cloth requires straight fibers."
+      },
+      {
+       "n": 3,
+       "text": "Natural fibers are straightened."
+      },
+      {
+       "n": 4,
+       "text": "The straightening is artificial."
+      },
+      {
+       "n": 5,
+       "text": "It happens before they are made into cloth."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "High temperatures cause all fibers in cloth to return to their original states.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about high temperatures."
+      },
+      {
+       "n": 2,
+       "text": "High temperatures cause fibers to return to their original states."
+      },
+      {
+       "n": 3,
+       "text": "This applies to all fibers in cloth."
+      }
+     ]
+    }
+   ],
+   "the_read": "In their original state, artificial fibers are straight.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q12",
+     "qnum": 12,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT104_S1_Q13",
+   "prompt": "Problems caused by the leaching of pollutants from dumps and landfills are worst in countries with an annual per capita economic output of $4,000 to $5,000, and less severe for considerably poorer and considerably richer countries. This is so because pollution problems increase during the early stages of a country's industrial development but then diminish as increasing industrial development generates adequate resources to tackle such problems. Therefore, problems caused by such leaching in Country X, where the annual per capita economic output is now $5,000, should begin to diminish in the next few years.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Some problems are caused by leaching. \u00b7 What leaches is pollutants. \u00b7 The pollutants come from dumps. \u00b7 They come from landfills as well. \u00b7 The problems are worst in certain countries. \u00b7 Those countries have an economic output of $4,000 to $5,000. \u00b7 That output is annual and per capita. (2) This is an additional point. \u00b7 The problems are less severe elsewhere. \u00b7 They are less severe for poorer countries. \u00b7 They are less severe for richer countries too. \u00b7 Those countries are considerably poorer or richer. (3) This gives the reason. \u00b7 Pollution problems increase at first. \u00b7 The increase comes during the early stages of industrial development. \u00b7 The development is a country's own. \u00b7 The problems then diminish. \u00b7 Industrial development keeps increasing. \u00b7 That development generates adequate resources. \u00b7 The resources go to tackling such problems. (4) This is the conclusion. \u00b7 It is about Country X. \u00b7 Country X has an annual per capita economic output of $5,000. \u00b7 That is its output now. \u00b7 Problems there are caused by such leaching. \u00b7 Those problems should begin to diminish. \u00b7 The diminishing would come in the next few years.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Problems caused by the leaching of pollutants from dumps and landfills are worst in countries with an annual per capita economic output of $4,000 to $5,000,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some problems are caused by leaching."
+      },
+      {
+       "n": 2,
+       "text": "What leaches is pollutants."
+      },
+      {
+       "n": 3,
+       "text": "The pollutants come from dumps."
+      },
+      {
+       "n": 4,
+       "text": "They come from landfills as well."
+      },
+      {
+       "n": 5,
+       "text": "The problems are worst in certain countries."
+      },
+      {
+       "n": 6,
+       "text": "Those countries have an economic output of $4,000 to $5,000."
+      },
+      {
+       "n": 7,
+       "text": "That output is annual and per capita."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "and less severe for considerably poorer and considerably richer countries.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "The problems are less severe elsewhere."
+      },
+      {
+       "n": 3,
+       "text": "They are less severe for poorer countries."
+      },
+      {
+       "n": 4,
+       "text": "They are less severe for richer countries too."
+      },
+      {
+       "n": 5,
+       "text": "Those countries are considerably poorer or richer."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "This is so because pollution problems increase during the early stages of a country's industrial development but then diminish as increasing industrial development generates adequate resources to tackle such problems.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason."
+      },
+      {
+       "n": 2,
+       "text": "Pollution problems increase at first."
+      },
+      {
+       "n": 3,
+       "text": "The increase comes during the early stages of industrial development."
+      },
+      {
+       "n": 4,
+       "text": "The development is a country's own."
+      },
+      {
+       "n": 5,
+       "text": "The problems then diminish."
+      },
+      {
+       "n": 6,
+       "text": "Industrial development keeps increasing."
+      },
+      {
+       "n": 7,
+       "text": "That development generates adequate resources."
+      },
+      {
+       "n": 8,
+       "text": "The resources go to tackling such problems."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore, problems caused by such leaching in Country X, where the annual per capita economic output is now $5,000, should begin to diminish in the next few years.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about Country X."
+      },
+      {
+       "n": 3,
+       "text": "Country X has an annual per capita economic output of $5,000."
+      },
+      {
+       "n": 4,
+       "text": "That is its output now."
+      },
+      {
+       "n": 5,
+       "text": "Problems there are caused by such leaching."
+      },
+      {
+       "n": 6,
+       "text": "Those problems should begin to diminish."
+      },
+      {
+       "n": 7,
+       "text": "The diminishing would come in the next few years."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if industrial development in Country X will not increase any time soon?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q13",
+     "qnum": 13,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT104_S1_Q14",
+   "prompt": "Critic: Many popular psychological theories are poor theories in that they are inelegant and do not help to dispel the mystery that surrounds our psyche. However, this is not really important. The theories produce the right results: therapeutically, they tend to have greater success than their more scientific rivals.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The critic is the speaker. \u00b7 Some psychological theories are popular. \u00b7 Many of those theories are poor ones. \u00b7 They are poor in that they are inelegant. \u00b7 They also do not dispel a mystery. \u00b7 The mystery surrounds our psyche. (2) This is a contrast. \u00b7 It refers to what was just said. \u00b7 What was just said is not really important. (3) This is about the theories. \u00b7 The theories produce the right results. \u00b7 They tend to have greater success. \u00b7 The success is therapeutic. \u00b7 The comparison is with their rivals. \u00b7 Those rivals are more scientific.",
+   "category": "Argument Part",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Critic: Many popular psychological theories are poor theories in that they are inelegant and do not help to dispel the mystery that surrounds our psyche.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The critic is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "Some psychological theories are popular."
+      },
+      {
+       "n": 3,
+       "text": "Many of those theories are poor ones."
+      },
+      {
+       "n": 4,
+       "text": "They are poor in that they are inelegant."
+      },
+      {
+       "n": 5,
+       "text": "They also do not dispel a mystery."
+      },
+      {
+       "n": 6,
+       "text": "The mystery surrounds our psyche."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "However, this is not really important.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "It refers to what was just said."
+      },
+      {
+       "n": 3,
+       "text": "What was just said is not really important."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The theories produce the right results: therapeutically, they tend to have greater success than their more scientific rivals.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the theories."
+      },
+      {
+       "n": 2,
+       "text": "The theories produce the right results."
+      },
+      {
+       "n": 3,
+       "text": "They tend to have greater success."
+      },
+      {
+       "n": 4,
+       "text": "The success is therapeutic."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with their rivals."
+      },
+      {
+       "n": 6,
+       "text": "Those rivals are more scientific."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the quality of psychological theory is defined by its elegance and ability to dispel mysteries of the psyche, not therapeutic success?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q14",
+     "qnum": 14,
+     "question_type": "Argument Part",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT104_S1_Q15",
+   "prompt": "Tony: Few anarchists have ever performed violent actions. These few are vastly outnumbered by the violent adherents of other political ideologies. Therefore, the special association in the public mind between anarchism and political violence is unwarranted.\n\nKeisha: Anarchists have always been few in number, whereas other ideologies have often spawned mass movements. Therefore, the proportion of anarchists who are violent is possibly greater than the proportion of adherents of other ideologies who are violent.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Tony is the first speaker. \u00b7 This is about anarchists. \u00b7 Few anarchists have ever performed violent actions. (2) This is about those few anarchists. \u00b7 They are outnumbered by other people. \u00b7 The outnumbering is vast. \u00b7 Those others adhere to other ideologies. \u00b7 Those ideologies are political ones. \u00b7 Those adherents are violent. (3) This is the conclusion. \u00b7 There is an association in the public mind. \u00b7 The association is a special one. \u00b7 It links anarchism with political violence. \u00b7 That association is unwarranted. (4) Keisha is the second speaker. \u00b7 Anarchists have been few in number. \u00b7 That has always been so. \u00b7 This is a contrast. \u00b7 Other ideologies have spawned mass movements. \u00b7 They have often done so. (5) This is Keisha's conclusion. \u00b7 Some proportion of anarchists is violent. \u00b7 That proportion may be greater. \u00b7 The comparison is with adherents of other ideologies. \u00b7 What is compared is the violent proportion. \u00b7 The claim is only that this is possible.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Tony: Few anarchists have ever performed violent actions.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Tony is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "This is about anarchists."
+      },
+      {
+       "n": 3,
+       "text": "Few anarchists have ever performed violent actions."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "These few are vastly outnumbered by the violent adherents of other political ideologies.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about those few anarchists."
+      },
+      {
+       "n": 2,
+       "text": "They are outnumbered by other people."
+      },
+      {
+       "n": 3,
+       "text": "The outnumbering is vast."
+      },
+      {
+       "n": 4,
+       "text": "Those others adhere to other ideologies."
+      },
+      {
+       "n": 5,
+       "text": "Those ideologies are political ones."
+      },
+      {
+       "n": 6,
+       "text": "Those adherents are violent."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, the special association in the public mind between anarchism and political violence is unwarranted.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "There is an association in the public mind."
+      },
+      {
+       "n": 3,
+       "text": "The association is a special one."
+      },
+      {
+       "n": 4,
+       "text": "It links anarchism with political violence."
+      },
+      {
+       "n": 5,
+       "text": "That association is unwarranted."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Keisha: Anarchists have always been few in number, whereas other ideologies have often spawned mass movements.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Keisha is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "Anarchists have been few in number."
+      },
+      {
+       "n": 3,
+       "text": "That has always been so."
+      },
+      {
+       "n": 4,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 5,
+       "text": "Other ideologies have spawned mass movements."
+      },
+      {
+       "n": 6,
+       "text": "They have often done so."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Therefore, the proportion of anarchists who are violent is possibly greater than the proportion of adherents of other ideologies who are violent.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is Keisha's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Some proportion of anarchists is violent."
+      },
+      {
+       "n": 3,
+       "text": "That proportion may be greater."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with adherents of other ideologies."
+      },
+      {
+       "n": 5,
+       "text": "What is compared is the violent proportion."
+      },
+      {
+       "n": 6,
+       "text": "The claim is only that this is possible."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether the raw number of violent anarchists is telling.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q15",
+     "qnum": 15,
+     "question_type": "Method",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT104_S1_Q16",
+   "prompt": "Recent research shows that sound change (pronunciation shift) in a language is not gradual. New sounds often emerge suddenly. This confounds the classical account of sound change, whose central tenet is gradualness. Since this classical account must be discarded, sound-change theory in general must also be.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Research shows something about sound change. \u00b7 The research is recent. \u00b7 Sound change is not gradual. \u00b7 Sound change is a shift in pronunciation. \u00b7 The change happens in a language. (2) This is about new sounds. \u00b7 New sounds emerge suddenly. \u00b7 They often do so. (3) This is about what was just said. \u00b7 It confounds an account. \u00b7 The account is the classical one. \u00b7 The account is of sound change. \u00b7 The account has a central tenet. \u00b7 That tenet is gradualness. (4) This is the conclusion. \u00b7 It rests on the classical account being discarded. \u00b7 Sound-change theory must also be discarded. \u00b7 The theory is meant in general.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Recent research shows that sound change (pronunciation shift) in a language is not gradual.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Research shows something about sound change."
+      },
+      {
+       "n": 2,
+       "text": "The research is recent."
+      },
+      {
+       "n": 3,
+       "text": "Sound change is not gradual."
+      },
+      {
+       "n": 4,
+       "text": "Sound change is a shift in pronunciation."
+      },
+      {
+       "n": 5,
+       "text": "The change happens in a language."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "New sounds often emerge suddenly.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about new sounds."
+      },
+      {
+       "n": 2,
+       "text": "New sounds emerge suddenly."
+      },
+      {
+       "n": 3,
+       "text": "They often do so."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "This confounds the classical account of sound change, whose central tenet is gradualness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about what was just said."
+      },
+      {
+       "n": 2,
+       "text": "It confounds an account."
+      },
+      {
+       "n": 3,
+       "text": "The account is the classical one."
+      },
+      {
+       "n": 4,
+       "text": "The account is of sound change."
+      },
+      {
+       "n": 5,
+       "text": "The account has a central tenet."
+      },
+      {
+       "n": 6,
+       "text": "That tenet is gradualness."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Since this classical account must be discarded, sound-change theory in general must also be.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on the classical account being discarded."
+      },
+      {
+       "n": 3,
+       "text": "Sound-change theory must also be discarded."
+      },
+      {
+       "n": 4,
+       "text": "The theory is meant in general."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because one part of a theory is wrong that doesn't mean the whole theory is wrong?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q16",
+     "qnum": 16,
+     "question_type": "Strengthen",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT104_S1_Q17",
+   "prompt": "The stable functioning of a society depends upon the relatively long-term stability of the goals of its citizens. This is clear from the fact that unless the majority of individuals have a predictable and enduring set of aspirations, it will be impossible for a legislature to craft laws that will augment the satisfaction of the citizenry, and it should be obvious that a society is stable only if its laws tend to increase the happiness of its citizens.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a society's functioning. \u00b7 The functioning in question is stable. \u00b7 It depends on the stability of certain goals. \u00b7 That stability is relatively long-term. \u00b7 The goals belong to the society's citizens. (2) This gives the support. \u00b7 The support makes the claim clear. \u00b7 It sets up a condition. \u00b7 The condition is that most individuals have a set of aspirations. \u00b7 The set would be predictable. \u00b7 The set would be enduring as well. (3) Something will be impossible. \u00b7 It will be impossible for a legislature. \u00b7 The legislature would craft laws. \u00b7 Those laws would augment satisfaction. \u00b7 The satisfaction is the citizenry's. (4) This is an additional point. \u00b7 The point should be obvious. \u00b7 A society is stable only under a condition. \u00b7 The condition concerns the society's laws. \u00b7 Those laws tend to increase happiness. \u00b7 The happiness is that of its citizens.",
+   "category": "Argument Part",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The stable functioning of a society depends upon the relatively long-term stability of the goals of its citizens.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a society's functioning."
+      },
+      {
+       "n": 2,
+       "text": "The functioning in question is stable."
+      },
+      {
+       "n": 3,
+       "text": "It depends on the stability of certain goals."
+      },
+      {
+       "n": 4,
+       "text": "That stability is relatively long-term."
+      },
+      {
+       "n": 5,
+       "text": "The goals belong to the society's citizens."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This is clear from the fact that unless the majority of individuals have a predictable and enduring set of aspirations,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the support."
+      },
+      {
+       "n": 2,
+       "text": "The support makes the claim clear."
+      },
+      {
+       "n": 3,
+       "text": "It sets up a condition."
+      },
+      {
+       "n": 4,
+       "text": "The condition is that most individuals have a set of aspirations."
+      },
+      {
+       "n": 5,
+       "text": "The set would be predictable."
+      },
+      {
+       "n": 6,
+       "text": "The set would be enduring as well."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "it will be impossible for a legislature to craft laws that will augment the satisfaction of the citizenry,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Something will be impossible."
+      },
+      {
+       "n": 2,
+       "text": "It will be impossible for a legislature."
+      },
+      {
+       "n": 3,
+       "text": "The legislature would craft laws."
+      },
+      {
+       "n": 4,
+       "text": "Those laws would augment satisfaction."
+      },
+      {
+       "n": 5,
+       "text": "The satisfaction is the citizenry's."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "and it should be obvious that a society is stable only if its laws tend to increase the happiness of its citizens.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "The point should be obvious."
+      },
+      {
+       "n": 3,
+       "text": "A society is stable only under a condition."
+      },
+      {
+       "n": 4,
+       "text": "The condition concerns the society's laws."
+      },
+      {
+       "n": 5,
+       "text": "Those laws tend to increase happiness."
+      },
+      {
+       "n": 6,
+       "text": "The happiness is that of its citizens."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if a society can end up with laws that tend to increase the\u00a0happiness of citizens without involving the legislature at all? What if some societies are monarchies?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q17",
+     "qnum": 17,
+     "question_type": "Argument Part",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT104_S1_Q18",
+   "prompt": "Astronauts who experience weightlessness frequently get motion sickness. The astronauts see their own motion relative to passing objects, but while the astronauts are weightless their inner ears indicate that their bodies are not moving. The astronauts' experience is best explained by the hypothesis that conflicting information received by the brain about the body's motion causes motion sickness.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about astronauts. \u00b7 Those astronauts experience weightlessness. \u00b7 They get motion sickness. \u00b7 They get it frequently. (2) This is about the astronauts. \u00b7 The astronauts see their own motion. \u00b7 They see it relative to passing objects. \u00b7 This is a contrast. \u00b7 The astronauts are weightless at the time. \u00b7 Their inner ears indicate something. \u00b7 What the ears indicate is that their bodies are not moving. (3) This is the conclusion. \u00b7 It is about the astronauts' experience. \u00b7 A hypothesis explains that experience. \u00b7 The hypothesis explains it best. \u00b7 The brain receives information about the body's motion. \u00b7 That information is conflicting. \u00b7 The conflicting information causes motion sickness.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Astronauts who experience weightlessness frequently get motion sickness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about astronauts."
+      },
+      {
+       "n": 2,
+       "text": "Those astronauts experience weightlessness."
+      },
+      {
+       "n": 3,
+       "text": "They get motion sickness."
+      },
+      {
+       "n": 4,
+       "text": "They get it frequently."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The astronauts see their own motion relative to passing objects, but while the astronauts are weightless their inner ears indicate that their bodies are not moving.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the astronauts."
+      },
+      {
+       "n": 2,
+       "text": "The astronauts see their own motion."
+      },
+      {
+       "n": 3,
+       "text": "They see it relative to passing objects."
+      },
+      {
+       "n": 4,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 5,
+       "text": "The astronauts are weightless at the time."
+      },
+      {
+       "n": 6,
+       "text": "Their inner ears indicate something."
+      },
+      {
+       "n": 7,
+       "text": "What the ears indicate is that their bodies are not moving."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The astronauts' experience is best explained by the hypothesis that conflicting information received by the brain about the body's motion causes motion sickness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the astronauts' experience."
+      },
+      {
+       "n": 3,
+       "text": "A hypothesis explains that experience."
+      },
+      {
+       "n": 4,
+       "text": "The hypothesis explains it best."
+      },
+      {
+       "n": 5,
+       "text": "The brain receives information about the body's motion."
+      },
+      {
+       "n": 6,
+       "text": "That information is conflicting."
+      },
+      {
+       "n": 7,
+       "text": "The conflicting information causes motion sickness."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if something else, like the air quality in space, gives astronauts motion sickness?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q18",
+     "qnum": 18,
+     "question_type": "Strengthen",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT104_S1_Q19",
+   "prompt": "Pollen and other allergens can cause cells in the nose to release histamine, a chemical that inflames nasal tissue and causes runny nose, congestion, and sneezing. Antihistamines minimize these allergy symptoms by blocking the action of histamine. In addition, antihistamines have other effects, including drowsiness. However, histamine plays no role in the processes by which colds produce their symptoms.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Pollen can cause a release of histamine. \u00b7 Other allergens can cause it too. \u00b7 The release happens in cells in the nose. \u00b7 Histamine is a chemical. \u00b7 Histamine inflames nasal tissue. \u00b7 It causes a runny nose. \u00b7 It also causes congestion. \u00b7 It causes sneezing as well. (2) This is about antihistamines. \u00b7 Antihistamines minimize those symptoms. \u00b7 The symptoms are allergy symptoms. \u00b7 They work by blocking an action. \u00b7 The action blocked is histamine's. (3) This is an additional point. \u00b7 Antihistamines have other effects. \u00b7 Drowsiness is one of them. (4) This is a contrast. \u00b7 It is about histamine. \u00b7 Histamine plays no role in certain processes. \u00b7 Those processes are how colds produce symptoms. \u00b7 The symptoms are the colds' own.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Pollen and other allergens can cause cells in the nose to release histamine, a chemical that inflames nasal tissue and causes runny nose, congestion, and sneezing.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Pollen can cause a release of histamine."
+      },
+      {
+       "n": 2,
+       "text": "Other allergens can cause it too."
+      },
+      {
+       "n": 3,
+       "text": "The release happens in cells in the nose."
+      },
+      {
+       "n": 4,
+       "text": "Histamine is a chemical."
+      },
+      {
+       "n": 5,
+       "text": "Histamine inflames nasal tissue."
+      },
+      {
+       "n": 6,
+       "text": "It causes a runny nose."
+      },
+      {
+       "n": 7,
+       "text": "It also causes congestion."
+      },
+      {
+       "n": 8,
+       "text": "It causes sneezing as well."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Antihistamines minimize these allergy symptoms by blocking the action of histamine.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about antihistamines."
+      },
+      {
+       "n": 2,
+       "text": "Antihistamines minimize those symptoms."
+      },
+      {
+       "n": 3,
+       "text": "The symptoms are allergy symptoms."
+      },
+      {
+       "n": 4,
+       "text": "They work by blocking an action."
+      },
+      {
+       "n": 5,
+       "text": "The action blocked is histamine's."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "In addition, antihistamines have other effects, including drowsiness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "Antihistamines have other effects."
+      },
+      {
+       "n": 3,
+       "text": "Drowsiness is one of them."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "However, histamine plays no role in the processes by which colds produce their symptoms.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "It is about histamine."
+      },
+      {
+       "n": 3,
+       "text": "Histamine plays no role in certain processes."
+      },
+      {
+       "n": 4,
+       "text": "Those processes are how colds produce symptoms."
+      },
+      {
+       "n": 5,
+       "text": "The symptoms are the colds' own."
+      }
+     ]
+    }
+   ],
+   "the_read": "If antihistamines only reduce symptoms by blocking histamine action, they do not help relieve cold symptoms.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q19",
+     "qnum": 19,
+     "question_type": "Inference",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT104_S1_Q20",
+   "prompt": "A poem is any work of art that exploits some of the musical characteristics of language, such as meter, rhythm, euphony, and rhyme. A novel, though it may be a work of art in language, does not usually exploit the musical characteristics of language. A symphony, though it may be a work of art that exploits the musical characteristics of sounds, rarely involves language. A limerick, though it may exploit some musical characteristics of language, is not, strictly speaking, art.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A poem is a work of art. \u00b7 Any such work counts as a poem. \u00b7 The work exploits musical characteristics. \u00b7 It exploits only some of them. \u00b7 The characteristics belong to language. \u00b7 Meter and rhythm are examples. \u00b7 Euphony is another example. \u00b7 Rhyme is another example. (2) This is about a novel. \u00b7 A novel may be a work of art. \u00b7 That art would be in language. \u00b7 This is a concession. \u00b7 A novel does not exploit the musical characteristics of language. \u00b7 That is usually the case. (3) This is about a symphony. \u00b7 A symphony may be a work of art. \u00b7 It may exploit the musical characteristics of sounds. \u00b7 This is a concession. \u00b7 A symphony rarely involves language. (4) This is about a limerick. \u00b7 A limerick may exploit musical characteristics. \u00b7 It exploits only some of them. \u00b7 Those characteristics belong to language. \u00b7 This is a concession. \u00b7 A limerick is not art. \u00b7 That holds strictly speaking.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A poem is any work of art that exploits some of the musical characteristics of language, such as meter, rhythm, euphony, and rhyme.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A poem is a work of art."
+      },
+      {
+       "n": 2,
+       "text": "Any such work counts as a poem."
+      },
+      {
+       "n": 3,
+       "text": "The work exploits musical characteristics."
+      },
+      {
+       "n": 4,
+       "text": "It exploits only some of them."
+      },
+      {
+       "n": 5,
+       "text": "The characteristics belong to language."
+      },
+      {
+       "n": 6,
+       "text": "Meter and rhythm are examples."
+      },
+      {
+       "n": 7,
+       "text": "Euphony is another example."
+      },
+      {
+       "n": 8,
+       "text": "Rhyme is another example."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "A novel, though it may be a work of art in language, does not usually exploit the musical characteristics of language.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a novel."
+      },
+      {
+       "n": 2,
+       "text": "A novel may be a work of art."
+      },
+      {
+       "n": 3,
+       "text": "That art would be in language."
+      },
+      {
+       "n": 4,
+       "text": "This is a concession."
+      },
+      {
+       "n": 5,
+       "text": "A novel does not exploit the musical characteristics of language."
+      },
+      {
+       "n": 6,
+       "text": "That is usually the case."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "A symphony, though it may be a work of art that exploits the musical characteristics of sounds, rarely involves language.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a symphony."
+      },
+      {
+       "n": 2,
+       "text": "A symphony may be a work of art."
+      },
+      {
+       "n": 3,
+       "text": "It may exploit the musical characteristics of sounds."
+      },
+      {
+       "n": 4,
+       "text": "This is a concession."
+      },
+      {
+       "n": 5,
+       "text": "A symphony rarely involves language."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "A limerick, though it may exploit some musical characteristics of language, is not, strictly speaking, art.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a limerick."
+      },
+      {
+       "n": 2,
+       "text": "A limerick may exploit musical characteristics."
+      },
+      {
+       "n": 3,
+       "text": "It exploits only some of them."
+      },
+      {
+       "n": 4,
+       "text": "Those characteristics belong to language."
+      },
+      {
+       "n": 5,
+       "text": "This is a concession."
+      },
+      {
+       "n": 6,
+       "text": "A limerick is not art."
+      },
+      {
+       "n": 7,
+       "text": "That holds strictly speaking."
+      }
+     ]
+    }
+   ],
+   "the_read": "Works that exploit the musical characteristics of language are not necessarily art.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q20",
+     "qnum": 20,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT104_S1_Q21",
+   "prompt": "In order to pressure the government of Country S to become less repressive, some legislators in Country R want to ban all exports from R to S. Companies in R that manufacture telecommunication equipment such as telephones and fax machines have argued that exports of their products should be exempted from the ban, on the grounds that it is impossible for a country to remain repressive when telecommunication equipment is widely available to the population of that country.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This states a purpose. \u00b7 The purpose is to pressure a government. \u00b7 The government is Country S's. \u00b7 The government would become less repressive. \u00b7 Some legislators want a ban. \u00b7 Those legislators are in Country R. \u00b7 The ban would cover all exports from R to S. (2) Certain companies are in Country R. \u00b7 Those companies manufacture telecommunication equipment. \u00b7 Telephones and fax machines are given as examples. \u00b7 The companies have argued for an exemption. \u00b7 The exemption would cover exports of their products. \u00b7 The exemption would be from the ban. (3) This gives their grounds. \u00b7 Something is impossible for a country. \u00b7 What is impossible is remaining repressive. \u00b7 This holds under a condition. \u00b7 The condition is that telecommunication equipment is available. \u00b7 The equipment is widely available. \u00b7 It is available to that country's population.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In order to pressure the government of Country S to become less repressive, some legislators in Country R want to ban all exports from R to S.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This states a purpose."
+      },
+      {
+       "n": 2,
+       "text": "The purpose is to pressure a government."
+      },
+      {
+       "n": 3,
+       "text": "The government is Country S's."
+      },
+      {
+       "n": 4,
+       "text": "The government would become less repressive."
+      },
+      {
+       "n": 5,
+       "text": "Some legislators want a ban."
+      },
+      {
+       "n": 6,
+       "text": "Those legislators are in Country R."
+      },
+      {
+       "n": 7,
+       "text": "The ban would cover all exports from R to S."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Companies in R that manufacture telecommunication equipment such as telephones and fax machines have argued that exports of their products should be exempted from the ban,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Certain companies are in Country R."
+      },
+      {
+       "n": 2,
+       "text": "Those companies manufacture telecommunication equipment."
+      },
+      {
+       "n": 3,
+       "text": "Telephones and fax machines are given as examples."
+      },
+      {
+       "n": 4,
+       "text": "The companies have argued for an exemption."
+      },
+      {
+       "n": 5,
+       "text": "The exemption would cover exports of their products."
+      },
+      {
+       "n": 6,
+       "text": "The exemption would be from the ban."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "on the grounds that it is impossible for a country to remain repressive when telecommunication equipment is widely available to the population of that country.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives their grounds."
+      },
+      {
+       "n": 2,
+       "text": "Something is impossible for a country."
+      },
+      {
+       "n": 3,
+       "text": "What is impossible is remaining repressive."
+      },
+      {
+       "n": 4,
+       "text": "This holds under a condition."
+      },
+      {
+       "n": 5,
+       "text": "The condition is that telecommunication equipment is available."
+      },
+      {
+       "n": 6,
+       "text": "The equipment is widely available."
+      },
+      {
+       "n": 7,
+       "text": "It is available to that country's population."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if allowing exports of a product to a country doesn't mean the product will be widely available in the country?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q21",
+     "qnum": 21,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT104_S1_Q22",
+   "prompt": "Some people believe that saying that an organization is hierarchical says everything there is to say about how that organization operates. All bureaucratically controlled organizations are hierarchical. Yet the Public Works Department, although bureaucratically controlled, operates quite differently than most other bureaucratically controlled organizations operate.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Some people hold a belief. \u00b7 The belief is about calling an organization hierarchical. \u00b7 Saying that would say everything about the organization. \u00b7 What it would cover is how the organization operates. (2) This is about certain organizations. \u00b7 Those organizations are bureaucratically controlled. \u00b7 All of them are hierarchical. (3) This is a contrast. \u00b7 It is about the Public Works Department. \u00b7 The department is bureaucratically controlled. \u00b7 The department operates differently. \u00b7 The difference is considerable. \u00b7 The comparison is with most other such organizations. \u00b7 Those organizations are bureaucratically controlled too.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Some people believe that saying that an organization is hierarchical says everything there is to say about how that organization operates.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some people hold a belief."
+      },
+      {
+       "n": 2,
+       "text": "The belief is about calling an organization hierarchical."
+      },
+      {
+       "n": 3,
+       "text": "Saying that would say everything about the organization."
+      },
+      {
+       "n": 4,
+       "text": "What it would cover is how the organization operates."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "All bureaucratically controlled organizations are hierarchical.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about certain organizations."
+      },
+      {
+       "n": 2,
+       "text": "Those organizations are bureaucratically controlled."
+      },
+      {
+       "n": 3,
+       "text": "All of them are hierarchical."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Yet the Public Works Department, although bureaucratically controlled, operates quite differently than most other bureaucratically controlled organizations operate.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "It is about the Public Works Department."
+      },
+      {
+       "n": 3,
+       "text": "The department is bureaucratically controlled."
+      },
+      {
+       "n": 4,
+       "text": "The department operates differently."
+      },
+      {
+       "n": 5,
+       "text": "The difference is considerable."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with most other such organizations."
+      },
+      {
+       "n": 7,
+       "text": "Those organizations are bureaucratically controlled too."
+      }
+     ]
+    }
+   ],
+   "the_read": "Not every heirarchical organization operates in the same way.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q22",
+     "qnum": 22,
+     "question_type": "Inference",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT104_S1_Q23",
+   "prompt": "Research indicates that 90 percent of extreme insomniacs consume large amounts of coffee. Since Tom drinks a lot of coffee, it is quite likely that he is an extreme insomniac.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This finding comes from research. \u00b7 Most extreme insomniacs consume coffee. \u00b7 That share is 90 percent. \u00b7 The amounts of coffee are large. (2) This is the conclusion. \u00b7 It rests on a reason about Tom. \u00b7 Tom drinks a lot of coffee. \u00b7 Tom is likely an extreme insomniac. \u00b7 The likelihood is put as quite likely.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Research indicates that 90 percent of extreme insomniacs consume large amounts of coffee.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This finding comes from research."
+      },
+      {
+       "n": 2,
+       "text": "Most extreme insomniacs consume coffee."
+      },
+      {
+       "n": 3,
+       "text": "That share is 90 percent."
+      },
+      {
+       "n": 4,
+       "text": "The amounts of coffee are large."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Since Tom drinks a lot of coffee, it is quite likely that he is an extreme insomniac.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on a reason about Tom."
+      },
+      {
+       "n": 3,
+       "text": "Tom drinks a lot of coffee."
+      },
+      {
+       "n": 4,
+       "text": "Tom is likely an extreme insomniac."
+      },
+      {
+       "n": 5,
+       "text": "The likelihood is put as quite likely."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we can't use bad conditional reasoning?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q23",
+     "qnum": 23,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT104_S1_Q24",
+   "prompt": "Folklorist: Oral traditions are often preferable to written ones. Exclusive dependence on speech improves the memory; literate populations grow sluggish in recall, running to written sources whenever they need information. Because writing has no limits, it can proliferate to the point where writer and reader both become confused. Since oral traditions are dependent on memory, what is useless and irrelevant is quickly eradicated.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The folklorist is the speaker. \u00b7 This is the main claim. \u00b7 Oral traditions are preferable. \u00b7 The comparison is with written traditions. \u00b7 This is often so. (2) Dependence on speech improves the memory. \u00b7 That dependence is exclusive. \u00b7 Literate populations grow sluggish. \u00b7 What they are sluggish at is recall. \u00b7 They run to written sources. \u00b7 They do this whenever they need information. (3) This gives a reason. \u00b7 Writing has no limits. \u00b7 Writing can proliferate to a certain point. \u00b7 The writer becomes confused at that point. \u00b7 The reader becomes confused too. (4) This gives a reason. \u00b7 Oral traditions depend on memory. \u00b7 Some material is useless. \u00b7 That material is irrelevant as well. \u00b7 Such material is eradicated. \u00b7 The eradication is quick.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Folklorist: Oral traditions are often preferable to written ones.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The folklorist is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "This is the main claim."
+      },
+      {
+       "n": 3,
+       "text": "Oral traditions are preferable."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with written traditions."
+      },
+      {
+       "n": 5,
+       "text": "This is often so."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Exclusive dependence on speech improves the memory; literate populations grow sluggish in recall, running to written sources whenever they need information.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Dependence on speech improves the memory."
+      },
+      {
+       "n": 2,
+       "text": "That dependence is exclusive."
+      },
+      {
+       "n": 3,
+       "text": "Literate populations grow sluggish."
+      },
+      {
+       "n": 4,
+       "text": "What they are sluggish at is recall."
+      },
+      {
+       "n": 5,
+       "text": "They run to written sources."
+      },
+      {
+       "n": 6,
+       "text": "They do this whenever they need information."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Because writing has no limits, it can proliferate to the point where writer and reader both become confused.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "Writing has no limits."
+      },
+      {
+       "n": 3,
+       "text": "Writing can proliferate to a certain point."
+      },
+      {
+       "n": 4,
+       "text": "The writer becomes confused at that point."
+      },
+      {
+       "n": 5,
+       "text": "The reader becomes confused too."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Since oral traditions are dependent on memory, what is useless and irrelevant is quickly eradicated.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "Oral traditions depend on memory."
+      },
+      {
+       "n": 3,
+       "text": "Some material is useless."
+      },
+      {
+       "n": 4,
+       "text": "That material is irrelevant as well."
+      },
+      {
+       "n": 5,
+       "text": "Such material is eradicated."
+      },
+      {
+       "n": 6,
+       "text": "The eradication is quick."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we don't care about having better memories and getting rid of useless and irrelevant information?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q24",
+     "qnum": 24,
+     "question_type": "Strengthen",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 23,
+   "slug": "PT104_S1_Q25",
+   "prompt": "When interviewing job candidates, personnel managers not only evaluate a candidate's work experience and educational background but also inquire about hobbies. Personnel managers try to justify these inquiries by noting that the enthusiasm someone shows for a hobby may well carry over to enthusiasm for a job. But such enthusiasm may also indicate that the candidate is less concerned with work than with play. Therefore personnel managers should not inquire about a candidate's hobbies.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about personnel managers. \u00b7 The managers interview job candidates. \u00b7 They evaluate a candidate's work experience. \u00b7 They evaluate the educational background too. \u00b7 They also inquire about hobbies. \u00b7 The inquiry comes in addition to the evaluation. (2) The personnel managers try to justify these inquiries. \u00b7 They justify them by noting a point. \u00b7 Someone shows enthusiasm for a hobby. \u00b7 That enthusiasm may carry over to a job. \u00b7 It may well do so. (3) This is a contrast. \u00b7 Such enthusiasm may indicate something else. \u00b7 It may indicate the candidate is less concerned with work. \u00b7 The comparison is with play. (4) This is the conclusion. \u00b7 It is about personnel managers. \u00b7 They should not inquire about hobbies. \u00b7 The hobbies are a candidate's own.",
+   "category": "Gap Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "When interviewing job candidates, personnel managers not only evaluate a candidate's work experience and educational background but also inquire about hobbies.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about personnel managers."
+      },
+      {
+       "n": 2,
+       "text": "The managers interview job candidates."
+      },
+      {
+       "n": 3,
+       "text": "They evaluate a candidate's work experience."
+      },
+      {
+       "n": 4,
+       "text": "They evaluate the educational background too."
+      },
+      {
+       "n": 5,
+       "text": "They also inquire about hobbies."
+      },
+      {
+       "n": 6,
+       "text": "The inquiry comes in addition to the evaluation."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Personnel managers try to justify these inquiries by noting that the enthusiasm someone shows for a hobby may well carry over to enthusiasm for a job.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The personnel managers try to justify these inquiries."
+      },
+      {
+       "n": 2,
+       "text": "They justify them by noting a point."
+      },
+      {
+       "n": 3,
+       "text": "Someone shows enthusiasm for a hobby."
+      },
+      {
+       "n": 4,
+       "text": "That enthusiasm may carry over to a job."
+      },
+      {
+       "n": 5,
+       "text": "It may well do so."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "But such enthusiasm may also indicate that the candidate is less concerned with work than with play.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Such enthusiasm may indicate something else."
+      },
+      {
+       "n": 3,
+       "text": "It may indicate the candidate is less concerned with work."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with play."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore personnel managers should not inquire about a candidate's hobbies.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about personnel managers."
+      },
+      {
+       "n": 3,
+       "text": "They should not inquire about hobbies."
+      },
+      {
+       "n": 4,
+       "text": "The hobbies are a candidate's own."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if it's good for personnel managers to know if a candidate is more concerned with play than with work, because it helps them weed out the unserious people?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q25",
+     "qnum": 25,
+     "question_type": "Gap Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 24,
+   "slug": "PT104_S1_Q26",
+   "prompt": "Researcher: The vast majority of a person's dreams bear no resemblance whatsoever to real events that follow the dreams. Thus, it is unreasonable to believe that one has extrasensory perception solely on the basis of having had several vivid dreams about events that happen after the dreams.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The researcher is the speaker. \u00b7 Most of a person's dreams bear no resemblance to later events. \u00b7 That majority is vast. \u00b7 There is no resemblance whatsoever. \u00b7 The events are real ones. \u00b7 Those events follow the dreams. (2) This is the conclusion. \u00b7 A belief would be unreasonable. \u00b7 The belief is that one has extrasensory perception. \u00b7 The basis for it would be having had dreams. \u00b7 Those dreams are several and vivid. \u00b7 The dreams would be about events. \u00b7 Those events happen after the dreams. \u00b7 That basis would be the sole one.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Researcher: The vast majority of a person's dreams bear no resemblance whatsoever to real events that follow the dreams.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The researcher is the speaker."
+      },
+      {
+       "n": 2,
+       "text": "Most of a person's dreams bear no resemblance to later events."
+      },
+      {
+       "n": 3,
+       "text": "That majority is vast."
+      },
+      {
+       "n": 4,
+       "text": "There is no resemblance whatsoever."
+      },
+      {
+       "n": 5,
+       "text": "The events are real ones."
+      },
+      {
+       "n": 6,
+       "text": "Those events follow the dreams."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Thus, it is unreasonable to believe that one has extrasensory perception solely on the basis of having had several vivid dreams about events that happen after the dreams.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "A belief would be unreasonable."
+      },
+      {
+       "n": 3,
+       "text": "The belief is that one has extrasensory perception."
+      },
+      {
+       "n": 4,
+       "text": "The basis for it would be having had dreams."
+      },
+      {
+       "n": 5,
+       "text": "Those dreams are several and vivid."
+      },
+      {
+       "n": 6,
+       "text": "The dreams would be about events."
+      },
+      {
+       "n": 7,
+       "text": "Those events happen after the dreams."
+      },
+      {
+       "n": 8,
+       "text": "That basis would be the sole one."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the few instances of dreams imitating reality are examples of ESP?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT104.S1.Q26",
+     "qnum": 26,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "D"
+    }
+   ]
+  }
+ ]
+}

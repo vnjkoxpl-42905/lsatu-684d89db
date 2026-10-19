@@ -1,0 +1,2848 @@
+{
+ "slug": "read-recall-colour-pt112-s4",
+ "title": "Read, Recall, Colour \u00b7 PT112 Section 4",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT112.S4",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT112_S4_Q1",
+   "prompt": "A government ought to protect and encourage free speech, because free speech is an activity that is conducive to a healthy nation and thus is in the best interest of its people.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A government ought to protect free speech. \u00b7 A government ought to encourage free speech as well. \u00b7 This recommendation is given a reason. \u00b7 Free speech is an activity. \u00b7 That activity is conducive to a healthy nation. \u00b7 A further step is drawn from that. \u00b7 Free speech is in the best interest of the people. \u00b7 The people are the nation's own people.",
+   "category": "Sufficient Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A government ought to protect and encourage free speech, because free speech is an activity that is conducive to a healthy nation and thus is in the best interest of its people.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A government ought to protect free speech."
+      },
+      {
+       "n": 2,
+       "text": "A government ought to encourage free speech as well."
+      },
+      {
+       "n": 3,
+       "text": "This recommendation is given a reason."
+      },
+      {
+       "n": 4,
+       "text": "Free speech is an activity."
+      },
+      {
+       "n": 5,
+       "text": "That activity is conducive to a healthy nation."
+      },
+      {
+       "n": 6,
+       "text": "A further step is drawn from that."
+      },
+      {
+       "n": 7,
+       "text": "Free speech is in the best interest of the people."
+      },
+      {
+       "n": 8,
+       "text": "The people are the nation's own people."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the government shouldn't do what's in the best interest of its people? What if there's a downside to protecting free speech, like people can voice and encourage extremist violence?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q1",
+     "qnum": 1,
+     "question_type": "Sufficient Assumption",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT112_S4_Q2",
+   "prompt": "The current theory about earthquakes holds that they are caused by adjoining plates of rock sliding past each other; the plates are pressed together until powerful forces overcome the resistance. As plausible as this may sound, at least one thing remains mysterious on this theory. The overcoming of such resistance should create enormous amounts of heat. But so far no increases in temperature unrelated to weather have been detected following earthquakes.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a theory about earthquakes. \u00b7 That theory is the current one. \u00b7 The theory says earthquakes have a cause. \u00b7 The cause is plates of rock sliding. \u00b7 The plates slide past each other. \u00b7 The plates are adjoining ones. (2) This continues the theory about the plates. \u00b7 The plates are pressed together. \u00b7 The pressing continues until something happens. \u00b7 Powerful forces overcome the resistance. \u00b7 The forces are described as powerful. (3) The theory may sound plausible. \u00b7 That plausibility is conceded here. \u00b7 Something still remains mysterious. \u00b7 At least one thing is mysterious. \u00b7 The mystery attaches to this theory. (4) This is about overcoming that resistance. \u00b7 Overcoming it should create heat. \u00b7 The heat should come in enormous amounts. \u00b7 The claim is about what should happen. (5) This is a contrast with what came before. \u00b7 No increases in temperature have been detected. \u00b7 The increases would be ones unrelated to weather. \u00b7 Detection would come after earthquakes. \u00b7 This holds so far.",
+   "category": "Conclusion",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The current theory about earthquakes holds that they are caused by adjoining plates of rock sliding past each other;",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a theory about earthquakes."
+      },
+      {
+       "n": 2,
+       "text": "That theory is the current one."
+      },
+      {
+       "n": 3,
+       "text": "The theory says earthquakes have a cause."
+      },
+      {
+       "n": 4,
+       "text": "The cause is plates of rock sliding."
+      },
+      {
+       "n": 5,
+       "text": "The plates slide past each other."
+      },
+      {
+       "n": 6,
+       "text": "The plates are adjoining ones."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "the plates are pressed together until powerful forces overcome the resistance.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This continues the theory about the plates."
+      },
+      {
+       "n": 2,
+       "text": "The plates are pressed together."
+      },
+      {
+       "n": 3,
+       "text": "The pressing continues until something happens."
+      },
+      {
+       "n": 4,
+       "text": "Powerful forces overcome the resistance."
+      },
+      {
+       "n": 5,
+       "text": "The forces are described as powerful."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "As plausible as this may sound, at least one thing remains mysterious on this theory.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The theory may sound plausible."
+      },
+      {
+       "n": 2,
+       "text": "That plausibility is conceded here."
+      },
+      {
+       "n": 3,
+       "text": "Something still remains mysterious."
+      },
+      {
+       "n": 4,
+       "text": "At least one thing is mysterious."
+      },
+      {
+       "n": 5,
+       "text": "The mystery attaches to this theory."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "The overcoming of such resistance should create enormous amounts of heat.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about overcoming that resistance."
+      },
+      {
+       "n": 2,
+       "text": "Overcoming it should create heat."
+      },
+      {
+       "n": 3,
+       "text": "The heat should come in enormous amounts."
+      },
+      {
+       "n": 4,
+       "text": "The claim is about what should happen."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "But so far no increases in temperature unrelated to weather have been detected following earthquakes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "No increases in temperature have been detected."
+      },
+      {
+       "n": 3,
+       "text": "The increases would be ones unrelated to weather."
+      },
+      {
+       "n": 4,
+       "text": "Detection would come after earthquakes."
+      },
+      {
+       "n": 5,
+       "text": "This holds so far."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the heat occurs and has been detected before earthquakes? What if our heat measuring tools are bad and this heat exists but we just haven't detected it yet?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q2",
+     "qnum": 2,
+     "question_type": "Conclusion",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT112_S4_Q3",
+   "prompt": "Legal theorist: It is unreasonable to incarcerate anyone for any other reason than that he or she is a serious threat to the property or lives of other people. The breaking of a law does not justify incarceration, for lawbreaking proceeds either from ignorance of the law or of the effects of one's actions, or from the free choice of the lawbreaker. Obviously mere ignorance cannot justify incarcerating a lawbreaker, and even free choice on the part of the lawbreaker fails to justify incarceration, for free choice proceeds from the desires of an agent, and the desires of an agent are products of genetics and environmental conditioning, neither of which is controlled by the agent.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A legal theorist is speaking. \u00b7 Incarcerating someone can be unreasonable. \u00b7 It is unreasonable for any reason other than one. \u00b7 The one acceptable reason is being a threat. \u00b7 The threat must be a serious one. \u00b7 The threat is to property. \u00b7 The threat is to lives as well. \u00b7 The property and lives belong to other people. (2) This is about the breaking of a law. \u00b7 Breaking a law does not justify incarceration. \u00b7 That is what the theorist claims. (3) This gives the reason for that claim. \u00b7 Lawbreaking proceeds from one of some sources. \u00b7 One source is ignorance of the law. \u00b7 Another is ignorance of the effects of one's actions. \u00b7 Another is the free choice of the lawbreaker. \u00b7 These are the only sources offered. (4) Ignorance cannot justify incarcerating a lawbreaker. \u00b7 The ignorance in question is mere ignorance. \u00b7 This is called obvious. \u00b7 Free choice also fails to justify incarceration. \u00b7 The free choice is the lawbreaker's own. \u00b7 Both possible sources are being ruled out here. (5) This gives a reason for that. \u00b7 Free choice proceeds from desires. \u00b7 The desires belong to an agent. (6) This adds a further step. \u00b7 The desires of an agent are products of something. \u00b7 One thing they are products of is genetics. \u00b7 Another is environmental conditioning. \u00b7 Neither of those is controlled by the agent.",
+   "category": "Argument Part",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Legal theorist: It is unreasonable to incarcerate anyone for any other reason than that he or she is a serious threat to the property or lives of other people.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A legal theorist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "Incarcerating someone can be unreasonable."
+      },
+      {
+       "n": 3,
+       "text": "It is unreasonable for any reason other than one."
+      },
+      {
+       "n": 4,
+       "text": "The one acceptable reason is being a threat."
+      },
+      {
+       "n": 5,
+       "text": "The threat must be a serious one."
+      },
+      {
+       "n": 6,
+       "text": "The threat is to property."
+      },
+      {
+       "n": 7,
+       "text": "The threat is to lives as well."
+      },
+      {
+       "n": 8,
+       "text": "The property and lives belong to other people."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The breaking of a law does not justify incarceration,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the breaking of a law."
+      },
+      {
+       "n": 2,
+       "text": "Breaking a law does not justify incarceration."
+      },
+      {
+       "n": 3,
+       "text": "That is what the theorist claims."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "for lawbreaking proceeds either from ignorance of the law or of the effects of one's actions, or from the free choice of the lawbreaker.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason for that claim."
+      },
+      {
+       "n": 2,
+       "text": "Lawbreaking proceeds from one of some sources."
+      },
+      {
+       "n": 3,
+       "text": "One source is ignorance of the law."
+      },
+      {
+       "n": 4,
+       "text": "Another is ignorance of the effects of one's actions."
+      },
+      {
+       "n": 5,
+       "text": "Another is the free choice of the lawbreaker."
+      },
+      {
+       "n": 6,
+       "text": "These are the only sources offered."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Obviously mere ignorance cannot justify incarcerating a lawbreaker, and even free choice on the part of the lawbreaker fails to justify incarceration,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Ignorance cannot justify incarcerating a lawbreaker."
+      },
+      {
+       "n": 2,
+       "text": "The ignorance in question is mere ignorance."
+      },
+      {
+       "n": 3,
+       "text": "This is called obvious."
+      },
+      {
+       "n": 4,
+       "text": "Free choice also fails to justify incarceration."
+      },
+      {
+       "n": 5,
+       "text": "The free choice is the lawbreaker's own."
+      },
+      {
+       "n": 6,
+       "text": "Both possible sources are being ruled out here."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "for free choice proceeds from the desires of an agent,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason for that."
+      },
+      {
+       "n": 2,
+       "text": "Free choice proceeds from desires."
+      },
+      {
+       "n": 3,
+       "text": "The desires belong to an agent."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "and the desires of an agent are products of genetics and environmental conditioning, neither of which is controlled by the agent.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This adds a further step."
+      },
+      {
+       "n": 2,
+       "text": "The desires of an agent are products of something."
+      },
+      {
+       "n": 3,
+       "text": "One thing they are products of is genetics."
+      },
+      {
+       "n": 4,
+       "text": "Another is environmental conditioning."
+      },
+      {
+       "n": 5,
+       "text": "Neither of those is controlled by the agent."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because free choice and ignorance don't justify incarceration, that doesn't mean the only reasonable reason to incarcerate someone is when they are a serious threat to property or people?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q3",
+     "qnum": 3,
+     "question_type": "Argument Part",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT112_S4_Q4",
+   "prompt": "A certain gene can be stimulated by chemicals in cigarette smoke, causing lung cells to metabolize the chemicals in a way that makes the cells cancerous. Yet smokers in whom this gene is not stimulated have as high a risk of developing lung cancer from smoking as other smokers do.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a certain gene. \u00b7 The gene can be stimulated. \u00b7 Chemicals are what stimulate it. \u00b7 The chemicals are in cigarette smoke. \u00b7 Stimulation causes lung cells to metabolize the chemicals. \u00b7 The metabolizing happens in a particular way. \u00b7 That way makes the cells cancerous. (2) This is a contrast with what came before. \u00b7 In some smokers this gene is not stimulated. \u00b7 Those smokers have a risk of developing lung cancer. \u00b7 The cancer would come from smoking. \u00b7 Their risk is as high as that of other smokers. \u00b7 The comparison is with the other smokers.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A certain gene can be stimulated by chemicals in cigarette smoke, causing lung cells to metabolize the chemicals in a way that makes the cells cancerous.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a certain gene."
+      },
+      {
+       "n": 2,
+       "text": "The gene can be stimulated."
+      },
+      {
+       "n": 3,
+       "text": "Chemicals are what stimulate it."
+      },
+      {
+       "n": 4,
+       "text": "The chemicals are in cigarette smoke."
+      },
+      {
+       "n": 5,
+       "text": "Stimulation causes lung cells to metabolize the chemicals."
+      },
+      {
+       "n": 6,
+       "text": "The metabolizing happens in a particular way."
+      },
+      {
+       "n": 7,
+       "text": "That way makes the cells cancerous."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Yet smokers in whom this gene is not stimulated have as high a risk of developing lung cancer from smoking as other smokers do.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "In some smokers this gene is not stimulated."
+      },
+      {
+       "n": 3,
+       "text": "Those smokers have a risk of developing lung cancer."
+      },
+      {
+       "n": 4,
+       "text": "The cancer would come from smoking."
+      },
+      {
+       "n": 5,
+       "text": "Their risk is as high as that of other smokers."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with the other smokers."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if smokers who don't have this gene stimulated tend to smoke cigarettes with a more cancerous concentration of nicotine, and develop lung cancer directly from the nicotine?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q4",
+     "qnum": 4,
+     "question_type": "Inference",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT112_S4_Q5",
+   "prompt": "In a poll of eligible voters conducted on the eve of a mayoral election, more of those polled stated that they favored Panitch than stated that they favored any other candidate. Despite this result, another candidate, Yeung, defeated Panitch by a comfortable margin.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There was a poll. \u00b7 The poll surveyed eligible voters. \u00b7 It was conducted on the eve of an election. \u00b7 The election was a mayoral one. \u00b7 Some of those polled stated that they favored Panitch. \u00b7 Panitch was named by more of them than any other candidate was. \u00b7 The comparison is with every other candidate. (2) This runs contrary to that result. \u00b7 Another candidate was Yeung. \u00b7 Yeung was the one who defeated Panitch. \u00b7 The margin was a comfortable one.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In a poll of eligible voters conducted on the eve of a mayoral election, more of those polled stated that they favored Panitch than stated that they favored any other candidate.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There was a poll."
+      },
+      {
+       "n": 2,
+       "text": "The poll surveyed eligible voters."
+      },
+      {
+       "n": 3,
+       "text": "It was conducted on the eve of an election."
+      },
+      {
+       "n": 4,
+       "text": "The election was a mayoral one."
+      },
+      {
+       "n": 5,
+       "text": "Some of those polled stated that they favored Panitch."
+      },
+      {
+       "n": 6,
+       "text": "Panitch was named by more of them than any other candidate was."
+      },
+      {
+       "n": 7,
+       "text": "The comparison is with every other candidate."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Despite this result, another candidate, Yeung, defeated Panitch by a comfortable margin.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This runs contrary to that result."
+      },
+      {
+       "n": 2,
+       "text": "Another candidate was Yeung."
+      },
+      {
+       "n": 3,
+       "text": "Yeung was the one who defeated Panitch."
+      },
+      {
+       "n": 4,
+       "text": "The margin was a comfortable one."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Panitch supporters were over sampled in the poll? What if poll respondents stating that they favor a candidate doesn't mean they will actually vote?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q5",
+     "qnum": 5,
+     "question_type": "Resolution",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT112_S4_Q6",
+   "prompt": "Commissioner: Budget forecasters project a revenue shortfall of a billion dollars in the coming fiscal year. Since there is no feasible way to increase the available funds, our only choice is to decrease expenditures. The plan before you outlines feasible cuts that would yield savings of a billion dollars over the coming fiscal year. We will be able to solve the problem we face, therefore, only if we adopt this plan.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A commissioner is speaking. \u00b7 Budget forecasters make a projection. \u00b7 They project a revenue shortfall. \u00b7 The shortfall is a billion dollars. \u00b7 The shortfall falls in the coming fiscal year. (2) This gives a reason first. \u00b7 There is no feasible way to increase the funds. \u00b7 The funds are the available ones. \u00b7 Decreasing expenditures is the only choice. \u00b7 The choice belongs to the speaker's group. (3) There is a plan before the audience. \u00b7 The plan outlines cuts. \u00b7 The cuts are feasible ones. \u00b7 The cuts would yield savings. \u00b7 The savings would be a billion dollars. \u00b7 The savings would come over the coming fiscal year. (4) This is the conclusion. \u00b7 The speaker's group faces a problem. \u00b7 They will be able to solve it. \u00b7 Solving it requires adopting this plan. \u00b7 Adopting the plan is the only way.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Commissioner: Budget forecasters project a revenue shortfall of a billion dollars in the coming fiscal year.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A commissioner is speaking."
+      },
+      {
+       "n": 2,
+       "text": "Budget forecasters make a projection."
+      },
+      {
+       "n": 3,
+       "text": "They project a revenue shortfall."
+      },
+      {
+       "n": 4,
+       "text": "The shortfall is a billion dollars."
+      },
+      {
+       "n": 5,
+       "text": "The shortfall falls in the coming fiscal year."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Since there is no feasible way to increase the available funds, our only choice is to decrease expenditures.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason first."
+      },
+      {
+       "n": 2,
+       "text": "There is no feasible way to increase the funds."
+      },
+      {
+       "n": 3,
+       "text": "The funds are the available ones."
+      },
+      {
+       "n": 4,
+       "text": "Decreasing expenditures is the only choice."
+      },
+      {
+       "n": 5,
+       "text": "The choice belongs to the speaker's group."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The plan before you outlines feasible cuts that would yield savings of a billion dollars over the coming fiscal year.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a plan before the audience."
+      },
+      {
+       "n": 2,
+       "text": "The plan outlines cuts."
+      },
+      {
+       "n": 3,
+       "text": "The cuts are feasible ones."
+      },
+      {
+       "n": 4,
+       "text": "The cuts would yield savings."
+      },
+      {
+       "n": 5,
+       "text": "The savings would be a billion dollars."
+      },
+      {
+       "n": 6,
+       "text": "The savings would come over the coming fiscal year."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "We will be able to solve the problem we face, therefore, only if we adopt this plan.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The speaker's group faces a problem."
+      },
+      {
+       "n": 3,
+       "text": "They will be able to solve it."
+      },
+      {
+       "n": 4,
+       "text": "Solving it requires adopting this plan."
+      },
+      {
+       "n": 5,
+       "text": "Adopting the plan is the only way."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if this particular plan isn't the only way to reduce expenditures by a billion dollars?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q6",
+     "qnum": 6,
+     "question_type": "Classic Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT112_S4_Q7",
+   "prompt": "Critic: Emily Dickinson's poetry demonstrates that meaning cannot reside entirely within a poem itself, but is always the unique result of an interaction between a reader's system of beliefs and the poem; and, of course, any two readers from different cultures or eras have radically different systems of beliefs.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A critic is speaking. \u00b7 Emily Dickinson wrote poetry. \u00b7 Her poetry demonstrates something. \u00b7 Meaning cannot reside within a poem itself. \u00b7 It cannot reside there entirely. (2) This is the contrasting half of the claim. \u00b7 Meaning is the result of an interaction. \u00b7 That result is unique. \u00b7 This is always so. \u00b7 One side of the interaction is a reader's system of beliefs. \u00b7 The other side is the poem. (3) This adds a further claim. \u00b7 It concerns any two readers. \u00b7 The readers come from different cultures. \u00b7 They may come from different eras instead. \u00b7 Such readers have different systems of beliefs. \u00b7 The difference is a radical one.",
+   "category": "Contradiction",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Critic: Emily Dickinson's poetry demonstrates that meaning cannot reside entirely within a poem itself,",
+     "details": [
+      {
+       "n": 1,
+       "text": "A critic is speaking."
+      },
+      {
+       "n": 2,
+       "text": "Emily Dickinson wrote poetry."
+      },
+      {
+       "n": 3,
+       "text": "Her poetry demonstrates something."
+      },
+      {
+       "n": 4,
+       "text": "Meaning cannot reside within a poem itself."
+      },
+      {
+       "n": 5,
+       "text": "It cannot reside there entirely."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "but is always the unique result of an interaction between a reader's system of beliefs and the poem;",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the contrasting half of the claim."
+      },
+      {
+       "n": 2,
+       "text": "Meaning is the result of an interaction."
+      },
+      {
+       "n": 3,
+       "text": "That result is unique."
+      },
+      {
+       "n": 4,
+       "text": "This is always so."
+      },
+      {
+       "n": 5,
+       "text": "One side of the interaction is a reader's system of beliefs."
+      },
+      {
+       "n": 6,
+       "text": "The other side is the poem."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "and, of course, any two readers from different cultures or eras have radically different systems of beliefs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This adds a further claim."
+      },
+      {
+       "n": 2,
+       "text": "It concerns any two readers."
+      },
+      {
+       "n": 3,
+       "text": "The readers come from different cultures."
+      },
+      {
+       "n": 4,
+       "text": "They may come from different eras instead."
+      },
+      {
+       "n": 5,
+       "text": "Such readers have different systems of beliefs."
+      },
+      {
+       "n": 6,
+       "text": "The difference is a radical one."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if poetry evokes the same reaction no matter what beliefs the reader has?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q7",
+     "qnum": 7,
+     "question_type": "Contradiction",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT112_S4_Q8",
+   "prompt": "Archaeologist: The fact that the ancient Egyptians and the Maya both built pyramids is often taken as evidence of a historical link between Old- and New-World civilizations that is earlier than any yet documented. But while these buildings are similar to each other, there are important differences in both design and function. The Egyptian pyramids were exclusively tombs for rulers, whereas the Mayan pyramids were used as temples. This shows conclusively that there was no such link between Old- and New-World civilizations.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) An archaeologist is speaking. \u00b7 The ancient Egyptians built pyramids. \u00b7 The Maya built pyramids too. \u00b7 That fact is taken as evidence. \u00b7 It is often taken that way. \u00b7 The evidence would be of a historical link. \u00b7 The link would join Old- and New-World civilizations. \u00b7 The link would be earlier than any yet documented. (2) This is a contrast with what came before. \u00b7 The buildings are similar to each other. \u00b7 That similarity is conceded. \u00b7 There are differences as well. \u00b7 The differences are important ones. \u00b7 Some of the differences are in design. \u00b7 Others are in function. (3) The Egyptian pyramids were tombs. \u00b7 The tombs were for rulers. \u00b7 They served that purpose exclusively. \u00b7 The Mayan pyramids are set against them. \u00b7 The Mayan pyramids were used as temples. (4) This is the conclusion. \u00b7 It is drawn from what came before. \u00b7 There was no such link. \u00b7 The link would have been between Old- and New-World civilizations. \u00b7 The showing is called conclusive.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Archaeologist: The fact that the ancient Egyptians and the Maya both built pyramids is often taken as evidence of a historical link between Old- and New-World civilizations that is earlier than any yet documented.",
+     "details": [
+      {
+       "n": 1,
+       "text": "An archaeologist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "The ancient Egyptians built pyramids."
+      },
+      {
+       "n": 3,
+       "text": "The Maya built pyramids too."
+      },
+      {
+       "n": 4,
+       "text": "That fact is taken as evidence."
+      },
+      {
+       "n": 5,
+       "text": "It is often taken that way."
+      },
+      {
+       "n": 6,
+       "text": "The evidence would be of a historical link."
+      },
+      {
+       "n": 7,
+       "text": "The link would join Old- and New-World civilizations."
+      },
+      {
+       "n": 8,
+       "text": "The link would be earlier than any yet documented."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But while these buildings are similar to each other, there are important differences in both design and function.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "The buildings are similar to each other."
+      },
+      {
+       "n": 3,
+       "text": "That similarity is conceded."
+      },
+      {
+       "n": 4,
+       "text": "There are differences as well."
+      },
+      {
+       "n": 5,
+       "text": "The differences are important ones."
+      },
+      {
+       "n": 6,
+       "text": "Some of the differences are in design."
+      },
+      {
+       "n": 7,
+       "text": "Others are in function."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The Egyptian pyramids were exclusively tombs for rulers, whereas the Mayan pyramids were used as temples.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The Egyptian pyramids were tombs."
+      },
+      {
+       "n": 2,
+       "text": "The tombs were for rulers."
+      },
+      {
+       "n": 3,
+       "text": "They served that purpose exclusively."
+      },
+      {
+       "n": 4,
+       "text": "The Mayan pyramids are set against them."
+      },
+      {
+       "n": 5,
+       "text": "The Mayan pyramids were used as temples."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "This shows conclusively that there was no such link between Old- and New-World civilizations.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is drawn from what came before."
+      },
+      {
+       "n": 3,
+       "text": "There was no such link."
+      },
+      {
+       "n": 4,
+       "text": "The link would have been between Old- and New-World civilizations."
+      },
+      {
+       "n": 5,
+       "text": "The showing is called conclusive."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because the pyramids from each culture served different functions, that doesn't mean there was absolutely no link whatsoever?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q8",
+     "qnum": 8,
+     "question_type": "Classic Flaw",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT112_S4_Q9",
+   "prompt": "Manuscripts written by first-time authors generally do not get serious attention by publishers except when these authors happen to be celebrities. My manuscript is unlikely to be taken seriously by publishers for I am a first-time author who is not a celebrity.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about manuscripts. \u00b7 The manuscripts are written by first-time authors. \u00b7 They do not get serious attention. \u00b7 The attention would come from publishers. \u00b7 This holds as a general rule. \u00b7 There is an exception to it. \u00b7 The exception is authors who happen to be celebrities. (2) This is the speaker's conclusion. \u00b7 The speaker has a manuscript. \u00b7 It is unlikely to be taken seriously. \u00b7 Publishers would be the ones taking it seriously. \u00b7 A reason is given for this. \u00b7 The speaker is a first-time author. \u00b7 The speaker is not a celebrity.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Manuscripts written by first-time authors generally do not get serious attention by publishers except when these authors happen to be celebrities.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about manuscripts."
+      },
+      {
+       "n": 2,
+       "text": "The manuscripts are written by first-time authors."
+      },
+      {
+       "n": 3,
+       "text": "They do not get serious attention."
+      },
+      {
+       "n": 4,
+       "text": "The attention would come from publishers."
+      },
+      {
+       "n": 5,
+       "text": "This holds as a general rule."
+      },
+      {
+       "n": 6,
+       "text": "There is an exception to it."
+      },
+      {
+       "n": 7,
+       "text": "The exception is authors who happen to be celebrities."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "My manuscript is unlikely to be taken seriously by publishers for I am a first-time author who is not a celebrity.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the speaker's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The speaker has a manuscript."
+      },
+      {
+       "n": 3,
+       "text": "It is unlikely to be taken seriously."
+      },
+      {
+       "n": 4,
+       "text": "Publishers would be the ones taking it seriously."
+      },
+      {
+       "n": 5,
+       "text": "A reason is given for this."
+      },
+      {
+       "n": 6,
+       "text": "The speaker is a first-time author."
+      },
+      {
+       "n": 7,
+       "text": "The speaker is not a celebrity."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rules of conditional reasoning don't apply?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q9",
+     "qnum": 9,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT112_S4_Q10",
+   "prompt": "Twelve healthy volunteers with the Apo-A-IV-1 gene and twelve healthy volunteers who instead have the Apo-A-IV-2 gene each consumed a standard diet supplemented daily by a high-cholesterol food. A high level of cholesterol in the blood is associated with an increased risk of heart disease. After three weeks, the blood cholesterol levels of the subjects in the second group were unchanged, whereas the blood cholesterol levels of those with the Apo-A-IV-1 gene rose 20 percent.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) One group had twelve volunteers. \u00b7 Those volunteers had the Apo-A-IV-1 gene. \u00b7 A second group also had twelve volunteers. \u00b7 Those volunteers had the Apo-A-IV-2 gene instead. \u00b7 All the volunteers were healthy. \u00b7 Each of them consumed a standard diet. \u00b7 The diet was supplemented daily. \u00b7 The supplement was a high-cholesterol food. (2) Cholesterol can be at a high level. \u00b7 The cholesterol is in the blood. \u00b7 A high level is associated with a risk. \u00b7 The risk is of heart disease. \u00b7 The risk is an increased one. (3) Three weeks had passed by then. \u00b7 This is about the subjects in the second group. \u00b7 Their blood cholesterol levels were measured. \u00b7 Those levels were unchanged. (4) This contrasts with the other group. \u00b7 It is about those with the Apo-A-IV-1 gene. \u00b7 Their blood cholesterol levels rose. \u00b7 The rise was 20 percent.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Twelve healthy volunteers with the Apo-A-IV-1 gene and twelve healthy volunteers who instead have the Apo-A-IV-2 gene each consumed a standard diet supplemented daily by a high-cholesterol food.",
+     "details": [
+      {
+       "n": 1,
+       "text": "One group had twelve volunteers."
+      },
+      {
+       "n": 2,
+       "text": "Those volunteers had the Apo-A-IV-1 gene."
+      },
+      {
+       "n": 3,
+       "text": "A second group also had twelve volunteers."
+      },
+      {
+       "n": 4,
+       "text": "Those volunteers had the Apo-A-IV-2 gene instead."
+      },
+      {
+       "n": 5,
+       "text": "All the volunteers were healthy."
+      },
+      {
+       "n": 6,
+       "text": "Each of them consumed a standard diet."
+      },
+      {
+       "n": 7,
+       "text": "The diet was supplemented daily."
+      },
+      {
+       "n": 8,
+       "text": "The supplement was a high-cholesterol food."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "A high level of cholesterol in the blood is associated with an increased risk of heart disease.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Cholesterol can be at a high level."
+      },
+      {
+       "n": 2,
+       "text": "The cholesterol is in the blood."
+      },
+      {
+       "n": 3,
+       "text": "A high level is associated with a risk."
+      },
+      {
+       "n": 4,
+       "text": "The risk is of heart disease."
+      },
+      {
+       "n": 5,
+       "text": "The risk is an increased one."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "After three weeks, the blood cholesterol levels of the subjects in the second group were unchanged,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Three weeks had passed by then."
+      },
+      {
+       "n": 2,
+       "text": "This is about the subjects in the second group."
+      },
+      {
+       "n": 3,
+       "text": "Their blood cholesterol levels were measured."
+      },
+      {
+       "n": 4,
+       "text": "Those levels were unchanged."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "whereas the blood cholesterol levels of those with the Apo-A-IV-1 gene rose 20 percent.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This contrasts with the other group."
+      },
+      {
+       "n": 2,
+       "text": "It is about those with the Apo-A-IV-1 gene."
+      },
+      {
+       "n": 3,
+       "text": "Their blood cholesterol levels rose."
+      },
+      {
+       "n": 4,
+       "text": "The rise was 20 percent."
+      }
+     ]
+    }
+   ],
+   "the_read": "High cholesterol diets may increase the risk of heart disease for people with Apo-A-IV-1 genes more than for people with Apo-A-IV-2 genes unless some other difference between the two study groups caused the difference in blood cholesterol levels.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q10",
+     "qnum": 10,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT112_S4_Q11",
+   "prompt": "High school students who feel that they are not succeeding in school often drop out before graduating and go to work. Last year, however, the city's high school dropout rate was significantly lower than the previous year's rate. This is encouraging evidence that the program instituted two years ago to improve the morale of high school students has begun to take effect to reduce dropouts.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about high school students. \u00b7 Some of them feel that they are not succeeding. \u00b7 The feeling is about school. \u00b7 Such students drop out. \u00b7 They drop out before graduating. \u00b7 They go to work afterward. \u00b7 Such dropping out happens often. (2) This is a contrast with what came before. \u00b7 The city has a high school dropout rate. \u00b7 Last year's rate was lower. \u00b7 The comparison is with the previous year's rate. \u00b7 The drop was a significant one. (3) This is the conclusion drawn from that. \u00b7 The fact counts as evidence. \u00b7 The evidence is called encouraging. \u00b7 There is a program. \u00b7 The program was instituted two years ago. \u00b7 Its aim was to improve morale. \u00b7 The morale is that of high school students. \u00b7 The program has begun to take effect and reduce dropouts.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "High school students who feel that they are not succeeding in school often drop out before graduating and go to work.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about high school students."
+      },
+      {
+       "n": 2,
+       "text": "Some of them feel that they are not succeeding."
+      },
+      {
+       "n": 3,
+       "text": "The feeling is about school."
+      },
+      {
+       "n": 4,
+       "text": "Such students drop out."
+      },
+      {
+       "n": 5,
+       "text": "They drop out before graduating."
+      },
+      {
+       "n": 6,
+       "text": "They go to work afterward."
+      },
+      {
+       "n": 7,
+       "text": "Such dropping out happens often."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Last year, however, the city's high school dropout rate was significantly lower than the previous year's rate.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "The city has a high school dropout rate."
+      },
+      {
+       "n": 3,
+       "text": "Last year's rate was lower."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with the previous year's rate."
+      },
+      {
+       "n": 5,
+       "text": "The drop was a significant one."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "This is encouraging evidence that the program instituted two years ago to improve the morale of high school students has begun to take effect to reduce dropouts.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion drawn from that."
+      },
+      {
+       "n": 2,
+       "text": "The fact counts as evidence."
+      },
+      {
+       "n": 3,
+       "text": "The evidence is called encouraging."
+      },
+      {
+       "n": 4,
+       "text": "There is a program."
+      },
+      {
+       "n": 5,
+       "text": "The program was instituted two years ago."
+      },
+      {
+       "n": 6,
+       "text": "Its aim was to improve morale."
+      },
+      {
+       "n": 7,
+       "text": "The morale is that of high school students."
+      },
+      {
+       "n": 8,
+       "text": "The program has begun to take effect and reduce dropouts."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's no causal relationship between the program and the reduced dropout rate? What if there were fewer dropouts because there were no jobs available for them to take? What if the dropout rate had been trending downward, and that's what prompted the new program?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q11",
+     "qnum": 11,
+     "question_type": "Weaken",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT112_S4_Q12",
+   "prompt": "The television show Henry was not widely watched until it was scheduled for Tuesday evenings immediately after That's Life, the most popular show on television. During the year after the move, Henry was consistently one of the ten most-watched shows on television. Since Henry's recent move to Wednesday evenings, however, it has been watched by far fewer people. We must conclude that Henry was widely watched before the move to Wednesday evenings because it followed That's Life and not because people especially liked it.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Henry is a television show. \u00b7 Henry was not widely watched at first. \u00b7 That changed when it was scheduled elsewhere. \u00b7 The new slot was Tuesday evenings. \u00b7 The slot came immediately after another show. \u00b7 That other show is That's Life. \u00b7 That's Life is the most popular show on television. (2) This covers the year after the move. \u00b7 Henry was one of the most-watched shows on television. \u00b7 It was among the ten most-watched. \u00b7 It held that position consistently. (3) This is a contrast with what came before. \u00b7 Henry has now moved again. \u00b7 The new night is Wednesday evenings. \u00b7 The move was a recent one. \u00b7 Fewer people have watched it since. \u00b7 The drop in viewers is a large one. (4) This is the conclusion. \u00b7 The conclusion is presented as forced. \u00b7 Henry was widely watched before the Wednesday move. \u00b7 The reason was that it followed That's Life. \u00b7 The reason was not that people liked it. \u00b7 People did not especially like the show.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The television show Henry was not widely watched until it was scheduled for Tuesday evenings immediately after That's Life, the most popular show on television.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Henry is a television show."
+      },
+      {
+       "n": 2,
+       "text": "Henry was not widely watched at first."
+      },
+      {
+       "n": 3,
+       "text": "That changed when it was scheduled elsewhere."
+      },
+      {
+       "n": 4,
+       "text": "The new slot was Tuesday evenings."
+      },
+      {
+       "n": 5,
+       "text": "The slot came immediately after another show."
+      },
+      {
+       "n": 6,
+       "text": "That other show is That's Life."
+      },
+      {
+       "n": 7,
+       "text": "That's Life is the most popular show on television."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "During the year after the move, Henry was consistently one of the ten most-watched shows on television.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This covers the year after the move."
+      },
+      {
+       "n": 2,
+       "text": "Henry was one of the most-watched shows on television."
+      },
+      {
+       "n": 3,
+       "text": "It was among the ten most-watched."
+      },
+      {
+       "n": 4,
+       "text": "It held that position consistently."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since Henry's recent move to Wednesday evenings, however, it has been watched by far fewer people.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "Henry has now moved again."
+      },
+      {
+       "n": 3,
+       "text": "The new night is Wednesday evenings."
+      },
+      {
+       "n": 4,
+       "text": "The move was a recent one."
+      },
+      {
+       "n": 5,
+       "text": "Fewer people have watched it since."
+      },
+      {
+       "n": 6,
+       "text": "The drop in viewers is a large one."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "We must conclude that Henry was widely watched before the move to Wednesday evenings because it followed That's Life and not because people especially liked it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The conclusion is presented as forced."
+      },
+      {
+       "n": 3,
+       "text": "Henry was widely watched before the Wednesday move."
+      },
+      {
+       "n": 4,
+       "text": "The reason was that it followed That's Life."
+      },
+      {
+       "n": 5,
+       "text": "The reason was not that people liked it."
+      },
+      {
+       "n": 6,
+       "text": "People did not especially like the show."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's no causal relationship between time slot and popularity? What if Henry got a new writing team when it moved to Wednesday and the writing is now bad? What if the shows that replaced Henry are not seeing an increase in viewers?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q12",
+     "qnum": 12,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT112_S4_Q13",
+   "prompt": "Joseph: My encyclopedia says that the mathematician Pierre de Fermat died in 1665 without leaving behind any written proof for a theorem that he claimed nonetheless to have proved. Probably this alleged theorem simply cannot be proved, since\u2014as the article points out\u2014no one else has been able to prove it. Therefore it is likely that Fermat was either lying or else mistaken when he made his claim.\n\nLaura: Your encyclopedia is out of date. Recently someone has in fact proved Fermat's theorem. And since the theorem is provable, your claim\u2014that Fermat was lying or mistaken\u2014clearly is wrong.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Joseph is the first speaker. \u00b7 He cites his encyclopedia. \u00b7 Pierre de Fermat was a mathematician. \u00b7 Fermat died in the year 1665. \u00b7 He left behind no written proof. \u00b7 The proof would have been for a theorem. \u00b7 Fermat claimed to have proved that theorem. \u00b7 He claimed it even so. (2) The theorem is only an alleged one. \u00b7 It probably cannot be proved. \u00b7 A reason is given for this. \u00b7 No one else has been able to prove it. \u00b7 The article points that out. (3) This is Joseph's conclusion. \u00b7 Something about Fermat is likely. \u00b7 One possibility is that he was lying. \u00b7 The other is that he was mistaken. \u00b7 This concerns the time he made his claim. (4) Laura is the second speaker. \u00b7 She addresses Joseph's encyclopedia. \u00b7 The encyclopedia is out of date. (5) Someone has proved the theorem. \u00b7 The theorem is Fermat's. \u00b7 The proof happened recently. \u00b7 This is offered as a fact. (6) This is Laura's conclusion. \u00b7 It rests on the theorem being provable. \u00b7 Joseph made a claim. \u00b7 His claim was that Fermat was lying or mistaken. \u00b7 That claim is wrong. \u00b7 It is clearly wrong.",
+   "category": "Argument Part",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Joseph: My encyclopedia says that the mathematician Pierre de Fermat died in 1665 without leaving behind any written proof for a theorem that he claimed nonetheless to have proved.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Joseph is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "He cites his encyclopedia."
+      },
+      {
+       "n": 3,
+       "text": "Pierre de Fermat was a mathematician."
+      },
+      {
+       "n": 4,
+       "text": "Fermat died in the year 1665."
+      },
+      {
+       "n": 5,
+       "text": "He left behind no written proof."
+      },
+      {
+       "n": 6,
+       "text": "The proof would have been for a theorem."
+      },
+      {
+       "n": 7,
+       "text": "Fermat claimed to have proved that theorem."
+      },
+      {
+       "n": 8,
+       "text": "He claimed it even so."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Probably this alleged theorem simply cannot be proved, since\u2014as the article points out\u2014no one else has been able to prove it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The theorem is only an alleged one."
+      },
+      {
+       "n": 2,
+       "text": "It probably cannot be proved."
+      },
+      {
+       "n": 3,
+       "text": "A reason is given for this."
+      },
+      {
+       "n": 4,
+       "text": "No one else has been able to prove it."
+      },
+      {
+       "n": 5,
+       "text": "The article points that out."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore it is likely that Fermat was either lying or else mistaken when he made his claim.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is Joseph's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Something about Fermat is likely."
+      },
+      {
+       "n": 3,
+       "text": "One possibility is that he was lying."
+      },
+      {
+       "n": 4,
+       "text": "The other is that he was mistaken."
+      },
+      {
+       "n": 5,
+       "text": "This concerns the time he made his claim."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Laura: Your encyclopedia is out of date.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Laura is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "She addresses Joseph's encyclopedia."
+      },
+      {
+       "n": 3,
+       "text": "The encyclopedia is out of date."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Recently someone has in fact proved Fermat's theorem.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Someone has proved the theorem."
+      },
+      {
+       "n": 2,
+       "text": "The theorem is Fermat's."
+      },
+      {
+       "n": 3,
+       "text": "The proof happened recently."
+      },
+      {
+       "n": 4,
+       "text": "This is offered as a fact."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "And since the theorem is provable, your claim\u2014that Fermat was lying or mistaken\u2014clearly is wrong.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is Laura's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on the theorem being provable."
+      },
+      {
+       "n": 3,
+       "text": "Joseph made a claim."
+      },
+      {
+       "n": 4,
+       "text": "His claim was that Fermat was lying or mistaken."
+      },
+      {
+       "n": 5,
+       "text": "That claim is wrong."
+      },
+      {
+       "n": 6,
+       "text": "It is clearly wrong."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether Fermat was lying or mistaken.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q13",
+     "qnum": 13,
+     "question_type": "Argument Part",
+     "correct_answer": "B"
+    },
+    {
+     "citation": "PT112.S4.Q14",
+     "qnum": 14,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT112_S4_Q15",
+   "prompt": "It is not good for a university to have class sizes that are very large or very small, or to have professors with teaching loads that are very light or very heavy. After all, crowded classes and overworked faculty cripple the institution's ability to recruit and retain both qualified students and faculty.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Something is not good for a university. \u00b7 Very large class sizes are not good. \u00b7 Very small class sizes are not good either. \u00b7 Teaching loads matter as well. \u00b7 The loads belong to professors. \u00b7 Very light loads are not good. \u00b7 Very heavy loads are not good. (2) This gives the reason for that. \u00b7 Crowded classes do damage. \u00b7 Overworked faculty do damage too. \u00b7 They cripple an ability of the institution. \u00b7 The ability is to recruit and retain people. \u00b7 Those people include qualified students. \u00b7 They include faculty as well.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "It is not good for a university to have class sizes that are very large or very small, or to have professors with teaching loads that are very light or very heavy.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Something is not good for a university."
+      },
+      {
+       "n": 2,
+       "text": "Very large class sizes are not good."
+      },
+      {
+       "n": 3,
+       "text": "Very small class sizes are not good either."
+      },
+      {
+       "n": 4,
+       "text": "Teaching loads matter as well."
+      },
+      {
+       "n": 5,
+       "text": "The loads belong to professors."
+      },
+      {
+       "n": 6,
+       "text": "Very light loads are not good."
+      },
+      {
+       "n": 7,
+       "text": "Very heavy loads are not good."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "After all, crowded classes and overworked faculty cripple the institution's ability to recruit and retain both qualified students and faculty.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason for that."
+      },
+      {
+       "n": 2,
+       "text": "Crowded classes do damage."
+      },
+      {
+       "n": 3,
+       "text": "Overworked faculty do damage too."
+      },
+      {
+       "n": 4,
+       "text": "They cripple an ability of the institution."
+      },
+      {
+       "n": 5,
+       "text": "The ability is to recruit and retain people."
+      },
+      {
+       "n": 6,
+       "text": "Those people include qualified students."
+      },
+      {
+       "n": 7,
+       "text": "They include faculty as well."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's no downside to light teaching loads and small class sizes? What if universities don't care about recruiting and retaining qualified students and faculty?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q15",
+     "qnum": 15,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT112_S4_Q16",
+   "prompt": "Sales manager: The highest priority should be given to the needs of the sales department, because without successful sales the company as a whole would fail.\n\nShipping manager: There are several departments other than sales that also must function successfully for the company to succeed. It is impossible to give the highest priority to all of them.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A sales manager is speaking. \u00b7 The highest priority should go to certain needs. \u00b7 Those needs belong to the sales department. \u00b7 A reason is given for this. \u00b7 Sales might not be successful. \u00b7 Without successful sales the company would fail. \u00b7 The failure would be of the company as a whole. (2) A shipping manager replies. \u00b7 There are other departments besides sales. \u00b7 Several of those departments exist. \u00b7 They must function successfully too. \u00b7 That is required for the company to succeed. (3) This continues the shipping manager's point. \u00b7 The highest priority could be given to a department. \u00b7 It cannot be given to all of them. \u00b7 Doing so is impossible.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Sales manager: The highest priority should be given to the needs of the sales department, because without successful sales the company as a whole would fail.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A sales manager is speaking."
+      },
+      {
+       "n": 2,
+       "text": "The highest priority should go to certain needs."
+      },
+      {
+       "n": 3,
+       "text": "Those needs belong to the sales department."
+      },
+      {
+       "n": 4,
+       "text": "A reason is given for this."
+      },
+      {
+       "n": 5,
+       "text": "Sales might not be successful."
+      },
+      {
+       "n": 6,
+       "text": "Without successful sales the company would fail."
+      },
+      {
+       "n": 7,
+       "text": "The failure would be of the company as a whole."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Shipping manager: There are several departments other than sales that also must function successfully for the company to succeed.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A shipping manager replies."
+      },
+      {
+       "n": 2,
+       "text": "There are other departments besides sales."
+      },
+      {
+       "n": 3,
+       "text": "Several of those departments exist."
+      },
+      {
+       "n": 4,
+       "text": "They must function successfully too."
+      },
+      {
+       "n": 5,
+       "text": "That is required for the company to succeed."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "It is impossible to give the highest priority to all of them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This continues the shipping manager's point."
+      },
+      {
+       "n": 2,
+       "text": "The highest priority could be given to a department."
+      },
+      {
+       "n": 3,
+       "text": "It cannot be given to all of them."
+      },
+      {
+       "n": 4,
+       "text": "Doing so is impossible."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether the highest priority can be given to departments on whom the success of the company depends.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q16",
+     "qnum": 16,
+     "question_type": "Method",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT112_S4_Q17",
+   "prompt": "Researchers have found that people who drink five or more cups of coffee a day have a risk of heart disease 2.5 times the average after corrections are made for age and smoking habits. Members of the research team say that, on the basis of their findings, they now limit their own daily coffee intake to two cups.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Researchers have made a finding. \u00b7 The finding concerns coffee drinkers. \u00b7 Those people drink five or more cups a day. \u00b7 They have a risk of heart disease. \u00b7 Their risk is 2.5 times the average. \u00b7 Corrections were made to the figure. \u00b7 One correction was for age. \u00b7 Another was for smoking habits. (2) Members of the research team say something. \u00b7 They are on the team that made the finding. \u00b7 Their findings are the basis for it. \u00b7 They limit their own coffee intake. \u00b7 The limit is two cups a day. \u00b7 They do this now.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Researchers have found that people who drink five or more cups of coffee a day have a risk of heart disease 2.5 times the average after corrections are made for age and smoking habits.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Researchers have made a finding."
+      },
+      {
+       "n": 2,
+       "text": "The finding concerns coffee drinkers."
+      },
+      {
+       "n": 3,
+       "text": "Those people drink five or more cups a day."
+      },
+      {
+       "n": 4,
+       "text": "They have a risk of heart disease."
+      },
+      {
+       "n": 5,
+       "text": "Their risk is 2.5 times the average."
+      },
+      {
+       "n": 6,
+       "text": "Corrections were made to the figure."
+      },
+      {
+       "n": 7,
+       "text": "One correction was for age."
+      },
+      {
+       "n": 8,
+       "text": "Another was for smoking habits."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Members of the research team say that, on the basis of their findings, they now limit their own daily coffee intake to two cups.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Members of the research team say something."
+      },
+      {
+       "n": 2,
+       "text": "They are on the team that made the finding."
+      },
+      {
+       "n": 3,
+       "text": "Their findings are the basis for it."
+      },
+      {
+       "n": 4,
+       "text": "They limit their own coffee intake."
+      },
+      {
+       "n": 5,
+       "text": "The limit is two cups a day."
+      },
+      {
+       "n": 6,
+       "text": "They do this now."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's no causal relationship between coffee consumption and risk of heart disease? What if something else, like stress, causes people to both drink a lot of coffee and to have a higher risk of heart disease? What if coffee is a home remedy for heart disease, so those who know they have an increased risk drink a lot of coffee?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q17",
+     "qnum": 17,
+     "question_type": "Weaken",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT112_S4_Q18",
+   "prompt": "People who have political power tend to see new technologies as a means of extending or protecting their power, whereas they generally see new ethical arguments and ideas as a threat to it. Therefore, technical ingenuity usually brings benefits to those who have this ingenuity, whereas ethical inventiveness brings only pain to those who have this inventiveness.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about people who have political power. \u00b7 They see new technologies a certain way. \u00b7 They see them as a means to an end. \u00b7 One end is extending their power. \u00b7 The other is protecting that power. \u00b7 This is a tendency rather than a rule. (2) This contrasts with the point about technologies. \u00b7 The same people see something else differently. \u00b7 The things are new ethical arguments. \u00b7 New ideas are included too. \u00b7 They see these as a threat to their power. \u00b7 This is generally so. (3) This is the conclusion. \u00b7 Technical ingenuity brings benefits. \u00b7 The benefits go to those who have that ingenuity. \u00b7 This is usually what happens. \u00b7 Ethical inventiveness is set against it. \u00b7 It brings pain to those who have that inventiveness. \u00b7 Pain is all that it brings.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "People who have political power tend to see new technologies as a means of extending or protecting their power,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about people who have political power."
+      },
+      {
+       "n": 2,
+       "text": "They see new technologies a certain way."
+      },
+      {
+       "n": 3,
+       "text": "They see them as a means to an end."
+      },
+      {
+       "n": 4,
+       "text": "One end is extending their power."
+      },
+      {
+       "n": 5,
+       "text": "The other is protecting that power."
+      },
+      {
+       "n": 6,
+       "text": "This is a tendency rather than a rule."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "whereas they generally see new ethical arguments and ideas as a threat to it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This contrasts with the point about technologies."
+      },
+      {
+       "n": 2,
+       "text": "The same people see something else differently."
+      },
+      {
+       "n": 3,
+       "text": "The things are new ethical arguments."
+      },
+      {
+       "n": 4,
+       "text": "New ideas are included too."
+      },
+      {
+       "n": 5,
+       "text": "They see these as a threat to their power."
+      },
+      {
+       "n": 6,
+       "text": "This is generally so."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, technical ingenuity usually brings benefits to those who have this ingenuity, whereas ethical inventiveness brings only pain to those who have this inventiveness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Technical ingenuity brings benefits."
+      },
+      {
+       "n": 3,
+       "text": "The benefits go to those who have that ingenuity."
+      },
+      {
+       "n": 4,
+       "text": "This is usually what happens."
+      },
+      {
+       "n": 5,
+       "text": "Ethical inventiveness is set against it."
+      },
+      {
+       "n": 6,
+       "text": "It brings pain to those who have that inventiveness."
+      },
+      {
+       "n": 7,
+       "text": "Pain is all that it brings."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if politically powerful people don't reward things they think enhance their power and punish things they think jeopardize their power?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q18",
+     "qnum": 18,
+     "question_type": "Strengthen",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT112_S4_Q19",
+   "prompt": "Birds need so much food energy to maintain their body temperatures that some of them spend most of their time eating. But a comparison of a bird of a seed-eating species to a bird of a nectar-eating species that has the same overall energy requirement would surely show that the seed-eating bird spends more time eating than does the nectar-eating bird, since a given amount of nectar provides more energy than does the same amount of seeds.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Birds need food energy. \u00b7 They need it to maintain their body temperatures. \u00b7 The amount they need is very large. \u00b7 Some birds spend their time eating. \u00b7 They spend most of their time that way. (2) This is a contrast with what came before. \u00b7 A comparison is proposed. \u00b7 One bird belongs to a seed-eating species. \u00b7 The other belongs to a nectar-eating species. \u00b7 The two have the same overall energy requirement. \u00b7 The comparison would show the seed-eating bird spends more time eating. \u00b7 The comparison is with the nectar-eating bird. \u00b7 The result is claimed to be sure. (3) This gives the reason for that. \u00b7 A given amount of nectar provides energy. \u00b7 Nectar provides more of it. \u00b7 The comparison is with the same amount of seeds.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Birds need so much food energy to maintain their body temperatures that some of them spend most of their time eating.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Birds need food energy."
+      },
+      {
+       "n": 2,
+       "text": "They need it to maintain their body temperatures."
+      },
+      {
+       "n": 3,
+       "text": "The amount they need is very large."
+      },
+      {
+       "n": 4,
+       "text": "Some birds spend their time eating."
+      },
+      {
+       "n": 5,
+       "text": "They spend most of their time that way."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But a comparison of a bird of a seed-eating species to a bird of a nectar-eating species that has the same overall energy requirement would surely show that the seed-eating bird spends more time eating than does the nectar-eating bird,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "A comparison is proposed."
+      },
+      {
+       "n": 3,
+       "text": "One bird belongs to a seed-eating species."
+      },
+      {
+       "n": 4,
+       "text": "The other belongs to a nectar-eating species."
+      },
+      {
+       "n": 5,
+       "text": "The two have the same overall energy requirement."
+      },
+      {
+       "n": 6,
+       "text": "The comparison would show the seed-eating bird spends more time eating."
+      },
+      {
+       "n": 7,
+       "text": "The comparison is with the nectar-eating bird."
+      },
+      {
+       "n": 8,
+       "text": "The result is claimed to be sure."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "since a given amount of nectar provides more energy than does the same amount of seeds.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason for that."
+      },
+      {
+       "n": 2,
+       "text": "A given amount of nectar provides energy."
+      },
+      {
+       "n": 3,
+       "text": "Nectar provides more of it."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with the same amount of seeds."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if it takes a lot more time to eat nectar than it does to eat the same quantity of seed?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q19",
+     "qnum": 19,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT112_S4_Q20",
+   "prompt": "Consumer advocate: The introduction of a new drug into the marketplace should be contingent upon our having a good understanding of its social impact. However, the social impact of the newly marketed antihistamine is far from clear. It is obvious, then, that there should be a general reduction in the pace of bringing to the marketplace new drugs that are now being tested.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A consumer advocate is speaking. \u00b7 New drugs are introduced into the marketplace. \u00b7 Such an introduction should be contingent on something. \u00b7 The condition is our having an understanding. \u00b7 The understanding must be a good one. \u00b7 What is understood is the drug's social impact. (2) This is a contrast with what came before. \u00b7 There is an antihistamine. \u00b7 It has been newly marketed. \u00b7 Its social impact is not clear. \u00b7 It is far from clear. (3) This is the conclusion. \u00b7 The conclusion is called obvious. \u00b7 There should be a reduction in pace. \u00b7 The reduction should be a general one. \u00b7 The pace is that of bringing drugs to the marketplace. \u00b7 The drugs are new ones now being tested.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Consumer advocate: The introduction of a new drug into the marketplace should be contingent upon our having a good understanding of its social impact.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A consumer advocate is speaking."
+      },
+      {
+       "n": 2,
+       "text": "New drugs are introduced into the marketplace."
+      },
+      {
+       "n": 3,
+       "text": "Such an introduction should be contingent on something."
+      },
+      {
+       "n": 4,
+       "text": "The condition is our having an understanding."
+      },
+      {
+       "n": 5,
+       "text": "The understanding must be a good one."
+      },
+      {
+       "n": 6,
+       "text": "What is understood is the drug's social impact."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "However, the social impact of the newly marketed antihistamine is far from clear.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "There is an antihistamine."
+      },
+      {
+       "n": 3,
+       "text": "It has been newly marketed."
+      },
+      {
+       "n": 4,
+       "text": "Its social impact is not clear."
+      },
+      {
+       "n": 5,
+       "text": "It is far from clear."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "It is obvious, then, that there should be a general reduction in the pace of bringing to the marketplace new drugs that are now being tested.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The conclusion is called obvious."
+      },
+      {
+       "n": 3,
+       "text": "There should be a reduction in pace."
+      },
+      {
+       "n": 4,
+       "text": "The reduction should be a general one."
+      },
+      {
+       "n": 5,
+       "text": "The pace is that of bringing drugs to the marketplace."
+      },
+      {
+       "n": 6,
+       "text": "The drugs are new ones now being tested."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the new antihistamine is an outlier, and we do understand the social impact of most new drugs?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q20",
+     "qnum": 20,
+     "question_type": "Strengthen",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT112_S4_Q21",
+   "prompt": "Tina: For centuries oceans and human eccentricity have been linked in the literary and artistic imagination. Such linkage is probably due to the European Renaissance practice of using ships as asylums for the socially undesirable.\n\nSergio: No. Oceans have always been viewed as mysterious and unpredictable\u2014qualities that people have invariably associated with eccentricity.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Tina is the first speaker. \u00b7 Oceans have been linked with something. \u00b7 The other thing is human eccentricity. \u00b7 The link lives in the imagination. \u00b7 That imagination is literary and artistic. \u00b7 The link has lasted for centuries. (2) This explains the linkage. \u00b7 The explanation is only probable. \u00b7 There was a practice of the European Renaissance. \u00b7 The practice used ships as asylums. \u00b7 The asylums held the socially undesirable. (3) Sergio is the second speaker. \u00b7 He rejects what Tina said. \u00b7 Oceans have been viewed as mysterious. \u00b7 They have been viewed as unpredictable. \u00b7 They have always been viewed that way. \u00b7 People associate those qualities with eccentricity. \u00b7 They have invariably done so.",
+   "category": "Controversy",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Tina: For centuries oceans and human eccentricity have been linked in the literary and artistic imagination.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Tina is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "Oceans have been linked with something."
+      },
+      {
+       "n": 3,
+       "text": "The other thing is human eccentricity."
+      },
+      {
+       "n": 4,
+       "text": "The link lives in the imagination."
+      },
+      {
+       "n": 5,
+       "text": "That imagination is literary and artistic."
+      },
+      {
+       "n": 6,
+       "text": "The link has lasted for centuries."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Such linkage is probably due to the European Renaissance practice of using ships as asylums for the socially undesirable.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This explains the linkage."
+      },
+      {
+       "n": 2,
+       "text": "The explanation is only probable."
+      },
+      {
+       "n": 3,
+       "text": "There was a practice of the European Renaissance."
+      },
+      {
+       "n": 4,
+       "text": "The practice used ships as asylums."
+      },
+      {
+       "n": 5,
+       "text": "The asylums held the socially undesirable."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Sergio: No. Oceans have always been viewed as mysterious and unpredictable\u2014qualities that people have invariably associated with eccentricity.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Sergio is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "He rejects what Tina said."
+      },
+      {
+       "n": 3,
+       "text": "Oceans have been viewed as mysterious."
+      },
+      {
+       "n": 4,
+       "text": "They have been viewed as unpredictable."
+      },
+      {
+       "n": 5,
+       "text": "They have always been viewed that way."
+      },
+      {
+       "n": 6,
+       "text": "People associate those qualities with eccentricity."
+      },
+      {
+       "n": 7,
+       "text": "They have invariably done so."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether the link between oceans and human eccentricity predates the European Renaissance.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q21",
+     "qnum": 21,
+     "question_type": "Controversy",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT112_S4_Q22",
+   "prompt": "In a recent study, a group of subjects had their normal daily caloric intake increased by 25 percent. This increase was entirely in the form of alcohol. Another group of similar subjects had alcohol replace nonalcoholic sources of 25 percent of their normal daily caloric intake. All subjects gained body fat over the course of the study, and the amount of body fat gained was the same for both groups.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There was a study. \u00b7 The study was a recent one. \u00b7 One group of subjects took part. \u00b7 The subjects had a normal daily caloric intake. \u00b7 That intake was increased. \u00b7 The increase was 25 percent. (2) This is about that increase. \u00b7 The increase came in the form of alcohol. \u00b7 Alcohol accounted for all of it. (3) There was another group of subjects. \u00b7 Its subjects were similar to the first group's. \u00b7 Alcohol replaced something for them. \u00b7 What it replaced was nonalcoholic sources. \u00b7 Those sources supplied 25 percent of their intake. \u00b7 The intake is their normal daily caloric intake. (4) Every subject gained body fat. \u00b7 The gain happened over the course of the study. \u00b7 A further point is added. \u00b7 An amount of body fat was gained. \u00b7 That amount was the same for both groups.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In a recent study, a group of subjects had their normal daily caloric intake increased by 25 percent.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There was a study."
+      },
+      {
+       "n": 2,
+       "text": "The study was a recent one."
+      },
+      {
+       "n": 3,
+       "text": "One group of subjects took part."
+      },
+      {
+       "n": 4,
+       "text": "The subjects had a normal daily caloric intake."
+      },
+      {
+       "n": 5,
+       "text": "That intake was increased."
+      },
+      {
+       "n": 6,
+       "text": "The increase was 25 percent."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This increase was entirely in the form of alcohol.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about that increase."
+      },
+      {
+       "n": 2,
+       "text": "The increase came in the form of alcohol."
+      },
+      {
+       "n": 3,
+       "text": "Alcohol accounted for all of it."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Another group of similar subjects had alcohol replace nonalcoholic sources of 25 percent of their normal daily caloric intake.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There was another group of subjects."
+      },
+      {
+       "n": 2,
+       "text": "Its subjects were similar to the first group's."
+      },
+      {
+       "n": 3,
+       "text": "Alcohol replaced something for them."
+      },
+      {
+       "n": 4,
+       "text": "What it replaced was nonalcoholic sources."
+      },
+      {
+       "n": 5,
+       "text": "Those sources supplied 25 percent of their intake."
+      },
+      {
+       "n": 6,
+       "text": "The intake is their normal daily caloric intake."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "All subjects gained body fat over the course of the study, and the amount of body fat gained was the same for both groups.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Every subject gained body fat."
+      },
+      {
+       "n": 2,
+       "text": "The gain happened over the course of the study."
+      },
+      {
+       "n": 3,
+       "text": "A further point is added."
+      },
+      {
+       "n": 4,
+       "text": "An amount of body fat was gained."
+      },
+      {
+       "n": 5,
+       "text": "That amount was the same for both groups."
+      }
+     ]
+    }
+   ],
+   "the_read": "An increase in body fat is not entirely determined by total calories consumed.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q22",
+     "qnum": 22,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT112_S4_Q23",
+   "prompt": "When investigators discovered that the director of a local charity had repeatedly overstated the number of people his charity had helped, the director accepted responsibility for the deception. However, the investigators claimed that journalists were as much to blame as the director was for inflating the charity's reputation, since they had na\u00efvely accepted what the director told them, and simply reported as fact the numbers he gave them.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Investigators made a discovery. \u00b7 There is a local charity. \u00b7 The charity has a director. \u00b7 The director overstated a number. \u00b7 The number was of people the charity had helped. \u00b7 He overstated it repeatedly. (2) This is what happened on that discovery. \u00b7 The director accepted responsibility. \u00b7 The responsibility was for the deception. (3) This is a contrast with what came before. \u00b7 The investigators made a claim. \u00b7 Their claim was about journalists. \u00b7 Journalists were to blame. \u00b7 They were as much to blame as the director. \u00b7 The blame was for inflating a reputation. \u00b7 The reputation is the charity's. (4) This gives the reason for that claim. \u00b7 The journalists accepted what the director told them. \u00b7 They accepted it naively. \u00b7 They also reported the numbers. \u00b7 The director gave them those numbers. \u00b7 They reported the numbers as fact. \u00b7 They simply did that and no more.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "When investigators discovered that the director of a local charity had repeatedly overstated the number of people his charity had helped,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Investigators made a discovery."
+      },
+      {
+       "n": 2,
+       "text": "There is a local charity."
+      },
+      {
+       "n": 3,
+       "text": "The charity has a director."
+      },
+      {
+       "n": 4,
+       "text": "The director overstated a number."
+      },
+      {
+       "n": 5,
+       "text": "The number was of people the charity had helped."
+      },
+      {
+       "n": 6,
+       "text": "He overstated it repeatedly."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "the director accepted responsibility for the deception.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is what happened on that discovery."
+      },
+      {
+       "n": 2,
+       "text": "The director accepted responsibility."
+      },
+      {
+       "n": 3,
+       "text": "The responsibility was for the deception."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "However, the investigators claimed that journalists were as much to blame as the director was for inflating the charity's reputation,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "The investigators made a claim."
+      },
+      {
+       "n": 3,
+       "text": "Their claim was about journalists."
+      },
+      {
+       "n": 4,
+       "text": "Journalists were to blame."
+      },
+      {
+       "n": 5,
+       "text": "They were as much to blame as the director."
+      },
+      {
+       "n": 6,
+       "text": "The blame was for inflating a reputation."
+      },
+      {
+       "n": 7,
+       "text": "The reputation is the charity's."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "since they had na\u00efvely accepted what the director told them, and simply reported as fact the numbers he gave them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason for that claim."
+      },
+      {
+       "n": 2,
+       "text": "The journalists accepted what the director told them."
+      },
+      {
+       "n": 3,
+       "text": "They accepted it naively."
+      },
+      {
+       "n": 4,
+       "text": "They also reported the numbers."
+      },
+      {
+       "n": 5,
+       "text": "The director gave them those numbers."
+      },
+      {
+       "n": 6,
+       "text": "They reported the numbers as fact."
+      },
+      {
+       "n": 7,
+       "text": "They simply did that and no more."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if a journalist's failing to fact check a source is not blameworthy?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q23",
+     "qnum": 23,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 23,
+   "slug": "PT112_S4_Q24",
+   "prompt": "Telephone companies are promoting \"voice mail\" as an alternative to the answering machine. By recording messages from callers when a subscriber does not have access to his or her telephone, voice mail provides a service similar to that of an answering machine. The companies promoting this service argue that it will soon make answering machines obsolete, since it is much more convenient, more flexible, and less expensive than an answering machine.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Telephone companies are promoting something. \u00b7 The thing is called voice mail. \u00b7 They promote it as an alternative. \u00b7 The alternative is to the answering machine. (2) Voice mail provides a service. \u00b7 The service is similar to an answering machine's. \u00b7 Voice mail records messages. \u00b7 The messages come from callers. \u00b7 The recording happens when a subscriber lacks access. \u00b7 What the subscriber lacks access to is a telephone. (3) The companies promote this service. \u00b7 They make an argument about it. \u00b7 Voice mail will make answering machines obsolete. \u00b7 That will happen soon. (4) This gives the reason for that argument. \u00b7 Voice mail is more convenient. \u00b7 It is much more convenient. \u00b7 It is more flexible. \u00b7 It is less expensive. \u00b7 The comparison is with an answering machine.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Telephone companies are promoting \"voice mail\" as an alternative to the answering machine.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Telephone companies are promoting something."
+      },
+      {
+       "n": 2,
+       "text": "The thing is called voice mail."
+      },
+      {
+       "n": 3,
+       "text": "They promote it as an alternative."
+      },
+      {
+       "n": 4,
+       "text": "The alternative is to the answering machine."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "By recording messages from callers when a subscriber does not have access to his or her telephone, voice mail provides a service similar to that of an answering machine.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Voice mail provides a service."
+      },
+      {
+       "n": 2,
+       "text": "The service is similar to an answering machine's."
+      },
+      {
+       "n": 3,
+       "text": "Voice mail records messages."
+      },
+      {
+       "n": 4,
+       "text": "The messages come from callers."
+      },
+      {
+       "n": 5,
+       "text": "The recording happens when a subscriber lacks access."
+      },
+      {
+       "n": 6,
+       "text": "What the subscriber lacks access to is a telephone."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The companies promoting this service argue that it will soon make answering machines obsolete,",
+     "details": [
+      {
+       "n": 1,
+       "text": "The companies promote this service."
+      },
+      {
+       "n": 2,
+       "text": "They make an argument about it."
+      },
+      {
+       "n": 3,
+       "text": "Voice mail will make answering machines obsolete."
+      },
+      {
+       "n": 4,
+       "text": "That will happen soon."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "since it is much more convenient, more flexible, and less expensive than an answering machine.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason for that argument."
+      },
+      {
+       "n": 2,
+       "text": "Voice mail is more convenient."
+      },
+      {
+       "n": 3,
+       "text": "It is much more convenient."
+      },
+      {
+       "n": 4,
+       "text": "It is more flexible."
+      },
+      {
+       "n": 5,
+       "text": "It is less expensive."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with an answering machine."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there are huge downsides to voice mail that outweigh the upsides? What if there's a key beneficial feature to answering machines that voice mail cannot match?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q24",
+     "qnum": 24,
+     "question_type": "Weaken",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 24,
+   "slug": "PT112_S4_Q25",
+   "prompt": "The judgment that an artist is great always rests on assessments of the work the artist has produced. A series of great works is the only indicator of greatness. Therefore, to say that an artist is great is just to summarize the quality of his or her known works, and the artist's greatness can provide no basis for predicting the quality of the artist's unknown or future works.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a judgment that an artist is great. \u00b7 That judgment rests on assessments. \u00b7 The assessments are of the artist's work. \u00b7 The artist has produced that work. \u00b7 The judgment always rests on them. (2) Greatness has an indicator. \u00b7 The indicator is a series of works. \u00b7 The works in the series are great. \u00b7 It is the only indicator there is. (3) This is the conclusion. \u00b7 Someone may say that an artist is great. \u00b7 Saying that is only a summary. \u00b7 What is summarized is quality. \u00b7 The quality is that of the artist's works. \u00b7 Those works are the known ones. (4) This adds a second part to the conclusion. \u00b7 The artist's greatness provides no basis. \u00b7 The basis would be for predicting quality. \u00b7 The quality would be of other works. \u00b7 Those works are unknown ones. \u00b7 They may be future ones instead.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The judgment that an artist is great always rests on assessments of the work the artist has produced.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a judgment that an artist is great."
+      },
+      {
+       "n": 2,
+       "text": "That judgment rests on assessments."
+      },
+      {
+       "n": 3,
+       "text": "The assessments are of the artist's work."
+      },
+      {
+       "n": 4,
+       "text": "The artist has produced that work."
+      },
+      {
+       "n": 5,
+       "text": "The judgment always rests on them."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "A series of great works is the only indicator of greatness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Greatness has an indicator."
+      },
+      {
+       "n": 2,
+       "text": "The indicator is a series of works."
+      },
+      {
+       "n": 3,
+       "text": "The works in the series are great."
+      },
+      {
+       "n": 4,
+       "text": "It is the only indicator there is."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, to say that an artist is great is just to summarize the quality of his or her known works,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Someone may say that an artist is great."
+      },
+      {
+       "n": 3,
+       "text": "Saying that is only a summary."
+      },
+      {
+       "n": 4,
+       "text": "What is summarized is quality."
+      },
+      {
+       "n": 5,
+       "text": "The quality is that of the artist's works."
+      },
+      {
+       "n": 6,
+       "text": "Those works are the known ones."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "and the artist's greatness can provide no basis for predicting the quality of the artist's unknown or future works.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This adds a second part to the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The artist's greatness provides no basis."
+      },
+      {
+       "n": 3,
+       "text": "The basis would be for predicting quality."
+      },
+      {
+       "n": 4,
+       "text": "The quality would be of other works."
+      },
+      {
+       "n": 5,
+       "text": "Those works are unknown ones."
+      },
+      {
+       "n": 6,
+       "text": "They may be future ones instead."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if a great artist is only capable of producing great works?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT112.S4.Q25",
+     "qnum": 25,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "A"
+    }
+   ]
+  }
+ ]
+}

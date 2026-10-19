@@ -1,0 +1,586 @@
+[
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Student: My university recently enacted new penalties for drinking alcohol in on-campus student housing. But the university has attempted to curb on-campus drinking many times in the past, and these attempts have never been successful. Thus, these new penalties are bound to be just as ineffective.",
+    "questionStem": "The reasoning in the student’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "fails to specify what new penalties the university enacted for drinking alcohol in on-campus student housing",
+      "B": "overlooks the possibility that many students did not drink alcohol in on-campus housing even before the new penalties were enacted",
+      "C": "presumes, without providing justification, that students’ preferred location for drinking alcohol is on-campus housing",
+      "D": "overlooks the possibility that the new penalties are relevantly different from the university’s past attempts to curb on-campus drinking",
+      "E": "fails to consider whether the new penalties will have any other positive consequences besides reducing drinking in on-campus student housing"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Anderson: Taking the long view, history shows that word usage and grammar rules are constantly changing and evolving—sometimes resulting in entirely new languages. Since they will change regardless of our efforts, we shouldn’t worry about violations of grammar rules. Lipton: That’s like arguing that we shouldn’t worry about enforcing laws since, in the larger scheme of things, laws change and nations come and go. But of course it is good that laws are enforced.",
+    "questionStem": "The dialogue provides the most support for the claim that Anderson and Lipton disagree over whether",
+    "answerChoices": {
+      "A": "grammar violations should be resisted",
+      "B": "a language can evolve into an entirely new language",
+      "C": "users of a language can easily adapt to changes in that language",
+      "D": "people only rarely violate grammar rules",
+      "E": "languages evolve through an accumulation of changes in usage and rules"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Requiring that passwords conform to rules of length, complexity, and unpredictability increases the likelihood of someone gaining unauthorized access to a user’s account. Since most user accounts are automatically locked after a certain number of incorrect password guesses, it is usually impossible to gain access by guessing a password. However, because complex passwords can be hard to remember, users often write them down.",
+    "questionStem": "The overall conclusion of the argument is strongly supported if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "People who use mnemonic devices to help remember their passwords are able to easily remember passwords that are long, complex, and unpredictable.",
+      "B": "User accounts that are automatically locked after a certain number of incorrect password guesses are usually unlocked after a reasonable time.",
+      "C": "When a password is written down, it increases the chances that someone will be able to use that password to gain unauthorized access to the user’s account.",
+      "D": "When users who forget their passwords are locked out of their own accounts, they must often go through a complicated process in order to have their accounts unlocked.",
+      "E": "Passwords that conform to rules of length, complexity, and unpredictability are no harder to guess than passwords that do not conform to such rules."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In view of the considerable length of the police chief’s tenure as head of the department, the chief should be held accountable for the widespread corruption in the department. That no evidence was discovered that the chief was involved in any way in the corruption does not allow us to escape this conclusion.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the argument?",
+    "answerChoices": {
+      "A": "Any supervisor who knowingly tolerates widespread corruption among his or her subordinates should be held accountable.",
+      "B": "If a person has been in a position of authority for a long time and all of that person’s subordinates are corrupt, then he or she could not help but know about that corruption.",
+      "C": "A supervisor should not be held accountable for widespread corruption among his or her subordinates unless the supervisor could reasonably be expected to know about that corruption.",
+      "D": "If corruption is rampant among a certain group, then the person in charge cannot be expected to take corrective action if that person has not been in charge for very long.",
+      "E": "If a person has been in a position of authority for a long time, then there is no excuse that can absolve the person of responsibility for widespread corruption among subordinates."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A store was vandalized repeatedly over a six-month period. When discussing the problem with a friend, the store owner mentioned having heard that bright lighting around the perimeter of commercial establishments had been known to reduce the incidence of vandalism. Three months later, the store owner reported to the same friend that there had been no incidents of vandalism since their previous conversation. The friend concluded that bright lighting had been installed around the perimeter of the store.",
+    "questionStem": "Each of the following, if true, would call into question the friend’s conclusion except:",
+    "answerChoices": {
+      "A": "There had been an increase in police patrolling of the area.",
+      "B": "Bright lights must be specially ordered from a security company, and installation by the company usually takes at least five months.",
+      "C": "The store owner reported that all the stores adjacent to the perimeter also experienced a reduction in vandalism, although stores one block away did not.",
+      "D": "The store’s budget did not allow for the installation of bright lights around the perimeter.",
+      "E": "The store owner brought in a watchdog to protect the store from vandals."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researchers studying athletes found that those who played mainly for the love of their sport actually had sharper vision during athletic competitions than those whose main goal was winning a trophy or championship. The vision of the first group of athletes was sharper because the concentration necessary for acute vision during an activity is typically possessed to a greater degree by those whose attention is focused on the activity itself.",
+    "questionStem": "Which one of the following is most strongly supported by the statements above?",
+    "answerChoices": {
+      "A": "Winning a trophy or championship is not important to athletes who play mainly for the love of their sport.",
+      "B": "If an athlete’s main goal during an athletic competition is winning a trophy or championship, that athlete will lack the concentration necessary for adequate vision during that competition.",
+      "C": "Athletes who play mainly for the love of their sport concentrate more on the sport itself during athletic competitions than do athletes whose main goal is winning a trophy or championship.",
+      "D": "It is impossible for an athlete to concentrate on more than one thing at a time during an athletic competition.",
+      "E": "During athletic competitions, an athlete whose attention is focused on the sport itself will perform better than any athlete whose attention is focused elsewhere."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Economist: ChesChem, a chemical manufacturer located in Chester, uses natural gas for its enormous energy needs. Currently, natural gas costs twice as much in Chester as it does in Tilsen. If the cost of natural gas in Chester becomes more than twice that in Tilsen, ChesChem will move its manufacturing operations to Tilsen. So if the cost of natural gas in Chester increases at all, ChesChem will move its manufacturing operations to Tilsen.",
+    "questionStem": "The economist’s argument requires assuming that",
+    "answerChoices": {
+      "A": "ChesChem spends far more on natural gas than on any other expense",
+      "B": "the price of natural gas in Tilsen will not increase",
+      "C": "ChesChem would not be profitable if its energy costs increased",
+      "D": "the only benefit ChesChem would receive by moving its manufacturing operations to Tilsen is lower energy costs",
+      "E": "ChesChem will not move its manufacturing operations to Tilsen unless the price of natural gas in Chester increases"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Conditional Conclusion",
+      "Defender",
+      "Math-y Stuff",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "When researchers discovered that cuttlefish have the ability to make themselves suddenly appear larger, they presumed that this behavior, called a “startle display,” was used to scare off predators. A long-term study, however, reveals that cuttlefish never use startle displays to scare off predators but instead only use such displays to scare off small fish that do not prey on cuttlefish.",
+    "questionStem": "Which one of the following, if true, most helps to explain why cuttlefish use startle displays?",
+    "answerChoices": {
+      "A": "Cuttlefish feed primarily on small fish and mollusks.",
+      "B": "Groups of small fish are likely to attract a cuttlefish’s predators.",
+      "C": "Small fish are more easily scared off by a startle display than are a cuttlefish’s predators.",
+      "D": "Cuttlefish have acute senses and are able to change colors.",
+      "E": "Unlike insects that use startle displays, cuttlefish are usually able to move faster than their predators."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "If the winner of a promotional contest is selected by a lottery, the lottery must be fair, giving all entrants an equal chance of winning. Since 90 percent of the winners selected by the lottery in a recent promotional contest submitted their entry forms within the first 2 days of the 30-day registration period, it is clear that this lottery did not meet the fairness requirement.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "The family members of the organizer of the contest were not permitted to participate in the contest.",
+      "B": "The manner in which the contest winner would be selected was publicized prior to the selection of the winner.",
+      "C": "The contest entry forms were submitted at a consistent rate throughout the registration period.",
+      "D": "The rules of the contest were posted conspicuously by those who organized the contest.",
+      "E": "The number of people entering the contest far exceeded the expectations of the contest organizers."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Godinez: In the past, land was sometimes measured by the amount of time required to plow it. Thus, two plots of equal physical dimensions were considered unequal if one was more difficult to plow than the other. However, knowing how long an area takes to plow reveals little about how many apartment complexes it can hold. Therefore, it became necessary to adopt new measures of land, such as acreage, when land uses diversified.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in Godinez’s argument?",
+    "answerChoices": {
+      "A": "It is now easier to measure a piece of land in terms of acres than in terms of plowing time.",
+      "B": "For modern purposes, newer methods provide a more accurate measure of land than plowing time does.",
+      "C": "Some plots of land that would have been considered unequal by plowing-time measurements are of equal physical dimensions.",
+      "D": "Modern measures of land were adopted when people realized that plowing time was an inadequate measure for some land uses.",
+      "E": "The advent of diversified land uses made new measures of land necessary."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Last year the Lalolah River was ranked by the Sunvale Water Commission as the most polluted of the fifteen rivers in the Sunvale Water District. Measures taken to clean up the river must be working, though, since this year the Lalolah River is ranked as only the third most polluted river in the district.",
+    "questionStem": "The reasoning in the argument is flawed because the argument",
+    "answerChoices": {
+      "A": "interprets lack of evidence for a claim as support for an opposing claim",
+      "B": "relies on an ambiguity in the expression “most polluted”",
+      "C": "does not disclose the basis for the ranking used",
+      "D": "confuses the state of the individual rivers in the water district with that of the water district as a whole",
+      "E": "equates a decrease relative to the other ranked rivers with an absolute decrease"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "If an activity significantly reduces chronic lower back pain, doctors should be prepared to discuss the merits of that activity with patients who ask about it. A recent study compared practicing yoga to taking stretching classes with a physical therapist and found that both activities lead to equal reductions in chronic lower back pain. Thus, doctors treating patients with chronic lower back pain should be prepared to discuss the merits of yoga.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "There are no activities that lead to more significant reductions in chronic lower back pain than do stretching classes with a physical therapist.",
+      "B": "Taking stretching classes with a physical therapist significantly reduces chronic lower back pain.",
+      "C": "Few treatment options for those with chronic lower back pain are available.",
+      "D": "No previous studies have compared practicing yoga to taking stretching classes with a physical therapist.",
+      "E": "Many doctors treating patients with chronic lower back pain discuss with their patients the merits of taking stretching classes with a physical therapist."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Missing Link / Idea",
+      "Links Between Premises",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Shelton: The recent sharp decline in the number of moose in this region was caused by a large increase in the white-tailed deer population. While the deer do not compete with moose for food, they carry a dangerous parasite that can be transferred to any moose living nearby. Russo: The neighboring region has also experienced a large increase in the white-tailed deer population, but the moose population there has remained stable.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent conflict between Shelton’s and Russo’s statements?",
+    "answerChoices": {
+      "A": "The region with the declining moose population is larger than the neighboring region and, even after the decline, has more moose than the neighboring region.",
+      "B": "The region with the declining moose population consists mainly of high-quality moose habitat, but the quality of moose habitat in the neighboring region is marginal.",
+      "C": "Wolf packs in the region with the declining moose population generally prey on only moose and deer, but in the neighboring region the wolf packs prey on a wider variety of species.",
+      "D": "There is a large overlap in the ranges of moose and white-tailed deer in the region with the declining moose population, but not in the neighboring region.",
+      "E": "Moose require a habitat with very little human settlement, whereas white-tailed deer often thrive in and around areas with considerable human settlement."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Until fairly recently, classroom computers were considered a luxury. Today, educators argue that students who have not had training in computer skills will lack the skills necessary to compete in the global marketplace. However, studies show that schools emphasizing computer technology spend more time teaching computer skills but less time developing students’ basic math and reading skills.",
+    "questionStem": "Which one of the following propositions is best illustrated by the statements above?",
+    "answerChoices": {
+      "A": "A knowledge of the latest technologies is no more valuable than a knowledge of the fundamental academic disciplines.",
+      "B": "Schools cannot emphasize the teaching of computer skills without neglecting other skills.",
+      "C": "A complete rethinking of traditional academic subjects is required in order to keep pace with global developments.",
+      "D": "Attempting to keep pace with recent educational developments can result in neglecting basic skills in favor of other skills.",
+      "E": "Giving students a knowledge of new technologies should be the primary goal of education."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A scientific team compared gold samples from several ancient artifacts with gold samples from an ancient mine in western Asia. The ratios of the trace elements in these samples were all very similar, and they were unlike the trace-element ratios from any other known mine. It is therefore likely that the gold in the artifacts was dug from the ancient mine.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "The ancient mine tapped into a large underground deposit that also supplied nearby riverbeds with significant quantities of gold.",
+      "B": "The ancient mine may have at one time been operated by the same civilization that was responsible for most of the ancient artifacts.",
+      "C": "The ancient mine was first operated many centuries before the artifacts were constructed.",
+      "D": "Ancient gold artifacts were often constructed from gold taken from earlier artifacts.",
+      "E": "Much of the gold dug from the ancient mine in western Asia was transported to faraway destinations."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Most pet owners who take allergy medication are allergic to pets. Therefore, since Chuck owns a pet dog, it is likely that he will take allergy medication if he develops an allergy to pets.",
+    "questionStem": "Which one of the following arguments exhibits flawed reasoning that is most similar to that exhibited by the argument above?",
+    "answerChoices": {
+      "A": "Most cars taken to Acme Automotive Electronics have electrical problems. Therefore, it is likely that Anastasia’s car has electrical problems if she has taken it to Acme Automotive Electronics.",
+      "B": "Most cars taken to Acme Automotive Electronics have electrical problems. Therefore, it is likely that Anastasia will take her car there if it has electrical problems.",
+      "C": "Most cars that are taken to Acme Automotive Electronics do not have electrical problems. Therefore, it is likely that Anastasia will not take her car to Acme Automotive Electronics if it has electrical problems.",
+      "D": "Most cars taken to Acme Automotive Electronics have electrical problems. Therefore, it is unlikely that Anastasia will take her car to Acme Automotive Electronics if it does not have electrical problems.",
+      "E": "Most cars taken to Acme Automotive Electronics have electrical problems. Therefore, it is likely that Anastasia will take her car to Acme Automotive Electronics whenever she thinks it has electrical problems."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Scientist: A number of errors can plague a data-collection process. Since examining the collected data enables researchers to detect many of these errors, it is standard practice for researchers to correct collected data. However, in my field, there is a striking tendency for such corrections to favor Jones’s theory; that is, the majority of corrections result in the corrected data’s being closer than the uncorrected data to what Jones’s theory predicts.",
+    "questionStem": "Which one of the following, if true, most helps to explain the tendency of corrections in the scientist’s field to favor Jones’s theory?",
+    "answerChoices": {
+      "A": "Researchers normally give data that is in line with a theory the same weight as data that conflicts with that theory when they are determining whether to accept that theory.",
+      "B": "Researchers in the scientist’s field give data that conflicts with Jones’s theory greater scrutiny than they give data that is in line with Jones’s theory.",
+      "C": "Researchers in the scientist’s field are more likely to pursue lines of research that they expect will favor theories they accept than to pursue other lines of research.",
+      "D": "Even if researchers fail to detect errors in a data-collection process when they examine the data that they collected, that does not guarantee that no such errors exist.",
+      "E": "Researchers in the scientist’s field have formulated several other theories that attempt to explain the same range of phenomena that Jones’s theory attempts to explain."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Doctor: Angiotensinogen is a protein in human blood. Typically, the higher a person’s angiotensinogen levels are, the higher that person’s blood pressure is. Disease X usually causes an increase in angiotensinogen levels. Therefore, disease X must be a cause of high blood pressure.",
+    "questionStem": "The doctor’s argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It confuses a necessary condition for a sufficient condition.",
+      "B": "It overlooks the possibility that even if a condition causally contributes to a given effect, other factors may fully counteract that effect in the presence of that condition.",
+      "C": "It illicitly infers, solely on the basis of two phenomena being correlated, that one causally contributes to the other.",
+      "D": "It confuses one phenomenon’s causing a second with the second phenomenon’s causing the first.",
+      "E": "It takes for granted that if one phenomenon often causes a second phenomenon and that second phenomenon often causes a third phenomenon, then the first phenomenon cannot ever be the immediate cause of the third."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Abstract Answers",
+      "Explain Curious Fact",
+      "Causal Chains",
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Some species of tarantula make good pets. However, no creature with poison fangs makes a good pet. Therefore, not all tarantula species have poison fangs.",
+    "questionStem": "Which one of the following arguments is most similar in its pattern of reasoning to the argument above?",
+    "answerChoices": {
+      "A": "None of the poetry written by Strawn has a regular meter. But some of the poems in this collection have a regular meter. Therefore, at least some of the poems in this collection were not written by Strawn.",
+      "B": "Some of the poems in this collection have a regular meter. However, some of the poetry written by Strawn does not have a regular meter. Therefore, at least some of the poetry written by Strawn is not in this collection.",
+      "C": "Some of the poetry written by Strawn has a regular meter. However, this collection contains no poetry written by Strawn. Therefore, not all of the poetry in this collection has a regular meter.",
+      "D": "Some of the poems in this collection were written by Strawn. However, none of the poems in this collection has a regular meter. Therefore, only Strawn’s unpublished poetry has a regular meter.",
+      "E": "No poems with a regular meter are found in this collection and none of the poetry in this collection was written by Strawn. Therefore, not all of the poetry written by Strawn has a regular meter."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Pulford: Scientists who study the remains of ancient historical figures to learn about their health history need to first ask themselves if their investigation is a legitimate scientific inquiry or is motivated by mere curiosity. An investigation into a private matter such as health history is justified only if it is done for the advancement of scientific knowledge. Varela: You forget that curiosity is the root of scientific inquiry. Many great scientific discoveries were motivated by curiosity alone.",
+    "questionStem": "Varela responds to Pulford’s argument by",
+    "answerChoices": {
+      "A": "contending that Pulford’s argument rests on an untenable distinction",
+      "B": "disputing the validity of a principle that Pulford explicitly states",
+      "C": "offering a counterexample to a generalization in Pulford’s conclusion",
+      "D": "attempting to draw a distinction between two views that Pulford treats as a single view",
+      "E": "maintaining that Pulford’s argument is based on inconsistent premises"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Ethicist: It is morally right to reveal a secret only if one has a legal obligation to do so and will not harm oneself by doing so. At the same time, it is morally wrong to reveal a secret if one has promised not to do so and if revealing the secret is likely to result in any harm to others.",
+    "questionStem": "The principles cited by the ethicist most help to justify the reasoning in which one of the following?",
+    "answerChoices": {
+      "A": "Kathryn revealed a secret entrusted to her by her brother. Kathryn did not promise not to reveal the secret and her revealing it was likely to benefit all parties concerned. However, because she was under no legal obligation to reveal the secret, her action was not morally right.",
+      "B": "Jae admitted in confidence to his defense attorney that he was guilty of the crime with which he had been charged. His attorney, knowing that the law did not require her to reveal such a confession of guilt, recounted Jae’s confession to the judge anyway. The attorney’s action was morally right.",
+      "C": "A doctor informed Judy that she should not tell her father that he was in critical condition, since such knowledge sometimes makes patients despondent and inhibits recovery. Nevertheless, Judy revealed the doctor’s diagnosis to her father. Judy’s action was morally wrong.",
+      "D": "Phil was arrested for bank robbery and under interrogation was asked to fulfill a legal obligation to reveal the identity of his accomplice. Despite the possibility that he was endangering himself by testifying, Phil revealed his accomplice’s identity, and his accomplice was arrested without incident. Phil’s action was morally right.",
+      "E": "After writing a story about a possible political scandal, a journalist invoked her legal rights and refused to reveal the names of her sources who had spoken on condition of anonymity. The journalist’s refusal to divulge her secret was morally right."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Although human economic exchange predates historical records, it is clear that the very first economies were based on barter and that money came later. This can be inferred from occasions in history when, in isolated places, currency largely disappeared from the local economy. At such times, the economy typically reverts to the original barter system, but then quickly abandons this form of exchange when currency becomes available again.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the argument’s reasoning?",
+    "answerChoices": {
+      "A": "The argument concludes that something can cause a particular outcome merely because it is necessary for that outcome.",
+      "B": "The argument contains premises that contradict one another.",
+      "C": "The argument presumes that something should be done merely because historically it has been done.",
+      "D": "The argument infers a causal relation between two events merely from the fact that one event occurred before the other.",
+      "E": "The argument relies on a premise that presupposes what the argument attempts to show in the conclusion."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A scientific study provides evidence that crows are capable of recognizing threatening people and can even pass their concerns on to other crows. Researchers wearing rubber caveman masks trapped wild crows and then released them in the same area. Years later, people wearing the same masks near where the crows had been trapped were shrieked at and dive-bombed by crows.",
+    "questionStem": "The argument depends on the assumption that",
+    "answerChoices": {
+      "A": "some of the crows that shrieked at and dive-bombed people wearing the masks were not among the crows that had been trapped",
+      "B": "crows that perceive an individual as threatening always respond by shrieking and dive-bombing",
+      "C": "most birds of any species will regard a person as threatening if they see crows shrieking at and dive-bombing that person",
+      "D": "even in places where crows have never been captured, most crows will shriek at and dive-bomb people wearing caveman masks",
+      "E": "crows can distinguish between people who are wearing caveman masks and those who are not, but they cannot recognize individual human faces"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Defender",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Must be false",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Political scientist: When a bill comes before a legislative body, the majority of the representatives are usually prepared to vote for it. Moreover, when a bill is at first unlikely to get approval by the majority, a compromise regarding the content of the bill is usually possible, allowing its passage into law. Such compromises are impossible, however, when the bill concerns an issue of fundamental importance to a large bloc of representatives.",
+    "questionStem": "If the political scientist’s statements are true, which one of the following must be false?",
+    "answerChoices": {
+      "A": "Compromises regarding issues of fundamental importance to large blocs of representatives in the legislature usually do not enable the passage of any bill into law.",
+      "B": "Most bills that do not concern any issues of fundamental importance to any large bloc of representatives in the legislature pass into law.",
+      "C": "Most bills concerning issues of fundamental importance to a large bloc of representatives pass into law as a result of compromises over the bills’ contents.",
+      "D": "Most bills concern issues of fundamental importance to at least one large bloc of representatives in the legislature.",
+      "E": "Most bills do not concern any issues of fundamental importance to any large bloc of representatives in the legislature."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The more demand there is for something, the easier it is to sell. Any junkyard will buy a used car that is less than ten years old, because the parts can easily be resold. However, because there is little demand for car parts that are ten years old or older, junkyards tend not to buy those cars. Thus, used cars that are less than ten years old are generally easier to sell than are cars that are ten years old or older.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "The salability of something is not influenced by any factors other than the level of demand for it.",
+      "B": "All used cars that are ten years old or older are sold to junkyards.",
+      "C": "In general, the older something is, the more difficult it is to sell.",
+      "D": "When determining the selling price of cars less than ten years old, the lack of demand would not be offset by a lack of supply.",
+      "E": "The salability of cars that are ten years old or older is largely a function of the level of demand for their parts."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Ruling Out Options"
+    ]
+  }
+]

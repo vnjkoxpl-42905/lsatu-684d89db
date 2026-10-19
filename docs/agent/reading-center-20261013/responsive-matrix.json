@@ -1,0 +1,154 @@
+[
+  {
+    "documentWidth": 375,
+    "heading": [
+      {
+        "left": 40,
+        "right": 231.1999969482422
+      }
+    ],
+    "keyboardVisible": false,
+    "page": "/reading-center/read/qa-reading-center-2026-10-13-200fe0e7",
+    "width": 375
+  },
+  {
+    "documentWidth": 640,
+    "heading": [
+      {
+        "left": 109.5999984741211,
+        "right": 427.9999923706054
+      }
+    ],
+    "keyboardVisible": false,
+    "page": "/reading-center/read/qa-reading-center-2026-10-13-200fe0e7",
+    "width": 640
+  },
+  {
+    "documentWidth": 1036,
+    "heading": [
+      {
+        "left": 109.5999984741211,
+        "right": 824.0000228881836
+      }
+    ],
+    "keyboardVisible": false,
+    "page": "/reading-center/read/qa-reading-center-2026-10-13-200fe0e7",
+    "width": 1036
+  },
+  {
+    "documentWidth": 1440,
+    "heading": [
+      {
+        "left": 109.5999984741211,
+        "right": 1228.0000228881836
+      }
+    ],
+    "keyboardVisible": false,
+    "page": "/reading-center/read/qa-reading-center-2026-10-13-200fe0e7",
+    "width": 1440
+  },
+  {
+    "dialogs": [
+      {
+        "clientWidth": 334,
+        "left": 16,
+        "right": 359.20001220703125,
+        "scrollWidth": 334
+      }
+    ],
+    "documentWidth": 375,
+    "page": "/reading-center/read/qa-reading-center-2026-10-13-200fe0e7",
+    "state": "preferences",
+    "width": 375
+  },
+  {
+    "dialogs": [
+      {
+        "clientWidth": 548,
+        "left": 45,
+        "right": 595,
+        "scrollWidth": 548
+      }
+    ],
+    "documentWidth": 640,
+    "page": "/reading-center/read/qa-reading-center-2026-10-13-200fe0e7",
+    "state": "preferences",
+    "width": 640
+  },
+  {
+    "dialogs": [
+      {
+        "clientWidth": 548,
+        "left": 243,
+        "right": 793,
+        "scrollWidth": 548
+      }
+    ],
+    "documentWidth": 1036,
+    "page": "/reading-center/read/qa-reading-center-2026-10-13-200fe0e7",
+    "state": "preferences",
+    "width": 1036
+  },
+  {
+    "dialogs": [
+      {
+        "clientWidth": 548,
+        "left": 445,
+        "right": 995,
+        "scrollWidth": 548
+      }
+    ],
+    "documentWidth": 1440,
+    "page": "/reading-center/read/qa-reading-center-2026-10-13-200fe0e7",
+    "state": "preferences",
+    "width": 1440
+  },
+  {
+    "documentWidth": 375,
+    "page": "/reading-center",
+    "state": "library",
+    "width": 375
+  },
+  {
+    "documentWidth": 640,
+    "page": "/reading-center",
+    "state": "library",
+    "width": 640
+  },
+  {
+    "documentWidth": 1036,
+    "page": "/reading-center",
+    "state": "library",
+    "width": 1036
+  },
+  {
+    "documentWidth": 1440,
+    "page": "/reading-center",
+    "state": "library",
+    "width": 1440
+  },
+  {
+    "documentWidth": 360,
+    "page": "/reading-center/profile",
+    "state": "profile",
+    "width": 375
+  },
+  {
+    "documentWidth": 625,
+    "page": "/reading-center/profile",
+    "state": "profile",
+    "width": 640
+  },
+  {
+    "documentWidth": 1036,
+    "page": "/reading-center/profile",
+    "state": "profile",
+    "width": 1036
+  },
+  {
+    "documentWidth": 1440,
+    "page": "/reading-center/profile",
+    "state": "profile",
+    "width": 1440
+  }
+]

@@ -1,0 +1,52 @@
+{
+  "date": "2026-09-30",
+  "browser": "Codex In-app Browser",
+  "environment": "fresh production frontend, designated ordinary tester",
+  "runId": "4474e82e-6530-4792-a08b-9de7c30ef94c",
+  "pt": 102,
+  "ownerId": "d763bfe6-d710-4c4b-90ff-4b3a20929211",
+  "completed": true,
+  "rawCorrect": 3,
+  "rawTotal": 75,
+  "estimatedScaled": 120,
+  "scoreSource": "estimate",
+  "revision": 66,
+  "writerEpoch": 2,
+  "sections": [
+    {
+      "kind": "rc",
+      "total": 26,
+      "correct": 1
+    },
+    {
+      "kind": "lr",
+      "total": 25,
+      "correct": 1
+    },
+    {
+      "kind": "lr",
+      "total": 24,
+      "correct": 1
+    }
+  ],
+  "checks": [
+    "Deliberate three-leg start and account creation",
+    "Account-save interruption hid questions and retained command; recovered before actual clean closeout",
+    "First and second leg acknowledged before advancement",
+    "Blocked break start retained command and withheld next section",
+    "Running-break pause failed under network block; delayed retry received definitive lease-expired rejection",
+    "Explicit rejected-command preservation, account reload, expired-lease claim and paused break recovery",
+    "Paused break reload retained9:00",
+    "Acknowledged break finish before third leg",
+    "Actual browser final-leg closeout; parent report includes all three saved sections",
+    "Actual report reload retains3/75 estimated120"
+  ],
+  "networkBlocksCleared": true,
+  "proofDirectory": "C:/Users/Joshu/dev/ai-os/research/2026-09-30-lsatu-foundation-evidence",
+  "limitations": [
+    "No physical second-device UI acceptance",
+    "No committed-but-lost TCP reply",
+    "No revoked in-flight UI write",
+    "Failed account save observed; it was not proven to be the final close command rather than a preceding heartbeat"
+  ]
+}

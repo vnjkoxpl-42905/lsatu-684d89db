@@ -1,0 +1,86 @@
+import { beforeEach, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import type { ReviewEpisode } from '@/lib/reviewEpisodes';
+const mocks = vi.hoisted(() => ({ list: vi.fn(), open: vi.fn(), append: vi.fn() }));
+vi.mock('@/lib/reviewEpisodes', async importOriginal => ({ ...await importOriginal<typeof import('@/lib/reviewEpisodes')>(), createReviewEpisodeService: () => mocks }));
+vi.mock('@/integrations/supabase/client', () => ({ supabase: {} }));
+import SavedReviewEpisodePanel from './SavedReviewEpisodePanel';
+const episode: ReviewEpisode = { id: 'episode', student_id: 'student', actor_id: 'student', source_kind: 'intro_lr_attempts', source_id: 'attempt', question_id: 'question', reason: 'missed', selection_reason: null, created_at: '2026-09-30T12:00:00Z' };
+const props = { ownerId: 'student', source: 'intro_lr_attempts' as const, sourceId: 'attempt' };
+beforeEach(() => { mocks.list.mockReset().mockResolvedValue({ episodes: [], events: [] }); mocks.open.mockReset().mockResolvedValue(episode); mocks.append.mockReset(); });
+it('reads without creating a task, then deliberately opens the exact saved source', async () => {
+  render(<SavedReviewEpisodePanel {...props} />);
+  await screen.findByRole('button', { name: 'Open review task' }); expect(mocks.open).not.toHaveBeenCalled(); expect(mocks.append).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: 'Open review task' }));
+  await waitFor(() => expect(mocks.open).toHaveBeenCalledWith({ actorId: 'student', studentId: 'student', source: 'intro_lr_attempts', sourceId: 'attempt', reason: 'missed' }));
+});
+it('keeps diagnoses on failed completion and retries the exact event before marking reviewed', async () => {
+  mocks.list.mockResolvedValue({ episodes: [episode], events: [] });
+  mocks.append.mockRejectedValueOnce(new Error('offline')).mockImplementationOnce(async (actor, ep, id, kind, payload) => ({ actor_id: actor, episode_id: ep.id, id, kind, payload, created_at: '2026-09-30T12:01:00Z' }));
+  render(<SavedReviewEpisodePanel {...props} />);
+  await screen.findByLabelText('Error diagnosis');
+  expect(screen.getByRole('button', { name: 'Mark reviewed' })).toBeDisabled();
+  fireEvent.change(screen.getByLabelText('Error diagnosis'), { target: { value: 'I changed the scope.' } });
+  fireEvent.change(screen.getByLabelText('Right answer diagnosis'), { target: { value: 'It keeps the conclusion scope.' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Mark reviewed' }));
+  await screen.findByRole('button', { name: 'Retry save' });
+  expect(screen.queryByText(/saved as reviewed/)).not.toBeInTheDocument(); expect(screen.getByLabelText('Error diagnosis')).toHaveValue('I changed the scope.');
+  fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+  await screen.findByText(/saved as reviewed/);
+  expect(screen.getByText('Saved error diagnosis: I changed the scope.')).toBeInTheDocument();
+  expect(mocks.append.mock.calls[0]).toEqual(mocks.append.mock.calls[1]);
+});
+it('records the optional review answer and distinct Reveal only after acknowledgement', async () => {
+  mocks.list.mockResolvedValue({ episodes: [episode], events: [] });
+  mocks.append.mockImplementation(async (actor, ep, id, kind, payload) => ({ actor_id: actor, episode_id: ep.id, id, kind, payload, created_at: '2026-09-30T12:01:00Z' }));
+  render(<SavedReviewEpisodePanel {...props} />); await screen.findByLabelText('Optional review answer');
+  fireEvent.change(screen.getByLabelText('Optional review answer'), { target: { value: 'B' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Save review answer' }));
+  await screen.findByText('Saved review answer: B');
+  expect(screen.queryByText('Reveal recorded for this review task.')).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Record Reveal for this task' }));
+  await screen.findByText('Reveal recorded for this review task.');
+  expect(mocks.append.mock.calls.map(call => call[3])).toEqual(['blind_answer', 'reveal']);
+  expect(mocks.append.mock.calls[0][2]).not.toBe(mocks.append.mock.calls[1][2]);
+});
+it('restores a reviewed teacher selection with its reason and creates no new writes', async () => {
+  mocks.list.mockResolvedValue({ episodes: [{ ...episode, actor_id: 'teacher', reason: 'teacher_selected', selection_reason: 'Compare both conclusions.' }], events: [{ id: 'done', episode_id: episode.id, actor_id: 'student', kind: 'complete', payload: {}, created_at: '2026-09-30T12:01:00Z' }] });
+  render(<SavedReviewEpisodePanel {...props} />);
+  await screen.findByText(/Compare both conclusions/); expect(screen.getByText(/saved as reviewed/)).toBeInTheDocument();
+  expect(mocks.open).not.toHaveBeenCalled(); expect(mocks.append).not.toHaveBeenCalled();
+});
+it('selects the requested exact teacher episode and never substitutes another source task', async () => {
+  const teacherEpisode = { ...episode, id: 'teacher-task', reason: 'teacher_selected', actor_id: 'teacher', selection_reason: 'Specific teacher reason.' };
+  mocks.list.mockResolvedValue({ episodes: [episode, teacherEpisode], events: [] });
+  const view = render(<SavedReviewEpisodePanel {...props} requestedEpisodeId="teacher-task" />);
+  await screen.findByText('Teacher’s reason: Specific teacher reason.');
+  expect(screen.getByRole('combobox', { name: 'Review task' })).toHaveValue('teacher-task');
+  view.rerender(<SavedReviewEpisodePanel {...props} requestedEpisodeId="foreign-task" />);
+  await screen.findByText('The requested review task is unavailable for this saved submission.');
+  expect(screen.queryByRole('button', { name: 'Mark reviewed' })).not.toBeInTheDocument();
+  expect(mocks.open).not.toHaveBeenCalled();
+});
+it('resets fields when the account changes and withholds writes when saved work cannot load', async () => {
+  mocks.list.mockResolvedValueOnce({ episodes: [episode], events: [] }).mockRejectedValueOnce(new Error('denied'));
+  const view = render(<SavedReviewEpisodePanel {...props} />); await screen.findByLabelText('Error diagnosis');
+  fireEvent.change(screen.getByLabelText('Error diagnosis'), { target: { value: 'owner A private text' } });
+  view.rerender(<SavedReviewEpisodePanel {...props} ownerId="other" />);
+  await screen.findByRole('alert'); expect(screen.queryByDisplayValue('owner A private text')).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Open review task' })).not.toBeInTheDocument(); expect(mocks.append).not.toHaveBeenCalled();
+});
+it('does not carry a pending save or its later acknowledgement into another source', async () => {
+  mocks.list.mockResolvedValue({ episodes: [episode], events: [] });
+  let acknowledge!: (value: unknown) => void;
+  mocks.append.mockImplementationOnce(() => new Promise(resolve => { acknowledge = resolve; }));
+  const view = render(<SavedReviewEpisodePanel {...props} />);
+  await screen.findByRole('button', { name: 'Record Reveal for this task' });
+  fireEvent.click(screen.getByRole('button', { name: 'Record Reveal for this task' }));
+  await waitFor(() => expect(mocks.append).toHaveBeenCalledTimes(1));
+  mocks.list.mockResolvedValue({ episodes: [], events: [] });
+  view.rerender(<SavedReviewEpisodePanel {...props} sourceId="another-attempt" />);
+  await screen.findByRole('button', { name: 'Open review task' });
+  const [actor, ep, id, kind, payload] = mocks.append.mock.calls[0];
+  acknowledge({ actor_id: actor, episode_id: ep.id, id, kind, payload, created_at: '2026-09-30T12:01:00Z' });
+  await waitFor(() => expect(screen.queryByText('Reveal recorded for this review task.')).not.toBeInTheDocument());
+  expect(screen.queryByRole('button', { name: 'Retry save' })).not.toBeInTheDocument();
+});
