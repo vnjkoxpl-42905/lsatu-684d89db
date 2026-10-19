@@ -4302,9 +4302,244 @@ export type Database = {
         }
         Relationships: []
       }
+      rc_recall_capture_transcripts: {
+        Row: {
+          asr_calls: number
+          asr_engine: string | null
+          asr_words: Json | null
+          attempt_id: string
+          audio_hash: string | null
+          audio_seconds: number | null
+          capture_id: string
+          claim_token: string | null
+          created_at: string
+          lease_until: string | null
+          status: string
+          student_id: string
+          transcript: string | null
+          tries: number
+          updated_at: string
+        }
+        Insert: {
+          asr_calls?: number
+          asr_engine?: string | null
+          asr_words?: Json | null
+          attempt_id: string
+          audio_hash?: string | null
+          audio_seconds?: number | null
+          capture_id: string
+          claim_token?: string | null
+          created_at?: string
+          lease_until?: string | null
+          status: string
+          student_id: string
+          transcript?: string | null
+          tries?: number
+          updated_at?: string
+        }
+        Update: {
+          asr_calls?: number
+          asr_engine?: string | null
+          asr_words?: Json | null
+          attempt_id?: string
+          audio_hash?: string | null
+          audio_seconds?: number | null
+          capture_id?: string
+          claim_token?: string | null
+          created_at?: string
+          lease_until?: string | null
+          status?: string
+          student_id?: string
+          transcript?: string | null
+          tries?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_recall_capture_transcripts_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rc_recall_capture_transcripts_capture_id_fkey"
+            columns: ["capture_id"]
+            isOneToOne: true
+            referencedRelation: "rc_recall_captures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rc_recall_captures: {
+        Row: {
+          attempt_id: string
+          created_at: string
+          duration_ms: number | null
+          id: string
+          mime_type: string | null
+          object_path: string | null
+          recording_state: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          attempt_id: string
+          created_at?: string
+          duration_ms?: number | null
+          id: string
+          mime_type?: string | null
+          object_path?: string | null
+          recording_state?: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          attempt_id?: string
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          mime_type?: string | null
+          object_path?: string | null
+          recording_state?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_recall_captures_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_attempts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rc_recall_grades: {
+        Row: {
+          asr_calls: number
+          asr_engine: string | null
+          asr_words: Json | null
+          assessment: Json | null
+          attempt_id: string
+          audio_hash: string | null
+          audio_seconds: number | null
+          capture_id: string | null
+          claim_token: string | null
+          created_at: string
+          grader_version: number
+          id: string
+          judge_calls: number
+          lease_until: string | null
+          model: string | null
+          object_path: string | null
+          paragraph_index: number | null
+          passage_id: number | null
+          provider_usage: Json | null
+          reason: string | null
+          recall_end_ms: number | null
+          recall_start_ms: number | null
+          recap_id: string
+          source_hash: string | null
+          source_text: string | null
+          status: string
+          student_id: string
+          transcript: string | null
+          tries: number
+          updated_at: string
+        }
+        Insert: {
+          asr_calls?: number
+          asr_engine?: string | null
+          asr_words?: Json | null
+          assessment?: Json | null
+          attempt_id: string
+          audio_hash?: string | null
+          audio_seconds?: number | null
+          capture_id?: string | null
+          claim_token?: string | null
+          created_at?: string
+          grader_version: number
+          id?: string
+          judge_calls?: number
+          lease_until?: string | null
+          model?: string | null
+          object_path?: string | null
+          paragraph_index?: number | null
+          passage_id?: number | null
+          provider_usage?: Json | null
+          reason?: string | null
+          recall_end_ms?: number | null
+          recall_start_ms?: number | null
+          recap_id: string
+          source_hash?: string | null
+          source_text?: string | null
+          status: string
+          student_id: string
+          transcript?: string | null
+          tries?: number
+          updated_at?: string
+        }
+        Update: {
+          asr_calls?: number
+          asr_engine?: string | null
+          asr_words?: Json | null
+          assessment?: Json | null
+          attempt_id?: string
+          audio_hash?: string | null
+          audio_seconds?: number | null
+          capture_id?: string | null
+          claim_token?: string | null
+          created_at?: string
+          grader_version?: number
+          id?: string
+          judge_calls?: number
+          lease_until?: string | null
+          model?: string | null
+          object_path?: string | null
+          paragraph_index?: number | null
+          passage_id?: number | null
+          provider_usage?: Json | null
+          reason?: string | null
+          recall_end_ms?: number | null
+          recall_start_ms?: number | null
+          recap_id?: string
+          source_hash?: string | null
+          source_text?: string | null
+          status?: string
+          student_id?: string
+          transcript?: string | null
+          tries?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_recall_grades_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rc_recall_grades_capture_id_fkey"
+            columns: ["capture_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_captures"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rc_recall_grades_recap_id_fkey"
+            columns: ["recap_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_recaps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rc_recall_recaps: {
         Row: {
           attempt_id: string
+          capture_id: string | null
           created_at: string
           duration_ms: number | null
           id: string
@@ -4312,6 +4547,8 @@ export type Database = {
           mime_type: string | null
           object_path: string | null
           passage_position: number
+          recall_end_ms: number | null
+          recall_start_ms: number | null
           recap_key: string
           recording_state: string
           student_id: string
@@ -4320,6 +4557,7 @@ export type Database = {
         }
         Insert: {
           attempt_id: string
+          capture_id?: string | null
           created_at?: string
           duration_ms?: number | null
           id: string
@@ -4327,6 +4565,8 @@ export type Database = {
           mime_type?: string | null
           object_path?: string | null
           passage_position: number
+          recall_end_ms?: number | null
+          recall_start_ms?: number | null
           recap_key: string
           recording_state: string
           student_id: string
@@ -4335,6 +4575,7 @@ export type Database = {
         }
         Update: {
           attempt_id?: string
+          capture_id?: string | null
           created_at?: string
           duration_ms?: number | null
           id?: string
@@ -4342,6 +4583,8 @@ export type Database = {
           mime_type?: string | null
           object_path?: string | null
           passage_position?: number
+          recall_end_ms?: number | null
+          recall_start_ms?: number | null
           recap_key?: string
           recording_state?: string
           student_id?: string
@@ -4354,6 +4597,13 @@ export type Database = {
             columns: ["attempt_id"]
             isOneToOne: false
             referencedRelation: "rc_recall_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rc_recall_recaps_capture_id_fkey"
+            columns: ["capture_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_captures"
             referencedColumns: ["id"]
           },
         ]
