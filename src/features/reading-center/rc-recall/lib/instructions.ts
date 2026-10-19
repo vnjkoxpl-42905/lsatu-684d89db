@@ -50,9 +50,9 @@ export const COMPARATIVE_NOTE =
 export const VOICE_NOTE =
   "Choose Start exercise before reading. Your microphone stays on while you read, recall and check. " +
   "Press Space to hide the paragraph, then Space again to check your recall. Only hidden recall speech is graded. " +
-  "Complete practice and save your result, then choose Get feedback on my recall. If your microphone cannot start, retry or continue without recording and automatic feedback.";
+  "Complete practice and save your result, then choose Get feedback on my recall. Practice requires a microphone. If it cannot start, retry or return to passage selection.";
 
-export const TIMING_NOTE = "Choose No clock to practise without a clock, or Show elapsed time to see how long each passage takes. There is no time limit. Keep the details and connections before trying to go faster.";
+export const TIMING_NOTE = "The timer counts up during active practice. Microphone setup and paused time are excluded. There is no time limit. Keep the details and connections before trying to go faster.";
 
 export const TIMING = {
   rc_recall: { perPassage: "6 minutes", section: "24+ minutes" },

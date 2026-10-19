@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { loadPassageProgress, savePassageProgress } from "./lib/passageProgress";
 import { createCapture, saveCaptureWindow, uploadCapture } from "./lib/captures";
-import { finalizeAttempt, insertRecap, newId, readAttemptProgress } from "./lib/attempts";
-import { clearCheckpoint, saveCheckpoint, contentKeyFor, type CheckpointRecap } from "./lib/checkpoint";
+import { finalizeAttempt, newId, readAttemptProgress } from "./lib/attempts";
+import { clearCheckpoint, saveCheckpoint, contentKeyFor, type CheckpointRecap, type PendingPassageProgress } from "./lib/checkpoint";
 import { buildSectionSteps, STEP_TITLE } from "./lib/sequence";
 import { ActiveClock, toSeconds } from "./lib/activeClock";
 import { discard } from "./lib/backup";
@@ -14,12 +15,15 @@ import "./ContinuousRcRecallRunner.css";
 type Props = Parameters<typeof LegacyRcRecallRunner>[0];
 type WindowIntent = { id: string; startMs: number; endMs: number; key: string; position: number; kind: "recall" | "passage_recap" };
 export default function ContinuousRcRecallRunner(props: Props) {
-  const { attempt, studentId, passages, segmented, scope, onExit, resume, showElapsedTimer = false } = props;
+  const { attempt, studentId, passages, segmented, scope, onExit, resume } = props;
+  const showElapsedTimer = true;
   const steps = useRef(buildSectionSteps("rc_recall", segmented, scope)).current;
   const initial = Math.min(resume?.stepIndex ?? 0, steps.length - 1);
   const [index, setIndex] = useState(steps[initial].kind === "recall" && !resume?.recaps.some((r) => r.key === steps[initial].recapKey) ? initial - 1 : initial);
-  const [guide, setGuide] = useState(index < 3);
-  const [silent, setSilent] = useState(false);
+  const [progressLoading, setProgressLoading] = useState(true);
+  const [progressLoadError, setProgressLoadError] = useState(false);
+  const [, refreshTimes] = useState(0);
+  const [guide, setGuide] = useState(false);
   const [ready, setReady] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -28,9 +32,9 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const [recaps, setRecaps] = useState<CheckpointRecap[]>(resume?.recaps ?? []);
   const [finished, setFinished] = useState<{ completed: boolean; seconds: number; error: string | null; retry: "save" | "refresh" | null } | null>(null);
   const [elapsed, setElapsed] = useState(toSeconds(resume?.sectionMs ?? 0));
-  const [optionalSpoken, setOptionalSpoken] = useState(false);
   const [optionalStarted, setOptionalStarted] = useState(false);
   const recorder = useRecapRecorder();
+  const everStarted = useRef(false);
   const capture = useRef<string | null>(null);
   const finalized = useRef<{ completed: boolean; seconds: number } | null>(null);
   const captureFailure = useRef<string | null>(null);
@@ -41,6 +45,9 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const lock = useRef(false), mounted = useRef(true), generation = useRef(0);
   const cancel = useRef<(() => void) | null>(null);
   const clock = useRef(new ActiveClock({ sectionMs: resume?.sectionMs, passageMs: resume?.passageMs }));
+  const passageTimes = useRef<number[]>(resume?.passageTimesMs ?? passages.map((_, position) => position === steps[initial].passage ? resume?.passageMs ?? 0 : 0));
+  const completedPositions = useRef(new Set(resume?.completedPassagePositions ?? []));
+  const progressIntent = useRef<PendingPassageProgress | null>(resume?.pendingPassageProgress ?? null);
   const heading = useRef<HTMLHeadingElement>(null);
   const latest = useRef({ index, recaps, done: false, ready: false, pending: resume?.pending ?? null });
   latest.current.index = index; latest.current.recaps = recaps; latest.current.ready = ready;
@@ -48,12 +55,32 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const step = steps[index];
   const persist = () => {
     if (latest.current.done) return;
+    if (!resume && !everStarted.current && latest.current.index === 0 && latest.current.recaps.length === 0 && !latest.current.pending && !progressIntent.current && !captureFailure.current && !retained.current && completedPositions.current.size === 0 && passageTimes.current.every((ms) => ms === 0)) return;
     const totals = clock.current.snapshot(Date.now());
     const result = saveCheckpoint({ version: 1, captureWorkflow: true, studentId, attemptId: attempt.id, attempt, contentKey: key, scope,
+      passageTimesMs: passageTimes.current.map((ms, position) => position === steps[latest.current.index].passage && !completedPositions.current.has(position + 1) ? Math.max(ms, totals.passageMs) : ms),
+      completedPassagePositions: [...completedPositions.current], pendingPassageProgress: progressIntent.current,
       stepIndex: latest.current.index, stepId: steps[latest.current.index].id, recaps: latest.current.recaps,
       sectionMs: totals.sectionMs, passageMs: totals.passageMs, showElapsedTimer, savedAt: Date.now(), pending: latest.current.pending });
     if (!result.ok && mounted.current) setMessage("This device could not save your place. Keep this screen open until you finish.");
   };
+  const loadProgress = async () => {
+    setProgressLoading(true); setProgressLoadError(false);
+    try {
+      const rows = await loadPassageProgress(studentId, [attempt.id]);
+      if (!mounted.current) return;
+      rows.filter((row) => row.attempt_id === attempt.id).forEach((row) => {
+        const position = row.passage_position - 1;
+        if (position < 0 || position >= passages.length || attempt.passage_ids[position] !== row.passage_id) return;
+        passageTimes.current[position] = Math.max(passageTimes.current[position] ?? 0, row.active_ms);
+        if (row.completed) { passageTimes.current[position] = row.active_ms; completedPositions.current.add(row.passage_position); }
+      });
+      clock.current.restoreMinimum({ sectionMs: passageTimes.current.reduce((sum, ms) => sum + ms, 0), passageMs: passageTimes.current[step.passage] }, Date.now());
+      setElapsed(toSeconds(clock.current.snapshot(Date.now()).sectionMs)); refreshTimes((value) => value + 1);
+    } catch { if (mounted.current) setProgressLoadError(true); }
+    finally { if (mounted.current) setProgressLoading(false); }
+  };
+  useEffect(() => { void loadProgress(); }, []);
   useEffect(() => {
     mounted.current = true;
     const tick = window.setInterval(() => setElapsed(toSeconds(clock.current.snapshot(Date.now()).sectionMs)), 1000);
@@ -72,6 +99,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
     finally { lock.current = false; if (mounted.current) setBusy(false); }
   };
   const begin = () => guarded(async () => {
+    if (progressLoading || progressLoadError) return;
     setMessage(null); setWaiting(true); const token = ++generation.current;
     const canceled = new Promise<null>((resolve) => { cancel.current = () => resolve(null); });
     const preparing = recorder.prepare().then((result) => { if (result.ok && (!mounted.current || token !== generation.current)) result.stream.getTracks().forEach((track) => track.stop()); return result; });
@@ -79,37 +107,31 @@ export default function ContinuousRcRecallRunner(props: Props) {
     try { prepared = await Promise.race([preparing, canceled]); }
     finally { if (token === generation.current && mounted.current) { setWaiting(false); cancel.current = null; } }
     if (!prepared || !mounted.current || token !== generation.current) return;
-    if (prepared.ok === false) { setMessage(prepared.reason); return; }
+    if (prepared.ok === false) { setMessage(`${prepared.reason.replace(/(?:Allow it, or choose|Choose) a silent recall instead\./gi, "").trim()} Allow microphone access, then try Start exercise again or choose another passage.`); return; }
     const id = newId();
     try {
       await createCapture(id, studentId, attempt.id, prepared.mimeType);
       if (!mounted.current || token !== generation.current) { prepared.stream.getTracks().forEach((track) => track.stop()); return; }
       const started = await recorder.start({ recapId: id, captureId: id, attemptId: attempt.id, studentId, recapKey: `capture-${id}` }, prepared);
       if (!mounted.current || token !== generation.current) { if (started.ok) await recorder.stop(); return; }
-      if (started.ok === false) { setMessage(started.reason); return; }
-      capture.current = id; captureFailure.current = null; captureKeys.current = new Set(); setReady(true); setSilent(false);
+      if (started.ok === false) { setMessage(started.reason.replace(/Try again or choose a silent recall instead\./gi, "Try Start exercise again or choose another passage.")); return; }
+      everStarted.current = true; capture.current = id; captureFailure.current = null; captureKeys.current = new Set(); setReady(true);
       if (!started.backup.ok) setMessage("Recording is running, but this device cannot keep a backup. Keep the screen open until your recording uploads.");
-    } catch { prepared.stream.getTracks().forEach((track) => track.stop()); throw new Error("Recording could not start. Retry or continue without recording."); }
+    } catch { prepared.stream.getTracks().forEach((track) => track.stop()); throw new Error("Recording could not start. Retry or choose another passage."); }
   });
-  const cancelRequest = (withoutRecording = false) => {
+  const cancelRequest = () => {
     generation.current += 1; cancel.current?.(); cancel.current = null; setWaiting(false);
-    if (withoutRecording) { setSilent(true); setReady(true); }
-    setMessage(withoutRecording ? null : "Microphone request canceled. You can dismiss the browser permission prompt and retry.");
+    setMessage("Microphone request canceled. Dismiss the browser permission prompt, then retry or choose another passage.");
   };
   const advance = () => {
     if (index >= 2) setGuide(false);
-    setOptionalStarted(false); setOptionalSpoken(false); captureStart.current = null; windowIntent.current = null;
-    if (steps[index + 1]?.passage !== step.passage) clock.current.resetPassage(Date.now());
+    setOptionalStarted(false); captureStart.current = null; windowIntent.current = null;
+    if (steps[index + 1]?.passage !== step.passage) { if (!completedPositions.current.has(step.passage + 1)) passageTimes.current[step.passage] = clock.current.snapshot(Date.now()).passageMs; clock.current.resetPassage(Date.now()); }
     setIndex((value) => value + 1);
   };
   const saveRecall = async () => {
     if (!step.recapKey) return;
     if (latest.current.recaps.some((r) => r.key === step.recapKey)) return;
-    if (silent) {
-      const row = await insertRecap({ studentId, attemptId: attempt.id, recapKey: step.recapKey, passagePosition: step.passage + 1, kind: step.kind as "recall" | "passage_recap", voice: "silent" });
-      updateRecaps([...latest.current.recaps, { key: step.recapKey, voice: "silent", state: "not_recorded", rowId: row.id, label: STEP_TITLE[step.kind] }]);
-      return;
-    }
     if (!capture.current || captureStart.current === null || recorder.interruption) throw new Error("This recall's recording was interrupted. Keep the saved audio and return to the passage list before starting again.");
     if (!windowIntent.current) windowIntent.current = { id: newId(), key: step.recapKey, startMs: captureStart.current, endMs: Math.max(captureStart.current + 1, recorder.getOffset()), position: step.passage + 1, kind: step.kind as "recall" | "passage_recap" };
     const intent = windowIntent.current;
@@ -129,6 +151,25 @@ export default function ContinuousRcRecallRunner(props: Props) {
     await discard(kept.id); retained.current = null;
     updateRecaps(latest.current.recaps.map((r) => captureKeys.current.has(r.key) ? { ...r, state: "saved" } : r));
   };
+  const saveCurrentProgress = async (completed: boolean, resumeClock = true) => {
+    const wasRunning = clock.current.running;
+    clock.current.pause(Date.now());
+    const position = step.passage + 1;
+    if (!progressIntent.current) progressIntent.current = { passageId: attempt.passage_ids[step.passage], passagePosition: position,
+      activeMs: Math.round(completedPositions.current.has(position) ? passageTimes.current[step.passage] : clock.current.snapshot(Date.now()).passageMs), completed };
+    persist();
+    const intent = progressIntent.current;
+    const row = await savePassageProgress({ studentId, attemptId: attempt.id, ...intent });
+    passageTimes.current[intent.passagePosition - 1] = row.active_ms;
+    if (row.completed) completedPositions.current.add(intent.passagePosition);
+    progressIntent.current = null;
+    if (completed && !row.completed) {
+      if (intent.completed) { progressIntent.current = intent; persist(); throw new Error("Passage completion could not be confirmed. Try again."); }
+      await saveCurrentProgress(true, resumeClock); return;
+    }
+    persist(); refreshTimes((value) => value + 1);
+    if (resumeClock && ready && !latest.current.done && (wasRunning || !latest.current.pending)) clock.current.start(Date.now());
+  };
   const reconcileProgress = async () => {
     const progress = await readAttemptProgress(attempt.id, studentId);
     updateRecaps(latest.current.recaps.map((recap) => {
@@ -143,6 +184,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const finish = async (completed: boolean) => {
     clock.current.pause(Date.now());
     const seconds = finalized.current?.seconds ?? latest.current.pending?.seconds ?? toSeconds(clock.current.snapshot(Date.now()).sectionMs);
+    if (!finalized.current) await saveCurrentProgress(false, false);
     if (!finalized.current) { latest.current.pending = { completed, seconds, savedAt: Date.now() }; persist(); }
     let audioError = captureFailure.current;
     if (!captureFailure.current) {
@@ -165,11 +207,12 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const act = () => guarded(async () => {
     if (!ready || recorder.interruption || leaveError) return;
     setMessage(null);
-    if (step.kind === "read") { captureStart.current = silent ? null : recorder.getOffset(); advanceTo(index + 1); return; }
+    if (step.kind === "read") { captureStart.current = recorder.getOffset(); advanceTo(index + 1); return; }
     if (step.kind === "recall") { await saveRecall(); advanceTo(index + 1); return; }
+    if (step.kind === "confirm" && steps[index + 1]?.kind !== "read") await saveCurrentProgress(true);
     if (step.kind === "passage_recap") {
-      if (optionalSpoken && !optionalStarted) { captureStart.current = recorder.getOffset(); setOptionalStarted(true); return; }
-      if (optionalSpoken) await saveRecall();
+      if (!optionalStarted) { captureStart.current = recorder.getOffset(); setOptionalStarted(true); return; }
+      await saveRecall();
 
     }
     if (index + 1 >= steps.length) await finish(true); else advance();
@@ -187,46 +230,47 @@ export default function ContinuousRcRecallRunner(props: Props) {
   }, []);
   const leave = () => guarded(async () => {
     clock.current.pause(Date.now());
-    try { await storeCapture(); }
+    try { await saveCurrentProgress(false, false); await storeCapture(); }
     catch {
       persist();
-      setLeaveError(captureFailure.current ?? "The recording has not uploaded. Keep this page open to retry, or leave and check Your attempts for any audio this device may have kept.");
+      setLeaveError(captureFailure.current ?? "Your progress or recording has not saved. Keep this page open to retry, or leave and check Your attempts for any audio this device may have kept.");
       return;
     }
     setLeaveError(null); persist(); onExit();
   });
 
-  if (finished) return <main className="rct-run rct-continuous" data-testid="rc-recall-finished"><h1 ref={heading} tabIndex={-1}>{finished.completed ? "Practice complete" : "Attempt ended early"}</h1><p role={finished.error ? "alert" : undefined}>{finished.error ?? "Your work is saved."}</p>{showElapsedTimer && <p>{formatClock(finished.seconds)}</p>}
+  if (finished) return <main className="rct-run rct-continuous" data-testid="rc-recall-finished"><h1 ref={heading} tabIndex={-1}>{finished.completed ? "Practice complete" : "Attempt ended early"}</h1><p role={finished.error ? "alert" : undefined}>{finished.error ?? "Your work is saved."}</p>{showElapsedTimer && <p>Total practice time: {formatClock(finished.seconds)}</p>}
     {finished.retry && <button type="button" disabled={busy} onClick={() => void guarded(() => finished.retry === "refresh" ? refreshProgress() : finish(finished.completed))}>{finished.retry === "refresh" ? "Refresh recording status" : "Try saving again"}</button>}
-    <button type="button" onClick={onExit}>Back to RC Training</button><RcTrainingFeedback attemptId={attempt.id} enabled={finalized.current?.completed === true} /></main>;
+    <button type="button" onClick={onExit}>Choose another passage</button><RcTrainingFeedback attemptId={attempt.id} enabled={finalized.current?.completed === true} /></main>;
   const hidden = step.kind === "recall" || step.kind === "passage_recap";
   const paragraph = segmented[step.passage];
   return <main className="rct-run rct-continuous" data-testid="rc-recall-runner" style={{ minHeight: "100vh", maxWidth: 1100, margin: "0 auto", padding: "24px clamp(16px,4vw,48px)" }}>
-    <header className="flex flex-wrap items-center justify-between gap-3"><div><h1 className="text-xl font-semibold">RC Training</h1><p>Passage {step.passage + 1} of {passages.length} · Paragraph {step.paragraph + 1} of {paragraph.paragraphs.length}</p></div>
-      <div>{ready && !silent && <span role="status">{leaveError ? "Recording stopped · upload not confirmed" : recorder.interruption ? "Recording interrupted" : "Recording · reading and recall"}</span>}{showElapsedTimer && <span className="ml-4">{formatClock(elapsed)}</span>}</div>
-      <button type="button" onClick={() => { setGuide((value) => !value); heading.current?.focus(); }}>{guide ? "Hide instructions" : "Show instructions"}</button></header>
-    {guide && <aside className="my-5 rounded-lg border p-4 text-sm" aria-label="Exercise instructions"><p>{silent ? "Read each paragraph. Press Space to hide it and recall it in your own words. Press Space again to check." : "Read each paragraph. Press Space to hide it and recall it out loud. Press Space again to check. The microphone records throughout; feedback checks only your hidden-text recalls."}</p></aside>}
+    <header className="flex flex-wrap items-center justify-between gap-3 text-sm"><div><h1 className="text-xl font-semibold">RC Training</h1>{ready && <p>Passage {step.passage + 1} of {passages.length} · Paragraph {step.paragraph + 1} of {paragraph.paragraphs.length}{completedPositions.current.has(step.passage + 1) ? " · Passage completed" : ""}</p>}</div>
+      <div>{ready && <span role="status">{leaveError ? "Recording stopped · upload not confirmed" : recorder.interruption ? "Recording interrupted" : "Recording · reading and recall"}</span>}{ready && <div role="timer" aria-label="Active practice time" className="flex flex-wrap gap-x-4 gap-y-1"><span className="whitespace-nowrap">Passage practice time: {formatClock(toSeconds(completedPositions.current.has(step.passage + 1) ? passageTimes.current[step.passage] : clock.current.snapshot(Date.now()).passageMs))}</span>{(passages.length > 1 || step.kind === "passage_recap") && <span className="whitespace-nowrap">Total practice time: {formatClock(elapsed)}</span>}</div>}</div>
+      {ready && <button type="button" style={{ borderColor: "transparent", background: "transparent", fontSize: 12, padding: "4px 8px" }} onClick={() => { setGuide((value) => !value); heading.current?.focus(); }}>{guide ? "Hide instructions" : "Show instructions"}</button>}</header>
+    {ready && guide && <aside className="my-3 text-sm" aria-label="Exercise instructions"><p>Read the paragraph. Press Space to hide it and recall it out loud. Press Space again to check.</p></aside>}
     {leaveError && <section aria-label="Recording not saved" className="my-4"><p role="alert">{leaveError}</p>
-      {retained.current && <button type="button" disabled={busy} onClick={() => void leave()}>Try saving recording again</button>}
+      {(retained.current || capture.current) && <button type="button" disabled={busy} onClick={() => void leave()}>Try saving recording again</button>}
       <button type="button" disabled={busy} onClick={() => { persist(); onExit(); }}>Leave anyway</button>
     </section>}
-    {!ready ? <section className="my-12" aria-label="Microphone setup"><h2>Start recording before you read</h2><p>Your microphone stays on while you read, recall and check. Only recall portions are used for feedback.</p>
+    {progressLoadError && <section role="alert"><p>Your saved passage progress could not be loaded.</p><button type="button" onClick={() => void loadProgress()}>Retry loading progress</button></section>}
+    {!ready ? <section className="my-12" aria-label="Microphone setup"><p>Allow microphone access to record as you read and recall; feedback checks only your hidden-text recalls.</p>
       {waiting && <p role="status">Waiting for microphone permission. Allow access in your browser, or cancel this request.</p>}
-      <button type="button" className="rct-run-button" disabled={busy} onClick={() => void begin()}>Start exercise</button>
+      <button type="button" className="rct-run-button" disabled={busy || progressLoading || progressLoadError} onClick={() => void begin()}>Start exercise</button>
       {waiting && <button type="button" onClick={() => cancelRequest()}>Cancel microphone request</button>}
-      <button type="button" disabled={busy && !waiting} onClick={() => cancelRequest(true)}>Continue without recording (no automatic feedback)</button></section>
+      <button type="button" style={{ borderColor: "transparent", background: "transparent", textDecoration: "underline" }} disabled={busy && !waiting} onClick={() => { cancelRequest(); persist(); onExit(); }}>Choose another passage</button></section>
     : <>
       <h2 ref={heading} tabIndex={-1} className="mt-6 text-lg font-semibold outline-none">{hidden ? "Recall paragraph" : step.kind === "confirm" ? "Check your recall" : "Read paragraph"}</h2>
       {recorder.interruption && <section aria-label="Recording interrupted" className="my-4"><p role="alert">{recorder.interruption}</p><button type="button" disabled={busy} onClick={() => void leave()}>Save recording and leave</button></section>}
       <section className="rct-source my-6 rounded-lg border p-4 sm:p-10" aria-label={hidden ? "Passage text hidden" : "Passage text"} style={{ background: "var(--rc-surface)", lineHeight: 1.85 }}>
         {hidden ? <p>{step.kind === "passage_recap" ? "Optional: recall the whole passage." : `Retell paragraph ${step.paragraph + 1} in your own words.`}</p> : step.visible.map((position) => <div key={position} className="mb-5 last:mb-0">{paragraph.paragraphs[position].labels.filter((label) => /^Passage [AB]$/i.test(label.trim())).map((label) => <p key={label} className="mb-3 font-semibold">{label}</p>)}<p>{paragraph.paragraphs[position].text}</p></div>)}
       </section>
-      {step.kind === "passage_recap" && !optionalStarted && <label className="mr-6"><input type="checkbox" checked={optionalSpoken} disabled={silent} onChange={(event) => setOptionalSpoken(event.target.checked)} /> Record this optional whole-passage recall for feedback. Then choose Begin whole-passage recall.</label>}
-      <div className="flex flex-wrap gap-3"><button type="button" className="rct-run-button" disabled={busy || !!recorder.interruption || !!leaveError} onClick={() => void act()}>{step.kind === "read" ? "Hide paragraph" : step.kind === "recall" ? "Check recall" : step.kind === "confirm" ? (steps[index + 1]?.kind === "read" ? "Next paragraph" : "Finish passage") : optionalSpoken && !optionalStarted ? "Begin whole-passage recall" : (index + 1 === steps.length ? "Finish practice" : "Finish recall")} <span aria-hidden="true">(Space)</span></button>
+      {step.kind === "passage_recap" && <p className="text-sm">Passage practice time is saved. This optional recall adds to total practice time.</p>}
+      <div className="flex flex-wrap gap-3"><button type="button" className="rct-run-button" disabled={busy || !!recorder.interruption || !!leaveError} onClick={() => void act()}>{step.kind === "read" ? "Hide paragraph" : step.kind === "recall" ? "Check recall" : step.kind === "confirm" ? (steps[index + 1]?.kind === "read" ? "Next paragraph" : "Finish passage") : !optionalStarted ? "Begin whole-passage recall" : (index + 1 === steps.length ? "Finish practice" : "Finish recall")} <span aria-hidden="true">(Space)</span></button>
         {step.optional && !optionalStarted && <button type="button" disabled={busy} onClick={() => void guarded(async () => { if (index + 1 === steps.length) await finish(true); else advance(); })}>Skip optional recall</button>}</div>
     </>}
     {message && <p role="alert" className="my-4">{message}</p>}
-    {silent && <p className="my-4 text-sm">No recording is being made. Silent recalls cannot receive automatic feedback.</p>}
-    <footer className="mt-8 flex flex-wrap gap-6"><button type="button" disabled={busy} onClick={() => void leave()}>Save my place and leave</button><button type="button" disabled={busy} onClick={() => { if (window.confirm("End this attempt now? It will be saved as not completed.")) void guarded(() => finish(false)); }}>End attempt</button></footer>
+    {ready && <details className="mt-8 text-sm"><summary>Practice options</summary><footer className="mt-3 flex flex-wrap gap-6"><button type="button" disabled={busy} onClick={() => void leave()}>Pause and return to passages</button><button type="button" disabled={busy} onClick={() => { if (window.confirm("Finish this practice early? Your progress will be saved.")) void guarded(() => finish(false)); }}>Finish early</button></footer></details>}
+
   </main>;
 }

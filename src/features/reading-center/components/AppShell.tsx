@@ -32,7 +32,7 @@ export function useAppTheme(reader = false): void {
 
 const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: RC_HOME_PATH, label: "Dashboard", icon: "apps", end: true },
-  { to: RC_RRC_PATH, label: "LR Recall", icon: "create", end: true },
+  { to: RC_RRC_PATH, label: "LR Training", icon: "create", end: true },
   { to: RC_RECALL_PATH, label: "RC Training", icon: "documentText", end: true },
   { to: RC_LIBRARY_PATH, label: "Speed Reading", icon: "book", end: true },
   { to: RC_TAGS_PATH, label: "Tags", icon: "pricetag" },

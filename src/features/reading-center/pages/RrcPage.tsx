@@ -15,7 +15,7 @@ export default function RrcPage() {
   // Legacy RRC-only assignments have no Reading Progress destination.
   const showProgress = !is_admin && !access.isPending && !access.allowed;
   return <div className="activity-centre min-h-screen" data-reading-activity="rrc">
-    <SectionLibraryPanel compact showProgress={showProgress} onExit={() => {
+    <SectionLibraryPanel title="LR Training" compact showProgress={showProgress} onExit={() => {
       if (user) void rrcExitPath(user.id, true).then(path => navigate(path));
     }} />
   </div>;

@@ -17,7 +17,7 @@ const setup = (path = "/reading-center/profile") => render(<MemoryRouter initial
 describe("Reading Progress activity selection", () => {
   it("opens LR history by default and switches to the preserved Speed Reading charts", () => {
     setup();
-    expect(screen.getByRole("tab", { name: "LR Recall" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "LR Training" })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByText("Detailed LR history")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("tab", { name: "Speed Reading" }));
     expect(screen.getByRole("button", { name: "Overview" })).toBeInTheDocument();
@@ -26,9 +26,9 @@ describe("Reading Progress activity selection", () => {
     expect(screen.queryByText("Detailed LR history")).not.toBeInTheDocument();
     expect(screen.getByTestId("url")).toHaveTextContent("activity=speed-reading");
   });
-  it("includes RC Training between LR Recall and Speed Reading, without mixing in LR grading", () => {
+  it("includes RC Training between LR Training and Speed Reading, without mixing in LR grading", () => {
     setup();
-    expect(screen.getAllByRole("tab").map((tab) => tab.textContent)).toEqual(["LR Recall", "RC Training", "Speed Reading"]);
+    expect(screen.getAllByRole("tab").map((tab) => tab.textContent)).toEqual(["LR Training", "RC Training", "Speed Reading"]);
     fireEvent.click(screen.getByRole("tab", { name: "RC Training" }));
     expect(screen.getByText("Detailed RC history")).toBeInTheDocument();
     expect(screen.queryByText("Detailed LR history")).not.toBeInTheDocument();
@@ -36,7 +36,7 @@ describe("Reading Progress activity selection", () => {
   });
   it("honours direct links and supports arrow, home and end tab navigation", () => {
     setup("/reading-center/profile?activity=speed-reading&from=dashboard");
-    const lr = screen.getByRole("tab", { name: "LR Recall" });
+    const lr = screen.getByRole("tab", { name: "LR Training" });
     const rc = screen.getByRole("tab", { name: "RC Training" });
     const speed = screen.getByRole("tab", { name: "Speed Reading" });
     expect(speed).toHaveAttribute("tabindex", "0");
