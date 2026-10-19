@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { loadPassages } from "@/features/rc/lib/rcBank";
+import { segmentPassage, type SegmentedPassage } from "./lib/segment";
 import { BookOpen } from "lucide-react";
 import RcTrainingFeedback from "./RcTrainingFeedback";
 import { getCaptureRecordingUrl, type CaptureRecap } from "./lib/captures";
@@ -50,7 +52,21 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
   onResume: Props["onResume"]; onRetryFinish: Props["onRetryFinish"];
 }) {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [recapsOpen, setRecapsOpen] = useState(false);
+  const [sources, setSources] = useState<Record<number, SegmentedPassage>>({});
   const { attempt, status } = entry;
+  useEffect(() => {
+    if (!feedbackOpen && !recapsOpen) return;
+    let active = true;
+    void loadPassages(attempt.passage_ids).then((passages) => {
+      if (!active) return;
+      const labels: Record<number, SegmentedPassage> = {};
+      attempt.passage_ids.forEach((id, index) => { const passage = passages.find((item) => item.passageId === id); if (passage?.text) labels[index + 1] = segmentPassage(passage.text); });
+      setSources(labels);
+    }).catch(() => { /* Existing saved labels remain available when the bank cannot load. */ });
+    return () => { active = false; };
+  }, [feedbackOpen, recapsOpen, attempt.passage_ids]);
+  const displayLabels = Object.fromEntries(entry.recaps.map((recap) => [recap.id, recapLabel(recap, sources[recap.passage_position], attempt.passage_ids.length)]));
   const spoken = entry.recaps.filter((r) => r.voice === "spoken");
   const duration = attempt.finished_at ? formatDuration(attempt.elapsed_seconds ?? 0) : entry.pendingFinalization ? formatDuration(entry.pendingFinalization.seconds) : null;
   return <li data-status={status}>
@@ -75,16 +91,16 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
       <span className="rct-attempt-state" data-status={status} data-completed={attempt.completed}>{STATUS_LABEL[status]}</span>
       <span>{dateLabel(attempt.started_at)}{duration ? ` · ${duration}` : ""}</span>
     </div>
-    {entry.recaps.length > 0 && <details className="rct-attempt-details">
+    {entry.recaps.length > 0 && <details className="rct-attempt-details" onToggle={(event) => setRecapsOpen(event.currentTarget.open)}>
       <summary>Recalls in this attempt ({entry.recaps.length})</summary>
       <ul>{[...entry.recaps].sort((a, b) => a.passage_position - b.passage_position || a.recap_key.localeCompare(b.recap_key)).map((recap) =>
-        <RecapItem key={recap.id} recap={recap} studentId={studentId} />)}</ul>
+        <RecapItem key={recap.id} recap={recap} studentId={studentId} displayLabel={displayLabels[recap.id]} />)}</ul>
     </details>}
-    {feedbackOpen && <div style={{ gridColumn: "1 / -1", width: "100%" }}><RcTrainingFeedback attemptId={attempt.id} enabled={!!attempt.finished_at && attempt.completed} /></div>}
+    {feedbackOpen && <div style={{ gridColumn: "1 / -1", width: "100%" }}><RcTrainingFeedback attemptId={attempt.id} enabled={!!attempt.finished_at && attempt.completed} displayLabels={Object.keys(sources).length ? displayLabels : undefined} /></div>}
   </li>;
 }
 
-function RecapItem({ recap, studentId }: { recap: RecapRow; studentId: string }) {
+function RecapItem({ recap, studentId, displayLabel }: { recap: RecapRow; studentId: string; displayLabel?: string }) {
   const [url, setUrl] = useState<string | null>(null);
   const [bounds, setBounds] = useState<{ start: number; end: number } | null>(null);
   const [loading, setLoading] = useState(false);
@@ -107,9 +123,9 @@ function RecapItem({ recap, studentId }: { recap: RecapRow; studentId: string })
     finally { setLoading(false); }
   };
   return <li>
-    <span>{recapLabel(recap)}</span> <span className="rct-attempt-note">{RECORDING_LABEL[recap.recording_state]}{recap.duration_ms ? ` · ${formatDuration(recap.duration_ms / 1000)}` : ""}</span>
+    <span>{displayLabel || recapLabel(recap)}</span> <span className="rct-attempt-note">{RECORDING_LABEL[recap.recording_state]}{recap.duration_ms ? ` · ${formatDuration(recap.duration_ms / 1000)}` : ""}</span>
     {playable && <span className="rct-recap-actions">
-      {url ? <audio controls src={url} aria-label={`Recording: ${recapLabel(recap)}`}
+      {url ? <audio controls src={url} aria-label={`Recording: ${displayLabel || recapLabel(recap)}`}
         onLoadedMetadata={(event) => { if (bounds) event.currentTarget.currentTime = bounds.start; }}
         onPlay={(event) => { const audio = event.currentTarget; if (bounds && (audio.currentTime < bounds.start || audio.currentTime >= bounds.end)) audio.currentTime = bounds.start; }}
         onSeeking={(event) => { const audio = event.currentTarget; if (bounds && (audio.currentTime < bounds.start || audio.currentTime > bounds.end)) audio.currentTime = bounds.start; }}

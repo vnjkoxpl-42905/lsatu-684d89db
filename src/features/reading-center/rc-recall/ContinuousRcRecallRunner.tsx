@@ -8,6 +8,8 @@ import { ActiveClock, toSeconds } from "./lib/activeClock";
 import { discard } from "./lib/backup";
 import { useRecapRecorder, type PreparedResult, type RecordedRecap } from "./useRecapRecorder";
 import RcTrainingFeedback from "./RcTrainingFeedback";
+import { recapLabel } from "./lib/history";
+import { paragraphDisplayLabel } from "./lib/segment";
 import LegacyRcRecallRunner, { formatClock } from "./LegacyRcRecallRunner";
 import "./RcRecallRunner.css";
 import "./ContinuousRcRecallRunner.css";
@@ -241,11 +243,12 @@ export default function ContinuousRcRecallRunner(props: Props) {
 
   if (finished) return <main className="rct-run rct-continuous" data-testid="rc-recall-finished"><h1 ref={heading} tabIndex={-1}>{finished.completed ? "Practice complete" : "Attempt ended early"}</h1><p role={finished.error ? "alert" : undefined}>{finished.error ?? "Your work is saved."}</p>{showElapsedTimer && <p>Total practice time: {formatClock(finished.seconds)}</p>}
     {finished.retry && <button type="button" disabled={busy} onClick={() => void guarded(() => finished.retry === "refresh" ? refreshProgress() : finish(finished.completed))}>{finished.retry === "refresh" ? "Refresh recording status" : "Try saving again"}</button>}
-    <button type="button" onClick={onExit}>Choose another passage</button><RcTrainingFeedback attemptId={attempt.id} enabled={finalized.current?.completed === true} /></main>;
+    <button type="button" onClick={onExit}>Choose another passage</button><RcTrainingFeedback attemptId={attempt.id} enabled={finalized.current?.completed === true} displayLabels={Object.fromEntries(recaps.filter((recap) => recap.rowId).map((recap) => { const position = Number(/^p(\d+)-/.exec(recap.key)?.[1] ?? 1); return [recap.rowId!, recapLabel({ recap_key: recap.key, kind: recap.key.endsWith("passage-recap") ? "passage_recap" : "recall", passage_position: position }, segmented[position - 1], passages.length)]; }))} /></main>;
   const hidden = step.kind === "recall" || step.kind === "passage_recap";
   const paragraph = segmented[step.passage];
+  const paragraphContext = paragraphDisplayLabel(paragraph, step.paragraph);
   return <main className="rct-run rct-continuous" data-testid="rc-recall-runner" style={{ minHeight: "100vh", maxWidth: 1100, margin: "0 auto", padding: "24px clamp(16px,4vw,48px)" }}>
-    <header className="flex flex-wrap items-center justify-between gap-3 text-sm"><div><h1 className="text-xl font-semibold">RC Training</h1>{ready && <p>Passage {step.passage + 1} of {passages.length} · Paragraph {step.paragraph + 1} of {paragraph.paragraphs.length}{completedPositions.current.has(step.passage + 1) ? " · Passage completed" : ""}</p>}</div>
+    <header className="flex flex-wrap items-center justify-between gap-3 text-sm"><div><h1 className="text-xl font-semibold">RC Training</h1>{ready && <><p>{passages.length > 1 && <>Selected passage {step.passage + 1} of {passages.length} · </>}{step.kind === "passage_recap" ? "Whole-passage recall" : paragraphContext}</p>{completedPositions.current.has(step.passage + 1) && <p>Passage completed</p>}</>}</div>
       <div>{ready && <span role="status">{leaveError ? "Recording stopped · upload not confirmed" : recorder.interruption ? "Recording interrupted" : "Recording · reading and recall"}</span>}{ready && <div role="timer" aria-label="Active practice time" className="flex flex-wrap gap-x-4 gap-y-1"><span className="whitespace-nowrap">Passage practice time: {formatClock(toSeconds(completedPositions.current.has(step.passage + 1) ? passageTimes.current[step.passage] : clock.current.snapshot(Date.now()).passageMs))}</span>{(passages.length > 1 || step.kind === "passage_recap") && <span className="whitespace-nowrap">Total practice time: {formatClock(elapsed)}</span>}</div>}</div>
       {ready && <button type="button" style={{ borderColor: "transparent", background: "transparent", fontSize: 12, padding: "4px 8px" }} onClick={() => { setGuide((value) => !value); heading.current?.focus(); }}>{guide ? "Hide instructions" : "Show instructions"}</button>}</header>
     {ready && guide && <aside className="my-3 text-sm" aria-label="Exercise instructions"><p>Read the paragraph. Press Space to hide it and recall it out loud. Press Space again to check.</p></aside>}
@@ -260,10 +263,14 @@ export default function ContinuousRcRecallRunner(props: Props) {
       {waiting && <button type="button" onClick={() => cancelRequest()}>Cancel microphone request</button>}
       <button type="button" style={{ borderColor: "transparent", background: "transparent", textDecoration: "underline" }} disabled={busy && !waiting} onClick={() => { cancelRequest(); persist(); onExit(); }}>Choose another passage</button></section>
     : <>
-      <h2 ref={heading} tabIndex={-1} className="mt-6 text-lg font-semibold outline-none">{hidden ? "Recall paragraph" : step.kind === "confirm" ? "Check your recall" : "Read paragraph"}</h2>
+      <h2 ref={heading} tabIndex={-1} className="mt-6 text-lg font-semibold outline-none">{step.kind === "passage_recap" ? "Recall the whole passage" : hidden ? "Recall the whole paragraph" : step.kind === "confirm" ? "Check your recall" : "Read the whole paragraph"}</h2>
       {recorder.interruption && <section aria-label="Recording interrupted" className="my-4"><p role="alert">{recorder.interruption}</p><button type="button" disabled={busy} onClick={() => void leave()}>Save recording and leave</button></section>}
       <section className="rct-source my-6 rounded-lg border p-4 sm:p-10" aria-label={hidden ? "Passage text hidden" : "Passage text"} style={{ background: "var(--rc-surface)", lineHeight: 1.85 }}>
-        {hidden ? <p>{step.kind === "passage_recap" ? "Optional: recall the whole passage." : `Retell paragraph ${step.paragraph + 1} in your own words.`}</p> : step.visible.map((position) => <div key={position} className="mb-5 last:mb-0">{paragraph.paragraphs[position].labels.filter((label) => /^Passage [AB]$/i.test(label.trim())).map((label) => <p key={label} className="mb-3 font-semibold">{label}</p>)}<p>{paragraph.paragraphs[position].text}</p></div>)}
+        <div style={{ maxWidth: "72ch", margin: "0 auto" }}>{hidden ? <p>{step.kind === "passage_recap" ? "Optional: explain the whole passage in your own words." : "Explain the whole paragraph in your own words."}</p> : step.visible.map((position, visibleIndex) => {
+          const source = paragraph.paragraphs[position];
+          const previous = visibleIndex > 0 ? paragraph.paragraphs[step.visible[visibleIndex - 1]] : null;
+          return <div key={position} className="mb-8 last:mb-0">{source.sub && previous?.sub !== source.sub && <h3 className="mb-4 font-semibold">Passage {source.sub}</h3>}<p>{source.text}</p></div>;
+        })}</div>
       </section>
       {step.kind === "passage_recap" && <p className="text-sm">Passage practice time is saved. This optional recall adds to total practice time.</p>}
       <div className="flex flex-wrap gap-3"><button type="button" className="rct-run-button" disabled={busy || !!recorder.interruption || !!leaveError} onClick={() => void act()}>{step.kind === "read" ? "Hide paragraph" : step.kind === "recall" ? "Check recall" : step.kind === "confirm" ? (steps[index + 1]?.kind === "read" ? "Next paragraph" : "Finish passage") : !optionalStarted ? "Begin whole-passage recall" : (index + 1 === steps.length ? "Finish practice" : "Finish recall")} <span aria-hidden="true">(Space)</span></button>
