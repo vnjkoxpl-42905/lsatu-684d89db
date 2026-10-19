@@ -35,7 +35,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const [message, setMessage] = useState<string | null>(null);
   const [recaps, setRecaps] = useState<CheckpointRecap[]>(resume?.recaps ?? []);
   const [finished, setFinished] = useState<{ completed: boolean; seconds: number; error: string | null; retry: "save" | "refresh" | null } | null>(null);
-  const [elapsed, setElapsed] = useState(toSeconds(resume?.sectionMs ?? 0));
+  const [, setElapsed] = useState(toSeconds(resume?.sectionMs ?? 0));
   const [optionalStarted, setOptionalStarted] = useState(false);
   const recorder = useRecapRecorder();
   const everStarted = useRef(false);
@@ -57,6 +57,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
   latest.current.index = index; latest.current.recaps = recaps; latest.current.ready = ready;
   const key = props.contentKey ?? contentKeyFor({ preptest: attempt.preptest, section: attempt.section, passageIds: attempt.passage_ids });
   const step = steps[index];
+  const displayedTime = clock.current.snapshot(Date.now());
   const persist = () => {
     if (latest.current.done) return;
     if (!resume && !everStarted.current && latest.current.index === 0 && latest.current.recaps.length === 0 && !latest.current.pending && !progressIntent.current && !captureFailure.current && !retained.current && completedPositions.current.size === 0 && passageTimes.current.every((ms) => ms === 0)) return;
@@ -258,7 +259,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const paragraphContext = paragraphDisplayLabel(paragraph, step.paragraph);
   return <main className="rct-run rct-continuous" data-testid="rc-recall-runner" style={{ minHeight: "100vh", maxWidth: 1100, margin: "0 auto", padding: "24px clamp(16px,4vw,48px)" }}>
     <header className="flex flex-wrap items-center justify-between gap-3 text-sm"><div><h1 className="text-xl font-semibold">RC Training</h1>{ready && <><p>{passages.length > 1 && <>Selected passage {step.passage + 1} of {passages.length} · </>}{step.kind === "passage_recap" ? "Whole-passage recall" : paragraphContext}</p>{completedPositions.current.has(step.passage + 1) && <p>Passage completed</p>}</>}</div>
-      <div>{ready && <span role="status">{leaveError ? "Recording stopped · upload not confirmed" : recorder.interruption ? "Recording interrupted" : "Recording · reading and recall"}</span>}{ready && <div role="timer" aria-label="Active practice time" className="flex flex-wrap gap-x-4 gap-y-1"><span className="whitespace-nowrap">Passage practice time: {formatClock(toSeconds(completedPositions.current.has(step.passage + 1) ? passageTimes.current[step.passage] : clock.current.snapshot(Date.now()).passageMs))}</span>{(passages.length > 1 || step.kind === "passage_recap") && <span className="whitespace-nowrap">Total practice time: {formatClock(elapsed)}</span>}</div>}</div>
+      <div>{ready && <span role="status">{leaveError ? "Recording stopped · upload not confirmed" : recorder.interruption ? "Recording interrupted" : "Recording · reading and recall"}</span>}{ready && <div role="timer" aria-label="Active practice time" className="flex flex-wrap gap-x-4 gap-y-1"><span className="whitespace-nowrap">Passage practice time: {formatClock(toSeconds(completedPositions.current.has(step.passage + 1) ? passageTimes.current[step.passage] : displayedTime.passageMs))}</span>{(passages.length > 1 || step.kind === "passage_recap") && <span className="whitespace-nowrap">Total practice time: {formatClock(toSeconds(displayedTime.sectionMs))}</span>}</div>}</div>
       {ready && <button type="button" style={{ borderColor: "transparent", background: "transparent", fontSize: 12, padding: "4px 8px" }} onClick={() => { setGuide((value) => !value); heading.current?.focus(); }}>{guide ? "Hide instructions" : "Show instructions"}</button>}</header>
     {ready && guide && <aside className="my-3 text-sm" aria-label="Exercise instructions"><p>{paragraphFlow ? "Read the whole paragraph. Press Space or Retell paragraph to hide it, then explain it aloud. Press Space again to move on. Feedback starts after you finish and save the selected practice." : "Read the paragraph. Press Space to hide it and recall it out loud. Press Space again to check."}</p></aside>}
     {leaveError && <section aria-label="Recording not saved" className="my-4"><p role="alert">{leaveError}</p>
