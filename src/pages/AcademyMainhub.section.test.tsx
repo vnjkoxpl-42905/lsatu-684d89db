@@ -448,10 +448,11 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.queryByText("RC active sitting")).not.toBeInTheDocument();
   });
 
-  it("labels the saved-set destination as LR rather than promising RC templates", () => {
+  it("offers the saved-set destination for both LR and RC", () => {
     renderHub("/practice/drills?section=rc&view=saved");
-    expect(screen.getByRole("heading", { name: "Saved LR sets" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Open saved LR sets" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Saved sets" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open saved sets" })).toBeInTheDocument();
+    expect(screen.getByText("Your saved Logical Reasoning and Reading Comprehension drills.")).toBeInTheDocument();
   });
 
   it("keeps section choice in the LR/RC switch instead of repeating it as a practice tile", () => {

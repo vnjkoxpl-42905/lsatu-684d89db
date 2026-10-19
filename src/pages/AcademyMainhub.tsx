@@ -432,9 +432,9 @@ export default function AcademyMainhub({
         </nav>
         {view === "saved" ? (
           <section className="drill-history-workspace rounded-xl border border-border bg-card p-6" aria-label="Saved sets">
-            <h1 className="text-xl font-semibold">Saved LR sets</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Reusable saved sets support Logical Reasoning. Find your RC drills in In progress or Completed.</p>
-            <Button className="mt-5" onClick={() => navigate("/practice/drills/saved")}>Open saved LR sets <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
+            <h1 className="text-xl font-semibold">Saved sets</h1>
+            <p className="mt-2 text-sm text-muted-foreground">Your saved Logical Reasoning and Reading Comprehension drills.</p>
+            <Button className="mt-5" onClick={() => navigate("/practice/drills/saved")}>Open saved sets <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
           </section>
         ) : view === "in-progress" || view === "completed" ? (
           <section className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
@@ -471,8 +471,10 @@ export default function AcademyMainhub({
           <div className="drill-observatory-tools">
             <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} />
           </div>
-          <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
-            <RcHubSurface embedded showHistory={false} />
+          <section className="rc-create-workspace drill-observatory-launcher relative overflow-hidden" aria-label="RC drill setup">
+            <div className="relative z-10">
+              <RcHubSurface embedded showHistory={false} />
+            </div>
           </section>
         </> : <>
         {/* The address row rides above the hero rather than inside it: the

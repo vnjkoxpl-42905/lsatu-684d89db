@@ -620,42 +620,10 @@
 }
 
 /* Builder layout follows the available panel width, including a docked sidecar. */
-.rc-create-workspace .rc-page.rc-embedded {
-  --observatory-ink: hsl(var(--foreground));
-  --observatory-ink-90: hsl(var(--foreground));
-  --observatory-ink-85: hsl(var(--foreground));
-  --observatory-ink-70: hsl(var(--muted-foreground));
-  --observatory-ink-62: hsl(var(--muted-foreground));
-  --observatory-ink-60: hsl(var(--muted-foreground));
-  --observatory-ink-55: hsl(var(--muted-foreground));
-  --observatory-ink-50: hsl(var(--muted-foreground));
-  --observatory-surface-card: hsl(var(--card));
-  --observatory-glass-soft: hsl(var(--card));
-  --observatory-glass-row: hsl(var(--muted));
-  --observatory-hairline: hsl(var(--border));
-  --observatory-ring-glass: hsl(var(--border));
-  --observatory-ring-strong: hsl(var(--foreground));
-  --observatory-ring-chip: hsl(var(--border));
-  --observatory-focus: hsl(var(--foreground));
-  color: hsl(var(--foreground));
-}
-.rc-create-workspace .rc-page > .rc-actions h2 {
-  font-family: inherit;
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  text-transform: none;
-  color: hsl(var(--foreground));
-}
-.rc-create-workspace .rc-page .rc-stepper-value { font-family: inherit; }
-.rc-create-workspace .rc-page .rc-stepper button { width: 44px; height: 44px; }
-.rc-create-workspace .rc-page .rc-button-primary {
-  background: hsl(var(--primary));
-  border-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-  min-height: 44px;
-}
-.rc-create-workspace .rc-page .rc-button-primary:hover { background: hsl(var(--primary)); }
+/* Keep the original observatory palette and typography. These target sizes
+   remain for touch and keyboard access in either host. */
+.rc-builder .rc-stepper button { width: 44px; height: 44px; }
+.rc-builder .rc-button-primary { min-height: 44px; }
 .rc-builder { container-type: inline-size; }
 .rc-builder-settings {
   display: grid;
