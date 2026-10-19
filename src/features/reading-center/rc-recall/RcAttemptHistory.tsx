@@ -52,7 +52,6 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const { attempt, status } = entry;
   const spoken = entry.recaps.filter((r) => r.voice === "spoken");
-  const saved = spoken.filter((r) => r.recording_state === "saved").length;
   const duration = attempt.finished_at ? formatDuration(attempt.elapsed_seconds ?? 0) : entry.pendingFinalization ? formatDuration(entry.pendingFinalization.seconds) : null;
   return <li data-status={status}>
     <div>
@@ -75,7 +74,6 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
     <div className="rct-attempt-meta">
       <span className="rct-attempt-state" data-status={status} data-completed={attempt.completed}>{STATUS_LABEL[status]}</span>
       <span>{dateLabel(attempt.started_at)}{duration ? ` · ${duration}` : ""}</span>
-      <span>{spoken.length ? `${saved} of ${spoken.length} spoken recalls saved` : "No spoken recalls"}</span>
     </div>
     {entry.recaps.length > 0 && <details className="rct-attempt-details">
       <summary>Recalls in this attempt ({entry.recaps.length})</summary>
