@@ -267,6 +267,13 @@
       "when": 1792381586623,
       "tag": "0037_rc_recall_passage_progress",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1792383214209,
+      "tag": "0038_rc_recall_finalized_progress_retry",
+      "breakpoints": true
     }
   ]
 }
