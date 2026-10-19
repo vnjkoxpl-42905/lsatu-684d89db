@@ -1,5 +1,17 @@
 # LR drill setup: design brief
 
+## Current refinement, 2026-10-18
+
+Joshua requested implementation of a simpler LR builder after reviewing its live search, summary and preview. This supersedes the historical layout and confirmation status below, not the set-composition rules. The current job is: choose question type, difficulty and question count, preview the drill, then start. Specific-question selection remains optional; less-used choices use More options.
+
+Joshua's follow-up removes all bank/facet totals, selection breakdowns, attempt history/counts, timing/reveal explanations and repeated action counts. Keep Easy, Medium and Hard, the question-count control, clear actions and useful PrepTest references. No visible technical labels such as filters, guaranteed or question IDs. Do not replace removed noise with more explanatory prose.
+
+The supplied screenshots and live builder show excessive inventory counts presented as the drill itself, repeated timing paragraphs, raw-ID/Inspect language, heavy type, inconsistent control shapes and a tall viewport-wide mobile tray. Refine these as one system using the existing Outfit family and classroom palette: normal-weight body copy, modest headings, persistent field labels, aligned 44px controls, restrained borders, consistent spacing and clear keyboard/disabled/error states. No gradients, shadows or enlarged headings as decoration.
+
+Use Your drill, Preview drill, View questions and Start drill. Use complete PrepTest/section/question references; keep internal IDs and parser behavior internal. Keep the exact preview, chosen questions outside filters, atomic reference handling, preview invalidation and one-time launch behavior. Previewing remains read-only. No source/key, scoring, account or RC changes are authorized by this refinement. Evidence and actual verification are recorded in [the dated design evidence](../design-evidence/lr-drill-builder-2026-10-18/README.md). Merge/publication require their separate standing release authorization.
+
+## Historical brief, 2026-09-26
+
 Date: 2026-09-26
 Status: awaiting Joshua's confirmation before implementation
 Target: revise draft LSAT U PR #137, `codex/drill-layout`
