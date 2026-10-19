@@ -3,11 +3,10 @@ import { ChevronRight } from 'lucide-react';
 
 interface LrQuestionInspectListProps {
   qids: string[];
-  chosenQids?: ReadonlySet<string>;
 }
 
 /** Reads the frozen set only. It never creates a run or records exposure. */
-export function LrQuestionInspectList({ qids, chosenQids }: LrQuestionInspectListProps) {
+export function LrQuestionInspectList({ qids }: LrQuestionInspectListProps) {
   if (qids.length === 0) return <p className="text-muted-foreground">This set has no questions.</p>;
 
   return (
@@ -21,7 +20,6 @@ export function LrQuestionInspectList({ qids, chosenQids }: LrQuestionInspectLis
               <span className="min-w-0 flex-1 space-y-1">
                 <span className="block font-medium">Question {index + 1}{question ? ` · ${question.qtype}` : ' · Unavailable'}</span>
                 {question && <span className="block text-xs font-normal leading-5 text-muted-foreground">PT {question.pt} · Section {question.section} · Question {question.qnum}</span>}
-                {question && <span className="block text-xs font-normal leading-5 text-muted-foreground">{chosenQids ? `${chosenQids.has(qid) ? 'Added by you' : 'From filters'} · ` : ''}{Number.isInteger(question.difficulty) && question.difficulty >= 1 && question.difficulty <= 5 ? `Difficulty ${question.difficulty} of 5` : 'Difficulty not available'}</span>}
               </span>
             </summary>
             {question ? (

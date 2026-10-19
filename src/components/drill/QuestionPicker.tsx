@@ -30,7 +30,6 @@ import {
   type LRDrillFilters,
 } from '@/lib/lrDrillFilters';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import {
   Dialog,
@@ -45,24 +44,6 @@ import { Bookmark } from 'lucide-react';
 import { recordExposures } from '@/lib/questionExposure';
 import { LrQuestionInspectList } from './LrQuestionInspectList';
 import { composeLRDrillSet, getLRDrillSetAvailability } from '@/lib/lrDrillSetComposition';
-
-// Item J — abbreviations for the table's Type pill so multi-word qtypes
-// stay on one line at a consistent height. Full name surfaces via title.
-const QTYPE_ABBREVIATIONS: Record<string, string> = {
-  'Necessary Assumption': 'Nec. Assumption',
-  'Sufficient Assumption': 'Suf. Assumption',
-  'Principle-Strengthen': 'Principle (S)',
-  'Principle-Conform': 'Principle (C)',
-  'Most Strongly Supported': 'MSS',
-  'Must Be True': 'Must Be True',
-  'Must Be False': 'Must Be False',
-  'Method of Reasoning': 'Method',
-  'Main Conclusion': 'Main Conc.',
-  'Parallel Reasoning': 'Parallel',
-  'Parallel Flaw': 'Parallel Flaw',
-  'Agree/Disagree': 'Agree/Disagr.',
-};
-const abbreviateQtype = (qtype: string): string => QTYPE_ABBREVIATIONS[qtype] ?? qtype;
 
 function FilterMenuHeader({
   title,
@@ -99,6 +80,12 @@ const REASONING_TYPE_LABELS: Record<string, string> = {
   'Comparative Reasoning': 'Comparison',
 };
 const ALL_DIFFICULTIES = [1, 2, 3, 4, 5] as const;
+const DIFFICULTY_GROUPS = [
+  { label: 'Easy', values: [1, 2] },
+  { label: 'Medium', values: [3] },
+  { label: 'Hard', values: [4, 5] },
+];
+const difficultyLabel = (difficulty: number) => difficulty <= 2 ? 'Easy' : difficulty === 3 ? 'Medium' : 'Hard';
 
 /**
  * Fixed column widths, border-box, each including the shared cell's 32px
@@ -109,9 +96,8 @@ const COL = {
   select: 48,
   pt: 84,
   sectionQ: 104,
-  type: 128,
-  level: 92,
-  attempts: 84,
+  type: 164,
+  level: 100,
 } as const;
 
 const FIXED_COLS_WIDTH = Object.values(COL).reduce((sum, width) => sum + width, 0);
@@ -124,14 +110,6 @@ const TABLE_MIN_WIDTH = FIXED_COLS_WIDTH + STEM_MIN_WIDTH;
 
 const reasoningTypeLabel = (value: string): string => REASONING_TYPE_LABELS[value] ?? value;
 
-/**
- * What a custom LR set actually does once started, traced from the runner's
- * practice-set path (fixed queue, stopwatch, optional Show Answer, results at
- * the end). The builder has no Test or timed choice, so it claims none.
- */
-const LR_SET_MODE_DETAIL =
-  'No time limit. Your time is recorded. Reveal answers when you choose, or review them after finishing.';
-
 function getSearchMode(value: string): 'text' | 'exact' | 'range' {
   const text = value.trim();
   if (/\.s\d+\.q\d+/i.test(text)) return 'exact';
@@ -139,13 +117,8 @@ function getSearchMode(value: string): 'text' | 'exact' | 'range' {
   return 'text';
 }
 
-interface QuestionRow extends LRQuestion {
-  attemptCount: number;
-}
-
 export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPickerProps) {
   const { user } = useAuth();
-  const userId = user?.id;
   const { toast } = useToast();
   
   // Filter state
@@ -165,8 +138,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   
   // Table state
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
-  const [attemptCounts, setAttemptCounts] = useState<Map<string, number>>(new Map());
+  const pageSize = 25;
 
   // Target set size for Generate
   const [setSize, setSetSize] = useState<number>(manifest.totalQuestions >= 10 ? 10 : 5);
@@ -304,7 +276,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       }
       const missing = parsed.refs.filter((ref) => !questionByAddress.has(`${ref.pt}.${ref.section}.${ref.qnum}`));
       if (missing.length > 0) {
-        setSearchIssues([{ kind: 'unknown-value', token: missing.map((ref) => ref.label).join(', '), message: `Not in the bank: ${missing.map((ref) => ref.label).join(', ')}. Nothing was added.` }]);
+        setSearchIssues([{ kind: 'unknown-value', token: missing.map((ref) => ref.label).join(', '), message: 'Nothing was added. Check your question references.' }]);
         return;
       }
       setSelectedQids((previous) => new Set([
@@ -323,57 +295,6 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     setDiscoverySearch('');
   };
 
-  const visibleDifficulties = useMemo(
-    () =>
-      getVisibleLRDrillOptions(
-        ALL_DIFFICULTIES,
-        filters.difficulties,
-        contextualCounts.difficulties,
-      ),
-    [contextualCounts.difficulties, filters.difficulties],
-  );
-  
-  // Load attempt counts
-  useEffect(() => {
-    // Counts belong to one account. A late reply for a previous account must
-    // not paint its history onto the next one's table.
-    let cancelled = false;
-    setAttemptCounts(new Map());
-    async function loadAttempts() {
-      if (!userId) return;
-      
-      try {
-        const { data: student } = await supabase
-          .from('students')
-          .select('class_id')
-          .eq('user_id', userId)
-          .maybeSingle();
-        
-        if (!student?.class_id) return;
-        
-        const { data: attempts } = await supabase
-          .from('attempts')
-          .select('qid')
-          .eq('class_id', student.class_id);
-        
-        if (attempts && !cancelled) {
-          const counts = new Map<string, number>();
-          attempts.forEach(a => {
-            counts.set(a.qid, (counts.get(a.qid) || 0) + 1);
-          });
-          setAttemptCounts(counts);
-        }
-      } catch (err) {
-        console.error('Failed to load attempt counts:', err);
-      }
-    }
-    
-    loadAttempts();
-    return () => {
-      cancelled = true;
-    };
-  }, [userId]);
-  
   // Filter and paginate questions
   const filteredQuestions = useMemo(() => filterLRQuestions(allQuestions, filters), [allQuestions, filters]);
   const visibleQuestions = useMemo(
@@ -387,17 +308,12 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   const totalCount = visibleQuestions.length;
   
   // Paginated questions
-  const paginatedQuestions: QuestionRow[] = useMemo(() => {
+  const paginatedQuestions: LRQuestion[] = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     
-    return visibleQuestions
-      .slice(startIndex, endIndex)
-      .map(q => ({
-        ...q,
-        attemptCount: attemptCounts.get(q.qid) || 0
-      }));
-  }, [visibleQuestions, currentPage, pageSize, attemptCounts]);
+    return visibleQuestions.slice(startIndex, endIndex);
+  }, [visibleQuestions, currentPage, pageSize]);
   
   const totalPages = Math.ceil(totalCount / pageSize);
   
@@ -459,15 +375,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   };
   
   const availability = getLRDrillSetAvailability(selectedQids, filteredQuestions, setSize);
-  const remainingPlaces = Math.max(0, setSize - selectedQids.size);
-  const selectedOutsideFilters = Array.from(selectedQids).filter(
-    (qid) => !filteredQuestions.some((question) => question.qid === qid),
-  ).length;
   const canGenerate = !availability.exceedsSize && availability.missingCount === 0;
   const generateHint = availability.exceedsSize
-    ? `You selected ${selectedQids.size} questions. Increase the set size or remove some.`
+    ? 'Increase the number of questions, or remove an added question.'
     : availability.missingCount > 0
-    ? `The filters need ${availability.missingCount} more question${availability.missingCount === 1 ? '' : 's'}. Try broader filters or a smaller set.`
+    ? 'Choose fewer questions, or broaden your choices.'
     : null;
   
   const hasAnyFilter =
@@ -498,7 +410,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     if (!sample) {
       toast({
         title: "Adjust your drill",
-        description: generateHint ?? "Check the selected questions and filters.",
+        description: generateHint ?? "Check your choices.",
         variant: "destructive",
       });
       return;
@@ -596,6 +508,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   };
   
   // Before preview, these are candidate-pool statistics, not a promised mix.
+  const selectedDifficultyLabels = DIFFICULTY_GROUPS.filter((group) => group.values.some((value) => filters.difficulties.includes(value))).map((group) => group.label);
   const hasPreview = !!previewedQids && previewedQids.length > 0;
 
   // Get first 6-7 words of stem
@@ -614,14 +527,14 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         <Card className="lr-builder-filters">
           <div className="lr-builder-section-heading">
             <h2>Choose your questions</h2>
-            {hasAnyFilter && <Button variant="ghost" size="sm" onClick={clearAllFilters}>Clear filters</Button>}
+            {hasAnyFilter && <Button variant="ghost" size="sm" onClick={clearAllFilters}>Reset options</Button>}
           </div>
           <div className="lr-builder-primary-filters">
             {/* Question Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  Question type {filters.questionTypes.length > 0 && `(${filters.questionTypes.length})`}
+                <Button variant="outline" aria-label={`Question type${filters.questionTypes.length ? `: ${filters.questionTypes.join(', ')}` : ''}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
+                  {filters.questionTypes.length === 1 ? filters.questionTypes[0] : 'Question type'}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
@@ -632,7 +545,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     activeCount={filters.questionTypes.length}
                     onClear={() => clearArrayFilter('questionTypes')}
                   />
-                  
+
                   {/* Search */}
                   <div className="relative">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -687,7 +600,6 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                             {group.name}
                           </div>
                           {visibleTypes.map(qtype => {
-                            const count = contextualCounts.questionTypes.get(qtype) ?? 0;
                             return (
                               <div key={qtype} className="flex items-center space-x-2 pl-2">
                                 <Checkbox
@@ -696,7 +608,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                                   onCheckedChange={() => toggleFilter('questionTypes', qtype)}
                                 />
                                 <label htmlFor={`qtype-${qtype}`} className="text-sm cursor-pointer flex-1">
-                                  {qtype} <span className="text-muted-foreground">({count})</span>
+                                  {qtype}
                                 </label>
                               </div>
                             );
@@ -712,8 +624,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             {/* Difficulty Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  Difficulty {filters.difficulties.length > 0 && `(${filters.difficulties.length})`}
+                <Button variant="outline" aria-label={`Difficulty${selectedDifficultyLabels.length ? `: ${selectedDifficultyLabels.join(', ')}` : ''}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
+                  {selectedDifficultyLabels.length === DIFFICULTY_GROUPS.length ? 'Any difficulty' : selectedDifficultyLabels.join(', ') || 'Difficulty'}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
@@ -724,31 +636,31 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     activeCount={filters.difficulties.length}
                     onClear={() => clearArrayFilter('difficulties')}
                   />
-                  {visibleDifficulties.map(diff => (
-                    <div key={diff} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`diff-${diff}`}
-                        checked={filters.difficulties.includes(diff)}
-                        onCheckedChange={() => toggleFilter('difficulties', diff)}
-                      />
-                      <label htmlFor={`diff-${diff}`} className="text-sm cursor-pointer flex-1">
-                        Level {diff} ({contextualCounts.difficulties.get(diff) ?? 0})
-                      </label>
-                    </div>
-                  ))}
+                  {DIFFICULTY_GROUPS.filter((group) => group.values.some((value) => filters.difficulties.includes(value) || (contextualCounts.difficulties.get(value) ?? 0) > 0)).map((group) => {
+                    const checked = group.values.every((value) => filters.difficulties.includes(value));
+                    return (
+                      <div key={group.label} className="flex items-center space-x-2">
+                        <Checkbox id={`difficulty-${group.label.toLowerCase()}`} checked={checked} onCheckedChange={() => {
+                          setFilters((previous) => ({ ...previous, difficulties: checked ? previous.difficulties.filter((value) => !group.values.includes(value)) : [...new Set([...previous.difficulties, ...group.values])] }));
+                          setCurrentPage(1);
+                        }} />
+                        <label htmlFor={`difficulty-${group.label.toLowerCase()}`} className="text-sm cursor-pointer flex-1">{group.label}</label>
+                      </div>
+                    );
+                  })}
                 </div>
               </PopoverContent>
             </Popover>
           </div>
           <button type="button" className="lr-builder-disclosure" aria-expanded={moreFiltersOpen} aria-controls="lr-more-filters" onClick={() => setMoreFiltersOpen((open) => !open)}>
-            <span>More filters{filters.reasoningTypes.length + filters.questionFeatures.length > 0 ? ` (${filters.reasoningTypes.length + filters.questionFeatures.length})` : ''}</span><ChevronDown className="h-4 w-4" aria-hidden />
+            <span>More options</span><ChevronDown className="h-4 w-4" aria-hidden />
           </button>
           {moreFiltersOpen && <div id="lr-more-filters" className="lr-builder-primary-filters">
             {/* Reasoning Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  Reasoning {filters.reasoningTypes.length > 0 && `(${filters.reasoningTypes.length})`}
+                  Reasoning
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
@@ -778,7 +690,6 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                         return reasoningTypeLabel(rt).toLowerCase().includes(reasoningSearch.toLowerCase());
                       })
                       .map((rt) => {
-                        const count = contextualCounts.reasoningTypes.get(rt) ?? 0;
                         return (
                           <div key={rt} className="flex items-center space-x-2">
                             <Checkbox
@@ -787,7 +698,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                               onCheckedChange={() => toggleFilter('reasoningTypes', rt)}
                             />
                             <label htmlFor={`rt-${rt}`} className="text-sm cursor-pointer flex-1">
-                              {reasoningTypeLabel(rt)} <span className="text-muted-foreground">({count})</span>
+                              {reasoningTypeLabel(rt)}
                             </label>
                           </div>
                         );
@@ -806,7 +717,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  Question features {filters.questionFeatures.length > 0 && `(${filters.questionFeatures.length})`}
+                  Question features
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
@@ -855,17 +766,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                           <summary className="cursor-pointer list-none flex items-center justify-between gap-2 px-2.5 py-1.5 select-none">
                             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground group-hover/family:text-foreground transition-colors">
                               {family.label}
-                              {selectedCount > 0 && (
-                                <span className="ml-1.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
-                                  {selectedCount}
-                                </span>
-                              )}
                             </span>
                             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground transition-transform group-open/family:rotate-180" />
                           </summary>
                           <div className="space-y-1.5 px-3 pt-1 pb-2">
                             {visibleFeatures.map((f) => {
-                              const count = contextualCounts.questionFeatures.get(f) ?? 0;
                               return (
                                 <div key={f} className="flex items-center space-x-2">
                                   <Checkbox
@@ -874,7 +779,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                                     onCheckedChange={() => toggleFilter('questionFeatures', f)}
                                   />
                                   <label htmlFor={`feat-${f}`} className="text-sm cursor-pointer flex-1">
-                                    {f} <span className="text-muted-foreground">({count})</span>
+                                    {f}
                                   </label>
                                 </div>
                               );
@@ -889,26 +794,13 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             </Popover>
 
           </div>}
-          {/* Active Filters */}
-          {(filters.prepTests.length > 0 ||
-            filters.questionTypes.length > 0 ||
-            filters.reasoningTypes.length > 0 ||
-            filters.questionFeatures.length > 0 ||
-            filters.sections.length > 0 ||
-            filters.difficulties.length > 0 ||
-            filters.questionNumbers.length > 0 ||
-            (searchMode === 'text' && discoverySearch.trim() !== '')) && (
+          {/* Additional choices remain removable without duplicating primary controls. */}
+          {(filters.prepTests.length > 0 || filters.reasoningTypes.length > 0 || filters.questionFeatures.length > 0 || filters.sections.length > 0 || filters.questionNumbers.length > 0) && (
             <div className="flex flex-wrap gap-2 border-t border-border/60 px-5 py-4">
               {filters.prepTests.map(pt => (
                 <Badge key={`pt-${pt}`} variant="secondary" className="gap-1">
                   PT{pt}
                   <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('prepTests', pt)} />
-                </Badge>
-              ))}
-              {filters.questionTypes.map(qtype => (
-                <Badge key={`qtype-${qtype}`} variant="secondary" className="gap-1">
-                  {qtype}
-                  <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('questionTypes', qtype)} />
                 </Badge>
               ))}
               {filters.reasoningTypes.map(rt => (
@@ -929,12 +821,6 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('sections', s)} />
                 </Badge>
               ))}
-              {filters.difficulties.map(diff => (
-                <Badge key={`diff-${diff}`} variant="secondary" className="gap-1">
-                  Level {diff}
-                  <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('difficulties', diff)} />
-                </Badge>
-              ))}
               {filters.questionNumbers.map((qnum) => (
                 <Badge key={`qnum-${qnum}`} variant="secondary" className="gap-1">
                   Q{qnum}
@@ -950,18 +836,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   />
                 </Badge>
               ))}
-              {searchMode === 'text' && discoverySearch.trim() !== '' && (
-                <Badge variant="secondary" className="gap-1">
-                  Search: {discoverySearch.trim()}
-                  <X
-                    className="h-3 w-3 cursor-pointer"
-                    onClick={() => {
-                      setDiscoverySearch('');
-                      setCurrentPage(1);
-                    }}
-                  />
-                </Badge>
-              )}
+
             </div>
           )}        </Card>
         <aside className="lr-builder-summary" data-testid="summary-rail" aria-label="Your drill">
@@ -976,37 +851,30 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 </SelectContent>
               </Select>
             </div>
-            <p className="lr-builder-pool" role="status">
-              {filteredQuestions.length.toLocaleString()} matching {filteredQuestions.length === 1 ? 'question' : 'questions'}
-              {selectedQids.size > 0 && <span className="block mt-1">{selectedQids.size} added by you · {remainingPlaces} from filters</span>}
-            </p>
             {selectedQids.size > 0 && <Button variant="ghost" size="sm" onClick={clearSelection}>Clear added questions</Button>}
-            {selectedOutsideFilters > 0 && <p className="lr-builder-note">Your {selectedOutsideFilters} added {selectedOutsideFilters === 1 ? 'question is' : 'questions are'} kept outside these filters.</p>}
-            {previewIsStale && <p className="lr-builder-note" role="status">Your drill changed, so the earlier preview was cleared. Preview it again before starting.</p>}
-            <p className="lr-builder-note" data-testid="lr-set-mode">{LR_SET_MODE_DETAIL}</p>
+            {previewIsStale && <p className="lr-builder-note" role="status">Your choices changed. Preview your drill again before starting.</p>}
             {hasPreview ? (
               <div className="lr-builder-actions">
-                <Button onClick={handleLaunch} className="w-full">Start drill ({previewedQids!.length})</Button>
-                <Button ref={viewQuestionsRef} type="button" variant="outline" className="w-full" onClick={() => setPreviewDialogOpen(true)}>View questions ({previewedQids!.length})</Button>
+                <Button onClick={handleLaunch} className="w-full">Start drill</Button>
+                <Button ref={viewQuestionsRef} type="button" variant="outline" className="w-full" onClick={() => setPreviewDialogOpen(true)}>View questions</Button>
                 <div className="lr-builder-secondary-actions">
                   <Button variant="ghost" onClick={handleGeneratePreview}>Choose again</Button>
                   <Button variant="ghost" onClick={() => { setSaveDialogName(''); setSaveDialogOpen(true); }}><Bookmark className="h-4 w-4" aria-hidden /> Save set</Button>
                 </div>
                 <Button variant="ghost" onClick={() => { pendingEditFocusRef.current = true; handleEditPreview(); setSpecificQuestionsOpen(true); }}>Edit questions</Button>
               </div>
-            ) : <Button onClick={handleGeneratePreview} disabled={!canGenerate} className="w-full">Preview drill ({setSize})</Button>}
+            ) : <Button onClick={handleGeneratePreview} disabled={!canGenerate} className="w-full">Preview drill</Button>}
             {generateHint && <p className="lr-builder-note" role="status">{generateHint}</p>}
           </Card>
         </aside>
         <section className="lr-builder-specific">
           <button type="button" className="lr-builder-disclosure" aria-expanded={specificQuestionsOpen} aria-controls="lr-specific-questions" onClick={() => setSpecificQuestionsOpen((open) => !open)}>
-            <span>Add specific questions{selectedQids.size > 0 ? ` (${selectedQids.size} added)` : ''}</span><ChevronDown className="h-4 w-4" aria-hidden />
+            <span>Add specific questions</span><ChevronDown className="h-4 w-4" aria-hidden />
           </button>
           {specificQuestionsOpen && <div id="lr-specific-questions" className="lr-builder-specific-content">
             <div className="space-y-3">
               <div className="flex items-center justify-between gap-3">
                 <h2 className="text-sm font-semibold text-foreground">Find questions</h2>
-                <span className="text-xs tabular-nums text-muted-foreground">{selectedQids.size} added by you</span>
               </div>
               <div className="relative">
                 <Search className="pointer-events-none absolute left-4 top-3.5 h-4 w-4 text-white/65" aria-hidden />
@@ -1044,17 +912,17 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </div>
               {searchMode !== 'text' && (
                 <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
-                  <span>{searchMode === 'exact' ? 'Add these exact questions to your set.' : 'Use this range to narrow the question bank.'}</span>
+                  <span>{searchMode === 'exact' ? 'Add these exact questions to your set.' : 'Use this selection.'}</span>
                   <Button type="button" variant="outline" size="sm" onClick={applySearchInput}>
                     {searchMode === 'exact'
                       ? exactSearch?.ok && exactSearch.refs.length === 1 ? 'Add question' : 'Add questions'
-                      : 'Filter bank'}
+                      : 'Apply choices'}
                   </Button>
                 </div>
               )}
               {searchIssues.length > 0 && (
                 <div id="search-errors" role="alert" className="space-y-1 text-xs text-destructive">
-                  {searchIssues.map((issue, index) => <p key={`${issue.token}-${index}`}>{issue.message}</p>)}
+                  <p>Nothing was added. Check the PrepTest, section and question numbers.</p>
                 </div>
               )}
             </div>
@@ -1066,7 +934,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" aria-label={`PrepTest selector, ${filters.prepTests.length ? filters.prepTests.join(', ') : 'any'}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  {filters.prepTests.length === 1 ? `PT ${filters.prepTests[0]}` : `PrepTest${filters.prepTests.length > 1 ? `s (${filters.prepTests.length})` : ''}`}
+                  {filters.prepTests.length === 1 ? `PT ${filters.prepTests[0]}` : 'PrepTests'}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
@@ -1104,8 +972,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                           type="button"
                           role="checkbox"
                           aria-checked={active}
-                          aria-label={`PT${pt}, ${count} questions`}
-                          title={`PT${pt} · ${count} questions`}
+                          aria-label={`PrepTest ${pt}`}
+                          title={`PrepTest ${pt}`}
                           onClick={() => toggleFilter('prepTests', pt)}
                           className={cn(
                             'h-9 rounded-md border text-xs tabular-nums transition-colors',
@@ -1130,7 +998,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" aria-label={`Section selector, ${filters.sections.length ? filters.sections.join(', ') : 'any'}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
-                  {filters.sections.length === 1 ? `Section ${filters.sections[0]}` : `Section${filters.sections.length > 1 ? `s (${filters.sections.length})` : ''}`}
+                  {filters.sections.length === 1 ? `Section ${filters.sections[0]}` : 'Sections'}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
@@ -1149,7 +1017,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                         onCheckedChange={() => toggleFilter('sections', s)}
                       />
                       <label htmlFor={`section-${s}`} className="text-sm cursor-pointer flex-1">
-                        Section {s} ({contextualCounts.sections.get(s) ?? 0})
+                        Section {s}
                       </label>
                     </div>
                   ))}
@@ -1192,34 +1060,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             </div>
 
 
-      {/* Results header — Item J: groups page-size with the table not the filters. */}
-      <div className="mb-3 flex items-center justify-between gap-3 text-sm">
-        <div className="text-muted-foreground">
-          Showing <span className="font-medium text-foreground">{paginatedQuestions.length}</span>{' '}
-          of <span className="font-medium text-foreground">{totalCount}</span> questions
-          {selectedQids.size > 0 && (
-            <span className="text-foreground"> · {selectedQids.size} selected</span>
-          )}
-        </div>
-        <div>
-        <Select
-          value={pageSize.toString()}
-          onValueChange={(value) => {
-            setPageSize(parseInt(value));
-            setCurrentPage(1);
-          }}
-        >
-          <SelectTrigger className="w-28 h-8 text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="drill-observatory-launcher-panel lr-builder-panel">
-            <SelectItem value="10">Show 10</SelectItem>
-            <SelectItem value="25">Show 25</SelectItem>
-            <SelectItem value="50">Show 50</SelectItem>
-          </SelectContent>
-        </Select>
-        </div>
-      </div>
+      <h2 className="mb-3">Questions</h2>
 
       {/* Results Table */}
       <Card className="flex-1 overflow-hidden flex flex-col mb-0">
@@ -1244,7 +1085,6 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               <col style={{ minWidth: STEM_MIN_WIDTH }} />
               <col style={{ width: COL.type }} />
               <col style={{ width: COL.level }} />
-              <col style={{ width: COL.attempts }} />
             </colgroup>
             <TableHeader>
               <TableRow>
@@ -1276,22 +1116,20 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 <TableHead>Question</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead
-                  title="1 = easiest · 5 = hardest. Blue / green / yellow / orange / red."
-                  className="cursor-help"
+                  
                 >
                   Difficulty
                 </TableHead>
-                <TableHead>Attempts</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {paginatedQuestions.length === 0 ? (
                 <TableRow>
-                  {/* Seven columns since Sec and Q# merged. Under
-                      `table-layout: fixed` a colSpan of 8 would mint an
+                  {/* Six columns, with section and question sharing a column. Under
+                      `table-layout: fixed` an extra column would mint an
                       anonymous eighth column and skew every width. */}
-                  <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
-                    {discoverySearch.trim() ? 'No questions match this search' : 'No questions match your filters'}
+                  <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
+                    {discoverySearch.trim() ? 'No questions match this search' : 'No questions match your choices'}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -1328,28 +1166,20 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                       <Badge
                         variant="outline"
                         title={q.qtype}
-                        className="h-6 px-2 text-[11px] font-medium whitespace-nowrap"
+                        className="max-w-full px-2 py-1 text-xs font-normal whitespace-normal leading-snug"
                       >
-                        {abbreviateQtype(q.qtype)}
+                        {q.qtype}
                       </Badge>
                     </TableCell>
                     <TableCell className="py-0">
                       <Badge
                         variant="secondary"
-                        title={`Level ${q.difficulty} of 5`}
-                        className={cn(
-                          "h-6 px-2 text-[11px] font-semibold tabular-nums",
-                          q.difficulty === 5 && "bg-red-500/10 text-red-400",
-                          q.difficulty === 4 && "bg-orange-500/10 text-orange-400",
-                          q.difficulty === 3 && "bg-yellow-500/10 text-yellow-400",
-                          q.difficulty === 2 && "bg-green-500/10 text-green-400",
-                          q.difficulty === 1 && "bg-blue-500/10 text-blue-400"
-                        )}
+                        title={difficultyLabel(q.difficulty)}
+                        className="h-6 px-2 text-[11px] font-medium"
                       >
-                        {q.difficulty}
+                        {difficultyLabel(q.difficulty)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="py-0 text-muted-foreground tabular-nums">{q.attemptCount}</TableCell>
                   </TableRow>
                 ))
               )}
@@ -1361,7 +1191,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         {totalPages > 1 && (
           <div className="border-t p-4 flex items-center justify-between">
             <div className="text-sm text-muted-foreground">
-              Page {currentPage} of {totalPages}
+              Page {currentPage}
             </div>
             <div className="flex gap-2">
               <Button
@@ -1401,7 +1231,6 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               ...(q.reasoningType || []),
               ...(q.questionFeatures || []),
             ];
-            const attemptedN = attemptCounts.get(q.qid) || 0;
             return (
               <>
                 <SheetHeader>
@@ -1410,10 +1239,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   </SheetTitle>
                   <div className="flex flex-wrap gap-2 pt-1">
                     <Badge variant="outline">{q.qtype}</Badge>
-                    <Badge variant="secondary">Level {q.difficulty}</Badge>
-                    {attemptedN > 0 && (
-                      <Badge variant="secondary">Attempted {attemptedN}×</Badge>
-                    )}
+                    <Badge variant="secondary">{difficultyLabel(q.difficulty)}</Badge>
                   </div>
                 </SheetHeader>
 
@@ -1512,20 +1338,20 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
         <DialogContent onCloseAutoFocus={(event) => { event.preventDefault(); viewQuestionsRef.current?.focus(); }} className="drill-observatory-launcher-panel lr-builder-panel max-w-3xl max-h-[85vh] overflow-y-auto flex flex-col [&>button]:right-1 [&>button]:top-1 [&>button]:flex [&>button]:h-11 [&>button]:w-11 [&>button]:items-center [&>button]:justify-center">
           <DialogHeader>
-            <DialogTitle>Your drill: {previewedQids?.length ?? 0} questions</DialogTitle>
-            <DialogDescription>
-              Your questions, in order. Open a question to read it.
+            <DialogTitle>Your drill</DialogTitle>
+            <DialogDescription className="sr-only">
+              Questions in this drill.
             </DialogDescription>
           </DialogHeader>
           {/* The list keeps a floor so large text or a short screen cannot
               squeeze it to nothing behind the header and footer; past that
               floor the dialog itself scrolls. */}
           <div className="flex min-h-[10rem] flex-1 flex-col">
-            <LrQuestionInspectList qids={previewedQids ?? []} chosenQids={selectedQids} />
+            <LrQuestionInspectList qids={previewedQids ?? []} />
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setPreviewDialogOpen(false)}>Back to setup</Button>
-            <Button type="button" onClick={handleLaunch}>Start drill ({previewedQids?.length ?? 0})</Button>
+            <Button type="button" onClick={handleLaunch}>Start drill</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -1544,7 +1370,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           <Input
             value={saveDialogName}
             onChange={(e) => setSaveDialogName(e.target.value)}
-            placeholder="e.g. PT 70-80 Hard Flaws"
+            placeholder="e.g. Hard flaw questions"
             autoFocus
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -1566,10 +1392,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     toast({ title: 'Set saved', description: `${name} is now in My Sets.` });
                     setSaveDialogOpen(false);
                     setSaveDialogName('');
-                  } catch (err) {
+                  } catch {
                     toast({
                       title: "Couldn't save set",
-                      description: err instanceof Error ? err.message : 'Unknown error',
+                      description: 'Please try again.',
                       variant: 'destructive',
                     });
                   }
@@ -1600,10 +1426,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   toast({ title: 'Set saved', description: `${name} is now in My Sets.` });
                   setSaveDialogOpen(false);
                   setSaveDialogName('');
-                } catch (err) {
+                } catch {
                   toast({
                     title: "Couldn't save set",
-                    description: err instanceof Error ? err.message : 'Unknown error',
+                    description: 'Please try again.',
                     variant: 'destructive',
                   });
                 }

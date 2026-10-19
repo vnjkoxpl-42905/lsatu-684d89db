@@ -13,7 +13,7 @@ Reference: Joshua's four attached production screenshots and the signed-in Codex
 
 ## Intended hierarchy and preserved behavior
 
-The default task is filters, question count, then Preview drill. Add specific questions is optional; advanced filters remain available. A compact summary describes the requested drill and selected conditions, with exact contents available after preview. View questions and Start drill have distinct actions. One concise timing/reveal explanation is sufficient per surface.
+The default task is question type, Easy/Medium/Hard difficulty, question count, then Preview drill. Add specific questions is optional; less-used choices remain under More options. View questions and Start drill have distinct actions. Joshua's follow-up explicitly removes bank/facet totals, composition breakdowns, attempt history/counts, timing/reveal explanations and repeated action counts. No visible filters, guaranteed or question-ID terminology. Keep useful question references and actionable recovery messages.
 
 Keep the existing dark classroom surface and Outfit family. Use a restrained type/spacing scale, aligned controls, consistent radius and visible focus/selected/disabled/error states. No new gradients or shadows. Preserve all selection and frozen-preview contracts, read-only previews, ownership checks, and canonical source/key data. RC is outside this visual change.
 
@@ -25,6 +25,6 @@ Verified preview creation moves focus to View questions, Escape returns focus th
 
 SavedSets was rendered through the isolated synthetic fixture in e2e/lr-saved-fixture. It has no account credentials or backend access; mutations reject. Verified the renamed action, expanded question body and unavailable-question fallback without exposing raw IDs.
 
-The picker suite passed 20 tests, including atomic parsing, preview invalidation, exact launch behavior and focus recovery. SavedSets passed 2 tests. Independent code review found the Edit questions focus issue, which was repaired and checked in the browser. Final integration checks and PR status are recorded in the release PR. Physical devices and screen-reader speech were not tested.
+The simplified picker suite passed 21 tests, including grouped difficulty, atomic parsing, preview invalidation, exact launch behavior and focus recovery. SavedSets passed 2 tests. Independent review confirmed history-display removal leaves launch/exposure behavior intact. Browser rechecks confirmed selected primary choices are not duplicated, difficulty choices have no counts, preview metadata has no provenance breakdown, and the optional table has full question-type names with no Attempts column. Integration results are recorded in the release PR. Physical devices and screen-reader speech were not tested.
 
 Screenshots: [phone](final-320.jpg), [tablet](final-768.jpg), [desktop](final-1440.jpg), [docked browser](final-650.jpg), [saved question preview](saved-preview.jpg). These are development and synthetic-fixture evidence, not a claim of publication.

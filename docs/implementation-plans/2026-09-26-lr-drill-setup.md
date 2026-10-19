@@ -2,7 +2,9 @@
 
 ## Current refinement, 2026-10-18
 
-Joshua requested implementation of a simpler LR builder after reviewing its live search, summary and preview. This supersedes the historical layout and confirmation status below, not the set-composition rules. The current job is: choose filters and question count, preview the exact drill, then start deliberately. Specific-question selection remains available through an optional disclosure; reasoning/features and less-used conditions use More filters.
+Joshua requested implementation of a simpler LR builder after reviewing its live search, summary and preview. This supersedes the historical layout and confirmation status below, not the set-composition rules. The current job is: choose question type, difficulty and question count, preview the drill, then start. Specific-question selection remains optional; less-used choices use More options.
+
+Joshua's follow-up removes all bank/facet totals, selection breakdowns, attempt history/counts, timing/reveal explanations and repeated action counts. Keep Easy, Medium and Hard, the question-count control, clear actions and useful PrepTest references. No visible technical labels such as filters, guaranteed or question IDs. Do not replace removed noise with more explanatory prose.
 
 The supplied screenshots and live builder show excessive inventory counts presented as the drill itself, repeated timing paragraphs, raw-ID/Inspect language, heavy type, inconsistent control shapes and a tall viewport-wide mobile tray. Refine these as one system using the existing Outfit family and classroom palette: normal-weight body copy, modest headings, persistent field labels, aligned 44px controls, restrained borders, consistent spacing and clear keyboard/disabled/error states. No gradients, shadows or enlarged headings as decoration.
 
