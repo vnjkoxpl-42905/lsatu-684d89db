@@ -1,0 +1,2884 @@
+{
+ "slug": "read-recall-colour-pt103-s1",
+ "title": "Read, Recall, Colour \u00b7 PT103 Section 1",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT103.S1",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT103_S1_Q1",
+   "prompt": "Three-year-old Sara and her playmate Michael are both ill and have the same symptoms. Since they play together every afternoon, Sara probably has the same illness as Michael does. Since Michael definitely does not have a streptococcal infection, despite his having some symptoms of one, the illness that Sara has is definitely not a streptococcal infection either.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Sara is three years old. \u00b7 Michael is Sara's playmate. \u00b7 Sara and Michael are both ill. \u00b7 The two have the same symptoms. (2) This gives a reason. \u00b7 The reason is that the two play together. \u00b7 They play together every afternoon. \u00b7 Sara has the same illness as Michael. \u00b7 This is stated as only probable. (3) This gives another reason. \u00b7 Michael does not have a streptococcal infection. \u00b7 That is definitely so. \u00b7 He does have some symptoms of one. \u00b7 The word despite marks a concession. (4) This is the conclusion. \u00b7 It is about the illness Sara has. \u00b7 Her illness is not a streptococcal infection. \u00b7 That is definitely so. \u00b7 The word either ties this to Michael.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Three-year-old Sara and her playmate Michael are both ill and have the same symptoms.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Sara is three years old."
+      },
+      {
+       "n": 2,
+       "text": "Michael is Sara's playmate."
+      },
+      {
+       "n": 3,
+       "text": "Sara and Michael are both ill."
+      },
+      {
+       "n": 4,
+       "text": "The two have the same symptoms."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Since they play together every afternoon, Sara probably has the same illness as Michael does.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "The reason is that the two play together."
+      },
+      {
+       "n": 3,
+       "text": "They play together every afternoon."
+      },
+      {
+       "n": 4,
+       "text": "Sara has the same illness as Michael."
+      },
+      {
+       "n": 5,
+       "text": "This is stated as only probable."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since Michael definitely does not have a streptococcal infection, despite his having some symptoms of one,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives another reason."
+      },
+      {
+       "n": 2,
+       "text": "Michael does not have a streptococcal infection."
+      },
+      {
+       "n": 3,
+       "text": "That is definitely so."
+      },
+      {
+       "n": 4,
+       "text": "He does have some symptoms of one."
+      },
+      {
+       "n": 5,
+       "text": "The word despite marks a concession."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "the illness that Sara has is definitely not a streptococcal infection either.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the illness Sara has."
+      },
+      {
+       "n": 3,
+       "text": "Her illness is not a streptococcal infection."
+      },
+      {
+       "n": 4,
+       "text": "That is definitely so."
+      },
+      {
+       "n": 5,
+       "text": "The word either ties this to Michael."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because they have the same symptoms that doesn't mean they have the same illness? What if Sara has two illnesses?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q1",
+     "qnum": 1,
+     "question_type": "Classic Flaw",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT103_S1_Q2",
+   "prompt": "Lambert: The proposal to raise gasoline taxes to support mass transit networks is unfair. Why should drivers who will never use train or bus lines be forced to pay for them?\n\nKeziah: You have misunderstood. The government has always spent far more, per user, from general revenue sources to fund highways than to fund mass transit. The additional revenue from the gasoline tax will simply allow the government to make its distribution of transportation funds more equitable.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Lambert is the first speaker. \u00b7 There is a proposal at issue. \u00b7 The proposal is to raise gasoline taxes. \u00b7 The taxes would support mass transit networks. \u00b7 Lambert says the proposal is unfair. (2) This is asked as a question. \u00b7 It is about certain drivers. \u00b7 Those drivers will never use train lines. \u00b7 They will never use bus lines either. \u00b7 The question is why they should be forced to pay. \u00b7 The paying would be for those lines. (3) Keziah is the second speaker. \u00b7 She responds to what Lambert said. \u00b7 She says he has misunderstood. (4) This is about government spending. \u00b7 The government has spent more on highways. \u00b7 It has spent far more. \u00b7 The comparison is with funding for mass transit. \u00b7 The spending is counted per user. \u00b7 The money comes from general revenue sources. \u00b7 This has always been so. (5) The gasoline tax would bring additional revenue. \u00b7 That revenue would allow the government to act. \u00b7 The government would change how it distributes transportation funds. \u00b7 The distribution would become more equitable. \u00b7 The word simply downplays what the tax does.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Lambert: The proposal to raise gasoline taxes to support mass transit networks is unfair.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Lambert is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "There is a proposal at issue."
+      },
+      {
+       "n": 3,
+       "text": "The proposal is to raise gasoline taxes."
+      },
+      {
+       "n": 4,
+       "text": "The taxes would support mass transit networks."
+      },
+      {
+       "n": 5,
+       "text": "Lambert says the proposal is unfair."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Why should drivers who will never use train or bus lines be forced to pay for them?",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is asked as a question."
+      },
+      {
+       "n": 2,
+       "text": "It is about certain drivers."
+      },
+      {
+       "n": 3,
+       "text": "Those drivers will never use train lines."
+      },
+      {
+       "n": 4,
+       "text": "They will never use bus lines either."
+      },
+      {
+       "n": 5,
+       "text": "The question is why they should be forced to pay."
+      },
+      {
+       "n": 6,
+       "text": "The paying would be for those lines."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Keziah: You have misunderstood.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Keziah is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "She responds to what Lambert said."
+      },
+      {
+       "n": 3,
+       "text": "She says he has misunderstood."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "The government has always spent far more, per user, from general revenue sources to fund highways than to fund mass transit.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about government spending."
+      },
+      {
+       "n": 2,
+       "text": "The government has spent more on highways."
+      },
+      {
+       "n": 3,
+       "text": "It has spent far more."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with funding for mass transit."
+      },
+      {
+       "n": 5,
+       "text": "The spending is counted per user."
+      },
+      {
+       "n": 6,
+       "text": "The money comes from general revenue sources."
+      },
+      {
+       "n": 7,
+       "text": "This has always been so."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "The additional revenue from the gasoline tax will simply allow the government to make its distribution of transportation funds more equitable.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The gasoline tax would bring additional revenue."
+      },
+      {
+       "n": 2,
+       "text": "That revenue would allow the government to act."
+      },
+      {
+       "n": 3,
+       "text": "The government would change how it distributes transportation funds."
+      },
+      {
+       "n": 4,
+       "text": "The distribution would become more equitable."
+      },
+      {
+       "n": 5,
+       "text": "The word simply downplays what the tax does."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether raising gas taxes to support public transit is unfair.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q2",
+     "qnum": 2,
+     "question_type": "Method",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT103_S1_Q3",
+   "prompt": "The number of calories in a gram of refined cane sugar is the same as in an equal amount of fructose, the natural sugar found in fruits and vegetables. Therefore, a piece of candy made with a given amount of refined cane sugar is no higher in calories than a piece of fruit that contains an equal amount of fructose.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a number of calories. \u00b7 A gram of refined cane sugar is at issue. \u00b7 That number is the same for fructose. \u00b7 The amount of fructose is equal. \u00b7 Fructose is a natural sugar. \u00b7 Fructose is found in fruits and vegetables. (2) This is the conclusion. \u00b7 It is about a piece of candy. \u00b7 The candy is made with refined cane sugar. \u00b7 The amount of that sugar is a given one. \u00b7 The candy is no higher in calories. \u00b7 The comparison is with a piece of fruit. \u00b7 That fruit contains an equal amount of fructose.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The number of calories in a gram of refined cane sugar is the same as in an equal amount of fructose, the natural sugar found in fruits and vegetables.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a number of calories."
+      },
+      {
+       "n": 2,
+       "text": "A gram of refined cane sugar is at issue."
+      },
+      {
+       "n": 3,
+       "text": "That number is the same for fructose."
+      },
+      {
+       "n": 4,
+       "text": "The amount of fructose is equal."
+      },
+      {
+       "n": 5,
+       "text": "Fructose is a natural sugar."
+      },
+      {
+       "n": 6,
+       "text": "Fructose is found in fruits and vegetables."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Therefore, a piece of candy made with a given amount of refined cane sugar is no higher in calories than a piece of fruit that contains an equal amount of fructose.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about a piece of candy."
+      },
+      {
+       "n": 3,
+       "text": "The candy is made with refined cane sugar."
+      },
+      {
+       "n": 4,
+       "text": "The amount of that sugar is a given one."
+      },
+      {
+       "n": 5,
+       "text": "The candy is no higher in calories."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with a piece of fruit."
+      },
+      {
+       "n": 7,
+       "text": "That fruit contains an equal amount of fructose."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if all the other ingredients in candy have way higher calorie counts than the other stuff in fruit?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q3",
+     "qnum": 3,
+     "question_type": "Classic Flaw",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT103_S1_Q4",
+   "prompt": "In order to increase production, ABC Company should implement a flextime schedule, which would allow individual employees some flexibility in deciding when to begin and end their workday. Studies have shown that working under flextime schedules is associated with increased employee morale.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is a recommendation. \u00b7 The recommendation is for ABC Company. \u00b7 ABC Company should implement a flextime schedule. \u00b7 The purpose is to increase production. (2) This is about the flextime schedule. \u00b7 The schedule would allow employees flexibility. \u00b7 The employees are individual ones. \u00b7 The flexibility is only some. \u00b7 They would decide when to begin their workday. \u00b7 They would decide when to end it. (3) Studies have shown something. \u00b7 The studies are about working under flextime schedules. \u00b7 That work is associated with employee morale. \u00b7 The morale is increased. \u00b7 The link is an association.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In order to increase production, ABC Company should implement a flextime schedule,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a recommendation."
+      },
+      {
+       "n": 2,
+       "text": "The recommendation is for ABC Company."
+      },
+      {
+       "n": 3,
+       "text": "ABC Company should implement a flextime schedule."
+      },
+      {
+       "n": 4,
+       "text": "The purpose is to increase production."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "which would allow individual employees some flexibility in deciding when to begin and end their workday.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the flextime schedule."
+      },
+      {
+       "n": 2,
+       "text": "The schedule would allow employees flexibility."
+      },
+      {
+       "n": 3,
+       "text": "The employees are individual ones."
+      },
+      {
+       "n": 4,
+       "text": "The flexibility is only some."
+      },
+      {
+       "n": 5,
+       "text": "They would decide when to begin their workday."
+      },
+      {
+       "n": 6,
+       "text": "They would decide when to end it."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Studies have shown that working under flextime schedules is associated with increased employee morale.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Studies have shown something."
+      },
+      {
+       "n": 2,
+       "text": "The studies are about working under flextime schedules."
+      },
+      {
+       "n": 3,
+       "text": "That work is associated with employee morale."
+      },
+      {
+       "n": 4,
+       "text": "The morale is increased."
+      },
+      {
+       "n": 5,
+       "text": "The link is an association."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if increased morale doesn't lead to increased productivity?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q4",
+     "qnum": 4,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT103_S1_Q5",
+   "prompt": "Attorneys for a criminal defendant charged that the government, in a coverup, had destroyed evidence that would have supported the defendant in a case. The government replied that there is no evidence that would even tend to support the defendant in the case.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Attorneys made a charge. \u00b7 The attorneys act for a criminal defendant. \u00b7 The charge is against the government. \u00b7 The government had destroyed evidence. \u00b7 The destroying was part of a coverup. \u00b7 The evidence would have supported the defendant. \u00b7 The support would have come in a case. (2) The government made a reply. \u00b7 The reply says there is no such evidence. \u00b7 No evidence would tend to support the defendant. \u00b7 The word even strengthens that denial. \u00b7 The case is the one at issue.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Attorneys for a criminal defendant charged that the government, in a coverup, had destroyed evidence that would have supported the defendant in a case.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Attorneys made a charge."
+      },
+      {
+       "n": 2,
+       "text": "The attorneys act for a criminal defendant."
+      },
+      {
+       "n": 3,
+       "text": "The charge is against the government."
+      },
+      {
+       "n": 4,
+       "text": "The government had destroyed evidence."
+      },
+      {
+       "n": 5,
+       "text": "The destroying was part of a coverup."
+      },
+      {
+       "n": 6,
+       "text": "The evidence would have supported the defendant."
+      },
+      {
+       "n": 7,
+       "text": "The support would have come in a case."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The government replied that there is no evidence that would even tend to support the defendant in the case.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The government made a reply."
+      },
+      {
+       "n": 2,
+       "text": "The reply says there is no such evidence."
+      },
+      {
+       "n": 3,
+       "text": "No evidence would tend to support the defendant."
+      },
+      {
+       "n": 4,
+       "text": "The word even strengthens that denial."
+      },
+      {
+       "n": 5,
+       "text": "The case is the one at issue."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if that doesn't mean they didn't destroy evidence?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q5",
+     "qnum": 5,
+     "question_type": "Method",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT103_S1_Q6",
+   "prompt": "Videocassette recorders (VCRs) enable people to watch movies at home on videotape. People who own VCRs go to movie theaters more often than do people who do not own VCRs. Contrary to popular belief, therefore, owning a VCR actually stimulates people to go to movie theaters more often than they otherwise would.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Videocassette recorders are called VCRs. \u00b7 They enable people to watch movies. \u00b7 The watching happens at home. \u00b7 The movies are on videotape. (2) This is about people who own VCRs. \u00b7 Those people go to movie theaters. \u00b7 They go more often. \u00b7 The comparison is with people who do not own VCRs. (3) This is the conclusion. \u00b7 It runs contrary to popular belief. \u00b7 Owning a VCR stimulates people. \u00b7 They are stimulated to go to movie theaters. \u00b7 They go more often. \u00b7 The comparison is with how often they otherwise would.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Videocassette recorders (VCRs) enable people to watch movies at home on videotape.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Videocassette recorders are called VCRs."
+      },
+      {
+       "n": 2,
+       "text": "They enable people to watch movies."
+      },
+      {
+       "n": 3,
+       "text": "The watching happens at home."
+      },
+      {
+       "n": 4,
+       "text": "The movies are on videotape."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "People who own VCRs go to movie theaters more often than do people who do not own VCRs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about people who own VCRs."
+      },
+      {
+       "n": 2,
+       "text": "Those people go to movie theaters."
+      },
+      {
+       "n": 3,
+       "text": "They go more often."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with people who do not own VCRs."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Contrary to popular belief, therefore, owning a VCR actually stimulates people to go to movie theaters more often than they otherwise would.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It runs contrary to popular belief."
+      },
+      {
+       "n": 3,
+       "text": "Owning a VCR stimulates people."
+      },
+      {
+       "n": 4,
+       "text": "They are stimulated to go to movie theaters."
+      },
+      {
+       "n": 5,
+       "text": "They go more often."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with how often they otherwise would."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's no causal relationship between VCRs and going to the movies? What if these people always went to the movies more often, and that's why they bought VCRs? What if these people are addicted to synthetic butter popcorn and that's why they go to the movies a lot?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q6",
+     "qnum": 6,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT103_S1_Q7",
+   "prompt": "The cumbersome spears that were the principal weapons used by certain tribes in the early Bronze Age precluded widespread casualties during intertribal conflicts. But the comparatively high number of warrior tombs found in recent excavations of the same tribes' late Bronze Age settlements indicates that in the late Bronze Age, wars between these tribes were frequent, and the casualty rate was high. Hence some archaeologists claim that by the late Bronze Age, these tribes had developed new methods of warfare designed to inflict many casualties.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about spears. \u00b7 The spears were cumbersome. \u00b7 They were the principal weapons of certain tribes. \u00b7 This was in the early Bronze Age. \u00b7 The spears precluded widespread casualties. \u00b7 Those casualties would have come in intertribal conflicts. (2) This is a contrast with what came before. \u00b7 It is about a number of warrior tombs. \u00b7 That number is comparatively high. \u00b7 The tombs were found in recent excavations. \u00b7 The excavations were of the same tribes' settlements. \u00b7 Those settlements are from the late Bronze Age. \u00b7 The tombs indicate something about the late Bronze Age. (3) This is what the tombs indicate. \u00b7 Wars happened between these tribes. \u00b7 The wars were frequent. \u00b7 The casualty rate was high. (4) This is drawn from what came before. \u00b7 Some archaeologists make a claim. \u00b7 The claim is about these tribes. \u00b7 They had developed new methods of warfare. \u00b7 This was so by the late Bronze Age. \u00b7 The methods were designed to inflict casualties. \u00b7 The casualties would be many.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The cumbersome spears that were the principal weapons used by certain tribes in the early Bronze Age precluded widespread casualties during intertribal conflicts.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about spears."
+      },
+      {
+       "n": 2,
+       "text": "The spears were cumbersome."
+      },
+      {
+       "n": 3,
+       "text": "They were the principal weapons of certain tribes."
+      },
+      {
+       "n": 4,
+       "text": "This was in the early Bronze Age."
+      },
+      {
+       "n": 5,
+       "text": "The spears precluded widespread casualties."
+      },
+      {
+       "n": 6,
+       "text": "Those casualties would have come in intertribal conflicts."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But the comparatively high number of warrior tombs found in recent excavations of the same tribes' late Bronze Age settlements indicates that in the late Bronze Age,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about a number of warrior tombs."
+      },
+      {
+       "n": 3,
+       "text": "That number is comparatively high."
+      },
+      {
+       "n": 4,
+       "text": "The tombs were found in recent excavations."
+      },
+      {
+       "n": 5,
+       "text": "The excavations were of the same tribes' settlements."
+      },
+      {
+       "n": 6,
+       "text": "Those settlements are from the late Bronze Age."
+      },
+      {
+       "n": 7,
+       "text": "The tombs indicate something about the late Bronze Age."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "wars between these tribes were frequent, and the casualty rate was high.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is what the tombs indicate."
+      },
+      {
+       "n": 2,
+       "text": "Wars happened between these tribes."
+      },
+      {
+       "n": 3,
+       "text": "The wars were frequent."
+      },
+      {
+       "n": 4,
+       "text": "The casualty rate was high."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Hence some archaeologists claim that by the late Bronze Age, these tribes had developed new methods of warfare designed to inflict many casualties.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is drawn from what came before."
+      },
+      {
+       "n": 2,
+       "text": "Some archaeologists make a claim."
+      },
+      {
+       "n": 3,
+       "text": "The claim is about these tribes."
+      },
+      {
+       "n": 4,
+       "text": "They had developed new methods of warfare."
+      },
+      {
+       "n": 5,
+       "text": "This was so by the late Bronze Age."
+      },
+      {
+       "n": 6,
+       "text": "The methods were designed to inflict casualties."
+      },
+      {
+       "n": 7,
+       "text": "The casualties would be many."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the warriors in the tombs died by some means other than mass-casualty weapons? What if there was a pandemic or famine during this time?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q7",
+     "qnum": 7,
+     "question_type": "Strengthen",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT103_S1_Q8",
+   "prompt": "Based on data collected from policyholders, life insurance companies have developed tables that list standard weight ranges for various heights. Policyholders whose weight fell within the range given for their height lived longer than those whose weight fell outside their given range. Therefore, if people whose weight falls outside their given range modified their weight to fall within that range, their overall life expectancies would improve.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Life insurance companies have developed tables. \u00b7 The tables list weight ranges. \u00b7 Those ranges are standard ones. \u00b7 The ranges are given for various heights. \u00b7 The tables are based on data. \u00b7 The data was collected from policyholders. (2) This is about policyholders. \u00b7 Some had weight within the range for their height. \u00b7 Those policyholders lived longer. \u00b7 The comparison is with policyholders outside their given range. (3) This is the conclusion. \u00b7 It is a conditional claim. \u00b7 Some people have weight outside their given range. \u00b7 Those people might modify their weight. \u00b7 The modified weight would fall within that range. \u00b7 Their life expectancies would improve. \u00b7 The expectancies are overall ones.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Based on data collected from policyholders, life insurance companies have developed tables that list standard weight ranges for various heights.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Life insurance companies have developed tables."
+      },
+      {
+       "n": 2,
+       "text": "The tables list weight ranges."
+      },
+      {
+       "n": 3,
+       "text": "Those ranges are standard ones."
+      },
+      {
+       "n": 4,
+       "text": "The ranges are given for various heights."
+      },
+      {
+       "n": 5,
+       "text": "The tables are based on data."
+      },
+      {
+       "n": 6,
+       "text": "The data was collected from policyholders."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Policyholders whose weight fell within the range given for their height lived longer than those whose weight fell outside their given range.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about policyholders."
+      },
+      {
+       "n": 2,
+       "text": "Some had weight within the range for their height."
+      },
+      {
+       "n": 3,
+       "text": "Those policyholders lived longer."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with policyholders outside their given range."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, if people whose weight falls outside their given range modified their weight to fall within that range, their overall life expectancies would improve.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is a conditional claim."
+      },
+      {
+       "n": 3,
+       "text": "Some people have weight outside their given range."
+      },
+      {
+       "n": 4,
+       "text": "Those people might modify their weight."
+      },
+      {
+       "n": 5,
+       "text": "The modified weight would fall within that range."
+      },
+      {
+       "n": 6,
+       "text": "Their life expectancies would improve."
+      },
+      {
+       "n": 7,
+       "text": "The expectancies are overall ones."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if people outside of the weight range losing weight would have a detrimental effect on their health?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q8",
+     "qnum": 8,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT103_S1_Q9",
+   "prompt": "Measurements of the motion of the planet Uranus seem to show Uranus being tugged by a force pulling it away from the Sun and the inner planets. Neptune and Pluto, the two known planets whose orbits are farther from the Sun than is the orbit of Uranus, do not have enough mass to exert the force that the measurements indicate. Therefore, in addition to the known planets, there must be at least one planet in our solar system that we have yet to discover.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There are measurements of motion. \u00b7 The motion is that of the planet Uranus. \u00b7 The measurements seem to show something. \u00b7 Uranus is being tugged by a force. \u00b7 The force pulls it away from the Sun. \u00b7 It also pulls Uranus away from the inner planets. (2) This is about Neptune and Pluto. \u00b7 They are two known planets. \u00b7 Their orbits are farther from the Sun. \u00b7 The comparison is with the orbit of Uranus. (3) This is still about Neptune and Pluto. \u00b7 They do not have enough mass. \u00b7 The mass would be needed to exert a force. \u00b7 That force is the one the measurements indicate. (4) This is the conclusion. \u00b7 There must be another planet. \u00b7 That planet is in our solar system. \u00b7 There is at least one such planet. \u00b7 It comes in addition to the known planets. \u00b7 We have yet to discover it.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Measurements of the motion of the planet Uranus seem to show Uranus being tugged by a force pulling it away from the Sun and the inner planets.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There are measurements of motion."
+      },
+      {
+       "n": 2,
+       "text": "The motion is that of the planet Uranus."
+      },
+      {
+       "n": 3,
+       "text": "The measurements seem to show something."
+      },
+      {
+       "n": 4,
+       "text": "Uranus is being tugged by a force."
+      },
+      {
+       "n": 5,
+       "text": "The force pulls it away from the Sun."
+      },
+      {
+       "n": 6,
+       "text": "It also pulls Uranus away from the inner planets."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Neptune and Pluto, the two known planets whose orbits are farther from the Sun than is the orbit of Uranus,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about Neptune and Pluto."
+      },
+      {
+       "n": 2,
+       "text": "They are two known planets."
+      },
+      {
+       "n": 3,
+       "text": "Their orbits are farther from the Sun."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with the orbit of Uranus."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "do not have enough mass to exert the force that the measurements indicate.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is still about Neptune and Pluto."
+      },
+      {
+       "n": 2,
+       "text": "They do not have enough mass."
+      },
+      {
+       "n": 3,
+       "text": "The mass would be needed to exert a force."
+      },
+      {
+       "n": 4,
+       "text": "That force is the one the measurements indicate."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore, in addition to the known planets, there must be at least one planet in our solar system that we have yet to discover.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "There must be another planet."
+      },
+      {
+       "n": 3,
+       "text": "That planet is in our solar system."
+      },
+      {
+       "n": 4,
+       "text": "There is at least one such planet."
+      },
+      {
+       "n": 5,
+       "text": "It comes in addition to the known planets."
+      },
+      {
+       "n": 6,
+       "text": "We have yet to discover it."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Uranus is being pulled by a non-planetary force?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q9",
+     "qnum": 9,
+     "question_type": "Weaken",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT103_S1_Q10",
+   "prompt": "Audiences find a speaker more convincing if the speaker begins a speech by arguing briefly against his or her position before providing reasons for accepting it. The reason this technique is so effective is that it makes the speaker appear fair-minded and trustworthy. Therefore, candidates for national political office who wish to be successful in winning votes should use this argumentative technique in their speeches.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about audiences. \u00b7 Audiences find a speaker more convincing. \u00b7 This holds under a condition. \u00b7 The speaker begins a speech by arguing against his own position. \u00b7 That arguing against it is brief. \u00b7 It comes before the reasons for accepting the position. (2) This gives the reason for the effect. \u00b7 The technique is very effective. \u00b7 It makes the speaker appear fair-minded. \u00b7 It also makes the speaker appear trustworthy. (3) This is the conclusion. \u00b7 It is about candidates for office. \u00b7 The office is national political office. \u00b7 Those candidates wish to be successful in winning votes. \u00b7 They should use this argumentative technique. \u00b7 They should use it in their speeches.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Audiences find a speaker more convincing if the speaker begins a speech by arguing briefly against his or her position before providing reasons for accepting it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about audiences."
+      },
+      {
+       "n": 2,
+       "text": "Audiences find a speaker more convincing."
+      },
+      {
+       "n": 3,
+       "text": "This holds under a condition."
+      },
+      {
+       "n": 4,
+       "text": "The speaker begins a speech by arguing against his own position."
+      },
+      {
+       "n": 5,
+       "text": "That arguing against it is brief."
+      },
+      {
+       "n": 6,
+       "text": "It comes before the reasons for accepting the position."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The reason this technique is so effective is that it makes the speaker appear fair-minded and trustworthy.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the reason for the effect."
+      },
+      {
+       "n": 2,
+       "text": "The technique is very effective."
+      },
+      {
+       "n": 3,
+       "text": "It makes the speaker appear fair-minded."
+      },
+      {
+       "n": 4,
+       "text": "It also makes the speaker appear trustworthy."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, candidates for national political office who wish to be successful in winning votes should use this argumentative technique in their speeches.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about candidates for office."
+      },
+      {
+       "n": 3,
+       "text": "The office is national political office."
+      },
+      {
+       "n": 4,
+       "text": "Those candidates wish to be successful in winning votes."
+      },
+      {
+       "n": 5,
+       "text": "They should use this argumentative technique."
+      },
+      {
+       "n": 6,
+       "text": "They should use it in their speeches."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if appearing fair-minded and trustworthy has nothing to do with winning political votes?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q10",
+     "qnum": 10,
+     "question_type": "Weaken",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT103_S1_Q11",
+   "prompt": "Five thousand of the 50,000 books published in country Z in 1991 were novels. Exactly 25 of the films released in country Z in 1992 were based on those novels. Since 100 films were released in country Z in 1992, no more than one-quarter of them were based on books published in country Z in 1991.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Fifty thousand books were published. \u00b7 The publishing happened in country Z. \u00b7 It happened in 1991. \u00b7 Five thousand of those books were novels. (2) This is about films. \u00b7 The films were released in country Z. \u00b7 They were released in 1992. \u00b7 Exactly 25 of them were based on those novels. (3) This is the conclusion. \u00b7 It rests on a given. \u00b7 One hundred films were released in 1992. \u00b7 Those releases were in country Z. \u00b7 No more than one-quarter of them were based on books. \u00b7 Those books were published in country Z in 1991.",
+   "category": "Sufficient Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Five thousand of the 50,000 books published in country Z in 1991 were novels.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Fifty thousand books were published."
+      },
+      {
+       "n": 2,
+       "text": "The publishing happened in country Z."
+      },
+      {
+       "n": 3,
+       "text": "It happened in 1991."
+      },
+      {
+       "n": 4,
+       "text": "Five thousand of those books were novels."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Exactly 25 of the films released in country Z in 1992 were based on those novels.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about films."
+      },
+      {
+       "n": 2,
+       "text": "The films were released in country Z."
+      },
+      {
+       "n": 3,
+       "text": "They were released in 1992."
+      },
+      {
+       "n": 4,
+       "text": "Exactly 25 of them were based on those novels."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since 100 films were released in country Z in 1992, no more than one-quarter of them were based on books published in country Z in 1991.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on a given."
+      },
+      {
+       "n": 3,
+       "text": "One hundred films were released in 1992."
+      },
+      {
+       "n": 4,
+       "text": "Those releases were in country Z."
+      },
+      {
+       "n": 5,
+       "text": "No more than one-quarter of them were based on books."
+      },
+      {
+       "n": 6,
+       "text": "Those books were published in country Z in 1991."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if some of the movies were based on nonfiction books published in Z in 1991?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q11",
+     "qnum": 11,
+     "question_type": "Sufficient Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT103_S1_Q12",
+   "prompt": "On their way from their nest to a food source, ants of most species leave a trail of chemicals called pheromones. The ants use the scent of the pheromones to guide themselves between the food and their nest. All pheromones evaporate without a trace almost immediately when temperatures rise above 45 degrees Celsius (113 degrees Fahrenheit), as is typical during afternoons in places such as the Sahara Desert.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about ants. \u00b7 It applies to ants of most species. \u00b7 The ants leave a trail of chemicals. \u00b7 Those chemicals are called pheromones. \u00b7 The trail is left on the way from their nest. \u00b7 The ants are heading to a food source. (2) This is about the ants again. \u00b7 They use the scent of the pheromones. \u00b7 The scent guides them. \u00b7 They guide themselves between the food and their nest. (3) This is about pheromones. \u00b7 It applies to all of them. \u00b7 They evaporate without a trace. \u00b7 They do so almost immediately. \u00b7 This happens when temperatures rise above a point. \u00b7 That point is 45 degrees Celsius. \u00b7 It is also given as 113 degrees Fahrenheit. (4) Those temperatures are typical somewhere. \u00b7 They are typical during afternoons. \u00b7 The places include the Sahara Desert. \u00b7 The Sahara Desert is given as an example.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "On their way from their nest to a food source, ants of most species leave a trail of chemicals called pheromones.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about ants."
+      },
+      {
+       "n": 2,
+       "text": "It applies to ants of most species."
+      },
+      {
+       "n": 3,
+       "text": "The ants leave a trail of chemicals."
+      },
+      {
+       "n": 4,
+       "text": "Those chemicals are called pheromones."
+      },
+      {
+       "n": 5,
+       "text": "The trail is left on the way from their nest."
+      },
+      {
+       "n": 6,
+       "text": "The ants are heading to a food source."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The ants use the scent of the pheromones to guide themselves between the food and their nest.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the ants again."
+      },
+      {
+       "n": 2,
+       "text": "They use the scent of the pheromones."
+      },
+      {
+       "n": 3,
+       "text": "The scent guides them."
+      },
+      {
+       "n": 4,
+       "text": "They guide themselves between the food and their nest."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "All pheromones evaporate without a trace almost immediately when temperatures rise above 45 degrees Celsius (113 degrees Fahrenheit),",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about pheromones."
+      },
+      {
+       "n": 2,
+       "text": "It applies to all of them."
+      },
+      {
+       "n": 3,
+       "text": "They evaporate without a trace."
+      },
+      {
+       "n": 4,
+       "text": "They do so almost immediately."
+      },
+      {
+       "n": 5,
+       "text": "This happens when temperatures rise above a point."
+      },
+      {
+       "n": 6,
+       "text": "That point is 45 degrees Celsius."
+      },
+      {
+       "n": 7,
+       "text": "It is also given as 113 degrees Fahrenheit."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "as is typical during afternoons in places such as the Sahara Desert.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Those temperatures are typical somewhere."
+      },
+      {
+       "n": 2,
+       "text": "They are typical during afternoons."
+      },
+      {
+       "n": 3,
+       "text": "The places include the Sahara Desert."
+      },
+      {
+       "n": 4,
+       "text": "The Sahara Desert is given as an example."
+      }
+     ]
+    }
+   ],
+   "the_read": "Ants may not be able to use their trails to guide them back to their nests in the afternoon in the Sahara Desert.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q12",
+     "qnum": 12,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT103_S1_Q13",
+   "prompt": "Some people think that in every barrel of politicians there are only a few rotten ones. But if deceit is a quality of rottenness, I believe all effective politicians are rotten. They must be deceitful in order to do the job properly. Someone who is scrupulously honest about obeying the rules of society will never be an effective politician.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Some people think something. \u00b7 Their thought is about barrels of politicians. \u00b7 This applies to every such barrel. \u00b7 Only a few politicians in it are rotten. (2) This is a contrast with what came before. \u00b7 The speaker states a belief. \u00b7 The belief rests on a condition. \u00b7 The condition is that deceit is a quality of rottenness. \u00b7 All effective politicians are rotten. (3) This is about effective politicians. \u00b7 They must be deceitful. \u00b7 The deceit is needed to do the job. \u00b7 Doing the job properly is what requires it. (4) This is about a certain person. \u00b7 That person is honest about obeying rules. \u00b7 The honesty is scrupulous. \u00b7 The rules are those of society. \u00b7 Such a person will never be an effective politician.",
+   "category": "Contradiction",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Some people think that in every barrel of politicians there are only a few rotten ones.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some people think something."
+      },
+      {
+       "n": 2,
+       "text": "Their thought is about barrels of politicians."
+      },
+      {
+       "n": 3,
+       "text": "This applies to every such barrel."
+      },
+      {
+       "n": 4,
+       "text": "Only a few politicians in it are rotten."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But if deceit is a quality of rottenness, I believe all effective politicians are rotten.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "The speaker states a belief."
+      },
+      {
+       "n": 3,
+       "text": "The belief rests on a condition."
+      },
+      {
+       "n": 4,
+       "text": "The condition is that deceit is a quality of rottenness."
+      },
+      {
+       "n": 5,
+       "text": "All effective politicians are rotten."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "They must be deceitful in order to do the job properly.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about effective politicians."
+      },
+      {
+       "n": 2,
+       "text": "They must be deceitful."
+      },
+      {
+       "n": 3,
+       "text": "The deceit is needed to do the job."
+      },
+      {
+       "n": 4,
+       "text": "Doing the job properly is what requires it."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Someone who is scrupulously honest about obeying the rules of society will never be an effective politician.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a certain person."
+      },
+      {
+       "n": 2,
+       "text": "That person is honest about obeying rules."
+      },
+      {
+       "n": 3,
+       "text": "The honesty is scrupulous."
+      },
+      {
+       "n": 4,
+       "text": "The rules are those of society."
+      },
+      {
+       "n": 5,
+       "text": "Such a person will never be an effective politician."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if doing the job properly is not the same thing as being an effective politician?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q13",
+     "qnum": 13,
+     "question_type": "Contradiction",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT103_S1_Q14",
+   "prompt": "The Biocarb Company wants to build a sterilization plant to treat contaminated medical waste in a city neighborhood where residents and environmental activists fear that such a facility will pollute the area. Biocarb's president argues that the operation of the plant cannot cause pollution because the waste would be sterile after processing by the plant. He claims that after exposure for an hour to superheated steam in the autoclave, such refuse would be far cleaner than food prepared in the cleanest kitchen.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The Biocarb Company wants to build a plant. \u00b7 The plant would sterilize things. \u00b7 It would treat medical waste. \u00b7 That waste is contaminated. \u00b7 The plant would go in a city neighborhood. \u00b7 Residents there fear the facility. \u00b7 Environmental activists fear it too. \u00b7 The fear is that it will pollute the area. (2) Biocarb's president makes an argument. \u00b7 The argument is that the plant cannot cause pollution. \u00b7 What cannot pollute is the operation of the plant. \u00b7 A reason is given for that. \u00b7 The waste would be sterile. \u00b7 It would be sterile after the plant processes it. (3) The president makes a further claim. \u00b7 The refuse would be exposed to steam. \u00b7 The steam is superheated. \u00b7 The exposure lasts an hour. \u00b7 The exposure happens in the autoclave. \u00b7 The refuse would then be far cleaner. \u00b7 The comparison is with food prepared in the cleanest kitchen.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The Biocarb Company wants to build a sterilization plant to treat contaminated medical waste in a city neighborhood where residents and environmental activists fear that such a facility will pollute the area.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The Biocarb Company wants to build a plant."
+      },
+      {
+       "n": 2,
+       "text": "The plant would sterilize things."
+      },
+      {
+       "n": 3,
+       "text": "It would treat medical waste."
+      },
+      {
+       "n": 4,
+       "text": "That waste is contaminated."
+      },
+      {
+       "n": 5,
+       "text": "The plant would go in a city neighborhood."
+      },
+      {
+       "n": 6,
+       "text": "Residents there fear the facility."
+      },
+      {
+       "n": 7,
+       "text": "Environmental activists fear it too."
+      },
+      {
+       "n": 8,
+       "text": "The fear is that it will pollute the area."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Biocarb's president argues that the operation of the plant cannot cause pollution because the waste would be sterile after processing by the plant.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Biocarb's president makes an argument."
+      },
+      {
+       "n": 2,
+       "text": "The argument is that the plant cannot cause pollution."
+      },
+      {
+       "n": 3,
+       "text": "What cannot pollute is the operation of the plant."
+      },
+      {
+       "n": 4,
+       "text": "A reason is given for that."
+      },
+      {
+       "n": 5,
+       "text": "The waste would be sterile."
+      },
+      {
+       "n": 6,
+       "text": "It would be sterile after the plant processes it."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "He claims that after exposure for an hour to superheated steam in the autoclave, such refuse would be far cleaner than food prepared in the cleanest kitchen.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The president makes a further claim."
+      },
+      {
+       "n": 2,
+       "text": "The refuse would be exposed to steam."
+      },
+      {
+       "n": 3,
+       "text": "The steam is superheated."
+      },
+      {
+       "n": 4,
+       "text": "The exposure lasts an hour."
+      },
+      {
+       "n": 5,
+       "text": "The exposure happens in the autoclave."
+      },
+      {
+       "n": 6,
+       "text": "The refuse would then be far cleaner."
+      },
+      {
+       "n": 7,
+       "text": "The comparison is with food prepared in the cleanest kitchen."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the act of sterilizing the waste causes pollution?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q14",
+     "qnum": 14,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT103_S1_Q15",
+   "prompt": "Grow-Again ointment is a proven treatment for reversing male hereditary baldness. Five drops daily is the recommended dose, and exceeding this quantity does not increase the product's effectiveness. Therefore, offering a manufacturer's rebate on the purchase price of Grow-Again will not increase sales and consequently would be unprofitable for the manufacturer.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Grow-Again is an ointment. \u00b7 It is a treatment. \u00b7 The treatment is proven. \u00b7 It reverses a kind of baldness. \u00b7 The baldness is male and hereditary. (2) The recommended dose is five drops. \u00b7 The dose is taken daily. \u00b7 Someone might exceed that quantity. \u00b7 Exceeding it does not increase effectiveness. \u00b7 The effectiveness is the product's. (3) This is the conclusion. \u00b7 A rebate might be offered. \u00b7 The rebate would come from the manufacturer. \u00b7 It would apply to the purchase price of Grow-Again. \u00b7 The rebate will not increase sales. \u00b7 It would consequently be unprofitable. \u00b7 The manufacturer is the one who would lose.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Grow-Again ointment is a proven treatment for reversing male hereditary baldness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Grow-Again is an ointment."
+      },
+      {
+       "n": 2,
+       "text": "It is a treatment."
+      },
+      {
+       "n": 3,
+       "text": "The treatment is proven."
+      },
+      {
+       "n": 4,
+       "text": "It reverses a kind of baldness."
+      },
+      {
+       "n": 5,
+       "text": "The baldness is male and hereditary."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Five drops daily is the recommended dose, and exceeding this quantity does not increase the product's effectiveness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The recommended dose is five drops."
+      },
+      {
+       "n": 2,
+       "text": "The dose is taken daily."
+      },
+      {
+       "n": 3,
+       "text": "Someone might exceed that quantity."
+      },
+      {
+       "n": 4,
+       "text": "Exceeding it does not increase effectiveness."
+      },
+      {
+       "n": 5,
+       "text": "The effectiveness is the product's."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, offering a manufacturer's rebate on the purchase price of Grow-Again will not increase sales and consequently would be unprofitable for the manufacturer.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "A rebate might be offered."
+      },
+      {
+       "n": 3,
+       "text": "The rebate would come from the manufacturer."
+      },
+      {
+       "n": 4,
+       "text": "It would apply to the purchase price of Grow-Again."
+      },
+      {
+       "n": 5,
+       "text": "The rebate will not increase sales."
+      },
+      {
+       "n": 6,
+       "text": "It would consequently be unprofitable."
+      },
+      {
+       "n": 7,
+       "text": "The manufacturer is the one who would lose."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rebate would incentivize new customers to buy the ointment? What if people would buy more ointment to give as gifts to friends? What if no one knows that using more than the recommended dose doesn't increase effectiveness?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q15",
+     "qnum": 15,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT103_S1_Q16",
+   "prompt": "Henry: Some scientists explain the dance of honeybees as the means by which honeybees communicate the location of whatever food source they have just visited to other members of the hive. But honeybees do not need so complicated a mechanism to communicate that information. Forager honeybees returning to their hive simply leave a scent trail from the food source they have just visited. There must therefore be some other explanation for the honeybees' dance.\n\nWinifred: Not necessarily. Most animals have several ways of accomplishing critical tasks. Bees of some species can navigate using either the position of the Sun or the memory of landmarks. Similarly, for honeybees, scent trails are a supplementary not an exclusive means of communicating.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Henry is the first speaker. \u00b7 Some scientists offer an explanation. \u00b7 The explanation is of the dance of honeybees. \u00b7 The dance is a means of communicating. \u00b7 What is communicated is the location of a food source. \u00b7 The honeybees have just visited that source. \u00b7 The communication goes to other members of the hive. (2) This is a contrast with what came before. \u00b7 Honeybees do not need such a mechanism. \u00b7 The mechanism is a complicated one. \u00b7 The communicating is of that information. (3) This is about forager honeybees. \u00b7 They are returning to their hive. \u00b7 They leave a scent trail. \u00b7 The trail runs from the food source. \u00b7 They have just visited that source. (4) This is the conclusion. \u00b7 There must be another explanation. \u00b7 The explanation would be of the honeybees' dance. \u00b7 It would be some explanation other than the first one. (5) Winifred is the second speaker. \u00b7 She disagrees with Henry. \u00b7 She says his conclusion does not follow necessarily. (6) This is about animals. \u00b7 It applies to most animals. \u00b7 They have several ways of getting things done. \u00b7 The things are critical tasks. (7) This is about bees. \u00b7 It applies to bees of some species. \u00b7 Those bees can navigate. \u00b7 One way is by the position of the Sun. \u00b7 Another way is by the memory of landmarks. \u00b7 Either of the two is available to them. (8) This is offered as a parallel case. \u00b7 It is about honeybees. \u00b7 Scent trails are a means of communicating. \u00b7 That means is supplementary. \u00b7 It is not an exclusive means.",
+   "category": "Controversy",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Henry: Some scientists explain the dance of honeybees as the means by which honeybees communicate the location of whatever food source they have just visited to other members of the hive.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Henry is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "Some scientists offer an explanation."
+      },
+      {
+       "n": 3,
+       "text": "The explanation is of the dance of honeybees."
+      },
+      {
+       "n": 4,
+       "text": "The dance is a means of communicating."
+      },
+      {
+       "n": 5,
+       "text": "What is communicated is the location of a food source."
+      },
+      {
+       "n": 6,
+       "text": "The honeybees have just visited that source."
+      },
+      {
+       "n": 7,
+       "text": "The communication goes to other members of the hive."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But honeybees do not need so complicated a mechanism to communicate that information.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "Honeybees do not need such a mechanism."
+      },
+      {
+       "n": 3,
+       "text": "The mechanism is a complicated one."
+      },
+      {
+       "n": 4,
+       "text": "The communicating is of that information."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Forager honeybees returning to their hive simply leave a scent trail from the food source they have just visited.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about forager honeybees."
+      },
+      {
+       "n": 2,
+       "text": "They are returning to their hive."
+      },
+      {
+       "n": 3,
+       "text": "They leave a scent trail."
+      },
+      {
+       "n": 4,
+       "text": "The trail runs from the food source."
+      },
+      {
+       "n": 5,
+       "text": "They have just visited that source."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "There must therefore be some other explanation for the honeybees' dance.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "There must be another explanation."
+      },
+      {
+       "n": 3,
+       "text": "The explanation would be of the honeybees' dance."
+      },
+      {
+       "n": 4,
+       "text": "It would be some explanation other than the first one."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Winifred: Not necessarily.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Winifred is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "She disagrees with Henry."
+      },
+      {
+       "n": 3,
+       "text": "She says his conclusion does not follow necessarily."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "Most animals have several ways of accomplishing critical tasks.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about animals."
+      },
+      {
+       "n": 2,
+       "text": "It applies to most animals."
+      },
+      {
+       "n": 3,
+       "text": "They have several ways of getting things done."
+      },
+      {
+       "n": 4,
+       "text": "The things are critical tasks."
+      }
+     ]
+    },
+    {
+     "n": 7,
+     "text": "Bees of some species can navigate using either the position of the Sun or the memory of landmarks.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about bees."
+      },
+      {
+       "n": 2,
+       "text": "It applies to bees of some species."
+      },
+      {
+       "n": 3,
+       "text": "Those bees can navigate."
+      },
+      {
+       "n": 4,
+       "text": "One way is by the position of the Sun."
+      },
+      {
+       "n": 5,
+       "text": "Another way is by the memory of landmarks."
+      },
+      {
+       "n": 6,
+       "text": "Either of the two is available to them."
+      }
+     ]
+    },
+    {
+     "n": 8,
+     "text": "Similarly, for honeybees, scent trails are a supplementary not an exclusive means of communicating.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is offered as a parallel case."
+      },
+      {
+       "n": 2,
+       "text": "It is about honeybees."
+      },
+      {
+       "n": 3,
+       "text": "Scent trails are a means of communicating."
+      },
+      {
+       "n": 4,
+       "text": "That means is supplementary."
+      },
+      {
+       "n": 5,
+       "text": "It is not an exclusive means."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether bees use their dance to communicate.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q16",
+     "qnum": 16,
+     "question_type": "Controversy",
+     "correct_answer": "C"
+    },
+    {
+     "citation": "PT103.S1.Q17",
+     "qnum": 17,
+     "question_type": "Argument Part",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT103_S1_Q18",
+   "prompt": "Politician: A government that taxes incomes at a rate of 100 percent will generate no revenue because all economic activity will cease. So it follows that the lower the rate of income tax, the more revenue the government will generate by that tax.\n\nEconomist: Your conclusion cannot be correct, since it would mean that an income tax of 0 percent would generate the maximum revenue.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The politician is the first speaker. \u00b7 A government might tax incomes. \u00b7 The rate would be 100 percent. \u00b7 Such a government will generate no revenue. \u00b7 A reason is given for that. \u00b7 All economic activity will cease. (2) This is the conclusion. \u00b7 It is presented as following from what came before. \u00b7 A lower rate of income tax is considered. \u00b7 The lower the rate, the more revenue there is. \u00b7 The government generates that revenue. \u00b7 The revenue comes by that tax. (3) The economist is the second speaker. \u00b7 He says the conclusion cannot be correct. \u00b7 The conclusion is the politician's. \u00b7 A reason is given for saying so. \u00b7 The conclusion would mean something about a 0 percent tax. \u00b7 Such a tax would generate the maximum revenue.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Politician: A government that taxes incomes at a rate of 100 percent will generate no revenue because all economic activity will cease.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The politician is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "A government might tax incomes."
+      },
+      {
+       "n": 3,
+       "text": "The rate would be 100 percent."
+      },
+      {
+       "n": 4,
+       "text": "Such a government will generate no revenue."
+      },
+      {
+       "n": 5,
+       "text": "A reason is given for that."
+      },
+      {
+       "n": 6,
+       "text": "All economic activity will cease."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "So it follows that the lower the rate of income tax, the more revenue the government will generate by that tax.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is presented as following from what came before."
+      },
+      {
+       "n": 3,
+       "text": "A lower rate of income tax is considered."
+      },
+      {
+       "n": 4,
+       "text": "The lower the rate, the more revenue there is."
+      },
+      {
+       "n": 5,
+       "text": "The government generates that revenue."
+      },
+      {
+       "n": 6,
+       "text": "The revenue comes by that tax."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Economist: Your conclusion cannot be correct, since it would mean that an income tax of 0 percent would generate the maximum revenue.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The economist is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "He says the conclusion cannot be correct."
+      },
+      {
+       "n": 3,
+       "text": "The conclusion is the politician's."
+      },
+      {
+       "n": 4,
+       "text": "A reason is given for saying so."
+      },
+      {
+       "n": 5,
+       "text": "The conclusion would mean something about a 0 percent tax."
+      },
+      {
+       "n": 6,
+       "text": "Such a tax would generate the maximum revenue."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether a lower income tax rate always means a higher revenue yield.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q18",
+     "qnum": 18,
+     "question_type": "Method",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT103_S1_Q19",
+   "prompt": "Sponges attach to the ocean floor, continually filtering seawater for food and ejecting water they have just filtered to avoid reingesting it. Tubular and vase-shaped sponges can eject filtered water without assistance from surrounding ocean currents and thus are adapted to slow-moving, quiet waters. Because of their shape, however, these sponges cannot live in strong currents, since strong currents would dislodge them. Both of these varieties of sponge were widespread during the late Jurassic period.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about sponges. \u00b7 Sponges attach to the ocean floor. \u00b7 The sponges filter seawater. \u00b7 The filtering is for food. \u00b7 The filtering is continual. \u00b7 They eject water they have just filtered. \u00b7 The ejecting avoids reingesting that water. (2) This is about two kinds of sponge. \u00b7 One kind is tubular. \u00b7 The other kind is vase-shaped. \u00b7 They can eject filtered water on their own. \u00b7 They need no assistance from surrounding ocean currents. \u00b7 They are therefore adapted to certain waters. \u00b7 Those waters are slow-moving and quiet. (3) This is a contrast with what came before. \u00b7 These sponges cannot live in strong currents. \u00b7 The reason is their shape. \u00b7 A further reason is given. \u00b7 Strong currents would dislodge them. (4) This is about both varieties. \u00b7 The varieties are of sponge. \u00b7 The two varieties were widespread. \u00b7 This was during the late Jurassic period.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Sponges attach to the ocean floor, continually filtering seawater for food and ejecting water they have just filtered to avoid reingesting it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about sponges."
+      },
+      {
+       "n": 2,
+       "text": "Sponges attach to the ocean floor."
+      },
+      {
+       "n": 3,
+       "text": "The sponges filter seawater."
+      },
+      {
+       "n": 4,
+       "text": "The filtering is for food."
+      },
+      {
+       "n": 5,
+       "text": "The filtering is continual."
+      },
+      {
+       "n": 6,
+       "text": "They eject water they have just filtered."
+      },
+      {
+       "n": 7,
+       "text": "The ejecting avoids reingesting that water."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Tubular and vase-shaped sponges can eject filtered water without assistance from surrounding ocean currents and thus are adapted to slow-moving, quiet waters.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about two kinds of sponge."
+      },
+      {
+       "n": 2,
+       "text": "One kind is tubular."
+      },
+      {
+       "n": 3,
+       "text": "The other kind is vase-shaped."
+      },
+      {
+       "n": 4,
+       "text": "They can eject filtered water on their own."
+      },
+      {
+       "n": 5,
+       "text": "They need no assistance from surrounding ocean currents."
+      },
+      {
+       "n": 6,
+       "text": "They are therefore adapted to certain waters."
+      },
+      {
+       "n": 7,
+       "text": "Those waters are slow-moving and quiet."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Because of their shape, however, these sponges cannot live in strong currents, since strong currents would dislodge them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "These sponges cannot live in strong currents."
+      },
+      {
+       "n": 3,
+       "text": "The reason is their shape."
+      },
+      {
+       "n": 4,
+       "text": "A further reason is given."
+      },
+      {
+       "n": 5,
+       "text": "Strong currents would dislodge them."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Both of these varieties of sponge were widespread during the late Jurassic period.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about both varieties."
+      },
+      {
+       "n": 2,
+       "text": "The varieties are of sponge."
+      },
+      {
+       "n": 3,
+       "text": "The two varieties were widespread."
+      },
+      {
+       "n": 4,
+       "text": "This was during the late Jurassic period."
+      }
+     ]
+    }
+   ],
+   "the_read": "During the late Jurassic period there were likely areas of the ocean floor with weak currents.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q19",
+     "qnum": 19,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT103_S1_Q20",
+   "prompt": "There is strong evidence that the cause of migraines (severe recurrent headaches) is not psychological but instead is purely physiological. Yet several studies have found that people being professionally treated for migraines rate higher on a standard psychological scale of anxiety than do people not being professionally treated for migraines.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is evidence about migraines. \u00b7 The evidence is strong. \u00b7 Migraines are severe headaches. \u00b7 Migraines are recurrent headaches. \u00b7 Their cause is not psychological. \u00b7 Their cause is physiological instead. \u00b7 That cause is purely physiological. (2) This is a contrast with what came before. \u00b7 Several studies have found something. \u00b7 The finding is about people treated for migraines. \u00b7 Their treatment is professional. \u00b7 Those people rate higher on a scale. \u00b7 The scale is a standard psychological one of anxiety. \u00b7 The comparison is with people not being treated for migraines.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "There is strong evidence that the cause of migraines (severe recurrent headaches) is not psychological but instead is purely physiological.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is evidence about migraines."
+      },
+      {
+       "n": 2,
+       "text": "The evidence is strong."
+      },
+      {
+       "n": 3,
+       "text": "Migraines are severe headaches."
+      },
+      {
+       "n": 4,
+       "text": "Migraines are recurrent headaches."
+      },
+      {
+       "n": 5,
+       "text": "Their cause is not psychological."
+      },
+      {
+       "n": 6,
+       "text": "Their cause is physiological instead."
+      },
+      {
+       "n": 7,
+       "text": "That cause is purely physiological."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Yet several studies have found that people being professionally treated for migraines rate higher on a standard psychological scale of anxiety than do people not being professionally treated for migraines.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "Several studies have found something."
+      },
+      {
+       "n": 3,
+       "text": "The finding is about people treated for migraines."
+      },
+      {
+       "n": 4,
+       "text": "Their treatment is professional."
+      },
+      {
+       "n": 5,
+       "text": "Those people rate higher on a scale."
+      },
+      {
+       "n": 6,
+       "text": "The scale is a standard psychological one of anxiety."
+      },
+      {
+       "n": 7,
+       "text": "The comparison is with people not being treated for migraines."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the professional treatment of severe recurrent headaches makes people more anxious?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q20",
+     "qnum": 20,
+     "question_type": "Resolution",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT103_S1_Q21",
+   "prompt": "Not all tenured faculty are full professors. Therefore, although every faculty member in the linguistics department has tenure, it must be the case that not all of the faculty members in the linguistics department are full professors.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about faculty who have tenure. \u00b7 It concerns being a full professor. \u00b7 Not all tenured faculty are full professors. (2) This introduces the conclusion. \u00b7 Something is granted first. \u00b7 Every faculty member in the department has tenure. \u00b7 The department is the linguistics department. \u00b7 The word although marks a concession. (3) This is the conclusion. \u00b7 It is stated as something that must be so. \u00b7 It is about faculty members in the linguistics department. \u00b7 Not all of them are full professors.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Not all tenured faculty are full professors.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about faculty who have tenure."
+      },
+      {
+       "n": 2,
+       "text": "It concerns being a full professor."
+      },
+      {
+       "n": 3,
+       "text": "Not all tenured faculty are full professors."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Therefore, although every faculty member in the linguistics department has tenure,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This introduces the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Something is granted first."
+      },
+      {
+       "n": 3,
+       "text": "Every faculty member in the department has tenure."
+      },
+      {
+       "n": 4,
+       "text": "The department is the linguistics department."
+      },
+      {
+       "n": 5,
+       "text": "The word although marks a concession."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "it must be the case that not all of the faculty members in the linguistics department are full professors.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is stated as something that must be so."
+      },
+      {
+       "n": 3,
+       "text": "It is about faculty members in the linguistics department."
+      },
+      {
+       "n": 4,
+       "text": "Not all of them are full professors."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the some tenured faculty who are not full professors work in other, non-linguistics, departments?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q21",
+     "qnum": 21,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT103_S1_Q22",
+   "prompt": "When a planetary system forms, the chances that a planet capable of supporting life will be formed are high. The chances that a large planet the size of Jupiter or Saturn will be formed, however, are low. Without Jupiter and Saturn, whose gravitational forces have prevented Earth from being frequently struck by large comets, intelligent life would never have arisen on Earth. Since planetary systems are unlikely to contain any large planets, the chances that intelligent life will emerge on a planet are, therefore, low.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a planetary system forming. \u00b7 It concerns the chances of something. \u00b7 A planet capable of supporting life might be formed. \u00b7 Those chances are high. (2) This is a contrast with what came before. \u00b7 It concerns the chances of another thing. \u00b7 A large planet might be formed. \u00b7 That planet would be the size of Jupiter or Saturn. \u00b7 Those chances are low. (3) This is about Jupiter and Saturn. \u00b7 They exert gravitational forces. \u00b7 Those forces have prevented strikes on Earth. \u00b7 The strikes would be by large comets. \u00b7 The strikes would have been frequent. \u00b7 Intelligent life did arise on Earth. \u00b7 It would never have arisen without those two planets. (4) This is the conclusion. \u00b7 It rests on a reason. \u00b7 Planetary systems are unlikely to contain large planets. \u00b7 This holds for any large planets. \u00b7 The chances of intelligent life emerging are low. \u00b7 The emerging would be on a planet.",
+   "category": "Evaluate",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "When a planetary system forms, the chances that a planet capable of supporting life will be formed are high.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a planetary system forming."
+      },
+      {
+       "n": 2,
+       "text": "It concerns the chances of something."
+      },
+      {
+       "n": 3,
+       "text": "A planet capable of supporting life might be formed."
+      },
+      {
+       "n": 4,
+       "text": "Those chances are high."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The chances that a large planet the size of Jupiter or Saturn will be formed, however, are low.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It concerns the chances of another thing."
+      },
+      {
+       "n": 3,
+       "text": "A large planet might be formed."
+      },
+      {
+       "n": 4,
+       "text": "That planet would be the size of Jupiter or Saturn."
+      },
+      {
+       "n": 5,
+       "text": "Those chances are low."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Without Jupiter and Saturn, whose gravitational forces have prevented Earth from being frequently struck by large comets, intelligent life would never have arisen on Earth.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about Jupiter and Saturn."
+      },
+      {
+       "n": 2,
+       "text": "They exert gravitational forces."
+      },
+      {
+       "n": 3,
+       "text": "Those forces have prevented strikes on Earth."
+      },
+      {
+       "n": 4,
+       "text": "The strikes would be by large comets."
+      },
+      {
+       "n": 5,
+       "text": "The strikes would have been frequent."
+      },
+      {
+       "n": 6,
+       "text": "Intelligent life did arise on Earth."
+      },
+      {
+       "n": 7,
+       "text": "It would never have arisen without those two planets."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Since planetary systems are unlikely to contain any large planets, the chances that intelligent life will emerge on a planet are, therefore, low.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on a reason."
+      },
+      {
+       "n": 3,
+       "text": "Planetary systems are unlikely to contain large planets."
+      },
+      {
+       "n": 4,
+       "text": "This holds for any large planets."
+      },
+      {
+       "n": 5,
+       "text": "The chances of intelligent life emerging are low."
+      },
+      {
+       "n": 6,
+       "text": "The emerging would be on a planet."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's a very low chance that when a planetary system forms there will be large comets that frequently strike planets?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q22",
+     "qnum": 22,
+     "question_type": "Evaluate",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT103_S1_Q23",
+   "prompt": "Construction contractors working on the cutting edge of technology nearly always work on a \"cost-plus\" basis only. One kind of cost-plus contract stipulates the contractor's profit as a fixed percentage of the contractor's costs; the other kind stipulates a fixed amount of profit over and above costs. Under the first kind of contract, higher costs yield higher profits for the contractor, so this is where one might expect final costs in excess of original cost estimates to be more common. Paradoxically, such cost overruns are actually more common if the contract is of the fixed-profit kind.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about construction contractors. \u00b7 Those contractors work on the cutting edge of technology. \u00b7 They work on a cost-plus basis. \u00b7 They do so nearly always. \u00b7 They work on that basis only. (2) There is one kind of cost-plus contract. \u00b7 That contract stipulates the contractor's profit. \u00b7 The profit is a percentage of costs. \u00b7 The percentage is fixed. \u00b7 The costs are the contractor's own. (3) There is another kind of contract. \u00b7 That kind stipulates an amount of profit. \u00b7 The amount is fixed. \u00b7 The profit comes over and above costs. (4) This is about the first kind of contract. \u00b7 Costs can be higher under it. \u00b7 The contractor gets higher profits when costs are higher. \u00b7 The profits go to the contractor. (5) This draws something from what came before. \u00b7 One might expect something of the first kind of contract. \u00b7 Final costs can exceed original cost estimates. \u00b7 Such excess would be more common there. (6) This is presented as a paradox. \u00b7 It is about such cost overruns. \u00b7 The overruns are actually more common. \u00b7 This holds if the contract is of the fixed-profit kind.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Construction contractors working on the cutting edge of technology nearly always work on a \"cost-plus\" basis only.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about construction contractors."
+      },
+      {
+       "n": 2,
+       "text": "Those contractors work on the cutting edge of technology."
+      },
+      {
+       "n": 3,
+       "text": "They work on a cost-plus basis."
+      },
+      {
+       "n": 4,
+       "text": "They do so nearly always."
+      },
+      {
+       "n": 5,
+       "text": "They work on that basis only."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "One kind of cost-plus contract stipulates the contractor's profit as a fixed percentage of the contractor's costs;",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is one kind of cost-plus contract."
+      },
+      {
+       "n": 2,
+       "text": "That contract stipulates the contractor's profit."
+      },
+      {
+       "n": 3,
+       "text": "The profit is a percentage of costs."
+      },
+      {
+       "n": 4,
+       "text": "The percentage is fixed."
+      },
+      {
+       "n": 5,
+       "text": "The costs are the contractor's own."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "the other kind stipulates a fixed amount of profit over and above costs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is another kind of contract."
+      },
+      {
+       "n": 2,
+       "text": "That kind stipulates an amount of profit."
+      },
+      {
+       "n": 3,
+       "text": "The amount is fixed."
+      },
+      {
+       "n": 4,
+       "text": "The profit comes over and above costs."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Under the first kind of contract, higher costs yield higher profits for the contractor,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the first kind of contract."
+      },
+      {
+       "n": 2,
+       "text": "Costs can be higher under it."
+      },
+      {
+       "n": 3,
+       "text": "The contractor gets higher profits when costs are higher."
+      },
+      {
+       "n": 4,
+       "text": "The profits go to the contractor."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "so this is where one might expect final costs in excess of original cost estimates to be more common.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This draws something from what came before."
+      },
+      {
+       "n": 2,
+       "text": "One might expect something of the first kind of contract."
+      },
+      {
+       "n": 3,
+       "text": "Final costs can exceed original cost estimates."
+      },
+      {
+       "n": 4,
+       "text": "Such excess would be more common there."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "Paradoxically, such cost overruns are actually more common if the contract is of the fixed-profit kind.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is presented as a paradox."
+      },
+      {
+       "n": 2,
+       "text": "It is about such cost overruns."
+      },
+      {
+       "n": 3,
+       "text": "The overruns are actually more common."
+      },
+      {
+       "n": 4,
+       "text": "This holds if the contract is of the fixed-profit kind."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if clients are more likely to review and negotiate down construction costs when the contractor's fee is tied to the overall cost?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q23",
+     "qnum": 23,
+     "question_type": "Resolution",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 23,
+   "slug": "PT103_S1_Q24",
+   "prompt": "That wall is supported by several joists. The only thing that can have caused the bulge that the wall now has is a broken joist. Therefore, at least one of the joists is broken.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a particular wall. \u00b7 The wall is supported by joists. \u00b7 There are several joists. (2) This is about a bulge. \u00b7 The wall now has that bulge. \u00b7 Something caused the bulge. \u00b7 Only a broken joist can have caused it. (3) This is the conclusion. \u00b7 It is about the joists. \u00b7 At least one of them is broken.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "That wall is supported by several joists.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a particular wall."
+      },
+      {
+       "n": 2,
+       "text": "The wall is supported by joists."
+      },
+      {
+       "n": 3,
+       "text": "There are several joists."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The only thing that can have caused the bulge that the wall now has is a broken joist.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a bulge."
+      },
+      {
+       "n": 2,
+       "text": "The wall now has that bulge."
+      },
+      {
+       "n": 3,
+       "text": "Something caused the bulge."
+      },
+      {
+       "n": 4,
+       "text": "Only a broken joist can have caused it."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, at least one of the joists is broken.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the joists."
+      },
+      {
+       "n": 3,
+       "text": "At least one of them is broken."
+      }
+     ]
+    }
+   ],
+   "the_read": "What is the rules of conditional reasoning don't apply?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q24",
+     "qnum": 24,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 24,
+   "slug": "PT103_S1_Q25",
+   "prompt": "Sasha: Handwriting analysis should be banned in court as evidence of a person's character: handwriting analysts called as witnesses habitually exaggerate the reliability of their analyses.\n\nGregory: You are right that the current use of handwriting analysis as evidence is problematic. But this problem exists only because there is no licensing board to set professional standards and thus deter irresponsible analysts from making exaggerated claims. When such a board is established, however, handwriting analysis by licensed practitioners will be a legitimate courtroom tool for character assessment.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Sasha is the first speaker. \u00b7 This is her recommendation. \u00b7 Handwriting analysis should be banned. \u00b7 The ban would be in court. \u00b7 It is used as evidence of a person's character. (2) This is her reason. \u00b7 It is about handwriting analysts. \u00b7 Those analysts are called as witnesses. \u00b7 They exaggerate the reliability of their analyses. \u00b7 They do so habitually. (3) Gregory is the second speaker. \u00b7 He agrees with part of what Sasha said. \u00b7 The current use of handwriting analysis is problematic. \u00b7 That use is as evidence. (4) This is a contrast with what he granted. \u00b7 The problem exists for one reason only. \u00b7 There is no licensing board. \u00b7 Such a board would set professional standards. \u00b7 The standards would deter irresponsible analysts. \u00b7 Those analysts make exaggerated claims. (5) This is his conclusion. \u00b7 Such a board may be established. \u00b7 Handwriting analysis would then be legitimate. \u00b7 The analysis would be done by licensed practitioners. \u00b7 It would be a courtroom tool. \u00b7 The tool would be for character assessment.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Sasha: Handwriting analysis should be banned in court as evidence of a person's character:",
+     "details": [
+      {
+       "n": 1,
+       "text": "Sasha is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "This is her recommendation."
+      },
+      {
+       "n": 3,
+       "text": "Handwriting analysis should be banned."
+      },
+      {
+       "n": 4,
+       "text": "The ban would be in court."
+      },
+      {
+       "n": 5,
+       "text": "It is used as evidence of a person's character."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "handwriting analysts called as witnesses habitually exaggerate the reliability of their analyses.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is her reason."
+      },
+      {
+       "n": 2,
+       "text": "It is about handwriting analysts."
+      },
+      {
+       "n": 3,
+       "text": "Those analysts are called as witnesses."
+      },
+      {
+       "n": 4,
+       "text": "They exaggerate the reliability of their analyses."
+      },
+      {
+       "n": 5,
+       "text": "They do so habitually."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Gregory: You are right that the current use of handwriting analysis as evidence is problematic.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Gregory is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "He agrees with part of what Sasha said."
+      },
+      {
+       "n": 3,
+       "text": "The current use of handwriting analysis is problematic."
+      },
+      {
+       "n": 4,
+       "text": "That use is as evidence."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "But this problem exists only because there is no licensing board to set professional standards and thus deter irresponsible analysts from making exaggerated claims.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what he granted."
+      },
+      {
+       "n": 2,
+       "text": "The problem exists for one reason only."
+      },
+      {
+       "n": 3,
+       "text": "There is no licensing board."
+      },
+      {
+       "n": 4,
+       "text": "Such a board would set professional standards."
+      },
+      {
+       "n": 5,
+       "text": "The standards would deter irresponsible analysts."
+      },
+      {
+       "n": 6,
+       "text": "Those analysts make exaggerated claims."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "When such a board is established, however, handwriting analysis by licensed practitioners will be a legitimate courtroom tool for character assessment.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is his conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Such a board may be established."
+      },
+      {
+       "n": 3,
+       "text": "Handwriting analysis would then be legitimate."
+      },
+      {
+       "n": 4,
+       "text": "The analysis would be done by licensed practitioners."
+      },
+      {
+       "n": 5,
+       "text": "It would be a courtroom tool."
+      },
+      {
+       "n": 6,
+       "text": "The tool would be for character assessment."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether handwriting analysis should be banned no matter what.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT103.S1.Q25",
+     "qnum": 25,
+     "question_type": "Method",
+     "correct_answer": "B"
+    },
+    {
+     "citation": "PT103.S1.Q26",
+     "qnum": 26,
+     "question_type": "Counter",
+     "correct_answer": "D"
+    }
+   ]
+  }
+ ]
+}
