@@ -284,8 +284,8 @@ describe("attempt history", () => {
     data.all = [attemptRow(1)];
     data.recaps = [recap({ id: "r1" }), recap({ id: "r2", recording_state: "failed", object_path: null, recap_key: "p2-passage-recap", passage_position: 2 })];
     renderPage();
-    await waitFor(() => expect(screen.getByText(/1 of 2 spoken recalls saved/)).toBeInTheDocument());
-    expect(screen.getByText(/30:00/)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/30:00/)).toBeInTheDocument());
+    expect(screen.queryByText(/spoken recalls saved|no spoken recalls/i)).not.toBeInTheDocument();
     expect(screen.getByText("Recording needs attention")).toBeInTheDocument();
   });
 
@@ -355,8 +355,35 @@ describe("attempt history", () => {
     });
     renderPage();
     const resume = (await screen.findAllByRole("button", { name: /resume/i }))[0];
+    expect(screen.getByText("Resume practice").closest("section")!.querySelector(".rct-continue-footer")).toBeNull();
     fireEvent.click(resume);
     expect(await screen.findByTestId("runner")).toHaveTextContent("resumed at p1-para1-recall a1");
+  });
+
+  it("leads with the latest resumable session and keeps older sessions distinguishable in a closed disclosure", async () => {
+    const earlier = attemptRow(1, { started_at: "2026-10-18T10:00:00Z", finished_at: null, completed: false, elapsed_seconds: null });
+    const latest = attemptRow(2, { started_at: "2026-10-19T15:30:00Z", finished_at: null, completed: false, elapsed_seconds: null });
+    const unopened = attemptRow(3, { started_at: "2026-10-19T16:00:00Z", finished_at: null, completed: false, elapsed_seconds: null });
+    data.all = [earlier, latest, unopened];
+    for (const attempt of [earlier, latest, unopened]) saveCheckpoint({ version: 1, studentId: "s1", attemptId: attempt.id, attempt,
+      contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds: attempt.passage_ids }), scope: "all_read", stepIndex: attempt.id === unopened.id ? 0 : 1, stepId: attempt.id === unopened.id ? "p1-para1-read" : "p1-para1-recall",
+      recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
+    renderPage();
+    const card = (await screen.findByText("Resume practice")).closest("section")!;
+    const disclosure = within(card).getByText("Other unfinished sessions (2)").closest("details")!;
+    expect(disclosure).not.toHaveAttribute("open");
+    expect(within(card).getAllByRole("button", { name: "Resume" })).toHaveLength(1);
+    expect(within(card).queryByText(/kept on this device/)).not.toBeInTheDocument();
+    const metas = [...card.querySelectorAll("p")].map((p) => p.textContent ?? "").filter((t) => t.includes("Started "));
+    expect(metas).toHaveLength(3);
+    for (const meta of metas) {
+      expect(meta).toMatch(/Started .*\d{1,2}:\d{2}(?:\s?[ap]\.?\s?m\.?)?$/i);
+      expect(meta).not.toMatch(/\d{1,2}:\d{2}:\d{2}/);
+    }
+    for (const button of within(disclosure).getAllByRole("button", { name: /^Resume .*, started / })) expect(button.getAttribute("aria-label")).not.toMatch(/\d{1,2}:\d{2}:\d{2}/);
+    expect(screen.queryByText(/You have practice in progress/)).not.toBeInTheDocument();
+    fireEvent.click(within(card).getByRole("button", { name: "Resume" }));
+    expect(await screen.findByTestId("runner")).toHaveTextContent("resumed at p1-para1-recall a2");
   });
 
   it("resumes a single original third passage from its own checkpoint", async () => {
