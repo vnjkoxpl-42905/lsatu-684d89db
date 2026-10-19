@@ -8,7 +8,7 @@ export type DashboardPassage = Pick<Passage, "id" | "slug" | "title">;
 export interface RecentReadingActivity {
   id: string;
   title: string;
-  activity: "LR Recall" | "Speed Reading";
+  activity: "LR Training" | "Speed Reading";
   date: string;
   action: "Resume" | "Open results" | "Read again";
   to: string;
@@ -50,7 +50,7 @@ export function readingDashboard(
   const recent: RecentReadingActivity[] = ownSections
     .filter(a => a.status === "in_progress" || a.status === "completed")
     .map(a => ({
-      id: `lr-${a.id}`, title: a.source_section || a.title, activity: "LR Recall",
+      id: `lr-${a.id}`, title: a.source_section || a.title, activity: "LR Training",
       date: a.completed_at || a.started_at || a.created_at,
       action: a.status === "completed" ? "Open results" : "Resume",
       to: `${RC_RRC_PATH}/attempt/${encodeURIComponent(a.id)}`,

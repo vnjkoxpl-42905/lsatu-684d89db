@@ -44,6 +44,15 @@ export class ActiveClock {
     if (wasRunning) this.start(now);
   }
 
+  /** Merge verified persisted totals without losing newer on-device practice. */
+  restoreMinimum(totals: Partial<ClockTotals>, now: number): void {
+    const running = this.running;
+    this.pause(now);
+    this.sectionBase = Math.max(this.sectionBase, clean(totals.sectionMs));
+    this.passageBase = Math.max(this.passageBase, clean(totals.passageMs));
+    if (running) this.start(now);
+  }
+
   snapshot(now: number): ClockTotals {
     const live = this.since === null ? 0 : Math.max(0, now - this.since);
     return { sectionMs: this.sectionBase + live, passageMs: this.passageBase + live };

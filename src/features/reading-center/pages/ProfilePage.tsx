@@ -19,7 +19,7 @@ import { RcTrainingProgress } from "../components/RcTrainingProgress";
 type ProgressActivity = "lr-recall" | "rc-training" | "speed-reading";
 /** In the same order as the sidebar. */
 const ACTIVITIES: readonly (readonly [ProgressActivity, string])[] = [
-  ["lr-recall", "LR Recall"], ["rc-training", "RC Training"], ["speed-reading", "Speed Reading"],
+  ["lr-recall", "LR Training"], ["rc-training", "RC Training"], ["speed-reading", "Speed Reading"],
 ];
 
 type Metric = ReadingMetric;

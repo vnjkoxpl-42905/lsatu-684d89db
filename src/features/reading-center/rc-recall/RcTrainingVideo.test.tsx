@@ -11,7 +11,7 @@ describe("RC Training video", () => {
     expect(video).toHaveAttribute("playsinline");
     expect(video).toHaveAttribute("preload", "metadata");
     expect(video).not.toHaveAttribute("autoplay");
-    expect(container.querySelector("source")).toHaveAttribute("src", "/media/rc-training-demo.mp4?v=continuous-v2");
+    expect(container.querySelector("source")).toHaveAttribute("src", "/media/rc-training-demo.mp4?v=guided-v3");
     expect(container.querySelector("track")).toHaveAttribute("kind", "captions");
     expect(screen.getByRole("link", { name: "Read the written steps" })).toHaveAttribute("href", "/reading-center/rc-recall/instructions#rc-instructions-steps");
     expect(video).toHaveAccessibleDescription(/not a practice time limit/i);

@@ -21,7 +21,12 @@ export interface CheckpointRecap { key: string; voice: Voice; state: RecordingSt
 
 export interface PendingFinalization { completed: boolean; seconds: number; savedAt: number }
 
+export interface PendingPassageProgress { passageId: number; passagePosition: number; activeMs: number; completed: boolean }
+
 export interface Checkpoint {
+  passageTimesMs?: number[];
+  completedPassagePositions?: number[];
+  pendingPassageProgress?: PendingPassageProgress | null;
   captureWorkflow?: boolean;
   version: typeof CHECKPOINT_VERSION;
   studentId: string;
@@ -83,6 +88,9 @@ function parse(raw: string | null): Checkpoint | null {
     if (!c || c.version !== CHECKPOINT_VERSION || typeof c.studentId !== "string" || typeof c.attemptId !== "string"
       || typeof c.contentKey !== "string" || typeof c.stepId !== "string" || !Number.isInteger(c.stepIndex)
       || !Array.isArray(c.recaps) || !finite(c.sectionMs) || !finite(c.passageMs)) return null;
+    if (c.passageTimesMs && (!Array.isArray(c.passageTimesMs) || c.passageTimesMs.length > 4 || !c.passageTimesMs.every(finite))) return null;
+    if (c.completedPassagePositions && (!Array.isArray(c.completedPassagePositions) || !c.completedPassagePositions.every((position) => Number.isInteger(position) && position >= 1 && position <= 4))) return null;
+    if (c.pendingPassageProgress && (!Number.isInteger(c.pendingPassageProgress.passageId) || !Number.isInteger(c.pendingPassageProgress.passagePosition) || c.pendingPassageProgress.passagePosition < 1 || c.pendingPassageProgress.passagePosition > 4 || !finite(c.pendingPassageProgress.activeMs) || typeof c.pendingPassageProgress.completed !== "boolean")) return null;
     if (c.attempt && (c.attempt.id !== c.attemptId || c.attempt.student_id !== c.studentId
       || !Number.isInteger(c.attempt.preptest) || !Number.isInteger(c.attempt.section)
       || !Array.isArray(c.attempt.passage_ids) || !c.attempt.passage_ids.every(Number.isInteger))) return null;

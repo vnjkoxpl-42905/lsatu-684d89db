@@ -19,6 +19,13 @@ import "./reading-center.css";
 /** Hub pages are gated by the Reading Center grant, inside the shared shell. */
 const hub = (page: ReactNode) => <ReadingCenterGate embedded>{page}</ReadingCenterGate>;
 
+function RcTrainingEntry() {
+  const { hash } = useLocation();
+  return hash === "#rc-recall-start" || hash === "#rc-recall-history"
+    ? <Navigate to={`/reading-center/rc-recall/passages${hash}`} replace />
+    : <RcTrainingInstructions />;
+}
+
 export default function ReadingCenter() {
   const { pathname } = useLocation();
   useAppTheme(pathname.startsWith('/reading-center/read/'));
@@ -36,7 +43,8 @@ export default function ReadingCenter() {
             Each page keeps its own access check; sharing the shell grants nothing. */}
         <Route element={<AppShell />}>
           <Route index element={hub(<ReadingCenterHome />)} />
-          <Route path="rc-recall" element={hub(<RcRecallPage />)} />
+          <Route path="rc-recall" element={hub(<RcTrainingEntry />)} />
+          <Route path="rc-recall/passages" element={hub(<RcRecallPage />)} />
           <Route path="rc-recall/instructions" element={hub(<RcTrainingInstructions />)} />
           <Route path="speed-reading" element={hub(<LibraryPage />)} />
           <Route path="tags" element={hub(<TagsPage />)} />

@@ -154,3 +154,14 @@ describe("active time", () => {
     expect(clock.snapshot(50).sectionMs).toBe(0);
   });
 });
+
+it("preserves per-passage times, acknowledged completion and an immutable pending save", () => {
+  const progress = { passageId: 2, passagePosition: 2, activeMs: 12500, completed: true };
+  const saved = make({ passageTimesMs: [10000, 12500, 0, 0], completedPassagePositions: [1], pendingPassageProgress: progress });
+  saveCheckpoint(saved, storage);
+  expect(loadCheckpoint(expected, storage)).toEqual({ ok: true, checkpoint: saved });
+});
+it("refuses malformed per-passage timing instead of restoring a misleading clock", () => {
+  saveCheckpoint(make({ passageTimesMs: [100, -10] }), storage);
+  expect(loadCheckpoint(expected, storage)).toEqual({ ok: false, reason: "unreadable" });
+});
