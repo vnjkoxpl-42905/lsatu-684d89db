@@ -260,6 +260,13 @@
       "when": 1792376786304,
       "tag": "0036_rc_recall_continuous_captures",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1792381586623,
+      "tag": "0037_rc_recall_passage_progress",
+      "breakpoints": true
     }
   ]
 }
