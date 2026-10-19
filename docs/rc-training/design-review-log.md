@@ -30,3 +30,14 @@ Coverage added hub, instructions, demo, runner CSS and legacy-media constants. T
 R1 through R6 were fixed and verified with focused tests. A separate read-only history/feedback review found and fixed mixed-status paid-call ambiguity, hidden cached feedback when another clip is unsaved, and expired playback links without retry. Status refresh is now read-only, grading remains explicit, and playback has refresh/error recovery.
 
 Fresh Opus 5.5 low inspection returned REVISE, artifact `C:/Users/Joshu/AppData/Local/Temp/rc-opus-review-20261018/claudex-6ox40fbs/result.json`. F1 accepted: align completion feedback eligibility with history after confirmed finalization. F2 accepted: restore step-heading focus after guide toggle. F3 accepted: focus completion heading and announce errors. These changes passed 17 focused runner tests; the prior page/instruction changes passed 46 tests and history/feedback passed 12 tests. Final inspection remains pending. Full reviewer responses and exact snapshot manifests are retained at the artifact paths.
+
+## Second final inspection and bounded dispositions
+
+The second fresh inspection returned REVISE, artifact `C:/Users/Joshu/AppData/Local/Temp/rc-opus-review-20261018/claudex-lm_rm7to/result.json`. It inspected the recorder/recovery/capture/grading contract and acceptance receipts as well as the main workflow. It did not run commands, inspect live SQL/provider state, or view the screenshots/video.
+
+- F1 accepted and fixed: failed save-and-leave now stays on screen with visible recovery choices; it no longer dismisses its own warning. Retained upload can retry; leaving without confirmed upload is explicit. Exercise controls remain blocked after stopping the capture.
+- F2 alternate silent continuation rejected for this bounded revision: a spoken window may already be immutable on the server after a lost response, while absent locally. Switching that same step to silent without reconciliation could conflict with its identity. The safe supported path remains save/leave, recover and resume with a new capture. No known audio or pending windows are discarded to suppress the warning.
+- F3 native checkbox Space activation retained for accessibility. Adjacent copy now explicitly directs students to Begin whole-passage recall; keyboard regression confirms checkbox activation cannot accidentally advance.
+- F4 accepted and fixed: showing the paragraph after microphone setup moves focus to its heading.
+
+These final changes passed 21 focused runner tests and typecheck. They are later edits than the second inspection snapshot, so they are not described as independently approved. The default two-inspection budget is exhausted. Merge/publication remains pending Joshua's decision to extend inspection or proceed with the documented review limit. No additional provider grading calls were made.

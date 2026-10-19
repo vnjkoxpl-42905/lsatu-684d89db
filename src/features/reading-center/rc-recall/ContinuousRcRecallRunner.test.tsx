@@ -20,7 +20,7 @@ const click = async (name: RegExp) => { await act(async () => { fireEvent.click(
 const space = async (repeat = false) => { await act(async () => { fireEvent.keyDown(document, { code: "Space", repeat }); }); };
 beforeEach(() => {
   Object.values(api).forEach((value) => { if (typeof value === "function" && "mockReset" in value) value.mockReset(); });
-  localStorage.clear(); api.interruption = null; api.offset = 0; api.count = 0;
+  props.onExit.mockReset(); localStorage.clear(); api.interruption = null; api.offset = 0; api.count = 0;
   api.prepare.mockResolvedValue({ ok: true, stream: { getTracks: () => [] }, mimeType: "audio/webm" });
   api.start.mockResolvedValue({ ok: true, backup: { ok: true } });
   api.stop.mockResolvedValue({ blob: new Blob(["full session"]), mimeType: "audio/webm", durationMs: 10000, path: "s1/a1/capture-id-1-unique.webm" });
@@ -162,7 +162,10 @@ it("puts a working save-and-leave action beside a recording interruption", async
   const notice = screen.getByRole("region", { name: "Recording interrupted" });
   expect(notice).toContainElement(screen.getByRole("button", { name: "Save recording and leave" }));
   await click(/Save recording and leave/);
-  expect(api.stop).toHaveBeenCalledOnce(); expect(props.onExit).toHaveBeenCalledOnce();
+  expect(api.stop).toHaveBeenCalledOnce();
+  expect(screen.getByRole("region", { name: "Recording not saved" })).toBeInTheDocument();
+  await click(/Leave anyway/);
+  expect(props.onExit).toHaveBeenCalledOnce();
 });
 
 it("returns focus from the instructions button to the step so Space still advances", async () => {
@@ -189,4 +192,35 @@ it("does not request feedback before finalization is confirmed", async () => {
   render(<Runner {...props} />); await click(/Start exercise/); await finishParagraphs(); await click(/Skip optional recall/);
   expect(screen.getByRole("alert")).toHaveTextContent(/result could not be confirmed/);
   expect(screen.getByTestId("feedback")).toHaveAttribute("data-enabled", "false");
+});
+
+it("keeps an unsuccessful leave visible, retries retained audio and exits only after confirmed save", async () => {
+  api.uploadCapture.mockRejectedValueOnce(new Error("offline"));
+  render(<Runner {...props} />); await click(/Start exercise/); await click(/Save my place and leave/);
+  expect(props.onExit).not.toHaveBeenCalled();
+  expect(screen.getByRole("region", { name: "Recording not saved" })).toHaveTextContent(/recording has not uploaded/);
+  expect(screen.getByRole("button", { name: /Hide paragraph/ })).toBeDisabled();
+  await click(/Try saving recording again/);
+  expect(api.stop).toHaveBeenCalledOnce(); expect(api.uploadCapture).toHaveBeenCalledTimes(2);
+  expect(props.onExit).toHaveBeenCalledOnce();
+});
+it("lets a student explicitly leave after a failed upload without discarding the retained backup", async () => {
+  api.uploadCapture.mockRejectedValueOnce(new Error("offline"));
+  render(<Runner {...props} />); await click(/Start exercise/); await click(/Save my place and leave/);
+  expect(api.discard).not.toHaveBeenCalled(); expect(props.onExit).not.toHaveBeenCalled();
+  await click(/Leave anyway/);
+  expect(props.onExit).toHaveBeenCalledOnce(); expect(api.discard).not.toHaveBeenCalled();
+});
+it("focuses the first paragraph when microphone setup becomes ready", async () => {
+  render(<Runner {...props} />); await click(/Start exercise/);
+  expect(screen.getByRole("heading", { name: "Read paragraph" })).toHaveFocus();
+});
+it("keeps native checkbox Space behavior and directs the selected recall to its Begin button", async () => {
+  render(<Runner {...props} />); await click(/Start exercise/); await finishParagraphs();
+  const checkbox = screen.getByRole("checkbox"); checkbox.focus();
+  fireEvent.keyDown(checkbox, { code: "Space" });
+  expect(api.saveCaptureWindow).toHaveBeenCalledTimes(2);
+  fireEvent.click(checkbox);
+  expect(screen.getByText(/Then choose Begin whole-passage recall/)).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /Begin whole-passage recall/ })).toBeInTheDocument();
 });

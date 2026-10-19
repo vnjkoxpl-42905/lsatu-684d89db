@@ -23,6 +23,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const [ready, setReady] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [leaveError, setLeaveError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [recaps, setRecaps] = useState<CheckpointRecap[]>(resume?.recaps ?? []);
   const [finished, setFinished] = useState<{ completed: boolean; seconds: number; error: string | null; retry: "save" | "refresh" | null } | null>(null);
@@ -62,7 +63,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
     return () => { mounted.current = false; generation.current += 1; cancel.current?.(); window.clearInterval(tick); window.removeEventListener("pagehide", hide); window.removeEventListener("pageshow", show); clock.current.pause(Date.now()); persist(); };
   }, []);
   useEffect(() => { if (ready && !latest.current.pending && !latest.current.done) clock.current.start(Date.now()); }, [ready]);
-  useEffect(() => { heading.current?.focus(); persist(); }, [index, recaps]);
+  useEffect(() => { heading.current?.focus(); persist(); }, [index, recaps, ready]);
   useEffect(() => { if (finished) heading.current?.focus(); }, [finished]);
   const updateRecaps = (next: CheckpointRecap[]) => { latest.current.recaps = next; setRecaps(next); };
   const guarded = async (action: () => Promise<void>) => {
@@ -162,7 +163,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
       retry: captureFailure.current ? null : retained.current ? "save" : refreshError ? "refresh" : null });
   };
   const act = () => guarded(async () => {
-    if (!ready || recorder.interruption) return;
+    if (!ready || recorder.interruption || leaveError) return;
     setMessage(null);
     if (step.kind === "read") { captureStart.current = silent ? null : recorder.getOffset(); advanceTo(index + 1); return; }
     if (step.kind === "recall") { await saveRecall(); advanceTo(index + 1); return; }
@@ -174,7 +175,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
     if (index + 1 >= steps.length) await finish(true); else advance();
   });
   const advanceTo = (next: number) => { if (index >= 2) setGuide(false); setIndex(next); };
-  const action = useRef<(() => void) | null>(null); action.current = ready && !busy && !finished ? () => void act() : null;
+  const action = useRef<(() => void) | null>(null); action.current = ready && !busy && !finished && !leaveError ? () => void act() : null;
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if (event.code !== "Space" || event.altKey || event.ctrlKey || event.metaKey) return;
@@ -184,7 +185,17 @@ export default function ContinuousRcRecallRunner(props: Props) {
     };
     document.addEventListener("keydown", keydown); return () => document.removeEventListener("keydown", keydown);
   }, []);
-  const leave = () => guarded(async () => { clock.current.pause(Date.now()); try { await storeCapture(); } catch { setMessage("The recording could not be uploaded. Return to Your attempts to check whether this device kept any audio."); } persist(); onExit(); });
+  const leave = () => guarded(async () => {
+    clock.current.pause(Date.now());
+    try { await storeCapture(); }
+    catch {
+      persist();
+      setLeaveError(captureFailure.current ?? "The recording has not uploaded. Keep this page open to retry, or leave and check Your attempts for any audio this device may have kept.");
+      return;
+    }
+    setLeaveError(null); persist(); onExit();
+  });
+
   if (finished) return <main className="rct-run rct-continuous" data-testid="rc-recall-finished"><h1 ref={heading} tabIndex={-1}>{finished.completed ? "Practice complete" : "Attempt ended early"}</h1><p role={finished.error ? "alert" : undefined}>{finished.error ?? "Your work is saved."}</p>{showElapsedTimer && <p>{formatClock(finished.seconds)}</p>}
     {finished.retry && <button type="button" disabled={busy} onClick={() => void guarded(() => finished.retry === "refresh" ? refreshProgress() : finish(finished.completed))}>{finished.retry === "refresh" ? "Refresh recording status" : "Try saving again"}</button>}
     <button type="button" onClick={onExit}>Back to RC Training</button><RcTrainingFeedback attemptId={attempt.id} enabled={finalized.current?.completed === true} /></main>;
@@ -192,9 +203,13 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const paragraph = segmented[step.passage];
   return <main className="rct-run rct-continuous" data-testid="rc-recall-runner" style={{ minHeight: "100vh", maxWidth: 1100, margin: "0 auto", padding: "24px clamp(16px,4vw,48px)" }}>
     <header className="flex flex-wrap items-center justify-between gap-3"><div><h1 className="text-xl font-semibold">RC Training</h1><p>Passage {step.passage + 1} of {passages.length} · Paragraph {step.paragraph + 1} of {paragraph.paragraphs.length}</p></div>
-      <div>{ready && !silent && <span role="status">{recorder.interruption ? "Recording interrupted" : "Recording · reading and recall"}</span>}{showElapsedTimer && <span className="ml-4">{formatClock(elapsed)}</span>}</div>
+      <div>{ready && !silent && <span role="status">{leaveError ? "Recording stopped · upload not confirmed" : recorder.interruption ? "Recording interrupted" : "Recording · reading and recall"}</span>}{showElapsedTimer && <span className="ml-4">{formatClock(elapsed)}</span>}</div>
       <button type="button" onClick={() => { setGuide((value) => !value); heading.current?.focus(); }}>{guide ? "Hide instructions" : "Show instructions"}</button></header>
     {guide && <aside className="my-5 rounded-lg border p-4 text-sm" aria-label="Exercise instructions"><p>{silent ? "Read each paragraph. Press Space to hide it and recall it in your own words. Press Space again to check." : "Read each paragraph. Press Space to hide it and recall it out loud. Press Space again to check. The microphone records throughout; feedback checks only your hidden-text recalls."}</p></aside>}
+    {leaveError && <section aria-label="Recording not saved" className="my-4"><p role="alert">{leaveError}</p>
+      {retained.current && <button type="button" disabled={busy} onClick={() => void leave()}>Try saving recording again</button>}
+      <button type="button" disabled={busy} onClick={() => { persist(); onExit(); }}>Leave anyway</button>
+    </section>}
     {!ready ? <section className="my-12" aria-label="Microphone setup"><h2>Start recording before you read</h2><p>Your microphone stays on while you read, recall and check. Only recall portions are used for feedback.</p>
       {waiting && <p role="status">Waiting for microphone permission. Allow access in your browser, or cancel this request.</p>}
       <button type="button" className="rct-run-button" disabled={busy} onClick={() => void begin()}>Start exercise</button>
@@ -206,8 +221,8 @@ export default function ContinuousRcRecallRunner(props: Props) {
       <section className="rct-source my-6 rounded-lg border p-4 sm:p-10" aria-label={hidden ? "Passage text hidden" : "Passage text"} style={{ background: "var(--rc-surface)", lineHeight: 1.85 }}>
         {hidden ? <p>{step.kind === "passage_recap" ? "Optional: recall the whole passage." : `Retell paragraph ${step.paragraph + 1} in your own words.`}</p> : step.visible.map((position) => <div key={position} className="mb-5 last:mb-0">{paragraph.paragraphs[position].labels.filter((label) => /^Passage [AB]$/i.test(label.trim())).map((label) => <p key={label} className="mb-3 font-semibold">{label}</p>)}<p>{paragraph.paragraphs[position].text}</p></div>)}
       </section>
-      {step.kind === "passage_recap" && !optionalStarted && <label className="mr-6"><input type="checkbox" checked={optionalSpoken} disabled={silent} onChange={(event) => setOptionalSpoken(event.target.checked)} /> Record this optional whole-passage recall for feedback</label>}
-      <div className="flex flex-wrap gap-3"><button type="button" className="rct-run-button" disabled={busy || !!recorder.interruption} onClick={() => void act()}>{step.kind === "read" ? "Hide paragraph" : step.kind === "recall" ? "Check recall" : step.kind === "confirm" ? (steps[index + 1]?.kind === "read" ? "Next paragraph" : "Finish passage") : optionalSpoken && !optionalStarted ? "Begin whole-passage recall" : (index + 1 === steps.length ? "Finish practice" : "Finish recall")} <span aria-hidden="true">(Space)</span></button>
+      {step.kind === "passage_recap" && !optionalStarted && <label className="mr-6"><input type="checkbox" checked={optionalSpoken} disabled={silent} onChange={(event) => setOptionalSpoken(event.target.checked)} /> Record this optional whole-passage recall for feedback. Then choose Begin whole-passage recall.</label>}
+      <div className="flex flex-wrap gap-3"><button type="button" className="rct-run-button" disabled={busy || !!recorder.interruption || !!leaveError} onClick={() => void act()}>{step.kind === "read" ? "Hide paragraph" : step.kind === "recall" ? "Check recall" : step.kind === "confirm" ? (steps[index + 1]?.kind === "read" ? "Next paragraph" : "Finish passage") : optionalSpoken && !optionalStarted ? "Begin whole-passage recall" : (index + 1 === steps.length ? "Finish practice" : "Finish recall")} <span aria-hidden="true">(Space)</span></button>
         {step.optional && !optionalStarted && <button type="button" disabled={busy} onClick={() => void guarded(async () => { if (index + 1 === steps.length) await finish(true); else advance(); })}>Skip optional recall</button>}</div>
     </>}
     {message && <p role="alert" className="my-4">{message}</p>}
