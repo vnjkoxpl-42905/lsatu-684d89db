@@ -41,3 +41,13 @@ The second fresh inspection returned REVISE, artifact `C:/Users/Joshu/AppData/Lo
 - F4 accepted and fixed: showing the paragraph after microphone setup moves focus to its heading.
 
 These final changes passed 21 focused runner tests and typecheck. They are later edits than the second inspection snapshot, so they are not described as independently approved. The default two-inspection budget is exhausted. Merge/publication remains pending Joshua's decision to extend inspection or proceed with the documented review limit. No additional provider grading calls were made.
+
+Joshua then explicitly selected "Run one final Opus inspection." The additional fresh inspection is authorized with the same exact requested model and low effort. The supported microphone interruption path and native checkbox keyboard behavior are now explicit in the plan. The final code also passed the repeated production build and canonical-content leak check; head 2b8a07d2 is pushed and PR225 remains draft pending this inspection. The outcome and release receipt will be recorded on PR225 and in the AI OS ledger.
+
+## Authorized additional inspection outcome
+
+Opus 5.5 low returned APPROVED with no high or medium findings, artifact `C:/Users/Joshu/AppData/Local/Temp/rc-opus-review-20261018/claudex-dt0zky51/result.json`. Source coverage included continuous recording, recovery, captures, feedback/history, grader contract/handler, migrations, instructions/demo/VTT and acceptance receipts. It did not run tests or view screenshots/video or live systems; host evidence remains separate.
+
+Three nonblocking follow-ups remain: shared-capture ASR retry exhaustion has a generic retry message; old legacy completion screens can gate feedback when one clip is unsaved (history still opens saved feedback); ASR/encoded duration drift near a capture's end can make an optional final recall ungradable. Backend follow-ups require a separately approved Lovable deployment and provider-call budget. No further paid action was taken.
+
+After this approval, Joshua requested replacing the confusing instructions link "Back to RC Training" and removing the hub sentence beginning "Practise remembering the details". These copy-only corrections use "Choose a passage" with a forward arrow and remove that sentence; existing page/instructions tests were updated. These later wording corrections are outside the approved code snapshot and are explicitly disclosed; the recording/grading workflow is unchanged.

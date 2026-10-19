@@ -116,7 +116,7 @@ describe("RC Training page: entry", () => {
   it("explains the goal first, with an example and a dedicated instruction page", () => {
     renderPage();
     expect(screen.getByRole("heading", { level: 1, name: "RC Training" })).toBeInTheDocument();
-    expect(screen.getByText(/Practise remembering the details and reasoning/)).toBeInTheDocument();
+    expect(screen.queryByText(/Practise remembering the details and reasoning/)).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Choose a passage" })).toHaveAttribute("href", "/reading-center/rc-recall#rc-recall-start");
     expect(screen.getByRole("link", { name: "See the instructions" })).toHaveAttribute("href", "/reading-center/rc-recall/instructions");
     expect(document.body.textContent).not.toMatch(/Cappuccino|Decaf/);

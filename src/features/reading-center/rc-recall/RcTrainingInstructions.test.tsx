@@ -10,7 +10,7 @@ describe("RC Training instructions", () => {
     const steps = screen.getByRole("heading", { name: "Work through one paragraph at a time" });
     expect(steps).toHaveFocus();
     expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({ block: "start" });
-    screen.getByRole("link", { name: "Back to RC Training" }).focus();
+    screen.getAllByRole("link", { name: "Choose a passage" })[0].focus();
     fireEvent.click(screen.getByRole("link", { name: "Read the written steps" }));
     expect(steps).toHaveFocus();
     expect(Element.prototype.scrollIntoView).toHaveBeenCalledTimes(2);
@@ -18,8 +18,7 @@ describe("RC Training instructions", () => {
   it("explains the paragraph routine and returns to passage choices", () => {
     const { container } = render(<MemoryRouter><RcTrainingInstructions /></MemoryRouter>);
     expect(screen.getByRole("heading", { level: 1, name: "How to practise RC Training" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Choose a passage" })).toHaveAttribute("href", "/reading-center/rc-recall#rc-recall-start");
-    expect(screen.getByRole("link", { name: "Back to RC Training" })).toHaveAttribute("href", "/reading-center/rc-recall#rc-recall-start");
+    for (const link of screen.getAllByRole("link", { name: "Choose a passage" })) expect(link).toHaveAttribute("href", "/reading-center/rc-recall#rc-recall-start");
     expect(container.textContent).toContain("Hide paragraph");
     expect(container.textContent).toContain("Check recall");
     expect(container.textContent).toContain("Recall only the new paragraph");

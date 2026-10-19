@@ -186,7 +186,6 @@ function AccountRecallPage() {
   return <main className="rct-page" data-reading-activity="rc-recall">
     <header className="rct-hub-header">
       <h1>RC Training</h1>
-      <p>Practise remembering the details and reasoning in a passage, one paragraph at a time.</p>
       <div className="rct-hub-actions">
         <Link to={{ hash: "#rc-recall-start" }} className="rct-button rct-button-primary">Choose a passage <ArrowDown size={16} aria-hidden="true" /></Link>
         <Link to="/reading-center/rc-recall/instructions" className="rct-text-button">See the instructions</Link>

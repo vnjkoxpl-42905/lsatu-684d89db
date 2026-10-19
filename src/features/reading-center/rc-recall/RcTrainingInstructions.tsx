@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { PURPOSE, RECAP_STANDARD } from "./lib/instructions";
 import RcTrainingVideo from "./RcTrainingVideo";
 import "./RcTraining.css";
@@ -17,7 +17,7 @@ export default function RcTrainingInstructions() {
   }, [location.hash, location.key]);
   return <main className="rct-page">
     <div className="rct-content">
-      <Link to={practicePath} className="rct-text-button"><ArrowLeft size={16} aria-hidden="true" />Back to RC Training</Link>
+      <Link to={practicePath} className="rct-text-button">Choose a passage<ArrowRight size={16} aria-hidden="true" /></Link>
       <header className="rct-section-heading">
         <div><h1 className="text-3xl font-semibold tracking-tight">How to practise RC Training</h1>
           <p>Read a paragraph, press Space to hide it, explain it aloud, then press Space again to check.</p></div>
