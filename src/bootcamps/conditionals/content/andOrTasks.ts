@@ -148,6 +148,28 @@ export function choiceStep(item: AndOrItem): ChoiceStep | null {
   return null;
 }
 
+/**
+ * The concise correct-answer line for a Pop Quiz: one natural sentence. Contrapositive answers read back as the if/then
+ * rule; status and settle answers are plain statements, never forced into a fake if/then.
+ */
+export function answerLine(item: AndOrItem): string {
+  const task = item.task;
+  const atoms = item.atoms;
+  if (task.kind === 'contrapositive') return ruleSentence(atoms, contrapositive(item.rule));
+  if (task.kind === 'negate') return `${capitalize(sideText(atoms, negateSide(sideOf(item.rule, task.side))))}.`;
+  if (task.kind === 'status') {
+    const text = sideText(atoms, sideOf(item.rule, task.side));
+    const status = statusAnswer(item);
+    return status === 'met' ? `The facts establish the whole group: ${text}.` : status === 'not-met' ? `The facts rule out the whole group: ${text}.` : `The facts do not establish the whole group yet: ${text}.`;
+  }
+  if (task.kind === 'settles') {
+    const text = literalText(atoms, task.target);
+    const settled = settleAnswer(item);
+    return settled === 'must' ? `The rules guarantee it: ${text}.` : settled === 'cannot' ? `The rules rule it out: ${text}.` : `The rules leave it open whether ${text}.`;
+  }
+  return '';
+}
+
 // ---- Building a diagram -----------------------------------------------------------------
 
 export interface BuilderState {

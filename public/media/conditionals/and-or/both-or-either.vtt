@@ -1,0 +1,41 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:06.979
+Here's a rule: a visitor gets a library card if the visitor shows photo ID and proof of address.
+
+2
+00:00:07.379 --> 00:00:11.347
+That word if covers a whole group, and the word and joins its two members.
+
+3
+00:00:12.147 --> 00:00:18.717
+AND needs both. Photo ID shown, proof of address shown: the group is established, and the rule applies.
+
+4
+00:00:19.117 --> 00:00:34.413
+Photo ID shown, nothing about proof of address. The group is not established yet. That doesn't mean it fails. We're still waiting on the second member. Unknown is not the same as denied, so a member the facts never mention hasn't been ruled out.
+
+5
+00:00:34.813 --> 00:00:38.888
+No photo ID at all? Then the group fails, whatever the address says.
+
+6
+00:00:39.688 --> 00:00:43.571
+Now a different rule: a pass is valid if it is stamped or signed.
+
+7
+00:00:43.971 --> 00:00:51.565
+OR needs at least one. Stamped is enough. Stamped and signed is enough too, because an OR doesn't push the second one away.
+
+8
+00:00:51.965 --> 00:00:54.589
+An OR fails only when every member fails.
+
+9
+00:00:55.389 --> 00:00:59.229
+So before you decide anything, find the whole group the word if covers.
+
+10
+00:00:59.629 --> 00:01:02.403
+Then say it out loud: both, or at least one?

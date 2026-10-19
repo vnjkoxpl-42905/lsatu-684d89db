@@ -22,10 +22,10 @@ describe('And/Or logic', () => {
   it('covers all four placements, each with the contrapositive the lesson teaches', () => {
     const [bothTrigger, eitherTrigger, bothRequired, oneRequired] = placementExamples.map(entry => entry.item);
     const text = (item: AndOrItem) => ruleSentence(item.atoms, contrapositive(item.rule));
-    expect(text(bothTrigger)).toBe('If the team does not qualify for the regional round, then the team does not submit a project or the team does not pass inspection.');
-    expect(text(eitherTrigger)).toContain('then no doctor’s note is on file and no accommodation letter is on file');
-    expect(text(bothRequired)).toBe('If the applicant does not receive a scholarship or the applicant does not receive a housing offer, then the applicant is not admitted.');
-    expect(text(oneRequired)).toBe('If the volunteer gets no shirt and the volunteer gets no badge, then the volunteer does not finish training.');
+    expect(text(bothTrigger)).toBe('If the team is not in the regional round, then the team does not submit a project or the team does not pass inspection.');
+    expect(text(eitherTrigger)).toBe('If the team is not in the regional round, then the team does not win its local round and the team gets no judge’s invitation.');
+    expect(text(bothRequired)).toBe('If the team has no signed safety form or the team has no registered coach, then the team is not in the regional round.');
+    expect(text(oneRequired)).toBe('If the team has no laptop and the team has no tablet, then the team is not in the regional round.');
   });
 
   it('distinguishes not both from neither, and keeps OR inclusive', () => {
@@ -65,9 +65,9 @@ describe('And/Or logic', () => {
   it('does not let a split AND trigger or a chosen OR branch add a guarantee', () => {
     const [project] = placementExamples.map(entry => entry.item);
     expect(settle([project.rule], { project: true }, { atom: 'regional' }, atomIdsOf([project.rule]))).toBe('open');
-    const volunteer = placementExamples[3].item;
-    expect(settle([volunteer.rule], { trained: true }, { atom: 'badge' }, atomIdsOf([volunteer.rule]))).toBe('open');
-    expect(settle([volunteer.rule], { trained: true, shirt: false }, { atom: 'badge' }, atomIdsOf([volunteer.rule]))).toBe('must');
+    const devices = placementExamples[3].item;
+    expect(settle([devices.rule], { regional: true }, { atom: 'tablet' }, atomIdsOf([devices.rule]))).toBe('open');
+    expect(settle([devices.rule], { regional: true, laptop: false }, { atom: 'tablet' }, atomIdsOf([devices.rule]))).toBe('must');
   });
 
   it('keeps the other conjunct needed when another rule reaches only one conjunct', () => {

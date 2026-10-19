@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, X } from 'lucide-react';
 import { andOrQuizzes, getAndOrDrill } from '../content/andOrItems';
-import { itemAtomIds, blankBuilder, checkBuild, choiceStep, expectedBuild, builtRule, type AndOrItem, type BuilderState, type ChoiceStep } from '../content/andOrTasks';
+import { answerLine, itemAtomIds, blankBuilder, checkBuild, choiceStep, expectedBuild, builtRule, type AndOrItem, type BuilderState, type ChoiceStep } from '../content/andOrTasks';
 import { atomOf, ruleSentence, type Atom } from '../content/andOrLogic';
 import { useCourseStep } from '../courseProgress';
 import { DrillProgress } from './DrillProgress';
@@ -76,7 +76,9 @@ function readSaved(key: string, accountState?: unknown): Saved {
 export interface ChoiceState { tried: number[]; outcome: Outcome }
 
 /** The learner's attempt always comes first. The first miss gets a hint for that choice; a second miss unlocks the answer. */
-export function ChoiceStepView({ item, step, state, onChange, idPrefix }: { item: AndOrItem; step: ChoiceStep; state: ChoiceState; onChange: (next: ChoiceState) => void; idPrefix: string }) {
+export function ChoiceStepView({ item, step, state, onChange, idPrefix, concise = false }: { item: AndOrItem; step: ChoiceStep; state: ChoiceState; onChange: (next: ChoiceState) => void; idPrefix: string; concise?: boolean }) {
+  // A Pop Quiz answers in one natural sentence. Practice keeps the full authored reasoning.
+  const explanation = concise ? answerLine(item) : item.why;
   const feedback = useRef<HTMLDivElement>(null);
   const first = useRef(true);
   const misses = state.tried.filter(index => !step.options[index]?.correct).length;
@@ -103,8 +105,8 @@ export function ChoiceStepView({ item, step, state, onChange, idPrefix }: { item
     })}</ol>
     <div ref={feedback} tabIndex={-1} role="status" aria-live="polite">
       {state.outcome === 'open' && lastMiss !== undefined && <div className="ao-feedback" data-kind="hint"><strong>Not that one.</strong>{step.options[lastMiss].hint}</div>}
-      {state.outcome === 'correct' && <div className="ao-feedback" data-kind="right"><strong>Yes.</strong>{item.why}</div>}
-      {state.outcome === 'revealed' && <div className="ao-feedback" data-kind="shown"><strong>Here is the answer.</strong>{item.why} This question counts as completed, not as answered correctly.</div>}
+      {state.outcome === 'correct' && <div className="ao-feedback" data-kind="right"><strong>Yes.</strong>{explanation}</div>}
+      {state.outcome === 'revealed' && <div className="ao-feedback" data-kind="shown"><strong>Here is the answer.</strong>{explanation} This question counts as completed, not as answered correctly.</div>}
     </div>
     {state.outcome === 'open' && misses >= 2 && <button type="button" className="ao-text-button" onClick={() => onChange({ ...state, outcome: 'revealed' })}>Show me the answer</button>}
   </>;
@@ -130,7 +132,7 @@ export function AndOrQuiz({ quizId }: { quizId: string }) {
       {finished
         ? <div className="ao-feedback" data-kind="right"><strong>That is all four.</strong>You worked {solved} of {items.length} questions. <button type="button" className="ao-text-button" onClick={() => { setStates({}); setIndex(0); setFinished(false); }}>Try them again</button></div>
         : <>
-          <ChoiceStepView key={item.id} item={item} step={step} state={state} idPrefix={`${quizId}-${item.id}`} onChange={next => setStates(previous => ({ ...previous, [item.id]: next }))}/>
+          <ChoiceStepView key={item.id} item={item} step={step} state={state} idPrefix={`${quizId}-${item.id}`} concise onChange={next => setStates(previous => ({ ...previous, [item.id]: next }))}/>
           {state.outcome !== 'open' && (index === items.length - 1
             ? <button type="button" className="ao-action" onClick={() => setFinished(true)}>Finish the quiz</button>
             : <button type="button" className="ao-action" onClick={() => setIndex(index + 1)}>Next question<ArrowRight size={16} aria-hidden="true"/></button>)}

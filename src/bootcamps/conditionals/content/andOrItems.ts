@@ -1,4 +1,4 @@
-import { group, lit, type Atom } from './andOrLogic';
+import { group, lit, type Atom, type Rule } from './andOrLogic';
 import type { AndOrItem } from './andOrTasks';
 
 /**
@@ -241,30 +241,44 @@ export const andOrQuizzes: Record<string, AndOrItem[]> = { 'and-or-both-or-eithe
 
 // ---- Worked examples carried through the lessons (never used as practice items) -------------
 
-const gym: Atom[] = [A('map', 'Map', 'the hiker has a map', 'the hiker has no map'), A('compass', 'Compass', 'the hiker has a compass', 'the hiker has no compass')];
-export const andOrLessonAtoms = { hike: gym } as const;
+// Lesson 2.1 carries one rule through the page (the library card, joined by AND), then a different rule built on the same
+// two facts (joined by OR) and one fresh example (the pass). They are different rules, never two versions of one rule.
+const idAtom = A('id', 'Photo ID', 'the visitor shows photo ID', 'the visitor does not show photo ID');
+const addressAtom = A('address', 'Proof of address', 'the visitor shows proof of address', 'the visitor does not show proof of address');
+const cardAtom = A('card', 'Library card', 'the visitor gets a library card', 'the visitor does not get a library card');
+export const libraryExample: { atoms: Atom[]; both: Rule; either: Rule } = {
+  atoms: [idAtom, addressAtom, cardAtom],
+  both: { sufficient: group('and', lit('id'), lit('address')), necessary: group('and', lit('card')) },
+  either: { sufficient: group('or', lit('id'), lit('address')), necessary: group('and', lit('card')) },
+};
+export const passExample: { atoms: Atom[]; rule: Rule } = {
+  atoms: [A('stamped', 'Stamped', 'the pass is stamped', 'the pass is not stamped'), A('signed', 'Signed', 'the pass is signed', 'the pass is not signed'), A('valid', 'Valid pass', 'the pass is valid', 'the pass is not valid')],
+  rule: { sufficient: group('or', lit('stamped'), lit('signed')), necessary: group('and', lit('valid')) },
+};
 
+// Lesson 2.2 keeps one setting (the regional round) and changes the rule four times. Each tab is a different rule.
+const regionalAtom = A('regional', 'Regional round', 'the team is in the regional round', 'the team is not in the regional round');
 export const placementExamples: { id: string; label: string; item: AndOrItem; probes: { fact: Record<string, boolean>; label: string }[] }[] = [
   { id: 'both-trigger', label: 'Both together are enough',
-    item: { id: 'ex-both-trigger', statement: 'A team qualifies for the regional round if it submits a project and passes inspection.',
-      atoms: [A('project', 'Submits project', 'the team submits a project', 'the team does not submit a project'), A('inspection', 'Passes inspection', 'the team passes inspection', 'the team does not pass inspection'), A('regional', 'Regional round', 'the team qualifies for the regional round', 'the team does not qualify for the regional round')],
+    item: { id: 'ex-both-trigger', statement: 'A team is in the regional round if it submits a project and passes inspection.',
+      atoms: [A('project', 'Submits project', 'the team submits a project', 'the team does not submit a project'), A('inspection', 'Passes inspection', 'the team passes inspection', 'the team does not pass inspection'), regionalAtom],
       rule: { sufficient: group('and', lit('project'), lit('inspection')), necessary: group('and', lit('regional')) }, task: { kind: 'settles', facts: {}, target: lit('regional') }, why: '' },
-    probes: [{ label: 'Project submitted', fact: { project: true } }, { label: 'Project submitted and inspection passed', fact: { project: true, inspection: true } }] },
+    probes: [{ label: 'The team submits a project', fact: { project: true } }, { label: 'The team submits a project and passes inspection', fact: { project: true, inspection: true } }] },
   { id: 'either-trigger', label: 'Either one is enough',
-    item: { id: 'ex-either-trigger', statement: 'A student gets extra time if a doctor’s note or an accommodation letter is on file.',
-      atoms: [A('note', 'Doctor’s note', 'a doctor’s note is on file', 'no doctor’s note is on file'), A('letter', 'Accommodation letter', 'an accommodation letter is on file', 'no accommodation letter is on file'), A('time', 'Extra time', 'the student gets extra time', 'the student does not get extra time')],
-      rule: { sufficient: group('or', lit('note'), lit('letter')), necessary: group('and', lit('time')) }, task: { kind: 'settles', facts: {}, target: lit('time') }, why: '' },
-    probes: [{ label: 'Only the note is on file', fact: { note: true, letter: false } }, { label: 'Only the letter is on file', fact: { note: false, letter: true } }, { label: 'Neither is on file', fact: { note: false, letter: false } }] },
+    item: { id: 'ex-either-trigger', statement: 'A team is in the regional round if it wins its local round or gets a judge’s invitation.',
+      atoms: [A('local', 'Wins local round', 'the team wins its local round', 'the team does not win its local round'), A('invite', 'Judge’s invitation', 'the team gets a judge’s invitation', 'the team gets no judge’s invitation'), regionalAtom],
+      rule: { sufficient: group('or', lit('local'), lit('invite')), necessary: group('and', lit('regional')) }, task: { kind: 'settles', facts: {}, target: lit('regional') }, why: '' },
+    probes: [{ label: 'Only the local round was won', fact: { local: true, invite: false } }, { label: 'Only the invitation was given', fact: { local: false, invite: true } }, { label: 'Neither happened', fact: { local: false, invite: false } }] },
   { id: 'both-required', label: 'Every member is required',
-    item: { id: 'ex-both-required', statement: 'Every admitted applicant receives a scholarship and a housing offer.',
-      atoms: [A('admitted', 'Admitted', 'the applicant is admitted', 'the applicant is not admitted'), A('scholarship', 'Scholarship', 'the applicant receives a scholarship', 'the applicant does not receive a scholarship'), A('housing', 'Housing offer', 'the applicant receives a housing offer', 'the applicant does not receive a housing offer')],
-      rule: { sufficient: group('and', lit('admitted')), necessary: group('and', lit('scholarship'), lit('housing')) }, task: { kind: 'settles', facts: {}, target: lit('housing') }, why: '' },
-    probes: [{ label: 'Admitted', fact: { admitted: true } }, { label: 'No housing offer', fact: { housing: false } }] },
+    item: { id: 'ex-both-required', statement: 'Every team in the regional round has a signed safety form and a registered coach.',
+      atoms: [regionalAtom, A('form', 'Safety form', 'the team has a signed safety form', 'the team has no signed safety form'), A('coach', 'Registered coach', 'the team has a registered coach', 'the team has no registered coach')],
+      rule: { sufficient: group('and', lit('regional')), necessary: group('and', lit('form'), lit('coach')) }, task: { kind: 'settles', facts: {}, target: lit('coach') }, why: '' },
+    probes: [{ label: 'The team is in the regional round', fact: { regional: true } }, { label: 'The team has no signed safety form', fact: { form: false } }] },
   { id: 'one-required', label: 'At least one is required',
-    item: { id: 'ex-one-required', statement: 'Every volunteer who finishes training gets a shirt or a badge.',
-      atoms: [A('trained', 'Finishes training', 'the volunteer finishes training', 'the volunteer does not finish training'), A('shirt', 'Shirt', 'the volunteer gets a shirt', 'the volunteer gets no shirt'), A('badge', 'Badge', 'the volunteer gets a badge', 'the volunteer gets no badge')],
-      rule: { sufficient: group('and', lit('trained')), necessary: group('or', lit('shirt'), lit('badge')) }, task: { kind: 'settles', facts: {}, target: lit('badge') }, why: '' },
-    probes: [{ label: 'Finished training', fact: { trained: true } }, { label: 'Finished training, got no shirt', fact: { trained: true, shirt: false } }] },
+    item: { id: 'ex-one-required', statement: 'Every team in the regional round has a laptop or a tablet.',
+      atoms: [regionalAtom, A('laptop', 'Laptop', 'the team has a laptop', 'the team has no laptop'), A('tablet', 'Tablet', 'the team has a tablet', 'the team has no tablet')],
+      rule: { sufficient: group('and', lit('regional')), necessary: group('or', lit('laptop'), lit('tablet')) }, task: { kind: 'settles', facts: {}, target: lit('tablet') }, why: '' },
+    probes: [{ label: 'The team is in the regional round', fact: { regional: true } }, { label: 'The team is in the round and has no laptop', fact: { regional: true, laptop: false } }] },
 ];
 
 export const negationExamples: { id: string; item: AndOrItem }[] = [

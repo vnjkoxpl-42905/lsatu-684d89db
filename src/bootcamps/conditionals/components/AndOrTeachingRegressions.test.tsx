@@ -19,18 +19,18 @@ const transfer = andOrDrills[3];
 const item = (id: string) => transfer.items.find(entry => entry.id === id)!;
 
 describe('probe: a denied necessary member', () => {
-  const housing = placementExamples.find(entry => entry.id === 'both-required')!;
-  it('concludes the applicant was not admitted when the housing offer is denied', () => {
-    const text = describeProbe(housing.item, { housing: false });
-    expect(text).toContain('the applicant is not admitted');
+  const required = placementExamples.find(entry => entry.id === 'both-required')!;
+  it('concludes the team is not in the round when a required safety form is denied', () => {
+    const text = describeProbe(required.item, { form: false });
+    expect(text).toContain('the team is not in the regional round');
     expect(text).not.toMatch(/no additional conclusion/);
   });
-  it('still reaches every member when the applicant is admitted', () => {
-    expect(describeProbe(housing.item, { admitted: true })).toMatch(/every member of the requirement follows/);
+  it('still reaches every member when the team is in the round', () => {
+    expect(describeProbe(required.item, { regional: true })).toMatch(/every member of the requirement follows/);
   });
-  it('still says no additional conclusion when nothing is denied or established', () => {
+  it('still says no additional conclusion under this rule when nothing is denied or established', () => {
     const either = placementExamples.find(entry => entry.id === 'either-trigger')!;
-    expect(describeProbe(either.item, { note: false, letter: false })).toMatch(/no additional conclusion/);
+    expect(describeProbe(either.item, { local: false, invite: false })).toMatch(/this rule gives no additional conclusion/);
   });
 });
 
@@ -54,7 +54,10 @@ describe('permission and boundary wording', () => {
 
 it('teaches that one known AND member leaves the group not established, not false', () => {
   render(<MemoryRouter><AndOrLesson id="and-or-both-or-either"/></MemoryRouter>);
-  expect(screen.getByText(/proof of address is still unknown, so the group is not established yet/)).toBeVisible();
+  const card = screen.getByText('Call the group met after one member.').closest('article') as HTMLElement;
+  expect(within(card).getByText('Proof of address').parentElement).toHaveTextContent('Unknown');
+  expect(within(card).getByText('Not established yet')).toBeVisible();
+  expect(within(card).queryByText(/ruled out/)).toBeNull();
   expect(screen.queryByText(/One member leaves it unmet/)).toBeNull();
 });
 

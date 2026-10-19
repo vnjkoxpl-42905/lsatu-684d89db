@@ -1,10 +1,11 @@
 import { useId, useState, type ReactNode } from 'react';
-import { ArrowRight, Check, RotateCcw, X } from 'lucide-react';
+import { ArrowRight, Check, Minus, RotateCcw, X } from 'lucide-react';
 import { Pill } from './ContrapositiveVisuals';
 import {
   allAssignments, atomIdsOf, contrapositive, converse, diagramText, literalShort, literalText, negateSide, ruleHolds, ruleMistakes, ruleSentence, sideStatus, sideText, sideValue,
   type Atom, type Facts, type Rule, type Side,
 } from '../content/andOrLogic';
+import { andOrLectureMedia, andOrLectureTranscript, andOrLectures } from '../content/andOrLectures';
 import { placementExamples } from '../content/andOrItems';
 import type { AndOrItem } from '../content/andOrTasks';
 import './and-or.css';
@@ -12,12 +13,13 @@ import './and-or.css';
 const yesNo = (value: boolean) => value ? <><Check size={14} aria-hidden="true"/><span>Yes</span></> : <><X size={14} aria-hidden="true"/><span>No</span></>;
 
 /** One side of a diagram: the members stacked, with the connector sitting on its own line between them. */
-function SideStack({ atoms, side, tone, label }: { atoms: Atom[]; side: Side; tone: 'amber' | 'teal'; label: string }) {
-  return <div className="ao-side" data-tone={tone}>
+function SideStack({ atoms, side, toneOf, label, cancelled = [] }: { atoms: Atom[]; side: Side; toneOf: (atom: string) => 'amber' | 'teal'; label: string; cancelled?: string[] }) {
+  return <div className="ao-side" data-tone="plain">
     <span className="ao-side-label">{label}</span>
-    <ul>{side.members.map((member, index) => <li key={`${member.atom}-${index}`}>
+    <ul>{side.members.map((member, index) => <li key={`${member.atom}-${index}`} data-cancelled={cancelled.includes(member.atom)}>
       {index > 0 && <span className="ao-connector" data-op={side.op}>{side.op.toUpperCase()}</span>}
-      <Pill text={literalShort(atoms, member)} tone={tone === 'amber' ? 'amber' : 'teal'} negated={!!member.negated}/>
+      <Pill text={literalShort(atoms, member)} tone={toneOf(member.atom)} negated={!!member.negated}/>
+      {cancelled.includes(member.atom) && <span className="ao-cancel">NOT + NOT = no NOT</span>}
     </li>)}</ul>
   </div>;
 }
@@ -25,14 +27,19 @@ function SideStack({ atoms, side, tone, label }: { atoms: Atom[]; side: Side; to
 /**
  * A rule drawn the way the lecture recommends: each group stacked vertically, with the arrow leaving the group
  * itself rather than one member. The plain-language readback is always present, never only the picture.
+ * `cancelled` marks members whose existing NOT just cancelled, so a double negation is seen and not only stated.
+ * Colour travels with the idea, as on the Contrapositive page: an idea that was sufficient in the `origin` rule (default: this rule)
+ * stays amber and a necessary one stays teal, however the sides are flipped, negated or switched. The side labels give the current role.
  */
-export function AndOrDiagram({ atoms, rule, title, readback = true }: { atoms: Atom[]; rule: Rule; title?: string; readback?: boolean }) {
+export function AndOrDiagram({ atoms, rule, title, readback = true, cancelled, origin }: { atoms: Atom[]; rule: Rule; title?: string; readback?: boolean; cancelled?: string[]; origin?: Rule }) {
+  const source = origin ?? rule;
+  const toneOf = (atom: string): 'amber' | 'teal' => source.sufficient.members.some(member => member.atom === atom) ? 'amber' : 'teal';
   return <figure className="ao-diagram" aria-label={`${title ? `${title}: ` : ''}${diagramText(atoms, rule)}`}>
     {title && <figcaption>{title}</figcaption>}
     <div className="ao-diagram-row" aria-hidden="true">
-      <SideStack atoms={atoms} side={rule.sufficient} tone="amber" label="Left side · sufficient"/>
+      <SideStack atoms={atoms} side={rule.sufficient} toneOf={toneOf} label="Left side · sufficient" cancelled={cancelled}/>
       <span className="ao-arrow"><b>must</b><ArrowRight size={28} strokeWidth={3}/></span>
-      <SideStack atoms={atoms} side={rule.necessary} tone="teal" label="Right side · necessary"/>
+      <SideStack atoms={atoms} side={rule.necessary} toneOf={toneOf} label="Right side · necessary" cancelled={cancelled}/>
     </div>
     {readback && <p className="ao-readback">{ruleSentence(atoms, rule)}</p>}
   </figure>;
@@ -40,8 +47,11 @@ export function AndOrDiagram({ atoms, rule, title, readback = true }: { atoms: A
 
 // ---- Both, or at least one ------------------------------------------------------------------
 
-/** The four combinations of two facts, with AND and OR answering each. The learner sets the facts. */
-export function FourCombos({ first, second, mode = 'meaning' }: { first: Atom; second: Atom; mode?: 'meaning' | 'opposite' }) {
+/**
+ * The four combinations of two facts, answered by two columns. The learner sets the facts. When `heads` is given the
+ * two columns are two different rules (for example the same two facts joined by AND, then by OR) and say so.
+ */
+export function FourCombos({ first, second, mode = 'meaning', heads }: { first: Atom; second: Atom; mode?: 'meaning' | 'opposite'; heads?: [string, string] }) {
   const [a, setA] = useState(true);
   const [b, setB] = useState(false);
   const atoms = [first, second];
@@ -52,15 +62,15 @@ export function FourCombos({ first, second, mode = 'meaning' }: { first: Atom; s
   const rows = allAssignments([first.id, second.id]);
   const now = { [first.id]: a, [second.id]: b };
   const columns = mode === 'meaning'
-    ? [{ key: 'and', head: 'Both (AND)', side: and }, { key: 'or', head: 'At least one (OR)', side: or }]
+    ? [{ key: 'and', head: heads?.[0] ?? 'Both (AND)', side: and }, { key: 'or', head: heads?.[1] ?? 'At least one (OR)', side: or }]
     : [{ key: 'and', head: 'Both hold', side: and }, { key: 'notBoth', head: 'Not both', side: notBoth }, { key: 'neither', head: 'Neither', side: neither }];
   const summary = mode === 'meaning'
     ? `${literalText(atoms, { atom: first.id, negated: !a })}, and ${literalText(atoms, { atom: second.id, negated: !b })}. Both: ${sideValue(and, now) ? 'yes' : 'no'}. At least one: ${sideValue(or, now) ? 'yes' : 'no'}.`
     : `${literalText(atoms, { atom: first.id, negated: !a })}, and ${literalText(atoms, { atom: second.id, negated: !b })}. Both hold: ${sideValue(and, now) ? 'yes' : 'no'}. Not both: ${sideValue(notBoth, now) ? 'yes' : 'no'}. Neither: ${sideValue(neither, now) ? 'yes' : 'no'}.`;
   return <div className="ao-combos">
     <div className="ao-combo-controls" role="group" aria-label="Set the facts">
-      <button type="button" aria-pressed={a} onClick={() => setA(value => !value)}><span aria-hidden="true">{a ? <Check size={15}/> : <X size={15}/>}</span>{a ? first.yes : first.no}</button>
-      <button type="button" aria-pressed={b} onClick={() => setB(value => !value)}><span aria-hidden="true">{b ? <Check size={15}/> : <X size={15}/>}</span>{b ? second.yes : second.no}</button>
+      <button type="button" aria-pressed={a} onClick={() => setA(value => !value)}><span aria-hidden="true">{a ? <Check size={15}/> : <X size={15}/>}</span>Click here to change: {a ? first.yes : first.no}</button>
+      <button type="button" aria-pressed={b} onClick={() => setB(value => !value)}><span aria-hidden="true">{b ? <Check size={15}/> : <X size={15}/>}</span>Click here to change: {b ? second.yes : second.no}</button>
     </div>
     <p className="ao-combo-now" role="status">{summary}</p>
     <table className="ao-table">
@@ -74,8 +84,31 @@ export function FourCombos({ first, second, mode = 'meaning' }: { first: Atom; s
   </div>;
 }
 
+/**
+ * A group checked against the facts, member by member. Words and icons carry each state, never colour alone.
+ * An unmentioned member is Unknown, which is not the same as No.
+ */
+export function GroupCheck({ atoms, side, facts }: { atoms: Atom[]; side: Side; facts: Facts }) {
+  const ids = side.members.map(member => member.atom);
+  const status = sideStatus(side, facts, ids);
+  const result = status === 'met' ? 'Group established' : status === 'not-met' ? 'Group ruled out' : 'Not established yet';
+  return <div className="ao-groupcheck" data-status={status}>
+    <ul>{side.members.map((member, index) => {
+      const known = facts[member.atom];
+      const holds = known === undefined ? undefined : known !== !!member.negated;
+      return <li key={`${member.atom}-${index}`}>
+        {index > 0 && <span className="ao-connector" data-op={side.op}>{side.op.toUpperCase()}</span>}
+        <Pill text={literalShort(atoms, member)} tone="amber" negated={!!member.negated}/>
+        <span className="ao-gc-state" data-state={holds === undefined ? 'unknown' : holds ? 'yes' : 'no'}>{holds === undefined ? <Minus size={14} aria-hidden="true"/> : holds ? <Check size={14} aria-hidden="true"/> : <X size={14} aria-hidden="true"/>}{holds === undefined ? 'Unknown' : holds ? 'Yes' : 'No'}</span>
+      </li>;
+    })}</ul>
+    <p className="ao-gc-result" role="img" aria-label={`${side.op.toUpperCase()} group. ${result}.`}>{status === 'met' ? <Check size={16} aria-hidden="true"/> : status === 'not-met' ? <X size={16} aria-hidden="true"/> : <Minus size={16} aria-hidden="true"/>}{result}</p>
+  </div>;
+}
+
 // ---- Where the group sits ---------------------------------------------------------------------
 
+/** What the rule gives for some facts. Exported so the logic can be tested against the authored rules. */
 export const describeProbe = (item: AndOrItem, facts: Facts) => {
   const ids = atomIdsOf([item.rule]);
   const trigger = sideStatus(item.rule.sufficient, facts, ids);
@@ -92,10 +125,10 @@ export const describeProbe = (item: AndOrItem, facts: Facts) => {
   if (sideStatus(target, facts, ids) === 'not-met') {
     return `Given: ${known}. The facts rule out the whole requirement (${text(target)}), so the sufficient side cannot be met. By the contrapositive: ${text(negateSide(item.rule.sufficient))}.`;
   }
-  return `Given: ${known}. This does not establish the whole sufficient side (${text(item.rule.sufficient)}), so the rule gives no additional conclusion from these facts.`;
+  return `Given: ${known}. This does not establish the whole sufficient side (${text(item.rule.sufficient)}), so this rule gives no additional conclusion from these facts.`;
 };
 
-/** Four placements of a group, one tab each. Pick a fact and read what the rule does and does not give. */
+/** Four different rules about one setting, one tab each. Pick a fact and read what the rule does and does not give. */
 export function PlacementExplorer() {
   const [index, setIndex] = useState(0);
   const [probe, setProbe] = useState<number | null>(null);
@@ -103,7 +136,7 @@ export function PlacementExplorer() {
   const example = placementExamples[index];
   const choose = (next: number) => { setIndex(next); setProbe(null); };
   return <div className="ao-explorer">
-    <div className="ao-tabs" role="tablist" aria-label="Where the group sits">
+    <div className="ao-tabs" role="tablist" aria-label="Four different rules about the regional round">
       {placementExamples.map((entry, i) => <button key={entry.id} id={`${id}-t${i}`} role="tab" type="button" aria-selected={i === index} aria-controls={`${id}-panel`} tabIndex={i === index ? 0 : -1}
         onClick={() => choose(i)}
         onKeyDown={event => {
@@ -116,9 +149,10 @@ export function PlacementExplorer() {
         }}>{entry.label}</button>)}
     </div>
     <div className="ao-explorer-panel" role="tabpanel" id={`${id}-panel`} aria-labelledby={`${id}-t${index}`}>
+      <p className="ao-rule-tag">Rule {index + 1} of {placementExamples.length}. A different rule from the others.</p>
       <p className="ao-sentence">{example.item.statement}</p>
       <AndOrDiagram atoms={example.item.atoms} rule={example.item.rule}/>
-      <p className="ao-probe-lead">Try a fact:</p>
+      <p className="ao-probe-lead">Click a fact to test it against the whole group:</p>
       <div className="ao-probes" role="group" aria-label="Facts to try">{example.probes.map((entry, i) => <button key={entry.label} type="button" aria-pressed={probe === i} onClick={() => setProbe(i)}>{entry.label}</button>)}</div>
       <p className="ao-probe-result" role="status">{probe === null ? 'Choose a fact to see what the rule gives.' : describeProbe(example.item, example.probes[probe].fact)}</p>
     </div>
@@ -143,10 +177,15 @@ export function ContrapositiveDemo({ item, label }: { item: AndOrItem; label: st
   const { atoms, rule } = item;
   const mistakes = ruleMistakes(rule);
   const shown: Rule = stage === 0 ? rule : stage === 1 ? converse(rule) : stage === 2 ? mistakes.find(m => m.kind === 'keeps-connector')!.rule : contrapositive(rule);
+  // A NOT that was already on a member cancels when the member is negated. Name it and mark it where it happens.
+  const cancelled = [...rule.sufficient.members, ...rule.necessary.members].filter(member => member.negated).map(member => member.atom);
+  const cancelNames = cancelled.map(id => `“${atoms.find(a => a.id === id)!.short}”`).join(' and ');
   const captions = [
     'Start with the rule as it stands.',
     'Step 1. The sides switched places. Nothing is negated yet, so this is not a rule we can use.',
-    'Step 2. Every member now carries a NOT. A NOT that was already there cancels. The connectors have not changed yet.',
+    cancelled.length
+      ? `Step 2. Every member now carries a NOT. ${cancelNames} already had one, so the two cancel and it reads positive again. The connectors have not changed yet.`
+      : 'Step 2. Every member now carries a NOT. The connectors have not changed yet.',
     'Step 3. A group of two or more changes its connector when it is negated. Now the whole requirement is denied, member by member.',
   ];
   const ids = atomIdsOf([rule]);
@@ -154,7 +193,7 @@ export function ContrapositiveDemo({ item, label }: { item: AndOrItem; label: st
   const steps: [string, string][] = [['Flip the sides', 'Click here to switch the left and right sides'], ['Put NOT on every member', 'Click here to negate each member'], ['Switch the connectors', 'Click here to change AND to OR and OR to AND']];
   return <div className="ao-demo" data-stage={stage} role="group" aria-label={label}>
     <p className="ct-flip-sentence" data-kind="rule"><span>The rule</span>{ruleSentence(atoms, rule)}</p>
-    <AndOrDiagram atoms={atoms} rule={shown} readback={false} title={stage === 0 ? 'Original' : stage === 3 ? 'Contrapositive' : `After step ${stage}`}/>
+    <AndOrDiagram atoms={atoms} rule={shown} readback={false} title={stage === 0 ? 'Original' : stage === 3 ? 'Contrapositive' : `After step ${stage}`} cancelled={stage >= 2 ? cancelled : []} origin={rule}/>
     <p className="ct-flip-sentence" data-kind="result" data-show={stage === 3} aria-hidden={stage !== 3}><span>The contrapositive</span>{ruleSentence(atoms, contrapositive(rule))}</p>
     <p className="ao-caption" role="status">{captions[stage]}</p>
     <div className="ct-flip-controls">
@@ -174,16 +213,38 @@ export function ContrapositiveDemo({ item, label }: { item: AndOrItem; label: st
 
 // ---- Tempting errors --------------------------------------------------------------------------
 
-export interface ErrorCard { verdict: 'right' | 'wrong'; how: string; body: ReactNode; why: string }
-/** Right and wrong side by side, in the existing Wrong / Right treatment. */
-export function ErrorCards({ start, cards }: { start: ReactNode; cards: ErrorCard[] }) {
+/** A slim Wrong or Right card: status badge, one line saying what was changed, and a diagram that shows it. */
+export interface ErrorCard { verdict: 'right' | 'wrong'; how: string; diagram: ReactNode }
+export function ErrorCards({ start, cards }: { start: { label?: string; text: string }; cards: ErrorCard[] }) {
   return <div className="ct-moves3">
-    <p className="ct-moves3-start">{start}</p>
-    <div className="ct-moves3-grid">{cards.map(card => <article className="ct-move" data-verdict={card.verdict} key={card.how}>
+    <p className="ct-moves3-start"><span>{start.label ?? 'The rule'}</span><strong>{start.text}</strong></p>
+    <div className="ct-moves3-grid">{cards.map(card => <article className="ct-move ao-slim" data-verdict={card.verdict} key={card.how}>
       <p className="ct-move-badge">{card.verdict === 'right' ? <Check size={16} strokeWidth={3} aria-hidden="true"/> : <X size={16} strokeWidth={3} aria-hidden="true"/>}{card.verdict === 'right' ? 'Right' : 'Wrong'}</p>
       <p className="ct-move-how">{card.how}</p>
-      <div className="ao-card-body">{card.body}</div>
-      <p className="ct-move-why">{card.why}</p>
+      <div className="ao-slim-diagram">{card.diagram}</div>
     </article>)}</div>
   </div>;
+}
+
+// ---- The film -----------------------------------------------------------------------------------
+
+/**
+ * The lesson's narrated film. The learner starts it; nothing autoplays. The written version renders only when the
+ * learner opens it or the video fails, so it is never a second always-open copy of the narration.
+ */
+export function AndOrLecture({ lessonId }: { lessonId: string }) {
+  const [failed, setFailed] = useState(false);
+  const [read, setRead] = useState(false);
+  const lecture = andOrLectures[lessonId];
+  if (!lecture) return null;
+  const media = andOrLectureMedia(lecture.slug);
+  return <figure className="ct-lecture ao-lecture">
+    <video controls preload="metadata" playsInline poster={media.poster} aria-label={`A short lecture: ${lecture.title}`} onError={() => setFailed(true)}>
+      <source src={media.video} type="video/mp4" onError={() => setFailed(true)}/>
+      <track kind="captions" src={media.captions} srcLang="en" label="English" default/>
+      Your browser cannot play this video. The lesson is written out below.
+    </video>
+    {failed && <p role="alert" className="ct-lecture-error">The video couldn't load. The lesson is written out below.</p>}
+    <details open={failed || undefined} onToggle={event => setRead(event.currentTarget.open)}><summary>Read what the video says</summary>{(read || failed) && <p>{andOrLectureTranscript(lessonId)}</p>}</details>
+  </figure>;
 }
