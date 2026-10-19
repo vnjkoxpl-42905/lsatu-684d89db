@@ -10,6 +10,14 @@ const ready = (id: string): RcGradeItem => ({ ...pending(id), status: "ready", r
 } });
 beforeEach(() => vi.resetAllMocks());
 describe("RC recall feedback", () => {
+  it("uses source-aware display labels by recap id and keeps server labels as fallback", async () => {
+    vi.mocked(getRcGrades).mockResolvedValue({ attemptId: "attempt", items: [pending("5"), pending("other")] });
+    render(<RcTrainingFeedback attemptId="attempt" enabled displayLabels={{ "5": "Passage B · Paragraph 1 of 4" }} />);
+    expect(await screen.findByRole("heading", { name: "Passage B · Paragraph 1 of 4" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Paragraph 5" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Paragraph other" })).toBeInTheDocument();
+    expect(gradeRcRecap).not.toHaveBeenCalled();
+  });
   it("does not let a delayed initial status overwrite an explicit review", async () => {
     let resolveInitial!: (value: Awaited<ReturnType<typeof getRcGrades>>) => void;
     vi.mocked(getRcGrades).mockReturnValueOnce(new Promise((resolve) => { resolveInitial = resolve; })).mockResolvedValue({ attemptId: "attempt", items: [pending("1")] });

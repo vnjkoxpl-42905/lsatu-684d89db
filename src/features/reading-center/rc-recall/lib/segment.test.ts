@@ -1,9 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { isSegmentable, PassageSegmentError, segmentPassage } from "./segment";
+import { isSegmentable, PassageSegmentError, segmentPassage, paragraphDisplayLabel } from "./segment";
+import { recapLabel } from "./history";
 
 import { COMPARATIVE, STANDARD } from "./fixtures";
 
 describe("segmentPassage", () => {
+  it("shares comparative local numbering with saved recall labels without changing global keys", () => {
+    const source = segmentPassage("Passage A\n\nA first.\n\nA second.\n\nPassage B\n\nB first.");
+    expect(paragraphDisplayLabel(source, 2)).toBe("Passage B · Paragraph 1 of 1");
+    const recap = { recap_key: "p2-para3-recall", kind: "recall" as const, passage_position: 2 };
+    expect(recapLabel(recap, source, 4)).toBe("Selected passage 2 · Passage B · Paragraph 1 of 1");
+    expect(recap.recap_key).toBe("p2-para3-recall");
+    expect(recapLabel(recap)).toBe("Passage 2, paragraph 3");
+    expect(paragraphDisplayLabel(source, 99)).toBeNull();
+    expect(paragraphDisplayLabel(segmentPassage("Whole first.\n\nWhole second."), 1)).toBe("Paragraph 2 of 2");
+  });
   it("splits a standard passage into paragraphs", () => {
     const s = segmentPassage(STANDARD);
     expect(s.comparative).toBe(false);

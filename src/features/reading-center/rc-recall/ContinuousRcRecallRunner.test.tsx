@@ -5,6 +5,9 @@ import { segmentPassage } from "./lib/segment";
 import type { RcPassage } from "@/features/rc/lib/rcTypes";
 import type { AttemptRow } from "./lib/attempts";
 import { ReadingExerciseLayout } from "../components/ReadingExerciseLayout";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import type { RcPreptestFile } from "@/features/rc/lib/rcTypes";
 const api = vi.hoisted(() => ({ loadPassageProgress: vi.fn(), savePassageProgress: vi.fn(), prepare: vi.fn(), start: vi.fn(), stop: vi.fn(), createCapture: vi.fn(), saveCaptureWindow: vi.fn(), uploadCapture: vi.fn(), insertRecap: vi.fn(), finalizeAttempt: vi.fn(), readAttemptProgress: vi.fn(), discard: vi.fn(), offset: 0, count: 0, interruption: null as string | null }));
 vi.mock("./lib/passageProgress", () => ({ loadPassageProgress: api.loadPassageProgress, savePassageProgress: api.savePassageProgress }));
 vi.mock("./lib/captures", () => ({ createCapture: api.createCapture, saveCaptureWindow: api.saveCaptureWindow, uploadCapture: api.uploadCapture }));
@@ -35,6 +38,38 @@ beforeEach(() => {
   api.finalizeAttempt.mockResolvedValue({ completed: true, elapsed_seconds: 10 });
 });
 describe("continuous RC recording", () => {
+  it("presents all eight complete bank paragraphs with local A/B numbering and unchanged recall identities", async () => {
+    const file: RcPreptestFile = JSON.parse(readFileSync(resolve(process.cwd(), "public/data/rc/RC-PT140.json"), "utf8"));
+    const source = file.passages.find((item) => item.passageId === 15)!;
+    const segmented = segmentPassage(source.text);
+    expect(source.title).toBe("Online Game Currencies");
+    expect(segmented.paragraphs.map((item) => item.sub)).toEqual(["A", "A", "A", "A", "B", "B", "B", "B"]);
+    render(<Runner {...props} passages={[source]} segmented={[segmented]} attempt={{ ...attempt, passage_ids: [15] }} />);
+    await click(/Start exercise/);
+    for (let index = 0; index < segmented.paragraphs.length; index++) {
+      const current = segmented.paragraphs[index];
+      expect(screen.getByText(`Passage ${current.sub} · Paragraph ${index % 4 + 1} of 4`)).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Read the whole paragraph" })).toBeInTheDocument();
+      const sourceArea = screen.getByRole("region", { name: "Passage text" });
+      expect(sourceArea.querySelectorAll("p")).toHaveLength(1);
+      expect(sourceArea.querySelector("p")!.textContent).toBe(current.text);
+      expect(screen.getByRole("heading", { name: `Passage ${current.sub}` })).toBeInTheDocument();
+      api.offset += 1000; await space();
+      expect(screen.getByRole("heading", { name: "Recall the whole paragraph" })).toBeInTheDocument();
+      expect(screen.getByText("Explain the whole paragraph in your own words.")).toBeInTheDocument();
+      expect(screen.queryByText(current.text)).not.toBeInTheDocument();
+      api.offset += 1000; await space();
+      expect(api.saveCaptureWindow).toHaveBeenLastCalledWith(expect.objectContaining({ recapKey: `p1-para${index + 1}-recall` }));
+      const checked = screen.getByRole("region", { name: "Passage text" });
+      expect([...checked.querySelectorAll("p")].map((item) => item.textContent)).toEqual(segmented.paragraphs.slice(0, index + 1).map((item) => item.text));
+      expect([...checked.querySelectorAll("h3")].map((item) => item.textContent)).toEqual(index < 4 ? ["Passage A"] : ["Passage A", "Passage B"]);
+      await click(/Next paragraph|Finish passage/);
+    }
+    expect(screen.getByText("Whole-passage recall")).toBeInTheDocument();
+    expect(screen.queryByText(/Paragraph \d of/)).not.toBeInTheDocument();
+    expect(screen.queryByText(segmented.paragraphs[0].text)).not.toBeInTheDocument();
+  });
+
   it("starts once before reading, stores only hidden-text windows and uploads once on leaving", async () => {
     const layout = vi.fn(); render(<ReadingExerciseLayout.Provider value={layout}><Runner {...props} /></ReadingExerciseLayout.Provider>);
     expect(layout).toHaveBeenCalledWith(true);
@@ -175,11 +210,11 @@ it("returns focus from the instructions button to the step so Space still advanc
   render(<Runner {...props} />); await click(/Start exercise/);
   const button = screen.getByRole("button", { name: "Show instructions" }); button.focus();
   await click(/Show instructions/);
-  expect(screen.getByRole("heading", { name: "Read paragraph" })).toHaveFocus();
+  expect(screen.getByRole("heading", { name: "Read the whole paragraph" })).toHaveFocus();
   api.offset = 1000; await space();
   expect(screen.getByLabelText("Passage text hidden")).toBeInTheDocument();
   const show = screen.getByRole("button", { name: "Hide instructions" }); show.focus(); await click(/Hide instructions/);
-  expect(screen.getByRole("heading", { name: "Recall paragraph" })).toHaveFocus();
+  expect(screen.getByRole("heading", { name: "Recall the whole paragraph" })).toHaveFocus();
   api.offset = 2000; await space();
   expect(screen.getByRole("heading", { name: "Check your recall" })).toBeInTheDocument();
 });
@@ -216,7 +251,7 @@ it("lets a student explicitly leave after a failed upload without discarding the
 });
 it("focuses the first paragraph when microphone setup becomes ready", async () => {
   render(<Runner {...props} />); await click(/Start exercise/);
-  expect(screen.getByRole("heading", { name: "Read paragraph" })).toHaveFocus();
+  expect(screen.getByRole("heading", { name: "Read the whole paragraph" })).toHaveFocus();
 });
 it("begins and finishes an optional spoken window without a checkbox or another microphone start", async () => {
   render(<Runner {...props} />); await click(/Start exercise/); await finishParagraphs();
@@ -279,7 +314,7 @@ it("keeps four passage clocks separate, freezes completed time and continues the
   expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 5");
   now += 3000; await click(/Skip optional recall/);
   expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 0");
-  expect(screen.getByText(/Passage 2 of 4/)).toBeInTheDocument();
+  expect(screen.getByText(/Selected passage 2 of 4/)).toBeInTheDocument();
   now += 2000; await click(/Pause and return to passages/);
   const checkpoint = listCheckpoints("s1")[0];
   expect(checkpoint.sectionMs).toBe(10000);

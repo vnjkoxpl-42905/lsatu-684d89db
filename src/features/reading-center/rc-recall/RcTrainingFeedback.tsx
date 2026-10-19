@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { getRcGrades, gradeRcRecap, type RcGradeItem } from "./lib/grading";
 
 /** Feedback is requested deliberately, after recordings have been saved. */
-export default function RcTrainingFeedback({ attemptId, enabled }: { attemptId: string; enabled: boolean }) {
+export default function RcTrainingFeedback({ attemptId, enabled, displayLabels }: { attemptId: string; enabled: boolean; displayLabels?: Record<string, string> }) {
   const [items, setItems] = useState<RcGradeItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [checkingStatus, setCheckingStatus] = useState(false);
@@ -73,7 +73,7 @@ export default function RcTrainingFeedback({ attemptId, enabled }: { attemptId: 
       {processing && <button type="button" disabled={loading} onClick={() => void refreshStatus()} className="ml-3 mt-3 min-h-11 rounded-lg border px-4 text-sm font-semibold" style={{ borderColor: "var(--rc-outline-2)" }}>{checkingStatus ? "Checking feedback status…" : "Check feedback status"}</button>}
       {loaded && items.length === 0 && <p className="mt-3 text-sm">There are no recorded recalls in this attempt.</p>}
       <div aria-live="polite" className="mt-4 space-y-3">{items.map((item, index) => <article key={item.recapId} className="rounded-lg border p-4" style={{ borderColor: "var(--rc-outline-2)" }}>
-        <h4 className="font-semibold">{item.label || `Recording ${index + 1}`}</h4>
+        <h4 className="font-semibold">{displayLabels?.[item.recapId] || item.label || `Recording ${index + 1}`}</h4>
         {item.status !== "ready" && <p className="mt-2 text-sm">{item.reason || (item.status === "processing" ? "Feedback is being prepared. Check its status in a moment." : item.status === "ungraded" ? "Ready for feedback." : "This recording could not be reviewed.")}</p>}
         {item.status === "ready" && item.grade && <>
           {item.grade.assessment.coverage && <div className="mt-3 rounded-lg p-3" style={{ background: "var(--rc-surface, #f4f3f8)" }}>
