@@ -34,6 +34,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const [elapsed, setElapsed] = useState(toSeconds(resume?.sectionMs ?? 0));
   const [optionalStarted, setOptionalStarted] = useState(false);
   const recorder = useRecapRecorder();
+  const everStarted = useRef(false);
   const capture = useRef<string | null>(null);
   const finalized = useRef<{ completed: boolean; seconds: number } | null>(null);
   const captureFailure = useRef<string | null>(null);
@@ -54,6 +55,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
   const step = steps[index];
   const persist = () => {
     if (latest.current.done) return;
+    if (!resume && !everStarted.current && latest.current.index === 0 && latest.current.recaps.length === 0 && !latest.current.pending && !progressIntent.current && !captureFailure.current && !retained.current && completedPositions.current.size === 0 && passageTimes.current.every((ms) => ms === 0)) return;
     const totals = clock.current.snapshot(Date.now());
     const result = saveCheckpoint({ version: 1, captureWorkflow: true, studentId, attemptId: attempt.id, attempt, contentKey: key, scope,
       passageTimesMs: passageTimes.current.map((ms, position) => position === steps[latest.current.index].passage && !completedPositions.current.has(position + 1) ? Math.max(ms, totals.passageMs) : ms),
@@ -113,7 +115,7 @@ export default function ContinuousRcRecallRunner(props: Props) {
       const started = await recorder.start({ recapId: id, captureId: id, attemptId: attempt.id, studentId, recapKey: `capture-${id}` }, prepared);
       if (!mounted.current || token !== generation.current) { if (started.ok) await recorder.stop(); return; }
       if (started.ok === false) { setMessage(started.reason.replace(/Try again or choose a silent recall instead\./gi, "Try Start exercise again or choose another passage.")); return; }
-      capture.current = id; captureFailure.current = null; captureKeys.current = new Set(); setReady(true);
+      everStarted.current = true; capture.current = id; captureFailure.current = null; captureKeys.current = new Set(); setReady(true);
       if (!started.backup.ok) setMessage("Recording is running, but this device cannot keep a backup. Keep the screen open until your recording uploads.");
     } catch { prepared.stream.getTracks().forEach((track) => track.stop()); throw new Error("Recording could not start. Retry or choose another passage."); }
   });

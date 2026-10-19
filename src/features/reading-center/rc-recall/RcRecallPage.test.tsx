@@ -359,6 +359,25 @@ describe("attempt history", () => {
     expect(await screen.findByTestId("runner")).toHaveTextContent("resumed at p1-para1-recall a1");
   });
 
+  it("leads with the latest resumable session and keeps older sessions distinguishable in a closed disclosure", async () => {
+    const earlier = attemptRow(1, { started_at: "2026-10-18T10:00:00Z", finished_at: null, completed: false, elapsed_seconds: null });
+    const latest = attemptRow(2, { started_at: "2026-10-19T15:30:00Z", finished_at: null, completed: false, elapsed_seconds: null });
+    const unopened = attemptRow(3, { started_at: "2026-10-19T16:00:00Z", finished_at: null, completed: false, elapsed_seconds: null });
+    data.all = [earlier, latest, unopened];
+    for (const attempt of [earlier, latest, unopened]) saveCheckpoint({ version: 1, studentId: "s1", attemptId: attempt.id, attempt,
+      contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds: attempt.passage_ids }), scope: "all_read", stepIndex: attempt.id === unopened.id ? 0 : 1, stepId: attempt.id === unopened.id ? "p1-para1-read" : "p1-para1-recall",
+      recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
+    renderPage();
+    const card = (await screen.findByText("Resume practice")).closest("section")!;
+    const disclosure = within(card).getByText("Other unfinished sessions (2)").closest("details")!;
+    expect(disclosure).not.toHaveAttribute("open");
+    expect(within(card).getAllByRole("button", { name: "Resume" })).toHaveLength(1);
+    expect(within(card).getAllByText("Your place is kept on this device only.")).toHaveLength(1);
+    expect(screen.queryByText(/You have practice in progress/)).not.toBeInTheDocument();
+    fireEvent.click(within(card).getByRole("button", { name: "Resume" }));
+    expect(await screen.findByTestId("runner")).toHaveTextContent("resumed at p1-para1-recall a2");
+  });
+
   it("resumes a single original third passage from its own checkpoint", async () => {
     const attempt = attemptRow(1, { passage_ids: [140043], finished_at: null, completed: false, elapsed_seconds: null });
     data.all = [attempt];

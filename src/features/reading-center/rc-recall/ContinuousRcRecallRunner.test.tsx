@@ -344,3 +344,24 @@ it("retries an optional recall save with its original window instead of recordin
   expect(api.saveCaptureWindow.mock.calls[3][0]).toMatchObject({ startMs: 5000, endMs: 8500, kind: "passage_recap" });
   expect(api.start).toHaveBeenCalledOnce(); expect(api.stop).toHaveBeenCalledOnce();
 });
+
+it("does not create a resume banner checkpoint when choosing another passage before starting", async () => {
+  const view = render(<Runner {...props} />);
+  await waitFor(() => expect(screen.getByRole("button", { name: "Start exercise" })).toBeEnabled());
+  expect(listCheckpoints("s1")).toHaveLength(0);
+  await click(/Choose another passage/); view.unmount();
+  expect(listCheckpoints("s1")).toHaveLength(0);
+  expect(api.start).not.toHaveBeenCalled(); expect(api.savePassageProgress).not.toHaveBeenCalled();
+});
+it("preserves a genuinely resumed step-zero checkpoint when leaving before a new microphone start", async () => {
+  const resume = { version: 1, captureWorkflow: true, studentId: "s1", attemptId: "a1", attempt, contentKey: "test", scope: "all_read", stepIndex: 0, stepId: "p1:read:0", recaps: [], sectionMs: 4000, passageMs: 4000, passageTimesMs: [4000], showElapsedTimer: true, savedAt: 0, pending: null, pendingPassageProgress: { passageId: 1, passagePosition: 1, activeMs: 4000, completed: false } } as import("./lib/checkpoint").Checkpoint;
+  const view = render(<Runner {...props} resume={resume} />);
+  await click(/Choose another passage/); view.unmount();
+  expect(listCheckpoints("s1")[0]).toMatchObject({ sectionMs: 4000, pendingPassageProgress: resume.pendingPassageProgress });
+  expect(api.start).not.toHaveBeenCalled();
+});
+it("keeps a fresh recording checkpoint from its first paragraph once the microphone has started", async () => {
+  const view = render(<Runner {...props} />); await click(/Start exercise/);
+  expect(listCheckpoints("s1")).toHaveLength(1);
+  view.unmount(); expect(listCheckpoints("s1")).toHaveLength(1);
+});
