@@ -58,7 +58,7 @@ function Location() {
   return <output data-testid="location">{pathname}</output>;
 }
 
-describe("Saved Sets Inspect", () => {
+describe("Saved Sets question preview", () => {
   beforeEach(() => {
     state.userId = "student-1";
     state.recordExposures.mockClear();
@@ -69,11 +69,12 @@ describe("Saved Sets Inspect", () => {
     render(<MemoryRouter initialEntries={["/practice/sets"]}><SavedSets /><Location /></MemoryRouter>);
     await screen.findByText("No saved RC sets or recipes yet.");
 
-    fireEvent.click(screen.getByRole("button", { name: "Inspect" }));
-    const dialog = screen.getByRole("dialog", { name: "Inspect Causal reasoning" });
-    expect(within(dialog).getByText(/1\. PT70 · S1 · Q1/)).toBeInTheDocument();
-    expect(within(dialog).getByText(/2\. PT70-S1-Q2 · unavailable/)).toBeInTheDocument();
-    fireEvent.click(within(dialog).getByText(/1\. PT70 · S1 · Q1/));
+    fireEvent.click(screen.getByRole("button", { name: "View questions in Causal reasoning" }));
+    const dialog = screen.getByRole("dialog", { name: "Causal reasoning" });
+    expect(within(dialog).getByText('PT 70 · Section 1 · Question 1')).toBeInTheDocument();
+    expect(within(dialog).getByText('Question 2 · Unavailable')).toBeInTheDocument();
+    expect(within(dialog).queryByText(/PT70-S1-Q2/)).not.toBeInTheDocument();
+    fireEvent.click(within(dialog).getByText('Question 1 · Strengthen'));
     expect(within(dialog).getByText("The city planted trees near every school.")).toBeInTheDocument();
     expect(within(dialog).getByText("Trees can cool a schoolyard.")).toBeInTheDocument();
     expect(screen.getByTestId("location")).toHaveTextContent("/practice/sets");
@@ -81,11 +82,11 @@ describe("Saved Sets Inspect", () => {
     expect(state.mutate).not.toHaveBeenCalled();
   });
 
-  it("keeps Inspect unavailable for a set owned by another account", async () => {
+  it("keeps the question preview unavailable for a set owned by another account", async () => {
     state.userId = "student-2";
     render(<MemoryRouter><SavedSets /></MemoryRouter>);
     await screen.findByText("No saved RC sets or recipes yet.");
-    expect(screen.getByRole("button", { name: "Inspect" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "View questions in Causal reasoning" })).toBeDisabled();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });

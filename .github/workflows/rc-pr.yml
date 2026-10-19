@@ -12,6 +12,9 @@ on:
       - 'src/components/testing/**'
       - 'src/components/drill/DrillSplit*'
       - 'src/components/drill/SectionSelector*'
+      - 'src/components/drill/QuestionPicker*'
+      - 'src/components/drill/LrQuestionInspectList*'
+      - 'src/components/drill/lr-builder.css'
       - 'src/lib/timed*'
       - 'src/lib/timed*/**'
       - 'src/lib/practiceTest*'
@@ -60,5 +63,5 @@ jobs:
       - name: Verify reviewed RC corrections survive bank rebuilds
         run: node --test scripts/verification/rc-authored-corrections.test.mjs scripts/verification/rc-source-correction.test.mjs
       - name: Test RC and its shared runners
-        run: npx vitest run src/features/rc src/components/timed src/components/testing src/lib/timedSection src/lib/standaloneDrillHistory.test.ts src/components/drill/SectionSelector.test.tsx src/components/drill/official/OfficialDrillToolbar.test.tsx src/pages/AcademyMainhub src/components/questionfinder src/pages/Inbox.test.tsx src/components/inbox src/lib/inboxQuestionContext.test.ts src/lib/savedSets.rcIsolation.test.ts src/lib/drillLaunchResolve.test.ts src/pages/SavedSets.inspect.test.tsx
+        run: npx vitest run src/features/rc src/components/timed src/components/testing src/lib/timedSection src/lib/standaloneDrillHistory.test.ts src/components/drill/SectionSelector.test.tsx src/components/drill/QuestionPicker.test.tsx src/components/drill/official/OfficialDrillToolbar.test.tsx src/pages/AcademyMainhub src/components/questionfinder src/pages/Inbox.test.tsx src/components/inbox src/lib/inboxQuestionContext.test.ts src/lib/savedSets.rcIsolation.test.ts src/lib/drillLaunchResolve.test.ts src/pages/SavedSets.inspect.test.tsx
       - run: npm run build

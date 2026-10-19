@@ -4257,6 +4257,107 @@ export type Database = {
           },
         ]
       }
+      rc_recall_attempts: {
+        Row: {
+          completed: boolean
+          confirmation_scope: string | null
+          created_at: string
+          elapsed_seconds: number | null
+          finished_at: string | null
+          id: string
+          mode: string
+          passage_ids: number[]
+          preptest: number
+          section: number
+          started_at: string
+          student_id: string
+        }
+        Insert: {
+          completed?: boolean
+          confirmation_scope?: string | null
+          created_at?: string
+          elapsed_seconds?: number | null
+          finished_at?: string | null
+          id: string
+          mode: string
+          passage_ids: number[]
+          preptest: number
+          section: number
+          started_at?: string
+          student_id: string
+        }
+        Update: {
+          completed?: boolean
+          confirmation_scope?: string | null
+          created_at?: string
+          elapsed_seconds?: number | null
+          finished_at?: string | null
+          id?: string
+          mode?: string
+          passage_ids?: number[]
+          preptest?: number
+          section?: number
+          started_at?: string
+          student_id?: string
+        }
+        Relationships: []
+      }
+      rc_recall_recaps: {
+        Row: {
+          attempt_id: string
+          created_at: string
+          duration_ms: number | null
+          id: string
+          kind: string
+          mime_type: string | null
+          object_path: string | null
+          passage_position: number
+          recap_key: string
+          recording_state: string
+          student_id: string
+          updated_at: string
+          voice: string
+        }
+        Insert: {
+          attempt_id: string
+          created_at?: string
+          duration_ms?: number | null
+          id: string
+          kind: string
+          mime_type?: string | null
+          object_path?: string | null
+          passage_position: number
+          recap_key: string
+          recording_state: string
+          student_id: string
+          updated_at?: string
+          voice: string
+        }
+        Update: {
+          attempt_id?: string
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          kind?: string
+          mime_type?: string | null
+          object_path?: string | null
+          passage_position?: number
+          recap_key?: string
+          recording_state?: string
+          student_id?: string
+          updated_at?: string
+          voice?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_recall_recaps_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_attempts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rc_taxonomy: {
         Row: {
           group: string | null
