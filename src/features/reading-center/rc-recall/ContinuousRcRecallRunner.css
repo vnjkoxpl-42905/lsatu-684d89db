@@ -1,0 +1,24 @@
+.rct-continuous button {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--rc-border, #cbd5e1);
+  border-radius: 8px;
+  background: var(--rc-surface, #fff);
+  color: var(--rc-text, #172b3a);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.rct-continuous button:hover:not(:disabled) { background: var(--rc-hover, #edf3f6); }
+.rct-continuous button:focus-visible { outline: 3px solid #297495; outline-offset: 3px; }
+.rct-continuous button:disabled { opacity: .55; cursor: wait; }
+.rct-continuous button.rct-run-button { background: #173f55; color: #fff; border-color: #173f55; font-weight: 600; padding: 12px 22px; }
+.rct-continuous button.rct-run-button:hover:not(:disabled) { background: #24566f; }
+.rct-continuous .rct-run-button span { display: inline-block; margin-left: 12px; padding: 1px 7px; border: 1px solid #ffffff66; border-radius: 4px; font-size: 12px; font-weight: 400; }
+.rct-continuous footer button { border-color: transparent; background: transparent; text-decoration: underline; text-underline-offset: 3px; }
+.rct-continuous section[aria-label="Microphone setup"] { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.rct-continuous section[aria-label="Microphone setup"] h2,
+.rct-continuous section[aria-label="Microphone setup"] p { flex-basis: 100%; }
+
+.rct-continuous .rct-source { font-size: 18px; }
+@media (min-width: 640px) { .rct-continuous .rct-source { font-size: 20px; } }

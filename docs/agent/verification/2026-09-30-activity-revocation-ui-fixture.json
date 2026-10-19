@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-30",
+  "ordinaryJwt": true,
+  "fixtureIds": {
+    "assignment": "99b54831-32dc-429c-8cfe-46d697672641",
+    "mirror": "b9d5250d-637b-4345-821f-8d5cd5e8aa33",
+    "response": "f1514f96-b7d5-4c83-b8fc-c6188f9678e9"
+  },
+  "checks": [
+    "admin capability; student capability denied",
+    "admin issued dedicated source with own attribution",
+    "student owned source read and direct saved response"
+  ],
+  "notifications": 0,
+  "gradingRequests": 0,
+  "deletes": 0,
+  "preExistingRowsModified": 0,
+  "preparedForUi": true,
+  "passed": true
+}

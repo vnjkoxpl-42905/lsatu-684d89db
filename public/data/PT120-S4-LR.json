@@ -1,0 +1,608 @@
+[
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Big-budget movies often gross two or three times the cost of their production and marketing. However, most of the movie industry’s total revenue comes from low-budget movies.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy above?",
+    "answerChoices": {
+      "A": "Big-budget movies need to sell many more tickets than do low-budget movies, just to recoup their production costs.",
+      "B": "There are many more low-budget movies produced than there are big- and medium-budget movies.",
+      "C": "The movie industry’s revenues, when adjusted for inflation, have declined sharply in the last 30 years.",
+      "D": "Big-budget movies, because of their elaborate special effects, cost more in insurance premiums than low-budget movies do.",
+      "E": "The more time a company spends on making a movie the more expensive the movie is."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Strengthen EXCEPT",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Dr. Theresa Pagano, a biologist, has found that the checkerspot butterfly is becoming more prevalent in regions farther north than before and less prevalent in regions farther south. The northward shift of the butterflies is almost perfectly correlated with the northward shift of the warm zones in the global climate, and Dr. Pagano has therefore concluded that the changing climate is responsible for the northward movement of the butterflies.",
+    "questionStem": "Each of the following, if true, supports Dr. Pagano’s reasoning except:",
+    "answerChoices": {
+      "A": "Checkerspot butterfly colonies observed under laboratory conditions are critically affected by small temperature changes.",
+      "B": "Climate does not affect checkerspot butterflies themselves directly, but the plants they depend on thrive best in warm climates.",
+      "C": "Experimental evidence suggests that the checkerspot butterfly can adapt easily to a wide range of temperatures and geographic conditions.",
+      "D": "In recent years, abnormally low average temperatures have been correlated with a reduced checkerspot butterfly population.",
+      "E": "Several studies have shown that several other species of butterfly closely related to the checkerspot butterfly survive only in warm climates."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "EXCEPT",
+      "Plausibility",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Professor: The best users of a language are its great authors. However, these authors often use language in ways that are innovative and idiosyncratic, and are therefore less respectful of the strictures of proper usage than most of us are.",
+    "questionStem": "The Professor’s statements, if true, most support which one of the following?",
+    "answerChoices": {
+      "A": "People who want to become great writers should not imitate great authors’ use of language.",
+      "B": "Writers who do not observe proper language usage risk developing a peculiar or idiosyncratic style.",
+      "C": "Those most talented at using a language are not as likely as most other people to observe proper language usage.",
+      "D": "People who use an innovative or idiosyncratic writing style often incur criticism of their language usage.",
+      "E": "The standard for what constitutes proper language usage should be set by the best users of a language."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "The purpose of the physical sciences is to predict the order in which events will succeed one another. Human behavior, also, can sometimes be successfully predicted. However, even successful predictions of human behavior do not provide an understanding of it, for understanding a human action requires knowing its goal, even though such knowledge of goals either cannot or need not be obtained in the case of nonhuman behavior.",
+    "questionStem": "Which one of the following most accurately expresses the argument’s conclusion?",
+    "answerChoices": {
+      "A": "Successful predictions of human behavior do not constitute an understanding of that behavior.",
+      "B": "One cannot predict an instance of human behavior without an understanding of the agent’s purpose in engaging in that behavior.",
+      "C": "In some cases, but not in others, understanding an event consists in the ability to predict the occurrence of that event.",
+      "D": "The goal of the physical sciences is to predict the order in which events will occur.",
+      "E": "The methods used to predict human behavior must involve reference to the psychological states of human agents."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Sickles found at one archaeological site had scratched blades, but those found at a second site did not. Since sickle blades always become scratched whenever they are used to harvest grain, this evidence shows that the sickles found at the first site were used to harvest grain, but the sickles found at the second site were not.",
+    "questionStem": "Which one of the following, if shown to be a realistic possibility, would undermine the argument?",
+    "answerChoices": {
+      "A": "Some sickles that have not yet been found at the first site do not have scratched blades.",
+      "B": "The scratches on the blades of the sickles found at the first site resulted from something other than harvesting grain.",
+      "C": "Sickles at both sites had ritual uses whether or not those sickles were used to harvest grain.",
+      "D": "At the second site tools other than sickles were used to harvest grain.",
+      "E": "The sickles found at the first site were made by the same people who made the sickles found at the second site."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Role",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Pain perception depends only partly on physiology. During World War II a significantly lower percentage of injured soldiers requested morphine than did civilians recuperating from surgery. The soldier’s response to injury was relief, joy at being alive, even euphoria; to the civilians, surgery was a depressing, calamitous event. So it would seem that the meaning one attaches to a wound can affect the amount of pain one perceives.",
+    "questionStem": "The claim that pain perception depends only partly on physiology figures in the argument in which one of the following ways?",
+    "answerChoices": {
+      "A": "It is an assumption on which the argument depends.",
+      "B": "It undermines the argument’s main conclusion.",
+      "C": "It summarizes a position that the argument is meant to discredit.",
+      "D": "It is information that the argument takes for granted.",
+      "E": "It is the main conclusion of the argument."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Paradox EXCEPT",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "If cold fusion worked, it would provide almost limitless power from very inexpensive raw materials, materials far cheaper than coal or oil. But replacing all the traditional electric generators that use these fuels with cold-fusion power plants would result in a reduction of no more than 25 percent in the average residential electric bill.",
+    "questionStem": "Each of the following, if true, would help to resolve the apparent discrepancy between the predictions above except:",
+    "answerChoices": {
+      "A": "Cold-fusion power plants would be more expensive to build and maintain than traditional electric generators are.",
+      "B": "Environmental regulations now placed on burning coal or fuel oil are less costly than the regulations that would be placed on cold fusion.",
+      "C": "Most electric companies would be willing to incorporate cold-fusion technology into their power plants.",
+      "D": "Only a relatively small portion of any residential electric bill is determined by the electric company’s expenses for fuel.",
+      "E": "Personnel costs for the distribution of power to consumers are unrelated to the type of raw materials an electric company uses."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Everyone likes repertory theater. Actors like it because playing different roles each night decreases their level of boredom. Stagehands like it because changing sets every night means more overtime and, thus, higher pay. Theater managers like it because, if plays that reflect audience demand are chosen for production, most performances generate large revenues. It is evident, therefore, that more theaters should change to repertory.",
+    "questionStem": "The argument above would be strengthened if which one of the following were true?",
+    "answerChoices": {
+      "A": "In a repertory theater, a large capital outlay is required at the beginning of each season.",
+      "B": "In a repertory theater, patrons need to pay overly close attention to the schedule in order to make their theater plans.",
+      "C": "In a repertory theater, storage space for sets for more than one production must be available.",
+      "D": "In a repertory theater, plays can be rescheduled to meet audience demand.",
+      "E": "In a repertory theater, some actors who change roles from night to night find it difficult to master all of the roles they play."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Writer: I collaborated with another writer on my last book, instead of writing alone as I usually do. Because the book sold so well as a result of this joint effort, I should collaborate with a writer on my next book so that book will sell well too.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning above?",
+    "answerChoices": {
+      "A": "If a person’s book sells well because of a collaboration, that person’s next book will sell well, if he or she collaborates with the same writer.",
+      "B": "A book sells well only if its author collaborated on the book with another writer.",
+      "C": "If a person’s book sells well because of a collaboration, future collaborations on the part of that person will produce other books that sell well.",
+      "D": "Writers who do not collaborate on books have a smaller chance of writing a book that will sell well.",
+      "E": "Writers who collaborate on books, if they are good writers, usually produce books that sell well."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Researcher: All defects in short-term memory are caused by a malfunction of a part of the brain called the hippocampus. In short-term memory, the mind holds a piece of information for only a few moments, after which it is either stored in long-term memory or forgotten. Learning is the accumulation of new information in long-term memory. Thus, whenever a child exhibits a learning deficit, the hippocampus is malfunctioning.",
+    "questionStem": "The reasoning in the researcher’s argument is most vulnerable to criticism on the grounds that this argument",
+    "answerChoices": {
+      "A": "draws a general conclusion based on too small a sample of learning deficits",
+      "B": "presumes, without giving justification, that all learning deficits in children involve short-term memory",
+      "C": "presumes, without giving justification, that short-term memory is disabled whenever the hippocampus is disabled",
+      "D": "fails to quantify precisely the length of time during which the mind holds a piece of information in short-term memory",
+      "E": "takes for granted that learning deficits in adults have a cause unrelated to the cause of learning deficits in children"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Historian: One traditional childrearing practice in the nineteenth century was to make a child who misbehaved sit alone outside. Anyone passing by would conclude that the child had misbehaved. Nowadays, many child psychologists would disapprove of this practice because they believe that such practices damage the child’s self-esteem and that damage to children’s self-esteem makes them less confident as adults. However, no one disagrees that adults raised under that traditional practice were, on average, as confident as adults not so raised.",
+    "questionStem": "Which one of the following can be properly inferred from the historian’s statements?",
+    "answerChoices": {
+      "A": "The beliefs of many present-day child psychologists about the consequences of loss of self-esteem are incorrect.",
+      "B": "Some of the most confident adults, as well as some of the least confident adults, were raised under the traditional practice in question.",
+      "C": "With the traditional childrearing practice, passersby did not always make correct inferences about children’s behavior by observing them outdoors.",
+      "D": "The most confident adults are those who developed the highest level of self-esteem in childhood.",
+      "E": "If children’s loss of self-esteem makes them less confident as adults, then the traditional childrearing practice in question did not tend to cause significant loss of self-esteem."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Novelist: Any author who thinks a sentence is ungrammatical will not write it down in the first place, and thus will have no need to use a grammar book. On the other hand, any author who is sure a sentence she or he has written is grammatical will not feel a need to consult a grammar book. Thus, grammar books are useless as reference sources for authors.",
+    "questionStem": "The reasoning in the novelist’s argument is flawed because the argument",
+    "answerChoices": {
+      "A": "infers, from the claim that authors should not consult grammar books, that they will not in fact do so",
+      "B": "infers, from the claim that an author does not mistakenly think that a sentence is ungrammatical, that the author will feel sure that it is grammatical",
+      "C": "overlooks the possibility that grammar books are useful as reference sources for people who are not authors",
+      "D": "presumes, without providing justification, that grammar books cannot have any use except as reference sources",
+      "E": "ignores the possibility that there is a middle ground between being sure that a sentence is grammatical and thinking that it is ungrammatical"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Binaries"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Britain is now rabies free. Nevertheless, Britain’s strict quarantine of imported domesticated animals, designed to prevent widespread outbreaks of rabies there, cannot succeed indefinitely in preventing such outbreaks. Bats, which are very susceptible to rabies, fly into Britain from continental Europe. Since wild bats cannot be quarantined, this policy cannot control rabies spread by wild bats.",
+    "questionStem": "Which one of the following is an argumentative strategy employed in the argument?",
+    "answerChoices": {
+      "A": "trying to undermine support for a certain policy by pointing out that factors other than the policy itself could account for the results attributed to that policy",
+      "B": "raising a possible objection to a certain policy in order to show that the objection is in fact irrelevant to the particular situation the policy was designed to address",
+      "C": "providing evidence that because the officials charged with enforcing a certain policy often fail to perform their duty that policy is sure to have little effect",
+      "D": "showing that because a certain policy is not universally adopted that policy cannot accomplish what it was designed to do",
+      "E": "arguing that a certain policy is bound to fail because an event that is likely to defeat the aim of the policy falls outside the policy’s influence"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Anti-Causal",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Franklin: The only clue I have as to the identity of the practical joker is the handwriting on the note. Ordinarily I would suspect Miller, who has always been jealous of me, but the handwriting is not hers. So the joker is apparently someone else.",
+    "questionStem": "Which one of the following provides the strongest grounds for criticizing Franklin’s reasoning?",
+    "answerChoices": {
+      "A": "It fails to consider the possibility that there was more than one practical joker.",
+      "B": "It fails to indicate the degree to which handwriting samples should look alike in order to be considered of the same source.",
+      "C": "It provides no explanation for why Miller should be the prime suspect.",
+      "D": "It provides no explanation for why only one piece of evidence was obtained.",
+      "E": "It takes for granted that if the handwriting on the note had been Miller’s, then the identity of the joker would have been ascertained to be Miller."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "People who have doctorates in the liberal arts are interested in improving their intellects. Companies, however, rarely hire people who are not concerned with the financial gain that can be obtained by hard work in the business world. As a result, companies rarely hire people who have doctorates in the liberal arts.",
+    "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Companies would hire people with doctorates in the liberal arts if such people were interested in the money available in the business world.",
+      "B": "Some people who are interested in the liberal arts do not care about money.",
+      "C": "The only people not interested in making money in the business world are people who are interested in improving their intellects.",
+      "D": "People with doctorates in the liberal arts are interested in employment in the business world.",
+      "E": "Only people not concerned with making money in the business world are interested in improving their intellects."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Logan: Newspapers have always focused on ephemeral matters while ignoring important societal changes. For this and other reasons, old newspapers are useless to both amateur and professional historians. Mendez: But news stories, along with popular art, provide a wealth of information about what the people of an era thought and felt.",
+    "questionStem": "On the basis of their statements, Logan and Mendez are committed to disagreeing over whether",
+    "answerChoices": {
+      "A": "newspapers accurately report the most important changes taking place in a society",
+      "B": "the study of previous eras should include investigations of the conventions of newspaper reporting",
+      "C": "popular art is an important source of information about what the people of previous eras thought and felt",
+      "D": "newspapers ought to focus more on the types of stories they have glossed over in the past",
+      "E": "newspaper reports from former eras are useful sources of material for understanding the past"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "People who have never been asked to do more than they can easily do are people who never do all they can. Alex is someone who has clearly not done all that he is capable of doing, so obviously no one has ever pushed him to do more than what comes to him easily.",
+    "questionStem": "The flawed reasoning in which one of the following is most similar to the flawed reasoning in the argument above?",
+    "answerChoices": {
+      "A": "Anybody who has a dog knows the true value of companionship, and Alicia has demonstrated that she knows the true value of companionship; thus we can safely conclude that Alicia has a dog.",
+      "B": "Anyone who discovers something new is someone who has examined all the possible solutions to a problem. Fran has surely never discovered something new. Therefore, Fran has never explored all the possible solutions to a problem.",
+      "C": "Any person who does not face sufficient challenges is a person who does not accomplish everything he or she can. Jill is a person who accomplishes everything she can, so Jill is a person who faces sufficient challenges.",
+      "D": "By definition, a polygon is any closed plane figure bounded by straight lines. That object pictured on the chalkboard is certainly a closed plane figure bounded by a large number of straight lines, so that object pictured on the chalkboard must be a polygon.",
+      "E": "People who have never lost something that they cannot afford to lose will be lax about keeping their property secure. Jon is lax about keeping property secure when it is something he can afford to lose, so Jon must never have lost anything."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Paradox",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "It has been a staple of drama to feature an innocent young protagonist, eager to make a mark on the world, who is stymied by an indifferent or hostile society. Since the playwrights of such works wished the audience to empathize with the protagonist, historians do not regard these plays as serious revelations of what the societies presented in the plays were really like.",
+    "questionStem": "Which one of the following, if true, most helps to explain the viewpoint of the historians described above?",
+    "answerChoices": {
+      "A": "The historians believe that playwrights tend to be more critical of their own societies than of other societies.",
+      "B": "The historians believe that playwrights tend to exaggerate the weaknesses of a society for the sake of dramatic effect.",
+      "C": "The historians believe that plays tend to provide useful information about the time and society in which they were written.",
+      "D": "The historians believe that plays often contain serious revelations of what the societies presented in those plays were like.",
+      "E": "The historians believe that only the most popular plays within a society accurately portray that society."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Flaw EXCEPT",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Fishing columnist: When an independent research firm compared the five best-selling baits, it found that Benton baits work best for catching trout. It asked a dozen top anglers to try out the five best-selling baits as they fished for speckled trout in a pristine northern stream, and every angler had the most success with a Benton bait. These results show that Benton is the best bait for anyone who is fishing for trout.",
+    "questionStem": "Each of the following describes a flaw in the reasoning in the fishing columnist’s argument except:",
+    "answerChoices": {
+      "A": "The argument overlooks the possibility that some other bait is more successful than any of the five best-selling baits.",
+      "B": "The argument overlooks the possibility that what works best for expert anglers will not work best for ordinary anglers.",
+      "C": "The argument overlooks the possibility that the relative effectiveness of different baits changes when used in different locations.",
+      "D": "The argument overlooks the possibility that two best-selling brands of bait may be equally effective.",
+      "E": "The argument overlooks the possibility that baits that work well with a particular variety of fish may not work well with other varieties of that fish."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Investment banker: Democracies require free-market capitalist economies, because a more controlled economy is incompatible with complete democracy. But history shows that repressive measures against certain capitalistic developments are required during the transition from a totalitarian regime to a democracy. Thus, people who bemoan the seemingly anticapitalistic measures certain governments are currently taking are being hasty.",
+    "questionStem": "Which one of the following is an assumption required by the investment banker’s argument?",
+    "answerChoices": {
+      "A": "No current government has reached as complete a state of democracy as it is possible for a government to reach.",
+      "B": "The more democratic a country is, the less regulated its economy must be.",
+      "C": "The need for economic stability makes the existence of partially democratic governments more probable than the existence of fully democratic governments.",
+      "D": "A free-market economy is incompatible with a nondemocratic regime.",
+      "E": "The nations whose anticapitalistic measures the people in question bemoan had totalitarian regimes in the recent past."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Assumes Similarity",
+      "Plausibility",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Administrator: Because revenue fell by 15 percent this year, the university needs to reduce next year’s budget. This could be accomplished by eliminating faculty positions. It could also be accomplished by reducing faculty salaries. Since we will not eliminate any faculty positions, we must reduce faculty salaries.",
+    "questionStem": "The administrator’s reasoning is flawed because the administrator",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that more money would be saved by reducing faculty salaries than would be saved by eliminating faculty positions",
+      "B": "presumes, without providing justification, that the budget cannot be reduced unless faculty positions are eliminated or faculty salaries are reduced",
+      "C": "ignores the possibility that, though budget cuts will be needed, they will not need to be as high as 15 percent",
+      "D": "presumes, without providing justification, that some faculty members will leave their jobs rather than accept a reduced salary",
+      "E": "ignores the possibility that the budget could be reduced by eliminating some faculty positions and reducing the remaining faculty members’ salaries"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Repressors—people who unconsciously inhibit their display of emotion—exhibit significant increases in heart rate when they encounter emotion-provoking situations. Nonrepressors have similar physiological responses when they encounter such situations and consciously inhibit their display of emotion. Thus the very act of inhibiting displays of emotion, whether done consciously or unconsciously, causes a sharp rise in heart rate.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Encountering an emotion-provoking situation is not sufficient to cause nonrepressors’ heart rates to rise sharply.",
+      "B": "Nonrepressors can inhibit facial and bodily displays of emotion as well as repressors do.",
+      "C": "Despite their outward calm, repressors normally feel even more excited than do nonrepressors in an emotion-provoking situation.",
+      "D": "People who are ordinarily very emotional can refrain from feeling strong emotions when experimenters ask them to do so.",
+      "E": "In situations that do not tend to provoke emotions, the average heart rate of repressors is the same as that of nonrepressors."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A television manufacturing plant has a total of 1,000 workers, though an average of 10 are absent on any given day for various reasons. On days when exactly 10 workers are absent, the plant produces televisions at its normal rate. Thus, it is reasonable to assume that the plant could fire 10 workers without any loss in production.",
+    "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "ignores the possibility that if 10 workers were fired, each of the remaining workers would produce more televisions than previously",
+      "B": "fails to show that the absentee rate would drop if 10 workers were fired",
+      "C": "takes for granted that the normal rate of production can be attained only when no more than the average number of workers are absent",
+      "D": "overlooks the possibility that certain workers are crucial to the production of televisions",
+      "E": "takes for granted that the rate of production is not affected by the number of workers employed at the plant"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "New evidence suggests that the collapse of Egypt’s old kingdom some 4,000 years ago was caused by environmental catastrophe rather than internal social upheaval. Ocean sediments reveal a period of global cooling at the time, a condition generally associated with extended droughts. There were, no doubt, serious social problems in Egypt at the time, but they resulted from a severe dry spell.",
+    "questionStem": "Which one of the following, if true, would most strengthen the argument?",
+    "answerChoices": {
+      "A": "Historically, most civilizations have succumbed to internal strife rather than external factors.",
+      "B": "The social problems in Egypt’s old kingdom at the time of its collapse were serious enough to have caused the collapse.",
+      "C": "At the time of the collapse of the old kingdom, several isolated but well-established civilizations near Egypt underwent sudden declines.",
+      "D": "Egyptian records recovered from the time of the collapse explicitly refer to the deteriorating conditions of the society.",
+      "E": "Shortly after the collapse of the old kingdom, Egypt was thrust into a civil war that lasted most of the next two centuries."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Parallel Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Inflation rates will not stabilize unless the rate of economic growth decreases. Yet in order to slow the economy, the full cooperation of world leaders will be required. Thus, it would be overly optimistic to expect stable inflation rates in the near future.",
+    "questionStem": "Which one of the following is most closely parallel in its reasoning to the reasoning in the argument above?",
+    "answerChoices": {
+      "A": "If factory safety is a serious concern, each employee must report potentially hazardous situations. Only with full employee participation in the safety program will these hazards be corrected and accidents be prevented. Thus, without everyone’s cooperation we cannot expect improved factory safety.",
+      "B": "If the board is serious about improving management efficiency, it must eliminate organizational redundancy. Unfortunately, it will not be possible to eliminate wasteful redundancy without dismissing a number of senior employees. Thus, no option is available but to dismiss some senior employees.",
+      "C": "Only if we thoroughly examine all options will we be able to arrive at the optimal decision. Such a thorough examination, however, will necessitate a delay in the presentation of our proposal. Therefore, we will be able to arrive at an optimal decision only if we delay the presentation of our proposal.",
+      "D": "If we are to produce the safest vehicles possible, we must conduct objective structural tests. However, the performance of such objective tests will inevitably result in huge cost overruns. It is therefore unavoidable that the level of vehicle safety will not be optimal.",
+      "E": "If honesty is the best policy, we should report our company’s poor performance in the last year. But if we do so, we will put our jobs at risk and our stockholders will complain. Therefore, we must not report our poor performance."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT120",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Weaken EXCEPT",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The number of applications for admission reported by North American Ph.D. programs in art history has declined in each of the last four years. We can conclude from this that interest among recent North American college and university graduates in choosing art history as a career has declined in the last four years.",
+    "questionStem": "Each of the following, if true, weakens the argument except:",
+    "answerChoices": {
+      "A": "The number of North American Ph.D. programs in art history that opted to report data about applications for admission has declined in each of the last four years.",
+      "B": "The average age of applicants for admission to North American Ph.D. programs in art history has increased in each of the last four years.",
+      "C": "The number of errors in data about applications for admission to North American Ph.D. programs in art history has increased substantially during the last four years.",
+      "D": "The number of North American employers willing to hire individuals without a Ph.D. for jobs in art history has increased in each of the last four years.",
+      "E": "The percentage of applications for admission received from outside North America by North American Ph.D. programs in art history has declined substantially in the last four years."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "EXCEPT"
+    ]
+  }
+]

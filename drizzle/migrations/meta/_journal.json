@@ -1,0 +1,279 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1787933244992,
+      "tag": "0000_create_admin_question_notes",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787961564372,
+      "tag": "0001_restore_profiles_grants",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788434560849,
+      "tag": "0002_profile_lsat_accommodation",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788481663616,
+      "tag": "0003_test_large_query",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788489446471,
+      "tag": "0004_a_run_is_graded_once_and_an_abandoned_one_never",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1788867409875,
+      "tag": "0005_start_section_focus_attempt",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788909285952,
+      "tag": "0006_one_off_booking_links",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1788909378876,
+      "tag": "0007_one_off_booking_links",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789034466098,
+      "tag": "0008_ta_interactions_agent_columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789501067877,
+      "tag": "0009_finalize_single_session_payment_validates_event_price",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789502017298,
+      "tag": "0010_single_session_outbox_scheduler",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1789502315901,
+      "tag": "0011_restore_single_session_worker_rpcs",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1789510898204,
+      "tag": "0012_booking_confirmation_details",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1789513349724,
+      "tag": "0013_fix_single_session_commerce_offer_reference",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1789516103682,
+      "tag": "0014_restore_purge_single_session_pii",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1789516196213,
+      "tag": "0015_restore_single_session_sweeper_job",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1789516235697,
+      "tag": "0016_grant_booking_worker_secrets_writer",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1789516263515,
+      "tag": "0017_revoke_booking_worker_secrets_writer",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1789517716129,
+      "tag": "0018_conditional_rephrase_paper_choices",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1789518854878,
+      "tag": "0019_reconcile_single_session_calendar_deletions",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1789519035488,
+      "tag": "0020_invoke_gcal_sync_pull_scheduler",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1790132408453,
+      "tag": "0021_student_archive_and_delete",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1790144845089,
+      "tag": "0022_student_archive",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1790280476667,
+      "tag": "0023_access_tiers_stage1_rewire",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1790280507857,
+      "tag": "0024_access_tiers_stage2_tier_column",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1790280538363,
+      "tag": "0025_access_tiers_stage3_assign_tiers",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1790488480976,
+      "tag": "0026_notifications_payment_needs_tier",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1791287160933,
+      "tag": "0027_guided_drill_missing_links_mastery",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1791932079595,
+      "tag": "0028_activity_ai_source_answer_key",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1791943044422,
+      "tag": "0029_activity_ai_answer_key_identity",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1791943044423,
+      "tag": "0030_activity_ai_grader_revision",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1792037826505,
+      "tag": "0031_return_teacher_missed_session_credit",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1792308999241,
+      "tag": "0032_booking_pass_paused_status",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1792374371775,
+      "tag": "0033_rc_recall_attempt_history_private_recordings",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1792374392234,
+      "tag": "0034_rc_recall_single_or_four_passages",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1792375501016,
+      "tag": "0035_rc_recall_grades",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1792376786304,
+      "tag": "0036_rc_recall_continuous_captures",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1792381586623,
+      "tag": "0037_rc_recall_passage_progress",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1792383214209,
+      "tag": "0038_rc_recall_finalized_progress_retry",
+      "breakpoints": true
+    }
+  ]
+}
