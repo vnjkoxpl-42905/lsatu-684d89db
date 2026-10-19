@@ -350,7 +350,9 @@ it("keeps four passage clocks separate, freezes completed time and continues the
   const fullBodies = [1, 2, 3, 4].map((id) => `Passage ${id} body.`);
   const full = { ...props, passages: fullBodies.map((text) => ({ text }) as RcPassage), segmented: fullBodies.map(text => segmentPassage(text)), attempt: { ...attempt, passage_ids: [1, 2, 3, 4] } };
   const view = render(<Runner {...full} />); await click(/Start exercise/);
-  now += 5000; api.offset = 1000; await space(); api.offset = 2000; await space(); await click(/Finish passage/);
+  now += 5000; api.offset = 1000; await space();
+  expect(screen.getByRole("timer")).toHaveTextContent(/Passage practice time: 5\s*Total practice time: 5/);
+  api.offset = 2000; await space(); await click(/Finish passage/);
   expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 5");
   now += 3000; await click(/Skip optional recall/);
   expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 0");
