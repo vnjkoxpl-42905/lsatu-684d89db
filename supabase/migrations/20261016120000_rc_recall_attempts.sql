@@ -1,6 +1,9 @@
 -- RC Recall: append-only attempt history and private per-recap recordings.
 --
--- Authored locally only. Nothing here has been applied to any remote database.
+-- Portable reference SQL. The Lovable Cloud deployment is recorded in
+-- drizzle/migrations/0033_rc_recall_attempt_history_private_recordings.sql.
+-- Cloud uses UUID ownership without an auth/profile FK and creates its private
+-- bucket through the native storage tool. See docs/rc-training/backend-acceptance.md.
 --
 -- Rules the policies enforce:
 --  * An attempt belongs to the student who made it and needs current Reading
@@ -15,7 +18,7 @@ begin;
 
 create table if not exists public.rc_recall_attempts (
   id uuid primary key,
-  student_id uuid not null references auth.users(id) on delete restrict,
+  student_id uuid not null,
   mode text not null check (mode in ('rc_recall', 'cumulative_recall')),
   preptest integer not null check (preptest > 0),
   section integer not null check (section > 0),
@@ -43,7 +46,7 @@ create index if not exists rc_recall_attempts_student_idx
 create table if not exists public.rc_recall_recaps (
   id uuid primary key,
   attempt_id uuid not null references public.rc_recall_attempts(id) on delete restrict,
-  student_id uuid not null references auth.users(id) on delete restrict,
+  student_id uuid not null,
   recap_key text not null,
   passage_position integer not null check (passage_position between 1 and 4),
   kind text not null check (kind in ('recall', 'cumulative', 'passage_recap')),

@@ -23,6 +23,8 @@ const CHUNKS = "chunks";
 export interface BackupRun {
   /** The recap row id. */
   recapId: string;
+  /** Set for continuous captures; recapId remains the backup storage key. */
+  captureId?: string;
   attemptId: string;
   studentId: string;
   /** Unique storage path decided before recording starts. */

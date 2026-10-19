@@ -1,8 +1,8 @@
 /**
  * The step order for both RC Recall modes.
  *
- * Source wording, per paragraph:
- *  - RC Recall:         read/translate/quip -> recall (text hidden) ->
+ * Current app workflow, per paragraph:
+ *  - RC Recall:         read/translate/quip -> recorded recall (text hidden) ->
  *                       confirm against the text (brief, silent) -> ...
  *                       and an optional full-passage recap at passage end.
  *  - Cumulative Recall: read/translate/quip -> recall (text hidden) ->
@@ -127,25 +127,27 @@ export const STEP_TITLE: Record<StepKind, string> = {
   passage_recap: "Recall the whole passage (optional)",
 };
 
-/** One plain-language instruction for the step; copy follows the source wording. */
+/** One plain-language instruction for the step, including the current recording controls. */
 export function stepInstruction(step: RecallStep, mode: RecallMode, scope: ConfirmScope = "all_read"): string {
   const n = step.paragraph + 1;
   switch (step.kind) {
     case "read":
-      return `Read all of paragraph ${n}. Put each idea into your own words and add a brief reaction, such as why it matters. Keep the details, the qualifications and how the ideas connect. When you reach the end, hide the text and recall it.`;
+      return `Read paragraph ${n} carefully. Keep its details and how the ideas connect. ${mode === "rc_recall" ? "Press Space to hide it and record your recall." : "Hide the text, then recall it."}`;
     case "recall":
-      return `The text is hidden. ${mode === "rc_recall" ? "In your head, " : ""}retell all of paragraph ${n} in your own words. Keep names, dates, lists and qualifications, and explain how the ideas connect. Only this paragraph, not the ones before it.`;
+      return mode === "rc_recall"
+        ? `Retell paragraph ${n} out loud in your own words. Keep its details and connections. Press Space to stop recording and check.`
+        : `Retell all of paragraph ${n} in your own words. Keep its details and connections. Recall only this paragraph.`;
     case "confirm":
       return step.paragraph === 0
-        ? "Check the paragraph against what you recalled. Look for details, qualifications or connections you missed or changed. Check the meaning you remember instead of starting a fresh read."
+        ? "Compare the paragraph with your recall. Find details or connections you missed or changed. Press Space to continue."
         : scope === "current_sub_passage" && step.covers[0] > 0
-          ? "Check the paragraphs shown from Passage B against what you remember. Look for details, qualifications or connections you missed or changed. Check your existing understanding instead of starting a fresh read."
-          : "Check all the paragraphs you have read so far against what you remember. Look for details, qualifications or connections you missed or changed. Check your existing understanding instead of starting a fresh read.";
+          ? "Compare the paragraphs shown from Passage B with your recall. Find missing or changed details and connections. Press Space to continue."
+          : "Check all the paragraphs you have read so far against your recall. Find missing or changed details and connections. Press Space to continue.";
     case "cumulative":
       return step.paragraph === 1
         ? "With the text hidden, retell paragraphs 1 and 2 in order."
         : `With the text hidden, retell paragraphs 1 to ${n} in order.`;
     case "passage_recap":
-      return "Optional. With the text hidden, retell the whole passage, silently or out loud. Keep its details and connections. Try this while you are learning the method and now and then afterward, or skip it and continue.";
+      return "Optional: retell the whole passage, silently or out loud. Keep its details and connections, or skip this recall and continue.";
   }
 }

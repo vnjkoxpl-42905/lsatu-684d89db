@@ -8416,6 +8416,11 @@
       "integrity": "sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A=="
     }
   },
+  "redirects": {
+    "https://esm.sh/tr46@~0.0.3?target=denonext": "https://esm.sh/tr46@0.0.3?target=denonext",
+    "https://esm.sh/webidl-conversions@^3.0.0?target=denonext": "https://esm.sh/webidl-conversions@3.0.1?target=denonext",
+    "https://esm.sh/whatwg-url@^5.0.0?target=denonext": "https://esm.sh/whatwg-url@5.0.0?target=denonext"
+  },
   "remote": {
     "https://deno.land/std@0.168.0/async/abortable.ts": "80b2ac399f142cc528f95a037a7d0e653296352d95c681e284533765961de409",
     "https://deno.land/std@0.168.0/async/deadline.ts": "2c2deb53c7c28ca1dda7a3ad81e70508b1ebc25db52559de6b8636c9278fd41f",
@@ -8428,8 +8433,27 @@
     "https://deno.land/std@0.168.0/async/retry.ts": "e8e5173623915bbc0ddc537698fa418cf875456c347eda1ed453528645b42e67",
     "https://deno.land/std@0.168.0/async/tee.ts": "3a47cc4e9a940904fd4341f0224907e199121c80b831faa5ec2b054c6d2eff5e",
     "https://deno.land/std@0.168.0/http/server.ts": "e99c1bee8a3f6571ee4cdeb2966efad465b8f6fe62bec1bdb59c1f007cc4d155",
+    "https://esm.sh/@noble/hashes@1.7.1/denonext/_assert.mjs": "df2825ef01234966d4ff0f56de2cf56849541919f03af58b1d4b41bc20583cf9",
+    "https://esm.sh/@noble/hashes@1.7.1/denonext/_md.mjs": "4a38df8984c8bc9543e59d3ddc58d82d1eb0e5b18c69c93f97d8e8412f6374a0",
+    "https://esm.sh/@noble/hashes@1.7.1/denonext/crypto.mjs": "19767995fc1660cf43a69cb270a9f42fe395000cd979eea60a48e9552ad70222",
+    "https://esm.sh/@noble/hashes@1.7.1/denonext/sha256.mjs": "a560807635225fc4ae73191b168d5136798c441543e187a9cf18b40830f4571d",
+    "https://esm.sh/@noble/hashes@1.7.1/denonext/utils.mjs": "0bb40584a0961905f21e5a0f119c6c286544f3c4385bc93c7671c8170c373698",
+    "https://esm.sh/@noble/hashes@1.7.1/sha256": "ab75c892f283e6a954fc87505e672d538f00d04b91bafd7b961907115a354c88",
+    "https://esm.sh/@supabase/auth-js@2.75.0/denonext/auth-js.mjs": "430a8a8de6764682d846fbffcf1f82957393bb708c5b37f479bd350572ad9661",
+    "https://esm.sh/@supabase/functions-js@2.75.0/denonext/functions-js.mjs": "bcd848bbed8650f8465f73840f7ef7c288f4922db3f8a15471eaa0a8115ff386",
+    "https://esm.sh/@supabase/node-fetch@2.6.15/denonext/node-fetch.mjs": "0bae9052231f4f6dbccc7234d05ea96923dbf967be12f402764580b6bf9f713d",
+    "https://esm.sh/@supabase/postgrest-js@2.75.0/denonext/postgrest-js.mjs": "0aecc5e89bdb6ec1dc4c6261db9fe593c4d8e5fc043c452db38f2a41a3313d4a",
+    "https://esm.sh/@supabase/realtime-js@2.75.0/denonext/realtime-js.mjs": "bc08511459399892d0fbe0327d39f037879228ca1ec2148adc6a82e21ed476e7",
+    "https://esm.sh/@supabase/storage-js@2.75.0/denonext/storage-js.mjs": "58ea911c641ef0804bbad1af0949f3bc7a07cd611c1205862a1e83d3930de4af",
     "https://esm.sh/@supabase/supabase-js@2.49.4": "d52c4d06946766d328fdd0ac2e007f52bb6d2ef7ce6103ad9f0f57d92b73e978",
-    "https://esm.sh/@supabase/supabase-js@2.75.0": "2560166a94e3385c37b1c4fa943ee9c729a44e92fc9c61c03037852dc494853e"
+    "https://esm.sh/@supabase/supabase-js@2.75.0": "2560166a94e3385c37b1c4fa943ee9c729a44e92fc9c61c03037852dc494853e",
+    "https://esm.sh/@supabase/supabase-js@2.75.0/denonext/supabase-js.mjs": "01b2173b174f48646d07ab419216688a424a23dffee6d1b74db5a87046fa9759",
+    "https://esm.sh/tr46@0.0.3/denonext/tr46.mjs": "5753ec0a99414f4055f0c1f97691100f13d88e48a8443b00aebb90a512785fa2",
+    "https://esm.sh/tr46@0.0.3?target=denonext": "19cb9be0f0d418a0c3abb81f2df31f080e9540a04e43b0f699bce1149cba0cbb",
+    "https://esm.sh/webidl-conversions@3.0.1/denonext/webidl-conversions.mjs": "238cd0743827707cbc1c2d7c2cf1027dbc536fb53ec9a3fde0ff8026a3ac5385",
+    "https://esm.sh/webidl-conversions@3.0.1?target=denonext": "4e20318d50528084616c79d7b3f6e7f0fe7b6d09013bd01b3974d7448d767e29",
+    "https://esm.sh/whatwg-url@5.0.0/denonext/whatwg-url.mjs": "29b16d74ee72624c915745bbd25b617cfd2248c6af0f5120d131e232a9a9af79",
+    "https://esm.sh/whatwg-url@5.0.0?target=denonext": "f001a2cadf81312d214ca330033f474e74d81a003e21e8c5d70a1f46dc97b02d"
   },
   "workspace": {
     "packageJson": {
@@ -8444,6 +8468,7 @@
         "npm:@hookform/resolvers@^3.10.0",
         "npm:@locator/runtime@~0.5.1",
         "npm:@lovable.dev/cloud-auth-js@^1.0.1",
+        "npm:@lovable.dev/email-js@0.1.0",
         "npm:@lovable.dev/mcp-js@0.20",
         "npm:@paper-design/shaders@^0.0.76",
         "npm:@playwright/test@^1.57.0",
@@ -8475,6 +8500,7 @@
         "npm:@radix-ui/react-toggle-group@^1.1.10",
         "npm:@radix-ui/react-toggle@^1.1.9",
         "npm:@radix-ui/react-tooltip@^1.2.7",
+        "npm:@react-email/components@0.0.22",
         "npm:@rrweb/record@^2.0.0-alpha.20",
         "npm:@rrweb/types@^2.0.0-alpha.20",
         "npm:@splinetool/react-spline@^4.1.0",

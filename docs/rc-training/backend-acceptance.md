@@ -1,5 +1,36 @@
 # RC Training backend deployment and acceptance
 
+## Version 2 passed the bounded semantic and continuous-audio controls
+
+After Joshua approved the capture migration, grader revision and five additional provider calls, the root reported Lovable deployed commit `6d68da6897580f275681305a8a45f77d03927294`, Drizzle migration `0036`, build `2026-10-18-rc-grader-2`. Four live assessments passed with exactly one new ASR call and four judge calls, with no retries. Three assessments reused trusted version-1 transcripts after source/audio hash verification.
+
+| Control | Meaning points | Result |
+| --- | --- | --- |
+| Accurate paraphrase | 6/6, 100% | All three canonical sentence units preserved |
+| Substantial omission | 2/6, 33% | Correct premise retained; psychological evidence and examples missing |
+| Changed quantities and certainty | 0/6, 0% | Some/all, apparent/proved, most-by-six/every-exactly-six, and can/always changes identified |
+| Continuous perfect reading, omitted recall, perfect checking | 2/6, 33% | Only hidden-recall words reached the judge; perfect read/check speech did not inflate points |
+
+The continuous control used offline synthesized speech, 112.553 seconds of audio and an immutable 50,159–62,371 ms recall window. Its graded transcript exactly matched the short omitted-details recall. All four cached grading requests left their persisted rows unchanged, including tries, usage counters and hashes. The feedback now names actual missing details and changed qualifications rather than advising gist or summarizing.
+
+Twelve live capture checks passed: capture/window creation, upload, saved-state propagation to the linked recap, rejection of window mutation and saved-capture mutation, admin metadata isolation, admin audio-signing denial, anonymous isolation and finalization. No records were deleted or overwritten. Results, transcripts of synthetic speech, generated assessments and usage counters are recorded in `grader-v2-acceptance-results-20261018.json`; continuous fixture timings are in `continuous-grader-fixture-20261018.json`.
+
+These are controlled API/semantic checks, not evidence of browser microphone capture, keyboard operation, or crash recovery. The three-unit denominator is deterministic sentence/chunk meaning points with AI semantic judgments, not a calibrated LSAT score. The version-1 failed control below remains preserved as historical evidence and is superseded by this version-2 pass.
+
+## Earlier version-1 semantic acceptance was partial
+
+With Joshua's explicit approval for at most six provider calls, three offline Windows TTS recordings were tested against the same canonical PT140, section 4, passage ID 16, paragraph 1. The live source URL returned HTTP 200 and matched the local bank text. The paragraph SHA-256 was `023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6`. Only synthetic speech was submitted. No hardware microphone recording was sent to AI.
+
+Exactly three new grading requests were made, conservatively accounting for all six approved calls (one Deepgram transcription and one judge call per recording). No failed grading request was retried. Two additional cached requests returned the ready grades without changing `tries`, `updated_at`, transcript, or source/audio hashes.
+
+- Accurate paraphrase: ready. The assessment accepted reworded ideas and retained qualifications, evidence, age example and athletic traits. Six details were marked kept.
+- Substantial omission: ready. It accepted the correctly recalled premise while identifying missing psychologists, prodigies, apparent heritability, age and athletic examples. It did not equate a correct gist with complete recall.
+- Changed quantifiers and certainty: failed safely with stored reason `ungrounded_source_evidence`, `tries=1`. Its ASR transcript and source/audio hashes were persisted, but the proposed assessment failed the source quotation guard. No fabricated grade was displayed. This control has not passed semantic acceptance.
+
+The ready assessments' next-step advice also recommended summarizing. That wording conflicts with the full-detail recall task and needs correction. Citation reliability and teaching feedback remain launch blockers for the grader. A judge-only retry may reuse the saved transcript, but requires a separately approved additional provider budget. Detailed synthetic fixture texts and per-request results are in `grader-acceptance-fixtures-20261018.json` and `grader-acceptance-results-20261018.json`.
+
+An initial read-only preflight used a synthetic attempt finalized as ended early; the deployed grader correctly refused it with HTTP 409 because the deployed contract now requires `completed=true`. That record was retained unchanged. Fresh completed synthetic attempts were used for all three provider tests.
+
 ## Authenticated acceptance after deployment on 2026-10-18
 
 After Joshua approved backend deployment and acceptance, the root agent reported Lovable applied commit `18ad58f8` through Drizzle migrations `0033` and `0034`. The following live tests then passed under the saved tester and admin accounts. The earlier missing-schema findings below are historical and were superseded by these checks.
@@ -7,6 +38,8 @@ After Joshua approved backend deployment and acceptance, the root agent reported
 Twenty authenticated/anonymous checks passed. Both tables are now readable. The tester created one-passage and four-passage attempts, silent and spoken recap metadata, and uploaded a valid one-second synthetic MP3. The saved row was read back. An owner-signed audio URL returned exactly the original 8,611 bytes. Admin metadata read succeeded; admin audio signing failed. Anonymous public audio access failed, and anonymous attempt reads returned no rows. Both attempts finalized as ended early. A subsequent finalized update affected no rows and the original result remained unchanged. A new recap after finalization was rejected with HTTP 403.
 
 Retained acceptance attempts: `85703227-ea03-4454-9bac-94c52903dd01` (one passage) and `fd7e5b4d-1ac2-4f59-9990-751d46c7af87` (four passages). Their recap keys begin `acceptance-20261018-`. No records or objects were deleted or overwritten, and no permissions were changed. Sanitized per-check evidence is in `backend-acceptance-results-20261018.json`; it contains no credentials, tokens or signed URLs.
+
+Fixture correction: the four-ID raw API test used `[14,15,16,17]`; the actual PT140 section contains `[14,15,16,18]`. That test proves allowed cardinality and persistence, not canonical section identity. The valid published-bank selection is checked separately by the frontend integrity tests. The later semantic-grader acceptance fixtures use canonical passage ID `16` with the valid paragraph key `p1-para1-recall`.
 
 These API checks do not prove microphone capture, browser playback, crash recovery, or UI completion. Those require browser acceptance. A second non-admin student and a no-entitlement account were unavailable, so cross-student and revoked-access checks remain unverified. Admin audio denial provides a tested separate-identity check but does not substitute for those cases. The earlier interrupted-recording source defect was repaired locally and requires final browser recovery acceptance.
 

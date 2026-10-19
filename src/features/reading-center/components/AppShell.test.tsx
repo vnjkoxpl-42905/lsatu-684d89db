@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, Link } from 'react-router-dom';
+import { useReadingExerciseLayout } from './ReadingExerciseLayout';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppShell, useAppTheme } from './AppShell';
 
@@ -15,6 +16,7 @@ vi.mock('./AddText', () => ({ AddTextScreen: () => <div>Add text dialog</div> })
 
 beforeEach(() => {
   state.allowed = true; state.theme = 'dark'; state.admin = false;
+  vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
   Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1024 });
   Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn(() => ({
     matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn(),
@@ -94,4 +96,20 @@ describe('Reading Center appearance scope', () => {
     render(<ThemeProbe />);
     await waitFor(() => expect(document.getElementById('reading-center-root')).toHaveAttribute('data-rc-theme', 'high_contrast'));
   });
+});
+
+function FullPageExerciseProbe() { useReadingExerciseLayout(); return <><h1>Focused exercise</h1><Link to="/reading-center/rrc">Leave exercise</Link></>; }
+it.each([320, 1024])("removes the navigation during an exercise and restores it after leaving at %ipx", async (width) => {
+  Object.defineProperty(window, 'innerWidth', { configurable: true, value: width });
+  render(<MemoryRouter initialEntries={['/reading-center/rc-recall']}><Routes><Route element={<AppShell />}>
+    <Route path="/reading-center/rc-recall" element={<FullPageExerciseProbe />} />
+    <Route path="/reading-center/rrc" element={<h1>Back at the list</h1>} />
+  </Route></Routes></MemoryRouter>);
+  expect(screen.getByRole('heading', { name: 'Focused exercise' })).toBeInTheDocument();
+  expect(document.getElementById('reading-center-navigation')).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Open Reading Center menu' })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('link', { name: 'Leave exercise' }));
+  expect(await screen.findByRole('heading', { name: 'Back at the list' })).toBeInTheDocument();
+  if (width < 768) expect(screen.getByRole('button', { name: 'Open Reading Center menu' })).toBeInTheDocument();
+  else expect(screen.getByRole('link', { name: 'RC Training' })).toBeInTheDocument();
 });

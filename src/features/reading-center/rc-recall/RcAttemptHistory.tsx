@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { BookOpen } from "lucide-react";
+import RcTrainingFeedback from "./RcTrainingFeedback";
+import { getCaptureRecordingUrl, type CaptureRecap } from "./lib/captures";
 import { classifyFailure, signedRecordingUrl, type RecapRow } from "./lib/attempts";
 import {
   PROCEDURE_LABEL, RECORDING_LABEL, STATUS_LABEL, formatDuration, recapLabel, type HistoryEntry,
@@ -32,7 +34,7 @@ export default function RcAttemptHistory({ studentId, history, recovery, savingU
         ? "Your attempts will appear here once saving is available. We cannot check their server status right now."
         : "Your attempts could not load. Your saved work has not changed."}</p><button type="button" className="rct-text-button" onClick={() => void history.refetch()}>Try loading attempts again</button></div>}
     {history.isError && entries.length > 0 && <p role="status">Showing work kept on this device. Server status could not be refreshed.</p>}
-    {!history.isPending && !history.isError && !entries.length && <div className="rct-history-empty"><span className="rct-empty-icon"><BookOpen size={23} aria-hidden="true" /></span><div><h3>Your first practice starts here.</h3><p>Choose a section above. Your time and recording status will appear here after you practise.</p></div></div>}
+    {!history.isPending && !history.isError && !entries.length && <div className="rct-history-empty"><span className="rct-empty-icon"><BookOpen size={23} aria-hidden="true" /></span><div><h3>Your first practice starts here.</h3><p>Choose a passage above. Your recordings and recall feedback will be available here after you practise.</p></div></div>}
     {entries.length > 0 && <>
             <ul className="rct-attempts">{entries.map((entry) => <AttemptRowItem key={entry.attempt.id} entry={entry} studentId={studentId} recovery={recovery}
               busy={recovery.running || busyAttemptId === entry.attempt.id} onResume={onResume} onRetryFinish={onRetryFinish} />)}</ul>
@@ -47,6 +49,7 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
   entry: HistoryEntry; studentId: string; recovery: Props["recovery"]; busy: boolean;
   onResume: Props["onResume"]; onRetryFinish: Props["onRetryFinish"];
 }) {
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const { attempt, status } = entry;
   const spoken = entry.recaps.filter((r) => r.voice === "spoken");
   const saved = spoken.filter((r) => r.recording_state === "saved").length;
@@ -56,6 +59,7 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
       <h3>{sectionLabel(attempt)}</h3>
       <p>{PROCEDURE_LABEL[attempt.mode]}{attempt.mode === "rc_recall" && attempt.confirmation_scope ? ` · Check: ${attempt.confirmation_scope === "all_read" ? "all text read so far" : "current passage only"}` : ""}</p>
       <div className="rct-attempt-actions">
+        {attempt.completed && attempt.finished_at && spoken.length > 0 && <button type="button" className="rct-text-button" aria-expanded={feedbackOpen} onClick={() => setFeedbackOpen((value) => !value)}>{feedbackOpen ? "Hide recall feedback" : "View recall feedback"}</button>}
         {status === "in_progress" && entry.resumable && <button type="button" className="rct-text-button" disabled={busy} onClick={() => onResume(entry)}>{busy ? "Opening…" : "Resume this practice"}</button>}
         {status === "not_resumable_here" && <span className="rct-attempt-note">Its place was not kept on this device, so it can't be resumed here. Check the device where you started it. No completion or duration is assumed.</span>}
         {status === "pending" && <>
@@ -78,29 +82,44 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
       <ul>{[...entry.recaps].sort((a, b) => a.passage_position - b.passage_position || a.recap_key.localeCompare(b.recap_key)).map((recap) =>
         <RecapItem key={recap.id} recap={recap} studentId={studentId} />)}</ul>
     </details>}
+    {feedbackOpen && <div style={{ gridColumn: "1 / -1", width: "100%" }}><RcTrainingFeedback attemptId={attempt.id} enabled={!!attempt.finished_at && attempt.completed} /></div>}
   </li>;
 }
 
 function RecapItem({ recap, studentId }: { recap: RecapRow; studentId: string }) {
   const [url, setUrl] = useState<string | null>(null);
+  const [bounds, setBounds] = useState<{ start: number; end: number } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const playable = recap.voice === "spoken" && recap.recording_state === "saved" && !!recap.object_path;
+  const continuous = !!(recap as CaptureRecap).capture_id;
+  const playable = recap.voice === "spoken" && recap.recording_state === "saved" && (!!recap.object_path || continuous);
   const load = async (download: boolean) => {
     setLoading(true);
     setError(null);
     try {
-      const link = await signedRecordingUrl(studentId, recap, { download });
-      if (download) window.location.assign(link); else setUrl(link);
+      if (continuous) {
+        const recording = await getCaptureRecordingUrl(studentId, recap as CaptureRecap, { download });
+        if (download) window.location.assign(recording.url);
+        else { setBounds({ start: recording.startSeconds, end: recording.endSeconds }); setUrl(recording.url); }
+      } else {
+        const link = await signedRecordingUrl(studentId, recap, { download });
+        if (download) window.location.assign(link); else setUrl(link);
+      }
     } catch { setError("This recording could not be opened right now. It is still saved. Try again."); }
     finally { setLoading(false); }
   };
   return <li>
     <span>{recapLabel(recap)}</span> <span className="rct-attempt-note">{RECORDING_LABEL[recap.recording_state]}{recap.duration_ms ? ` · ${formatDuration(recap.duration_ms / 1000)}` : ""}</span>
     {playable && <span className="rct-recap-actions">
-      {url ? <audio controls src={url} aria-label={`Recording: ${recapLabel(recap)}`} />
-        : <button type="button" className="underline" disabled={loading} onClick={() => void load(false)}>{loading ? "Opening…" : "Play"}</button>}
-      <button type="button" className="underline" disabled={loading} onClick={() => void load(true)}>Download</button>
+      {url ? <audio controls src={url} aria-label={`Recording: ${recapLabel(recap)}`}
+        onLoadedMetadata={(event) => { if (bounds) event.currentTarget.currentTime = bounds.start; }}
+        onPlay={(event) => { const audio = event.currentTarget; if (bounds && (audio.currentTime < bounds.start || audio.currentTime >= bounds.end)) audio.currentTime = bounds.start; }}
+        onSeeking={(event) => { const audio = event.currentTarget; if (bounds && (audio.currentTime < bounds.start || audio.currentTime > bounds.end)) audio.currentTime = bounds.start; }}
+        onTimeUpdate={(event) => { const audio = event.currentTarget; if (bounds && audio.currentTime >= bounds.end) audio.pause(); }}
+        onError={() => { setUrl(null); setBounds(null); setError("Playback could not continue. Open the recording again to get a fresh playback link."); }} />
+        : <button type="button" className="underline" disabled={loading} onClick={() => void load(false)}>{loading ? "Opening…" : continuous ? "Play recall segment" : "Play"}</button>}
+      {url && <button type="button" className="underline" disabled={loading} onClick={() => void load(false)}>{loading ? "Refreshing…" : "Refresh playback link"}</button>}
+      <button type="button" className="underline" disabled={loading} onClick={() => void load(true)}>{continuous ? "Download full recording" : "Download"}</button>
     </span>}
     {error && <span role="alert" className="rct-error"> {error}</span>}
   </li>;

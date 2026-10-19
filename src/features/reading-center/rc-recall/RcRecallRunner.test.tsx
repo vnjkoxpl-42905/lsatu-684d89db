@@ -7,6 +7,7 @@ import { listCheckpoints, type Checkpoint } from "./lib/checkpoint";
 
 // Explicit mocks of the persistence and recorder boundaries. The checkpoint
 // store is the real one, backed by jsdom's localStorage.
+const capture = vi.hoisted(() => ({ recording: false, active: null as string | null, path: "" }));
 const api = vi.hoisted(() => ({
   insertRecap: vi.fn(), finalizeAttempt: vi.fn(), markRecapFailed: vi.fn(), uploadRecording: vi.fn(),
   resetFailedRecap: vi.fn(), markUnstartedRecapFailed: vi.fn(), prepare: vi.fn(), start: vi.fn(), stop: vi.fn(), isRecording: vi.fn(), activeRecapId: vi.fn(),
@@ -21,7 +22,8 @@ vi.mock("./useRecapRecorder", () => ({
   useRecapRecorder: () => ({ prepare: api.prepare, start: api.start, stop: api.stop, forget: vi.fn(), isRecording: api.isRecording, activeRecapId: api.activeRecapId }),
 }));
 
-import RcRecallRunner from "./RcRecallRunner";
+vi.mock("./RcTrainingFeedback", () => ({ default: ({ enabled }: { enabled: boolean }) => <div data-testid="feedback" data-enabled={String(enabled)} /> }));
+import RcRecallRunner from "./LegacyRcRecallRunner";
 
 const bodies = [0, 1, 2, 3].map((p) => `P${p} first paragraph.\n\nP${p} second paragraph.`);
 const segmented = bodies.map(segmentPassage);
@@ -41,7 +43,9 @@ const click = async (name: RegExp) => {
 const step = (name: RegExp) => screen.findByRole("heading", { name });
 /** One paragraph, the whole-paragraph way: read, hide and recall, check, then on. */
 const workParagraph = async (next: RegExp = /next paragraph|optional passage recall/i) => {
-  await click(/hide the text and recall paragraph/i);
+  api.prepare.mockResolvedValueOnce({ ok: false, reason: "Use silent fallback in this regression case." });
+  await click(/hide the text and record paragraph/i);
+  await click(/continue silently/i);
   await click(/check my recall/i);
   await click(next);
 };
@@ -53,19 +57,181 @@ beforeEach(() => {
   api.insertRecap.mockImplementation(async (input) => ({ id: `row-${input.recapKey}`, ...input }));
   api.resetFailedRecap.mockImplementation(async (id, _studentId, voice) => ({ id, voice, recording_state: voice === "spoken" ? "pending" : "not_recorded" }));
   api.prepare.mockResolvedValue({ ok: true, stream: { getTracks: () => [] }, mimeType: "audio/webm" });
-  api.isRecording.mockReturnValue(false);
-  api.activeRecapId.mockReturnValue(null);
+  capture.recording = false; capture.active = null; capture.path = "";
+  api.isRecording.mockImplementation(() => capture.recording);
+  api.activeRecapId.mockImplementation(() => capture.active);
+  api.start.mockImplementation(async (input) => { capture.recording = true; capture.active = input.recapId; capture.path = `${input.studentId}/${input.attemptId}/${input.recapKey}.webm`; return { ok: true, path: capture.path, backup: { ok: true } }; });
+  api.stop.mockImplementation(async () => { capture.recording = false; return { blob: new Blob(["audio"], { type: "audio/webm" }), path: capture.path, mimeType: "audio/webm", durationMs: 1000, backup: { ok: true } }; });
+  api.uploadRecording.mockResolvedValue(undefined);
   api.finalizeAttempt.mockResolvedValue({});
   api.markRecapFailed.mockResolvedValue(undefined);
 });
 
 afterEach(() => { vi.useRealTimers(); });
 
+describe("Space records a paragraph recall", () => {
+  const space = (target: Document | HTMLElement | Window = document, repeat = false) => fireEvent.keyDown(target, { code: "Space", key: " ", repeat });
+
+  it("lets a pending permission request be canceled, then stops its late stream without recording", async () => {
+    let permit!: (value: unknown) => void;
+    const stop = vi.fn();
+    api.prepare.mockReturnValueOnce(new Promise((resolve) => { permit = resolve; }));
+    renderRunner();
+    space();
+    expect(screen.getByText(/Waiting for microphone permission/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Cancel microphone request" })).toBeEnabled();
+    fireEvent.click(screen.getByRole("button", { name: "Cancel microphone request" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: /Hide the text and record/ })).toBeEnabled());
+    expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
+    await act(async () => { permit({ ok: true, stream: { getTracks: () => [{ stop }] }, mimeType: "audio/webm" }); });
+    expect(stop).toHaveBeenCalledOnce();
+    expect(api.start).not.toHaveBeenCalled();
+    expect(api.insertRecap).not.toHaveBeenCalled();
+  });
+
+  it("can continue silently while browser permission remains unresolved", async () => {
+    let permit!: (value: unknown) => void;
+    const stop = vi.fn();
+    api.prepare.mockReturnValueOnce(new Promise((resolve) => { permit = resolve; }));
+    renderRunner();
+    space();
+    fireEvent.click(screen.getByRole("button", { name: /Continue silently/ }));
+    expect(await screen.findByLabelText("Passage text hidden")).toBeInTheDocument();
+    expect(screen.getByText(/Silent recall is not recorded and cannot receive automatic feedback/)).toBeInTheDocument();
+    await act(async () => { permit({ ok: true, stream: { getTracks: () => [{ stop }] }, mimeType: "audio/webm" }); });
+    expect(stop).toHaveBeenCalledOnce();
+    expect(api.start).not.toHaveBeenCalled();
+    await click(/Check my recall/);
+    expect(api.insertRecap).toHaveBeenCalledWith(expect.objectContaining({ voice: "silent" }));
+  });
+
+  it("stops a permission stream that arrives after the runner unmounts", async () => {
+    let permit!: (value: unknown) => void;
+    const stop = vi.fn();
+    api.prepare.mockReturnValueOnce(new Promise((resolve) => { permit = resolve; }));
+    const view = renderRunner();
+    space();
+    view.unmount();
+    await act(async () => { permit({ ok: true, stream: { getTracks: () => [{ stop }] }, mimeType: "audio/webm" }); });
+    expect(stop).toHaveBeenCalledOnce();
+    expect(api.start).not.toHaveBeenCalled();
+    expect(api.insertRecap).not.toHaveBeenCalled();
+  });
+
+  it("keeps the paragraph visible until the microphone and recorder are ready, and prevents repeated starts", async () => {
+    let permit!: (value: unknown) => void;
+    api.prepare.mockReturnValueOnce(new Promise((resolve) => { permit = resolve; }));
+    renderRunner({ passageCount: 1 });
+    space(); space(); space(document, true);
+    expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
+    expect(api.prepare).toHaveBeenCalledTimes(1);
+    expect(api.start).not.toHaveBeenCalled();
+    await act(async () => { permit({ ok: true, stream: { getTracks: () => [] }, mimeType: "audio/webm" }); });
+    expect(await screen.findByLabelText("Passage text hidden")).toBeInTheDocument();
+    expect(screen.queryByText("P0 first paragraph.")).not.toBeInTheDocument();
+    expect(api.start).toHaveBeenCalledTimes(1);
+    expect(api.insertRecap).toHaveBeenCalledWith(expect.objectContaining({ kind: "recall", voice: "spoken", recapKey: "p1-para1-recall" }));
+  });
+
+  it("Space stops and uploads this paragraph before showing the text for checking", async () => {
+    let finishUpload!: () => void;
+    api.uploadRecording.mockReturnValueOnce(new Promise<void>((resolve) => { finishUpload = resolve; }));
+    renderRunner({ passageCount: 1 });
+    await act(async () => { space(); });
+    await screen.findByLabelText("Passage text hidden");
+    await act(async () => { space(); });
+    expect(api.stop).toHaveBeenCalledTimes(1);
+    expect(api.uploadRecording).toHaveBeenCalledWith(expect.objectContaining({ recapId: "row-p1-para1-recall", attemptId: "att-1" }));
+    expect(screen.queryByText("P0 first paragraph.")).not.toBeInTheDocument();
+    expect(screen.getByText("Recording stopped. Saving your recall…")).toBeInTheDocument();
+    await act(async () => { finishUpload(); });
+    expect(await screen.findByRole("heading", { name: "Check your recall" })).toBeInTheDocument();
+    expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
+    expect(checkpoint().recaps[0]).toMatchObject({ voice: "spoken", state: "saved" });
+  });
+
+  it("does not consume spaces from controls, held keys, modified keys or an open modal", () => {
+    renderRunner();
+    space(document, true);
+    fireEvent.keyDown(document, { code: "Space", key: " ", ctrlKey: true });
+    for (const tag of ["button", "input", "textarea", "select", "audio", "video", "summary"]) {
+      const control = document.createElement(tag);
+      document.body.appendChild(control); space(control); control.remove();
+    }
+    const editor = document.createElement("div"); editor.setAttribute("contenteditable", "true");
+    document.body.appendChild(editor); space(editor); editor.remove();
+    const modal = document.createElement("div"); modal.setAttribute("role", "dialog"); modal.setAttribute("aria-modal", "true");
+    document.body.appendChild(modal); space(); modal.remove();
+    expect(api.prepare).not.toHaveBeenCalled();
+    expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
+  });
+
+  it("keeps the text visible on microphone refusal, with retry or an explicitly ungraded silent fallback", async () => {
+    api.prepare.mockResolvedValueOnce({ ok: false, reason: "Allow microphone access to record." });
+    renderRunner();
+    await act(async () => { space(); });
+    expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
+    expect(api.start).not.toHaveBeenCalled();
+    expect(api.insertRecap).not.toHaveBeenCalled();
+    await click(/continue silently \(no automatic feedback\)/i);
+    expect(screen.getByText(/Silent recall is not recorded and cannot receive automatic feedback/)).toBeInTheDocument();
+    expect(screen.queryByText("P0 first paragraph.")).not.toBeInTheDocument();
+    await click(/check my recall/i);
+    expect(api.insertRecap).toHaveBeenCalledWith(expect.objectContaining({ voice: "silent" }));
+  });
+
+  it("keeps the read state when saving the recap or starting the recorder fails", async () => {
+    api.insertRecap.mockRejectedValueOnce(new Error("offline"));
+    renderRunner();
+    await act(async () => { space(); });
+    expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
+    expect(api.start).not.toHaveBeenCalled();
+    api.start.mockResolvedValueOnce({ ok: false, reason: "Recorder unavailable." });
+    await act(async () => { space(); });
+    expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /continue silently/i })).toBeInTheDocument();
+  });
+
+  it("stops and saves the active paragraph recording before leaving", async () => {
+    const onExit = vi.fn();
+    renderRunner({ onExit });
+    await act(async () => { space(); });
+    await click(/save my place and leave/i);
+    expect(api.stop).toHaveBeenCalledTimes(1);
+    expect(api.uploadRecording).toHaveBeenCalled();
+    expect(onExit).toHaveBeenCalledTimes(1);
+    expect(capture.recording).toBe(false);
+  });
+});
+
+describe("feedback waits for durable completion and audio", () => {
+  it.each(["pending", "failed", "saved"] as const)("holds feedback while a paragraph recording is %s", async (state) => {
+    renderRunner({ passageCount: 1, resume: {
+      version: 1, studentId: "s1", attemptId: "att-1", contentKey: "k", scope: "all_read", stepIndex: 6, stepId: "p1-passage-recap",
+      recaps: [{ key: "p1-para1-recall", voice: "spoken", state, rowId: "row-one", label: "Paragraph 1" }],
+      sectionMs: 1000, passageMs: 1000, showElapsedTimer: false, savedAt: 1, pending: null,
+    } });
+    await click(/skip this optional recall/i);
+    expect(await screen.findByTestId("feedback")).toHaveAttribute("data-enabled", state === "saved" ? "true" : "false");
+  });
+
+  it("does not request feedback if completion could not be confirmed", async () => {
+    api.finalizeAttempt.mockRejectedValue(new Error("offline"));
+    renderRunner({ passageCount: 1, resume: {
+      version: 1, studentId: "s1", attemptId: "att-1", contentKey: "k", scope: "all_read", stepIndex: 6, stepId: "p1-passage-recap",
+      recaps: [{ key: "p1-para1-recall", voice: "spoken", state: "saved", rowId: "row-one", label: "Paragraph 1" }],
+      sectionMs: 1000, passageMs: 1000, showElapsedTimer: false, savedAt: 1, pending: null,
+    } });
+    await click(/skip this optional recall/i);
+    expect(await screen.findByTestId("feedback")).toHaveAttribute("data-enabled", "false");
+  });
+});
+
 describe("RC Training runner: the whole-paragraph procedure", () => {
   it("shows the text to read, hides it for recall, and shows it again to check", async () => {
     renderRunner();
     expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
-    await click(/hide the text and recall paragraph 1/i);
+    await click(/hide the text and record paragraph 1/i);
     expect(await screen.findByLabelText("Passage text hidden")).toBeInTheDocument();
     expect(screen.queryByText("P0 first paragraph.")).not.toBeInTheDocument();
     await click(/check my recall/i);
@@ -73,21 +239,21 @@ describe("RC Training runner: the whole-paragraph procedure", () => {
     expect(screen.getByText("P0 first paragraph.")).toBeInTheDocument();
   });
 
-  it("hiding starts silent recall immediately, with no separate start click", async () => {
+  it("hiding starts paragraph recording immediately, with no separate start click", async () => {
     renderRunner();
-    await click(/hide the text and recall paragraph 1/i);
-    expect(await screen.findByText("Silently retell paragraph 1 in your own words.")).toBeInTheDocument();
-    expect(screen.getByText(/silent recall in progress/i)).toBeInTheDocument();
+    await click(/hide the text and record paragraph 1/i);
+    expect(await screen.findByText("Retell paragraph 1 in your own words.")).toBeInTheDocument();
+    expect(screen.getByText(/Recording this recall only/i, { selector: ".rct-run-active-status" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /start (the )?recap|start recording/i })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: /check my recall/i })).toBeEnabled();
-    expect(api.prepare).not.toHaveBeenCalled();
+    expect(api.prepare).toHaveBeenCalledOnce();
   });
 
   it("recalls only the newest paragraph, then checks everything read so far", async () => {
     renderRunner();
     await workParagraph(/next paragraph/i);
-    await click(/hide the text and recall paragraph 2/i);
-    expect(screen.getByText("Silently retell paragraph 2 in your own words.")).toBeInTheDocument();
+    await click(/hide the text and record paragraph 2/i);
+    expect(screen.getByText("Retell paragraph 2 in your own words.")).toBeInTheDocument();
     expect(screen.queryByText(/paragraphs 1 to 2/i)).not.toBeInTheDocument();
     await click(/check my recall/i);
     expect(await step(/check your recall/i)).toBeInTheDocument();
@@ -99,7 +265,7 @@ describe("RC Training runner: the whole-paragraph procedure", () => {
     renderRunner();
     expect(screen.getByText(/Passage 1/, { selector: ".rct-run-location" })).toHaveTextContent("Passage 1 of 4 · Paragraph 1 of 2");
     expect(screen.getByRole("listitem", { current: "step" })).toHaveTextContent("Read");
-    await click(/hide the text and recall paragraph 1/i);
+    await click(/hide the text and record paragraph 1/i);
     expect(screen.getByRole("listitem", { current: "step" })).toHaveTextContent("Hide and recall");
     await click(/check my recall/i);
     expect(screen.getByRole("listitem", { current: "step" })).toHaveTextContent("Check");
@@ -107,10 +273,10 @@ describe("RC Training runner: the whole-paragraph procedure", () => {
 
   it("names one dominant next action at each step", async () => {
     renderRunner();
-    const actions = () => screen.getAllByRole("button").map((b) => b.textContent).filter((t) => /recall|check|next|finish|continue|start/i.test(t ?? "") && !/save my place|end attempt/i.test(t ?? ""));
-    expect(actions()).toEqual(["Hide the text and recall paragraph 1"]);
+    const actions = () => screen.getAllByRole("button").map((b) => b.textContent).filter((t) => /recall|record|check|next|finish|continue|start/i.test(t ?? "") && !/save my place|end attempt/i.test(t ?? ""));
+    expect(actions()).toEqual(["Hide the text and record paragraph 1"]);
     await click(/hide the text/i);
-    expect(actions()).toEqual(["Check my recall"]);
+    expect(actions()).toEqual(["Stop recording and check my recall"]);
     await click(/check my recall/i);
     expect(actions()).toEqual(["Next paragraph"]);
   });
@@ -138,6 +304,7 @@ describe("optional whole-passage recall", () => {
     await workParagraph(/next paragraph/i);
     await workParagraph(/optional passage recall/i);
     await step(/whole passage \(optional\)/i);
+    api.prepare.mockClear();
   };
 
   it("offers silent (the default) or out loud, and can be skipped", async () => {
@@ -259,7 +426,7 @@ describe("timing", () => {
   it("does not infer inactivity from a long silent stretch", async () => {
     vi.useFakeTimers({ toFake: ["Date", "setInterval", "clearInterval"] });
     renderRunner();
-    await click(/hide the text and recall paragraph 1/i);
+    await click(/hide the text and record paragraph 1/i);
     act(() => vi.advanceTimersByTime(15 * 60_000));
     expect(screen.getByLabelText("Section elapsed time")).toHaveTextContent("15:00");
   });
@@ -268,17 +435,17 @@ describe("timing", () => {
 describe("leaving and resuming", () => {
   it("writes the place on this device as the student moves, per account and attempt", async () => {
     renderRunner();
-    await click(/hide the text and recall paragraph 1/i);
+    await click(/hide the text and record paragraph 1/i);
     await click(/check my recall/i);
     const saved = checkpoint();
     expect(saved).toMatchObject({ studentId: "s1", attemptId: "att-1", stepId: "p1-para1-confirm", stepIndex: 2, pending: null });
-    expect(saved.recaps).toEqual([expect.objectContaining({ key: "p1-para1-recall", voice: "silent", rowId: "row-p1-para1-recall" })]);
+    expect(saved.recaps).toEqual([expect.objectContaining({ key: "p1-para1-recall", voice: "spoken", state: "saved", rowId: "row-p1-para1-recall" })]);
   });
 
   it("Save my place and leave keeps the work for resuming instead of abandoning it", async () => {
     const onExit = vi.fn();
     renderRunner({ onExit });
-    await click(/hide the text and recall paragraph 1/i);
+    await click(/hide the text and record paragraph 1/i);
     await click(/save my place and leave/i);
     expect(onExit).toHaveBeenCalled();
     expect(api.finalizeAttempt).not.toHaveBeenCalled();
@@ -287,7 +454,7 @@ describe("leaving and resuming", () => {
 
   it("unmounting from navigation keeps the place too", async () => {
     const view = renderRunner();
-    await click(/hide the text and recall paragraph 1/i);
+    await click(/hide the text and record paragraph 1/i);
     view.unmount();
     expect(checkpoint()).toMatchObject({ stepId: "p1-para1-recall" });
     expect(api.finalizeAttempt).not.toHaveBeenCalled();
@@ -296,7 +463,7 @@ describe("leaving and resuming", () => {
   it("resumes at the saved step with the saved recaps and the active time, adding none for time away", async () => {
     vi.useFakeTimers({ toFake: ["Date", "setInterval", "clearInterval"] });
     const first = renderRunner();
-    await click(/hide the text and recall paragraph 1/i);
+    await click(/hide the text and record paragraph 1/i);
     await click(/check my recall/i);
     act(() => vi.advanceTimersByTime(20_000));
     first.unmount();
@@ -466,8 +633,10 @@ describe("recordings", () => {
 
   it("keeps a failed silent recall visible after moving to the next step", async () => {
     api.insertRecap.mockRejectedValueOnce(new Error("offline"));
+    api.prepare.mockResolvedValueOnce({ ok: false, reason: "Microphone unavailable." });
     renderRunner();
-    await click(/hide the text and recall paragraph 1/i);
+    await click(/hide the text and record paragraph 1/i);
+    await click(/continue silently/i);
     await click(/check my recall/i);
     expect(await screen.findByRole("alert")).toHaveTextContent(/1 silent recall record could not be saved/i);
   });
@@ -476,10 +645,10 @@ describe("recordings", () => {
 describe("legacy cumulative mode", () => {
   it("still has no look-back: paragraph 2 recalls everything with the text hidden", async () => {
     renderRunner({ mode: "cumulative_recall" });
-    await click(/hide the text and recall paragraph 1/i);
+    await click(/hide the text and record paragraph 1/i);
     await click(/finish recall/i);
     await step(/read the paragraph/i);
-    await click(/hide the text and recall paragraph 2/i);
+    await click(/hide the text and record paragraph 2/i);
     await click(/finish recall/i);
     expect(await step(/recall everything so far/i)).toBeInTheDocument();
     expect(screen.queryByText(/P0 (first|second) paragraph/)).not.toBeInTheDocument();

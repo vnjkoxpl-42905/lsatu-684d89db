@@ -20,7 +20,7 @@ describe("RC Recall sequence", () => {
   it("paragraph 5: confirmation covers paragraphs 1 to 5", () => {
     expect(brief(upTo(steps, 4)).slice(0, 3)).toEqual(["read:5:5:5", "recall:5:hidden:5", "confirm:5:1+2+3+4+5:1+2+3+4+5"]);
   });
-  it("recalls and confirmations are silent; only the passage-end recap offers a voice and is optional", () => {
+  it("keeps paragraph capture fixed and offers a voice choice only for the optional passage recap", () => {
     const voiced = steps.filter((s) => s.voiceChoice);
     expect(voiced.map((s) => s.kind)).toEqual(["passage_recap"]);
     expect(voiced[0].optional).toBe(true);
@@ -29,6 +29,11 @@ describe("RC Recall sequence", () => {
   });
   it("has no cumulative step", () => {
     expect(steps.some((s) => s.kind === "cumulative")).toBe(false);
+  });
+  it("explains Space recording and the spoken paragraph recall", () => {
+    expect(stepInstruction(steps[0], "rc_recall")).toContain("Press Space to hide it and record");
+    expect(stepInstruction(steps[1], "rc_recall")).toContain("out loud");
+    expect(stepInstruction(steps[1], "rc_recall")).toContain("stop recording and check");
   });
 });
 

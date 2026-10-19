@@ -1,0 +1,142 @@
+[
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Show instructions",
+        "width": 154
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)",
+        "width": 221.75
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave",
+        "width": 207.8249969482422
+      },
+      {
+        "height": 44,
+        "label": "End attempt",
+        "width": 116.95000457763672
+      }
+    ],
+    "scrollWidth": 375,
+    "sidebar": false,
+    "sourceWidth": 343.20001220703125,
+    "width": 390
+  },
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Show instructions",
+        "width": 154
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)",
+        "width": 221.75
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave",
+        "width": 207.8249969482422
+      },
+      {
+        "height": 44,
+        "label": "End attempt",
+        "width": 116.95000457763672
+      }
+    ],
+    "scrollWidth": 635,
+    "sidebar": false,
+    "sourceWidth": 583.1749877929688,
+    "width": 650
+  },
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Show instructions",
+        "width": 154
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)",
+        "width": 221.75
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave",
+        "width": 207.8249969482422
+      },
+      {
+        "height": 44,
+        "label": "End attempt",
+        "width": 116.95000457763672
+      }
+    ],
+    "scrollWidth": 753,
+    "sidebar": false,
+    "sourceWidth": 691.375,
+    "width": 768
+  },
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Show instructions",
+        "width": 154
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)",
+        "width": 221.75
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave",
+        "width": 207.8249969482422
+      },
+      {
+        "height": 44,
+        "label": "End attempt",
+        "width": 116.95000457763672
+      }
+    ],
+    "scrollWidth": 1000,
+    "sidebar": false,
+    "sourceWidth": 920,
+    "width": 1000
+  },
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Show instructions",
+        "width": 154
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)",
+        "width": 221.75
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave",
+        "width": 207.8249969482422
+      },
+      {
+        "height": 44,
+        "label": "End attempt",
+        "width": 116.95000457763672
+      }
+    ],
+    "scrollWidth": 1440,
+    "sidebar": false,
+    "sourceWidth": 1004,
+    "width": 1440
+  }
+]

@@ -4,7 +4,6 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { loadAllIndexPassages, loadPassages } from "@/features/rc/lib/rcBank";
 import type { RcPassage } from "@/features/rc/lib/rcTypes";
-import ExamplePlayer from "./ExamplePlayer";
 import { ArrowDown, ArrowUpRight, Headphones, History } from "lucide-react";
 import RcTrainingVideo from "./RcTrainingVideo";
 import "./RcTraining.css";
@@ -16,10 +15,6 @@ import { AttemptOutcomeUnknownError, createAttempt, newId, probeAttemptsBackend,
 import { REJECTION_MESSAGE, clearCheckpoint, contentKeyFor, listCheckpoints, loadCheckpoint, type Checkpoint } from "./lib/checkpoint";
 import { recapLabel, type HistoryEntry } from "./lib/history";
 import { retryPendingFinalization } from "./lib/pending";
-import {
-  RC_RECALL_DEMO_CORRECTION, RC_RECALL_EXAMPLES, RC_RECALL_NOTE,
-  mediaBase,
-} from "./lib/media";
 import { buildRecallSections, restoreRecallPractice, selectRecallPractice, sectionLabel, verifyLoadedSection, type RecallSection } from "./lib/sections";
 import { buildSectionSteps, type ConfirmScope, type RecallMode } from "./lib/sequence";
 import type { SegmentedPassage } from "./lib/segment";
@@ -51,11 +46,17 @@ function AccountRecallPage() {
   const [starting, setStarting] = useState(false);
   const startingRef = useRef(false);
   const [startError, setStartError] = useState<string | null>(null);
+  const [startSelection, setStartSelection] = useState<string | null>(null);
+  const startErrorRef = useRef<HTMLParagraphElement>(null);
   const [historyMessage, setHistoryMessage] = useState<string | null>(null);
   const [busyAttemptId, setBusyAttemptId] = useState<string | null>(null);
   // The id a start attempt used, kept so a retry after a lost response reuses it instead of creating a second attempt.
   const pendingCreate = useRef<{ key: string; id: string } | null>(null);
-  const base = mediaBase();
+  useEffect(() => {
+    if (!startError) return;
+    startErrorRef.current?.scrollIntoView?.({ block: "nearest" });
+    startErrorRef.current?.focus();
+  }, [startError]);
 
   const index = useQuery({ queryKey: ["rc-recall-index"], queryFn: loadAllIndexPassages, staleTime: Infinity });
   const sections = useMemo(() => buildRecallSections(index.data ?? []), [index.data]);
@@ -97,6 +98,7 @@ function AccountRecallPage() {
     if (!user || !savingReady || recovery.running || startingRef.current) return;
     startingRef.current = true;
     setStarting(true);
+    setStartSelection(contentKeyFor(selected));
     setStartError(null);
     try {
       const loaded = await loadPassages(selected.passageIds);
@@ -218,26 +220,21 @@ function AccountRecallPage() {
           {savingUnavailable && <div role="alert" className="rct-save-state"><p>{SAVING_UNAVAILABLE}</p><button type="button" className="rct-text-button" disabled={backend.isFetching} onClick={() => void backend.refetch()}>{backend.isFetching ? "Checking…" : "Check again"}</button></div>}
           {backend.data?.state === "unknown" && <div role="alert" className="rct-save-state"><p>We could not check whether saving is available. Check your connection, then try again. Starting is turned off until we can confirm it.</p><button type="button" className="rct-text-button" disabled={backend.isFetching} onClick={() => void backend.refetch()}>{backend.isFetching ? "Checking…" : "Try again"}</button></div>}
           <ul className="rct-passage-list" aria-label={passageCount === 1 ? "Available passages" : "Available full sections"}>
-            {matching.slice(0, visibleCount).map(({ selection, title, label, recommended }) => <li key={contentKeyFor(selection)} className="rct-passage-choice">
+            {matching.slice(0, visibleCount).map(({ selection, title, label, recommended }) => <li key={contentKeyFor(selection)} className="rct-passage-choice" style={startError && startSelection === contentKeyFor(selection) ? { flexWrap: "wrap" } : undefined}>
               <div>{recommended && <span className="rct-attempt-note">{passageCount === 1 ? "The passage used in the example" : "Includes the example passage"}</span>}<h3>{title}</h3><p>{label}</p></div>
-              <button type="button" className="rct-button rct-button-primary" aria-label={`Start ${label}`} disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>{starting ? "Starting…" : passageCount === 1 ? "Start passage" : "Start section"}<ArrowUpRight size={18} aria-hidden="true" /></button>
+              <button type="button" className="rct-button rct-button-primary" aria-label={`Start ${label}`} disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>{starting && startSelection === contentKeyFor(selection) ? "Starting…" : passageCount === 1 ? "Start passage" : "Start section"}<ArrowUpRight size={18} aria-hidden="true" /></button>
+              {startError && startSelection === contentKeyFor(selection) && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error" style={{ flexBasis: "100%", width: "100%" }}>{startError}</p>}
             </li>)}
           </ul>
           {!index.isPending && !index.isError && choices.length > 0 && matching.length === 0 && <p role="status">No passages match that search. Try a PrepTest number or another word.</p>}
           {matching.length > visibleCount && <button type="button" className="rct-text-button" onClick={() => setVisibleCount((count) => count + 24)}>Show more {passageCount === 1 ? "passages" : "sections"} ({matching.length - visibleCount} remaining)</button>}
-          {startError && <p role="alert" className="rct-error">{startError}</p>}
-          <p className="rct-save-note"><Headphones size={14} aria-hidden="true" />See Your attempts for your time and whether spoken recordings have saved. Your recall is not graded.</p>
+          <p className="rct-save-note"><Headphones size={14} aria-hidden="true" />Your microphone stays on during practice. Press Space to hide each paragraph and recall it aloud. Finish and save to get your recall grade and feedback.</p>
         </div>
       </section>
 
       <details className="rct-demo-disclosure"><summary>Watch demo</summary><RcTrainingVideo compact /></details>
 
-      {base && <section className="rct-examples" aria-labelledby="rc-recall-examples"><div className="rct-section-heading"><div><h2 id="rc-recall-examples" tabIndex={-1}>Video examples</h2><p>Watch the method unfold, then choose your own practice.</p></div></div>
-        <div className="rct-example-note"><h3>Read this before the examples</h3><ul>{RC_RECALL_DEMO_CORRECTION.map((t) => <li key={t}>{t}</li>)}</ul><ExamplePlayer clip={RC_RECALL_NOTE} /></div>
-        <div className="rct-example-grid">{RC_RECALL_EXAMPLES.map((clip) => <ExamplePlayer key={clip.id} clip={clip} />)}</div>
-      </section>}
-
-      <nav aria-label="Practice help" className="rct-hero-actions"><Link to={{ hash: "#rc-recall-history" }}>Your attempts</Link>{base && <Link to={{ hash: "#rc-recall-examples" }}>Examples</Link>}</nav>
+      <nav aria-label="Practice help" className="rct-hero-actions"><Link to={{ hash: "#rc-recall-history" }}>Your attempts</Link></nav>
       <section className="rct-history" aria-labelledby="rc-recall-history"><div className="rct-section-heading"><div><h2 id="rc-recall-history" tabIndex={-1}>Your attempts</h2><p>Each attempt stays here. Starting again never replaces your earlier work.</p></div><History size={23} aria-hidden="true" /></div>
         {user && (recovery.attention > 0 || recovery.result?.storageError || recovery.error) && <div className="rct-recovery" role="alert">
           <p>{recovery.result?.storageError ?? recovery.error ?? `${recovery.attention} recording${recovery.attention === 1 ? "" : "s"} saved on this device ${recovery.attention === 1 ? "has" : "have"} not uploaded yet.`}</p>

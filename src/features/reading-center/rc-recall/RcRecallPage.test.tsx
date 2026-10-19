@@ -75,6 +75,33 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllEnvs());
 
 describe("RC Training page: entry", () => {
+  it("keeps legacy source videos out even when a media base is configured", async () => {
+    vi.stubEnv("VITE_RC_RECALL_MEDIA_BASE", "https://example.invalid/media");
+    renderPage();
+    await startButton();
+    expect(screen.queryByRole("heading", { name: "Video examples" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Examples" })).not.toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/Cappuccino|Decaf/);
+    expect(screen.getByTestId("demo-video")).toBeInTheDocument();
+  });
+
+  it("shows pending state and a focused failure beside only the chosen passage", async () => {
+    let fail!: (reason: Error) => void;
+    data.loadPassages.mockImplementation(() => new Promise((_resolve, reject) => { fail = reject; }));
+    renderPage();
+    await waitFor(async () => expect(await startButton()).toBeEnabled());
+    const buttons = screen.getAllByRole("button", { name: /^Start PT140/i });
+    fireEvent.click(buttons[1]);
+    expect(buttons[1]).toHaveTextContent("Starting…");
+    expect(buttons[0]).toHaveTextContent("Start passage");
+    for (const button of buttons) expect(button).toBeDisabled();
+    fail(new Error("Connection unavailable"));
+    const error = await screen.findByRole("alert");
+    expect(error.closest("li")).toBe(buttons[1].closest("li"));
+    await waitFor(() => expect(error).toHaveFocus());
+    expect(buttons[1]).toBeEnabled();
+  });
+
   it("returns to the passage list every time the start link is clicked", async () => {
     renderPage("/reading-center/rc-recall#rc-recall-start");
     const heading = screen.getByRole("heading", { name: "Choose a passage" });

@@ -10,6 +10,7 @@ import type { ReaderTheme, UserTag } from "../lib/types";
 import { Icon, MIcon, type IconName } from "./Icon";
 import { ConfirmDialog, PopMenu, TAG_COLORS, TagColorPicker, TagEditDialog, TagGlyph } from "./Tags";
 import { AddTextScreen } from "./AddText";
+import { ReadingExerciseLayout } from "./ReadingExerciseLayout";
 import { useRouteView } from "../hooks/useRouteView";
 
 /** The activity workspace stays light; the immersive reader keeps saved appearance. */
@@ -65,6 +66,7 @@ function useTagsReturn(pathname: string): { to: string; label: string } {
 }
 
 export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.ReactElement {
+  const [exerciseActive, setExerciseActive] = useState(false);
   const [narrow, setNarrow] = useState(() => window.innerWidth < 768);
   const [navOpen, setNavOpen] = useState(() => window.innerWidth >= 768);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -101,7 +103,7 @@ export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.Reac
   const { remember } = useRouteView(content);
   useEffect(() => { if (narrow) setNavOpen(false); }, [pathname, narrow]);
   useEffect(() => {
-    if (!narrow || !navOpen) return;
+    if (exerciseActive || !narrow || !navOpen) return;
     const openedOnPath = pathname;
     const controls = () => Array.from(drawer.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled])') ?? []);
     controls()[0]?.focus();
@@ -119,20 +121,21 @@ export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.Reac
       // Dismissal returns to the trigger. Navigation leaves focus on the new heading.
       if (activePath.current === openedOnPath) menuButton.current?.focus();
     };
-  }, [narrow, navOpen]);
+  }, [narrow, navOpen, exerciseActive]);
   // Small screens give the activity the full stage; navigation opens over it.
   const rail = !narrow && !navOpen;
 
   return (
+    <ReadingExerciseLayout.Provider value={setExerciseActive}>
     <div className="relative flex min-h-screen flex-col md:flex-row" style={{ background: "var(--rc-page)", color: "var(--rc-text)" }}>
-      {narrow && <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-3 border-b px-3" style={{ background: "var(--rc-sidenav)", color: "var(--rc-nav-text)" }}>
+      {!exerciseActive && narrow && <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-3 border-b px-3" style={{ background: "var(--rc-sidenav)", color: "var(--rc-nav-text)" }}>
         <button ref={menuButton} type="button" aria-label="Open Reading Center menu" aria-expanded={navOpen} aria-controls="reading-center-navigation" onClick={() => setNavOpen(true)} className="flex h-11 w-11 items-center justify-center rounded-lg hover:bg-[var(--rc-nav-hover)]">
           <Icon name="menu" size={24} />
         </button>
         <span className="text-base font-semibold">Reading Center</span>
       </header>}
-      {narrow && navOpen && <button type="button" aria-label="Close menu" onClick={() => setNavOpen(false)} className="fixed inset-0 z-30 bg-black/40" />}
-      {(!narrow || navOpen) && <aside
+      {!exerciseActive && narrow && navOpen && <button type="button" aria-label="Close menu" onClick={() => setNavOpen(false)} className="fixed inset-0 z-30 bg-black/40" />}
+      {!exerciseActive && (!narrow || navOpen) && <aside
         ref={drawer}
         id="reading-center-navigation"
         role={narrow ? 'dialog' : undefined}
@@ -208,6 +211,7 @@ export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.Reac
       {screen && <AddTextScreen mode={screen} onClose={() => setScreen(null)} onSaved={(slug) => { setScreen(null); navigate(RC_LIBRARY_PATH); void slug; }} />}
       {creatingTag && <TagEditDialog onClose={() => setCreatingTag(false)} onSaved={(t) => navigate(rcTagPath(t.name))} />}
     </div>
+    </ReadingExerciseLayout.Provider>
   );
 }
 

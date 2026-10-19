@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { uploadCapture } from "./lib/captures";
 import { uploadRecording } from "./lib/attempts";
 import { downloadRun, recoverRcRecallBackups, type BackupRun, type RecoveryResult } from "./lib/backup";
 
@@ -30,7 +31,7 @@ export function useRecordingRecovery(studentId: string | undefined, onRecovered?
     running.current = studentId;
     setState((s) => ({ ...s, running: true, error: null }));
     try {
-      const result = await recoverRcRecallBackups(studentId, ({ run, blob }) => uploadRecording({
+      const result = await recoverRcRecallBackups(studentId, ({ run, blob }) => run.captureId ? uploadCapture({ studentId: run.studentId, attemptId: run.attemptId, captureId: run.captureId, path: run.path, blob, mimeType: run.mimeType, durationMs: run.durationMs ?? 0 }) : uploadRecording({
         studentId: run.studentId, attemptId: run.attemptId, recapId: run.recapId, path: run.path,
         blob, mimeType: run.mimeType, durationMs: run.durationMs ?? null,
       }));

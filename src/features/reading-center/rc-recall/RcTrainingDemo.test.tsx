@@ -5,8 +5,8 @@ import RcTrainingDemo from "./RcTrainingDemo";
 const P1 = /Millions of people worldwide play multiplayer online games/;
 const P2 = /The economist Edward Castronova noticed something curious/;
 const go = (tab: RegExp) => fireEvent.click(screen.getByRole("button", { name: tab }));
-const firstCheck = () => { go(/Hide paragraph 1/); go(/Show paragraph 1/); };
-const finishExample = () => { firstCheck(); go(/Read paragraph 2/); go(/Hide paragraph 2/); go(/Show both paragraphs/); go(/Finish the example/); };
+const firstCheck = () => { go(/Hide paragraph/); go(/Check recall/); };
+const finishExample = () => { firstCheck(); go(/Next paragraph/); go(/Hide paragraph/); go(/Check recall/); go(/Finish the example/); };
 
 describe("RC Training demonstration", () => {
   it("starts with paragraph 1 and does not mention paragraph 2 yet", () => {
@@ -17,19 +17,27 @@ describe("RC Training demonstration", () => {
 
   it("hides the text for recall and gives no answer while the learner is being tested", () => {
     render(<RcTrainingDemo />);
-    go(/Hide paragraph 1/);
+    go(/Hide paragraph/);
     expect(screen.queryByText(P1)).not.toBeInTheDocument();
     expect(document.querySelector("blockquote")).toBeNull();
     expect(screen.getByText("Your turn")).toBeVisible();
+    expect(screen.getByRole("status")).toHaveTextContent(/Your microphone is off/);
   });
 
-  it("labels the instructor's example and shows an omitted qualification being repaired", () => {
+  it("holds illustrative automatic feedback until the end, then explains changed qualifications", () => {
     render(<RcTrainingDemo />);
     firstCheck();
+    expect(document.querySelector("blockquote")).toBeNull();
+    expect(screen.getByText(/Automatic feedback comes at the end of practice/)).toBeVisible();
+    go(/Next paragraph/);
+    go(/Hide paragraph/);
+    go(/Check recall/);
+    go(/Finish the example/);
     expect(screen.getByText("Instructor modelling")).toBeVisible();
-    expect(screen.getByText(/they all team up/)).toBeVisible();
+    expect(screen.getByText("Illustrative feedback, not a real attempt")).toBeVisible();
+    expect(screen.getByText(/They all play as warriors/)).toBeVisible();
     expect(screen.getByText("might band together")).toBeVisible();
-    const repair = screen.getByText(/The recall makes two details too strong/);
+    const repair = screen.getByText(/the recall makes two details too strong/);
     expect(repair).toHaveTextContent(/one possible character/);
     expect(repair).toHaveTextContent(/players might team up/);
     expect(repair).toHaveTextContent(/does not say they all do/);
@@ -38,12 +46,12 @@ describe("RC Training demonstration", () => {
   it("recalls paragraph 2 alone, then confirms both paragraphs", () => {
     render(<RcTrainingDemo />);
     firstCheck();
-    go(/Read paragraph 2/);
+    go(/Next paragraph/);
     expect(screen.getByText(P2)).toBeVisible();
-    go(/Hide paragraph 2/);
-    expect(screen.getByText(/Silently retell paragraph 2 only/)).toBeVisible();
+    go(/Hide paragraph/);
+    expect(screen.getByText(/Retell paragraph 2 only, out loud/)).toBeVisible();
     expect(screen.queryByText(P2)).not.toBeInTheDocument();
-    go(/Show both paragraphs/);
+    go(/Check recall/);
     expect(screen.getByText(P1)).toBeVisible();
     expect(screen.getByText(P2)).toBeVisible();
   });
@@ -52,7 +60,7 @@ describe("RC Training demonstration", () => {
     render(<RcTrainingDemo />);
     finishExample();
     expect(screen.getByText(/whole-passage recall is optional/)).toBeVisible();
-    expect(screen.getByText(/not graded/)).toBeVisible();
+    expect(screen.getByText(/not automatically graded/)).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: /Try the example again/i }));
     expect(screen.getByText(P1)).toBeVisible();
   });
@@ -84,7 +92,7 @@ describe("RC Training demonstration", () => {
       go(/Pause demo/);
       act(() => vi.advanceTimersByTime(60000));
       expect(screen.queryByText(P1)).not.toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Show paragraph 1 and check/ })).toBeVisible();
+      expect(screen.getByRole("button", { name: /Check recall/ })).toBeVisible();
     } finally { vi.useRealTimers(); }
   });
 });

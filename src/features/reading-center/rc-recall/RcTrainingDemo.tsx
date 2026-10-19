@@ -20,6 +20,7 @@ interface DemoStep {
   /** An instructor's own example, always labelled as modelling and never offered as the answer to a test. */
   model?: { title: string; text: string };
   repair?: string;
+  recording?: boolean;
 }
 
 /**
@@ -30,35 +31,34 @@ interface DemoStep {
  */
 const STEPS: DemoStep[] = [
   {
-    tab: "Read", action: "Hide paragraph 1 and recall it", label: "1. Read paragraph 1", voice: "Your turn", visible: [0],
-    note: "Read this paragraph from Passage A. Put each idea into your own words. Picture people choosing characters and playing together, rather than trying to memorize the wording. When you're ready, click Hide paragraph 1 and recall it.",
+    tab: "Read", action: "Hide paragraph", label: "1. Read paragraph 1", voice: "Your turn", visible: [0],
+    note: "Read the whole paragraph. Put each idea into your own words in your head. In practice, press Space or Hide paragraph when you're ready. Choose Start exercise and allow microphone access before reading. Your microphone stays on while you read, recall and check.",
   },
   {
-    tab: "Recall", action: "Show paragraph 1 and check", label: "2. Recall paragraph 1", voice: "Your turn", visible: [],
-    note: "Silently explain the whole paragraph in your own words: who is playing, what they choose, what they might do together, and what they see on screen. You don't need to type or record anything. When you've finished, click Show paragraph 1 and check.",
+    tab: "Record", action: "Check recall", label: "2. Record your recall of paragraph 1", voice: "Your turn", visible: [], recording: true,
+    note: "Explain the whole paragraph out loud in your own words, with the text hidden. In practice, press Space again or Check recall when you've finished. This demonstration does not use your microphone.",
   },
   {
-    tab: "Check", action: "Read paragraph 2", label: "3. Check paragraph 1", voice: "Instructor modelling", visible: [0], marks: ["might band together", "such as a warrior"],
-    model: { title: "An example recall with a mistake", text: "Millions of people play online games as warriors, and they all team up to fight magical beasts." },
-    note: "Now compare. You check what you remember against the text. You do not start a fresh read.",
-    repair: "The recall makes two details too strong. A warrior is one possible character, and players might team up. The text does not say they all do. A fuller recall: Millions play these games around the world. They choose characters, perhaps medieval warriors, and may team up on quests. Their on-screen characters travel through a fantasy world.",
+    tab: "Check", action: "Next paragraph", label: "3. Check paragraph 1", voice: "Your turn", visible: [0],
+    note: "Recording continues. Compare the text with what you remembered: what did you miss or change? Check your existing understanding instead of beginning a fresh read. Automatic feedback comes at the end of practice.",
   },
   {
-    tab: "Read", action: "Hide paragraph 2 and recall it", label: "1. Read paragraph 2", voice: "Your turn", visible: [1],
-    note: "Repeat the same three steps with the next paragraph. Read it in your own words and notice how it connects to paragraph 1. When you're ready, click Hide paragraph 2 and recall it.",
+    tab: "Read", action: "Hide paragraph", label: "1. Read paragraph 2", voice: "Your turn", visible: [1],
+    note: "Read the next whole paragraph in your own words. Notice how it connects to paragraph 1. Then press Space or Hide paragraph.",
   },
   {
-    tab: "Recall", action: "Show both paragraphs and check", label: "2. Recall paragraph 2", voice: "Your turn", visible: [],
-    note: "Silently retell paragraph 2 only. Include what Castronova noticed, how players acquire goods, and how playing longer affects their wealth. Then click Show both paragraphs and check.",
+    tab: "Record", action: "Check recall", label: "2. Record your recall of paragraph 2", voice: "Your turn", visible: [], recording: true,
+    note: "Retell paragraph 2 only, out loud, with its details and connections. In practice, press Space again to check. The source and example answer stay hidden while you recall.",
   },
   {
     tab: "Check", action: "Finish the example", label: "3. Check all the text read so far", voice: "Instructor modelling", visible: [0, 1], marks: ["its own economy", "virtual goods", "The longer they play, the wealthier they get"],
-    note: "Check what you remembered against both paragraphs. Paragraph 1 introduces the game world; paragraph 2 shows an economy inside it. Keep that connection, plus how players acquire and trade goods. Nothing here has yet said that these goods sell for real money. Check your existing recall, rather than beginning a fresh read.",
+    note: "Recording continues. Check your recall against both paragraphs. Keep the connection between the game world and its economy, plus how players acquire and trade goods. Continue through the passage. You review automatic feedback after finishing practice, not at each checking step.",
   },
   {
-    tab: "Finished", action: "Choose a passage", label: "You're ready to practise", voice: "Your turn",
-    visible: [],
-    note: "That's the routine: read one paragraph, hide it and recall it, then check all the text read so far. Repeat to the end of the passage. A whole-passage recall is optional. Choose a passage below to try it yourself. Your recall is not graded.",
+    tab: "Finished", action: "Choose a passage", label: "At the end: review feedback", voice: "Instructor modelling", visible: [0], marks: ["might band together", "such as a warrior"],
+    model: { title: "Illustrative feedback, not a real attempt", text: "Example transcript: They all play as warriors and team up to fight magical beasts." },
+    note: "Complete practice and save your result, then choose Get feedback on my recall. Only hidden recall speech is graded, using 2 points for complete meaning, 1 for partial meaning and 0 for missing or changed meaning. Reading and checking speech are excluded. Review what your explanation kept, missed or changed. A whole-passage recall is optional. Silent recalls and unusable recordings are not automatically graded.",
+    repair: "In this example, the recall makes two details too strong. A warrior is one possible character, and players might team up. The text does not say they all do. Keep those qualifications in your next recall.",
   },
 ];
 
@@ -106,10 +106,11 @@ export default function RcTrainingDemo({ onStartPractice }: { onStartPractice?: 
     </div>
     <div className="rct-demo-watch"><span>Online Game Currencies · PT140, Section 4, Passage 2</span><button type="button" onClick={() => { if (last && !playing) setIndex(0); setPlaying(!playing); }}>{playing ? "Pause demo" : "Watch demo"}</button></div>
     <ol className="rct-demo-progress" aria-label="The three steps">
-      {["Read", "Recall", "Check"].map((label, i) => <li key={label} aria-current={step.tab === label ? "step" : undefined}><span>{i + 1}</span>{label}</li>)}
+      {["Read", "Record", "Check"].map((label, i) => <li key={label} aria-current={step.tab === label ? "step" : undefined}><span>{i + 1}</span>{label}</li>)}
     </ol>
     <div className="rct-demo-body" aria-live={playing ? "off" : "polite"}>
       <div className="rct-demo-label">{step.label}<span className="rct-demo-badge" data-voice={step.voice}>{step.voice}</span></div>
+      {!last && <p role="status" className="rct-demo-badge">Recording shown in demo. Your microphone is off.</p>}
       {hidden ? <div className="rct-demo-hidden">
         <span className="rct-hidden-lines" aria-hidden="true"><i /><i /><i /></span>
         <h3>{last ? "Now try a passage yourself." : "The text is hidden. Recall it now."}</h3>

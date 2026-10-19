@@ -34,13 +34,16 @@ describe("RC Training student copy", () => {
     expect(PURPOSE).toMatch(/checking afterward shows which details or connections you lost/i);
   });
 
-  it("teaches one method: whole-paragraph recall with an optional passage recall, never sentence-by-sentence or graded", () => {
+  it("teaches recorded whole-paragraph recall with end feedback and an honest silent fallback", () => {
     const text = [instructions.RC_RECALL_STEPS.join(" "), instructions.VOICE_NOTE].join(" ");
     expect(text).toMatch(/whole paragraph/i);
     expect(text).toMatch(/optional/i);
     expect(text).not.toMatch(/sentence/i);
-    expect(text).not.toMatch(/\bgrad(e|ed|ing)\b/i);
-    expect(text).toMatch(/only an out loud recall is recorded/i);
+    expect(text).toMatch(/Press Space/i);
+    expect(text).toMatch(/microphone stays on while you read, recall and check/i);
+    expect(text).toMatch(/Complete practice and save your result, then choose Get feedback/i);
+    expect(text).toMatch(/Silent recalls and unusable recordings are not graded/i);
+    expect(text).toMatch(/Only hidden recall speech is graded/i);
   });
 
   it("uses recall, not recap, in the steps a student follows", () => {

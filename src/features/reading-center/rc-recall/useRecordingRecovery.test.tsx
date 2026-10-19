@@ -3,9 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // The device backup and the upload are explicit mocked boundaries here; the
 // scheduling under test (mount, reconnect, manual retry, no overlap) is real.
-const api = vi.hoisted(() => ({ recover: vi.fn(), download: vi.fn(), upload: vi.fn() }));
+const api = vi.hoisted(() => ({ recover: vi.fn(), download: vi.fn(), upload: vi.fn(), uploadCapture: vi.fn() }));
 vi.mock("./lib/backup", () => ({ recoverRcRecallBackups: api.recover, downloadRun: api.download }));
 vi.mock("./lib/attempts", () => ({ uploadRecording: api.upload }));
+vi.mock("./lib/captures", () => ({ uploadCapture: api.uploadCapture }));
 
 import { useRecordingRecovery } from "./useRecordingRecovery";
 
@@ -95,4 +96,13 @@ it("does not start automatic or manual recovery while practice disables it", asy
   expect(api.recover).not.toHaveBeenCalled();
   rerender({ enabled: true });
   await waitFor(() => expect(api.recover).toHaveBeenCalledTimes(1));
+});
+
+it("recovers a sealed continuous capture through the capture adapter, preserving its duration", async () => {
+  const blob = new Blob(["session"]);
+  api.recover.mockImplementationOnce(async (_studentId, upload) => { await upload({ run: { captureId: "c1", recapId: "c1", studentId: "s1", attemptId: "a1", path: "s1/a1/capture-c1-unique.webm", mimeType: "audio/webm", durationMs: 6000 }, blob }); return result({ recovered: 1 }); });
+  const { result: hook } = renderHook(() => useRecordingRecovery("s1"));
+  await waitFor(() => expect(hook.current.result).not.toBeNull());
+  expect(api.uploadCapture).toHaveBeenCalledWith(expect.objectContaining({ captureId: "c1", durationMs: 6000, blob }));
+  expect(api.upload).not.toHaveBeenCalled();
 });

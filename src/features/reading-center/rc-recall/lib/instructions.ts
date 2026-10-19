@@ -1,13 +1,12 @@
 /**
- * Full instructions for both modes, kept to the source workouts' procedure.
- * "Decaf" and "Cappuccino" are the source's names; the app names lead.
- * The LawHub footnote is replaced by the in-app section picker.
+ * RC Training preserves the source's paragraph recall/check procedure, with
+ * Joshua's recorded recall and end-of-practice feedback added explicitly.
  */
 
 /** Why the method works, before how to do it. */
 export const PURPOSE = "A paragraph can feel familiar while you are looking at it. Hiding it shows what you can explain from memory. Checking afterward shows which details or connections you lost.";
 
-export const SECTION_PICKER_NOTE = "Choose a full RC section below. You work all four of its passages, in order, inside the app.";
+export const SECTION_PICKER_NOTE = "Choose one passage or a full RC section. A full section includes all four passages in order.";
 
 export const RECAP_STANDARD = [
   "Tell back the whole paragraph in your own words, including its details and how the ideas connect.",
@@ -22,12 +21,12 @@ export const READ_STANDARD = [
 ];
 
 export const RC_RECALL_STEPS = [
-  "Read one whole paragraph. Put its ideas into your own words as you go, and add a brief reaction to each idea.",
-  "Hide the text. Silently retell that paragraph from memory, keeping its details, qualifications and connections.",
-  "Show the text. Check your recall against all the paragraphs you have read so far. Look for anything you missed or changed instead of starting a fresh read.",
-  "Continue with the next paragraph. Recall only that paragraph, then check all the text read so far again.",
-  "At the end of a passage you can choose to recall the whole passage with the text hidden, silently or out loud. This is optional. Try it while you are learning the method and now and then afterward.",
-  "Repeat for the remaining passages in the section.",
+  "Choose Start exercise and allow microphone access. Your microphone stays on while you read, recall and check.",
+  "Read one whole paragraph. Put each idea into your own words and add a brief reaction.",
+  "Press Space or Hide paragraph. Explain the whole paragraph aloud from memory, keeping its details, qualifications and connections.",
+  "Press Space or Check recall. Compare your explanation with all the text read so far. Recording continues.",
+  "Choose Next paragraph and repeat, or Finish passage after its last paragraph. Recall only the new paragraph. A whole-passage recall at the end is optional.",
+  "Complete practice and save your result, then choose Get feedback on my recall. Only hidden recall speech is graded. Silent recalls and unusable recordings are not graded.",
 ];
 
 export const CUMULATIVE_STEPS = [
@@ -49,10 +48,11 @@ export const COMPARATIVE_NOTE =
   "If you choose to check each passage separately, checks in Passage B include only the paragraphs of B you have read.";
 
 export const VOICE_NOTE =
-  "Recall each paragraph silently. At the end of the passage, the optional whole-passage recall can be spoken or silent. " +
-  "Only an out loud recall is recorded.";
+  "Choose Start exercise before reading. Your microphone stays on while you read, recall and check. " +
+  "Press Space to hide the paragraph, then Space again to check your recall. Only hidden recall speech is graded. " +
+  "Complete practice and save your result, then choose Get feedback on my recall. If your microphone cannot start, retry or continue without recording and automatic feedback.";
 
-export const TIMING_NOTE = "Choose Untimed to practise without a clock, or Elapsed timer to see how long each passage takes. There is no time limit. Keep the details and connections before trying to go faster.";
+export const TIMING_NOTE = "Choose No clock to practise without a clock, or Show elapsed time to see how long each passage takes. There is no time limit. Keep the details and connections before trying to go faster.";
 
 export const TIMING = {
   rc_recall: { perPassage: "6 minutes", section: "24+ minutes" },

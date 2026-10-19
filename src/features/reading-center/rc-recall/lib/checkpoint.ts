@@ -22,6 +22,7 @@ export interface CheckpointRecap { key: string; voice: Voice; state: RecordingSt
 export interface PendingFinalization { completed: boolean; seconds: number; savedAt: number }
 
 export interface Checkpoint {
+  captureWorkflow?: boolean;
   version: typeof CHECKPOINT_VERSION;
   studentId: string;
   attemptId: string;

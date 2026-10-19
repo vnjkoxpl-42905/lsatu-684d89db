@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { PURPOSE, RECAP_STANDARD, VOICE_NOTE } from "./lib/instructions";
+import { PURPOSE, RECAP_STANDARD } from "./lib/instructions";
 import RcTrainingVideo from "./RcTrainingVideo";
 import "./RcTraining.css";
 
@@ -20,22 +20,21 @@ export default function RcTrainingInstructions() {
       <Link to={practicePath} className="rct-text-button"><ArrowLeft size={16} aria-hidden="true" />Back to RC Training</Link>
       <header className="rct-section-heading">
         <div><h1 className="text-3xl font-semibold tracking-tight">How to practise RC Training</h1>
-          <p>Read one paragraph, recall it with the text hidden, then check what you remembered.</p></div>
+          <p>Read a paragraph, press Space to hide it, explain it aloud, then press Space again to check.</p></div>
       </header>
       <section className="rct-full-instructions" aria-labelledby="rc-instructions-goal">
         <h2 id="rc-instructions-goal" className="text-xl font-semibold">Keep the meaning when the text is gone</h2>
         <p>{PURPOSE}</p>
-        <p>Your goal is to carry the paragraph's ideas, details and connections into your own words. You aren't trying to memorise its exact wording. You are checking whether you understood enough to explain it without looking.</p>
-        <p>For example, if an author says a treatment helped some patients but hasn't been tested over several years, keep both parts. “The treatment works” drops the limits on the claim. When you check the text, look for that kind of change.</p>
+        <p>Your goal is to explain the whole paragraph in your own words without looking. Keep its details, qualifications and connections. At the end of practice, feedback on your recorded recalls helps you find meaning you missed or changed.</p>
       </section>
       <section className="rct-full-instructions" aria-labelledby="rc-instructions-steps">
         <h2 id="rc-instructions-steps" tabIndex={-1} className="text-xl font-semibold">Work through one paragraph at a time</h2>
         <ol className="mt-5 list-decimal space-y-5 pl-6">
-          <li><strong>Read the whole paragraph.</strong> Put each idea into your own words as you read. Add a brief reaction, such as why an idea matters or what surprises you. Keep the details rather than reducing the paragraph to its main point.</li>
-          <li><strong>Hide it and recall.</strong> Press <strong>Hide the text and recall paragraph 1</strong>. The paragraph number changes as you work. Silently retell that paragraph in your own words, with the text hidden. Don't look back while you recall.</li>
-          <li><strong>Check what you remembered.</strong> Press <strong>Check my recall</strong> when you've finished. The text appears again. Compare it with what you recalled: what did you leave out, change or connect differently? Check the text you have read so far instead of starting a fresh read.</li>
-          <li><strong>Move to the next paragraph.</strong> Press <strong>Next paragraph</strong> and repeat. Recall only the new paragraph with the text hidden. At the checking step, you can see the earlier paragraphs too.</li>
-          <li><strong>Choose whether to recall the whole passage.</strong> At the end, the app offers an optional passage recall. You can do it silently, choose <strong>Out loud (recorded)</strong> and press <strong>Start recording</strong>, or skip it. Only this optional out loud recall uses your microphone.</li>
+          <li><strong>Start your microphone.</strong> Choose <strong>Start exercise</strong> and allow microphone access. Your microphone stays on while you read, recall and check.</li>
+          <li><strong>Read one whole paragraph.</strong> Put each idea into your own words in your head. Add a brief reaction, such as why it matters. Keep the details and connections.</li>
+          <li><strong>Hide it and explain it aloud.</strong> Press <strong>Space</strong> or <strong>Hide paragraph</strong>. Retell the whole paragraph from memory in your own words.</li>
+          <li><strong>Check your recall.</strong> Press <strong>Space</strong> or <strong>Check recall</strong>. Compare your explanation with the text. Recording continues. Choose <strong>Next paragraph</strong> and repeat, or <strong>Finish passage</strong> after its last paragraph. Recall only the new paragraph. A whole-passage recall at the end is optional.</li>
+          <li><strong>Get feedback at the end.</strong> Complete practice and save your result, then choose <strong>Get feedback on my recall</strong>. Only your hidden recall speech is graded. Review the transcript beside the source to find meaning you missed or changed. Silent recalls and unusable recordings are not graded.</li>
         </ol>
       </section>
       <section className="rct-full-instructions" aria-labelledby="rc-instructions-video">
@@ -49,8 +48,10 @@ export default function RcTrainingInstructions() {
       </section>
       <section className="rct-full-instructions" aria-labelledby="rc-instructions-pace">
         <h2 id="rc-instructions-pace" className="text-xl font-semibold">Take the time you need</h2>
-        <p>Practice starts with <strong>No clock</strong> selected. Choose <strong>Show elapsed time</strong> before starting if you want to see how long you've practised. It counts up and pauses while you are away from the practice screen. There is no time limit. Keep the details and connections before trying to go faster.</p>
-        <p>{VOICE_NOTE} The app doesn't grade your recall. You compare it with the passage yourself.</p>
+        <p>Practice starts with <strong>No clock</strong> selected. Choose <strong>Show elapsed time</strong> before starting if you want to see how long you've practised. It counts up. Time pauses when you leave practice and resume later. There is no time limit. Keep the details and connections before trying to go faster.</p>
+        <p>Practice opens without the app sidebar. Choose <strong>Hide instructions</strong> when you are ready; the guide also collapses after the first paragraph. Choose <strong>Show instructions</strong> to reopen it. Space and the matching buttons move between reading, recall and checking. They do not stop your microphone.</p>
+        <p>If your microphone cannot start, retry or choose <strong>Continue without recording (no automatic feedback)</strong>.</p>
+        <details><summary>Recording and grading</summary><p>Your full recording is transcribed to locate the words spoken during each hidden recall. Only those recall words are sent for comparison with the original paragraph. Reading and checking speech are excluded from the grade.</p><p>Each source unit earns 2 meaning points when its complete meaning is kept, 1 when part is kept, or 0 when it is missing or changed. The app calculates earned points out of the fixed total. This is an AI assessment of your transcript, not an LSAT score. Unclear recordings are left ungraded.</p></details>
         <p>To pause, press <strong>Save my place and leave</strong>. Return to the attempt to continue. Use <strong>End attempt</strong> when you want to finish early rather than resume later.</p>
       </section>
       <Link to={practicePath} className="rct-button rct-button-primary">Choose a passage<ArrowRight size={16} aria-hidden="true" /></Link>
