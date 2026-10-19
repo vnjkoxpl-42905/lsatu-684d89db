@@ -1,6 +1,20 @@
 # RC Training backend deployment and acceptance
 
-Status checked on 2026-10-18. No production writes or deployment were performed in this audit.
+## Authenticated acceptance after deployment on 2026-10-18
+
+After Joshua approved backend deployment and acceptance, the root agent reported Lovable applied commit `18ad58f8` through Drizzle migrations `0033` and `0034`. The following live tests then passed under the saved tester and admin accounts. The earlier missing-schema findings below are historical and were superseded by these checks.
+
+Twenty authenticated/anonymous checks passed. Both tables are now readable. The tester created one-passage and four-passage attempts, silent and spoken recap metadata, and uploaded a valid one-second synthetic MP3. The saved row was read back. An owner-signed audio URL returned exactly the original 8,611 bytes. Admin metadata read succeeded; admin audio signing failed. Anonymous public audio access failed, and anonymous attempt reads returned no rows. Both attempts finalized as ended early. A subsequent finalized update affected no rows and the original result remained unchanged. A new recap after finalization was rejected with HTTP 403.
+
+Retained acceptance attempts: `85703227-ea03-4454-9bac-94c52903dd01` (one passage) and `fd7e5b4d-1ac2-4f59-9990-751d46c7af87` (four passages). Their recap keys begin `acceptance-20261018-`. No records or objects were deleted or overwritten, and no permissions were changed. Sanitized per-check evidence is in `backend-acceptance-results-20261018.json`; it contains no credentials, tokens or signed URLs.
+
+These API checks do not prove microphone capture, browser playback, crash recovery, or UI completion. Those require browser acceptance. A second non-admin student and a no-entitlement account were unavailable, so cross-student and revoked-access checks remain unverified. Admin audio denial provides a tested separate-identity check but does not substitute for those cases. The earlier interrupted-recording source defect was repaired locally and requires final browser recovery acceptance.
+
+The deployed compatible schema differs from the initial authored PostgreSQL migration: the root reported Lovable required `student_id uuid not null` without a direct auth/profile foreign key, while retaining `auth.uid()` ownership policies and immutable guards. The root also reported bucket MIME enforcement through the storage insert policy rather than the unsupported native bucket MIME configuration. Reconcile the actual deployment SQL with the release branch before merge.
+
+## Earlier read-only audit
+
+Initial status checked on 2026-10-18 before deployment. No production writes were performed during that initial audit.
 
 ## Confirmed blockers
 

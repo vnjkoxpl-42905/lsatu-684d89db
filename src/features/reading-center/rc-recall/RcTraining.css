@@ -253,3 +253,40 @@ body:has(.rc-root[data-rc-theme]:not([data-rc-theme="light"])) .rct-section-menu
  .rct-demo-progress { padding: 12px 10px 0; gap: 3px; }
 }
 .rct-page [id^="rc-recall-"]:focus-visible { outline: 3px solid #a790d3; outline-offset: 4px; border-radius: 4px; }
+
+/* The passage list is the main action; help stays within reach. */
+.rct-hub-header { padding: 8px 4px 24px; border-bottom: 1px solid var(--rc-outline-2); }
+.rct-hub-header h1 { color: var(--rc-text); font-size: clamp(28px, 3.5vw, 38px); line-height: 1.25; font-weight: 600; letter-spacing: -.025em; }
+.rct-hub-header > p { max-width: 650px; margin-top: 10px; color: var(--rc-text-2); font-size: 15px; line-height: 1.7; }
+.rct-hub-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 24px; margin-top: 18px; }
+.rct-hub-actions .rct-text-button { min-height: 44px; display: inline-flex; align-items: center; font-size: 14px; }
+.rc-root .rct-page .rct-content { padding: 24px 4px 0; }
+.rc-root .rct-page .rct-start { border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.rct-list-heading { margin-bottom: 18px; }
+.rc-root .rct-page .rct-list-heading h2 { font-size: 23px; font-weight: 600; line-height: 1.4; color: var(--rc-text); }
+.rct-list-heading > p { margin-top: 6px; color: var(--rc-text-2); font-size: 13px; line-height: 1.7; }
+.rc-root .rct-page .rct-start-form { padding: 0; }
+.rct-choice-tools { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 12px 18px; }
+.rct-passage-search { flex: 1 1 240px; }
+.rct-passage-search > span { display: block; margin-bottom: 7px; font-size: 12px; font-weight: 500; color: var(--rc-text-2); }
+.rct-segmented { display: flex; flex: 0 1 auto; flex-wrap: wrap; align-items: center; border: 1px solid var(--rc-outline-2); border-radius: 9px; padding: 3px; gap: 3px; }
+.rct-segmented label { position: relative; cursor: pointer; }
+.rct-segmented input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.rct-segmented span { display: flex; align-items: center; min-height: 38px; padding: 7px 12px; border-radius: 6px; color: var(--rc-text-2); font-size: 12px; }
+.rct-segmented input:checked + span { background: #eeebf6; color: #332752; font-weight: 600; }
+.rct-segmented input:focus-visible + span { outline: 3px solid #8b73b0; outline-offset: 2px; }
+.rct-clock-choice { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; margin: 10px 0 0; }
+.rct-clock-choice legend { float: left; margin-right: 18px; padding-top: 11px; font-size: 12px; color: var(--rc-text-2); }
+.rct-clock-choice label { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; cursor: pointer; font-size: 12px; color: var(--rc-text-2); }
+.rct-clock-choice input { accent-color: #645081; }
+.rct-clock-choice p { color: var(--rc-text-2); font-size: 12px; line-height: 1.6; }
+.rct-demo-disclosure { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--rc-outline-2); }
+.rct-demo-disclosure > summary { min-height: 44px; padding: 10px 0; cursor: pointer; color: var(--rc-text); font-size: 15px; font-weight: 600; }
+.rct-demo-disclosure > summary:focus-visible { outline: 3px solid #8b73b0; outline-offset: 3px; }
+.rct-demo-disclosure > :not(summary) { margin-top: 12px; }
+@container (max-width: 600px) {
+ .rct-choice-tools { align-items: stretch; }
+ .rct-passage-search { flex-basis: 100%; }
+ .rct-segmented { align-self: flex-start; }
+ .rct-hub-header { padding-top: 4px; }
+}

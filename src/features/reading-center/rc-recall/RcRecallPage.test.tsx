@@ -36,8 +36,9 @@ vi.mock("./lib/attempts", async (orig) => ({
 vi.mock("./useRecordingRecovery", () => ({
   useRecordingRecovery: () => ({ running: false, result: null, error: null, attention: 0, retry: vi.fn(), download: vi.fn() }),
 }));
+vi.mock("./RcTrainingVideo", () => ({ default: () => <div data-testid="demo-video">Video demonstration</div> }));
 vi.mock("./RcRecallRunner", () => ({
-  default: (props: { resume: Checkpoint | null; attempt: AttemptRow }) => <div data-testid="runner">{props.resume ? `resumed at ${props.resume.stepId}` : "new"} {props.attempt.id}</div>,
+  default: (props: { resume: Checkpoint | null; attempt: AttemptRow; showElapsedTimer: boolean }) => <div data-testid="runner" data-clock={props.showElapsedTimer ? "shown" : "hidden"}>{props.resume ? `resumed at ${props.resume.stepId}` : "new"} {props.attempt.id}</div>,
   formatClock: (s: number) => String(s),
 }));
 
@@ -76,30 +77,31 @@ afterEach(() => vi.unstubAllEnvs());
 describe("RC Training page: entry", () => {
   it("returns to the passage list every time the start link is clicked", async () => {
     renderPage("/reading-center/rc-recall#rc-recall-start");
-    const heading = screen.getByRole("heading", { name: "Choose your practice" });
+    const heading = screen.getByRole("heading", { name: "Choose a passage" });
     await waitFor(() => expect(heading).toHaveFocus());
     screen.getByRole("searchbox").focus();
-    fireEvent.click(screen.getByRole("link", { name: /let.s start/i }));
+    fireEvent.click(screen.getByRole("link", { name: "Choose a passage" }));
     await waitFor(() => expect(heading).toHaveFocus());
     screen.getByRole("searchbox").focus();
-    fireEvent.click(screen.getByRole("link", { name: /let.s start/i }));
+    fireEvent.click(screen.getByRole("link", { name: "Choose a passage" }));
     await waitFor(() => expect(heading).toHaveFocus());
   });
   it("explains the goal first, with an example and a dedicated instruction page", () => {
     renderPage();
     expect(screen.getByRole("heading", { level: 1, name: "RC Training" })).toBeInTheDocument();
-    expect(screen.getByText(/Your goal is to retell each paragraph/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /let.s start/i })).toHaveAttribute("href", "/reading-center/rc-recall#rc-recall-start");
+    expect(screen.getByText(/Practise remembering the details and reasoning/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Choose a passage" })).toHaveAttribute("href", "/reading-center/rc-recall#rc-recall-start");
     expect(screen.getByRole("link", { name: "See the instructions" })).toHaveAttribute("href", "/reading-center/rc-recall/instructions");
     expect(document.body.textContent).not.toMatch(/Cappuccino|Decaf/);
-    expect(screen.getByRole("radio", { name: /^one passage$/i })).toBeChecked();
+    expect(screen.getByRole("radio", { name: /^single passage$/i })).toBeChecked();
   });
   it("lists one-click passage launches with no setup dropdown", async () => {
     renderPage();
     await waitFor(async () => expect(await startButton()).toBeEnabled());
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
     expect(within(screen.getByRole("list", { name: "Available passages" })).getAllByRole("button")).toHaveLength(4);
-    expect(screen.getByRole("checkbox", { name: "Show elapsed time" })).toBeChecked();
+    expect(screen.getByRole("radio", { name: "No clock" })).toBeChecked();
+    expect(screen.getByRole("radio", { name: "Show elapsed time" })).not.toBeChecked();
   });
   it("finds a passage by title or PrepTest and keeps full sections available", async () => {
     renderPage();
@@ -113,7 +115,31 @@ describe("RC Training page: entry", () => {
   it("hides optional video media when no media base is set", async () => {
     renderPage();
     await startButton();
-    expect(document.querySelector("video")).toBeNull();
+    const demo = screen.getByText("Watch demo").closest("details")!;
+    expect(demo).not.toHaveAttribute("open");
+    expect(screen.getByTestId("demo-video")).not.toBeVisible();
+  });
+});
+
+describe("starting with an optional clock", () => {
+  it("shows the clock only after an explicit choice, with no countdown", async () => {
+    vi.mocked(createAttempt).mockResolvedValue(attemptRow(1, { passage_ids: [140041], finished_at: null }));
+    renderPage();
+    fireEvent.click(screen.getByRole("radio", { name: "Show elapsed time" }));
+    expect(screen.getByText("Counts up only. No time limit.")).toBeInTheDocument();
+    const button = await startButton();
+    await waitFor(() => expect(button).toBeEnabled());
+    fireEvent.click(button);
+    expect(await screen.findByTestId("runner")).toHaveAttribute("data-clock", "shown");
+  });
+  it("keeps the passage list before the collapsed demonstration", async () => {
+    renderPage();
+    const list = await screen.findByRole("list", { name: "Available passages" });
+    const demo = screen.getByText("Watch demo").closest("details")!;
+    expect(list.compareDocumentPosition(demo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    fireEvent.click(screen.getByText("Watch demo"));
+    expect(demo).toHaveAttribute("open");
+    expect(screen.getByTestId("demo-video")).toBeVisible();
   });
 });
 
@@ -165,6 +191,7 @@ describe("starting a section", () => {
     expect(await screen.findByTestId("runner")).toBeInTheDocument();
     expect(createAttempt).toHaveBeenCalledWith(expect.objectContaining({ passageIds: [140041], confirmationScope: "all_read" }));
     expect(data.loadPassages).toHaveBeenCalledWith([140041]);
+    expect(screen.getByTestId("runner")).toHaveAttribute("data-clock", "hidden");
   });
 
   it("starts passage three without renumbering the bank record", async () => {

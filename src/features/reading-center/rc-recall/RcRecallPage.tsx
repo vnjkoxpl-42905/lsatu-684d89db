@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { loadAllIndexPassages, loadPassages } from "@/features/rc/lib/rcBank";
 import type { RcPassage } from "@/features/rc/lib/rcTypes";
 import ExamplePlayer from "./ExamplePlayer";
-import { ArrowDown, ArrowUpRight, BookOpen, Clock3, Headphones, History } from "lucide-react";
-import RcTrainingDemo from "./RcTrainingDemo";
+import { ArrowDown, ArrowUpRight, Headphones, History } from "lucide-react";
+import RcTrainingVideo from "./RcTrainingVideo";
 import "./RcTraining.css";
 import RcRecallRunner from "./RcRecallRunner";
 import RcAttemptHistory from "./RcAttemptHistory";
@@ -41,9 +41,8 @@ function AccountRecallPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const location = useLocation();
-  const navigate = useNavigate();
   const mode: RecallMode = "rc_recall";
-  const [showElapsedTimer, setShowElapsedTimer] = useState(true);
+  const [showElapsedTimer, setShowElapsedTimer] = useState(false);
   const scope: ConfirmScope = "all_read";
   const [passageCount, setPassageCount] = useState<1 | 4>(1);
   const [search, setSearch] = useState("");
@@ -183,45 +182,38 @@ function AccountRecallPage() {
   const unsavedResults = history.entries.filter((e) => e.status === "pending");
 
   return <main className="rct-page" data-reading-activity="rc-recall">
-    <header className="rct-hero">
-      <div className="rct-hero-copy">
-        <span className="rct-hero-tag"><BookOpen size={15} aria-hidden="true" /> Reading comprehension</span>
-        <h1>RC Training</h1>
-        <p className="rct-hero-description">Practise understanding and remembering a passage, one paragraph at a time. Your goal is to retell each paragraph in your own words, including the details and how the ideas connect.</p>
-        <ol className="rct-entry-steps">
-          <li><strong>Read.</strong> Put each idea in the paragraph into your own words and add a brief reaction. Keep the details and how the ideas connect.</li>
-          <li><strong>Hide and recall.</strong> With the text hidden, silently retell the whole paragraph in your own words.</li>
-          <li><strong>Check.</strong> Compare your recall with all the text read so far. Find what you missed, then repeat with the next paragraph. Check what you remember rather than starting a fresh read.</li>
-        </ol>
-        <div className="rct-hero-actions">
-          <Link to={{ hash: "#rc-recall-start" }} className="rct-button rct-button-light">Let’s start <ArrowDown size={16} aria-hidden="true" /></Link>
-          <Link to="/reading-center/rc-recall/instructions" className="rct-hero-link">See the instructions</Link>
-        </div>
-        <div className="rct-hero-foot"><span>One passage or a full section</span><span>Untimed. Your recall is not graded.</span></div>
+    <header className="rct-hub-header">
+      <h1>RC Training</h1>
+      <p>Practise remembering the details and reasoning in a passage, one paragraph at a time.</p>
+      <div className="rct-hub-actions">
+        <Link to={{ hash: "#rc-recall-start" }} className="rct-button rct-button-primary">Choose a passage <ArrowDown size={16} aria-hidden="true" /></Link>
+        <Link to="/reading-center/rc-recall/instructions" className="rct-text-button">See the instructions</Link>
       </div>
-      <RcTrainingDemo onStartPractice={() => navigate({ hash: "#rc-recall-start" })} />
     </header>
 
     <div className="rct-content">
       <section className="rct-start" aria-labelledby="rc-recall-start">
-        <div className="rct-start-intro"><span className="rct-section-icon"><BookOpen size={23} aria-hidden="true" /></span><h2 id="rc-recall-start" tabIndex={-1}>Choose your practice</h2><p>Start with one passage. Choose a full section when you want to practise all four passages in order.</p><div className="rct-timing"><Clock3 size={17} aria-hidden="true" /><div><strong>Untimed</strong><span>No countdown or time limit. Work at your own pace.</span></div></div></div>
+        <div className="rct-list-heading"><h2 id="rc-recall-start" tabIndex={-1}>{passageCount === 1 ? "Choose a passage" : "Choose a full section"}</h2><p>{passageCount === 1 ? "Read, hide the text and recall, then check. Start any passage below." : "Practise four passages in order, using the same paragraph-by-paragraph routine."}</p></div>
         <div className="rct-start-form">
           {(inProgress.length > 0 || unsavedResults.length > 0) && <div className="rct-resume-banner" role="status">
             {inProgress.map((e) => <p key={e.attempt.id}>You have practice in progress: {sectionLabel(e.attempt)}. <button type="button" className="underline" disabled={busyAttemptId === e.attempt.id} onClick={() => void resume(e)}>Resume it</button> <span className="rct-attempt-note">Your place is kept on this device only.</span></p>)}
             {unsavedResults.map((e) => <p key={e.attempt.id}>The result for {sectionLabel(e.attempt)} has not been saved yet. <button type="button" className="underline" disabled={busyAttemptId === e.attempt.id} onClick={() => void retryFinish(e)}>Try saving it again</button></p>)}
           </div>}
-          <fieldset className="rct-scope"><legend>How much will you practise?</legend>
-            <label><input type="radio" name="practice-length" checked={passageCount === 1} onChange={() => setPassageCount(1)} /> One passage</label>
-            <label><input type="radio" name="practice-length" checked={passageCount === 4} onChange={() => setPassageCount(4)} /> Full section (4 passages)</label>
+          <div className="rct-choice-tools">
+            <label className="rct-section-field rct-passage-search"><span>Find a passage or PrepTest</span><input type="search" value={search} onChange={(event) => { setSearch(event.target.value); setVisibleCount(12); }} placeholder="For example, PT140" className="rct-select-trigger" /></label>
+            <fieldset className="rct-segmented"><legend className="sr-only">Practice length</legend>
+              <label><input type="radio" name="practice-length" checked={passageCount === 1} onChange={() => { setPassageCount(1); setVisibleCount(12); }} /><span>Single passage</span></label>
+              <label><input type="radio" name="practice-length" checked={passageCount === 4} onChange={() => { setPassageCount(4); setVisibleCount(12); }} /><span>Full section · 4 passages</span></label>
+            </fieldset>
+          </div>
+          <fieldset className="rct-clock-choice"><legend>Clock</legend>
+            <label><input type="radio" name="practice-clock" checked={!showElapsedTimer} onChange={() => setShowElapsedTimer(false)} /> No clock</label>
+            <label><input type="radio" name="practice-clock" checked={showElapsedTimer} onChange={() => setShowElapsedTimer(true)} /> Show elapsed time</label>
+            {showElapsedTimer && <p>Counts up only. No time limit.</p>}
           </fieldset>
-          {index.isPending && <div className="rct-loading" role="status">Loading sections…</div>}
-          {index.isError && <div role="alert"><p>The section list could not load.</p><button className="rct-text-button" onClick={() => void index.refetch()}>Try loading sections again</button></div>}
+          {index.isPending && <div className="rct-loading" role="status">Loading passages…</div>}
+          {index.isError && <div role="alert"><p>The passage list could not load.</p><button className="rct-text-button" onClick={() => void index.refetch()}>Try loading passages again</button></div>}
           {!index.isPending && !index.isError && !sections.length && <p role="status">No complete RC sections are available yet.</p>}
-          <label className="rct-section-field"><span>Find a passage or PrepTest</span><input type="search" value={search} onChange={(event) => { setSearch(event.target.value); setVisibleCount(12); }} placeholder="For example, PT140" className="rct-select-trigger" /></label>
-          <details className="rct-check-options"><summary>Timer</summary>
-            <label className="rct-timer-choice"><input type="checkbox" checked={showElapsedTimer} onChange={(event) => setShowElapsedTimer(event.target.checked)} /> Show elapsed time</label>
-            <p className="rct-timer-note">No time limit. Time pauses while you are away from the practice screen.</p>
-          </details>
           {backend.isPending && !!user && <p role="status" className="rct-save-state">Checking that saving is available…</p>}
           {savingUnavailable && <div role="alert" className="rct-save-state"><p>{SAVING_UNAVAILABLE}</p><button type="button" className="rct-text-button" disabled={backend.isFetching} onClick={() => void backend.refetch()}>{backend.isFetching ? "Checking…" : "Check again"}</button></div>}
           {backend.data?.state === "unknown" && <div role="alert" className="rct-save-state"><p>We could not check whether saving is available. Check your connection, then try again. Starting is turned off until we can confirm it.</p><button type="button" className="rct-text-button" disabled={backend.isFetching} onClick={() => void backend.refetch()}>{backend.isFetching ? "Checking…" : "Try again"}</button></div>}
@@ -237,6 +229,8 @@ function AccountRecallPage() {
           <p className="rct-save-note"><Headphones size={14} aria-hidden="true" />See Your attempts for your time and whether spoken recordings have saved. Your recall is not graded.</p>
         </div>
       </section>
+
+      <details className="rct-demo-disclosure"><summary>Watch demo</summary><RcTrainingVideo compact /></details>
 
       {base && <section className="rct-examples" aria-labelledby="rc-recall-examples"><div className="rct-section-heading"><div><h2 id="rc-recall-examples" tabIndex={-1}>Video examples</h2><p>Watch the method unfold, then choose your own practice.</p></div></div>
         <div className="rct-example-note"><h3>Read this before the examples</h3><ul>{RC_RECALL_DEMO_CORRECTION.map((t) => <li key={t}>{t}</li>)}</ul><ExamplePlayer clip={RC_RECALL_NOTE} /></div>

@@ -1,11 +1,20 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PURPOSE, RECAP_STANDARD, VOICE_NOTE } from "./lib/instructions";
+import RcTrainingVideo from "./RcTrainingVideo";
 import "./RcTraining.css";
 
 const practicePath = "/reading-center/rc-recall#rc-recall-start";
 
 export default function RcTrainingInstructions() {
+  const location = useLocation();
+  useEffect(() => {
+    const target = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+    if (!target) return;
+    target.scrollIntoView?.({ block: "start" });
+    target.focus({ preventScroll: true });
+  }, [location.hash, location.key]);
   return <main className="rct-page">
     <div className="rct-content">
       <Link to={practicePath} className="rct-text-button"><ArrowLeft size={16} aria-hidden="true" />Back to RC Training</Link>
@@ -20,7 +29,7 @@ export default function RcTrainingInstructions() {
         <p>For example, if an author says a treatment helped some patients but hasn't been tested over several years, keep both parts. “The treatment works” drops the limits on the claim. When you check the text, look for that kind of change.</p>
       </section>
       <section className="rct-full-instructions" aria-labelledby="rc-instructions-steps">
-        <h2 id="rc-instructions-steps" className="text-xl font-semibold">Work through one paragraph at a time</h2>
+        <h2 id="rc-instructions-steps" tabIndex={-1} className="text-xl font-semibold">Work through one paragraph at a time</h2>
         <ol className="mt-5 list-decimal space-y-5 pl-6">
           <li><strong>Read the whole paragraph.</strong> Put each idea into your own words as you read. Add a brief reaction, such as why an idea matters or what surprises you. Keep the details rather than reducing the paragraph to its main point.</li>
           <li><strong>Hide it and recall.</strong> Press <strong>Hide the text and recall paragraph 1</strong>. The paragraph number changes as you work. Silently retell that paragraph in your own words, with the text hidden. Don't look back while you recall.</li>
@@ -29,6 +38,10 @@ export default function RcTrainingInstructions() {
           <li><strong>Choose whether to recall the whole passage.</strong> At the end, the app offers an optional passage recall. You can do it silently, choose <strong>Out loud (recorded)</strong> and press <strong>Start recording</strong>, or skip it. Only this optional out loud recall uses your microphone.</li>
         </ol>
       </section>
+      <section className="rct-full-instructions" aria-labelledby="rc-instructions-video">
+        <h2 id="rc-instructions-video" className="text-xl font-semibold">Watch the paragraph routine</h2>
+        <RcTrainingVideo />
+      </section>
       <section className="rct-full-instructions" aria-labelledby="rc-instructions-details">
         <h2 id="rc-instructions-details" className="text-xl font-semibold">Check the details as well as the main point</h2>
         <ul className="mt-4 list-disc space-y-2 pl-6">{RECAP_STANDARD.map(line => <li key={line}>{line}</li>)}</ul>
@@ -36,7 +49,7 @@ export default function RcTrainingInstructions() {
       </section>
       <section className="rct-full-instructions" aria-labelledby="rc-instructions-pace">
         <h2 id="rc-instructions-pace" className="text-xl font-semibold">Take the time you need</h2>
-        <p>The optional elapsed timer shows how long you've practised. There is no time limit. Open <strong>Timer</strong> before you begin if you want to hide the clock. Keep the details and connections before trying to go faster.</p>
+        <p>Practice starts with <strong>No clock</strong> selected. Choose <strong>Show elapsed time</strong> before starting if you want to see how long you've practised. It counts up and pauses while you are away from the practice screen. There is no time limit. Keep the details and connections before trying to go faster.</p>
         <p>{VOICE_NOTE} The app doesn't grade your recall. You compare it with the passage yourself.</p>
         <p>To pause, press <strong>Save my place and leave</strong>. Return to the attempt to continue. Use <strong>End attempt</strong> when you want to finish early rather than resume later.</p>
       </section>
