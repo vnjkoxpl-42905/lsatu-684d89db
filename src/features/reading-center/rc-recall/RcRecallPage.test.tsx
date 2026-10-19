@@ -335,6 +335,46 @@ describe("starting a section", () => {
 });
 
 describe("attempt history", () => {
+  it.each([[140043], [140041, 140042, 140043, 140044]])("restarts the saved selection %j below Resume while preserving its saved place", async (...ids) => {
+    const passageIds = ids as number[];
+    const original = attemptRow(1, { passage_ids: passageIds, finished_at: null, completed: false, elapsed_seconds: null });
+    data.all = [original];
+    saveCheckpoint({ version: 1, studentId: "s1", attemptId: original.id, attempt: original,
+      contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds }), scope: "all_read", stepIndex: 1, stepId: "p1-para1-recall",
+      recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
+    const saved = listCheckpoints("s1");
+    vi.mocked(createAttempt).mockResolvedValue(attemptRow(2, { id: "fresh", passage_ids: passageIds, finished_at: null }));
+    renderPage();
+    const card = (await screen.findByText("Resume practice")).closest("section")!;
+    const reset = within(card).getByRole("button", { name: passageIds.length === 1 ? "Reset passage" : "Reset section" });
+    expect(reset.previousElementSibling).toHaveTextContent("Resume");
+    await waitFor(() => expect(reset).toBeEnabled());
+    fireEvent.click(reset);
+    expect(await screen.findByTestId("runner")).toHaveTextContent("new fresh");
+    expect(createAttempt).toHaveBeenCalledWith(expect.objectContaining({ passageIds }));
+    expect(data.loadPassages).toHaveBeenCalledWith(passageIds);
+    expect(listCheckpoints("s1")).toEqual(saved);
+  });
+
+  it("shows a failed saved-session reset beside Resume and keeps the saved place", async () => {
+    const original = attemptRow(1, { passage_ids: [140043], finished_at: null, completed: false, elapsed_seconds: null });
+    data.all = [original];
+    saveCheckpoint({ version: 1, studentId: "s1", attemptId: original.id, attempt: original,
+      contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds: [140043] }), scope: "all_read", stepIndex: 1, stepId: "p1-para1-recall",
+      recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
+    vi.mocked(createAttempt).mockRejectedValue(new Error("Connection unavailable"));
+    renderPage();
+    const card = (await screen.findByText("Resume practice")).closest("section")!;
+    const reset = within(card).getByRole("button", { name: "Reset passage" });
+    await waitFor(() => expect(reset).toBeEnabled());
+    fireEvent.click(reset);
+    const alert = await screen.findByRole("alert");
+    expect(card).toContainElement(alert);
+    await waitFor(() => expect(alert).toHaveFocus());
+    expect(listCheckpoints("s1")).toHaveLength(1);
+    expect(within(card).getByRole("button", { name: "Resume" })).toBeEnabled();
+  });
+
   const recap = (over: Partial<RecapRow>): RecapRow => ({
     id: "r1", attempt_id: "a1", student_id: "s1", recap_key: "p1-passage-recap", passage_position: 1, kind: "passage_recap", voice: "spoken",
     recording_state: "saved", object_path: "s1/a1/p1-passage-recap-x.webm", mime_type: "audio/webm", duration_ms: 65_000, ...over,
