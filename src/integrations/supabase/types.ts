@@ -4536,6 +4536,50 @@ export type Database = {
           },
         ]
       }
+      rc_recall_passage_progress: {
+        Row: {
+          active_ms: number
+          attempt_id: string
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          passage_id: number
+          passage_position: number
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          active_ms?: number
+          attempt_id: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          passage_id: number
+          passage_position: number
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          active_ms?: number
+          attempt_id?: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          passage_id?: number
+          passage_position?: number
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_recall_passage_progress_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_attempts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rc_recall_recaps: {
         Row: {
           attempt_id: string
@@ -9139,6 +9183,32 @@ export type Database = {
           student_id: string
           student_name: string
         }[]
+      }
+      save_rc_recall_passage_progress: {
+        Args: {
+          p_active_ms: number
+          p_attempt_id: string
+          p_completed: boolean
+          p_passage_id: number
+          p_passage_position: number
+        }
+        Returns: {
+          active_ms: number
+          attempt_id: string
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          passage_id: number
+          passage_position: number
+          student_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "rc_recall_passage_progress"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       search_teaching_assets: {
         Args: { max_rows?: number; q: string }
