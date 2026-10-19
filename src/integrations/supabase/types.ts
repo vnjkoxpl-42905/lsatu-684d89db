@@ -4302,6 +4302,99 @@ export type Database = {
         }
         Relationships: []
       }
+      rc_recall_grades: {
+        Row: {
+          asr_engine: string | null
+          asr_words: Json | null
+          assessment: Json | null
+          attempt_id: string
+          audio_hash: string | null
+          claim_token: string | null
+          created_at: string
+          grader_version: number
+          id: string
+          lease_until: string | null
+          model: string | null
+          object_path: string | null
+          paragraph_index: number | null
+          passage_id: number | null
+          reason: string | null
+          recap_id: string
+          source_hash: string | null
+          source_text: string | null
+          status: string
+          student_id: string
+          transcript: string | null
+          tries: number
+          updated_at: string
+        }
+        Insert: {
+          asr_engine?: string | null
+          asr_words?: Json | null
+          assessment?: Json | null
+          attempt_id: string
+          audio_hash?: string | null
+          claim_token?: string | null
+          created_at?: string
+          grader_version: number
+          id?: string
+          lease_until?: string | null
+          model?: string | null
+          object_path?: string | null
+          paragraph_index?: number | null
+          passage_id?: number | null
+          reason?: string | null
+          recap_id: string
+          source_hash?: string | null
+          source_text?: string | null
+          status: string
+          student_id: string
+          transcript?: string | null
+          tries?: number
+          updated_at?: string
+        }
+        Update: {
+          asr_engine?: string | null
+          asr_words?: Json | null
+          assessment?: Json | null
+          attempt_id?: string
+          audio_hash?: string | null
+          claim_token?: string | null
+          created_at?: string
+          grader_version?: number
+          id?: string
+          lease_until?: string | null
+          model?: string | null
+          object_path?: string | null
+          paragraph_index?: number | null
+          passage_id?: number | null
+          reason?: string | null
+          recap_id?: string
+          source_hash?: string | null
+          source_text?: string | null
+          status?: string
+          student_id?: string
+          transcript?: string | null
+          tries?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rc_recall_grades_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rc_recall_grades_recap_id_fkey"
+            columns: ["recap_id"]
+            isOneToOne: false
+            referencedRelation: "rc_recall_recaps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rc_recall_recaps: {
         Row: {
           attempt_id: string
