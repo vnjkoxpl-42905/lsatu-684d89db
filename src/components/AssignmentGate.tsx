@@ -164,7 +164,7 @@ export function ActivityAssignmentGate({ children, rrcOnly = false }: { children
 }
 
 /** The RRC door accepts a hub grant or its existing, specifically assigned library. */
-export function ReadingCenterRrcGate({ children }: { children: ReactNode }) {
+export function ReadingCenterRrcGate({ children, embedded = false }: { children: ReactNode; embedded?: boolean }) {
   const { user, authReady } = useAuth();
   const permissions = useUserPermissions();
   const access = useReadingCenterAccess(!permissions.is_admin);
@@ -180,7 +180,7 @@ export function ReadingCenterRrcGate({ children }: { children: ReactNode }) {
   });
   if (!authReady || permissions.loading || (!!user && !permissions.is_admin &&
     (access.isPending || (!access.allowed && permissions.has_classroom_access && legacy.isPending)))) {
-    return <div role="status" className="flex min-h-screen items-center justify-center">Checking Read, Recall, Colour access…</div>;
+    return <div role="status" className={`flex ${embedded ? "min-h-[50vh] p-6" : "min-h-screen"} items-center justify-center`}>Checking Read, Recall, Colour access…</div>;
   }
   return <ProtectedRoute allowSignedIn>{permissions.is_admin || access.allowed || (permissions.has_classroom_access && legacy.data === true)
     ? children : <LockedModule />}</ProtectedRoute>;

@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppShell, useAppTheme } from './AppShell';
 
 const state = vi.hoisted(() => ({ allowed: true, theme: 'dark', admin: false }));
+vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'student' }, authReady: true }) }));
 vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ is_admin: state.admin }) }));
 vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => ({ allowed: state.allowed }) }));
 vi.mock('../hooks/useReadingCenterData', () => ({
@@ -30,10 +31,14 @@ function shell(rrcOnly = false) {
 }
 
 describe('Reading Center activity rail', () => {
-  it('keeps the three activity destinations beside the existing LR stage', () => {
+  it('shows RC Training as its own activity beside the existing LR stage', () => {
     shell(true);
     expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('href', '/reading-center');
     expect(screen.getByRole('link', { name: 'LR Recall' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'RC Training' })).toHaveAttribute('href', '/reading-center/rc-recall');
+    expect(screen.getAllByRole('link', { name: 'RC Training' })).toHaveLength(1);
+    expect(screen.queryByRole('link', { name: 'RC Practice' })).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'RC Training' })).not.toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: 'Speed Reading' })).toHaveAttribute('href', '/reading-center/speed-reading');
     expect(screen.getByRole('link', { name: 'Tags' })).toHaveAttribute('href', '/reading-center/tags');
     expect(screen.getByRole('heading', { name: 'Existing LR collection' })).toBeInTheDocument();

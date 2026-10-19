@@ -5,13 +5,18 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import LockedModule from '@/components/LockedModule';
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 
-export default function ReadingCenterGate({ children }: { children: ReactNode }) {
+/**
+ * `embedded` is for a gate that sits inside the Reading Center shell: while access
+ * is checked it fills only the content area, so the sidebar stays put instead of
+ * the whole workspace being replaced.
+ */
+export default function ReadingCenterGate({ children, embedded = false }: { children: ReactNode; embedded?: boolean }) {
   const { user, authReady } = useAuth();
   const permissions = useUserPermissions();
   const access = useReadingCenterAccess(!permissions.is_admin);
 
   if (!authReady || permissions.loading || (!!user && !permissions.is_admin && access.isPending)) {
-    return <div role="status" className="flex min-h-screen items-center justify-center">Checking Reading Center access…</div>;
+    return <div role="status" className={`flex ${embedded ? "min-h-[50vh] p-6" : "min-h-screen"} items-center justify-center`}>Checking Reading Center access…</div>;
   }
   return <ProtectedRoute allowSignedIn>
     {permissions.is_admin ? children : access.isError

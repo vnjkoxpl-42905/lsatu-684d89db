@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDashboardPassages, useDashboardProgress, useDashboardSessions, useRecallDashboard } from "../hooks/useRecallDashboard";
 import { readingDashboard, recordedTime } from "../lib/dashboard";
 import { RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_RRC_PATH } from "../lib/routes";
+import { RcTrainingProgress } from "../components/RcTrainingProgress";
 
 const panel = { background: "var(--rc-card)", borderColor: "var(--rc-outline-2)" };
 const muted = { color: "var(--rc-text-2)" };
@@ -76,6 +77,7 @@ export default function ReadingCenterHome() {
       <Trend title="LR Recall" description="How much of the original detail survived in your recall." unit="%" points={dashboard.recallTrend} loading={recall.isLoading} failed={recall.isError} empty="No graded LR runs yet. Complete a section to start your recall graph." to={RC_RRC_PATH} retry={() => { void recall.refetch(); }} />
       <Trend title="Speed Reading" description="Recorded pace, calculated from words read and active reading time." unit="WPM" points={dashboard.speedTrend} loading={sessions.isLoading} failed={sessions.isError} empty="No recorded reading sessions yet. Read a passage to start your pace graph." to={RC_LIBRARY_PATH} retry={() => { void sessions.refetch(); }} />
     </div>
+    <div className="mt-6"><RcTrainingProgress compact /></div>
     <section className="mt-6 rounded-2xl border p-5 sm:p-6" style={panel} aria-label="Recent practice">
       <h2 className="text-lg font-semibold">Recent practice</h2>
       <p className="mt-1 text-sm" style={muted}>Resume a drill, open its results or return to a passage.</p>
