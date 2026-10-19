@@ -10,6 +10,7 @@ const state = vi.hoisted(() => ({ recall: { data: { assignments: [], grades: [] 
   progress: { data: [], isLoading: false, isError: false, refetch: vi.fn() } }));
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "me" } }) }));
 vi.mock("../hooks/useRecallDashboard", () => ({ useRecallDashboard: () => state.recall, useDashboardSessions: () => state.sessions, useDashboardProgress: () => state.progress, useDashboardPassages: () => state.passages }));
+vi.mock("../components/RcTrainingProgress", () => ({ RcTrainingProgress: ({ compact }: { compact?: boolean }) => <section aria-label="RC Training progress">{compact ? "RC summary" : "RC detail"}</section> }));
 vi.mock("recharts", () => ({ ResponsiveContainer: () => null, CartesianGrid: () => null, Line: () => null, LineChart: () => null, Tooltip: () => null, XAxis: () => null, YAxis: () => null }));
 
 let node: HTMLDivElement;
@@ -33,6 +34,18 @@ describe("Reading dashboard", () => {
     expect(node.querySelector('a[href="/reading-center/rrc"]')).not.toBeNull();
     expect(node.querySelector('a[href="/reading-center/speed-reading"]')).not.toBeNull();
     expect(node.textContent).not.toContain("Choose your reading activity");
+  });
+
+  it("includes RC Training beside the other activities", () => {
+    render();
+    expect(node.querySelector('[aria-label="RC Training progress"]')?.textContent).toBe("RC summary");
+  });
+
+  it("keeps RC practice within the single RC Training experience", () => {
+    render();
+    expect(node.querySelectorAll('[aria-label="RC Training progress"]')).toHaveLength(1);
+    expect(node.querySelector('[aria-label="RC Practice"]')).toBeNull();
+    expect(node.querySelector('a[href="/practice/exams?view=section&section=rc"]')).toBeNull();
   });
 
   it("shows a failed query as unavailable with retry rather than a false zero", () => {

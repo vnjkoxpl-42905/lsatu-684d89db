@@ -5,6 +5,7 @@
  */
 export const TOOLS_PATH = "/teacher/tools";
 export const RC_HOME_PATH = "/reading-center";
+export const RC_RECALL_PATH = "/reading-center/rc-recall";
 export const RC_LIBRARY_PATH = "/reading-center/speed-reading";
 export const RC_RRC_PATH = "/reading-center/rrc";
 export const RC_STATS_PATH = "/reading-center/profile";

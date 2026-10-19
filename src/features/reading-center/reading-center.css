@@ -214,3 +214,17 @@
   .rc-root .rc-reader-controls { gap: 8px; }
   .rc-root .rc-reader-controls > button { width: 70px; }
 }
+
+/* Navigation never animates for people who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  #reading-center-root *, #reading-center-root *::before, #reading-center-root *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* A focused destination heading stays clear of the sticky mobile header. */
+#reading-center-root h1[tabindex="-1"] { scroll-margin-top: 72px; }
+#reading-center-root h1[tabindex="-1"]:focus { outline: none; }
+#reading-center-root h1[tabindex="-1"]:focus-visible { outline: 3px solid #a790d3; outline-offset: 4px; border-radius: 4px; }
