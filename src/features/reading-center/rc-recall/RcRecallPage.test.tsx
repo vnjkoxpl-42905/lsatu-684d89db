@@ -284,8 +284,8 @@ describe("attempt history", () => {
     data.all = [attemptRow(1)];
     data.recaps = [recap({ id: "r1" }), recap({ id: "r2", recording_state: "failed", object_path: null, recap_key: "p2-passage-recap", passage_position: 2 })];
     renderPage();
-    await waitFor(() => expect(screen.getByText(/1 of 2 spoken recalls saved/)).toBeInTheDocument());
-    expect(screen.getByText(/30:00/)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/30:00/)).toBeInTheDocument());
+    expect(screen.queryByText(/spoken recalls saved|no spoken recalls/i)).not.toBeInTheDocument();
     expect(screen.getByText("Recording needs attention")).toBeInTheDocument();
   });
 
@@ -355,6 +355,7 @@ describe("attempt history", () => {
     });
     renderPage();
     const resume = (await screen.findAllByRole("button", { name: /resume/i }))[0];
+    expect(screen.getByText("Resume practice").closest("section")!.querySelector(".rct-continue-footer")).toBeNull();
     fireEvent.click(resume);
     expect(await screen.findByTestId("runner")).toHaveTextContent("resumed at p1-para1-recall a1");
   });
@@ -372,7 +373,14 @@ describe("attempt history", () => {
     const disclosure = within(card).getByText("Other unfinished sessions (2)").closest("details")!;
     expect(disclosure).not.toHaveAttribute("open");
     expect(within(card).getAllByRole("button", { name: "Resume" })).toHaveLength(1);
-    expect(within(card).getAllByText("Your place is kept on this device only.")).toHaveLength(1);
+    expect(within(card).queryByText(/kept on this device/)).not.toBeInTheDocument();
+    const metas = [...card.querySelectorAll("p")].map((p) => p.textContent ?? "").filter((t) => t.includes("Started "));
+    expect(metas).toHaveLength(3);
+    for (const meta of metas) {
+      expect(meta).toMatch(/Started .*\d{1,2}:\d{2}(?:\s?[ap]\.?\s?m\.?)?$/i);
+      expect(meta).not.toMatch(/\d{1,2}:\d{2}:\d{2}/);
+    }
+    for (const button of within(disclosure).getAllByRole("button", { name: /^Resume .*, started / })) expect(button.getAttribute("aria-label")).not.toMatch(/\d{1,2}:\d{2}:\d{2}/);
     expect(screen.queryByText(/You have practice in progress/)).not.toBeInTheDocument();
     fireEvent.click(within(card).getByRole("button", { name: "Resume" }));
     expect(await screen.findByTestId("runner")).toHaveTextContent("resumed at p1-para1-recall a2");
