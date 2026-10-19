@@ -4269,6 +4269,7 @@ export type Database = {
           passage_ids: number[]
           preptest: number
           section: number
+          segmentation_version: number
           started_at: string
           student_id: string
         }
@@ -4283,6 +4284,7 @@ export type Database = {
           passage_ids: number[]
           preptest: number
           section: number
+          segmentation_version?: number
           started_at?: string
           student_id: string
         }
@@ -4297,6 +4299,7 @@ export type Database = {
           passage_ids?: number[]
           preptest?: number
           section?: number
+          segmentation_version?: number
           started_at?: string
           student_id?: string
         }
