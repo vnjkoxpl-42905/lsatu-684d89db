@@ -152,6 +152,27 @@ describe('RcHubSurface autostart', () => {
     adoption.sessions = [];
   });
 
+  it('keeps saved-set management out of Create and offers saving only after preview', async () => {
+    const saved = await import('../api/rcSavedSets');
+    vi.mocked(saved.listRcSavedSets).mockClear();
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    expect(screen.queryByLabelText('Saved RC name')).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Saved RC sets' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'How Adaptive chooses passages' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    expect(screen.getByRole('heading', { name: 'How Adaptive chooses passages' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Hide filters' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    expect(screen.getByLabelText('Saved RC name')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Save passages' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Save settings' })).toBeInTheDocument();
+    expect(saved.listRcSavedSets).not.toHaveBeenCalled();
+    expect(saved.saveRcSet).not.toHaveBeenCalled();
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
   it('keeps exposure unknown on a failed ledger read while legacy not-attempted selection remains available', async () => {
     const exposure = await import('../api/rcExposure');
     vi.mocked(exposure.getRcExposureHistory).mockRejectedValueOnce(new Error('offline'));
