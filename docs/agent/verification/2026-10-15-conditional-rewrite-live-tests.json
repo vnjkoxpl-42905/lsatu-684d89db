@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-10-15T04:22:56.6435753+00:00",
+  "endpoint": "grade-conditional-rewrite",
+  "configuredModel": "openai/gpt-5-nano",
+  "results": [
+    {
+      "case": "faithful-paraphrase",
+      "passed": false,
+      "expectedCorrect": true,
+      "feedback": null,
+      "request": {
+        "expected": "If it is raining, then Mia takes the bus.",
+        "original": "Mia takes the bus if it is raining.",
+        "task": "rewrite",
+        "studentResponse": "Whenever it rains, Mia rides the bus.",
+        "stagePrompt": "Rewrite this conditional in your own words."
+      },
+      "error": "Your answer has not been checked. Please try again.",
+      "correct": null,
+      "latencyMs": 1977,
+      "status": 503
+    }
+  ],
+  "calls": 1
+}

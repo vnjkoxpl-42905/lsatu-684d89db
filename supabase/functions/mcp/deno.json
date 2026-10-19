@@ -1,0 +1,8 @@
+{
+  "nodeModulesDir": "auto",
+  "compilerOptions": { "strict": false, "noImplicitAny": false },
+  "imports": {
+    "@modelcontextprotocol/server": "npm:@modelcontextprotocol/server",
+    "zod/v4": "npm:zod/v4"
+  }
+}

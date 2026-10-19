@@ -1,0 +1,14 @@
+{
+  "voice": "af_heart",
+  "speed": 0.98,
+  "scenes": [
+    {"id":"intro","title":"Spot the Relationship","text":"Your job is to name the relationship, then find the words that create it."},
+    {"id":"read","title":"Read the sentence","text":"Read the whole sentence first. A lantern can be lit only if its wick is dry."},
+    {"id":"spot","title":"Find the connection","text":"Notice only if. Those words make a dry wick necessary for lighting the lantern. That is a conditional relationship."},
+    {"id":"answer","title":"Write both parts","text":"Write the type, then quote the indicator: Conditional, only if. Give both parts of the answer."},
+    {"id":"cause","title":"Look for a cause","text":"A causal relationship says one thing produces or changes another. The room warmed because the heater switched on. Here, because gives the cause."},
+    {"id":"compare","title":"Look for a comparison","text":"A comparative relationship compares things. This lamp is brighter than that one. Brighter than makes the comparison."},
+    {"id":"mixed","title":"Check for another type","text":"Sometimes a sentence contains more than one type. If the lamp is on, the room is brighter than the hallway. If is conditional. Brighter than is comparative. Include each type with its own indicator words."},
+    {"id":"close","title":"Your turn","text":"Read the sentence. Name each relationship type. Quote the words that create it. You're ready to start."}
+  ]
+}

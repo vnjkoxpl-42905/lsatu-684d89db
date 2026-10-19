@@ -1,0 +1,16 @@
+{
+  "date":"2026-09-30",
+  "origin":"https://lsatprep.study",
+  "teacherWorkRoute":"/teacher/students/d763bfe6-d710-4c4b-90ff-4b3a20929211/work",
+  "assignmentId":"99b54831-32dc-429c-8cfe-46d697672641",
+  "dedicatedVerificationFixture":true,
+  "savedWorkConfirmationShown":true,
+  "removingStateShown":true,
+  "dialogClosedAfterAcknowledgment":true,
+  "sourceAndMirrorDisappearedFromActionableWork":true,
+  "databaseReadback":{"status":"assigned","revoked":true,"teacherActorMatchesOriginal":true,"itemsPreserved":1,"savedResponsePreserved":1,"mirrorHidden":true},
+  "preExistingAssignmentsRevoked":0,
+  "gradingRequests":0,
+  "notifications":0,
+  "screenshots":["production-activity-revocation-enabled.png","production-activity-revocation-acknowledged.png"]
+}
