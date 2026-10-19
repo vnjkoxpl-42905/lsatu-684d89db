@@ -56,6 +56,11 @@ describe('Reading Center route boundaries', () => {
   it('opens RC Recall for hub members and keeps it behind the hub gate', () => {
     access.hub = true;
     open('/reading-center/rc-recall');
+    expect(screen.getByText('RC Training instructions')).toBeInTheDocument();
+  });
+  it.each(['/reading-center/rc-recall/passages', '/reading-center/rc-recall#rc-recall-start', '/reading-center/rc-recall#rc-recall-history'])('opens passage selection through %s', (path) => {
+    access.hub = true;
+    open(path);
     expect(screen.getByText('RC Recall stage')).toBeInTheDocument();
   });
   it('opens the separate instructions page within the shared activity rail', () => {
@@ -83,7 +88,7 @@ describe('one shell for LR and RC, with separate access checks', () => {
     open('/reading-center/rrc');
     expect(screen.getByText('LR stage')).toBeInTheDocument();
     fireEvent.click(screen.getByText('to RC'));
-    expect(screen.getByText('RC Recall stage')).toBeInTheDocument();
+    expect(screen.getByText('RC Training instructions')).toBeInTheDocument();
     fireEvent.click(screen.getByText('to LR'));
     expect(screen.getByText('LR stage')).toBeInTheDocument();
     fireEvent.click(screen.getByText('to Dashboard'));
@@ -105,7 +110,7 @@ describe('one shell for LR and RC, with separate access checks', () => {
   it('hub-only: RC opens while LR stays behind its own gate', () => {
     access.hub = true; access.lr = false;
     open('/reading-center/rc-recall');
-    expect(screen.getByText('RC Recall stage')).toBeInTheDocument();
+    expect(screen.getByText('RC Training instructions')).toBeInTheDocument();
     fireEvent.click(screen.getByText('to LR'));
     expect(screen.getByText('LR locked')).toBeInTheDocument();
     expect(screen.queryByText('LR stage')).not.toBeInTheDocument();

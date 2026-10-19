@@ -27,6 +27,26 @@ describe("RC recall feedback", () => {
     expect(await screen.findByText("Recall grade: 100%")).toBeInTheDocument();
     expect(gradeRcRecap).not.toHaveBeenCalled();
   });
+  it("keeps mixed-state status refresh separate from starting new feedback", async () => {
+    const mixed = [{ ...pending("1"), status: "processing" as const, retryable: false }, pending("2")];
+    vi.mocked(getRcGrades).mockResolvedValue({ attemptId: "attempt", items: mixed });
+    vi.mocked(gradeRcRecap).mockResolvedValue({ attemptId: "attempt", items: [ready("2")] });
+    render(<RcTrainingFeedback attemptId="attempt" enabled />);
+    fireEvent.click(await screen.findByRole("button", { name: "Check feedback status" }));
+    await waitFor(() => expect(getRcGrades).toHaveBeenCalledTimes(2));
+    expect(gradeRcRecap).not.toHaveBeenCalled();
+    fireEvent.click(await screen.findByRole("button", { name: "Get feedback on my recall" }));
+    await waitFor(() => expect(gradeRcRecap).toHaveBeenCalledExactlyOnceWith("attempt", "2"));
+  });
+  it("reviews saved clips while leaving an unsaved clip ungradable", async () => {
+    vi.mocked(getRcGrades).mockResolvedValue({ attemptId: "attempt", items: [ready("1"), pending("2"), { ...pending("3"), status: "ungradable", retryable: false, reason: "The recording has not saved yet." }] });
+    vi.mocked(gradeRcRecap).mockResolvedValue({ attemptId: "attempt", items: [ready("2")] });
+    render(<RcTrainingFeedback attemptId="attempt" enabled />);
+    expect(await screen.findByText("Kept the meaning in 1.")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Get feedback on my recall" }));
+    await waitFor(() => expect(gradeRcRecap).toHaveBeenCalledExactlyOnceWith("attempt", "2"));
+    expect(screen.getByText("The recording has not saved yet.")).toBeInTheDocument();
+  });
   it("ignores an old attempt's delayed response after switching attempts", async () => {
     let resolveOld!: (value: Awaited<ReturnType<typeof getRcGrades>>) => void;
     vi.mocked(getRcGrades).mockReturnValueOnce(new Promise((resolve) => { resolveOld = resolve; })).mockResolvedValue({ attemptId: "second", items: [] });

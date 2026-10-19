@@ -12,8 +12,9 @@ Only timestamped hidden-recall words reach the judge. Full recording ASR is cach
 
 ## Automated verification
 
-- Reading Center suite: **853 tests across48 files passed**.
-- Typecheck passed. Production build and the postbuild canonical-content leak check passed before the final small silent-copy/mobile-spacing revision; final build is being repeated for release.
+- Reading Center suite after review fixes and merging current main: **868 tests across 49 files passed**.
+- The final save-warning/startup-focus revision passed all 21 focused runner tests; typecheck and production build were repeated successfully afterward. Its independent-review limit is recorded in design-review-log.md.
+- Typecheck, production build and the postbuild canonical-content leak check passed on the merged source.
 - Grader:14 pure Vitest tests and2 Deno endpoint tests passed, including full-bank segmentation parity, canonical source/ID validation, exact denominator, no grading before completion, shared-ASR concurrency, transcript reuse and read/check exclusion.
 - Recorder checks cover permission cancellation, late permission after unmount, interrupted audio, cross-tab locks, device backup failures, immutable marker retry, upload failure and recovery.
 
@@ -28,7 +29,7 @@ All backend migrations were applied through Lovable Cloud: `drizzle/migrations/0
 - Actual Chrome single-passage completion: attempt `a9bb9fee-cb9b-429e-b1c4-85f37230b913`,8 saved spoken recalls,2 saved captures after a development-refresh recovery, valid windows,68 active seconds, zero AI grading of test-room audio.
 - Actual Chrome full-section completion: attempt `2aae37e8-7c3d-4223-890c-5c4b691bd7d9`, canonical passage IDs `[14,15,16,18]`,19 saved spoken recalls across counts `[3,8,4,4]`, one saved capture, valid windows,63 active seconds, zero AI grading of test-room audio.
 - Chrome reading and checking visibly retained the recording indicator across every passage transition; completion stopped it. Guide collapse and sidebar restoration were observed.
-- Responsive matrix390/650/768/1000/1440 CSS pixels: no horizontal overflow; practice sidebar absent and controls at least44px high. The650px case represents a narrow docked content panel. Final mobile-spacing readback is pending.
+- Final responsive matrix at 390/650/768/1000/1440 CSS pixels: no horizontal overflow; practice sidebar absent and controls at least 44px high. At 390px the source uses 18px text and 16px padding; wider layouts use 20px text and 40px padding. The 650px case represents a narrow docked content panel.
 
 Detailed sanitized receipts are in the adjacent backend, grader-v2 and hardware readback JSON files. Dedicated test records are retained as append-only history. A second non-admin student and no-entitlement live identity were unavailable; denial paths also have handler tests and policy review.
 
@@ -40,4 +41,4 @@ The earlier HyperFrames CLI global skill-refresh side effect remains recorded in
 
 ## Frontend release status
 
-Frontend merge/publication is pending final playback, responsive readback and release checks. Publication must match Lovable's merged commit SHA and be proven through the changed live assets and signed-in UI.
+Final release and deployment receipts are recorded on PR #225 and in the AI OS release ledger after publication. Publication must match Lovable's merged commit SHA and be proven through the changed live assets and signed-in UI. Local acceptance alone is not a claim of publication.

@@ -25,8 +25,8 @@ export const RC_RECALL_STEPS = [
   "Read one whole paragraph. Put each idea into your own words and add a brief reaction.",
   "Press Space or Hide paragraph. Explain the whole paragraph aloud from memory, keeping its details, qualifications and connections.",
   "Press Space or Check recall. Compare your explanation with all the text read so far. Recording continues.",
-  "Choose Next paragraph and repeat. Recall only the new paragraph. A whole-passage recall at the end is optional.",
-  "Complete practice and save your result, then choose Get feedback. Only hidden recall speech is graded. Silent recalls and unusable recordings are not graded.",
+  "Choose Next paragraph and repeat, or Finish passage after its last paragraph. Recall only the new paragraph. A whole-passage recall at the end is optional.",
+  "Complete practice and save your result, then choose Get feedback on my recall. Only hidden recall speech is graded. Silent recalls and unusable recordings are not graded.",
 ];
 
 export const CUMULATIVE_STEPS = [
@@ -50,9 +50,9 @@ export const COMPARATIVE_NOTE =
 export const VOICE_NOTE =
   "Choose Start exercise before reading. Your microphone stays on while you read, recall and check. " +
   "Press Space to hide the paragraph, then Space again to check your recall. Only hidden recall speech is graded. " +
-  "Complete practice and save your result, then choose Get feedback. If your microphone cannot start, retry or continue without recording and automatic feedback.";
+  "Complete practice and save your result, then choose Get feedback on my recall. Practice requires a microphone. If it cannot start, retry or return to passage selection.";
 
-export const TIMING_NOTE = "Choose No clock to practise without a clock, or Show elapsed time to see how long each passage takes. There is no time limit. Keep the details and connections before trying to go faster.";
+export const TIMING_NOTE = "The timer counts up during active practice. Microphone setup and paused time are excluded. There is no time limit. Keep the details and connections before trying to go faster.";
 
 export const TIMING = {
   rc_recall: { perPassage: "6 minutes", section: "24+ minutes" },

@@ -52,7 +52,7 @@ describe("Reading dashboard", () => {
     state.recall.isError = true;
     render();
     expect(node.querySelector('[aria-label="LR drills completed"]')?.textContent).toContain("Unavailable");
-    expect(node.querySelector('[aria-label="LR Recall progress"]')?.textContent).not.toContain("No graded LR runs");
+    expect(node.querySelector('[aria-label="LR Training progress"]')?.textContent).not.toContain("No graded LR runs");
     const retry = [...node.querySelectorAll("button")].find(button => button.textContent === "Try again")!;
     act(() => retry.click());
     expect(state.recall.refetch).toHaveBeenCalledTimes(1);

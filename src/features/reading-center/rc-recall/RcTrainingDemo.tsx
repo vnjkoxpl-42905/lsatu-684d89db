@@ -32,7 +32,7 @@ interface DemoStep {
 const STEPS: DemoStep[] = [
   {
     tab: "Read", action: "Hide paragraph", label: "1. Read paragraph 1", voice: "Your turn", visible: [0],
-    note: "Read the whole paragraph in your own words. In practice, press Space or Hide paragraph when you're ready. Choose Start exercise and allow microphone access before reading. Your microphone stays on while you read, recall and check.",
+    note: "Read the whole paragraph. Put each idea into your own words in your head. In practice, press Space or Hide paragraph when you're ready. Choose Start exercise and allow microphone access before reading. Your microphone stays on while you read, recall and check.",
   },
   {
     tab: "Record", action: "Check recall", label: "2. Record your recall of paragraph 1", voice: "Your turn", visible: [], recording: true,
@@ -57,7 +57,7 @@ const STEPS: DemoStep[] = [
   {
     tab: "Finished", action: "Choose a passage", label: "At the end: review feedback", voice: "Instructor modelling", visible: [0], marks: ["might band together", "such as a warrior"],
     model: { title: "Illustrative feedback, not a real attempt", text: "Example transcript: They all play as warriors and team up to fight magical beasts." },
-    note: "Complete practice and save your result, then choose Get feedback. Only hidden recall speech is graded, using 2 points for complete meaning, 1 for partial meaning and 0 for missing or changed meaning. Reading and checking speech are excluded. Review what your explanation kept, missed or changed. A whole-passage recall is optional. Silent recalls and unusable recordings are not automatically graded.",
+    note: "Complete practice and save your result, then choose Get feedback on my recall. Only hidden recall speech is graded, using 2 points for complete meaning, 1 for partial meaning and 0 for missing or changed meaning. Reading and checking speech are excluded. Review what your explanation kept, missed or changed. A whole-passage recall is optional. Silent recalls and unusable recordings are not automatically graded.",
     repair: "In this example, the recall makes two details too strong. A warrior is one possible character, and players might team up. The text does not say they all do. Keep those qualifications in your next recall.",
   },
 ];

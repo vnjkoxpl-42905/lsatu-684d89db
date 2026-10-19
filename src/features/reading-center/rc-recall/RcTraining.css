@@ -290,3 +290,14 @@ body:has(.rc-root[data-rc-theme]:not([data-rc-theme="light"])) .rct-section-menu
  .rct-segmented { align-self: flex-start; }
  .rct-hub-header { padding-top: 4px; }
 }
+.rct-entry-page .rct-section-heading { align-items: center; gap: 24px; }
+.rct-entry-page .rct-section-heading > div { max-width: 660px; }
+.rct-entry-page .rct-section-heading > .rct-button { flex-shrink: 0; }
+.rct-entry-workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(24px, 3vw, 48px); align-items: start; }
+.rct-entry-workspace .rct-full-instructions { margin: 0; min-width: 0; }
+.rct-entry-workspace h2 { margin-bottom: 16px; }
+.rct-entry-page > .rct-content > details { margin-top: 28px; }
+@media (max-width: 900px) {
+  .rct-entry-workspace { grid-template-columns: minmax(0, 1fr); }
+  .rct-entry-page .rct-section-heading { align-items: flex-start; flex-direction: column; gap: 16px; }
+}

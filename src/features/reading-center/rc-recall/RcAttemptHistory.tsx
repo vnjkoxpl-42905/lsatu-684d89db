@@ -82,7 +82,7 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
       <ul>{[...entry.recaps].sort((a, b) => a.passage_position - b.passage_position || a.recap_key.localeCompare(b.recap_key)).map((recap) =>
         <RecapItem key={recap.id} recap={recap} studentId={studentId} />)}</ul>
     </details>}
-    {feedbackOpen && <div style={{ gridColumn: "1 / -1", width: "100%" }}><RcTrainingFeedback attemptId={attempt.id} enabled={!!attempt.finished_at && attempt.completed && spoken.every((recap) => recap.recording_state === "saved")} /></div>}
+    {feedbackOpen && <div style={{ gridColumn: "1 / -1", width: "100%" }}><RcTrainingFeedback attemptId={attempt.id} enabled={!!attempt.finished_at && attempt.completed} /></div>}
   </li>;
 }
 
@@ -115,8 +115,10 @@ function RecapItem({ recap, studentId }: { recap: RecapRow; studentId: string })
         onLoadedMetadata={(event) => { if (bounds) event.currentTarget.currentTime = bounds.start; }}
         onPlay={(event) => { const audio = event.currentTarget; if (bounds && (audio.currentTime < bounds.start || audio.currentTime >= bounds.end)) audio.currentTime = bounds.start; }}
         onSeeking={(event) => { const audio = event.currentTarget; if (bounds && (audio.currentTime < bounds.start || audio.currentTime > bounds.end)) audio.currentTime = bounds.start; }}
-        onTimeUpdate={(event) => { const audio = event.currentTarget; if (bounds && audio.currentTime >= bounds.end) audio.pause(); }} />
+        onTimeUpdate={(event) => { const audio = event.currentTarget; if (bounds && audio.currentTime >= bounds.end) audio.pause(); }}
+        onError={() => { setUrl(null); setBounds(null); setError("Playback could not continue. Open the recording again to get a fresh playback link."); }} />
         : <button type="button" className="underline" disabled={loading} onClick={() => void load(false)}>{loading ? "Opening…" : continuous ? "Play recall segment" : "Play"}</button>}
+      {url && <button type="button" className="underline" disabled={loading} onClick={() => void load(false)}>{loading ? "Refreshing…" : "Refresh playback link"}</button>}
       <button type="button" className="underline" disabled={loading} onClick={() => void load(true)}>{continuous ? "Download full recording" : "Download"}</button>
     </span>}
     {error && <span role="alert" className="rct-error"> {error}</span>}

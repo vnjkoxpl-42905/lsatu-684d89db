@@ -15,7 +15,7 @@ vi.mock('../hooks/useReadingCenterData', () => ({
 vi.mock('./AddText', () => ({ AddTextScreen: () => <div>Add text dialog</div> }));
 
 const DESTINATIONS = [
-  ['Dashboard', 'Dashboard page'], ['LR Recall', 'LR Recall page'], ['RC Training', 'RC Training page'],
+  ['Dashboard', 'Dashboard page'], ['LR Training', 'LR Training page'], ['RC Training', 'RC Training page'],
   ['Speed Reading', 'Speed Reading page'], ['Tags', 'Tags page'], ['Reading Progress', 'Reading Progress page'],
 ] as const;
 
@@ -41,7 +41,7 @@ function app(initial = '/reading-center/rrc') {
     <Routes>
       <Route element={<AppShell />}>
         <Route path="/reading-center" element={<h1>Dashboard page</h1>} />
-        <Route path="/reading-center/rrc" element={<h1>LR Recall page</h1>} />
+        <Route path="/reading-center/rrc" element={<h1>LR Training page</h1>} />
         <Route path="/reading-center/rc-recall" element={<Fragment />} />
         <Route path="/reading-center/speed-reading" element={<LatePage />} />
         <Route path="/reading-center/profile" element={<h1>Reading Progress page</h1>} />
@@ -84,10 +84,10 @@ describe('opening a destination from the sidebar', () => {
     expect(heading('RC Training page')).toHaveFocus();
   });
   it.each([
-    ['LR Recall', 'RC Training', 'RC Training page'],
-    ['RC Training', 'LR Recall', 'LR Recall page'],
+    ['LR Training', 'RC Training', 'RC Training page'],
+    ['RC Training', 'LR Training', 'LR Training page'],
   ])('from a scrolled %s to %s: starts at the top with the new heading focused', async (_from, to, expected) => {
-    app(_from === 'LR Recall' ? '/reading-center/rrc' : '/reading-center/rc-recall');
+    app(_from === 'LR Training' ? '/reading-center/rrc' : '/reading-center/rc-recall');
     scrolledTo(806);
     fireEvent.click(link(to));
     expect(heading(expected)).toBeInTheDocument();
@@ -115,7 +115,7 @@ describe('opening a destination from the sidebar', () => {
     app('/reading-center/rrc');
     const nav = screen.getByRole('navigation', { name: 'Main' });
     fireEvent.click(link('RC Training'));
-    fireEvent.click(link('LR Recall'));
+    fireEvent.click(link('LR Training'));
     fireEvent.click(link('Speed Reading'));
     expect(screen.getByRole('navigation', { name: 'Main' })).toBe(nav);
   });
@@ -129,9 +129,9 @@ describe('Back and Forward', () => {
     scrolledTo(0);
     scrollTo.mockClear();
     fireEvent.click(screen.getByRole('button', { name: 'history back' }));
-    expect(heading('LR Recall page')).toBeInTheDocument();
+    expect(heading('LR Training page')).toBeInTheDocument();
     expect(scrollTo).toHaveBeenCalledWith({ top: 806, left: 0, behavior: 'auto' });
-    expect(heading('LR Recall page')).not.toHaveFocus();
+    expect(heading('LR Training page')).not.toHaveFocus();
   });
 
   it('Forward returns to the later view at the position it had', async () => {
@@ -163,7 +163,7 @@ describe('what must not move the page or focus', () => {
 
   it('the first render does not steal focus', () => {
     app('/reading-center/rrc');
-    expect(heading('LR Recall page')).not.toHaveFocus();
+    expect(heading('LR Training page')).not.toHaveFocus();
     expect(scrollTo).not.toHaveBeenCalled();
   });
 
@@ -218,7 +218,7 @@ describe('Tags', () => {
   it('names a destination from any path, not just the top level', () => {
     expect(navDestinationFor('/reading-center')).toEqual({ to: '/reading-center', label: 'Dashboard' });
     expect(navDestinationFor('/reading-center/rc-recall#rc-recall-how')).toEqual({ to: '/reading-center/rc-recall', label: 'RC Training' });
-    expect(navDestinationFor('/reading-center/rrc/attempt/9')).toEqual({ to: '/reading-center/rrc', label: 'LR Recall' });
+    expect(navDestinationFor('/reading-center/rrc/attempt/9')).toEqual({ to: '/reading-center/rrc', label: 'LR Training' });
     expect(navDestinationFor('/somewhere/else')).toEqual({ to: '/reading-center/speed-reading', label: 'Speed Reading' });
   });
 });
@@ -240,7 +240,7 @@ describe('access stays separate from the shared shell', () => {
   it('a student with only the LR grant does not get hub destinations by sharing the shell', () => {
     state.allowed = false;
     app('/reading-center/rrc');
-    expect(link('LR Recall')).toBeInTheDocument();
+    expect(link('LR Training')).toBeInTheDocument();
     for (const name of ['Dashboard', 'RC Training', 'Speed Reading', 'Tags', 'Reading Progress']) expect(screen.queryByRole('link', { name })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Add Text' })).not.toBeInTheDocument();
   });
@@ -248,7 +248,7 @@ describe('access stays separate from the shared shell', () => {
   it('a student with neither grant sees no destinations, only the way home', () => {
     state.allowed = false;
     app('/reading-center/rc-recall');
-    expect(screen.queryByRole('link', { name: 'LR Recall' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'LR Training' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'RC Training' })).not.toBeInTheDocument();
     expect(link('LSAT U Home')).toBeInTheDocument();
   });
@@ -257,6 +257,6 @@ describe('access stays separate from the shared shell', () => {
     state.allowed = false; state.pending = true;
     app('/reading-center/rc-recall');
     expect(link('RC Training')).toBeInTheDocument();
-    expect(link('LR Recall')).toBeInTheDocument();
+    expect(link('LR Training')).toBeInTheDocument();
   });
 });

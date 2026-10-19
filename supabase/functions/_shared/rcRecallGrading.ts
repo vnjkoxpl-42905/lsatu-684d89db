@@ -73,7 +73,8 @@ const normalize = (s: string) => s.trim().replace(/\s+/g, " ");
 export function sourceUnits(source: string): Array<{ id: string; text: string }> {
   const spans: Array<{ start: number; end: number }> = []; let start = 0;
   for (const match of source.matchAll(/[.!?]+(?=\s|$)/g)) {
-    const end = match.index! + match[0].length;
+    if (match.index === undefined) continue;
+    const end = match.index + match[0].length;
     const prefix = source.slice(0, end);
     if (match[0] === "." && /(?:\b(?:Mr|Mrs|Ms|Dr|Prof|Sr|Jr|St|vs|etc|e\.g|i\.e|U\.S|D\.C|b)\.|\b[A-Z]\.)$/i.test(prefix)) continue;
     if (source.slice(start, end).trim()) spans.push({ start, end }); start = end;

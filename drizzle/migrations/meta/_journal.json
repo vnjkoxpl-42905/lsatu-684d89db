@@ -246,6 +246,27 @@
       "when": 1792374392234,
       "tag": "0034_rc_recall_single_or_four_passages",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1792375501016,
+      "tag": "0035_rc_recall_grades",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1792376786304,
+      "tag": "0036_rc_recall_continuous_captures",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1792381586623,
+      "tag": "0037_rc_recall_passage_progress",
+      "breakpoints": true
     }
   ]
 }

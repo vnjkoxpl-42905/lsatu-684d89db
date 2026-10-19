@@ -1,0 +1,34 @@
+# RC Training guided entry and passage tracking
+
+## Goal and settled behavior
+RC Training opens on a concise landing page with the goal, concrete steps, a visible demonstration video and one primary Enter RC Training action. The action leads to the bank-backed passage selector. Instructions remain accessible from the selector, without making returning students repeat a tutorial. Preserve direct links and existing attempt identities.
+
+The selector offers one passage or a full four-passage section. It shows which passages have been completed, plus truthful previous practice time/date when available. Earlier section totals must never be divided into invented passage times. Restarting practice preserves earlier history and completion.
+
+Clock settings are removed. Active practice time is always visible and counts up without a forced practice cutoff. Track current passage routine time and total session time separately, preserving them across pause/resume. Microphone setup and inactive/paused time are excluded. Passage completion and time persist after acknowledged Finish passage, before optional whole-passage recall; optional recall continues session time.
+
+Start exercise requests microphone access and starts recording before reading text is revealed. New RC practice has no silent fallback. Permission refusal or unavailable audio has clear retry/back actions and cannot silently advance. Preserve historical silent attempts and their legacy handling. Recording continues through reading, hidden recall and checking; only immutable recall windows reach grading.
+
+Before practice starts, the composition has one primary Start exercise button and concise microphone explanation. Hide the full running guide, progress clutter and pause/finish tools until they are relevant. During practice the paragraph and Hide paragraph/Check recall lead; progress, recording status and timers are quieter. Pause and return to passages and Finish early remain available under Practice options, with urgent failure/recovery actions visible beside their warnings. Preserve safe save/leave/recover/resume after microphone interruption.
+
+All student-facing Reading Center LR Recall labels become LR Training. Preserve route slugs, backend keys, data and external source titles.
+
+## Persistence and authorization
+Add owner-scoped passage progress keyed by attempt and passage position. Validate identity against the attempt's passage IDs. Updates are monotonic; completion is immutable and retries idempotent. Preserve old records and no delete access. Store in-progress timing when pausing/leaving and final completion before advancing. Failed progress saves remain visible and retry the same intent. Recover across device refresh/resume without inventing saved completion.
+
+The current Lovable-managed backend requires a reviewed additive migration deployed through Lovable. No new Lovable credit-spending action is authorized by the broader product request: obtain fresh explicit approval immediately before deployment. The prior grading-call budgets are exhausted; no further provider calls, private room-audio grading, secret display or rotation. Existing cached grades and read-only checks are available.
+
+## Verification and release
+- Focused tests for landing/selector routes, old deep links, mandatory recording, permission failure, always-visible timing, pause/resume, per-passage progress failure/retry, repeated practice, historical completion fallback and LR labels.
+- Typecheck and production build; inspect final source through Opus 5.5 at low effort, preserving actual coverage and verdict.
+- Signed-in Chrome: landing -> demo -> enter -> select -> Start exercise -> recording -> read/hide/recall/check -> passage complete -> completed badge/time/history. Do not submit room audio for AI grading.
+- Check narrow, middle, wide and docked widths (390/650/768/1000/1440), no overflow, clear focus, reachable options and no global exercise sidebar.
+- Update the rendered video for the actual new flow, always-running timer and completion marker; render and inspect frames/playback.
+- Verify deployed progress schema/RLS and persistence after approved migration, including immutable completion and ownership denial.
+- Original PR225 merged as 77376eac3e77108769f8d222f429ad3a1fdb821a and is now verified published through deployment 43786ce9-68c3-455c-b05a-84ae4d9e21c1. Chrome confirmed the signed-in RC route and bundle change from index-DXyQ7KsG.js to index-3zZC5fS_.js. The earlier failure-looking history UI was stale: actual hosted logs show a successful 48.63-second development-mode build, no repair required. This guided-entry follow-up is separate and remains unpublished.
+- User already authorized conditional merge and publication when checks pass. Use a branch/PR, preserve other work, wait for Lovable's exact merged SHA, publish through the free control, then prove changed live assets and signed-in behavior. No rollback or force push.
+
+## Narrow migration review before deployment approval
+The immediate plan-review turn should focus on `supabase/migrations/20261019030000_rc_recall_passage_progress.sql`, its equivalent no-wrapper managed draft `docs/rc-training/passage-progress-managed-cloud.sql`, and `lib/passageProgress.ts` under the RC recall feature. Eleven helper tests passed. Check RLS/identity matching, immutable completed timing, lost-response/idempotent retries, concurrent saves, old completion fallback and truthful history. The frontend is still being integrated and gets a separate final inspection; do not claim this narrow migration review approves the finished UI. No reviewer commands, writes, provider calls or deployment. Codex coordinates/builds, Claude Opus 5.5 low independently reviews; two review rounds maximum.
+
+That narrow migration review completed APPROVED. Joshua then explicitly approved deployment and hosted-build diagnosis. Lovable applied drizzle/migrations/0037_rc_recall_passage_progress.sql, verified policies/guards/RPC/FOR SHARE and unchanged old records, with only grant ordering adapted before RLS. Commit3102226f2b9c044314ac30a351ab29e70ea0b487. No provider calls. Final inspection must now cover the whole guided-entry implementation, mandatory microphone hierarchy, timing/recovery, completed markers, labels, video consistency and verification evidence rather than repeating only the migration review.
