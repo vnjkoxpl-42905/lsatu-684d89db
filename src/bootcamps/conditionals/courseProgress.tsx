@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import type { CourseStepProgress } from './progress';
 
-export type CourseStepPatch = Partial<Omit<CourseStepProgress, 'updatedAt'>>;
+export type CourseStepPatch = Partial<Omit<CourseStepProgress, 'updatedAt'>> & { reopen?: boolean };
 export interface CourseProgressStore {
   steps: Record<string, CourseStepProgress>;
   save: (stepId: string, patch: CourseStepPatch) => void;
@@ -37,8 +37,9 @@ export function useDeviceCourseProgress(scope = 'preview'): CourseProgressStore 
   });
   const save = useCallback((stepId: string, patch: CourseStepPatch) => setSteps(previous => {
     const prior = previous[stepId];
-    const status = prior?.status === 'done' ? 'done' : patch.status ?? prior?.status ?? 'started';
-    const next = { ...previous, [stepId]: { ...prior, ...patch, status, updatedAt: new Date().toISOString() } };
+    const { reopen, ...rest } = patch;
+    const status = prior?.status === 'done' && !reopen ? 'done' : rest.status ?? (reopen ? 'started' : prior?.status) ?? 'started';
+    const next = { ...previous, [stepId]: { ...prior, ...rest, status, updatedAt: new Date().toISOString() } };
     try { localStorage.setItem(key, JSON.stringify(next)); } catch { /* keep in memory */ }
     return next;
   }), [key]);

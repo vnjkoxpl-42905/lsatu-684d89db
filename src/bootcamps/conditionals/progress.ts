@@ -56,11 +56,13 @@ export function markConditionalLessonRead(progress: ConditionalProgress, unitId:
   const editionKey = conditionalOpeningEditionKey(unitId);
   return { ...progress, lessons: { ...progress.lessons, [unitId]: readAt, ...(editionKey ? { [editionKey]: readAt } : {}) } };
 }
-export function recordCourseStep(progress: ConditionalProgress, stepId: string, patch: Partial<Omit<CourseStepProgress, 'updatedAt'>>, at = new Date().toISOString()): ConditionalProgress {
+/** `reopen` lets a step that tracks live work (Chapter 2 practice) drop from done to started when required work is invalidated. Without it, finishing is permanent. */
+export function recordCourseStep(progress: ConditionalProgress, stepId: string, patch: Partial<Omit<CourseStepProgress, 'updatedAt'>> & { reopen?: boolean }, at = new Date().toISOString()): ConditionalProgress {
   const prior = progress.course?.[stepId];
-  // Finishing is permanent: revisiting or resetting a drill never un-completes it.
-  const status = prior?.status === 'done' ? 'done' : patch.status ?? prior?.status ?? 'started';
-  return { ...progress, course: { ...progress.course, [stepId]: { ...prior, ...patch, status, updatedAt: at } } };
+  const { reopen, ...rest } = patch;
+  // Finishing is permanent: revisiting or resetting a drill never un-completes it, unless the step asks to reopen.
+  const status = prior?.status === 'done' && !reopen ? 'done' : rest.status ?? (reopen ? 'started' : prior?.status) ?? 'started';
+  return { ...progress, course: { ...progress.course, [stepId]: { ...prior, ...rest, status, updatedAt: at } } };
 }
 function cleanCourse(course: unknown): Record<string, CourseStepProgress> | undefined {
   if (course === undefined) return undefined;

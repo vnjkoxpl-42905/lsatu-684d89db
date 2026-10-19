@@ -42,7 +42,7 @@ function BothOrEither() {
     </Section>
     <Section title="Two ways to get it wrong">
       <ErrorCards start={<>A group is met when the facts match its connector.</>} cards={[
-        { verdict: 'wrong', how: 'Treat AND as if either member were enough.', body: <p>Photo ID shown, nothing about proof of address. “The group is met.”</p>, why: 'AND needs every member. One member leaves it unmet.' },
+        { verdict: 'wrong', how: 'Treat AND as if either member were enough.', body: <p>Photo ID shown, nothing about proof of address. “The group is met.”</p>, why: 'AND needs every member. Photo ID alone does not establish the group. It does not show the group fails either: proof of address is still unknown, so the group is not established yet.' },
         { verdict: 'wrong', how: 'Treat OR as if only one member may be true.', body: <p>Stamped and signed. “Neither fits, so the group fails.”</p>, why: 'OR needs at least one. Both is allowed.' },
         { verdict: 'right', how: 'Match the facts to the connector.', body: <p>AND: every member. OR: at least one.</p>, why: 'Say it out loud before you decide anything else.' },
       ]}/>
@@ -91,7 +91,7 @@ function NegateGroup() {
   return <>
     <Section title="Start with when the group fails">
       <p className="ct-definition"><strong>To deny a group, ask when it fails. Then say that.</strong></p>
-      <p>Two things have to be true for a parade float to pass: its brakes, and its lights. Set the facts and compare three statements: both hold, not both, and neither.</p>
+      <p>Consider this group: the float’s brakes pass and its lights work. Set the facts and compare three statements: both hold, not both, and neither.</p>
       <FourCombos first={brakes} second={lights} mode="opposite"/>
       <p>“Not both” is true in three of the four cases. “Neither” is true in only one. They are different statements, and the denial of <em>both</em> is <strong>not both</strong>, which means at least one is missing. For an OR, the logic runs the other way: it fails only when every member fails, so its denial is <strong>neither</strong>.</p>
     </Section>

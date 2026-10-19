@@ -114,7 +114,11 @@
 .ao-labels input{min-height:2.75rem;padding:.5rem .8rem;border:2px solid #b9c4c9;border-radius:12px;font-size:1rem;background:#fff;color:#173544}
 .ao-build{display:grid;gap:.8rem}
 .ao-build-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:.6rem;align-items:center;padding:.6rem .8rem;border-radius:12px;background:#fffdf7;border:1px solid #e0d6bd}
-.ao-build-row strong{overflow-wrap:anywhere}
+.ao-build-row{color:#173544}
+.ao-build-row strong{overflow-wrap:anywhere;color:#173544}
+/* Feedback that sits outside the dark step panel (the build "Why it works" note) sits on the light run surface. */
+.ao-run>.ao-feedback{background:#e4f5ec;color:#14573a;border:1px solid #2fb07a}
+.ao-run>.ao-feedback[data-kind=hint],.ao-run>.ao-feedback[data-kind=shown]{background:#fff3d9;color:#5c3b00;border-color:#c7841f}
 .ao-build fieldset{margin:0;padding:0;border:0;display:inline-flex;gap:.3rem}
 .ao-build legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 #root .ao-build button,#root .ao-build-op button{min-height:2.75rem;min-width:2.75rem;padding:.3rem .8rem;border:2px solid #173544;border-radius:999px;background:#fff;color:#173544;font-weight:800;cursor:pointer}
@@ -148,3 +152,7 @@
 .dark .ao-form-contra{background:#173b43}
 .dark #root .ao-combo-controls button,.dark #root .ao-probes button,.dark #root .ao-tabs button,.dark #root .ao-check-button,.dark #root .ao-map button,.dark #root .ao-nav button,.dark #root .ao-build button{background:#203b40;color:#edf3ed;border-color:#7a9096}
 .dark .ao-run{color:#edf3ed}
+.dark .ao-build-row{background:#1d3a40;border-color:#50636a;color:#edf3ed}
+.dark .ao-build-row strong{color:#edf3ed}
+.dark .ao-run>.ao-feedback{background:#2fb07a33;color:#e8fff4;border-color:#2fb07a}
+.dark .ao-run>.ao-feedback[data-kind=hint],.dark .ao-run>.ao-feedback[data-kind=shown]{background:#ffc2472e;color:#fff4d6;border-color:#c7841f}

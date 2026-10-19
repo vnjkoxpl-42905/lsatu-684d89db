@@ -2,7 +2,10 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { conditionalUnits, findConditionalUnit } from './content';
-import { emptyProgress, type ConditionalProgress } from './progress';
+import { attemptSummary, emptyDraft, emptyProgress, newRun, type ConditionalAttempt, type ConditionalProgress } from './progress';
+import { conditionalAssignmentAllowsAction, conditionalAssignmentUnitIds } from './assignments';
+import { getCurriculumDifficulty } from './curriculumPath';
+import type { ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
 import { needsExpandedConditionalLessonReview, CONDITIONAL_OPENING_UNIT_IDS } from './openingRevision';
 import { OPENING_COURSE_PATH } from './openingCoursePath';
 import type { ResolvedConditionalAssignment } from './assignments';
@@ -127,6 +130,88 @@ it('counts every Chapter 2 step in the course completion denominator', () => {
   cleanup();
   mount(`${base}/lessons?assignment=andor`, [assignment('andor', ['and-or'])]);
   expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('of 4 steps done');
+});
+
+// ---- Access matrix, built from the real assignment contract ---------------------------------------
+
+const andOrArea = findConditionalUnit('and-or')!.area;
+const targets: { name: string; target: ConditionalAssignmentTarget }[] = [
+  { name: 'v2-stage from the first unit', target: { scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: conditionalUnits[0].id, curriculumVersion: 2 } },
+  { name: 'v2-stage starting at And/Or', target: { scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: 'and-or', curriculumVersion: 2 } },
+  { name: 'legacy-stage starting at And/Or', target: { scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: 'and-or' } },
+  { name: 'legacy-stage starting at group-2', target: { scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: 'group-2' } },
+  { name: 'area', target: { scope: 'area', mode: 'learn', difficulty: 'medium', area: andOrArea } },
+  { name: 'general learn', target: { scope: 'general', mode: 'learn', difficulty: 'medium' } },
+  { name: 'skill And/Or', target: { scope: 'skill', mode: 'learn', difficulty: 'beginner', unitId: 'and-or' } },
+  { name: 'skill De Morgan', target: { scope: 'skill', mode: 'learn', difficulty: 'advanced', unitId: 'de-morgan' } },
+];
+const fromTarget = (target: ConditionalAssignmentTarget, id = 'matrix'): ResolvedConditionalAssignment => ({
+  id, title: id, route: base, target, unitIds: conditionalAssignmentUnitIds(target), mode: target.mode,
+  ...(target.scope !== 'course' && target.scope !== 'stage' ? { difficulty: target.difficulty } : {}),
+});
+const expectedTitles = (unitIds: string[]) => [
+  ...(unitIds.includes('and-or') ? [LESSONS[0], LESSONS[1]] : []), ...(unitIds.includes('de-morgan') ? [LESSONS[2]] : []),
+  ...(unitIds.includes('and-or') ? [DRILLS[0], DRILLS[1]] : []), ...(unitIds.includes('de-morgan') ? [DRILLS[2], DRILLS[3]] : []),
+];
+
+it('shows each Chapter 2 step to exactly the assignment targets whose real unit membership reaches its topic', () => {
+  for (const { name, target } of targets) {
+    const assignment = fromTarget(target);
+    mount(`${base}/lessons?assignment=matrix`, [assignment]);
+    const expected = expectedTitles(assignment.unitIds);
+    if (!expected.length) expect(chapterTwo(), name).toBeNull();
+    else expect(cardTitles(chapterTwo()!), name).toEqual(expected);
+    cleanup();
+  }
+  // Sanity on the contract itself: a legacy stage keeps its original membership, a skill grant is one unit.
+  expect(conditionalAssignmentUnitIds(targets[2].target)).toContain('de-morgan');
+  expect(conditionalAssignmentUnitIds(targets[6].target)).toEqual(['and-or']);
+  expect(conditionalAssignmentUnitIds(targets[3].target)).not.toContain('orientation');
+});
+
+it('lets only learn-mode assignments reach a new lesson, and refuses a unit outside the grant', () => {
+  for (const { name, target } of targets) {
+    const learn = fromTarget(target);
+    const practice = fromTarget({ ...target, mode: 'practice' } as ConditionalAssignmentTarget);
+    for (const unitId of ['and-or', 'de-morgan']) {
+      expect(conditionalAssignmentAllowsAction(learn, { unitId, action: 'lesson' }), `${name} ${unitId} lesson`).toBe(learn.unitIds.includes(unitId));
+      expect(conditionalAssignmentAllowsAction(practice, { unitId, action: 'lesson' }), `${name} ${unitId} practice-only lesson`).toBe(false);
+    }
+  }
+  mount(`${base}/opening/and-or-both-or-either?assignment=matrix`, [fromTarget(targets[7].target)]);
+  expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
+});
+
+it('applies an explicit beginner, medium or advanced level to And/Or practice and ignores the level in the URL', () => {
+  for (const level of ['beginner', 'medium', 'advanced'] as const) {
+    const assignment = fromTarget({ scope: 'skill', mode: 'practice', difficulty: level, unitId: 'and-or' });
+    for (const asked of ['beginner', 'medium', 'advanced'] as const) {
+      expect(conditionalAssignmentAllowsAction(assignment, { unitId: 'and-or', action: 'practice', difficulty: asked }), `${level} grant, ${asked} request`).toBe(asked === level);
+    }
+    expect(conditionalAssignmentAllowsAction(assignment, { unitId: 'de-morgan', action: 'practice', difficulty: level })).toBe(false);
+    expect(conditionalAssignmentAllowsAction(assignment, { unitId: 'and-or', action: 'guided' })).toBe(false);
+  }
+  // Stage and course grants carry no level; the curriculum level for the unit governs.
+  const stage = fromTarget(targets[1].target);
+  expect(stage.difficulty).toBeUndefined();
+  expect(conditionalAssignmentAllowsAction(stage, { unitId: 'and-or', action: 'practice', difficulty: getCurriculumDifficulty('and-or') })).toBe(true);
+});
+
+it('leaves legacy runs, earned attempts and their grade untouched while the new chapter is opened', () => {
+  const question = findConditionalUnit('and-or')!.drills.beginner[0];
+  const run = { ...newRun([question.id]), id: 'legacy-run', index: 1, finished: true, drafts: { [question.id]: { ...emptyDraft(), checked: true, choice: 0, working: 'my work' } } };
+  const attempt: ConditionalAttempt = { id: 'legacy-run:1', questionId: question.id, unitId: 'and-or', difficulty: 'beginner', choice: 0, correct: true, hint: false, explanationBeforeCheck: false, working: 'my work', checkedAt: '2026-09-02T12:00:00.000Z' };
+  state.progress!.runs = { 'legacy-run': run };
+  state.progress!.attempts = [attempt];
+  const before = structuredClone({ runs: state.progress!.runs, attempts: state.progress!.attempts, summary: attemptSummary(state.progress!.attempts) });
+  mount(`${base}/opening/and-or-both-or-either?assignment=course`, [course]);
+  cleanup();
+  mount(`${base}/lessons?assignment=course`, [course]);
+  cleanup();
+  mount(`${base}/lessons/and-or?assignment=course`, [course]);
+  expect({ runs: state.progress!.runs, attempts: state.progress!.attempts, summary: attemptSummary(state.progress!.attempts) }).toEqual(before);
+  expect(before.summary).toEqual({ total: 1, correct: 1, assisted: 0 });
+  expect(Object.keys(state.progress!.course ?? {})).not.toContain(question.id);
 });
 
 it('lists the recorded legacy practice for And/Or alongside the numbered chapter without joining the opening edition', () => {

@@ -76,7 +76,7 @@ export function FourCombos({ first, second, mode = 'meaning' }: { first: Atom; s
 
 // ---- Where the group sits ---------------------------------------------------------------------
 
-const describe = (item: AndOrItem, facts: Facts) => {
+export const describeProbe = (item: AndOrItem, facts: Facts) => {
   const ids = atomIdsOf([item.rule]);
   const trigger = sideStatus(item.rule.sufficient, facts, ids);
   const target = item.rule.necessary;
@@ -87,6 +87,10 @@ const describe = (item: AndOrItem, facts: Facts) => {
     const oneOf = target.members.length > 1 && target.op === 'or';
     const stillOpen = oneOf && target.members.every(member => facts[member.atom] === undefined);
     return `Given: ${known}. The whole sufficient side is established, so the rule applies: ${everyMember ? `every member of the requirement follows (${text(target)}).` : oneOf ? (stillOpen ? `at least one of the requirements follows (${text(target)}), but the rule does not say which.` : `the requirement follows (${text(target)}), and what is already ruled out narrows it.`) : `${text(target)} follows.`}`;
+  }
+  // A denied requirement works backward through the rule: the whole sufficient side cannot be met.
+  if (sideStatus(target, facts, ids) === 'not-met') {
+    return `Given: ${known}. The facts rule out the whole requirement (${text(target)}), so the sufficient side cannot be met. By the contrapositive: ${text(negateSide(item.rule.sufficient))}.`;
   }
   return `Given: ${known}. This does not establish the whole sufficient side (${text(item.rule.sufficient)}), so the rule gives no additional conclusion from these facts.`;
 };
@@ -116,7 +120,7 @@ export function PlacementExplorer() {
       <AndOrDiagram atoms={example.item.atoms} rule={example.item.rule}/>
       <p className="ao-probe-lead">Try a fact:</p>
       <div className="ao-probes" role="group" aria-label="Facts to try">{example.probes.map((entry, i) => <button key={entry.label} type="button" aria-pressed={probe === i} onClick={() => setProbe(i)}>{entry.label}</button>)}</div>
-      <p className="ao-probe-result" role="status">{probe === null ? 'Choose a fact to see what the rule gives.' : describe(example.item, example.probes[probe].fact)}</p>
+      <p className="ao-probe-result" role="status">{probe === null ? 'Choose a fact to see what the rule gives.' : describeProbe(example.item, example.probes[probe].fact)}</p>
     </div>
   </div>;
 }

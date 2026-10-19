@@ -10,19 +10,25 @@ import { AndOrDiagram } from './AndOrVisuals';
 import './and-or.css';
 
 type Outcome = 'open' | 'correct' | 'revealed' | 'done';
-interface StepState { tried: number[]; outcome: Outcome; misses: number; hint: string; builder: BuilderState }
+/** `checked` is the arrangement the current `hint` was written about; a hint is stale once the builder no longer matches it. */
+interface StepState { tried: number[]; outcome: Outcome; misses: number; hint: string; checked: string; everRevealed: boolean; builder: BuilderState }
 interface ItemState { stepIndex: number; labels: Record<string, string>; steps: Record<string, StepState> }
 interface Saved { version: 1; current: number; items: Record<string, ItemState> }
 
-const blankStep = (): StepState => ({ tried: [], outcome: 'open', misses: 0, hint: '', builder: blankBuilder() });
+const blankStep = (): StepState => ({ tried: [], outcome: 'open', misses: 0, hint: '', checked: '', everRevealed: false, builder: blankBuilder() });
+/** Order-independent fingerprint of an arrangement, so undoing an edit makes the old hint current again. */
+export const builderSignature = (item: AndOrItem, builder: BuilderState) =>
+  JSON.stringify([itemAtomIds(item).map(id => [builder.place[id] ?? '', !!builder.negated[id]]), builder.leftOp, builder.rightOp]);
+/** Wording changed: the arrangement and its accepted or revealed grade no longer apply. Misses and the last hint are kept, marked as earlier feedback. */
+export const invalidateArrangement = (step: StepState): StepState => ({ ...step, outcome: 'open', builder: blankBuilder() });
 const blankItem = (): ItemState => ({ stepIndex: 0, labels: {}, steps: {} });
 const stepKeys = (item: AndOrItem): string[] => item.task.kind !== 'build' ? ['answer'] : ['labels', 'diagram', ...(item.task.withContrapositive ? ['contra'] : [])];
 const stepNames: Record<string, string> = { answer: 'Answer', labels: 'Short versions', diagram: 'Build the diagram', contra: 'Build the contrapositive' };
 const stepOf = (state: ItemState, key: string): StepState => state.steps[key] ?? blankStep();
 /** Every step has been answered, correctly or by an explicit reveal. */
 const itemDone = (item: AndOrItem, state?: ItemState) => !!state && stepKeys(item).every(key => stepOf(state, key).outcome !== 'open');
-/** Done without ever seeing a revealed answer. */
-const itemCorrect = (item: AndOrItem, state?: ItemState) => itemDone(item, state) && stepKeys(item).every(key => ['correct', 'done'].includes(stepOf(state!, key).outcome));
+/** Done without ever seeing a revealed answer, including one later cleared by an edit (`everRevealed` is history, not current state). */
+const itemCorrect = (item: AndOrItem, state?: ItemState) => itemDone(item, state) && stepKeys(item).every(key => ['correct', 'done'].includes(stepOf(state!, key).outcome) && !stepOf(state!, key).everRevealed);
 
 // Short versions are drafts for the learner's own use; they are checked for readability only.
 const readable = (value: string) => /[A-Za-z]{3}/.test(value.trim()) && value.trim().length <= 80;
@@ -39,7 +45,8 @@ function cleanStep(raw: unknown): StepState {
   return {
     tried: Array.isArray(step.tried) ? step.tried.filter(Number.isInteger) : [],
     outcome: ['open', 'correct', 'revealed', 'done'].includes(step.outcome as string) ? step.outcome as Outcome : 'open',
-    misses: Number.isInteger(step.misses) ? step.misses! : 0, hint: typeof step.hint === 'string' ? step.hint : '',
+    misses: Number.isInteger(step.misses) ? step.misses! : 0, hint: typeof step.hint === 'string' ? step.hint : '', checked: typeof step.checked === 'string' ? step.checked : '',
+    everRevealed: step.everRevealed === true || step.outcome === 'revealed',
     builder: {
       place: Object.fromEntries(Object.entries(builder.place ?? {}).filter(([, v]) => v === 'left' || v === 'right' || v === '')) as BuilderState['place'],
       negated: Object.fromEntries(Object.entries(builder.negated ?? {}).filter(([, v]) => typeof v === 'boolean')),
@@ -188,7 +195,7 @@ function AndOrRun({ set, run, startUrl, title, storageScope }: { set: NonNullabl
   const correctCount = set.items.filter(entry => itemCorrect(entry, saved.items[entry.id])).length;
 
   useEffect(() => {
-    if (started) record?.({ state: saved, done: doneCount, total, ...(doneCount === total ? { status: 'done' as const } : {}) });
+    if (started) record?.({ state: saved, done: doneCount, total, ...(doneCount === total ? { status: 'done' as const } : { reopen: true }) });
     try { localStorage.setItem(storageKey, JSON.stringify(saved)); setStorageFailed(false); } catch { setStorageFailed(!record); }
   }, [saved, storageKey, record, started, doneCount, total]);
   useEffect(() => { if (started) heading.current?.focus({ preventScroll: true }); }, [current, started, results]);
@@ -198,10 +205,15 @@ function AndOrRun({ set, run, startUrl, title, storageScope }: { set: NonNullabl
   const go = (index: number) => { setSaved(previous => ({ ...previous, current: index })); setResults(false); setStarted(true); };
   const atoms = labelledAtoms(item, state.labels);
 
-  /** Editing wording clears the diagram, the NOT choices and any accepted check that depended on it. The written text stays. */
+  /** Editing wording reopens the labels step and clears the arrangement, NOT choices and any accepted or revealed grade built on it. The written text, the miss count and the last hint stay. */
   const setLabel = (id: string, value: string) => patchItem(prior => ({
     ...prior, labels: { ...prior.labels, [id]: value },
-    steps: { ...prior.steps, labels: blankStep(), diagram: blankStep(), contra: blankStep() },
+    steps: {
+      ...prior.steps,
+      labels: { ...stepOf(prior, 'labels'), outcome: 'open' },
+      diagram: invalidateArrangement(stepOf(prior, 'diagram')),
+      contra: invalidateArrangement(stepOf(prior, 'contra')),
+    },
   }));
 
   if (!started) return <section className="ao-run"><h1>{title ?? set.title}</h1><p>{set.description}</p>{startUrl && <a className="ao-action" href={startUrl}>Start practice</a>}</section>;
@@ -211,9 +223,10 @@ function AndOrRun({ set, run, startUrl, title, storageScope }: { set: NonNullabl
   const checkStep = () => {
     if (!buildStage) return;
     const result = checkBuild(item, step.builder, buildStage);
-    if (!result.ready) { patchStep(key, { hint: result.hint }); return; }
-    if (result.correct) patchStep(key, { outcome: 'correct', hint: '' });
-    else patchStep(key, { misses: step.misses + 1, hint: result.hint });
+    const checked = builderSignature(item, step.builder);
+    if (!result.ready) { patchStep(key, { hint: result.hint, checked }); return; }
+    if (result.correct) patchStep(key, { outcome: 'correct', hint: '', checked: '' });
+    else patchStep(key, { misses: step.misses + 1, hint: result.hint, checked });
   };
   const nextStep = () => patchItem(value => ({ ...value, stepIndex: Math.min(keys.length - 1, stepIndex + 1) }));
   const finishedItem = itemDone(item, saved.items[item.id]);
@@ -235,7 +248,7 @@ function AndOrRun({ set, run, startUrl, title, storageScope }: { set: NonNullabl
       {keys.length > 1 && <ol className="ao-stage-rail" aria-label="Steps for this question">{keys.map((k, i) => <li key={k} aria-current={i === stepIndex ? 'step' : undefined}>
         <button type="button" className="ao-text-button" style={{ color: 'inherit', textDecoration: i === stepIndex ? 'underline' : 'none' }} disabled={i > stepIndex && stepOf(state, keys[i - 1]).outcome === 'open'} onClick={() => patchItem(value => ({ ...value, stepIndex: i }))}>{i + 1}. {stepNames[k]}{stepOf(state, k).outcome !== 'open' ? ' (done)' : ''}</button>
       </li>)}</ol>}
-      {choice && <div className="ao-step"><ChoiceStepView key={item.id} item={item} step={choice} state={{ tried: step.tried, outcome: step.outcome }} idPrefix={`${set.id}-${item.id}`} onChange={next => patchStep('answer', next)}/></div>}
+      {choice && <div className="ao-step"><ChoiceStepView key={item.id} item={item} step={choice} state={{ tried: step.tried, outcome: step.outcome }} idPrefix={`${set.id}-${item.id}`} onChange={next => patchStep('answer', { ...next, ...(next.outcome === 'revealed' ? { everRevealed: true } : {}) })}/></div>}
       {key === 'labels' && <div className="ao-step">
         <p className="ao-prompt">Write a short version of each condition. Keep who or what it concerns, every restriction, and any negative.</p>
         <div className="ao-labels">{itemAtomIds(item).map(id => <label key={id}><span style={{ color: '#cfe3ea' }}>{atomOf(item.atoms, id).yes}</span>
@@ -246,15 +259,17 @@ function AndOrRun({ set, run, startUrl, title, storageScope }: { set: NonNullabl
       </div>}
       {buildStage && <div className="ao-step">
         <p className="ao-prompt">{buildStage === 'diagram' ? 'Place each condition on a side of the arrow, set each connector, and mark any NOT the rule contains.' : 'Now build the contrapositive: switch the sides, put NOT on every member, and change each group’s connector.'}</p>
-        <Builder item={item} atoms={atoms} stage={buildStage} state={step.builder} disabled={step.outcome !== 'open'} onChange={next => patchStep(key, { builder: next, hint: '' })}/>
+        <Builder item={item} atoms={atoms} stage={buildStage} state={step.builder} disabled={step.outcome !== 'open'} onChange={next => patchStep(key, { builder: next })}/>
         <div role="status" aria-live="polite">
-          {step.outcome === 'open' && step.hint && <div className="ao-feedback" data-kind="hint"><strong>Not yet.</strong>{step.hint}</div>}
+          {step.outcome === 'open' && step.hint && (step.checked === builderSignature(item, step.builder)
+            ? <div className="ao-feedback" data-kind="hint"><strong>Not yet.</strong>{step.hint}</div>
+            : <div className="ao-feedback" data-kind="hint"><strong>Earlier feedback.</strong>You changed the arrangement after this was written, so it may no longer apply. Check this step again for a fresh answer. {step.hint}</div>)}
           {step.outcome === 'correct' && <div className="ao-feedback" data-kind="right"><strong>That works.</strong>{ruleSentence(item.atoms, expectedBuild(item, buildStage))}</div>}
           {step.outcome === 'revealed' && <div className="ao-feedback" data-kind="shown"><strong>Here is the arrangement.</strong>{ruleSentence(item.atoms, expectedBuild(item, buildStage))} This step counts as completed, not as built correctly.</div>}
         </div>
         {step.outcome === 'revealed' && <AndOrDiagram atoms={atoms} rule={expectedBuild(item, buildStage)} title="The arrangement"/>}
         {step.outcome === 'open' && <button type="button" className="ao-action" onClick={checkStep}>Check this step</button>}
-        {step.outcome === 'open' && step.misses >= 2 && <button type="button" className="ao-text-button" onClick={() => patchStep(key, { outcome: 'revealed' })}>Show me the arrangement</button>}
+        {step.outcome === 'open' && step.misses >= 2 && <button type="button" className="ao-text-button" onClick={() => patchStep(key, { outcome: 'revealed', everRevealed: true })}>Show me the arrangement</button>}
         {step.outcome !== 'open' && stepIndex < keys.length - 1 && <button type="button" className="ao-action" onClick={nextStep}>Next step<ArrowRight size={16} aria-hidden="true"/></button>}
       </div>}
       {finishedItem && item.task.kind === 'build' && <div className="ao-feedback" data-kind="right"><strong>Why it works.</strong>{item.why}</div>}

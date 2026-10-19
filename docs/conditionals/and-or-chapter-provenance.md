@@ -36,4 +36,5 @@ No MP4 was produced. The existing Conditional films are static files under `publ
 ## Known limits
 
 - Narration, copy and visuals are unreviewed by Joshua and unreviewed in a signed-in browser.
-- Two optional legacy touch-ups (the legacy And/Or worked diagram's "may enter" label, and a note that connector switching applies to negating a whole compound) were not applied: they must go through `npm run content:conditionals`, which the build session could not run. See the build report.
+- The two legacy touch-ups are now made in `applications.source.ts` (the And/Or worked diagram says "may enter", and the negation method says AND/OR switch only as part of denying the whole compound). The generated content files change only after the host runs `npm run content:conditionals`; until that run is checked in, the generated output still carries the old wording.
+- Progress: Chapter 1 steps keep permanent "done" status. Chapter 2 practice sets alone send `reopen`, so a finished set returns to "started" with a lower done count when an edit invalidates required work. Drafts, misses and the last hint are kept, and the hint is labelled earlier feedback.
