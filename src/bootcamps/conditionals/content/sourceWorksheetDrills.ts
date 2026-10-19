@@ -17,11 +17,11 @@ export interface SourceWorksheetDrillSet {
 export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
   {
     "id": "source-intro-identify",
-    "title": "Find the indicators and both conditions",
+    "title": "Find the indicators",
     "shortTitle": "Intro training",
     "stage": "Recognize",
     "taskKind": "identify",
-    "instructions": "Select the indicators and choose each one’s group. Then highlight the two complete conditions in the rule. Keep words that limit who, when, or what the rule covers.",
+    "instructions": "Select the indicators and choose each one’s group. Then compare your answers with the explanation.",
     "items": [
       {
         "id": "source-intro-identify-01",
@@ -792,7 +792,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Intro training revisited",
     "stage": "Diagram",
     "taskKind": "forward",
-    "instructions": "Return to the 15 intro rules. Highlight the complete conditions, give each a letter, then build the original diagram with your own letters. It is checked for direction and complete meaning.",
+    "instructions": "Return to the 15 intro rules. Shorten each supplied complete condition, then build the original diagram with your short versions. It is checked for direction and complete meaning.",
     "items": [
       {
         "id": "source-intro-diagrams-01",
@@ -1213,7 +1213,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Diagramming and roles",
     "stage": "Diagram",
     "taskKind": "roles",
-    "instructions": "Highlight the two complete conditions. Then place the sufficient condition on the left and the necessary condition on the right. Their order in the rule may differ.",
+    "instructions": "Place the sufficient condition on the left and the necessary condition on the right. Their order in the rule may differ.",
     "items": [
       {
         "id": "source-roles-01",
@@ -2196,7 +2196,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Four ways to express the rule",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Find each indicator and its group, then highlight the complete conditions and give each a letter. Build the original diagram, then the contrapositive; each is checked as you go. Last, read both back in ordinary if/then language.",
+    "instructions": "Find each indicator and its group, then shorten each supplied complete condition. Build the original diagram, then the contrapositive; each is checked as you go. Last, read both back in ordinary if/then language.",
     "items": [
       {
         "id": "source-full-translation-01",
@@ -2740,7 +2740,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "The complete translation set",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Translate each rule on your own: find the indicators, highlight the complete conditions, give each a letter, build both diagrams, and read them back in words. Each diagram is checked as you build it, and you compare your wording with ours at the end. Keep every qualifier and negate whole conditions.",
+    "instructions": "Translate each rule on your own: find the indicators, shorten each supplied complete condition, build both diagrams, and read them back in words. Each diagram is checked as you build it, and you compare your wording with ours at the end. Keep every qualifier and negate whole conditions.",
     "items": [
       {
         "id": "source-independent-01",
@@ -3708,7 +3708,7 @@ export const getSourceWorksheetDrill = (id: string): SourceWorksheetDrillSet | u
     shortTitle: revisit.shortTitle,
     stage: 'After contraposition',
     taskKind: 'contrapositive',
-    instructions: 'Return to these familiar sentences. Find the indicators, write the complete conditions, and define your symbols. Build the original diagram and compare it with ours, then build the contrapositive and check it. Last, write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.',
+    instructions: 'Return to these familiar sentences. Find the indicators and shorten each supplied complete condition. Build the original diagram and compare it with ours, then build the contrapositive and check it. Last, write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.',
   };
 };
 

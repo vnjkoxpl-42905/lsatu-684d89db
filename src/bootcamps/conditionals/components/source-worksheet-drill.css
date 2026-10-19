@@ -109,3 +109,40 @@
 .dark .sw-experience .sw-active-task button.sw-primary { background:#c5dfd1; color:#173544!important; border-color:#c5dfd1; }
 .dark .sw-experience .sw-active-task button.sw-primary:disabled { background:#304950; color:#bfcdcb!important; border-color:#50636a; }
 .sw-group-card input:focus-visible { outline:none; }
+.sw-final-review .sw-finish-mark { float:left; width:32px; height:32px; margin:0 12px 14px 0; }
+.sw-final-review h3 { display:flex; align-items:center; min-height:32px; margin:0 0 16px; font-family:inherit; font-size:1.05rem; font-weight:600; line-height:1.5; }
+.sw-final-review .sw-answer-diagram { clear:both; }
+.sw-final-review details { margin-top:20px; }
+
+/* The complete phrases remain readable within two distinct diagram positions. */
+.sw-experience .sw-arrow-row { grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr); gap:14px; align-items:stretch; }
+.sw-experience .sw-arrow-row > :first-child,.sw-experience .sw-arrow-row > :last-child { min-width:0; padding:18px 14px; border:1px solid var(--sw-line); border-radius:12px; background:color-mix(in srgb,var(--sw-paper) 92%,#254d65 8%); }
+.sw-experience .sw-arrow-row > :last-child { background:color-mix(in srgb,var(--sw-paper) 92%,#176556 8%); }
+.sw-experience .sw-arrow { align-self:center; font-size:36px; font-weight:600; color:var(--sw-ink); }
+.sw-experience .sw-choice-slot legend { float:left; width:100%; padding:0 0 12px; font-size:.875rem; }
+.sw-experience .sw-choice-slot button { flex:0 0 auto; width:100%; white-space:normal; word-break:normal; overflow-wrap:anywhere; line-height:1.6; padding:13px 12px; font-size:1rem; }
+.sw-experience .sw-symbol-slot button span { font-family:inherit; font-size:1rem; font-weight:500; text-align:left; white-space:normal; overflow-wrap:anywhere; }
+@media(max-width:600px) {
+ .sw-experience .sw-arrow-row { grid-template-columns:minmax(0,1fr); gap:12px; }
+ .sw-experience .sw-arrow { transform:rotate(90deg); justify-self:center; font-size:32px; line-height:1; padding:0 8px; }
+ .sw-experience .sw-arrow-row > :first-child,.sw-experience .sw-arrow-row > :last-child { padding:16px; }
+}
+
+/* Respond to the actual work area, including a narrow panel beside the course rail. */
+.sw-work { container-type:inline-size; container-name:worksheet-work; }
+.sw-experience .sw-diagram-question { margin:0 0 22px; font-size:1.125rem; font-weight:500; color:var(--sw-ink); line-height:1.65; }
+.sw-experience .sw-choice-slot { --sw-choice-accent:#254d65; }
+.sw-experience .sw-choice-slot[data-side=right],.sw-experience .sw-choice-slot[data-side=contraRight] { --sw-choice-accent:#176556; }
+.sw-experience .sw-choice-slot legend { float:none; color:var(--sw-ink); font-size:.9375rem; padding-bottom:8px; }
+.sw-experience .sw-choice-slot .sw-side-help { margin:0 0 10px; font-size:.875rem; line-height:1.5; color:var(--sw-soft); }
+.sw-experience .sw-choice-slot button { min-height:52px; border:1.5px solid #879ca6; background:var(--sw-paper)!important; color:var(--sw-ink)!important; font-weight:500; gap:10px; border-radius:8px; box-shadow:none; }
+.sw-experience .sw-choice-slot button:hover { border-color:var(--sw-choice-accent); box-shadow:0 0 0 1px var(--sw-choice-accent); }
+.sw-experience .sw-choice-slot button[aria-pressed=true] { background:var(--sw-choice-accent)!important; color:#fffdf6!important; border-color:var(--sw-choice-accent); box-shadow:0 0 0 1px var(--sw-choice-accent); }
+.sw-experience .sw-choice-slot button[aria-pressed=true] svg { color:currentColor!important; }
+.sw-experience .sw-arrow { width:40px; min-height:40px; border-radius:50%; background:var(--sw-paper); border:1px solid var(--sw-line); }
+@container worksheet-work (max-width:560px) {
+ .sw-experience .sw-arrow-row { grid-template-columns:minmax(0,1fr); gap:14px; }
+ .sw-experience .sw-arrow { transform:rotate(90deg); justify-self:center; font-size:30px; line-height:1; padding:0; }
+ .sw-experience .sw-arrow-row > :first-child,.sw-experience .sw-arrow-row > :last-child { padding:18px; }
+ .sw-experience .sw-choice-slot button { padding:14px; font-size:1rem; }
+}

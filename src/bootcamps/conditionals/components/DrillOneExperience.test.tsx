@@ -17,8 +17,8 @@ it('checks deliberately, preserves the rule panel, and shows question progress a
   const rulePanel = document.querySelector('.d1-rule-panel')!.innerHTML;
   expect(screen.getByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toBeVisible();
   expect(screen.queryByText('Select one answer.')).toBeNull();
-  expect(screen.getByText('Question 1 of 24').closest('header')).toHaveClass('d1-run-progress');
-  expect(document.querySelectorAll('.d1-segmented-progress>span')).toHaveLength(24);
+  expect(screen.getByText('Question 1 of 24').closest('header')).toHaveClass('cd-progress');
+  expect(document.querySelectorAll('.cd-progress-track>span')).toHaveLength(24);
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   expect(screen.getByRole('button', { name: 'Check answer' })).toBeDisabled();
   expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
@@ -33,7 +33,7 @@ it('checks deliberately, preserves the rule panel, and shows question progress a
   expect(screen.queryByText('Read the rule left to right')).toBeNull();
   expect(screen.queryByRole('button', { name: 'Try again' })).toBeNull();
   expect(document.querySelector('.d1-rule-panel')!.innerHTML).toBe(rulePanel);
-  expect(document.querySelectorAll('.d1-segmented-progress>span[data-answered=true]')).toHaveLength(1);
+  expect(document.querySelectorAll('.cd-progress-track>span[data-complete=true]')).toHaveLength(1);
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
   expect(screen.getByRole('button', { name: 'Next question' })).toBeEnabled();
 });
