@@ -6,6 +6,7 @@
  * and never graded, and nothing in this file turns time or completion into one.
  */
 import type { AttemptRow, RecapRow } from "./attempts";
+import { paragraphDisplayLabel, type SegmentedPassage } from "./segment";
 import type { Checkpoint } from "./checkpoint";
 import type { RecallMode } from "./sequence";
 
@@ -73,11 +74,13 @@ export function buildEntries(attempts: AttemptRow[], recaps: RecapRow[], local: 
 }
 
 /** A recap row's key in words: "p2-para3-recall" is "Passage 2, paragraph 3". */
-export function recapLabel(recap: Pick<RecapRow, "recap_key" | "kind" | "passage_position">): string {
+export function recapLabel(recap: Pick<RecapRow, "recap_key" | "kind" | "passage_position">, source?: SegmentedPassage, passageCount = 1): string {
   const para = /-para(\d+)-/.exec(recap.recap_key)?.[1];
   const passage = `Passage ${recap.passage_position}`;
   if (recap.kind === "passage_recap") return `${passage}, whole-passage recall`;
   if (recap.kind === "cumulative") return `${passage}, paragraphs 1 to ${para ?? "?"} together`;
+  const localLabel = source && para ? paragraphDisplayLabel(source, Number(para) - 1) : null;
+  if (localLabel) return `${passageCount > 1 ? `Selected passage ${recap.passage_position} · ` : ""}${localLabel}`;
   return `${passage}, paragraph ${para ?? "?"}`;
 }
 

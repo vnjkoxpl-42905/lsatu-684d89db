@@ -23,6 +23,14 @@ export interface SegmentedPassage {
   paragraphs: RecallParagraph[];
 }
 
+/** Presentation only: canonical indexes remain unchanged for saved recall keys. */
+export function paragraphDisplayLabel(passage: SegmentedPassage, index: number): string | null {
+  const paragraph = passage.paragraphs[index];
+  if (!paragraph) return null;
+  const group = passage.paragraphs.filter((item) => item.sub === paragraph.sub);
+  return `${paragraph.sub ? `Passage ${paragraph.sub} · ` : ""}Paragraph ${group.indexOf(paragraph) + 1} of ${group.length}`;
+}
+
 const HEADING = /^\W*Passage\s+([AB])\W*$/i;
 const ITALIC_NOTE = /^\*[^*][\s\S]*\*$/;
 
