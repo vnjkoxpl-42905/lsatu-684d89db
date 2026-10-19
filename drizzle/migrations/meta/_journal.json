@@ -253,6 +253,13 @@
       "when": 1792375501016,
       "tag": "0035_rc_recall_grades",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1792376786304,
+      "tag": "0036_rc_recall_continuous_captures",
+      "breakpoints": true
     }
   ]
 }
