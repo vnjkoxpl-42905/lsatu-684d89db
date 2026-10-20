@@ -1,0 +1,28 @@
+- generic:
+  - generic [aria-hidden]:
+    - generic:
+      - main:
+        - generic:
+          - generic:
+            - heading [level=1]: RC Training
+            - paragraph: Paragraph 1 of 2
+          - button: Pause
+        - heading [level=2]: Read the whole paragraph
+        - region:
+          - generic:
+            - generic:
+              - paragraph: Millions of people worldwide play multiplayer online games. They each pick, say, a medieval character to play, such as a warrior. Then they might band together in quests to slay magical beasts; their avatars appear as tiny characters striding across a Tolkienesque land.
+        - generic:
+          - button [disabled]:
+            - text: Recall paragraph
+            - generic [aria-hidden]: (Space)
+  - dialog [ref=f1e26]:
+    - heading "Practice paused" [level=2] [ref=f1e27]
+    - paragraph [ref=f1e28]: Your timer and recording are paused. Resume whenever you’re ready.
+    - timer "Active practice time" [ref=f1e29]:
+      - generic [ref=f1e30]: "Passage practice time: 1:18"
+    - button "Resume" [active] [ref=f1e31] [cursor=pointer]
+    - generic [ref=f1e32]:
+      - button "Save and leave" [ref=f1e33] [cursor=pointer]
+      - button "Finish early" [ref=f1e34] [cursor=pointer]
+    - button "Show instructions" [ref=f1e35] [cursor=pointer]

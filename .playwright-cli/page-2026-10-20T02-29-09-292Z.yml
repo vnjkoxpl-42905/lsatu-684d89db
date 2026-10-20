@@ -1,0 +1,12 @@
+- main [ref=f2e4]:
+  - generic [ref=f2e5]:
+    - generic [ref=f2e6]:
+      - heading "RC Training" [level=1] [ref=f2e7]
+      - paragraph [ref=f2e12]: Paragraph 1 of 2
+    - button "Pause" [ref=f2e13] [cursor=pointer]
+  - heading "Read the whole paragraph" [active] [level=2] [ref=f2e17]
+  - region "Passage text" [ref=f2e18]:
+    - paragraph [ref=f2e21]: Millions of people worldwide play multiplayer online games. They each pick, say, a medieval character to play, such as a warrior. Then they might band together in quests to slay magical beasts; their avatars appear as tiny characters striding across a Tolkienesque land.
+  - button "Recall paragraph" [ref=f2e23] [cursor=pointer]:
+    - text: Recall paragraph
+    - generic [aria-hidden] [ref=f2e24]: (Space)

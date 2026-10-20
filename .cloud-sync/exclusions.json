@@ -308,6 +308,10 @@
     "reason": "excluded file"
   },
   {
+    "path": ".playwright-cli/console-2026-10-20T02-24-11-566Z.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "dist",
     "reason": "excluded directory"
   },

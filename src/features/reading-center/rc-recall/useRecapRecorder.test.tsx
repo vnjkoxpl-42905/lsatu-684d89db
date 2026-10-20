@@ -6,6 +6,59 @@ import { listRuns } from "./lib/backup";
 
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
+it("pauses capture and excludes breaks from recall offsets and saved duration", async () => {
+  let now = 0;
+  vi.spyOn(performance, "now").mockImplementation(() => now);
+  let recorder!: Recorder;
+  class Recorder {
+    state = "inactive";
+    onstop: (() => void) | null = null;
+    ondataavailable: ((event: { data: Blob }) => void) | null = null;
+    constructor() { recorder = this; }
+    start() { this.state = "recording"; }
+    pause() { this.state = "paused"; }
+    resume() { this.state = "recording"; }
+    stop() { this.state = "inactive"; this.ondataavailable?.({ data: new Blob(["audio"]) }); this.onstop?.(); }
+  }
+  vi.stubGlobal("MediaRecorder", Recorder);
+  const stream = { getTracks: () => [{ stop: vi.fn() }] } as unknown as MediaStream;
+  const { result } = renderHook(() => useRecapRecorder());
+  await act(async () => { await result.current.start({ recapId: "pause-clock", attemptId: "a", studentId: "pause-test", recapKey: "k" }, { ok: true, stream, mimeType: "audio/webm" }); });
+  now = 2000;
+  act(() => { expect(result.current.pause()).toBe(true); });
+  expect(recorder.state).toBe("paused");
+  now = 62000;
+  expect(result.current.getOffset()).toBe(2000);
+  act(() => { expect(result.current.resume()).toBe(true); });
+  expect(recorder.state).toBe("recording");
+  now = 65000;
+  expect(result.current.getOffset()).toBe(5000);
+  act(() => { expect(result.current.pause()).toBe(true); });
+  now = 125000;
+  await act(async () => { expect((await result.current.stop())?.durationMs).toBe(5000); });
+  expect((await listRuns("pause-test"))[0].durationMs).toBe(5000);
+});
+
+it("reports pause failure without freezing the recording clock", async () => {
+  let now = 0;
+  vi.spyOn(performance, "now").mockImplementation(() => now);
+  class Recorder {
+    state = "inactive";
+    onstop: (() => void) | null = null;
+    start() { this.state = "recording"; }
+    pause() { throw new Error("cannot pause"); }
+    stop() { this.state = "inactive"; this.onstop?.(); }
+  }
+  vi.stubGlobal("MediaRecorder", Recorder);
+  const stream = { getTracks: () => [{ stop: vi.fn() }] } as unknown as MediaStream;
+  const { result } = renderHook(() => useRecapRecorder());
+  await act(async () => { await result.current.start({ recapId: "pause-failure", attemptId: "a", studentId: "pause-failure-test", recapKey: "k" }, { ok: true, stream, mimeType: "audio/webm" }); });
+  expect(result.current.pause()).toBe(false);
+  now = 3000;
+  expect(result.current.getOffset()).toBe(3000);
+  await act(async () => { await result.current.stop(); });
+});
+
 it("meters the existing stream, follows real samples and releases analyser resources without another microphone request", async () => {
   let frame!: FrameRequestCallback;
   let sampleValue = 128;

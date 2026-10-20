@@ -23,19 +23,19 @@ interface DemoStep {
   recording?: boolean;
 }
 
-/** The first two complete source paragraphs model the same read-and-retell routine as practice. */
+/** The first two complete source paragraphs model the same read-and-recall routine as practice. */
 const STEPS: DemoStep[] = [
-  { tab: "Read", action: "Retell paragraph", label: "1. Read the whole first paragraph", voice: "Your turn", visible: [0],
+  { tab: "Read", action: "Recall paragraph", label: "1. Read the whole first paragraph", voice: "Your turn", visible: [0],
     note: "Read every sentence. Keep the details and connections in your own words. In practice, Start exercise turns on your microphone before the paragraph appears." },
-  { tab: "Retell", action: "Next paragraph", label: "2. Retell paragraph 1", voice: "Your turn", visible: [], recording: true,
-    note: "The whole paragraph is hidden. Retell it aloud from memory. When you finish, choose Next paragraph. This demonstration does not use your microphone." },
-  { tab: "Read", action: "Retell paragraph", label: "3. Read the whole next paragraph", voice: "Your turn", visible: [1],
-    note: "Read paragraph 2 only, including all of its sentences. Recording continues. The same read-and-retell routine repeats for every paragraph." },
-  { tab: "Retell", action: "Finish the example", label: "4. Retell paragraph 2", voice: "Your turn", visible: [], recording: true,
-    note: "Retell paragraph 2 only, out loud, with its details and connections. In practice, continue to Next paragraph. Use Finish passage after the final paragraph, or Next passage and Finish section for four passages." },
+  { tab: "Recall", action: "Next paragraph", label: "2. Recall paragraph 1", voice: "Your turn", visible: [], recording: true,
+    note: "The whole paragraph is hidden. Recall it aloud from memory. When you finish, choose Next paragraph. This demonstration does not use your microphone." },
+  { tab: "Read", action: "Recall paragraph", label: "3. Read the whole next paragraph", voice: "Your turn", visible: [1],
+    note: "Read paragraph 2 only, including all of its sentences. Recording continues. The same read-and-recall routine repeats for every paragraph." },
+  { tab: "Recall", action: "Finish the example", label: "4. Recall paragraph 2", voice: "Your turn", visible: [], recording: true,
+    note: "Recall paragraph 2 only, out loud, with its details and connections. In practice, continue to Next paragraph. Use Finish passage after the final paragraph, or Next passage and Finish section for four passages." },
   { tab: "Feedback", action: "Choose a passage", label: "At the end: review feedback", voice: "Instructor modelling", visible: [0], marks: ["might band together", "such as a warrior"],
     model: { title: "Illustrative feedback, not a real attempt", text: "Example transcript: They all play as warriors and team up to fight magical beasts." },
-    note: "Feedback starts automatically after the complete passage or full section is saved. Only hidden retelling speech is graded. Meaning points are 2 for complete meaning, 1 for partial meaning and 0 for missing or changed meaning. Reading speech is excluded. Unusable recordings are not graded.",
+    note: "Feedback starts automatically after the complete passage or full section is saved. Only speech recorded while the text is hidden is graded. Meaning points are 2 for complete meaning, 1 for partial meaning and 0 for missing or changed meaning. Reading speech is excluded. Unusable recordings are not graded.",
     repair: "In this example, the recall makes two details too strong. A warrior is one possible character, and players might team up. The text does not say they all do. Keep those qualifications in your next recall." },
 ];
 
@@ -83,7 +83,7 @@ export default function RcTrainingDemo({ onStartPractice }: { onStartPractice?: 
     </div>
     <div className="rct-demo-watch"><span>Online Game Currencies · PT140, Section 4, Passage 2</span><button type="button" onClick={() => { if (last && !playing) setIndex(0); setPlaying(!playing); }}>{playing ? "Pause demo" : "Watch demo"}</button></div>
     <ol className="rct-demo-progress" aria-label="The paragraph routine">
-      {["Read", "Retell", "Continue"].map((label, i) => <li key={label} aria-current={step.tab === label ? "step" : undefined}><span>{i + 1}</span>{label}</li>)}
+      {["Read", "Recall", "Continue"].map((label, i) => <li key={label} aria-current={step.tab === label ? "step" : undefined}><span>{i + 1}</span>{label}</li>)}
     </ol>
     <div className="rct-demo-body" aria-live={playing ? "off" : "polite"}>
       <div className="rct-demo-label">{step.label}<span className="rct-demo-badge" data-voice={step.voice}>{step.voice}</span></div>
