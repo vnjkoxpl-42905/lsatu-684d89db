@@ -1,0 +1,63 @@
+{
+  "checkedAt": "2026-10-01T02:31:15.722Z",
+  "readOnly": true,
+  "ordinaryJwt": true,
+  "canonicalIdentityAcknowledged": true,
+  "studentSources": {
+    "attempts": {
+      "count": 17,
+      "sha256": "7906b428e1524d3ec3a281a351e10209a6f2d51480398a35668b873f58e93294"
+    },
+    "section_history": {
+      "count": 9,
+      "sha256": "da0694ce7e968a15e2f3a73d1e818642115174bde9780573dd67841140ab813e"
+    },
+    "rc_attempts": {
+      "count": 81,
+      "sha256": "0bb23dfe50c228e9f7109929666ec329406f3a8c53dfb74bb126a4f10dbb05ac"
+    },
+    "rc_drill_sessions": {
+      "count": 11,
+      "sha256": "f8e57d7ee3f334675e8c16994b7507e6d70ad3a2d705ab406f7cf8b939768253"
+    },
+    "practice_test_runs": {
+      "count": 2,
+      "sha256": "c3b013ef23dbe25755aedf64a0e48033d249302ac8c777c4358cab2139f746ca"
+    }
+  },
+  "teacherSources": {
+    "attempts": {
+      "count": 17,
+      "sha256": "7906b428e1524d3ec3a281a351e10209a6f2d51480398a35668b873f58e93294"
+    },
+    "section_history": {
+      "count": 9,
+      "sha256": "da0694ce7e968a15e2f3a73d1e818642115174bde9780573dd67841140ab813e"
+    },
+    "rc_attempts": {
+      "count": 81,
+      "sha256": "0bb23dfe50c228e9f7109929666ec329406f3a8c53dfb74bb126a4f10dbb05ac"
+    },
+    "rc_drill_sessions": {
+      "count": 11,
+      "sha256": "f8e57d7ee3f334675e8c16994b7507e6d70ad3a2d705ab406f7cf8b939768253"
+    },
+    "practice_test_runs": {
+      "count": 2,
+      "sha256": "c3b013ef23dbe25755aedf64a0e48033d249302ac8c777c4358cab2139f746ca"
+    }
+  },
+  "matchingSources": {
+    "attempts": true,
+    "section_history": true,
+    "rc_attempts": true,
+    "rc_drill_sessions": true,
+    "practice_test_runs": true
+  },
+  "limits": [
+    "One designated QA account sample; no other student population claim.",
+    "Matching raw source populations feed the same first-answer reducer; this probe does not assert browser rendering.",
+    "No source rows or identity mappings were modified.",
+    "Concurrent legitimate source writes can produce unequal snapshots; rerun after work is submitted if necessary."
+  ]
+}

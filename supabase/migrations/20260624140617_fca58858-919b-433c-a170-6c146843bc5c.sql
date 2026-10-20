@@ -1,0 +1,1 @@
+ALTER TABLE public.ta_interactions ADD COLUMN IF NOT EXISTS action_status text;

@@ -1,0 +1,21 @@
+{
+  "deployed": true,
+  "route": "managed Lovable Cloud SQL",
+  "function": "get_student_progress_user_id(text)",
+  "readOnly": true,
+  "existingPoliciesUnchanged": true,
+  "preservedStudentRows": 44,
+  "preservedStudentDigest": "56f66c8e2189201b37262ff9dc910c7b",
+  "isolatedPermissionChecks": 13,
+  "independentSecurityReview": "no high-priority blocker",
+  "ordinaryJwtCheckedAt": "2026-10-01T00:21:35.913Z",
+  "canonicalMappingConflictDenied": true,
+  "checks": {
+    "studentOwnIdentity": true,
+    "studentForeignDenied": true,
+    "teacherSelectedIdentity": true,
+    "studentsRlsUnchanged": true,
+    "anonymousDenied": true
+  },
+  "limits": ["Frontend is uncommitted and unpublished at this checkpoint.", "Actual local UI verification is blocked by browser policy on the existing tab."]
+}

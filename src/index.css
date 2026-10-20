@@ -1,0 +1,262 @@
+/* Main Conclusion bootcamp scoped styles (active only inside .mc-bootcamp). */
+@import "./bootcamps/main-conclusion/styles/scoped.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    color-scheme: dark;
+
+    /* LSAT U — Dark-first design system.
+       Tokens resolve to the dark palette by default.
+       Add class="light" to <html> to switch to light mode.
+    */
+    --background: 0 0% 3.9%;         /* neutral-950 */
+    --foreground: 0 0% 98%;           /* near white */
+
+    --card: 0 0% 7%;                  /* neutral-900 equivalent */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;              /* white — primary interactive on dark */
+    --primary-foreground: 0 0% 3.9%; /* dark text behind white elements */
+
+    --secondary: 0 0% 14.9%;          /* neutral-800 */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;   /* neutral-500 */
+
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+
+    /* Status colors */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 98%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 98%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Attempt-state semantic tokens.
+       Used by drill / flashcard / playground feedback across topic bootcamps.
+       Hue-distinct from --success / --destructive so attempt feedback never
+       collides visually with system status. */
+    --state-correct: 160 84% 39%;     /* emerald-500 */
+    --state-correct-foreground: 0 0% 98%;
+    --state-incorrect: 350 89% 60%;   /* rose-500 */
+    --state-incorrect-foreground: 0 0% 98%;
+    /* Spaced-repetition / self-rate tokens.
+       Same hues as state-correct / state-incorrect at the source, but kept
+       under distinct names so future hue shifts to wrong/right cannot
+       silently reframe a self-report as a judgment. */
+    --state-again: 350 89% 60%;       /* rose-500, aliased on purpose */
+    --state-again-foreground: 0 0% 98%;
+    --state-easy: 160 84% 39%;        /* emerald-500, aliased on purpose */
+    --state-easy-foreground: 0 0% 98%;
+    /* Surface-warn semantic — bonus / stretch / non-blocking notice. */
+    --state-warn: 38 92% 50%;         /* amber-500, mirrors --warning */
+    --state-warn-foreground: 0 0% 98%;
+
+    --border: 0 0% 14.9%;             /* neutral-800 */
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;               /* neutral-300 */
+
+    --radius: 0.5rem;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+    --shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 20px 0 rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 8px 32px 0 rgba(0, 0, 0, 0.7);
+    --shadow-glow: 0 0 24px 0 rgba(255, 255, 255, 0.06);
+
+    /* Surface elevation */
+    --surface-elevated: 0 0% 10%;
+
+    /* Text hierarchy */
+    --text-primary: 0 0% 98%;
+    --text-secondary: 0 0% 63.9%;
+    --text-tertiary: 0 0% 45%;
+
+    --sidebar-background: 0 0% 3.9%;
+    --sidebar-foreground: 0 0% 63.9%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 0 0% 3.9%;
+    --sidebar-accent: 0 0% 14.9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 14.9%;
+    --sidebar-ring: 0 0% 83.1%;
+
+    /* ── Teacher workspace accent ─────────────────────────────────────────────
+     * The Desk's warm amber, promoted from the hardcoded #c8841f it was written
+     * as. This is THE accent for every primary action in the teacher workspace;
+     * no second accent colour is allowed there. Hue-locked ramp so the steps
+     * read as one colour at different weights. Theme-independent on purpose:
+     * the workspace is always the light gray format, never the dark shell.
+     */
+    --teacher-accent: 36 73% 45%;           /* #c8841f — fills, icons, rules */
+    --teacher-accent-hover: 36 76% 39%;     /* #b07418 — hover on filled */
+    --teacher-accent-strong: 36 79% 30%;    /* #8a5a10 — text on tinted fills */
+    --teacher-accent-soft: 37 71% 58%;      /* #e0a64a — light step */
+    --teacher-accent-foreground: 0 0% 100%; /* text on a filled accent */
+  }
+
+  /* ── Light mode ── add class="light" to <html> to activate ───────────────── */
+  .light {
+    color-scheme: light;
+    --background: 0 0% 99%;
+    --foreground: 0 0% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 0 0% 7%;
+    --primary-foreground: 0 0% 99%;
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 0 0% 7%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 92%;
+    --accent-foreground: 0 0% 7%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 88%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 20%;
+    --surface-elevated: 0 0% 97%;
+    --text-primary: 0 0% 7%;
+    --text-secondary: 0 0% 45%;
+    --text-tertiary: 0 0% 55%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 28%;
+    --sidebar-primary: 0 0% 7%;
+    --sidebar-primary-foreground: 0 0% 99%;
+    --sidebar-accent: 0 0% 92%;
+    --sidebar-accent-foreground: 0 0% 7%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 0 0% 20%;
+  }
+
+  /* .dark mirrors .light — reserved alias */
+  .dark {
+    color-scheme: light;
+    --background: 0 0% 99%;
+    --foreground: 0 0% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 0 0% 7%;
+    --primary-foreground: 0 0% 99%;
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 0 0% 7%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 92%;
+    --accent-foreground: 0 0% 7%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 88%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 20%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 28%;
+    --sidebar-primary: 0 0% 7%;
+    --sidebar-primary-foreground: 0 0% 99%;
+    --sidebar-accent: 0 0% 92%;
+    --sidebar-accent-foreground: 0 0% 7%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 0 0% 20%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  /* Focus indicator floor.
+     Zero specificity via :where(), so any component that defines its own focus
+     treatment still wins (the Academy's cyan, the scoped bootcamp rings). This
+     exists so a control that defines nothing is never left without one: the
+     shared Button shipped for five months with no visible focus at all, because
+     it removed the browser default and replaced it with a ring class that did
+     not exist pointing at a token that was never defined. */
+  :where(a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
+    outline: 2px solid hsl(var(--foreground));
+    outline-offset: 2px;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Lexend', 'Outfit', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "rlig" 1, "calt" 1, "cv11" 1;
+  }
+
+  /* Font lock for LSAT-question / Smart Drill surfaces: these must keep the
+     original Outfit stack even though the rest of the app moved to Lexend. */
+  .font-lsat-question {
+    font-family: 'Outfit', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  @media (min-width: 640px) {
+    body {
+      font-size: 16px;
+    }
+  }
+
+  /* Touch-friendly spacing and targets */
+  @media (max-width: 767px) {
+    input, textarea, select, button {
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+  }
+
+  /* Section stagger entry animation */
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-section {
+    animation: fade-in-up 0.45s cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+
+  /* Highlight styles - zero layout shift */
+  .hl {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    line-height: inherit;
+    letter-spacing: inherit;
+    word-spacing: inherit;
+    vertical-align: baseline;
+    white-space: pre-wrap;
+    background: none;
+    mix-blend-mode: normal;
+    border-radius: 0;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+}
+
+/* 3D flip utilities (used by bootcamp Flashcard) */
+.perspective-1200 { perspective: 1200px; }
+.preserve-3d { transform-style: preserve-3d; }
+.backface-hidden { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(180deg); }

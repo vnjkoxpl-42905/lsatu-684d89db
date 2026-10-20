@@ -1,0 +1,488 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-05T05:23:17.771Z",
+  "title": "Design System: LSAT Academy",
+  "extensions": {
+    "colorMeta": {
+      "hall-night": {
+        "role": "primary",
+        "displayName": "Vault Night",
+        "canonical": "#070606",
+        "purpose": "The Hall ground. Near-black with a warm cast, never pure #000.",
+        "tonalRamp": [
+          "#292323",
+          "#473d3d",
+          "#665757",
+          "#847171",
+          "#9e8e8e",
+          "#b8adad",
+          "#d5cece",
+          "#efecec"
+        ]
+      },
+      "hall-marble": {
+        "role": "neutral",
+        "displayName": "Marble",
+        "canonical": "#eae5da",
+        "purpose": "Hall body text. Warm off-white, 16.11:1 on the night ground.",
+        "tonalRamp": [
+          "#312a1c",
+          "#554930",
+          "#786844",
+          "#9c8759",
+          "#b3a17a",
+          "#c8ba9d",
+          "#ded6c4",
+          "#f2efe8"
+        ]
+      },
+      "hall-bronze": {
+        "role": "primary",
+        "displayName": "Hall Bronze",
+        "canonical": "#c6a467",
+        "purpose": "The Hall’s warm light: CTA hairline, sheen, selection. 8.58:1 on night, 2.30:1 on the Workroom page.",
+        "tonalRamp": [
+          "#382b15",
+          "#604b24",
+          "#896b33",
+          "#b28a43",
+          "#c6a467",
+          "#d5bc90",
+          "#e6d7bc",
+          "#f5efe5"
+        ]
+      },
+      "hall-bronze-bright": {
+        "role": "primary",
+        "displayName": "Bronze Bright",
+        "canonical": "#e8cf96",
+        "purpose": "The sheen that sweeps the Hall CTA on hover.",
+        "tonalRamp": [
+          "#3f300e",
+          "#6d5318",
+          "#9b7622",
+          "#c9992c",
+          "#d9b153",
+          "#e4c681",
+          "#efddb4",
+          "#f9f2e2"
+        ]
+      },
+      "hall-cyan": {
+        "role": "secondary",
+        "displayName": "Instrument Cyan",
+        "canonical": "#8ad8e2",
+        "purpose": "The Hall’s cool note and its focus outline. 12.53:1 on night.",
+        "tonalRamp": [
+          "#0f383d",
+          "#1a616a",
+          "#258a97",
+          "#31b3c4",
+          "#57c7d5",
+          "#84d6e1",
+          "#b5e6ed",
+          "#e2f5f8"
+        ]
+      },
+      "workroom-page": {
+        "role": "neutral",
+        "displayName": "Workroom Page",
+        "canonical": "#fcfcfc",
+        "purpose": "The shipped default ground inside the app.",
+        "tonalRamp": [
+          "#262626",
+          "#424242",
+          "#5e5e5e",
+          "#7a7a7a",
+          "#969696",
+          "#b3b3b3",
+          "#d1d1d1",
+          "#ededed"
+        ]
+      },
+      "workroom-card": {
+        "role": "neutral",
+        "displayName": "Card",
+        "canonical": "#ffffff",
+        "purpose": "One step of separation from the page. No shadow.",
+        "tonalRamp": [
+          "#262626",
+          "#424242",
+          "#5e5e5e",
+          "#7a7a7a",
+          "#969696",
+          "#b3b3b3",
+          "#d1d1d1",
+          "#ededed"
+        ]
+      },
+      "workroom-ink": {
+        "role": "primary",
+        "displayName": "Workroom Ink",
+        "canonical": "#121212",
+        "purpose": "Text, primary button fill, and the focus ring. The Workroom has no accent, so ink carries emphasis alone.",
+        "tonalRamp": [
+          "#262626",
+          "#424242",
+          "#5e5e5e",
+          "#7a7a7a",
+          "#969696",
+          "#b3b3b3",
+          "#d1d1d1",
+          "#ededed"
+        ]
+      },
+      "workroom-ink-muted": {
+        "role": "neutral",
+        "displayName": "Ink Muted",
+        "canonical": "#737373",
+        "purpose": "Secondary text. 4.62:1 on the page — clears AA with nothing spare. Do not lighten.",
+        "tonalRamp": [
+          "#262626",
+          "#424242",
+          "#5e5e5e",
+          "#7a7a7a",
+          "#969696",
+          "#b3b3b3",
+          "#d1d1d1",
+          "#ededed"
+        ]
+      },
+      "workroom-hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e0e0e0",
+        "purpose": "The one-pixel border that does the work shadows used to do.",
+        "tonalRamp": [
+          "#262626",
+          "#424242",
+          "#5e5e5e",
+          "#7a7a7a",
+          "#969696",
+          "#b3b3b3",
+          "#d1d1d1",
+          "#ededed"
+        ]
+      },
+      "state-correct": {
+        "role": "tertiary",
+        "displayName": "Correct",
+        "canonical": "#10b77f",
+        "purpose": "The student’s attempt was right. Held apart from system success on purpose.",
+        "tonalRamp": [
+          "#064631",
+          "#0b7a55",
+          "#0fae78",
+          "#14e19c",
+          "#3feeb3",
+          "#72f3c8",
+          "#abf8de",
+          "#defcf2"
+        ]
+      },
+      "state-incorrect": {
+        "role": "tertiary",
+        "displayName": "Incorrect",
+        "canonical": "#f43e5c",
+        "purpose": "The student’s attempt was wrong.",
+        "tonalRamp": [
+          "#48040f",
+          "#7d071b",
+          "#b30a26",
+          "#e80d31",
+          "#f43958",
+          "#f76e85",
+          "#faa8b6",
+          "#fddde2"
+        ]
+      },
+      "state-warn": {
+        "role": "tertiary",
+        "displayName": "Warn",
+        "canonical": "#f59f0a",
+        "purpose": "A bonus, a stretch, a non-blocking notice.",
+        "tonalRamp": [
+          "#4a3003",
+          "#7f5305",
+          "#b57607",
+          "#eb990a",
+          "#f7b036",
+          "#f9c56c",
+          "#fbdca7",
+          "#fef2dd"
+        ]
+      },
+      "teacher-accent": {
+        "role": "secondary",
+        "displayName": "Teacher Amber",
+        "canonical": "#c7841f",
+        "purpose": "The single accent of the teacher workspace. Theme-independent, operator-only.",
+        "tonalRamp": [
+          "#422c0a",
+          "#734c12",
+          "#a36c19",
+          "#d48c21",
+          "#e3a64a",
+          "#eabe7b",
+          "#f3d8b0",
+          "#faf0e0"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "body": {
+        "displayName": "Body",
+        "purpose": "Workroom chrome and prose. Lexend, 14px rising to 16px at 640px."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and section headings inside the Workroom."
+      },
+      "question": {
+        "displayName": "Question",
+        "purpose": "LSAT stimulus and answer choices. Font-locked to Outfit so a shell typeface change never reflows a passage mid-read."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Button and control labels."
+      },
+      "hall-display": {
+        "displayName": "Hall Display",
+        "purpose": "Hall headings. Fraunces at weight 380, which reads carved rather than printed."
+      },
+      "hall-inscription": {
+        "displayName": "Hall Inscription",
+        "purpose": "The Hall's few short carved lines. Cinzel. Never body copy."
+      },
+      "hall-mono": {
+        "displayName": "Hall Mono",
+        "purpose": "Instrument labels in the Hall. IBM Plex Mono."
+      }
+    },
+    "shadows": [
+      {
+        "name": "none",
+        "value": "none",
+        "purpose": "The Workroom has no shadow vocabulary. Depth is a hairline plus one tonal step. Five dark-tuned tokens (0.4 to 0.7 black) still ship in the codebase and are retired by this record."
+      },
+      {
+        "name": "hall-cta-inset",
+        "value": "inset 0 1px 0 rgba(255,255,255,0.07)",
+        "purpose": "The single highlight along the top edge of the Hall CTA. Atmospheric, Hall-only, does not transfer."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default easing for Workroom state transitions."
+      },
+      {
+        "name": "ease-hall",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The Hall's long decelerating ease, paired with 280ms."
+      },
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "Tooltips and small reveals."
+      },
+      {
+        "name": "duration-base",
+        "value": "180ms",
+        "purpose": "Most Workroom state changes."
+      },
+      {
+        "name": "duration-slow",
+        "value": "220ms",
+        "purpose": "Larger surface transitions."
+      },
+      {
+        "name": "duration-hall",
+        "value": "280ms",
+        "purpose": "Hall hover and focus transitions."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce)",
+        "purpose": "Every world stylesheet ends with one. Continuous motion stops rather than speeding up. 46 CSS blocks and 100 JS call sites honour it today."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "2xl",
+        "value": "1400px"
+      },
+      {
+        "name": "phone",
+        "value": "max 600px"
+      },
+      {
+        "name": "tablet",
+        "value": "601px to 900px"
+      },
+      {
+        "name": "desktop",
+        "value": "min 901px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The Workroom's main action. Precise and quiet: darkens on hover, does not lift or scale.",
+      "html": "<button class=\"ds-btn-primary\">Continue</button>",
+      "css": ".ds-btn-primary{background:#121212;color:#fcfcfc;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:500;line-height:1.4;padding:8px 16px;min-height:44px;border:none;border-radius:6px;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)}.ds-btn-primary:hover{background:#2b2b2b}.ds-btn-primary:focus-visible{outline:2px solid #121212;outline-offset:2px}"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action. Page ground behind a one-pixel field border.",
+      "html": "<button class=\"ds-btn-outline\">Review later</button>",
+      "css": ".ds-btn-outline{background:#fcfcfc;color:#121212;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:44px;border:1px solid #e6e6e6;border-radius:6px;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)}.ds-btn-outline:hover{background:#f2f2f2}.ds-btn-outline:focus-visible{outline:2px solid #121212;outline-offset:2px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Lowest-emphasis action. No fill at rest, tonal fill on hover.",
+      "html": "<button class=\"ds-btn-ghost\">Skip</button>",
+      "css": ".ds-btn-ghost{background:transparent;color:#121212;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:44px;border:none;border-radius:6px;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)}.ds-btn-ghost:hover{background:#f2f2f2}.ds-btn-ghost:focus-visible{outline:2px solid #121212;outline-offset:2px}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat surface separated by a hairline. No shadow, by rule.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Assumption drills</h3><p class=\"ds-card-body\">Six questions, assigned Tuesday.</p></div>",
+      "css": ".ds-card{background:#fff;color:#121212;border:1px solid #e0e0e0;border-radius:8px;padding:24px;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif}.ds-card-title{margin:0 0 8px;font-size:24px;font-weight:600;line-height:1;letter-spacing:-0.025em}.ds-card-body{margin:0;font-size:14px;line-height:1.6;color:#737373}"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Focus is an offset ink outline, never a border-colour shift alone.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Search questions\" />",
+      "css": ".ds-input{width:100%;background:#fcfcfc;color:#121212;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:16px;line-height:1.6;padding:8px 12px;min-height:44px;border:1px solid #e6e6e6;border-radius:6px}.ds-input::placeholder{color:#737373}.ds-input:focus-visible{outline:2px solid #121212;outline-offset:2px}"
+    },
+    {
+      "name": "Verdict Chip",
+      "kind": "chip",
+      "refersTo": null,
+      "description": "Marks an attempt. Colour is the signal; the label carries it too, so meaning survives grayscale.",
+      "html": "<span class=\"ds-chip ds-chip-correct\">Correct</span> <span class=\"ds-chip ds-chip-incorrect\">Incorrect</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;gap:6px;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:13px;font-weight:500;padding:4px 10px;border-radius:9999px;border:1px solid}.ds-chip-correct{color:#0b6b4a;border-color:#10b77f;background:rgba(16,183,127,0.10)}.ds-chip-incorrect{color:#9b1030;border-color:#f43e5c;background:rgba(244,62,92,0.10)}"
+    },
+    {
+      "name": "Hall CTA",
+      "kind": "custom",
+      "refersTo": "hall-cta",
+      "description": "The door. Near-square corners, bronze hairline, a sheen on hover, cyan focus. Hall register only.",
+      "html": "<div class=\"ds-hall\"><button class=\"ds-hall-cta\">Enter LSAT University</button></div>",
+      "css": ".ds-hall{background:#070606;padding:40px;display:flex;justify-content:center}.ds-hall-cta{position:relative;display:inline-flex;align-items:center;justify-content:center;height:60px;padding:0 38px;border-radius:2px;border:1px solid rgba(198,164,103,0.32);background:linear-gradient(180deg,rgba(198,164,103,0.13),rgba(198,164,103,0.04));color:#eae5da;font-family:Outfit,-apple-system,system-ui,sans-serif;font-size:15px;font-weight:500;letter-spacing:0.05em;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);transition:border-color 280ms cubic-bezier(0.16,1,0.3,1),background 280ms cubic-bezier(0.16,1,0.3,1)}.ds-hall-cta:hover{border-color:#c6a467;background:linear-gradient(180deg,rgba(232,207,150,0.20),rgba(198,164,103,0.06))}.ds-hall-cta:focus-visible{outline:2px solid #8ad8e2;outline-offset:3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "LSAT Academy",
+    "overview": "One institution with two registers, and the seam between them is deliberate. The Hall is the door: unauthenticated, dark, and material, with a near-black ground, warm marble text, a bronze that carries the light, and a serif that behaves like carved lettering. Its job is to make a prospective student feel they are entering somewhere, not signing up for something.\n\nThe Workroom is everything past sign-in. Light, neutral, and quiet, because a student sits inside it for an hour reading dense argument text and the interface must not compete with the passage. There is no warmth here and that is the decision, not an oversight: warm accents need a dark ground to read, and on the Workroom's white they collapse. The Hall's bronze measures 8.58:1 on its own night and 2.30:1 on the Workroom's page.\n\nWhat both registers share is restraint about meaning. Colour is a signal. Depth comes from hairlines and background tone rather than shadow, and hierarchy comes from size, weight and position rather than hue. Inside the Workroom, individual rooms may commit fully to their own world behind a wrapper class. That is what an academy is: neutral corridors, characterful rooms.",
+    "keyCharacteristics": [
+      "Two registers, one institution: a dark marble Hall at the door, a light neutral Workroom inside.",
+      "Colour means something or it is absent.",
+      "Flat surfaces, hairline separation, no drop shadows.",
+      "Precise and quiet controls that stay out of the reader's way.",
+      "Rooms may be worlds; corridors never are."
+    ],
+    "rules": [
+      {
+        "name": "The Ground Decides Rule",
+        "body": "A warm colour is legible on the Hall's night and illegible on the Workroom's page. Never carry a colour across the seam on the strength of liking it; measure it against the ground it will land on first.",
+        "section": "colors"
+      },
+      {
+        "name": "The Meaning-Only Rule",
+        "body": "A colour appears in the Workroom because something is right, wrong, cautionary, or dangerous. There is no fifth reason. If a surface feels flat and the impulse is to add a colour, the answer is type and space.",
+        "section": "colors"
+      },
+      {
+        "name": "The Named Ground Rule",
+        "body": "No colour is written as a literal hex in a component. It resolves from a token, and a token that resolves to nothing is a defect, not a subtle effect.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Face Rule",
+        "body": "The Workroom uses a single family. Hierarchy is built from size, weight and space.",
+        "section": "typography"
+      },
+      {
+        "name": "The Question Never Moves Rule",
+        "body": "LSAT question text is font-locked. A change to the shell's typeface must not reflow a passage a student is mid-way through reading.",
+        "section": "typography"
+      },
+      {
+        "name": "The Serif Stays At The Door Rule",
+        "body": "Fraunces and Cinzel belong to the Hall. A serif appearing in the Workroom chrome means the seam has leaked.",
+        "section": "typography"
+      },
+      {
+        "name": "The Reading Measure Rule",
+        "body": "Any surface carrying an LSAT passage, stimulus, or explanation constrains its own line length. The container's maximum is a ceiling for layout, never a licence for prose.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat Rule",
+        "body": "Depth in the Workroom comes from a hairline or a tonal step. A box-shadow on a Workroom surface is a defect.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Two-Step Rule",
+        "body": "Page, then card, then at most one raised step. A surface that needs a fourth level of layering is a surface that needs restructuring.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Hairline Rule",
+        "body": "One pixel, always. A thicker border used as a coloured accent stripe on the leading edge of a surface is banned, including when faked with an inset shadow.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do resolve every colour from a token, and treat a token that resolves to nothing as a defect. Verify a new token renders before documenting it.",
+      "Do give every interactive element a visible focus indicator: a solid two-pixel ink outline offset two pixels in the Workroom, cyan in the Hall.",
+      "Do check contrast against the ground the colour will actually land on, in the theme that actually ships, in a browser.",
+      "Do separate surfaces with a one-pixel hairline and one tonal step.",
+      "Do keep colour semantic: correct, incorrect, warning, danger. Nothing else earns it.",
+      "Do scope a new room's identity behind its own wrapper class with prefixed tokens.",
+      "Do hold LSAT passage and stimulus text to a readable line length, and leave it on the Outfit question lock.",
+      "Do end every world's stylesheet with a prefers-reduced-motion block that stops continuous motion rather than speeding it up."
+    ],
+    "donts": [
+      "Don't add a box-shadow to a Workroom surface. Depth is hairline and tone.",
+      "Don't carry a Hall colour into the Workroom. Bronze reads 8.58:1 on the Hall's night and 2.30:1 on the Workroom's page.",
+      "Don't introduce a warm or metallic accent into the Workroom to make it feel premium. Premium here is depth, hierarchy and type.",
+      "Don't remove the browser's focus outline without shipping a replacement in the same rule.",
+      "Don't animate the focus indicator. A transition-all on a control means the ring fades in, which delays the one signal a keyboard user depends on.",
+      "Don't use a border thicker than one pixel as a coloured accent stripe, including when faked with an inset shadow.",
+      "Don't put a second typeface into the Workroom chrome, and don't let a serif cross in from the Hall.",
+      "Don't animate layout properties. Animate opacity, transform and color. No bounce, no elastic, no lift on hover.",
+      "Don't write a hex value into a component. If a room needs its own colour, promote it to named tokens behind that room's wrapper."
+    ]
+  }
+}
