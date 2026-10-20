@@ -49,8 +49,7 @@ import { useDialogOverlay } from "@/components/classroom/shell/useDialogOverlay"
 import AssignedReadingCenterLink from '@/components/classroom/AssignedReadingCenterLink';
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import "@/components/classroom/classroom.css";
-
-type ClassroomSection = "notes" | "work" | "flagged" | "journal";
+import { ClassroomLayoutContext, type ClassroomSection } from "./classroomLayoutContext";
 
 const SECTION_TITLES: Record<ClassroomSection, string> = {
   notes: "Notes and recaps",
@@ -58,33 +57,6 @@ const SECTION_TITLES: Record<ClassroomSection, string> = {
   flagged: "Flagged",
   journal: "Wrong answers",
 };
-
-type ClassroomLayoutContextValue = {
-  displayName: string;
-  setDisplayName: (name: string) => void;
-  testDate: string | null;
-  setTestDate: (date: string | null) => void;
-  openSection: (section: ClassroomSection) => void;
-};
-
-const ClassroomLayoutContext =
-  React.createContext<ClassroomLayoutContextValue | null>(null);
-
-// eslint-disable-next-line react-refresh/only-export-components
-export function useClassroomLayout() {
-  const value = React.useContext(ClassroomLayoutContext);
-  if (!value) {
-    throw new Error("useClassroomLayout must be used inside ClassroomLayout");
-  }
-  return value;
-}
-
-// Optional for leaf surfaces that can also render in isolated test and preview
-// harnesses. Inside the classroom shell it exposes the real section drawer.
-// eslint-disable-next-line react-refresh/only-export-components
-export function useOptionalClassroomLayout() {
-  return React.useContext(ClassroomLayoutContext);
-}
 
 function useRetainedValue<T>(value: T, canReplace: boolean) {
   const ref = React.useRef(value);

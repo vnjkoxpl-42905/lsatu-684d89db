@@ -394,12 +394,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     [questionIdsByPassage, displayHistory],
   );
 
-  const correctnessFilterBlocked = hiddenResults && (filters.status === 'incorrect_before' || filters.status === 'incorrect_last');
-  // Selected difficulty is itself observable. Hidden grades must not steer it.
-  const selectionHistory = hiddenResults ? displayHistory : history;
-  const selectionPool = React.useMemo(() => correctnessFilterBlocked ? [] : filters.status === 'strict_no_exposure'
+  // Outcome filters and observable difficulty use released takes only.
+  const selectionHistory = displayHistory;
+  const selectionPool = React.useMemo(() => filters.status === 'strict_no_exposure'
     ? exposureStatus === 'ready' && filters.includeUnknownExposure === true ? passages.filter(passage => !exposures.has(passage.passageId)) : [] : passages,
-  [correctnessFilterBlocked, filters.status, filters.includeUnknownExposure, exposureStatus, passages, exposures]);
+  [filters.status, filters.includeUnknownExposure, exposureStatus, passages, exposures]);
 
   const preview = React.useMemo(
     () =>
@@ -429,7 +428,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
      launches wait for both eligibility inputs and a custom pace that parses. */
   const savedQuery = params.has('saved') ? params.toString() : null;
   const builderReady = indexStatus === 'ready' && historyStatus === 'ready'
-    && !correctnessFilterBlocked && (filters.status !== 'strict_no_exposure' || exposureStatus === 'ready' && filters.includeUnknownExposure === true)
+    && (filters.status !== 'strict_no_exposure' || exposureStatus === 'ready' && filters.includeUnknownExposure === true)
     && selectionQuery === params.toString() && !customInvalid && (savedQuery === null || restoredSavedQuery === savedQuery);
 
   const ptRun = params.get('ptRun');
@@ -731,7 +730,6 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   }, [search, filters, pickerSort]);
 
   function matches(p: RcIndexPassageWithPt) {
-    if (correctnessFilterBlocked) return false;
     const status = statusOf(p);
     if (p.preptest < filters.preptestMin || p.preptest > filters.preptestMax) return false;
     if (filters.topics.length && (!p.topic || !filters.topics.includes(p.topic))) return false;
@@ -858,7 +856,6 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         <label><input type="checkbox" checked={filters.includeUnknownExposure === true} disabled={exposureStatus !== 'ready'} onChange={event => setFilters(previous => ({ ...previous, includeUnknownExposure: event.target.checked }))} /> Include passages whose earlier exposure is unknown</label>
         {filters.includeUnknownExposure !== true && <p>Choose whether to include these passages before previewing or starting.</p>}
       </div>}
-      {correctnessFilterBlocked && <p className="rc-field-hint" role="status">Reveal your saved results or choose another status before filtering by correctness.</p>}
       {historyStatus === 'ready' && <RcAdaptiveSummary summary={buildRcAdaptiveSummary({ history, displayHistory, hasHiddenGradedResults: hiddenResults })} />}
       {!starting && recoveryPending && <div className="rc-builder-alert" role="status">
         <span>A previous Start is pending for {describePendingPassages(recoveryPending.ids)}. Retry checks that original saved drill with its original timing and answer settings; your current edits will not start another drill.</span>
@@ -1067,7 +1064,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                   key={option.id}
                   type="button"
                   className={`rc-chip${filters.status === option.id ? ' rc-active' : ''}`}
-                  disabled={(hiddenResults && (option.id === 'incorrect_before' || option.id === 'incorrect_last')) || (option.id === 'strict_no_exposure' && exposureStatus !== 'ready')}
+                  disabled={(option.id === 'strict_no_exposure' && exposureStatus !== 'ready')}
                   onClick={() => setFilters((f) => ({ ...f, status: option.id }))}
                 >
                   {option.label}

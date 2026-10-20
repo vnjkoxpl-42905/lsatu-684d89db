@@ -308,6 +308,14 @@
     "reason": "excluded file"
   },
   {
+    "path": ".playwright-cli/console-2026-10-20T06-51-54-632Z.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "dist",
+    "reason": "excluded directory"
+  },
+  {
     "path": "node_modules",
     "reason": "link"
   },

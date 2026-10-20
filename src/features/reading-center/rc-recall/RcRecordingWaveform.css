@@ -1,8 +1,6 @@
-.rct-recording-waveform { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border: 1px solid var(--rc-outline-2, #ded8e8); border-radius: 14px; background: var(--rc-surface, #fff); width: fit-content; max-width: 100%; margin: 20px auto; }
-.rct-recording-mic { display: grid; place-items: center; flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: var(--rc-card, #f4f1f8); color: var(--rc-text, #241a3d); }
-.rct-recording-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.rct-recording-copy strong { font-size: 14px; font-weight: 600; }
-.rct-recording-copy > span { color: var(--rc-text-2, #706982); font-size: 12px; }
-.rct-recording-bars { display: flex; align-items: center; gap: 3px; height: 34px; margin-left: 10px; flex-shrink: 0; }
-.rct-recording-bars i { display: block; width: 3px; min-height: 3px; border-radius: 3px; background: var(--rc-text-2, #706982); transition: height 80ms linear; }
+.rct-recording-waveform { display: grid; place-items: center; width: 100%; min-height: 112px; margin: 28px auto 16px; }
+.rct-recording-bars { display: flex; align-items: center; justify-content: center; gap: clamp(4px, 1vw, 7px); width: min(100%, 340px); height: 100px; color: var(--rc-focus-ink, #183744); }
+.rct-recording-bars i { display: block; flex: 0 1 4px; width: 4px; min-height: 3px; border-radius: 4px; background: currentColor; transition: height 80ms linear; }
+.rct-recording-meter-unavailable { margin: 0; color: var(--rc-text-2, #667078); font-size: 13px; line-height: 1.6; text-align: center; }
+@media (max-width: 480px) { .rct-recording-waveform { margin-top: 20px; } }
 @media (prefers-reduced-motion: reduce) { .rct-recording-bars i { transition: none; } }

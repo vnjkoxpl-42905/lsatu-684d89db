@@ -25,6 +25,7 @@ import type {
 } from '../lib/rcTypes';
 import { readRcDraftAnswers } from '../lib/rcTypes';
 import { isActivePracticeTestDevice } from '@/lib/practiceTestStore';
+import { canRevealRcResults } from '../lib/rcResultsReveal';
 
 /** Postgres "relation does not exist" — the migration has not been run. */
 const MISSING_TABLE = '42P01';
@@ -548,6 +549,22 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
     sessionsById.set(session.id, session);
   }
 
+  // Persisted owner-scoped completion, never a device backup, releases an exam.
+  const parentIds = new Set([...sessionsById.values()].flatMap(session => {
+    const id = session.practice_test_run_id || session.config?.practiceTestRunId;
+    return id ? [id] : [];
+  }));
+  const releasedParents = new Set<string>();
+  if (parentIds.size > 0) {
+    const parents = await fetchHistoryPages<{ id: string; user_id: string; status: string }>(async (from, to) => {
+      return await rcDb.from('practice_test_runs').select('id, user_id, status')
+        .eq('user_id', uid).order('created_at', { ascending: true }).order('id', { ascending: true }).range(from, to);
+    });
+    for (const parent of parents) {
+      if (parent.user_id === uid && parent.status === 'complete' && parentIds.has(parent.id)) releasedParents.add(parent.id);
+    }
+  }
+
   const seenAttemptIds = new Set<string>();
   const validAttemptRows: RcHistoryAttemptRow[] = [];
   for (const row of attemptRows) {
@@ -569,130 +586,141 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
   });
 
   const history: RcQuestionHistory = new Map();
+  const displayHistory: RcQuestionHistory = new Map();
   const hiddenQuestions = new Set<number>();
-  const firstTakeSessions = new Set<string>();
-  for (const row of validAttemptRows) {
-    const session = row.session_id ? sessionsById.get(row.session_id) : undefined;
-    if (row.session_id && !session) continue;
-    if (session?.excluded_from_analytics) continue;
+  for (const aggregate of [history, displayHistory]) {
+    const firstTakeSessions = new Set<string>();
+    for (const row of validAttemptRows) {
+      const session = row.session_id ? sessionsById.get(row.session_id) : undefined;
+      if (row.session_id && !session) continue;
+      if (session?.excluded_from_analytics) continue;
 
-    const sessionStatus = session?.status ?? 'completed';
-    if (
-      sessionStatus !== 'completed' &&
-      sessionStatus !== 'in_progress' &&
-      sessionStatus !== 'abandoned'
-    ) {
-      continue;
-    }
-
-    // Historical races could insert multiple rows marked first for one sitting.
-    // The earliest row is the immutable original, including an original skip.
-    if (row.is_first_attempt !== false && row.session_id) {
-      const firstTakeKey = `${row.session_id}:${row.question_id}`;
-      if (firstTakeSessions.has(firstTakeKey)) continue;
-      firstTakeSessions.add(firstTakeKey);
-    }
-
-    const existing: RcQuestionHistoryEntry = history.get(row.question_id) ?? {
-      questionId: row.question_id,
-      attempts: 0,
-      everIncorrect: false,
-      incorrectOnLastTake: false,
-      incorrectCount: 0,
-      lastSeenAt: null,
-      lastGradedAt: null,
-      answered: false,
-      firstEverCorrect: null,
-      firstTakeCorrect: null,
-      unansweredOnFirstTake: false,
-      everCorrect: false,
-      lastFirstTakeIncorrect: false,
-      reviewCorrected: false,
-      completedAnswered: false,
-      completedAnsweredSessionIds: [],
-    };
-
-    const isFirstTake = row.is_first_attempt !== false;
-    const hasSelected = typeof row.selected === 'string' && row.selected.trim().length > 0;
-    const hasGradedAnswer = hasSelected && typeof row.is_correct === 'boolean';
-    // Generic builder analytics cannot establish a full-test parent's release.
-    // Other completed sessions require an explicit disclosure marker here.
-    const fullTestChild = Boolean(session?.practice_test_run_id || session?.config?.practiceTestRunId);
-    const released = !fullTestChild && sessionStatus === 'completed' && typeof session?.config?.resultsRevealedAt === 'string'
-      && Number.isFinite(Date.parse(session.config.resultsRevealedAt));
-    if (sessionStatus !== 'abandoned' && hasGradedAnswer && !released) hiddenQuestions.add(row.question_id);
-
-    if (sessionStatus === 'abandoned') {
-      if (isFirstTake || existing.attempts === 0) {
-        existing.attempts += 1;
+      const sessionStatus = session?.status ?? 'completed';
+      if (
+        sessionStatus !== 'completed' &&
+        sessionStatus !== 'in_progress' &&
+        sessionStatus !== 'abandoned'
+      ) {
+        continue;
       }
-      if (isFirstTake || !existing.lastSeenAt) {
-        existing.lastSeenAt = row.created_at;
+
+      // Historical races could insert multiple rows marked first for one sitting.
+      // The earliest row is the immutable original, including an original skip.
+      if (row.is_first_attempt !== false && row.session_id) {
+        const firstTakeKey = `${row.session_id}:${row.question_id}`;
+        if (firstTakeSessions.has(firstTakeKey)) continue;
+        firstTakeSessions.add(firstTakeKey);
       }
-      history.set(row.question_id, existing);
-      continue;
-    }
 
-    if (isFirstTake) {
-      existing.attempts += 1;
-      existing.lastSeenAt = row.created_at;
+      const existing: RcQuestionHistoryEntry = aggregate.get(row.question_id) ?? {
+        questionId: row.question_id,
+        attempts: 0,
+        everIncorrect: false,
+        incorrectOnLastTake: false,
+        incorrectCount: 0,
+        lastSeenAt: null,
+        lastGradedAt: null,
+        answered: false,
+        firstEverCorrect: null,
+        firstTakeCorrect: null,
+        unansweredOnFirstTake: false,
+        everCorrect: false,
+        lastFirstTakeIncorrect: false,
+        reviewCorrected: false,
+        completedAnswered: false,
+        completedAnsweredSessionIds: [],
+      };
 
-      if (!hasGradedAnswer) {
-        if (!existing.answered) {
-          existing.unansweredOnFirstTake = true;
-          existing.firstEverCorrect = null;
-          existing.firstTakeCorrect = null;
-          existing.lastFirstTakeIncorrect = false;
-          existing.incorrectOnLastTake = false;
-          existing.reviewCorrected = false;
-        }
-      } else {
-        const right = row.is_correct === true;
-        const wrong = row.is_correct === false;
+      const isFirstTake = row.is_first_attempt !== false;
+      const hasSelected = typeof row.selected === 'string' && row.selected.trim().length > 0;
+      const parentId = session?.practice_test_run_id || session?.config?.practiceTestRunId;
+      // Sessionless legacy work has no pending release; missing linked work is
+      // excluded above. Timed sections and exams use their existing release rules.
+      const released = !row.session_id || canRevealRcResults({ status: sessionStatus as RcSessionStatus, config: {
+        ...session?.config,
+        practiceTestRunId: parentId ?? undefined,
+        timedSectionSittingId: session?.timed_section_sitting_id || session?.config?.timedSectionSittingId,
+      } as RcDrillConfig }, Boolean(parentId && releasedParents.has(parentId)));
+      const graded = hasSelected && typeof row.is_correct === 'boolean';
+      if (sessionStatus !== 'abandoned' && graded && !released) hiddenQuestions.add(row.question_id);
+      // A hidden newer take must not erase a previously released miss.
+      const hasGradedAnswer = graded && (aggregate === history || released);
+
+      if (aggregate === displayHistory && sessionStatus !== 'abandoned' && graded && !released) {
         existing.answered = true;
-        existing.unansweredOnFirstTake = false;
-        if (existing.firstEverCorrect === null) {
-          existing.firstEverCorrect = right;
-        }
-        existing.firstTakeCorrect = right;
-        existing.lastGradedAt = row.created_at;
-        existing.reviewCorrected = false;
-        if (right) {
-          existing.everCorrect = true;
-        }
-        if (wrong) {
-          existing.everIncorrect = true;
-          existing.incorrectCount += 1;
-        }
-        existing.lastFirstTakeIncorrect = wrong;
-        existing.incorrectOnLastTake = wrong;
-
         if (sessionStatus === 'completed') {
           existing.completedAnswered = true;
-          if (
-            row.session_id &&
-            !existing.completedAnsweredSessionIds!.includes(row.session_id)
-          ) {
-            existing.completedAnsweredSessionIds!.push(row.session_id);
-          }
+          if (row.session_id && !existing.completedAnsweredSessionIds?.includes(row.session_id)) existing.completedAnsweredSessionIds?.push(row.session_id);
         }
       }
-    } else {
-      if (!existing.lastSeenAt) {
-        existing.lastSeenAt = row.created_at;
-      }
-      if (hasGradedAnswer && existing.lastFirstTakeIncorrect) {
-        existing.reviewCorrected = row.is_correct === true;
-      }
-    }
 
-    history.set(row.question_id, existing);
+      if (sessionStatus === 'abandoned') {
+        if (isFirstTake || existing.attempts === 0) {
+          existing.attempts += 1;
+        }
+        if (isFirstTake || !existing.lastSeenAt) {
+          existing.lastSeenAt = row.created_at;
+        }
+        aggregate.set(row.question_id, existing);
+        continue;
+      }
+
+      if (isFirstTake) {
+        existing.attempts += 1;
+        existing.lastSeenAt = row.created_at;
+
+        if (!hasGradedAnswer) {
+          if (!existing.answered) {
+            existing.unansweredOnFirstTake = true;
+            existing.firstEverCorrect = null;
+            existing.firstTakeCorrect = null;
+            existing.lastFirstTakeIncorrect = false;
+            existing.incorrectOnLastTake = false;
+            existing.reviewCorrected = false;
+          }
+        } else {
+          const right = row.is_correct === true;
+          const wrong = row.is_correct === false;
+          existing.answered = true;
+          existing.unansweredOnFirstTake = false;
+          if (existing.firstEverCorrect === null) {
+            existing.firstEverCorrect = right;
+          }
+          existing.firstTakeCorrect = right;
+          existing.lastGradedAt = row.created_at;
+          existing.reviewCorrected = false;
+          if (right) {
+            existing.everCorrect = true;
+          }
+          if (wrong) {
+            existing.everIncorrect = true;
+            existing.incorrectCount += 1;
+          }
+          existing.lastFirstTakeIncorrect = wrong;
+          existing.incorrectOnLastTake = wrong;
+
+          if (sessionStatus === 'completed') {
+            existing.completedAnswered = true;
+            if (
+              row.session_id &&
+              !existing.completedAnsweredSessionIds!.includes(row.session_id)
+            ) {
+              existing.completedAnsweredSessionIds!.push(row.session_id);
+            }
+          }
+        }
+      } else {
+        if (!existing.lastSeenAt) {
+          existing.lastSeenAt = row.created_at;
+        }
+        if (hasGradedAnswer && existing.lastFirstTakeIncorrect) {
+          existing.reviewCorrected = row.is_correct === true;
+        }
+      }
+
+      aggregate.set(row.question_id, existing);
+    }
   }
-  const displayHistory: RcQuestionHistory = new Map([...history].map(([id, entry]) => [id, hiddenQuestions.has(id) ? {
-    ...entry, firstEverCorrect: null, firstTakeCorrect: null, lastGradedAt: null,
-    everIncorrect: false, incorrectOnLastTake: false, incorrectCount: 0,
-    lastFirstTakeIncorrect: false, everCorrect: false, reviewCorrected: false,
-  } : { ...entry }]));
   return { history, displayHistory, hasHiddenGradedResults: hiddenQuestions.size > 0 };
 }
 

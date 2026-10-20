@@ -38,7 +38,7 @@ vi.mock("@/hooks/useUserPermissions", () => ({
 vi.mock('@/hooks/useReadingCenterAccess', () => ({
   useReadingCenterAccess: () => ({ allowed: workState.readingCenterAllowed }),
 }));
-vi.mock("@/components/classroom/shell/ClassroomLayout", () => ({
+vi.mock("@/components/classroom/shell/classroomLayoutContext", () => ({
   useClassroomLayout: () => ({ displayName: "Ada" }),
 }));
 vi.mock("@/lib/completeAssignedWork", () => ({

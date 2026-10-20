@@ -1,13 +1,14 @@
-import { Mic } from "lucide-react";
 import "./RcRecordingWaveform.css";
 
-/** A live input meter, never an animation that pretends speech was detected. */
+const BAR_WEIGHTS = [.16, .22, .3, .42, .52, .4, .66, .8, .6, .9, 1, .72, .88, .62, .96, .76, .56, .82, .68, .44, .6, .46, .32, .24, .16];
+
+/** Heights follow the real microphone level. Silence stays still. */
 export default function RcRecordingWaveform({ active, level, available }: { active: boolean; level: number; available: boolean }) {
   if (!active) return null;
   const safeLevel = available && Number.isFinite(level) ? Math.max(0, Math.min(1, level)) : 0;
-  return <div className="rct-recording-waveform" role="status">
-    <span className="rct-recording-mic" aria-hidden="true"><Mic size={19} /></span>
-    <div className="rct-recording-copy"><strong>Recall paragraph</strong><span>{available ? "Microphone active" : "Recording · level meter unavailable"}</span></div>
-    {available && <span className="rct-recording-bars" aria-hidden="true">{[.35, .6, .85, 1, .75, .5, .9, .65, .4].map((weight, index) => <i key={index} style={{ height: `${3 + safeLevel * weight * 29}px` }} />)}</span>}
+  return <div className="rct-recording-waveform">
+    {available ? <div className="rct-recording-bars" role="img" aria-label="Live microphone input level">
+      {BAR_WEIGHTS.map((weight, index) => <i aria-hidden="true" key={index} style={{ height: `${3 + safeLevel * weight * 85}px` }} />)}
+    </div> : <p className="rct-recording-meter-unavailable" role="status">Recording · input level unavailable</p>}
   </div>;
 }

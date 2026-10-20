@@ -16,6 +16,7 @@ const { insert, update, clock, getUser, personalList, historyStore, annotations,
   personalList: { rows: [] as Record<string, unknown>[], filters: vi.fn() },
   historyStore: {
     sessions: [] as Record<string, unknown>[],
+    parents: [] as Record<string, unknown>[],
     attempts: [] as Record<string, unknown>[],
     bypassEqFilter: false,
     sessionFilters: vi.fn(),
@@ -68,7 +69,7 @@ vi.mock('./rcSupabase.types', () => ({
                     ranges.push([from, to]);
                     const sourceRows = isAttempts
                       ? historyStore.attempts
-                      : (historyStore.sessions.length > 0 ? historyStore.sessions : personalList.rows);
+                      : _table === 'practice_test_runs' ? historyStore.parents : (historyStore.sessions.length > 0 ? historyStore.sessions : personalList.rows);
                     const filtered = historyStore.bypassEqFilter
                       ? [...sourceRows]
                       : sourceRows.filter(row => row[column] === value);
@@ -119,6 +120,7 @@ beforeEach(() => {
   personalList.filters.mockClear();
   personalList.rows = [];
   historyStore.sessions = [];
+  historyStore.parents = [];
   historyStore.attempts = [];
   historyStore.bypassEqFilter = false;
   historyStore.sessionFilters.mockClear();
@@ -1102,4 +1104,42 @@ it('refuses answers and flag changes in discarded ordinary drills without mutati
   await expect(setAttemptFlag(sessionId, 7, true, owner)).rejects.toThrow('discarded');
   expect(insert).not.toHaveBeenCalled();
   expect(update).not.toHaveBeenCalled();
+});
+
+
+it.each(['config', 'column'])('releases protected completed misses using persisted parent status (%s)', async location => {
+  historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', config: { ...clock.config,
+    ...(location === 'config' ? { practiceTestRunId: 'exam' } : {}) }, ...(location === 'column' ? { practice_test_run_id: 'exam' } : {}) }];
+  historyStore.attempts = [{ id: attemptId, user_id: owner, session_id: sessionId, question_id: 7, selected: 'C', is_correct: false, created_at: '2026-10-17T10:00:00Z' }];
+  historyStore.parents = [{ id: 'exam', user_id: owner, status: 'in_progress' }];
+  expect((await getRcHistorySnapshot(owner)).displayHistory.get(7)?.everIncorrect).toBe(false);
+  historyStore.parents[0].status = 'complete';
+  expect((await getRcHistorySnapshot(owner)).displayHistory.get(7)?.everIncorrect).toBe(true);
+  historyStore.bypassEqFilter = true;
+  historyStore.parents[0].user_id = 'other';
+  expect((await getRcHistorySnapshot(owner)).displayHistory.get(7)?.everIncorrect).toBe(false);
+});
+it.each(['config', 'column'])('releases completed timed-section misses without a drill reveal marker (%s)', async location => {
+  historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', config: { ...clock.config,
+    ...(location === 'config' ? { timedSectionSittingId: 'sitting' } : {}) }, ...(location === 'column' ? { timed_section_sitting_id: 'sitting' } : {}) }];
+  historyStore.attempts = [{ id: attemptId, user_id: owner, session_id: sessionId, question_id: 7, selected: 'C', is_correct: false, created_at: '2026-10-17T10:00:00Z' }];
+  expect((await getRcHistorySnapshot(owner)).displayHistory.get(7)?.everIncorrect).toBe(true);
+  historyStore.sessions[0].status = 'in_progress';
+  expect((await getRcHistorySnapshot(owner)).displayHistory.get(7)?.everIncorrect).toBe(false);
+});
+it('preserves a released miss and its last-try result beneath a newer hidden answer', async () => {
+  historyStore.sessions = [{ id: sessionId, user_id: owner, status: 'completed', config: { ...clock.config, resultsRevealedAt: '2026-10-17T11:00:00Z' } },
+    { id: 'hidden', user_id: owner, status: 'in_progress', config: clock.config }];
+  historyStore.attempts = [{ id: attemptId, user_id: owner, session_id: sessionId, question_id: 7, selected: 'C', is_correct: false, created_at: '2026-10-17T10:00:00Z' },
+    { id: 'new', user_id: owner, session_id: 'hidden', question_id: 7, selected: 'A', is_correct: true, created_at: '2026-10-18T10:00:00Z' }];
+  const snapshot = await getRcHistorySnapshot(owner);
+  expect(snapshot.hasHiddenGradedResults).toBe(true);
+  expect(snapshot.displayHistory.get(7)).toMatchObject({ everIncorrect: true, firstTakeCorrect: false, incorrectOnLastTake: true, incorrectCount: 1, lastGradedAt: '2026-10-17T10:00:00Z' });
+});
+it('retains sessionless legacy misses but excludes a missing linked session', async () => {
+  historyStore.attempts = [{ id: attemptId, user_id: owner, question_id: 7, selected: 'C', is_correct: false, created_at: '2026-10-17T10:00:00Z' },
+    { id: 'missing', user_id: owner, session_id: 'missing', question_id: 8, selected: 'C', is_correct: false, created_at: '2026-10-17T10:00:00Z' }];
+  const snapshot = await getRcHistorySnapshot(owner);
+  expect(snapshot.displayHistory.get(7)?.everIncorrect).toBe(true);
+  expect(snapshot.displayHistory.has(8)).toBe(false);
 });

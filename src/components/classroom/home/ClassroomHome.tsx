@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
+import { useClassroomLayout } from "@/components/classroom/shell/classroomLayoutContext";
 import { useClassroomHome } from "./useClassroomHome";
 import ClassroomHomeView from "./ClassroomHomeView";
 import "./home.css";

@@ -26,6 +26,8 @@ vi.mock("@/hooks/useAssignedTodoFeed", () => ({ useAssignedTodoFeed: () => ({ it
 vi.mock("@/lib/routePreload", () => ({ preloadDrillHub: vi.fn() }));
 
 import ClassroomLayout from "./ClassroomLayout";
+import { useClassroomLayout, useOptionalClassroomLayout } from "./classroomLayoutContext";
+import { useOrientation } from "../OrientationCard";
 
 const NONE = {
   loading: false, is_admin: false, has_bootcamp_access: false, has_classroom_access: false,
@@ -63,6 +65,29 @@ beforeEach(() => {
   window.matchMedia = window.matchMedia ?? ((() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) as never);
 });
 afterEach(cleanup);
+
+it("shares the shell context with the real orientation hook across layout remounts", async () => {
+  const snapshots: Array<{ name: string; shared: boolean }> = [];
+  function OrientationProbe() {
+    const layout = useClassroomLayout();
+    const optionalLayout = useOptionalClassroomLayout();
+    const orientation = useOrientation();
+    if (orientation.loaded) {
+      snapshots.push({ name: orientation.name, shared: layout === optionalLayout });
+    }
+    return orientation.loaded ? <Where /> : null;
+  }
+  for (let mount = 0; mount < 2; mount += 1) {
+    render(<MemoryRouter initialEntries={["/classroom"]}>
+      <Routes><Route element={<ClassroomLayout />}>
+        <Route path="/classroom" element={<OrientationProbe />} />
+      </Route></Routes>
+    </MemoryRouter>);
+    await screen.findByTestId("where");
+    expect(snapshots.at(-1)).toEqual({ name: "Sam", shared: true });
+    cleanup();
+  }
+});
 
 describe("classroom rail access", () => {
   it('places an assigned Reading Center directly after My Work with no broad Classroom flag', async () => {
