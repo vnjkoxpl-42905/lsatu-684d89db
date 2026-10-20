@@ -14,26 +14,82 @@
 .rct-continuous button:disabled { opacity: .55; cursor: wait; }
 .rct-continuous button.rct-run-button { background: #173f55; color: #fff; border-color: #173f55; font-weight: 600; padding: 12px 22px; }
 .rct-continuous button.rct-run-button:hover:not(:disabled) { background: #24566f; }
-.rct-continuous .rct-run-button span { display: inline-block; margin-left: 12px; padding: 1px 7px; border: 1px solid #ffffff66; border-radius: 4px; font-size: 12px; font-weight: 400; }
-.rct-continuous footer button { border-color: transparent; background: transparent; text-decoration: underline; text-underline-offset: 3px; }
-.rct-continuous section[aria-label="Microphone setup"] { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
-.rct-continuous section[aria-label="Microphone setup"] h2,
-.rct-continuous section[aria-label="Microphone setup"] p { flex-basis: 100%; }
-
-.rct-continuous .rct-source { font-size: 18px; }
-@media (min-width: 640px) { .rct-continuous .rct-source { font-size: 20px; } }
-
-/* Keep the reading column at the centre of the exercise. */
-.rct-focus-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.rct-context { color: var(--rc-muted, #64748b); font-size: 13px; line-height: 1.5; }
 .rct-continuous button.rct-pause-button { display: inline-flex; align-items: center; gap: 7px; border-color: transparent; background: transparent; font-size: 13px; padding: 8px; }
-.rct-continuous .rct-focus-source { border: 0; padding: 0; margin: clamp(48px, 10vh, 100px) auto 32px; max-width: none; font-size: clamp(19px, 1.6vw, 24px); min-height: 200px; }
-.rct-focus-source + p, .rct-focus-source ~ .flex { max-width: none; margin-left: auto; margin-right: auto; }
 .rct-pause-overlay { position: fixed; inset: 0; z-index: 80; background: rgb(240 244 246 / .65); backdrop-filter: blur(9px); }
-.rct-pause-panel { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 81; width: min(440px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow-y: auto; border: 1px solid var(--rc-border, #dce2e7); border-radius: 16px; background: var(--rc-surface, #fff); color: var(--rc-text, #172b3a); padding: 30px; box-shadow: 0 20px 80px #173f5514; display: grid; gap: 18px; }
-.rct-pause-panel h2 { font-size: 22px; font-weight: 600; }
-.rct-pause-panel > p, .rct-pause-panel aside { font-size: 14px; line-height: 1.6; }
 .rct-pause-time { display: grid; gap: 4px; font-size: 13px; color: var(--rc-muted, #64748b); font-variant-numeric: tabular-nums; }
-.rct-pause-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-.rct-pause-panel button.rct-instructions-toggle, .rct-pause-links button { border-color: transparent; background: transparent; }
-@media (max-width: 639px) { .rct-continuous .rct-focus-source { margin-top: 40px; min-height: 160px; } .rct-pause-panel { padding: 24px; } }
+.rct-pause-panel > p, .rct-pause-panel aside { font-size: 14px; line-height: 1.6; }
+/* An anchored exercise frame keeps the next action in one place. */
+.rct-run.rct-continuous[data-testid="rc-recall-runner"] { height: 100dvh; max-height: 100dvh; min-height: 0; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; padding: 24px clamp(20px, 5vw, 64px) 0; background: var(--rc-surface, #fff); color: var(--rc-text, #172b3a); }
+.rct-focus-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: none; min-height: 44px; }
+.rct-location { min-width: 0; }
+.rct-passage-position { display: block; }
+.rct-context { color: var(--rc-muted, #64748b); line-height: 1.5; font-size: 12px; letter-spacing: .01em; }
+.rct-session-tools { display: flex; align-items: center; gap: 22px; flex: none; }
+.rct-capture-status { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--rc-muted, #64748b); line-height: 1.4; }
+.rct-capture-status i { height: 5px; width: 5px; border-radius: 50%; background: #94a3b8; flex: none; }
+.rct-capture-status.is-recording i { background: #527868; }
+.rct-paragraph-progress { display: flex; flex: none; gap: 5px; width: min(168px, 45%); margin-top: 8px; }
+.rct-paragraph-progress > span { height: 3px; min-width: 2px; flex: 1; border-radius: 2px; background: var(--rc-border, #e3e8eb); }
+.rct-paragraph-progress > span.is-current { background: #a1adb5; }
+.rct-paragraph-progress > span.is-saved { background: #294c5c; }
+.rct-exercise-body { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-gutter: stable; margin-top: 24px; }
+.rct-step-content { position: relative; min-height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 30px 0 44px; }
+.rct-step-content.is-recall { text-align: center; }
+.rct-continuous .rct-focus-source { border: 0; padding: 0; max-width: none; font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: clamp(21px, 1.7vw, 25px); line-height: 1.85; letter-spacing: -.012em; margin: 0; min-height: 0; width: 100%; background: transparent; }
+.rct-continuous .rct-recall-source { font-family: inherit; letter-spacing: normal; }
+.rct-recall-prompt { display: flex; flex-direction: column; align-items: center; }
+.rct-recall-prompt > h3 { font-size: clamp(34px, 4vw, 48px); line-height: 1.15; font-weight: 500; letter-spacing: -.04em; margin: 0 0 16px; }
+.rct-recall-prompt > p { font-size: 16px; line-height: 1.6; color: var(--rc-muted, #64748b); margin: 0 0 32px; }
+.rct-exercise-actions { flex: none; min-height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 0 max(24px, env(safe-area-inset-bottom)); background: var(--rc-surface, #fff); }
+.rct-action-context { max-width: 42ch; color: var(--rc-muted, #64748b); font-size: 12px; line-height: 1.6; }
+.rct-primary-actions { display: flex; flex: none; align-items: center; gap: 12px; margin-left: auto; }
+.rct-continuous .rct-exercise-actions button.rct-run-button { width: 204px; min-width: 204px; display: inline-flex; align-items: center; justify-content: space-between; gap: 18px; border-radius: 9px; min-height: 48px; padding: 12px 18px; font-size: 13px; }
+.rct-continuous .rct-run-button span { display: inline-block; margin-left: 0; font-size: 10px; font-weight: 400; border: 1px solid #ffffff40; border-radius: 4px; padding: 2px 6px; }
+.rct-optional-note { font-size: 12px; color: var(--rc-muted, #64748b); margin-top: 20px; }
+.rct-inline-notice { font-size: 14px; line-height: 1.7; margin-bottom: 24px; }
+.rct-pause-panel { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 81; width: min(440px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow-y: auto; border: 1px solid var(--rc-border, #dce2e7); border-radius: 18px; background: var(--rc-surface, #fff); color: var(--rc-text, #172b3a); padding: 34px; box-shadow: 0 20px 80px #173f5514; display: grid; gap: 18px; }
+.rct-pause-panel h2 { font-size: 26px; font-weight: 500; letter-spacing: -.025em; }
+.rct-pause-panel > p { margin: 0; }
+.rct-pause-panel .rct-pause-context { font-size: 12px; color: var(--rc-muted, #64748b); }
+.rct-pause-panel > button.rct-run-button { min-height: 50px; }
+.rct-pause-links { display: flex; flex-wrap: wrap; gap: 4px; justify-content: space-between; }
+.rct-pause-panel .rct-pause-links button { font-size: 12px; padding: 8px; border-color: transparent; background: transparent; }
+.rct-pause-panel .rct-instructions-toggle { border-color: transparent; background: transparent; font-size: 12px; color: var(--rc-muted, #64748b); }
+.rct-completion { max-width: 1000px; margin: 0 auto; padding: 64px clamp(20px, 5vw, 64px); min-height: 100dvh; }
+.rct-completion-intro { margin-bottom: 44px; }
+.rct-completion-eyebrow { color: var(--rc-muted, #64748b); font-size: 12px; margin-bottom: 28px; }
+.rct-completion-intro h1 { font-size: clamp(30px, 4vw, 42px); font-weight: 500; letter-spacing: -.035em; line-height: 1.2; margin-bottom: 18px; }
+.rct-completion-intro > p:not(.rct-completion-eyebrow) { font-size: 14px; line-height: 1.7; margin: 10px 0; }
+.rct-completion-intro > button { margin-top: 20px; margin-right: 12px; }
+.rct-step-transition { animation: rct-content-enter 140ms ease-out both; }
+@keyframes rct-content-enter { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .rct-step-transition { animation: none; } }
+@media (max-width: 639px) {
+  .rct-run.rct-continuous[data-testid="rc-recall-runner"] { padding-top: 16px; }
+  .rct-session-tools { gap: 8px; }
+  .rct-capture-status { font-size: 10px; }
+  .rct-context { font-size: 11px; max-width: 27ch; }
+  .rct-continuous .rct-focus-source { font-size: 21px; margin: 0; line-height: 1.8; }
+  .rct-step-content { padding: 20px 0 28px; }
+  .rct-exercise-body { margin-top: 16px; }
+  .rct-exercise-actions { min-height: 110px; align-items: flex-end; gap: 12px; padding-top: 16px; }
+  .rct-action-context { max-width: 15ch; font-size: 11px; padding-bottom: 6px; }
+  .rct-primary-actions { flex-direction: column; align-items: flex-end; gap: 6px; }
+  .rct-continuous .rct-exercise-actions button.rct-run-button { width: 184px; min-width: 184px; font-size: 12px; padding: 12px; gap: 12px; }
+  .rct-recall-prompt > p { max-width: 27ch; font-size: 15px; }
+  .rct-pause-panel { padding: 28px; }
+  .rct-completion { padding-top: 36px; }
+}
+
+.rct-continuous .rct-exercise-actions button { text-decoration: none; }
+
+@media (max-width: 359px) { .rct-action-context { max-width: 11ch; font-size: 10px; } .rct-exercise-actions { gap: 8px; } }
+
+.rct-waveform-slot { width: 100%; min-height: 156px; display: flex; align-items: center; justify-content: center; }
+
+.rct-step-content.rct-setup-content { align-items: center; }
+.rct-setup-content > p { max-width: 40ch; font-size: clamp(18px, 1.6vw, 20px); line-height: 1.75; color: var(--rc-text, #172b3a); }
+.rct-permission-status { max-width: 40ch; margin-top: 28px; font-size: 13px; line-height: 1.7; color: var(--rc-muted, #64748b); }
+.rct-permission-status button { margin-top: 12px; }
+.rct-continuous .rct-quiet-exit { padding: 8px 0; border-color: transparent; background: transparent; font-size: 12px; color: var(--rc-muted, #64748b); text-align: left; }
+@media (max-width: 359px) { .rct-continuous .rct-quiet-exit { max-width: 11ch; font-size: 10px; } }
