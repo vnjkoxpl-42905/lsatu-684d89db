@@ -22,3 +22,18 @@
 
 .rct-continuous .rct-source { font-size: 18px; }
 @media (min-width: 640px) { .rct-continuous .rct-source { font-size: 20px; } }
+
+/* Keep the reading column at the centre of the exercise. */
+.rct-focus-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.rct-context { color: var(--rc-muted, #64748b); font-size: 13px; line-height: 1.5; }
+.rct-continuous button.rct-pause-button { display: inline-flex; align-items: center; gap: 7px; border-color: transparent; background: transparent; font-size: 13px; padding: 8px; }
+.rct-continuous .rct-focus-source { border: 0; padding: 0; margin: clamp(48px, 10vh, 100px) auto 32px; max-width: none; font-size: clamp(19px, 1.6vw, 24px); min-height: 200px; }
+.rct-focus-source + p, .rct-focus-source ~ .flex { max-width: none; margin-left: auto; margin-right: auto; }
+.rct-pause-overlay { position: fixed; inset: 0; z-index: 80; background: rgb(240 244 246 / .65); backdrop-filter: blur(9px); }
+.rct-pause-panel { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 81; width: min(440px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow-y: auto; border: 1px solid var(--rc-border, #dce2e7); border-radius: 16px; background: var(--rc-surface, #fff); color: var(--rc-text, #172b3a); padding: 30px; box-shadow: 0 20px 80px #173f5514; display: grid; gap: 18px; }
+.rct-pause-panel h2 { font-size: 22px; font-weight: 600; }
+.rct-pause-panel > p, .rct-pause-panel aside { font-size: 14px; line-height: 1.6; }
+.rct-pause-time { display: grid; gap: 4px; font-size: 13px; color: var(--rc-muted, #64748b); font-variant-numeric: tabular-nums; }
+.rct-pause-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.rct-pause-panel button.rct-instructions-toggle, .rct-pause-links button { border-color: transparent; background: transparent; }
+@media (max-width: 639px) { .rct-continuous .rct-focus-source { margin-top: 40px; min-height: 160px; } .rct-pause-panel { padding: 24px; } }

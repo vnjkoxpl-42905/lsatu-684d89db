@@ -52,6 +52,12 @@ interface ActiveRun {
   interrupted: boolean;
   getChunkCount: () => number;
   offsetStart: number;
+  pausedAt: number | null;
+  pausedMs: number;
+}
+
+function recordingOffset(run: ActiveRun): number {
+  return Math.max(0, (run.pausedAt ?? performance.now()) - run.offsetStart - run.pausedMs);
 }
 
 async function settleBackup(run: ActiveRun): Promise<BackupHealth> {
@@ -126,7 +132,7 @@ export function useRecapRecorder() {
     const seal = () => {
       if (run!.interrupted) { run!.releaseLock?.(); return; }
       void settleBackup(run!).then(async () => {
-        if (!run!.interrupted) await markStopped(run!.recapId, Math.max(1, Math.ceil(performance.now() - run!.offsetStart)), run!.getChunkCount());
+        if (!run!.interrupted) await markStopped(run!.recapId, Math.max(1, Math.ceil(recordingOffset(run!))), run!.getChunkCount());
         if (run!.interrupted) await markInterrupted(run!.recapId);
       }).finally(() => run!.releaseLock?.());
     };
@@ -179,7 +185,7 @@ export function useRecapRecorder() {
       setBackupHealth(begun);
       const run: ActiveRun = {
         recorder, stream, chunks, writes, recapId: meta.recapId, mimeType, path, startedAt: Date.now(), releaseLock,
-        offsetStart: performance.now(), backupFailure: begun.ok === false ? begun.reason : null, interrupted: false, getChunkCount: () => seq,
+        offsetStart: performance.now(), pausedAt: null, pausedMs: 0, backupFailure: begun.ok === false ? begun.reason : null, interrupted: false, getChunkCount: () => seq,
       };
       const interrupted = () => {
         stopMeter();
@@ -221,7 +227,7 @@ export function useRecapRecorder() {
     if (!run) { resolve(null); return; }
     if (run.interrupted) { run.releaseLock?.(); cleanup(); resolve(null); return; }
     const finish = async () => {
-      const durationMs = Math.max(1, Math.ceil(performance.now() - run.offsetStart));
+      const durationMs = Math.max(1, Math.ceil(recordingOffset(run)));
       const blob = new Blob(run.chunks, { type: run.mimeType });
       let backup = await settleBackup(run);
       if (run.interrupted) { run.releaseLock?.(); cleanup(); resolve(null); return; }
@@ -237,6 +243,33 @@ export function useRecapRecorder() {
     run.recorder.stop();
   }), [cleanup]);
 
+  const pause = useCallback((): boolean => {
+    const run = active.current;
+    if (!run || run.interrupted) return false;
+    if (run.pausedAt !== null) return true;
+    if (run.recorder.state !== "recording") return false;
+    try {
+      run.recorder.pause();
+      run.pausedAt = performance.now();
+      stopMeter();
+      return true;
+    } catch { return false; }
+  }, [stopMeter]);
+
+  const resume = useCallback((): boolean => {
+    const run = active.current;
+    if (!run || run.interrupted) return false;
+    if (run.pausedAt === null) return run.recorder.state === "recording";
+    if (run.recorder.state !== "paused") return false;
+    try {
+      run.recorder.resume();
+      run.pausedMs += performance.now() - run.pausedAt;
+      run.pausedAt = null;
+      startMeter(run.stream);
+      return true;
+    } catch { return false; }
+  }, [startMeter]);
+
   /** Drop a run that produced nothing, so it is not offered for recovery. */
   const forget = useCallback((recapId: string) => discard(recapId), []);
 
@@ -250,5 +283,5 @@ export function useRecapRecorder() {
     return result;
   }, []);
 
-  return { micLevel, micAvailable, backupHealth, interruption, prepare, start, stop, forget, getOffset: () => active.current ? Math.max(0, Math.round(performance.now() - active.current.offsetStart)) : 0, isRecording: () => active.current !== null, activeRecapId: () => active.current?.recapId ?? null };
+  return { micLevel, micAvailable, backupHealth, interruption, prepare, start, stop, pause, resume, forget, getOffset: () => active.current ? Math.round(recordingOffset(active.current)) : 0, isRecording: () => active.current !== null, activeRecapId: () => active.current?.recapId ?? null };
 }

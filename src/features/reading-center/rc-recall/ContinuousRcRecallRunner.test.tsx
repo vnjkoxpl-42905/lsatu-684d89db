@@ -8,24 +8,25 @@ import { ReadingExerciseLayout } from "../components/ReadingExerciseLayout";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { RcPreptestFile } from "@/features/rc/lib/rcTypes";
-const api = vi.hoisted(() => ({ loadPassageProgress: vi.fn(), savePassageProgress: vi.fn(), prepare: vi.fn(), start: vi.fn(), stop: vi.fn(), createCapture: vi.fn(), saveCaptureWindow: vi.fn(), uploadCapture: vi.fn(), insertRecap: vi.fn(), finalizeAttempt: vi.fn(), readAttemptProgress: vi.fn(), discard: vi.fn(), offset: 0, count: 0, interruption: null as string | null }));
+const api = vi.hoisted(() => ({ loadPassageProgress: vi.fn(), savePassageProgress: vi.fn(), prepare: vi.fn(), start: vi.fn(), stop: vi.fn(), pause: vi.fn(), resume: vi.fn(), createCapture: vi.fn(), saveCaptureWindow: vi.fn(), uploadCapture: vi.fn(), insertRecap: vi.fn(), finalizeAttempt: vi.fn(), readAttemptProgress: vi.fn(), discard: vi.fn(), offset: 0, count: 0, interruption: null as string | null }));
 vi.mock("./lib/passageProgress", () => ({ loadPassageProgress: api.loadPassageProgress, savePassageProgress: api.savePassageProgress }));
 vi.mock("./lib/captures", () => ({ createCapture: api.createCapture, saveCaptureWindow: api.saveCaptureWindow, uploadCapture: api.uploadCapture }));
 vi.mock("./lib/attempts", () => ({ newId: () => `id-${++api.count}`, insertRecap: api.insertRecap, finalizeAttempt: api.finalizeAttempt, readAttemptProgress: api.readAttemptProgress }));
 vi.mock("./lib/backup", () => ({ discard: api.discard }));
-vi.mock("./useRecapRecorder", () => ({ useRecapRecorder: () => ({ prepare: api.prepare, start: api.start, stop: api.stop, getOffset: () => api.offset, interruption: api.interruption }) }));
+vi.mock("./useRecapRecorder", () => ({ useRecapRecorder: () => ({ prepare: api.prepare, start: api.start, stop: api.stop, pause: api.pause, resume: api.resume, getOffset: () => api.offset, interruption: api.interruption }) }));
 vi.mock("./LegacyRcRecallRunner", () => ({ default: () => <div>Legacy exercise</div>, formatClock: (n: number) => String(n) }));
 vi.mock("./RcTrainingFeedback", () => ({ default: ({ enabled, autoReview }: { enabled: boolean; autoReview?: boolean }) => <div data-testid="feedback" data-enabled={String(enabled)} data-auto={String(autoReview)} /> }));
 import Runner from "./RcRecallRunner";
 const bodies = ["First paragraph.\n\nSecond paragraph."];
 const attempt = { id: "a1", student_id: "s1", preptest: 140, section: 4, passage_ids: [1] } as AttemptRow;
 const props = { mode: "rc_recall" as const, scope: "all_read" as const, passages: bodies.map((text) => ({ text }) as RcPassage), segmented: bodies.map(text => segmentPassage(text)), attempt, studentId: "s1", onExit: vi.fn() };
-const click = async (name: RegExp) => { if ((name.test("Pause and return to passages") || name.test("Finish early")) && !screen.queryByRole("button", { name })) fireEvent.click(screen.getByText("Practice options")); await waitFor(() => expect(screen.getByRole("button", { name })).toBeEnabled()); await act(async () => { fireEvent.click(screen.getByRole("button", { name })); }); };
+const click = async (name: RegExp) => { if ((name.test("Save and leave") || name.test("Finish early") || name.test("Show instructions")) && !screen.queryByRole("button", { name })) fireEvent.click(screen.getByRole("button", { name: "Pause" })); await waitFor(() => expect(screen.getByRole("button", { name })).toBeEnabled()); await act(async () => { fireEvent.click(screen.getByRole("button", { name })); }); };
 const space = async (repeat = false) => { await act(async () => { fireEvent.keyDown(document, { code: "Space", repeat }); }); };
 beforeEach(() => {
   vi.restoreAllMocks();
   Object.values(api).forEach((value) => { if (typeof value === "function" && "mockReset" in value) value.mockReset(); });
   props.onExit.mockReset(); localStorage.clear(); api.interruption = null; api.offset = 0; api.count = 0;
+  api.pause.mockReturnValue(true); api.resume.mockReturnValue(true);
   api.loadPassageProgress.mockResolvedValue([]);
   api.savePassageProgress.mockImplementation(async (input) => ({ attempt_id: input.attemptId, student_id: input.studentId, passage_id: input.passageId, passage_position: input.passagePosition, active_ms: input.activeMs, completed: input.completed }));
   api.prepare.mockResolvedValue({ ok: true, stream: { getTracks: () => [] }, mimeType: "audio/webm" });
@@ -42,7 +43,7 @@ describe("continuous RC recording", () => {
     render(<Runner {...props} attempt={{ ...attempt, segmentation_version: 2 }} />);
     await click(/Start exercise/);
     expect(screen.getByText("First paragraph.")).toBeInTheDocument();
-    api.offset = 1000; await click(/Retell paragraph/);
+    api.offset = 1000; await click(/Recall paragraph/);
     expect(screen.queryByText("First paragraph.")).not.toBeInTheDocument();
     expect(screen.getByText("Explain the whole paragraph in your own words.")).toBeInTheDocument();
     expect(screen.queryByTestId("feedback")).not.toBeInTheDocument();
@@ -51,7 +52,7 @@ describe("continuous RC recording", () => {
     expect(screen.getByText("Second paragraph.")).toBeInTheDocument();
     expect(screen.queryByText("First paragraph.")).not.toBeInTheDocument();
     expect(api.finalizeAttempt).not.toHaveBeenCalled();
-    api.offset = 4000; await click(/Retell paragraph/);
+    api.offset = 4000; await click(/Recall paragraph/);
     api.offset = 6000; await click(/Finish passage/);
     expect(api.saveCaptureWindow).toHaveBeenLastCalledWith(expect.objectContaining({ recapKey: "p1-para2-recall", startMs: 4000, endMs: 6000 }));
     expect(api.savePassageProgress).toHaveBeenCalledWith(expect.objectContaining({ completed: true, passagePosition: 1 }));
@@ -67,7 +68,7 @@ describe("continuous RC recording", () => {
     await click(/Start exercise/);
     for (let i = 0; i < 4; i++) {
       expect(screen.getByText(`Complete passage ${i + 1}.`)).toBeInTheDocument();
-      api.offset += 1000; await click(/Retell paragraph/);
+      api.offset += 1000; await click(/Recall paragraph/);
       expect(screen.queryByText(`Complete passage ${i + 1}.`)).not.toBeInTheDocument();
       expect(screen.queryByTestId("feedback")).not.toBeInTheDocument();
       api.offset += 1000; await click(i === 3 ? /Finish section/ : /Next passage/);
@@ -125,7 +126,7 @@ describe("continuous RC recording", () => {
     await click(/Next paragraph/);
     expect(screen.queryByLabelText("Exercise instructions")).not.toBeInTheDocument();
     expect(screen.getByText("Second paragraph.")).toBeInTheDocument();
-    await click(/Pause and return to passages/);
+    await click(/Save and leave/);
     expect(api.prepare).toHaveBeenCalledOnce(); expect(api.start).toHaveBeenCalledOnce(); expect(api.stop).toHaveBeenCalledOnce();
     expect(api.uploadCapture).toHaveBeenCalledWith(expect.objectContaining({ captureId: "id-1", durationMs: 10000 }));
     expect(api.discard).toHaveBeenCalledWith("id-1");
@@ -191,7 +192,7 @@ it("does not count microphone setup or permission waiting as practice time", asy
   render(<Runner {...props} />);
   await click(/Start exercise/); now += 600000;
   await act(async () => { permit({ ok: true, stream: { getTracks: () => [] }, mimeType: "audio/webm" }); });
-  now += 3000; await click(/Pause and return to passages/);
+  now += 3000; await click(/Save and leave/);
   const checkpoint = listCheckpoints("s1")[0];
   expect(checkpoint.sectionMs).toBe(3000);
   vi.restoreAllMocks();
@@ -246,18 +247,22 @@ it("puts a working save-and-leave action beside a recording interruption", async
   expect(props.onExit).toHaveBeenCalledOnce();
 });
 
-it("returns focus from the instructions button to the step so Space still advances", async () => {
+it("pauses recording and timer, blocks Space, and resumes after viewing instructions", async () => {
   render(<Runner {...props} />); await click(/Start exercise/);
-  const button = screen.getByRole("button", { name: "Show instructions" }); button.focus();
+  await click(/^Pause$/);
+  expect(api.pause).toHaveBeenCalledOnce();
+  expect(screen.getByRole("dialog", { name: "Practice paused" })).toBeInTheDocument();
   await click(/Show instructions/);
+  expect(screen.getByLabelText("Exercise instructions")).toBeInTheDocument();
+  await space();
+  expect(api.saveCaptureWindow).not.toHaveBeenCalled();
+  await click(/^Resume$/);
+  expect(api.resume).toHaveBeenCalledOnce();
   expect(screen.getByRole("heading", { name: "Read the whole paragraph" })).toHaveFocus();
   api.offset = 1000; await space();
   expect(screen.getByLabelText("Passage text hidden")).toBeInTheDocument();
-  const show = screen.getByRole("button", { name: "Hide instructions" }); show.focus(); await click(/Hide instructions/);
-  expect(screen.getByRole("heading", { name: "Recall the whole paragraph" })).toHaveFocus();
-  api.offset = 2000; await space();
-  expect(screen.getByRole("heading", { name: "Check your recall" })).toBeInTheDocument();
 });
+
 it("focuses the completion heading and announces a warning while retaining server feedback eligibility", async () => {
   api.readAttemptProgress.mockRejectedValueOnce(new Error("offline"));
   render(<Runner {...props} />); await click(/Start exercise/); await finishParagraphs(); await click(/Skip optional recall/);
@@ -274,17 +279,17 @@ it("does not request feedback before finalization is confirmed", async () => {
 
 it("keeps an unsuccessful leave visible, retries retained audio and exits only after confirmed save", async () => {
   api.uploadCapture.mockRejectedValueOnce(new Error("offline"));
-  render(<Runner {...props} />); await click(/Start exercise/); await click(/Pause and return to passages/);
+  render(<Runner {...props} />); await click(/Start exercise/); await click(/Save and leave/);
   expect(props.onExit).not.toHaveBeenCalled();
   expect(screen.getByRole("region", { name: "Recording not saved" })).toHaveTextContent(/progress or recording has not saved/);
-  expect(screen.getByRole("button", { name: /Hide paragraph/ })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Resume" })).toBeDisabled();
   await click(/Try saving recording again/);
   expect(api.stop).toHaveBeenCalledOnce(); expect(api.uploadCapture).toHaveBeenCalledTimes(2);
   expect(props.onExit).toHaveBeenCalledOnce();
 });
 it("lets a student explicitly leave after a failed upload without discarding the retained backup", async () => {
   api.uploadCapture.mockRejectedValueOnce(new Error("offline"));
-  render(<Runner {...props} />); await click(/Start exercise/); await click(/Pause and return to passages/);
+  render(<Runner {...props} />); await click(/Start exercise/); await click(/Save and leave/);
   expect(api.discard).not.toHaveBeenCalled(); expect(props.onExit).not.toHaveBeenCalled();
   await click(/Leave anyway/);
   expect(props.onExit).toHaveBeenCalledOnce(); expect(api.discard).not.toHaveBeenCalled();
@@ -310,7 +315,7 @@ it("keeps prestart to one primary action and no paragraph, timer, guide or exit 
   render(<Runner {...props} />); await waitFor(() => expect(screen.getByRole("button", { name: "Start exercise" })).toBeEnabled());
   expect(screen.queryByRole("timer")).not.toBeInTheDocument();
   expect(screen.queryByText(/Paragraph 1 of/)).not.toBeInTheDocument();
-  expect(screen.queryByRole("button", { name: /Show instructions|Pause and return|Finish early|Continue without/ })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: /Show instructions|Save and leave|Finish early|Continue without/ })).not.toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Choose another passage" })).toBeInTheDocument();
 });
 it("does not reveal a paragraph when microphone preparation fails", async () => {
@@ -336,11 +341,13 @@ it("saves passage completion before advancing and retries the identical intent o
   expect(api.saveCaptureWindow).toHaveBeenCalledTimes(2);
   vi.restoreAllMocks();
 });
-it("restores passage timing from the server and always shows its active timer", async () => {
+it("restores passage timing from the server and shows restored active time in the pause menu", async () => {
   api.loadPassageProgress.mockResolvedValue([{ attempt_id: "a1", passage_id: 1, passage_position: 1, active_ms: 7000, completed: false }]);
   render(<Runner {...props} showElapsedTimer={false} />); await click(/Start exercise/);
+  await click(/^Pause$/);
   expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 7");
-  await click(/Pause and return to passages/);
+  await click(/^Resume$/);
+  await click(/Save and leave/);
   expect(api.savePassageProgress).toHaveBeenCalledWith(expect.objectContaining({ activeMs: expect.any(Number), completed: false }));
   expect(listCheckpoints("s1")[0].passageTimesMs![0]).toBeGreaterThanOrEqual(7000);
 });
@@ -351,13 +358,19 @@ it("keeps four passage clocks separate, freezes completed time and continues the
   const full = { ...props, passages: fullBodies.map((text) => ({ text }) as RcPassage), segmented: fullBodies.map(text => segmentPassage(text)), attempt: { ...attempt, passage_ids: [1, 2, 3, 4] } };
   const view = render(<Runner {...full} />); await click(/Start exercise/);
   now += 5000; api.offset = 1000; await space();
+  await click(/^Pause$/);
   expect(screen.getByRole("timer")).toHaveTextContent(/Passage practice time: 5\s*Total practice time: 5/);
+  await click(/^Resume$/);
   api.offset = 2000; await space(); await click(/Finish passage/);
+  await click(/^Pause$/);
   expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 5");
+  await click(/^Resume$/);
   now += 3000; await click(/Skip optional recall/);
+  await click(/^Pause$/);
   expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 0");
+  await click(/^Resume$/);
   expect(screen.getByText(/Selected passage 2 of 4/)).toBeInTheDocument();
-  now += 2000; await click(/Pause and return to passages/);
+  now += 2000; await click(/Save and leave/);
   const checkpoint = listCheckpoints("s1")[0];
   expect(checkpoint.sectionMs).toBe(10000);
   expect(checkpoint.passageTimesMs).toEqual([5000, 2000, 0, 0]);
@@ -367,8 +380,12 @@ it("keeps four passage clocks separate, freezes completed time and continues the
   view.unmount(); now += 600000;
   api.loadPassageProgress.mockResolvedValue([{ attempt_id: "a1", passage_id: 2, passage_position: 2, active_ms: 2000, completed: false }]);
   render(<Runner {...full} resume={checkpoint} />); await click(/Start exercise/);
+  await click(/^Pause$/);
   expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 2");
+  await click(/^Resume$/);
+  await click(/^Pause$/);
   expect(screen.getByRole("timer")).toHaveTextContent("Total practice time: 10");
+  await click(/^Resume$/);
 
 });
 
@@ -441,4 +458,31 @@ it("keeps a fresh recording checkpoint from its first paragraph once the microph
   const view = render(<Runner {...props} />); await click(/Start exercise/);
   expect(listCheckpoints("s1")).toHaveLength(1);
   view.unmount(); expect(listCheckpoints("s1")).toHaveLength(1);
+});
+
+it("keeps recording failure visible if the recorder cannot pause", async () => {
+  api.pause.mockReturnValue(false);
+  render(<Runner {...props} />); await click(/Start exercise/); await click(/^Pause$/);
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(screen.getByRole("alert")).toHaveTextContent("could not pause");
+});
+it("retains the pause screen if recording cannot resume", async () => {
+  api.resume.mockReturnValue(false);
+  render(<Runner {...props} />); await click(/Start exercise/); await click(/^Pause$/); await click(/^Resume$/);
+  expect(screen.getByRole("dialog")).toBeInTheDocument();
+  expect(screen.getByRole("alert")).toHaveTextContent("could not resume");
+});
+
+it("excludes a break from active time and saves the same checkpoint position", async () => {
+  let now = 1000; vi.spyOn(Date, "now").mockImplementation(() => now);
+  render(<Runner {...props} attempt={{ ...attempt, segmentation_version: 2 }} />); await click(/Start exercise/);
+  now += 3000; await click(/^Pause$/);
+  expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 3");
+  now += 60000; await click(/Show instructions/);
+  expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 3");
+  await click(/^Resume$/); now += 2000; await click(/^Pause$/);
+  expect(screen.getByRole("timer")).toHaveTextContent("Passage practice time: 5");
+  await click(/Save and leave/);
+  expect(listCheckpoints("s1")[0]).toEqual(expect.objectContaining({ stepIndex: 0, passageMs: 5000, sectionMs: 5000 }));
+  expect(api.uploadCapture).toHaveBeenCalledOnce();
 });

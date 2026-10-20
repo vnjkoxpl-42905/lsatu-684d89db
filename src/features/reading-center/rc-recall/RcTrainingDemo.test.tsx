@@ -5,8 +5,8 @@ import RcTrainingDemo from "./RcTrainingDemo";
 const P1 = /Millions of people worldwide play multiplayer online games/;
 const P2 = /The economist Edward Castronova noticed something curious/;
 const go = (tab: RegExp) => fireEvent.click(screen.getByRole("button", { name: tab }));
-const nextParagraph = () => { go(/Retell paragraph/); go(/Next paragraph/); };
-const finishExample = () => { nextParagraph(); go(/Retell paragraph/); go(/Finish the example/); };
+const nextParagraph = () => { go(/Recall paragraph/); go(/Next paragraph/); };
+const finishExample = () => { nextParagraph(); go(/Recall paragraph/); go(/Finish the example/); };
 
 describe("RC Training demonstration", () => {
   it("starts with paragraph 1 and does not mention paragraph 2 yet", () => {
@@ -17,7 +17,7 @@ describe("RC Training demonstration", () => {
 
   it("hides the text for recall and gives no answer while the learner is being tested", () => {
     render(<RcTrainingDemo />);
-    go(/Retell paragraph/);
+    go(/Recall paragraph/);
     expect(screen.queryByText(P1)).not.toBeInTheDocument();
     expect(document.querySelector("blockquote")).toBeNull();
     expect(screen.getByText("Your turn")).toBeVisible();
@@ -30,9 +30,9 @@ describe("RC Training demonstration", () => {
     expect(document.querySelector("blockquote")).toBeNull();
     expect(screen.getByText(P2)).toBeVisible();
     expect(screen.queryByText(P1)).not.toBeInTheDocument();
-    go(/Retell paragraph/);
+    go(/Recall paragraph/);
     expect(screen.queryByText(P2)).not.toBeInTheDocument();
-    expect(screen.getByText(/Retell paragraph 2 only, out loud/)).toBeVisible();
+    expect(screen.getByText(/Recall paragraph 2 only, out loud/)).toBeVisible();
     go(/Finish the example/);
     expect(screen.getByText("Illustrative feedback, not a real attempt")).toBeVisible();
     expect(screen.getByText(/They all play as warriors/)).toBeVisible();
