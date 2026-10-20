@@ -1,12 +1,12 @@
 {
   "repository": "vnjkoxpl-42905/lsatu-684d89db",
-  "source_head": "a52b3ff5570be1653d0fa7b82b44f6f496599d06",
+  "source_head": "cf613b69fb14047eb16f057c40c7049857b114a3",
   "source_branch": "codex/rc-focus-release-20261019",
   "snapshot_branch": "codex/local-sync/laptop-le9a083p/lsatu-rc-focus-release",
   "encrypted_original_context": {
     "enabled": true,
     "format": 2,
-    "file_count": 75,
+    "file_count": 76,
     "paths": [
       "lsatu-rc-focus-release/.agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
       "lsatu-rc-focus-release/.agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
@@ -80,10 +80,11 @@
       "lsatu-rc-focus-release/.claude/skills/notebooklm/tests/cassettes/sources_refresh.yaml",
       "lsatu-rc-focus-release/.claude/skills/notebooklm/tests/cassettes/sources_rename.yaml",
       "lsatu-rc-focus-release/.claude/skills/watch/scripts/setup.py",
+      "lsatu-rc-focus-release/scripts/verification/start-rc-builder-preview.mjs",
       "lsatu-rc-focus-release/src/contexts/AuthContext.tsx",
       "lsatu-rc-focus-release/src/lib/googleDrive.ts",
       "lsatu-rc-focus-release/supabase/functions/handle-email-events/index.ts"
     ],
-    "ciphertext_sha256": "5365b536ea0c3f1f539714aff8e6dc66bb9ec88d56ead3da06376018b22c75d0"
+    "ciphertext_sha256": "82acd83b1956e2200b3bb0c49d300a84421b05ef72661e98369ee904cadd23e2"
   }
 }

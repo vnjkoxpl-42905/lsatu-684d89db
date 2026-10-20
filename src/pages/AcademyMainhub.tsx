@@ -25,6 +25,8 @@ import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
 import type { QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 import { SectionToggle } from "@/components/drill/SectionToggle";
+import { RcSavedSetsPanel } from "@/features/rc/components/RcSavedSetsPanel";
+import { RcPracticeLanding, RcPracticeResume } from "@/features/rc/components/RcPracticeLanding";
 import { RcHubSurface } from "@/features/rc/components/RcHubSurface";
 import {
   DRILL_SECTION_PARAM,
@@ -125,7 +127,9 @@ function LauncherStage({
     [drillReturnTo, navigate],
   );
 
-  /* RC's builder reads the passage index, not the LR question bank, so it
+  /* AcademyMainhub routes RC directly before mounting LauncherStage. This
+     compatibility branch is retained for other callers. RC reads the passage
+     index, not the LR question bank, so it
      returns before `useQuestionBank`'s loading gate — waiting on 5.5 MB of LR
      questions to draw a reading drill would be a spinner for nothing. */
   if (section === "rc") {
@@ -204,6 +208,7 @@ export default function AcademyMainhub({
   const view = viewParam === "in-progress" || viewParam === "completed" || viewParam === "saved" ? viewParam : "create";
   const [runs, setRuns] = React.useState<StandaloneDrillHistoryItem[]>([]);
   const [runsOwner, setRunsOwner] = React.useState<string | null>(null);
+  const [runsLoadedKey, setRunsLoadedKey] = React.useState<string | null>(null);
   const [runsLoading, setRunsLoading] = React.useState(false);
   const [runsError, setRunsError] = React.useState<string | null>(null);
   const [runsRevision, refreshRuns] = React.useReducer((value) => value + 1, 0);
@@ -236,14 +241,40 @@ export default function AcademyMainhub({
     setSearchParams(next, { replace: true });
   }, [searchParams, setSearchParams]);
 
+  const sectionParam = searchParams.get(DRILL_SECTION_PARAM);
+  const section = React.useMemo(() => resolveDrillSection(sectionParam), [sectionParam]);
+  const rcBuilderRequested = searchParams.has('builder') || searchParams.get('stage') === 'type-drill'
+    || ['saved', 'passages', 'count', 'timing', 'secondsPerPassage', 'reveal', 'start', 'assignment', 'assignmentId', 'ptRun', 'ptLeg', 'timedSection'].some(key => searchParams.has(key));
+  const isRcLanding = section === 'rc' && view === 'create' && !rcBuilderRequested;
+  const runsRequestKey = JSON.stringify([user?.id ?? null, section, view, runsRevision, rcBuilderRequested]);
+
   React.useEffect(() => {
-    if (!user?.id || (view !== "in-progress" && view !== "completed")) {
+    if (!user?.id || (view !== "in-progress" && view !== "completed" && !(section === "rc" && view === "create" && !rcBuilderRequested))) {
       setRuns([]);
+      setRunsLoadedKey(null);
       return;
     }
     let active = true;
     setRunsLoading(true);
     setRunsError(null);
+    if (isRcLanding) {
+      // A resume row needs only the latest eligible RC sitting. LR history and
+      // attempts from other sittings must not delay or block this entry point.
+      void Promise.all([listSessions(), loadAllIndexPassages().catch(() => [])]).then(async ([allRc, indexPassages]) => {
+        const recent = allRc.filter(session => session.userId === user.id && session.status === 'in_progress'
+          && !session.config.practiceTestRunId && !session.config.timedSectionSittingId && session.config.source !== 'assignment')
+          .sort((a, b) => (b.config.lastActiveAt ?? b.startedAt).localeCompare(a.config.lastActiveAt ?? a.startedAt))[0];
+        if (!recent) return [];
+        const attempts = await getSessionAttempts(recent.id).catch(() => null);
+        const names = new Map(indexPassages.map(p => [p.passageId, { preptest: p.preptest, section: p.section, setNumber: p.setNumber, title: p.title }] as const));
+        const loaded = buildStandaloneDrillHistory([], [recent], new Map(attempts ? [[recent.id, attempts]] : []), null, names);
+        return attempts ? loaded : loaded.map(run => ({ ...run, detail: 'Saved answers could not be checked. Resume to continue.' }));
+      }).then(
+        loaded => { if (active) setRuns(loaded); },
+        error => { if (active) setRunsError(error instanceof Error ? error.message : 'Your RC drill could not be loaded.'); },
+      ).finally(() => { if (active) { setRunsLoading(false); setRunsOwner(user.id); setRunsLoadedKey(runsRequestKey); } });
+      return () => { active = false; };
+    }
     void Promise.all([
       listStandaloneDrillRuns(user.id),
       listSessions(),
@@ -262,7 +293,7 @@ export default function AcademyMainhub({
       (error: unknown) => { if (active) setRunsError(error instanceof Error ? error.message : "Drill runs could not be loaded."); },
     ).finally(() => { if (active) { setRunsLoading(false); setRunsOwner(user.id); } });
     return () => { active = false; };
-  }, [user?.id, view, runsRevision]);
+  }, [user?.id, view, runsRevision, section, rcBuilderRequested, isRcLanding, runsRequestKey]);
 
   const changeView = React.useCallback((next: "create" | "in-progress" | "completed" | "saved") => {
     const params = new URLSearchParams(searchParams);
@@ -276,8 +307,7 @@ export default function AcademyMainhub({
      remembers, then LR — see `src/lib/drillSection.ts`. Reading it from the
      URL rather than from state is what makes a refresh, a Back press, and a
      shared link all land in the same place. */
-  const sectionParam = searchParams.get(DRILL_SECTION_PARAM);
-  const section = React.useMemo(() => resolveDrillSection(sectionParam), [sectionParam]);
+
 
   /* A bare URL states no section, so it resolves from what this browser
      remembers — and memory MOVES. Land on /classroom/drill in LR, throw the
@@ -310,6 +340,7 @@ export default function AcademyMainhub({
     if (section !== "rc" || view !== "create" || stageParam !== "type-drill") return;
     const next = new URLSearchParams(searchParams);
     next.delete("stage");
+    if (!next.has("builder")) next.set("builder", next.has("passages") ? "manual" : "automatic");
     next.set("view", "create");
     setSearchParams(next, { replace: true });
   }, [section, view, stageParam, searchParams, setSearchParams]);
@@ -376,6 +407,16 @@ export default function AcademyMainhub({
     [section, setSearchParams],
   );
 
+  const openRcBuilder = (mode: 'automatic' | 'manual') => {
+    setSearchParams({ section: 'rc', view: 'create', builder: mode }, { replace: false, state: { fromRcLanding: true } });
+  };
+
+  const closeRcBuilder = () => {
+    if (location.state?.fromRcLanding === true) navigate(-1);
+    else setSearchParams({ section: 'rc', view: 'create' }, { replace: true });
+  };
+
+
   const closeStage = React.useCallback(() => {
     setSearchParams({ [DRILL_SECTION_PARAM]: section }, { replace: true });
   }, [section, setSearchParams]);
@@ -430,13 +471,18 @@ export default function AcademyMainhub({
           </div>
           {!(section === "lr" && view === "create" && isLauncherStage) && <SectionToggle section={section} onChange={changeSection} />}
         </nav>
-        {view === "saved" ? (
+        {view === "saved" ? (section === "rc" ? (
+          <section className="rc-page rc-embedded rc-saved-workspace" aria-label="Saved RC drills">
+            <h1>Saved RC drills</h1>
+            <RcSavedSetsPanel />
+          </section>
+        ) : (
           <section className="drill-history-workspace rounded-xl border border-border bg-card p-6" aria-label="Saved sets">
             <h1 className="text-xl font-semibold">Saved LR sets</h1>
             <p className="mt-2 text-sm text-muted-foreground">Reusable saved sets support Logical Reasoning. Find your RC drills in In progress or Completed.</p>
             <Button className="mt-5" onClick={() => navigate("/practice/drills/saved")}>Open saved LR sets <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
           </section>
-        ) : view === "in-progress" || view === "completed" ? (
+        )) : view === "in-progress" || view === "completed" ? (
           <section className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
             <div className="flex items-center justify-between gap-3">
               <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>
@@ -471,9 +517,25 @@ export default function AcademyMainhub({
           <div className="drill-observatory-tools">
             <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} />
           </div>
-          <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
+          {rcBuilderRequested ? <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
+            <button type="button" className="rc-practice-back" onClick={closeRcBuilder}>Back to RC practice</button>
             <RcHubSurface embedded showHistory={false} />
-          </section>
+          </section> : <RcPracticeLanding
+            onChooseAutomatic={() => openRcBuilder('automatic')}
+            onChooseManual={() => openRcBuilder('manual')}
+            practice={<>
+              {!user ? <p className="rc-practice-note">Sign in to see your RC drills.</p>
+                : runsLoading || runsOwner !== user.id || runsLoadedKey !== runsRequestKey ? <p className="rc-practice-note" role="status">Loading your RC drills…</p>
+                : runsError ? <div role="alert"><p>{runsError}</p><button type="button" className="rc-practice-link" onClick={refreshRuns}>Retry RC drills</button></div>
+                : (() => {
+                  const recent = runs.find(run => run.section === 'rc' && run.status === 'in_progress');
+                  return recent ? <RcPracticeResume title={recent.title} detail={recent.detail} onResume={() => recent.continueTo && navigate(recent.continueTo)} />
+                    : <p className="rc-practice-note">No RC drill in progress. Build a drill above or view your completed drills.</p>;
+                })()}
+              <button type="button" className="rc-practice-link" onClick={() => changeView('completed')}>View completed RC drills <span aria-hidden="true">→</span></button>
+            </>}
+            assigned={<AssignedWorkPanel drillReturnTo={drillReturnTo} />}
+          />}
         </> : <>
         {/* The address row rides above the hero rather than inside it: the
             route label row is decorative and aria-hidden, and the hero's two
