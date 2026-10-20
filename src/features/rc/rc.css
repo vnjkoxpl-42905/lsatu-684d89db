@@ -1,0 +1,775 @@
+/*
+ * Chrome for the RC hub, results, and the review layer. Unlike player.css this
+ * follows the LSAT U look, so it leans on the product's CSS variables and only
+ * falls back to a literal where a token does not exist.
+ */
+
+/*
+ * The drill-state palette, named once.
+ *
+ * DESIGN.md documents these under "Drill state" — correct #2f9e64 on a soft
+ * #eaf6ef, wrong #e5484d on a soft #fdecec — but nothing in the codebase turns
+ * them into tokens, so they were pasted as literals here and, separately, as
+ * Tailwind green-500/green-50 in the choice row. That is how one screen ended
+ * up showing two different greens for a single verdict. One source now, and
+ * both the banner and the choice row read from it.
+ */
+:root {
+  --rc-correct: #2f9e64;
+  --rc-correct-soft: #eaf6ef;
+  --rc-correct-ink: #14532d;
+  --rc-wrong: #e5484d;
+  --rc-wrong-soft: #fdecec;
+  --rc-surface-quiet: #fafafc; /* drill-page */
+  --rc-line: #e5e5ea; /* drill-border */
+  --rc-ink: #1d1d1f; /* drill-ink */
+}
+
+/* ----------------------------------------------------------------- buttons */
+
+/*
+ * These used to live in player.css, which the hub and results do not import —
+ * so their buttons only picked up styling if the player had already mounted in
+ * the same page session. They belong here, with everything else these three
+ * surfaces share. The shape is the official chrome's pill.
+ */
+
+.rc-button {
+  border-radius: 9999px;
+  border: 1px solid #94a3b8;
+  background: #ffffff;
+  color: #334155;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+.rc-button:hover { background: #f1f5f9; }
+
+.rc-button-primary {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+  padding: 8px 28px;
+  font-weight: 600;
+}
+
+.rc-button-primary:hover { background: #000000; }
+
+.rc-button[disabled] { opacity: 0.4; cursor: not-allowed; }
+.rc-button-primary[disabled]:hover { background: #0f172a; }
+
+.rc-button.rc-active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+}
+
+/* ------------------------------------------------------------ review layer */
+
+.rc-review {
+  margin-bottom: 18px;
+}
+
+.rc-verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.rc-verdict-right {
+  background: var(--rc-correct-soft);
+  border: 1px solid var(--rc-correct);
+}
+
+.rc-verdict-wrong {
+  background: var(--rc-wrong-soft);
+  border: 1px solid var(--rc-wrong);
+}
+
+.rc-verdict-detail {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.rc-blocks { display: flex; flex-direction: column; gap: 6px; }
+
+.rc-block {
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.rc-block-toggle,
+.rc-disclosure-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.rc-block-toggle:hover { background: hsl(var(--muted)); }
+
+.rc-block-body,
+.rc-disclosure-body {
+  padding: 0 12px 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.rc-block-body p,
+.rc-disclosure-body p { margin: 0 0 0.7em; }
+.rc-block-body p:last-child,
+.rc-disclosure-body p:last-child { margin-bottom: 0; }
+.rc-block-body ul,
+.rc-disclosure-body ul { margin: 0 0 0.7em; padding-left: 1.2em; }
+
+.rc-disclosure {
+  margin: 8px 0 2px 38px;
+  font-size: 13px;
+}
+
+.rc-disclosure-toggle { padding: 6px 0; width: auto; }
+
+.rc-disclosure-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.rc-disclosure-percent { opacity: 0.65; font-variant-numeric: tabular-nums; }
+
+.rc-tag-chip {
+  border-radius: 9999px;
+  padding: 2px 9px;
+  font-size: 13px;
+  font-weight: 600;
+  background: hsl(var(--muted));
+}
+
+.rc-tag-correct { background: var(--rc-correct); color: #ffffff; }
+
+.rc-tag-outline {
+  background: transparent;
+  border: 1px solid currentColor;
+  opacity: 0.7;
+}
+
+.rc-tutor-fallback {
+  border: 1px dashed hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 14px;
+  font-size: 13px;
+}
+
+.rc-tutor-fallback p { margin: 0 0 10px; }
+
+/*
+ * The blind re-attempt banner.
+ *
+ * It used to be built from the product's app tokens — hsl(var(--primary) / 0.1)
+ * resolves to a flat grey — inside an exam pane that is otherwise LawHub slate.
+ * It read as pasted in from the marketing side of the app. It sits on the exam
+ * chrome's own palette now, at a size that belongs to the pane it introduces.
+ */
+.rc-reattempt-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-radius: var(--radius);
+  background: var(--rc-surface-quiet);
+  border: 1px solid var(--rc-line);
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+/* The message takes whatever the link does not, rather than both wrapping. */
+.rc-reattempt-banner > span {
+  min-width: 0;
+}
+
+.rc-skip-link {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--rc-ink);
+  padding: 0;
+  /*
+   * "Show my answer" was breaking to "Show my / answer" and taking the message
+   * with it, which left a 62px banner holding two ragged two-line blocks.
+   */
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rc-skip-link:hover { opacity: 0.75; }
+
+.rc-summary-toggle {
+  margin-top: 22px;
+  border-top: 1px solid hsl(var(--border));
+  padding-top: 14px;
+}
+
+.rc-summary-tabs { display: flex; gap: 6px; margin: 10px 0; flex-wrap: wrap; }
+
+.rc-summary-tab {
+  border: 1px solid hsl(var(--border));
+  background: transparent;
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.rc-summary-tab.rc-active { border-color: hsl(var(--primary)); color: hsl(var(--primary)); font-weight: 600; }
+
+/* ------------------------------------------------------------------- hub */
+
+/*
+ * The hub runs on the classroom's observatory system — ivory on tinted black,
+ * mono micro-labels, Fraunces for values, hairlines instead of borders — so it
+ * matches the mainhub that launches it. The token ladder itself is hosted in
+ * classroom.css, which names .rc-page alongside the classroom root; every value
+ * below has to come off that ladder.
+ *
+ * The route paints its own surface: unlike the mainhub it has no classroom
+ * shell around it to supply one.
+ */
+.rc-page {
+  min-height: 100vh;
+  background: var(--observatory-surface-image);
+  color: var(--observatory-ink);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  padding: var(--observatory-space-6) var(--observatory-space-6)
+    calc(var(--observatory-space-7) * 2);
+}
+
+.rc-page > * {
+  max-width: 71.25rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rc-page h1 {
+  font-family: var(--observatory-display-font);
+  font-size: var(--observatory-text-display);
+  font-weight: 500;
+  letter-spacing: var(--observatory-track-display);
+  line-height: 1.05;
+  margin: 0 0 var(--observatory-space-2);
+}
+
+/* Section headings are mono micro-labels here, not sentence-case h2s. */
+.rc-page h2 {
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label);
+  font-weight: 500;
+  letter-spacing: var(--observatory-track-label);
+  text-transform: uppercase;
+  color: var(--observatory-ink-50);
+  margin: 0 0 var(--observatory-space-4);
+}
+
+.rc-page-sub {
+  color: var(--observatory-ink-55);
+  font-size: var(--observatory-text-body);
+  margin: 0 0 var(--observatory-space-6);
+}
+
+.rc-card {
+  background: var(--observatory-surface-card);
+  border-radius: var(--observatory-radius-shell);
+  box-shadow: 0 0 0 1px var(--observatory-hairline), var(--observatory-shadow-card);
+  padding: var(--observatory-space-6);
+  margin-bottom: var(--observatory-space-5);
+}
+
+.rc-field { margin-bottom: var(--observatory-space-5); }
+
+.rc-field-label {
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label);
+  font-weight: 500;
+  letter-spacing: var(--observatory-track-label);
+  text-transform: uppercase;
+  color: var(--observatory-ink-50);
+  margin-bottom: var(--observatory-space-3);
+}
+
+.rc-field-hint {
+  font-size: var(--observatory-text-meta);
+  color: var(--observatory-ink-50);
+  margin-top: var(--observatory-space-2);
+}
+
+.rc-segmented { display: flex; flex-wrap: wrap; gap: var(--observatory-space-2); }
+
+.rc-segment {
+  border: 1px solid var(--observatory-ring-glass);
+  border-radius: var(--observatory-radius-control);
+  background: var(--observatory-glass-soft);
+  color: var(--observatory-ink-70);
+  padding: var(--observatory-space-3) var(--observatory-space-4);
+  font-size: var(--observatory-text-body);
+  cursor: pointer;
+  text-align: left;
+  transition: transform var(--observatory-motion), border-color var(--observatory-motion),
+    color var(--observatory-motion);
+}
+
+.rc-segment:hover { transform: translateY(-2px); }
+
+.rc-segment.rc-active {
+  border-color: var(--observatory-ring-strong);
+  color: var(--observatory-ink);
+  font-weight: 600;
+}
+
+.rc-segment-caption {
+  display: block;
+  font-size: var(--observatory-text-meta);
+  color: var(--observatory-ink-50);
+  margin-top: var(--observatory-space-1);
+}
+
+.rc-chip-row { display: flex; flex-wrap: wrap; gap: var(--observatory-space-2); }
+
+.rc-chip {
+  border: 1px solid var(--observatory-ring-glass);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--observatory-ink-70);
+  padding: var(--observatory-space-2) var(--observatory-space-4);
+  font-size: var(--observatory-text-meta);
+  cursor: pointer;
+  transition: color var(--observatory-motion), border-color var(--observatory-motion);
+}
+
+.rc-chip:hover { color: var(--observatory-ink); }
+
+.rc-chip.rc-active {
+  background: var(--observatory-ink);
+  color: var(--observatory-surface-card);
+  border-color: var(--observatory-ink);
+}
+
+.rc-stepper { display: inline-flex; align-items: center; gap: var(--observatory-space-3); }
+
+.rc-stepper button {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--observatory-radius-control);
+  border: 1px solid var(--observatory-ring-glass);
+  background: var(--observatory-glass-soft);
+  color: var(--observatory-ink-85);
+  font-size: var(--observatory-text-control);
+  cursor: pointer;
+}
+
+.rc-stepper button:hover { color: var(--observatory-ink); }
+
+.rc-stepper-value {
+  font-family: var(--observatory-display-font);
+  font-size: var(--observatory-text-heading);
+  min-width: 24px;
+  text-align: center;
+}
+
+/* ------------------------------------------------- builder: launch truth */
+
+.rc-stepper button[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+/* The builder's controls inherit no visible focus from the observatory layer,
+   so keyboard users get one ring here. Builder only; the player keeps its own. */
+.rc-page .rc-button:focus-visible,
+.rc-page .rc-chip:focus-visible,
+.rc-page .rc-segment:focus-visible,
+.rc-page .rc-stepper button:focus-visible,
+.rc-page .rc-shortfall input:focus-visible,
+.rc-page details > summary:focus-visible {
+  outline: 2px solid var(--observatory-focus);
+  outline-offset: 2px;
+}
+
+/* An error is said in words first; the red edge only repeats it. */
+.rc-page .rc-input-invalid { border-color: var(--rc-wrong); }
+
+.rc-field-error {
+  font-size: var(--observatory-text-meta);
+  color: var(--observatory-ink-85);
+  border-left: 2px solid var(--rc-wrong);
+  padding-left: var(--observatory-space-3);
+  margin-top: var(--observatory-space-2);
+}
+
+.rc-builder-alert {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--observatory-space-3);
+  border-left: 2px solid var(--observatory-amber);
+  padding: var(--observatory-space-2) var(--observatory-space-3);
+  margin-bottom: var(--observatory-space-4);
+  color: var(--observatory-ink-85);
+  font-size: var(--observatory-text-body);
+}
+
+.rc-launch-summary {
+  border-top: 1px solid var(--observatory-hairline);
+  padding-top: var(--observatory-space-4);
+  margin-bottom: var(--observatory-space-4);
+}
+
+.rc-launch-summary dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--observatory-space-2);
+  margin: 0;
+}
+
+.rc-launch-summary dl > div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: var(--observatory-space-3);
+  align-items: baseline;
+}
+
+.rc-launch-summary dt {
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label);
+  letter-spacing: var(--observatory-track-label);
+  text-transform: uppercase;
+  color: var(--observatory-ink-50);
+}
+
+.rc-launch-summary dd {
+  margin: 0;
+  color: var(--observatory-ink-85);
+  font-size: var(--observatory-text-body);
+  overflow-wrap: anywhere;
+}
+
+/* Phone width: labels stack over values instead of squeezing them. */
+@media (max-width: 480px) {
+  .rc-launch-summary dl > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+
+.rc-shortfall {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--observatory-space-3);
+  margin-top: var(--observatory-space-3);
+  padding: var(--observatory-space-3);
+  border-left: 2px solid var(--observatory-amber);
+  color: var(--observatory-ink-85);
+  font-size: var(--observatory-text-body);
+  cursor: pointer;
+}
+
+.rc-shortfall input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
+
+.rc-table { width: 100%; border-collapse: collapse; font-size: var(--observatory-text-meta); }
+
+.rc-table th,
+.rc-table td {
+  text-align: left;
+  padding: var(--observatory-space-3) var(--observatory-space-2);
+  border-bottom: 1px solid var(--observatory-hairline);
+  vertical-align: top;
+  color: var(--observatory-ink-85);
+}
+
+.rc-table th {
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label-sm);
+  font-weight: 500;
+  letter-spacing: var(--observatory-track-label);
+  text-transform: uppercase;
+  color: var(--observatory-ink-50);
+}
+
+.rc-hero-meta { font-size: var(--observatory-text-meta); color: var(--observatory-ink-55); }
+
+.rc-session-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--observatory-space-3);
+  padding: var(--observatory-space-3) 0;
+  border-bottom: 1px solid var(--observatory-hairline);
+  font-size: var(--observatory-text-body);
+}
+
+.rc-session-excluded { opacity: 0.4; }
+
+.rc-status-chip {
+  border-radius: 999px;
+  padding: var(--observatory-space-1) var(--observatory-space-3);
+  font-size: var(--observatory-text-meta);
+  background: var(--observatory-glass-row);
+  border: 1px solid var(--observatory-ring-quiet);
+  color: var(--observatory-ink-70);
+}
+
+.rc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--observatory-space-3);
+  margin-top: var(--observatory-space-6);
+}
+
+.rc-empty {
+  font-size: var(--observatory-text-body);
+  color: var(--observatory-ink-50);
+  padding: var(--observatory-space-5) 0;
+}
+
+/* .rc-button is shared with the review layer, which mounts inside the white
+   player — so the hub's ivory-on-black treatment has to be scoped here rather
+   than changing the base rule. */
+.rc-page .rc-button {
+  border: 1px solid var(--observatory-ring-glass);
+  background: var(--observatory-glass-soft);
+  color: var(--observatory-ink-70);
+  border-radius: 999px;
+  padding: var(--observatory-space-2) var(--observatory-space-5);
+  font-size: var(--observatory-text-body);
+  transition: transform var(--observatory-motion), color var(--observatory-motion);
+}
+
+.rc-page .rc-button:hover {
+  background: var(--observatory-glass-soft);
+  color: var(--observatory-ink);
+  transform: translateY(-2px);
+}
+
+.rc-page .rc-button-primary,
+.rc-page .rc-button.rc-active {
+  background: var(--observatory-ink);
+  border-color: var(--observatory-ink);
+  color: var(--observatory-surface-card);
+  font-weight: 600;
+}
+
+.rc-page .rc-button-primary:hover {
+  background: var(--observatory-ink);
+  color: var(--observatory-surface-card);
+}
+
+
+/* ------------------------------------------------- embedded in the drill hub */
+
+/*
+ * The same builder, mounted inside the drill hub's RC section rather than at
+ * /rc. It keeps the `.rc-page` class because that is where the observatory
+ * token ladder is declared; what it drops is the page frame. The launcher
+ * panel around it already draws the card, the padding, and the column.
+ */
+.rc-page.rc-embedded {
+  background: none;
+  min-height: 0;
+  padding: 0;
+}
+
+.rc-page.rc-embedded > * {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: none;
+}
+
+/* The builder's own cards lose their frame too — a card inside a card is one
+   ring too many on a page whose only borders are hairlines. */
+.rc-page.rc-embedded .rc-card {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.rc-page.rc-embedded .rc-card + .rc-card {
+  border-top: 1px solid var(--observatory-hairline);
+  margin-top: var(--observatory-space-6);
+  padding-top: var(--observatory-space-6);
+}
+
+/* Builder layout follows the available panel width, including a docked sidecar. */
+.rc-create-workspace .rc-page.rc-embedded {
+  --observatory-ink: hsl(var(--foreground));
+  --observatory-ink-90: hsl(var(--foreground));
+  --observatory-ink-85: hsl(var(--foreground));
+  --observatory-ink-70: hsl(var(--muted-foreground));
+  --observatory-ink-62: hsl(var(--muted-foreground));
+  --observatory-ink-60: hsl(var(--muted-foreground));
+  --observatory-ink-55: hsl(var(--muted-foreground));
+  --observatory-ink-50: hsl(var(--muted-foreground));
+  --observatory-surface-card: hsl(var(--card));
+  --observatory-glass-soft: hsl(var(--card));
+  --observatory-glass-row: hsl(var(--muted));
+  --observatory-hairline: hsl(var(--border));
+  --observatory-ring-glass: hsl(var(--border));
+  --observatory-ring-strong: hsl(var(--foreground));
+  --observatory-ring-chip: hsl(var(--border));
+  --observatory-focus: hsl(var(--foreground));
+  color: hsl(var(--foreground));
+}
+.rc-create-workspace .rc-page > .rc-actions h2 {
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  text-transform: none;
+  color: hsl(var(--foreground));
+}
+.rc-create-workspace .rc-page .rc-stepper-value { font-family: inherit; }
+.rc-create-workspace .rc-page .rc-stepper button { width: 44px; height: 44px; }
+.rc-create-workspace .rc-page .rc-button-primary {
+  background: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  min-height: 44px;
+}
+.rc-create-workspace .rc-page .rc-button-primary:hover { background: hsl(var(--primary)); }
+.rc-builder { container-type: inline-size; }
+.rc-builder-settings {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.rc-builder-settings > .rc-field { margin: 0; min-width: 0; }
+.rc-builder-settings > .rc-field:last-child { grid-column: 1 / -1; }
+.rc-builder .rc-field-label,
+.rc-builder .rc-launch-summary dt,
+.rc-builder h2 {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--observatory-ink-85);
+}
+.rc-builder .rc-field-hint { line-height: 1.6; max-width: 72ch; }
+.rc-builder .rc-segmented { align-items: stretch; }
+.rc-builder-settings .rc-segment { flex: 1 1 120px; min-width: 0; }
+.rc-builder .rc-segment,
+.rc-builder .rc-chip { min-height: 44px; }
+.rc-builder .rc-segment:hover { transform: none; }
+.rc-builder .rc-segment.rc-active { background: var(--observatory-glass-row); }
+.rc-builder-filters {
+  border-top: 1px solid var(--observatory-hairline);
+  padding: 8px 0 24px;
+}
+.rc-passage-picker { margin: 24px 0; }
+.rc-passage-search { width: 100%; margin-top: 8px; cursor: text; }
+.rc-picked-passages { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.rc-picked-passages .rc-chip { max-width: 100%; white-space: normal; text-align: left; overflow-wrap: anywhere; }
+.rc-passage-list { list-style: none; padding: 0; margin: 16px 0 0; max-height: 440px; overflow-y: auto; scrollbar-gutter: stable; }
+.rc-passage-option {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 18px 12px;
+  border-bottom: 1px solid var(--observatory-hairline);
+}
+.rc-passage-option-copy { flex: 1; min-width: 0; }
+.rc-passage-option h3 { font-size: 16px; font-weight: 600; line-height: 1.4; margin: 4px 0; color: var(--observatory-ink); }
+.rc-passage-location,
+.rc-passage-opening,
+.rc-passage-metadata { font-size: 13px; line-height: 1.6; color: var(--observatory-ink-70); }
+.rc-passage-opening { margin: 4px 0 8px; overflow-wrap: anywhere; }
+.rc-passage-metadata { display: flex; flex-wrap: wrap; column-gap: 16px; row-gap: 4px; }
+.rc-passage-option > button { flex: none; }
+.rc-passage-picked { background: var(--observatory-glass-row); }
+.rc-drill-preview { border-top: 1px solid var(--observatory-hairline); padding: 24px 0; }
+.rc-drill-preview details { border-bottom: 1px solid var(--observatory-hairline); padding-bottom: 16px; }
+.rc-drill-preview summary { line-height: 1.6; }
+.rc-builder .rc-launch-summary { margin-bottom: 0; padding-top: 20px; }
+.rc-builder .rc-launch-summary dl { display: flex; flex-wrap: wrap; gap: 16px 32px; }
+.rc-builder .rc-launch-summary dl > div { display: flex; flex-direction: column; gap: 4px; }
+.rc-builder > .rc-actions { margin-top: 16px; align-items: center; }
+@container (max-width: 640px) {
+  .rc-builder-settings { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .rc-builder-settings .rc-segmented { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .rc-passage-option { align-items: flex-start; gap: 12px; padding: 16px 4px; }
+  .rc-builder .rc-launch-summary dl { flex-direction: column; gap: 12px; }
+  .rc-builder > .rc-actions .rc-button { flex: 1 1 180px; white-space: normal; }
+}
+
+.rc-page.rc-embedded .rc-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--observatory-space-2);
+}
+
+/*
+ * A write that did not land.
+ *
+ * Every failure used to be caught and dropped, so Confirm revealed, the passage
+ * moved into review and submit walked to a results screen — all of it telling
+ * the student their work was recorded when nothing held it. The drill still
+ * keeps their place; it just stops claiming the save happened.
+ */
+.rc-save-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--rc-wrong);
+  background: var(--rc-wrong-soft);
+  color: var(--rc-ink);
+  padding: 10px 24px;
+  font-size: 14px;
+}
+
+/*
+ * The credited answer's row, once feedback is showing.
+ *
+ * These colours lived as Tailwind green-500 / green-50 / green-600 / green-900
+ * inside RcChoiceRow while the verdict banner right above it used the design
+ * system's drill-correct. One verdict, two greens. Both read `--rc-correct` now.
+ *
+ * The accessibility schemes still win the fill: `.rc-exam[class*='rc-scheme-']
+ * .rc-choice` is more specific than this, so a scheme neutralises the row and
+ * the state reads from the border, which is the existing behaviour.
+ */
+.rc-choice-correct {
+  border-color: var(--rc-correct);
+  background: var(--rc-correct-soft);
+}
+
+.rc-choice-correct .rc-choice-badge {
+  border-color: var(--rc-correct);
+  background: var(--rc-correct);
+  color: #ffffff;
+}
+
+.rc-choice-correct .rc-choice-text {
+  color: var(--rc-correct-ink);
+}

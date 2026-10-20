@@ -1,0 +1,122 @@
+[
+  {
+    "bodySize": "16px",
+    "buttonBackground": "rgb(18, 18, 18)",
+    "buttonColor": "rgb(252, 252, 252)",
+    "font": "Lexend, Outfit, ui-sans-serif, system-ui, sans-serif",
+    "height": 874,
+    "hostColorScheme": "light",
+    "hostStylesheetLoaded": true,
+    "order": [
+      "BUTTON",
+      "VIDEO"
+    ],
+    "overflow": false,
+    "pageColor": "rgb(252, 252, 252)",
+    "start": {
+      "height": 44,
+      "width": 335.20001220703125,
+      "x": 20,
+      "y": 890.2000122070312
+    },
+    "textColor": "rgb(18, 18, 18)",
+    "titleSize": "28px",
+    "video": {
+      "height": 188.5500030517578,
+      "width": 335.20001220703125,
+      "x": 20,
+      "y": 1007.4000244140624
+    },
+    "width": 390
+  },
+  {
+    "bodySize": "16px",
+    "buttonBackground": "rgb(18, 18, 18)",
+    "buttonColor": "rgb(252, 252, 252)",
+    "font": "Lexend, Outfit, ui-sans-serif, system-ui, sans-serif",
+    "height": 874,
+    "hostColorScheme": "light",
+    "hostStylesheetLoaded": true,
+    "order": [
+      "BUTTON",
+      "VIDEO"
+    ],
+    "overflow": false,
+    "pageColor": "rgb(252, 252, 252)",
+    "start": {
+      "height": 44,
+      "width": 464.8000183105469,
+      "x": 20,
+      "y": 839
+    },
+    "textColor": "rgb(18, 18, 18)",
+    "titleSize": "28px",
+    "video": {
+      "height": 191.25,
+      "width": 340,
+      "x": 20,
+      "y": 956.2000122070312
+    },
+    "width": 520
+  },
+  {
+    "bodySize": "16px",
+    "buttonBackground": "rgb(18, 18, 18)",
+    "buttonColor": "rgb(252, 252, 252)",
+    "font": "Lexend, Outfit, ui-sans-serif, system-ui, sans-serif",
+    "height": 874,
+    "hostColorScheme": "light",
+    "hostStylesheetLoaded": true,
+    "order": [
+      "BUTTON",
+      "VIDEO"
+    ],
+    "overflow": false,
+    "pageColor": "rgb(252, 252, 252)",
+    "start": {
+      "height": 44,
+      "width": 706.7250366210938,
+      "x": 23.037500381469727,
+      "y": 790.8375244140625
+    },
+    "textColor": "rgb(18, 18, 18)",
+    "titleSize": "28px",
+    "video": {
+      "height": 191.25,
+      "width": 340,
+      "x": 23.037500381469727,
+      "y": 908.0375366210938
+    },
+    "width": 768
+  },
+  {
+    "bodySize": "16px",
+    "buttonBackground": "rgb(18, 18, 18)",
+    "buttonColor": "rgb(252, 252, 252)",
+    "font": "Lexend, Outfit, ui-sans-serif, system-ui, sans-serif",
+    "height": 874,
+    "hostColorScheme": "light",
+    "hostStylesheetLoaded": true,
+    "order": [
+      "BUTTON",
+      "VIDEO"
+    ],
+    "overflow": false,
+    "pageColor": "rgb(252, 252, 252)",
+    "start": {
+      "height": 44,
+      "width": 98.1500015258789,
+      "x": 625.4500122070312,
+      "y": 799.2999877929688
+    },
+    "textColor": "rgb(18, 18, 18)",
+    "titleSize": "34px",
+    "video": {
+      "height": 180,
+      "width": 320,
+      "x": 755.6000366210938,
+      "y": 270.8999938964844
+    },
+    "width": 1230
+  }
+]
