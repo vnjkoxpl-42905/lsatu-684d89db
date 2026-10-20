@@ -74,16 +74,16 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null;
     if (!owner) return;
     const saved = await getRcSavedSet(owner, id);
     if (!saved.payload) throw new Error(saved.problem ?? 'This saved RC set could not be verified.');
-    if (alive.current) navigate(`/rc?saved=${encodeURIComponent(id)}`);
+    if (alive.current) navigate(`/practice/drills?section=rc&view=create&saved=${encodeURIComponent(id)}`);
   });
-  return <section className="my-6 space-y-3 rounded-xl border p-4" aria-label="Saved RC sets and recipes">
-    <h2 className="text-lg font-semibold">Saved RC sets and recipes</h2>
-    <p className="text-sm">A fixed set keeps its passages and questions. A recipe uses your filters to choose again from your current progress. Neither starts a drill until you inspect it.</p>
+  return <section className="rc-saved-panel" aria-label="Saved RC sets and recipes">
+    <h2 className="text-lg font-semibold">Saved passages and settings</h2>
+    <p className="text-sm">Saved passages keep the exact passages and questions. Saved settings choose passages again using your filters and current progress. Preview either before starting.</p>
     {!owner && <p>Sign in to save and reopen RC work.</p>}
-    {owner && (recipe || fixed) && <div className="flex flex-wrap gap-2">
-      <input aria-label="Saved RC name" maxLength={100} value={name} onChange={e => setName(e.target.value)} placeholder="Name this RC set or recipe" className="rounded border px-3 py-2" />
-      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !fixed} onClick={() => fixed && void save(fixed, name)}>Save fixed RC set</button>
-      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !recipe} onClick={() => recipe && void save(recipe, name)}>Save RC recipe</button>
+    {owner && (recipe || fixed) && <div className="rc-saved-form">
+      <input aria-label="Saved RC name" maxLength={100} value={name} onChange={e => setName(e.target.value)} placeholder="Name these passages or settings" className="rounded border px-3 py-2" />
+      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !fixed} onClick={() => fixed && void save(fixed, name)}>Save these passages</button>
+      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !recipe} onClick={() => recipe && void save(recipe, name)}>Save these settings</button>
     </div>}
     {pendingVisible && <div role="status"><p>A previous RC save still needs account confirmation. Retry that original name and selection before saving another item.</p>
       <button type="button" className="rc-chip" disabled={busy} onClick={() => {
@@ -95,15 +95,15 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null;
     {loading && <p role="status">Loading saved RC sets…</p>}
     {(error || recoveryError) && <div role="alert"><p>{recoveryError ?? error}</p><button type="button" className="rc-chip" disabled={busy} onClick={retry}>Retry loading RC sets</button></div>}
     {notice && <p role="status">{notice}</p>}
-    {!loading && !error && owner && rows.length === 0 && <p>No saved RC sets or recipes yet.</p>}
-    <ul className="space-y-3">{rows.map(row => <li key={row.id} className="rounded border p-3">
-      <strong>{row.name}</strong><p className="text-sm">{row.payload ? row.payload.mode === 'fixed' ? `Fixed RC set · ${row.payload.passageIds.length} passage${row.payload.passageIds.length === 1 ? '' : 's'} · ${row.payload.questionIds.length} question${row.payload.questionIds.length === 1 ? '' : 's'}` : `RC recipe · ${row.payload.count} passage${row.payload.count === 1 ? '' : 's'} requested` : row.problem}</p>
-      <div className="flex flex-wrap gap-2">
+    {!loading && !error && owner && rows.length === 0 && <p>No saved passages or settings yet.</p>}
+    <ul className="rc-saved-list">{rows.map(row => <li key={row.id} className="rc-saved-row">
+      <strong>{row.name}</strong><p className="text-sm">{row.payload ? row.payload.mode === 'fixed' ? `Exact passages · ${row.payload.passageIds.length} passage${row.payload.passageIds.length === 1 ? '' : 's'} · ${row.payload.questionIds.length} question${row.payload.questionIds.length === 1 ? '' : 's'}` : `Reusable settings · ${row.payload.count} passage${row.payload.count === 1 ? '' : 's'} requested` : row.problem}</p>
+      <div className="rc-saved-form">
         <button type="button" className="rc-chip" disabled={busy || !row.payload} onClick={() => void open(row.id)}>Open {row.name}</button>
         <button type="button" className="rc-chip" disabled={busy || pendingVisible || !row.payload} onClick={() => { if (pendingVisible) return; setRenaming(row.id); setNewName(row.name); }}>Rename {row.name}</button>
         <button type="button" className="rc-chip" disabled={busy || pendingVisible || !row.payload} onClick={() => !pendingVisible && row.payload && void save(row.payload, `${row.name.slice(0, 93)} (copy)`)}>Duplicate {row.name}</button>
       </div>
-      {renaming === row.id && <div className="flex flex-wrap gap-2"><input aria-label={`New name for ${row.name}`} maxLength={100} value={newName} onChange={e => setNewName(e.target.value)} /><button type="button" className="rc-chip" disabled={busy || pendingVisible || !newName.trim()} onClick={() => void perform(async () => { if (!owner || pendingVisible) return; await renameRcSet(owner, row.id, newName, row.name); if (alive.current) { setRenaming(null); retry(); } })}>Save RC name</button><button type="button" className="rc-chip" onClick={() => setRenaming(null)}>Cancel rename</button></div>}
+      {renaming === row.id && <div className="rc-saved-form"><input aria-label={`New name for ${row.name}`} maxLength={100} value={newName} onChange={e => setNewName(e.target.value)} /><button type="button" className="rc-chip" disabled={busy || pendingVisible || !newName.trim()} onClick={() => void perform(async () => { if (!owner || pendingVisible) return; await renameRcSet(owner, row.id, newName, row.name); if (alive.current) { setRenaming(null); retry(); } })}>Save RC name</button><button type="button" className="rc-chip" onClick={() => setRenaming(null)}>Cancel rename</button></div>}
     </li>)}</ul>
   </section>;
 }
