@@ -1,5 +1,7 @@
 # AGENTS.md
-
+<!-- LOVABLE:BEGIN -->
+- RC builder correctness and observable adaptive selection use independently aggregated released history; protected exams require persisted owner-scoped parent completion, so hidden newer takes cannot erase earlier released misses.
+<!-- LOVABLE:END -->
 This file is the Codex-facing adapter for this repository. It summarizes the Claude-oriented project guidance from `CLAUDE.md` in a smaller format that is fast for Codex to scan. `CLAUDE.md` remains the fuller source of project knowledge.
 
 ## Fast Locator

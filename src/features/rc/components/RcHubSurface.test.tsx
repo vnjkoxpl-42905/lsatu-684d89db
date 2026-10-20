@@ -177,16 +177,30 @@ describe('RcHubSurface autostart', () => {
     expect(screen.queryByText('What is the main point?')).not.toBeInTheDocument();
   });
 
-  it('withholds outcome filters and adaptive numbers while saved results remain hidden', async () => {
+  it('keeps outcome filters available while withholding unreleased adaptive numbers', async () => {
     const progress = await import('../api/rcProgress');
     vi.mocked(progress.getRcHistorySnapshot).mockResolvedValueOnce({ history: new Map(), displayHistory: new Map(), hasHiddenGradedResults: true });
     mount('/classroom/drill?section=rc');
     await screen.findByText(/Some saved results are still hidden/);
     fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
-    expect(screen.getByRole('button', { name: 'Incorrect before' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Incorrect on last try' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Incorrect before' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Incorrect on last try' })).toBeEnabled();
     expect(screen.queryByText(/% correct/)).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
+  });
+  it.each(['Incorrect before', 'Incorrect on last try'])('previews only released misses with %s despite other hidden results', async label => {
+    const progress = await import('../api/rcProgress');
+    const miss = { questionId: 11880, attempts: 1, everIncorrect: true, incorrectOnLastTake: true, lastFirstTakeIncorrect: true,
+      incorrectCount: 1, lastSeenAt: '2026-10-17T12:00:00Z', lastGradedAt: '2026-10-17T12:00:00Z', answered: true, firstEverCorrect: false, firstTakeCorrect: false };
+    vi.mocked(progress.getRcHistorySnapshot).mockResolvedValueOnce({ history: new Map([[11880, miss], [12010, { ...miss, questionId: 12010 }]]),
+      displayHistory: new Map([[11880, miss]]), hasHiddenGradedResults: true });
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Filter passages' }));
+    fireEvent.click(screen.getByRole('button', { name: label }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    expect(loadPassages.mock.calls.at(-1)?.[0]).toEqual([1188]);
   });
   it('does not let an unrevealed high grade change the selected difficulty', async () => {
     const progress = await import('../api/rcProgress');
