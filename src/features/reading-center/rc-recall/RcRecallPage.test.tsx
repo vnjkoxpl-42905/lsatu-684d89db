@@ -29,6 +29,7 @@ vi.mock("./lib/attempts", async (orig) => ({
     const attempts = slice.slice(0, size);
     return { attempts, recaps: data.recaps.filter((r) => attempts.some((a) => a.id === (r as RecapRow).attempt_id)), hasMore: slice.length > size, nextOffset: offset + attempts.length };
   },
+  resetUnfinishedAttempt: vi.fn(async ({ attemptId }: { attemptId: string }) => { const prior = (data.all as AttemptRow[]).find((attempt) => attempt.id === attemptId); if (!prior) throw new Error("Missing attempt"); const ended = { ...prior, finished_at: "2026-10-20T12:00:00Z", completed: false }; data.all = data.all.map((attempt) => (attempt as AttemptRow).id === attemptId ? ended : attempt); return ended; }),
   createAttempt: vi.fn(),
   readAttemptProgress: vi.fn(async () => { throw new Error("offline"); }),
   uploadRecording: vi.fn(),
@@ -36,14 +37,16 @@ vi.mock("./lib/attempts", async (orig) => ({
 vi.mock("./useRecordingRecovery", () => ({
   useRecordingRecovery: () => ({ running: false, result: null, error: null, attention: 0, retry: vi.fn(), download: vi.fn() }),
 }));
+vi.mock("./lib/selectionProgress", async (orig) => ({ ...(await orig<typeof import("./lib/selectionProgress")>()), loadSelectionProgress: vi.fn(async () => ({ attempts: data.all, recaps: data.recaps })) }));
 vi.mock("./lib/passageProgress", () => ({ loadPassageCompletions: vi.fn(async () => new Map()) }));
+vi.mock("./RcTrainingFeedback", () => ({ default: () => <div data-testid="saved-feedback">Saved feedback</div> }));
 vi.mock("./RcTrainingVideo", () => ({ default: () => <div data-testid="demo-video">Video demonstration</div> }));
 vi.mock("./RcRecallRunner", () => ({
   default: (props: { resume: Checkpoint | null; attempt: AttemptRow; showElapsedTimer: boolean }) => <div data-testid="runner" data-clock={props.showElapsedTimer ? "shown" : "hidden"}>{props.resume ? `resumed at ${props.resume.stepId}` : "new"} {props.attempt.id}</div>,
   formatClock: (s: number) => String(s),
 }));
 
-import { AttemptOutcomeUnknownError, createAttempt } from "./lib/attempts";
+import { AttemptOutcomeUnknownError, createAttempt, resetUnfinishedAttempt } from "./lib/attempts";
 import RcRecallPage from "./RcRecallPage";
 import { loadPassageCompletions } from "./lib/passageProgress";
 
@@ -63,7 +66,7 @@ const renderPage = (path = "/reading-center/rc-recall") => render(
     <MemoryRouter initialEntries={[path]}><RcRecallPage /><Where /></MemoryRouter>
   </QueryClientProvider>,
 );
-const startButton = async () => (await screen.findAllByRole("button", { name: /^Start PT140/i }))[0];
+const startButton = async () => (await screen.findAllByRole("button", { name: /^(Start|Review results|Resume) PT140/i }))[0];
 
 beforeEach(() => {
   data.index = [1, 2, 3, 4].map(idx);
@@ -71,6 +74,7 @@ beforeEach(() => {
   data.backend = { state: "available" };
   data.loadPassages.mockReset().mockImplementation(async (ids: number[]) => ids.map((id) => loaded.find((p) => p.passageId === id)).filter(Boolean));
   vi.mocked(createAttempt).mockReset();
+  vi.mocked(resetUnfinishedAttempt).mockClear();
   vi.mocked(loadPassageCompletions).mockReset().mockResolvedValue(new Map());
   window.localStorage.clear();
   Element.prototype.scrollIntoView = vi.fn();
@@ -78,13 +82,12 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllEnvs());
 
 describe("RC Training page: entry", () => {
-  it("shows saved completion and keeps unknown legacy time honest", async () => {
+  it("keeps an earlier completion as history without mislabelling a ready selection", async () => {
     vi.mocked(loadPassageCompletions).mockResolvedValue(new Map([[140041, { passageId: 140041, completed: true, lastCompletedAt: "2026-10-18T10:00:00Z", lastActiveMs: null, bestActiveMs: null, completedAttempts: 1, legacyOnly: true }]]));
     renderPage();
-    expect(await screen.findByText(/Passage time unavailable/)).toHaveTextContent("Completed");
-    expect(loadPassageCompletions).toHaveBeenCalledWith("s1");
-    fireEvent.click(screen.getByRole("radio", { name: /Full section/ }));
-    expect(await screen.findByText("1 of 4 passages completed")).toBeInTheDocument();
+    expect(await screen.findByText("Earlier practice saved in Your attempts")).toBeInTheDocument();
+    expect(screen.queryByText("Passage time unavailable")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start PT140 · Section 4 · Passage 1" })).toBeEnabled();
   });
   it("keeps legacy source videos out even when a media base is configured", async () => {
     vi.stubEnv("VITE_RC_RECALL_MEDIA_BASE", "https://example.invalid/media");
@@ -192,64 +195,43 @@ describe("persistence availability", () => {
 });
 
 describe("starting a section", () => {
-  it("places Reset passage below Start on each single-passage card, not full sections", async () => {
-    renderPage();
-    await startButton();
-    const cards = within(screen.getByRole("list", { name: "Available passages" })).getAllByRole("listitem");
-    expect(cards).toHaveLength(4);
-    for (const card of cards) {
-      const actions = within(card).getAllByRole("button");
-      expect(actions[0]).toHaveTextContent("Start passage");
-      expect(actions[1]).toHaveTextContent("Reset passage");
-      expect(actions[1].parentElement).toBe(actions[0].parentElement);
-    }
-    fireEvent.click(screen.getByRole("radio", { name: /Full section/ }));
+  it("shows Reset only for an unfinished matching practice", async () => {
+    renderPage(); await startButton();
     expect(screen.queryByRole("button", { name: /^Reset PT/ })).not.toBeInTheDocument();
+    for (const card of within(screen.getByRole("list", { name: "Available passages" })).getAllByRole("listitem")) expect(within(card).getAllByRole("button")).toHaveLength(1);
   });
-
-  it("resets the selected passage into a fresh attempt while preserving earlier work", async () => {
-    const earlier = attemptRow(1, { passage_ids: [140043], finished_at: null, completed: false, elapsed_seconds: null });
-    data.all = [earlier, attemptRow(2, { passage_ids: [140043] })];
-    saveCheckpoint({ version: 1, studentId: "s1", attemptId: earlier.id, attempt: earlier,
-      contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds: [140043] }), scope: "all_read",
-      stepIndex: 1, stepId: "p1-para1-recall", recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
-    const savedPlaces = listCheckpoints("s1");
-    vi.mocked(createAttempt).mockResolvedValue(attemptRow(3, { id: "fresh", passage_ids: [140043], finished_at: null, completed: false }));
+  it("confirms reset, clears only the chosen place, preserves filters and never starts practice", async () => {
+    const earlier = attemptRow(1, { passage_ids: [140043], started_at: "2026-10-20T10:00:00Z", finished_at: null, completed: false, elapsed_seconds: null });
+    const other = attemptRow(4, { passage_ids: [140042], finished_at: null, completed: false });
+    const completed = attemptRow(2, { passage_ids: [140043], started_at: "2026-10-18T10:00:00Z" });
+    data.all = [earlier, completed, other];
+    for (const attempt of [earlier, other]) saveCheckpoint({ version: 1, studentId: "s1", attemptId: attempt.id, attempt, contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds: attempt.passage_ids }), scope: "all_read", stepIndex: 1, stepId: "p1-para1-recall", recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
     renderPage();
-    expect(await screen.findByText("Resume practice")).toBeInTheDocument();
+    const search = await screen.findByRole("searchbox"); fireEvent.change(search, { target: { value: "Passage 3" } });
     const reset = await screen.findByRole("button", { name: "Reset PT140 · Section 4 · Passage 3" });
-    await waitFor(() => expect(reset).toBeEnabled());
     fireEvent.click(reset);
-    expect(await screen.findByTestId("runner")).toHaveTextContent("new fresh");
-    expect(createAttempt).toHaveBeenCalledOnce();
-    expect(createAttempt).toHaveBeenCalledWith(expect.objectContaining({ passageIds: [140043], confirmationScope: "all_read" }));
-    expect(vi.mocked(createAttempt).mock.calls[0][0].id).not.toBe(earlier.id);
-    expect(data.loadPassages).toHaveBeenCalledWith([140043]);
-    expect(listCheckpoints("s1")).toEqual(savedPlaces);
-    expect(data.all).toEqual([earlier, attemptRow(2, { passage_ids: [140043] })]);
+    expect(resetUnfinishedAttempt).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Keep my place" }));
+    expect(listCheckpoints("s1")).toHaveLength(2);
+    fireEvent.click(reset); fireEvent.click(screen.getByRole("button", { name: "Reset practice" }));
+    await screen.findByText(/Practice reset\./);
+    expect(resetUnfinishedAttempt).toHaveBeenCalledOnce();
+    expect(resetUnfinishedAttempt).toHaveBeenCalledWith({ attemptId: earlier.id, studentId: "s1", elapsedSeconds: 5 });
+    expect(listCheckpoints("s1").map((checkpoint) => checkpoint.attemptId)).toEqual([other.id]);
+    expect(createAttempt).not.toHaveBeenCalled(); expect(screen.queryByTestId("runner")).not.toBeInTheDocument();
+    expect(search).toHaveValue("Passage 3"); expect(screen.getByRole("radio", { name: "Single passage" })).toBeChecked();
+    expect(await screen.findByRole("button", { name: "Start PT140 · Section 4 · Passage 3" })).toBeEnabled();
+    expect(data.all).toContainEqual(completed);
   });
-
-  it("guards repeated reset clicks and retries an uncertain create with its original id", async () => {
-    let rejectCreate!: (reason: Error) => void;
-    vi.mocked(createAttempt).mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectCreate = reject; }))
-      .mockResolvedValueOnce(attemptRow(1, { id: "fresh", passage_ids: [140042], finished_at: null }));
-    renderPage();
-    const reset = await screen.findByRole("button", { name: "Reset PT140 · Section 4 · Passage 2" });
-    await waitFor(() => expect(reset).toBeEnabled());
-    fireEvent.click(reset);
-    fireEvent.click(reset);
-    await waitFor(() => expect(createAttempt).toHaveBeenCalledOnce());
-    expect(reset).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Start PT140 · Section 4 · Passage 2" })).toBeDisabled();
-    rejectCreate(new AttemptOutcomeUnknownError("unknown", new Error("offline")));
-    const alert = await screen.findByRole("alert");
-    expect(alert.closest("li")).toBe(reset.closest("li"));
-    await waitFor(() => expect(reset).toBeEnabled());
-    fireEvent.click(reset);
-    expect(await screen.findByTestId("runner")).toHaveTextContent("new fresh");
-    const ids = vi.mocked(createAttempt).mock.calls.map(([input]) => input.id);
-    expect(ids).toHaveLength(2);
-    expect(ids[1]).toBe(ids[0]);
+  it("guards repeated reset confirmation while its result is pending", async () => {
+    const original = attemptRow(1, { passage_ids: [140042], finished_at: null, completed: false }); data.all = [original];
+    let resolve!: (value: AttemptRow) => void;
+    vi.mocked(resetUnfinishedAttempt).mockImplementationOnce(() => new Promise((done) => { resolve = done; }));
+    renderPage(); fireEvent.click(await screen.findByRole("button", { name: "Reset PT140 · Section 4 · Passage 2" }));
+    const confirm = screen.getByRole("button", { name: "Reset practice" }); fireEvent.click(confirm); fireEvent.click(confirm);
+    await waitFor(() => expect(resetUnfinishedAttempt).toHaveBeenCalledOnce());
+    resolve({ ...original, finished_at: "2026-10-20T12:00:00Z", completed: false });
+    await screen.findByText(/Practice reset\./); expect(createAttempt).not.toHaveBeenCalled();
   });
 
   it("launches the default single passage with its actual identity", async () => {
@@ -335,44 +317,14 @@ describe("starting a section", () => {
 });
 
 describe("attempt history", () => {
-  it.each([[140043], [140041, 140042, 140043, 140044]])("restarts the saved selection %j below Resume while preserving its saved place", async (...ids) => {
-    const passageIds = ids as number[];
-    const original = attemptRow(1, { passage_ids: passageIds, finished_at: null, completed: false, elapsed_seconds: null });
-    data.all = [original];
-    saveCheckpoint({ version: 1, studentId: "s1", attemptId: original.id, attempt: original,
-      contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds }), scope: "all_read", stepIndex: 1, stepId: "p1-para1-recall",
-      recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
-    const saved = listCheckpoints("s1");
-    vi.mocked(createAttempt).mockResolvedValue(attemptRow(2, { id: "fresh", passage_ids: passageIds, finished_at: null }));
-    renderPage();
-    const card = (await screen.findByText("Resume practice")).closest("section")!;
-    const reset = within(card).getByRole("button", { name: passageIds.length === 1 ? "Reset passage" : "Reset section" });
-    expect(reset.previousElementSibling).toHaveTextContent("Resume");
-    await waitFor(() => expect(reset).toBeEnabled());
-    fireEvent.click(reset);
-    expect(await screen.findByTestId("runner")).toHaveTextContent("new fresh");
-    expect(createAttempt).toHaveBeenCalledWith(expect.objectContaining({ passageIds }));
-    expect(data.loadPassages).toHaveBeenCalledWith(passageIds);
-    expect(listCheckpoints("s1")).toEqual(saved);
-  });
-
-  it("shows a failed saved-session reset beside Resume and keeps the saved place", async () => {
-    const original = attemptRow(1, { passage_ids: [140043], finished_at: null, completed: false, elapsed_seconds: null });
-    data.all = [original];
-    saveCheckpoint({ version: 1, studentId: "s1", attemptId: original.id, attempt: original,
-      contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds: [140043] }), scope: "all_read", stepIndex: 1, stepId: "p1-para1-recall",
-      recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
-    vi.mocked(createAttempt).mockRejectedValue(new Error("Connection unavailable"));
-    renderPage();
-    const card = (await screen.findByText("Resume practice")).closest("section")!;
-    const reset = within(card).getByRole("button", { name: "Reset passage" });
-    await waitFor(() => expect(reset).toBeEnabled());
-    fireEvent.click(reset);
-    const alert = await screen.findByRole("alert");
-    expect(card).toContainElement(alert);
-    await waitFor(() => expect(alert).toHaveFocus());
-    expect(listCheckpoints("s1")).toHaveLength(1);
-    expect(within(card).getByRole("button", { name: "Resume" })).toBeEnabled();
+  it("keeps a failed reset in its confirmation without changing saved work", async () => {
+    const original = attemptRow(1, { passage_ids: [140043], finished_at: null, completed: false }); data.all = [original];
+    saveCheckpoint({ version: 1, studentId: "s1", attemptId: original.id, attempt: original, contentKey: contentKeyFor({ preptest: 140, section: 4, passageIds: original.passage_ids }), scope: "all_read", stepIndex: 1, stepId: "p1-para1-recall", recaps: [], sectionMs: 5000, passageMs: 5000, showElapsedTimer: true, savedAt: 1, pending: null });
+    vi.mocked(resetUnfinishedAttempt).mockRejectedValueOnce(new Error("Connection unavailable"));
+    renderPage(); fireEvent.click(await screen.findByRole("button", { name: "Reset PT140 · Section 4 · Passage 3" })); fireEvent.click(screen.getByRole("button", { name: "Reset practice" }));
+    const dialog = screen.getByRole("alertdialog"); expect(await within(dialog).findByRole("alert")).toHaveTextContent("Connection unavailable");
+    expect(listCheckpoints("s1")).toHaveLength(1); expect(createAttempt).not.toHaveBeenCalled();
+    expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
   });
 
   const recap = (over: Partial<RecapRow>): RecapRow => ({
@@ -548,6 +500,31 @@ describe("attempt history", () => {
     expect(await screen.findByText("Result not saved yet")).toBeInTheDocument();
     expect(screen.getByText(/12:34/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /try saving the result again/i })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /^resume/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Resume this practice/i })).not.toBeInTheDocument();
+  });
+});
+
+describe("saved paragraph progress in the original picker", () => {
+  it("distinguishes active zero, saved cycles, and unstarted passages", async () => {
+    data.loadPassages.mockImplementation(async (ids: number[]) => ids.map((id) => ({ ...loaded.find((passage) => passage.passageId === id), passageId: id, text: "One.\n\nTwo.\n\nThree.\n\nFour." })));
+    const active = attemptRow(1, { passage_ids: [140041], segmentation_version: 2, finished_at: null, completed: false });
+    const zero = attemptRow(2, { passage_ids: [140042], segmentation_version: 2, finished_at: null, completed: false });
+    data.all = [active, zero];
+    data.recaps = [1, 2].map((n) => ({ id: `r${n}`, attempt_id: active.id, student_id: "s1", recap_key: `p1-para${n}-recall`, passage_position: 1, kind: "recall", voice: "spoken", recording_state: "saved", object_path: `s1/a1/r${n}.webm`, mime_type: "audio/webm", duration_ms: 1000 }));
+    renderPage(); const list = await screen.findByRole("list", { name: "Available passages" });
+    await waitFor(() => expect(within(list).getByText("In progress · 2 of 4 paragraphs completed")).toBeInTheDocument());
+    expect(within(list).getByText("In progress · 0 of 4 paragraphs completed")).toBeInTheDocument();
+    expect(within(list).getAllByRole("progressbar")).toHaveLength(1);
+    expect(within(list).getAllByText("Ready to start")).toHaveLength(2);
+  });
+  it("reviews the exact completed result outside the first history page without starting", async () => {
+    data.all = Array.from({ length: 30 }, (_, n) => attemptRow(n + 1, { passage_ids: [140042] }));
+    const completed = attemptRow(99, { id: "older-completed", passage_ids: [140041], segmentation_version: 2 }); data.all.push(completed);
+    renderPage(); const button = await screen.findByRole("button", { name: "Review results PT140 · Section 4 · Passage 1" });
+    fireEvent.click(button);
+    await waitFor(() => expect(document.getElementById(`rc-attempt-${completed.id}`)).toHaveFocus());
+    expect(screen.getByTestId("saved-feedback")).toBeInTheDocument();
+    expect(createAttempt).not.toHaveBeenCalled(); expect(screen.queryByTestId("runner")).not.toBeInTheDocument();
+    expect(document.getElementById("rc-attempt-a1")).toBeInTheDocument();
   });
 });

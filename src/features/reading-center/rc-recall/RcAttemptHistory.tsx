@@ -16,6 +16,7 @@ const dateLabel = (v: string) => new Date(v).toLocaleDateString(undefined, { mon
 
 interface Props {
   studentId: string;
+  reviewAttemptId?: string | null;
   history: ReturnType<typeof useRcHistory>;
   recovery: ReturnType<typeof useRecordingRecovery>;
   /** The attempts table cannot be reached, so an empty list means nothing about saved work. */
@@ -27,8 +28,16 @@ interface Props {
   message: string | null;
 }
 
-export default function RcAttemptHistory({ studentId, history, recovery, savingUnavailable, onResume, onRetryFinish, busyAttemptId, message }: Props) {
+export default function RcAttemptHistory({ studentId, history, recovery, savingUnavailable, onResume, onRetryFinish, busyAttemptId, message, reviewAttemptId }: Props) {
   const { entries } = history;
+  useEffect(() => {
+    if (!reviewAttemptId) return;
+    const frame = requestAnimationFrame(() => {
+      const result = document.getElementById(`rc-attempt-${reviewAttemptId}`);
+      result?.scrollIntoView({ block: "start", behavior: "smooth" }); result?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [reviewAttemptId]);
   return <div>
     {message && <p role="alert" className="rct-error">{message}</p>}
     {history.isPending && <div role="status" className="rct-loading">Loading your attempts…</div>}
@@ -39,7 +48,7 @@ export default function RcAttemptHistory({ studentId, history, recovery, savingU
     {!history.isPending && !history.isError && !entries.length && <div className="rct-history-empty"><span className="rct-empty-icon"><BookOpen size={23} aria-hidden="true" /></span><div><h3>Your first practice starts here.</h3><p>Choose a passage above. Your recordings and recall feedback will be available here after you practise.</p></div></div>}
     {entries.length > 0 && <>
             <ul className="rct-attempts">{entries.map((entry) => <AttemptRowItem key={entry.attempt.id} entry={entry} studentId={studentId} recovery={recovery}
-              busy={recovery.running || busyAttemptId === entry.attempt.id} onResume={onResume} onRetryFinish={onRetryFinish} />)}</ul>
+              reviewRequested={reviewAttemptId === entry.attempt.id} busy={recovery.running || busyAttemptId === entry.attempt.id} onResume={onResume} onRetryFinish={onRetryFinish} />)}</ul>
             {history.hasNextPage && <button type="button" className="rct-text-button rct-load-more" disabled={history.isFetchingNextPage} onClick={() => void history.fetchNextPage()}>
               {history.isFetchingNextPage ? "Loading earlier attempts…" : "Show earlier attempts"}</button>}
             {history.isFetchNextPageError && <p role="alert" className="rct-error">Earlier attempts could not load. <button type="button" className="underline" onClick={() => void history.fetchNextPage()}>Try again</button></p>}
@@ -47,11 +56,12 @@ export default function RcAttemptHistory({ studentId, history, recovery, savingU
   </div>;
 }
 
-function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFinish }: {
-  entry: HistoryEntry; studentId: string; recovery: Props["recovery"]; busy: boolean;
+function AttemptRowItem({ entry, studentId, recovery, reviewRequested, busy, onResume, onRetryFinish }: {
+  entry: HistoryEntry; studentId: string; reviewRequested?: boolean; recovery: Props["recovery"]; busy: boolean;
   onResume: Props["onResume"]; onRetryFinish: Props["onRetryFinish"];
 }) {
-  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(!!reviewRequested);
+  useEffect(() => { if (reviewRequested) setFeedbackOpen(true); }, [reviewRequested]);
   const [recapsOpen, setRecapsOpen] = useState(false);
   const [sources, setSources] = useState<Record<number, SegmentedPassage>>({});
   const { attempt, status } = entry;
@@ -69,7 +79,7 @@ function AttemptRowItem({ entry, studentId, recovery, busy, onResume, onRetryFin
   const displayLabels = Object.fromEntries(entry.recaps.map((recap) => [recap.id, recapLabel(recap, sources[recap.passage_position], attempt.passage_ids.length)]));
   const spoken = entry.recaps.filter((r) => r.voice === "spoken");
   const duration = attempt.finished_at ? formatDuration(attempt.elapsed_seconds ?? 0) : entry.pendingFinalization ? formatDuration(entry.pendingFinalization.seconds) : null;
-  return <li data-status={status}>
+  return <li id={`rc-attempt-${attempt.id}`} tabIndex={-1} data-status={status}>
     <div>
       <h3>{sectionLabel(attempt)}</h3>
       <p>{PROCEDURE_LABEL[attempt.mode]}{attempt.mode === "rc_recall" && attempt.confirmation_scope ? ` · Check: ${attempt.confirmation_scope === "all_read" ? "all text read so far" : "current passage only"}` : ""}</p>

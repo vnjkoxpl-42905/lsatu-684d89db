@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,14 +12,15 @@ import RcRecallRunner from "./RcRecallRunner";
 import RcAttemptHistory from "./RcAttemptHistory";
 import { useRcHistory, rcHistoryKey } from "./useRcHistory";
 import { useRecordingRecovery } from "./useRecordingRecovery";
-import { AttemptOutcomeUnknownError, createAttempt, newId, probeAttemptsBackend, readAttemptProgress, type AttemptRow } from "./lib/attempts";
+import { AttemptOutcomeUnknownError, createAttempt, newId, probeAttemptsBackend, readAttemptProgress, resetUnfinishedAttempt, type AttemptRow } from "./lib/attempts";
 import { REJECTION_MESSAGE, clearCheckpoint, contentKeyFor, listCheckpoints, loadCheckpoint, type Checkpoint } from "./lib/checkpoint";
-import { recapLabel, type HistoryEntry } from "./lib/history";
+import { buildEntries, recapLabel, type HistoryEntry } from "./lib/history";
 import { loadPassageCompletions } from "./lib/passageProgress";
 import { retryPendingFinalization } from "./lib/pending";
 import { buildRecallSections, restoreRecallPractice, selectRecallPractice, sectionLabel, verifyLoadedSection, type RecallSection } from "./lib/sections";
 import { buildSectionSteps, buildParagraphTrainingSteps, type ConfirmScope, type RecallMode } from "./lib/sequence";
-import type { SegmentedPassage } from "./lib/segment";
+import { segmentPassage, type SegmentedPassage } from "./lib/segment";
+import { getSelectionProgress, loadSelectionProgress } from "./lib/selectionProgress";
 
 interface Running {
   mode: RecallMode; scope: ConfirmScope; passages: RcPassage[]; segmented: SegmentedPassage[]; attempt: AttemptRow;
@@ -27,13 +29,6 @@ interface Running {
 
 const SAVING_UNAVAILABLE = "Saving is not available yet, so starting practice is turned off. You can read the instructions and try the demonstration while saving is unavailable.";
 
-function PassageCompletionNote({ ids, progress }: { ids: number[]; progress: Awaited<ReturnType<typeof loadPassageCompletions>> }) {
-  const completed = ids.flatMap((id) => progress.get(id) ? [progress.get(id)!] : []);
-  if (!completed.length) return null;
-  const last = completed[0];
-  const seconds = last.lastActiveMs === null ? null : Math.floor(last.lastActiveMs / 1000);
-  return <p className="rct-attempt-note"><strong>{completed.length === ids.length ? "Completed" : `${completed.length} of ${ids.length} passages completed`}</strong>{ids.length === 1 && <> · Last completed {new Date(last.lastCompletedAt).toLocaleDateString()}{seconds !== null ? ` · ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}` : " · Passage time unavailable"}</>}</p>;
-}
 
 export default function RcRecallPage() {
   const { user } = useAuth();
@@ -57,6 +52,13 @@ function AccountRecallPage() {
   const [startError, setStartError] = useState<string | null>(null);
   const [startSelection, setStartSelection] = useState<string | null>(null);
   const [resettingSession, setResettingSession] = useState(false);
+  const [resetTarget, setResetTarget] = useState<HistoryEntry | null>(null);
+  const [resetError, setResetError] = useState<string | null>(null);
+  const [resetNotice, setResetNotice] = useState<string | null>(null);
+  const resetLock = useRef(false);
+  const [resetBusy, setResetBusy] = useState(false);
+  const [resetRows, setResetRows] = useState<Record<string, AttemptRow>>({});
+  const [reviewAttemptId, setReviewAttemptId] = useState<string | null>(null);
   const startErrorRef = useRef<HTMLParagraphElement>(null);
   const [historyMessage, setHistoryMessage] = useState<string | null>(null);
   const [busyAttemptId, setBusyAttemptId] = useState<string | null>(null);
@@ -94,6 +96,7 @@ function AccountRecallPage() {
 
   const history = useRcHistory(user?.id);
   const passageProgress = useQuery({ queryKey: ["rc-passage-progress", user?.id], enabled: !!user, queryFn: () => loadPassageCompletions(user!.id), retry: false });
+  const selectionProgress = useQuery({ queryKey: ["rc-selection-progress", user?.id], enabled: !!user, queryFn: () => loadSelectionProgress(user!.id), retry: false });
   const recovery = useRecordingRecovery(user?.id, () => { void queryClient.invalidateQueries({ queryKey: rcHistoryKey(user?.id) }); }, !running && !starting && !busyAttemptId);
 
   // The URL is the source of truth for the instructions view: click, reload, direct entry and Back all agree.
@@ -185,28 +188,52 @@ function AccountRecallPage() {
     } finally { setBusyAttemptId(null); history.refreshLocal(); }
   };
 
+  const savedPlaces = new Map((user ? listCheckpoints(user.id) : []).map((checkpoint) => [checkpoint.attemptId, checkpoint]));
+  const hasActivity = (entry: HistoryEntry) => entry.recaps.length > 0 || (savedPlaces.get(entry.attempt.id)?.stepIndex ?? 0) > 0 || (savedPlaces.get(entry.attempt.id)?.recaps.length ?? 0) > 0;
+  const selectionEntries = selectionProgress.data ? buildEntries(selectionProgress.data.attempts.map((attempt) => resetRows[attempt.id] ?? attempt), selectionProgress.data.recaps, [...savedPlaces.values()]) : history.entries;
+  const inProgress = selectionEntries.filter((e) => e.status === "in_progress" && e.resumable && !resetRows[e.attempt.id]).sort((a, b) => Number(hasActivity(b)) - Number(hasActivity(a)) || b.attempt.started_at.localeCompare(a.attempt.started_at));
+  const latestSession = inProgress[0];
+
+  const countIds = [...new Set([...matching.slice(0, visibleCount).flatMap((choice) => choice.selection.passageIds), ...inProgress.flatMap((entry) => entry.attempt.passage_ids)])].sort((a, b) => a - b);
+  const paragraphCounts = useQuery({ queryKey: ["rc-selection-paragraph-counts", countIds.join(",")], enabled: countIds.length > 0, staleTime: Infinity, retry: false, queryFn: async () => {
+    const sources = await loadPassages(countIds);
+    const counts: Record<number, { 1: number; 2: number }> = {};
+    for (const source of sources) if (source.text) counts[source.passageId] = { 1: segmentPassage(source.text, 1, { preptest: source.preptest, passageId: source.passageId }).paragraphs.length, 2: segmentPassage(source.text, 2, { preptest: source.preptest, passageId: source.passageId }).paragraphs.length };
+    return counts;
+  } });
+
   if (running && user) {
     return <RcRecallRunner {...running} studentId={user.id} onExit={() => {
       setRunning(null);
       history.refreshLocal();
       void queryClient.invalidateQueries({ queryKey: rcHistoryKey(user.id) });
       void queryClient.invalidateQueries({ queryKey: ["rc-passage-progress", user.id] });
+      void queryClient.invalidateQueries({ queryKey: ["rc-selection-progress", user.id] });
     }} />;
   }
 
-  const savedPlaces = new Map((user ? listCheckpoints(user.id) : []).map((checkpoint) => [checkpoint.attemptId, checkpoint]));
-  const hasActivity = (entry: HistoryEntry) => entry.recaps.length > 0 || (savedPlaces.get(entry.attempt.id)?.stepIndex ?? 0) > 0 || (savedPlaces.get(entry.attempt.id)?.recaps.length ?? 0) > 0;
-  const inProgress = history.entries.filter((e) => e.status === "in_progress" && e.resumable).sort((a, b) => Number(hasActivity(b)) - Number(hasActivity(a)) || b.attempt.started_at.localeCompare(a.attempt.started_at));
-  const latestSession = inProgress[0];
-  const resetSession = () => {
-    if (!latestSession || startingRef.current || busyAttemptId !== null || recovery.running || !savingReady) return;
+  const requestReset = (entry: HistoryEntry) => {
+    if (resetLock.current || startingRef.current || busyAttemptId !== null || recovery.running || !savingReady || entry.attempt.finished_at || entry.pendingFinalization) return;
+    setResetError(null); setResetTarget(entry);
+  };
+  const confirmReset = async () => {
+    if (!user || !resetTarget || resetLock.current) return;
+    resetLock.current = true; setResetBusy(true); setResetError(null);
+    const target = resetTarget;
+    const y = window.scrollY;
     try {
-      const original = sections.find((section) => section.preptest === latestSession.attempt.preptest && section.section === latestSession.attempt.section);
-      if (!original) throw new Error("The saved passage is no longer available. Try loading passages again.");
-      void start(restoreRecallPractice(original, latestSession.attempt.passage_ids), true);
+      const checkpoint = savedPlaces.get(target.attempt.id);
+      const saved = await resetUnfinishedAttempt({ attemptId: target.attempt.id, studentId: user.id, elapsedSeconds: Math.floor((checkpoint?.sectionMs ?? (target.attempt.elapsed_seconds ?? 0) * 1000) / 1000) });
+      clearCheckpoint(user.id, target.attempt.id);
+      setResetRows((rows) => ({ ...rows, [saved.id]: saved }));
+      history.refreshLocal();
+      setResetTarget(null); setResetNotice("Practice reset. Start again when you’re ready. Your earlier practice stays in Your attempts.");
+      await Promise.all([queryClient.invalidateQueries({ queryKey: rcHistoryKey(user.id) }), queryClient.invalidateQueries({ queryKey: ["rc-selection-progress", user.id] }), queryClient.invalidateQueries({ queryKey: ["rc-passage-progress", user.id] })]);
     } catch (error) {
-      setResettingSession(true);
-      setStartError(error instanceof Error ? error.message : "This practice could not be restarted. Your saved work has not changed.");
+      setResetError(error instanceof Error ? error.message : "This practice could not be reset. Your saved place has not changed. Try again.");
+    } finally {
+      resetLock.current = false; setResetBusy(false);
+      requestAnimationFrame(() => { if (window.scrollY !== y) window.scrollTo({ top: y, behavior: "instant" }); });
     }
   };
   const sessionTitle = (entry: HistoryEntry) => entry.attempt.passage_ids.length === 1
@@ -215,6 +242,23 @@ function AccountRecallPage() {
   const sessionDate = (entry: HistoryEntry) => new Date(entry.attempt.started_at).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
   const sessionMeta = (entry: HistoryEntry) => `${sessionTitle(entry) === sectionLabel(entry.attempt) ? "" : `${sectionLabel(entry.attempt)} · `}Started ${sessionDate(entry)}`;
   const unsavedResults = history.entries.filter((e) => e.status === "pending");
+  const progressData = selectionProgress.data;
+  const progressFor = (passageIds: number[], attemptId?: string) => getSelectionProgress({ passageIds, attemptId, attempts: (progressData?.attempts ?? history.entries.map((entry) => entry.attempt)).map((attempt) => resetRows[attempt.id] ?? attempt), recaps: progressData?.recaps ?? history.entries.flatMap((entry) => entry.recaps), passageProgress: progressData?.passageProgress, paragraphCountsByVersion: paragraphCounts.data ?? {} });
+  const entryFor = (attempt: AttemptRow) => buildEntries([attempt], (progressData?.recaps ?? history.entries.flatMap((entry) => entry.recaps)).filter((recap) => recap.attempt_id === attempt.id), [...savedPlaces.values()])[0];
+  const reviewResults = (attemptId: string) => { setReviewAttemptId(attemptId); const result = document.getElementById(`rc-attempt-${attemptId}`); result?.scrollIntoView({ block: "start" }); result?.focus({ preventScroll: true }); };
+  const selectedReviewAttempt = progressData?.attempts.find((attempt) => attempt.id === reviewAttemptId);
+  const displayedHistory = selectedReviewAttempt && !history.entries.some((entry) => entry.attempt.id === selectedReviewAttempt.id) ? { ...history, entries: [entryFor(selectedReviewAttempt), ...history.entries] } : history;
+  const progressNote = (ids: number[], attemptId?: string) => {
+    if (selectionProgress.isPending) return <p className="rct-attempt-note">Loading progress…</p>;
+    if (selectionProgress.isError) return <p className="rct-attempt-note">Progress unavailable</p>;
+    const progress = progressFor(ids, attemptId);
+    if (progress.state === "ready") return <div className="rct-selection-progress"><span>Ready to start</span>{(progress.hasPriorPractice || ids.some((id) => passageProgress.data?.has(id))) && <span>Earlier practice saved in Your attempts</span>}</div>;
+    const total = progress.totalParagraphs;
+    const date = progress.state === "completed" ? progress.completedAt : progress.startedAt;
+    return <div className="rct-selection-progress">{date && !attemptId && <span>{progress.state === "completed" ? "Completed" : "Started"} {new Date(date).toLocaleDateString("en-CA")}</span>}<p>{progress.state === "completed" ? "Completed" : "In progress"} · {total === null ? "Paragraph count unavailable" : `${progress.completedParagraphs} of ${total} paragraphs completed`}</p>
+      {total !== null && progress.completedParagraphs > 0 && <progress value={progress.completedParagraphs} max={total} aria-label={`${progress.completedParagraphs} of ${total} paragraphs completed`} />}
+    </div>;
+  };
 
   return <main className="rct-page rct-selector-page" data-reading-activity="rc-recall">
     <header className="rct-hub-header">
@@ -224,6 +268,12 @@ function AccountRecallPage() {
       </div>
     </header>
 
+    <AlertDialog.Root open={!!resetTarget} onOpenChange={(open) => { if (!open && !resetBusy) setResetTarget(null); }}><AlertDialog.Portal><AlertDialog.Overlay className="rct-reset-overlay" /><AlertDialog.Content className="rct-reset-dialog" onCloseAutoFocus={(event) => event.preventDefault()}>
+      <AlertDialog.Title>Reset this unfinished practice?</AlertDialog.Title><AlertDialog.Description>You’ll stay on this page. This practice will be ready to start again. Earlier attempts, completed passages and recordings stay saved.</AlertDialog.Description>
+      {resetTarget && <p>{sessionTitle(resetTarget)} · {sessionMeta(resetTarget)}</p>}
+      {resetError && <p role="alert" className="rct-error">{resetError}</p>}
+      <div><AlertDialog.Cancel asChild><button type="button" className="rct-text-button" disabled={resetBusy}>Keep my place</button></AlertDialog.Cancel><button type="button" className="rct-button rct-button-primary" disabled={resetBusy} onClick={() => void confirmReset()}>{resetBusy ? "Resetting…" : "Reset practice"}</button></div>
+    </AlertDialog.Content></AlertDialog.Portal></AlertDialog.Root>
     <div className="rct-content">
       <section className="rct-start" aria-labelledby="rc-recall-start">
         <div className="rct-list-heading"><h2 id="rc-recall-start" tabIndex={-1}>{passageCount === 1 ? "Choose a passage" : "Choose a full section"}</h2><p>{passageCount === 1 ? "Read one paragraph, retell it from memory, then move to the next. Start any passage below." : "Practise four passages in order, using the same paragraph-by-paragraph routine."}</p></div>
@@ -231,17 +281,18 @@ function AccountRecallPage() {
           {latestSession && <section className="rct-continue-card" aria-labelledby="rc-continue-title">
             <div className="rct-continue-main">
               <span className="rct-continue-icon" aria-hidden="true"><BookOpen size={21} /></span>
-              <div className="rct-continue-copy"><p className="rct-continue-caption">Resume practice</p><h3 id="rc-continue-title">{sessionTitle(latestSession)}</h3><p>{sessionMeta(latestSession)}</p></div>
+              <div className="rct-continue-copy"><p className="rct-continue-caption">Resume practice</p><h3 id="rc-continue-title">{sessionTitle(latestSession)}</h3><p>{sessionMeta(latestSession)}</p>{progressNote(latestSession.attempt.passage_ids, latestSession.attempt.id)}</div>
               <div className="rct-passage-actions rct-continue-actions">
                 <button type="button" className="rct-button rct-button-primary" disabled={recovery.running || busyAttemptId !== null || starting} onClick={() => void resume(latestSession)}>{busyAttemptId === latestSession.attempt.id ? "Opening…" : "Resume"}</button>
-                <button type="button" className="rct-text-button rct-reset-passage" disabled={recovery.running || busyAttemptId !== null || starting || !savingReady || index.isPending || index.isError} onClick={resetSession} title="Start again from the beginning. Your earlier attempts stay saved.">{starting && resettingSession ? "Starting…" : latestSession.attempt.passage_ids.length === 1 ? "Reset passage" : "Reset section"}</button>
+                <button type="button" className="rct-text-button rct-reset-passage" disabled={recovery.running || busyAttemptId !== null || starting || !savingReady || index.isPending || index.isError} onClick={() => requestReset(latestSession)} title="Clear this unfinished practice. Earlier work stays saved.">{resetBusy ? "Resetting…" : latestSession.attempt.passage_ids.length === 1 ? "Reset passage" : "Reset section"}</button>
               </div>
             </div>
             {startError && resettingSession && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error rct-continue-error">{startError}</p>}
-            {inProgress.length > 1 && <footer className="rct-continue-footer"><details className="rct-other-sessions"><summary>Other unfinished sessions ({inProgress.length - 1})</summary><ul>{inProgress.slice(1).map((entry) => <li key={entry.attempt.id}><div><strong>{sessionTitle(entry)}</strong><p>{sessionMeta(entry)}</p></div><button type="button" className="rct-text-button" disabled={recovery.running || busyAttemptId !== null || starting} onClick={() => void resume(entry)} aria-label={`Resume ${sessionTitle(entry)}, started ${sessionDate(entry)}`}>{busyAttemptId === entry.attempt.id ? "Opening…" : "Resume"}</button></li>)}</ul></details>
+            {inProgress.length > 1 && <footer className="rct-continue-footer"><details className="rct-other-sessions"><summary>Other unfinished sessions ({inProgress.length - 1})</summary><ul>{inProgress.slice(1).map((entry) => <li key={entry.attempt.id}><div><strong>{sessionTitle(entry)}</strong><p>{sessionMeta(entry)}</p>{progressNote(entry.attempt.passage_ids, entry.attempt.id)}</div><button type="button" className="rct-text-button" disabled={recovery.running || busyAttemptId !== null || starting} onClick={() => void resume(entry)} aria-label={`Resume ${sessionTitle(entry)}, started ${sessionDate(entry)}`}>{busyAttemptId === entry.attempt.id ? "Opening…" : "Resume"}</button><button type="button" className="rct-text-button" disabled={resetBusy || starting || recovery.running} onClick={() => requestReset(entry)} aria-label={`Reset ${sessionTitle(entry)}, started ${sessionDate(entry)}`}>Reset</button></li>)}</ul></details>
             </footer>}
           </section>}
           {unsavedResults.length > 0 && <div className="rct-save-results" role="status">{unsavedResults.map((entry) => <p key={entry.attempt.id}>Result not saved: {sectionLabel(entry.attempt)}. <button type="button" className="rct-text-button" disabled={busyAttemptId !== null || recovery.running || starting} onClick={() => void retryFinish(entry)}>Try saving it again</button></p>)}</div>}
+          {resetNotice && <p role="status" className="rct-reset-notice">{resetNotice}</p>}
           <div className="rct-choice-tools">
             <label className="rct-section-field rct-passage-search"><span>Find a passage or PrepTest</span><input type="search" value={search} onChange={(event) => { setSearch(event.target.value); setVisibleCount(12); }} placeholder="For example, PT140" className="rct-select-trigger" /></label>
             <fieldset className="rct-segmented"><legend className="sr-only">Practice length</legend>
@@ -255,18 +306,21 @@ function AccountRecallPage() {
           {backend.isPending && !!user && <p role="status" className="rct-save-state">Checking that saving is available…</p>}
           {savingUnavailable && <div role="alert" className="rct-save-state"><p>{SAVING_UNAVAILABLE}</p><button type="button" className="rct-text-button" disabled={backend.isFetching} onClick={() => void backend.refetch()}>{backend.isFetching ? "Checking…" : "Check again"}</button></div>}
           {backend.data?.state === "unknown" && <div role="alert" className="rct-save-state"><p>We could not check whether saving is available. Check your connection, then try again. Starting is turned off until we can confirm it.</p><button type="button" className="rct-text-button" disabled={backend.isFetching} onClick={() => void backend.refetch()}>{backend.isFetching ? "Checking…" : "Try again"}</button></div>}
+          {selectionProgress.isError && <p role="status">Saved paragraph progress could not load. Your saved work has not changed. <button type="button" className="rct-text-button" onClick={() => void selectionProgress.refetch()}>Try loading paragraph progress again</button></p>}
           {passageProgress.isError && <p role="status">Completion records could not load. Your saved work has not changed. <button type="button" className="rct-text-button" onClick={() => void passageProgress.refetch()}>Try loading completion records again</button></p>}
           <ul className="rct-passage-list" aria-label={passageCount === 1 ? "Available passages" : "Available full sections"}>
-            {matching.slice(0, visibleCount).map(({ selection, title, label, recommended }) => <li key={contentKeyFor(selection)} className="rct-passage-choice" style={startError && startSelection === contentKeyFor(selection) ? { flexWrap: "wrap" } : undefined}>
+            {matching.slice(0, visibleCount).map(({ selection, title, label, recommended }) => { const progress = progressFor(selection.passageIds); const activeEntry = progress.attempt && !progress.attempt.finished_at ? entryFor(progress.attempt) : null; return <li key={contentKeyFor(selection)} className="rct-passage-choice" style={startError && startSelection === contentKeyFor(selection) ? { flexWrap: "wrap" } : undefined}>
               <div>{recommended && <span className="rct-attempt-note">{passageCount === 1 ? "The passage used in the example" : "Includes the example passage"}</span>}<h3>{title}</h3><p>{label}</p>
-                {passageProgress.data && <PassageCompletionNote ids={selection.passageIds} progress={passageProgress.data} />}
+                {progressNote(selection.passageIds)}
+
               </div>
               <div className="rct-passage-actions">
-                <button type="button" className="rct-button rct-button-primary" aria-label={`Start ${label}`} disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>{starting && startSelection === contentKeyFor(selection) ? "Starting…" : passageCount === 1 ? "Start passage" : "Start section"}<ArrowUpRight size={18} aria-hidden="true" /></button>
-                {passageCount === 1 && <button type="button" className="rct-text-button rct-reset-passage" aria-label={`Reset ${label}`} title="Start again from paragraph 1. Your earlier attempts stay saved." disabled={starting || !savingReady || recovery.running} onClick={() => void start(selection)}>Reset passage</button>}
+                {progress.state === "completed" && progress.attempt ? <button type="button" className="rct-button rct-button-primary" aria-label={`Review results ${label}`} onClick={() => reviewResults(progress.attempt!.id)}>Review results</button> : activeEntry?.pendingFinalization ? <button type="button" className="rct-button rct-button-primary" onClick={() => void retryFinish(activeEntry)} disabled={busyAttemptId !== null || resetBusy}>Try saving result</button> : activeEntry ? <button type="button" className="rct-button rct-button-primary" aria-label={`${activeEntry.resumable ? "Resume" : "Continue on original device"} ${label}`} disabled={!activeEntry.resumable || resetBusy || starting || busyAttemptId !== null || recovery.running} onClick={() => void resume(activeEntry)}>{activeEntry.resumable ? "Resume" : "Use original device"}</button> : <button type="button" className="rct-button rct-button-primary" aria-label={`Start ${label}`} disabled={resetBusy || starting || !savingReady || recovery.running || selectionProgress.isPending || selectionProgress.isError} onClick={() => void start(selection)}>{starting && startSelection === contentKeyFor(selection) ? "Starting…" : passageCount === 1 ? "Start passage" : "Start section"}<ArrowUpRight size={18} aria-hidden="true" /></button>}
+                {activeEntry && !activeEntry.pendingFinalization && <button type="button" className="rct-text-button rct-reset-passage" aria-label={`Reset ${label}`} title="Clear this unfinished practice. Earlier work stays saved." disabled={resetBusy || starting || !savingReady || recovery.running} onClick={() => requestReset(activeEntry)}>Reset {activeEntry.attempt.passage_ids.length === 1 ? "passage" : "section"}</button>}
+
               </div>
               {startError && !resettingSession && startSelection === contentKeyFor(selection) && <p ref={startErrorRef} tabIndex={-1} role="alert" className="rct-error" style={{ flexBasis: "100%", width: "100%" }}>{startError}</p>}
-            </li>)}
+            </li>; })}
           </ul>
           {!index.isPending && !index.isError && choices.length > 0 && matching.length === 0 && <p role="status">No passages match that search. Try a PrepTest number or another word.</p>}
           {matching.length > visibleCount && <button type="button" className="rct-text-button" onClick={() => setVisibleCount((count) => count + 24)}>Show more {passageCount === 1 ? "passages" : "sections"} ({matching.length - visibleCount} remaining)</button>}
@@ -283,7 +337,7 @@ function AccountRecallPage() {
           <button type="button" className="rct-text-button" disabled={recovery.running} onClick={() => void recovery.retry()}>{recovery.running ? "Retrying…" : "Retry uploads"}</button>
           {recovery.result?.details.filter((d) => d.outcome === "failed" || (d.outcome === "incomplete" && !d.run.stopped)).map((d) => <button key={d.run.recapId} type="button" className="rct-text-button" onClick={() => void recovery.download(d.run)}>Save a copy to this device</button>)}
         </div>}
-        {user && <RcAttemptHistory studentId={user.id} history={history} recovery={recovery} savingUnavailable={savingUnavailable}
+        {user && <RcAttemptHistory studentId={user.id} history={displayedHistory} reviewAttemptId={reviewAttemptId} recovery={recovery} savingUnavailable={savingUnavailable}
           onResume={(e) => void resume(e)} onRetryFinish={(e) => void retryFinish(e)} busyAttemptId={busyAttemptId} message={historyMessage} />}
       </section>
     </div>

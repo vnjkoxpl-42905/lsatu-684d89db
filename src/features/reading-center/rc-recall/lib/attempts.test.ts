@@ -44,7 +44,7 @@ vi.mock("@/integrations/supabase/client", () => {
 });
 
 import {
-  AttemptOutcomeUnknownError, classifyFailure, createAttempt, finalizeAttempt, insertRecap, listAttempts, markRecapFailed,
+  AttemptOutcomeUnknownError, classifyFailure, createAttempt, finalizeAttempt, resetUnfinishedAttempt, insertRecap, listAttempts, markRecapFailed,
   probeAttemptsBackend, recordingPath, resetFailedRecap, markUnstartedRecapFailed, signedRecordingUrl, summarizeRecordings, uploadRecording,
 } from "./attempts";
 
@@ -54,6 +54,46 @@ const echoInsert = (c: Call) => ({ data: c.payload, error: null });
 
 beforeEach(() => {
   db.calls.length = 0; db.replies = {}; db.upload.mockReset(); db.list.mockReset().mockResolvedValue({ data: [], error: null }); db.signed.mockReset();
+});
+
+describe("resetUnfinishedAttempt", () => {
+  const original = { id: "a1", student_id: "s1", started_at: "2026-10-19T12:00:00Z", finished_at: null, completed: false, elapsed_seconds: 42 };
+  const input = { attemptId: "a1", studentId: "s1", elapsedSeconds: 12 };
+  it("ends only the selected unfinished attempt without starting or deleting anything", async () => {
+    db.replies["rc_recall_attempts:select"] = { data: original, error: null };
+    db.replies["rc_recall_attempts:update"] = (call: Call) => ({ data: { ...original, ...(call.payload as object) }, error: null });
+    expect(await resetUnfinishedAttempt(input)).toMatchObject({ ...original, finished_at: expect.any(String), elapsed_seconds: 42 });
+    expect(db.calls).toHaveLength(2);
+    expect(db.calls[1]).toMatchObject({ table: "rc_recall_attempts", op: "update", filters: { "eq:id": "a1", "eq:student_id": "s1", "is:finished_at": null } });
+    expect(db.calls[1].payload).not.toHaveProperty("started_at");
+  });
+  it("is idempotent for an already ended unfinished attempt", async () => {
+    const ended = { ...original, finished_at: "2026-10-20T12:00:00Z" };
+    db.replies["rc_recall_attempts:select"] = { data: ended, error: null };
+    expect(await resetUnfinishedAttempt(input)).toEqual(ended);
+    expect(db.calls).toHaveLength(1);
+  });
+  it.each([{ ...original, completed: true }, { ...original, student_id: "other" }, null])("refuses completed, foreign or missing sessions", async (row) => {
+    db.replies["rc_recall_attempts:select"] = { data: row, error: null };
+    await expect(resetUnfinishedAttempt(input)).rejects.toThrow();
+    expect(db.calls.every(call => call.op === "select")).toBe(true);
+  });
+  it("does not report reset if another tab completed the attempt", async () => {
+    db.replies["rc_recall_attempts:select"] = [{ data: original, error: null }, { data: { ...original, completed: true, finished_at: "2026-10-20T12:00:00Z" }, error: null }];
+    db.replies["rc_recall_attempts:update"] = { data: null, error: { message: "already finished" } };
+    await expect(resetUnfinishedAttempt(input)).rejects.toThrow("reset could not be verified");
+  });
+  it("accepts a lost response only after confirmed reset readback", async () => {
+    const ended = { ...original, finished_at: "2026-10-20T12:00:00Z" };
+    db.replies["rc_recall_attempts:select"] = [{ data: original, error: null }, { data: ended, error: null }];
+    db.replies["rc_recall_attempts:update"] = { throws: new TypeError("Failed to fetch"), data: null, error: null };
+    expect(await resetUnfinishedAttempt(input)).toEqual(ended);
+  });
+  it("does not report success when the write and readback are uncertain", async () => {
+    db.replies["rc_recall_attempts:select"] = [{ data: original, error: null }, { data: null, error: { message: "offline" } }];
+    db.replies["rc_recall_attempts:update"] = { throws: new TypeError("Failed to fetch"), data: null, error: null };
+    await expect(resetUnfinishedAttempt(input)).rejects.toThrow("Failed to fetch");
+  });
 });
 
 describe("recording paths", () => {

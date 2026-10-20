@@ -300,6 +300,29 @@ export async function finalizeAttempt(input: {
   return row;
 }
 
+/** End only the selected unfinished attempt. Retain its history and recordings. */
+export async function resetUnfinishedAttempt(input: {
+  attemptId: string; studentId: string; elapsedSeconds: number;
+}): Promise<AttemptRow> {
+  const read = await readAttempt(input.attemptId, input.studentId);
+  const original = read.row;
+  if (!read.ok || !original || original.id !== input.attemptId || original.student_id !== input.studentId) {
+    throw new Error("Could not verify this session. Please try again.");
+  }
+  if (original.completed) throw new Error("A completed attempt cannot be reset.");
+  if (original.finished_at) return original;
+  const elapsed = Number.isFinite(input.elapsedSeconds) ? input.elapsedSeconds : 0;
+  const row = await finalizeAttempt({
+    ...input, completed: false,
+    elapsedSeconds: Math.max(original.elapsed_seconds ?? 0, elapsed),
+  });
+  if (row.id !== original.id || row.student_id !== original.student_id ||
+      !row.finished_at || row.completed || row.started_at !== original.started_at) {
+    throw new Error("The reset could not be verified. Refresh before trying again.");
+  }
+  return row;
+}
+
 /* ----------------------------------------------------------------- history */
 
 export const HISTORY_PAGE_SIZE = 25;
