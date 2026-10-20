@@ -12,12 +12,12 @@ export function RcPracticeLanding({ onChooseAutomatic, onChooseManual, practice,
     <section className="rc-practice-hero" aria-label="Build an RC drill">
       <div className="rc-practice-choice">
         <h2>Choose for me</h2>
-        <p>Choose how many passages and set your timing. We choose passages that match your filters for you to preview.</p>
+        <p>Set the passage count and filters. We’ll choose a matching set for you to preview.</p>
         <button type="button" className="rc-practice-entry" onClick={onChooseAutomatic}>Set up an RC drill <span aria-hidden="true">→</span></button>
       </div>
       <div className="rc-practice-choice">
         <h2>Pick your passages</h2>
-        <p>Find passages by title or PrepTest. Choose their order before you start.</p>
+        <p>Find passages by title or PrepTest. Arrange your selection before you start.</p>
         <button type="button" className="rc-practice-entry" onClick={onChooseManual}>Pick passages <span aria-hidden="true">→</span></button>
       </div>
     </section>
@@ -31,9 +31,12 @@ export function RcPracticeLanding({ onChooseAutomatic, onChooseManual, practice,
   </div>;
 }
 
-export function RcPracticeResume({ title, detail, onResume }: { title: string; detail: string; onResume: () => void }) {
+export function RcPracticeResume({ title, source, detail, onResume }: { title: string; source?: string; detail: string; onResume: () => void }) {
+  const firstAnswers = detail.match(/^(\d+) first answers? saved$/);
+  const progress = firstAnswers ? Number(firstAnswers[1]) === 0 ? 'No answers saved yet'
+    : `${Number(firstAnswers[1])} answer${Number(firstAnswers[1]) === 1 ? '' : 's'} saved` : detail;
   return <button type="button" className="rc-practice-resume" aria-label={`Resume RC drill: ${title}`} onClick={onResume}>
-    <span><span className="rc-practice-resume-label">Resume your drill</span><strong>{title}</strong><small>{detail}</small></span>
-    <span aria-hidden="true">→</span>
+    <span><span className="rc-practice-resume-label">Resume your drill</span><strong>{title}</strong>{source && <span className="rc-practice-resume-source">{source}</span>}<small>{progress}</small></span>
+    <span className="rc-practice-resume-continue">Continue <span aria-hidden="true">→</span></span>
   </button>;
 }

@@ -619,78 +619,105 @@
   padding-top: var(--observatory-space-6);
 }
 
-/* Builder layout follows the available panel width, including a docked sidecar. */
+/* RC landing uses the LR surfaces with its own compact, reading-first rhythm. */
+.student-destination:has(.rc-practice-page) > :is(.student-destination-heading, .student-destination-tabs) { width: 100%; max-width: 71.25rem; margin-inline: auto; }
+.rc-practice-page .drill-observatory-canvas { gap: 16px; }
+.rc-practice-page .drill-view-tabs { gap: 12px 20px; padding-bottom: 12px; }
+.rc-practice-nav-actions { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.rc-practice-nav-actions .drill-observatory-tools { margin: 0; padding: 0; }
+.drill-observatory-root .rc-practice-nav-actions .drill-observatory-section-toggle { width: auto; flex: 0 0 auto; }
+.drill-observatory-root .rc-practice-nav-actions .drill-observatory-section-toggle-option { flex: 0 0 auto; }
 .rc-practice-landing {
   --observatory-ink: #efefed;
   --observatory-ink-90: #efefed;
   --observatory-ink-85: #efefed;
-  --observatory-ink-70: #b6b6b3;
-  --observatory-ink-62: #b6b6b3;
-  --observatory-ink-60: #b6b6b3;
-  --observatory-ink-55: #b6b6b3;
-  --observatory-ink-50: #b6b6b3;
-  --observatory-hairline: #38383a;
+  --observatory-ink-70: #bdbdb9;
+  --observatory-ink-62: #bdbdb9;
+  --observatory-ink-60: #bdbdb9;
+  --observatory-ink-55: #bdbdb9;
+  --observatory-ink-50: #bdbdb9;
+  --observatory-hairline: #303033;
   --observatory-ring-glass: #454548;
-  --observatory-surface-card: #18181a;
-  --observatory-focus: #d6d6d1;
+  --observatory-surface-card: #151517;
+  --observatory-focus: #efefed;
   color: #efefed;
   font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
   container-type: inline-size;
   display: grid;
-  gap: 20px;
+  gap: 16px;
 }
 .rc-practice-hero {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  align-items: stretch;
-  gap: 0;
-  padding: 28px;
-  background: #09090b;
-  border: 1px solid #28282b;
-  border-radius: 20px;
+  display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: stretch;
+  padding: 28px 32px; background: #09090b; border: 1px solid #28282b; border-radius: 18px;
 }
-.rc-practice-choice { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: 12px 24px 12px 0; }
-.rc-practice-choice + .rc-practice-choice { border-left: 1px solid #38383a; padding: 12px 0 12px 28px; }
-.drill-observatory-root .rc-practice-choice h2 { margin: 0; color: #efefed; font-family: inherit; font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -.025em; text-transform: none; }
-.rc-practice-choice p { flex: 1; margin: 12px 0 20px; max-width: 43ch; color: #b6b6b3; font-size: 14px; line-height: 1.6; }
+.rc-practice-choice { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: 4px 32px 4px 0; }
+.rc-practice-choice + .rc-practice-choice { border-left: 1px solid #303033; padding: 4px 0 4px 32px; }
+.drill-observatory-root .rc-practice-choice h2 { margin: 0; color: #efefed; font-family: inherit; font-size: 28px; font-weight: 600; line-height: 1.25; letter-spacing: -.025em; text-transform: none; }
+.rc-practice-choice p { flex: 1; margin: 10px 0 24px; max-width: 40ch; color: #bdbdb9; font-size: 15px; line-height: 1.55; text-wrap: pretty; }
 .rc-practice-entry {
-  display: inline-flex; justify-content: center; align-items: center; gap: 12px;
-  min-height: 48px; min-width: 200px; max-width: 100%; padding: 12px 24px;
+  display: inline-flex; justify-content: center; align-items: center; gap: 14px;
+  min-height: 46px; min-width: 200px; max-width: 100%; padding: 11px 24px;
   background: #efefed; color: #111113; border: 1px solid #efefed; border-radius: 999px;
-  font-family: inherit; font-size: 14px; font-weight: 600; line-height: 1.4; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 600; line-height: 1.5; cursor: pointer;
 }
-.rc-practice-entry:hover { background: #ffffff; }
-.rc-practice-landing :is(button,a):focus-visible { outline: 2px solid #d6d6d1; outline-offset: 4px; }
-.rc-practice-deck { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); align-items: start; gap: 20px; }
-.rc-practice-history { min-width: 0; padding: 24px; background: #09090b; border: 1px solid #28282b; border-radius: 20px; }
-.rc-practice-history > h2 { margin: 0 0 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .16em; color: #b6b6b3; }
-.rc-practice-resume { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 72px; padding: 16px; text-align: left; border: 1px solid #38383a; border-radius: 14px; background: #111113; color: #efefed; }
-.rc-practice-resume span { min-width: 0; overflow-wrap: anywhere; }
-.rc-practice-resume strong { display: block; font-size: 14px; font-weight: 500; line-height: 1.5; }
-.rc-practice-resume small { display: block; color: #b6b6b3; font-size: 12px; line-height: 1.5; }
-.rc-practice-resume-label { display: block; margin-bottom: 6px; color: #b6b6b3; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
-.rc-practice-note { color: #b6b6b3; font-size: 13px; line-height: 1.6; }
-.rc-practice-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 12px; color: #efefed; text-decoration: underline; text-underline-offset: 3px; font-size: 13px; }
-.drill-observatory-root .rc-practice-landing .drill-observatory-today { min-width: 0; background: #09090b; background-image: none; border: 1px solid #28282b; border-radius: 20px; box-shadow: none; }
+.rc-practice-entry:hover { background: #fff; border-color: #fff; }
+.rc-practice-entry:active { background: #dcdcd8; }
+.rc-practice-landing :is(button,a):focus-visible { outline: 2px solid #efefed; outline-offset: 4px; }
+.rc-practice-deck { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; gap: 16px; }
+.rc-practice-history { min-width: 0; padding: 24px; background: #09090b; border: 1px solid #28282b; border-radius: 18px; }
+.drill-observatory-root .rc-practice-history > h2,
+.drill-observatory-root .rc-practice-landing .drill-observatory-today h2 { display: flex; align-items: center; min-height: 32px; margin: 0; color: #bdbdb9; font-family: inherit; font-size: 12px; font-weight: 600; line-height: 1.4; text-transform: uppercase; letter-spacing: .12em; }
+.drill-observatory-root .rc-practice-history > h2 { margin-bottom: 16px; }
+.rc-practice-resume { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; padding: 18px; text-align: left; border: 1px solid #303033; border-radius: 12px; background: #131315; color: #efefed; cursor: pointer; }
+.rc-practice-resume > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.rc-practice-resume strong { display: block; font-size: 18px; font-weight: 500; line-height: 1.35; letter-spacing: -.01em; }
+.rc-practice-resume small { display: block; margin-top: 8px; color: #bdbdb9; font-size: 13px; line-height: 1.5; }
+.rc-practice-resume-label { display: block; margin-bottom: 12px; color: #bdbdb9; font-size: 11px; font-weight: 500; letter-spacing: .04em; }
+.rc-practice-resume-source { display: block; margin-top: 6px; color: #bdbdb9; font-size: 13px; line-height: 1.5; }
+.rc-practice-resume-continue { display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto; font-size: 13px; font-weight: 500; }
+.rc-practice-resume:hover { background: #1b1b1e; border-color: #555558; }
+.rc-practice-note { margin: 0; color: #bdbdb9; font-size: 14px; line-height: 1.6; }
+.rc-practice-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 12px; color: #cececa; text-decoration: underline; text-underline-offset: 4px; font-size: 13px; }
+.rc-practice-link:hover { color: #fff; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today { min-width: 0; background: #09090b; background-image: none; border: 1px solid #28282b; border-radius: 18px; box-shadow: none; }
 .drill-observatory-root .rc-practice-landing .drill-observatory-today::before,
 .drill-observatory-root .rc-practice-landing .drill-observatory-today::after { display: none; }
-.drill-observatory-root .rc-practice-landing .drill-observatory-today-inner { padding: 24px; background: transparent; border-radius: inherit; box-shadow: none; }
-.drill-observatory-root .rc-practice-landing .drill-observatory-today h2 { color: #b6b6b3; font-family: inherit; font-size: 11px; font-weight: 600; line-height: 1.5; letter-spacing: .16em; text-transform: uppercase; }
-.drill-observatory-root .rc-practice-landing .drill-observatory-today-rail { background: #111113; border: 1px solid #38383a; border-radius: 14px; padding: 14px; min-height: 64px; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-inner { padding: 24px; gap: 0; background: transparent; border-radius: inherit; box-shadow: none; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-inner > div:first-child { min-height: 32px; padding: 0; gap: 8px 16px; flex-wrap: wrap; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-insight-link { min-height: 32px; color: #bdbdb9; font-size: 12px; font-weight: 400; line-height: 1.5; letter-spacing: normal; white-space: normal; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-inner > ol { margin-top: 16px; gap: 10px; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-rail { display: grid; grid-template-columns: 16px minmax(0,1fr) auto; align-items: start; gap: 10px 12px; background: #131315; border: 1px solid #303033; border-radius: 12px; padding: 16px; min-height: 76px; box-shadow: none; transition: none; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > svg { margin-top: 3px; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > span:first-of-type > span:first-child { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; white-space: normal; overflow: hidden; text-overflow: clip; overflow-wrap: anywhere; font-size: 14px; font-weight: 500; line-height: 1.45; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > span:first-of-type > span:last-child { margin-top: 5px; font-size: 12px; line-height: 1.5; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > span:last-child { margin-top: 1px; max-width: 10ch; white-space: normal; color: #bdbdb9; font-size: 12px; line-height: 1.5; text-align: right; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-rail:hover { background: #1b1b1e; border-color: #555558; transform: none; box-shadow: none; }
+.drill-observatory-root .rc-practice-landing .drill-observatory-today-rail:active { transform: none; }
 .rc-practice-back { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: 12px; font-size: 13px; color: #efefed; text-decoration: underline; text-underline-offset: 3px; }
 .rc-practice-back:focus-visible { outline: 2px solid #d6d6d1; outline-offset: 3px; }
-@container (max-width: 700px) {
+@container (max-width: 850px) {
+  .rc-practice-deck { grid-template-columns: minmax(0,1fr); }
+  .rc-practice-page .drill-view-tabs { align-items: stretch; }
+  .rc-practice-nav-actions { width: 100%; justify-content: space-between; }
+}
+@container (max-width: 600px) {
   .rc-practice-hero { grid-template-columns: minmax(0,1fr); padding: 24px; }
   .rc-practice-choice { padding: 0 0 24px; }
-  .rc-practice-choice + .rc-practice-choice { border-left: 0; border-top: 1px solid #38383a; padding: 24px 0 0; }
-  .rc-practice-deck { grid-template-columns: minmax(0,1fr); }
-}
-@media (max-width: 480px) {
-  .rc-practice-hero { padding: 20px; }
+  .rc-practice-choice + .rc-practice-choice { border-left: 0; border-top: 1px solid #303033; padding: 24px 0 0; }
   .drill-observatory-root .rc-practice-choice h2 { font-size: 24px; }
   .rc-practice-entry { width: 100%; min-width: 0; }
+}
+@container (max-width: 420px) {
+  .rc-practice-page .drill-destination-tabs { width: 100%; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0; }
+  .rc-practice-page .drill-destination-tabs > button { min-height: 44px; height: auto; padding: 8px 4px; font-size: 12px; line-height: 1.35; white-space: normal; }
+  .rc-practice-nav-actions { gap: 12px; }
+  .rc-practice-nav-actions > :last-child { flex: 0 0 auto; }
+  .rc-practice-hero { padding: 20px; border-radius: 16px; }
   .rc-practice-history,
   .drill-observatory-root .rc-practice-landing .drill-observatory-today-inner { padding: 20px; }
+  .rc-practice-resume { flex-wrap: wrap; gap: 14px; padding: 16px; }
+  .rc-practice-resume > span:first-child { flex: 1 1 100%; }
+  .rc-practice-resume-continue { min-height: 28px; }
 }
 .drill-observatory-root .rc-create-workspace,
 .rc-page.rc-saved-workspace {
@@ -969,36 +996,10 @@
 }
 
 /* Keep assigned titles readable beside their status on narrow RC landings. */
-@media (max-width: 480px) {
-  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail {
-    display: grid;
-    grid-template-columns: 16px minmax(0, 1fr);
-    column-gap: 10px;
-    row-gap: 8px;
-    align-items: start;
-  }
-  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > svg {
-    grid-column: 1;
-    grid-row: 1;
-    margin-top: 3px;
-  }
-  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > span:first-of-type {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > span:first-of-type > span:first-child {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    text-overflow: clip;
-  }
-  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > span:last-child {
-    grid-column: 2;
-    grid-row: 2;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-  }
+@container (max-width: 600px) {
+  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > span:first-of-type > span:first-child { display: block; -webkit-line-clamp: unset; }
+  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail { grid-template-columns: 16px minmax(0,1fr); gap: 8px 12px; }
+  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > svg { grid-column: 1; grid-row: 1 / 3; }
+  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > span:first-of-type { grid-column: 2; grid-row: 1; }
+  .drill-observatory-root .rc-practice-landing .drill-observatory-today-rail > span:last-child { grid-column: 2; grid-row: 2; max-width: none; margin: 0; text-align: left; }
 }

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation, useNavigate } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { RcDrillSession } from "@/features/rc/lib/rcTypes";
+import { RcPracticeResume } from "@/features/rc/components/RcPracticeLanding";
 import AcademyMainhub from "./AcademyMainhub";
 
 vi.mock("@/features/rc/lib/rcBank", () => ({ loadAllIndexPassages: vi.fn(async () => []) }));
@@ -342,6 +343,38 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(ledger.listStandaloneDrillRuns).not.toHaveBeenCalled();
     expect(progress.getSessionAttempts).toHaveBeenCalledTimes(1);
     expect(progress.getSessionAttempts).toHaveBeenCalledWith('newest');
+  });
+
+  it('groups one RC lookup with section navigation and preserves its Practice return route', () => {
+    renderHub('/practice/drills?section=rc&view=create');
+    const nav = screen.getByRole('navigation', { name: 'Drills' });
+    expect(within(nav).getAllByRole('button', { name: 'Open a question' })).toHaveLength(1);
+    expect(screen.getAllByRole('button', { name: 'Open a question' })).toHaveLength(1);
+    fireEvent.click(within(nav).getByRole('button', { name: 'Open a question' }));
+    const dialog = screen.getByRole('dialog', { name: 'Find a question' });
+    fireEvent.change(within(dialog).getByRole('textbox'), { target: { value: 'PT140 S4 Q17' } });
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Open question' }));
+    expect(url().get('returnTo')).toBe('/practice/drills?section=rc&view=create');
+  });
+
+  it('presents a known single passage title separately from its source reference', async () => {
+    const progress = await import('@/features/rc/api/rcProgress');
+    const bank = await import('@/features/rc/lib/rcBank');
+    vi.mocked(progress.listSessions).mockResolvedValue([rcSitting('active')]);
+    vi.mocked(bank.loadAllIndexPassages).mockResolvedValueOnce([{ passageId: 1188, preptest: 140, section: 1, setNumber: 1, title: 'Origins of Language' }] as never);
+    renderHub('/practice/drills?section=rc&view=create');
+    const resume = await screen.findByRole('button', { name: 'Resume RC drill: Origins of Language' });
+    expect(within(resume).getByText('PT 140 · S1 · P1')).toBeInTheDocument();
+    expect(within(resume).getByText('Continue')).toBeInTheDocument();
+  });
+
+  it.each([
+    ['0 first answers saved', 'No answers saved yet'], ['1 first answer saved', '1 answer saved'],
+    ['3 first answers saved', '3 answers saved'], ['0 first answers saved · results hidden', '0 first answers saved · results hidden'],
+    ['Saved answers could not be checked. Resume to continue.', 'Saved answers could not be checked. Resume to continue.'],
+  ])('formats only exact progress counts: %s', (detail, expected) => {
+    render(<RcPracticeResume title="Passage" detail={detail} onResume={() => undefined} />);
+    expect(screen.getByText(expected)).toBeInTheDocument();
   });
 
   it("treats an unrecognised section as LR rather than as an error", () => {

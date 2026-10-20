@@ -1,5 +1,6 @@
 // Local-only real-component harness. All account adapters are synthetic.
 import { createServer } from 'vite';
+import { execFileSync } from 'node:child_process';
 import react from '@vitejs/plugin-react-swc';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,9 +15,16 @@ export const recipe={kind:'rc-builder',version:1,mode:'recipe',config:{reveal:'e
 export const rows=[{id:'settings',userId:owner,name:'Weekly practice settings',payload:recipe,problem:null},{id:'passages',userId:owner,name:'Exact science and history',payload:{...recipe,mode:'fixed',passageIds:[1188,1189],questionIds:passages.slice(0,2).flatMap(p=>p.questions.map(q=>q.questionId))},problem:null}];
 export const sessions=new Map(); export const exposures=new Map();
 `;
+const baselineCommit='e5e25c7c';
+const baselineLanding=execFileSync('git',['show',baselineCommit+':src/features/rc/components/RcPracticeLanding.tsx'],{cwd:root,encoding:'utf8'});
+const baselineCss=execFileSync('git',['show',baselineCommit+':src/features/rc/rc.css'],{cwd:root,encoding:'utf8'});
 const modules = {
+  'baselineLanding.tsx':baselineLanding,
+  baselineCss:'export default '+JSON.stringify(baselineCss),
   shared,
-[REDACTED CREDENTIAL]
+  assigned: `const params=new URLSearchParams(location.search);export const useAssignedTodoFeed=()=>({rows:params.has('empty')?[]:['RC: Explain the author’s main point and the role of the final paragraph','Comparative passages: Identify the disagreement between the two authors','RC: Track the evidence supporting a scientific explanation','Passage structure: Distinguish an objection from the author’s reply'].map((title,i)=>({key:'synthetic-assigned-'+i,kind:'guided',refId:'fixture-'+i,sourceTable:'guided_drill_assignments',title,subtitle:i===0?'Practice the reasoning from our session on passage structure':'Assigned by Joshua',status:i%2?'in_progress':'assigned',createdAt:'2026-10-20',dueAt:null,route:'/guided/fixture-'+i})),loading:false,failed:params.get('fail')==='assignments',evidenceWarnings:params.get('fail')==='assignments'?['synthetic assignment read']:[],retry:()=>{}});export const routeWithReturnTo=(route,from)=>route+'?returnTo='+encodeURIComponent(from);`,
+  finderBanks: `export const useQuestionFinderBanks=()=>({lr:[],rcPassages:[],rcQuestions:[],loading:false,error:null,lrFailed:false,rcFailed:false,retry:()=>{}});`,
+  finderAddresses: `export const useFinderAddressIndex=()=>({tests:[],loading:false,failed:false,retry:()=>{}});`,
   auth: `export const useAuth=()=>({user:{id:'synthetic-rc-builder-owner'},authReady:true});`,
   cloud: `export const supabase=new Proxy({}, {get(){throw new Error('Production backend disabled in RC builder harness');}});`,
   bank: `import {passages,fail} from 'rc-preview:shared'; export const loadAllIndexPassages=async()=>{fail('index');return passages.map(p=>({...p,questionCount:p.questions.length,questionIds:p.questions.map(q=>q.questionId)}))}; export const loadPassages=async ids=>{fail('preview');return ids.map(id=>passages.find(p=>p.passageId===id))};`,
@@ -24,5 +32,5 @@ const modules = {
   exposure: `import {exposures} from 'rc-preview:shared'; export const getRcExposureHistory=async()=>exposures;export const createRcExposureRequest=(actorId,passageId,source)=>({id:crypto.randomUUID(),actorId,passageId,source});export const isRcExposureRequest=()=>true;export const recordRcPassageExposure=async request=>{exposures.set(request.passageId,request)};`,
   saved: `import {rows} from 'rc-preview:shared';export const listRcSavedSets=async()=>rows;export const getRcSavedSet=async(owner,id)=>rows.find(r=>r.id===id)||{problem:'Synthetic saved item unavailable'};export const saveRcSet=async(owner,name,payload,id)=>{const row={id,userId:owner,name,payload,problem:null};rows.push(row);return row};export const renameRcSet=async(owner,id,name)=>{rows.find(r=>r.id===id).name=name};`,
 };
-const server=await createServer({root,configFile:false,envFile:false,resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom']},plugins:[{name:'isolated-rc-builder',enforce:'pre',resolveId(source){if(source.startsWith('rc-preview:'))return '\0'+source;if(source.endsWith('/hooks/useAssignedTodoFeed'))return '\0rc-preview:assigned';if(source.endsWith('/contexts/AuthContext'))return '\0rc-preview:auth';if(source.endsWith('/integrations/supabase/client'))return '\0rc-preview:cloud';const names={'../lib/rcBank':'bank','../api/rcProgress':'progress','../api/rcExposure':'exposure','../api/rcSavedSets':'saved'};if(names[source])return '\0rc-preview:'+names[source];},load(id){if(id.startsWith('\0rc-preview:'))return modules[id.slice('\0rc-preview:'.length)];}},react()],server:{host:'127.0.0.1',port:8092,strictPort:true}});
+const server=await createServer({root,configFile:false,envFile:false,resolve:{alias:{'@':resolve(root,'src')},dedupe:['react','react-dom']},plugins:[{name:'isolated-rc-builder',enforce:'pre',resolveId(source){if(source==='./useQuestionFinderBanks')return '\0rc-preview:finderBanks';if(source==='./useFinderAddressIndex')return '\0rc-preview:finderAddresses';if(source.startsWith('rc-preview:'))return '\0'+source;if(source.endsWith('/hooks/useAssignedTodoFeed'))return '\0rc-preview:assigned';if(source.endsWith('/contexts/AuthContext'))return '\0rc-preview:auth';if(source.endsWith('/integrations/supabase/client'))return '\0rc-preview:cloud';const names={'../lib/rcBank':'bank','../api/rcProgress':'progress','../api/rcExposure':'exposure','../api/rcSavedSets':'saved'};if(names[source])return '\0rc-preview:'+names[source];},load(id){if(id.startsWith('\0rc-preview:'))return modules[id.slice('\0rc-preview:'.length)];}},react()],server:{host:'127.0.0.1',port:8092,strictPort:true}});
 await server.listen(); console.log('RC builder preview: http://127.0.0.1:8092/docs/verification/rc-builder-preview.html');

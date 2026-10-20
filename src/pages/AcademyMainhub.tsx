@@ -206,7 +206,7 @@ export default function AcademyMainhub({
   const navigate = useNavigate();
   const viewParam = searchParams.get("view");
   const view = viewParam === "in-progress" || viewParam === "completed" || viewParam === "saved" ? viewParam : "create";
-  const [runs, setRuns] = React.useState<StandaloneDrillHistoryItem[]>([]);
+  const [runs, setRuns] = React.useState<(StandaloneDrillHistoryItem & { displayTitle?: string; displaySource?: string })[]>([]);
   const [runsOwner, setRunsOwner] = React.useState<string | null>(null);
   const [runsLoadedKey, setRunsLoadedKey] = React.useState<string | null>(null);
   const [runsLoading, setRunsLoading] = React.useState(false);
@@ -268,7 +268,11 @@ export default function AcademyMainhub({
         const attempts = await getSessionAttempts(recent.id).catch(() => null);
         const names = new Map(indexPassages.map(p => [p.passageId, { preptest: p.preptest, section: p.section, setNumber: p.setNumber, title: p.title }] as const));
         const loaded = buildStandaloneDrillHistory([], [recent], new Map(attempts ? [[recent.id, attempts]] : []), null, names);
-        return attempts ? loaded : loaded.map(run => ({ ...run, detail: 'Saved answers could not be checked. Resume to continue.' }));
+        const singlePassage = recent.passageIds.length === 1 ? names.get(recent.passageIds[0]) : undefined;
+        return loaded.map(run => ({ ...run,
+          ...(singlePassage?.title ? { displayTitle: singlePassage.title, displaySource: `PT ${singlePassage.preptest} · S${singlePassage.section} · P${singlePassage.setNumber}` } : {}),
+          ...(!attempts ? { detail: 'Saved answers could not be checked. Resume to continue.' } : {}),
+        }));
       }).then(
         loaded => { if (active) setRuns(loaded); },
         error => { if (active) setRunsError(error instanceof Error ? error.message : 'Your RC drill could not be loaded.'); },
@@ -457,7 +461,7 @@ export default function AcademyMainhub({
   }, [setOrbitalActive, stage]);
 
   return (
-    <div data-section={section} className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12">
+    <div data-section={section} className={cn("drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12", isRcLanding && "rc-practice-page")}>
       {/* 1140px and a 20px gap: the design's column. The three cards each carry
           26-30px of internal padding, so the gap between them stays smaller than
           their padding by design — they read as three objects on one field, not
@@ -469,7 +473,10 @@ export default function AcademyMainhub({
             <Button key={key} type="button" size="sm" variant={view === key ? "default" : "ghost"} aria-current={view === key ? "page" : undefined} onClick={() => changeView(key)}>{label}</Button>
           ))}
           </div>
-          {!(section === "lr" && view === "create" && isLauncherStage) && <SectionToggle section={section} onChange={changeSection} />}
+          {isRcLanding ? <div className="rc-practice-nav-actions">
+            <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} />
+            <SectionToggle section={section} onChange={changeSection} />
+          </div> : !(section === "lr" && view === "create" && isLauncherStage) && <SectionToggle section={section} onChange={changeSection} />}
         </nav>
         {view === "saved" ? (section === "rc" ? (
           <section className="rc-page rc-embedded rc-saved-workspace" aria-label="Saved RC drills">
@@ -514,9 +521,9 @@ export default function AcademyMainhub({
             })()}
           </section>
         ) : section === "rc" && stage !== "analytics" ? <>
-          <div className="drill-observatory-tools">
+          {!isRcLanding && <div className="drill-observatory-tools">
             <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} />
-          </div>
+          </div>}
           {rcBuilderRequested ? <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
             <button type="button" className="rc-practice-back" onClick={closeRcBuilder}>Back to RC practice</button>
             <RcHubSurface embedded showHistory={false} />
@@ -529,7 +536,7 @@ export default function AcademyMainhub({
                 : runsError ? <div role="alert"><p>{runsError}</p><button type="button" className="rc-practice-link" onClick={refreshRuns}>Retry RC drills</button></div>
                 : (() => {
                   const recent = runs.find(run => run.section === 'rc' && run.status === 'in_progress');
-                  return recent ? <RcPracticeResume title={recent.title} detail={recent.detail} onResume={() => recent.continueTo && navigate(recent.continueTo)} />
+                  return recent ? <RcPracticeResume title={recent.displayTitle ?? recent.title} source={recent.displaySource} detail={recent.detail} onResume={() => recent.continueTo && navigate(recent.continueTo)} />
                     : <p className="rc-practice-note">No RC drill in progress. Build a drill above or view your completed drills.</p>;
                 })()}
               <button type="button" className="rc-practice-link" onClick={() => changeView('completed')}>View completed RC drills <span aria-hidden="true">→</span></button>

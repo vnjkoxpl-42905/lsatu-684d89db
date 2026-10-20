@@ -1,12 +1,12 @@
 {
   "repository": "vnjkoxpl-42905/lsatu-684d89db",
-  "source_head": "feb65b55f9b1ee57697de8a169243009e52b58f7",
-  "source_branch": "codex/rc-builder-layout",
+  "source_head": "c988d854bd30ab2c2f81d92912ee4c4fb7e19570",
+  "source_branch": "codex/rc-landing-polish",
   "snapshot_branch": "codex/local-sync/laptop-le9a083p/lsatu-rc-builder-layout",
   "encrypted_original_context": {
     "enabled": true,
     "format": 2,
-    "file_count": 76,
+    "file_count": 75,
     "paths": [
       "lsatu-rc-builder-layout/.agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
       "lsatu-rc-builder-layout/.agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
@@ -80,11 +80,10 @@
       "lsatu-rc-builder-layout/.claude/skills/notebooklm/tests/cassettes/sources_refresh.yaml",
       "lsatu-rc-builder-layout/.claude/skills/notebooklm/tests/cassettes/sources_rename.yaml",
       "lsatu-rc-builder-layout/.claude/skills/watch/scripts/setup.py",
-      "lsatu-rc-builder-layout/scripts/verification/start-rc-builder-preview.mjs",
       "lsatu-rc-builder-layout/src/contexts/AuthContext.tsx",
       "lsatu-rc-builder-layout/src/lib/googleDrive.ts",
       "lsatu-rc-builder-layout/supabase/functions/handle-email-events/index.ts"
     ],
-    "ciphertext_sha256": "2b95352c6e6f88ba6576ce0fbdebd733da55a83175f7d98657068c0623ecd6a7"
+    "ciphertext_sha256": "af6b1032610aebd90f178acabfbf60aca8df28d8b015e79be92732a4c0b6ae34"
   }
 }
