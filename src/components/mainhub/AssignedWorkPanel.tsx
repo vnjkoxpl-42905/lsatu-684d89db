@@ -1,6 +1,6 @@
 import { ClipboardList } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useOptionalClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
+import { useOptionalClassroomLayout } from "@/components/classroom/shell/classroomLayoutContext";
 import {
   routeWithReturnTo,
   useAssignedTodoFeed,
