@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
-import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
+import { useClassroomLayout } from "@/components/classroom/shell/classroomLayoutContext";
 import { StepField } from "@/components/classroom/onboarding/stepFields";
 import {
   NAME_STEP_COPY,

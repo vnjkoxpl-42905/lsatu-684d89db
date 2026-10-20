@@ -11,7 +11,7 @@ import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
-import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
+import { useClassroomLayout } from "@/components/classroom/shell/classroomLayoutContext";
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import { useLocation } from "react-router-dom";
 import {

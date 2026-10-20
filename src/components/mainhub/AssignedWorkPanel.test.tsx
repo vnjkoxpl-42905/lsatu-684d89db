@@ -4,7 +4,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import AssignedWorkPanel from './AssignedWorkPanel';
 
 const state = vi.hoisted(() => ({ uncertain: true, retry: vi.fn() }));
-vi.mock('@/components/classroom/shell/ClassroomLayout', () => ({ useOptionalClassroomLayout: () => null }));
+vi.mock('@/components/classroom/shell/classroomLayoutContext', () => ({ useOptionalClassroomLayout: () => null }));
 vi.mock('@/hooks/useAssignedTodoFeed', () => ({
   routeWithReturnTo: (route: string) => route,
   useAssignedTodoFeed: () => ({ loading: false, failed: state.uncertain, retry: state.retry,

@@ -3,7 +3,7 @@ import { Check, KeyRound, Loader2, Pencil, X } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
+import { useClassroomLayout } from "@/components/classroom/shell/classroomLayoutContext";
 import PrepSection from "@/components/classroom/account/PrepSection";
 import StudySettingsSection from "@/components/classroom/account/StudySettingsSection";
 
