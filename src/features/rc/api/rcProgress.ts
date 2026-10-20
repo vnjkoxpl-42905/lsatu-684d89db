@@ -25,6 +25,7 @@ import type {
 } from '../lib/rcTypes';
 import { readRcDraftAnswers } from '../lib/rcTypes';
 import { isActivePracticeTestDevice } from '@/lib/practiceTestStore';
+import { canRevealRcResults } from '../lib/rcResultsReveal';
 
 /** Postgres "relation does not exist" — the migration has not been run. */
 const MISSING_TABLE = '42P01';
@@ -548,6 +549,22 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
     sessionsById.set(session.id, session);
   }
 
+  // Persisted owner-scoped completion, never a device backup, releases an exam.
+  const parentIds = new Set([...sessionsById.values()].flatMap(session => {
+    const id = session.practice_test_run_id || session.config?.practiceTestRunId;
+    return id ? [id] : [];
+  }));
+  const releasedParents = new Set<string>();
+  if (parentIds.size > 0) {
+    const parents = await fetchHistoryPages<{ id: string; user_id: string; status: string }>(async (from, to) => {
+      return await rcDb.from('practice_test_runs').select('id, user_id, status')
+        .eq('user_id', uid).order('created_at', { ascending: true }).order('id', { ascending: true }).range(from, to);
+    });
+    for (const parent of parents) {
+      if (parent.user_id === uid && parent.status === 'complete' && parentIds.has(parent.id)) releasedParents.add(parent.id);
+    }
+  }
+
   const seenAttemptIds = new Set<string>();
   const validAttemptRows: RcHistoryAttemptRow[] = [];
   for (const row of attemptRows) {
@@ -569,7 +586,9 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
   });
 
   const history: RcQuestionHistory = new Map();
+  const displayHistory: RcQuestionHistory = new Map();
   const hiddenQuestions = new Set<number>();
+  for (const aggregate of [history, displayHistory]) {
   const firstTakeSessions = new Set<string>();
   for (const row of validAttemptRows) {
     const session = row.session_id ? sessionsById.get(row.session_id) : undefined;
@@ -593,7 +612,7 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
       firstTakeSessions.add(firstTakeKey);
     }
 
-    const existing: RcQuestionHistoryEntry = history.get(row.question_id) ?? {
+    const existing: RcQuestionHistoryEntry = aggregate.get(row.question_id) ?? {
       questionId: row.question_id,
       attempts: 0,
       everIncorrect: false,
@@ -614,13 +633,26 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
 
     const isFirstTake = row.is_first_attempt !== false;
     const hasSelected = typeof row.selected === 'string' && row.selected.trim().length > 0;
-    const hasGradedAnswer = hasSelected && typeof row.is_correct === 'boolean';
-    // Generic builder analytics cannot establish a full-test parent's release.
-    // Other completed sessions require an explicit disclosure marker here.
-    const fullTestChild = Boolean(session?.practice_test_run_id || session?.config?.practiceTestRunId);
-    const released = !fullTestChild && sessionStatus === 'completed' && typeof session?.config?.resultsRevealedAt === 'string'
-      && Number.isFinite(Date.parse(session.config.resultsRevealedAt));
-    if (sessionStatus !== 'abandoned' && hasGradedAnswer && !released) hiddenQuestions.add(row.question_id);
+    const parentId = session?.practice_test_run_id || session?.config?.practiceTestRunId;
+    // Sessionless legacy work has no pending release; missing linked work is
+    // excluded above. Timed sections and exams use their existing release rules.
+    const released = !row.session_id || canRevealRcResults({ status: sessionStatus as RcSessionStatus, config: {
+      ...session?.config,
+      practiceTestRunId: parentId ?? undefined,
+      timedSectionSittingId: session?.timed_section_sitting_id || session?.config?.timedSectionSittingId,
+    } as RcDrillConfig }, Boolean(parentId && releasedParents.has(parentId)));
+    const graded = hasSelected && typeof row.is_correct === 'boolean';
+    if (sessionStatus !== 'abandoned' && graded && !released) hiddenQuestions.add(row.question_id);
+    // A hidden newer take must not erase a previously released miss.
+    const hasGradedAnswer = graded && (aggregate === history || released);
+
+    if (aggregate === displayHistory && graded && !released) {
+      existing.answered = true;
+      if (sessionStatus === 'completed') {
+        existing.completedAnswered = true;
+        if (row.session_id && !existing.completedAnsweredSessionIds?.includes(row.session_id)) existing.completedAnsweredSessionIds?.push(row.session_id);
+      }
+    }
 
     if (sessionStatus === 'abandoned') {
       if (isFirstTake || existing.attempts === 0) {
@@ -629,7 +661,7 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
       if (isFirstTake || !existing.lastSeenAt) {
         existing.lastSeenAt = row.created_at;
       }
-      history.set(row.question_id, existing);
+      aggregate.set(row.question_id, existing);
       continue;
     }
 
@@ -686,13 +718,9 @@ export async function getRcHistorySnapshot(userId?: string): Promise<RcHistorySn
       }
     }
 
-    history.set(row.question_id, existing);
+    aggregate.set(row.question_id, existing);
   }
-  const displayHistory: RcQuestionHistory = new Map([...history].map(([id, entry]) => [id, hiddenQuestions.has(id) ? {
-    ...entry, firstEverCorrect: null, firstTakeCorrect: null, lastGradedAt: null,
-    everIncorrect: false, incorrectOnLastTake: false, incorrectCount: 0,
-    lastFirstTakeIncorrect: false, everCorrect: false, reviewCorrected: false,
-  } : { ...entry }]));
+  }
   return { history, displayHistory, hasHiddenGradedResults: hiddenQuestions.size > 0 };
 }
 
