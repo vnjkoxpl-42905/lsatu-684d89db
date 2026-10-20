@@ -14,12 +14,12 @@ const mount = () => render(<MemoryRouter><RcSavedSetsPanel recipe={recipe} /></M
 describe('saved RC controls', () => {
   it('retries a failed recipe save using the same durable command id', async () => {
     m.save.mockRejectedValueOnce(new Error('Reply lost'));
-    mount(); await screen.findByText('No saved RC sets or recipes yet.');
+    mount(); await screen.findByText('No saved passages or settings yet.');
     fireEvent.change(screen.getByRole('textbox', { name: 'Saved RC name' }), { target: { value: 'Science practice' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save RC recipe' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save these settings' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Reply lost');
     const firstId = m.save.mock.calls[0][3];
-    expect(screen.getByRole('button', { name: 'Save RC recipe' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Save these settings' })).toBeDisabled();
     fireEvent.click(screen.getByRole('button', { name: 'Retry original RC save' }));
     await screen.findByText(/Saved to your account/);
     expect(m.save.mock.calls[1][3]).toBe(firstId);
@@ -27,8 +27,23 @@ describe('saved RC controls', () => {
   it('opens a recipe in the builder and has no deletion action', async () => {
     m.list.mockResolvedValue([saved]); mount();
     fireEvent.click(await screen.findByRole('button', { name: 'Open Science practice' }));
-    await waitFor(() => expect(m.navigate).toHaveBeenCalledWith('/rc?saved=saved-1'));
+    await waitFor(() => expect(m.navigate).toHaveBeenCalledWith('/practice/drills?section=rc&view=create&saved=saved-1'));
     expect(m.save).not.toHaveBeenCalled(); expect(screen.queryByRole('button', { name: /delete/i })).toBeNull();
+  });
+  it('distinguishes exact passages from reusable settings when saving', async () => {
+    const fixed: RcSavedPayload = { ...recipe, mode: 'fixed', passageIds: [1188], questionIds: [1, 2] };
+    render(<MemoryRouter><RcSavedSetsPanel recipe={recipe} fixed={fixed} /></MemoryRouter>);
+    fireEvent.change(screen.getByRole('textbox', { name: 'Saved RC name' }), { target: { value: 'Exact practice' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save these passages' }));
+    await waitFor(() => expect(m.save).toHaveBeenCalledWith('owner', 'Exact practice', fixed, expect.any(String)));
+    expect(screen.getByRole('button', { name: 'Save these settings' })).toBeInTheDocument();
+  });
+  it('keeps failed saved-item verification in place without navigating', async () => {
+    m.list.mockResolvedValue([saved]); m.get.mockRejectedValue(new Error('Could not verify saved work')); mount();
+    fireEvent.click(await screen.findByRole('button', { name: 'Open Science practice' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not verify saved work');
+    expect(m.navigate).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: 'Open Science practice' })).toBeEnabled();
   });
   it('retains a saved definition when renaming fails', async () => {
     m.list.mockResolvedValue([saved]); m.rename.mockRejectedValue(new Error('Name did not save')); mount();
@@ -40,9 +55,9 @@ describe('saved RC controls', () => {
   });
   it('can retry the original command after remount without restoring typed builder fields', async () => {
     m.save.mockRejectedValueOnce(new Error('Reply lost'));
-    const view = mount(); await screen.findByText('No saved RC sets or recipes yet.');
+    const view = mount(); await screen.findByText('No saved passages or settings yet.');
     fireEvent.change(screen.getByRole('textbox', { name: 'Saved RC name' }), { target: { value: 'Science practice' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save RC recipe' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save these settings' }));
     await screen.findByRole('alert'); const id = m.save.mock.calls[0][3]; view.unmount();
     mount(); fireEvent.click(await screen.findByRole('button', { name: 'Retry original RC save' }));
     await screen.findByText(/Saved to your account/);
@@ -51,9 +66,9 @@ describe('saved RC controls', () => {
 
   it('blocks rename and duplicate while recovering an unconfirmed original save', async () => {
     m.save.mockRejectedValueOnce(new Error('Reply lost'));
-    const view = mount(); await screen.findByText('No saved RC sets or recipes yet.');
+    const view = mount(); await screen.findByText('No saved passages or settings yet.');
     fireEvent.change(screen.getByRole('textbox', { name: 'Saved RC name' }), { target: { value: saved.name } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save RC recipe' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save these settings' }));
     await screen.findByRole('alert'); view.unmount(); m.list.mockResolvedValue([saved]); mount();
     const rename = await screen.findByRole('button', { name: 'Rename Science practice' });
     expect(rename).toBeDisabled(); expect(screen.getByRole('button', { name: 'Duplicate Science practice' })).toBeDisabled();
