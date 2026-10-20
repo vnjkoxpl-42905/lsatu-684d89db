@@ -1,6 +1,7 @@
 # AGENTS.md
 <!-- LOVABLE:BEGIN -->
 - RC builder correctness and observable adaptive selection use independently aggregated released history; protected exams require persisted owner-scoped parent completion, so hidden newer takes cannot erase earlier released misses.
+- Classroom layout context and hooks live in a non-component module; all consumers import it directly to preserve provider identity during live component refreshes.
 <!-- LOVABLE:END -->
 This file is the Codex-facing adapter for this repository. It summarizes the Claude-oriented project guidance from `CLAUDE.md` in a smaller format that is fast for Codex to scan. `CLAUDE.md` remains the fuller source of project knowledge.
 
