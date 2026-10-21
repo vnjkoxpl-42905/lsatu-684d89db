@@ -16,6 +16,7 @@ import { RcPassagePane } from '../components/RcPassagePane';
 import { RcQuestionPane } from '../components/RcQuestionPane';
 import { useRcPlayerExposure } from '../hooks/useRcPlayerExposure';
 import { useRcTraining } from '../hooks/useRcTraining';
+import { useRcPresentationTraining } from '../hooks/useRcPresentationTraining';
 import { useRcPaneObservation } from '../hooks/useRcPaneObservation';
 import { RcTrainingPanel, RcLearningStatus, RcParagraphTrainingControls, RcEvidenceNotes, RcPaneObservationControl } from '../components/RcTraining';
 import { RcPassageSummary } from '../components/RcPassageSummary';
@@ -533,6 +534,11 @@ function RcPlayerRunner() {
     enabled: studyAidsEnabled && ['manual', 'adaptive'].includes(config.source) && !loadingAnswers && !answerLoadError && sessionOwnerId === user?.id,
     canPredict });
   const trainingCommandRef = training.pendingRequest;
+  const presentation = useRcPresentationTraining({ config, reviewOnly,
+    enabled: !loadingAnswers && !answerLoadError && !!user?.id && sessionOwnerId === user.id,
+    scope: `${user?.id ?? ''}:${sessionId ?? ''}`, passageId: item?.passage.passageId,
+    questionId: item?.question.questionId, canPredict });
+  const choicesHidden = training.choicesHidden || presentation.choicesHidden;
   const paneObservation = useRcPaneObservation(`${user?.id ?? ''}:${sessionId ?? ''}:${item?.question.questionId ?? ''}`, training.enabled && !reviewOnly, state.paused);
   const playerExposure = useRcPlayerExposure(user?.id, sessionId, !!sessionId && sessionOwnerId === user?.id && !loadingAnswers && !answerLoadError);
   React.useEffect(() => {
@@ -1054,7 +1060,7 @@ function RcPlayerRunner() {
    */
   const selectLetter = React.useCallback(
     (letter: RcLetter) => {
-      if (training.choicesHidden || protectedReview || !item || state.paused || navigationInFlightRef.current || submitting || reviewWriteBusyRef.current || pendingReviewRef.current) return;
+      if (choicesHidden || protectedReview || !item || state.paused || navigationInFlightRef.current || submitting || reviewWriteBusyRef.current || pendingReviewRef.current) return;
       const id = item.question.questionId;
       if (!item.question.choices.some((c) => c.letter === letter)) return;
 
@@ -1100,7 +1106,7 @@ function RcPlayerRunner() {
       if (studyAidsEnabled && !reviewOnly && !state.recorded.has(id)) changedCrossOuts.current.add(id);
       dispatch({ type: 'select', questionId: id, letter });
     },
-    [training.choicesHidden, item, awaitingReattempt, revealed, sessionId, sessionOwnerId, user?.id, saveReviewAnswer, reviewOnly, protectedReview, studyAidsEnabled, state.currentIndex, state.flagged, state.eliminations, state.recorded, state.paused, submitting, writeAttempt, failAccountSave],
+    [choicesHidden, item, awaitingReattempt, revealed, sessionId, sessionOwnerId, user?.id, saveReviewAnswer, reviewOnly, protectedReview, studyAidsEnabled, state.currentIndex, state.flagged, state.eliminations, state.recorded, state.paused, submitting, writeAttempt, failAccountSave],
   );
 
   /* -------------------------------------------------------- keyboard */
@@ -1433,9 +1439,15 @@ function RcPlayerRunner() {
           passage={
             <RcPassagePane
               onContentShown={playerExposure.onShown}
-              paragraphLimit={training.enabled && training.segmented ? training.paragraphLimit : undefined}
+              paragraphLimit={!presentation.lineByLine && training.enabled && training.segmented ? training.paragraphLimit : undefined}
+              sentenceLimit={presentation.lineByLine ? presentation.sentenceLimit : undefined}
+              onSentenceCount={presentation.setSentenceCount}
               onParagraphCount={training.setParagraphCount}
-              readingControls={<><RcParagraphTrainingControls training={training} findActive={findQuery.trim().length >= 2} /><RcEvidenceNotes key={`${user?.id}:${sessionId}:${item.passage.passageId}:${questionId}`} training={training} source={item.passage.text} /></>}
+              readingControls={<>{presentation.lineByLine && <div className="mb-4 flex flex-wrap items-center gap-2 rounded border border-slate-300 p-2 text-sm" aria-label="Line-by-line reading">
+                <span role="status">Sentence {Math.min(presentation.sentenceLimit, presentation.sentenceCount || 1)} of {presentation.sentenceCount || '…'}</span>
+                <button type="button" className="min-h-11 rounded border px-3" disabled={state.paused || presentation.sentenceLimit >= presentation.sentenceCount} onClick={presentation.nextSentence}>Next sentence</button>
+                {presentation.sentenceLimit < presentation.sentenceCount && <button type="button" className="min-h-11 px-2 underline" disabled={state.paused} onClick={presentation.showPassage}>Show full passage</button>}
+              </div>}{!presentation.lineByLine && <RcParagraphTrainingControls training={training} findActive={findQuery.trim().length >= 2} />}<RcEvidenceNotes key={`${user?.id}:${sessionId}:${item.passage.passageId}:${questionId}`} training={training} source={item.passage.text} /></>}
               paragraphFocus={a11y.settings.paragraphFocus}
               annotationsDisabled={!highlights.loaded}
               passage={item.passage}
@@ -1477,8 +1489,9 @@ function RcPlayerRunner() {
           question={
             <RcQuestionPane
               actorId={user?.id}
-              choicesHidden={training.choicesHidden}
-              trainingControls={<><RcTrainingPanel training={training} questionId={questionId} canPredict={canPredict} allowReflection={revealed && !reattemptMode} />{!reviewOnly && <RcPaneObservationControl training={training} snapshot={paneObservation.snapshot} />}</>}
+              choicesHidden={choicesHidden}
+              choicesHiddenMessage={presentation.choicesHidden ? 'Anticipate the answer, then reveal the choices when you are ready.' : undefined}
+              trainingControls={<>{presentation.choicesHidden && <button type="button" className="my-3 min-h-11 rounded border border-slate-400 px-4 text-sm font-medium" disabled={state.paused || savingNavigation || submitting || reviewSaving} onClick={presentation.showChoices}>Show answer choices</button>}<RcTrainingPanel training={training} questionId={questionId} canPredict={canPredict} allowReflection={revealed && !reattemptMode} />{!reviewOnly && <RcPaneObservationControl training={training} snapshot={paneObservation.snapshot} />}</>}
               annotationsDisabled={!highlights.loaded}
               item={item}
               selected={selected}
@@ -1497,7 +1510,7 @@ function RcPlayerRunner() {
               onToggleFlag={() => toggleFlag(questionId)}
               type={type}
               onSelect={selectLetter}
-              interactionDisabled={training.choicesHidden || protectedReview || state.paused || savingNavigation || submitting || reviewSaving || !!pendingReviewRef.current}
+              interactionDisabled={choicesHidden || protectedReview || state.paused || savingNavigation || submitting || reviewSaving || !!pendingReviewRef.current}
               onToggleElimination={(letter) => {
                 if (protectedReview || navigationInFlightRef.current || submitting || state.paused || reviewWriteBusyRef.current || pendingReviewRef.current) return;
                 if (!reviewOnly && state.answers.get(questionId) === letter) return;

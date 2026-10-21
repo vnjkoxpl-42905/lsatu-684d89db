@@ -42,6 +42,7 @@ vi.mock("react-router-dom", async () => {
 const settingsMock: { defaultTimingMode: "35" | "52.5" | "70" | "unlimited" } = {
   defaultTimingMode: "35",
 };
+const profileTimingMock = { status: 'saved' };
 // Who is looking. Most tests are a student with the Practice tests switch, who
 // sees the whole bank; the assigned-only tests flip it off.
 const access = vi.hoisted(() => ({
@@ -71,7 +72,7 @@ vi.mock("@/integrations/supabase/client", () => ({
 }));
 
 vi.mock("@/contexts/UserSettingsContext", () => ({
-  useUserSettings: () => ({ settings: settingsMock }),
+  useUserSettings: () => ({ settings: settingsMock, profileTimingStatus: profileTimingMock.status }),
 }));
 
 vi.mock("@/contexts/QuestionBankContext", () => ({
@@ -421,6 +422,7 @@ describe("Testing Centre", () => {
   describe("accommodated timing", () => {
     afterEach(() => {
       settingsMock.defaultTimingMode = "35";
+      profileTimingMock.status = 'saved';
       // The test localStorage keeps its store in a closure, so Object.keys on
       // it returns method names. clear() is the only reliable sweep.
       localStorage.clear();
@@ -458,6 +460,41 @@ describe("Testing Centre", () => {
       const run = await beginPracticeTest();
       expect(run.pace).toBe("standard");
       expect(run.sectionSeconds).toBe(52.5 * 60);
+    });
+
+    it("uses the profile's untimed default for a new sitting", async () => {
+      settingsMock.defaultTimingMode = "unlimited";
+      const run = await beginPracticeTest();
+      expect(run.pace).toBe("untimed");
+      expect(run.sectionSeconds).toBeNull();
+    });
+
+    it("waits for profile timing before starting with an untouched default", async () => {
+      profileTimingMock.status = 'loading';
+      renderPage();
+      fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
+      openPrepTests();
+      fireEvent.click(await screen.findByRole("option", { name: /PrepTest 131/ }));
+      const begin = screen.getByRole("button", { name: /Begin practice test/ });
+      expect(begin.getAttribute('aria-disabled')).toBe('true');
+      fireEvent.click(begin);
+      expect(officialEntry.prepare).not.toHaveBeenCalled();
+      expect(screen.getByText('Checking your profile timing…')).toBeTruthy();
+    });
+
+    it("allows an explicitly chosen clock while the default is still loading", async () => {
+      profileTimingMock.status = 'loading';
+      renderPage();
+      fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
+      openPrepTests();
+      fireEvent.click(await screen.findByRole("option", { name: /PrepTest 131/ }));
+      fireEvent.click(screen.getByRole("combobox", { name: /Timing/i }));
+      fireEvent.click(await screen.findByRole("option", { name: /Untimed/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Begin practice test/ }));
+      await waitFor(() => expect(officialEntry.prepare).toHaveBeenCalled());
+      expect(officialEntry.prepare.mock.calls[0].slice(2)).toEqual(['untimed', null]);
     });
 
     /**

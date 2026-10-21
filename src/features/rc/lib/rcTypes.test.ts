@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { questionTarget, type RcHighlightTarget } from './rcTypes';
+import { questionTarget, readRcTrainingModes, type RcHighlightTarget } from './rcTypes';
 
 describe('questionTarget', () => {
+  it('keeps legacy and malformed training flags disabled', () => {
+    expect(readRcTrainingModes(undefined)).toEqual({ anticipation: false, lineByLine: false });
+    expect(readRcTrainingModes({ anticipation: 'true', lineByLine: true })).toEqual({ anticipation: false, lineByLine: false });
+    expect(readRcTrainingModes({ anticipation: true, lineByLine: false, resultsRevealedAt: 'unsafe' })).toEqual({ anticipation: true, lineByLine: false });
+  });
   it('names the question and the part', () => {
     expect(questionTarget(1188, 'stem')).toBe('q1188:stem');
     expect(questionTarget(1188, 'A')).toBe('q1188:A');

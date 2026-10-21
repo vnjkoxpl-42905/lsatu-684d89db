@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { RcMarkdown } from './RcMarkdown';
 import { RcSelectionPopover, type RcSelectionAnchor } from './RcSelectionPopover';
 import { useRcMarkSurface } from '../hooks/useRcMarkSurface';
+import { applyRcSentenceLimit } from '../lib/rcSentenceReveal';
 import {
   RC_FIND_ATTR,
   findMatches,
@@ -47,6 +48,8 @@ interface Props {
   paragraphFocus?: boolean;
   children?: React.ReactNode;
   paragraphLimit?: number;
+  sentenceLimit?: number;
+  onSentenceCount?: (count: number) => void;
   onParagraphCount?: (count: number) => void;
   readingControls?: React.ReactNode;
   onContentShown?: (passageId: number) => void;
@@ -72,6 +75,8 @@ export function RcPassagePane({
   paragraphFocus = false,
   children,
   paragraphLimit,
+  sentenceLimit,
+  onSentenceCount,
   onParagraphCount,
   readingControls,
   onContentShown,
@@ -84,7 +89,7 @@ export function RcPassagePane({
   const sourceHeaders = React.useMemo(() => [...passage.text.matchAll(/^\s*\*{0,4}Passage ([AB])\*{0,4}\s*$/gm)].map(match => match[1]), [passage.text]);
   const comparative = sourceHeaders.length > 0 || /comparative/i.test(passage.format ?? '') && !/non-comparative/i.test(passage.format ?? '');
   React.useEffect(() => { setComparativeView('both'); }, [passage.passageId]);
-  const effectiveView = findQuery.trim().length >= 2 || paragraphLimit !== undefined ? 'both' : comparativeView;
+  const effectiveView = findQuery.trim().length >= 2 || paragraphLimit !== undefined || sentenceLimit !== undefined ? 'both' : comparativeView;
   React.useLayoutEffect(() => {
     const elements = Array.from(textRef.current?.firstElementChild?.children ?? []) as HTMLElement[];
     const headers = elements.map((element, index) => ({ index, label: element.textContent?.trim().replace(/^\*+|\*+$/g, '') })).filter(entry => /^Passage [AB]$/.test(entry.label ?? ''));
@@ -101,7 +106,7 @@ export function RcPassagePane({
       elements[index].hidden = Boolean(part && effectiveView !== 'both' && effectiveView !== part)
         || paragraphLimit !== undefined && findQuery.trim().length < 2 && segmentIndex >= paragraphLimit;
     }
-  }, [passage.passageId, passage.text, sourceHeaders, effectiveView, paragraphLimit, findQuery, onParagraphCount]);
+  }, [passage.passageId, passage.text, sourceHeaders, effectiveView, paragraphLimit, sentenceLimit, findQuery, onParagraphCount]);
   const [anchor, setAnchor] = React.useState<RcSelectionAnchor | null>(null);
 
   // The passage's own marks, kept as the same array while they are the same
@@ -138,6 +143,10 @@ export function RcPassagePane({
     if (matches.length > 0) scrollToMatch(el, Math.min(findIndex, matches.length - 1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [findQuery, findIndex, passage.passageId, passageHighlights]);
+
+  React.useLayoutEffect(() => {
+    if (textRef.current) onSentenceCount?.(applyRcSentenceLimit(textRef.current, sentenceLimit));
+  }, [sentenceLimit, passage.passageId, passage.text, passageHighlights, findQuery, findIndex, onSentenceCount]);
 
   // Restore after passage or layout changes. A wider layout can clamp the
   // scroll position, so the player remembers each layout separately.
@@ -177,7 +186,7 @@ export function RcPassagePane({
     >
       {comparative && <div className="sticky top-0 z-10 mb-3 rounded border bg-[var(--rc-bg)] p-2" role="group" aria-label="Comparative passage view">
         {(['both', 'A', 'B'] as const).map(view => <button type="button" key={view} aria-pressed={effectiveView === view}
-          disabled={view !== 'both' && (!canSeparate || findQuery.trim().length >= 2 || paragraphLimit !== undefined)}
+          disabled={view !== 'both' && (!canSeparate || findQuery.trim().length >= 2 || paragraphLimit !== undefined || sentenceLimit !== undefined)}
           className="min-h-11 rounded border px-3 py-2 disabled:opacity-50" onClick={() => { setComparativeView(view); if (paneRef.current) paneRef.current.scrollTop = 0; }}>
           {view === 'both' ? 'Both' : `Passage ${view}`}</button>)}
         {!canSeparate && <p className="text-sm">This passage is available in Both view only because its separate parts could not be verified.</p>}
@@ -186,7 +195,7 @@ export function RcPassagePane({
       {readingControls}
       {passage.title && <h1 className="rc-passage-title">{passage.title}</h1>}
       <div className="rc-passage-text" ref={textRef}>
-        <RcMarkdown>{passage.text}</RcMarkdown>
+        <RcMarkdown key={passage.passageId}>{passage.text}</RcMarkdown>
       </div>
 
       {children}

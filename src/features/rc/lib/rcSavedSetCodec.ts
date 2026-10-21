@@ -1,10 +1,10 @@
-import type { RcDrillConfig } from './rcTypes';
+import { isRcTrainingModes, readRcTrainingModes, type RcDrillConfig } from './rcTypes';
 import type { RcSelectionFilters } from './rcAdaptive';
 
 export const RC_SAVED_KIND = 'rc-builder';
 export type RcSavedPayload = {
   kind: typeof RC_SAVED_KIND; version: 1; mode: 'fixed' | 'recipe';
-  config: Pick<RcDrillConfig, 'reveal' | 'timing'>;
+  config: Pick<RcDrillConfig, 'reveal' | 'timing' | 'training'>;
   filters: RcSelectionFilters; count: number; passageIds: number[]; questionIds: number[];
 };
 export type RcSavedDecode = { status: 'ok'; value: RcSavedPayload } | { status: 'not-ours' | 'invalid' | 'unsupported-version' };
@@ -20,6 +20,7 @@ export function decodeRcSavedSet(raw: unknown): RcSavedDecode {
   if (!['per_question', 'per_passage', 'end_of_set'].includes(String(config.reveal)) || !record(config.timing)
     || !['unlimited', 'per_passage_budget'].includes(String(config.timing.mode))
     || config.timing.mode === 'per_passage_budget' && (!Number.isSafeInteger(config.timing.secondsPerPassage) || Number(config.timing.secondsPerPassage) < 60 || Number(config.timing.secondsPerPassage) > 3600)
+    || config.training !== undefined && !isRcTrainingModes(config.training)
     || !Number.isSafeInteger(raw.count) || Number(raw.count) < 1 || Number(raw.count) > 320
     || !ids(raw.passageIds) || !ids(raw.questionIds)
     || raw.mode === 'fixed' && (!raw.passageIds.length || raw.passageIds.length > 320 || raw.count !== raw.passageIds.length || !raw.questionIds.length)
@@ -32,7 +33,7 @@ export function decodeRcSavedSet(raw: unknown): RcSavedDecode {
     || Number(f.preptestMin) < 101 || Number(f.preptestMax) > 159 || Number(f.preptestMin) > Number(f.preptestMax)) return { status: 'invalid' };
   return { status: 'ok', value: {
     kind: RC_SAVED_KIND, version: 1, mode: raw.mode as RcSavedPayload['mode'],
-    config: { reveal: config.reveal as RcDrillConfig['reveal'], timing: config.timing.mode === 'unlimited' ? { mode: 'unlimited' } : { mode: 'per_passage_budget', secondsPerPassage: Number(config.timing.secondsPerPassage) } },
+    config: { reveal: config.reveal as RcDrillConfig['reveal'], timing: config.timing.mode === 'unlimited' ? { mode: 'unlimited' } : { mode: 'per_passage_budget', secondsPerPassage: Number(config.timing.secondsPerPassage) }, ...(config.training === undefined ? {} : { training: readRcTrainingModes(config.training) }) },
     filters: { ...(typeof f.includeUnknownExposure === 'boolean' ? { includeUnknownExposure: f.includeUnknownExposure } : {}), topics: [...f.topics as string[]], formats: [...f.formats as string[]], frameworks: [...f.frameworks as string[]], families: [...f.families as string[]], difficulties: [...f.difficulties as number[]], status: f.status as RcSelectionFilters['status'], preptestMin: Number(f.preptestMin), preptestMax: Number(f.preptestMax) },
     count: Number(raw.count), passageIds: [...raw.passageIds], questionIds: [...raw.questionIds],
   } };

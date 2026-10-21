@@ -3,9 +3,10 @@
 // Ownership and lifetime
 // - Owner: the signed-in account (auth user id). Settings never follow a
 //   device from one account to the next.
-// - Persistence: this browser's localStorage, one key per account. There is
-//   no server copy (no schema for one), so a second device starts from the
-//   defaults. The UI says so.
+// - Persistence: question-pool settings use this browser's localStorage, one
+//   key per account. Explicitly saved practice timing also lives in the auth
+//   account metadata, so every device can use the same timing preference.
+//   This is a practice preference, not a verified scoring entitlement.
 // - Failure: a write that throws (private mode, full storage) leaves the
 //   in-memory value in force for this tab and marks it unsaved. Later edits
 //   build on that in-memory value, and a retry writes the latest value.
@@ -70,6 +71,25 @@ const TIMING_MODES: readonly TimingMode[] = ['35', '52.5', '70', 'unlimited'];
 
 export function isTimingMode(value: unknown): value is TimingMode {
   return typeof value === 'string' && (TIMING_MODES as readonly string[]).includes(value);
+}
+
+export const PROFILE_TIMING_KEY = 'lsatu_practice_timing';
+
+export function readProfileTiming(metadata: unknown): TimingMode | null {
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) return null;
+  const value = (metadata as Record<string, unknown>)[PROFILE_TIMING_KEY];
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  const saved = value as Record<string, unknown>;
+  return saved.version === 1 && isTimingMode(saved.mode) ? saved.mode : null;
+}
+
+export function profileSectionMinutes(mode: TimingMode): number | null {
+  return mode === 'unlimited' ? null : Number(mode);
+}
+
+export function profilePassageSeconds(mode: TimingMode): number | null {
+  const minutes = profileSectionMinutes(mode);
+  return minutes === null ? null : Math.round(minutes * 60 / 4);
 }
 
 /** A recycle value is valid only as a whole number of days in range. */

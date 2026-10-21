@@ -1,3 +1,4 @@
+import { UserSettingsProvider } from "../../src/contexts/UserSettingsContext";
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
@@ -14,9 +15,10 @@ import { SectionToggle } from '../../src/components/drill/SectionToggle';
 import QuestionJump from '../../src/components/questionfinder/QuestionJump';
 import RcQuestionPreview from '../../src/features/rc/pages/RcQuestionPreview';
 
-document.documentElement.classList.remove('dark');
-document.documentElement.classList.add('light');
 const params = new URLSearchParams(location.search);
+const previewTheme = params.get('theme') === 'dark' ? 'dark' : 'light';
+document.documentElement.classList.remove('dark', 'light');
+document.documentElement.classList.add(previewTheme);
 if (!params.has('landing') && !params.has('savedView') && !params.has('saved') && !params.has('builder')) params.set('landing', '1');
 function LaunchReadback() {
   const navigate = useNavigate();
@@ -45,4 +47,4 @@ function Workspace() {
 const initial=new URLSearchParams({section:'rc',view:params.has('savedView')?'saved':'create'});
 if(params.has('saved')) initial.set('saved',params.get('saved')!);
 if(params.has('builder')||params.has('fail')||params.has('hidden')) initial.set('builder',params.get('builder')||'automatic');
-createRoot(document.getElementById('root')!).render(<><aside style={{padding:8,fontSize:13}}>Local RC builder verification. Actual classroom/drill host wrapper; fixture account/backend. Scenario: {params.get('fail')||'ready'}{params.has('hidden')?' / hidden results':''}</aside><MemoryRouter initialEntries={initial.has('builder')||initial.has('saved') ? ['/practice/drills?section=rc&view=create','/practice/drills?'+initial] : ['/practice/drills?'+initial]} initialIndex={initial.has('builder')||initial.has('saved') ? 1 : 0}><Routes><Route path="/practice/drills" element={<Workspace/>}/><Route path="/rc/drill" element={<LaunchReadback/>}/><Route path="/rc/preview" element={<LookupReadback/>}/></Routes></MemoryRouter></>);
+createRoot(document.getElementById('root')!).render(<><aside style={{padding:8,fontSize:13}}>Local RC builder verification. Actual classroom/drill host wrapper; fixture account/backend. Profile saves are synthetic and reset on reload. Scenario: {params.get('fail')||'ready'}{params.has('hidden')?' / hidden results':''}</aside><UserSettingsProvider><MemoryRouter initialEntries={initial.has('builder')||initial.has('saved') ? ['/practice/drills?section=rc&view=create','/practice/drills?'+initial] : ['/practice/drills?'+initial]} initialIndex={initial.has('builder')||initial.has('saved') ? 1 : 0}><Routes><Route path="/practice/drills" element={<Workspace/>}/><Route path="/rc/drill" element={<LaunchReadback/>}/><Route path="/rc/preview" element={<LookupReadback/>}/></Routes></MemoryRouter></UserSettingsProvider></>);

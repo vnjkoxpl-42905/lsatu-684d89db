@@ -22,10 +22,11 @@ const rcTestState = vi.hoisted(() => ({
   freshness: new Map<string, SectionFreshness>(),
   manualEnabled: false,
   coverage: true,
+  timingMode: '35',
 }));
 
 vi.mock('@/contexts/UserSettingsContext', () => ({
-  useUserSettings: () => ({ settings: { defaultTimingMode: '35' } }),
+  useUserSettings: () => ({ settings: { defaultTimingMode: rcTestState.timingMode } }),
 }));
 
 vi.mock('@/hooks/useClassId', () => ({
@@ -111,6 +112,7 @@ beforeEach(() => {
   rcTestState.freshness = new Map();
   rcTestState.manualEnabled = false;
   rcTestState.coverage = true;
+  rcTestState.timingMode = '35';
 });
 
 /** Routed: the timing popover carries the accommodations note, which links out. */
@@ -161,6 +163,19 @@ const pickSection = async () => {
 };
 
 describe('SectionSelector', () => {
+  it('starts the displayed Standard clock after an Unlimited profile default', async () => {
+    rcTestState.timingMode = 'unlimited';
+    const onStartSection = vi.fn();
+    renderSelector({ onStartSection });
+    await pickSection();
+    fireEvent.click(screen.getByRole('combobox', { name: /Timing/i }));
+    fireEvent.click(await screen.findByRole('option', { name: /Standard/ }));
+    expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toContain('35:00');
+    fireEvent.click(screen.getByRole('button', { name: /Start Section/i }));
+    await waitFor(() => expect(onStartSection).toHaveBeenCalledTimes(1));
+    expect(onStartSection.mock.calls[0][0].timer.mode).toBe('35');
+  });
+
   it('names every field for a screen reader', async () => {
     renderSelector();
     await screen.findByText(/Select a PrepTest/);
@@ -434,6 +449,27 @@ describe('SectionSelector', () => {
     await waitFor(() => expect(onStartRcSection).toHaveBeenCalledTimes(1));
     await new Promise((resolve) => setTimeout(resolve, 20));
     expect(onStartRcSection).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['52.5', 'time-and-a-half'],
+    ['70', 'double-time'],
+    ['unlimited', 'untimed'],
+  ])('starts a new RC section with the saved %s profile timing', async (mode, expectedPace) => {
+    rcTestState.timingMode = mode;
+    rcTestState.passages = buildRcPassageFixtures(141, 1);
+    rcTestState.freshness = new Map([
+      ['141-1', { pt: 141, section: 1, total: 28, unseen: 28, percentFresh: 100, isFresh: true }],
+    ]);
+    rcTestState.manualEnabled = true;
+    const onStartRcSection = vi.fn();
+    renderSelector({ initialKind: 'rc', onStartRcSection });
+    await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
+    await openPrepTests(); fireEvent.click(await screen.findByText(/^PrepTest 141$/));
+    await openSelectShowing(/Select a section/); fireEvent.click(await screen.findByText(/^Section 1$/));
+    fireEvent.click(screen.getByRole('button', { name: /Start Section/i }));
+    await waitFor(() => expect(onStartRcSection).toHaveBeenCalledTimes(1));
+    expect(new URL(onStartRcSection.mock.calls[0][0], 'https://example.test').searchParams.get('pace')).toBe(expectedPace);
   });
 
   it('falls back to rcSectionHref when the timing pace does not map to a protected pace', async () => {

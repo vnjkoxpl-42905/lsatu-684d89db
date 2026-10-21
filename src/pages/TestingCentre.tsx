@@ -131,8 +131,17 @@ function PracticeTestSelector({
   ) => void;
 }) {
   const [pt, setPt] = React.useState<number | null>(initialPt);
-  const [pace, setPace] = React.useState<PracticeTestPaceId>("standard");
-  const { settings } = useUserSettings();
+  const { settings, profileTimingStatus } = useUserSettings();
+  const [pace, setPace] = React.useState<PracticeTestPaceId>(() =>
+    settings.defaultTimingMode === "unlimited" ? "untimed" : "standard",
+  );
+  const paceTouched = React.useRef(false);
+  const checkingProfileTiming = profileTimingStatus === "loading" && !paceTouched.current;
+  React.useEffect(() => {
+    if (!paceTouched.current) {
+      setPace(settings.defaultTimingMode === "unlimited" ? "untimed" : "standard");
+    }
+  }, [settings.defaultTimingMode]);
 
   /**
    * The student's own standard clock, the same reading the section door takes
@@ -199,7 +208,10 @@ function PracticeTestSelector({
         <label htmlFor="testing-pace" id="testing-pace-label">
           Timing
         </label>
-        <Select value={pace} onValueChange={(v) => setPace(v as PracticeTestPaceId)}>
+        <Select value={pace} onValueChange={(v) => {
+          paceTouched.current = true;
+          setPace(v as PracticeTestPaceId);
+        }}>
           <SelectTrigger
             id="testing-pace"
             aria-labelledby="testing-pace-label testing-pace"
@@ -273,10 +285,11 @@ function PracticeTestSelector({
           live region so the change is heard when the PrepTest is chosen. */}
       <div className="testing-actions">
         <Button
-          aria-disabled={!chosen}
-          aria-describedby={chosen ? undefined : beginHintId}
+          aria-disabled={!chosen || checkingProfileTiming}
+          aria-describedby={chosen && !checkingProfileTiming ? undefined : beginHintId}
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
           onClick={() => {
+            if (checkingProfileTiming) return;
             if (chosen) {
               onBegin(chosen, pace, sectionSeconds);
               return;
@@ -287,7 +300,7 @@ function PracticeTestSelector({
           Begin practice test
         </Button>
         <p className="testing-note testing-actions-hint" id={beginHintId} role="status">
-          {chosen ? null : "Choose a PrepTest above to begin."}
+          {checkingProfileTiming ? "Checking your profile timing…" : chosen ? null : "Choose a PrepTest above to begin."}
         </p>
       </div>
     </div>

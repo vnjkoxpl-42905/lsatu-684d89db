@@ -21,12 +21,12 @@
   --act-on-accent: 40 44% 97%;      /* warm off-white on the accent         */
 
   /* ---- Clean warm-ivory canvas (refined, not sepia/beige) ---- */
-  --act-canvas: 40 13% 95%;         /* clean warm ivory paper               */
-  --act-canvas-2: 40 15% 92%;       /* a touch deeper, for quiet depth      */
-  --act-surface: 40 22% 99%;        /* card, crisp and near-white on paper  */
-  --act-ink: 30 6% 10%;             /* crisp near-neutral ink               */
-  --act-ink-soft: 30 5% 40%;        /* secondary text                       */
-  --act-hairline: 38 12% 88%;       /* soft warm borders                    */
+  --act-canvas: var(--lsatu-canvas-hsl);
+  --act-canvas-2: var(--lsatu-canvas-hsl);
+  --act-surface: var(--lsatu-canvas-hsl);
+  --act-ink: var(--lsatu-ink-hsl);
+  --act-ink-soft: var(--lsatu-ink-muted-hsl);
+  --act-hairline: 54.545 11.579% 81.373%;
 
   /* ---- Fixed skeleton (radius + depth + motion match the workbook) ---- */
   --act-r-card: 18px;

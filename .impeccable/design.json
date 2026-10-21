@@ -7,7 +7,7 @@
       "hall-night": {
         "role": "primary",
         "displayName": "Vault Night",
-        "canonical": "#070606",
+        "canonical": "#131718",
         "purpose": "The Hall ground. Near-black with a warm cast, never pure #000.",
         "tonalRamp": [
           "#292323",
@@ -23,7 +23,7 @@
       "hall-marble": {
         "role": "neutral",
         "displayName": "Marble",
-        "canonical": "#eae5da",
+        "canonical": "#efede6",
         "purpose": "Hall body text. Warm off-white, 16.11:1 on the night ground.",
         "tonalRamp": [
           "#312a1c",
@@ -87,82 +87,32 @@
       "workroom-page": {
         "role": "neutral",
         "displayName": "Workroom Page",
-        "canonical": "#fcfcfc",
-        "purpose": "The shipped default ground inside the app.",
-        "tonalRamp": [
-          "#262626",
-          "#424242",
-          "#5e5e5e",
-          "#7a7a7a",
-          "#969696",
-          "#b3b3b3",
-          "#d1d1d1",
-          "#ededed"
-        ]
+        "canonical": "#f7f4ee",
+        "purpose": "Approved open paper canvas, selected by Joshua on 2026-10-21."
       },
       "workroom-card": {
         "role": "neutral",
         "displayName": "Card",
-        "canonical": "#ffffff",
-        "purpose": "One step of separation from the page. No shadow.",
-        "tonalRamp": [
-          "#262626",
-          "#424242",
-          "#5e5e5e",
-          "#7a7a7a",
-          "#969696",
-          "#b3b3b3",
-          "#d1d1d1",
-          "#ededed"
-        ]
+        "canonical": "#f7f4ee",
+        "purpose": "Shared paper surface. Separate groups with restrained borders when needed."
       },
       "workroom-ink": {
         "role": "primary",
         "displayName": "Workroom Ink",
-        "canonical": "#121212",
-        "purpose": "Text, primary button fill, and the focus ring. The Workroom has no accent, so ink carries emphasis alone.",
-        "tonalRamp": [
-          "#262626",
-          "#424242",
-          "#5e5e5e",
-          "#7a7a7a",
-          "#969696",
-          "#b3b3b3",
-          "#d1d1d1",
-          "#ededed"
-        ]
+        "canonical": "#252b26",
+        "purpose": "Heading text and focus ring. Primary action fill is the darker platform surface #131718."
       },
       "workroom-ink-muted": {
         "role": "neutral",
         "displayName": "Ink Muted",
-        "canonical": "#737373",
-        "purpose": "Secondary text. 4.62:1 on the page — clears AA with nothing spare. Do not lighten.",
-        "tonalRamp": [
-          "#262626",
-          "#424242",
-          "#5e5e5e",
-          "#7a7a7a",
-          "#969696",
-          "#b3b3b3",
-          "#d1d1d1",
-          "#ededed"
-        ]
+        "canonical": "#64645b",
+        "purpose": "Readable supporting text on the approved paper canvas."
       },
       "workroom-hairline": {
         "role": "neutral",
         "displayName": "Hairline",
-        "canonical": "#e0e0e0",
-        "purpose": "The one-pixel border that does the work shadows used to do.",
-        "tonalRamp": [
-          "#262626",
-          "#424242",
-          "#5e5e5e",
-          "#7a7a7a",
-          "#969696",
-          "#b3b3b3",
-          "#d1d1d1",
-          "#ededed"
-        ]
+        "canonical": "#d5d4ca",
+        "purpose": "The one-pixel border that does the work shadows used to do."
       },
       "state-correct": {
         "role": "tertiary",
@@ -227,6 +177,24 @@
           "#f3d8b0",
           "#faf0e0"
         ]
+      },
+      "workroom-primary": {
+        "role": "neutral",
+        "displayName": "Workroom Primary",
+        "canonical": "#131718",
+        "purpose": "Light Workroom primary action fill."
+      },
+      "workroom-primary-hover": {
+        "role": "neutral",
+        "displayName": "Workroom Primary Hover",
+        "canonical": "#2a2d2d",
+        "purpose": "Rendered shared Button hover: 90% primary over approved paper canvas."
+      },
+      "workroom-on-primary": {
+        "role": "neutral",
+        "displayName": "Workroom On Primary",
+        "canonical": "#efede6",
+        "purpose": "Text on the dark primary action."
       }
     },
     "typographyMeta": {
@@ -341,16 +309,31 @@
         "name": "desktop",
         "value": "min 901px"
       }
-    ]
+    ],
+    "approvedPlatformPalette": {
+      "approvedAt": "2026-10-21",
+      "reference": "docs/design/approved-platform-palette.md",
+      "canvas": "#f7f4ee",
+      "ink": "#252b26",
+      "mutedInk": "#64645b",
+      "darkSurface": "#131718",
+      "darkField": "#282b2c",
+      "onDark": "#efede6",
+      "fieldBorder": "#747773",
+      "onDarkAction": "#eeebe2",
+      "actionInk": "#161d18",
+      "lookupInk": "#293328",
+      "scope": "Shared neutral roles across classroom, practice, light Reading Center, Booking, Testing Centre, Activity Centre wrappers and Academy Hall. Semantic feedback, teaching-world visuals, Hall film/bronze/cyan and saved immersive reader appearances remain independent."
+    }
   },
   "components": [
     {
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The Workroom's main action. Precise and quiet: darkens on hover, does not lift or scale.",
+      "description": "Dark platform surface for the main action; a visible 90% hover tint over the paper canvas and an offset heading-ink focus ring.",
       "html": "<button class=\"ds-btn-primary\">Continue</button>",
-      "css": ".ds-btn-primary{background:#121212;color:#fcfcfc;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:500;line-height:1.4;padding:8px 16px;min-height:44px;border:none;border-radius:6px;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)}.ds-btn-primary:hover{background:#2b2b2b}.ds-btn-primary:focus-visible{outline:2px solid #121212;outline-offset:2px}"
+      "css": ".ds-btn-primary{background:#131718;color:#efede6;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:500;line-height:1.4;padding:8px 16px;min-height:44px;border:none;border-radius:6px;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)}.ds-btn-primary:hover{background:rgba(19,23,24,0.9)}.ds-btn-primary:focus-visible{outline:2px solid #252b26;outline-offset:2px}"
     },
     {
       "name": "Outline Button",
@@ -358,7 +341,7 @@
       "refersTo": "button-outline",
       "description": "Secondary action. Page ground behind a one-pixel field border.",
       "html": "<button class=\"ds-btn-outline\">Review later</button>",
-      "css": ".ds-btn-outline{background:#fcfcfc;color:#121212;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:44px;border:1px solid #e6e6e6;border-radius:6px;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)}.ds-btn-outline:hover{background:#f2f2f2}.ds-btn-outline:focus-visible{outline:2px solid #121212;outline-offset:2px}"
+      "css": ".ds-btn-outline{background:#f7f4ee;color:#252b26;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:44px;border:1px solid #747773;border-radius:6px;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)}.ds-btn-outline:hover{background:#eeebe2}.ds-btn-outline:focus-visible{outline:2px solid #252b26;outline-offset:2px}"
     },
     {
       "name": "Ghost Button",
@@ -366,7 +349,7 @@
       "refersTo": "button-ghost",
       "description": "Lowest-emphasis action. No fill at rest, tonal fill on hover.",
       "html": "<button class=\"ds-btn-ghost\">Skip</button>",
-      "css": ".ds-btn-ghost{background:transparent;color:#121212;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:44px;border:none;border-radius:6px;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)}.ds-btn-ghost:hover{background:#f2f2f2}.ds-btn-ghost:focus-visible{outline:2px solid #121212;outline-offset:2px}"
+      "css": ".ds-btn-ghost{background:transparent;color:#252b26;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:44px;border:none;border-radius:6px;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)}.ds-btn-ghost:hover{background:#eeebe2}.ds-btn-ghost:focus-visible{outline:2px solid #252b26;outline-offset:2px}"
     },
     {
       "name": "Card",
@@ -374,7 +357,7 @@
       "refersTo": "card",
       "description": "Flat surface separated by a hairline. No shadow, by rule.",
       "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Assumption drills</h3><p class=\"ds-card-body\">Six questions, assigned Tuesday.</p></div>",
-      "css": ".ds-card{background:#fff;color:#121212;border:1px solid #e0e0e0;border-radius:8px;padding:24px;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif}.ds-card-title{margin:0 0 8px;font-size:24px;font-weight:600;line-height:1;letter-spacing:-0.025em}.ds-card-body{margin:0;font-size:14px;line-height:1.6;color:#737373}"
+      "css": ".ds-card{background:#f7f4ee;color:#252b26;border:1px solid #d5d4ca;border-radius:8px;padding:24px;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif}.ds-card-title{margin:0 0 8px;font-size:24px;font-weight:600;line-height:1;letter-spacing:-0.025em}.ds-card-body{margin:0;font-size:14px;line-height:1.6;color:#64645b}"
     },
     {
       "name": "Input",
@@ -382,7 +365,7 @@
       "refersTo": "input",
       "description": "Focus is an offset ink outline, never a border-colour shift alone.",
       "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Search questions\" />",
-      "css": ".ds-input{width:100%;background:#fcfcfc;color:#121212;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:16px;line-height:1.6;padding:8px 12px;min-height:44px;border:1px solid #e6e6e6;border-radius:6px}.ds-input::placeholder{color:#737373}.ds-input:focus-visible{outline:2px solid #121212;outline-offset:2px}"
+      "css": ".ds-input{width:100%;background:#f7f4ee;color:#252b26;font-family:Lexend,Outfit,ui-sans-serif,system-ui,sans-serif;font-size:16px;line-height:1.6;padding:8px 12px;min-height:44px;border:1px solid #747773;border-radius:6px}.ds-input::placeholder{color:#64645b}.ds-input:focus-visible{outline:2px solid #252b26;outline-offset:2px}"
     },
     {
       "name": "Verdict Chip",

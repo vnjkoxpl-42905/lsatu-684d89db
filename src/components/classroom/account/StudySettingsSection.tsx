@@ -4,16 +4,15 @@ import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserSettings, type SettingsSaveState } from "@/contexts/UserSettingsContext";
 import { QuestionPoolService } from "@/lib/questionPoolService";
+import { ProfileTimingPreference } from './ProfileTimingPreference';
 import {
   POOL_HISTORY_NOTE,
   RECYCLE_MAX_DAYS,
   RECYCLE_MIN_DAYS,
-  TIMING_LABEL,
   legacyOfferSummary,
   parseRecycleDays,
   poolConsequence,
   timingConsequence,
-  type TimingMode,
 } from "@/lib/studySettings";
 
 /**
@@ -171,7 +170,6 @@ function StudySettingsCards() {
   const { settings, updateSettings, saveState, retrySave, source, legacyOffer, adoptLegacy } = useUserSettings();
   const [confirmReset, setConfirmReset] = React.useState(false);
   const [resetting, setResetting] = React.useState(false);
-  const timingDescId = React.useId();
   const poolDescId = React.useId();
   const repeatsDescId = React.useId();
   const unseenDescId = React.useId();
@@ -204,13 +202,13 @@ function StudySettingsCards() {
         </header>
         {source === "unavailable" ? (
           <p className="classroom-account-card-note" role="alert">
-            This browser is not letting us read your saved settings, so the defaults are in use. Changes
-            you make apply in this tab, and are saved only once the browser allows it.
+            Local question-pool preferences could not be read. Their defaults apply until this browser allows access.
+            Profile timing is saved separately.
           </p>
         ) : source === "unreadable" ? (
           <p className="classroom-account-card-note" role="alert">
-            Your saved settings in this browser could not be read, so the defaults are in use. Your next
-            change replaces them.
+            Local question-pool preferences could not be read. Their next change replaces the unreadable local copy.
+            Profile timing is saved separately.
           </p>
         ) : null}
         {legacyOffer ? (
@@ -230,26 +228,8 @@ function StudySettingsCards() {
             </button>
           </div>
         ) : null}
-        <PrefRow
-          label="Your standard section time"
-          description={timingConsequence(settings.defaultTimingMode)}
-          descriptionId={timingDescId}
-        >
-          <select
-            className="classroom-account-select"
-            value={settings.defaultTimingMode}
-            onChange={(e) => updateSettings({ defaultTimingMode: e.target.value as TimingMode })}
-            aria-label="Your standard section time"
-            aria-describedby={timingDescId}
-          >
-            {(Object.keys(TIMING_LABEL) as TimingMode[]).map((mode) => (
-              <option key={mode} value={mode}>
-                {TIMING_LABEL[mode]}
-              </option>
-            ))}
-          </select>
-        </PrefRow>
-        <SaveStatus state={saveState} onRetry={retry} />
+        <ProfileTimingPreference />
+        <p className="classroom-account-card-note">{timingConsequence(settings.defaultTimingMode)}</p>
       </section>
 
       <section className="classroom-account-card" aria-labelledby="study-pool-heading">

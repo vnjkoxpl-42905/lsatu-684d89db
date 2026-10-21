@@ -71,6 +71,7 @@
 .rc-final-drawer .rc-final-drawer-head { padding: 22px 24px 16px; }
 .rc-final-drawer .rc-final-drawer-head h2 { font-size: 24px; line-height: 1.2; }
 .rc-final-drawer .rc-final-drawer-head p { font-size: 14px; line-height: 1.5; margin-top: 8px; }
+.rc-final-drawer .rc-final-drawer-head p { padding-right: 42px; }
 .rc-final-drawer .rc-final-drawer-body { padding: 20px 24px; }
 .rc-final-drawer .rc-passage-search { min-height: 48px; width: 100%; font-size: 16px !important; }
 .rc-picker-tools { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; align-items: start; margin: 12px 0; }
@@ -383,3 +384,173 @@
  .rc-final-builder .rc-split-setup .rc-selection-source { margin-bottom: 22px; }
  .rc-final-builder .rc-split-setup .rc-setup-description { margin-bottom: 0; }
 }
+/* Approved open composition: the optional address lives on the page, the
+   practice conditions have one distinct working surface. */
+.rc-practice-workspace .rc-create-workspace:has(.rc-direct-lookup) { background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 12px 0 0 !important; }
+.rc-practice-workspace .rc-create-workspace:has(.rc-direct-lookup) > button { color: var(--lsatu-ink-muted, #64645b) !important; margin-bottom: 28px !important; }
+.rc-final-builder:has(.rc-direct-lookup) { color: var(--rc-paper-ink); background: transparent; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) { grid-template-columns: minmax(0,1fr) minmax(0,1.06fr) !important; gap: clamp(32px,5vw,64px) !important; background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+.rc-final-builder .rc-split-setup .rc-setup-heading:has(.rc-direct-lookup) { padding: 18px 0 0; }
+.rc-final-builder .rc-setup-heading:has(.rc-direct-lookup) .rc-setup-eyebrow { display: none; }
+.rc-final-builder:has(.rc-direct-lookup) #rc-final-heading { color: var(--rc-paper-ink) !important; font-size: clamp(30px,3.3vw,44px) !important; line-height: 1.08 !important; letter-spacing: -.045em; font-weight: 600; max-width: 460px; }
+.rc-final-builder .rc-setup-heading:has(.rc-direct-lookup) .rc-setup-description { color: var(--rc-paper-muted) !important; font-size: 16px; line-height: 1.6; margin: 22px 0 0; }
+.rc-direct-lookup { margin-top: 36px; padding-top: 24px; border-top: 1px solid #d7d4cb; }
+.rc-direct-lookup h3 { color: var(--rc-paper-lookup); font-size: 15px; line-height: 1.5; font-weight: 500; margin: 0; }
+.rc-direct-lookup > p { color: var(--rc-paper-muted) !important; font-size: 13px !important; line-height: 1.5; margin: 8px 0 22px !important; }
+.rc-lookup-address { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 18px; }
+.rc-lookup-address label { display: grid; gap: 7px; min-width: 0; color: var(--rc-paper-muted); font-size: 12px; line-height: 1.5; }
+.rc-final-builder .rc-direct-lookup select { width: 100%; min-width: 0; padding: 9px 22px 10px 2px !important; min-height: 44px; color: var(--rc-paper-lookup) !important; border: 0 !important; border-bottom: 1px solid #8a8e80 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; font-size: 15px !important; color-scheme: light; }
+.rc-final-builder .rc-direct-lookup select:disabled { opacity: .55; border-bottom-color: #b3b6aa !important; cursor: not-allowed; }
+.rc-final-builder .rc-direct-lookup select:focus-visible { outline: 2px solid #646f60 !important; outline-offset: 3px; }
+.rc-lookup-status { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; color: var(--rc-paper-muted); font-size: 13px; line-height: 1.5; margin-top: 14px; }
+.rc-lookup-status button { min-height: 44px; padding: 4px 0 4px 10px; color: var(--rc-paper-lookup); background: transparent; border: 0; text-decoration: underline; text-underline-offset: 4px; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-setup-workspace { padding: 32px !important; border: 0 !important; border-radius: 8px 38px 8px 38px !important; background: var(--lsatu-surface-dark, #131718) !important; color: var(--lsatu-text-on-dark, #efede6); box-shadow: 0 14px 20px -18px #13171855; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-config-groups { grid-template-columns: 120px minmax(0,1fr); gap: 24px 20px; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-stepper { width: 120px; max-width: 120px; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-stepper button { min-width: 36px; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-stepper-value { min-width: 24px; }
+.rc-final-builder .rc-setup-workspace select, .rc-final-builder .rc-setup-workspace input, .rc-final-builder .rc-setup-workspace .rc-stepper { background: var(--lsatu-field-dark, #282b2c) !important; color: var(--lsatu-text-on-dark, #efede6) !important; border-color: var(--lsatu-field-border, #747773) !important; border-radius: 9px; }
+.rc-final-builder .rc-setup-workspace .rc-field-label { color: var(--lsatu-text-on-dark, #efede6) !important; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-final-filter-strip { margin-top: 20px; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-final-filter-strip .rc-chip { border-color: var(--lsatu-field-border, #747773) !important; color: var(--lsatu-text-on-dark, #efede6) !important; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-final-launch { border-top-color: #3c433e; margin-top: 28px; padding-top: 22px; }
+.rc-final-builder .rc-setup-workspace .rc-final-launch p { color: #c3c4b9 !important; font-size: 13px !important; }
+.rc-final-builder .rc-setup-workspace .rc-button-primary { background: var(--lsatu-action-on-dark, #eeebe2) !important; color: var(--lsatu-action-ink, #161d18) !important; min-height: 50px; }
+.rc-final-builder .rc-setup-workspace .rc-button-primary:disabled { opacity: .45; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-config-groups:has(.rc-manual-passage-controls) { grid-template-columns: 1fr; }
+@media(max-width:760px) {
+ .rc-final-builder .rc-split-setup:has(.rc-direct-lookup) { grid-template-columns: 1fr !important; gap: 28px !important; }
+ .rc-final-builder .rc-split-setup .rc-setup-heading:has(.rc-direct-lookup) { padding-top: 0; }
+ .rc-final-builder:has(.rc-direct-lookup) #rc-final-heading { font-size: 34px !important; max-width: 380px; }
+ .rc-final-builder .rc-direct-lookup { margin-top: 24px; padding-top: 20px; }
+ .rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-setup-workspace { padding: 24px !important; border-radius: 8px 30px 8px 30px !important; }
+ .rc-practice-workspace .rc-create-workspace:has(.rc-direct-lookup) > button { margin-bottom: 18px !important; }
+}
+@media(max-width:390px) {
+ .rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-setup-workspace { padding: 22px 18px !important; }
+ .rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-config-groups { grid-template-columns: 102px minmax(0,1fr); gap: 22px 12px; }
+ .rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-stepper { width: 102px; }
+ .rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-stepper button { min-width: 32px; }
+ .rc-lookup-address { gap: 12px; }
+ .rc-final-builder .rc-direct-lookup select { font-size: 16px !important; }
+}
+/* Review continues on the same paper canvas. Only Start owns primary weight. */
+.rc-practice-workspace .rc-create-workspace:has(.rc-review-stage) { background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 12px 0 0 !important; }
+.rc-practice-workspace .rc-create-workspace:has(.rc-review-stage) > button { color: var(--lsatu-ink-muted, #64645b) !important; }
+.rc-final-builder:has(.rc-review-stage) { color: var(--rc-paper-ink); }
+.rc-final-builder .rc-review-stage { background: transparent !important; color: var(--rc-paper-ink) !important; border: 0 !important; box-shadow: none !important; }
+.rc-final-builder .rc-review-stage #rc-review-heading, .rc-final-builder .rc-review-stage h3, .rc-final-builder .rc-review-stage dd { color: var(--rc-paper-ink) !important; }
+.rc-final-builder .rc-review-stage .rc-review-step, .rc-final-builder .rc-review-stage dt, .rc-final-builder .rc-review-stage .rc-field-hint, .rc-final-builder .rc-review-stage .rc-review-passage-reference, .rc-final-builder .rc-review-stage .rc-review-passage-metadata, .rc-final-builder .rc-review-stage .rc-review-passage-number { color: var(--rc-paper-muted) !important; }
+.rc-final-builder .rc-review-stage .rc-chip, .rc-final-builder .rc-review-stage .rc-reveal-text-action { color: var(--rc-paper-lookup) !important; background: transparent !important; border-color: #b8bbb0 !important; }
+.rc-final-builder .rc-review-stage .rc-review-conditions, .rc-final-builder .rc-review-stage .rc-review-passage { border-color: #d7d4cb !important; }
+.rc-final-builder .rc-review-stage .rc-review-passage { background: transparent !important; }
+.rc-final-builder .rc-review-launch > span { color: var(--rc-paper-muted); }
+.rc-final-builder .rc-review-launch .rc-button-primary { background: var(--lsatu-surface-dark, #131718) !important; color: var(--lsatu-text-on-dark, #efede6) !important; }
+.rc-final-builder:has(.rc-review-stage) .rc-builder-saved { color: var(--rc-paper-ink); border-top-color: #d7d4cb !important; }
+.rc-final-builder:has(.rc-review-stage) .rc-builder-saved summary, .rc-final-builder:has(.rc-review-stage) .rc-contextual-save p { color: var(--rc-paper-muted) !important; }
+/* The rail uses the same contrast roles as the setup, with quieter method rows. */
+.rc-final-drawer { background: var(--lsatu-surface-dark, #131718) !important; color: var(--lsatu-text-on-dark, #efede6) !important; }
+.rc-final-drawer select, .rc-final-drawer input[type=text], .rc-final-drawer input[type=number], .rc-final-drawer .rc-filter-select > summary > strong, .rc-final-drawer .rc-filter-checklist { background: var(--lsatu-field-dark, #282b2c) !important; color: var(--lsatu-text-on-dark, #efede6) !important; border-color: var(--lsatu-field-border, #747773) !important; }
+.rc-final-drawer .rc-final-drawer-footer .rc-button-primary { background: var(--lsatu-action-on-dark, #eeebe2) !important; color: var(--lsatu-action-ink, #161d18) !important; }
+.rc-final-drawer .rc-drawer-methods { gap: 6px; margin-bottom: 18px; padding-bottom: 18px; }
+.rc-final-drawer .rc-drawer-methods > button { min-height: 50px; padding: 10px 12px; border-color: #555e56; border-radius: 8px; }
+.rc-final-drawer .rc-drawer-methods > button[aria-pressed=true] { background: var(--lsatu-field-dark, #282b2c); border-color: #a6ada1; }
+.rc-final-drawer .rc-drawer-methods small { display: none; }
+.rc-final-drawer .rc-drawer-methods strong { font-size: 15px; line-height: 1.4; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-stepper { display: grid !important; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 0; padding: 0; box-sizing: border-box; box-shadow: none !important; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-stepper button { width: 100% !important; min-width: 0 !important; height: 46px; min-height: 44px; padding: 0; }
+.rc-final-builder .rc-split-setup:has(.rc-direct-lookup) .rc-stepper-value { min-width: 0; }
+
+/* Paper-facing roles follow the student's theme, including failure and recovery
+   states outside the two working columns. The settings rail keeps dark roles. */
+.rc-create-workspace .rc-page.rc-final-builder {
+ --rc-paper-ink: var(--lsatu-ink, #252b26);
+ --rc-paper-muted: var(--lsatu-ink-muted, #64645b);
+ --rc-paper-lookup: var(--lsatu-lookup-ink, #293328);
+ --observatory-ink: var(--rc-paper-ink);
+ --observatory-ink-90: var(--rc-paper-ink);
+ --observatory-ink-85: var(--rc-paper-ink);
+ --observatory-ink-55: var(--rc-paper-muted);
+ color: var(--rc-paper-ink);
+ max-width: none !important;
+ margin-inline: 0 !important;
+}
+.rc-final-builder .rc-setup-workspace {
+ --observatory-ink: var(--lsatu-text-on-dark, #efede6);
+ --observatory-ink-90: var(--lsatu-text-on-dark, #efede6);
+ --observatory-ink-85: var(--lsatu-text-on-dark, #efede6);
+ --observatory-ink-55: #c3c4b9;
+}
+.rc-final-builder .rc-review-stage .rc-field-error, .rc-final-builder .rc-review-stage .rc-shortfall,
+.rc-final-builder > .rc-builder-alert, .rc-final-builder > .rc-page-sub { color: var(--rc-paper-ink) !important; }
+.rc-final-builder .rc-final-filter-strip .rc-chip:disabled { opacity: .45; cursor: not-allowed; }
+html.dark .rc-create-workspace .rc-page.rc-final-builder {
+ --rc-paper-ink: var(--lsatu-text-on-dark, #efede6);
+ --rc-paper-muted: #babcb5;
+ --rc-paper-lookup: var(--lsatu-text-on-dark, #efede6);
+}
+html.dark .rc-final-builder .rc-direct-lookup select { color-scheme: dark; }
+html.dark .rc-final-builder .rc-direct-lookup,
+html.dark .rc-final-builder .rc-review-stage .rc-review-conditions,
+html.dark .rc-final-builder .rc-review-stage .rc-review-passage { border-color: #535b53 !important; }
+html.dark .rc-final-builder .rc-review-launch .rc-button-primary { background: var(--lsatu-action-on-dark, #eeebe2) !important; color: var(--lsatu-action-ink, #161d18) !important; }
+html.dark .rc-practice-workspace .rc-create-workspace > button,
+html.dark .rc-practice-workspace .rc-builder-question-shortcut button { color: #babcb5 !important; }
+
+.rc-final-builder { --rc-paper-ink: var(--lsatu-ink, #252b26); --rc-paper-muted: var(--lsatu-ink-muted, #64645b); --rc-paper-lookup: var(--lsatu-lookup-ink, #293328); }
+html.dark .rc-final-builder { --rc-paper-ink: var(--lsatu-text-on-dark, #efede6); --rc-paper-muted: #babcb5; --rc-paper-lookup: var(--lsatu-text-on-dark, #efede6); }
+/* Complete paper roles also cover recoverable failures and expanded saving. */
+.rc-create-workspace .rc-page.rc-final-builder {
+ --observatory-ink-70: var(--rc-paper-muted);
+ --observatory-ink-62: var(--rc-paper-muted);
+ --observatory-ink-60: var(--rc-paper-muted);
+ --observatory-ink-50: var(--rc-paper-muted);
+ --observatory-amber: var(--rc-paper-lookup);
+}
+.rc-final-builder .rc-setup-workspace {
+ --observatory-ink-70: #c3c4b9;
+ --observatory-ink-62: #c3c4b9;
+ --observatory-ink-60: #c3c4b9;
+ --observatory-ink-50: #c3c4b9;
+ --observatory-amber: #c3c4b9;
+}
+.rc-final-builder > .rc-builder-alert .rc-chip,
+.rc-final-builder > .rc-field-hint .rc-chip { color: var(--rc-paper-lookup) !important; border-color: var(--lsatu-field-border, #747773) !important; background: transparent !important; }
+.rc-final-builder:has(.rc-review-stage) .rc-builder-saved .rc-contextual-save input {
+ background: transparent !important;
+ color: var(--rc-paper-ink) !important;
+ border: 1px solid var(--lsatu-field-border, #747773) !important;
+ box-shadow: none !important;
+ min-height: 46px;
+}
+.rc-final-builder:has(.rc-review-stage) .rc-builder-saved .rc-contextual-save input::placeholder { color: var(--rc-paper-muted) !important; opacity: 1; }
+.rc-final-builder:has(.rc-review-stage) .rc-builder-saved .rc-field-label { color: var(--rc-paper-ink) !important; }
+.rc-final-builder:has(.rc-review-stage) .rc-builder-saved .rc-chip { color: var(--rc-paper-lookup) !important; border-color: var(--lsatu-field-border, #747773) !important; background: transparent !important; }
+.rc-final-builder:has(.rc-review-stage) .rc-builder-saved .rc-chip:not(:disabled):hover { background: color-mix(in srgb, var(--rc-paper-ink) 7%, transparent) !important; }
+html.dark .rc-practice-workspace .drill-observatory-tools button { color: #babcb5 !important; }
+
+/* Optional practice tools stay in the rail, leaving the working surface quiet. */
+.rc-final-drawer .rc-drawer-options { border-top: 1px solid var(--lsatu-field-border, #747773); margin-top: 20px; }
+.rc-final-drawer .rc-drawer-options > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 12px 0; cursor: pointer; color: var(--lsatu-text-on-dark, #efede6); font-size: 15px; font-weight: 500; list-style: none; }
+.rc-final-drawer .rc-drawer-options > summary::-webkit-details-marker { display: none; }
+.rc-final-drawer .rc-drawer-options > summary::after { content: '+'; font-size: 20px; font-weight: 400; margin-left: auto; }
+.rc-final-drawer .rc-drawer-options[open] > summary::after { content: '−'; }
+.rc-final-drawer .rc-drawer-options > summary > span { color: #babcb5; font-size: 12px; font-weight: 400; }
+.rc-final-drawer .rc-drawer-options > summary:focus-visible { outline: 2px solid var(--lsatu-action-on-dark, #eeebe2); outline-offset: 3px; border-radius: 4px; }
+.rc-final-drawer .rc-training-switches { display: grid; gap: 0; padding-bottom: 4px; }
+.rc-final-drawer .rc-training-switches > label { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 76px; padding: 14px 0; cursor: pointer; }
+.rc-final-drawer .rc-training-switches > label + label { border-top: 1px solid #3c433e; }
+.rc-final-drawer .rc-training-switches strong { display: block; color: var(--lsatu-text-on-dark, #efede6); font-size: 15px; font-weight: 500; line-height: 1.5; }
+.rc-final-drawer .rc-training-switches small { display: block; margin-top: 3px; color: #babcb5; font-size: 13px; line-height: 1.5; }
+.rc-final-drawer .rc-training-switches input[type=checkbox] { appearance: none; flex: 0 0 40px; width: 40px; height: 24px; margin: 0; border: 1px solid var(--lsatu-field-border, #747773); border-radius: 999px; background: var(--lsatu-field-dark, #282b2c); position: relative; cursor: pointer; }
+.rc-final-drawer .rc-training-switches input[type=checkbox]::before { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; top: 3px; left: 3px; background: #babcb5; transition: transform 150ms ease; }
+.rc-final-drawer .rc-training-switches input[type=checkbox]:checked { background: var(--lsatu-action-on-dark, #eeebe2); }
+.rc-final-drawer .rc-training-switches input[type=checkbox]:checked::before { background: var(--lsatu-action-ink, #161d18); transform: translateX(16px); }
+.rc-final-drawer .rc-training-switches input[type=checkbox]:focus-visible { outline: 2px solid var(--lsatu-action-on-dark, #eeebe2); outline-offset: 4px; }
+.rc-final-drawer .profile-timing-preference { padding: 0 0 8px; color: var(--lsatu-text-on-dark, #efede6); }
+.rc-final-drawer .profile-timing-preference p { color: #babcb5 !important; opacity: 1 !important; }
+.rc-final-drawer .profile-timing-save { color: var(--lsatu-text-on-dark, #efede6) !important; }
+.rc-final-drawer .profile-timing-save:disabled { opacity: .55; cursor: default; }
+.rc-final-builder .rc-training-applied { flex-basis: 100%; margin: 8px 0 0; font-size: 13px; line-height: 1.5; color: #babcb5; }
+.rc-final-builder .rc-review-training { color: var(--rc-paper-muted); font-size: 14px; line-height: 1.6; }
+@media(prefers-reduced-motion:reduce) { .rc-final-drawer .rc-training-switches input[type=checkbox]::before { transition: none; } }

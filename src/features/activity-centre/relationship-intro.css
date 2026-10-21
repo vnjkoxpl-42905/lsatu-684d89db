@@ -3,13 +3,13 @@
   /* Activity Centre pins a warm palette locally. Use the existing Workroom
    * light values here explicitly; ancestor semantic values are not neutral. */
   color-scheme: light;
-  --background: 0 0% 99%;
-  --foreground: 0 0% 7%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 7%;
-  --border: 0 0% 88%;
-  --primary: 0 0% 7%;
-  --primary-foreground: 0 0% 99%;
+  --background: var(--lsatu-canvas-hsl);
+  --foreground: var(--lsatu-ink-hsl);
+  --card: var(--lsatu-canvas-hsl);
+  --card-foreground: var(--lsatu-ink-hsl);
+  --border: 54.545 11.579% 81.373%;
+  --primary: var(--lsatu-surface-dark-hsl);
+  --primary-foreground: var(--lsatu-text-on-dark-hsl);
   background: hsl(var(--background));
   color: hsl(var(--foreground));
 }
@@ -20,7 +20,7 @@
   --relationship-border: hsl(var(--border));
   --relationship-primary: hsl(var(--primary));
   --relationship-on-primary: hsl(var(--primary-foreground));
-  --relationship-video-ground: hsl(0 0% 4%);
+  --relationship-video-ground: var(--lsatu-surface-dark);
   box-sizing: border-box;
   container-type: inline-size;
   width: min(100%, 1080px);

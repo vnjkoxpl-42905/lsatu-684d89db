@@ -3,7 +3,7 @@
 
 
 /*
- * Reading Center uses the LR Recall ink and lavender on Pure White surfaces.
+ * Reading Center uses the approved platform paper and ink in its light appearance.
  * Immersive Speed Reading retains the saved dark and high-contrast appearance.
  */
 
@@ -18,44 +18,49 @@
   }
 
   .rc-root[data-rc-theme="light"] {
-    --rc-page: #ffffff;
-    --rc-surface: #ffffff;
-    --rc-text: #16132b;
-    --rc-text-2: #6a6784;
-    --rc-strong: #16132b;
-    --rc-read: #000000;
+    --rc-page: var(--lsatu-canvas);
+    --rc-surface: var(--lsatu-canvas);
+    --rc-text: var(--lsatu-ink);
+    --rc-text-2: var(--lsatu-ink-muted);
+    --rc-strong: var(--lsatu-ink);
+    --rc-read: var(--lsatu-ink);
     --rc-dim: #cbcbcb;
-    --rc-card: #f7f7f9;
-    --rc-dialog: #ffffff;
+    --rc-card: var(--lsatu-action-on-dark);
+    --rc-dialog: var(--lsatu-canvas);
     --rc-dialog-border: transparent;
     --rc-dialog-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
     --rc-backdrop: rgba(0, 0, 0, 0.55);
-    --rc-outline: #dedce8;
-    --rc-outline-2: #dedce8;
-    --rc-bottombar: rgba(255, 255, 255, 0.85);
-    --rc-bottombar-border: #cccccc;
-    --rc-menu: #ffffff;
-    --rc-sheet: #ffffff;
-    --rc-sheet-title: #666666;
+    --rc-outline: #d5d4ca;
+    --rc-outline-2: var(--lsatu-field-border);
+    --rc-bottombar: rgba(247, 244, 238, 0.95);
+    --rc-bottombar-border: #d5d4ca;
+    --rc-menu: var(--lsatu-canvas);
+    --rc-sheet: var(--lsatu-canvas);
+    --rc-sheet-title: var(--lsatu-ink-muted);
     --rc-tag-list-border: rgba(0, 0, 0, 0.12);
-    --rc-btn-secondary-border: #cccccc;
+    --rc-btn-secondary-border: var(--lsatu-field-border);
     --rc-btn-disabled-bg: rgba(0, 0, 0, 0.12);
     --rc-btn-disabled-fg: rgba(0, 0, 0, 0.26);
-    --rc-field-line: #b3b3b3;
-    --rc-empty-circle: #757575;
+    --rc-field-line: var(--lsatu-field-border);
+    --rc-empty-circle: var(--lsatu-ink-muted);
     --rc-menu-hover: rgba(0, 0, 0, 0.04);
-    --rc-sidenav: #ffffff; /* inferred */
-    --rc-nav-text: #16132b;
-    --rc-nav-hover: #f7f7f9;
-    --rc-nav-active-bg: #eeebfa;
-    --rc-nav-active-fg: #534391;
-    --rc-searchbox: #f7f7f9;
-    --rc-tab-idle: #757575;
+    --rc-sidenav: var(--lsatu-canvas); /* inferred */
+    --rc-nav-text: var(--lsatu-ink);
+    --rc-nav-hover: var(--lsatu-action-on-dark);
+    --rc-nav-active-bg: var(--lsatu-surface-dark);
+    --rc-nav-active-fg: var(--lsatu-text-on-dark);
+    --rc-searchbox: var(--lsatu-action-on-dark);
+    --rc-tab-idle: var(--lsatu-ink-muted);
     --rc-ink: rgba(52, 173, 7, 0.15);
-    --rc-fontsel-bg: #eeeeee;
-    --rc-keycap: #e8e8e8;
-    --rc-popover: #ffffff;
-  }
+    --rc-fontsel-bg: var(--lsatu-action-on-dark);
+    --rc-keycap: var(--lsatu-action-on-dark);
+    --rc-popover: var(--lsatu-canvas);
+    --rc-green: var(--lsatu-ink);
+    --rc-blue: var(--lsatu-ink);
+    --rc-slider: var(--lsatu-ink);
+    --rc-addtext-bg: var(--lsatu-surface-dark);
+    --rc-addtext-fg: var(--lsatu-text-on-dark);
+}
 
   .rc-root[data-rc-theme="dark"] {
     --rc-page: #000000;

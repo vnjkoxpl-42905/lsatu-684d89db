@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PrepTestCombobox } from '@/components/testing/PrepTestCombobox';
 import { cn } from '@/lib/utils';
@@ -64,14 +64,18 @@ export function SectionSelector({
   onStartSection,
   onStartRcSection,
   initialKind = 'lr',
-  initialTiming = STANDARD_TIMING,
+  initialTiming,
   onCancel,
 }: SectionSelectorProps) {
-  const { settings } = useUserSettings();
+  const { settings, profileTimingStatus } = useUserSettings();
   const [kind, setKind] = useState<SectionKind>(initialKind);
   const [selectedPT, setSelectedPT] = useState<number | null>(null);
   const [selectedSection, setSelectedSection] = useState<number | null>(null);
-  const [timing, setTiming] = useState<SectionTiming>(initialTiming);
+  const [timing, setTiming] = useState<SectionTiming>(() => initialTiming ?? (settings.defaultTimingMode === 'unlimited' ? { mode: 'unlimited' } : STANDARD_TIMING));
+  const timingTouched = useRef(false);
+  useEffect(() => {
+    if (!initialTiming && !timingTouched.current) setTiming(settings.defaultTimingMode === 'unlimited' ? { mode: 'unlimited' } : STANDARD_TIMING);
+  }, [initialTiming, settings.defaultTimingMode]);
   // A PrepTest is a consumable, so the first question is which sections are
   // still unspent. Defaults to Fresh, which is what a student wants nine times
   // in ten and the only state that gives a clean read on where they stand.
@@ -208,11 +212,13 @@ export function SectionSelector({
    * RC, which makes this mapping total rather than a silent rounding.
    */
   const rcPaceId: RcSectionPaceId =
-    timing.mode === 'timed' && timing.percent >= 200
+    timing.mode === 'unlimited' ? 'untimed' : baseMinutes * timing.percent / 100 >= 70 - .01
       ? 'double-time'
-      : timing.mode === 'timed' && timing.percent >= 150
+      : baseMinutes * timing.percent / 100 >= 52.5 - .01
         ? 'time-and-a-half'
         : 'standard';
+  const rcPercents = [35, 52.5, 70].map(minutes => minutes / baseMinutes * 100);
+  const rcTimingLabels = Object.fromEntries(rcPercents.map((percent, index) => [percent, ['Standard', 'Time and a half', 'Double time'][index]]));
 
   const switchKind = (next: SectionKind) => {
     if (next === kind) return;
@@ -295,11 +301,14 @@ export function SectionSelector({
   }, [pickableSections, selectedPT, selectedSection]);
 
   const handleStart = async () => {
+    if (profileTimingStatus === 'loading' && !initialTiming && !timingTouched.current) return;
     if (kind === 'rc') {
       if (chosenRcSection && onStartRcSection && !starting) {
         setStarting(true);
         try {
-          const protectedPace = rcProtectedPaceForTiming(timing);
+          const protectedPace = rcProtectedPaceForTiming(timing.mode === 'unlimited' ? timing : {
+            mode: 'timed', percent: Math.round(timing.percent * baseMinutes / 35 * 1e6) / 1e6,
+          });
           const canUseManualSection =
             protectedPace !== null &&
             manualSectionCoverage('rc', chosenRcSection.preptest, chosenRcSection.section) &&
@@ -326,9 +335,9 @@ export function SectionSelector({
       if (timing.mode === 'unlimited') {
         mode = 'unlimited';
       } else if (timing.percent === 100) {
-        // 100% IS the student's standing default, whatever that is, so hand
-        // the timer the same mode it would have got before this control existed.
-        mode = settings.defaultTimingMode;
+        // A timed choice always uses the displayed numeric base. In particular,
+        // choosing Standard after an Unlimited profile default must start 35:00.
+        mode = baseMinutes === 52.5 ? '52.5' : baseMinutes === 70 ? '70' : '35';
       } else {
         // Everything else is a derived clock. customMinutes is consumed as
         // `minutes * 60 * 1000`, so a fractional value is exact to the second
@@ -378,7 +387,10 @@ export function SectionSelector({
     kind === 'rc' &&
     rcManualEnabled === true &&
     chosenRcSection != null &&
-    rcProtectedPaceForTiming(timing) !== null &&
+    rcProtectedPaceForTiming(timing.mode === 'unlimited' ? timing : {
+      mode: 'timed',
+      percent: Math.round(timing.percent * baseMinutes / 35 * 1e6) / 1e6,
+    }) !== null &&
     manualSectionCoverage('rc', chosenRcSection.preptest, chosenRcSection.section);
 
   return (
@@ -575,20 +587,20 @@ export function SectionSelector({
       <div className="space-y-3 mb-12">
         <SectionTimingPicker
           value={timing}
-          onChange={setTiming}
-          baseMinutes={kind === 'rc' ? 35 : baseMinutes}
+          onChange={value => { timingTouched.current = true; setTiming(value); }}
+          baseMinutes={baseMinutes}
           questionCount={chosenQuestionCount}
           // Three clocks and no more. 100% is the student's own standard,
           // and the two above it are the accommodations the LSAT actually
           // grants (+50% and +100%). The old speed-training presets (97%,
           // 94%, 70%) and the custom stepper read as arbitrary numbers on
           // a panel whose job is to start a real section.
-          allowedPercents={[100, 150, 200]}
+          allowedPercents={kind === 'rc' ? rcPercents : [100, 150, 200]}
           // RC's clock is a per-passage budget with only three paces, and
           // no stopwatch to fall back to.
-          allowUnlimited={kind === 'lr'}
-          labels={{ 100: 'Standard', 150: 'Time and a half', 200: 'Double time' }}
-          accommodationNote={kind === 'rc' ? undefined : <AccommodationNote baseMinutes={baseMinutes} />}
+          allowUnlimited
+          labels={kind === 'rc' ? rcTimingLabels : { 100: 'Standard', 150: 'Time and a half', 200: 'Double time' }}
+          accommodationNote={<AccommodationNote baseMinutes={baseMinutes} />}
           className="min-h-[44px] rounded-md"
           contentClassName="testing-menu"
         />
@@ -632,7 +644,7 @@ export function SectionSelector({
         <button
           type="button"
           onClick={handleStart}
-          disabled={!isReadyToStart || starting}
+          disabled={!isReadyToStart || starting || (profileTimingStatus === 'loading' && !initialTiming && !timingTouched.current)}
           className={cn(
             "min-h-[44px] rounded-md px-8 py-3 text-sm font-semibold",
             "transition-colors duration-200",
