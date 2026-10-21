@@ -220,3 +220,33 @@
 .rc-final-builder .rc-review-passage .rc-review-passage-metadata { margin: 3px 0 !important; font-size: 14px !important; }
 .rc-final-builder .rc-builder-saved { border: 0 !important; border-top: 1px solid #303033 !important; border-radius: 0 !important; box-shadow: none !important; }
 @media(max-width:700px) { .rc-final-builder .rc-review-passage h3 { font-size: 18px !important; } }
+
+/* One compact setup, with the selection method kept secondary to the task. */
+.rc-practice-workspace .drill-observatory-canvas { max-width: 940px !important; }
+.rc-practice-workspace .rc-create-workspace { padding: 24px 30px !important; }
+.rc-final-builder .rc-config-group .rc-builder-settings { max-width: none; }
+.rc-final-builder .rc-setup-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 0 0 28px; }
+.rc-setup-heading > div { min-width: 0; }
+.rc-final-builder .rc-setup-eyebrow { margin: 0 0 8px; color: #99968f; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.rc-final-builder #rc-final-heading { font-size: clamp(25px,2.1vw,30px); max-width: 420px; }
+.rc-selection-method { display: block; flex: 0 0 218px; min-width: 0; }
+.rc-selection-method > span { display: block; margin-bottom: 8px; color: #aaa79f; font-size: 13px; }
+.rc-final-builder .rc-selection-method select { width: 100%; min-height: 44px; border-color: #3a393c; background-color: #18181a; font-size: 14px !important; }
+.rc-final-builder .rc-config-groups { gap: 22px; }
+.rc-final-builder .rc-config-group > legend { font-size: 13px; color: #99968f; margin-bottom: 12px; }
+.rc-final-builder .rc-passage-controls { grid-template-columns: 128px minmax(0,1fr) minmax(0,1fr); gap: 16px; }
+.rc-final-builder .rc-manual-passage-controls { display: block; }
+.rc-final-builder .rc-final-filter-strip { margin-top: 22px; padding-block: 14px; background: transparent; border-inline: 0; border-radius: 0; }
+.rc-final-builder .rc-final-summary-label { display: none; }
+.rc-final-builder .rc-final-filter-summary { margin: 0; color: #aaa79f; }
+.rc-final-builder .rc-final-launch { margin-top: 18px; padding-top: 0; border-top: 0; }
+@media(max-width:700px) {
+ .rc-practice-workspace .rc-create-workspace { padding: 18px 18px !important; }
+ .rc-practice-workspace .rc-create-workspace > button { margin-bottom: 16px !important; }
+ .rc-final-builder .rc-setup-eyebrow { display: none; }
+ .rc-final-builder .rc-setup-heading { align-items: stretch; flex-direction: column; gap: 18px; margin-bottom: 24px; }
+ .rc-selection-method { flex-basis: auto; width: 100%; }
+ .rc-final-builder .rc-passage-controls { grid-template-columns: 1fr 1fr; gap: 14px; }
+ .rc-final-builder .rc-passage-controls > .rc-field:first-child { grid-column: 1/-1; }
+ .rc-final-builder .rc-config-groups { gap: 22px; }
+}

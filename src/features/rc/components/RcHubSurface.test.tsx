@@ -171,7 +171,7 @@ describe('RC builder transactional drawers', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
     const inspectedIds = [...loadPassages.mock.calls.at(-1)![0]];
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
     if (dismiss === 'Escape') fireEvent.keyDown(drawer, { key: 'Escape', code: 'Escape' });
@@ -189,7 +189,7 @@ describe('RC builder transactional drawers', () => {
   it('applies the selected passage count only on Apply and preserves main timing and reveal', async () => {
     mount('/classroom/drill?section=rc&count=3&timing=standard&reveal=end_of_set');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
     expect(createSession).not.toHaveBeenCalled();
@@ -209,7 +209,7 @@ describe('RC builder transactional drawers', () => {
   it('keeps selected passages hidden by search or filters and applies their chosen order', async () => {
     mount('/classroom/drill?section=rc');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
     fireEvent.change(within(drawer).getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'PT 141' } });
@@ -264,7 +264,7 @@ describe('RC builder transactional drawers', () => {
     vi.mocked(progress.getRcHistorySnapshot).mockResolvedValueOnce({ history, displayHistory: history, hasHiddenGradedResults: false });
     mount('/classroom/drill?section=rc');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
     fireEvent.change(within(drawer).getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'Passage 1188' } });
     expect(within(drawer).getByText(/Matching passages are excluded by your active filters/)).toBeInTheDocument();
@@ -333,7 +333,7 @@ describe('RC builder transactional drawers', () => {
     })) as never);
     mount('/classroom/drill?section=rc');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
     const announcement = within(drawer).getByRole('status');
     expect(announcement).toBeEmptyDOMElement();
@@ -383,7 +383,7 @@ describe('RC builder transactional drawers', () => {
     expect(screen.queryByRole('combobox', { name: 'Timing' })).not.toBeInTheDocument();
     const ids = [...loadPassages.mock.calls.at(-1)![0]];
     editSetup();
-    expect(screen.getByRole('heading', { name: 'Build your RC drill' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Choose your next passages?/ })).toBeInTheDocument();
     previewDrill();
     await screen.findByRole('heading', { name: 'Review your RC drill' });
     expect(loadPassages).toHaveBeenCalledTimes(1);
@@ -403,8 +403,8 @@ describe('RC refinement workflow regressions', () => {
   it('closes Apply when automatic entry changes the host prop to manual and does not reopen on Edit selection', async () => {
     render(<MemoryRouter initialEntries={['/practice/drills?section=rc&builder=automatic']}><RouteDrivenPickerSurface /><ModeLocationProbe /></MemoryRouter>);
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
-    const opener = screen.getByRole('button', { name: 'Pick passages' });
-    fireEvent.click(opener);
+    const opener = screen.getByRole('combobox', { name: 'Passage selection method' });
+    fireEvent.change(opener, { target: { value: 'manual' } });
     const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
@@ -437,8 +437,8 @@ describe('RC refinement workflow regressions', () => {
     expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
     expect(screen.queryByRole('button', { name: 'Edit selection' })).not.toBeInTheDocument();
     expect(createSession).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button', { name: 'Choose for me' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'automatic' } });
+    fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     const empty = await screen.findByRole('dialog');
     expect(within(within(empty).getByRole('list', { name: 'Selected passages' })).queryAllByRole('listitem')).toHaveLength(0);
   });
@@ -481,7 +481,7 @@ describe('RC refinement workflow regressions', () => {
   it('keeps manual picks and order while browsing filters change without claiming a final topic restriction', async () => {
     mount('/classroom/drill?section=rc');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
-    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     const drawer = await screen.findByRole('dialog');
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
@@ -581,7 +581,7 @@ describe('RC refinement workflow regressions', () => {
     }));
     fireEvent.click(screen.getByRole('button', { name: 'Choose different passages' }));
     expect(screen.getByRole('heading', { name: 'Review your RC drill' })).toBeInTheDocument();
-    expect(screen.queryByRole('heading', { name: 'Build your RC drill' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /Choose your next passages?/ })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Starting|Start drill/ })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Edit setup' })).toBeDisabled();
     await act(async () => release());
@@ -639,7 +639,7 @@ describe('RC refinement workflow regressions', () => {
 describe('RcHubSurface autostart', () => {
   it('opens the manual landing entry without selecting or starting any passages', async () => {
     mount('/classroom/drill?section=rc&builder=manual');
-    expect(await screen.findByRole('heading', { name: 'Build your RC drill' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Choose your next passages?/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
     fireEvent.click(screen.getByRole('button', { name: 'Choose passages' }));
     expect(await screen.findByRole('button', { name: 'Add Passage 1188' })).toBeEnabled();
@@ -1075,7 +1075,7 @@ describe('RcHubSurface autostart', () => {
     try {
       mount('/classroom/drill?section=rc&count=1');
       await screen.findByRole('button', { name: 'Preview drill' });
-      editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+      editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
       const list = screen.getByRole('list', { name: 'Available passages' });
       expect(within(list).getAllByRole('listitem')).toHaveLength(12);
       expect(screen.getByText('Showing 1–12 of 100 passages.')).toBeInTheDocument();
@@ -1100,7 +1100,7 @@ describe('RcHubSurface autostart', () => {
   it('requires a manual selection and previews only the passages added from the searchable list', async () => {
     mount('/classroom/drill?section=rc&count=3');
     await screen.findByRole('button', { name: 'Preview drill' });
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     expect(screen.getByRole('button', { name: 'Apply' })).toBeEnabled();
     fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'PT 141' } });
     const list = screen.getByRole('list', { name: 'Available passages' });
@@ -1117,14 +1117,14 @@ describe('RcHubSurface autostart', () => {
 
   it('uses only the active automatic draft and restores manual passages when switching back', async () => {
     mount('/classroom/drill?section=rc&passages=1188,1201');
-    await screen.findByRole('button', { name: 'Choose for me' });
+    await screen.findByRole('combobox', { name: 'Passage selection method' });
     await screen.findByText('2 selected');
-    fireEvent.click(screen.getByRole('button', { name: 'Choose for me' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'automatic' } });
     expect(screen.queryByRole('region', { name: 'Choose your passages' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /^More passages/ })).toBeEnabled();
     commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('region', { name: 'Selected reading set' });
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     expect(screen.getByRole('dialog', { name: 'Pick passages' })).toBeInTheDocument();
     expect(within(screen.getByLabelText('Selected passages')).getByRole('button', { name: 'Remove Passage 1188 from selection' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
@@ -1266,7 +1266,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     mount('/classroom/drill?section=rc&stage=type-drill');
     await screen.findByRole('button', { name: 'Preview drill' });
     commitDrawerIfOpen(); editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     await act(async () => releaseIndex());
     fireEvent.click(screen.getByRole('button', { name: 'Add Passage 1201' }));
     commitDrawerIfOpen();
@@ -1338,13 +1338,13 @@ describe('RcHubSurface launch truth (#171)', () => {
     await waitFor(() => expect(primary()).toBeEnabled());
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     expect(screen.getByRole('button', { name: 'Apply' })).toBeEnabled();
     fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
     previewDrill();
     expect(screen.getByRole('region', { name: 'Selected reading set' })).toBeInTheDocument();
     expect(primary()).toHaveTextContent('Start drill');
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     fireEvent.click(screen.getByRole('button', { name: 'Add Passage 1201' }));
     commitDrawerIfOpen();
     expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
@@ -1374,7 +1374,7 @@ describe('RcHubSurface launch truth (#171)', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
     await waitFor(() => expect(primary()).toBeEnabled());
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     expect(within(screen.getByRole('list', { name: 'Available passages' })).getAllByRole('listitem')).toHaveLength(3);
   });
 
@@ -1560,8 +1560,8 @@ describe('RcHubSurface launch truth (#171)', () => {
       ]),
     );
     mount('/classroom/drill?section=rc&count=1');
-    await screen.findByRole('button', { name: 'Pick passages' });
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    await screen.findByRole('combobox', { name: 'Passage selection method' });
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
 
     // Default status filter is Fresh: only passage 1202 (not_attempted) matches
     let list = await screen.findByRole('list', { name: 'Available passages' });
@@ -1640,10 +1640,10 @@ describe('RcHubSurface launch truth (#171)', () => {
     render(<MemoryRouter initialEntries={['/practice/drills?section=rc&saved=mode-saved']}><RcHubSurface embedded showHistory={false} /><ModeLocationProbe /></MemoryRouter>);
     await screen.findByText(/Opened Mode saved work/);
     const readCount = vi.mocked(getRcSavedSet).mock.calls.length;
-    fireEvent.click(screen.getByRole('button', { name: mode === 'fixed' ? 'Choose for me' : 'Pick passages' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: mode === 'fixed' ? 'automatic' : 'manual' } });
     if (mode === 'recipe') { fireEvent.click(screen.getByRole('button', { name: 'Add Passage 1188' })); commitDrawerIfOpen(); }
     commitDrawerIfOpen(); editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
-    fireEvent.click(screen.getByRole('button', { name: mode === 'fixed' ? 'Pick passages' : 'Choose for me' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: mode === 'fixed' ? 'manual' : 'automatic' } });
     commitDrawerIfOpen();
     expect(vi.mocked(getRcSavedSet)).toHaveBeenCalledTimes(readCount);
     commitDrawerIfOpen(); editSetup(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('end_of_set');
@@ -1660,7 +1660,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     openOptions();
     selectStatus('Incorrect before');
     commitDrawerIfOpen();
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     fireEvent.click(within(screen.getByRole('list', { name: 'Available passages' })).getByRole('button', { name: 'Add Passage 1188' }));
     commitDrawerIfOpen();
     expect(screen.getByTestId('mode-location')).toHaveTextContent('builder=manual');
@@ -1669,13 +1669,13 @@ describe('RcHubSurface launch truth (#171)', () => {
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Earliest PrepTest' }), { target: { value: '' } });
     expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
     fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Choose for me' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'automatic' } });
     expect(screen.getByTestId('mode-location')).toHaveTextContent('builder=automatic');
     openOptions(); expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('incorrect_before'); commitDrawerIfOpen();
     expect(screen.getByRole('textbox', { name: 'Minutes and seconds per passage' })).toHaveValue('10:30');
     commitDrawerIfOpen(); editSetup(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('end_of_set');
     expect(within(screen.getByRole('group', { name: 'Passages' })).getByText('3')).toBeInTheDocument();
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     expect(within(screen.getByLabelText('Selected passages')).getByRole('button', { name: 'Remove Passage 1188 from selection' })).toBeInTheDocument();
     commitDrawerIfOpen(); openAdvancedOptions();
     expect(screen.getByRole('spinbutton', { name: 'Earliest PrepTest' })).toHaveValue(101);
@@ -1684,7 +1684,7 @@ describe('RcHubSurface launch truth (#171)', () => {
   it('keeps automatic timing and count committed when an empty manual draft is cancelled', async () => {
     mount('/classroom/drill?section=rc&count=3&timing=standard');
     await screen.findByRole('button', { name: 'Preview drill' });
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     expect(screen.getByRole('button', { name: 'Apply' })).toBeEnabled();
     fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
     expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
@@ -1696,7 +1696,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     'finds passages by title or passage reference: %s', async query => {
       mount('/classroom/drill?section=rc');
       await screen.findByRole('button', { name: 'Preview drill' });
-      editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+      editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
       fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: query } });
       const list = screen.getByRole('list', { name: 'Available passages' });
       expect(within(list).getAllByRole('listitem')).toHaveLength(1);
@@ -1710,13 +1710,13 @@ describe('RcHubSurface launch truth (#171)', () => {
     openOptions();
     selectStatus('Incorrect before');
     commitDrawerIfOpen();
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     fireEvent.click(screen.getByRole('button', { name: 'Add Passage 1188' })); commitDrawerIfOpen();
     openOptions(); expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('fresh');
     selectStatus('Any'); commitDrawerIfOpen();
-    fireEvent.click(screen.getByRole('button', { name: 'Choose for me' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'automatic' } });
     openOptions(); expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('incorrect_before'); commitDrawerIfOpen();
-    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Passage selection method' }), { target: { value: 'manual' } });
     commitDrawerIfOpen(); openOptions(); expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('any');
   });
 
