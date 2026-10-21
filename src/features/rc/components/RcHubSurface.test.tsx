@@ -145,12 +145,219 @@ function mount(entry: string, next?: string, showHistory = false) {
   );
 }
 
+const commitDrawerIfOpen = () => { const dialog = screen.queryByRole('dialog'); if (dialog) fireEvent.click(within(dialog).getByRole('button', { name: 'Apply' })); };
+const openOptions = () => { if (!screen.queryByRole('dialog')) fireEvent.click(screen.getByRole('button', { name: 'Customize drill' })); };
+const openAdvancedOptions = () => { openOptions(); const details = document.querySelector<HTMLDetailsElement>('.rc-final-advanced'); if (details && !details.open) fireEvent.click(details.querySelector('summary')!); };
+const openSavedSettings = () => { const details = document.querySelector<HTMLDetailsElement>('.rc-builder-saved'); if (details && !details.open) fireEvent.click(details.querySelector('summary')!); };
+
+const openSelectedPassages = () => { if (!screen.queryByRole('dialog')) fireEvent.click(screen.getByRole('button', { name: 'Edit selection' })); };
+const selectStatus = (label: string) => { openOptions(); const values: Record<string, string> = { Any: 'any', 'Not attempted': 'fresh', 'No recorded exposure': 'strict_no_exposure', 'Incorrect before': 'incorrect_before', 'Incorrect on last try': 'incorrect_last' }; fireEvent.change(screen.getByRole('combobox', { name: 'Practice history' }), { target: { value: values[label] } }); };
+const previewDrill = () => { expect(screen.queryByRole('dialog')).not.toBeInTheDocument(); fireEvent.click(screen.getByRole('button', { name: 'Preview drill' })); };
+
+describe('RC builder transactional drawers', () => {
+  beforeEach(() => {
+    sessionStorage.clear(); auth.id = 'owner'; navigate.mockClear(); createSession.mockClear(); loadPassages.mockClear();
+    getSession.mockReset().mockResolvedValue(null); adoption.enabled = false; adoption.sessions = [];
+  });
+
+  it.each(['Cancel', 'Close', 'Escape'] as const)('discards a passage draft through %s without changing the inspected drill', async (dismiss) => {
+    mount('/classroom/drill?section=rc&count=3');
+    fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    const inspectedIds = [...loadPassages.mock.calls.at(-1)![0]];
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
+    if (dismiss === 'Escape') fireEvent.keyDown(drawer, { key: 'Escape', code: 'Escape' });
+    else fireEvent.click(within(drawer).getByRole('button', { name: dismiss }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.getByRole('region', { name: 'Selected reading set' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual(inspectedIds);
+    expect(createSession.mock.calls[0][0].source).toBe('adaptive');
+  });
+
+  it('applies the selected passage count only on Apply and preserves main timing and reveal', async () => {
+    mount('/classroom/drill?section=rc&count=3&timing=standard&reveal=end_of_set');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
+    expect(createSession).not.toHaveBeenCalled();
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
+    expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('end_of_set');
+    commitDrawerIfOpen(); previewDrill();
+    await screen.findByRole('button', { name: 'Start this drill' });
+    expect(loadPassages).toHaveBeenLastCalledWith([1201]);
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual([1201]);
+    expect(createSession.mock.calls[0][0]).toMatchObject({ source: 'manual', reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 525 } });
+  });
+
+  it('keeps selected passages hidden by search or filters and applies their chosen order', async () => {
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
+    fireEvent.change(within(drawer).getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'PT 141' } });
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Move Passage 1201 earlier' }));
+    expect(within(drawer).getByRole('button', { name: 'Move Passage 1188 earlier' })).toBeInTheDocument();
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Customize drill' }));
+    const filters = await screen.findByRole('dialog', { name: 'Customize drill' });
+    fireEvent.click(within(filters).getByText('More specific filters'));
+    fireEvent.change(within(filters).getByRole('spinbutton', { name: 'Earliest PrepTest' }), { target: { value: '141' } });
+    fireEvent.click(within(filters).getByRole('button', { name: 'Apply' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Edit selection' }));
+    const reopened = await screen.findByRole('dialog', { name: 'Pick passages' });
+    const selectedRows = within(within(reopened).getByRole('list', { name: 'Selected passages' })).getAllByRole('listitem');
+    expect(selectedRows[0]).toHaveTextContent('1. Passage 1201');
+    expect(selectedRows[1]).toHaveTextContent('2. Passage 1188');
+    expect(within(reopened).getByText('Picks outside the current search or filters stay selected.')).toBeInTheDocument();
+    fireEvent.click(within(reopened).getByRole('button', { name: 'Apply' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('button', { name: 'Start this drill' });
+    expect(loadPassages).toHaveBeenLastCalledWith([1201, 1188]);
+  });
+
+  it('discards Customize changes until Apply and invalidates the preview only after applying', async () => {
+    mount('/classroom/drill?section=rc');
+    fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('button', { name: 'Start this drill' });
+    fireEvent.click(screen.getByRole('button', { name: 'Customize drill' }));
+    let drawer = await screen.findByRole('dialog', { name: 'Customize drill' });
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Law' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Cancel' }));
+    expect(await screen.findByRole('button', { name: 'Start this drill' })).toBeEnabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Customize drill' }));
+    drawer = await screen.findByRole('dialog', { name: 'Customize drill' });
+    expect(within(drawer).getByRole('button', { name: 'Law' })).toHaveAttribute('aria-pressed', 'false');
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Science' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
+    expect(await screen.findByRole('button', { name: 'Preview drill' })).toBeEnabled();
+    expect(screen.queryByRole('button', { name: 'Start this drill' })).not.toBeInTheDocument();
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('can pick an attempted passage when the entire default manual pool has been practiced', async () => {
+    const progress = await import('../api/rcProgress');
+    const history = new Map([11880, 12010, 12020].map(questionId => [questionId, {
+      questionId, attempts: 1, everIncorrect: true, incorrectOnLastTake: true, lastFirstTakeIncorrect: true,
+      incorrectCount: 1, answered: true, firstEverCorrect: false, firstTakeCorrect: false,
+      lastSeenAt: '2026-10-20T12:00:00Z', lastGradedAt: '2026-10-20T12:00:00Z',
+    }]));
+    vi.mocked(progress.getRcHistorySnapshot).mockResolvedValueOnce({ history, displayHistory: history, hasHiddenGradedResults: false });
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
+    expect(within(drawer).getByText('No passages match your search and filters. Your selection is kept.')).toBeInTheDocument();
+    expect(within(drawer).getByRole('button', { name: 'Apply' })).toBeDisabled();
+    fireEvent.click(within(drawer).getByText('Filter passages'));
+    fireEvent.change(within(drawer).getByRole('combobox', { name: 'Practice history' }), { target: { value: 'any' } });
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
+    expect(within(drawer).getByRole('button', { name: 'Apply' })).toBeEnabled();
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
+    previewDrill();
+    await screen.findByRole('button', { name: 'Start this drill' });
+    expect(loadPassages).toHaveBeenLastCalledWith([1188]);
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual([1188]);
+    expect(createSession.mock.calls[0][0].source).toBe('manual');
+  });
+
+  it.each(['Cancel', 'Close', 'Escape', 'outside'] as const)('discards filters on %s and returns focus to Customize drill', async dismiss => {
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    previewDrill();
+    await screen.findByRole('button', { name: 'Start this drill' });
+    const opener = screen.getByRole('button', { name: 'Customize drill' });
+    fireEvent.click(opener);
+    const drawer = await screen.findByRole('dialog', { name: 'Customize drill' });
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Law' }));
+    if (dismiss === 'Escape') fireEvent.keyDown(drawer, { key: 'Escape', code: 'Escape' });
+    else if (dismiss === 'outside') {
+      const overlay = document.querySelector<HTMLElement>('[data-state="open"].inset-0');
+      expect(overlay).not.toBeNull();
+      fireEvent.pointerDown(overlay!, { button: 0, ctrlKey: false, pointerType: 'mouse' });
+    } else fireEvent.click(within(drawer).getByRole('button', { name: dismiss }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await waitFor(() => expect(opener).toHaveFocus());
+    expect(screen.getByRole('button', { name: 'Start this drill' })).toBeEnabled();
+    fireEvent.click(opener);
+    expect(screen.getByRole('button', { name: 'Law' })).toHaveAttribute('aria-pressed', 'false');
+  });
+
+  it('keeps the exact inspected drill after applying an unchanged filters draft', async () => {
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    previewDrill();
+    await screen.findByRole('button', { name: 'Start this drill' });
+    const inspectedIds = [...loadPassages.mock.calls.at(-1)![0]];
+    fireEvent.click(screen.getByRole('button', { name: 'Customize drill' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Apply' }));
+    expect(await screen.findByRole('button', { name: 'Start this drill' })).toBeEnabled();
+    expect(loadPassages).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual(inspectedIds);
+  });
+
+  it('returns the manual catalog to its first page when draft filters narrow a later page', async () => {
+    const bank = await import('../lib/rcBank');
+    vi.mocked(bank.loadAllIndexPassages).mockResolvedValueOnce(Array.from({ length: 30 }, (_, index) => ({
+      passageId: 5000 + index, preptest: 101 + Math.floor(index / 4), section: 1, setNumber: index % 4 + 1,
+      title: `Pagination ${5000 + index}`, firstWords: 'Opening', topic: index < 5 ? 'Law' : 'Science',
+      format: 'Standard (Non-Comparative)', frameworks: [], difficulty: 3, questionCount: 1, questionIds: [(5000 + index) * 10],
+    })) as never);
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
+    const announcement = within(drawer).getByRole('status');
+    expect(announcement).toBeEmptyDOMElement();
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Next passages' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Next passages' }));
+    expect(within(drawer).getByText('Showing 25–30 of 30 passages.')).toBeInTheDocument();
+    fireEvent.click(within(drawer).getByText('Filter passages'));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Law' }));
+    expect(announcement).toBeEmptyDOMElement();
+    const catalog = within(drawer).getByRole('list', { name: 'Available passages' });
+    expect(within(catalog).getAllByRole('listitem')).toHaveLength(5);
+    expect(within(catalog).getByRole('button', { name: 'Add Pagination 5000' })).toBeInTheDocument();
+    expect(within(drawer).queryByText(/Showing 25/)).not.toBeInTheDocument();
+    fireEvent.click(within(catalog).getByRole('button', { name: 'Add Pagination 5000' }));
+    expect(announcement).toHaveTextContent('1 passage selected');
+    expect(announcement).not.toHaveTextContent('1 passages selected');
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
+    previewDrill();
+    await screen.findByRole('button', { name: 'Start this drill' });
+    expect(loadPassages).toHaveBeenLastCalledWith([5000]);
+  });
+});
+
 describe('RcHubSurface autostart', () => {
   it('opens the manual landing entry without selecting or starting any passages', async () => {
     mount('/classroom/drill?section=rc&builder=manual');
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Pick passages' })).toHaveAttribute('aria-pressed', 'true'));
+    expect(await screen.findByRole('heading', { name: 'Choose your next passage' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
     expect(await screen.findByRole('button', { name: 'Add Passage 1188' })).toBeEnabled();
+    expect(screen.queryByRole('combobox', { name: 'Timing' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('combobox', { name: 'Show answers' })).not.toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: 'Sort passages' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^More passages/ })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
+    const firstRow = within(screen.getByRole('list', { name: 'Available passages' })).getAllByRole('listitem')[0];
+    expect(firstRow.querySelector('details')).not.toHaveAttribute('open');
+    expect(within(firstRow).getByText('Some opening words')).not.toBeVisible();
     expect(createSession).not.toHaveBeenCalled();
   });
   beforeEach(() => {
@@ -169,9 +376,10 @@ describe('RcHubSurface autostart', () => {
     vi.mocked(exposure.getRcExposureHistory).mockRejectedValueOnce(new Error('offline'));
     mount('/classroom/drill?section=rc');
     await screen.findByText(/Recorded exposure could not be checked/);
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    expect(screen.getByRole('button', { name: 'No recorded exposure' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Not attempted' })).toBeEnabled();
+    openOptions();
+    expect(screen.getByRole('option', { name: 'No recorded exposure' })).toBeDisabled();
+    expect(screen.getByRole('option', { name: 'Not attempted' })).toBeEnabled();
+    commitDrawerIfOpen();
     expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
   });
 
@@ -180,10 +388,10 @@ describe('RcHubSurface autostart', () => {
     vi.mocked(exposure.getRcExposureHistory).mockResolvedValueOnce(new Set([1188]));
     mount('/classroom/drill?section=rc');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    fireEvent.click(screen.getByRole('button', { name: 'No recorded exposure' }));
+    openOptions();
+    selectStatus('No recorded exposure');
     fireEvent.click(screen.getByRole('checkbox', { name: 'Include passages whose earlier exposure is unknown' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(loadPassages.mock.calls[0][0]).not.toContain(1188);
     expect(screen.queryByText('What is the main point?')).not.toBeInTheDocument();
@@ -193,11 +401,14 @@ describe('RcHubSurface autostart', () => {
     const progress = await import('../api/rcProgress');
     vi.mocked(progress.getRcHistorySnapshot).mockResolvedValueOnce({ history: new Map(), displayHistory: new Map(), hasHiddenGradedResults: true });
     mount('/classroom/drill?section=rc');
-    await screen.findByText(/Some saved results are still hidden/);
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    expect(screen.getByRole('button', { name: 'Incorrect before' })).toBeEnabled();
-    expect(screen.getByRole('button', { name: 'Incorrect on last try' })).toBeEnabled();
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    openOptions();
+    expect(screen.getByRole('option', { name: 'Incorrect before' })).toBeEnabled();
+    expect(screen.getByRole('option', { name: 'Incorrect on last try' })).toBeEnabled();
+    fireEvent.click(screen.getByText('How adaptive selection works'));
+    expect(await within(screen.getByRole('dialog')).findByText(/Some saved results are still hidden/)).toBeInTheDocument();
     expect(screen.queryByText(/% correct/)).not.toBeInTheDocument();
+    commitDrawerIfOpen();
     expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
   });
   it.each(['Incorrect before', 'Incorrect on last try'])('previews only released misses with %s despite other hidden results', async label => {
@@ -208,9 +419,9 @@ describe('RcHubSurface autostart', () => {
       displayHistory: new Map([[11880, miss]]), hasHiddenGradedResults: true });
     mount('/classroom/drill?section=rc');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    fireEvent.click(screen.getByRole('button', { name: label }));
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    openOptions();
+    selectStatus(label);
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(loadPassages.mock.calls.at(-1)?.[0]).toEqual([1188]);
   });
@@ -225,9 +436,9 @@ describe('RcHubSurface autostart', () => {
       displayHistory: new Map([[11880, { ...hiddenEntry, firstTakeCorrect: null, firstEverCorrect: null, lastGradedAt: null }]]), hasHiddenGradedResults: true });
     mount('/classroom/drill?section=rc');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Any' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    openOptions();
+    openOptions(); selectStatus('Any');
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(loadPassages.mock.calls[0][0]).toEqual([1188]);
   });
@@ -238,8 +449,8 @@ describe('RcHubSurface autostart', () => {
     mount('/classroom/drill?saved=saved-fixed');
     await screen.findByText(/Opened Fixed passages/);
     expect(createSession).not.toHaveBeenCalled();
-    expect(screen.getByRole('button', { name: /After each question/ })).toHaveAttribute('aria-pressed', 'true');
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('per_question');
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByText(/questions in this fixed set have changed/);
     expect(screen.queryByRole('button', { name: 'Start this drill' })).toBeNull();
     expect(createSession).not.toHaveBeenCalled();
@@ -251,7 +462,7 @@ describe('RcHubSurface autostart', () => {
     await screen.findByText(/Opened Science recipe/);
     expect(createSession).not.toHaveBeenCalled();
     expect(screen.getByRole('textbox', { name: 'Minutes and seconds per passage' })).toHaveValue('10:00');
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' })); await screen.findByRole('button', { name: 'Start this drill' });
+    commitDrawerIfOpen(); previewDrill(); await screen.findByRole('button', { name: 'Start this drill' });
     expect(createSession).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
     await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
@@ -259,61 +470,63 @@ describe('RcHubSurface autostart', () => {
   });
   it('configures intent presets without creating work', async () => {
     mount('/classroom/drill'); await screen.findByRole('button', { name: 'Preview drill' });
-    fireEvent.click(screen.getByRole('button', { name: 'Four passages, then review' }));
-    expect(screen.getByRole('button', { name: /At the end/ })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('button', { name: /Standard pace/ })).toHaveAttribute('aria-pressed', 'true');
+    openSavedSettings(); fireEvent.click(screen.getByRole('button', { name: 'Four passages, then review' }));
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('end_of_set');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
     expect(createSession).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'One passage with feedback' }));
-    expect(screen.getByRole('button', { name: 'Untimed' })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('button', { name: /After each passage/ })).toHaveAttribute('aria-pressed', 'true');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('untimed');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('per_passage');
   });
   it('restores an owner timing default but explicit links win', async () => {
     localStorage.setItem('lsatu:rc-timing-default:v1:owner', JSON.stringify({ mode: 'custom', seconds: 600 }));
     const view = mount('/classroom/drill');
     expect(await screen.findByRole('textbox', { name: 'Minutes and seconds per passage' })).toHaveValue('10:00'); view.unmount();
     mount('/classroom/drill?timing=untimed'); await screen.findByRole('button', { name: 'Preview drill' });
-    expect(screen.getByRole('button', { name: 'Untimed' })).toHaveAttribute('aria-pressed', 'true');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('untimed');
   });
   it('saves timing only when requested and makes failed defaults honest', async () => {
     localStorage.setItem('lsatu:rc-timing-default:v1:owner', 'broken');
     mount('/classroom/drill'); await screen.findByText(/timing default could not be read/);
-    fireEvent.click(screen.getByRole('button', { name: /Standard pace/ }));
+    commitDrawerIfOpen(); fireEvent.change(screen.getByRole('combobox', { name: 'Timing' }), { target: { value: 'standard' } });
     expect(localStorage.getItem('lsatu:rc-timing-default:v1:owner')).toBe('broken');
-    fireEvent.click(screen.getByRole('button', { name: 'Save timing default on this device' }));
+    openSavedSettings(); fireEvent.click(screen.getByRole('button', { name: 'Save timing default on this device' }));
     expect(JSON.parse(localStorage.getItem('lsatu:rc-timing-default:v1:owner')!)).toEqual({ mode: 'standard', seconds: 525 });
   });
   it('clears just passage filters without resetting the drill timing', async () => {
     mount('/classroom/drill?timing=standard'); await screen.findByRole('button', { name: 'Preview drill' });
-    fireEvent.click(screen.getByRole('button', { name: 'Remove status filter' }));
-    expect(screen.queryByRole('button', { name: 'Remove status filter' })).toBeNull();
-    fireEvent.click(screen.getByRole('button', { name: 'Clear passage filters' }));
-    expect(screen.getByRole('button', { name: /Standard pace/ })).toHaveAttribute('aria-pressed', 'true');
+    openAdvancedOptions(); fireEvent.click(screen.getByRole('button', { name: 'Clear passage filters' }));
+    expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('any');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
   });
   it('sorts manual passages and reorders the actual inspected selection', async () => {
-    mount('/classroom/drill?passages=1188,1201'); await screen.findByRole('button', { name: 'Move Passage 1201 earlier' });
-    fireEvent.change(screen.getByRole('combobox', { name: 'Sort passages' }), { target: { value: 'title' } });
+    mount('/classroom/drill?passages=1188,1201'); await screen.findByText('2 selected');
+    openSelectedPassages(); fireEvent.change(screen.getByRole('combobox', { name: 'Sort passages' }), { target: { value: 'title' } });
     fireEvent.click(screen.getByRole('button', { name: 'Move Passage 1201 earlier' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('button', { name: 'Start this drill' });
     expect(loadPassages).toHaveBeenLastCalledWith([1201, 1188]);
     expect(createSession).not.toHaveBeenCalled();
   });
   it('requires explicit inclusion of unknown earlier exposure for strict selection', async () => {
     mount('/classroom/drill'); await screen.findByRole('button', { name: 'Preview drill' });
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    fireEvent.click(screen.getByRole('button', { name: 'No recorded exposure' }));
+    openOptions();
+    selectStatus('No recorded exposure');
+    commitDrawerIfOpen();
     expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    openOptions();
     const permission = screen.getByRole('checkbox', { name: 'Include passages whose earlier exposure is unknown' });
     expect(permission).not.toBeChecked(); fireEvent.click(permission);
+    commitDrawerIfOpen();
     expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
   });
   it('rechecks exposure at Start and preserves the selection instead of silently substituting', async () => {
     const exposure = await import('../api/rcExposure');
     mount('/classroom/drill'); await screen.findByRole('button', { name: 'Preview drill' });
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    fireEvent.click(screen.getByRole('button', { name: 'No recorded exposure' }));
+    openOptions();
+    selectStatus('No recorded exposure');
     fireEvent.click(screen.getByRole('checkbox', { name: 'Include passages whose earlier exposure is unknown' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('button', { name: 'Start this drill' });
     const selected = loadPassages.mock.calls.at(-1)![0];
     vi.mocked(exposure.getRcExposureHistory).mockResolvedValueOnce(new Set(selected));
@@ -461,7 +674,7 @@ describe('RcHubSurface autostart', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
     expect(createSession).not.toHaveBeenCalled();
     expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('region', { name: 'Selected reading set' });
     fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
     await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
@@ -502,14 +715,14 @@ describe('RcHubSurface autostart', () => {
       '/classroom/drill?section=rc&stage=type-drill&passages=1188,1201&reveal=end_of_set&secondsPerPassage=60',
       'section=rc&stage=type-drill&count=1',
     );
-    expect(await screen.findByText(/2 passages ·/)).toBeInTheDocument();
+    expect(await screen.findByText('2 selected')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'next link' }));
-    await waitFor(() => expect(screen.queryByText(/2 passages ·/)).not.toBeInTheDocument());
-    expect(screen.getByRole('button', { name: /After each passage/ })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('button', { name: 'Untimed' })).toHaveAttribute('aria-pressed', 'true');
+    await waitFor(() => expect(screen.queryByText('2 selected')).not.toBeInTheDocument());
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('per_passage');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('untimed');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(createSession).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
@@ -528,7 +741,7 @@ describe('RcHubSurface autostart', () => {
 
   it('inspects exact passages without exposing answer keys or creating an attempt', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201');
-    await screen.findByText(/2 passages ·/);
+    await screen.findByText('2 selected');
     fireEvent.click(screen.getAllByRole('button', { name: 'Preview drill' })[0]);
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(loadPassages).toHaveBeenCalledWith([1188, 1201]);
@@ -547,12 +760,12 @@ describe('RcHubSurface autostart', () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
     fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
-    fireEvent.click(screen.getByRole('button', { name: 'More passages' }));
+    fireEvent.click(screen.getByRole('button', { name: /^More passages/ }));
     expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
     expect(createSession).not.toHaveBeenCalled();
   });
 
-  it('keeps the picker bounded to forty rows and preserves selections across pages', async () => {
+  it('keeps the picker bounded to twelve rows and preserves selections across pages', async () => {
     const many = Array.from({ length: 100 }, (_, i) => ({
       passageId: 3000 + i, preptest: 101 + (i % 40), section: 1, setNumber: 1 + Math.floor(i / 40),
       title: `Many ${3000 + i}`, firstWords: 'Opening', topic: 'Science', format: 'Single', frameworks: [] as string[],
@@ -565,17 +778,17 @@ describe('RcHubSurface autostart', () => {
       await screen.findByRole('button', { name: 'Preview drill' });
       fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
       const list = screen.getByRole('list', { name: 'Available passages' });
-      expect(within(list).getAllByRole('listitem')).toHaveLength(40);
-      expect(screen.getByText('Showing 1–40 of 100 passages.')).toBeInTheDocument();
+      expect(within(list).getAllByRole('listitem')).toHaveLength(12);
+      expect(screen.getByText('Showing 1–12 of 100 passages.')).toBeInTheDocument();
       fireEvent.click(within(list).getByRole('button', { name: 'Add Many 3000' }));
       fireEvent.click(screen.getByRole('button', { name: 'Next passages' }));
-      expect(within(list).getAllByRole('listitem')).toHaveLength(40);
+      expect(within(list).getAllByRole('listitem')).toHaveLength(12);
       expect(within(list).queryByRole('button', { name: 'Remove Many 3000' })).not.toBeInTheDocument();
       fireEvent.click(screen.getByRole('button', { name: 'Previous passages' }));
       expect(within(list).getByRole('button', { name: 'Remove Many 3000' })).toBeInTheDocument();
       fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'Many 3005' } });
       expect(within(list).getAllByRole('listitem')).toHaveLength(1);
-      expect(screen.getByText(/1 passage matches your search, out of 100 passages that match your filters/)).toBeInTheDocument();
+      expect(screen.getByText(/1 selected · 1 passages match your search and manual filters/)).toBeInTheDocument();
     } finally {
       vi.mocked(bank.loadAllIndexPassages).mockReset().mockImplementation(async () =>
         [1188, 1201, 1202].map((passageId, i) => ({
@@ -589,15 +802,14 @@ describe('RcHubSurface autostart', () => {
     mount('/classroom/drill?section=rc&count=3');
     await screen.findByRole('button', { name: 'Preview drill' });
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
-    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
-    expect(screen.getByText('No passages selected')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
     fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'PT 141' } });
     const list = screen.getByRole('list', { name: 'Available passages' });
     expect(within(list).getAllByRole('listitem')).toHaveLength(1);
     fireEvent.click(within(list).getByRole('button', { name: 'Add Passage 1201' }));
     fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'PT 142' } });
-    expect(screen.getByRole('button', { name: 'Remove Passage 1201' })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    openSelectedPassages(); expect(screen.getByRole('button', { name: 'Remove Passage 1201 from selection' })).toBeInTheDocument();
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(loadPassages).toHaveBeenLastCalledWith([1201]);
     expect(screen.getAllByRole('button', { name: 'Start this drill' })).toHaveLength(1);
@@ -607,18 +819,18 @@ describe('RcHubSurface autostart', () => {
   it('uses only the active automatic draft and restores manual passages when switching back', async () => {
     mount('/classroom/drill?section=rc&passages=1188,1201');
     await screen.findByRole('button', { name: 'Choose for me' });
-    await screen.findByText(/2 passages ·/);
+    await screen.findByText('2 selected');
     fireEvent.click(screen.getByRole('button', { name: 'Choose for me' }));
     expect(screen.queryByRole('region', { name: 'Choose your passages' })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'More passages' })).toBeEnabled();
-    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    expect(screen.getByRole('button', { name: /^More passages/ })).toBeEnabled();
+    commitDrawerIfOpen(); previewDrill();
     await screen.findByRole('region', { name: 'Selected reading set' });
     fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
     await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
     expect(createSession.mock.calls[0][0].source).toBe('adaptive');
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
-    expect(screen.getByRole('region', { name: 'Choose your passages' })).toBeInTheDocument();
-    expect(within(screen.getByLabelText('Selected passages')).getByRole('button', { name: 'Remove Passage 1188' })).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Pick passages' })).toBeInTheDocument();
+    expect(within(screen.getByLabelText('Selected passages')).getByRole('button', { name: 'Remove Passage 1188 from selection' })).toBeInTheDocument();
   });
 });
 
@@ -637,7 +849,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     vi.mocked(progress.deleteSession).mockClear();
   });
 
-  const primary = () => screen.getAllByRole('button', { name: /^(Preview drill|Start this drill|Loading preview…|Starting…)$/ })[0];
+  const primary = () => { expect(screen.queryByRole('dialog')).not.toBeInTheDocument(); return screen.getAllByRole('button', { name: /^(Preview drill|Start this drill|Loading preview…|Starting…)$/ })[0]; };
   const launchSummary = () => screen.getByRole('region', { name: 'Launch summary' });
 
   it.each(['Not attempted', 'Incorrect before', 'Incorrect on last try', 'Any'])(
@@ -652,8 +864,8 @@ describe('RcHubSurface launch truth (#171)', () => {
       }));
       mount('/classroom/drill?section=rc&count=1');
       await waitFor(() => expect(release).toBeDefined());
-      fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-      fireEvent.click(screen.getByRole('button', { name: status }));
+      openOptions();
+      selectStatus(status); commitDrawerIfOpen();
       expect(primary()).toBeDisabled();
       fireEvent.click(primary());
       expect(loadPassages).not.toHaveBeenCalled();
@@ -695,18 +907,18 @@ describe('RcHubSurface launch truth (#171)', () => {
 
   it('times the hand-picked passages, not the stepper, and says the count is in passages', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201&timing=standard');
-    await screen.findByText(/2 passages ·/);
-    expect(screen.getByText('8:45 per passage · 17:30 for 2 passages')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'More passages' })).toBeDisabled();
-    expect(screen.getByText(/Using your 2 hand-picked passages/)).toBeInTheDocument();
-    expect(within(launchSummary()).getByText('2 hand-picked passages')).toBeInTheDocument();
-    expect(within(launchSummary()).getByText('Timed, 8:45 per passage (17:30 in all)')).toBeInTheDocument();
+    await screen.findByText('2 selected');
+    expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
+    expect(screen.queryByRole('button', { name: /^More passages/ })).not.toBeInTheDocument();
+    expect(screen.getByText('2 selected')).toBeInTheDocument();
+    expect(launchSummary()).not.toHaveTextContent('10 questions');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
   });
 
   it('keeps an invalid custom time editable, explains it, and blocks Inspect until it is valid', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
     await screen.findByRole('button', { name: 'Preview drill' });
-    fireEvent.click(screen.getByRole('button', { name: 'Custom' }));
+    commitDrawerIfOpen(); fireEvent.change(screen.getByRole('combobox', { name: 'Timing' }), { target: { value: 'custom' } });
     const field = screen.getByRole('textbox', { name: 'Minutes and seconds per passage' });
     fireEvent.change(field, { target: { value: '8:75' } });
     expect(field).toHaveValue('8:75');
@@ -732,13 +944,13 @@ describe('RcHubSurface launch truth (#171)', () => {
 
   it('counts launched questions from loaded content and launches exactly the inspected passages', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201&reveal=end_of_set');
-    await screen.findByText(/2 passages ·/);
+    await screen.findByText('2 selected');
     // The index says five questions each; nothing is promised before loading.
-    expect(within(launchSummary()).getByText('Preview to see the passages and exact question count')).toBeInTheDocument();
+    expect(launchSummary()).not.toHaveTextContent(/\d+ questions/);
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
     // The loaded passages carry one question each, and that is what is shown.
-    expect(within(launchSummary()).getByText('2 passages · 2 questions')).toBeInTheDocument();
+    expect(screen.getByText('2 passages · 2 questions inspected. Answers stay hidden.')).toBeInTheDocument();
     fireEvent.click(primary());
     await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
     expect(createSession.mock.calls[0][1]).toEqual([1188, 1201]);
@@ -752,21 +964,24 @@ describe('RcHubSurface launch truth (#171)', () => {
     vi.mocked(bank.loadAllIndexPassages).mockImplementationOnce(() => new Promise((resolve) => { releaseIndex = () => resolve(index); }));
     mount('/classroom/drill?section=rc&stage=type-drill');
     await screen.findByRole('button', { name: 'Preview drill' });
-    fireEvent.click(screen.getByRole('button', { name: /At the end/ }));
+    commitDrawerIfOpen(); fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
     await act(async () => releaseIndex());
     fireEvent.click(screen.getByRole('button', { name: 'Add Passage 1201' }));
+    commitDrawerIfOpen();
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
-    fireEvent.click(screen.getByRole('button', { name: 'Custom' }));
+    commitDrawerIfOpen(); fireEvent.change(screen.getByRole('combobox', { name: 'Timing' }), { target: { value: 'custom' } });
     expect(primary()).toHaveTextContent('Preview drill');
     const field = screen.getByRole('textbox', { name: 'Minutes and seconds per passage' });
     fireEvent.change(field, { target: { value: '0:00' } });
     expect(primary()).toBeDisabled();
     fireEvent.change(field, { target: { value: '1:00' } });
     fireEvent.blur(field);
-    expect(screen.getByRole('button', { name: /At the end/ })).toHaveAttribute('aria-pressed', 'true');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('end_of_set');
+    openSelectedPassages();
     expect(within(screen.getByRole('list', { name: 'Available passages' })).getByRole('button', { name: 'Remove Passage 1201' })).toHaveAttribute('aria-pressed', 'true');
+    commitDrawerIfOpen();
     fireEvent.click(primary());
     await waitFor(() => expect(primary()).toHaveTextContent('Start this drill'));
     fireEvent.click(primary());
@@ -781,7 +996,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     expect(screen.getByText(/Only 3 passages match/)).toBeInTheDocument();
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
-    expect(within(launchSummary()).getByText('3 passages · 3 questions')).toBeInTheDocument();
+    expect(within(launchSummary()).getByText('3 passages · 3 questions inspected. Answers stay hidden.')).toBeInTheDocument();
     expect(primary()).toBeDisabled();
     fireEvent.click(primary());
     expect(createSession).not.toHaveBeenCalled();
@@ -801,7 +1016,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     });
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
     fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
-    fireEvent.click(screen.getByRole('button', { name: 'More passages' }));
+    fireEvent.click(screen.getByRole('button', { name: /^More passages/ }));
     release();
     await waitFor(() => expect(primary()).toHaveTextContent('Preview drill'));
     expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
@@ -812,20 +1027,26 @@ describe('RcHubSurface launch truth (#171)', () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
     fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
-    fireEvent.click(screen.getByRole('button', { name: /At the end/ }));
+    commitDrawerIfOpen(); fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
     expect(screen.getByText(/settings changed. Preview the drill again/)).toBeInTheDocument();
     expect(primary()).toHaveTextContent('Preview drill');
   });
 
-  it('invalidates an adaptive inspection when switching to an empty manual selection', async () => {
+  it('keeps an adaptive inspection until a nonempty manual selection is applied', async () => {
     mount('/classroom/drill?section=rc&count=1');
     await waitFor(() => expect(primary()).toBeEnabled());
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(screen.getByRole('region', { name: 'Selected reading set' })).toBeInTheDocument();
+    expect(primary()).toHaveTextContent('Start this drill');
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Add Passage 1201' }));
+    commitDrawerIfOpen();
     expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
     expect(primary()).toHaveTextContent('Preview drill');
-    expect(primary()).toBeDisabled();
     expect(createSession).not.toHaveBeenCalled();
   });
 
@@ -833,7 +1054,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     loadPassages.mockImplementationOnce(async (ids: number[]) =>
       ids.map((passageId) => ({ passageId, preptest: 140, title: 'Empty', setNumber: 1, text: 'x', questions: [] })) as never);
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
-    await screen.findByText(/1 passage ·/);
+    await screen.findByText('1 selected');
     fireEvent.click(primary());
     expect(await screen.findByText(/loaded without its questions/)).toBeInTheDocument();
     expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
@@ -844,14 +1065,15 @@ describe('RcHubSurface launch truth (#171)', () => {
     vi.mocked(bank.loadAllIndexPassages).mockRejectedValueOnce(new Error('offline'));
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
     expect(await screen.findByText(/The passage list could not be loaded\./)).toBeInTheDocument();
-    expect(screen.getByText('Passage list unavailable')).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent('The passage list could not be loaded.');
     expect(screen.queryByText(/Choosing from 0 of 0/)).not.toBeInTheDocument();
-    expect(within(launchSummary()).getByText('Preview to see the passages and exact question count')).toBeInTheDocument();
+    expect(launchSummary()).not.toHaveTextContent(/\d+ questions/);
     expect(primary()).toBeDisabled();
 
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
-    expect(await screen.findByText('3 passages match your filters')).toBeInTheDocument();
-    expect(primary()).toBeEnabled();
+    await waitFor(() => expect(primary()).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    expect(within(screen.getByRole('list', { name: 'Available passages' })).getAllByRole('listitem')).toHaveLength(3);
   });
 
   it('keeps hand-picks but blocks launch when a refresh fails', async () => {
@@ -861,13 +1083,13 @@ describe('RcHubSurface launch truth (#171)', () => {
     // the passage list after the hand-picks were already applied.
     vi.mocked(progress.getQuestionHistory).mockRejectedValueOnce(new Error('offline'));
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201');
-    await screen.findByText(/2 passages ·/);
+    await screen.findByText('2 selected');
     expect(screen.getByText(/answer history could not be loaded/)).toBeInTheDocument();
 
     vi.mocked(bank.loadAllIndexPassages).mockRejectedValueOnce(new Error('offline'));
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
     expect(await screen.findByText(/Your choices are kept/)).toBeInTheDocument();
-    expect(screen.getByText(/2 passages ·/)).toBeInTheDocument();
+    expect(screen.getByText('2 selected')).toBeInTheDocument();
     for (const button of screen.getAllByRole('button', { name: 'Preview drill' })) expect(button).toBeDisabled();
     expect(loadPassages).not.toHaveBeenCalled();
   });
@@ -876,7 +1098,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     let finish: (value: RcDrillSession) => void = () => {};
     createSession.mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
-    await screen.findByText(/1 passage ·/);
+    await screen.findByText('1 selected');
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
     const startButton = primary();
@@ -897,13 +1119,13 @@ describe('RcHubSurface launch truth (#171)', () => {
     createSession.mockRejectedValueOnce(new Error('network reset'));
     getSession.mockResolvedValueOnce(null).mockRejectedValueOnce(new Error('offline'));
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
-    await screen.findByText(/questions? selected$/);
+    await screen.findByText('1 selected');
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
     fireEvent.click(primary());
     await screen.findByText(/Press Start again to retry this exact launch/);
     const [config, passageIds, request] = createSession.mock.calls[0];
-    fireEvent.click(screen.getByRole('button', { name: /At the end/ }));
+    commitDrawerIfOpen(); fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
     getSession.mockResolvedValueOnce({ id: request!.id, userId: request!.actorId, config, passageIds, status: 'in_progress' } as RcDrillSession);
     fireEvent.click(screen.getByRole('button', { name: 'Retry original launch' }));
     await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringContaining('sessionId=' + request!.id), { replace: undefined }));
@@ -919,7 +1141,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     fireEvent.click(primary());
     await screen.findByText(/Press Start again to retry this exact launch/);
     const original = createSession.mock.calls[0];
-    fireEvent.click(screen.getByRole('button', { name: 'More passages' }));
+    fireEvent.click(screen.getByRole('button', { name: /^More passages/ }));
     fireEvent.click(screen.getByRole('button', { name: 'Retry original launch' }));
     await waitFor(() => expect(createSession).toHaveBeenCalledTimes(2));
     expect(createSession.mock.calls[1]).toEqual(original);
@@ -927,7 +1149,7 @@ describe('RcHubSurface launch truth (#171)', () => {
   it('cannot create another row while the exact pending lookup still fails', async () => {
     getSession.mockRejectedValue(new Error('offline'));
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
-    await screen.findByText(/questions? selected$/); fireEvent.click(primary());
+    await screen.findByText('1 selected'); fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' }); fireEvent.click(primary());
     await screen.findByText(/Press Start again to retry this exact launch/);
     fireEvent.click(screen.getByRole('button', { name: 'Retry original launch' }));
@@ -939,7 +1161,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     let finish!: (value: RcDrillSession) => void;
     createSession.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
     const view = mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
-    await screen.findByText(/questions? selected$/); fireEvent.click(primary());
+    await screen.findByText('1 selected'); fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' }); fireEvent.click(primary());
     await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
     const [config, passageIds, request] = createSession.mock.calls[0];
@@ -954,7 +1176,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     createSession.mockRejectedValueOnce(new Error('network reset'));
     getSession.mockResolvedValueOnce(null).mockRejectedValueOnce(new Error('offline'));
     const first = mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
-    await screen.findByText(/questions? selected$/); fireEvent.click(primary());
+    await screen.findByText('1 selected'); fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' }); fireEvent.click(primary());
     await screen.findByText(/Press Start again to retry this exact launch/);
     const [config, passageIds, request] = createSession.mock.calls[0];
@@ -974,7 +1196,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     sessionStorage.setItem('lsatu:rc-pending-launch:v1:owner', '{broken');
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
     await screen.findByText(/pending reading drill could not be verified/);
-    await screen.findByText(/questions? selected$/); fireEvent.click(primary());
+    await screen.findByText('1 selected'); fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' }); fireEvent.click(primary());
     expect(createSession).not.toHaveBeenCalled();
   });
@@ -982,7 +1204,7 @@ describe('RcHubSurface launch truth (#171)', () => {
   it('inspects without creating, deleting, or listing sessions', async () => {
     const progress = await import('../api/rcProgress');
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201');
-    await screen.findByText(/2 passages ·/);
+    await screen.findByText('2 selected');
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(createSession).not.toHaveBeenCalled();
@@ -1040,21 +1262,23 @@ describe('RcHubSurface launch truth (#171)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
 
     // Default status filter is Fresh: only passage 1202 (not_attempted) matches
-    const list = await screen.findByRole('list', { name: 'Available passages' });
+    let list = await screen.findByRole('list', { name: 'Available passages' });
     expect(within(list).getAllByRole('listitem')).toHaveLength(1);
     expect(within(list).getByText('Passage 1202')).toBeInTheDocument();
     expect(within(list).getByText('Not attempted')).toBeInTheDocument();
 
     // Switch filter to Any: shows Skipped (1188), Partial · 1 missed (1201), and Not attempted (1202)
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Any' }));
+    fireEvent.click(within(list).getByRole('button', { name: 'Add Passage 1202' })); commitDrawerIfOpen();
+    openOptions(); selectStatus('Any'); commitDrawerIfOpen(); openSelectedPassages();
+    list = screen.getByRole('list', { name: 'Available passages' });
     expect(within(list).getAllByRole('listitem')).toHaveLength(3);
     expect(within(list).getByText('Skipped')).toBeInTheDocument();
     expect(within(list).getByText('Partial · 1 missed')).toBeInTheDocument();
     expect(within(list).getByText('Not attempted')).toBeInTheDocument();
 
     // Switch filter to Incorrect on last try: passage 1201 still matches even though reviewCorrected is true
-    fireEvent.click(screen.getByRole('button', { name: 'Incorrect on last try' }));
+    commitDrawerIfOpen(); openOptions(); selectStatus('Incorrect on last try'); commitDrawerIfOpen(); openSelectedPassages();
+    list = screen.getByRole('list', { name: 'Available passages' });
     expect(within(list).getAllByRole('listitem')).toHaveLength(1);
     expect(within(list).getByText('Passage 1201')).toBeInTheDocument();
   });
@@ -1068,7 +1292,7 @@ describe('RcHubSurface launch truth (#171)', () => {
         }),
     );
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
-    await screen.findByText(/1 passage ·/);
+    await screen.findByText('1 selected');
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
     fireEvent.click(primary());
@@ -1098,7 +1322,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     createSession.mockRejectedValueOnce(new Error('network reset'));
     getSession.mockResolvedValueOnce(null).mockRejectedValueOnce(new Error('offline'));
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
-    await screen.findByText(/1 passage ·/);
+    await screen.findByText('1 selected');
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
     fireEvent.click(primary());
@@ -1115,46 +1339,55 @@ describe('RcHubSurface launch truth (#171)', () => {
     await screen.findByText(/Opened Mode saved work/);
     const readCount = vi.mocked(getRcSavedSet).mock.calls.length;
     fireEvent.click(screen.getByRole('button', { name: mode === 'fixed' ? 'Choose for me' : 'Pick passages' }));
-    fireEvent.click(screen.getByRole('button', { name: /At the end/ }));
+    if (mode === 'recipe') { fireEvent.click(screen.getByRole('button', { name: 'Add Passage 1188' })); commitDrawerIfOpen(); }
+    commitDrawerIfOpen(); fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
     fireEvent.click(screen.getByRole('button', { name: mode === 'fixed' ? 'Pick passages' : 'Choose for me' }));
+    commitDrawerIfOpen();
     expect(vi.mocked(getRcSavedSet)).toHaveBeenCalledTimes(readCount);
-    expect(screen.getByRole('button', { name: /At the end/ })).toHaveAttribute('aria-pressed', 'true');
-    if (mode === 'fixed') expect(within(screen.getByLabelText('Selected passages')).getByRole('button', { name: 'Remove Passage 1188' })).toBeInTheDocument();
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('end_of_set');
+    if (mode === 'fixed') expect(screen.getByText('1 selected')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
   });
 
   it('syncs the mode URL without resetting either drill draft or router return state', async () => {
     render(<MemoryRouter initialEntries={[{ pathname: '/practice/drills', search: '?section=rc&builder=automatic&count=3', state: { fromRcLanding: true } }]}><RcHubSurface embedded showHistory={false} /><ModeLocationProbe /></MemoryRouter>);
     await screen.findByRole('button', { name: 'Preview drill' });
-    fireEvent.click(screen.getByRole('button', { name: 'Custom' }));
+    commitDrawerIfOpen(); fireEvent.change(screen.getByRole('combobox', { name: 'Timing' }), { target: { value: 'custom' } });
     fireEvent.change(screen.getByRole('textbox', { name: 'Minutes and seconds per passage' }), { target: { value: '10:30' } });
-    fireEvent.click(screen.getByRole('button', { name: /At the end/ }));
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Incorrect before' }));
+    commitDrawerIfOpen(); fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
+    openOptions();
+    selectStatus('Incorrect before');
+    commitDrawerIfOpen();
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    fireEvent.click(within(screen.getByRole('list', { name: 'Available passages' })).getByRole('button', { name: 'Add Passage 1188' }));
+    commitDrawerIfOpen();
     expect(screen.getByTestId('mode-location')).toHaveTextContent('builder=manual');
     expect(screen.getByTestId('mode-location')).toHaveTextContent('fromRcLanding');
-    fireEvent.click(within(screen.getByRole('list', { name: 'Available passages' })).getByRole('button', { name: 'Add Passage 1188' }));
+    openAdvancedOptions();
     fireEvent.change(screen.getByRole('spinbutton', { name: 'Earliest PrepTest' }), { target: { value: '' } });
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
     fireEvent.click(screen.getByRole('button', { name: 'Choose for me' }));
     expect(screen.getByTestId('mode-location')).toHaveTextContent('builder=automatic');
-    expect(screen.getByRole('button', { name: 'Incorrect before' })).toHaveClass('rc-active');
+    openOptions(); expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('incorrect_before'); commitDrawerIfOpen();
     expect(screen.getByRole('textbox', { name: 'Minutes and seconds per passage' })).toHaveValue('10:30');
-    expect(screen.getByRole('button', { name: /At the end/ })).toHaveAttribute('aria-pressed', 'true');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('end_of_set');
     expect(within(screen.getByRole('group', { name: 'Passages' })).getByText('3')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
-    expect(within(screen.getByLabelText('Selected passages')).getByRole('button', { name: 'Remove Passage 1188' })).toBeInTheDocument();
-    expect(screen.getByRole('spinbutton', { name: 'Earliest PrepTest' })).toHaveValue(null);
-    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    expect(within(screen.getByLabelText('Selected passages')).getByRole('button', { name: 'Remove Passage 1188 from selection' })).toBeInTheDocument();
+    commitDrawerIfOpen(); openAdvancedOptions();
+    expect(screen.getByRole('spinbutton', { name: 'Earliest PrepTest' })).toHaveValue(101);
   });
 
-  it('does not report timing for an inactive automatic count in an empty manual draft', async () => {
+  it('keeps automatic timing and count committed while an empty manual draft cannot apply', async () => {
     mount('/classroom/drill?section=rc&count=3&timing=standard');
     await screen.findByRole('button', { name: 'Preview drill' });
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
-    expect(screen.getByText(/no passages to time yet/)).toBeInTheDocument();
-    expect(within(screen.getByRole('region', { name: 'Launch summary' })).getByText('No passages selected')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
+    expect(within(screen.getByRole('group', { name: 'Passages' })).getByText('3')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
   });
 
   it.each(['PT140 S1 P1', '140.1.1', 'Passage 1188'])(
@@ -1172,49 +1405,48 @@ describe('RcHubSurface launch truth (#171)', () => {
   it('preserves each mode filter draft independently', async () => {
     mount('/classroom/drill?section=rc');
     await screen.findByRole('button', { name: 'Preview drill' });
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Incorrect before' }));
+    openOptions();
+    selectStatus('Incorrect before');
+    commitDrawerIfOpen();
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
-    expect(screen.getByRole('button', { name: 'Not attempted' })).toHaveClass('rc-active');
-    fireEvent.click(screen.getByRole('button', { name: 'Any' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Add Passage 1188' })); commitDrawerIfOpen();
+    openOptions(); expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('fresh');
+    selectStatus('Any'); commitDrawerIfOpen();
     fireEvent.click(screen.getByRole('button', { name: 'Choose for me' }));
-    expect(screen.getByRole('button', { name: 'Incorrect before' })).toHaveClass('rc-active');
+    openOptions(); expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('incorrect_before'); commitDrawerIfOpen();
     fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
-    expect(screen.getByRole('button', { name: 'Any' })).toHaveClass('rc-active');
+    commitDrawerIfOpen(); openOptions(); expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('any');
   });
 
   it('keeps invalid PrepTest bounds visible and blocks preview until corrected', async () => {
     mount('/classroom/drill?section=rc');
     await screen.findByRole('button', { name: 'Preview drill' });
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
+    openAdvancedOptions();
     const minimum = screen.getByRole('spinbutton', { name: 'Earliest PrepTest' });
     const maximum = screen.getByRole('spinbutton', { name: 'Latest PrepTest' });
     fireEvent.change(minimum, { target: { value: '158' } });
     fireEvent.change(maximum, { target: { value: '140' } });
     expect(maximum).toHaveValue(140);
     expect(maximum).toHaveAttribute('aria-invalid', 'true');
-    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
     fireEvent.change(maximum, { target: { value: '158' } });
     expect(maximum).toHaveAttribute('aria-invalid', 'false');
-    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeEnabled();
   });
 
   it('resets only filters and preserves timing and reveal on embedded Create view', async () => {
     mount('/classroom/drill?section=rc&count=3&timing=standard&reveal=end_of_set');
     await screen.findByRole('button', { name: 'Preview drill' });
 
-    fireEvent.click(screen.getByRole('button', { name: 'Advanced filters' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Incorrect before' }));
-    expect(screen.getByRole('button', { name: 'Incorrect before' })).toHaveClass('rc-active');
+    openOptions();
+    selectStatus('Incorrect before');
+    expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('incorrect_before');
 
     fireEvent.click(screen.getByRole('button', { name: 'Reset filters' }));
 
-    expect(screen.getByRole('button', { name: 'Not attempted' })).toHaveClass('rc-active');
-    expect(screen.getByRole('button', { name: /Standard pace/ })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('button', { name: /At the end/ })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
+    expect(screen.getByRole('combobox', { name: 'Practice history' })).toHaveValue('fresh');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
+    commitDrawerIfOpen(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('end_of_set');
     expect(navigate).not.toHaveBeenCalled();
   });
 });
