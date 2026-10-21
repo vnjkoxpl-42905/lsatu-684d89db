@@ -1,0 +1,194 @@
+
+
+
+
+/*
+ * Spreeder palette, captured live 2026-10-13 (research/2026-10-13-spreeder-reconstruction-spec.md).
+ * The whole app follows the reading theme, as Spreeder does. Values marked "inferred" were not
+ * observed directly.
+ */
+
+  .rc-root {
+    --rc-green: #34ad07;
+    --rc-blue: #0a85ff;
+    --rc-slider: #3e92d7;
+    --rc-addtext-bg: #073555;
+    --rc-addtext-fg: #009cdb;
+    --rc-cover: #009cdb;
+    --radius: 0.25rem;
+  }
+
+  .rc-root[data-rc-theme="light"] {
+    --rc-page: #ffffff;
+    --rc-surface: #ffffff;
+    --rc-text: #424242;
+    --rc-text-2: #757575;
+    --rc-strong: rgba(0, 0, 0, 0.87);
+    --rc-read: #000000;
+    --rc-dim: #cbcbcb;
+    --rc-card: #f5f5f5; /* inferred */
+    --rc-dialog: #ffffff;
+    --rc-dialog-border: transparent;
+    --rc-dialog-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
+    --rc-backdrop: rgba(0, 0, 0, 0.55);
+    --rc-outline: #cccccc;
+    --rc-outline-2: #cccccc;
+    --rc-bottombar: rgba(255, 255, 255, 0.85);
+    --rc-bottombar-border: #cccccc;
+    --rc-menu: #ffffff;
+    --rc-sheet: #ffffff;
+    --rc-sheet-title: #666666;
+    --rc-tag-list-border: rgba(0, 0, 0, 0.12);
+    --rc-btn-secondary-border: #cccccc;
+    --rc-btn-disabled-bg: rgba(0, 0, 0, 0.12);
+    --rc-btn-disabled-fg: rgba(0, 0, 0, 0.26);
+    --rc-field-line: #b3b3b3;
+    --rc-empty-circle: #757575;
+    --rc-menu-hover: rgba(0, 0, 0, 0.04);
+    --rc-sidenav: #ffffff; /* inferred */
+    --rc-nav-text: #424242; /* inferred */
+    --rc-nav-hover: rgba(0, 0, 0, 0.06); /* inferred */
+    --rc-nav-active-bg: #e3f3dc; /* inferred */
+    --rc-nav-active-fg: #34ad07; /* inferred */
+    --rc-searchbox: #f2f2f2; /* inferred */
+    --rc-tab-idle: #757575;
+    --rc-ink: rgba(52, 173, 7, 0.15);
+    --rc-fontsel-bg: #eeeeee;
+    --rc-keycap: #e8e8e8;
+    --rc-popover: #ffffff;
+  }
+
+  .rc-root[data-rc-theme="dark"] {
+    --rc-page: #000000;
+    --rc-surface: #000000;
+    --rc-text: #ffffff;
+    --rc-text-2: #ffffff;
+    --rc-strong: #ffffff;
+    --rc-read: #ffffff;
+    --rc-dim: #444444;
+    --rc-card: #252525;
+    --rc-dialog: #000000;
+    --rc-dialog-border: transparent;
+    --rc-dialog-shadow: -1px 4px 29px 0 rgba(255, 255, 255, 0.4);
+    --rc-backdrop: rgba(110, 118, 125, 0.4);
+    --rc-outline: #cccccc;
+    --rc-outline-2: #444444;
+    --rc-bottombar: rgba(0, 0, 0, 0.8);
+    --rc-bottombar-border: #121313;
+    --rc-menu: #252525;
+    --rc-sheet: #1f1f1f;
+    --rc-sheet-title: #666666;
+    --rc-tag-list-border: #444444;
+    --rc-btn-secondary-border: #444444;
+    --rc-btn-disabled-bg: rgba(0, 0, 0, 0.12);
+    --rc-btn-disabled-fg: #444444;
+    --rc-field-line: #b3b3b3;
+    --rc-empty-circle: #1f1f1f;
+    --rc-menu-hover: rgba(255, 255, 255, 0.08);
+    --rc-sidenav: rgba(0, 0, 0, 0.85);
+    --rc-nav-text: #ffffff;
+    --rc-nav-hover: #2c2c2c;
+    --rc-nav-active-bg: #1a3b13;
+    --rc-nav-active-fg: #3aab1f;
+    --rc-searchbox: #252525;
+    --rc-tab-idle: #ffffff;
+    --rc-ink: rgba(113, 241, 65, 0.15);
+    --rc-fontsel-bg: transparent;
+    --rc-keycap: #3a3a3a;
+    --rc-popover: #252525;
+  }
+
+  .rc-root[data-rc-theme="high_contrast"] {
+    --rc-page: #121212;
+    --rc-surface: #1e1e1e;
+    --rc-text: #ffffff;
+    --rc-text-2: #e0e0e0;
+    --rc-strong: #ffffff;
+    --rc-read: #ffffff;
+    --rc-dim: #444444;
+    --rc-card: #242424;
+    --rc-dialog: #242424;
+    --rc-dialog-border: #6c6c6c;
+    --rc-dialog-shadow: -1px 4px 29px 0 rgba(255, 255, 255, 0.4);
+    --rc-backdrop: rgba(110, 118, 125, 0.4);
+    --rc-outline: #444444;
+    --rc-outline-2: #444444;
+    --rc-bottombar: #1a1a1a;
+    --rc-bottombar-border: #6c6c6c;
+    --rc-menu: #242424;
+    --rc-sheet: #1f1f1f;
+    --rc-sheet-title: #666666;
+    --rc-tag-list-border: #444444;
+    --rc-btn-secondary-border: #444444;
+    --rc-btn-disabled-bg: rgba(0, 0, 0, 0.12);
+    --rc-btn-disabled-fg: #444444;
+    --rc-field-line: #b3b3b3;
+    --rc-empty-circle: #1f1f1f;
+    --rc-menu-hover: rgba(255, 255, 255, 0.08);
+    --rc-sidenav: #1a1a1a; /* inferred */
+    --rc-nav-text: #ffffff;
+    --rc-nav-hover: #2c2c2c;
+    --rc-nav-active-bg: #1a3b13;
+    --rc-nav-active-fg: #3aab1f;
+    --rc-searchbox: #242424;
+    --rc-tab-idle: #e0e0e0;
+    --rc-ink: rgba(113, 241, 65, 0.15);
+    --rc-fontsel-bg: transparent;
+    --rc-keycap: #3a3a3a;
+    --rc-popover: #242424;
+  }
+
+  .rc-root {
+    background: var(--rc-page);
+    color: var(--rc-text);
+    font-family: Poppins, sans-serif;
+  }
+  .rc-root * { border-color: var(--rc-outline); }
+  /* Spreeder styles.css: 8px scrollbar, white rounded track, #9b9b9b thumb (all themes). */
+  .rc-root ::-webkit-scrollbar { width: 8px; height: 8px; background-color: #fff; }
+  .rc-root ::-webkit-scrollbar-track { background-color: #fff; border-radius: 8px; }
+  .rc-root ::-webkit-scrollbar-thumb { border-radius: 8px; background-color: #9b9b9b; }
+  .rc-icon svg { width: 100%; height: 100%; fill: currentColor; }
+
+
+  .rc-outline-btn {
+    @apply inline-flex items-center justify-center rounded px-4 text-sm font-medium transition;
+    height: 36px;
+    border: 0.8px solid var(--rc-btn-secondary-border);
+    color: var(--rc-strong);
+  }
+  .rc-outline-btn:hover { background: var(--rc-menu-hover); }
+  .rc-green-btn {
+    @apply inline-flex items-center justify-center rounded px-4 text-sm font-medium text-white transition;
+    height: 38px;
+    background: var(--rc-green);
+    border: 0.8px solid var(--rc-green);
+  }
+  .rc-green-btn:disabled { opacity: 0.4; cursor: default; }
+  .rc-menu {
+    @apply rounded py-2 text-[15px];
+    background: var(--rc-menu);
+    color: var(--rc-text);
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  }
+  .rc-menu-item {
+    @apply flex w-full items-center gap-3 px-4 text-left;
+    height: 48px;
+  }
+  .rc-menu-item:hover, .rc-menu-item[data-active="true"] { background: var(--rc-menu-hover); }
+
+.rc-root .material-icons { font-family: 'Material Icons'; font-weight: normal; font-style: normal; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }
+.rc-root { min-height: 100vh; }
+@media (min-width: 1181px) {
+  .rc-root .rc-reader-footer { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .rc-root .rc-reader-keyboard { display: flex; }
+  .rc-root .rc-reader-controls { order: 0; margin: 0; justify-content: center; }
+  .rc-root .rc-reader-progress { order: 0; padding-left: 100px; line-height: 31px; }
+}
+@media (min-width: 1380px) { .rc-root .rc-reading-stage { width: 72%; } }
+@media (max-width: 480px) {
+  .rc-root .rc-reader-footer { padding-left: 8px; padding-right: 8px; }
+  .rc-root .rc-reader-progress { font-size: 11px; }
+  .rc-root .rc-reader-controls { gap: 8px; }
+  .rc-root .rc-reader-controls > button { width: 70px; }
+}

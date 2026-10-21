@@ -1,0 +1,2674 @@
+{
+ "slug": "read-recall-colour-pt102-s3",
+ "title": "Read, Recall, Colour \u00b7 PT102 Section 3",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT102.S3",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT102_S3_Q1",
+   "prompt": "Director of Ace Manufacturing Company: Our management consultant proposes that we reassign staff so that all employees are doing both what they like to do and what they do well. This, she says, will \"increase productivity by fully exploiting our available resources.\" But Ace Manufacturing has a long-standing commitment not to exploit its workers. Therefore, implementing her recommendations would cause us to violate our own policy.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A director is speaking. \u00b7 The director is at Ace Manufacturing Company. \u00b7 A management consultant makes a proposal. \u00b7 The consultant is theirs. \u00b7 The proposal is to reassign staff. \u00b7 The aim is that employees do what they like to do. \u00b7 They should also be doing what they do well. \u00b7 This applies to all employees. (2) This is what she says it will do. \u00b7 It will increase productivity. \u00b7 The way is by exploiting resources. \u00b7 The resources are their available ones. \u00b7 The exploiting is full. (3) This is a contrast. \u00b7 Ace Manufacturing has a commitment. \u00b7 The commitment is long-standing. \u00b7 The commitment is not to exploit its workers. (4) This is the conclusion. \u00b7 It is about implementing her recommendations. \u00b7 Doing so would cause a violation. \u00b7 What would be violated is their own policy.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Director of Ace Manufacturing Company: Our management consultant proposes that we reassign staff so that all employees are doing both what they like to do and what they do well.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A director is speaking."
+      },
+      {
+       "n": 2,
+       "text": "The director is at Ace Manufacturing Company."
+      },
+      {
+       "n": 3,
+       "text": "A management consultant makes a proposal."
+      },
+      {
+       "n": 4,
+       "text": "The consultant is theirs."
+      },
+      {
+       "n": 5,
+       "text": "The proposal is to reassign staff."
+      },
+      {
+       "n": 6,
+       "text": "The aim is that employees do what they like to do."
+      },
+      {
+       "n": 7,
+       "text": "They should also be doing what they do well."
+      },
+      {
+       "n": 8,
+       "text": "This applies to all employees."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This, she says, will \"increase productivity by fully exploiting our available resources.\"",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is what she says it will do."
+      },
+      {
+       "n": 2,
+       "text": "It will increase productivity."
+      },
+      {
+       "n": 3,
+       "text": "The way is by exploiting resources."
+      },
+      {
+       "n": 4,
+       "text": "The resources are their available ones."
+      },
+      {
+       "n": 5,
+       "text": "The exploiting is full."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "But Ace Manufacturing has a long-standing commitment not to exploit its workers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Ace Manufacturing has a commitment."
+      },
+      {
+       "n": 3,
+       "text": "The commitment is long-standing."
+      },
+      {
+       "n": 4,
+       "text": "The commitment is not to exploit its workers."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore, implementing her recommendations would cause us to violate our own policy.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about implementing her recommendations."
+      },
+      {
+       "n": 3,
+       "text": "Doing so would cause a violation."
+      },
+      {
+       "n": 4,
+       "text": "What would be violated is their own policy."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if \"exploit\" is used in two different senses?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q1",
+     "qnum": 1,
+     "question_type": "Classic Flaw",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT102_S3_Q2",
+   "prompt": "A large number of drivers routinely violate highway speed limits. Since driving at speeds that exceed posted limits is a significant factor in most accidents, installing devices in all cars that prevent those cars from traveling faster than the speed limit would prevent most accidents.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Drivers violate speed limits. \u00b7 The limits are highway speed limits. \u00b7 A large number of drivers do this. \u00b7 They do it routinely. (2) This is the reason given. \u00b7 It is about driving above the posted limits. \u00b7 That is a factor in accidents. \u00b7 The factor is significant. \u00b7 This holds for most accidents. (3) This is the conclusion. \u00b7 It is about installing devices. \u00b7 The devices would go in all cars. \u00b7 The devices prevent cars traveling faster than the speed limit. \u00b7 Doing this would prevent accidents. \u00b7 It would prevent most of them.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A large number of drivers routinely violate highway speed limits.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Drivers violate speed limits."
+      },
+      {
+       "n": 2,
+       "text": "The limits are highway speed limits."
+      },
+      {
+       "n": 3,
+       "text": "A large number of drivers do this."
+      },
+      {
+       "n": 4,
+       "text": "They do it routinely."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Since driving at speeds that exceed posted limits is a significant factor in most accidents,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the reason given."
+      },
+      {
+       "n": 2,
+       "text": "It is about driving above the posted limits."
+      },
+      {
+       "n": 3,
+       "text": "That is a factor in accidents."
+      },
+      {
+       "n": 4,
+       "text": "The factor is significant."
+      },
+      {
+       "n": 5,
+       "text": "This holds for most accidents."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "installing devices in all cars that prevent those cars from traveling faster than the speed limit would prevent most accidents.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about installing devices."
+      },
+      {
+       "n": 3,
+       "text": "The devices would go in all cars."
+      },
+      {
+       "n": 4,
+       "text": "The devices prevent cars traveling faster than the speed limit."
+      },
+      {
+       "n": 5,
+       "text": "Doing this would prevent accidents."
+      },
+      {
+       "n": 6,
+       "text": "It would prevent most of them."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the devices are dangerous, and would cause more accidents than speeding?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q2",
+     "qnum": 2,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT102_S3_Q3",
+   "prompt": "In a recession, a decrease in consumer spending causes many businesses to lay off workers or even to close. Workers who lose their jobs in a recession usually cannot find new jobs. The result is an increase in the number of people who are jobless. Recovery from a recession is defined by an increase in consumer spending and an expansion of business activity that creates a need for additional workers. But businesspeople generally have little confidence in the economy after a recession and therefore delay hiring additional workers as long as possible.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a recession. \u00b7 Consumer spending goes down. \u00b7 The decrease causes an effect on businesses. \u00b7 Many businesses lay off workers. \u00b7 Or they even close. (2) This is about workers who lose their jobs. \u00b7 They lose them in a recession. \u00b7 They cannot find new jobs. \u00b7 This is usually so. (3) This is the result. \u00b7 There is an increase. \u00b7 What increases is the number of people who are jobless. (4) This defines recovery from a recession. \u00b7 Consumer spending goes up. \u00b7 There is an expansion of business activity. \u00b7 The expansion creates a need. \u00b7 The need is for additional workers. (5) This is a contrast. \u00b7 Businesspeople have little confidence in the economy. \u00b7 This is after a recession. \u00b7 It is generally so. \u00b7 They therefore delay hiring additional workers. \u00b7 They delay as long as possible.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In a recession, a decrease in consumer spending causes many businesses to lay off workers or even to close.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a recession."
+      },
+      {
+       "n": 2,
+       "text": "Consumer spending goes down."
+      },
+      {
+       "n": 3,
+       "text": "The decrease causes an effect on businesses."
+      },
+      {
+       "n": 4,
+       "text": "Many businesses lay off workers."
+      },
+      {
+       "n": 5,
+       "text": "Or they even close."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Workers who lose their jobs in a recession usually cannot find new jobs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about workers who lose their jobs."
+      },
+      {
+       "n": 2,
+       "text": "They lose them in a recession."
+      },
+      {
+       "n": 3,
+       "text": "They cannot find new jobs."
+      },
+      {
+       "n": 4,
+       "text": "This is usually so."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The result is an increase in the number of people who are jobless.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the result."
+      },
+      {
+       "n": 2,
+       "text": "There is an increase."
+      },
+      {
+       "n": 3,
+       "text": "What increases is the number of people who are jobless."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Recovery from a recession is defined by an increase in consumer spending and an expansion of business activity that creates a need for additional workers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This defines recovery from a recession."
+      },
+      {
+       "n": 2,
+       "text": "Consumer spending goes up."
+      },
+      {
+       "n": 3,
+       "text": "There is an expansion of business activity."
+      },
+      {
+       "n": 4,
+       "text": "The expansion creates a need."
+      },
+      {
+       "n": 5,
+       "text": "The need is for additional workers."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "But businesspeople generally have little confidence in the economy after a recession and therefore delay hiring additional workers as long as possible.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Businesspeople have little confidence in the economy."
+      },
+      {
+       "n": 3,
+       "text": "This is after a recession."
+      },
+      {
+       "n": 4,
+       "text": "It is generally so."
+      },
+      {
+       "n": 5,
+       "text": "They therefore delay hiring additional workers."
+      },
+      {
+       "n": 6,
+       "text": "They delay as long as possible."
+      }
+     ]
+    }
+   ],
+   "the_read": "Recovery from a recession may be delayed.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q3",
+     "qnum": 3,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT102_S3_Q4",
+   "prompt": "Scientists analyzing air bubbles that had been trapped in Antarctic ice during the Earth's last ice age found that the ice-age atmosphere had contained unusually large amounts of ferrous material and surprisingly small amounts of carbon dioxide. One scientist noted that algae absorb carbon dioxide from the atmosphere. The scientist hypothesized that the ferrous material, which was contained in atmospheric dust, had promoted a great increase in the population of Antarctic algae such as diatoms.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Scientists analyzed air bubbles. \u00b7 The bubbles were trapped in Antarctic ice. \u00b7 They were trapped during the Earth's last ice age. \u00b7 The scientists found something about the ice-age atmosphere. \u00b7 It contained large amounts of ferrous material. \u00b7 The amounts were unusually large. \u00b7 It contained small amounts of carbon dioxide. \u00b7 The small amounts were surprising. (2) One scientist noted something. \u00b7 It is about algae. \u00b7 Algae absorb carbon dioxide. \u00b7 They absorb it from the atmosphere. (3) The scientist made a hypothesis. \u00b7 It is about the ferrous material. \u00b7 The material was contained in atmospheric dust. \u00b7 The material promoted an increase. \u00b7 The increase was great. \u00b7 What increased was the population of Antarctic algae. \u00b7 Diatoms are given as an example.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Scientists analyzing air bubbles that had been trapped in Antarctic ice during the Earth's last ice age found that the ice-age atmosphere had contained unusually large amounts of ferrous material and surprisingly small amounts of carbon dioxide.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Scientists analyzed air bubbles."
+      },
+      {
+       "n": 2,
+       "text": "The bubbles were trapped in Antarctic ice."
+      },
+      {
+       "n": 3,
+       "text": "They were trapped during the Earth's last ice age."
+      },
+      {
+       "n": 4,
+       "text": "The scientists found something about the ice-age atmosphere."
+      },
+      {
+       "n": 5,
+       "text": "It contained large amounts of ferrous material."
+      },
+      {
+       "n": 6,
+       "text": "The amounts were unusually large."
+      },
+      {
+       "n": 7,
+       "text": "It contained small amounts of carbon dioxide."
+      },
+      {
+       "n": 8,
+       "text": "The small amounts were surprising."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "One scientist noted that algae absorb carbon dioxide from the atmosphere.",
+     "details": [
+      {
+       "n": 1,
+       "text": "One scientist noted something."
+      },
+      {
+       "n": 2,
+       "text": "It is about algae."
+      },
+      {
+       "n": 3,
+       "text": "Algae absorb carbon dioxide."
+      },
+      {
+       "n": 4,
+       "text": "They absorb it from the atmosphere."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The scientist hypothesized that the ferrous material, which was contained in atmospheric dust, had promoted a great increase in the population of Antarctic algae such as diatoms.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The scientist made a hypothesis."
+      },
+      {
+       "n": 2,
+       "text": "It is about the ferrous material."
+      },
+      {
+       "n": 3,
+       "text": "The material was contained in atmospheric dust."
+      },
+      {
+       "n": 4,
+       "text": "The material promoted an increase."
+      },
+      {
+       "n": 5,
+       "text": "The increase was great."
+      },
+      {
+       "n": 6,
+       "text": "What increased was the population of Antarctic algae."
+      },
+      {
+       "n": 7,
+       "text": "Diatoms are given as an example."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we have evidence that there was little or no algae at this time? What if something else is responsible for the low levels of carbon dioxide?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q4",
+     "qnum": 4,
+     "question_type": "Weaken",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT102_S3_Q5",
+   "prompt": "Adults who work outside the home spend, on average, 100 minutes less time each week in preparing dinner than adults who do not work outside the home. But, contrary to expectation, comparisons show that the dinners eaten at home by the two groups of adults do not differ significantly with respect to nutritional value, variety of menus, or number of courses.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about adults who work outside the home. \u00b7 They spend less time preparing dinner. \u00b7 The amount less is 100 minutes. \u00b7 The period is each week. \u00b7 This is an average. \u00b7 The comparison is with adults who do not work outside the home. (2) This is a contrast. \u00b7 The result runs contrary to expectation. \u00b7 The dinners of the two groups are compared. \u00b7 The dinners are eaten at home. \u00b7 They do not differ significantly. \u00b7 One respect is nutritional value. \u00b7 Another is variety of menus. \u00b7 Another is the number of courses.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Adults who work outside the home spend, on average, 100 minutes less time each week in preparing dinner than adults who do not work outside the home.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about adults who work outside the home."
+      },
+      {
+       "n": 2,
+       "text": "They spend less time preparing dinner."
+      },
+      {
+       "n": 3,
+       "text": "The amount less is 100 minutes."
+      },
+      {
+       "n": 4,
+       "text": "The period is each week."
+      },
+      {
+       "n": 5,
+       "text": "This is an average."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with adults who do not work outside the home."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But, contrary to expectation, comparisons show that the dinners eaten at home by the two groups of adults do not differ significantly with respect to nutritional value, variety of menus, or number of courses.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "The result runs contrary to expectation."
+      },
+      {
+       "n": 3,
+       "text": "The dinners of the two groups are compared."
+      },
+      {
+       "n": 4,
+       "text": "The dinners are eaten at home."
+      },
+      {
+       "n": 5,
+       "text": "They do not differ significantly."
+      },
+      {
+       "n": 6,
+       "text": "One respect is nutritional value."
+      },
+      {
+       "n": 7,
+       "text": "Another is variety of menus."
+      },
+      {
+       "n": 8,
+       "text": "Another is the number of courses."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if adults who work outside the home are eating out more?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q5",
+     "qnum": 5,
+     "question_type": "Resolution",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT102_S3_Q6",
+   "prompt": "Legislator: Your agency is responsible for regulating an industry shaken by severe scandals. You were given funds to hire 500 investigators to examine the scandals, but you hired no more than 400. I am forced to conclude that you purposely limited hiring in an attempt to prevent the full extent of the scandals from being revealed.\n\nRegulator: We tried to hire the 500 investigators but the starting salaries for these positions had been frozen so low by the legislature that it was impossible to attract enough qualified applicants.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A legislator is speaking. \u00b7 The legislator addresses an agency. \u00b7 The agency is responsible for regulating an industry. \u00b7 The industry has been shaken by scandals. \u00b7 The scandals are severe. (2) The agency was given funds. \u00b7 The funds were to hire investigators. \u00b7 The number funded was 500. \u00b7 The investigators were to examine the scandals. \u00b7 This is a contrast. \u00b7 The agency hired no more than 400. (3) This is the legislator's conclusion. \u00b7 The legislator claims to be forced to it. \u00b7 The agency limited hiring. \u00b7 The limiting was purposeful. \u00b7 It was an attempt to prevent something. \u00b7 What would be prevented is the full extent of the scandals being revealed. (4) A regulator answers the legislator. \u00b7 They tried to hire the 500 investigators. \u00b7 This is a contrast with that attempt. \u00b7 The starting salaries had been frozen. \u00b7 The legislature froze them. \u00b7 They were frozen very low. \u00b7 It was impossible to attract enough qualified applicants.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Legislator: Your agency is responsible for regulating an industry shaken by severe scandals.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A legislator is speaking."
+      },
+      {
+       "n": 2,
+       "text": "The legislator addresses an agency."
+      },
+      {
+       "n": 3,
+       "text": "The agency is responsible for regulating an industry."
+      },
+      {
+       "n": 4,
+       "text": "The industry has been shaken by scandals."
+      },
+      {
+       "n": 5,
+       "text": "The scandals are severe."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "You were given funds to hire 500 investigators to examine the scandals, but you hired no more than 400.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The agency was given funds."
+      },
+      {
+       "n": 2,
+       "text": "The funds were to hire investigators."
+      },
+      {
+       "n": 3,
+       "text": "The number funded was 500."
+      },
+      {
+       "n": 4,
+       "text": "The investigators were to examine the scandals."
+      },
+      {
+       "n": 5,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 6,
+       "text": "The agency hired no more than 400."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "I am forced to conclude that you purposely limited hiring in an attempt to prevent the full extent of the scandals from being revealed.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the legislator's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The legislator claims to be forced to it."
+      },
+      {
+       "n": 3,
+       "text": "The agency limited hiring."
+      },
+      {
+       "n": 4,
+       "text": "The limiting was purposeful."
+      },
+      {
+       "n": 5,
+       "text": "It was an attempt to prevent something."
+      },
+      {
+       "n": 6,
+       "text": "What would be prevented is the full extent of the scandals being revealed."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Regulator: We tried to hire the 500 investigators but the starting salaries for these positions had been frozen so low by the legislature that it was impossible to attract enough qualified applicants.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A regulator answers the legislator."
+      },
+      {
+       "n": 2,
+       "text": "They tried to hire the 500 investigators."
+      },
+      {
+       "n": 3,
+       "text": "This is a contrast with that attempt."
+      },
+      {
+       "n": 4,
+       "text": "The starting salaries had been frozen."
+      },
+      {
+       "n": 5,
+       "text": "The legislature froze them."
+      },
+      {
+       "n": 6,
+       "text": "They were frozen very low."
+      },
+      {
+       "n": 7,
+       "text": "It was impossible to attract enough qualified applicants."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over the reason why the regulator did not hire 500 investigators.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q6",
+     "qnum": 6,
+     "question_type": "Method",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT102_S3_Q7",
+   "prompt": "A commonly accepted myth is that left-handed people are more prone to cause accidents than are right-handed people. But this is, in fact, just a myth, as is indicated by the fact that more household accidents are caused by right-handed people than are caused by left-handed people.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a myth. \u00b7 The myth is commonly accepted. \u00b7 It is about left-handed people. \u00b7 They are said to be more prone to cause accidents. \u00b7 The comparison is with right-handed people. (2) This is a contrast. \u00b7 The claim is just a myth. \u00b7 Something is offered as indicating this. \u00b7 More household accidents are caused by right-handed people. \u00b7 The comparison is with accidents caused by left-handed people.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A commonly accepted myth is that left-handed people are more prone to cause accidents than are right-handed people.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a myth."
+      },
+      {
+       "n": 2,
+       "text": "The myth is commonly accepted."
+      },
+      {
+       "n": 3,
+       "text": "It is about left-handed people."
+      },
+      {
+       "n": 4,
+       "text": "They are said to be more prone to cause accidents."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with right-handed people."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But this is, in fact, just a myth, as is indicated by the fact that more household accidents are caused by right-handed people than are caused by left-handed people.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "The claim is just a myth."
+      },
+      {
+       "n": 3,
+       "text": "Something is offered as indicating this."
+      },
+      {
+       "n": 4,
+       "text": "More household accidents are caused by right-handed people."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with accidents caused by left-handed people."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there are far more right handed people in the world than lefties?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q7",
+     "qnum": 7,
+     "question_type": "Classic Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT102_S3_Q8",
+   "prompt": "Ornithologist: The curvature of the claws of modern tree-dwelling birds enables them to perch in trees. The claws of Archeopteryx, the earliest known birdlike creature, show similar curvature that must have enabled the creature to perch on tree limbs. Therefore, Archeopteryx was probably a tree-dwelling creature.\n\nPaleontologist: No, the ability to perch in trees is not good evidence that Archeopteryx was a tree-dwelling bird. Chickens also spend time perched in trees, yet chickens are primarily ground-dwelling.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) An ornithologist is speaking. \u00b7 It is about the claws of modern birds. \u00b7 Those birds are tree-dwelling. \u00b7 The claws have a curvature. \u00b7 The curvature enables them to perch in trees. (2) This is about the claws of Archeopteryx. \u00b7 Archeopteryx is the earliest known birdlike creature. \u00b7 Its claws show a similar curvature. \u00b7 The curvature must have enabled it to perch. \u00b7 It would perch on tree limbs. (3) This is the conclusion. \u00b7 Archeopteryx was a tree-dwelling creature. \u00b7 This is hedged as probable. (4) A paleontologist answers the ornithologist. \u00b7 The answer is no. \u00b7 It is about the ability to perch in trees. \u00b7 That ability is not good evidence. \u00b7 What it would be evidence for is Archeopteryx being a tree-dwelling bird. (5) Chickens spend time perched in trees. \u00b7 They do this too. \u00b7 This is a contrast. \u00b7 Chickens are ground-dwelling. \u00b7 They are primarily so.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Ornithologist: The curvature of the claws of modern tree-dwelling birds enables them to perch in trees.",
+     "details": [
+      {
+       "n": 1,
+       "text": "An ornithologist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "It is about the claws of modern birds."
+      },
+      {
+       "n": 3,
+       "text": "Those birds are tree-dwelling."
+      },
+      {
+       "n": 4,
+       "text": "The claws have a curvature."
+      },
+      {
+       "n": 5,
+       "text": "The curvature enables them to perch in trees."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The claws of Archeopteryx, the earliest known birdlike creature, show similar curvature that must have enabled the creature to perch on tree limbs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the claws of Archeopteryx."
+      },
+      {
+       "n": 2,
+       "text": "Archeopteryx is the earliest known birdlike creature."
+      },
+      {
+       "n": 3,
+       "text": "Its claws show a similar curvature."
+      },
+      {
+       "n": 4,
+       "text": "The curvature must have enabled it to perch."
+      },
+      {
+       "n": 5,
+       "text": "It would perch on tree limbs."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, Archeopteryx was probably a tree-dwelling creature.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Archeopteryx was a tree-dwelling creature."
+      },
+      {
+       "n": 3,
+       "text": "This is hedged as probable."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Paleontologist: No, the ability to perch in trees is not good evidence that Archeopteryx was a tree-dwelling bird.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A paleontologist answers the ornithologist."
+      },
+      {
+       "n": 2,
+       "text": "The answer is no."
+      },
+      {
+       "n": 3,
+       "text": "It is about the ability to perch in trees."
+      },
+      {
+       "n": 4,
+       "text": "That ability is not good evidence."
+      },
+      {
+       "n": 5,
+       "text": "What it would be evidence for is Archeopteryx being a tree-dwelling bird."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Chickens also spend time perched in trees, yet chickens are primarily ground-dwelling.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Chickens spend time perched in trees."
+      },
+      {
+       "n": 2,
+       "text": "They do this too."
+      },
+      {
+       "n": 3,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 4,
+       "text": "Chickens are ground-dwelling."
+      },
+      {
+       "n": 5,
+       "text": "They are primarily so."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether the archeopteryx's claw shape is good evidence that it was tree dwelling.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q8",
+     "qnum": 8,
+     "question_type": "Method",
+     "correct_answer": "C"
+    },
+    {
+     "citation": "PT102.S3.Q9",
+     "qnum": 9,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT102_S3_Q10",
+   "prompt": "There are rumors that the Premier will reshuffle the cabinet this week. However, every previous reshuffle that the Premier has made was preceded by meetings between the Premier and senior cabinet members. No such meetings have occurred or are planned. Therefore the rumors are most likely false.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There are rumors going around. \u00b7 The rumors are about the Premier. \u00b7 The Premier will reshuffle the cabinet. \u00b7 The reshuffle would be this week. (2) This is a contrast. \u00b7 It is about the Premier's previous reshuffles. \u00b7 This holds for every one of them. \u00b7 Each was preceded by meetings. \u00b7 The meetings were between the Premier and cabinet members. \u00b7 Those members were senior. (3) This is about those meetings. \u00b7 No such meetings have occurred. \u00b7 No such meetings are planned either. (4) This is the conclusion. \u00b7 It is about the rumors. \u00b7 The rumors are false. \u00b7 This is hedged as most likely.",
+   "category": "Principle Conform",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "There are rumors that the Premier will reshuffle the cabinet this week.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There are rumors going around."
+      },
+      {
+       "n": 2,
+       "text": "The rumors are about the Premier."
+      },
+      {
+       "n": 3,
+       "text": "The Premier will reshuffle the cabinet."
+      },
+      {
+       "n": 4,
+       "text": "The reshuffle would be this week."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "However, every previous reshuffle that the Premier has made was preceded by meetings between the Premier and senior cabinet members.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "It is about the Premier's previous reshuffles."
+      },
+      {
+       "n": 3,
+       "text": "This holds for every one of them."
+      },
+      {
+       "n": 4,
+       "text": "Each was preceded by meetings."
+      },
+      {
+       "n": 5,
+       "text": "The meetings were between the Premier and cabinet members."
+      },
+      {
+       "n": 6,
+       "text": "Those members were senior."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "No such meetings have occurred or are planned.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about those meetings."
+      },
+      {
+       "n": 2,
+       "text": "No such meetings have occurred."
+      },
+      {
+       "n": 3,
+       "text": "No such meetings are planned either."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore the rumors are most likely false.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the rumors."
+      },
+      {
+       "n": 3,
+       "text": "The rumors are false."
+      },
+      {
+       "n": 4,
+       "text": "This is hedged as most likely."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because meetings preceded reshuffling in the past, that doesn't mean they have to precede reshuffling in the future?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q10",
+     "qnum": 10,
+     "question_type": "Principle Conform",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT102_S3_Q11",
+   "prompt": "Carl: Researchers who perform operations on animals for experimental purposes are legally required to complete detailed pain protocols indicating whether the animals will be at risk of pain and, if so, what steps will be taken to minimize or alleviate it. Yet when human beings undergo operations, such protocols are never required. If lawmakers were as concerned about human beings as they seem to be about animals, there would be pain protocols for human beings too.\n\nDebbie: But consider this: a person for whom a doctor wants to schedule surgery can simply be told what pain to expect and can then decide whether or not to undergo the operation. So you see, pain protocols are unnecessary for human beings.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Carl is the first speaker. \u00b7 It is about researchers who operate on animals. \u00b7 The operations are for experimental purposes. \u00b7 Those researchers are legally required to do something. \u00b7 They must complete pain protocols. \u00b7 The protocols are detailed. \u00b7 The protocols indicate whether the animals will be at risk of pain. (2) This is conditional on the animals being at risk. \u00b7 The protocol also indicates steps. \u00b7 The steps would be taken to minimize pain. \u00b7 They could instead alleviate it. (3) This is a contrast. \u00b7 It is about human beings undergoing operations. \u00b7 Such protocols are not required. \u00b7 They are never required. (4) This is a conditional claim. \u00b7 It is about lawmakers' concern for human beings. \u00b7 The comparison is with how concerned they seem about animals. \u00b7 There would then be pain protocols for human beings. \u00b7 There would be those as well as for animals. (5) Debbie is the second speaker. \u00b7 This is a contrast with Carl's point. \u00b7 It is about a person whose doctor wants to schedule surgery. \u00b7 That person can be told what pain to expect. \u00b7 Being told is simple. \u00b7 The person can then decide. \u00b7 The decision is whether or not to undergo the operation. (6) This is Debbie's conclusion. \u00b7 It is about pain protocols. \u00b7 Those protocols are unnecessary. \u00b7 They are unnecessary for human beings.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Carl: Researchers who perform operations on animals for experimental purposes are legally required to complete detailed pain protocols indicating whether the animals will be at risk of pain and,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Carl is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "It is about researchers who operate on animals."
+      },
+      {
+       "n": 3,
+       "text": "The operations are for experimental purposes."
+      },
+      {
+       "n": 4,
+       "text": "Those researchers are legally required to do something."
+      },
+      {
+       "n": 5,
+       "text": "They must complete pain protocols."
+      },
+      {
+       "n": 6,
+       "text": "The protocols are detailed."
+      },
+      {
+       "n": 7,
+       "text": "The protocols indicate whether the animals will be at risk of pain."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "if so, what steps will be taken to minimize or alleviate it.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is conditional on the animals being at risk."
+      },
+      {
+       "n": 2,
+       "text": "The protocol also indicates steps."
+      },
+      {
+       "n": 3,
+       "text": "The steps would be taken to minimize pain."
+      },
+      {
+       "n": 4,
+       "text": "They could instead alleviate it."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Yet when human beings undergo operations, such protocols are never required.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "It is about human beings undergoing operations."
+      },
+      {
+       "n": 3,
+       "text": "Such protocols are not required."
+      },
+      {
+       "n": 4,
+       "text": "They are never required."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "If lawmakers were as concerned about human beings as they seem to be about animals, there would be pain protocols for human beings too.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a conditional claim."
+      },
+      {
+       "n": 2,
+       "text": "It is about lawmakers' concern for human beings."
+      },
+      {
+       "n": 3,
+       "text": "The comparison is with how concerned they seem about animals."
+      },
+      {
+       "n": 4,
+       "text": "There would then be pain protocols for human beings."
+      },
+      {
+       "n": 5,
+       "text": "There would be those as well as for animals."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Debbie: But consider this: a person for whom a doctor wants to schedule surgery can simply be told what pain to expect and can then decide whether or not to undergo the operation.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Debbie is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "This is a contrast with Carl's point."
+      },
+      {
+       "n": 3,
+       "text": "It is about a person whose doctor wants to schedule surgery."
+      },
+      {
+       "n": 4,
+       "text": "That person can be told what pain to expect."
+      },
+      {
+       "n": 5,
+       "text": "Being told is simple."
+      },
+      {
+       "n": 6,
+       "text": "The person can then decide."
+      },
+      {
+       "n": 7,
+       "text": "The decision is whether or not to undergo the operation."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "So you see, pain protocols are unnecessary for human beings.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is Debbie's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about pain protocols."
+      },
+      {
+       "n": 3,
+       "text": "Those protocols are unnecessary."
+      },
+      {
+       "n": 4,
+       "text": "They are unnecessary for human beings."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether the lack of pain protocols for humans indicates that lawmakers do not care as much about humans as they seem to care about animals.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q11",
+     "qnum": 11,
+     "question_type": "Method",
+     "correct_answer": "B"
+    },
+    {
+     "citation": "PT102.S3.Q12",
+     "qnum": 12,
+     "question_type": "Weaken",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT102_S3_Q13",
+   "prompt": "A company with long-outstanding bills owed by its customers can assign those bills to a collection agency that pays the company a fraction of their amount and then tries to collect payment from the customers. Since these agencies pay companies only 15 percent of the total amount of the outstanding bills, a company interested in reducing losses from long-outstanding bills would be well advised to pursue its debtors on its own.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a company with outstanding bills. \u00b7 The bills have been outstanding a long time. \u00b7 The bills are owed by its customers. \u00b7 The company can assign those bills. \u00b7 They are assigned to a collection agency. \u00b7 The agency pays the company a fraction of the amount. \u00b7 The agency then tries to collect from the customers. (2) This is the reason given. \u00b7 The agencies pay companies a percentage. \u00b7 The figure is 15 percent. \u00b7 The word only marks it as small. \u00b7 The percentage is of the total amount of the outstanding bills. (3) This is the conclusion. \u00b7 It is about a company interested in reducing losses. \u00b7 The losses come from long-outstanding bills. \u00b7 Such a company would be well advised to pursue its debtors. \u00b7 It should pursue them on its own.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A company with long-outstanding bills owed by its customers can assign those bills to a collection agency that pays the company a fraction of their amount and then tries to collect payment from the customers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a company with outstanding bills."
+      },
+      {
+       "n": 2,
+       "text": "The bills have been outstanding a long time."
+      },
+      {
+       "n": 3,
+       "text": "The bills are owed by its customers."
+      },
+      {
+       "n": 4,
+       "text": "The company can assign those bills."
+      },
+      {
+       "n": 5,
+       "text": "They are assigned to a collection agency."
+      },
+      {
+       "n": 6,
+       "text": "The agency pays the company a fraction of the amount."
+      },
+      {
+       "n": 7,
+       "text": "The agency then tries to collect from the customers."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Since these agencies pay companies only 15 percent of the total amount of the outstanding bills,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the reason given."
+      },
+      {
+       "n": 2,
+       "text": "The agencies pay companies a percentage."
+      },
+      {
+       "n": 3,
+       "text": "The figure is 15 percent."
+      },
+      {
+       "n": 4,
+       "text": "The word only marks it as small."
+      },
+      {
+       "n": 5,
+       "text": "The percentage is of the total amount of the outstanding bills."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "a company interested in reducing losses from long-outstanding bills would be well advised to pursue its debtors on its own.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about a company interested in reducing losses."
+      },
+      {
+       "n": 3,
+       "text": "The losses come from long-outstanding bills."
+      },
+      {
+       "n": 4,
+       "text": "Such a company would be well advised to pursue its debtors."
+      },
+      {
+       "n": 5,
+       "text": "It should pursue them on its own."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if it's much more expensive to pursue debtors on your own? What if at least with collections there's a guarantee you'll get some money?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q13",
+     "qnum": 13,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT102_S3_Q14",
+   "prompt": "Herbalist: Many of my customers find that their physical coordination improves after drinking juice containing certain herbs. A few doctors assert that the herbs are potentially harmful, but doctors are always trying to maintain a monopoly over medical therapies. So there is no reason not to try my herb juice.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A herbalist is speaking. \u00b7 Many of the herbalist's customers find something. \u00b7 Their physical coordination improves. \u00b7 The improvement follows drinking juice. \u00b7 The juice contains certain herbs. (2) Some doctors make an assertion. \u00b7 Only a few do. \u00b7 They say the herbs are potentially harmful. \u00b7 This is a contrast. \u00b7 Doctors try to maintain a monopoly. \u00b7 The monopoly is over medical therapies. \u00b7 They always do this. (3) This is the conclusion. \u00b7 There is no reason against it. \u00b7 What there is no reason against is trying the herbalist's herb juice.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Herbalist: Many of my customers find that their physical coordination improves after drinking juice containing certain herbs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A herbalist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "Many of the herbalist's customers find something."
+      },
+      {
+       "n": 3,
+       "text": "Their physical coordination improves."
+      },
+      {
+       "n": 4,
+       "text": "The improvement follows drinking juice."
+      },
+      {
+       "n": 5,
+       "text": "The juice contains certain herbs."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "A few doctors assert that the herbs are potentially harmful, but doctors are always trying to maintain a monopoly over medical therapies.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some doctors make an assertion."
+      },
+      {
+       "n": 2,
+       "text": "Only a few do."
+      },
+      {
+       "n": 3,
+       "text": "They say the herbs are potentially harmful."
+      },
+      {
+       "n": 4,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 5,
+       "text": "Doctors try to maintain a monopoly."
+      },
+      {
+       "n": 6,
+       "text": "The monopoly is over medical therapies."
+      },
+      {
+       "n": 7,
+       "text": "They always do this."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "So there is no reason not to try my herb juice.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "There is no reason against it."
+      },
+      {
+       "n": 3,
+       "text": "What there is no reason against is trying the herbalist's herb juice."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because doctors want a monopoly that doesn't mean they're wrong about herb danger?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q14",
+     "qnum": 14,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT102_S3_Q15",
+   "prompt": "Because of the lucrative but illegal trade in rhinoceros horns, a certain rhinoceros species has been hunted nearly to extinction. Therefore an effective way to ensure the survival of that species would be to periodically trim off the horns of all rhinoceroses, thereby eliminating the motivation for poaching.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is the reason given. \u00b7 There is a trade in rhinoceros horns. \u00b7 The trade is lucrative. \u00b7 The trade is illegal. \u00b7 A rhinoceros species has been hunted. \u00b7 It has been hunted nearly to extinction. (2) This is the conclusion. \u00b7 There would be an effective way to ensure the species survives. \u00b7 The way is to trim off the horns. \u00b7 The trimming would be periodic. \u00b7 It would be done to all rhinoceroses. \u00b7 Doing so would eliminate the motivation for poaching.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Because of the lucrative but illegal trade in rhinoceros horns, a certain rhinoceros species has been hunted nearly to extinction.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the reason given."
+      },
+      {
+       "n": 2,
+       "text": "There is a trade in rhinoceros horns."
+      },
+      {
+       "n": 3,
+       "text": "The trade is lucrative."
+      },
+      {
+       "n": 4,
+       "text": "The trade is illegal."
+      },
+      {
+       "n": 5,
+       "text": "A rhinoceros species has been hunted."
+      },
+      {
+       "n": 6,
+       "text": "It has been hunted nearly to extinction."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Therefore an effective way to ensure the survival of that species would be to periodically trim off the horns of all rhinoceroses, thereby eliminating the motivation for poaching.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "There would be an effective way to ensure the species survives."
+      },
+      {
+       "n": 3,
+       "text": "The way is to trim off the horns."
+      },
+      {
+       "n": 4,
+       "text": "The trimming would be periodic."
+      },
+      {
+       "n": 5,
+       "text": "It would be done to all rhinoceroses."
+      },
+      {
+       "n": 6,
+       "text": "Doing so would eliminate the motivation for poaching."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if rhinos can't survive without their horns?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q15",
+     "qnum": 15,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT102_S3_Q16",
+   "prompt": "Motorcoach driver: Professional drivers spend much more time driving, on average, than do other people and hence are more competent drivers than are other, less experienced drivers. Therefore, the speed limit on major highways should not be reduced, because that action would have the undesirable effect of forcing some people who are now both law-abiding and competent drivers to break the law.\n\nPolice officer: All drivers can drive within the legal speed limit if they wish, so it is not true to say that reducing the speed limit would be the cause of such illegal behavior.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A motorcoach driver is speaking. \u00b7 It is about professional drivers. \u00b7 They spend more time driving. \u00b7 The difference is large. \u00b7 This is an average. (2) The comparison is with other people. \u00b7 A conclusion is drawn from that. \u00b7 Professional drivers are more competent. \u00b7 The second comparison is with other drivers. \u00b7 Those other drivers are less experienced. (3) This is the driver's conclusion. \u00b7 It is about the speed limit. \u00b7 The limit is on major highways. \u00b7 The limit should not be reduced. (4) This is the driver's reason. \u00b7 Reducing the limit would have an effect. \u00b7 The effect is undesirable. \u00b7 It would force some people to break the law. \u00b7 Those people are law-abiding now. \u00b7 They are also competent drivers. (5) A police officer answers. \u00b7 All drivers can drive within the legal speed limit. \u00b7 They can do so if they wish. \u00b7 A conclusion is drawn from that ability. \u00b7 It is not true that reducing the limit would cause the behavior. \u00b7 The behavior meant is the illegal one.",
+   "category": "Controversy",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Motorcoach driver: Professional drivers spend much more time driving, on average,",
+     "details": [
+      {
+       "n": 1,
+       "text": "A motorcoach driver is speaking."
+      },
+      {
+       "n": 2,
+       "text": "It is about professional drivers."
+      },
+      {
+       "n": 3,
+       "text": "They spend more time driving."
+      },
+      {
+       "n": 4,
+       "text": "The difference is large."
+      },
+      {
+       "n": 5,
+       "text": "This is an average."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "than do other people and hence are more competent drivers than are other, less experienced drivers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The comparison is with other people."
+      },
+      {
+       "n": 2,
+       "text": "A conclusion is drawn from that."
+      },
+      {
+       "n": 3,
+       "text": "Professional drivers are more competent."
+      },
+      {
+       "n": 4,
+       "text": "The second comparison is with other drivers."
+      },
+      {
+       "n": 5,
+       "text": "Those other drivers are less experienced."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, the speed limit on major highways should not be reduced,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the driver's conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the speed limit."
+      },
+      {
+       "n": 3,
+       "text": "The limit is on major highways."
+      },
+      {
+       "n": 4,
+       "text": "The limit should not be reduced."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "because that action would have the undesirable effect of forcing some people who are now both law-abiding and competent drivers to break the law.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the driver's reason."
+      },
+      {
+       "n": 2,
+       "text": "Reducing the limit would have an effect."
+      },
+      {
+       "n": 3,
+       "text": "The effect is undesirable."
+      },
+      {
+       "n": 4,
+       "text": "It would force some people to break the law."
+      },
+      {
+       "n": 5,
+       "text": "Those people are law-abiding now."
+      },
+      {
+       "n": 6,
+       "text": "They are also competent drivers."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Police officer: All drivers can drive within the legal speed limit if they wish, so it is not true to say that reducing the speed limit would be the cause of such illegal behavior.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A police officer answers."
+      },
+      {
+       "n": 2,
+       "text": "All drivers can drive within the legal speed limit."
+      },
+      {
+       "n": 3,
+       "text": "They can do so if they wish."
+      },
+      {
+       "n": 4,
+       "text": "A conclusion is drawn from that ability."
+      },
+      {
+       "n": 5,
+       "text": "It is not true that reducing the limit would cause the behavior."
+      },
+      {
+       "n": 6,
+       "text": "The behavior meant is the illegal one."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether reducing the highway speed limit would cause illegal behavior.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q16",
+     "qnum": 16,
+     "question_type": "Controversy",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT102_S3_Q17",
+   "prompt": "People cannot devote themselves to the study of natural processes unless they have leisure, and people have leisure when resources are plentiful, not when resources are scarce. Although some anthropologists claim that agriculture, the cultivation of crops, actually began under conditions of drought and hunger, the early societies that domesticated plants must first have discovered how the plants they cultivated reproduced themselves and grew to maturity. These complex discoveries were the result of the active study of natural processes.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) People cannot study natural processes without leisure. \u00b7 Devoting themselves is what requires it. \u00b7 People have leisure when resources are plentiful. \u00b7 They do not have it when resources are scarce. (2) This is a contrast. \u00b7 Some anthropologists make a claim. \u00b7 The claim is about agriculture. \u00b7 Agriculture is the cultivation of crops. \u00b7 They say it began under conditions of drought. \u00b7 They say it began under hunger too. (3) This is about early societies. \u00b7 Those societies domesticated plants. \u00b7 They must have made discoveries first. \u00b7 They discovered how the plants reproduced themselves. \u00b7 They discovered how the plants grew to maturity. \u00b7 The plants meant are the ones they cultivated. (4) The discoveries were complex. \u00b7 They were the result of study. \u00b7 The study was active. \u00b7 What was studied is natural processes.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "People cannot devote themselves to the study of natural processes unless they have leisure, and people have leisure when resources are plentiful, not when resources are scarce.",
+     "details": [
+      {
+       "n": 1,
+       "text": "People cannot study natural processes without leisure."
+      },
+      {
+       "n": 2,
+       "text": "Devoting themselves is what requires it."
+      },
+      {
+       "n": 3,
+       "text": "People have leisure when resources are plentiful."
+      },
+      {
+       "n": 4,
+       "text": "They do not have it when resources are scarce."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Although some anthropologists claim that agriculture, the cultivation of crops, actually began under conditions of drought and hunger,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Some anthropologists make a claim."
+      },
+      {
+       "n": 3,
+       "text": "The claim is about agriculture."
+      },
+      {
+       "n": 4,
+       "text": "Agriculture is the cultivation of crops."
+      },
+      {
+       "n": 5,
+       "text": "They say it began under conditions of drought."
+      },
+      {
+       "n": 6,
+       "text": "They say it began under hunger too."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "the early societies that domesticated plants must first have discovered how the plants they cultivated reproduced themselves and grew to maturity.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about early societies."
+      },
+      {
+       "n": 2,
+       "text": "Those societies domesticated plants."
+      },
+      {
+       "n": 3,
+       "text": "They must have made discoveries first."
+      },
+      {
+       "n": 4,
+       "text": "They discovered how the plants reproduced themselves."
+      },
+      {
+       "n": 5,
+       "text": "They discovered how the plants grew to maturity."
+      },
+      {
+       "n": 6,
+       "text": "The plants meant are the ones they cultivated."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "These complex discoveries were the result of the active study of natural processes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The discoveries were complex."
+      },
+      {
+       "n": 2,
+       "text": "They were the result of study."
+      },
+      {
+       "n": 3,
+       "text": "The study was active."
+      },
+      {
+       "n": 4,
+       "text": "What was studied is natural processes."
+      }
+     ]
+    }
+   ],
+   "the_read": "Agriculture first began in societies that had leisure.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q17",
+     "qnum": 17,
+     "question_type": "Inference",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT102_S3_Q18",
+   "prompt": "In the past decade, a decreasing percentage of money spent on treating disease X went to pay for standard methods of treatment, which are known to be effective though they are expensive and painful. An increasing percentage is being spent on nonstandard treatments, which cause little discomfort. Unfortunately, the nonstandard treatments have proved to be ineffective. Obviously, less money is being spent now on effective treatments of disease X than was spent ten years ago.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about the past decade. \u00b7 A percentage of money is decreasing. \u00b7 The money is spent on treating disease X. \u00b7 That percentage pays for standard methods of treatment. (2) The standard methods are known to be effective. \u00b7 This is a contrast. \u00b7 The standard methods are expensive. \u00b7 The standard methods are painful. (3) A percentage is increasing. \u00b7 It is spent on nonstandard treatments. \u00b7 Those treatments cause discomfort. \u00b7 The discomfort is little. (4) This is marked as unfortunate. \u00b7 It is about the nonstandard treatments. \u00b7 They have proved ineffective. (5) This is the conclusion. \u00b7 It is treated as obvious. \u00b7 Less money is being spent now. \u00b7 The money is for effective treatments of disease X. \u00b7 The comparison is with what was spent ten years ago.",
+   "category": "Sufficient Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In the past decade, a decreasing percentage of money spent on treating disease X went to pay for standard methods of treatment,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the past decade."
+      },
+      {
+       "n": 2,
+       "text": "A percentage of money is decreasing."
+      },
+      {
+       "n": 3,
+       "text": "The money is spent on treating disease X."
+      },
+      {
+       "n": 4,
+       "text": "That percentage pays for standard methods of treatment."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "which are known to be effective though they are expensive and painful.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The standard methods are known to be effective."
+      },
+      {
+       "n": 2,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 3,
+       "text": "The standard methods are expensive."
+      },
+      {
+       "n": 4,
+       "text": "The standard methods are painful."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "An increasing percentage is being spent on nonstandard treatments, which cause little discomfort.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A percentage is increasing."
+      },
+      {
+       "n": 2,
+       "text": "It is spent on nonstandard treatments."
+      },
+      {
+       "n": 3,
+       "text": "Those treatments cause discomfort."
+      },
+      {
+       "n": 4,
+       "text": "The discomfort is little."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Unfortunately, the nonstandard treatments have proved to be ineffective.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is marked as unfortunate."
+      },
+      {
+       "n": 2,
+       "text": "It is about the nonstandard treatments."
+      },
+      {
+       "n": 3,
+       "text": "They have proved ineffective."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Obviously, less money is being spent now on effective treatments of disease X than was spent ten years ago.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is treated as obvious."
+      },
+      {
+       "n": 3,
+       "text": "Less money is being spent now."
+      },
+      {
+       "n": 4,
+       "text": "The money is for effective treatments of disease X."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with what was spent ten years ago."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we're spending more money overall on treating disease X?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q18",
+     "qnum": 18,
+     "question_type": "Sufficient Assumption",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT102_S3_Q19",
+   "prompt": "When an ordinary piece of steel is put under pressure, the steel compresses; that is, its volume slightly decreases. Glass, however, is a fluid, so rather than compressing, it flows when put under pressure; its volume remains unchanged. Any portion of a sheet of glass that is under sustained pressure will very slowly flow to areas under less pressure. Therefore, if a single, extremely heavy object is placed in the middle of a horizontal sheet of glass of uniform thickness and if the glass is able to support the weight without cracking, then the sheet of glass will eventually _______.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a piece of steel. \u00b7 The steel is an ordinary one. \u00b7 It is put under pressure. \u00b7 What happens is the steel compresses. \u00b7 A definition of that follows. \u00b7 The steel's volume decreases. \u00b7 The decrease is slight. (2) This is a contrast. \u00b7 Glass is a fluid. \u00b7 A consequence is drawn from that. \u00b7 Glass does not compress. \u00b7 Glass flows instead of compressing. \u00b7 It flows when put under pressure. \u00b7 Its volume remains unchanged. (3) This is about a portion of a sheet of glass. \u00b7 It holds for any such portion. \u00b7 The portion is under pressure. \u00b7 The pressure is sustained. \u00b7 The portion will flow. \u00b7 It flows very slowly. \u00b7 It flows to areas under less pressure. (4) This is the conclusion. \u00b7 An object is placed on the glass. \u00b7 There is only one object. \u00b7 The object is extremely heavy. \u00b7 It is placed in the middle of the sheet. \u00b7 The sheet is horizontal. \u00b7 The sheet is of uniform thickness. \u00b7 The glass supports the weight without cracking.",
+   "category": "Fill In",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "When an ordinary piece of steel is put under pressure, the steel compresses; that is, its volume slightly decreases.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a piece of steel."
+      },
+      {
+       "n": 2,
+       "text": "The steel is an ordinary one."
+      },
+      {
+       "n": 3,
+       "text": "It is put under pressure."
+      },
+      {
+       "n": 4,
+       "text": "What happens is the steel compresses."
+      },
+      {
+       "n": 5,
+       "text": "A definition of that follows."
+      },
+      {
+       "n": 6,
+       "text": "The steel's volume decreases."
+      },
+      {
+       "n": 7,
+       "text": "The decrease is slight."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Glass, however, is a fluid, so rather than compressing, it flows when put under pressure; its volume remains unchanged.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Glass is a fluid."
+      },
+      {
+       "n": 3,
+       "text": "A consequence is drawn from that."
+      },
+      {
+       "n": 4,
+       "text": "Glass does not compress."
+      },
+      {
+       "n": 5,
+       "text": "Glass flows instead of compressing."
+      },
+      {
+       "n": 6,
+       "text": "It flows when put under pressure."
+      },
+      {
+       "n": 7,
+       "text": "Its volume remains unchanged."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Any portion of a sheet of glass that is under sustained pressure will very slowly flow to areas under less pressure.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a portion of a sheet of glass."
+      },
+      {
+       "n": 2,
+       "text": "It holds for any such portion."
+      },
+      {
+       "n": 3,
+       "text": "The portion is under pressure."
+      },
+      {
+       "n": 4,
+       "text": "The pressure is sustained."
+      },
+      {
+       "n": 5,
+       "text": "The portion will flow."
+      },
+      {
+       "n": 6,
+       "text": "It flows very slowly."
+      },
+      {
+       "n": 7,
+       "text": "It flows to areas under less pressure."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore, if a single, extremely heavy object is placed in the middle of a horizontal sheet of glass of uniform thickness and if the glass is able to support the weight without cracking, then the sheet of glass will eventually _______.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "An object is placed on the glass."
+      },
+      {
+       "n": 3,
+       "text": "There is only one object."
+      },
+      {
+       "n": 4,
+       "text": "The object is extremely heavy."
+      },
+      {
+       "n": 5,
+       "text": "It is placed in the middle of the sheet."
+      },
+      {
+       "n": 6,
+       "text": "The sheet is horizontal."
+      },
+      {
+       "n": 7,
+       "text": "The sheet is of uniform thickness."
+      },
+      {
+       "n": 8,
+       "text": "The glass supports the weight without cracking."
+      }
+     ]
+    }
+   ],
+   "the_read": "The glass will eventually be thicker at the edges and thinner under the heavy object.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q19",
+     "qnum": 19,
+     "question_type": "Fill In",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT102_S3_Q20",
+   "prompt": "Anyone who insists that music videos are an art form should also agree that television gave rise to an art form, since television gave rise to music videos.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about anyone with a certain view. \u00b7 The view is that music videos are an art form. \u00b7 Such a person insists on it. \u00b7 That person should also agree to something. \u00b7 They should agree television gave rise to an art form. \u00b7 This is the reason given. \u00b7 Television gave rise to music videos.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Anyone who insists that music videos are an art form should also agree that television gave rise to an art form, since television gave rise to music videos.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about anyone with a certain view."
+      },
+      {
+       "n": 2,
+       "text": "The view is that music videos are an art form."
+      },
+      {
+       "n": 3,
+       "text": "Such a person insists on it."
+      },
+      {
+       "n": 4,
+       "text": "That person should also agree to something."
+      },
+      {
+       "n": 5,
+       "text": "They should agree television gave rise to an art form."
+      },
+      {
+       "n": 6,
+       "text": "This is the reason given."
+      },
+      {
+       "n": 7,
+       "text": "Television gave rise to music videos."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rules of conditional reasoning don't apply?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q20",
+     "qnum": 20,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT102_S3_Q21",
+   "prompt": "Medieval Arabs had manuscripts of many ancient Greek texts, which were translated into Arabic when there was a demand for them. Medieval Arab philosophers were very interested in Aristotle's Poetics, an interest that evidently was not shared by medieval Arab poets, because a poet interested in the Poetics would certainly have wanted to read Homer, to whose epics Aristotle frequently refers. But Homer was not translated into Arabic until modern times.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Medieval Arabs had manuscripts. \u00b7 The manuscripts were of ancient Greek texts. \u00b7 There were many of them. \u00b7 The texts were translated into Arabic. \u00b7 Translation happened when there was demand. (2) Medieval Arab philosophers were interested in a text. \u00b7 The text is Aristotle's Poetics. \u00b7 The interest was very great. \u00b7 Medieval Arab poets did not share it. \u00b7 This is marked as evident. (3) This is the reason given. \u00b7 It is about a poet interested in the Poetics. \u00b7 Such a poet would have wanted to read Homer. \u00b7 This is stated with certainty. \u00b7 Aristotle refers to Homer's epics. \u00b7 Aristotle refers to them frequently. (4) This is a contrast. \u00b7 Homer was not translated into Arabic. \u00b7 This held until modern times.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Medieval Arabs had manuscripts of many ancient Greek texts, which were translated into Arabic when there was a demand for them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Medieval Arabs had manuscripts."
+      },
+      {
+       "n": 2,
+       "text": "The manuscripts were of ancient Greek texts."
+      },
+      {
+       "n": 3,
+       "text": "There were many of them."
+      },
+      {
+       "n": 4,
+       "text": "The texts were translated into Arabic."
+      },
+      {
+       "n": 5,
+       "text": "Translation happened when there was demand."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Medieval Arab philosophers were very interested in Aristotle's Poetics, an interest that evidently was not shared by medieval Arab poets,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Medieval Arab philosophers were interested in a text."
+      },
+      {
+       "n": 2,
+       "text": "The text is Aristotle's Poetics."
+      },
+      {
+       "n": 3,
+       "text": "The interest was very great."
+      },
+      {
+       "n": 4,
+       "text": "Medieval Arab poets did not share it."
+      },
+      {
+       "n": 5,
+       "text": "This is marked as evident."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "because a poet interested in the Poetics would certainly have wanted to read Homer, to whose epics Aristotle frequently refers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the reason given."
+      },
+      {
+       "n": 2,
+       "text": "It is about a poet interested in the Poetics."
+      },
+      {
+       "n": 3,
+       "text": "Such a poet would have wanted to read Homer."
+      },
+      {
+       "n": 4,
+       "text": "This is stated with certainty."
+      },
+      {
+       "n": 5,
+       "text": "Aristotle refers to Homer's epics."
+      },
+      {
+       "n": 6,
+       "text": "Aristotle refers to them frequently."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "But Homer was not translated into Arabic until modern times.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "Homer was not translated into Arabic."
+      },
+      {
+       "n": 3,
+       "text": "This held until modern times."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if medieval Arab poets read Homer in Greek?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q21",
+     "qnum": 21,
+     "question_type": "Strengthen",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT102_S3_Q22",
+   "prompt": "Congenial guests and a plentiful supply of good things to eat and drink will ensure a successful dinner party. Since Sylvia has prepared more than enough to eat and drink and her guests are all congenial people, her dinner party is certain to be a success.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Two things will ensure something. \u00b7 One is congenial guests. \u00b7 The other is a supply of good things to eat and drink. \u00b7 The supply is plentiful. \u00b7 What is ensured is a dinner party's success. (2) This is the reason given. \u00b7 Sylvia has prepared enough to eat and drink. \u00b7 She has prepared more than enough. \u00b7 Her guests are congenial people. \u00b7 All of them are. \u00b7 This is the conclusion. \u00b7 Her dinner party will be a success. \u00b7 This is stated as certain.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Congenial guests and a plentiful supply of good things to eat and drink will ensure a successful dinner party.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Two things will ensure something."
+      },
+      {
+       "n": 2,
+       "text": "One is congenial guests."
+      },
+      {
+       "n": 3,
+       "text": "The other is a supply of good things to eat and drink."
+      },
+      {
+       "n": 4,
+       "text": "The supply is plentiful."
+      },
+      {
+       "n": 5,
+       "text": "What is ensured is a dinner party's success."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Since Sylvia has prepared more than enough to eat and drink and her guests are all congenial people, her dinner party is certain to be a success.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the reason given."
+      },
+      {
+       "n": 2,
+       "text": "Sylvia has prepared enough to eat and drink."
+      },
+      {
+       "n": 3,
+       "text": "She has prepared more than enough."
+      },
+      {
+       "n": 4,
+       "text": "Her guests are congenial people."
+      },
+      {
+       "n": 5,
+       "text": "All of them are."
+      },
+      {
+       "n": 6,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 7,
+       "text": "Her dinner party will be a success."
+      },
+      {
+       "n": 8,
+       "text": "This is stated as certain."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Sylvia's cooking sucks?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q22",
+     "qnum": 22,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT102_S3_Q23",
+   "prompt": "A museum director, in order to finance expensive new acquisitions, discreetly sold some paintings by major artists. All of them were paintings that the director privately considered inferior. Critics roundly condemned the sale, charging that the museum had lost first-rate pieces, thereby violating its duty as a trustee of art for future generations. A few months after being sold by the museum, those paintings were resold, in an otherwise stagnant art market, at two to three times the price paid to the museum. Clearly, these prices settle the issue, since they demonstrate the correctness of the critics' evaluation.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A museum director sold paintings. \u00b7 The paintings are by major artists. \u00b7 Only some were sold. \u00b7 The selling was discreet. \u00b7 The purpose was to finance new acquisitions. \u00b7 The acquisitions are expensive. (2) This is about all of the paintings sold. \u00b7 The director considered them inferior. \u00b7 The director did so privately. (3) Critics condemned the sale. \u00b7 The condemnation was round. \u00b7 They made a charge. \u00b7 The charge is that the museum lost first-rate pieces. \u00b7 Doing so violated a duty. \u00b7 The duty is as a trustee of art. \u00b7 The art is held for future generations. (4) The paintings were resold. \u00b7 This was a few months after the museum sold them. \u00b7 The art market was otherwise stagnant. \u00b7 The resale price was higher. \u00b7 It was two to three times higher. \u00b7 The comparison is with the price paid to the museum. (5) This is the conclusion. \u00b7 It is treated as clear. \u00b7 The prices settle the issue. \u00b7 This is the reason given. \u00b7 The prices demonstrate something. \u00b7 What they demonstrate is that the critics' evaluation was correct.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A museum director, in order to finance expensive new acquisitions, discreetly sold some paintings by major artists.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A museum director sold paintings."
+      },
+      {
+       "n": 2,
+       "text": "The paintings are by major artists."
+      },
+      {
+       "n": 3,
+       "text": "Only some were sold."
+      },
+      {
+       "n": 4,
+       "text": "The selling was discreet."
+      },
+      {
+       "n": 5,
+       "text": "The purpose was to finance new acquisitions."
+      },
+      {
+       "n": 6,
+       "text": "The acquisitions are expensive."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "All of them were paintings that the director privately considered inferior.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about all of the paintings sold."
+      },
+      {
+       "n": 2,
+       "text": "The director considered them inferior."
+      },
+      {
+       "n": 3,
+       "text": "The director did so privately."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Critics roundly condemned the sale, charging that the museum had lost first-rate pieces, thereby violating its duty as a trustee of art for future generations.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Critics condemned the sale."
+      },
+      {
+       "n": 2,
+       "text": "The condemnation was round."
+      },
+      {
+       "n": 3,
+       "text": "They made a charge."
+      },
+      {
+       "n": 4,
+       "text": "The charge is that the museum lost first-rate pieces."
+      },
+      {
+       "n": 5,
+       "text": "Doing so violated a duty."
+      },
+      {
+       "n": 6,
+       "text": "The duty is as a trustee of art."
+      },
+      {
+       "n": 7,
+       "text": "The art is held for future generations."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "A few months after being sold by the museum, those paintings were resold, in an otherwise stagnant art market, at two to three times the price paid to the museum.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The paintings were resold."
+      },
+      {
+       "n": 2,
+       "text": "This was a few months after the museum sold them."
+      },
+      {
+       "n": 3,
+       "text": "The art market was otherwise stagnant."
+      },
+      {
+       "n": 4,
+       "text": "The resale price was higher."
+      },
+      {
+       "n": 5,
+       "text": "It was two to three times higher."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with the price paid to the museum."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Clearly, these prices settle the issue, since they demonstrate the correctness of the critics' evaluation.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is treated as clear."
+      },
+      {
+       "n": 3,
+       "text": "The prices settle the issue."
+      },
+      {
+       "n": 4,
+       "text": "This is the reason given."
+      },
+      {
+       "n": 5,
+       "text": "The prices demonstrate something."
+      },
+      {
+       "n": 6,
+       "text": "What they demonstrate is that the critics' evaluation was correct."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if a high price doesn't mean something is a great work of art? What if an obnoxious rich person bought these for the express purpose of laughing at how bad they are?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q23",
+     "qnum": 23,
+     "question_type": "Classic Flaw",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT102_S3_Q24",
+   "prompt": "The United States ranks far behind countries such as Sweden and Canada when it comes to workplace safety. In all three countries, joint labor-management committees that oversee workplace safety conditions have been very successful in reducing occupational injuries. In the United States, such committees are found only in the few companies that have voluntarily established them. However, in Sweden and several Canadian provinces, joint safety committees are required by law and exist in all medium-sized and large workplaces.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about the United States. \u00b7 It ranks behind other countries. \u00b7 It ranks far behind. \u00b7 Sweden is one of them. \u00b7 Canada is another of them. \u00b7 The subject is workplace safety. (2) This holds in all three countries. \u00b7 There are joint labor-management committees. \u00b7 The committees oversee workplace safety conditions. \u00b7 The committees have been successful. \u00b7 They have been very successful. \u00b7 What they reduced is occupational injuries. (3) This returns to the United States. \u00b7 Such committees are found only in some companies. \u00b7 Those companies are few. \u00b7 Those companies established them voluntarily. (4) This is a contrast. \u00b7 This is about Sweden. \u00b7 It is also about Canadian provinces. \u00b7 Several provinces are meant. \u00b7 Joint safety committees are required by law. \u00b7 They exist in all medium-sized workplaces. \u00b7 They exist in all large workplaces.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The United States ranks far behind countries such as Sweden and Canada when it comes to workplace safety.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the United States."
+      },
+      {
+       "n": 2,
+       "text": "It ranks behind other countries."
+      },
+      {
+       "n": 3,
+       "text": "It ranks far behind."
+      },
+      {
+       "n": 4,
+       "text": "Sweden is one of them."
+      },
+      {
+       "n": 5,
+       "text": "Canada is another of them."
+      },
+      {
+       "n": 6,
+       "text": "The subject is workplace safety."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In all three countries, joint labor-management committees that oversee workplace safety conditions have been very successful in reducing occupational injuries.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This holds in all three countries."
+      },
+      {
+       "n": 2,
+       "text": "There are joint labor-management committees."
+      },
+      {
+       "n": 3,
+       "text": "The committees oversee workplace safety conditions."
+      },
+      {
+       "n": 4,
+       "text": "The committees have been successful."
+      },
+      {
+       "n": 5,
+       "text": "They have been very successful."
+      },
+      {
+       "n": 6,
+       "text": "What they reduced is occupational injuries."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "In the United States, such committees are found only in the few companies that have voluntarily established them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This returns to the United States."
+      },
+      {
+       "n": 2,
+       "text": "Such committees are found only in some companies."
+      },
+      {
+       "n": 3,
+       "text": "Those companies are few."
+      },
+      {
+       "n": 4,
+       "text": "Those companies established them voluntarily."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "However, in Sweden and several Canadian provinces, joint safety committees are required by law and exist in all medium-sized and large workplaces.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast."
+      },
+      {
+       "n": 2,
+       "text": "This is about Sweden."
+      },
+      {
+       "n": 3,
+       "text": "It is also about Canadian provinces."
+      },
+      {
+       "n": 4,
+       "text": "Several provinces are meant."
+      },
+      {
+       "n": 5,
+       "text": "Joint safety committees are required by law."
+      },
+      {
+       "n": 6,
+       "text": "They exist in all medium-sized workplaces."
+      },
+      {
+       "n": 7,
+       "text": "They exist in all large workplaces."
+      }
+     ]
+    }
+   ],
+   "the_read": "There is some correlation between legally mandated joint safety committees and better workplace safety.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT102.S3.Q24",
+     "qnum": 24,
+     "question_type": "Inference",
+     "correct_answer": "A"
+    }
+   ]
+  }
+ ]
+}

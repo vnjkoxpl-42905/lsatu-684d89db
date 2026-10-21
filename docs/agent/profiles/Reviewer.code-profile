@@ -1,0 +1,25 @@
+{
+  "name": "LSAT U Reviewer",
+  "settings": {
+    "workbench.secondarySideBar.defaultVisibility": "visible",
+    "workbench.activityBar.compact": true,
+    "workbench.editor.labelFormat": "medium",
+    "workbench.browser.openLocalhostLinks": true,
+    "workbench.browser.dataStorage": "workspace",
+    "diffEditor.renderSideBySide": true,
+    "git.openRepositoryInParentFolders": "always",
+    "peacock.color": "#6f4aa8"
+  },
+  "extensions": [
+    "openai.chatgpt",
+    "anthropic.claude-code",
+    "ms-playwright.playwright",
+    "usernamehw.errorlens",
+    "gruntfuggly.todo-tree",
+    "johnpapa.vscode-peacock",
+    "eamodio.gitlens",
+    "yzhang.markdown-all-in-one"
+  ],
+  "keybindings": "../keybindings/lsatu-cockpit.keybindings.json",
+  "tasks": "../../.vscode/tasks.json"
+}
