@@ -25,12 +25,12 @@ describe('saved RC controls', () => {
     expect(m.save).toHaveBeenCalledWith('owner', 'My settings', recipe, expect.any(String));
     expect(m.list).not.toHaveBeenCalled();
   });
-  it('explains exact-passage availability before Preview without hiding the save choices', () => {
+  it('explains exact-passage availability before Review without hiding the save choices', () => {
     render(<MemoryRouter><RcSavedSetsPanel variant="contextual" /></MemoryRouter>);
     expect(screen.getByRole('button', { name: 'Save these passages' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Save these settings' })).toBeDisabled();
-    expect(screen.getByText(/Preview your selection to save these exact passages/)).toBeInTheDocument();
-    expect(screen.getByText(/Reusable settings are available with Choose for me/)).toBeInTheDocument();
+    expect(screen.getByText(/Review your selection to save these exact passages/)).toBeInTheDocument();
+    expect(screen.getByText(/Reusable settings are available with Tutor's choice/)).toBeInTheDocument();
     expect(m.list).not.toHaveBeenCalled();
   });
   it('reports explicit demo success only after the adapter completes', async () => {

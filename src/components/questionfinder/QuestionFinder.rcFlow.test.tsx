@@ -70,3 +70,34 @@ describe('RC single-section address completion',()=>{
   fixture.index.tests[0].sections.push({section:3,lr:[],rc:[{id:21,position:1,title:'Other',questions:[{id:2007,number:7}]}]});const d=open();type(d,'PT140 Q7');expect(within(d).getByRole('textbox')).toHaveValue('PT140 Q7');expect(within(d).getByRole('button',{name:'Open question'})).toBeDisabled();expect(fixture.navigate).not.toHaveBeenCalled();
  });
 });
+
+describe('RC clicked-result provenance across separate indexes',()=>{
+ beforeEach(()=>{
+  fixture.navigate.mockReset();fixture.banks={loading:false,error:null,lrFailed:false,rcFailed:false,retry:vi.fn(),lr:[],rcPassages:[makePassage(14,140,1,'Marine ecosystems')],rcQuestions:[{questionId:1588,passageId:14,preptest:140,section:4,qnum:1,position:1,prompt:'Marine main point'}]};
+  fixture.index={loading:false,failed:false,retry:vi.fn(),tests:[{pt:140,sections:[{section:4,lr:[],rc:[{id:999,position:1,title:'Different passage',questions:[{id:8888,number:1}]},{id:15,position:2,title:'Libraries',questions:[{id:1594,number:7}]}]}]},{pt:141,sections:[{section:3,lr:[],rc:[{id:21,position:1,title:'Other passage',questions:[{id:2001,number:1}]}]}]}]};
+ });
+ it('blocks a clicked passage when another index maps its address to a different passage id',async()=>{
+  const d=open();type(d,'Marine ecosystems');fireEvent.click(await within(d).findByRole('button',{name:/PT 140 · S4 · P1/}));expect(within(d).getByRole('button',{name:'Open question'})).toBeDisabled();expect(within(d).getByRole('alert')).toHaveTextContent(/no longer matches this search result/i);expect(fixture.navigate).not.toHaveBeenCalled();
+ });
+ it('blocks a clicked exact question when its question id differs despite matching passage and question number',async()=>{
+  fixture.index.tests[0].sections[0].rc[0].id=14;
+  const d=open();type(d,'Marine main point');fireEvent.click(await within(d).findByRole('button',{name:/PT 140 · S4 · Q1/}));expect(within(d).getByRole('button',{name:'Open question'})).toBeDisabled();expect(within(d).getByRole('alert')).toHaveTextContent(/no longer matches this search result/i);expect(fixture.navigate).not.toHaveBeenCalled();
+ });
+ it('blocks a clicked passage when the same id has moved to another passage position',async()=>{
+  fixture.index.tests[0].sections[0].rc[0].id=14;fixture.index.tests[0].sections[0].rc[0].position=3;
+  const d=open();type(d,'Marine ecosystems');fireEvent.click(await within(d).findByRole('button',{name:/PT 140 · S4 · P1/}));expect(within(d).getByRole('button',{name:'Open question'})).toBeDisabled();expect(within(d).getByRole('alert')).toHaveTextContent(/no longer matches this search result/i);expect(fixture.navigate).not.toHaveBeenCalled();
+ });
+ it.each(['typing','clear','escape','bank','test','section'])('clears clicked provenance on explicit %s',async action=>{
+  const d=open();type(d,'Marine ecosystems');fireEvent.click(await within(d).findByRole('button',{name:/PT 140 · S4 · P1/}));expect(within(d).getByRole('alert')).toHaveTextContent(/no longer matches this search result/i);
+  if(action==='typing')type(d,'PT140 S4 P2');
+  if(action==='clear')fireEvent.click(within(d).getByRole('button',{name:'Clear search'}));
+  if(action==='escape')fireEvent.keyDown(within(d).getByRole('textbox'),{key:'Escape'});
+  if(action==='bank')fireEvent.click(within(d).getByRole('button',{name:'LR'}));
+  if(action==='test')fireEvent.change(within(d).getByLabelText('Test'),{target:{value:'141'}});
+  if(action==='section')fireEvent.change(within(d).getByLabelText('Section'),{target:{value:''}});
+  await waitFor(()=>expect(within(d).queryByRole('alert')).toBeNull());
+  if(action==='typing')expect(within(d).getByRole('button',{name:'Open passage'})).toBeEnabled();
+  else expect(within(d).getByRole('button',{name:'Open question'})).toBeDisabled();
+  expect(fixture.navigate).not.toHaveBeenCalled();
+ });
+});

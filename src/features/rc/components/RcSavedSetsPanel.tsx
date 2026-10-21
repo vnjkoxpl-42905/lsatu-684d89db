@@ -80,7 +80,7 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant, saveSuccessMessa
   });
   return <section className={`rc-saved-panel${variant === 'contextual' ? ' rc-contextual-save' : ''}`} aria-label="Saved RC sets and recipes">
     <h2 className="text-lg font-semibold">{variant === 'contextual' ? 'Save this drill' : 'Saved passages and settings'}</h2>
-    <p className="text-sm">{variant === 'contextual' ? 'Exact passages keep this set. Reusable settings choose passages again next time.' : 'Saved passages keep the exact passages and questions. Saved settings choose passages again using your filters and current progress. Preview either before starting.'}</p>
+    <p className="text-sm">{variant === 'contextual' ? 'Exact passages keep this set. Reusable settings choose passages again next time.' : 'Saved passages keep the exact passages and questions. Saved settings choose passages again using your filters and current progress. Review either before starting.'}</p>
     {!owner && <p>Sign in to save and reopen RC work.</p>}
     {owner && (recipe || fixed || variant === 'contextual') && <div className="rc-saved-form">
       {variant === 'contextual' ? <label className="rc-contextual-save-name block w-full"><span className="rc-field-label">Name</span><input aria-label="Saved RC name" aria-describedby={saveHelpId} maxLength={100} value={name} onChange={e => setName(e.target.value)} placeholder="For example, Science practice" className="w-full rounded border px-3 py-2" /></label> : <input aria-label="Saved RC name" maxLength={100} value={name} onChange={e => setName(e.target.value)} placeholder="Name these passages or settings" className="rounded border px-3 py-2" />}
@@ -89,7 +89,7 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant, saveSuccessMessa
         <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !recipe} aria-describedby={variant === 'contextual' ? saveHelpId : undefined} onClick={() => recipe && void save(recipe, name)}>Save these settings</button>
       </div>
     </div>}
-    {variant === 'contextual' && owner && <p id={saveHelpId} className="rc-field-hint">{!fixed ? 'Preview your selection to save these exact passages. ' : ''}{!recipe ? 'Reusable settings are available with Choose for me. ' : ''}Enter a name to save. Manage saved work in Saved sets.</p>}
+    {variant === 'contextual' && owner && <p id={saveHelpId} className="rc-field-hint">{!fixed ? 'Review your selection to save these exact passages. ' : ''}{!recipe ? "Reusable settings are available with Tutor's choice. " : ''}Enter a name to save. Manage saved work in Saved sets.</p>}
     {pendingVisible && <div role="status"><p>A previous RC save still needs account confirmation. Retry that original name and selection before saving another item.</p>
       <button type="button" className="rc-chip" disabled={busy} onClick={() => {
         if (!pending.current) return;

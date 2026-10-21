@@ -154,7 +154,7 @@ function mount(entry: string, next?: string, showHistory = false, openPickerOnEn
 const commitDrawerIfOpen = () => { const dialog = screen.queryByRole('dialog'); if (dialog) fireEvent.click(within(dialog).getByRole('button', { name: 'Apply' })); };
 const editSetup = () => { const button = screen.queryByRole('button', { name: 'Edit setup' }); if (button) fireEvent.click(button); };
 const openOptions = () => { editSetup(); if (!screen.queryByRole('dialog')) fireEvent.click(screen.getByRole('button', { name: 'Customize drill' })); };
-const choosePassageMethod = (mode: 'automatic' | 'manual') => { editSetup(); if (!screen.queryByRole('dialog')) fireEvent.click(screen.getByRole('button', { name: 'Change passage selection' })); fireEvent.click(screen.getByRole('button', { name: mode === 'automatic' ? /^Tutor's choice/ : /^Pick passages/ })); if (mode === 'automatic') commitDrawerIfOpen(); };
+const choosePassageMethod = (mode: 'automatic' | 'manual') => { editSetup(); if (!screen.queryByRole('dialog')) fireEvent.click(screen.getByRole('button', { name: /^Change passage selection/ })); fireEvent.click(screen.getByRole('button', { name: mode === 'automatic' ? /^Tutor's choice/ : /^Pick passages/ })); if (mode === 'automatic') commitDrawerIfOpen(); };
 const openFilter = (label: string) => { const details = screen.getByText(label, { exact: true }).closest('details')!; if (!details.open) fireEvent.click(details.querySelector('summary')!); };
 const openAdvancedOptions = () => { openOptions(); const details = document.querySelector<HTMLDetailsElement>('.rc-final-advanced'); if (details && !details.open) fireEvent.click(details.querySelector('summary')!); };
 
@@ -429,7 +429,7 @@ describe('RC refinement workflow regressions', () => {
   it('closes Apply when automatic entry changes the host prop to manual and does not reopen on Edit selection', async () => {
     render(<MemoryRouter initialEntries={['/practice/drills?section=rc&builder=automatic']}><RouteDrivenPickerSurface /><ModeLocationProbe /></MemoryRouter>);
     await waitFor(() => expect(screen.getByRole('button', { name: 'Review selection' })).toBeEnabled());
-    const opener = screen.getByRole('button', { name: 'Change passage selection' });
+    const opener = screen.getByRole('button', { name: /^Change passage selection/ });
     choosePassageMethod('manual');
     const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
@@ -481,7 +481,7 @@ describe('RC refinement workflow regressions', () => {
     fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     expect(screen.getByText('Choose at least one passage to continue.')).toBeInTheDocument();
-    expect(screen.queryByText('Your settings changed. Preview the drill again before starting.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Your settings changed. Review the selection again before starting.')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Choose passages' })).toBeEnabled();
     expect(screen.getByRole('button', { name: 'Review selection' })).toBeDisabled();
     expect(createSession).not.toHaveBeenCalled();
@@ -613,6 +613,28 @@ describe('RC refinement workflow regressions', () => {
     await act(async () => release());
     await waitFor(() => expect(screen.getByRole('button', { name: 'Start drill' })).toBeEnabled());
     expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it.each(['missing passage', 'missing questions', 'load failure'] as const)('explains that the reviewed set remains selected when choosing different passages fails: %s', async failure => {
+    mount('/classroom/drill?section=rc&count=2');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Review selection' })).toBeEnabled());
+    previewDrill(); await screen.findByRole('button', { name: 'Start drill' });
+    const originalIds = [...loadPassages.mock.calls.at(-1)![0]];
+    const originalLoad = loadPassages.getMockImplementation()!;
+    loadPassages.mockImplementationOnce(async ids => {
+      if (failure === 'load failure') throw new Error('Load failed');
+      const passages = await originalLoad(ids);
+      return failure === 'missing passage' ? passages.slice(1) : passages.map(passage => ({ ...passage, questions: [] }));
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Choose different passages' }));
+    await screen.findByText(/The previously reviewed passages are still selected\./);
+    expect(screen.getByRole('heading', { name: 'Review your RC drill' })).toBeInTheDocument();
+    expect(screen.queryByText('What is the main point?')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Start drill' })).toBeEnabled();
+    expect(createSession).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Start drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual(originalIds);
   });
 
   it('requires explicit reveal again when a fresh automatic inspection selects the same passage', async () => {
@@ -838,7 +860,7 @@ describe('RcHubSurface autostart', () => {
     const workspace = document.querySelector<HTMLElement>('.rc-setup-workspace')!;
     expect(workspace.firstElementChild).toHaveClass('rc-selection-source');
     expect(within(workspace).getByText('Passage selection', { exact: true })).toBeInTheDocument();
-    expect(within(workspace).getByRole('button', { name: 'Change passage selection' })).toHaveAccessibleDescription("Tutor's choice");
+    expect(within(workspace).getByRole('button', { name: /^Change passage selection/ })).toHaveAccessibleName("Change passage selection, currently Tutor's choice");
     expect(document.querySelector('.rc-setup-heading .rc-selection-source')).toBeNull();
     expect(screen.queryByText('Timing preference')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Start drill' })).not.toBeInTheDocument();
@@ -1211,7 +1233,7 @@ describe('RcHubSurface autostart', () => {
 
   it('uses only the active automatic draft and restores manual passages when switching back', async () => {
     mount('/classroom/drill?section=rc&passages=1188,1201');
-    await screen.findByRole('button', { name: 'Change passage selection' });
+    await screen.findByRole('button', { name: /^Change passage selection/ });
     await screen.findByText('2 selected');
     choosePassageMethod('automatic');
     expect(screen.queryByRole('region', { name: 'Choose your passages' })).not.toBeInTheDocument();
@@ -1423,7 +1445,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Review selection' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
     commitDrawerIfOpen(); editSetup(); fireEvent.click(screen.getByRole('button', { name: /^More passages/ }));
-    expect(screen.getByText(/settings changed. Preview the drill again/)).toBeInTheDocument();
+    expect(screen.getByText(/settings changed. Review the selection again/)).toBeInTheDocument();
     expect(primary()).toHaveTextContent('Review selection');
   });
 
@@ -1654,7 +1676,7 @@ describe('RcHubSurface launch truth (#171)', () => {
       ]),
     );
     mount('/classroom/drill?section=rc&count=1');
-    await screen.findByRole('button', { name: 'Change passage selection' });
+    await screen.findByRole('button', { name: /^Change passage selection/ });
     editSetup(); choosePassageMethod('manual');
 
     // Default status filter is Fresh: only passage 1202 (not_attempted) matches

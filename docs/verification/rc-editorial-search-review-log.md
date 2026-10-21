@@ -107,3 +107,106 @@ Implementation detail: finder may derive retained passage identity from explicit
 ## Implementation verification before final inspection
 All changes authored by Codex agents. Full749tests passed across63files; typecheck test-typing repairs followed by typecheckpass+145affectedtests; buildpass. Actualbefore/after pairedfinder repro and publicindexchecks recorded in verification report. Sourcefrozen beforeinspection.
 Snapshot includes intended preexisting uncommitted RCwork; inspector should inspect currenttask+relevantinteractions, not claimcompleteindependentreviewofallhistoricalconceptfiles. No publication authorized.
+## Final inspection round1: REVISE; observed claude-opus-5-5
+{
+  "verdict": "REVISE",
+  "summary": "Most of the plan is implemented, and the safeguards I traced hold. RcQuestionPreview handles a missing q separately from an invalid one, keeps question focus as number|null in the retained launch, and rechecks the account and preview context. Retained launches with a different focus are rejected, and passage-only launches leave q out of the drill URL. The RC-only bank loading is keyed to the live finder view. More results load six at a time up to 60. Timing-default saving only happens on its explicit button, and the fixture adapters are wired into both the preview server and the exporter. One material deviation remains. When a student clicks a passage result, the finder does not keep that passage's id as the resolved plan requires. It rewrites the query as text and looks the passage up again by position in a separately generated address index, without checking that the id it finds matches the result that was clicked. The other findings are low-severity cleanup.",
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "medium",
+      "path": "src/components/questionfinder/QuestionFinder.tsx",
+      "evidence": "The plan's resolved details require: 'Retained passage selection records passageId,pt,section and validates them against the current visible address.' Instead, openHit (line ~231) discards hit.passageId and only writes the text query `PT${preptest} S${section} P${setNumber}`. selectedTarget (lines 211-219) then looks the passage up again in useFinderAddressIndex (/data/finder-address-index.json) by `passage.position === address.pnum`. The search hits come from a different source, loadRcIndex. The two artifacts are generated separately; scripts/build-finder-address-index.mjs maps position from setNumber at build time. If they drift (stale JSON, a renumbered passage, or a passage whose question count differs between them), Open passage can navigate to a different passage id than the one clicked, or quietly disable. Nothing compares the resolved id with hit.passageId. The verification doc even records an 'address-position mismatch' in an earlier fixture, so this kind of drift has already happened in testing. The rcFlow tests only use fixtures where the two sources agree.",
+      "fix": "Have openHit store the retained selection as {passageId, pt, section, pnum}. In selectedTarget, open only if the address-index passage at that position has id === retained.passageId; otherwise disable Open and explain the mismatch. Clear the retained selection on the actions the plan lists (typing, Clear, Escape, bank or test/section change). Add a test where the bank and the address index disagree on the id at a position, and assert that Open stays disabled and navigate is not called."
+    },
+    {
+      "id": "F2",
+      "severity": "low",
+      "path": "src/features/rc/components/RcHubSurface.tsx",
+      "evidence": "inspectSet no longer clears selectedSet when it starts (the setSelectedSet(null) call was removed). 'Choose different passages' keeps the same selectionKey. If the new inspection fails ('No passages match…', 'Some passages could not be loaded', 'loaded without its questions', or the catch path), the earlier set stays active. The review stage keeps showing the old passages with Start enabled, and the only feedback is a notice. The student asked for different passages, but Start still launches the old ones. Nothing new is exposed, but the result is ambiguous.",
+      "fix": "When an inspection triggered by 'Choose different passages' fails, either state clearly that the previously reviewed passages are still selected, or require explicit confirmation before Start. Add a test for that failure path."
+    },
+    {
+      "id": "F3",
+      "severity": "low",
+      "path": "src/features/rc/components/RcHubSurface.tsx",
+      "evidence": "essentialFilters (line ~949), hiddenFilterSummary (line 912), essentialOpen/essentialRoot with their pointerdown listener effect, essentialKeyDown, setActiveFilters, topicLabel and difficultyLabel are defined but never rendered. A test even asserts `.rc-essential-control` has length 0. This is dead UI logic inside a component that controls launches, and it could break under noUnusedLocals.",
+      "fix": "Remove the unused essential-filter code and its CSS, or render it on purpose."
+    },
+    {
+      "id": "F4",
+      "severity": "low",
+      "path": "src/features/rc/components/RcHubSurface.tsx",
+      "evidence": "Plan item 2 says the selection control's accessible name should describe both the action and the current method. The button's aria-label is a fixed 'Change passage selection'. The current method ('Tutor's choice' / 'Selected passages') is only in aria-describedby, so screen readers that skip descriptions announce the name without the method.",
+      "fix": "Put the method in the name, e.g. aria-label={`Change passage selection, currently ${method}`}, or drop aria-label so the visible label and value form the name, and update the test."
+    }
+  ],
+  "coverage": [
+    "Plan document and the full tracked diff, as provided",
+    "QuestionFinder.tsx: panel state, selectedTarget, openHit, more-results, keyboard reset/clamp, BrowseByTest passage/question selectors",
+    "questionFinderSearch.ts: parseRcPassageAddress, scoring, rcLimit/rcTotal, LR address grammar left unchanged",
+    "useFinderAddressIndex.ts and scripts/build-finder-address-index.mjs: how position maps to setNumber",
+    "useQuestionFinderBanks.ts: per-view lazy loading, failure/retry semantics",
+    "QuestionFinder.rcFlow.test.tsx contents",
+    "RcQuestionPreview.tsx: optional q validation, Pending identity, launch/reveal context checks, passage-only rendering",
+    "RcHubSurface.tsx: inspectSet, start/launchKey rechecks, strict-exposure history recheck, timing-default drawer, drawer method switching, dead-code check",
+    "Sheet portal and drawer CSS scoping (rcBuilderRefinement.css)",
+    "Fixture wiring: rc-finder-fixture.mjs referenced by both start-rc-builder-simple-preview.mjs and export-rc-advisor.mjs; preview route readback in rc-builder-simple-preview.tsx",
+    "rc-editorial-search-verification.md claims (read as statements only, not checked against the logs)"
+  ],
+  "limitations": [
+    "I could not run tests, typecheck, build or a browser, so pass/fail claims in the verification doc are unconfirmed.",
+    "I did not read the proof logs under AppData/Temp or the Downloads screenshots, and I did not check visual layout at the stated widths.",
+    "I skimmed but did not fully review the RcHubSurface.test.tsx changes, the CSS files, the AssignedWorkPanel/useAssignedTodoFeed/assignedWorkSection changes, or RcSavedSetsPanel beyond the diff.",
+    "I did not compare the real finder-address-index.json with the RC index for actual drift; F1 rests on code structure, not an observed real-data mismatch.",
+    "Binary image artifacts and the historical HTML exports in the manifest were not inspected."
+  ]
+}
+Result: C:/Users/Joshu/AppData/Local/Temp/rc-editorial-inspection-20261021/claudex-gzvw73y9/result.json
+Dispositions: accept F1 id/provenance cross-check with mismatch explanation and tests; accept F2 explicit prior-selection notice on failed reroll; accept F3 remove dead essential-filter component/styles; accept F4 accessible current-method name. Host also fixes stale Choose for me/Preview wording in contextual/save management notices to match Tutor's choice/Review selection. Inspection did not examine screenshots/proof logs or fully inspect CSS; second inspection requested to cover currenttask screenshots/CSS and all repairs.
+`n## Final inspection 2: APPROVED`nResult: C:/Users/Joshu/AppData/Local/Temp/rc-editorial-inspection-20261021/claudex-w3e9ffi5/result.json`nRequested opus; observed claude-opus-5-5. Fresh read-only session. No production code changed afterward.`n{
+  "verdict": "APPROVED",
+  "summary": "All four findings from the prior inspection are fixed in the current source. No material functional defects remain in the areas I inspected.\n\n- **F1:** Clicking a result now keeps its passageId, pt, section, pnum, questionId and qnum (`QuestionFinder.tsx:158`, `:245`). The `retainedMismatch` check at `:226-234` compares that kept identity against the address index: same passage id at the same position with questions, same visible address, same question, and an `addressTarget` whose passageId and questionId match. On any mismatch, `selectedTarget` becomes null, so Open stays disabled and an alert explains why. Typing, Clear, Escape-clear, a tab/bank change and selector picks all clear the kept identity by going through `writeQuery`. `openHit` alone calls `setQuery` directly, so its identity survives.\n- **F2:** When \"Choose different passages\" fails, the notice now says the previously reviewed passages are still selected, and tests cover the missing-passage, missing-questions and load-failure cases.\n- **F3:** The dead essential-filter identifiers are gone; a grep finds none.\n- **F4:** The selection control's accessible name now includes the current method (\"Change passage selection, currently Tutor's choice\"), and a test asserts it.\n\nThe rest of the plan's safeguards still hold in source:\n- Missing `q` versus invalid `q` in RcQuestionPreview, and `number|null` question focus in the pending launch.\n- Lazy bank loading keyed to the live finder view.\n- More results six at a time up to 60.\n- Timing default saved only by its explicit button, with status shown after the drawer closes.\n\nWhat's left is three low-severity issues about evidence and polish:\n- **Finder screenshots:** they appear to be captured partway through the fade-in. They show the builder behind the panel, so they can't prove the finder is readable.\n- **Timing at 320px:** the Timing select cuts off its value.\n- **Flaky test:** one 60-result expansion test timed out once.",
+  "findings": [
+    {
+      "id": "G1",
+      "severity": "low",
+      "path": "C:/Users/Joshu/Downloads/RC-Editorial-Final-2026-10-21/finder-1440.jpg; finder-320.jpg",
+      "evidence": "In both finder screenshots the builder behind the panel shows clearly through it: 'Choose your next passage', the Timing/Show answers selects and 'Review selection' are all visible through the panel body. The CSS gives `.qf-panel` an opaque `background: var(--qf-surface-warm)`, and the qfRise (240ms) and qfFade (180ms) animations start at opacity 0 (`questionFinder.css:164-166`, `:908-937`). So these frames were most likely taken mid-animation rather than showing a translucent design. As captured, they cannot support any claim about finder readability or contrast. At 320px the overlap makes the placeholder, hint and row titles hard to read.",
+      "fix": "Recapture finder-1440 and finder-320 after the animations finish: wait about 300ms or for animationend, or use prefers-reduced-motion. Then confirm the panel is opaque before citing the images as visual evidence."
+    },
+    {
+      "id": "G2",
+      "severity": "low",
+      "path": "src/features/rc/rc.css (and src/features/rc/rcBuilderRefinement.css)",
+      "evidence": "In setup-320.jpg the Passages stepper and Timing select share one row, and the Timing select shows 'Standard pac' cut off. The pace ('8:45 per passage') is hidden from the main control at the smallest width the plan lists. There's no horizontal page clipping, but the selected value can't be read without opening the select.",
+      "fix": "At ≤360px, stack the count and timing controls, or use a shorter option label (e.g. 'Standard · 8:45') so the selected value fits."
+    },
+    {
+      "id": "G3",
+      "severity": "low",
+      "path": "src/components/questionfinder/QuestionFinder.rcFlow.test.tsx",
+      "evidence": "The host reports the full run had one 15s timeout in the 60-result expansion test, which then passed 28/28 on an immediate rerun with no code changes. That means the test that guards the bounded more-results behaviour is timing-sensitive, and a future CI failure could be dismissed as flake.",
+      "fix": "Lower the per-click cost (fewer DOM queries, or a smaller fixture of 61 results), or set an explicit timeout for that test. Record the flake in the verification log as observed, not resolved."
+    }
+  ],
+  "coverage": [
+    "Prior inspection result.json (F1–F4 text) compared against current source",
+    "QuestionFinder.tsx: retainedRcHit state, writeQuery clearing paths, addressTarget, retainedMismatch, selectedTarget/openSelected, openHit, BrowseByTest passage/question selectors and effects (from diff plus grep of current file)",
+    "questionFinderSearch.ts: parseRcPassageAddress, pnum filtering, scoring, rcLimit/rcTotal, LR loop skipped on pnum (diff)",
+    "useQuestionFinderBanks.ts: lazy loading per view, requested-bank loading/failure, retry (diff)",
+    "RcQuestionPreview.tsx and its tests: optional q, raw-q context key, passage-only reveal/start/pending recovery, rejected focus mismatch (diff)",
+    "RcHubSurface.tsx and its tests: accessible name with current method, retained-selection failure notice, launchKey vs selectionKey, strict-exposure recheck at Start, timing preference drawer (diff); grep confirming dead essential-filter code removed",
+    "questionFinder.css: panel opacity and animation rules",
+    "Screenshots viewed with Read: setup-1440.jpg, setup-320.jpg, finder-1440.jpg, finder-320.jpg; visual hierarchy assessed for setup (passage selection first, count beside timing, Show answers below, Review selection primary, quiet save disclosure)"
+  ],
+  "limitations": [
+    "I could not run tests, typecheck, build or a browser. The host's figures (97 finder, 121 builder, 760 total with one timeout, typecheck/build exit 0) are unconfirmed.",
+    "I did not re-read the full current QuestionFinder.tsx or RcHubSurface.tsx beyond the diff and targeted greps, and I did not open the new QuestionFinder.rcFlow.test.tsx regression cases. That the nine regression cases failed before the repair is taken from the host's report.",
+    "I did not read the verification and review-log markdown files, the fixture scripts or rcBuilderRefinement.css/rcTypography.css in full.",
+    "Image reading worked, but the finder screenshots look like mid-animation frames, so I could not assess the finder's final readability visually (see G1). I reviewed no screenshots at 980/768/390, and none of the drawer or review stage.",
+    "I did not check the real finder-address-index.json against the RC index for actual position/id drift. The F1 fix is verified only from code structure.",
+    "AssignedWorkPanel/useAssignedTodoFeed/assignedWorkSection, RcSavedSetsPanel and the historical prototype artifacts were reviewed only lightly or not at all."
+  ]
+}
+Host disposition: G1 evidence recaptured with reduced motion after review, desktop and320 finder confirmed opaque/readable. G2 retained as known low-priority320px timing-value truncation (opening select shows full pace); no post-inspection source changes. G3 timeout observed and recorded, whole-file rerun28/28 passed unchanged, not declared permanently resolved. Inspection budget2/2 used. Source changes are approved within stated coverage, not an exhaustive production acceptance claim.

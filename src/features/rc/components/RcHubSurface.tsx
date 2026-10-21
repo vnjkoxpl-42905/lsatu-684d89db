@@ -434,7 +434,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
       const known = [...new Set(wanted.filter((id) => Number.isSafeInteger(id) && id > 0
         && passages.some((p) => p.passageId === id && p.questionCount > 0)))];
       if (known.length !== wanted.length) {
-        setNotice('The linked passages could not be verified. Choose passages and preview the drill below.');
+        setNotice('The linked passages could not be verified. Choose passages and review your selection below.');
         setAutoStart(false);
       }
       setHandPicked(known);
@@ -539,7 +539,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
       else { setTiming('custom'); setCustomSeconds(payload.config.timing.secondsPerPassage); setCustomText(mmss(payload.config.timing.secondsPerPassage)); }
       setHandPicked(payload.mode === 'fixed' ? payload.passageIds : []); setHandPickOpen(payload.mode === 'fixed');
       setSavedSnapshot(payload.mode === 'fixed' ? payload : null); setRestoredSavedQuery(drillQueryKey);
-      setNotice(`Opened ${saved.name}. Preview the current passages before starting. No drill has started.`);
+      setNotice(`Opened ${saved.name}. Review the current passages before starting. No drill has started.`);
     }).catch(err => { if (current) setNotice(err instanceof Error ? err.message : 'This saved RC set could not be loaded.'); });
     return () => { current = false; };
   }, [actorId, drillQueryKey, indexStatus, passages]);
@@ -573,10 +573,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
   const previewIdentity = activeSet ? `${activeSet.key}:${activeSet.previewId}` : null;
   const shortfallAccepted = activeSetKey !== null && acceptedShortfall === activeSetKey;
   const needsShortfallAck = activeSet !== null && summary.shortfall > 0 && !shortfallAccepted;
-  const inspectSet = async () => {
+  const inspectSet = async (options?: { retainingReviewedSelection?: boolean }) => {
     if (!builderReady || (handPickOpen && handPicked.length === 0)) return;
     const request = ++inspectRequest.current;
     const key = selectionKey;
+    const reportFailure = (message: string) => setNotice(options?.retainingReviewedSelection ? `${message} The previously reviewed passages are still selected.` : message);
     setAcceptedShortfall(null);
     setInspecting(true);
     setNotice(null);
@@ -592,31 +593,31 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
             seed: Date.now() % 2147483647,
           }).selected.map((p) => p.passageId);
       if (ids.length === 0) {
-        setNotice('No passages match those filters. Loosen one and try again.');
+        reportFailure('No passages match those filters. Loosen one and try again.');
         return;
       }
       const full = await loadPassages(ids);
       if (!mounted.current || request !== inspectRequest.current || key !== selectionKeyRef.current) return;
       if (full.length !== ids.length || full.some((passage, index) => passage.passageId !== ids[index])) {
-        setNotice('Some passages could not be loaded. Try previewing the drill again.');
+        reportFailure('Some passages could not be loaded. Try reviewing the selection again.');
         return;
       }
       // A passage that loads without questions would start as an empty
       // reading set, so it cannot pass inspection either.
       if (full.some((passage) => passage.questions.length === 0)) {
-        setNotice('A passage in this set loaded without its questions. Choose different passages.');
+        reportFailure('A passage in this set loaded without its questions. Choose different passages.');
         return;
       }
       if (savedSnapshot && savedSnapshot.passageIds.join(',') === ids.join(',')
         && savedSnapshot.questionIds.join(',') !== full.flatMap(p => p.questions.map(q => q.questionId)).join(',')) {
-        setNotice('The questions in this fixed set have changed. Its saved snapshot has been kept; choose a new selection before starting.'); return;
+        reportFailure('The questions in this fixed set have changed. Its saved snapshot has been kept; choose a new selection before starting.'); return;
       }
       const inspected = { key, previewId: request, ids, passages: full };
       setSelectedSet(inspected);
       return inspected;
     } catch {
       if (mounted.current && request === inspectRequest.current && key === selectionKeyRef.current) {
-        setNotice('The selected passages could not be loaded. Try again.');
+        reportFailure('The selected passages could not be loaded. Try again.');
       }
     } finally {
       if (mounted.current && request === inspectRequest.current) setInspecting(false);
@@ -638,7 +639,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
     setStarting(true);
     const replace = options?.replace ?? params.get('start') === '1';
     try {
-      // Autostart inspects through the same content checks as a manual Preview.
+      // Autostart inspects through the same content checks as a manual Review.
       // An uncertain launch already owns its validated, immutable request.
       const inspected = uncertainStart.current ? null : activeSet ?? (options?.replace ? await inspectSet() : null);
       if (!mounted.current) return;
@@ -648,7 +649,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
         return;
       }
       if (!uncertainStart.current && (inspected!.key !== selectionKeyRef.current || startingKey !== launchKeyRef.current)) {
-        throw new Error('Your settings changed. Preview the drill again before starting.');
+        throw new Error('Your settings changed. Review the selection again before starting.');
       }
       if (!uncertainStart.current && !handPickOpen && inspected!.ids.length < count
         && acceptedShortfall !== inspected!.key + '|' + inspected!.ids.join(',')) {
@@ -662,7 +663,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
         secondsPerPassage === 788 ? 'time-and-a-half' : secondsPerPassage === 1050 ? 'double-time' : null;
       const useProtectedSection = !uncertainStart.current && canonical && protectedPace && await manualSectionsEnabled();
       if (!uncertainStart.current && (inspected!.key !== selectionKeyRef.current || startingKey !== launchKeyRef.current)) {
-        throw new Error('Your settings changed. Preview the drill again before starting.');
+        throw new Error('Your settings changed. Review the selection again before starting.');
       }
       if (useProtectedSection) {
         if (!mounted.current) return;
@@ -673,7 +674,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
       let launchExposures: Set<number> | null = null;
       if (!uncertainStart.current && filters.status === 'strict_no_exposure') {
         const latestHistory = await getRcHistorySnapshot(actorId);
-        if (!mounted.current || startingKey !== launchKeyRef.current) throw new Error('Your settings changed. Preview the drill again before starting.');
+        if (!mounted.current || startingKey !== launchKeyRef.current) throw new Error('Your settings changed. Review the selection again before starting.');
         const answered = chosen.filter(id => { const passage = passages.find(p => p.passageId === id); return !passage || passageStatus(passage, questionIdsByPassage.get(id) ?? [], latestHistory.displayHistory).state !== 'not_attempted'; });
         if (answered.length) {
           setHistory(latestHistory.history); setDisplayHistory(latestHistory.displayHistory); setHiddenResults(latestHistory.hasHiddenGradedResults);
@@ -684,11 +685,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
       if (!uncertainStart.current) {
         try { launchExposures = await getRcExposureHistory(actorId); }
         catch { if (filters.status === 'strict_no_exposure') throw new Error('Recorded exposure could not be checked. Retry before starting this exposure-filtered drill.'); }
-        if (!mounted.current || (inspected!.key !== selectionKeyRef.current || startingKey !== launchKeyRef.current)) throw new Error('Your settings changed. Preview the drill again before starting.');
+        if (!mounted.current || (inspected!.key !== selectionKeyRef.current || startingKey !== launchKeyRef.current)) throw new Error('Your settings changed. Review the selection again before starting.');
         if (filters.status === 'strict_no_exposure' && chosen.some(id => launchExposures?.has(id))) {
           setExposures(new Set(launchExposures));
           if (!handPickOpen) refreshEligibility();
-          throw new Error(`A selected passage now has recorded exposure, including any text you revealed in Preview. Choose another status or inspect a different selection before starting. ${describePendingPassages(chosen.filter(id => launchExposures?.has(id)))}`);
+          throw new Error(`A selected passage now has recorded exposure, including any text you revealed during review. Choose another status or inspect a different selection before starting. ${describePendingPassages(chosen.filter(id => launchExposures?.has(id)))}`);
         }
       }
       // An unresolved save owns its immutable UUID and settings, even if the
@@ -909,7 +910,6 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
     return { ...previous, ids };
   });
   const filterSummary = [filters.topics.length ? filters.topics.join(', ') : 'All topics', filters.difficulties.length ? `Difficulty ${filters.difficulties.join(', ')}` : handPickOpen ? 'Any difficulty' : 'Adaptive difficulty', STATUS_OPTIONS.find(option => option.id === filters.status)?.label, ...filters.formats, ...filters.frameworks, ...filters.families, `PT ${filters.preptestMin}–${filters.preptestMax}`].filter(Boolean).join(' · ');
-  const hiddenFilterSummary = [STATUS_OPTIONS.find(option => option.id === filters.status)?.label, ...filters.formats, ...filters.frameworks, ...filters.families, `PT ${filters.preptestMin}–${filters.preptestMax}`].filter(Boolean).join(' · ');
   const requestedCount = handPickOpen ? handPicked.length : count;
   const reviewStage = reviewing && activeSet !== null;
   const wasReviewStage = React.useRef(false);
@@ -918,7 +918,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
     else if (wasReviewStage.current) document.getElementById('rc-final-heading')?.focus();
     wasReviewStage.current = reviewStage;
   }, [reviewStage]);
-  const showDifferentSelection = async () => { const inspected = await inspectSet(); if (inspected) setReviewing(true); };
+  const showDifferentSelection = async () => { const inspected = await inspectSet({ retainingReviewedSelection: activeSet !== null }); if (inspected) setReviewing(true); };
   const showReview = async () => {
     if (activeSet) { setReviewing(true); return; }
     const inspected = await inspectSet();
@@ -930,28 +930,6 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
     entryPickerOpened.current = true;
     openDrawer('pick', pickButton.current);
   }, [openPickerOnEntry, indexStatus, selectionQuery, drillQueryKey, savedQuery, restoredSavedQuery]);
-  const setActiveFilters = (update: (value: RcSelectionFilters) => RcSelectionFilters) => setFilterDrafts(previous => ({ ...previous, [handPickOpen ? 'manual' : 'automatic']: update(previous[handPickOpen ? 'manual' : 'automatic']) }));
-  const topicLabel = filters.topics.length ? filters.topics.join(', ') : 'Any topic';
-  const difficultyLabel = filters.difficulties.length ? filters.difficulties.join(', ') : handPickOpen ? 'Any difficulty' : 'Adaptive';
-  const [essentialOpen, setEssentialOpen] = React.useState<'topic' | 'difficulty' | null>(null);
-  const essentialRoot = React.useRef<HTMLDivElement | null>(null);
-  React.useEffect(() => {
-    if (!essentialOpen) return;
-    const close = (event: PointerEvent) => { if (!essentialRoot.current?.contains(event.target as Node)) setEssentialOpen(null); };
-    document.addEventListener('pointerdown', close);
-    return () => document.removeEventListener('pointerdown', close);
-  }, [essentialOpen]);
-  const essentialKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key !== 'Escape') return;
-    event.preventDefault(); setEssentialOpen(null);
-    event.currentTarget.querySelector<HTMLElement>('summary')?.focus();
-  };
-  const essentialFilters = <>
-    <details className="rc-essential-control" open={essentialOpen === 'topic'} onKeyDown={essentialKeyDown}><summary onClick={event => { event.preventDefault(); setEssentialOpen(value => value === 'topic' ? null : 'topic'); }}><span>Topic</span><strong>{topicLabel}</strong></summary><div className="rc-essential-options" role="group" aria-label="Passage topic">{RC_TOPICS.map(value => <button type="button" className={`rc-chip${filters.topics.includes(value) ? ' rc-active' : ''}`} key={value} aria-pressed={filters.topics.includes(value)} onClick={() => setActiveFilters(previous => ({ ...previous, topics: previous.topics.includes(value) ? previous.topics.filter(item => item !== value) : [...previous.topics, value] }))}>{value}</button>)}<button type="button" className="rc-chip" onClick={() => setActiveFilters(previous => ({ ...previous, topics: [] }))}>Any topic</button></div></details>
-    <details className="rc-essential-control" open={essentialOpen === 'difficulty'} onKeyDown={essentialKeyDown}><summary onClick={event => { event.preventDefault(); setEssentialOpen(value => value === 'difficulty' ? null : 'difficulty'); }}><span>Difficulty</span><strong>{difficultyLabel}</strong></summary><div className="rc-essential-options" role="group" aria-label="Passage difficulty"><button type="button" className={`rc-chip${!filters.difficulties.length ? ' rc-active' : ''}`} aria-pressed={!filters.difficulties.length} onClick={() => setActiveFilters(previous => ({ ...previous, difficulties: [] }))}>{handPickOpen ? 'Any difficulty' : 'Adaptive'}</button>{[1, 2, 3, 4, 5].map(value => <button type="button" key={value} className={`rc-chip${filters.difficulties.includes(value) ? ' rc-active' : ''}`} aria-pressed={filters.difficulties.includes(value)} onClick={() => setActiveFilters(previous => ({ ...previous, difficulties: previous.difficulties.includes(value) ? previous.difficulties.filter(item => item !== value) : [...previous.difficulties, value] }))}>{value}</button>)}</div></details>
-  </>;
-
-
   const drawerFilterControls = drawer && <>
 
               <>
@@ -986,8 +964,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
           <span>
             {loadError}{' '}
             {passages.length > 0
-              ? 'Your choices are kept. Preview and Start will be available once it loads.'
-              : 'Preview is unavailable until the passage list loads.'}
+              ? 'Your choices are kept. You can review and start once it loads.'
+              : 'Review is unavailable until the passage list loads.'}
           </span>
           <button type="button" className="rc-chip" onClick={retryLoad} disabled={indexStatus === 'loading'}>
             {indexStatus === 'loading' ? 'Retrying…' : 'Retry'}
@@ -1000,7 +978,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
         <div className="rc-builder-alert" role="status">
           <span>
             Your answer history could not be loaded, so the Not attempted and Incorrect filters cannot tell
-            which passages you have already done. Retry before previewing or starting a new drill.
+            which passages you have already done. Retry before reviewing or starting a new drill.
           </span>
           <button type="button" className="rc-chip" onClick={retryLoad} disabled={indexStatus === 'loading'}>
             Retry
@@ -1022,8 +1000,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
           <p className="rc-setup-description">Whole passages. All their questions.<br /> Practice at your own pace.</p>
         </header>
         <div className="rc-setup-workspace">
-          <div className="rc-selection-source"><span className="rc-source-label" id="rc-selection-source-label">Passage selection</span><button type="button" className="rc-source-control" aria-label="Change passage selection" aria-describedby="rc-selection-source-value" onClick={event => openDrawer('filters', event.currentTarget)}><span id="rc-selection-source-value">{handPickOpen ? 'Selected passages' : "Tutor's choice"}</span><span aria-hidden="true">⌄</span></button></div>
-        <div ref={essentialRoot} className="rc-config-groups">
+          <div className="rc-selection-source"><span className="rc-source-label" id="rc-selection-source-label">Passage selection</span><button type="button" className="rc-source-control" aria-label={`Change passage selection, currently ${handPickOpen ? 'Selected passages' : "Tutor's choice"}`} onClick={event => openDrawer('filters', event.currentTarget)}><span>{handPickOpen ? 'Selected passages' : "Tutor's choice"}</span><span aria-hidden="true">⌄</span></button></div>
+        <div className="rc-config-groups">
           <fieldset className="rc-config-group" aria-label="Passage settings"><legend>{handPickOpen ? 'Your passages' : 'Passages'}</legend><div className={`rc-passage-controls${handPickOpen ? ' rc-manual-passage-controls' : ''}`}>
           <div className="rc-field"><div className="rc-field-label" id="rc-passage-count-label">{handPickOpen ? 'Selected passages' : 'Passages'}</div>{handPickOpen ? <div className="rc-final-picked-count"><span role="status">{handPicked.length} selected</span><button ref={pickButton} type="button" className="rc-chip" onClick={event => openDrawer('pick', event.currentTarget)}>{handPicked.length > 0 ? 'Edit selection' : 'Choose passages'}</button></div> : <div className="rc-stepper" role="group" aria-label="Passages"><button type="button" aria-label={`Fewer passages, ${count} selected`} disabled={count <= 1} onClick={() => setCount(value => Math.max(1, value - 1))}>−</button><span className="rc-stepper-value" aria-live="polite">{count}</span><button type="button" aria-label={`More passages, ${count} selected`} disabled={count >= 8} onClick={() => setCount(value => Math.min(8, value + 1))}>+</button></div>}</div>
           </div>
@@ -1033,9 +1011,9 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
         </div>
         {hiddenResults && <p className="rc-field-hint" role="status">Some saved results are still hidden and are excluded from practice-history filters until released.</p>}
         <div className="rc-final-filter-strip">{filters.status === 'strict_no_exposure' && <p className="rc-field-hint">Launch requirement: No recorded exposure</p>}<button type="button" className="rc-chip" onClick={event => openDrawer('filters', event.currentTarget)}>Customize drill</button></div>
-        {rangeInvalid && <p className="rc-field-error" role="alert">Fix the PrepTest range in Customize drill before previewing.</p>}
-        {filters.status === 'strict_no_exposure' && filters.includeUnknownExposure !== true && <p className="rc-field-hint">Review unknown earlier exposure in Customize drill before previewing.</p>}
-        {staleSet && (!handPickOpen || handPicked.length > 0) && <p className="rc-field-hint" role="status">Your settings changed. Preview the drill again before starting.</p>}
+        {rangeInvalid && <p className="rc-field-error" role="alert">Fix the PrepTest range in Customize drill before reviewing.</p>}
+        {filters.status === 'strict_no_exposure' && filters.includeUnknownExposure !== true && <p className="rc-field-hint">Review unknown earlier exposure in Customize drill before reviewing.</p>}
+        {staleSet && (!handPickOpen || handPicked.length > 0) && <p className="rc-field-hint" role="status">Your settings changed. Review the selection again before starting.</p>}
 
         {!activeSet && !handPickOpen && indexStatus === 'ready' && passages.length > 0 && historyStatus === 'ready' && preview.shortfallMessage && <p className="rc-field-hint">{preview.shortfallMessage}</p>}
         <div className="rc-final-launch" role="region" aria-label="Launch summary"><p className="rc-field-hint">{handPickOpen && !handPicked.length ? 'Choose at least one passage to continue.' : 'Check the passages next. Start when you are ready.'}</p><button type="button" className="rc-button rc-button-primary" disabled={starting || inspecting || recoveryPending !== null || uncertainStart.current !== null || !builderReady || (handPickOpen && handPicked.length === 0)} onClick={() => void showReview()}>{inspecting ? 'Preparing review…' : 'Review selection'}</button></div>

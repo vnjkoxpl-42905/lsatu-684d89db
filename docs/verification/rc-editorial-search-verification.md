@@ -48,3 +48,14 @@ Screenshot evidence (actual Codex browser):
 - C:/Users/Joshu/Downloads/RC-Editorial-Final-2026-10-21/finder-320.jpg
 
 Final mobile refinements: normal loaded-timing information appears only in the drawer, preserving explicit success/error notices on main. RC lookup retains visible text at320px; LR trigger behavior unchanged. Search results show complete passage titles at320px. Legacy PT140 Q7 preserves Q when a unique RC section is inferred; ambiguous sections are not guessed. Main timing edits retain inspected automatic passage identity.
+## Final inspection fixes and latest proof
+Claude Opus final inspection 1 requested changes. Fixed: clicked-result passage/question provenance now cross-checks the authoritative address index; mismatches visibly disable Open. Failed rerolls explicitly retain the prior reviewed set. Removed obsolete essential-filter code/CSS. Selection accessible name includes current method. Saving copy uses Tutor's choice and Review.
+
+Nine new provenance regressions failed before the repair and passed afterward. Finder suite: 97/97 passed. Builder suite: 121/121 passed. Latest combined run: 760 passed, one 15-second timeout in the 60-result expansion test; immediate whole-file rerun passed 28/28 with no edits. Latest typecheck passed exit 0. Latest production build passed in 1m30s; canonical-content scan passed 765 files. Generated MCP build stub restored only to recorded baseline. Diff whitespace check passed.
+
+Logs: C:/Users/Joshu/AppData/Local/Temp/rc-finder-provenance-before.log; rc-finder-provenance-after.log; rc-finder-provenance-typecheck.log; rc-editorial-inspection-fixes-tests.log; rc-editorial-post-inspection-tests.log; rc-editorial-timeout-recheck.log; rc-editorial-post-inspection-build.log.
+Final inspection 2 pending. Source frozen for fresh inspection.
+
+Final inspection 2: APPROVED. Claude Opus (observed claude-opus-5-5) independently confirmed F1-F4 resolved, with no material findings in inspected scope. It read setup/finder desktop and320 screenshots plus targeted source/diffs. It did not run browser/tests and did not inspect every changed file in full. Result: C:/Users/Joshu/AppData/Local/Temp/rc-editorial-inspection-20261021/claudex-w3e9ffi5/result.json.
+
+Remaining low findings: native Timing value truncates at320px until opened; large-results test had one observed timeout followed by unchanged28/28 rerun. Finder screenshots were recaptured after review with reduced motion and confirmed opaque/readable, resolving screenshot-evidence issue. No production code changed after approval. Two final inspections used. Local fixture remains open in Codex browser. No commit, push, merge or deployment performed.

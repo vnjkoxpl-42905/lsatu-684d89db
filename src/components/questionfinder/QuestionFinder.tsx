@@ -155,6 +155,12 @@ function FinderPanel({
 }) {
   const navigate = useNavigate();
   const [query, setQuery] = React.useState("");
+  const [retainedRcHit, setRetainedRcHit] = React.useState<{ passageId: number; pt: number; section: number; pnum: number; questionId: number | null; qnum: number | null } | null>(null);
+  // Address edits express fresh intent. Only a clicked result retains index provenance.
+  const writeQuery = React.useCallback((value: string) => {
+    setRetainedRcHit(null);
+    setQuery(value);
+  }, []);
   const [active, setActive] = React.useState(0);
   const [rcLimit, setRcLimit] = React.useState(PER_BANK_LIMIT);
   /* Seeded from the host, not locked to it: the Drill hub opens the finder on
@@ -169,8 +175,8 @@ function FinderPanel({
   const addressIndex = useFinderAddressIndex(open);
   React.useEffect(() => {
     setView(bank ?? "all");
-    setQuery("");
-  }, [bank]);
+    writeQuery("");
+  }, [bank, writeQuery]);
 
   const results = React.useMemo(
     () =>
@@ -208,7 +214,7 @@ function FinderPanel({
     };
   }, [open]);
 
-  const selectedTarget = React.useMemo(() => {
+  const addressTarget = React.useMemo(() => {
     const address = results.address;
     if (!address?.section || view === "lr" || (view === 'all' && results.exact)) return null;
     const section = addressIndex.tests.find((test) => test.pt === address.pt)?.sections.find((entry) => entry.section === address.section);
@@ -217,6 +223,16 @@ function FinderPanel({
     const matches = passages.flatMap((passage) => passage.questions.filter((q) => q.number === address.qnum).map((q) => ({ passageId: passage.id, questionId: q.id })));
     return matches.length === 1 ? matches[0] : null;
   }, [results.address, results.exact, addressIndex.tests, view]);
+  const retainedMismatch = React.useMemo(() => {
+    if (!retainedRcHit || addressIndex.loading || addressIndex.failed) return false;
+    const address = results.address;
+    const section = addressIndex.tests.find(test => test.pt === retainedRcHit.pt)?.sections.find(entry => entry.section === retainedRcHit.section);
+    const samePassage = section?.rc.some(passage => passage.id === retainedRcHit.passageId && passage.position === retainedRcHit.pnum && passage.questions.length > 0);
+    const sameAddress = address?.pt === retainedRcHit.pt && address.section === retainedRcHit.section && (address.pnum === undefined || address.pnum === retainedRcHit.pnum);
+    const sameQuestion = retainedRcHit.questionId === null ? address?.qnum === undefined && address?.pnum === retainedRcHit.pnum : address?.qnum === retainedRcHit.qnum;
+    return !samePassage || !sameAddress || !sameQuestion || !addressTarget || addressTarget.passageId !== retainedRcHit.passageId || addressTarget.questionId !== retainedRcHit.questionId;
+  }, [retainedRcHit, results.address, addressTarget, addressIndex.tests, addressIndex.loading, addressIndex.failed]);
+  const selectedTarget = retainedMismatch ? null : addressTarget;
   const openSelected = () => {
     if (!selectedTarget || addressIndex.loading || addressIndex.failed) return;
     const params = new URLSearchParams({ passage: String(selectedTarget.passageId) });
@@ -227,6 +243,7 @@ function FinderPanel({
   };
 
   const openHit = React.useCallback((hit: FinderHit) => {
+    setRetainedRcHit(hit.bank === 'rc' ? { passageId: hit.passageId, pt: hit.preptest, section: hit.section, pnum: hit.setNumber, questionId: hit.questionId ?? null, qnum: hit.qnum ?? null } : null);
     setView(hit.bank);
     setQuery(hit.bank === "lr" ? `PT${hit.pt} S${hit.section} Q${hit.qnum}` : `PT${hit.preptest} S${hit.section}${hit.qnum ? ` Q${hit.qnum}` : ` P${hit.setNumber}`}`);
   }, []);
@@ -240,7 +257,7 @@ function FinderPanel({
       event.preventDefault();
       // Escape clears a query before it closes the panel — the same two-step the
       // old drill console used, so a mistyped search is one key from fixed.
-      if (query) setQuery("");
+      if (query) writeQuery("");
       else onClose();
       return;
     }
@@ -332,7 +349,7 @@ function FinderPanel({
                   onClick={() => {
                     if (view !== tab.value) {
                       setView(tab.value);
-                      setQuery("");
+                      writeQuery("");
                     }
                   }}
                 >
@@ -349,7 +366,7 @@ function FinderPanel({
               bank={view === "all" ? undefined : view}
               loading={addressIndex.loading}
               failed={addressIndex.failed}
-              onPick={setQuery}
+              onPick={writeQuery}
               tests={addressIndex.tests}
               selectedAddress={results.address}
               canOpen={!!selectedTarget}
@@ -357,6 +374,7 @@ function FinderPanel({
               onOpen={openSelected}
             />
             {addressIndex.failed && <p className="qf-warn" role="alert">Question addresses could not be loaded. <button type="button" onClick={addressIndex.retry}>Retry</button></p>}
+            {retainedMismatch && <p className="qf-warn" role="alert">The passage address no longer matches this search result. Choose the passage using the selectors, or search again before opening it.</p>}
 
           <div className="qf-inputrow">
             <Search className="qf-inputrow-icon" size={18} strokeWidth={1.9} aria-hidden />
@@ -369,7 +387,7 @@ function FinderPanel({
               autoComplete="off"
               placeholder={view === 'rc' ? 'Search passage titles, question text, or PT140 S4 P2' : 'Search question text, or type PT90 S1 Q12'}
               aria-label="Search question text, or type a question address"
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => writeQuery(event.target.value)}
             />
             {results.address && (
               <span className="qf-address">{formatQuestionAddress(results.address)}</span>
@@ -379,7 +397,7 @@ function FinderPanel({
                 type="button"
                 className="qf-clear"
                 onClick={() => {
-                  setQuery("");
+                  writeQuery("");
                   inputRef.current?.focus();
                 }}
                 aria-label="Clear search"
