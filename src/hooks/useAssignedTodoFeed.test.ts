@@ -18,6 +18,38 @@ const EMPTY: AssignedFeedSources = {
   items: [],
 };
 
+describe('source-backed assignment section classification', () => {
+  it('preserves RC homework identity through a renamed classroom mirror', () => {
+    const rows = buildAssignedRows({ ...EMPTY,
+      hw: [{ id: 'rc-homework', question_qids: ['PT101-S1-Q1'], set_title: 'Custom title', status: 'assigned', created_at: '2026-10-21T12:00:00Z' }] as never,
+      items: [item({ id: 'rc-mirror', type: 'homework', source_table: 'homework_assignments', source_id: 'rc-homework', title: 'Teacher renamed it', metadata_json: {} })],
+    });
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ title: 'Teacher renamed it', workSection: 'rc', sourceTable: 'homework_assignments' });
+  });
+  it('keeps unrelated, mixed and unknown work in the global feed without calling it RC', () => {
+    const rows = buildAssignedRows({ ...EMPTY,
+      hw: [{ id: 'mixed', question_qids: ['PT101-S1-Q1', 'PT101-S2-Q1'], status: 'assigned', created_at: '2026-10-21T12:00:00Z' }] as never,
+      activities: [{ id: 'legacy-lr', title: 'RC Read Recall', source_section: 'PT21.S3', mode: 'section', instructions: {}, status: 'assigned', created_at: '2026-10-21T11:00:00Z' }] as never,
+      items: [item({ id: 'unknown', source_id: '/unknown', title: 'RC training', metadata_json: {} }), item({ id: 'conditional', source_id: '/conditional-indicators-refresher', metadata_json: { bootcamp_id: 'conditional-indicators-refresher' } })],
+    });
+    expect(rows).toHaveLength(4);
+    expect(rows.find(row => row.refId === 'mixed')?.workSection).toBe('mixed');
+    expect(rows.find(row => row.refId === 'legacy-lr')?.workSection).toBe('lr');
+    expect(rows.find(row => row.key === 'ci-unknown')?.workSection).toBe('unknown');
+    expect(rows.find(row => row.key === 'ci-conditional')?.workSection).toBe('lr');
+  });
+  it('recognizes explicit RC items and withholds source/mirror conflicts', () => {
+    const rows = buildAssignedRows({ ...EMPTY,
+      activities: [{ id: 'conflict', source_section: 'PT21.S3', instructions: {}, status: 'assigned', created_at: '2026-10-21T11:00:00Z' }] as never,
+      items: [item({ id: 'rc', source_id: '/bootcamp/rc-engaging-with-the-passage', metadata_json: { bootcamp_id: 'rc-engaging-with-the-passage' } }),
+        item({ id: 'mirror', type: 'activity', source_table: 'activity_assignments', source_id: 'conflict', metadata_json: { section_kind: 'rc' } })],
+    });
+    expect(rows.find(row => row.key === 'ci-rc')?.workSection).toBe('rc');
+    expect(rows.find(row => row.key === 'ci-mirror')?.workSection).toBe('mixed');
+  });
+});
+
 function guidedRow(over: Record<string, unknown> = {}) {
   return {
     id: 'ga-1',

@@ -1,7 +1,7 @@
 {
   "repository": "vnjkoxpl-42905/lsatu-684d89db",
   "source_head": "aeecce9bd038eb6e5b637f1ab22f348b2fa860c1",
-  "source_branch": "codex/rc-builder-simplify-20261020",
+  "source_branch": "codex/rc-workflow-20261021",
   "snapshot_branch": "codex/local-sync/laptop-le9a083p/lsatu-rc-focus-release",
   "encrypted_original_context": {
     "enabled": true,
@@ -86,6 +86,6 @@
       "lsatu-rc-focus-release/src/lib/googleDrive.ts",
       "lsatu-rc-focus-release/supabase/functions/handle-email-events/index.ts"
     ],
-    "ciphertext_sha256": "bf6b94298860d9f7b8b86c98bfbf36ec1572ed7b75b82b3691ac0de0bbc237cd"
+    "ciphertext_sha256": "5b0342ac0b7733660bcab7014dadbcf91f31b209fdfc5d98c16b7d1bc9981739"
   }
 }

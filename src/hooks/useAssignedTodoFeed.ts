@@ -9,6 +9,7 @@ import { resolveItemRoute } from '@/lib/classroomItems';
 import { readSectionBriefing, type SectionBriefing } from '@/lib/sectionBriefing';
 import { singleSectionOf } from '@/lib/drillRunSpec';
 import { sectionDirectionsRoute } from '@/lib/sectionDirections';
+import { mergeWorkSections, sectionFromCitation, sectionFromMetadata, sectionFromQuestionIds, type AssignedWorkSection } from '@/lib/assignedWorkSection';
 import { listAssignmentsForStudent as listGuidedForStudent, type GuidedDrill, type GuidedDrillAssignment } from '@/lib/guidedDrills';
 import { listStudentAssignments as listActivityForStudent } from '@/features/activity-centre/api/activitiesClient';
 import { activityWorkStatus, guidedWorkStatus, homeworkWorkStatus, studentWorkKey, teacherWorkStatus } from '@/lib/studentWorkProjection';
@@ -33,6 +34,8 @@ export interface AssignedTodoRow {
   /** Due date, when a classroom_items row carries one. */
   dueAt: string | null;
   route: string;
+  /** Source identity/content evidence only. Unknown work remains in general work. */
+  workSection?: AssignedWorkSection;
   /**
    * Work that reports its own completion, so the student is never asked to
    * assert it. A timed section is the case: sitting it IS finishing it, and a
@@ -150,6 +153,7 @@ export function buildAssignedRows({
         dueAt: null,
         route: section ? sectionDirectionsRoute(a.id) : `/classroom/${encodeURIComponent(a.id)}`,
         selfCompleting: !!section,
+        workSection: sectionFromQuestionIds(a.question_qids),
       });
     }
 
@@ -182,6 +186,7 @@ export function buildAssignedRows({
         createdAt: g.assigned_at,
         dueAt: null,
         route: `/guided/${encodeURIComponent(g.id)}`,
+        workSection: sectionFromQuestionIds(g.question_qids?.length ? g.question_qids : g.guided_drill?.question_qids),
       });
     }
 
@@ -197,6 +202,7 @@ export function buildAssignedRows({
         createdAt: a.created_at,
         dueAt: null,
         route: `/activities/${encodeURIComponent(a.id)}`,
+        workSection: mergeWorkSections(sectionFromCitation(a.source_section), sectionFromMetadata(a.instructions)),
       });
     }
 
@@ -255,6 +261,7 @@ export function buildAssignedRows({
           (item.metadata_json as { kind?: string } | null)?.kind === 'timed_section' ||
           !!existing?.selfCompleting,
         briefing: readSectionBriefing(item.metadata_json) ?? undefined,
+        workSection: mergeWorkSections(existing?.workSection, sectionFromMetadata(item.metadata_json)),
       });
     }
 

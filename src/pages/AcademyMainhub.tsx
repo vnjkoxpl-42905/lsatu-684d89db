@@ -519,7 +519,7 @@ export default function AcademyMainhub({
           </div>
           {rcBuilderRequested ? <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
             <button type="button" className="rc-practice-back" onClick={closeRcBuilder}>Back to RC practice</button>
-            <RcHubSurface embedded showHistory={false} />
+            <RcHubSurface embedded showHistory={false} openPickerOnEntry={searchParams.get('builder') === 'manual'} />
           </section> : <RcPracticeLanding
             onChooseAutomatic={() => openRcBuilder('automatic')}
             onChooseManual={() => openRcBuilder('manual')}
@@ -534,7 +534,7 @@ export default function AcademyMainhub({
                 })()}
               <button type="button" className="rc-practice-link" onClick={() => changeView('completed')}>View completed RC drills <span aria-hidden="true">→</span></button>
             </>}
-            assigned={<AssignedWorkPanel drillReturnTo={drillReturnTo} />}
+            assigned={<AssignedWorkPanel drillReturnTo={drillReturnTo} scope="rc" />}
           />}
         </> : <>
         {/* The address row rides above the hero rather than inside it: the

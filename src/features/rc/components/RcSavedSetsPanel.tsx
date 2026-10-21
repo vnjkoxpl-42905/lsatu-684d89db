@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { getRcSavedSet, listRcSavedSets, renameRcSet, saveRcSet, type RcSavedDefinition } from '../api/rcSavedSets';
 import { decodeRcSavedSet, type RcSavedPayload } from '../lib/rcSavedSetCodec';
 
-export function RcSavedSetsPanel({ recipe, fixed }: { recipe?: RcSavedPayload | null; fixed?: RcSavedPayload | null }) {
+type SavedPanelProps = { recipe?: RcSavedPayload | null; fixed?: RcSavedPayload | null; variant?: 'management' | 'contextual' };
+export function RcSavedSetsPanel({ recipe, fixed, variant = 'management' }: SavedPanelProps) {
   const { user } = useAuth();
-  return <ActorRcSavedSetsPanel key={user?.id ?? 'signed-out'} owner={user?.id ?? null} recipe={recipe} fixed={fixed} />;
+  return <ActorRcSavedSetsPanel key={user?.id ?? 'signed-out'} owner={user?.id ?? null} recipe={recipe} fixed={fixed} variant={variant} />;
 }
-function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null; recipe?: RcSavedPayload | null; fixed?: RcSavedPayload | null }) {
+function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant }: SavedPanelProps & { owner: string | null }) {
   const navigate = useNavigate();
   const [rows, setRows] = React.useState<RcSavedDefinition[]>([]);
   const [name, setName] = React.useState('');
@@ -38,11 +39,11 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null;
     } catch { setRecoveryError('The pending RC save could not be restored. Keep this page open and contact Joshua.'); }
   }, [owner]);
   React.useEffect(() => {
-    if (!owner) { setLoading(false); return; }
+    if (!owner || variant === 'contextual') { setLoading(false); return; }
     let current = true; setLoading(true); setError(null);
     void listRcSavedSets(owner).then(value => { if (current) setRows(value); }).catch(err => { if (current) setError(err instanceof Error ? err.message : 'Your saved RC sets could not be loaded.'); }).finally(() => { if (current) setLoading(false); });
     return () => { current = false; };
-  }, [owner, revision]);
+  }, [owner, revision, variant]);
   const perform = async (work: () => Promise<void>) => {
     if (lock.current || !owner || recoveryError) return;
     lock.current = true; setBusy(true); setError(null); setNotice(null);
@@ -68,7 +69,7 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null;
     localStorage.removeItem(storageKey); pending.current = null;
     if (alive.current) setPendingVisible(false);
     if (!alive.current) return;
-    setName(''); setNotice('Saved to your account. Opening a saved item returns to the builder for inspection.'); retry();
+    setName(''); setNotice(variant === 'contextual' ? 'Saved to your account. Find it in Saved sets.' : 'Saved to your account. Opening a saved item returns to the builder for inspection.'); retry();
   });
   const open = (id: string) => perform(async () => {
     if (!owner) return;
@@ -77,7 +78,7 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null;
     if (alive.current) navigate(`/practice/drills?section=rc&view=create&saved=${encodeURIComponent(id)}`);
   });
   return <section className="rc-saved-panel" aria-label="Saved RC sets and recipes">
-    <h2 className="text-lg font-semibold">Saved passages and settings</h2>
+    <h2 className="text-lg font-semibold">{variant === 'contextual' ? 'Save this drill' : 'Saved passages and settings'}</h2>
     <p className="text-sm">Saved passages keep the exact passages and questions. Saved settings choose passages again using your filters and current progress. Preview either before starting.</p>
     {!owner && <p>Sign in to save and reopen RC work.</p>}
     {owner && (recipe || fixed) && <div className="rc-saved-form">
@@ -92,11 +93,11 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null;
         const decoded = decodeRcSavedSet(command.payload);
         if (decoded.status === 'ok') void save(decoded.value, command.name);
       }}>Retry original RC save</button></div>}
-    {loading && <p role="status">Loading saved RC sets…</p>}
-    {(error || recoveryError) && <div role="alert"><p>{recoveryError ?? error}</p><button type="button" className="rc-chip" disabled={busy} onClick={retry}>Retry loading RC sets</button></div>}
+    {variant !== 'contextual' && loading && <p role="status">Loading saved RC sets…</p>}
+    {(error || recoveryError) && <div role="alert"><p>{recoveryError ?? error}</p>{variant !== 'contextual' && <button type="button" className="rc-chip" disabled={busy} onClick={retry}>Retry loading RC sets</button>}</div>}
     {notice && <p role="status">{notice}</p>}
-    {!loading && !error && owner && rows.length === 0 && <p>No saved passages or settings yet.</p>}
-    <ul className="rc-saved-list">{rows.map(row => <li key={row.id} className="rc-saved-row">
+    {variant !== 'contextual' && !loading && !error && owner && rows.length === 0 && <p>No saved passages or settings yet.</p>}
+    {variant !== 'contextual' && <ul className="rc-saved-list">{rows.map(row => <li key={row.id} className="rc-saved-row">
       <strong>{row.name}</strong><p className="text-sm">{row.payload ? row.payload.mode === 'fixed' ? `Exact passages · ${row.payload.passageIds.length} passage${row.payload.passageIds.length === 1 ? '' : 's'} · ${row.payload.questionIds.length} question${row.payload.questionIds.length === 1 ? '' : 's'}` : `Reusable settings · ${row.payload.count} passage${row.payload.count === 1 ? '' : 's'} requested` : row.problem}</p>
       <div className="rc-saved-form">
         <button type="button" className="rc-chip" disabled={busy || !row.payload} onClick={() => void open(row.id)}>Open {row.name}</button>
@@ -104,6 +105,6 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed }: { owner: string | null;
         <button type="button" className="rc-chip" disabled={busy || pendingVisible || !row.payload} onClick={() => !pendingVisible && row.payload && void save(row.payload, `${row.name.slice(0, 93)} (copy)`)}>Duplicate {row.name}</button>
       </div>
       {renaming === row.id && <div className="rc-saved-form"><input aria-label={`New name for ${row.name}`} maxLength={100} value={newName} onChange={e => setNewName(e.target.value)} /><button type="button" className="rc-chip" disabled={busy || pendingVisible || !newName.trim()} onClick={() => void perform(async () => { if (!owner || pendingVisible) return; await renameRcSet(owner, row.id, newName, row.name); if (alive.current) { setRenaming(null); retry(); } })}>Save RC name</button><button type="button" className="rc-chip" onClick={() => setRenaming(null)}>Cancel rename</button></div>}
-    </li>)}</ul>
+    </li>)}</ul>}
   </section>;
 }
