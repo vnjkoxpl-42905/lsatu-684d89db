@@ -1,0 +1,15 @@
+{
+  "source": { "preptest": 140, "section": 4, "passageId": 16, "paragraphIndex": 0 },
+  "voice": "Offline Windows System.Speech Microsoft David Desktop",
+  "segments": [
+    { "phase": "read", "text": "Exact canonical paragraph", "durationSeconds": 49.659410 },
+    { "phase": "silence", "durationSeconds": 0.5 },
+    { "phase": "recall", "fixture": "substantial-omission", "durationSeconds": 12.212245 },
+    { "phase": "silence", "durationSeconds": 0.5 },
+    { "phase": "check", "text": "Exact canonical paragraph", "durationSeconds": 49.659410 }
+  ],
+  "recallStartMs": 50159,
+  "recallEndMs": 62371,
+  "captureDurationMs": 112554,
+  "expected": "Only the short omitted-details recall may reach the judge. The perfect source reading and checking must not improve meaning points. Missing psychologists/evidence/prodigies/heredity/musician age/athletic examples should remain missing."
+}

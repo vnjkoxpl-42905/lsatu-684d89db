@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.1",
+  "source_slug": "lsat-lr-question-reasoning-guide",
+  "source_version": "1.1.1",
+  "title": "Logical Reasoning Guide to Question and Reasoning Types",
+  "domain": "logical_reasoning",
+  "authority": "canonical",
+  "canonical_markdown_file": "lsat_lr_guide_canonical_clean.md",
+  "ingestion_file": "lsat_lr_guide_ingestion_clean.jsonl",
+  "record_count": 158,
+  "question_type_count": 16,
+  "reasoning_type_count": 5,
+  "canonical_markdown_sha256": "17302707c433b76140e7307ad48c4a5f610f0a9aee50d732707cadbf2038d5c6",
+  "ingestion_jsonl_sha256": "03d3038df275b906170039ec2fdfdac374f3468a9b8a54269e49d6b6400e9fbf",
+  "validation": {
+    "duplicate_record_ids": false,
+    "empty_records": 0,
+    "literal_page_break_bullets_remaining": 0,
+    "transport_separators_remaining": 0
+  }
+}

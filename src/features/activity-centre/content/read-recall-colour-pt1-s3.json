@@ -1,0 +1,2606 @@
+{
+ "slug": "read-recall-colour-pt1-s3",
+ "title": "Read, Recall, Colour \u00b7 PT1 Section 3",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT1.S3",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT1_S3_Q1",
+   "prompt": "It is difficult to keep deep wounds free of bacteria. Even strong antibiotics fail to kill the bacteria that live in such wounds. However, many physicians have succeeded in eliminating bacteria from deep wounds by packing the wound with a sweet substance like sugar.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about wounds. \u00b7 The wounds are deep. \u00b7 The subject is keeping them free of bacteria. \u00b7 Doing that is difficult. (2) This is about antibiotics. \u00b7 The antibiotics are strong ones. \u00b7 Even the strong ones fail. \u00b7 What they fail to do is kill the bacteria. \u00b7 Those bacteria live in such wounds. (3) This is a contrast with what came before. \u00b7 This is about physicians. \u00b7 Many of them have succeeded. \u00b7 What they succeeded at is eliminating bacteria. \u00b7 The bacteria were eliminated from deep wounds. \u00b7 They did it by packing the wound. \u00b7 The wound is packed with a sweet substance. \u00b7 Sugar is given as the example.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "It is difficult to keep deep wounds free of bacteria.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about wounds."
+      },
+      {
+       "n": 2,
+       "text": "The wounds are deep."
+      },
+      {
+       "n": 3,
+       "text": "The subject is keeping them free of bacteria."
+      },
+      {
+       "n": 4,
+       "text": "Doing that is difficult."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Even strong antibiotics fail to kill the bacteria that live in such wounds.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about antibiotics."
+      },
+      {
+       "n": 2,
+       "text": "The antibiotics are strong ones."
+      },
+      {
+       "n": 3,
+       "text": "Even the strong ones fail."
+      },
+      {
+       "n": 4,
+       "text": "What they fail to do is kill the bacteria."
+      },
+      {
+       "n": 5,
+       "text": "Those bacteria live in such wounds."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "However, many physicians have succeeded in eliminating bacteria from deep wounds by packing the wound with a sweet substance like sugar.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "This is about physicians."
+      },
+      {
+       "n": 3,
+       "text": "Many of them have succeeded."
+      },
+      {
+       "n": 4,
+       "text": "What they succeeded at is eliminating bacteria."
+      },
+      {
+       "n": 5,
+       "text": "The bacteria were eliminated from deep wounds."
+      },
+      {
+       "n": 6,
+       "text": "They did it by packing the wound."
+      },
+      {
+       "n": 7,
+       "text": "The wound is packed with a sweet substance."
+      },
+      {
+       "n": 8,
+       "text": "Sugar is given as the example."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if sugar creates an inhospitable environment for bacteria?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q1",
+     "qnum": 1,
+     "question_type": "Resolution",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT1_S3_Q2",
+   "prompt": "People who are red/green color-blind cannot distinguish between green and brown. Gerald cannot distinguish between green and brown. Therefore Gerald is red/green color-blind.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about certain people. \u00b7 Those people are red/green color-blind. \u00b7 They cannot distinguish between two colors. \u00b7 The colors are green and brown. (2) This is about a person named Gerald. \u00b7 Gerald cannot distinguish between two colors. \u00b7 The colors are green and brown. (3) This is the conclusion. \u00b7 The conclusion is about Gerald. \u00b7 It says he is red/green color-blind.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "People who are red/green color-blind cannot distinguish between green and brown.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about certain people."
+      },
+      {
+       "n": 2,
+       "text": "Those people are red/green color-blind."
+      },
+      {
+       "n": 3,
+       "text": "They cannot distinguish between two colors."
+      },
+      {
+       "n": 4,
+       "text": "The colors are green and brown."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Gerald cannot distinguish between green and brown.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a person named Gerald."
+      },
+      {
+       "n": 2,
+       "text": "Gerald cannot distinguish between two colors."
+      },
+      {
+       "n": 3,
+       "text": "The colors are green and brown."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore Gerald is red/green color-blind.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The conclusion is about Gerald."
+      },
+      {
+       "n": 3,
+       "text": "It says he is red/green color-blind."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we can't use bad conditional reasoning? What if many things are sufficient to inhibit someone from distinguishing between green and brown?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q2",
+     "qnum": 2,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT1_S3_Q3",
+   "prompt": "The theory of military deterrence was based on a simple psychological truth, that fear of retaliation makes a would-be aggressor nation hesitate before attacking and is often sufficient to deter it altogether from attacking. Clearly, then, to maintain military deterrence, a nation would have to be believed to have retaliatory power so great that a potential aggressor nation would have reason to think that it could not defend itself against such retaliation.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a theory. \u00b7 The theory is military deterrence. \u00b7 It was based on something. \u00b7 What it was based on is a psychological truth. \u00b7 That truth is described as simple. (2) This states the truth itself. \u00b7 It is about fear of retaliation. \u00b7 That fear makes a nation hesitate. \u00b7 The nation is a would-be aggressor. \u00b7 It hesitates before attacking. \u00b7 The fear is also often sufficient. \u00b7 It can deter the nation altogether from attacking. (3) This is the conclusion. \u00b7 The goal is maintaining military deterrence. \u00b7 A nation would have to be believed to have retaliatory power. \u00b7 That power has to be extremely great. \u00b7 The belief is what matters here. \u00b7 A potential aggressor would have reason to think something. \u00b7 It would think it could not defend itself. \u00b7 What it could not defend against is such retaliation.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The theory of military deterrence was based on a simple psychological truth,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a theory."
+      },
+      {
+       "n": 2,
+       "text": "The theory is military deterrence."
+      },
+      {
+       "n": 3,
+       "text": "It was based on something."
+      },
+      {
+       "n": 4,
+       "text": "What it was based on is a psychological truth."
+      },
+      {
+       "n": 5,
+       "text": "That truth is described as simple."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "that fear of retaliation makes a would-be aggressor nation hesitate before attacking and is often sufficient to deter it altogether from attacking.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This states the truth itself."
+      },
+      {
+       "n": 2,
+       "text": "It is about fear of retaliation."
+      },
+      {
+       "n": 3,
+       "text": "That fear makes a nation hesitate."
+      },
+      {
+       "n": 4,
+       "text": "The nation is a would-be aggressor."
+      },
+      {
+       "n": 5,
+       "text": "It hesitates before attacking."
+      },
+      {
+       "n": 6,
+       "text": "The fear is also often sufficient."
+      },
+      {
+       "n": 7,
+       "text": "It can deter the nation altogether from attacking."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Clearly, then, to maintain military deterrence, a nation would have to be believed to have retaliatory power so great that a potential aggressor nation would have reason to think that it could not defend itself against such retaliation.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The goal is maintaining military deterrence."
+      },
+      {
+       "n": 3,
+       "text": "A nation would have to be believed to have retaliatory power."
+      },
+      {
+       "n": 4,
+       "text": "That power has to be extremely great."
+      },
+      {
+       "n": 5,
+       "text": "The belief is what matters here."
+      },
+      {
+       "n": 6,
+       "text": "A potential aggressor would have reason to think something."
+      },
+      {
+       "n": 7,
+       "text": "It would think it could not defend itself."
+      },
+      {
+       "n": 8,
+       "text": "What it could not defend against is such retaliation."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if nations are just conflict averse and fear any aggression, even if they think they can defend themselves if need be?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q3",
+     "qnum": 3,
+     "question_type": "Inference",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT1_S3_Q4",
+   "prompt": "To the Editor:\n\nIn 1960, an astronomer proposed a mathematical model for determining whether extraterrestrial life exists. It was based on the assumptions that life as we know it could exist only on a planet and that many stars are, like our Sun, orbited by planets. On the basis that there are nine planets in our solar system and one of them has life as we know it, the astronomer predicted that there are as many as one million extraterrestrial civilizations across all solar systems. Yet astronomers to date have not detected even one planet outside our solar system. This indicates that the astronomer\u2019s model is wrong, and life as we know it exists only on the planet Earth.\n\nClay Moltz",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is addressed to an editor. \u00b7 This is about the year 1960. \u00b7 An astronomer proposed something. \u00b7 What was proposed is a mathematical model. \u00b7 The model determines whether something exists. \u00b7 What it is about is extraterrestrial life. (2) The model rested on assumptions. \u00b7 There is more than one assumption. \u00b7 The first is about where life could exist. \u00b7 Life as we know it could exist only on a planet. \u00b7 The second assumption is about stars. \u00b7 Many stars are orbited by planets. \u00b7 Our Sun is given as the comparison. (3) This gives the basis for what follows. \u00b7 Our solar system has nine planets. \u00b7 One of those planets has life. \u00b7 The life is life as we know it. (4) The astronomer made a prediction. \u00b7 The prediction is about extraterrestrial civilizations. \u00b7 The number is one million. \u00b7 That is stated as an upper figure. \u00b7 The civilizations are across all solar systems. (5) This is a contrast with what came before. \u00b7 This is about astronomers. \u00b7 They have not detected any planet. \u00b7 Not even one has been detected. \u00b7 The planets in question are outside our solar system. \u00b7 This is true as of the time of writing. (6) This is the conclusion. \u00b7 It says the astronomer's model is wrong. \u00b7 It makes a second claim as well. \u00b7 Life as we know it exists in only one place. \u00b7 That place is the planet Earth. (7) This is the signature at the end. \u00b7 The writer's first name is Clay. \u00b7 The writer's last name is Moltz.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "To the Editor: In 1960, an astronomer proposed a mathematical model for determining whether extraterrestrial life exists.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is addressed to an editor."
+      },
+      {
+       "n": 2,
+       "text": "This is about the year 1960."
+      },
+      {
+       "n": 3,
+       "text": "An astronomer proposed something."
+      },
+      {
+       "n": 4,
+       "text": "What was proposed is a mathematical model."
+      },
+      {
+       "n": 5,
+       "text": "The model determines whether something exists."
+      },
+      {
+       "n": 6,
+       "text": "What it is about is extraterrestrial life."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "It was based on the assumptions that life as we know it could exist only on a planet and that many stars are, like our Sun, orbited by planets.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The model rested on assumptions."
+      },
+      {
+       "n": 2,
+       "text": "There is more than one assumption."
+      },
+      {
+       "n": 3,
+       "text": "The first is about where life could exist."
+      },
+      {
+       "n": 4,
+       "text": "Life as we know it could exist only on a planet."
+      },
+      {
+       "n": 5,
+       "text": "The second assumption is about stars."
+      },
+      {
+       "n": 6,
+       "text": "Many stars are orbited by planets."
+      },
+      {
+       "n": 7,
+       "text": "Our Sun is given as the comparison."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "On the basis that there are nine planets in our solar system and one of them has life as we know it,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the basis for what follows."
+      },
+      {
+       "n": 2,
+       "text": "Our solar system has nine planets."
+      },
+      {
+       "n": 3,
+       "text": "One of those planets has life."
+      },
+      {
+       "n": 4,
+       "text": "The life is life as we know it."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "the astronomer predicted that there are as many as one million extraterrestrial civilizations across all solar systems.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The astronomer made a prediction."
+      },
+      {
+       "n": 2,
+       "text": "The prediction is about extraterrestrial civilizations."
+      },
+      {
+       "n": 3,
+       "text": "The number is one million."
+      },
+      {
+       "n": 4,
+       "text": "That is stated as an upper figure."
+      },
+      {
+       "n": 5,
+       "text": "The civilizations are across all solar systems."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Yet astronomers to date have not detected even one planet outside our solar system.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "This is about astronomers."
+      },
+      {
+       "n": 3,
+       "text": "They have not detected any planet."
+      },
+      {
+       "n": 4,
+       "text": "Not even one has been detected."
+      },
+      {
+       "n": 5,
+       "text": "The planets in question are outside our solar system."
+      },
+      {
+       "n": 6,
+       "text": "This is true as of the time of writing."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "This indicates that the astronomer\u2019s model is wrong, and life as we know it exists only on the planet Earth.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It says the astronomer's model is wrong."
+      },
+      {
+       "n": 3,
+       "text": "It makes a second claim as well."
+      },
+      {
+       "n": 4,
+       "text": "Life as we know it exists in only one place."
+      },
+      {
+       "n": 5,
+       "text": "That place is the planet Earth."
+      }
+     ]
+    },
+    {
+     "n": 7,
+     "text": "Clay Moltz",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the signature at the end."
+      },
+      {
+       "n": 2,
+       "text": "The writer's first name is Clay."
+      },
+      {
+       "n": 3,
+       "text": "The writer's last name is Moltz."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because they haven't yet detected life on another planet, that doesn't mean it's impossible?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q4",
+     "qnum": 4,
+     "question_type": "Weaken",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT1_S3_Q5",
+   "prompt": "If Max were guilty, he would not ask the police to investigate. Therefore, his asking the police to investigate shows that he is not guilty.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is a conditional statement. \u00b7 It is about a person named Max. \u00b7 The condition is Max being guilty. \u00b7 The result concerns asking the police. \u00b7 He would not ask them to investigate. (2) This is the conclusion. \u00b7 It is drawn from what came before. \u00b7 Max did ask the police to investigate. \u00b7 That asking is treated as showing something. \u00b7 What it shows is that he is not guilty.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "If Max were guilty, he would not ask the police to investigate.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a conditional statement."
+      },
+      {
+       "n": 2,
+       "text": "It is about a person named Max."
+      },
+      {
+       "n": 3,
+       "text": "The condition is Max being guilty."
+      },
+      {
+       "n": 4,
+       "text": "The result concerns asking the police."
+      },
+      {
+       "n": 5,
+       "text": "He would not ask them to investigate."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Therefore, his asking the police to investigate shows that he is not guilty.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is drawn from what came before."
+      },
+      {
+       "n": 3,
+       "text": "Max did ask the police to investigate."
+      },
+      {
+       "n": 4,
+       "text": "That asking is treated as showing something."
+      },
+      {
+       "n": 5,
+       "text": "What it shows is that he is not guilty."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rules of conditional reasoning don't apply?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q5",
+     "qnum": 5,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT1_S3_Q6",
+   "prompt": "A population of game ducks at a western lake contains 55 males to every 45 females, while a population of game ducks at an eastern lake contains 65 males for every 35 females. Among those ducks that have not yet bred there are only slightly more males than females, but among older ducks the number of males greatly exceeds the number of females. Because there are appreciably more males among adult ducks than among young ducks, we can infer that the greater the disparity in overall sex ratios, the greater the percentage of older male ducks in the population.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about game ducks. \u00b7 Two populations are being compared. \u00b7 One population is at a western lake. \u00b7 That one has 55 males to every 45 females. \u00b7 The other population is at an eastern lake. \u00b7 That one has 65 males for every 35 females. (2) This is about ducks that have not yet bred. \u00b7 Among those there are more males than females. \u00b7 The difference is only slight. \u00b7 A contrast is drawn with older ducks. \u00b7 Among older ducks males exceed females. \u00b7 That excess is great rather than slight. (3) This gives a reason for what follows. \u00b7 It compares adult ducks with young ducks. \u00b7 Adult ducks have more males. \u00b7 The difference is appreciable. (4) This is the conclusion. \u00b7 It is stated as something we can infer. \u00b7 It links two things that rise together. \u00b7 The first is the disparity in overall sex ratios. \u00b7 The second is the percentage of older male ducks. \u00b7 The percentage is of the population.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A population of game ducks at a western lake contains 55 males to every 45 females, while a population of game ducks at an eastern lake contains 65 males for every 35 females.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about game ducks."
+      },
+      {
+       "n": 2,
+       "text": "Two populations are being compared."
+      },
+      {
+       "n": 3,
+       "text": "One population is at a western lake."
+      },
+      {
+       "n": 4,
+       "text": "That one has 55 males to every 45 females."
+      },
+      {
+       "n": 5,
+       "text": "The other population is at an eastern lake."
+      },
+      {
+       "n": 6,
+       "text": "That one has 65 males for every 35 females."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Among those ducks that have not yet bred there are only slightly more males than females, but among older ducks the number of males greatly exceeds the number of females.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about ducks that have not yet bred."
+      },
+      {
+       "n": 2,
+       "text": "Among those there are more males than females."
+      },
+      {
+       "n": 3,
+       "text": "The difference is only slight."
+      },
+      {
+       "n": 4,
+       "text": "A contrast is drawn with older ducks."
+      },
+      {
+       "n": 5,
+       "text": "Among older ducks males exceed females."
+      },
+      {
+       "n": 6,
+       "text": "That excess is great rather than slight."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Because there are appreciably more males among adult ducks than among young ducks,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason for what follows."
+      },
+      {
+       "n": 2,
+       "text": "It compares adult ducks with young ducks."
+      },
+      {
+       "n": 3,
+       "text": "Adult ducks have more males."
+      },
+      {
+       "n": 4,
+       "text": "The difference is appreciable."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "we can infer that the greater the disparity in overall sex ratios, the greater the percentage of older male ducks in the population.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is stated as something we can infer."
+      },
+      {
+       "n": 3,
+       "text": "It links two things that rise together."
+      },
+      {
+       "n": 4,
+       "text": "The first is the disparity in overall sex ratios."
+      },
+      {
+       "n": 5,
+       "text": "The second is the percentage of older male ducks."
+      },
+      {
+       "n": 6,
+       "text": "The percentage is of the population."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if this is not a representative sample?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q6",
+     "qnum": 6,
+     "question_type": "Inference",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT1_S3_Q7",
+   "prompt": "The common procedure for determining whether a food additive should be banned from use is to compare its health-related benefits with its potential risks. Yellow Dye No. 5, an additive used to color lemon soda, might cause allergic reactions in a few consumers. For most consumers of lemon soda, however, the coloring enhances their enjoyment of the beverage. This particular additive should not be banned, therefore, because its benefits greatly outweigh its risks.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a procedure. \u00b7 The procedure is described as common. \u00b7 It determines whether a food additive should be banned. \u00b7 The procedure is a comparison. \u00b7 One side is the additive's health-related benefits. \u00b7 The other side is its potential risks. (2) This is about a specific additive. \u00b7 The additive is Yellow Dye No. 5. \u00b7 It is used to color lemon soda. \u00b7 It might cause allergic reactions. \u00b7 This is stated as a possibility. \u00b7 The reactions would affect a few consumers. (3) This is a contrast with what came before. \u00b7 It is about most consumers of lemon soda. \u00b7 The coloring enhances something for them. \u00b7 What is enhanced is their enjoyment. \u00b7 The enjoyment is of the beverage. (4) This is the conclusion. \u00b7 It is about this particular additive. \u00b7 It says the additive should not be banned. \u00b7 A reason is given. \u00b7 The reason is that benefits outweigh risks. \u00b7 The outweighing is described as great.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The common procedure for determining whether a food additive should be banned from use is to compare its health-related benefits with its potential risks.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a procedure."
+      },
+      {
+       "n": 2,
+       "text": "The procedure is described as common."
+      },
+      {
+       "n": 3,
+       "text": "It determines whether a food additive should be banned."
+      },
+      {
+       "n": 4,
+       "text": "The procedure is a comparison."
+      },
+      {
+       "n": 5,
+       "text": "One side is the additive's health-related benefits."
+      },
+      {
+       "n": 6,
+       "text": "The other side is its potential risks."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Yellow Dye No. 5, an additive used to color lemon soda, might cause allergic reactions in a few consumers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a specific additive."
+      },
+      {
+       "n": 2,
+       "text": "The additive is Yellow Dye No. 5."
+      },
+      {
+       "n": 3,
+       "text": "It is used to color lemon soda."
+      },
+      {
+       "n": 4,
+       "text": "It might cause allergic reactions."
+      },
+      {
+       "n": 5,
+       "text": "This is stated as a possibility."
+      },
+      {
+       "n": 6,
+       "text": "The reactions would affect a few consumers."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "For most consumers of lemon soda, however, the coloring enhances their enjoyment of the beverage.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about most consumers of lemon soda."
+      },
+      {
+       "n": 3,
+       "text": "The coloring enhances something for them."
+      },
+      {
+       "n": 4,
+       "text": "What is enhanced is their enjoyment."
+      },
+      {
+       "n": 5,
+       "text": "The enjoyment is of the beverage."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "This particular additive should not be banned, therefore, because its benefits greatly outweigh its risks.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about this particular additive."
+      },
+      {
+       "n": 3,
+       "text": "It says the additive should not be banned."
+      },
+      {
+       "n": 4,
+       "text": "A reason is given."
+      },
+      {
+       "n": 5,
+       "text": "The reason is that benefits outweigh risks."
+      },
+      {
+       "n": 6,
+       "text": "The outweighing is described as great."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if enjoyment is not a health-related benefit?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q7",
+     "qnum": 7,
+     "question_type": "Classic Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT1_S3_Q8",
+   "prompt": "Fines levied against those responsible for certain environmentally damaging accidents are now so high that it costs a company responsible for such an accident more to pay the fine than it would have cost to adopt measures that would have prevented the accident. Therefore, since businesses value their profits, those that might have such accidents will now install adequate environmental safeguards.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about fines. \u00b7 The fines are levied against those responsible for accidents. \u00b7 The accidents are environmentally damaging ones. \u00b7 This applies to certain accidents, not all. \u00b7 The fines are now very high. \u00b7 Paying the fine costs a company more. \u00b7 The comparison is with the cost of preventive measures. \u00b7 Those measures would have prevented the accident. (2) This is the conclusion. \u00b7 A reason is given for it. \u00b7 The reason is that businesses value their profits. \u00b7 It is about businesses that might have such accidents. \u00b7 They will install environmental safeguards. \u00b7 The safeguards are described as adequate. \u00b7 This is predicted to happen now.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Fines levied against those responsible for certain environmentally damaging accidents are now so high that it costs a company responsible for such an accident more to pay the fine than it would have cost to adopt measures that would have prevented the accident.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about fines."
+      },
+      {
+       "n": 2,
+       "text": "The fines are levied against those responsible for accidents."
+      },
+      {
+       "n": 3,
+       "text": "The accidents are environmentally damaging ones."
+      },
+      {
+       "n": 4,
+       "text": "This applies to certain accidents, not all."
+      },
+      {
+       "n": 5,
+       "text": "The fines are now very high."
+      },
+      {
+       "n": 6,
+       "text": "Paying the fine costs a company more."
+      },
+      {
+       "n": 7,
+       "text": "The comparison is with the cost of preventive measures."
+      },
+      {
+       "n": 8,
+       "text": "Those measures would have prevented the accident."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Therefore, since businesses value their profits, those that might have such accidents will now install adequate environmental safeguards.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "A reason is given for it."
+      },
+      {
+       "n": 3,
+       "text": "The reason is that businesses value their profits."
+      },
+      {
+       "n": 4,
+       "text": "It is about businesses that might have such accidents."
+      },
+      {
+       "n": 5,
+       "text": "They will install environmental safeguards."
+      },
+      {
+       "n": 6,
+       "text": "The safeguards are described as adequate."
+      },
+      {
+       "n": 7,
+       "text": "This is predicted to happen now."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if businesses think they'll never have an accident so there's no need to invest in safeguards?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q8",
+     "qnum": 8,
+     "question_type": "Weaken",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT1_S3_Q9",
+   "prompt": "Even in a democracy, it is necessary to restrict the dissemination of advanced technological knowledge that is of commercial or national-security value. Dissemination to certain countries, those that are or will be competitors or enemies, should be selectively prohibited. There must, however, be free exchange of scientific information.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This concedes something about democracies. \u00b7 Restricting dissemination is necessary. \u00b7 What is restricted is advanced technological knowledge. \u00b7 The knowledge has commercial value. \u00b7 It may instead have national-security value. (2) This is about dissemination to certain countries. \u00b7 Those countries are competitors or enemies. \u00b7 They may be so now or in the future. \u00b7 Dissemination should be prohibited. \u00b7 The prohibition is selective rather than total. (3) This is a contrast with what came before. \u00b7 Something must be the case. \u00b7 There must be free exchange. \u00b7 What is exchanged is scientific information.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Even in a democracy, it is necessary to restrict the dissemination of advanced technological knowledge that is of commercial or national-security value.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This concedes something about democracies."
+      },
+      {
+       "n": 2,
+       "text": "Restricting dissemination is necessary."
+      },
+      {
+       "n": 3,
+       "text": "What is restricted is advanced technological knowledge."
+      },
+      {
+       "n": 4,
+       "text": "The knowledge has commercial value."
+      },
+      {
+       "n": 5,
+       "text": "It may instead have national-security value."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Dissemination to certain countries, those that are or will be competitors or enemies, should be selectively prohibited.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about dissemination to certain countries."
+      },
+      {
+       "n": 2,
+       "text": "Those countries are competitors or enemies."
+      },
+      {
+       "n": 3,
+       "text": "They may be so now or in the future."
+      },
+      {
+       "n": 4,
+       "text": "Dissemination should be prohibited."
+      },
+      {
+       "n": 5,
+       "text": "The prohibition is selective rather than total."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "There must, however, be free exchange of scientific information.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "Something must be the case."
+      },
+      {
+       "n": 3,
+       "text": "There must be free exchange."
+      },
+      {
+       "n": 4,
+       "text": "What is exchanged is scientific information."
+      }
+     ]
+    }
+   ],
+   "the_read": "There must be scientific information that is not advanced technological knowledge.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q9",
+     "qnum": 9,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT1_S3_Q10",
+   "prompt": "Water vapor evaporated from the ocean contains a greater proportion of oxygen-16 and a smaller proportion of the heavier oxygen-18 than does seawater. Normally, this phenomenon has no effect on the overall composition of the ocean, because evaporated seawater returns to the ocean through precipitation. During an ice age, however, a large amount of precipitation falls on ice caps, where it is trapped as ice.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about water vapor. \u00b7 The vapor was evaporated from the ocean. \u00b7 It contains a greater proportion of oxygen-16. \u00b7 It contains a smaller proportion of oxygen-18. \u00b7 Oxygen-18 is the heavier of the two. \u00b7 The comparison is with seawater. (2) This describes what happens normally. \u00b7 The phenomenon has no effect. \u00b7 What is unaffected is the ocean's overall composition. \u00b7 A reason is given for that. \u00b7 Evaporated seawater returns to the ocean. \u00b7 It returns through precipitation. (3) This is a contrast with the normal case. \u00b7 It describes what happens during an ice age. \u00b7 Precipitation falls on ice caps. \u00b7 The amount is large. \u00b7 The precipitation is trapped there. \u00b7 It is trapped as ice.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Water vapor evaporated from the ocean contains a greater proportion of oxygen-16 and a smaller proportion of the heavier oxygen-18 than does seawater.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about water vapor."
+      },
+      {
+       "n": 2,
+       "text": "The vapor was evaporated from the ocean."
+      },
+      {
+       "n": 3,
+       "text": "It contains a greater proportion of oxygen-16."
+      },
+      {
+       "n": 4,
+       "text": "It contains a smaller proportion of oxygen-18."
+      },
+      {
+       "n": 5,
+       "text": "Oxygen-18 is the heavier of the two."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with seawater."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Normally, this phenomenon has no effect on the overall composition of the ocean, because evaporated seawater returns to the ocean through precipitation.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This describes what happens normally."
+      },
+      {
+       "n": 2,
+       "text": "The phenomenon has no effect."
+      },
+      {
+       "n": 3,
+       "text": "What is unaffected is the ocean's overall composition."
+      },
+      {
+       "n": 4,
+       "text": "A reason is given for that."
+      },
+      {
+       "n": 5,
+       "text": "Evaporated seawater returns to the ocean."
+      },
+      {
+       "n": 6,
+       "text": "It returns through precipitation."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "During an ice age, however, a large amount of precipitation falls on ice caps, where it is trapped as ice.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with the normal case."
+      },
+      {
+       "n": 2,
+       "text": "It describes what happens during an ice age."
+      },
+      {
+       "n": 3,
+       "text": "Precipitation falls on ice caps."
+      },
+      {
+       "n": 4,
+       "text": "The amount is large."
+      },
+      {
+       "n": 5,
+       "text": "The precipitation is trapped there."
+      },
+      {
+       "n": 6,
+       "text": "It is trapped as ice."
+      }
+     ]
+    }
+   ],
+   "the_read": "Ice caps formed during an ice age will have a greater proportion of oxygen-16 and a smaller proportion of oxygen-18.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q10",
+     "qnum": 10,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT1_S3_Q11",
+   "prompt": "Some of the most prosperous nations in the world have experienced a pronounced drop in national savings rates\u2014the percentage of after-tax income an average household saves. This trend will undoubtedly continue if the average age of these nations\u2019 populations continues to rise, since older people have fewer reasons to save than do younger people.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about nations. \u00b7 The nations are among the most prosperous in the world. \u00b7 It applies to some of them, not all. \u00b7 They have experienced a drop. \u00b7 The drop is pronounced. \u00b7 What dropped is national savings rates. \u00b7 That rate is a percentage of after-tax income. \u00b7 It is what an average household saves. (2) This is the conclusion. \u00b7 It predicts the trend will continue. \u00b7 The prediction is stated with certainty. \u00b7 It depends on a condition. \u00b7 The condition is the average age continuing to rise. \u00b7 The age is that of these nations' populations. \u00b7 A reason is given for the prediction. \u00b7 Older people have fewer reasons to save than younger people.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Some of the most prosperous nations in the world have experienced a pronounced drop in national savings rates\u2014the percentage of after-tax income an average household saves.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about nations."
+      },
+      {
+       "n": 2,
+       "text": "The nations are among the most prosperous in the world."
+      },
+      {
+       "n": 3,
+       "text": "It applies to some of them, not all."
+      },
+      {
+       "n": 4,
+       "text": "They have experienced a drop."
+      },
+      {
+       "n": 5,
+       "text": "The drop is pronounced."
+      },
+      {
+       "n": 6,
+       "text": "What dropped is national savings rates."
+      },
+      {
+       "n": 7,
+       "text": "That rate is a percentage of after-tax income."
+      },
+      {
+       "n": 8,
+       "text": "It is what an average household saves."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This trend will undoubtedly continue if the average age of these nations\u2019 populations continues to rise, since older people have fewer reasons to save than do younger people.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It predicts the trend will continue."
+      },
+      {
+       "n": 3,
+       "text": "The prediction is stated with certainty."
+      },
+      {
+       "n": 4,
+       "text": "It depends on a condition."
+      },
+      {
+       "n": 5,
+       "text": "The condition is the average age continuing to rise."
+      },
+      {
+       "n": 6,
+       "text": "The age is that of these nations' populations."
+      },
+      {
+       "n": 7,
+       "text": "A reason is given for the prediction."
+      },
+      {
+       "n": 8,
+       "text": "Older people have fewer reasons to save than younger people."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if older people have much better reasons to save, even if they have fewer?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q11",
+     "qnum": 11,
+     "question_type": "Classic Flaw",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT1_S3_Q12",
+   "prompt": "The term \u201cpit bull\u201d does not designate a breed of dog, as do the terms \u201cGerman shepherd\u201d and \u201cpoodle.\u201d It is like the terms \u201cSeeing-Eye dog\u201d and \u201cpolice dog,\u201d which designate dogs according to what they do. If you take two German shepherds and place them side by side, you cannot tell by appearance alone which is the police dog and which is the Seeing-Eye dog.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about the term pit bull. \u00b7 That term does not designate a breed. \u00b7 A contrast is drawn with other terms. \u00b7 German shepherd is one of those terms. \u00b7 Poodle is the other. \u00b7 Those terms do designate breeds. (2) A comparison is being made. \u00b7 The comparison is with two other terms. \u00b7 One term is Seeing-Eye dog. \u00b7 The other is police dog. \u00b7 Those terms designate dogs by what they do. (3) This sets up a situation. \u00b7 The situation involves two German shepherds. \u00b7 They are placed side by side. \u00b7 You cannot tell which is which. \u00b7 Appearance alone is not enough. \u00b7 One is the police dog. \u00b7 The other is the Seeing-Eye dog.",
+   "category": "Conclusion",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The term \u201cpit bull\u201d does not designate a breed of dog, as do the terms \u201cGerman shepherd\u201d and \u201cpoodle.\u201d",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the term pit bull."
+      },
+      {
+       "n": 2,
+       "text": "That term does not designate a breed."
+      },
+      {
+       "n": 3,
+       "text": "A contrast is drawn with other terms."
+      },
+      {
+       "n": 4,
+       "text": "German shepherd is one of those terms."
+      },
+      {
+       "n": 5,
+       "text": "Poodle is the other."
+      },
+      {
+       "n": 6,
+       "text": "Those terms do designate breeds."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "It is like the terms \u201cSeeing-Eye dog\u201d and \u201cpolice dog,\u201d which designate dogs according to what they do.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A comparison is being made."
+      },
+      {
+       "n": 2,
+       "text": "The comparison is with two other terms."
+      },
+      {
+       "n": 3,
+       "text": "One term is Seeing-Eye dog."
+      },
+      {
+       "n": 4,
+       "text": "The other is police dog."
+      },
+      {
+       "n": 5,
+       "text": "Those terms designate dogs by what they do."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "If you take two German shepherds and place them side by side, you cannot tell by appearance alone which is the police dog and which is the Seeing-Eye dog.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This sets up a situation."
+      },
+      {
+       "n": 2,
+       "text": "The situation involves two German shepherds."
+      },
+      {
+       "n": 3,
+       "text": "They are placed side by side."
+      },
+      {
+       "n": 4,
+       "text": "You cannot tell which is which."
+      },
+      {
+       "n": 5,
+       "text": "Appearance alone is not enough."
+      },
+      {
+       "n": 6,
+       "text": "One is the police dog."
+      },
+      {
+       "n": 7,
+       "text": "The other is the Seeing-Eye dog."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if a dog's breed can be determined by what it does? What if dog breed has nothing to do with appearance?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q12",
+     "qnum": 12,
+     "question_type": "Conclusion",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT1_S3_Q13",
+   "prompt": "Historically, monetary systems have developed only in population centers with marketplaces. Through the fourth century B.C., Mesopotamian cities engaged in trade, but had never had marketplaces. By that period, however, Greek cities all had marketplaces, or agorae. The Greek cities\u2019 agorae were centrally located and goods were traded there either for money or for commodities.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is a historical claim. \u00b7 It is about monetary systems. \u00b7 Those systems have developed in only one kind of place. \u00b7 The places are population centers. \u00b7 Those centers have marketplaces. (2) This covers a period of time. \u00b7 The period runs through the fourth century B.C. \u00b7 It is about Mesopotamian cities. \u00b7 Those cities engaged in trade. \u00b7 A contrast follows that. \u00b7 They had never had marketplaces. (3) This is a contrast with the Mesopotamian cities. \u00b7 It is about Greek cities. \u00b7 It refers to the same period. \u00b7 All of those cities had marketplaces. \u00b7 The marketplaces were called agorae. (4) This is about the Greek agorae. \u00b7 They were centrally located. \u00b7 Goods were traded there. \u00b7 There were two things goods were traded for. \u00b7 One of them was money. \u00b7 The other was commodities.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Historically, monetary systems have developed only in population centers with marketplaces.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a historical claim."
+      },
+      {
+       "n": 2,
+       "text": "It is about monetary systems."
+      },
+      {
+       "n": 3,
+       "text": "Those systems have developed in only one kind of place."
+      },
+      {
+       "n": 4,
+       "text": "The places are population centers."
+      },
+      {
+       "n": 5,
+       "text": "Those centers have marketplaces."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Through the fourth century B.C., Mesopotamian cities engaged in trade, but had never had marketplaces.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This covers a period of time."
+      },
+      {
+       "n": 2,
+       "text": "The period runs through the fourth century B.C."
+      },
+      {
+       "n": 3,
+       "text": "It is about Mesopotamian cities."
+      },
+      {
+       "n": 4,
+       "text": "Those cities engaged in trade."
+      },
+      {
+       "n": 5,
+       "text": "A contrast follows that."
+      },
+      {
+       "n": 6,
+       "text": "They had never had marketplaces."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "By that period, however, Greek cities all had marketplaces, or agorae.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with the Mesopotamian cities."
+      },
+      {
+       "n": 2,
+       "text": "It is about Greek cities."
+      },
+      {
+       "n": 3,
+       "text": "It refers to the same period."
+      },
+      {
+       "n": 4,
+       "text": "All of those cities had marketplaces."
+      },
+      {
+       "n": 5,
+       "text": "The marketplaces were called agorae."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "The Greek cities\u2019 agorae were centrally located and goods were traded there either for money or for commodities.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the Greek agorae."
+      },
+      {
+       "n": 2,
+       "text": "They were centrally located."
+      },
+      {
+       "n": 3,
+       "text": "Goods were traded there."
+      },
+      {
+       "n": 4,
+       "text": "There were two things goods were traded for."
+      },
+      {
+       "n": 5,
+       "text": "One of them was money."
+      },
+      {
+       "n": 6,
+       "text": "The other was commodities."
+      }
+     ]
+    }
+   ],
+   "the_read": "Fourth century Mesopotamian cities did not have monetary systems.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q13",
+     "qnum": 13,
+     "question_type": "Inference",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT1_S3_Q14",
+   "prompt": "Computer operating system software has become increasingly standardized. But when a large business with multiple, linked computer systems uses identical operating system software on all of its computers, a computer vandal who gains access to one computer automatically has access to the data on all the computers. Using a program known as a \u201cvirus,\u201d the vandal can then destroy much of the data on all the computers. If such a business introduced minor variations into its operating system software, unauthorized access to all the computers at the same time could be virtually eliminated. Furthermore, variations in operating system software can be created without any loss of computer compatibility to the business. Therefore, it is advisable for businesses to implement such variations.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about computer operating system software. \u00b7 That software has become standardized. \u00b7 The standardization is increasing. (2) This is a contrast with what came before. \u00b7 It sets up a condition. \u00b7 The condition involves a large business. \u00b7 The business has multiple computer systems. \u00b7 Those systems are linked. \u00b7 It uses identical operating system software. \u00b7 The software is on all of its computers. (3) This gives the result of that condition. \u00b7 It is about a computer vandal. \u00b7 The vandal gains access to one computer. \u00b7 That gives access to all the computers. \u00b7 What is accessed is the data. \u00b7 The access is granted automatically. (4) This is about a program. \u00b7 The program is known as a virus. \u00b7 The vandal uses it. \u00b7 The vandal can then destroy data. \u00b7 Much of the data can be destroyed. \u00b7 The data is on all the computers. (5) This is a conditional statement. \u00b7 The condition is the business introducing variations. \u00b7 The variations are minor ones. \u00b7 They go into its operating system software. \u00b7 The result concerns unauthorized access. \u00b7 The access is to all the computers at the same time. \u00b7 That access could be eliminated. \u00b7 The elimination is virtual rather than total. (6) This is an additional point. \u00b7 It is about variations in operating system software. \u00b7 Those variations can be created. \u00b7 Nothing is lost by creating them. \u00b7 What is not lost is computer compatibility. \u00b7 The compatibility is the business's own. (7) This is the conclusion. \u00b7 It is about businesses. \u00b7 Something is advisable for them. \u00b7 What is advisable is implementing such variations.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Computer operating system software has become increasingly standardized.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about computer operating system software."
+      },
+      {
+       "n": 2,
+       "text": "That software has become standardized."
+      },
+      {
+       "n": 3,
+       "text": "The standardization is increasing."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But when a large business with multiple, linked computer systems uses identical operating system software on all of its computers,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It sets up a condition."
+      },
+      {
+       "n": 3,
+       "text": "The condition involves a large business."
+      },
+      {
+       "n": 4,
+       "text": "The business has multiple computer systems."
+      },
+      {
+       "n": 5,
+       "text": "Those systems are linked."
+      },
+      {
+       "n": 6,
+       "text": "It uses identical operating system software."
+      },
+      {
+       "n": 7,
+       "text": "The software is on all of its computers."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "a computer vandal who gains access to one computer automatically has access to the data on all the computers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives the result of that condition."
+      },
+      {
+       "n": 2,
+       "text": "It is about a computer vandal."
+      },
+      {
+       "n": 3,
+       "text": "The vandal gains access to one computer."
+      },
+      {
+       "n": 4,
+       "text": "That gives access to all the computers."
+      },
+      {
+       "n": 5,
+       "text": "What is accessed is the data."
+      },
+      {
+       "n": 6,
+       "text": "The access is granted automatically."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Using a program known as a \u201cvirus,\u201d the vandal can then destroy much of the data on all the computers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a program."
+      },
+      {
+       "n": 2,
+       "text": "The program is known as a virus."
+      },
+      {
+       "n": 3,
+       "text": "The vandal uses it."
+      },
+      {
+       "n": 4,
+       "text": "The vandal can then destroy data."
+      },
+      {
+       "n": 5,
+       "text": "Much of the data can be destroyed."
+      },
+      {
+       "n": 6,
+       "text": "The data is on all the computers."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "If such a business introduced minor variations into its operating system software, unauthorized access to all the computers at the same time could be virtually eliminated.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a conditional statement."
+      },
+      {
+       "n": 2,
+       "text": "The condition is the business introducing variations."
+      },
+      {
+       "n": 3,
+       "text": "The variations are minor ones."
+      },
+      {
+       "n": 4,
+       "text": "They go into its operating system software."
+      },
+      {
+       "n": 5,
+       "text": "The result concerns unauthorized access."
+      },
+      {
+       "n": 6,
+       "text": "The access is to all the computers at the same time."
+      },
+      {
+       "n": 7,
+       "text": "That access could be eliminated."
+      },
+      {
+       "n": 8,
+       "text": "The elimination is virtual rather than total."
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "text": "Furthermore, variations in operating system software can be created without any loss of computer compatibility to the business.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "It is about variations in operating system software."
+      },
+      {
+       "n": 3,
+       "text": "Those variations can be created."
+      },
+      {
+       "n": 4,
+       "text": "Nothing is lost by creating them."
+      },
+      {
+       "n": 5,
+       "text": "What is not lost is computer compatibility."
+      },
+      {
+       "n": 6,
+       "text": "The compatibility is the business's own."
+      }
+     ]
+    },
+    {
+     "n": 7,
+     "text": "Therefore, it is advisable for businesses to implement such variations.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about businesses."
+      },
+      {
+       "n": 3,
+       "text": "Something is advisable for them."
+      },
+      {
+       "n": 4,
+       "text": "What is advisable is implementing such variations."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there's a huge downside to variations in operating system software, like it's very expensive to purchase and maintain, and it's hard for employees to use?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q14",
+     "qnum": 14,
+     "question_type": "Strengthen",
+     "correct_answer": "B"
+    },
+    {
+     "citation": "PT1.S3.Q15",
+     "qnum": 15,
+     "question_type": "Inference",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT1_S3_Q16",
+   "prompt": "It is the mark of a superior conductor that he or she has the authority to insist, even with a top orchestra, that rehearsal work must be intensified. This authority cannot simply be claimed; the conductor must earn it by winning the orchestra\u2019s respect for the artistic interpretations he or she is currently pursuing.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This describes the mark of something. \u00b7 It is about a superior conductor. \u00b7 The conductor has authority. \u00b7 The authority is to insist on something. \u00b7 What is insisted on is intensified rehearsal work. \u00b7 This holds even with a top orchestra. (2) This is about that authority. \u00b7 The authority cannot simply be claimed. \u00b7 The conductor must earn it instead. \u00b7 It is earned by winning respect. \u00b7 The respect comes from the orchestra. \u00b7 The respect is for artistic interpretations. \u00b7 Those are the ones the conductor is currently pursuing.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "It is the mark of a superior conductor that he or she has the authority to insist, even with a top orchestra, that rehearsal work must be intensified.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This describes the mark of something."
+      },
+      {
+       "n": 2,
+       "text": "It is about a superior conductor."
+      },
+      {
+       "n": 3,
+       "text": "The conductor has authority."
+      },
+      {
+       "n": 4,
+       "text": "The authority is to insist on something."
+      },
+      {
+       "n": 5,
+       "text": "What is insisted on is intensified rehearsal work."
+      },
+      {
+       "n": 6,
+       "text": "This holds even with a top orchestra."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This authority cannot simply be claimed; the conductor must earn it by winning the orchestra\u2019s respect for the artistic interpretations he or she is currently pursuing.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about that authority."
+      },
+      {
+       "n": 2,
+       "text": "The authority cannot simply be claimed."
+      },
+      {
+       "n": 3,
+       "text": "The conductor must earn it instead."
+      },
+      {
+       "n": 4,
+       "text": "It is earned by winning respect."
+      },
+      {
+       "n": 5,
+       "text": "The respect comes from the orchestra."
+      },
+      {
+       "n": 6,
+       "text": "The respect is for artistic interpretations."
+      },
+      {
+       "n": 7,
+       "text": "Those are the ones the conductor is currently pursuing."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the orchestra pays zero attention to the conductor and cannot/will not recognize any conductor's interpretation whatsoever? What if respecting a conductor's artistic decisions will not sway the orchestra to work harder?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q16",
+     "qnum": 16,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT1_S3_Q17",
+   "prompt": "In the United States proven oil reserves\u2014the amount of oil considered extractable from known fields\u2014are at the same level as they were ten years ago. Yet over this same period no new oil fields of any consequence have been discovered, and the annual consumption of domestically produced oil has increased.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about the United States. \u00b7 It is about proven oil reserves. \u00b7 Proven reserves means oil considered extractable. \u00b7 The oil comes from known fields. \u00b7 The reserves are at the same level. \u00b7 The comparison is with ten years ago. (2) This is a contrast with what came before. \u00b7 It covers the same period. \u00b7 No new oil fields have been discovered. \u00b7 None of any consequence, at least. \u00b7 A second point is added. \u00b7 Annual consumption has increased. \u00b7 The oil consumed is domestically produced.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In the United States proven oil reserves\u2014the amount of oil considered extractable from known fields\u2014are at the same level as they were ten years ago.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the United States."
+      },
+      {
+       "n": 2,
+       "text": "It is about proven oil reserves."
+      },
+      {
+       "n": 3,
+       "text": "Proven reserves means oil considered extractable."
+      },
+      {
+       "n": 4,
+       "text": "The oil comes from known fields."
+      },
+      {
+       "n": 5,
+       "text": "The reserves are at the same level."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with ten years ago."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Yet over this same period no new oil fields of any consequence have been discovered, and the annual consumption of domestically produced oil has increased.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It covers the same period."
+      },
+      {
+       "n": 3,
+       "text": "No new oil fields have been discovered."
+      },
+      {
+       "n": 4,
+       "text": "None of any consequence, at least."
+      },
+      {
+       "n": 5,
+       "text": "A second point is added."
+      },
+      {
+       "n": 6,
+       "text": "Annual consumption has increased."
+      },
+      {
+       "n": 7,
+       "text": "The oil consumed is domestically produced."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we can extract more oil from curent fields than previously thought?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q17",
+     "qnum": 17,
+     "question_type": "Resolution",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT1_S3_Q18",
+   "prompt": "Train service suffers when a railroad combines commuter and freight service. By dividing its attention between its freight and commuter customers, a railroad serves neither particularly well. Therefore, if a railroad is going to be a successful business, then it must concentrate exclusively on one of these two markets.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about train service. \u00b7 That service suffers under a condition. \u00b7 The condition is a railroad combining two services. \u00b7 One is commuter service. \u00b7 The other is freight service. (2) This explains why that happens. \u00b7 The railroad divides its attention. \u00b7 The attention is split between two sets of customers. \u00b7 Those are freight and commuter customers. \u00b7 The railroad serves neither well. \u00b7 Neither is served particularly well. (3) This is the conclusion. \u00b7 It is a conditional statement. \u00b7 The condition is being a successful business. \u00b7 The railroad must concentrate on one market. \u00b7 The concentration must be exclusive. \u00b7 There are two markets to choose between.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Train service suffers when a railroad combines commuter and freight service.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about train service."
+      },
+      {
+       "n": 2,
+       "text": "That service suffers under a condition."
+      },
+      {
+       "n": 3,
+       "text": "The condition is a railroad combining two services."
+      },
+      {
+       "n": 4,
+       "text": "One is commuter service."
+      },
+      {
+       "n": 5,
+       "text": "The other is freight service."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "By dividing its attention between its freight and commuter customers, a railroad serves neither particularly well.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This explains why that happens."
+      },
+      {
+       "n": 2,
+       "text": "The railroad divides its attention."
+      },
+      {
+       "n": 3,
+       "text": "The attention is split between two sets of customers."
+      },
+      {
+       "n": 4,
+       "text": "Those are freight and commuter customers."
+      },
+      {
+       "n": 5,
+       "text": "The railroad serves neither well."
+      },
+      {
+       "n": 6,
+       "text": "Neither is served particularly well."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, if a railroad is going to be a successful business, then it must concentrate exclusively on one of these two markets.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is a conditional statement."
+      },
+      {
+       "n": 3,
+       "text": "The condition is being a successful business."
+      },
+      {
+       "n": 4,
+       "text": "The railroad must concentrate on one market."
+      },
+      {
+       "n": 5,
+       "text": "The concentration must be exclusive."
+      },
+      {
+       "n": 6,
+       "text": "There are two markets to choose between."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if a railroad can serve its customers poorly but still be a successful business?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q18",
+     "qnum": 18,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT1_S3_Q19",
+   "prompt": "Most people in the United States view neither big nor small business as particularly efficient or dynamic and regard both as providing consumers with fairly priced goods and services. However, most people consistently perceive small business as a force for good in society, whereas big business is perceived as socially responsible only in times of prosperity.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about most people. \u00b7 Those people are in the United States. \u00b7 They view neither big nor small business as efficient. \u00b7 They do not view either as dynamic. \u00b7 Neither is seen as particularly so. \u00b7 They regard both as providing fairly priced goods. \u00b7 Services are included as well. \u00b7 What is provided goes to consumers. (2) This is a contrast with what came before. \u00b7 It is about most people again. \u00b7 They perceive small business as a force for good. \u00b7 That perception is consistent. \u00b7 The good is in society. \u00b7 Big business is perceived differently. \u00b7 It is seen as socially responsible only sometimes. \u00b7 That is in times of prosperity.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Most people in the United States view neither big nor small business as particularly efficient or dynamic and regard both as providing consumers with fairly priced goods and services.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about most people."
+      },
+      {
+       "n": 2,
+       "text": "Those people are in the United States."
+      },
+      {
+       "n": 3,
+       "text": "They view neither big nor small business as efficient."
+      },
+      {
+       "n": 4,
+       "text": "They do not view either as dynamic."
+      },
+      {
+       "n": 5,
+       "text": "Neither is seen as particularly so."
+      },
+      {
+       "n": 6,
+       "text": "They regard both as providing fairly priced goods."
+      },
+      {
+       "n": 7,
+       "text": "Services are included as well."
+      },
+      {
+       "n": 8,
+       "text": "What is provided goes to consumers."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "However, most people consistently perceive small business as a force for good in society, whereas big business is perceived as socially responsible only in times of prosperity.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about most people again."
+      },
+      {
+       "n": 3,
+       "text": "They perceive small business as a force for good."
+      },
+      {
+       "n": 4,
+       "text": "That perception is consistent."
+      },
+      {
+       "n": 5,
+       "text": "The good is in society."
+      },
+      {
+       "n": 6,
+       "text": "Big business is perceived differently."
+      },
+      {
+       "n": 7,
+       "text": "It is seen as socially responsible only sometimes."
+      },
+      {
+       "n": 8,
+       "text": "That is in times of prosperity."
+      }
+     ]
+    }
+   ],
+   "the_read": "Businesses can be perceived as a force for good in society even if they are not perceived as being particularly dynamic.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q19",
+     "qnum": 19,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT1_S3_Q20",
+   "prompt": "The energy an animal must expend to move uphill is proportional to its body weight, whereas the animal\u2019s energy output available to perform this task is proportional to its surface area. This is the reason that small animals, like squirrels, can run up a tree trunk almost as fast as they can move on level ground, whereas large animals tend to slow down when they are moving uphill.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about an animal. \u00b7 It is about energy the animal must expend. \u00b7 The energy is for moving uphill. \u00b7 That energy is proportional to something. \u00b7 It is proportional to body weight. (2) This is a contrast with what came before. \u00b7 It is about the animal's energy output. \u00b7 That output is the amount available. \u00b7 It is available to perform this task. \u00b7 It is proportional to surface area. (3) This states a reason for what follows. \u00b7 It is about small animals. \u00b7 Squirrels are given as the example. \u00b7 They can run up a tree trunk. \u00b7 They do it almost as fast as on level ground. \u00b7 The comparison is with level ground. (4) This is a contrast with the small animals. \u00b7 It is about large animals. \u00b7 They tend to slow down. \u00b7 This is a tendency rather than a rule. \u00b7 It happens when they are moving uphill.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The energy an animal must expend to move uphill is proportional to its body weight,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about an animal."
+      },
+      {
+       "n": 2,
+       "text": "It is about energy the animal must expend."
+      },
+      {
+       "n": 3,
+       "text": "The energy is for moving uphill."
+      },
+      {
+       "n": 4,
+       "text": "That energy is proportional to something."
+      },
+      {
+       "n": 5,
+       "text": "It is proportional to body weight."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "whereas the animal\u2019s energy output available to perform this task is proportional to its surface area.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about the animal's energy output."
+      },
+      {
+       "n": 3,
+       "text": "That output is the amount available."
+      },
+      {
+       "n": 4,
+       "text": "It is available to perform this task."
+      },
+      {
+       "n": 5,
+       "text": "It is proportional to surface area."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "This is the reason that small animals, like squirrels, can run up a tree trunk almost as fast as they can move on level ground,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This states a reason for what follows."
+      },
+      {
+       "n": 2,
+       "text": "It is about small animals."
+      },
+      {
+       "n": 3,
+       "text": "Squirrels are given as the example."
+      },
+      {
+       "n": 4,
+       "text": "They can run up a tree trunk."
+      },
+      {
+       "n": 5,
+       "text": "They do it almost as fast as on level ground."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with level ground."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "whereas large animals tend to slow down when they are moving uphill.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with the small animals."
+      },
+      {
+       "n": 2,
+       "text": "It is about large animals."
+      },
+      {
+       "n": 3,
+       "text": "They tend to slow down."
+      },
+      {
+       "n": 4,
+       "text": "This is a tendency rather than a rule."
+      },
+      {
+       "n": 5,
+       "text": "It happens when they are moving uphill."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if small animals have a much smaller surface area to body weight ratio than large animals?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q20",
+     "qnum": 20,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT1_S3_Q21",
+   "prompt": "The 1980s have been characterized as a period of selfish individualism that threatens the cohesion of society. But this characterization is true of any time. Throughout history all human actions have been motivated by selfishness. When the deeper implications are considered, even the simplest \u201cunselfish\u201d acts prove to be instances of selfish concern for the human species.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about the 1980s. \u00b7 That decade has been characterized in a certain way. \u00b7 It is called a period of selfish individualism. \u00b7 That individualism threatens something. \u00b7 What is threatened is the cohesion of society. (2) This is a contrast with what came before. \u00b7 It is about that characterization. \u00b7 The characterization is true. \u00b7 It is true of any time, not just the 1980s. (3) This covers the whole of history. \u00b7 It is about human actions. \u00b7 It applies to all of them. \u00b7 They have been motivated by selfishness. (4) This depends on considering deeper implications. \u00b7 It is about unselfish acts. \u00b7 It applies even to the simplest of them. \u00b7 Those acts prove to be something else. \u00b7 They are instances of selfish concern. \u00b7 The concern is for the human species.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The 1980s have been characterized as a period of selfish individualism that threatens the cohesion of society.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the 1980s."
+      },
+      {
+       "n": 2,
+       "text": "That decade has been characterized in a certain way."
+      },
+      {
+       "n": 3,
+       "text": "It is called a period of selfish individualism."
+      },
+      {
+       "n": 4,
+       "text": "That individualism threatens something."
+      },
+      {
+       "n": 5,
+       "text": "What is threatened is the cohesion of society."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But this characterization is true of any time.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It is about that characterization."
+      },
+      {
+       "n": 3,
+       "text": "The characterization is true."
+      },
+      {
+       "n": 4,
+       "text": "It is true of any time, not just the 1980s."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Throughout history all human actions have been motivated by selfishness.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This covers the whole of history."
+      },
+      {
+       "n": 2,
+       "text": "It is about human actions."
+      },
+      {
+       "n": 3,
+       "text": "It applies to all of them."
+      },
+      {
+       "n": 4,
+       "text": "They have been motivated by selfishness."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "When the deeper implications are considered, even the simplest \u201cunselfish\u201d acts prove to be instances of selfish concern for the human species.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This depends on considering deeper implications."
+      },
+      {
+       "n": 2,
+       "text": "It is about unselfish acts."
+      },
+      {
+       "n": 3,
+       "text": "It applies even to the simplest of them."
+      },
+      {
+       "n": 4,
+       "text": "Those acts prove to be something else."
+      },
+      {
+       "n": 5,
+       "text": "They are instances of selfish concern."
+      },
+      {
+       "n": 6,
+       "text": "The concern is for the human species."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if selfish individualism is different from selfish concern for human species?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q21",
+     "qnum": 21,
+     "question_type": "Classic Flaw",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT1_S3_Q22",
+   "prompt": "A medical journal used a questionnaire survey to determine whether a particular change in its format would increase its readership. Sixty-two percent of those who returned the questionnaire supported that change. On the basis of this outcome, the decision was made to introduce the new format.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a medical journal. \u00b7 The journal used a survey. \u00b7 The survey was a questionnaire. \u00b7 It was used to determine something. \u00b7 The question was about a change in format. \u00b7 The change is a particular one. \u00b7 The issue is whether it would increase readership. (2) This gives a figure. \u00b7 The figure is sixty-two percent. \u00b7 It is a percentage of a specific group. \u00b7 The group is those who returned the questionnaire. \u00b7 Those people supported the change. (3) This rests on that outcome. \u00b7 A decision was made. \u00b7 The decision was to introduce the new format.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A medical journal used a questionnaire survey to determine whether a particular change in its format would increase its readership.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a medical journal."
+      },
+      {
+       "n": 2,
+       "text": "The journal used a survey."
+      },
+      {
+       "n": 3,
+       "text": "The survey was a questionnaire."
+      },
+      {
+       "n": 4,
+       "text": "It was used to determine something."
+      },
+      {
+       "n": 5,
+       "text": "The question was about a change in format."
+      },
+      {
+       "n": 6,
+       "text": "The change is a particular one."
+      },
+      {
+       "n": 7,
+       "text": "The issue is whether it would increase readership."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Sixty-two percent of those who returned the questionnaire supported that change.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a figure."
+      },
+      {
+       "n": 2,
+       "text": "The figure is sixty-two percent."
+      },
+      {
+       "n": 3,
+       "text": "It is a percentage of a specific group."
+      },
+      {
+       "n": 4,
+       "text": "The group is those who returned the questionnaire."
+      },
+      {
+       "n": 5,
+       "text": "Those people supported the change."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "On the basis of this outcome, the decision was made to introduce the new format.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This rests on that outcome."
+      },
+      {
+       "n": 2,
+       "text": "A decision was made."
+      },
+      {
+       "n": 3,
+       "text": "The decision was to introduce the new format."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the sample size of those who returned the survey is too small? What if the people who are in favor of the change are disproportionately sampled among those who returned the survey?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q22",
+     "qnum": 22,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT1_S3_Q23",
+   "prompt": "Shanna: Owners of any work of art, simply by virtue of ownership, ethically have the right to destroy that artwork if they find it morally or aesthetically distasteful, or if caring for it becomes inconvenient.\n\nJorge: Ownership of unique artworks, unlike ownership of other kinds of objects, carries the moral right to possess but not to destroy. A unique work of art with aesthetic or historical value belongs to posterity and so must be preserved, whatever the personal wishes of its legal owner.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The first speaker is named Shanna. \u00b7 She is talking about owners. \u00b7 The owners are of any work of art. \u00b7 Their claim rests on ownership alone. (2) The owners have a right. \u00b7 The right is an ethical one. \u00b7 The right is to destroy the artwork. \u00b7 It applies under certain conditions. \u00b7 One is finding it morally distasteful. \u00b7 Another is finding it aesthetically distasteful. \u00b7 Another is caring for it becoming inconvenient. (3) The second speaker is named Jorge. \u00b7 He is talking about ownership of unique artworks. \u00b7 He contrasts that with other kinds of objects. \u00b7 That ownership carries a moral right. \u00b7 The right is to possess the artwork. \u00b7 The right does not extend to destroying it. (4) This is about a unique work of art. \u00b7 The work has aesthetic or historical value. \u00b7 It belongs to posterity. \u00b7 It must therefore be preserved. \u00b7 That holds whatever the owner wishes. \u00b7 The owner in question is the legal owner.",
+   "category": "Counter",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Shanna: Owners of any work of art, simply by virtue of ownership,",
+     "details": [
+      {
+       "n": 1,
+       "text": "The first speaker is named Shanna."
+      },
+      {
+       "n": 2,
+       "text": "She is talking about owners."
+      },
+      {
+       "n": 3,
+       "text": "The owners are of any work of art."
+      },
+      {
+       "n": 4,
+       "text": "Their claim rests on ownership alone."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "ethically have the right to destroy that artwork if they find it morally or aesthetically distasteful, or if caring for it becomes inconvenient.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The owners have a right."
+      },
+      {
+       "n": 2,
+       "text": "The right is an ethical one."
+      },
+      {
+       "n": 3,
+       "text": "The right is to destroy the artwork."
+      },
+      {
+       "n": 4,
+       "text": "It applies under certain conditions."
+      },
+      {
+       "n": 5,
+       "text": "One is finding it morally distasteful."
+      },
+      {
+       "n": 6,
+       "text": "Another is finding it aesthetically distasteful."
+      },
+      {
+       "n": 7,
+       "text": "Another is caring for it becoming inconvenient."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Jorge: Ownership of unique artworks, unlike ownership of other kinds of objects, carries the moral right to possess but not to destroy.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The second speaker is named Jorge."
+      },
+      {
+       "n": 2,
+       "text": "He is talking about ownership of unique artworks."
+      },
+      {
+       "n": 3,
+       "text": "He contrasts that with other kinds of objects."
+      },
+      {
+       "n": 4,
+       "text": "That ownership carries a moral right."
+      },
+      {
+       "n": 5,
+       "text": "The right is to possess the artwork."
+      },
+      {
+       "n": 6,
+       "text": "The right does not extend to destroying it."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "A unique work of art with aesthetic or historical value belongs to posterity and so must be preserved, whatever the personal wishes of its legal owner.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a unique work of art."
+      },
+      {
+       "n": 2,
+       "text": "The work has aesthetic or historical value."
+      },
+      {
+       "n": 3,
+       "text": "It belongs to posterity."
+      },
+      {
+       "n": 4,
+       "text": "It must therefore be preserved."
+      },
+      {
+       "n": 5,
+       "text": "That holds whatever the owner wishes."
+      },
+      {
+       "n": 6,
+       "text": "The owner in question is the legal owner."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether art owners have the right to destroy any of their artworks.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT1.S3.Q23",
+     "qnum": 23,
+     "question_type": "Counter",
+     "correct_answer": "E"
+    },
+    {
+     "citation": "PT1.S3.Q24",
+     "qnum": 24,
+     "question_type": "Controversy",
+     "correct_answer": "A"
+    }
+   ]
+  }
+ ]
+}

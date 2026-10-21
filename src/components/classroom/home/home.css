@@ -1,0 +1,2063 @@
+/* ── Classroom Home ────────────────────────────────────────────────────
+   The student dashboard. Warm paper: the rail's gradient no longer stops at
+   its own edge, it becomes the page. Hierarchy is the point — one primary
+   action, then the work, then the coach and the next session, then the week.
+
+   Neutral roles follow the approved platform palette in both host themes.
+   Teaching-category dots retain their independent semantic colors.
+
+   Every hairline is a box-shadow ring, never a border: borders take layout
+   space and shift a card by a pixel when a hover state thickens them.
+   Every animation is transform/opacity/box-shadow only, so nothing on this
+   page can reflow while it moves. */
+
+.classroom-root .classroom-home {
+  --home-ink: var(--classroom-ink);
+  --home-ink-strong: var(--classroom-ink);
+  --home-ink-mid: var(--classroom-meta-text);
+  --home-body: var(--classroom-meta-text);
+  --home-soft: var(--classroom-meta-text);
+  --home-muted: var(--classroom-meta-text);
+  --home-faint: var(--classroom-meta-text);
+  --home-disabled: var(--classroom-line-strong);
+
+  --home-white: var(--classroom-panel);
+  --home-row-hover: var(--classroom-hover);
+  --home-sheet: var(--classroom-panel);
+  --home-sheet-deep: var(--classroom-hover);
+
+  --home-accent: var(--classroom-active);
+  --home-accent-text: var(--classroom-link-text);
+  --home-gold: var(--classroom-meta-text);
+  --home-rule-gold: var(--classroom-line-strong);
+
+  --home-v3-ink: var(--classroom-ink);
+  --home-v3-warm-muted: var(--classroom-meta-text);
+  --home-v3-date: var(--classroom-meta-text);
+  --home-v3-taupe: var(--classroom-panel);
+  --home-v3-panel-a: var(--classroom-panel);
+  --home-v3-panel-b: var(--classroom-panel);
+  --home-v3-panel-c: var(--classroom-panel);
+
+  --home-hair-05: rgba(37, 43, 38, 0.05);
+  --home-hair-06: rgba(37, 43, 38, 0.06);
+  --home-hair-07: rgba(37, 43, 38, 0.07);
+  --home-hair-08: rgba(37, 43, 38, 0.08);
+  --home-hair-09: rgba(37, 43, 38, 0.09);
+  --home-hair-12: rgba(37, 43, 38, 0.12);
+
+  --home-card-shadow: 0 0 0 1px var(--home-hair-08),
+    0 14px 30px -22px rgba(37, 43, 38, 0.35);
+  --home-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --home-display: "Fraunces", Georgia, ui-serif, serif;
+  --home-ui: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --home-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  color: var(--home-body);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--home-ui);
+  gap: 24px;
+  /* The page glows sit past the right edge on purpose; clip them so they
+     never widen the page into a sideways scrollbar. clip, not hidden: it
+     makes no scroll container, so nothing sticky inside breaks. */
+  overflow-x: clip;
+  position: relative;
+  width: 100%;
+}
+
+/* Decorative page glows. Behind everything, inert to the pointer. */
+.classroom-root .classroom-home-glow {
+  border-radius: 50%;
+  filter: blur(24px);
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.classroom-root .classroom-home-glow-a {
+  animation: classroomHomeDrift 16s var(--home-ease) infinite;
+  background: radial-gradient(circle, rgba(37, 43, 38, 0.1), transparent 68%);
+  height: 420px;
+  right: -140px;
+  top: 40px;
+  width: 620px;
+}
+
+.classroom-root .classroom-home-glow-b {
+  animation: classroomHomeDrift 22s var(--home-ease) 3s infinite reverse;
+  background: radial-gradient(circle, rgba(37, 43, 38, 0.055), transparent 68%);
+  bottom: 40px;
+  filter: blur(30px);
+  height: 380px;
+  right: -80px;
+  width: 520px;
+}
+
+.classroom-root .classroom-home > *:not(.classroom-home-glow) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── masthead ───────────────────────────────────────────────────────── */
+
+/* ── finder bar ────────────────────────────────────────────────────────
+   A rule of its own above the greeting, the way LSAT Lab hangs Find A Question
+   over its dashboard. The trigger brings its own pill shape; this band only
+   places it and draws the line under it. */
+
+.classroom-root .classroom-home-finderbar {
+  animation: classroomHomeRise 560ms var(--home-ease) both;
+  display: flex;
+  margin-bottom: 26px;
+  padding-bottom: 18px;
+  position: relative;
+}
+
+.classroom-root .classroom-home-finderbar::after {
+  background: rgba(37, 43, 38, 0.08);
+  bottom: 0;
+  content: "";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.classroom-root .classroom-home-finderbar .qf-trigger {
+  min-width: 264px;
+}
+
+/* The trigger drops its label on a narrow screen wherever it shares a row.
+   Here it does not share one — the band is its own — and an unlabelled circle
+   alone above the greeting reads as decoration rather than the way in. So the
+   words stay and the pill takes the width instead. */
+@media (max-width: 720px) {
+  .classroom-root .classroom-home-finderbar .qf-trigger {
+    min-width: 0;
+    padding: 10px 12px 10px 14px;
+    width: 100%;
+  }
+
+  .classroom-root .classroom-home-finderbar .qf-trigger-label {
+    display: block;
+  }
+}
+
+.classroom-root .classroom-home-masthead {
+  align-items: flex-end;
+  animation: classroomHomeRise 560ms var(--home-ease) 40ms both;
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.classroom-root .classroom-home-masthead-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-eyebrow {
+  align-items: center;
+  color: var(--home-muted);
+  display: flex;
+  font-family: var(--home-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  gap: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-home-eyebrow-dot {
+  animation: classroomHomeUnread 2.8s var(--home-ease) 1s infinite;
+  background: var(--home-accent);
+  border-radius: 50%;
+  flex: none;
+  height: 5px;
+  width: 5px;
+}
+
+.classroom-root .classroom-home-title {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 42px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.classroom-root .classroom-home-subtitle {
+  animation: classroomHomeRise 560ms var(--home-ease) 140ms both;
+  color: var(--home-body);
+  font-family: var(--home-display);
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* The masthead's utility cluster: status only, now that the address controls
+   have their own band below. A row of its own, so what sits here cannot change
+   where the pill sits relative to the greeting. */
+.classroom-root .classroom-home-masthead-tools {
+  align-items: center;
+  animation: classroomHomeRise 560ms var(--home-ease) 100ms both;
+  display: flex;
+  flex: none;
+  gap: 12px;
+}
+
+.classroom-root .classroom-home-duepill {
+  align-items: center;
+  background: var(--home-white);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--home-hair-08), 0 6px 16px -12px rgba(37, 43, 38, 0.4);
+  color: var(--home-body);
+  display: flex;
+  flex: none;
+  font-family: var(--home-mono);
+  font-size: 10px;
+  font-weight: 600;
+  gap: 9px;
+  letter-spacing: 0.14em;
+  padding: 9px 14px;
+}
+
+.classroom-root .classroom-home-duepill i {
+  animation: classroomHomeUnread 2.8s var(--home-ease) 1s infinite;
+  background: var(--home-accent);
+  border-radius: 50%;
+  height: 6px;
+  width: 6px;
+}
+
+/* ── hero ───────────────────────────────────────────────────────────── */
+
+.classroom-root .classroom-home-hero {
+  animation: classroomHomeRise 620ms var(--home-ease) 180ms both;
+  position: relative;
+}
+
+/* Two paper sheets behind the panel: this is a stack of work, not a banner. */
+.classroom-root .classroom-home-sheet {
+  border-radius: 18px;
+  display: block;
+  height: 40px;
+  position: absolute;
+}
+
+.classroom-root .classroom-home-sheet-back {
+  background: var(--home-sheet-deep);
+  bottom: -9px;
+  box-shadow: 0 0 0 1px var(--home-hair-06);
+  left: 16px;
+  right: 16px;
+}
+
+.classroom-root .classroom-home-sheet-front {
+  background: var(--home-sheet);
+  bottom: -4px;
+  box-shadow: 0 0 0 1px var(--home-hair-07);
+  left: 8px;
+  right: 8px;
+}
+
+.classroom-root .classroom-home-hero-panel {
+  background: var(--classroom-panel);
+  border-radius: 18px;
+  box-shadow:
+    0 0 0 1px rgba(37, 43, 38, 0.14),
+    0 26px 50px -30px rgba(37, 43, 38, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  position: relative;
+}
+
+.classroom-root .classroom-home-hero-glow {
+  animation: classroomHomeDrift 18s var(--home-ease) infinite;
+  background: radial-gradient(circle, rgba(37, 43, 38, 0.18), transparent 68%);
+  border-radius: 50%;
+  display: block;
+  height: 360px;
+  left: 36%;
+  pointer-events: none;
+  position: absolute;
+  top: -150px;
+  width: 520px;
+}
+
+.classroom-root .classroom-home-hero-body {
+  align-items: center;
+  display: flex;
+  gap: 44px;
+  padding: 30px 34px 32px;
+  position: relative;
+}
+
+.classroom-root .classroom-home-hero-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-hero-eyebrow {
+  align-items: center;
+  color: var(--home-gold);
+  display: flex;
+  font-family: var(--home-mono);
+  font-size: 10px;
+  font-weight: 700;
+  gap: 9px;
+  letter-spacing: 0.2em;
+}
+
+.classroom-root .classroom-home-hero-eyebrow i {
+  background: var(--home-rule-gold);
+  display: block;
+  flex: none;
+  height: 1px;
+  width: 16px;
+}
+
+.classroom-root .classroom-home-hero-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.classroom-root .classroom-home-hero-heading h2 {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.classroom-root .classroom-home-hero-meta {
+  align-items: center;
+  color: var(--home-soft);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 13px;
+  gap: 9px;
+}
+
+.classroom-root .classroom-home-tag {
+  background: var(--home-hair-06);
+  border-radius: 4px;
+  color: var(--home-body);
+  font-family: var(--home-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  padding: 3px 7px;
+}
+
+.classroom-root .classroom-home-hero-prose {
+  color: var(--home-body);
+  font-family: var(--home-display);
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 2px 0 0;
+  max-width: 54ch;
+}
+
+.classroom-root .classroom-home-hero-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.classroom-root .classroom-home-cta {
+  align-items: center;
+  background: var(--classroom-active);
+  border: 0;
+  border-radius: 999px;
+  box-shadow:
+    0 10px 24px -8px rgba(37, 43, 38, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  color: var(--classroom-active-ink);
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  gap: 8px;
+  padding: 12px 22px;
+  transition:
+    transform 180ms var(--home-ease),
+    box-shadow 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-cta:hover {
+  box-shadow:
+    0 16px 30px -8px rgba(37, 43, 38, 0.78),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.classroom-root .classroom-home-cta:active {
+  transform: translateY(0.5px);
+}
+
+.classroom-root .classroom-home-ghost {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(37, 43, 38, 0.16);
+  color: var(--home-ink-mid);
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 12px 18px;
+  transition:
+    box-shadow 180ms var(--home-ease),
+    color 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-ghost:hover {
+  box-shadow: inset 0 0 0 1px rgba(37, 43, 38, 0.3);
+  color: var(--home-ink);
+}
+
+/* Progress card. Only ever rendered when both halves of the count are real. */
+.classroom-root .classroom-home-progress {
+  background: var(--home-white);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px var(--home-hair-08),
+    0 10px 24px -18px rgba(37, 43, 38, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 18px 20px;
+  width: 212px;
+}
+
+.classroom-root .classroom-home-progress-label {
+  color: var(--home-muted);
+  font-family: var(--home-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.classroom-root .classroom-home-progress-count {
+  align-items: baseline;
+  color: var(--home-ink);
+  display: flex;
+  gap: 7px;
+}
+
+.classroom-root .classroom-home-progress-count b {
+  font-family: var(--home-display);
+  font-size: 34px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.classroom-root .classroom-home-progress-count span {
+  color: var(--home-muted);
+  font-size: 13px;
+}
+
+.classroom-root .classroom-home-ticks {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.classroom-root .classroom-home-tick {
+  background: var(--home-hair-09);
+  border-radius: 4px;
+  height: 22px;
+}
+
+.classroom-root .classroom-home-tick-done {
+  background: var(--classroom-active);
+  box-shadow: 0 4px 10px -4px rgba(37, 43, 38, 0.6);
+}
+
+.classroom-root .classroom-home-progress-note {
+  color: var(--home-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.classroom-root .classroom-home-card {
+  background: var(--home-white);
+  border-radius: 14px;
+  box-shadow: var(--home-card-shadow);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-home-card-head {
+  align-items: center;
+  box-shadow: inset 0 -1px 0 var(--home-hair-07);
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 15px 18px 13px;
+}
+
+.classroom-root .classroom-home-card-label {
+  color: var(--home-ink-strong);
+  font-family: var(--home-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.classroom-root .classroom-home-card-label-muted {
+  color: var(--home-muted);
+}
+
+.classroom-root .classroom-home-badge {
+  animation: classroomHomeUnread 2.6s var(--home-ease) 1.4s infinite;
+  background: rgba(37, 43, 38, 0.12);
+  border-radius: 999px;
+  color: var(--home-accent-text);
+  flex: none;
+  font-family: var(--home-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 7px;
+}
+
+.classroom-root .classroom-home-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.classroom-root .classroom-home-row {
+  align-items: center;
+  background: none;
+  border: 0;
+  box-shadow: inset 0 -1px 0 var(--home-hair-06);
+  cursor: pointer;
+  display: flex;
+  gap: 13px;
+  padding: 14px 18px;
+  text-align: left;
+  transition: background 180ms var(--home-ease);
+  width: 100%;
+}
+
+.classroom-root .classroom-home-row:last-child {
+  box-shadow: none;
+}
+
+.classroom-root .classroom-home-row:hover {
+  background: var(--home-row-hover);
+}
+
+.classroom-root .classroom-home-dot {
+  border-radius: 50%;
+  flex: none;
+  height: 6px;
+  width: 6px;
+}
+
+.classroom-root .classroom-home-dot-activity {
+  background: #ff8906;
+  box-shadow: 0 0 0 4px rgba(255, 137, 6, 0.12);
+}
+
+.classroom-root .classroom-home-dot-drill {
+  background: #60a5fa;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.12);
+}
+
+.classroom-root .classroom-home-dot-recap {
+  background: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+}
+
+.classroom-root .classroom-home-row-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-row-title {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 16px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-home-row-meta {
+  color: var(--home-muted);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* One pill, two weights: the accent variant marks the single next action. */
+.classroom-root .classroom-home-pill {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--home-hair-12);
+  color: var(--home-body);
+  cursor: pointer;
+  display: inline-flex;
+  flex: none;
+  font-family: var(--home-ui);
+  font-size: 12.5px;
+  font-weight: 500;
+  gap: 6px;
+  padding: 7px 12px;
+  transition:
+    box-shadow 180ms var(--home-ease),
+    background 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-pill:hover {
+  box-shadow: inset 0 0 0 1px rgba(37, 43, 38, 0.26);
+}
+
+.classroom-root .classroom-home-pill-accent {
+  box-shadow: inset 0 0 0 1px rgba(37, 43, 38, 0.28);
+  color: var(--home-accent-text);
+  font-weight: 600;
+}
+
+.classroom-root .classroom-home-pill-accent:hover {
+  background: rgba(37, 43, 38, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(37, 43, 38, 0.4);
+}
+
+/* A pill nested inside a row button is decoration, not a second control. */
+.classroom-root .classroom-home-row .classroom-home-pill {
+  pointer-events: none;
+}
+
+.classroom-root .classroom-home-row:hover .classroom-home-pill-accent {
+  background: rgba(37, 43, 38, 0.08);
+}
+
+.classroom-root .classroom-home-empty {
+  color: var(--home-muted);
+  font-size: 13px;
+  margin: 0;
+  padding: 16px 18px 20px;
+}
+
+.classroom-root .classroom-home-empty-boxed {
+  background: var(--home-white);
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--home-hair-08);
+  padding: 16px 14px;
+}
+
+/* ── the coach's last word ──────────────────────────────────────────── */
+
+.classroom-root .classroom-home-thread {
+  animation: classroomHomeRise 560ms var(--home-ease) 620ms both;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-rule {
+  align-items: center;
+  display: flex;
+  gap: 9px;
+}
+
+.classroom-root .classroom-home-rule > i {
+  background: rgba(37, 43, 38, 0.1);
+  display: block;
+  flex: 1;
+  height: 1px;
+}
+
+.classroom-root .classroom-home-stack {
+  animation: classroomHomeFloat 7s var(--home-ease) 1.2s infinite;
+  padding-bottom: 12px;
+  position: relative;
+}
+
+.classroom-root .classroom-home-note {
+  border-radius: 12px;
+  display: block;
+  height: 44px;
+  position: absolute;
+}
+
+.classroom-root .classroom-home-note-back {
+  background: var(--classroom-panel);
+  bottom: 0;
+  box-shadow: 0 0 0 1px var(--home-hair-05);
+  left: 14px;
+  right: 14px;
+}
+
+.classroom-root .classroom-home-note-front {
+  background: var(--classroom-panel);
+  bottom: 6px;
+  box-shadow: 0 0 0 1px var(--home-hair-06);
+  left: 7px;
+  right: 7px;
+}
+
+.classroom-root .classroom-home-message {
+  align-items: flex-start;
+  background: var(--classroom-panel);
+  border: 0;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 1px var(--home-hair-09),
+    0 1px 1px rgba(37, 43, 38, 0.04),
+    0 14px 26px -18px rgba(37, 43, 38, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  overflow: hidden;
+  padding: 14px;
+  position: relative;
+  text-align: left;
+  transition:
+    transform 180ms var(--home-ease),
+    box-shadow 180ms var(--home-ease);
+  width: 100%;
+}
+
+.classroom-root .classroom-home-message:hover {
+  box-shadow:
+    0 0 0 1px var(--home-hair-09),
+    0 22px 38px -20px rgba(37, 43, 38, 0.5);
+  transform: translateY(-3px);
+}
+
+.classroom-root .classroom-home-shine {
+  animation: classroomHomeShine 6.5s var(--home-ease) 2s infinite;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(239, 237, 230, 0.9) 50%,
+    rgba(255, 255, 255, 0)
+  );
+  bottom: 0;
+  display: block;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 34%;
+}
+
+.classroom-root .classroom-home-avatar {
+  align-items: center;
+  background: var(--classroom-panel);
+  border-radius: 50%;
+  box-shadow:
+    0 2px 6px -3px rgba(37, 43, 38, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  color: var(--classroom-meta-text);
+  display: flex;
+  flex: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  height: 28px;
+  justify-content: center;
+  position: relative;
+  width: 28px;
+}
+
+.classroom-root .classroom-home-avatar-dot {
+  animation: classroomHomeUnread 2.4s var(--home-ease) 1.8s infinite;
+  background: var(--home-accent);
+  border-radius: 50%;
+  bottom: -1px;
+  box-shadow: 0 0 0 2px var(--classroom-panel);
+  height: 8px;
+  position: absolute;
+  right: -1px;
+  width: 8px;
+}
+
+.classroom-root .classroom-home-message-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+  position: relative;
+}
+
+.classroom-root .classroom-home-message-head {
+  align-items: baseline;
+  display: flex;
+  gap: 6px;
+}
+
+.classroom-root .classroom-home-message-head b {
+  color: var(--home-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-home-message-head time {
+  color: var(--home-faint);
+  font-family: var(--home-mono);
+  font-size: 9.5px;
+}
+
+/* Three lines of the coach, then it clamps: this is a doorway, not the thread. */
+.classroom-root .classroom-home-message-text {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: var(--home-body);
+  display: -webkit-box;
+  font-family: var(--home-display);
+  font-size: 13.5px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+/* ── this week ──────────────────────────────────────────────────────── */
+
+.classroom-root .classroom-home-week {
+  animation: classroomHomeRise 560ms var(--home-ease) 700ms both;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 26px;
+  padding-bottom: 8px;
+}
+
+.classroom-root .classroom-home-rule-draw {
+  animation: classroomHomeDrawRule 620ms var(--home-ease) 760ms both;
+  background: rgba(37, 43, 38, 0.1);
+  display: block;
+  flex: 1;
+  height: 1px;
+  transform-origin: left;
+}
+
+.classroom-root .classroom-home-week-range {
+  color: var(--home-muted);
+  font-size: 12.5px;
+}
+
+.classroom-root .classroom-home-days {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+/* Rendered as a <button> only when /schedule is reachable, otherwise a <div>.
+   The pointer and the hover lift below are scoped to the button so the inert
+   variant does not advertise a click it cannot perform. */
+.classroom-root .classroom-home-day {
+  background: none;
+  border: 0;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  padding: 13px 13px 15px;
+  text-align: left;
+  transition:
+    box-shadow 180ms var(--home-ease),
+    transform 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-day-head {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+}
+
+.classroom-root .classroom-home-day-abbr {
+  color: var(--home-faint);
+  font-family: var(--home-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+
+.classroom-root .classroom-home-day-num {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-home-day-label {
+  align-items: center;
+  color: var(--home-body);
+  display: flex;
+  font-size: 11.5px;
+  gap: 6px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-day-label i {
+  background: var(--home-rule-gold);
+  border-radius: 50%;
+  display: block;
+  flex: none;
+  height: 4px;
+  width: 4px;
+}
+
+/* The label is one line: a long assignment title truncates rather than
+   making one cell in the row taller than the other six. */
+.classroom-root .classroom-home-day-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-home-day-today {
+  animation: classroomHomeTodayGlow 3.2s var(--home-ease) 1.6s infinite;
+  background: var(--home-ink-strong);
+}
+
+.classroom-root .classroom-home-day-today .classroom-home-day-abbr {
+  color: var(--lsatu-text-on-dark);
+  opacity: 0.6;
+}
+
+.classroom-root .classroom-home-day-today .classroom-home-day-num {
+  color: var(--lsatu-text-on-dark);
+}
+
+.classroom-root .classroom-home-day-today .classroom-home-day-label {
+  color: var(--lsatu-text-on-dark);
+}
+
+.classroom-root .classroom-home-day-today .classroom-home-day-label i {
+  background: var(--home-accent);
+}
+
+.classroom-root .classroom-home-day-item,
+.classroom-root .classroom-home-day-open {
+  background: var(--home-white);
+  box-shadow: 0 0 0 1px var(--home-hair-07);
+}
+
+.classroom-root button.classroom-home-day {
+  cursor: pointer;
+}
+
+.classroom-root button.classroom-home-day-item:hover,
+.classroom-root button.classroom-home-day-open:hover {
+  box-shadow:
+    0 0 0 1px rgba(37, 43, 38, 0.14),
+    0 10px 22px -16px rgba(37, 43, 38, 0.4);
+}
+
+.classroom-root .classroom-home-day-open .classroom-home-day-label {
+  color: var(--home-faint);
+}
+
+.classroom-root .classroom-home-day-rest {
+  box-shadow: inset 0 0 0 1px var(--home-hair-05);
+}
+
+.classroom-root .classroom-home-day-rest .classroom-home-day-abbr,
+.classroom-root .classroom-home-day-rest .classroom-home-day-label {
+  color: var(--home-disabled);
+}
+
+.classroom-root .classroom-home-day-rest .classroom-home-day-num {
+  color: var(--home-faint);
+}
+
+/* ── motion ─────────────────────────────────────────────────────────── */
+
+@keyframes classroomHomeRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes classroomHomeDrift {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: translate3d(26px, 18px, 0) scale(1.08);
+  }
+}
+
+@keyframes classroomHomeUnread {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 43, 38, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(37, 43, 38, 0);
+  }
+}
+
+@keyframes classroomHomeFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes classroomHomeShine {
+  0% {
+    transform: translateX(-160%) skewX(-14deg);
+  }
+  55%,
+  100% {
+    transform: translateX(320%) skewX(-14deg);
+  }
+}
+
+@keyframes classroomHomeDrawRule {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes classroomHomeTodayGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 6px 16px -10px rgba(37, 43, 38, 0.8),
+      0 0 0 0 rgba(37, 43, 38, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 6px 16px -10px rgba(37, 43, 38, 0.8),
+      0 0 0 6px rgba(37, 43, 38, 0);
+  }
+}
+
+/* The layout must be complete and correct with every animation removed. */
+@media (prefers-reduced-motion: reduce) {
+  .classroom-root .classroom-home *,
+  .classroom-root .classroom-home *::before,
+  .classroom-root .classroom-home *::after,
+  .classroom-root .classroom-home {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── responsive ─────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .classroom-root .classroom-home-hero-body {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .classroom-root .classroom-home-progress {
+    width: 100%;
+  }
+
+  .classroom-root .classroom-home-days {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .classroom-root .classroom-home-masthead {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Stacked, the cluster stays a left-aligned row directly under the greeting.
+     Deliberately NOT reordered or spread: the due pill has always sat at the
+     masthead's start on a phone, and the finder joining it must not move it. */
+  .classroom-root .classroom-home-masthead-tools {
+    gap: 10px;
+  }
+
+  .classroom-root .classroom-home-title {
+    font-size: 32px;
+  }
+
+  .classroom-root .classroom-home-hero-heading h2 {
+    font-size: 28px;
+  }
+
+  .classroom-root .classroom-home-hero-body {
+    padding: 24px 20px 26px;
+  }
+
+  .classroom-root .classroom-home-days {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .classroom-root .classroom-home-glow {
+    display: none;
+  }
+}
+
+/* ── dark ───────────────────────────────────────────────────────────── */
+
+/* The Classroom ships a dark theme. The warm paper cannot simply invert, so
+   the ink/surface tokens are restated against a warm-neutral dark ground and
+   the accent stays exactly where it is. */
+html.dark .classroom-root .classroom-home {
+  --home-ink: var(--classroom-ink);
+  --home-ink-strong: var(--classroom-ink);
+  --home-ink-mid: var(--classroom-meta-text);
+  --home-body: var(--classroom-meta-text);
+  --home-soft: var(--classroom-meta-text);
+  --home-muted: var(--classroom-meta-text);
+  /* Not a straight inversion of the light ramp: on a dark ground the two
+     quietest steps have to move up, or the weekend cells fall under 2:1 and
+     the "Rest" label stops being readable at all. */
+  --home-faint: var(--classroom-meta-text);
+  --home-disabled: var(--classroom-line-strong);
+
+  --home-white: var(--classroom-panel);
+  --home-row-hover: var(--classroom-hover);
+  --home-sheet: var(--classroom-panel);
+  --home-sheet-deep: var(--classroom-hover);
+
+  --home-hair-05: rgba(255, 255, 255, 0.05);
+  --home-hair-06: rgba(255, 255, 255, 0.06);
+  --home-hair-07: rgba(255, 255, 255, 0.07);
+  --home-hair-08: rgba(255, 255, 255, 0.08);
+  --home-hair-09: rgba(255, 255, 255, 0.09);
+  --home-hair-12: rgba(255, 255, 255, 0.14);
+
+  --home-card-shadow: 0 0 0 1px var(--home-hair-08),
+    0 14px 30px -22px rgba(0, 0, 0, 0.8);
+  --home-v3-ink: var(--classroom-ink);
+  --home-v3-warm-muted: var(--classroom-meta-text);
+  --home-v3-date: var(--classroom-meta-text);
+  --home-v3-taupe: var(--classroom-panel);
+  --home-v3-panel-a: var(--classroom-panel);
+  --home-v3-panel-b: var(--classroom-panel);
+  --home-v3-panel-c: var(--classroom-panel);
+}
+
+html.dark .classroom-root .classroom-home-hero-panel {
+  background: var(--classroom-panel);
+  box-shadow:
+    0 0 0 1px rgba(37, 43, 38, 0.22),
+    0 26px 50px -30px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+
+html.dark .classroom-root .classroom-home-message {
+  background: var(--classroom-panel);
+}
+
+html.dark .classroom-root .classroom-home-note-back {
+  background: var(--lsatu-field-dark);
+}
+
+html.dark .classroom-root .classroom-home-note-front {
+  background: var(--classroom-panel);
+}
+
+html.dark .classroom-root .classroom-home-avatar {
+  background: var(--classroom-panel);
+  color: var(--classroom-meta-text);
+}
+
+html.dark .classroom-root .classroom-home-avatar-dot {
+  box-shadow: 0 0 0 2px var(--classroom-panel);
+}
+
+html.dark .classroom-root .classroom-home-day-today {
+  background: var(--lsatu-action-on-dark);
+}
+
+html.dark .classroom-root .classroom-home-day-today .classroom-home-day-num {
+  color: var(--lsatu-action-ink);
+}
+
+/* The light card mutes this 9px label with opacity 0.6 over a dark background,
+   which lands at 4.83:1. The dark card flips the background to cream and only
+   overrode the colour, so the same 0.6 dropped it to 4.01:1 — under the 4.5:1
+   floor. Dark carries the de-emphasis in the colour instead, which keeps the
+   label quieter than the date without trading away legibility. */
+html.dark .classroom-root .classroom-home-day-today .classroom-home-day-abbr {
+  color: var(--lsatu-ink-muted);
+  opacity: 1;
+}
+
+html.dark .classroom-root .classroom-home-day-today .classroom-home-day-label {
+  color: var(--lsatu-ink);
+}
+
+html.dark .classroom-root .classroom-home-shine {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(239, 237, 230, 0.06) 50%,
+    rgba(255, 255, 255, 0)
+  );
+}
+
+/* ── clearing assigned work ───────────────────────────────────────────── */
+/* The row stays the primary target; "Mark done" is a quiet second control
+   that only appears on hover or keyboard focus so the list keeps its calm. */
+.classroom-root .classroom-home-row-wrap {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.classroom-root .classroom-home-row-wrap > .classroom-home-row {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-done {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--home-hair-12);
+  color: var(--home-muted);
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  padding: 5px 10px;
+  transition: opacity 120ms ease-out, color 120ms ease-out;
+}
+
+.classroom-root .classroom-home-row-wrap:hover .classroom-home-done,
+.classroom-root .classroom-home-done:focus-visible {
+  opacity: 1;
+}
+
+.classroom-root .classroom-home-done:hover {
+  color: var(--home-body);
+}
+
+.classroom-root .classroom-home-done:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .classroom-root .classroom-home-done {
+    opacity: 1;
+  }
+}
+
+/* Phase 1: the existing Home data in the reviewed Classroom layout.
+   These rules deliberately leave the Next seven days strip untouched. */
+.classroom-root .classroom-home {
+  container: classroom-home / inline-size;
+  gap: 22px;
+}
+
+.classroom-root .classroom-home-finderbar {
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+.classroom-root .classroom-home-finderbar::after { content: none; }
+.classroom-root .classroom-home-finderbar .qf { flex: 1; min-width: 0; }
+.classroom-root .classroom-home-finderbar .qf-trigger {
+  background: var(--home-white);
+  border-radius: 26px;
+  box-shadow: var(--home-card-shadow);
+  color: var(--home-body);
+  font-family: var(--home-ui);
+  font-size: 15px;
+  height: 52px;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: 0 18px;
+  width: 100%;
+}
+.classroom-root .classroom-home-finderbar .qf-trigger-label { display: block; }
+.classroom-root .classroom-home-bell {
+  align-items: center;
+  background: var(--home-white);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--home-hair-08);
+  color: var(--home-ink);
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 52px;
+  height: 52px;
+  justify-content: center;
+  margin-left: auto;
+  position: relative;
+}
+.classroom-root .classroom-home-bell > span {
+  background: var(--home-accent);
+  border-radius: 9px;
+  color: var(--home-ink);
+  font-family: var(--home-mono);
+  font-size: 10px;
+  min-width: 18px;
+  padding: 1px 4px;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+.classroom-root .classroom-home-title { font-size: clamp(32px, 5cqi, 50px); font-weight: 400; }
+.classroom-root .classroom-home-eyebrow { color: var(--home-gold); }
+.classroom-root .classroom-home-subtitle { font-size: 18px; }
+.classroom-root .classroom-home-actions {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr);
+}
+.classroom-root .classroom-home-action {
+  background: var(--home-white);
+  border: 0;
+  border-radius: 22px;
+  box-shadow: var(--home-card-shadow);
+  color: var(--home-body);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 22px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 400;
+  transition: transform 180ms var(--home-ease), box-shadow 180ms var(--home-ease);
+}
+.classroom-root .classroom-home-action:hover { transform: translateY(-2px); }
+.classroom-root .classroom-home-action-top {
+  align-items: center;
+  color: var(--home-soft);
+  display: flex;
+  font-family: var(--home-mono);
+  font-size: 10px;
+  justify-content: space-between;
+  gap: 12px;
+  letter-spacing: .14em;
+}
+.classroom-root .classroom-home-action-top svg { color: var(--home-accent); flex: none; }
+.classroom-root .classroom-home-action-title {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.classroom-root .classroom-home-top {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(24px, 3.2cqi, 40px);
+  border-radius: 34px;
+  background: linear-gradient(
+    115deg,
+    var(--home-v3-panel-a) 0%,
+    var(--home-v3-panel-b) 55%,
+    var(--home-v3-panel-c) 100%
+  );
+  box-shadow: 0 0 0 1px rgba(37, 43, 38, 0.08),
+    0 26px 50px -38px rgba(37, 43, 38, 0.55);
+}
+
+.classroom-root .classroom-home-top::after {
+  position: absolute;
+  top: -180px;
+  right: 20%;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 43, 38, 0.24), transparent 66%);
+  content: "";
+  pointer-events: none;
+}
+
+.classroom-root .classroom-home-masthead {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.classroom-root .classroom-home-masthead-text {
+  min-width: 0;
+}
+
+.classroom-root .classroom-home-title {
+  margin: 14px 0 12px;
+  color: var(--home-v3-ink);
+  font: 300 clamp(38px, 5.2cqi, 68px) / 1 var(--home-display);
+  letter-spacing: -0.025em;
+}
+
+.classroom-root .classroom-home-title em {
+  font-style: italic;
+}
+
+.classroom-root .classroom-home-eyebrow {
+  color: var(--home-v3-date);
+}
+
+.classroom-root .classroom-home-subtitle {
+  color: var(--home-v3-warm-muted);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.classroom-root .classroom-home-work-summary,
+.classroom-root .classroom-home-work-retry {
+  margin-top: 10px;
+  color: var(--home-v3-ink);
+  font: 600 12px / 1.4 var(--home-ui);
+}
+
+.classroom-root .classroom-home-work-retry {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.classroom-root .classroom-home-work-retry:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.classroom-root .classroom-home-next-session-line {
+  display: inline-flex;
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--home-v3-ink);
+  cursor: pointer;
+  font: 500 14px / 1.4 var(--home-ui);
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: rgba(37, 43, 38, 0.38);
+  text-underline-offset: 3px;
+}
+
+.classroom-root .classroom-home-next-session-line:hover {
+  text-decoration-color: currentColor;
+}
+
+.classroom-root .classroom-home-next-session-line:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid var(--home-v3-ink);
+  outline-offset: 4px;
+}
+
+.classroom-root .classroom-home-top-tools {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.classroom-root .classroom-home-finderbar {
+  margin: 0;
+  padding: 0;
+}
+
+.classroom-root .classroom-home-finderbar .qf-trigger {
+  min-height: 56px;
+  padding-inline: 20px 10px;
+  border-radius: 28px;
+  background: var(--classroom-panel);
+  color: var(--classroom-meta-text);
+  box-shadow: inset 0 0 0 1px rgba(37, 43, 38, 0.16);
+}
+
+.classroom-root .classroom-home-stat-row {
+  display: flex;
+  gap: 36px;
+  margin-top: 26px;
+}
+
+.classroom-root .classroom-home-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.classroom-root .classroom-home-test-days strong {
+  color: var(--home-v3-ink);
+  font: 300 46px / 0.95 var(--home-display);
+}
+
+.classroom-root .classroom-home-stat span {
+  color: var(--home-v3-warm-muted);
+  font-size: 13px;
+}
+
+.classroom-root .classroom-home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 0;
+}
+
+.classroom-root .classroom-home-action {
+  min-height: 48px;
+  flex: 1 1 auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-radius: 25px;
+  background: var(--classroom-panel);
+  color: var(--classroom-ink);
+  box-shadow: inset 0 0 0 1px rgba(37, 43, 38, 0.15),
+    0 8px 18px -16px rgba(37, 43, 38, 0.7);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.classroom-root .classroom-home-action svg {
+  color: var(--classroom-link-text);
+}
+
+.classroom-root .classroom-home-action-continue {
+  display: flex;
+  min-height: 112px;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 26px;
+  background: var(--classroom-active);
+  color: var(--classroom-active-ink);
+  box-shadow: 0 18px 30px -22px rgba(37, 43, 38, 0.75);
+  text-align: left;
+}
+
+.classroom-root .classroom-home-continue-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.classroom-root .classroom-home-continue-copy .classroom-home-action-top {
+  color: color-mix(in srgb, var(--classroom-active-ink) 80%, var(--classroom-active));
+  font: 600 10px var(--home-mono);
+  letter-spacing: 0.12em;
+}
+
+.classroom-root .classroom-home-continue-copy strong {
+  overflow: hidden;
+  color: var(--classroom-active-ink);
+  font: 400 22px / 1.15 var(--home-display);
+  text-overflow: ellipsis;
+}
+
+.classroom-root .classroom-home-continue-copy small {
+  overflow: hidden;
+  color: color-mix(in srgb, var(--classroom-active-ink) 80%, var(--classroom-active));
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-home-continue-label {
+  color: var(--classroom-active-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-home-continue-arrow {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--classroom-active-ink);
+  color: var(--classroom-active);
+}
+
+.classroom-root .classroom-home-continue-arrow svg {
+  color: var(--classroom-active);
+}
+
+.classroom-root .classroom-home-main-card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 26px;
+  border-radius: 30px;
+  background: var(--home-v3-taupe);
+  box-shadow: 0 0 0 1px rgba(37, 43, 38, 0.08),
+    0 18px 36px -28px rgba(37, 43, 38, 0.4);
+}
+
+.classroom-root .classroom-home-main-content {
+  width: min(100%, 68ch);
+  margin-inline: auto;
+}
+
+.classroom-root .classroom-home-hero {
+  margin: 0 0 20px;
+}
+
+.classroom-root .classroom-home-hero-panel {
+  border-radius: 22px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.classroom-root .classroom-home-hero-body {
+  padding: 0 0 20px;
+}
+
+.classroom-root .classroom-home-hero-heading h2 {
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-home-hero-meta,
+.classroom-root .classroom-home-hero-prose {
+  color: var(--classroom-meta-text);
+}
+
+.classroom-root .classroom-home-hero-eyebrow {
+  color: var(--classroom-meta-text);
+}
+
+.classroom-root .classroom-home-cta {
+  background: var(--classroom-active);
+  color: var(--classroom-active-ink);
+}
+
+.classroom-root .classroom-home-assigned {
+  padding-top: 18px;
+  box-shadow: inset 0 1px rgba(37, 43, 38, 0.16);
+}
+
+/* With no hero above it, the list opens the card and needs no divider. */
+.classroom-root .classroom-home-main-content > .classroom-home-assigned:first-child {
+  padding-top: 0;
+  box-shadow: none;
+}
+
+/* Inside the taupe card the wrap carries the row surface, so a row with a
+   Mark done button and a row without one end at the same right edge. */
+.classroom-root .classroom-home-main-card .classroom-home-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.classroom-root .classroom-home-main-card .classroom-home-row-wrap {
+  background: rgba(255, 255, 255, 0.44);
+  border-radius: 16px;
+  padding-right: 8px;
+}
+
+.classroom-root .classroom-home-main-card .classroom-home-row-wrap:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.classroom-root .classroom-home-main-card .classroom-home-row {
+  background: transparent;
+  border-radius: 16px;
+  color: var(--classroom-ink);
+}
+
+/* The stacked-paper sheets and the hero glow were drawn for a hero on its own
+   white panel; on the taupe card they read as an empty bar and a stray box. */
+.classroom-root .classroom-home-main-card .classroom-home-sheet,
+.classroom-root .classroom-home-main-card .classroom-home-hero-glow {
+  display: none;
+}
+
+.classroom-root .classroom-home-main-card .classroom-home-row-meta {
+  color: var(--classroom-meta-text);
+}
+
+
+.classroom-root .classroom-home-message-card {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 22px;
+  border-radius: 24px;
+  background: var(--home-white);
+  box-shadow: var(--home-card-shadow);
+}
+
+.classroom-root .classroom-home-message-card .classroom-home-rule {
+  margin: 0;
+}
+
+.classroom-root .classroom-home-message-card .classroom-home-stack {
+  padding: 0;
+}
+
+.classroom-root .classroom-home-message-card .classroom-home-message {
+  box-shadow: inset 0 0 0 1px var(--home-hair-08);
+}
+
+.classroom-root .classroom-home-badge {
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-home > :not(.classroom-home-week) {
+  animation: home-settle 0.38s var(--home-ease) both;
+}
+
+.classroom-root .classroom-home > :nth-child(2) {
+  animation-delay: 35ms;
+}
+
+.classroom-root .classroom-home > :nth-child(3) {
+  animation-delay: 70ms;
+}
+
+@keyframes home-settle {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .classroom-root .classroom-home > :not(.classroom-home-week) {
+    animation: none;
+  }
+}
+
+@container classroom-home (max-width: 899.98px) {
+  .classroom-root .classroom-home-masthead {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .classroom-root .classroom-home-top-tools {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .classroom-root .classroom-home-top {
+    padding: 23px 20px;
+    border-radius: 28px;
+  }
+
+  .classroom-root .classroom-home-title {
+    font-size: clamp(38px, 10vw, 52px);
+  }
+
+  .classroom-root .classroom-home-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Two per row; only a lone last pill takes the whole row. */
+  .classroom-root .classroom-home-actions > :last-child:nth-child(odd) {
+    grid-column: span 2;
+  }
+
+  .classroom-root .classroom-home-main-card {
+    padding: 20px;
+  }
+}
+
+.classroom-root .classroom-home-inbox-pill > span {
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: var(--lsatu-action-on-dark);
+  color: var(--lsatu-action-ink);
+  font: 600 11px var(--home-mono);
+}
+
+html.dark .classroom-root .classroom-home-top {
+  background: linear-gradient(
+    115deg,
+    var(--home-v3-panel-a),
+    var(--home-v3-panel-b) 55%,
+    var(--home-v3-panel-c)
+  );
+}
+
+html.dark .classroom-root .classroom-home-title,
+html.dark .classroom-root .classroom-home-test-days strong {
+  color: var(--home-v3-ink);
+}
+
+html.dark .classroom-root .classroom-home-eyebrow,
+html.dark .classroom-root .classroom-home-subtitle,
+html.dark .classroom-root .classroom-home-stat span {
+  color: var(--home-v3-warm-muted);
+}
+
+html.dark .classroom-root .classroom-home-next-session-line {
+  color: var(--home-v3-ink);
+}
+
+html.dark .classroom-root .classroom-home-main-card {
+  background: var(--home-v3-taupe);
+}
+
+html.dark .classroom-root .classroom-home-main-card .classroom-home-hero-heading h2,
+html.dark .classroom-root .classroom-home-main-card .classroom-home-row {
+  color: var(--home-v3-ink);
+}
+
+html.dark .classroom-root .classroom-home-main-card .classroom-home-hero-meta,
+html.dark .classroom-root .classroom-home-main-card .classroom-home-hero-prose,
+html.dark .classroom-root .classroom-home-main-card .classroom-home-row-meta {
+  color: #babcb5;
+}
+
+html.dark .classroom-root .classroom-home-main-card .classroom-home-row-wrap {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+html.dark .classroom-root .classroom-home-main-card .classroom-home-row-wrap:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* ── Fit to the screen ─────────────────────────────────────────────────── */
+
+/* Home sizes itself from the window so a student with homework sees the
+   greeting, what's due, Continue, the quick starts, Assigned work, the latest
+   message and the next seven days on one screen at 1536x695 (Windows' default
+   125% on a 1080p laptop). Every value is a clamp: a floor for small laptops,
+   a cap for big monitors, the window's height in between. No step changes.
+   On a shorter window the page scrolls from the bottom up, so Next seven days
+   is the first thing to leave the screen and the greeting is the last. */
+.classroom-root.classroom-root-home .classroom-column {
+  max-width: clamp(1260px, 74vw, 1560px);
+  padding: clamp(12px, 2.4vh, 30px) clamp(24px, 3vw, 44px) clamp(24px, 5vh, 56px);
+}
+
+.classroom-root .classroom-home {
+  gap: clamp(10px, 1.6vh, 22px);
+}
+
+.classroom-root .classroom-home .classroom-home-top {
+  padding: clamp(14px, 2.4vh, 36px) clamp(22px, 2.6vw, 40px);
+}
+
+.classroom-root .classroom-home .classroom-home-title {
+  font-size: clamp(32px, min(5cqi, 6.2vh), 60px);
+  margin-top: clamp(6px, 1.4vh, 14px);
+  margin-bottom: clamp(6px, 1.2vh, 12px);
+}
+
+.classroom-root .classroom-home .classroom-home-top-tools {
+  gap: clamp(8px, 1.4vh, 12px);
+}
+
+.classroom-root .classroom-home .classroom-home-action-continue {
+  min-height: clamp(64px, 11vh, 112px);
+  padding: clamp(10px, 1.8vh, 18px) 20px;
+}
+
+.classroom-root .classroom-home .classroom-home-main-card {
+  padding: clamp(14px, 2.6vh, 26px) clamp(18px, 1.8vw, 26px);
+}
+
+.classroom-root .classroom-home .classroom-home-message-card {
+  gap: clamp(8px, 1.4vh, 12px);
+  padding: clamp(10px, 1.8vh, 18px) 22px;
+}
+
+.classroom-root .classroom-home .classroom-home-message {
+  padding: clamp(8px, 1.4vh, 14px) 14px;
+}
+
+.classroom-root .classroom-home .classroom-home-week {
+  margin-top: 0;
+  padding-bottom: 0;
+  gap: clamp(8px, 1.4vh, 12px);
+}
+
+.classroom-root .classroom-home .classroom-home-day {
+  padding: clamp(8px, 1.4vh, 13px) 13px clamp(9px, 1.6vh, 15px);
+}
+
+/* The name never breaks across lines ("Joshua / Fisseha"); if the greeting is
+   too long, the whole name moves to the next line together. */
+.classroom-root .classroom-home .classroom-home-title em {
+  white-space: nowrap;
+}
+
+/* The greeting and its tools stayed side by side only above 900px of column,
+   which a 1280px laptop with the rail open (about 880px) never reached, so the
+   card stacked and doubled in height. Side by side holds down to 760px now. */
+@container classroom-home (max-width: 899.98px) {
+  .classroom-root .classroom-home .classroom-home-masthead {
+    grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+    gap: 24px;
+  }
+
+  .classroom-root .classroom-home .classroom-home-top-tools {
+    width: auto;
+  }
+}
+
+@container classroom-home (max-width: 759.98px) {
+  .classroom-root .classroom-home .classroom-home-masthead {
+    grid-template-columns: 1fr;
+  }
+
+  .classroom-root .classroom-home .classroom-home-top-tools {
+    width: 100%;
+  }
+}
+
+/* Assigned work and the latest message share one row, approved 2026-09-25.
+   Stacked, a student with an overdue item, a second assignment and a message
+   ran to 872px at 1536x695 even after the spacing above; side by side it
+   ends at 672. Either card alone takes the full row. Below a 760px column
+   everything stacks again. */
+.classroom-root .classroom-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.classroom-root .classroom-home > * {
+  grid-column: 1 / -1;
+}
+
+.classroom-root .classroom-home > .classroom-home-main-card:has(~ .classroom-home-message-card) {
+  grid-column: 1;
+}
+
+.classroom-root .classroom-home > .classroom-home-main-card ~ .classroom-home-message-card {
+  grid-column: 2;
+}
+
+/* The assigned rows sat in a narrow island in the middle of the card. */
+.classroom-root .classroom-home .classroom-home-main-card .classroom-home-main-content {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+/* The greeting's tools column gets the wider share so the four quick starts
+   (Smart Drill, Timed section, Inbox, Book a session) sit on one row instead
+   of leaving Book a session alone on a second one. */
+.classroom-root .classroom-home .classroom-home-masthead {
+  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+}
+
+.classroom-root .classroom-home .classroom-home-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 8px;
+}
+
+.classroom-root .classroom-home .classroom-home-actions .classroom-home-action {
+  justify-content: center;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+@container classroom-home (max-width: 759.98px) {
+  /* .classroom-home is the container, so it cannot query itself; its
+     children span both columns instead, which stacks them. */
+  .classroom-root .classroom-home > .classroom-home-main-card:has(~ .classroom-home-message-card),
+  .classroom-root .classroom-home > .classroom-home-main-card ~ .classroom-home-message-card {
+    grid-column: 1 / -1;
+  }
+
+  /* This must follow the wide masthead rule above. At narrow widths its
+     360px tools minimum otherwise squeezes the greeting into a sliver. */
+  .classroom-root .classroom-home .classroom-home-masthead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .classroom-root .classroom-home .classroom-home-top-tools,
+  .classroom-root .classroom-home .classroom-home-finderbar {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@container classroom-home (max-width: 420px) {
+  .classroom-root .classroom-home .classroom-home-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .classroom-root .classroom-home .classroom-home-actions .classroom-home-action {
+    min-width: 0;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .classroom-root .classroom-home .classroom-home-title em {
+    white-space: normal;
+  }
+
+  .classroom-root .classroom-home .classroom-home-action-continue {
+    gap: 8px;
+    padding-inline: 12px;
+  }
+
+  .classroom-root .classroom-home .classroom-home-continue-arrow {
+    width: 38px;
+    height: 38px;
+  }
+}

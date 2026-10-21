@@ -1,0 +1,2854 @@
+{
+ "slug": "read-recall-colour-pt105-s1",
+ "title": "Read, Recall, Colour \u00b7 PT105 Section 1",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT105.S1",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT105_S1_Q1",
+   "prompt": "Tennyson's line of poetry \"nature, red in tooth and claw\" is misconstrued by many evolutionists as a reference to Darwin's theory of evolution. The poem in which the line appears was published in 1850, but Darwin kept his theory closely held until publishing it in 1859. In addition, in view of the context provided by the rest of the poem, the line was clearly meant to refer to the dominant biological theory of the early nineteenth century, which was a creationist theory.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The line of poetry is Tennyson's. \u00b7 The line reads nature, red in tooth and claw. \u00b7 The line is misconstrued. \u00b7 Evolutionists are the ones who misconstrue it. \u00b7 Many of them do so. \u00b7 They take it as a reference to a theory of evolution. \u00b7 The theory is Darwin's. (2) This is about the poem containing the line. \u00b7 The poem was published in 1850. \u00b7 This is a contrast with what came before it. \u00b7 Darwin kept his theory closely held. \u00b7 He held it until he published it. \u00b7 He published it in 1859. (3) This is an additional point. \u00b7 It rests on context. \u00b7 The context comes from the poem. \u00b7 What provides it is the rest of the poem. (4) The line was meant to refer to a theory. \u00b7 This is clearly so. \u00b7 The theory was a biological one. \u00b7 It was the dominant theory. \u00b7 It was dominant in the early nineteenth century. \u00b7 That theory was a creationist one.",
+   "category": "Conclusion",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Tennyson's line of poetry \"nature, red in tooth and claw\" is misconstrued by many evolutionists as a reference to Darwin's theory of evolution.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The line of poetry is Tennyson's."
+      },
+      {
+       "n": 2,
+       "text": "The line reads nature, red in tooth and claw."
+      },
+      {
+       "n": 3,
+       "text": "The line is misconstrued."
+      },
+      {
+       "n": 4,
+       "text": "Evolutionists are the ones who misconstrue it."
+      },
+      {
+       "n": 5,
+       "text": "Many of them do so."
+      },
+      {
+       "n": 6,
+       "text": "They take it as a reference to a theory of evolution."
+      },
+      {
+       "n": 7,
+       "text": "The theory is Darwin's."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The poem in which the line appears was published in 1850, but Darwin kept his theory closely held until publishing it in 1859.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the poem containing the line."
+      },
+      {
+       "n": 2,
+       "text": "The poem was published in 1850."
+      },
+      {
+       "n": 3,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 4,
+       "text": "Darwin kept his theory closely held."
+      },
+      {
+       "n": 5,
+       "text": "He held it until he published it."
+      },
+      {
+       "n": 6,
+       "text": "He published it in 1859."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "In addition, in view of the context provided by the rest of the poem,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "It rests on context."
+      },
+      {
+       "n": 3,
+       "text": "The context comes from the poem."
+      },
+      {
+       "n": 4,
+       "text": "What provides it is the rest of the poem."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "the line was clearly meant to refer to the dominant biological theory of the early nineteenth century, which was a creationist theory.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The line was meant to refer to a theory."
+      },
+      {
+       "n": 2,
+       "text": "This is clearly so."
+      },
+      {
+       "n": 3,
+       "text": "The theory was a biological one."
+      },
+      {
+       "n": 4,
+       "text": "It was the dominant theory."
+      },
+      {
+       "n": 5,
+       "text": "It was dominant in the early nineteenth century."
+      },
+      {
+       "n": 6,
+       "text": "That theory was a creationist one."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Tennyson had early access to Darwin's unpublished theory?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q1",
+     "qnum": 1,
+     "question_type": "Conclusion",
+     "correct_answer": "E"
+    },
+    {
+     "citation": "PT105.S1.Q2",
+     "qnum": 2,
+     "question_type": "Argument Part",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT105_S1_Q3",
+   "prompt": "Space programs have recently suffered several setbacks with respect to their large projects, and much money has been lost. Consequently, these grand projects should be abandoned in favor of several small ones.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Space programs have suffered setbacks. \u00b7 There were several setbacks. \u00b7 The setbacks happened recently. \u00b7 The setbacks concerned their projects. \u00b7 Those projects are large ones. \u00b7 Money has been lost. \u00b7 The amount lost is much. (2) This is the conclusion. \u00b7 The projects should be abandoned. \u00b7 Those projects are the grand ones. \u00b7 Something is favored instead. \u00b7 Several projects would take their place. \u00b7 The replacements are small ones.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Space programs have recently suffered several setbacks with respect to their large projects, and much money has been lost.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Space programs have suffered setbacks."
+      },
+      {
+       "n": 2,
+       "text": "There were several setbacks."
+      },
+      {
+       "n": 3,
+       "text": "The setbacks happened recently."
+      },
+      {
+       "n": 4,
+       "text": "The setbacks concerned their projects."
+      },
+      {
+       "n": 5,
+       "text": "Those projects are large ones."
+      },
+      {
+       "n": 6,
+       "text": "Money has been lost."
+      },
+      {
+       "n": 7,
+       "text": "The amount lost is much."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Consequently, these grand projects should be abandoned in favor of several small ones.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The projects should be abandoned."
+      },
+      {
+       "n": 3,
+       "text": "Those projects are the grand ones."
+      },
+      {
+       "n": 4,
+       "text": "Something is favored instead."
+      },
+      {
+       "n": 5,
+       "text": "Several projects would take their place."
+      },
+      {
+       "n": 6,
+       "text": "The replacements are small ones."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because things get hard that doesn't mean we should give up and go home? What if we don't care about how much money is lost? What if we're not quitters?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q3",
+     "qnum": 3,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT105_S1_Q4",
+   "prompt": "In an experiment testing whether hyperactivity is due to a brain abnormality, the brain activity of 25 hyperactive adults was compared to the brain activity of 25 adults who were not hyperactive. The tests revealed that the hyperactive adults had much less brain activity in the premotor cortex, a region of the brain believed to control action, than did the nonhyperactive adults. The experimenters concluded that diminished activity in the premotor cortex is one cause of hyperactivity.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There was an experiment. \u00b7 The experiment tested a question. \u00b7 The question was whether hyperactivity has a cause. \u00b7 The cause proposed is a brain abnormality. (2) Brain activity was compared. \u00b7 One group was hyperactive adults. \u00b7 That group had 25 people. \u00b7 The comparison is with another group of adults. \u00b7 That second group also had 25 people. \u00b7 Those adults were not hyperactive. (3) The tests revealed something. \u00b7 The hyperactive adults had brain activity. \u00b7 Their brain activity was less. \u00b7 It was much less. \u00b7 The activity was in the premotor cortex. (4) This is about the premotor cortex. \u00b7 The premotor cortex is a region of the brain. \u00b7 It is believed to control action. \u00b7 The comparison is with the nonhyperactive adults. (5) This is the conclusion. \u00b7 The experimenters drew it. \u00b7 Activity in the premotor cortex can be diminished. \u00b7 That diminished activity causes hyperactivity. \u00b7 It is one cause among others.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In an experiment testing whether hyperactivity is due to a brain abnormality,",
+     "details": [
+      {
+       "n": 1,
+       "text": "There was an experiment."
+      },
+      {
+       "n": 2,
+       "text": "The experiment tested a question."
+      },
+      {
+       "n": 3,
+       "text": "The question was whether hyperactivity has a cause."
+      },
+      {
+       "n": 4,
+       "text": "The cause proposed is a brain abnormality."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "the brain activity of 25 hyperactive adults was compared to the brain activity of 25 adults who were not hyperactive.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Brain activity was compared."
+      },
+      {
+       "n": 2,
+       "text": "One group was hyperactive adults."
+      },
+      {
+       "n": 3,
+       "text": "That group had 25 people."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with another group of adults."
+      },
+      {
+       "n": 5,
+       "text": "That second group also had 25 people."
+      },
+      {
+       "n": 6,
+       "text": "Those adults were not hyperactive."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The tests revealed that the hyperactive adults had much less brain activity in the premotor cortex,",
+     "details": [
+      {
+       "n": 1,
+       "text": "The tests revealed something."
+      },
+      {
+       "n": 2,
+       "text": "The hyperactive adults had brain activity."
+      },
+      {
+       "n": 3,
+       "text": "Their brain activity was less."
+      },
+      {
+       "n": 4,
+       "text": "It was much less."
+      },
+      {
+       "n": 5,
+       "text": "The activity was in the premotor cortex."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "a region of the brain believed to control action, than did the nonhyperactive adults.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the premotor cortex."
+      },
+      {
+       "n": 2,
+       "text": "The premotor cortex is a region of the brain."
+      },
+      {
+       "n": 3,
+       "text": "It is believed to control action."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with the nonhyperactive adults."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "The experimenters concluded that diminished activity in the premotor cortex is one cause of hyperactivity.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The experimenters drew it."
+      },
+      {
+       "n": 3,
+       "text": "Activity in the premotor cortex can be diminished."
+      },
+      {
+       "n": 4,
+       "text": "That diminished activity causes hyperactivity."
+      },
+      {
+       "n": 5,
+       "text": "It is one cause among others."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if hyperactivity caused decreased activity in the premotor cortex? What if it's a total coincidence? What if all hyperactive adults eat tons of sugar, and that's what causes both the hyperactivity and the decreased premotor activity?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q4",
+     "qnum": 4,
+     "question_type": "Weaken",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT105_S1_Q5",
+   "prompt": "Large discount chains can make a profit even while offering low prices, because they buy goods in large quantities at favorable cost. This creates a problem for small retailers. If they try to retain their customers by lowering prices to match those of large discount chains, the result is a lower profit margin. But small retailers can retain their customer base without lowering prices if they offer exceptional service. Hence, small retailers that are forced to compete with large discount chains must offer exceptional service in order to retain their level of profitability.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Discount chains can make a profit. \u00b7 Those chains are large ones. \u00b7 They make a profit while offering prices. \u00b7 Those prices are low. \u00b7 This is the reason for it. \u00b7 They buy goods in large quantities. \u00b7 The cost they buy at is favorable. (2) This is about what came before it. \u00b7 It creates a problem. \u00b7 The problem is for retailers. \u00b7 Those retailers are small ones. (3) This is a conditional statement. \u00b7 Small retailers might try to retain their customers. \u00b7 The way they would do that is by lowering prices. \u00b7 The prices would match those of the large discount chains. \u00b7 The result would be a lower profit margin. (4) This is a contrast with what came before it. \u00b7 Small retailers can retain their customer base. \u00b7 They can do it without lowering prices. \u00b7 This holds if they offer service. \u00b7 The service is exceptional. (5) This is the conclusion. \u00b7 It is about small retailers. \u00b7 Those retailers are forced to compete. \u00b7 What they compete with is large discount chains. \u00b7 They must offer exceptional service. \u00b7 The purpose is to retain their profitability. \u00b7 What is retained is their level of it.",
+   "category": "Gap Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Large discount chains can make a profit even while offering low prices, because they buy goods in large quantities at favorable cost.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Discount chains can make a profit."
+      },
+      {
+       "n": 2,
+       "text": "Those chains are large ones."
+      },
+      {
+       "n": 3,
+       "text": "They make a profit while offering prices."
+      },
+      {
+       "n": 4,
+       "text": "Those prices are low."
+      },
+      {
+       "n": 5,
+       "text": "This is the reason for it."
+      },
+      {
+       "n": 6,
+       "text": "They buy goods in large quantities."
+      },
+      {
+       "n": 7,
+       "text": "The cost they buy at is favorable."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This creates a problem for small retailers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about what came before it."
+      },
+      {
+       "n": 2,
+       "text": "It creates a problem."
+      },
+      {
+       "n": 3,
+       "text": "The problem is for retailers."
+      },
+      {
+       "n": 4,
+       "text": "Those retailers are small ones."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "If they try to retain their customers by lowering prices to match those of large discount chains, the result is a lower profit margin.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a conditional statement."
+      },
+      {
+       "n": 2,
+       "text": "Small retailers might try to retain their customers."
+      },
+      {
+       "n": 3,
+       "text": "The way they would do that is by lowering prices."
+      },
+      {
+       "n": 4,
+       "text": "The prices would match those of the large discount chains."
+      },
+      {
+       "n": 5,
+       "text": "The result would be a lower profit margin."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "But small retailers can retain their customer base without lowering prices if they offer exceptional service.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 2,
+       "text": "Small retailers can retain their customer base."
+      },
+      {
+       "n": 3,
+       "text": "They can do it without lowering prices."
+      },
+      {
+       "n": 4,
+       "text": "This holds if they offer service."
+      },
+      {
+       "n": 5,
+       "text": "The service is exceptional."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Hence, small retailers that are forced to compete with large discount chains must offer exceptional service in order to retain their level of profitability.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about small retailers."
+      },
+      {
+       "n": 3,
+       "text": "Those retailers are forced to compete."
+      },
+      {
+       "n": 4,
+       "text": "What they compete with is large discount chains."
+      },
+      {
+       "n": 5,
+       "text": "They must offer exceptional service."
+      },
+      {
+       "n": 6,
+       "text": "The purpose is to retain their profitability."
+      },
+      {
+       "n": 7,
+       "text": "What is retained is their level of it."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there are other ways to retain customers without offering exceptional service, such as cool branding or corporate values alignment?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q5",
+     "qnum": 5,
+     "question_type": "Gap Flaw",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT105_S1_Q6",
+   "prompt": "We should do what will make others more virtuous and not do what will make others less virtuous. It is an irony of human existence that praise makes those who are less virtuous more virtuous, while it makes those who are more virtuous less virtuous. And, of course, none except the more virtuous deserve praise.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) We should do certain things. \u00b7 What we should do is what makes others more virtuous. \u00b7 We should also refrain from certain things. \u00b7 What we should not do is what makes others less virtuous. (2) This is called an irony. \u00b7 The irony is one of human existence. \u00b7 Praise has an effect on people. \u00b7 Praise makes the less virtuous more virtuous. \u00b7 This is contrasted with another effect. \u00b7 Praise makes the more virtuous less virtuous. (3) This is an additional point. \u00b7 It is said to be obvious. \u00b7 Some people deserve praise. \u00b7 Only the more virtuous deserve it. \u00b7 No one else deserves it.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "We should do what will make others more virtuous and not do what will make others less virtuous.",
+     "details": [
+      {
+       "n": 1,
+       "text": "We should do certain things."
+      },
+      {
+       "n": 2,
+       "text": "What we should do is what makes others more virtuous."
+      },
+      {
+       "n": 3,
+       "text": "We should also refrain from certain things."
+      },
+      {
+       "n": 4,
+       "text": "What we should not do is what makes others less virtuous."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "It is an irony of human existence that praise makes those who are less virtuous more virtuous, while it makes those who are more virtuous less virtuous.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is called an irony."
+      },
+      {
+       "n": 2,
+       "text": "The irony is one of human existence."
+      },
+      {
+       "n": 3,
+       "text": "Praise has an effect on people."
+      },
+      {
+       "n": 4,
+       "text": "Praise makes the less virtuous more virtuous."
+      },
+      {
+       "n": 5,
+       "text": "This is contrasted with another effect."
+      },
+      {
+       "n": 6,
+       "text": "Praise makes the more virtuous less virtuous."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "And, of course, none except the more virtuous deserve praise.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "It is said to be obvious."
+      },
+      {
+       "n": 3,
+       "text": "Some people deserve praise."
+      },
+      {
+       "n": 4,
+       "text": "Only the more virtuous deserve it."
+      },
+      {
+       "n": 5,
+       "text": "No one else deserves it."
+      }
+     ]
+    }
+   ],
+   "the_read": "We should not praise those most deserving of praise.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q6",
+     "qnum": 6,
+     "question_type": "Inference",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT105_S1_Q7",
+   "prompt": "Generic drugs contain exactly the same active ingredients as their brand-name counterparts, but usually cost much less to develop, produce, and market. So, generic drugs are just as effective as their brand-name counterparts, but cost considerably less.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Generic drugs contain active ingredients. \u00b7 Those ingredients are the same as the ones in brand-name drugs. \u00b7 They are exactly the same. \u00b7 This is a contrast with what came before it. \u00b7 Generic drugs cost less than the brand-name ones. \u00b7 They cost much less. \u00b7 This is usually so. \u00b7 The costs are for developing, producing, and marketing. (2) This is the conclusion. \u00b7 Generic drugs are effective. \u00b7 They are just as effective as the brand-name ones. \u00b7 This is a contrast within the sentence. \u00b7 Generic drugs cost less. \u00b7 The amount less is considerable.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Generic drugs contain exactly the same active ingredients as their brand-name counterparts, but usually cost much less to develop, produce, and market.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Generic drugs contain active ingredients."
+      },
+      {
+       "n": 2,
+       "text": "Those ingredients are the same as the ones in brand-name drugs."
+      },
+      {
+       "n": 3,
+       "text": "They are exactly the same."
+      },
+      {
+       "n": 4,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 5,
+       "text": "Generic drugs cost less than the brand-name ones."
+      },
+      {
+       "n": 6,
+       "text": "They cost much less."
+      },
+      {
+       "n": 7,
+       "text": "This is usually so."
+      },
+      {
+       "n": 8,
+       "text": "The costs are for developing, producing, and marketing."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "So, generic drugs are just as effective as their brand-name counterparts, but cost considerably less.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Generic drugs are effective."
+      },
+      {
+       "n": 3,
+       "text": "They are just as effective as the brand-name ones."
+      },
+      {
+       "n": 4,
+       "text": "This is a contrast within the sentence."
+      },
+      {
+       "n": 5,
+       "text": "Generic drugs cost less."
+      },
+      {
+       "n": 6,
+       "text": "The amount less is considerable."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if generic drugs are marked up to consumers so that they cost the same as name brand drugs? What if they have the same ingredients but in different quantities and concentrations, so they are not as effective?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q7",
+     "qnum": 7,
+     "question_type": "Strengthen",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT105_S1_Q8",
+   "prompt": "Economist: In the interaction between producers and consumers, the only obligation that all parties have is to act in the best interests of their own side. And distribution of information about product defects is in the best interests of the consumer. So consumers are always obligated to report product defects they discover, while producers are never obligated to reveal them.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The economist is speaking. \u00b7 This is about an interaction. \u00b7 The interaction is between producers and consumers. \u00b7 All parties have an obligation. \u00b7 That is the only obligation they have. \u00b7 The obligation is to act in the best interests of a side. \u00b7 The side is their own. (2) This is an additional point. \u00b7 It is about distributing information. \u00b7 The information concerns product defects. \u00b7 Distributing it serves someone's best interests. \u00b7 The interests are the consumer's. (3) This is the conclusion. \u00b7 Consumers are obligated to report product defects. \u00b7 The defects are ones they discover. \u00b7 They are always obligated to do so. \u00b7 This is contrasted with the producers. \u00b7 Producers are not obligated to reveal defects. \u00b7 They are never obligated to.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Economist: In the interaction between producers and consumers, the only obligation that all parties have is to act in the best interests of their own side.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The economist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "This is about an interaction."
+      },
+      {
+       "n": 3,
+       "text": "The interaction is between producers and consumers."
+      },
+      {
+       "n": 4,
+       "text": "All parties have an obligation."
+      },
+      {
+       "n": 5,
+       "text": "That is the only obligation they have."
+      },
+      {
+       "n": 6,
+       "text": "The obligation is to act in the best interests of a side."
+      },
+      {
+       "n": 7,
+       "text": "The side is their own."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "And distribution of information about product defects is in the best interests of the consumer.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "It is about distributing information."
+      },
+      {
+       "n": 3,
+       "text": "The information concerns product defects."
+      },
+      {
+       "n": 4,
+       "text": "Distributing it serves someone's best interests."
+      },
+      {
+       "n": 5,
+       "text": "The interests are the consumer's."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "So consumers are always obligated to report product defects they discover, while producers are never obligated to reveal them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Consumers are obligated to report product defects."
+      },
+      {
+       "n": 3,
+       "text": "The defects are ones they discover."
+      },
+      {
+       "n": 4,
+       "text": "They are always obligated to do so."
+      },
+      {
+       "n": 5,
+       "text": "This is contrasted with the producers."
+      },
+      {
+       "n": 6,
+       "text": "Producers are not obligated to reveal defects."
+      },
+      {
+       "n": 7,
+       "text": "They are never obligated to."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if it is in the best interest of producers to reveal product defect information?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q8",
+     "qnum": 8,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT105_S1_Q9",
+   "prompt": "All potatoes naturally contain solanine, which is poisonous in large quantities. Domesticated potatoes contain only very small amounts of solanine, but many wild potatoes contain poisonous levels of solanine. Since most of the solanine in potatoes is concentrated in the skin, however, peeling wild potatoes makes them at least as safe to eat as unpeeled domesticated potatoes of the same size.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Solanine is contained in potatoes. \u00b7 All potatoes contain it. \u00b7 They contain it naturally. \u00b7 The solanine is poisonous. \u00b7 It is poisonous in large quantities. (2) Domesticated potatoes contain solanine. \u00b7 The amounts they contain are small. \u00b7 The amounts are only very small. \u00b7 This is a contrast with what came before it. \u00b7 Wild potatoes contain solanine. \u00b7 Many wild potatoes do. \u00b7 The levels in them are poisonous. (3) This gives a reason for what follows. \u00b7 It is also a contrast with what came before it. \u00b7 Solanine in potatoes is concentrated. \u00b7 Most of it is concentrated. \u00b7 The place it is concentrated is the skin. (4) Peeling wild potatoes makes them safe to eat. \u00b7 They become at least as safe as another kind. \u00b7 The comparison is with domesticated potatoes. \u00b7 Those domesticated potatoes are unpeeled. \u00b7 The potatoes compared are the same size.",
+   "category": "Sufficient Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "All potatoes naturally contain solanine, which is poisonous in large quantities.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Solanine is contained in potatoes."
+      },
+      {
+       "n": 2,
+       "text": "All potatoes contain it."
+      },
+      {
+       "n": 3,
+       "text": "They contain it naturally."
+      },
+      {
+       "n": 4,
+       "text": "The solanine is poisonous."
+      },
+      {
+       "n": 5,
+       "text": "It is poisonous in large quantities."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Domesticated potatoes contain only very small amounts of solanine, but many wild potatoes contain poisonous levels of solanine.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Domesticated potatoes contain solanine."
+      },
+      {
+       "n": 2,
+       "text": "The amounts they contain are small."
+      },
+      {
+       "n": 3,
+       "text": "The amounts are only very small."
+      },
+      {
+       "n": 4,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 5,
+       "text": "Wild potatoes contain solanine."
+      },
+      {
+       "n": 6,
+       "text": "Many wild potatoes do."
+      },
+      {
+       "n": 7,
+       "text": "The levels in them are poisonous."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Since most of the solanine in potatoes is concentrated in the skin, however,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason for what follows."
+      },
+      {
+       "n": 2,
+       "text": "It is also a contrast with what came before it."
+      },
+      {
+       "n": 3,
+       "text": "Solanine in potatoes is concentrated."
+      },
+      {
+       "n": 4,
+       "text": "Most of it is concentrated."
+      },
+      {
+       "n": 5,
+       "text": "The place it is concentrated is the skin."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "peeling wild potatoes makes them at least as safe to eat as unpeeled domesticated potatoes of the same size.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Peeling wild potatoes makes them safe to eat."
+      },
+      {
+       "n": 2,
+       "text": "They become at least as safe as another kind."
+      },
+      {
+       "n": 3,
+       "text": "The comparison is with domesticated potatoes."
+      },
+      {
+       "n": 4,
+       "text": "Those domesticated potatoes are unpeeled."
+      },
+      {
+       "n": 5,
+       "text": "The potatoes compared are the same size."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if a peeled wild potato still has more solanine than a similarly sized unpeeled domesticated potato?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q9",
+     "qnum": 9,
+     "question_type": "Sufficient Assumption",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT105_S1_Q10",
+   "prompt": "The consequences of surgical errors can be devastating, and no one would want to risk surgery unless it was performed by someone highly competent to perform surgery. General surgeons have special training and expertise that make them extremely competent to perform surgery. Therefore, surgery at the hands of anyone other than a general surgeon involves highly undesirable risks.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Surgical errors have consequences. \u00b7 Those consequences can be devastating. \u00b7 No one would want to risk surgery. \u00b7 There is an exception to that. \u00b7 The exception is surgery performed by a competent person. \u00b7 That person is highly competent to perform surgery. (2) General surgeons have training. \u00b7 The training is special. \u00b7 They also have expertise. \u00b7 Their training and expertise make them competent. \u00b7 They are extremely competent. \u00b7 What they are competent to do is perform surgery. (3) This is the conclusion. \u00b7 Some surgery involves risks. \u00b7 The risks are undesirable. \u00b7 They are highly undesirable. \u00b7 The surgery is at the hands of anyone other than a general surgeon.",
+   "category": "Gap Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The consequences of surgical errors can be devastating, and no one would want to risk surgery unless it was performed by someone highly competent to perform surgery.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Surgical errors have consequences."
+      },
+      {
+       "n": 2,
+       "text": "Those consequences can be devastating."
+      },
+      {
+       "n": 3,
+       "text": "No one would want to risk surgery."
+      },
+      {
+       "n": 4,
+       "text": "There is an exception to that."
+      },
+      {
+       "n": 5,
+       "text": "The exception is surgery performed by a competent person."
+      },
+      {
+       "n": 6,
+       "text": "That person is highly competent to perform surgery."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "General surgeons have special training and expertise that make them extremely competent to perform surgery.",
+     "details": [
+      {
+       "n": 1,
+       "text": "General surgeons have training."
+      },
+      {
+       "n": 2,
+       "text": "The training is special."
+      },
+      {
+       "n": 3,
+       "text": "They also have expertise."
+      },
+      {
+       "n": 4,
+       "text": "Their training and expertise make them competent."
+      },
+      {
+       "n": 5,
+       "text": "They are extremely competent."
+      },
+      {
+       "n": 6,
+       "text": "What they are competent to do is perform surgery."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Therefore, surgery at the hands of anyone other than a general surgeon involves highly undesirable risks.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Some surgery involves risks."
+      },
+      {
+       "n": 3,
+       "text": "The risks are undesirable."
+      },
+      {
+       "n": 4,
+       "text": "They are highly undesirable."
+      },
+      {
+       "n": 5,
+       "text": "The surgery is at the hands of anyone other than a general surgeon."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if general surgeons are not the only competent surgeons?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q10",
+     "qnum": 10,
+     "question_type": "Gap Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT105_S1_Q11",
+   "prompt": "Although the concept of free will is essential to that of moral responsibility, its role in determining responsibility is not the same in all situations. We hold criminals morally responsible for the damage they cause, assuming that they freely chose their activities. But we do not hold someone who has a heart attack while driving morally responsible for the damage caused, if any, even when we have good reason to believe that the heart attack could have been prevented by eating different foods and that one's choice of diet is made freely.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This opens with a concession. \u00b7 Free will is a concept. \u00b7 It is essential to another concept. \u00b7 The other concept is moral responsibility. \u00b7 Free will has a role in determining responsibility. \u00b7 That role is not the same in all situations. (2) We hold criminals responsible. \u00b7 The responsibility is a moral one. \u00b7 What we hold them responsible for is damage. \u00b7 The damage is what they cause. \u00b7 This rests on an assumption. \u00b7 The assumption is that they chose their activities freely. (3) This is a contrast with what came before it. \u00b7 We do not hold a certain person morally responsible. \u00b7 That person has a heart attack. \u00b7 The heart attack happens while the person is driving. \u00b7 What they are not held responsible for is the damage caused. \u00b7 There may not be any damage. (4) This holds even in a certain case. \u00b7 The case is one where we have reason to believe two things. \u00b7 Our reason is a good one. \u00b7 The first belief is that the heart attack could have been prevented. \u00b7 Eating different foods would have prevented it. \u00b7 The second belief is that a choice of diet is made freely.",
+   "category": "Argument Part",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Although the concept of free will is essential to that of moral responsibility, its role in determining responsibility is not the same in all situations.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This opens with a concession."
+      },
+      {
+       "n": 2,
+       "text": "Free will is a concept."
+      },
+      {
+       "n": 3,
+       "text": "It is essential to another concept."
+      },
+      {
+       "n": 4,
+       "text": "The other concept is moral responsibility."
+      },
+      {
+       "n": 5,
+       "text": "Free will has a role in determining responsibility."
+      },
+      {
+       "n": 6,
+       "text": "That role is not the same in all situations."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "We hold criminals morally responsible for the damage they cause, assuming that they freely chose their activities.",
+     "details": [
+      {
+       "n": 1,
+       "text": "We hold criminals responsible."
+      },
+      {
+       "n": 2,
+       "text": "The responsibility is a moral one."
+      },
+      {
+       "n": 3,
+       "text": "What we hold them responsible for is damage."
+      },
+      {
+       "n": 4,
+       "text": "The damage is what they cause."
+      },
+      {
+       "n": 5,
+       "text": "This rests on an assumption."
+      },
+      {
+       "n": 6,
+       "text": "The assumption is that they chose their activities freely."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "But we do not hold someone who has a heart attack while driving morally responsible for the damage caused, if any,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 2,
+       "text": "We do not hold a certain person morally responsible."
+      },
+      {
+       "n": 3,
+       "text": "That person has a heart attack."
+      },
+      {
+       "n": 4,
+       "text": "The heart attack happens while the person is driving."
+      },
+      {
+       "n": 5,
+       "text": "What they are not held responsible for is the damage caused."
+      },
+      {
+       "n": 6,
+       "text": "There may not be any damage."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "even when we have good reason to believe that the heart attack could have been prevented by eating different foods and that one's choice of diet is made freely.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This holds even in a certain case."
+      },
+      {
+       "n": 2,
+       "text": "The case is one where we have reason to believe two things."
+      },
+      {
+       "n": 3,
+       "text": "Our reason is a good one."
+      },
+      {
+       "n": 4,
+       "text": "The first belief is that the heart attack could have been prevented."
+      },
+      {
+       "n": 5,
+       "text": "Eating different foods would have prevented it."
+      },
+      {
+       "n": 6,
+       "text": "The second belief is that a choice of diet is made freely."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we hold murderers and people who suffer heart attacks to different degrees of responsibility because of\u00a0something else\u00a0other than free will?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q11",
+     "qnum": 11,
+     "question_type": "Argument Part",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT105_S1_Q12",
+   "prompt": "Alice will volunteer to work on the hospital fund-raising drive only if her brother Bruce also volunteers and a majority of the others working on the drive promise to select Bruce to manage the drive. However, although Bruce is willing to volunteer, none of the others working on the drive will promise to select Bruce to manage the drive. Thus it is certain that Alice will not volunteer.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about whether Alice volunteers. \u00b7 What she would volunteer for is a fund-raising drive. \u00b7 The drive is the hospital's. \u00b7 She will volunteer only if two conditions hold. \u00b7 The first is that Bruce also volunteers. \u00b7 Bruce is her brother. \u00b7 The second is that others promise to select Bruce to manage the drive. \u00b7 Those promising must be a majority of the others working on the drive. (2) This is a contrast with what came before it. \u00b7 It grants one thing first. \u00b7 Bruce is willing to volunteer. \u00b7 None of the others will make the promise. \u00b7 Those others are working on the drive. \u00b7 The promise would be to select Bruce as manager of the drive. (3) This is the conclusion. \u00b7 Alice will not volunteer. \u00b7 This outcome is certain.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Alice will volunteer to work on the hospital fund-raising drive only if her brother Bruce also volunteers and a majority of the others working on the drive promise to select Bruce to manage the drive.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about whether Alice volunteers."
+      },
+      {
+       "n": 2,
+       "text": "What she would volunteer for is a fund-raising drive."
+      },
+      {
+       "n": 3,
+       "text": "The drive is the hospital's."
+      },
+      {
+       "n": 4,
+       "text": "She will volunteer only if two conditions hold."
+      },
+      {
+       "n": 5,
+       "text": "The first is that Bruce also volunteers."
+      },
+      {
+       "n": 6,
+       "text": "Bruce is her brother."
+      },
+      {
+       "n": 7,
+       "text": "The second is that others promise to select Bruce to manage the drive."
+      },
+      {
+       "n": 8,
+       "text": "Those promising must be a majority of the others working on the drive."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "However, although Bruce is willing to volunteer, none of the others working on the drive will promise to select Bruce to manage the drive.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 2,
+       "text": "It grants one thing first."
+      },
+      {
+       "n": 3,
+       "text": "Bruce is willing to volunteer."
+      },
+      {
+       "n": 4,
+       "text": "None of the others will make the promise."
+      },
+      {
+       "n": 5,
+       "text": "Those others are working on the drive."
+      },
+      {
+       "n": 6,
+       "text": "The promise would be to select Bruce as manager of the drive."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Thus it is certain that Alice will not volunteer.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Alice will not volunteer."
+      },
+      {
+       "n": 3,
+       "text": "This outcome is certain."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rules of conditional reasoning don't apply?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q12",
+     "qnum": 12,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT105_S1_Q13",
+   "prompt": "If an artist receives a public subsidy to support work on a specific project\u2014e.g., making a film\u2014and if this project then proves successful enough to allow the artist to repay the subsidy, is the artist then morally obliged to do so? The answer is clearly yes, since the money returned to the agency distributing the subsidies will be welcome as a source of support for other artists deserving of public subsidies.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is a conditional statement. \u00b7 An artist might receive a subsidy. \u00b7 The subsidy is a public one. \u00b7 The subsidy supports work on a project. \u00b7 The project is a specific one. \u00b7 An example is then given. (2) The example is making a film. \u00b7 The project might prove successful. \u00b7 It would be successful enough to allow repayment. \u00b7 The artist would repay the subsidy. \u00b7 A question is asked. \u00b7 The question is whether the artist is obliged to repay. \u00b7 The obligation would be a moral one. (3) The answer to the question is yes. \u00b7 This is clearly so. \u00b7 A reason is given for it. \u00b7 The money would be returned to an agency. \u00b7 That agency distributes the subsidies. \u00b7 The money will be welcome there. \u00b7 It would be a source of support for other artists. \u00b7 Those artists deserve public subsidies.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "If an artist receives a public subsidy to support work on a specific project\u2014e.g.,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a conditional statement."
+      },
+      {
+       "n": 2,
+       "text": "An artist might receive a subsidy."
+      },
+      {
+       "n": 3,
+       "text": "The subsidy is a public one."
+      },
+      {
+       "n": 4,
+       "text": "The subsidy supports work on a project."
+      },
+      {
+       "n": 5,
+       "text": "The project is a specific one."
+      },
+      {
+       "n": 6,
+       "text": "An example is then given."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "making a film\u2014and if this project then proves successful enough to allow the artist to repay the subsidy, is the artist then morally obliged to do so?",
+     "details": [
+      {
+       "n": 1,
+       "text": "The example is making a film."
+      },
+      {
+       "n": 2,
+       "text": "The project might prove successful."
+      },
+      {
+       "n": 3,
+       "text": "It would be successful enough to allow repayment."
+      },
+      {
+       "n": 4,
+       "text": "The artist would repay the subsidy."
+      },
+      {
+       "n": 5,
+       "text": "A question is asked."
+      },
+      {
+       "n": 6,
+       "text": "The question is whether the artist is obliged to repay."
+      },
+      {
+       "n": 7,
+       "text": "The obligation would be a moral one."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The answer is clearly yes, since the money returned to the agency distributing the subsidies will be welcome as a source of support for other artists deserving of public subsidies.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The answer to the question is yes."
+      },
+      {
+       "n": 2,
+       "text": "This is clearly so."
+      },
+      {
+       "n": 3,
+       "text": "A reason is given for it."
+      },
+      {
+       "n": 4,
+       "text": "The money would be returned to an agency."
+      },
+      {
+       "n": 5,
+       "text": "That agency distributes the subsidies."
+      },
+      {
+       "n": 6,
+       "text": "The money will be welcome there."
+      },
+      {
+       "n": 7,
+       "text": "It would be a source of support for other artists."
+      },
+      {
+       "n": 8,
+       "text": "Those artists deserve public subsidies."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if artists are selfish and don't care about helping other artists?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q13",
+     "qnum": 13,
+     "question_type": "Method",
+     "correct_answer": "B"
+    },
+    {
+     "citation": "PT105.S1.Q14",
+     "qnum": 14,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT105_S1_Q15",
+   "prompt": "Jessica: The budget surplus should be used only to increase government payments to those who are unemployed.\n\nMarcie: A better use of the money would be for a public works project that would create jobs.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Jessica is the first speaker. \u00b7 There is a budget surplus. \u00b7 The surplus should be used to increase payments. \u00b7 It should be used only for that. \u00b7 The payments come from the government. \u00b7 The payments go to those who are unemployed. (2) Marcie is the second speaker. \u00b7 She proposes a different use of the money. \u00b7 She says her use would be better. \u00b7 The money would go to a project. \u00b7 The project is a public works one. \u00b7 The project would create jobs.",
+   "category": "Controversy",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Jessica: The budget surplus should be used only to increase government payments to those who are unemployed.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Jessica is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "There is a budget surplus."
+      },
+      {
+       "n": 3,
+       "text": "The surplus should be used to increase payments."
+      },
+      {
+       "n": 4,
+       "text": "It should be used only for that."
+      },
+      {
+       "n": 5,
+       "text": "The payments come from the government."
+      },
+      {
+       "n": 6,
+       "text": "The payments go to those who are unemployed."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Marcie: A better use of the money would be for a public works project that would create jobs.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Marcie is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "She proposes a different use of the money."
+      },
+      {
+       "n": 3,
+       "text": "She says her use would be better."
+      },
+      {
+       "n": 4,
+       "text": "The money would go to a project."
+      },
+      {
+       "n": 5,
+       "text": "The project is a public works one."
+      },
+      {
+       "n": 6,
+       "text": "The project would create jobs."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether the budget surplus should be used for things other than unemployment benefits.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q15",
+     "qnum": 15,
+     "question_type": "Controversy",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT105_S1_Q16",
+   "prompt": "In a town containing a tourist attraction, hotel and restaurant revenues each increased more rapidly over the past year than did revenue from the sale of passes to the attraction, which are valid for a full year. This led those in charge of the attraction to hypothesize that visitors were illicitly selling or sharing the passes.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A town contains a tourist attraction. \u00b7 The hotel revenues increased. \u00b7 Restaurant revenues increased as well. \u00b7 Each of them increased more rapidly. \u00b7 The increases happened over the past year. \u00b7 The comparison is with revenue from selling passes to the attraction. \u00b7 The passes are valid for a full year. (2) This is about what came before it. \u00b7 It led some people to a hypothesis. \u00b7 Those people are in charge of the attraction. \u00b7 The hypothesis is about visitors. \u00b7 The visitors were selling or sharing the passes. \u00b7 They were doing so illicitly.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In a town containing a tourist attraction, hotel and restaurant revenues each increased more rapidly over the past year than did revenue from the sale of passes to the attraction, which are valid for a full year.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A town contains a tourist attraction."
+      },
+      {
+       "n": 2,
+       "text": "The hotel revenues increased."
+      },
+      {
+       "n": 3,
+       "text": "Restaurant revenues increased as well."
+      },
+      {
+       "n": 4,
+       "text": "Each of them increased more rapidly."
+      },
+      {
+       "n": 5,
+       "text": "The increases happened over the past year."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with revenue from selling passes to the attraction."
+      },
+      {
+       "n": 7,
+       "text": "The passes are valid for a full year."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This led those in charge of the attraction to hypothesize that visitors were illicitly selling or sharing the passes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about what came before it."
+      },
+      {
+       "n": 2,
+       "text": "It led some people to a hypothesis."
+      },
+      {
+       "n": 3,
+       "text": "Those people are in charge of the attraction."
+      },
+      {
+       "n": 4,
+       "text": "The hypothesis is about visitors."
+      },
+      {
+       "n": 5,
+       "text": "The visitors were selling or sharing the passes."
+      },
+      {
+       "n": 6,
+       "text": "They were doing so illicitly."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if people with passes to the attraction come back multiple times per year to visit the attraction?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q16",
+     "qnum": 16,
+     "question_type": "Weaken",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT105_S1_Q17",
+   "prompt": "The difference between manners and morals is that the former are necessarily social in nature whereas the latter are not necessarily social in nature. So the rules of etiquette do not apply when one is alone.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a difference between two things. \u00b7 The two things are manners and morals. \u00b7 Manners are social in nature. \u00b7 Manners are necessarily so. \u00b7 This is contrasted with morals. \u00b7 Morals are not necessarily social in nature. (2) This is the conclusion. \u00b7 There are rules of etiquette. \u00b7 Those rules do not apply in a certain case. \u00b7 The case is when one is alone.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The difference between manners and morals is that the former are necessarily social in nature whereas the latter are not necessarily social in nature.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a difference between two things."
+      },
+      {
+       "n": 2,
+       "text": "The two things are manners and morals."
+      },
+      {
+       "n": 3,
+       "text": "Manners are social in nature."
+      },
+      {
+       "n": 4,
+       "text": "Manners are necessarily so."
+      },
+      {
+       "n": 5,
+       "text": "This is contrasted with morals."
+      },
+      {
+       "n": 6,
+       "text": "Morals are not necessarily social in nature."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "So the rules of etiquette do not apply when one is alone.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "There are rules of etiquette."
+      },
+      {
+       "n": 3,
+       "text": "Those rules do not apply in a certain case."
+      },
+      {
+       "n": 4,
+       "text": "The case is when one is alone."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rules of ettiquette don't only apply to social situations?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q17",
+     "qnum": 17,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT105_S1_Q18",
+   "prompt": "Sociologist: The intended function of news is to give us information on which to act. But in a consumer society, news becomes a product to be manufactured and dispensed to the consumer. An enormous industry for the production and consumption of news has evolved, and we ingest news with an insatiable appetite. Under such circumstances, news is primarily entertaining and cannot, therefore, serve its intended function.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The sociologist is speaking. \u00b7 News has a function. \u00b7 That function is the intended one. \u00b7 The function is to give us information. \u00b7 The information is something to act on. (2) This is a contrast with what came before it. \u00b7 The setting is a consumer society. \u00b7 News becomes a product. \u00b7 The product is manufactured. \u00b7 The product is dispensed to the consumer. (3) An industry has evolved. \u00b7 The industry is enormous. \u00b7 It is for the production of news. \u00b7 It is also for the consumption of news. \u00b7 We ingest the news. \u00b7 We do so with an appetite. \u00b7 That appetite is insatiable. (4) This holds under the circumstances described. \u00b7 The news is entertaining. \u00b7 It is primarily entertaining. \u00b7 This is the conclusion. \u00b7 News cannot serve its function. \u00b7 The function is the intended one.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Sociologist: The intended function of news is to give us information on which to act.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The sociologist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "News has a function."
+      },
+      {
+       "n": 3,
+       "text": "That function is the intended one."
+      },
+      {
+       "n": 4,
+       "text": "The function is to give us information."
+      },
+      {
+       "n": 5,
+       "text": "The information is something to act on."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But in a consumer society, news becomes a product to be manufactured and dispensed to the consumer.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 2,
+       "text": "The setting is a consumer society."
+      },
+      {
+       "n": 3,
+       "text": "News becomes a product."
+      },
+      {
+       "n": 4,
+       "text": "The product is manufactured."
+      },
+      {
+       "n": 5,
+       "text": "The product is dispensed to the consumer."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "An enormous industry for the production and consumption of news has evolved, and we ingest news with an insatiable appetite.",
+     "details": [
+      {
+       "n": 1,
+       "text": "An industry has evolved."
+      },
+      {
+       "n": 2,
+       "text": "The industry is enormous."
+      },
+      {
+       "n": 3,
+       "text": "It is for the production of news."
+      },
+      {
+       "n": 4,
+       "text": "It is also for the consumption of news."
+      },
+      {
+       "n": 5,
+       "text": "We ingest the news."
+      },
+      {
+       "n": 6,
+       "text": "We do so with an appetite."
+      },
+      {
+       "n": 7,
+       "text": "That appetite is insatiable."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Under such circumstances, news is primarily entertaining and cannot, therefore, serve its intended function.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This holds under the circumstances described."
+      },
+      {
+       "n": 2,
+       "text": "The news is entertaining."
+      },
+      {
+       "n": 3,
+       "text": "It is primarily entertaining."
+      },
+      {
+       "n": 4,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 5,
+       "text": "News cannot serve its function."
+      },
+      {
+       "n": 6,
+       "text": "The function is the intended one."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if people can get information on which to act from entertainment?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q18",
+     "qnum": 18,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT105_S1_Q19",
+   "prompt": "Paleontologist: It is widely, but falsely, held that life began in the ocean and did not exist on land until half a billion years ago. Traces of carbon 14 have been found throughout certain 1.2-billion-year-old rocks in North America. Carbon 14 is extracted by plants and microbes from the atmosphere to fuel their chemical reactions, and is then released when the plants and microbes die.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) The paleontologist is speaking. \u00b7 Something is widely held. \u00b7 What is held is false. \u00b7 The belief is that life began in the ocean. \u00b7 The belief is also that life did not exist on land. \u00b7 Life is said to have been absent from land until half a billion years ago. (2) Traces of carbon 14 have been found. \u00b7 They were found in rocks. \u00b7 The rocks are 1.2 billion years old. \u00b7 Only certain rocks are meant. \u00b7 The traces are found throughout those rocks. \u00b7 The rocks are in North America. (3) Carbon 14 is extracted by plants. \u00b7 Microbes extract it as well. \u00b7 They extract it from the atmosphere. \u00b7 The purpose is to fuel their chemical reactions. \u00b7 The carbon 14 is later released. \u00b7 It is released when the plants and microbes die.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Paleontologist: It is widely, but falsely, held that life began in the ocean and did not exist on land until half a billion years ago.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The paleontologist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "Something is widely held."
+      },
+      {
+       "n": 3,
+       "text": "What is held is false."
+      },
+      {
+       "n": 4,
+       "text": "The belief is that life began in the ocean."
+      },
+      {
+       "n": 5,
+       "text": "The belief is also that life did not exist on land."
+      },
+      {
+       "n": 6,
+       "text": "Life is said to have been absent from land until half a billion years ago."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Traces of carbon 14 have been found throughout certain 1.2-billion-year-old rocks in North America.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Traces of carbon 14 have been found."
+      },
+      {
+       "n": 2,
+       "text": "They were found in rocks."
+      },
+      {
+       "n": 3,
+       "text": "The rocks are 1.2 billion years old."
+      },
+      {
+       "n": 4,
+       "text": "Only certain rocks are meant."
+      },
+      {
+       "n": 5,
+       "text": "The traces are found throughout those rocks."
+      },
+      {
+       "n": 6,
+       "text": "The rocks are in North America."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Carbon 14 is extracted by plants and microbes from the atmosphere to fuel their chemical reactions, and is then released when the plants and microbes die.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Carbon 14 is extracted by plants."
+      },
+      {
+       "n": 2,
+       "text": "Microbes extract it as well."
+      },
+      {
+       "n": 3,
+       "text": "They extract it from the atmosphere."
+      },
+      {
+       "n": 4,
+       "text": "The purpose is to fuel their chemical reactions."
+      },
+      {
+       "n": 5,
+       "text": "The carbon 14 is later released."
+      },
+      {
+       "n": 6,
+       "text": "It is released when the plants and microbes die."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rocks were initially under water?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q19",
+     "qnum": 19,
+     "question_type": "Strengthen",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT105_S1_Q20",
+   "prompt": "The nature of English literature reflects the rich and diverse vocabulary of the English language, which resulted from the dual influence of the Anglo-Saxon and, later, French languages. The French language, though, is a direct descendant of Latin, with few traces of the Celtic language spoken by the pre-Roman inhabitants of the area; the hallmark of French literature is its simplicity and clarity.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) English literature has a nature. \u00b7 That nature reflects a vocabulary. \u00b7 The vocabulary belongs to the English language. \u00b7 The vocabulary is rich. \u00b7 It is diverse as well. (2) This is about the English vocabulary. \u00b7 The vocabulary resulted from an influence. \u00b7 The influence was a dual one. \u00b7 One influence was the Anglo-Saxon language. \u00b7 The other was the French language. \u00b7 The French influence came later. (3) This is a contrast with what came before it. \u00b7 The French language descends from Latin. \u00b7 It is a direct descendant. \u00b7 French carries traces of the Celtic language. \u00b7 Those traces are few. \u00b7 Celtic was spoken by the inhabitants of the area. \u00b7 Those inhabitants were there before the Romans. (4) This turns to French literature. \u00b7 French literature has a hallmark. \u00b7 The hallmark is its simplicity. \u00b7 The hallmark is also its clarity.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The nature of English literature reflects the rich and diverse vocabulary of the English language,",
+     "details": [
+      {
+       "n": 1,
+       "text": "English literature has a nature."
+      },
+      {
+       "n": 2,
+       "text": "That nature reflects a vocabulary."
+      },
+      {
+       "n": 3,
+       "text": "The vocabulary belongs to the English language."
+      },
+      {
+       "n": 4,
+       "text": "The vocabulary is rich."
+      },
+      {
+       "n": 5,
+       "text": "It is diverse as well."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "which resulted from the dual influence of the Anglo-Saxon and, later, French languages.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the English vocabulary."
+      },
+      {
+       "n": 2,
+       "text": "The vocabulary resulted from an influence."
+      },
+      {
+       "n": 3,
+       "text": "The influence was a dual one."
+      },
+      {
+       "n": 4,
+       "text": "One influence was the Anglo-Saxon language."
+      },
+      {
+       "n": 5,
+       "text": "The other was the French language."
+      },
+      {
+       "n": 6,
+       "text": "The French influence came later."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The French language, though, is a direct descendant of Latin, with few traces of the Celtic language spoken by the pre-Roman inhabitants of the area;",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 2,
+       "text": "The French language descends from Latin."
+      },
+      {
+       "n": 3,
+       "text": "It is a direct descendant."
+      },
+      {
+       "n": 4,
+       "text": "French carries traces of the Celtic language."
+      },
+      {
+       "n": 5,
+       "text": "Those traces are few."
+      },
+      {
+       "n": 6,
+       "text": "Celtic was spoken by the inhabitants of the area."
+      },
+      {
+       "n": 7,
+       "text": "Those inhabitants were there before the Romans."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "the hallmark of French literature is its simplicity and clarity.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This turns to French literature."
+      },
+      {
+       "n": 2,
+       "text": "French literature has a hallmark."
+      },
+      {
+       "n": 3,
+       "text": "The hallmark is its simplicity."
+      },
+      {
+       "n": 4,
+       "text": "The hallmark is also its clarity."
+      }
+     ]
+    }
+   ],
+   "the_read": "The English language has distant Latin influence.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q20",
+     "qnum": 20,
+     "question_type": "Inference",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT105_S1_Q21",
+   "prompt": "Two doctrines have been greatly influential in this century. The first holds that the explanation of any historical event must appeal to economic factors. The second attempts to account psychologically for all historical events, especially in terms of early childhood experience. Both doctrines, however, are mistaken. Certainly there have been events that were due both to economic forces and to the nature of the early childhood experiences of the major participants in the event.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There are two doctrines. \u00b7 The doctrines have been influential. \u00b7 They have been greatly influential. \u00b7 Their influence is in this century. (2) This is about the first doctrine. \u00b7 It concerns the explanation of a historical event. \u00b7 It applies to any historical event. \u00b7 An explanation must appeal to certain factors. \u00b7 Those factors are economic ones. (3) This is about the second doctrine. \u00b7 It attempts to account for historical events. \u00b7 The accounting is psychological. \u00b7 It covers all historical events. \u00b7 It works especially in terms of experience. \u00b7 The experience is from early childhood. (4) This is a contrast with what came before it. \u00b7 The doctrines are mistaken. \u00b7 Both of them are mistaken. (5) This is stated with certainty. \u00b7 There have been events of a certain kind. \u00b7 Those events were due to two things at once. \u00b7 One was economic forces. \u00b7 The other was the nature of early childhood experiences. \u00b7 The experiences belong to participants in the event. \u00b7 Those participants are the major ones.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Two doctrines have been greatly influential in this century.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There are two doctrines."
+      },
+      {
+       "n": 2,
+       "text": "The doctrines have been influential."
+      },
+      {
+       "n": 3,
+       "text": "They have been greatly influential."
+      },
+      {
+       "n": 4,
+       "text": "Their influence is in this century."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The first holds that the explanation of any historical event must appeal to economic factors.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the first doctrine."
+      },
+      {
+       "n": 2,
+       "text": "It concerns the explanation of a historical event."
+      },
+      {
+       "n": 3,
+       "text": "It applies to any historical event."
+      },
+      {
+       "n": 4,
+       "text": "An explanation must appeal to certain factors."
+      },
+      {
+       "n": 5,
+       "text": "Those factors are economic ones."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The second attempts to account psychologically for all historical events, especially in terms of early childhood experience.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the second doctrine."
+      },
+      {
+       "n": 2,
+       "text": "It attempts to account for historical events."
+      },
+      {
+       "n": 3,
+       "text": "The accounting is psychological."
+      },
+      {
+       "n": 4,
+       "text": "It covers all historical events."
+      },
+      {
+       "n": 5,
+       "text": "It works especially in terms of experience."
+      },
+      {
+       "n": 6,
+       "text": "The experience is from early childhood."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Both doctrines, however, are mistaken.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 2,
+       "text": "The doctrines are mistaken."
+      },
+      {
+       "n": 3,
+       "text": "Both of them are mistaken."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Certainly there have been events that were due both to economic forces and to the nature of the early childhood experiences of the major participants in the event.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is stated with certainty."
+      },
+      {
+       "n": 2,
+       "text": "There have been events of a certain kind."
+      },
+      {
+       "n": 3,
+       "text": "Those events were due to two things at once."
+      },
+      {
+       "n": 4,
+       "text": "One was economic forces."
+      },
+      {
+       "n": 5,
+       "text": "The other was the nature of early childhood experiences."
+      },
+      {
+       "n": 6,
+       "text": "The experiences belong to participants in the event."
+      },
+      {
+       "n": 7,
+       "text": "Those participants are the major ones."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if these doctrines allow for hybrid/dual explanations?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q21",
+     "qnum": 21,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT105_S1_Q22",
+   "prompt": "Editorial: Supporters of the proposed law that would require bicyclists to wear helmets are seriously misguided. The number of pedestrians who die yearly as a result of accidents involving automobiles is five times the number of deaths resulting from bicycle accidents, and drunken driving exacts a much higher toll than both combined. Yet there are no calls for a ban on alcohol or walking down the street.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is an editorial. \u00b7 There is a proposed law. \u00b7 The law would require bicyclists to wear helmets. \u00b7 The law has supporters. \u00b7 Those supporters are misguided. \u00b7 They are seriously misguided. (2) Pedestrians die every year. \u00b7 Their deaths result from accidents. \u00b7 The accidents involve automobiles. \u00b7 The comparison is with deaths from bicycle accidents. \u00b7 The pedestrian number is five times the other. (3) This adds a further comparison. \u00b7 Drunken driving exacts a toll. \u00b7 That toll is higher. \u00b7 It is much higher. \u00b7 The comparison is with the other two tolls combined. (4) This is a contrast with what came before it. \u00b7 There are no calls for a ban. \u00b7 One possible ban would be on alcohol. \u00b7 Another would be on walking down the street.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Editorial: Supporters of the proposed law that would require bicyclists to wear helmets are seriously misguided.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an editorial."
+      },
+      {
+       "n": 2,
+       "text": "There is a proposed law."
+      },
+      {
+       "n": 3,
+       "text": "The law would require bicyclists to wear helmets."
+      },
+      {
+       "n": 4,
+       "text": "The law has supporters."
+      },
+      {
+       "n": 5,
+       "text": "Those supporters are misguided."
+      },
+      {
+       "n": 6,
+       "text": "They are seriously misguided."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The number of pedestrians who die yearly as a result of accidents involving automobiles is five times the number of deaths resulting from bicycle accidents,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Pedestrians die every year."
+      },
+      {
+       "n": 2,
+       "text": "Their deaths result from accidents."
+      },
+      {
+       "n": 3,
+       "text": "The accidents involve automobiles."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with deaths from bicycle accidents."
+      },
+      {
+       "n": 5,
+       "text": "The pedestrian number is five times the other."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "and drunken driving exacts a much higher toll than both combined.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This adds a further comparison."
+      },
+      {
+       "n": 2,
+       "text": "Drunken driving exacts a toll."
+      },
+      {
+       "n": 3,
+       "text": "That toll is higher."
+      },
+      {
+       "n": 4,
+       "text": "It is much higher."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with the other two tolls combined."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Yet there are no calls for a ban on alcohol or walking down the street.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 2,
+       "text": "There are no calls for a ban."
+      },
+      {
+       "n": 3,
+       "text": "One possible ban would be on alcohol."
+      },
+      {
+       "n": 4,
+       "text": "Another would be on walking down the street."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if requiring bikers to wear a helmet is not analogous to banning walking or drinking?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q22",
+     "qnum": 22,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT105_S1_Q23",
+   "prompt": "Deep tillage is even more deleterious to the world's topsoil supply than previously believed. For example, farmers who till deeply are ten times more likely to lose topsoil to erosion than are farmers who use no-till methods. Results like these make it clear that farmers who now till deeply should strive, by using other topsoil aeration techniques, to incorporate no-till methods instead.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Deep tillage is deleterious. \u00b7 What it harms is a topsoil supply. \u00b7 The supply is the world's. \u00b7 It is even more deleterious than was believed. \u00b7 The belief being compared to is the previous one. (2) This is an example. \u00b7 Some farmers till deeply. \u00b7 Those farmers are more likely to lose topsoil. \u00b7 They are ten times more likely. \u00b7 The topsoil is lost to erosion. \u00b7 The comparison is with other farmers. \u00b7 Those farmers use no-till methods. (3) This rests on results like the one given. \u00b7 The results make something clear. \u00b7 It is about farmers who till deeply. \u00b7 Those farmers till deeply now. \u00b7 They should strive to incorporate no-till methods. \u00b7 The no-till methods would replace deep tillage. \u00b7 They would do this by using other topsoil aeration techniques.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Deep tillage is even more deleterious to the world's topsoil supply than previously believed.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Deep tillage is deleterious."
+      },
+      {
+       "n": 2,
+       "text": "What it harms is a topsoil supply."
+      },
+      {
+       "n": 3,
+       "text": "The supply is the world's."
+      },
+      {
+       "n": 4,
+       "text": "It is even more deleterious than was believed."
+      },
+      {
+       "n": 5,
+       "text": "The belief being compared to is the previous one."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "For example, farmers who till deeply are ten times more likely to lose topsoil to erosion than are farmers who use no-till methods.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an example."
+      },
+      {
+       "n": 2,
+       "text": "Some farmers till deeply."
+      },
+      {
+       "n": 3,
+       "text": "Those farmers are more likely to lose topsoil."
+      },
+      {
+       "n": 4,
+       "text": "They are ten times more likely."
+      },
+      {
+       "n": 5,
+       "text": "The topsoil is lost to erosion."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with other farmers."
+      },
+      {
+       "n": 7,
+       "text": "Those farmers use no-till methods."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Results like these make it clear that farmers who now till deeply should strive, by using other topsoil aeration techniques, to incorporate no-till methods instead.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This rests on results like the one given."
+      },
+      {
+       "n": 2,
+       "text": "The results make something clear."
+      },
+      {
+       "n": 3,
+       "text": "It is about farmers who till deeply."
+      },
+      {
+       "n": 4,
+       "text": "Those farmers till deeply now."
+      },
+      {
+       "n": 5,
+       "text": "They should strive to incorporate no-till methods."
+      },
+      {
+       "n": 6,
+       "text": "The no-till methods would replace deep tillage."
+      },
+      {
+       "n": 7,
+       "text": "They would do this by using other topsoil aeration techniques."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there are other, much more harmful, downsides to the no-till methods? What if farmers who don't till don't lose topsoil, but all their soil gets devoid of nutrients and can't grow crops? What if soil grows on trees and we don't care about losing it to erosion?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q23",
+     "qnum": 23,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT105_S1_Q24",
+   "prompt": "Editorial: Our society has a vested interest in maintaining a political system in which candidates are free to adhere to their principles. Yet campaigning for elected office is extremely costly, and because only the wealthiest individuals are able to finance their own political campaigns, most candidates must seek funding from private sources. In so doing, the candidates are almost invariably obliged to compromise their principles. Thus, government itself should assume the cost of candidates' campaigns.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is an editorial. \u00b7 Our society has an interest. \u00b7 The interest is a vested one. \u00b7 The interest is in maintaining a political system. \u00b7 Candidates in that system are free. \u00b7 What they are free to do is adhere to their principles. (2) This is a contrast with what came before it. \u00b7 The campaigning is costly. \u00b7 It is extremely costly. \u00b7 The campaigning is for elected office. \u00b7 Some individuals can finance their own political campaigns. \u00b7 Only the wealthiest can do so. \u00b7 This is given as a reason. (3) Candidates must seek funding. \u00b7 Most candidates must do so. \u00b7 The funding comes from sources. \u00b7 Those sources are private ones. (4) This is about what happens when they do that. \u00b7 The candidates are obliged to do something. \u00b7 What they are obliged to do is compromise their principles. \u00b7 This happens almost invariably. (5) This is the conclusion. \u00b7 The government should assume a cost. \u00b7 The government itself should do it. \u00b7 The cost is that of campaigns. \u00b7 The campaigns belong to the candidates.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Editorial: Our society has a vested interest in maintaining a political system in which candidates are free to adhere to their principles.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an editorial."
+      },
+      {
+       "n": 2,
+       "text": "Our society has an interest."
+      },
+      {
+       "n": 3,
+       "text": "The interest is a vested one."
+      },
+      {
+       "n": 4,
+       "text": "The interest is in maintaining a political system."
+      },
+      {
+       "n": 5,
+       "text": "Candidates in that system are free."
+      },
+      {
+       "n": 6,
+       "text": "What they are free to do is adhere to their principles."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Yet campaigning for elected office is extremely costly, and because only the wealthiest individuals are able to finance their own political campaigns,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 2,
+       "text": "The campaigning is costly."
+      },
+      {
+       "n": 3,
+       "text": "It is extremely costly."
+      },
+      {
+       "n": 4,
+       "text": "The campaigning is for elected office."
+      },
+      {
+       "n": 5,
+       "text": "Some individuals can finance their own political campaigns."
+      },
+      {
+       "n": 6,
+       "text": "Only the wealthiest can do so."
+      },
+      {
+       "n": 7,
+       "text": "This is given as a reason."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "most candidates must seek funding from private sources.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Candidates must seek funding."
+      },
+      {
+       "n": 2,
+       "text": "Most candidates must do so."
+      },
+      {
+       "n": 3,
+       "text": "The funding comes from sources."
+      },
+      {
+       "n": 4,
+       "text": "Those sources are private ones."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "In so doing, the candidates are almost invariably obliged to compromise their principles.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about what happens when they do that."
+      },
+      {
+       "n": 2,
+       "text": "The candidates are obliged to do something."
+      },
+      {
+       "n": 3,
+       "text": "What they are obliged to do is compromise their principles."
+      },
+      {
+       "n": 4,
+       "text": "This happens almost invariably."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "Thus, government itself should assume the cost of candidates' campaigns.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The government should assume a cost."
+      },
+      {
+       "n": 3,
+       "text": "The government itself should do it."
+      },
+      {
+       "n": 4,
+       "text": "The cost is that of campaigns."
+      },
+      {
+       "n": 5,
+       "text": "The campaigns belong to the candidates."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the government shouldn't pay for anything, no matter what?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q24",
+     "qnum": 24,
+     "question_type": "Strengthen",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 23,
+   "slug": "PT105_S1_Q25",
+   "prompt": "A clothing manufacturer reports that unsalable garments, those found to be defective by inspectors plus those returned by retailers, total 7 percent of the garments produced. Further, it reports that all of its unsalable garments are recycled as scrap, but the percentage of garments reported as recycled scrap is 9 percent.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A clothing manufacturer makes a report. \u00b7 The report is about unsalable garments. \u00b7 Some of those garments were found defective. \u00b7 Inspectors found them defective. \u00b7 Others were returned by retailers. \u00b7 Together they total 7 percent. \u00b7 The percentage is of the garments produced. (2) This is an additional report. \u00b7 The unsalable garments are recycled as scrap. \u00b7 All of them are recycled that way. \u00b7 This is a contrast with what came before it. \u00b7 A percentage is reported as recycled scrap. \u00b7 That percentage is 9 percent.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A clothing manufacturer reports that unsalable garments, those found to be defective by inspectors plus those returned by retailers, total 7 percent of the garments produced.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A clothing manufacturer makes a report."
+      },
+      {
+       "n": 2,
+       "text": "The report is about unsalable garments."
+      },
+      {
+       "n": 3,
+       "text": "Some of those garments were found defective."
+      },
+      {
+       "n": 4,
+       "text": "Inspectors found them defective."
+      },
+      {
+       "n": 5,
+       "text": "Others were returned by retailers."
+      },
+      {
+       "n": 6,
+       "text": "Together they total 7 percent."
+      },
+      {
+       "n": 7,
+       "text": "The percentage is of the garments produced."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Further, it reports that all of its unsalable garments are recycled as scrap, but the percentage of garments reported as recycled scrap is 9 percent.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional report."
+      },
+      {
+       "n": 2,
+       "text": "The unsalable garments are recycled as scrap."
+      },
+      {
+       "n": 3,
+       "text": "All of them are recycled that way."
+      },
+      {
+       "n": 4,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 5,
+       "text": "A percentage is reported as recycled scrap."
+      },
+      {
+       "n": 6,
+       "text": "That percentage is 9 percent."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if insalable garments are measured differently than recycled scrap? What if more things than just insalable garments are recycled as scrap?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q25",
+     "qnum": 25,
+     "question_type": "Resolution",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 24,
+   "slug": "PT105_S1_Q26",
+   "prompt": "Marion knows that the bridge on her usual route is closed and that, unless she takes the train instead of driving, she can get to work on time only by leaving at least 45 minutes early. She must go to her neighborhood bank before leaving for work, however, and the bank will not be open in time for her to do so if she leaves 45 minutes early. Therefore, since she hates taking the train, Marion cannot avoid being late for work.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Marion knows certain things. \u00b7 A bridge is closed. \u00b7 The bridge is on her usual route. \u00b7 There is an exception to what follows. \u00b7 The exception is her taking the train. \u00b7 The alternative to the train is driving. (2) Marion can get to work on time. \u00b7 There is only one way to do it. \u00b7 The way is leaving early. \u00b7 She would leave at least 45 minutes early. (3) This is a contrast with what came before it. \u00b7 Marion must go to a bank. \u00b7 The bank is in her neighborhood. \u00b7 She must go before leaving for work. \u00b7 The bank will not be open in time. \u00b7 That is so if she leaves 45 minutes early. (4) This is the conclusion. \u00b7 It rests on a reason. \u00b7 The reason is that she hates taking the train. \u00b7 Marion cannot avoid being late. \u00b7 The lateness is for work.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Marion knows that the bridge on her usual route is closed and that, unless she takes the train instead of driving,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Marion knows certain things."
+      },
+      {
+       "n": 2,
+       "text": "A bridge is closed."
+      },
+      {
+       "n": 3,
+       "text": "The bridge is on her usual route."
+      },
+      {
+       "n": 4,
+       "text": "There is an exception to what follows."
+      },
+      {
+       "n": 5,
+       "text": "The exception is her taking the train."
+      },
+      {
+       "n": 6,
+       "text": "The alternative to the train is driving."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "she can get to work on time only by leaving at least 45 minutes early.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Marion can get to work on time."
+      },
+      {
+       "n": 2,
+       "text": "There is only one way to do it."
+      },
+      {
+       "n": 3,
+       "text": "The way is leaving early."
+      },
+      {
+       "n": 4,
+       "text": "She would leave at least 45 minutes early."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "She must go to her neighborhood bank before leaving for work, however, and the bank will not be open in time for her to do so if she leaves 45 minutes early.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before it."
+      },
+      {
+       "n": 2,
+       "text": "Marion must go to a bank."
+      },
+      {
+       "n": 3,
+       "text": "The bank is in her neighborhood."
+      },
+      {
+       "n": 4,
+       "text": "She must go before leaving for work."
+      },
+      {
+       "n": 5,
+       "text": "The bank will not be open in time."
+      },
+      {
+       "n": 6,
+       "text": "That is so if she leaves 45 minutes early."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Therefore, since she hates taking the train, Marion cannot avoid being late for work.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on a reason."
+      },
+      {
+       "n": 3,
+       "text": "The reason is that she hates taking the train."
+      },
+      {
+       "n": 4,
+       "text": "Marion cannot avoid being late."
+      },
+      {
+       "n": 5,
+       "text": "The lateness is for work."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if Marion sometimes does things she hates?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT105.S1.Q26",
+     "qnum": 26,
+     "question_type": "Classic Flaw",
+     "correct_answer": "D"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSAT Premium Tutor Portal</title>
+    <style>
+        :root {
+            --bg-main: #FAFAFC;
+            --bg-card: #FFFFFF;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+            --text-main: #1D1D1F;
+            --text-secondary: #86868B;
+            --text-tertiary: #A1A1A6;
+            --accent: #0071E3;
+            --accent-hover: #0058B0;
+            --accent-light: #E8F2FC;
+            --border: #E5E5EA;
+            --success: #34C759;
+            --success-light: #E8F8EE;
+            --warning: #FF9500;
+            --warning-light: #FFF5E5;
+            --error: #FF3B30;
+            --error-light: #FFECEB;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 16px 40px rgba(0,0,0,0.08);
+            --shadow-hover: 0 16px 48px rgba(0,0,0,0.12);
+            --glow-primary: 0 6px 20px rgba(0, 113, 227, 0.3);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Subtle Ambient Background Mesh */
+        body::before {
+            content: '';
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 15% 50%, rgba(0, 113, 227, 0.03), transparent 25%),
+                        radial-gradient(circle at 85% 30%, rgba(52, 199, 89, 0.02), transparent 25%);
+            z-index: -1; pointer-events: none;
+            animation: ambientDrift 20s alternate infinite ease-in-out;
+        }
+        @keyframes ambientDrift {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(2%, 3%); }
+        }
+
+        h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+
+        .app-container { display: flex; min-height: 100vh; flex-direction: column; }
+
+        nav {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: none;
+            transition: background 0.4s ease;
+        }
+        .nav-content {
+            max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-item {
+            color: var(--text-secondary); text-decoration: none; font-weight: 500;
+            font-size: 0.95rem; padding: 0.5rem 0; position: relative; cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .nav-item::after {
+            content: ''; position: absolute; bottom: -17px; left: 0; width: 100%;
+            height: 2px; background: var(--text-main); border-radius: 2px 2px 0 0;
+            transform: scaleX(0); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-origin: center;
+        }
+        .nav-item.active { color: var(--text-main); }
+        .nav-item.active::after { transform: scaleX(1); }
+
+        .profile-wrapper { display: flex; align-items: center; gap: 1rem; }
+
+        /* Persistent Auto-Save Indicator */
+        #save-status {
+            font-size: 0.75rem; font-weight: 500; color: var(--text-tertiary);
+            display: flex; align-items: center; gap: 0.35rem; opacity: 0; transition: opacity 0.4s ease;
+        }
+        #save-status .dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; box-shadow: 0 0 6px var(--success); }
+
+        .profile-btn {
+            display: flex; align-items: center; gap: 0.75rem; cursor: pointer;
+            padding: 0.25rem 0.75rem; border-radius: var(--radius-full); transition: var(--transition);
+        }
+        .profile-btn:active { transform: scale(0.96); }
+        .avatar {
+            width: 32px; height: 32px; background: var(--accent); color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 0.9rem; transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Fixed View System */
+        .view {
+            display: none;
+            flex: 1; padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; width: 100%;
+        }
+        .view.active {
+            display: block;
+            animation: fadeInView 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        #login-view.active { display: flex; }
+
+        @keyframes fadeInView {
+            from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        /* Buttons & Tactile Feedback */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.8rem 1.5rem; border-radius: var(--radius-full);
+            font-weight: 500; font-size: 0.95rem; cursor: pointer; border: none;
+            transition: var(--transition); text-decoration: none;
+            position: relative; overflow: hidden;
+        }
+        .btn::after {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.2); border-radius: 50%; transform: translate(-50%, -50%) scale(0);
+            opacity: 0; transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .btn:active::after { transform: translate(-50%, -50%) scale(2); opacity: 1; transition: 0s; }
+        .btn:active { transform: scale(0.96) !important; transition: transform 0.1s ease; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-secondary { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); }
+
+        /* Login */
+        #login-view { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: transparent; }
+        .login-card {
+            background: var(--bg-card); padding: 3.5rem 3rem; border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg); width: 100%; max-width: 420px; text-align: center;
+            animation: floatCard 6s ease-in-out infinite;
+        }
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0px); box-shadow: var(--shadow-lg); }
+            50% { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(0,0,0,0.1); }
+        }
+        .input-group { margin: 2rem 0; text-align: left; position: relative; }
+        .input-group label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 0.5rem; transition: color 0.3s; }
+        .input-group input { width: 100%; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 1rem; outline: none; transition: var(--transition); background: var(--bg-main); }
+        .input-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); background: white; }
+        .input-group input:focus + label { color: var(--accent); }
+
+        /* Premium Progress Bars */
+        .header-progress { display: flex; flex-direction: column; align-items: flex-end; background: var(--bg-card); padding: 1.25rem 1.75rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.02); }
+        .header-progress-top { display: flex; align-items: baseline; gap: 0.4rem; margin-bottom: 0.5rem; }
+        .header-percent { font-size: 1.75rem; font-weight: 700; color: var(--accent); line-height: 1; letter-spacing: -0.02em; }
+        .header-percent-label { font-size: 0.85rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; }
+        .header-bar-bg { width: 160px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem; }
+        .header-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #3fa2ff); border-radius: 4px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
+        .header-bar-fill::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); animation: shimmerBar 2.5s infinite; }
+        .header-subtext { font-size: 0.75rem; color: var(--text-tertiary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* Dashboard */
+        .dashboard-header { margin-bottom: 3rem; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        .card {
+            background: var(--bg-card); border-radius: var(--radius-lg); padding: 1.75rem;
+            box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.02); transition: var(--transition);
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        .dashboard-grid .card:nth-child(1) { animation-delay: 0.1s; }
+        .dashboard-grid .card:nth-child(2) { animation-delay: 0.2s; }
+        .dashboard-grid .card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .kpi-title { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .kpi-value { font-size: 2.75rem; font-weight: 600; color: var(--text-main); display: flex; align-items: baseline; gap: 0.5rem; }
+        .kpi-sub { font-size: 0.85rem; color: var(--text-tertiary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-top: 0.75rem; }
+
+        .progress-bar-bg { background: var(--bg-main); border: 1px solid var(--border); height: 8px; border-radius: 4px; margin-top: 1rem; overflow: hidden; }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--accent), #3fa2ff); height: 100%; border-radius: 4px;
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden;
+        }
+        .progress-bar-fill::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: shimmerBar 2.5s infinite;
+        }
+        @keyframes shimmerBar { 100% { left: 200%; } }
+
+        .action-card {
+            background: linear-gradient(135deg, #1D1D1F 0%, #3A3A3C 100%); background-size: 200% 200%;
+            position: relative; overflow: hidden; animation: gradientShift 10s ease infinite, slideUpFade 0.6s backwards 0.1s;
+        }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .action-card::after {
+            content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%; pointer-events: none; transition: transform 0.5s ease;
+        }
+        .action-card:hover::after { transform: scale(1.5); }
+        .action-card .kpi-title, .action-card p { color: rgba(255,255,255,0.8); position: relative; z-index: 1; }
+        .action-card .kpi-value, .action-card h2 { color: white; position: relative; z-index: 1; }
+        .action-card .btn { margin-top: 1.5rem; background: white; color: var(--text-main); width: 100%; position: relative; z-index: 1; border: none; }
+
+        /* Lessons / Notes */
+        .lesson-layout { display: grid; grid-template-columns: 280px 1fr; gap: 4rem; }
+        .lesson-nav { position: sticky; top: 100px; }
+        .lesson-nav-header { margin-bottom: 1.5rem; }
+
+        .lesson-nav-item {
+            display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1rem; border-radius: var(--radius-md);
+            cursor: pointer; transition: var(--transition); color: var(--text-secondary); font-weight: 500;
+            margin-bottom: 0.25rem; border: 1px solid transparent;
+        }
+        .lesson-nav-item.active { background: var(--accent-light); color: var(--accent); box-shadow: 0 4px 12px rgba(0,113,227,0.08); }
+        .lesson-nav-indicator { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.4s ease; }
+        .lesson-nav-item.completed .lesson-nav-indicator { background: var(--success); box-shadow: 0 0 8px rgba(52,199,89,0.4); }
+        .lesson-nav-item:active { transform: scale(0.97); transition: transform 0.1s; }
+
+        .lesson-content { max-width: 700px; }
+        .lesson-section { display: none; animation: fadeInView 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .lesson-section.active { display: block; }
+        .anchor-box { background: var(--bg-card); border-left: 4px solid var(--accent); padding: 2.5rem; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; box-shadow: var(--shadow-sm); margin: 2rem 0; transition: var(--transition); }
+        .coach-note { background: #F9F9FB; border: 1px solid var(--border); padding: 1.5rem; border-radius: var(--radius-lg); margin: 2rem 0; display: flex; gap: 1.25rem; transition: var(--transition); }
+        .coach-icon { font-size: 1.5rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); animation: gentlePulse 3s infinite; }
+        @keyframes gentlePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        .framework-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+        .framework-bucket { background: var(--bg-main); border: 1px solid var(--border); padding: 1.5rem; border-radius: var(--radius-lg); transition: var(--transition); }
+        .bucket-tag { display: inline-block; padding: 0.35rem 0.85rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.75rem; transition: var(--transition); }
+        .tag-main { background: var(--accent-light); color: var(--accent); }
+        .tag-support { background: #E8F8EE; color: #248A3D; }
+        .tag-opposing { background: #FFECEB; color: #D70015; }
+        .tag-neutral { background: #F2F2F7; color: #8E8E93; }
+
+        /* Embedded Pop Quizzes */
+        .pop-quiz { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; margin: 3rem 0; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .pq-title { font-size: 0.85rem; font-weight: 600; color: var(--accent); text-transform: uppercase; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; letter-spacing: 0.05em; }
+        .pq-question { font-weight: 500; margin-bottom: 1.5rem; color: var(--text-main); font-size: 1.1rem; }
+        .pq-options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .pq-option { padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: var(--transition); background: var(--bg-main); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .pq-option:active { transform: scale(0.98); transition: transform 0.1s; }
+        .pq-option.correct { background: var(--success-light); border-color: var(--success); color: #1e7135; pointer-events: none; box-shadow: 0 4px 12px rgba(52,199,89,0.1); }
+        .pq-option.incorrect { background: var(--error-light); border-color: var(--error); color: #b0241a; pointer-events: none; }
+        .pq-feedback { margin-top: 1.25rem; font-size: 0.9rem; font-weight: 500; display: none; padding-top: 1rem; border-top: 1px solid var(--border); animation: slideUp 0.3s ease; }
+
+        /* Lesson Example Blocks */
+        .example-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.75rem; margin: 2rem 0; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .example-label { font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+        .example-text { font-size: 1.1rem; color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.6; padding-left: 1.25rem; border-left: 3px solid var(--border); }
+        .example-breakdown { display: flex; flex-direction: column; gap: 1rem; background: var(--bg-main); padding: 1.5rem; border-radius: var(--radius-md); }
+        .breakdown-step { display: flex; align-items: flex-start; gap: 1rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; }
+        .breakdown-step strong { color: var(--text-main); font-weight: 600; display: block; margin-bottom: 0.2rem; font-size: 1rem; }
+        .step-icon { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--accent-light); color: var(--accent); border-radius: 50%; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; }
+
+        .cta-box { margin-top: 4rem; padding: 3rem 2rem; background: linear-gradient(135deg, var(--bg-card) 0%, #F5F5F7 100%); border: 1px solid var(--border); border-radius: var(--radius-lg); text-align: center; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .cta-box h3 { font-size: 1.35rem; margin-bottom: 0.75rem; color: var(--text-main); }
+        .cta-box p { color: var(--text-secondary); margin-bottom: 2rem; max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.6; font-size: 1.05rem; }
+
+        /* Drills */
+        .drill-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .drill-workspace { background: var(--bg-card); border-radius: var(--radius-lg); padding: 3.5rem; box-shadow: var(--shadow-md); margin-bottom: 2rem; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); }
+        .stimulus { font-size: 1.25rem; line-height: 1.8; color: var(--text-main); margin-bottom: 2rem; }
+
+        .drill-part-anim { animation: textReveal 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+        @keyframes textReveal { from { opacity: 0; filter: blur(4px); } to { opacity: 1; filter: blur(0); } }
+
+        .selectable-phrase { cursor: pointer; padding: 0.2rem 0.4rem; margin: -0.2rem -0.4rem; border-radius: 6px; transition: var(--transition); border: 1px solid transparent; }
+        .selectable-phrase:active { transform: scale(0.98); transition: transform 0.1s; }
+        .selectable-phrase.selected-conclusion { background: var(--accent-light); color: var(--accent); border-color: rgba(0,113,227,0.3); box-shadow: 0 2px 12px rgba(0,113,227,0.15); }
+        .selectable-phrase.selected-support { background: var(--success-light); color: #248A3D; border-color: rgba(52,199,89,0.3); box-shadow: 0 2px 12px rgba(52,199,89,0.15); }
+        .selectable-phrase.selected-opposing { background: var(--error-light); color: #D70015; border-color: rgba(255,59,48,0.3); box-shadow: 0 2px 12px rgba(255,59,48,0.15); }
+
+        .indicator-word { font-weight: 600; border-bottom: 2px dashed; position: relative; display: inline-block; transition: var(--transition); }
+        .indicator-word::after { content: attr(data-type); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(12px) scale(0.95); background: #1D1D1F; color: #FFFFFF; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 10; box-shadow: var(--shadow-md); pointer-events: none; }
+        .indicator-word::before { content: ''; position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(12px) scale(0.95); border: 6px solid transparent; border-top-color: #1D1D1F; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 10; margin-bottom: -11px; pointer-events: none; }
+        .indicator-word:hover::after, .indicator-word:hover::before { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0) scale(1); }
+
+        .drill-controls { background: #F9F9FB; border-radius: var(--radius-lg); padding: 2rem; border: 1px solid var(--border); animation: slideUpFade 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: var(--shadow-sm); }
+        .instruction-step { font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; font-size: 1.1rem; }
+        .step-badge { background: var(--text-main); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .choice-grid { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        .choice-btn { flex: 1; padding: 1.25rem; background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; font-weight: 500; text-align: center; transition: var(--transition); box-shadow: var(--shadow-sm); }
+        .choice-btn:active { transform: scale(0.97); transition: transform 0.1s; }
+        .choice-btn.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent); box-shadow: 0 4px 16px rgba(0,113,227,0.15); }
+
+        .feedback-panel { margin-top: 2rem; padding: 1.75rem; border-radius: var(--radius-lg); display: none; transition: var(--transition); box-shadow: var(--shadow-md); animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .feedback-panel.correct { background: #F4FBF6; border: 1px solid rgba(52,199,89,0.2); }
+        .feedback-panel.incorrect { background: #FEF6F5; border: 1px solid rgba(255,59,48,0.2); }
+
+        /* Training Flashcards Redesign */
+        .flashcard-wrapper { position: relative; perspective: 1200px; width: 100%; max-width: 600px; margin: 0 auto 2rem; height: 440px; }
+        .flashcard-stack-1, .flashcard-stack-2 {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid rgba(0,0,0,0.04);
+            z-index: 0; transition: var(--transition); pointer-events: none;
+        }
+        .flashcard-stack-1 { transform: translateY(12px) scale(0.96); opacity: 0.8; box-shadow: var(--shadow-sm); }
+        .flashcard-stack-2 { transform: translateY(24px) scale(0.92); opacity: 0.4; box-shadow: var(--shadow-sm); }
+
+        .flashcard { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1); transform-style: preserve-3d; cursor: pointer; z-index: 2; }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); display: flex; flex-direction: column; padding: 2.5rem; border: 1px solid rgba(0,0,0,0.03); transition: var(--transition); }
+
+        .card-front { align-items: center; justify-content: center; text-align: center; }
+        .fc-prompt-label { font-size: 0.75rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem; }
+        .fc-front-question { font-size: 1.6rem; font-weight: 600; color: var(--text-main); line-height: 1.4; margin-bottom: 2rem; }
+        .fc-hint { position: absolute; bottom: 2rem; font-size: 0.85rem; color: var(--text-tertiary); font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
+
+        .card-back { transform: rotateY(180deg); align-items: flex-start; text-align: left; justify-content: flex-start; }
+        .fc-role-badge { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.4rem 0.85rem; border-radius: var(--radius-full); margin-bottom: 1.25rem; }
+        .fc-function-text { font-size: 1.15rem; color: var(--text-main); font-weight: 500; line-height: 1.5; margin-bottom: 1.5rem; }
+        .fc-example-box { background: #F9F9FB; border-left: 3px solid var(--border); padding: 1rem 1.25rem; border-radius: 0 var(--radius-md) var(--radius-md) 0; font-size: 1rem; color: var(--text-secondary); font-style: italic; margin-bottom: 1.5rem; width: 100%; }
+        .fc-coach-note { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.9rem; color: var(--text-secondary); background: white; padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border); width: 100%; }
+
+        .fc-controls-wrapper { display: flex; justify-content: center; gap: 1rem; margin-top: 3rem; opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fc-controls-wrapper.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .btn-review { background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); }
+        .btn-review:hover { background: var(--warning-light); border-color: var(--warning); color: var(--warning); }
+        .btn-gotit { background: var(--accent); color: white; }
+        .btn-gotit:hover { background: var(--success); box-shadow: 0 4px 16px rgba(52,199,89,0.2); }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Premium State System & Loaders */
+        #top-progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 1000; opacity: 0; transition: width 0.4s ease, opacity 0.3s ease; box-shadow: 0 0 10px var(--accent); }
+
+        .state-loading, .state-empty { display: none; animation: fadeInView 0.4s ease; }
+        .view.is-loading .state-loading { display: block; }
+        .view.is-loading .state-content, .view.is-loading .state-empty { display: none !important; }
+
+        .view.is-empty .state-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center; }
+        .view.is-empty .state-content, .view.is-empty .state-loading { display: none !important; }
+        .view:not(.is-loading):not(.is-empty) .state-content { display: block; animation: fadeInView 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        .skeleton { background: linear-gradient(90deg, #f0f0f5 25%, #e6e6ec 50%, #f0f0f5 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; border-radius: var(--radius-md); }
+        .skeleton-text { height: 1.2rem; margin-bottom: 0.75rem; border-radius: 4px; }
+        .skeleton-title { height: 2.5rem; width: 60%; margin-bottom: 1rem; border-radius: 8px; }
+        .skeleton-card { height: 160px; border-radius: var(--radius-lg); }
+
+        @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Scroll Reveal Animation System */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .empty-state-icon { width: 72px; height: 72px; background: var(--success-light); color: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 1.5rem; box-shadow: 0 8px 24px rgba(52,199,89,0.2); animation: floatCard 4s ease-in-out infinite; }
+        .empty-state-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-main); }
+        .empty-state-desc { color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 450px; line-height: 1.6; margin-left: auto; margin-right: auto; font-size: 1.05rem; }
+
+        /* Premium Toasts & Inline Errors */
+        #toast-container { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none; }
+        .toast { background: var(--bg-card); color: var(--text-main); padding: 0.8rem 1.5rem; border-radius: var(--radius-full); box-shadow: var(--shadow-lg); border: 1px solid var(--border); font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 0.75rem; animation: toastIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .toast.toast-leaving { animation: toastOut 0.4s ease forwards; }
+        .toast-icon { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; color: white; }
+        .toast-icon.success { background: var(--success); box-shadow: 0 2px 8px rgba(52,199,89,0.4); }
+        .toast-icon.error { background: var(--error); box-shadow: 0 2px 8px rgba(255,59,48,0.4); }
+        .toast-icon.warning { background: var(--warning); box-shadow: 0 2px 8px rgba(255,149,0,0.4); }
+
+        .input-error-text { color: var(--error); font-size: 0.85rem; margin-top: 0.5rem; display: none; animation: slideUp 0.3s ease; }
+        .input-error-active { border-color: var(--error) !important; box-shadow: 0 0 0 3px var(--error-light) !important; background: #fff !important; }
+
+        @keyframes toastIn { from { opacity: 0; transform: translateY(20px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes toastOut { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(10px) scale(0.95); } }
+
+        #profile-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000; animation: fadeIn 0.3s ease; }
+        .modal-content { background: var(--bg-card); padding: 2.5rem; border-radius: var(--radius-lg); width: 90%; max-width: 400px; box-shadow: 0 24px 48px rgba(0,0,0,0.2); transition: var(--transition); animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .text-center { text-align: center; } .mt-2 { margin-top: 0.5rem; } .mt-4 { margin-top: 1rem; } .mt-8 { margin-top: 2rem; } .mb-4 { margin-bottom: 1rem; } .mx-auto { margin-left: auto; margin-right: auto; } .my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+
+        /* Hover states wrapped for non-touch devices to prevent sticky hover issues */
+        @media (hover: hover) and (pointer: fine) {
+            .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--glow-primary); background: var(--accent-hover); }
+            .btn-secondary:hover { background: var(--bg-card); border-color: #C7C7CC; box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+            .nav-item:hover { color: var(--text-main); }
+            .profile-btn:hover { background: rgba(0,0,0,0.04); }
+            .profile-btn:hover .avatar { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,113,227,0.2); }
+            .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: rgba(0,0,0,0.06); }
+            .lesson-nav-item:hover:not(.active) { background: white; border-color: var(--border); box-shadow: var(--shadow-sm); transform: translateX(6px); color: var(--text-main); }
+            .pq-option:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--accent); background: white; z-index: 2; position: relative; }
+            .selectable-phrase:hover { background: white; box-shadow: 0 6px 20px rgba(0,0,0,0.08); transform: translateY(-2px); border-color: var(--border); z-index: 10; position: relative; }
+            .choice-btn:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--accent); background: white; }
+            .flashcard:hover .card-face { box-shadow: var(--shadow-hover); border-color: rgba(0,0,0,0.08); }
+            .flashcard-wrapper:hover .flashcard-stack-1 { transform: translateY(10px) scale(0.97); opacity: 0.85; }
+            .flashcard-wrapper:hover .flashcard-stack-2 { transform: translateY(20px) scale(0.94); opacity: 0.5; }
+            .indicator-word:hover { background: rgba(0,0,0,0.04); border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+            .framework-bucket:hover { background: white; box-shadow: var(--shadow-md); transform: translateY(-4px); border-color: rgba(0,0,0,0.06); }
+            .anchor-box:hover { box-shadow: var(--shadow-md); transform: translateX(4px); }
+            .pop-quiz:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+            .example-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: rgba(0,0,0,0.06); }
+            .cta-box:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
+        }
+
+        /* Mobile & Tablet Responsive Adjustments */
+        @media (max-width: 768px) {
+            .nav-content { flex-wrap: wrap; padding: 1rem 1.5rem; }
+            .nav-links { order: 3; width: 100%; overflow-x: auto; padding-top: 1rem; padding-bottom: 0.5rem; gap: 1.5rem; justify-content: flex-start; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .nav-links::-webkit-scrollbar { display: none; }
+            .nav-item::after { bottom: -8px; }
+
+            .view { padding: 1.5rem 1rem; }
+            .lesson-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+            .lesson-nav { position: static; display: flex; overflow-x: auto; white-space: nowrap; padding-bottom: 1rem; gap: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .lesson-nav::-webkit-scrollbar { display: none; }
+            .lesson-nav-header { display: none; }
+            .lesson-nav-item { margin-bottom: 0; flex-shrink: 0; border: 1px solid var(--border); background: var(--bg-card); padding: 0.6rem 1rem; }
+            .lesson-nav-item.active { border-color: var(--accent); background: var(--accent-light); }
+
+            .drill-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .header-progress { align-items: flex-start; width: 100%; }
+            .header-bar-bg { width: 100%; }
+
+            .drill-workspace { padding: 1.5rem; }
+            .choice-grid { flex-direction: column; }
+            .anchor-box { padding: 1.5rem; margin: 1.5rem 0; }
+            .framework-grid { grid-template-columns: 1fr; }
+            .example-card { padding: 1.25rem; }
+            .example-breakdown { padding: 1.25rem; }
+            .cta-box { padding: 2rem 1.5rem; }
+            .flashcard-wrapper { height: 480px; }
+            .card-back { padding: 1.5rem; }
+            h1 { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body>
+<div id="top-progress-bar"></div>
+<div id="toast-container"></div>
+
+<div class="app-container">
+    <nav id="main-nav">
+        <div class="nav-content">
+            <div style="font-weight: 700; font-size: 1.2rem; letter-spacing: -0.5px;">LSAT<span style="color: var(--accent)">Premium</span></div>
+            <div class="nav-links">
+                <a class="nav-item" data-target="dashboard-view">Dashboard</a>
+                <a class="nav-item" data-target="lessons-view">Notes</a>
+                <a class="nav-item" data-target="drills-view">Drills</a>
+                <a class="nav-item" data-target="flashcards-view">Flashcards</a>
+            </div>
+            <div class="profile-wrapper">
+                <div id="save-status"><div class="dot"></div> Saved</div>
+                <div class="profile-btn" onclick="document.getElementById('profile-modal').style.display='flex'">
+                    <div class="avatar" id="nav-avatar">A</div>
+                    <span id="nav-name" style="font-weight: 500; font-size: 0.9rem;">Student</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="login-view" class="view active">
+        <div class="login-card">
+            <h1 style="margin-bottom: 0.5rem;">Welcome to Premium</h1>
+            <p style="margin-bottom: 2rem;">Your LSAT Argument Analysis Portal</p>
+            <div class="input-group">
+                <label for="student-name">Student Name</label>
+                <input type="text" id="student-name" placeholder="Enter your name" autocomplete="off" onkeypress="handleLoginEnter(event)" oninput="clearLoginError()">
+                <div id="login-error" class="input-error-text">Please enter your name to continue.</div>
+            </div>
+            <button id="login-btn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.05rem;" onclick="login()">Start Homework</button>
+        </div>
+    </main>
+
+    <main id="dashboard-view" class="view">
+        <div class="state-loading">
+            <div class="dashboard-header">
+                <div class="skeleton skeleton-title"></div>
+                <div class="skeleton skeleton-text" style="width: 40%;"></div>
+            </div>
+            <div class="dashboard-grid">
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+            </div>
+        </div>
+        <div class="state-content">
+            <div class="dashboard-header">
+                <h1 id="dash-greeting">Good afternoon, Student.</h1>
+                <p>Here is your learning command center. Resume where you left off.</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card action-card">
+                    <div class="kpi-title" id="dash-next-label">Next Best Action</div>
+                    <h2 id="dash-next-title" style="margin-bottom: 0.5rem; font-size: 1.5rem;">Start Lesson: 2-Step Check</h2>
+                    <p id="dash-next-desc" style="font-size: 0.9rem;">Master the framework before drilling.</p>
+                    <button class="btn" id="dash-action-btn" onclick="navigate('lessons-view')">Go to Notes</button>
+                </div>
+                <div class="card">
+                    <div class="kpi-title">Notes Progress</div>
+                    <div class="kpi-value"><span id="dash-notes-percent">0</span>%</div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" id="dash-notes-bar" style="width: 0%;"></div></div>
+                    <span class="kpi-sub" id="dash-notes-sub">0 of 4 modules</span>
+                </div>
+                <div class="card">
+                    <div class="kpi-title">Drills Progress</div>
+                    <div class="kpi-value"><span id="dash-drills-percent">0</span>%</div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" id="dash-drills-bar" style="width: 0%;"></div></div>
+                    <span class="kpi-sub" id="dash-drills-sub">0 of 20 dissected</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="lessons-view" class="view">
+        <div class="state-loading">
+            <div class="lesson-layout">
+                <div class="lesson-nav">
+                    <div class="skeleton skeleton-text" style="width: 120px; margin-bottom: 2rem;"></div>
+                    <div class="skeleton skeleton-text" style="height: 40px; margin-bottom: 0.5rem;"></div>
+                    <div class="skeleton skeleton-text" style="height: 40px; margin-bottom: 0.5rem;"></div>
+                    <div class="skeleton skeleton-text" style="height: 40px; margin-bottom: 0.5rem;"></div>
+                </div>
+                <div class="lesson-content">
+                    <div class="skeleton skeleton-text" style="width: 100px; height: 24px; border-radius: 12px; margin-bottom: 1rem;"></div>
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text" style="width: 90%;"></div>
+                    <div class="skeleton skeleton-text" style="width: 85%;"></div>
+                    <div class="skeleton skeleton-card" style="margin-top: 2rem;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="state-content">
+            <div class="lesson-layout">
+                <div class="lesson-nav">
+                    <div class="lesson-nav-header">
+                        <h3 style="font-size: 1rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.5rem;">Lesson Modules</h3>
+                        <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+                            <span style="font-size: 1.25rem; font-weight: 700; color: var(--accent);" id="nav-notes-percent">0%</span>
+                            <span style="font-size: 0.75rem; color: var(--text-tertiary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;" id="nav-notes-sub">0 of 4 modules</span>
+                        </div>
+                        <div class="progress-bar-bg" style="height: 4px; margin-top: 0.5rem; margin-bottom: 1.5rem;"><div class="progress-bar-fill" id="nav-notes-bar" style="width: 0%;"></div></div>
+                    </div>
+
+                    <div class="lesson-nav-item active" data-section="sec-1" onclick="switchLesson('sec-1')"><div class="lesson-nav-indicator"></div> Argument Basics</div>
+                    <div class="lesson-nav-item" data-section="sec-2" onclick="switchLesson('sec-2')"><div class="lesson-nav-indicator"></div> 2-Step Check</div>
+                    <div class="lesson-nav-item" data-section="sec-3" onclick="switchLesson('sec-3')"><div class="lesson-nav-indicator"></div> Role Framework</div>
+                    <div class="lesson-nav-item" data-section="sec-4" onclick="switchLesson('sec-4')"><div class="lesson-nav-indicator"></div> Referential Language</div>
+                </div>
+                <div class="lesson-content">
+
+                    <div id="sec-1" class="lesson-section active">
+                        <div class="bucket-tag tag-neutral">Foundation</div>
+                        <h1>Argument Basics</h1>
+                        <p class="mt-4" style="font-size: 1.1rem; color: var(--text-main);">Most of the paragraphs we read in Logical Reasoning are labeled arguments or reasoning.</p>
+                        <div class="anchor-box reveal-on-scroll">
+                            <h3 style="margin-bottom: 0.5rem;">Core Idea</h3>
+                            <p style="color: var(--text-main); font-size: 1.1rem; margin: 0;">An argument is a <strong>claim</strong> supported by some <strong>other claim(s)</strong>.</p>
+                        </div>
+                        <p>To analyze an argument (i.e. to solve most LR questions), our first step is to find the Conclusion and its Supporting idea(s).</p>
+                        <p>In most cases there is more than one Supporting idea. In a small number of cases, there is more than one Conclusion (a Main Conclusion supported by an Intermediate Conclusion).</p>
+
+                        <!-- Lightweight Pop Quiz embedded in Notes -->
+                        <div class="pop-quiz reveal-on-scroll" id="pq-1">
+                            <div class="pq-title">⚡ Mini Concept Check</div>
+                            <div class="pq-question">Identify the Conclusion: "It is raining heavily, so we should cancel the picnic."</div>
+                            <div class="pq-options">
+                                <div class="pq-option" onclick="checkPQ('pq-1', 0, false, 'That is the premise (support).')">
+                                    <strong>A)</strong> It is raining heavily.
+                                </div>
+                                <div class="pq-option" onclick="checkPQ('pq-1', 1, true, 'Correct! This is the claim being supported.')">
+                                    <strong>B)</strong> We should cancel the picnic.
+                                </div>
+                            </div>
+                            <div class="pq-feedback"></div>
+                        </div>
+
+                        <button class="btn btn-primary mt-8" onclick="markLessonComplete('sec-1'); switchLesson('sec-2')">Continue to 2-Step Check</button>
+                    </div>
+
+                    <div id="sec-2" class="lesson-section">
+                        <div class="bucket-tag tag-main">Core Strategy</div>
+                        <h1>The 2-Step Process</h1>
+                        <p class="mt-4">Main Conclusion questions are less common, but they are our most straightforward task. Because the task is simple, they complicate it by "hiding" the conclusion.</p>
+                        <div class="anchor-box reveal-on-scroll" style="border-left-color: var(--accent); background: var(--accent-light);">
+                            <h3 style="color: var(--accent); margin-bottom: 1rem;">The 2-Step Check</h3>
+                            <div style="background: white; padding: 1.25rem; border-radius: 12px; margin-bottom: 0.75rem; box-shadow: var(--shadow-sm); transition: transform 0.3s ease;"><strong>Step 1:</strong> Find the author’s opinion, not merely a factual statement.</div>
+                            <div style="background: white; padding: 1.25rem; border-radius: 12px; box-shadow: var(--shadow-sm); transition: transform 0.3s ease;"><strong>Step 2:</strong> Check whether that opinion is explicitly supported by at least one other statement.</div>
+                        </div>
+                        <div class="coach-note reveal-on-scroll">
+                            <div class="coach-icon">💡</div>
+                            <div><p style="margin:0; color: var(--text-main);"><strong>Coach's Tip: Upside Down Arguments</strong><br>They very rarely put the conclusion as the final claim. Instead, we usually hear the Conclusion before we hear its Support. If the first sentence sounds like an Author Opinion, verify it gets supported.</p></div>
+                        </div>
+
+                        <!-- Lightweight Pop Quiz embedded in Notes -->
+                        <div class="pop-quiz reveal-on-scroll" id="pq-2">
+                            <div class="pq-title">⚡ Pop Quiz</div>
+                            <div class="pq-question">Which of the following sounds like an Author's Opinion (Conclusion) rather than a mere fact?</div>
+                            <div class="pq-options">
+                                <div class="pq-option" onclick="checkPQ('pq-2', 0, false, 'This is a factual statement of record, not an opinion.')">
+                                    <strong>A)</strong> The city council voted 5-4 to approve the new zoning laws.
+                                </div>
+                                <div class="pq-option" onclick="checkPQ('pq-2', 1, true, 'Correct! Calling it \'a mistake\' implies a subjective judgment or opinion.')">
+                                    <strong>B)</strong> The city council made a mistake by approving the new zoning laws.
+                                </div>
+                            </div>
+                            <div class="pq-feedback"></div>
+                        </div>
+
+                        <button class="btn btn-primary mt-8" onclick="markLessonComplete('sec-2'); switchLesson('sec-3')">Continue to Role Framework</button>
+                    </div>
+
+                    <div id="sec-3" class="lesson-section">
+                        <div class="bucket-tag tag-support">Structure</div>
+                        <h1>Statement Role Framework</h1>
+                        <p>For Role questions, you need to identify what role a specific claim played in the argument. We use a four-bucket system.</p>
+                        <div class="framework-grid">
+                            <div class="framework-bucket reveal-on-scroll"><div class="bucket-tag tag-main">Main Conclusion</div><p style="font-size: 0.9rem; margin:0;">The claim the author is ultimately trying to prove. A generalization supported by evidence.</p></div>
+                            <div class="framework-bucket reveal-on-scroll"><div class="bucket-tag tag-support">Support</div><p style="font-size: 0.9rem; margin:0;">A claim used in favor of the conclusion. Includes <strong>Premises</strong> (direct support) and <strong>Intermediate Conclusions</strong> (supported by other statements, but used to support the main conclusion).</p></div>
+                            <div class="framework-bucket reveal-on-scroll"><div class="bucket-tag tag-opposing">Opposing Viewpoint</div><p style="font-size: 0.9rem; margin:0;">A claim the author is responding to, pushing back against (rebuttal target), or conceding before replying.</p></div>
+                            <div class="framework-bucket reveal-on-scroll"><div class="bucket-tag tag-neutral">Neutral Info</div><p style="font-size: 0.9rem; margin:0;">Background information, context, or setup that frames the argument without functioning as the conclusion, support, or opposing view.</p></div>
+                        </div>
+
+                        <!-- Lightweight Pop Quiz embedded in Notes -->
+                        <div class="pop-quiz reveal-on-scroll" id="pq-3">
+                            <div class="pq-title">⚡ Quick Check</div>
+                            <div class="pq-question">Is the word "because" typically a Premise indicator or a Conclusion indicator?</div>
+                            <div class="pq-options">
+                                <div class="pq-option" onclick="checkPQ('pq-3', 0, true, 'Correct! \'Because\' introduces supporting evidence.')">
+                                    <strong>A)</strong> Premise Indicator
+                                </div>
+                                <div class="pq-option" onclick="checkPQ('pq-3', 1, false, 'Incorrect. Conclusion indicators are words like \'therefore\' or \'thus\'.')">
+                                    <strong>B)</strong> Conclusion Indicator
+                                </div>
+                            </div>
+                            <div class="pq-feedback"></div>
+                        </div>
+
+                        <button class="btn btn-primary mt-8" onclick="markLessonComplete('sec-3'); switchLesson('sec-4')">Continue to Referential Language</button>
+                    </div>
+
+                    <div id="sec-4" class="lesson-section">
+                        <div class="bucket-tag tag-main">Translation Skill</div>
+                        <h1>Referential Language in Conclusions</h1>
+                        <p class="mt-4" style="font-size: 1.1rem; color: var(--text-main);">Many conclusions act as rebuttals or summaries that rely on referential shorthand words like <em>this</em>, <em>that</em>, <em>they</em>, <em>such</em>, or <em>it</em>.</p>
+
+                        <div class="anchor-box reveal-on-scroll" style="padding: 1.5rem 2rem;">
+                            <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.05em;">The Translation Rule</h3>
+                            <p style="color: var(--text-main); font-size: 1.1rem; margin: 0; font-weight: 500;">Never leave a conclusion in vague shorthand. Always trace the referential word back to its exact target, and replace the pronoun with the specific noun.</p>
+                        </div>
+
+                        <div class="example-card reveal-on-scroll">
+                            <div class="example-label">Case Study</div>
+                            <div class="example-text">"Some people propose laws that would require mandatory background checks. However, <em>such laws</em> won't affect the homicide rate."</div>
+
+                            <div class="example-breakdown">
+                                <div class="breakdown-step">
+                                    <span class="step-icon">1</span>
+                                    <div>
+                                        <strong>Identify the shorthand</strong>
+                                        The author uses the phrase <em>"such laws"</em> in the conclusion.
+                                    </div>
+                                </div>
+                                <div class="breakdown-step">
+                                    <span class="step-icon">2</span>
+                                    <div>
+                                        <strong>Locate the exact target</strong>
+                                        The previous sentence defines them as "laws that would require mandatory background checks."
+                                    </div>
+                                </div>
+                                <div class="breakdown-step">
+                                    <span class="step-icon">3</span>
+                                    <div>
+                                        <strong>Restate explicitly</strong>
+                                        "Laws requiring mandatory background checks won't affect the homicide rate."
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p style="font-size: 1.05rem; color: var(--text-main); margin-top: 2rem;">When dissecting arguments in the drills ahead, your job is to translate every vague conclusion into a precise, standalone claim.</p>
+
+                        <div class="cta-box reveal-on-scroll">
+                            <h3>Phase 1 Complete</h3>
+                            <p>You now have the structural framework to dissect any argument. Apply these tools in the practice arena.</p>
+                            <button class="btn btn-primary" style="font-size: 1.05rem; padding: 1rem 2rem;" onclick="markLessonComplete('sec-4'); navigate('drills-view')">Enter Practice Arena</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="drills-view" class="view">
+        <div class="state-loading">
+            <div class="drill-header" style="justify-content: flex-start; gap: 1rem; margin-bottom: 2rem;">
+                <div class="skeleton skeleton-text" style="width: 100px; height: 28px; border-radius: 14px; margin: 0;"></div>
+                <div class="skeleton skeleton-text" style="width: 200px; height: 32px; margin: 0;"></div>
+            </div>
+            <div class="drill-workspace skeleton" style="height: 180px;"></div>
+            <div class="drill-controls skeleton" style="height: 120px;"></div>
+        </div>
+        <div class="state-empty">
+            <div class="empty-state-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <h2 class="empty-state-title">All Drills Completed</h2>
+            <p class="empty-state-desc">You've successfully dissected every argument in the premium bank. Incredible work on mastering these structures.</p>
+            <button class="btn btn-primary" onclick="navigate('dashboard-view')">Return to Dashboard</button>
+        </div>
+        <div class="state-content">
+            <div class="drill-header">
+                <div><div class="bucket-tag tag-main">Application</div><h1>Argument Dissection</h1></div>
+                <div class="header-progress">
+                    <div class="header-progress-top">
+                        <span class="header-percent"><span id="drill-percent-val">0</span>%</span>
+                        <span class="header-percent-label">Complete</span>
+                    </div>
+                    <div class="header-bar-bg"><div class="header-bar-fill" id="drill-header-bar" style="width: 0%;"></div></div>
+                    <div class="header-subtext" id="drill-sub-text">0 of 20 questions</div>
+                </div>
+            </div>
+            <div class="drill-workspace reveal-on-scroll" id="drill-workspace"></div>
+            <div class="drill-controls reveal-on-scroll" id="drill-controls"></div>
+            <div class="feedback-panel" id="drill-feedback"></div>
+        </div>
+    </main>
+
+    <main id="flashcards-view" class="view">
+        <div class="state-loading">
+            <div class="text-center mb-4">
+                <div class="skeleton skeleton-text" style="width: 80px; height: 24px; border-radius: 12px; margin: 0 auto 1rem;"></div>
+                <div class="skeleton skeleton-title" style="margin: 0 auto 0.5rem;"></div>
+                <div class="skeleton skeleton-text" style="width: 100px; margin: 0 auto;"></div>
+            </div>
+            <div class="flashcard-wrapper skeleton" style="border:none;"></div>
+        </div>
+        <div class="state-content">
+            <div class="text-center mb-4">
+                <div class="bucket-tag tag-support">Training</div>
+                <h1>Indicator Word Deck</h1>
+                <div class="fc-progress-container mt-4">
+                    <div class="header-progress-top" style="justify-content: center;">
+                        <span class="header-percent"><span id="fc-percent-val">0</span>%</span>
+                        <span class="header-percent-label">Mastered</span>
+                    </div>
+                    <div class="header-bar-bg mx-auto my-2" style="width: 240px; height: 8px;"><div class="header-bar-fill" id="fc-header-bar" style="width: 0%;"></div></div>
+                    <div class="header-subtext mt-2" id="fc-sub-text">0 of 33 cards</div>
+                </div>
+            </div>
+
+            <div class="flashcard-wrapper reveal-on-scroll">
+                <div class="flashcard-stack-2"></div>
+                <div class="flashcard-stack-1"></div>
+                <div class="flashcard" id="fc-card" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <div class="fc-prompt-label">Concept Check</div>
+                        <div class="fc-front-question" id="fc-front-q">Question text here</div>
+                        <div class="fc-hint">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                            Tap to reveal
+                        </div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="fc-role-badge" id="fc-role">Role</div>
+                        <div class="fc-function-text" id="fc-function">Explanation of function.</div>
+                        <div class="fc-example-box" id="fc-example-text">"Example sentence."</div>
+                        <div class="fc-coach-note">
+                            <span class="coach-icon" style="font-size: 1.1rem; filter: none; animation: none;">💡</span>
+                            <span id="fc-note-text">Note text</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fc-controls-wrapper" id="fc-controls">
+                <button class="btn btn-review" onclick="handleFC('review')">Review Again</button>
+                <button class="btn btn-gotit" onclick="handleFC('got-it')">Got It</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="profile-modal">
+    <div class="modal-content text-center">
+        <h2>Profile Settings</h2>
+        <div class="avatar" id="modal-avatar" style="width: 72px; height: 72px; font-size: 2.5rem; margin: 1.5rem auto;">A</div>
+        <p id="modal-name" style="font-weight: 600; color: var(--text-main); font-size: 1.25rem; margin-bottom: 2rem;">Student</p>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <button class="btn btn-secondary" onclick="changeName()">Change Name</button>
+            <button id="reset-btn" class="btn btn-secondary" onclick="resetProgress()">Reset Progress</button>
+            <button id="logout-btn" class="btn btn-secondary" style="color: var(--error); border-color: rgba(255,59,48,0.3);" onclick="logout()">Clear Session & Logout</button>
+            <button class="btn btn-primary mt-4" onclick="document.getElementById('profile-modal').style.display='none'">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ------------------------------------------------------------------
+    // SANDBOX-SAFE STORAGE MANAGER
+    // ------------------------------------------------------------------
+    const StorageMgr = {
+        memory: {},
+        isAvailable: false,
+        init() {
+            try {
+                const testKey = '__test__';
+                window.localStorage.setItem(testKey, '1');
+                window.localStorage.removeItem(testKey);
+                this.isAvailable = true;
+            } catch (e) {
+                console.warn('Sandbox blocked localStorage. Using memory fallback.');
+                this.isAvailable = false;
+            }
+        },
+        get(key) {
+            if (this.isAvailable) return window.localStorage.getItem(key);
+            return this.memory[key] || null;
+        },
+        set(key, val) {
+            if (this.isAvailable) window.localStorage.setItem(key, val);
+            else this.memory[key] = val;
+        },
+        remove(key) {
+            if (this.isAvailable) window.localStorage.removeItem(key);
+            else delete this.memory[key];
+        }
+    };
+    StorageMgr.init();
+
+    // ------------------------------------------------------------------
+    // APP STATE & PERSISTENCE
+    // ------------------------------------------------------------------
+    const DEFAULT_STATE = {
+        name: '',
+        view: 'dashboard-view',
+        lastLearningView: 'lessons-view',
+        currentLessonSection: 'sec-1',
+        fcIndex: 0,
+        fcMastered: [],
+        drillsCompleted: [],
+        popQuizzes: {},
+        lessons: { 'sec-1': false, 'sec-2': false, 'sec-3': false, 'sec-4': false }
+    };
+
+    let appState = { ...DEFAULT_STATE };
+    let drillCurrentIdx = 0;
+    let drillState = { step: 1, selectedC: null, structureType: null, selectedFollowUp: null };
+
+    const loaderBar = document.getElementById('top-progress-bar');
+    let saveStatusTimeout;
+
+    // Scroll Reveal Observer
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                scrollObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        root: null,
+        threshold: 0.1,
+        rootMargin: "0px 0px -30px 0px"
+    });
+
+    function initScrollAnimations() {
+        const elementsToReveal = document.querySelectorAll(
+            '.anchor-box, .coach-note, .pop-quiz, .example-card, .framework-bucket, .cta-box, .drill-workspace, .drill-controls, .flashcard-wrapper'
+        );
+        elementsToReveal.forEach(el => {
+            el.classList.remove('is-visible');
+            el.classList.add('reveal-on-scroll');
+            scrollObserver.observe(el);
+        });
+
+        const frameworkGrid = document.querySelector('.framework-grid');
+        if (frameworkGrid) {
+            Array.from(frameworkGrid.children).forEach((bucket, i) => {
+                bucket.style.transitionDelay = `${i * 0.1}s`;
+                setTimeout(() => { bucket.style.transitionDelay = '0s'; }, 1000 + (i * 100));
+            });
+        }
+    }
+
+    function animateValue(obj, start, end, duration) {
+        if (!obj) return;
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 4);
+            obj.innerHTML = Math.floor(ease * (end - start) + start);
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+
+        let iconHtml = '✓';
+        if (type === 'error') iconHtml = '✕';
+        if (type === 'warning') iconHtml = '↻';
+
+        toast.innerHTML = `<div class="toast-icon ${type}">${iconHtml}</div> <span>${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('toast-leaving');
+            setTimeout(() => toast.remove(), 400);
+        }, 3000);
+    }
+
+    async function simulateLoading(viewId, callback) {
+        const view = document.getElementById(viewId);
+        if(!view) return;
+
+        loaderBar.style.opacity = '1';
+        loaderBar.style.width = '30%';
+        view.classList.add('is-loading');
+
+        setTimeout(() => { loaderBar.style.width = '70%'; }, 200);
+        await new Promise(r => setTimeout(r, 600));
+
+        if(callback) callback();
+
+        loaderBar.style.width = '100%';
+        view.classList.remove('is-loading');
+
+        setTimeout(() => {
+            loaderBar.style.opacity = '0';
+            setTimeout(() => { loaderBar.style.width = '0%'; }, 300);
+        }, 300);
+    }
+
+    function loadState() {
+        const saved = StorageMgr.get('lsat_portal_state');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                appState = { ...DEFAULT_STATE, ...parsed };
+                if (!appState.popQuizzes) appState.popQuizzes = {};
+                if (!appState.fcMastered) appState.fcMastered = [];
+            } catch (e) {
+                console.error("Failed to parse saved state", e);
+            }
+        }
+    }
+
+    function saveState() {
+        StorageMgr.set('lsat_portal_state', JSON.stringify(appState));
+        updateDashboard();
+
+        const saveIndicator = document.getElementById('save-status');
+        if (saveIndicator && appState.name) {
+            saveIndicator.style.opacity = '1';
+            clearTimeout(saveStatusTimeout);
+            saveStatusTimeout = setTimeout(() => {
+                saveIndicator.style.opacity = '0';
+            }, 2500);
+        }
+    }
+
+    function clearLoginError() {
+        document.getElementById('student-name').classList.remove('input-error-active');
+        document.getElementById('login-error').style.display = 'none';
+    }
+
+    async function login() {
+        const nameInput = document.getElementById('student-name').value.trim();
+        const btn = document.getElementById('login-btn');
+
+        if (!nameInput) {
+            document.getElementById('student-name').classList.add('input-error-active');
+            document.getElementById('login-error').style.display = 'block';
+            return;
+        }
+
+        btn.innerHTML = '<span class="spinner" style="display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation: spin 1s linear infinite; margin-right: 8px;"></span> Authenticating...';
+        btn.disabled = true;
+
+        await new Promise(r => setTimeout(r, 800));
+
+        appState.name = nameInput;
+        appState.view = 'dashboard-view';
+        saveState();
+        initApp();
+
+        btn.innerHTML = 'Start Homework';
+        btn.disabled = false;
+    }
+
+    function handleLoginEnter(e) { if (e.key === 'Enter') login(); }
+
+    function changeName() {
+        const newName = prompt("Enter your name:", appState.name);
+        if (newName && newName.trim() !== '') {
+            appState.name = newName.trim();
+            saveState();
+
+            const initial = appState.name.charAt(0).toUpperCase();
+            document.getElementById('nav-name').innerText = appState.name;
+            document.getElementById('modal-name').innerText = appState.name;
+            document.getElementById('nav-avatar').innerText = initial;
+            document.getElementById('modal-avatar').innerText = initial;
+
+            updateDashboard();
+            showToast('Profile name updated.');
+        }
+    }
+
+    async function logout() {
+        const btn = document.getElementById('logout-btn');
+        btn.innerHTML = '<span class="spinner" style="display:inline-block; width:16px; height:16px; border:2px solid rgba(255,59,48,0.3); border-top-color:var(--error); border-radius:50%; animation: spin 1s linear infinite; margin-right: 8px;"></span> Logging out...';
+        btn.disabled = true;
+
+        await new Promise(r => setTimeout(r, 600));
+
+        StorageMgr.remove('lsat_portal_state');
+        appState = { ...DEFAULT_STATE };
+        document.getElementById('student-name').value = '';
+        document.getElementById('profile-modal').style.display = 'none';
+
+        btn.innerHTML = 'Clear Session & Logout';
+        btn.disabled = false;
+
+        navigate('login-view', false);
+    }
+
+    async function resetProgress() {
+        const btn = document.getElementById('reset-btn');
+        btn.innerHTML = '<span class="spinner" style="display:inline-block; width:16px; height:16px; border:2px solid rgba(0,0,0,0.1); border-top-color:var(--text-main); border-radius:50%; animation: spin 1s linear infinite; margin-right: 8px;"></span> Resetting...';
+        btn.disabled = true;
+
+        await new Promise(r => setTimeout(r, 800));
+
+        appState.lessons = { 'sec-1': false, 'sec-2': false, 'sec-3': false, 'sec-4': false };
+        appState.drillsCompleted = [];
+        appState.popQuizzes = {};
+        appState.fcIndex = 0;
+        appState.fcMastered = [];
+        appState.view = 'dashboard-view';
+        appState.lastLearningView = 'lessons-view';
+        appState.currentLessonSection = 'sec-1';
+        drillCurrentIdx = 0;
+        saveState();
+
+        document.querySelectorAll('.pq-option').forEach(opt => {
+            opt.classList.remove('correct', 'incorrect');
+            opt.style.pointerEvents = 'auto';
+        });
+        document.querySelectorAll('.pq-feedback').forEach(fb => fb.style.display = 'none');
+
+        document.getElementById('profile-modal').style.display = 'none';
+
+        btn.innerHTML = 'Reset Progress';
+        btn.disabled = false;
+
+        initApp();
+        showToast('Learning progress has been reset.');
+    }
+
+    function applyPQState(quizId) {
+        const state = appState.popQuizzes[quizId];
+        if (!state) return;
+
+        const container = document.getElementById(quizId);
+        if (!container) return;
+
+        const options = container.querySelectorAll('.pq-option');
+        options.forEach((opt, idx) => {
+            opt.style.pointerEvents = 'none';
+            if (idx === state.selected) {
+                opt.classList.add(state.isCorrect ? 'correct' : 'incorrect');
+            }
+        });
+
+        const feedbackEl = container.querySelector('.pq-feedback');
+        feedbackEl.innerText = state.feedbackText;
+        feedbackEl.style.color = state.isCorrect ? 'var(--success)' : 'var(--error)';
+        feedbackEl.style.display = 'block';
+    }
+
+    function restorePopQuizzes() {
+        Object.keys(appState.popQuizzes).forEach(applyPQState);
+    }
+
+    function initApp() {
+        if (!appState.name) { navigate('login-view', false); return; }
+
+        const initial = appState.name.charAt(0).toUpperCase();
+        document.getElementById('nav-avatar').innerText = initial;
+        document.getElementById('nav-name').innerText = appState.name;
+        document.getElementById('modal-avatar').innerText = initial;
+        document.getElementById('modal-name').innerText = appState.name;
+        document.getElementById('main-nav').style.display = 'block';
+
+        switchLesson(appState.currentLessonSection || 'sec-1', false);
+        restorePopQuizzes();
+
+        updateDashboard();
+        loadDrill();
+        loadFlashcard();
+
+        const startView = (appState.view && appState.view !== 'login-view') ? appState.view : 'dashboard-view';
+        navigate(startView, false);
+    }
+
+    function navigate(viewId, animate = true) {
+        document.querySelectorAll('.view').forEach(v => {
+            v.classList.remove('active');
+            v.style.display = 'none';
+        });
+
+        const target = document.getElementById(viewId);
+
+        if (viewId === 'login-view') {
+            target.style.display = 'flex';
+        } else {
+            target.style.display = 'block';
+        }
+
+        if (animate) {
+            void target.offsetWidth;
+            target.classList.add('active');
+        } else {
+            target.classList.add('active');
+            target.style.animation = 'none';
+            setTimeout(() => target.style.animation = '', 100);
+        }
+
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        const activeLink = document.querySelector(`.nav-item[data-target="${viewId}"]`);
+        if (activeLink) activeLink.classList.add('active');
+
+        document.getElementById('main-nav').style.display = viewId === 'login-view' ? 'none' : 'block';
+
+        appState.view = viewId;
+        if (['lessons-view', 'drills-view', 'flashcards-view'].includes(viewId)) {
+            appState.lastLearningView = viewId;
+        }
+        saveState();
+
+        if (viewId !== 'login-view' && animate) {
+            simulateLoading(viewId, () => {
+                if (viewId === 'dashboard-view') {
+                    const notesCompleted = Object.values(appState.lessons).filter(v => v).length;
+                    const drillsDone = appState.drillsCompleted.length;
+                    animateValue(document.getElementById('dash-notes-percent'), 0, Math.round((notesCompleted / 4) * 100), 1000);
+                    animateValue(document.getElementById('dash-drills-percent'), 0, Math.round((drillsDone / 20) * 100), 1200);
+                }
+                if (viewId === 'drills-view') {
+                    if (appState.drillsCompleted.length >= 20) {
+                        target.classList.add('is-empty');
+                    } else {
+                        target.classList.remove('is-empty');
+                    }
+                }
+                initScrollAnimations();
+            });
+        } else {
+            if (viewId === 'drills-view' && appState.drillsCompleted.length >= 20) target.classList.add('is-empty');
+            setTimeout(initScrollAnimations, 100);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // DASHBOARD & LESSON LOGIC
+    // ------------------------------------------------------------------
+    function updateDashboard() {
+        if(!appState.name) return;
+        document.getElementById('dash-greeting').innerText = `Good afternoon, ${appState.name}.`;
+
+        const notesCompleted = Object.values(appState.lessons).filter(v => v).length;
+        const notesPercent = Math.round((notesCompleted / 4) * 100);
+        const notesEl = document.getElementById('dash-notes-percent');
+        if(notesEl && notesEl.innerText == '0' && notesPercent > 0) animateValue(notesEl, 0, notesPercent, 1000);
+        else if (notesEl) notesEl.innerText = notesPercent;
+        document.getElementById('dash-notes-bar').style.width = `${notesPercent}%`;
+        document.getElementById('dash-notes-sub').innerText = `${notesCompleted} of 4 modules`;
+
+        // Notes Nav
+        document.getElementById('nav-notes-percent').innerText = `${notesPercent}%`;
+        document.getElementById('nav-notes-bar').style.width = `${notesPercent}%`;
+        document.getElementById('nav-notes-sub').innerText = `${notesCompleted} of 4 modules`;
+
+        const drillsDone = appState.drillsCompleted.length;
+        const drillsPercent = Math.round((drillsDone / 20) * 100);
+        const drillsEl = document.getElementById('dash-drills-percent');
+        if(drillsEl && drillsEl.innerText == '0' && drillsPercent > 0) animateValue(drillsEl, 0, drillsPercent, 1200);
+        else if (drillsEl) drillsEl.innerText = drillsPercent;
+        document.getElementById('dash-drills-bar').style.width = `${drillsPercent}%`;
+        document.getElementById('dash-drills-sub').innerText = `${drillsDone} of 20 dissected`;
+
+        const nextLabel = document.getElementById('dash-next-label');
+        const nextTitle = document.getElementById('dash-next-title');
+        const nextDesc = document.getElementById('dash-next-desc');
+        const actionBtn = document.getElementById('dash-action-btn');
+
+        const lastView = appState.lastLearningView || 'lessons-view';
+
+        if (lastView === 'lessons-view') {
+            const lessonNames = {
+                'sec-1': 'Argument Basics',
+                'sec-2': '2-Step Check',
+                'sec-3': 'Role Framework',
+                'sec-4': 'Referential Language'
+            };
+            nextLabel.innerText = "Resume Notes";
+            nextTitle.innerText = lessonNames[appState.currentLessonSection] || "Argument Basics";
+            nextDesc.innerText = "Pick up right where you left off.";
+            actionBtn.innerText = "Continue Learning";
+            actionBtn.onclick = () => { navigate('lessons-view'); switchLesson(appState.currentLessonSection || 'sec-1'); };
+
+        } else if (lastView === 'drills-view') {
+            nextLabel.innerText = "Resume Drills";
+            nextTitle.innerText = "Argument Dissection";
+            nextDesc.innerText = drillsDone >= 20 ? "All drills completed." : `${drillsPercent}% completed.`;
+            actionBtn.innerText = drillsDone >= 20 ? "Review Drills" : "Continue Drilling";
+            actionBtn.onclick = () => navigate('drills-view');
+
+        } else if (lastView === 'flashcards-view') {
+            const fcPercent = Math.round(((appState.fcMastered || []).length / flashcardsData.length) * 100);
+            nextLabel.innerText = "Resume Flashcards";
+            nextTitle.innerText = "Indicator Word Deck";
+            nextDesc.innerText = `${fcPercent}% of deck mastered.`;
+            actionBtn.innerText = "Open Deck";
+            actionBtn.onclick = () => navigate('flashcards-view');
+        }
+
+        document.querySelectorAll('.lesson-nav-item').forEach(el => {
+            const sec = el.getAttribute('data-section');
+            if(appState.lessons[sec]) el.classList.add('completed');
+            else el.classList.remove('completed');
+        });
+    }
+
+    function switchLesson(secId, doSave = true) {
+        document.querySelectorAll('.lesson-section').forEach(el => el.classList.remove('active'));
+        const targetSection = document.getElementById(secId);
+        if (targetSection) targetSection.classList.add('active');
+
+        document.querySelectorAll('.lesson-nav-item').forEach(el => el.classList.remove('active'));
+        const targetNav = document.querySelector(`.lesson-nav-item[data-section="${secId}"]`);
+        if (targetNav) targetNav.classList.add('active');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        initScrollAnimations();
+
+        if (doSave && appState.currentLessonSection !== secId) {
+            appState.currentLessonSection = secId;
+            saveState();
+        }
+    }
+
+    function markLessonComplete(secId) {
+        if (!appState.lessons[secId]) {
+            appState.lessons[secId] = true;
+            saveState();
+            showToast('Notes segment completed.');
+        }
+    }
+
+    function checkPQ(quizId, optionIndex, isCorrect, feedbackText) {
+        if (appState.popQuizzes[quizId] !== undefined) return;
+
+        appState.popQuizzes[quizId] = { selected: optionIndex, isCorrect, feedbackText };
+        saveState();
+        applyPQState(quizId);
+    }
+
+    // ------------------------------------------------------------------
+    // DRILLS LOGIC & DATA
+    // ------------------------------------------------------------------
+    const drillsData = [
+        { id: 1, type: 'first', parts: [
+            {id: 'p1', text: "The vision test for obtaining a driver's license <i-w t=\"Opinion Indicator\">should</i-w> not be limited to measuring the adequacy of vision in daylight conditions, as is the current practice. ", isC: true},
+            {id: 'p2', text: "Many people whose daylight vision is adequate have night vision that is inadequate for safe night driving. ", isS: true},
+            {id: 'p3', text: "Most car accidents occur at night, and inadequate vision plays a role in 80 percent of these accidents.", isS: true}
+        ], feedback: "Correct! The first sentence is the author's opinion, supported by the factual data about night vision and car accidents." },
+        { id: 2, type: 'first', parts: [
+            {id: 'p1', text: "Freedom of speech is not only a basic human right; it is also the only rational policy for this government to adopt. ", isC: true},
+            {id: 'p2', text: "When ideas are openly aired, good ideas flourish, silly proposals are easily recognized as such, and dangerous ideas can be responded to by rational argument. ", isS: true},
+            {id: 'p3', text: "Nothing is ever gained by forcing citizens to disseminate their thoughts in secret.", isS: true}
+        ], feedback: "Correct. The strong opinion 'the only rational policy' is the conclusion, supported by the benefits of airing ideas." },
+        { id: 3, type: 'first', parts: [
+            {id: 'p1', text: "Arguing that there was no trade between Europe and East Asia in the early Middle Ages because there are no written records of such trade is like arguing that the yeti, an apelike creature supposedly existing in the Himalayas, does not exist because there have been no scientifically confirmed sightings. ", isC: true},
+            {id: 'p2', text: "A verifiable sighting of the yeti would prove that the creature does exist, <i-w t=\"Pivot\">but</i-w> the absence of sightings cannot prove that it does not.", isS: true}
+        ], feedback: "Correct. The author makes an analogy in the first sentence to express their main point, and supports it in the second." },
+        { id: 4, type: 'first', parts: [
+            {id: 'p1', text: "No computer will ever be able to do everything that some human minds can do, ", isC: true},
+            {id: 'p2', text: "<i-w t=\"Premise Indicator\">for</i-w> there are some problems that cannot be solved by following any set of mechanically applicable rules. ", isS: true},
+            {id: 'p3', text: "<i-w t=\"Pivot\">Yet</i-w> computers can only solve problems by following some set of mechanically applicable rules.", isS: true}
+        ], feedback: "Correct. 'for' indicates a premise follows. The first clause is the main conclusion." },
+        { id: 5, type: 'first', parts: [
+            {id: 'p1', text: "The toy-labeling law <i-w t=\"Opinion Indicator\">should</i-w> require manufacturers to provide explicit safety labels on toys to indicate what hazards the toys pose. ", isC: true},
+            {id: 'p2', text: "The only labels currently required by law are labels indicating the age range for which a toy is intended. ", isN: true},
+            {id: 'p3', text: "For instance, a \"three and up\" label is required on toys that pose a choking hazard for children under three years of age. ", isS: true},
+            {id: 'p4', text: "<i-w t=\"Concession Indicator\">Although</i-w> the current toy-labeling law has indeed reduced the incidence of injuries to children from toys, ", isO: true},
+            {id: 'p5', text: "parents could prevent such injuries almost entirely if toy labels provided explicit safety information.", isS: true}
+        ], feedback: "Correct. The prescriptive 'should' points to the conclusion in sentence one." },
+        { id: 6, type: 'first', parts: [
+            {id: 'p1', text: "It is inaccurate to say that a diet high in refined sugar cannot cause adult-onset diabetes, ", isC: true},
+            {id: 'p2', text: "<i-w t=\"Premise Indicator\">since</i-w> a diet high in refined sugar can make a person overweight, and being overweight can predispose a person to adult-onset diabetes.", isS: true}
+        ], feedback: "Correct. 'since' introduces the support. The framing clause is the conclusion." },
+        { id: 7, type: 'first', parts: [
+            {id: 'p1', text: "It is unreasonable to incarcerate anyone for any other reason than that he or she is a serious threat to the property or lives of other people. ", isC: true},
+            {id: 'p2', text: "The breaking of a law does not justify incarceration, ", isS: true},
+            {id: 'p3', text: "<i-w t=\"Premise Indicator\">for</i-w> lawbreaking proceeds either from ignorance of the law or of the effects of one's actions, or from the free choice on the part of the lawbreaker. ", isS: true},
+            {id: 'p4', text: "<i-w t=\"Opinion Indicator\">Obviously</i-w> mere ignorance cannot justify incarcerating a lawbreaker, and even free choice on the part of the lawbreaker fails to justify incarceration, <i-w t=\"Premise Indicator\">for</i-w> free choice proceeds from the desires of an agent, and the desires of an agent are products of genetics and environmental conditioning, neither of which is controlled by the agent.", isS: true}
+        ], feedback: "Correct. Heavy opinion at the start, supported by a chain of intermediate conclusions." },
+        { id: 8, type: 'rebuttal', parts: [
+            {id: 'p1', text: "<i-w t=\"Concession Indicator\">Even though</i-w> cotton and nylon are used for similar purposes, some people have the mistaken notion that cotton is natural but nylon is not. ", isO: true},
+            {id: 'p2', text: "<i-w t=\"Pivot\">However</i-w>, nylon's main components come from petroleum and from the nitrogen in the atmosphere. ", isC: true},
+            {id: 'p3', text: "<i-w t=\"Opinion Indicator\">Clearly</i-w> the atmosphere is natural. And petroleum comes from oil, which in turn comes from ancient plants—a natural source.", isS: true}
+        ], feedback: "Correct. The author pushes back against the 'mistaken notion' using the pivot word 'However'." },
+        { id: 9, type: 'rebuttal', parts: [
+            {id: 'p1', text: "Mayor McKinney's policies have often been criticized on the grounds that they benefit only wealthy city residents, ", isO: true},
+            {id: 'p2', text: "<i-w t=\"Pivot\">but</i-w> that is not a fair evaluation. ", isC: true},
+            {id: 'p3', text: "Some of McKinney's policies have <i-w t=\"Opinion Indicator\">clearly</i-w> benefited the city's less affluent residents. McKinney actively supported last year's proposal to lower the city's high property taxes. ", isS: true},
+            {id: 'p4', text: "<i-w t=\"Premise Indicator\">Because</i-w> of this tax decrease, more development is taking place in the city, helping to end the housing shortage and stabilize the rents in the city.", isS: true}
+        ], feedback: "Correct. Rebuttal conclusion ('not a fair evaluation') responding to critics." },
+        { id: 10, type: 'rebuttal', parts: [
+            {id: 'p1', text: "Some legislators refuse to commit public funds for new scientific research if they cannot be assured that the research will contribute to the public welfare. ", isO: true},
+            {id: 'p2', text: "Such a position ignores the lessons of experience. ", isC: true},
+            {id: 'p3', text: "Many important contributions to the public welfare that resulted from scientific research were never predicted as potential outcomes of that research. Suppose that a scientist in the early twentieth century had applied for public funds to study molds: who would have predicted that such research would lead to the discovery of antibiotics—one of the greatest contributions ever made to the public welfare?", isS: true}
+        ], feedback: "Correct. The author attacks the legislators' position with 'Such a position ignores...'." },
+        { id: 11, type: 'rebuttal', parts: [
+            {id: 'p1', text: "I was shocked to learn that Judge Mosston was convicted of criminal assault, ", isN: true},
+            {id: 'p2', text: "<i-w t=\"Pivot\">but</i-w> I disagree with my fellow citizens who believe that he should be forced to resign. ", isC: true},
+            {id: 'p3', text: "I have played cards with Judge Mosston for many years, and he has always shown himself to be fair toward me and our fellow cardplayers. Our judicial system simply cannot afford to lose any just and fair judges.", isS: true}
+        ], feedback: "Correct. Rebuttal conclusion rejecting the fellow citizens' view." },
+        { id: 12, type: 'rebuttal', parts: [
+            {id: 'p1', text: "<i-w t=\"Opposing Viewpoint\">Some people believe</i-w> that witnessing violence in movies will discharge aggressive energy. ", isO: true},
+            {id: 'p2', text: "Does watching someone else eat fill one's own stomach?", isC: true}
+        ], feedback: "Correct. A rhetorical question acting as a rebuttal conclusion." },
+        { id: 13, type: 'rebuttal', parts: [
+            {id: 'p1', text: "Behind the hope that computers can replace teachers is the idea that the student's understanding of the subject being taught consists in knowing facts and rules, the job of a teacher being to make the facts and rules explicit and convey them to the student, either by practice drills or by coaching. If that were indeed the way the mind works, the teacher could transfer facts and rules to the computer, which would replace the teacher as drillmaster and coach. ", isO: true},
+            {id: 'p2', text: "<i-w t=\"Pivot\">But</i-w> <i-w t=\"Premise Indicator\">since</i-w> understanding does not consist merely of knowing facts and rules, but of the grasp of the general concepts underlying them, ", isS: true},
+            {id: 'p3', text: "the hope that the computer will eventually replace the teacher is fundamentally misguided.", isC: true}
+        ], feedback: "Correct. The conclusion is at the end of the paragraph, rebutting the hope mentioned earlier." },
+        { id: 14, type: 'rebuttal', parts: [
+            {id: 'p1', text: "So-called environmentalists have argued that the proposed Golden Lake Development would interfere with bird-migration patterns. ", isO: true},
+            {id: 'p2', text: "<i-w t=\"Pivot\">However</i-w>, the fact that these same people have raised environmental objections to virtually every development proposal brought before the council in recent years indicates that their expressed concern for bird migration patterns is nothing but a mask for their antidevelopment, antiprogress agenda. ", isS: true},
+            {id: 'p3', text: "Their claim, <i-w t=\"Conclusion Indicator\">therefore</i-w>, <i-w t=\"Opinion Indicator\">should</i-w> be dismissed without further consideration.", isC: true}
+        ], feedback: "Correct. Rebuttal conclusion marked by 'therefore' at the end." },
+        { id: 15, type: 'rebuttal', parts: [
+            {id: 'p1', text: "That long-term cigarette smoking can lead to health problems including cancer and lung disease is a scientifically well-established fact. ", isN: true},
+            {id: 'p2', text: "Contrary to what many people seem to believe, <i-w t=\"Pivot\">however</i-w>, it is not necessary to deny this fact in order to reject the view that tobacco companies should be held either morally or legally responsible for the poor health of smokers. ", isC: true},
+            {id: 'p3', text: "<i-w t=\"Premise Indicator\">After all</i-w>, excessive consumption of candy undeniably leads to such health problems as tooth decay, <i-w t=\"Pivot\">but</i-w> no one seriously believes that candy eaters who get cavities should be able to sue candy manufacturers.", isS: true}
+        ], feedback: "Correct. Rebuttal conclusion nested in a complex sentence, supported by the candy analogy." },
+        { id: 16, type: 'rebuttal', parts: [
+            {id: 'p1', text: "Pharmacists maintain that doctors should not be permitted to sell the medicine that they prescribe <i-w t=\"Premise Indicator\">because</i-w> doctors would then be tempted to prescribe unnecessary medicines in order to earn extra income. ", isO: true},
+            {id: 'p2', text: "<i-w t=\"Pivot\">But</i-w> pharmacists have a financial interest in having a monopoly on the sale of prescription medicines, ", isS: true},
+            {id: 'p3', text: "<i-w t=\"Conclusion Indicator\">so</i-w> their objection to the sale of medicines by doctors cannot be taken seriously.", isC: true}
+        ], feedback: "Correct. Rebuttal introduced by 'so' at the very end." },
+        { id: 17, type: 'rebuttal', parts: [
+            {id: 'p1', text: "Our radio station has a responsibility to serve the public interest. ", isS: true},
+            {id: 'p2', text: "<i-w t=\"Conclusion Indicator\">Hence</i-w>, when our critics contend that our recent exposé of events in the private lives of local celebrities was excessively intrusive, ", isO: true},
+            {id: 'p3', text: "we can only reply that the overwhelming public interest in these matters makes it our responsibility to publicize them.", isC: true}
+        ], feedback: "Correct. 'we can only reply that...' is the rebuttal conclusion." },
+        { id: 18, type: 'rebuttal', parts: [
+            {id: 'p1', text: "The fire that destroyed the Municipal Building started before dawn this morning, and the last fire fighters did not leave until late this afternoon. No one could have been anywhere in the vicinity of a fire like that one and fail to notice it. ", isS: true},
+            {id: 'p2', text: "Thomas <i-w t=\"Opinion Indicator\">must</i-w> have seen it, ", isC: true},
+            {id: 'p3', text: "whatever he now says to the contrary. ", isO: true},
+            {id: 'p4', text: "He admits that, as usual, he went from his apartment to the library this morning, and there is no way for him to get from his apartment to the library without going past the Municipal Building.", isS: true}
+        ], feedback: "Correct. Maps to rebuttal family due to 'whatever he now says to the contrary'." },
+        { id: 19, type: 'first', parts: [
+            {id: 'p1', text: "There is no mystery as to why figurative painting revived in the late 1970s. ", isC: true},
+            {id: 'p2', text: "People want to look at recognizable images. Sorting out art theories reflected in abstract paintings is no substitute for the sense of empathy that comes from looking at a realistic painting of a figure in a landscape. ", isS: true},
+            {id: 'p3', text: "<i-w t=\"Opinion Indicator\">Perhaps</i-w> members of the art-viewing public resented abstract art <i-w t=\"Premise Indicator\">because</i-w> they felt that its lack of realistic subject matter was a rejection of the viewers and their world.", isS: true}
+        ], feedback: "Correct. First sentence states the opinion, the rest provides the reasons (support)." },
+        { id: 20, type: 'first', parts: [
+            {id: 'p1', text: "<i-w t=\"Premise Indicator\">Since</i-w> multinational grain companies operate so as to maximize profits, ", isS: true},
+            {id: 'p2', text: "they cannot be relied on to initiate economic changes that would reform the world's food-distribution system. ", isC: true},
+            {id: 'p3', text: "<i-w t=\"Concession Indicator\">Although</i-w> it is true that the actions of multinational companies sometimes do result in such economic change, ", isO: true},
+            {id: 'p4', text: "this result is incidental, arising not from the desire for reform <i-w t=\"Pivot\">but</i-w> from the desire to maximize profits. The maximization of profits normally depends on a stable economic environment, one that discourages change.", isS: true}
+        ], feedback: "Correct. The conclusion sits right after the 'Since...' premise." }
+    ];
+
+    function parseIndicators(text) {
+        return text.replace(/<i-w t="([^"]+)">([^<]+)<\/i-w>/g, (match, type, content) => {
+            let color = "var(--accent)";
+            if (type.includes("Premise")) color = "#248A3D";
+            else if (type.includes("Pivot")) color = "#FF9500";
+            else if (type.includes("Opposing")) color = "#D70015";
+            else if (type.includes("Concession")) color = "#8E8E93";
+            return `<span class="indicator-word" data-type="${type}" style="border-bottom-color: ${color}; color: ${color};">${content}</span>`;
+        });
+    }
+
+    function updateDrillProgress() {
+        const drillsDone = appState.drillsCompleted.length;
+        const drillsPercent = Math.round((drillsDone / drillsData.length) * 100);
+        document.getElementById('drill-percent-val').innerText = drillsPercent;
+        document.getElementById('drill-header-bar').style.width = `${drillsPercent}%`;
+        document.getElementById('drill-sub-text').innerText = `${drillsDone} of ${drillsData.length} questions`;
+    }
+
+    function loadDrill() {
+        const nextIncomplete = drillsData.findIndex(d => !appState.drillsCompleted.includes(d.id));
+        if (nextIncomplete === -1) {
+            drillCurrentIdx = drillsData.length - 1;
+        } else {
+            drillCurrentIdx = nextIncomplete;
+        }
+        renderDrill();
+    }
+
+    function renderDrill() {
+        const q = drillsData[drillCurrentIdx];
+        drillState = { step: 1, selectedC: null, structureType: null, selectedFollowUp: null };
+
+        updateDrillProgress();
+
+        const ws = document.getElementById('drill-workspace');
+        const partsHTML = q.parts.map((p, index) =>
+            `<span class="selectable-phrase drill-part-anim" style="animation-delay: ${index * 0.1}s;" id="${p.id}" onclick="handlePhraseClick('${p.id}')">${parseIndicators(p.text)}</span>`
+        ).join('');
+
+        ws.innerHTML = `<div class="stimulus" id="stimulus-container">${partsHTML}</div>`;
+        document.getElementById('drill-feedback').style.display = 'none';
+        renderDrillControls();
+
+        ws.classList.remove('is-visible');
+        setTimeout(() => ws.classList.add('is-visible'), 50);
+    }
+
+    function renderDrillControls() {
+        const ctrls = document.getElementById('drill-controls');
+        const q = drillsData[drillCurrentIdx];
+        let html = '';
+        if (drillState.step === 1) {
+            html = `<div class="instruction-step"><div class="step-badge">1</div> Select the Main Conclusion in the text above.</div>
+                    <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Click on the phrase that represents the author's ultimate point.</p>
+                    <button class="btn btn-primary" disabled id="btn-step-1" onclick="advanceDrillStep()">Next Step</button>`;
+        } else if (drillState.step === 2) {
+            html = `<div class="instruction-step"><div class="step-badge">2</div> Classify the Argument Structure</div>
+                    <div class="choice-grid">
+                        <div class="choice-btn ${drillState.structureType === 'first' ? 'selected' : ''}" onclick="selectStructure('first')">First-sentence</div>
+                        <div class="choice-btn ${drillState.structureType === 'rebuttal' ? 'selected' : ''}" onclick="selectStructure('rebuttal')">Rebuttal</div>
+                    </div>
+                    <button class="btn btn-primary" disabled id="btn-step-2" onclick="advanceDrillStep()">Next Step</button>`;
+        } else if (drillState.step === 3) {
+            const prompt = drillState.structureType === 'first' ? "Select a Supporting Claim" : "Select the Opposing Viewpoint";
+            html = `<div class="instruction-step"><div class="step-badge">3</div> ${prompt}</div>
+                    <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Click on the appropriate phrase in the text above.</p>
+                    <button class="btn btn-primary" disabled id="btn-step-3" onclick="gradeDrill()">Submit Answer</button>`;
+        }
+        ctrls.innerHTML = html;
+        updateWorkspaceHighlights();
+
+        ctrls.classList.remove('is-visible');
+        setTimeout(() => ctrls.classList.add('is-visible'), 50);
+    }
+
+    function handlePhraseClick(pId) {
+        if (drillState.step === 1) {
+            drillState.selectedC = pId;
+            document.getElementById('btn-step-1').disabled = false;
+        } else if (drillState.step === 3) {
+            if(pId === drillState.selectedC) return;
+            drillState.selectedFollowUp = pId;
+            document.getElementById('btn-step-3').disabled = false;
+        }
+        updateWorkspaceHighlights();
+    }
+
+    function updateWorkspaceHighlights() {
+        document.querySelectorAll('.selectable-phrase').forEach(el => {
+            el.className = 'selectable-phrase';
+            if (el.id === drillState.selectedC) el.classList.add('selected-conclusion');
+            if (el.id === drillState.selectedFollowUp) {
+                if (drillState.structureType === 'first') el.classList.add('selected-support');
+                if (drillState.structureType === 'rebuttal') el.classList.add('selected-opposing');
+            }
+        });
+    }
+
+    function selectStructure(type) {
+        drillState.structureType = type;
+        renderDrillControls();
+        document.getElementById('btn-step-2').disabled = false;
+    }
+
+    function advanceDrillStep() {
+        drillState.step++;
+        renderDrillControls();
+    }
+
+    function gradeDrill() {
+        const q = drillsData[drillCurrentIdx];
+        const isConclusionCorrect = q.parts.find(p => p.id === drillState.selectedC)?.isC;
+        const isTypeCorrect = drillState.structureType === q.type;
+
+        let isFollowUpCorrect = false;
+        if (drillState.structureType === 'first') isFollowUpCorrect = q.parts.find(p => p.id === drillState.selectedFollowUp)?.isS;
+        else isFollowUpCorrect = q.parts.find(p => p.id === drillState.selectedFollowUp)?.isO;
+
+        const isAllCorrect = isConclusionCorrect && isTypeCorrect && isFollowUpCorrect;
+
+        document.querySelectorAll('.selectable-phrase').forEach(el => {
+            el.className = 'selectable-phrase';
+            el.style.pointerEvents = 'none';
+        });
+
+        q.parts.forEach(p => {
+            const el = document.getElementById(p.id);
+            if(p.isC) el.classList.add('selected-conclusion');
+            if(p.isS) el.classList.add('selected-support');
+            if(p.isO) el.classList.add('selected-opposing');
+        });
+
+        document.getElementById('drill-controls').innerHTML = '';
+        const fbPanel = document.getElementById('drill-feedback');
+        fbPanel.style.display = 'block';
+        fbPanel.className = `feedback-panel ${isAllCorrect ? 'correct' : 'incorrect'}`;
+
+        fbPanel.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: ${isAllCorrect ? '#34C759' : '#FF3B30'}; color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 12px ${isAllCorrect ? 'rgba(52,199,89,0.3)' : 'rgba(255,59,48,0.3)'};">
+                    ${isAllCorrect ? '✓' : '✕'}
+                </div>
+                <h3 style="color: var(--text-main); margin: 0; font-size: 1.2rem;">
+                    ${isAllCorrect ? 'Perfect Dissection' : 'Review the Map'}
+                </h3>
+            </div>
+            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; font-size: 1.05rem;">${q.feedback}</p>
+            <div style="display: flex; gap: 1rem; font-size: 0.85rem; font-weight: 500; padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.05);">
+                <span style="color: var(--accent);"><span style="opacity:0.5; margin-right:4px;">■</span> Conclusion</span>
+                <span style="color: #248A3D;"><span style="opacity:0.5; margin-right:4px;">■</span> Support</span>
+                <span style="color: #D70015;"><span style="opacity:0.5; margin-right:4px;">■</span> Opposing View</span>
+            </div>
+            <button class="btn btn-${isAllCorrect ? 'primary' : 'secondary'} mt-4" style="width: 100%; font-size: 1.05rem;" onclick="nextDrill()">${appState.drillsCompleted.length === 19 ? 'Finish Drills' : 'Next Question'}</button>
+        `;
+
+        if (isAllCorrect && !appState.drillsCompleted.includes(q.id)) {
+            appState.drillsCompleted.push(q.id);
+            saveState();
+            updateDrillProgress();
+            showToast('Progress saved.', 'success');
+        }
+    }
+
+    function nextDrill() {
+        if (appState.drillsCompleted.length >= drillsData.length) {
+            navigate('dashboard-view');
+        } else {
+            const nextIncomplete = drillsData.findIndex(d => !appState.drillsCompleted.includes(d.id));
+            drillCurrentIdx = nextIncomplete !== -1 ? nextIncomplete : 0;
+            renderDrill();
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // FLASHCARDS LOGIC
+    // ------------------------------------------------------------------
+    const flashcardsData = [
+        { front: 'What is the 2-Point Check for a Main Conclusion?', role: 'Framework', function: '1) Sounds like the Author\'s Opinion (facts < conclusions).\n2) Is Supported by at least one other explicit claim.', example: 'N/A', note: 'Always verify support!' },
+        { front: 'What does "so" usually signal?', role: 'Conclusion Indicator', function: 'Indicates the Main Conclusion or an Intermediate Conclusion follows.', example: '"The rent is high, so we must move."', note: 'Often introduces the main point.' },
+        { front: 'What does "thus" usually signal?', role: 'Conclusion Indicator', function: 'Indicates a logical deduction or conclusion follows.', example: '"It is raining; thus, the game is delayed."', note: 'A formal way to state a conclusion.' },
+        { front: 'What does "hence" usually signal?', role: 'Conclusion Indicator', function: 'Indicates a conclusion derived from previous premises.', example: '"He was late, hence he missed the train."', note: 'Similar to "therefore".' },
+        { front: 'What does "therefore" usually signal?', role: 'Conclusion Indicator', function: 'Signals that the author\'s main point or an intermediate conclusion is about to follow.', example: '"The roads are icy. Therefore, school should be canceled."', note: 'Usually the easiest way to spot the exact claim you need to prove.' },
+        { front: 'What does "it follows" usually signal?', role: 'Conclusion Indicator', function: 'Indicates a conclusion deduced from the evidence.', example: '"Since A equals B, it follows that B equals A."', note: 'Watch for what immediately follows this phrase.' },
+        { front: 'What does "as a result" usually signal?', role: 'Conclusion Indicator', function: 'Shows the logical outcome or conclusion of the preceding facts.', example: '"Sales dropped; as a result, the store closed."', note: 'Can be an intermediate or main conclusion.' },
+        { front: 'What does "consequently" usually signal?', role: 'Conclusion Indicator', function: 'Indicates the consequence or conclusion of an argument.', example: '"He didn\'t study; consequently, he failed."', note: 'Flags a direct conclusion.' },
+        { front: 'What does "this shows that" usually signal?', role: 'Conclusion Indicator', function: 'Directly points to the conclusion the author is drawing from the evidence.', example: '"The fingerprints match. This shows that he was there."', note: 'Directly flags a conclusion.' },
+        { front: 'When you see "conclude", what does it usually signal?', role: 'Conclusion Indicator', function: 'Explicitly states the conclusion of the argument.', example: '"We must conclude that the earth is round."', note: 'Directly flags a conclusion.' },
+        { front: 'In LR, what is "for" usually doing?', role: 'Premise Indicator', function: 'Introduces a reason or support for a preceding claim.', example: '"We must leave, for the storm is approaching."', note: 'Often follows the conclusion it supports.' },
+        { front: 'In LR, what is "after all" usually doing?', role: 'Premise Indicator', function: 'Provides justification or a premise for an earlier claim.', example: '"She will win. After all, she trained the hardest."', note: 'A classic premise indicator.' },
+        { front: 'In LR, what is "because" usually doing?', role: 'Premise Indicator', function: 'Introduces factual support, evidence, or a reason for a claim.', example: '"The proposal should fail because it is too expensive."', note: 'Look for the conclusion this support is helping to prove.' },
+        { front: 'In LR, what is "since" usually doing?', role: 'Premise Indicator', function: 'Acts as a premise indicator, supplying a reason.', example: '"Since the bridge is out, we must turn back."', note: 'The conclusion often comes in the other half of the sentence.' },
+        { front: 'In LR, what is "and" (when connecting facts) usually doing?', role: 'Premise Indicator', function: 'Functions as an additional premise or piece of evidence.', example: '"The car is fast, and it is fuel-efficient."', note: 'Links multiple pieces of support together.' },
+        { front: 'What is the likely function of "but"?', role: 'Pivot Word', function: 'Signals a shift, often away from an opposing view and toward the author\'s point.', example: '"Some like it cold, but I prefer it hot."', note: 'Pay close attention to what comes right after it.' },
+        { front: 'What is the likely function of "yet"?', role: 'Pivot Word', function: 'Functions as a pivot, shifting the argument\'s direction.', example: '"The plan is costly, yet it is necessary."', note: 'Often introduces the main conclusion.' },
+        { front: 'What is the likely function of "however"?', role: 'Pivot Word', function: 'Signals a turn away from another viewpoint and toward the author\'s real point.', example: '"Some critics oppose the policy. However, the evidence supports it."', note: 'Pay close attention to what comes right after it—often the main conclusion.' },
+        { front: 'What does "some people say" usually introduce?', role: 'Opposing Viewpoint', function: 'Frames a view or belief that the author is almost certainly going to attack or rebut.', example: '"Some people say video games cause violence. But studies show otherwise."', note: 'Expect a pivot word (like "but") to follow shortly after.' },
+        { front: 'What does "it\'s commonly believed" usually introduce?', role: 'Opposing Viewpoint', function: 'Sets up a widespread opinion that the author will likely disagree with.', example: '"It\'s commonly believed that carrots improve eyesight, but this is a myth."', note: 'A classic setup for a rebuttal conclusion.' },
+        { front: 'What does "some economists believe" usually introduce?', role: 'Opposing Viewpoint', function: 'Introduces a domain-specific opposing viewpoint.', example: '"Some economists believe taxes should rise, but they are mistaken."', note: 'The author is teeing up an argument against these experts.' },
+        { front: 'What does "some biologist" usually introduce?', role: 'Opposing Viewpoint', function: 'Introduces a domain-specific opposing viewpoint.', example: '"Some biologists claim the species is extinct, yet recent sightings occur."', note: 'Look for the author\'s rebuttal.' },
+        { front: 'When you see "although", what should you suspect?', role: 'Concession', function: 'Acknowledges a contrary point without adopting it as the main view.', example: '"Although the initial cost is high, the long-term savings are substantial."', note: 'The author is playing defense. The real point comes after the comma.' },
+        { front: 'When you see "while" (as a contrast), what should you suspect?', role: 'Concession', function: 'Concedes a point before delivering the primary argument.', example: '"While it is raining, we must still go outside."', note: 'The main point usually follows the concession.' },
+        { front: 'When you see "despite", what should you suspect?', role: 'Concession', function: 'Acknowledges a hindrance or opposing fact without adopting it.', example: '"Despite the risks, the mission was a success."', note: 'Often followed by the author\'s main conclusion.' },
+        { front: 'When you see "granted", what should you suspect?', role: 'Concession', function: 'Admits a point to the opposition before countering it.', example: '"Granted, the car is old, but it runs perfectly."', note: 'Sets up a pivot to the actual conclusion.' },
+        { front: 'When you see "naturally", what should you suspect?', role: 'Concession', function: 'Acknowledges an expected objection before proceeding.', example: '"Naturally, people are upset, but the law must stay."', note: 'Functions similarly to "granted".' },
+        { front: 'What do words like "clearly" signal?', role: 'Opinion Indicator', function: 'Flags the author\'s strong belief, often pointing directly to the conclusion.', example: '"Clearly, the new tax plan will benefit the wealthy."', note: 'The author uses these words to persuade you. Find the evidence they use to back it up.' },
+        { front: 'What do words like "obviously" signal?', role: 'Opinion Indicator', function: 'Indicates a strong subjective judgment from the author.', example: '"Obviously, we cannot fund this project."', note: 'Highly likely to be the main conclusion.' },
+        { front: 'What do words like "evidently" signal?', role: 'Opinion Indicator', function: 'Signals that the author is drawing a conclusion based on evidence.', example: '"Evidently, the policy has failed."', note: 'Ties the opinion directly to the reasoning.' },
+        { front: 'If an author uses "ought", what does it strongly suggest?', role: 'Opinion Indicator', function: 'Indicates a prescriptive judgment, highly likely to be the conclusion.', example: '"We ought to protect the environment."', note: 'Prescriptive claims almost always act as conclusions.' },
+        { front: 'If an author uses "must", what does it strongly suggest?', role: 'Opinion Indicator', function: 'Signals a strong prescriptive or logical necessity, often the conclusion.', example: '"The government must lower interest rates."', note: 'Facts rarely use "must". It\'s a conclusion needing support.' },
+        { front: 'If an author uses "should", what does it strongly suggest?', role: 'Opinion Indicator', function: 'Indicates a prescriptive judgment (what the author thinks is right), highly likely to be the conclusion.', example: '"The city should invest in more green spaces."', note: 'Facts do not use "should". This is a subjective claim that needs support.' }
+    ];
+
+    function updateFCProgress() {
+        const total = flashcardsData.length;
+        const mastered = (appState.fcMastered || []).length;
+        const percent = Math.round((mastered / total) * 100);
+        document.getElementById('fc-percent-val').innerText = percent;
+        document.getElementById('fc-header-bar').style.width = `${percent}%`;
+        document.getElementById('fc-sub-text').innerText = `${mastered} of ${total} cards mastered`;
+    }
+
+    function loadFlashcard() {
+        const c = flashcardsData[appState.fcIndex];
+        document.getElementById('fc-front-q').innerText = c.front;
+        document.getElementById('fc-role').innerText = c.role;
+        document.getElementById('fc-function').innerText = c.function;
+        document.getElementById('fc-example-text').innerText = c.example;
+        document.getElementById('fc-note-text').innerText = c.note;
+
+        updateFCProgress();
+
+        const card = document.getElementById('fc-card');
+        const controls = document.getElementById('fc-controls');
+
+        card.classList.remove('is-flipped');
+        controls.classList.remove('visible');
+    }
+
+    function flipCard() {
+        const card = document.getElementById('fc-card');
+        const controls = document.getElementById('fc-controls');
+        const isFlippingToBack = !card.classList.contains('is-flipped');
+
+        card.classList.toggle('is-flipped');
+
+        if (isFlippingToBack) {
+            controls.classList.add('visible');
+        } else {
+            controls.classList.remove('visible');
+        }
+    }
+
+    function handleFC(action) {
+        document.getElementById('fc-card').classList.remove('is-flipped');
+        document.getElementById('fc-controls').classList.remove('visible');
+
+        setTimeout(() => {
+            if (action === 'got-it') {
+                if (!appState.fcMastered) appState.fcMastered = [];
+                if (!appState.fcMastered.includes(appState.fcIndex)) {
+                    appState.fcMastered.push(appState.fcIndex);
+                }
+                showToast('Marked as mastered', 'success');
+            } else {
+                showToast('Saved for next review', 'warning');
+            }
+
+            appState.fcIndex = (appState.fcIndex + 1) % flashcardsData.length;
+            saveState();
+            loadFlashcard();
+        }, 400);
+    }
+
+    document.querySelectorAll('.nav-item').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const target = e.target.getAttribute('data-target');
+            if(target) navigate(target);
+        });
+    });
+
+    // ------------------------------------------------------------------
+    // SAFE BOOT SYSTEM
+    // ------------------------------------------------------------------
+    function bootApp() {
+        loadState();
+        if (appState.name) {
+            initApp();
+        } else {
+            navigate('login-view', false);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootApp);
+    } else {
+        bootApp();
+    }
+
+</script>
+</body>
+</html>
