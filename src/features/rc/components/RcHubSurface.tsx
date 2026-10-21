@@ -541,7 +541,9 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
   const rangeInvalid = rangeDraft !== null && (!rangeDraft.min.trim() || !rangeDraft.max.trim() || !Number.isInteger(rangeMin) || !Number.isInteger(rangeMax) || rangeMin < RC_PREPTEST_MIN || rangeMax > RC_PREPTEST_MAX || rangeMin > rangeMax);
   const activeHandPicked = exactMode ? exactIds : [];
   const manualStrictBlocked = exactMode && filters.status === 'strict_no_exposure' ? exactIds.filter(id => { const passage = passages.find(p => p.passageId === id); return !passage || exposures.has(id) || statusOf(passage).state !== 'not_attempted'; }) : [];
-  const builderReady = !(useProfilePace && !timingEdited.current && profileTimingStatus === 'loading') && manualStrictBlocked.length === 0 && indexStatus === 'ready' && historyStatus === 'ready'
+  const profileTimingPending = useProfilePace && !timingEdited.current && (profileTimingStatus === 'loading'
+    || Boolean(profileTimingMode && timing !== (profileTimingMode === 'unlimited' ? 'untimed' : 'standard')));
+  const builderReady = !profileTimingPending && manualStrictBlocked.length === 0 && indexStatus === 'ready' && historyStatus === 'ready'
     && (filters.status !== 'strict_no_exposure' || exposureStatus === 'ready' && filters.includeUnknownExposure === true)
     && selectionQuery === drillQueryKey && !customInvalid && (!rangeInvalid || exactMode) && (!lookupActive || lookupPassage !== undefined) && (savedQuery === null || restoredSavedQuery === savedQuery);
 

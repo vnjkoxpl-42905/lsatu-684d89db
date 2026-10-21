@@ -9,8 +9,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const navigate = vi.fn();
 const auth = vi.hoisted(() => ({ id: 'owner' as string | null }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: auth.id } }) }));
-const profileTiming = vi.hoisted(() => ({ mode: '35' as '35' | '52.5' | '70' | 'unlimited', savedMode: null as '35' | '52.5' | '70' | 'unlimited' | null, save: vi.fn(async () => false) }));
-vi.mock('@/contexts/UserSettingsContext', () => ({ useUserSettings: () => ({ settings: { defaultTimingMode: profileTiming.mode }, profileTimingMode: profileTiming.savedMode, ownerId: auth.id, ready: true, profileTimingStatus: profileTiming.savedMode ? 'saved' : 'not-saved', profileTimingError: null, saveProfileTiming: profileTiming.save }) }));
+const profileTiming = vi.hoisted(() => ({ mode: '35' as '35' | '52.5' | '70' | 'unlimited', savedMode: null as '35' | '52.5' | '70' | 'unlimited' | null, status: null as 'loading' | null, save: vi.fn(async () => false) }));
+vi.mock('@/contexts/UserSettingsContext', () => ({ useUserSettings: () => ({ settings: { defaultTimingMode: profileTiming.mode }, profileTimingMode: profileTiming.savedMode, ownerId: auth.id, ready: true, profileTimingStatus: profileTiming.status ?? (profileTiming.savedMode ? 'saved' : 'not-saved'), profileTimingError: null, saveProfileTiming: profileTiming.save }) }));
 const getSession = vi.fn(async (_id: string, _actor?: string) => null as RcDrillSession | null);
 const adoption = vi.hoisted(() => ({ enabled: false, sessions: [] as unknown[] }));
 vi.mock('@/lib/timedSectionAdoption', async () => {
@@ -98,7 +98,7 @@ import type { RcSavedPayload } from '../lib/rcSavedSetCodec';
 import type { RcDrillConfig } from '../lib/rcTypes';
 
 beforeEach(async () => {
-  profileTiming.mode = '35'; profileTiming.savedMode = null; profileTiming.save.mockClear();
+  profileTiming.mode = '35'; profileTiming.savedMode = null; profileTiming.status = null; profileTiming.save.mockClear();
   localStorage.clear();
   const progress = await import('../api/rcProgress');
   vi.mocked(progress.getQuestionHistory).mockReset().mockResolvedValue(new Map());
@@ -900,6 +900,41 @@ describe('RcHubSurface autostart', () => {
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     expect(profileTiming.save).not.toHaveBeenCalled();
     expect(localStorage.getItem('lsatu:rc-timing-default:v1:owner')).toBeNull();
+  });
+  it('waits for profile timing before enabling Review even while the initial clock is untimed', async () => {
+    profileTiming.status = 'loading';
+    mount('/classroom/drill');
+    await act(async () => {});
+    expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('untimed');
+    expect(screen.getByRole('button', { name: 'Review passages' })).toBeDisabled();
+    expect(loadPassages).not.toHaveBeenCalled();
+    profileTiming.mode = '70'; profileTiming.savedMode = '70'; profileTiming.status = null;
+    fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Review passages' })).toBeEnabled());
+    previewDrill(); await screen.findByRole('button', { name: 'Start drill' });
+    fireEvent.click(screen.getByRole('button', { name: 'Start drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][0].timing).toEqual({ mode: 'per_passage_budget', secondsPerPassage: 1050 });
+  });
+  it('does not autostart an initially untimed drill until profile timing has loaded', async () => {
+    profileTiming.status = 'loading';
+    const surface = () => <MemoryRouter initialEntries={['/classroom/drill?start=1']} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}><RcHubSurface embedded showHistory={false} /></MemoryRouter>;
+    const view = render(surface());
+    await act(async () => {});
+    expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('untimed');
+    expect(screen.getByRole('button', { name: 'Review passages' })).toBeDisabled();
+    expect(createSession).not.toHaveBeenCalled();
+    expect(loadPassages).not.toHaveBeenCalled();
+    profileTiming.mode = '70'; profileTiming.savedMode = '70'; profileTiming.status = null;
+    view.rerender(surface());
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][0].timing).toEqual({ mode: 'per_passage_budget', secondsPerPassage: 1050 });
+  });
+  it('allows an explicit URL clock to autostart while profile timing is loading', async () => {
+    profileTiming.status = 'loading';
+    mount('/classroom/drill?timing=standard&start=1');
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][0].timing).toEqual({ mode: 'per_passage_budget', secondsPerPassage: 525 });
   });
   it.each([['52.5', 788], ['70', 1050]] as const)('uses the saved %s profile pace for a new timed drill', async (mode, seconds) => {
     profileTiming.mode = mode; profileTiming.savedMode = mode;

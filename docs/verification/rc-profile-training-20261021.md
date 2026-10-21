@@ -46,11 +46,21 @@ Screenshots: C:/Users/Joshu/Downloads/RC-Profile-Training-2026-10-21/
 
 ## Automated verification
 
-- Builder suite: 134 passing tests.
+- Final builder suite: 137 passing tests, including loading/default synchronization and explicit-clock bypass regressions.
 - Training/type/codec/progress/player/save-safety/passage suites: 141 passing tests.
 - Profile/account/settings/section-selector/testing-centre suites: 91 passing tests.
+- Final SectionSelector rerun after the Unlimited-to-Standard fix: 21 passing tests; final typecheck passed. The new regression exercises the explicit timing setup contract, rather than claiming browser acceptance of the live section selector.
 - Root combined builder/context/player/presentation rerun: 163 passing tests.
 - Final typecheck and production build passed after the TestingCentre loading guard, including content/index verification and the no-canonical-content postbuild check.
 - git diff --check passed with existing CRLF conversion notices only.
 
 Existing unrelated working-tree changes were preserved. The production build's generated Windows MCP stub was inspected and restored separately.
+
+## Independent integration review
+
+A read-only second-agent review found two clock issues, both corrected before completion:
+
+- An Unlimited profile followed by explicit Standard timing in the LR section selector displayed 35:00 but launched unlimited. The launch now uses the displayed numeric base clock.
+- RC could follow its initial untimed state before a fresh profile lookup finished. Profile-dependent review and launch now wait for that lookup and the corresponding timing-state synchronization, regardless of the initial timing label. Explicit URL/saved clocks remain independent.
+
+This was a code integration review, not a new Claude review or production acceptance run.

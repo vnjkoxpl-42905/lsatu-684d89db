@@ -163,14 +163,13 @@ const pickSection = async () => {
 };
 
 describe('SectionSelector', () => {
-  it('starts the displayed Standard clock after an Unlimited profile default', async () => {
+  it('starts an explicit Standard clock with an Unlimited profile default', async () => {
     rcTestState.timingMode = 'unlimited';
     const onStartSection = vi.fn();
-    renderSelector({ onStartSection });
+    renderSelector({ onStartSection, initialTiming: { mode: 'timed', percent: 100 } });
+    await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
     await pickSection();
-    fireEvent.click(screen.getByRole('combobox', { name: /Timing/i }));
-    fireEvent.click(await screen.findByRole('option', { name: /Standard/ }));
-    expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toContain('35:00');
+    await waitFor(() => expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toContain('35:00'));
     fireEvent.click(screen.getByRole('button', { name: /Start Section/i }));
     await waitFor(() => expect(onStartSection).toHaveBeenCalledTimes(1));
     expect(onStartSection.mock.calls[0][0].timer.mode).toBe('35');
