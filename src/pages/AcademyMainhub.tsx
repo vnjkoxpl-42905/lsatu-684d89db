@@ -457,7 +457,7 @@ export default function AcademyMainhub({
   }, [setOrbitalActive, stage]);
 
   return (
-    <div data-section={section} className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12">
+    <div data-section={section} className={cn("drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12", section === "rc" && "rc-practice-workspace")}>
       {/* 1140px and a 20px gap: the design's column. The three cards each carry
           26-30px of internal padding, so the gap between them stays smaller than
           their padding by design — they read as three objects on one field, not

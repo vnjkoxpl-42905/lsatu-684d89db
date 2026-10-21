@@ -219,7 +219,7 @@ describe('RC builder transactional drawers', () => {
     fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Customize drill' }));
     const filters = await screen.findByRole('dialog', { name: 'Customize drill' });
-    fireEvent.click(within(filters).getByText('More specific filters'));
+    fireEvent.click(within(filters).getByText('Passage features and format'));
     fireEvent.change(within(filters).getByRole('spinbutton', { name: 'Earliest PrepTest' }), { target: { value: '141' } });
     fireEvent.click(within(filters).getByRole('button', { name: 'Apply' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Edit selection' }));
@@ -340,7 +340,7 @@ describe('RC builder transactional drawers', () => {
     fireEvent.click(within(drawer).getByRole('button', { name: 'Next passages' }));
     fireEvent.click(within(drawer).getByRole('button', { name: 'Next passages' }));
     expect(within(drawer).getByText('Showing 25–30 of 30 passages.')).toBeInTheDocument();
-    fireEvent.click(within(drawer).getByText('Filter passages'));
+    fireEvent.click(within(drawer).getByText('Filters'));
     fireEvent.click(within(drawer).getByRole('button', { name: 'Law' }));
     expect(announcement).toBeEmptyDOMElement();
     const catalog = within(drawer).getByRole('list', { name: 'Available passages' });
@@ -443,6 +443,24 @@ describe('RC refinement workflow regressions', () => {
     expect(within(within(empty).getByRole('list', { name: 'Selected passages' })).queryAllByRole('listitem')).toHaveLength(0);
   });
 
+  it('replaces the stale-preview warning with an actionable empty state after clearing reviewed manual picks', async () => {
+    mount('/classroom/drill?section=rc&passages=1188,1201');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    previewDrill();
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    editSetup();
+    fireEvent.click(screen.getByRole('button', { name: 'Edit selection' }));
+    const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Clear selection' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.getByText('Choose at least one passage to continue.')).toBeInTheDocument();
+    expect(screen.queryByText('Your settings changed. Preview the drill again before starting.')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Choose passages' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
   it.each(['Timing', 'Show answers'] as const)('keeps automatically reviewed IDs after changing only %s', async control => {
     mount('/classroom/drill?section=rc&count=2');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
@@ -468,7 +486,7 @@ describe('RC refinement workflow regressions', () => {
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
     fireEvent.click(within(drawer).getByRole('button', { name: 'Move Passage 1201 earlier' }));
-    fireEvent.click(within(drawer).getByText('Filter passages'));
+    fireEvent.click(within(drawer).getByText('Filters'));
     fireEvent.click(within(drawer).getByRole('button', { name: 'Law' }));
     expect(within(drawer).getByText(/Picks outside the current search or filters stay selected/)).toBeInTheDocument();
     fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));

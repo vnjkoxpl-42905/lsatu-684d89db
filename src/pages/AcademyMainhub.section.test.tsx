@@ -272,7 +272,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.queryByRole("list", { name: "Insights" })).not.toBeInTheDocument();
   });
 
-  it.each([['Create your own RC drill', 'automatic'], ['Pick specific passages', 'manual']])('opens the explicit RC builder from %s', (label, mode) => {
+  it.each([['Build a drill', 'automatic'], ['Pick specific passages', 'manual']])('opens the explicit RC builder from %s', (label, mode) => {
     renderHub('/practice/drills?section=rc&view=create');
     fireEvent.click(screen.getByRole('button', { name: label }));
     expect(url().get('builder')).toBe(mode);
