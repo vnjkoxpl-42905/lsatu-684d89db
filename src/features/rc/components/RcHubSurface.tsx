@@ -244,6 +244,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
   const [savedSnapshot, setSavedSnapshot] = React.useState<RcSavedPayload | null>(null);
   const [selectedSet, setSelectedSet] = React.useState<{
     key: string;
+    previewId: number;
     ids: number[];
     passages: RcPassage[];
   } | null>(null);
@@ -556,6 +557,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
     secondsPerPassage,
   });
   const activeSetKey = activeSet ? activeSet.key + '|' + activeSet.ids.join(',') : null;
+  const previewIdentity = activeSet ? `${activeSet.key}:${activeSet.previewId}` : null;
   const shortfallAccepted = activeSetKey !== null && acceptedShortfall === activeSetKey;
   const needsShortfallAck = activeSet !== null && summary.shortfall > 0 && !shortfallAccepted;
   const inspectSet = async () => {
@@ -596,7 +598,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
         && savedSnapshot.questionIds.join(',') !== full.flatMap(p => p.questions.map(q => q.questionId)).join(',')) {
         setNotice('The questions in this fixed set have changed. Its saved snapshot has been kept; choose a new selection before starting.'); return;
       }
-      const inspected = { key, ids, passages: full };
+      const inspected = { key, previewId: request, ids, passages: full };
       setSelectedSet(inspected);
       return inspected;
     } catch {
@@ -659,14 +661,21 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
       if (!uncertainStart.current && filters.status === 'strict_no_exposure') {
         const latestHistory = await getRcHistorySnapshot(actorId);
         if (!mounted.current || startingKey !== launchKeyRef.current) throw new Error('Your settings changed. Preview the drill again before starting.');
-        if (chosen.some(id => { const passage = passages.find(p => p.passageId === id); return !passage || passageStatus(passage, questionIdsByPassage.get(id) ?? [], latestHistory.displayHistory).state !== 'not_attempted'; })) throw new Error('A selected passage now has saved answers and does not meet No recorded exposure. Edit your selection or change Practice history.');
+        const answered = chosen.filter(id => { const passage = passages.find(p => p.passageId === id); return !passage || passageStatus(passage, questionIdsByPassage.get(id) ?? [], latestHistory.displayHistory).state !== 'not_attempted'; });
+        if (answered.length) {
+          setHistory(latestHistory.history); setDisplayHistory(latestHistory.displayHistory); setHiddenResults(latestHistory.hasHiddenGradedResults);
+          if (!handPickOpen) refreshEligibility();
+          throw new Error(`A selected passage now has saved answers and does not meet No recorded exposure. Edit your selection or change Practice history. ${describePendingPassages(answered)}`);
+        }
       }
       if (!uncertainStart.current) {
         try { launchExposures = await getRcExposureHistory(actorId); }
         catch { if (filters.status === 'strict_no_exposure') throw new Error('Recorded exposure could not be checked. Retry before starting this exposure-filtered drill.'); }
         if (!mounted.current || (inspected!.key !== selectionKeyRef.current || startingKey !== launchKeyRef.current)) throw new Error('Your settings changed. Preview the drill again before starting.');
         if (filters.status === 'strict_no_exposure' && chosen.some(id => launchExposures?.has(id))) {
-          throw new Error('A selected passage now has recorded exposure, including any text you revealed in Preview. Choose another status or inspect a different selection before starting.');
+          setExposures(new Set(launchExposures));
+          if (!handPickOpen) refreshEligibility();
+          throw new Error(`A selected passage now has recorded exposure, including any text you revealed in Preview. Choose another status or inspect a different selection before starting. ${describePendingPassages(chosen.filter(id => launchExposures?.has(id)))}`);
         }
       }
       // An unresolved save owns its immutable UUID and settings, even if the
@@ -769,7 +778,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
     }
     return true;
   });
-  const excludedSearchMatches = searchMatches.filter(p => !matches(p, pickerCriteria));
+  const excludedSearchMatches = pickerQuery ? searchMatches.filter(p => !matches(p, pickerCriteria)) : [];
   const filteredSearchCount = excludedSearchMatches.length;
   const handPickRows = searchMatches.filter(p => matches(p, pickerCriteria)).sort((a, b) => {
     const address = () => a.preptest - b.preptest || a.section - b.section || a.setNumber - b.setNumber || a.passageId - b.passageId;
@@ -1015,12 +1024,12 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
 
       </section>}
       {reviewStage && activeSet && <section className="rc-drill-preview rc-review-stage" aria-label="Selected reading set">
-        <header className="rc-review-heading"><div><p className="rc-review-step">{handPickOpen ? 'Manually selected' : 'Chosen for you'}</p><h2 id="rc-review-heading" tabIndex={-1}>Review your RC drill</h2></div><button type="button" className="rc-chip" disabled={starting} onClick={() => setReviewing(false)}>Edit setup</button></header>
+        <header className="rc-review-heading"><div><p className="rc-review-step">{handPickOpen ? 'Manually selected' : 'Chosen for you'}</p><h2 id="rc-review-heading" tabIndex={-1}>Review your RC drill</h2></div><button type="button" className="rc-chip" disabled={starting || inspecting} onClick={() => setReviewing(false)}>Edit setup</button></header>
         <dl className="rc-review-conditions"><div><dt>Passages</dt><dd>{activeSet.ids.length}</dd></div><div><dt>Questions</dt><dd>{summary.inspectedQuestions}</dd></div><div><dt>Timing</dt><dd>{timing === 'untimed' ? 'Untimed' : `${mmss(secondsPerPassage)} per passage`}</dd></div><div><dt>Show answers</dt><dd>{REVEAL_OPTIONS.find(option => option.id === reveal)?.label}</dd></div></dl>
         {!handPickOpen && <p className="rc-field-hint">Selection: {filterSummary}</p>}
         {filters.status === 'strict_no_exposure' && <p className="rc-field-hint">Launch requirement: No recorded exposure</p>}
         <p className="rc-field-hint">These exact passages will appear in this order. Text stays hidden until you explicitly reveal it and record exposure. Answers and explanations stay hidden.</p>
-        {activeSet.passages.map((passage, index) => <RcExposurePreview key={`${activeSet.key}:${passage.passageId}`} actorId={actorId} passage={passage} index={index} alreadyRevealed={previewReveals.has(`${activeSet.key}:${passage.passageId}`)} onExposed={id => { setExposures(previous => new Set(previous).add(id)); setPreviewReveals(previous => new Set(previous).add(`${activeSet.key}:${id}`)); }} />)}
+        {activeSet.passages.map((passage, index) => <React.Fragment key={`${previewIdentity}:${passage.passageId}`}>{manualStrictBlocked.includes(passage.passageId) && <p className="rc-field-error">{passage.title || `Passage ${passage.passageId}`}: Does not meet No recorded exposure: recorded exposure or saved answers.</p>}<RcExposurePreview key={`${previewIdentity}:${passage.passageId}`} actorId={actorId} passage={passage} index={index} alreadyRevealed={previewReveals.has(`${previewIdentity}:${passage.passageId}`)} onExposed={id => { setExposures(previous => new Set(previous).add(id)); setPreviewReveals(previous => new Set(previous).add(`${previewIdentity}:${id}`)); }} /></React.Fragment>)}
         {activeSet && summary.shortfall > 0 && <label className="rc-shortfall"><input type="checkbox" checked={shortfallAccepted} onChange={event => setAcceptedShortfall(event.target.checked ? activeSetKey : null)} /><span>Only {plural(summary.plannedPassages, 'passage')} of the {summary.requestedPassages} you asked for {summary.plannedPassages === 1 ? 'matches' : 'match'} these filters. Start with {plural(summary.plannedPassages, 'passage')}.</span></label>}
         <div className="rc-review-launch" role="region" aria-label="Launch summary"><span>{plural(summary.plannedPassages, 'passage')} · {plural(summary.inspectedQuestions ?? 0, 'question')} · {timing === 'untimed' ? 'Untimed' : `${mmss(secondsPerPassage)} per passage`}</span><button type="button" className="rc-button rc-button-primary" disabled={starting || inspecting || recoveryPending !== null || uncertainStart.current !== null || !builderReady || needsShortfallAck} onClick={() => void start()}>{starting ? 'Starting…' : 'Start drill'}</button></div>
         {!handPickOpen && <button type="button" className="rc-chip rc-final-different" disabled={starting || inspecting || !builderReady} onClick={() => void showDifferentSelection()}>Choose different passages</button>}
@@ -1041,7 +1050,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
               {drawer.ids.some(id => !handPickRows.some(value => value.passageId === id)) && <p className="rc-field-hint">Picks outside the current search or filters stay selected.</p>}
               <ul className="rc-passage-list" aria-label="Available passages">{handPickRows.slice(pickerLimit - RC_PICKER_PAGE, pickerLimit).map(passage => { const picked = drawer.ids.includes(passage.passageId); return <li key={passage.passageId} className={`rc-passage-option${picked ? ' rc-passage-picked' : ''}`}><div className="rc-passage-option-copy"><h3>{passage.title || `Passage ${passage.setNumber}`}</h3><div className="rc-passage-location">PT {passage.preptest} · Section {passage.section} · Passage {passage.setNumber} · {plural(passage.questionCount, 'question')}</div><details className="rc-passage-details"><summary>Passage details</summary>{passage.firstWords && <p className="rc-passage-opening">{passage.firstWords}</p>}<div className="rc-passage-metadata">{passage.topic && <span>{passage.topic}</span>}{passage.format && <span>{passage.format}</span>}{passage.difficulty != null && <span>Difficulty {passage.difficulty}/5</span>}<span>{formatPassageStatusLabel(statusOf(passage))}</span></div></details></div><button type="button" className={`rc-chip${picked ? ' rc-active' : ''}`} aria-label={`${picked ? 'Remove' : 'Add'} ${passage.title || `passage ${passage.passageId}`}`} aria-pressed={picked} onClick={() => changeDraftPick(passage.passageId)}>{picked ? 'Remove' : 'Add'}</button></li>; })}</ul>
               {handPickRows.length > RC_PICKER_PAGE && <div className="rc-actions"><p className="rc-field-hint">Showing {pickerLimit - RC_PICKER_PAGE + 1}–{Math.min(pickerLimit, handPickRows.length)} of {handPickRows.length} passages.</p><button type="button" className="rc-chip" disabled={pickerLimit === RC_PICKER_PAGE} onClick={() => setPickerLimit(value => value - RC_PICKER_PAGE)}>Previous passages</button><button type="button" className="rc-chip" disabled={pickerLimit >= handPickRows.length} onClick={() => setPickerLimit(value => value + RC_PICKER_PAGE)}>Next passages</button></div>}
-              {filteredSearchCount > 0 && <div className="rc-filter-exclusion"><p role="status">{plural(filteredSearchCount, 'matching passage')} excluded by active filters.</p><ul>{excludedSearchMatches.slice(0, 3).map(passage => <li key={passage.passageId}><strong>{passage.title || `Passage ${passage.setNumber}`}</strong> · PT {passage.preptest} · S{passage.section} · P{passage.setNumber}<span>{exclusionReasons(passage)}</span></li>)}</ul>{filteredSearchCount > 3 && <p>And {filteredSearchCount - 3} more. Adjust passage filters to include them.</p>}</div>}{handPickRows.length === 0 && <div className="rc-empty"><p>{filteredSearchCount > 0 ? 'Matching passages are excluded by your active filters. Adjust them to include these passages.' : 'No passages match your search. Try a title or PrepTest number.'} Your selection is kept.</p><button type="button" className="rc-chip" onClick={event => { const details = event.currentTarget.closest('.rc-final-drawer-body')?.querySelector<HTMLDetailsElement>('.rc-final-pick-filters'); if (details) { details.open = true; details.querySelector<HTMLElement>('summary')?.focus(); } }}>Adjust passage filters</button></div>}{search && <button type="button" className="rc-chip" onClick={() => setSearch('')}>Clear search</button>}
+              {filteredSearchCount > 0 && <div className="rc-filter-exclusion"><p role="status">{plural(filteredSearchCount, 'matching passage')} excluded by active filters.</p><ul>{excludedSearchMatches.slice(0, 3).map(passage => <li key={passage.passageId}><strong>{passage.title || `Passage ${passage.setNumber}`}</strong> · PT {passage.preptest} · S{passage.section} · P{passage.setNumber}<span>{exclusionReasons(passage)}</span></li>)}</ul>{filteredSearchCount > 3 && <p>And {filteredSearchCount - 3} more. Adjust passage filters to include them.</p>}</div>}{handPickRows.length === 0 && <div className="rc-empty"><p>{filteredSearchCount > 0 ? 'Matching passages are excluded by your active filters. Adjust them to include these passages.' : pickerQuery ? 'No passages match your search. Try a title or PrepTest number.' : 'No passages match these browsing filters. Adjust them to find passages.'} Your selection is kept.</p><button type="button" className="rc-chip" onClick={event => { const details = event.currentTarget.closest('.rc-final-drawer-body')?.querySelector<HTMLDetailsElement>('.rc-final-pick-filters'); if (details) { details.open = true; details.querySelector<HTMLElement>('summary')?.focus(); } }}>Adjust passage filters</button></div>}{search && <button type="button" className="rc-chip" onClick={() => setSearch('')}>Clear search</button>}
             </>}
           </div>
           <div className="rc-final-drawer-footer">{drawer?.kind === 'pick' && <span className="rc-picker-footer-count">{plural(drawer.ids.length, 'passage')} selected</span>}<button type="button" className="rc-chip" onClick={() => setDrawer(previous => previous ? previous.kind === 'pick' ? { ...previous, ids: [] } : { ...previous, filters: cloneFilters(DEFAULT_FILTERS), range: null } : null)}>{drawer?.kind === 'pick' ? 'Clear selection' : 'Reset filters'}</button><div><button type="button" className="rc-chip" onClick={() => setDrawer(null)}>Cancel</button><button type="button" className="rc-button rc-button-primary" disabled={drawerRangeInvalid} onClick={applyDrawer}>Apply</button></div></div>

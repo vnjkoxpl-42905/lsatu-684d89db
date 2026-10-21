@@ -266,6 +266,7 @@ describe('RC builder transactional drawers', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
     editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
     const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
+    fireEvent.change(within(drawer).getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'Passage 1188' } });
     expect(within(drawer).getByText(/Matching passages are excluded by your active filters/)).toBeInTheDocument();
     fireEvent.click(within(drawer).getByRole('button', { name: 'Adjust passage filters' }));
     expect(within(drawer).getByRole('button', { name: 'Apply' })).toBeEnabled();
@@ -498,6 +499,9 @@ describe('RC refinement workflow regressions', () => {
     vi.mocked(exposure.getRcExposureHistory).mockResolvedValueOnce(new Set([1188]));
     fireEvent.click(screen.getByRole('button', { name: 'Start drill' }));
     await screen.findByText(/A selected passage now has recorded exposure/);
+    expect(screen.getByRole('button', { name: 'Start drill' })).toBeDisabled();
+    const blocked = screen.getByRole('region', { name: 'Selected reading set' });
+    expect(within(blocked).getByText(/Passage 1188: Does not meet No recorded exposure/)).toBeInTheDocument();
     expect(createSession).not.toHaveBeenCalled();
     expect(loadPassages).toHaveBeenLastCalledWith([1188]);
   });
@@ -541,6 +545,9 @@ describe('RC refinement workflow regressions', () => {
     await screen.findByText(/A selected passage now has saved answers and does not meet No recorded exposure/);
     expect(vi.mocked(progress.getRcHistorySnapshot).mock.calls.length).toBeGreaterThan(priorReads);
     expect(screen.getByText('Launch requirement: No recorded exposure')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Start drill' })).toBeDisabled();
+    const blocked = screen.getByRole('region', { name: 'Selected reading set' });
+    expect(within(blocked).getByText(/Passage 1188: Does not meet No recorded exposure/)).toBeInTheDocument();
     expect(loadPassages).toHaveBeenLastCalledWith([1188]);
     expect(createSession).not.toHaveBeenCalled();
   });
@@ -558,8 +565,27 @@ describe('RC refinement workflow regressions', () => {
     expect(screen.getByRole('heading', { name: 'Review your RC drill' })).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Build your RC drill' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Starting|Start drill/ })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Edit setup' })).toBeDisabled();
     await act(async () => release());
     await waitFor(() => expect(screen.getByRole('button', { name: 'Start drill' })).toBeEnabled());
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('requires explicit reveal again when a fresh automatic inspection selects the same passage', async () => {
+    const bank = await import('../lib/rcBank');
+    const index = await bank.loadAllIndexPassages();
+    vi.mocked(bank.loadAllIndexPassages).mockResolvedValueOnce(index.slice(0, 1));
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    previewDrill(); await screen.findByRole('button', { name: 'Start drill' });
+    fireEvent.click(screen.getByRole('button', { name: 'Reveal passage and questions · records exposure' }));
+    await screen.findByText('What is the main point?');
+    expect(screen.queryByRole('button', { name: 'Reveal passage and questions · records exposure' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Choose different passages' }));
+    await waitFor(() => expect(loadPassages).toHaveBeenCalledTimes(2));
+    await screen.findByRole('button', { name: 'Reveal passage and questions · records exposure' });
+    expect(loadPassages.mock.calls[0][0]).toEqual(loadPassages.mock.calls[1][0]);
+    expect(screen.queryByText('What is the main point?')).not.toBeInTheDocument();
     expect(createSession).not.toHaveBeenCalled();
   });
 
