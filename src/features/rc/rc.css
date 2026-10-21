@@ -1674,3 +1674,21 @@
     min-width: 0;
   }
 }
+
+/* Keep mobile form focus from triggering Safari's small-text zoom. */
+@media (max-width: 700px) {
+  .rc-final-builder select,
+  .rc-final-builder input,
+  .rc-final-drawer select,
+  .rc-final-drawer input {
+    font-size: 16px !important;
+  }
+}
+
+.rc-final-drawer .rc-final-pick-filters {
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-top: 0;
+  border-top: 0;
+  border-bottom: 1px solid #303034;
+}
