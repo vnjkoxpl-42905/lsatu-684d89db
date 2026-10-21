@@ -1,0 +1,589 @@
+[
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Children should be discouraged from reading Jones’s\nbooks. Reading them is like eating candy, which provides\nintense, short-term sensory stimulation but leaves one\npoorly nourished and dulls one’s taste for better fare.\nIn other words, the problem with letting children read\nJones’s books is that _______.",
+    "questionStem": "Which one of the following most logically completes the\nargument above?",
+    "answerChoices": {
+      "A": "it will lead them to develop a taste for candy and sweets",
+      "B": "too many children may become frustrated by their difficulty and stop reading altogether",
+      "C": "their doing so interferes with the development of appreciation for more challenging literature",
+      "D": "their message may undermine the positive teaching done by parents",
+      "E": "children may become so enthralled with books that they will want to spend all their time reading"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Archaeologist: How did the Parthenon’s stonemasons\nmanage to carve columns that all bulged outward\nin the center in precisely the same way? One\nhypothesis is suggested by the discovery of a\nscale drawing of a column etched into the stone\nof a Greek temple at Didyma. The drawing is\na profile view of a column surrounded by a\ngrid, which makes it possible to determine the\ncorrect width at every height of the column.\nThe stonemasons who carved the Parthenon’s\ncolumns may have relied on a drawing like the\none at Didyma.",
+    "questionStem": "Which one of the following, if true, adds the most\nsupport for the archaeologist’s hypothesis?",
+    "answerChoices": {
+      "A": "Modern attempts to recreate columns like those at the Parthenon have only been partially successful.",
+      "B": "The construction of the temple at Didyma was begun over a century after the Parthenon was constructed.",
+      "C": "Scale drawings were commonly used in many types of construction in ancient Greece.",
+      "D": "The surviving columns at Didyma are almost twice as tall as the columns at the Parthenon.",
+      "E": "The Parthenon’s stonemasons had considerable experience carving columns before they started work on the Parthenon."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Editorial: The government should not fund any part of\nits health services with lottery revenue. These\nhealth services are essential to our community,\nbut lottery revenue could decline at some time in\nthe future, leaving the government scrambling to\nmake up a budget shortfall.",
+    "questionStem": "The argument in the editorial most closely conforms to\nwhich one of the following principles?",
+    "answerChoices": {
+      "A": "Governments should spend more of their revenue on essential services than on nonessential services.",
+      "B": "Essential government services must be funded from reliable sources of revenue.",
+      "C": "No government service should be entirely dependent on lottery revenue for its funding.",
+      "D": "Governments should consider all health services to be essential to the community.",
+      "E": "At least some lottery revenue must be set aside in case of budget shortfalls in the future."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Scientist: Rattlesnakes prey on young California ground\nsquirrels. Protective adult squirrels harass a\nthreatening rattlesnake by puffing up their tails\nand wagging them. New results show that the\nsquirrel’s tail also heats up when harassing a\nrattlesnake. Since rattlesnakes have an infrared\nsensing organ that detects body heat, the heating\nup of the squirrel’s tail probably plays a role in\nrepelling rattlesnakes.",
+    "questionStem": "Which one of the following, if true, most helps to support\nthe scientist’s hypothesis?",
+    "answerChoices": {
+      "A": "Rattlesnakes do not have the ability to increase the temperature of their tails.",
+      "B": "Squirrels puff up their tails and wag them when they attempt to attract the attention of other squirrels.",
+      "C": "Rattlesnakes react much more defensively when confronted with a squirrel whose tail is heated up than when confronted with one whose tail is not.",
+      "D": "The rattlesnake is not the only predator of the California ground squirrel that causes it to engage in harassing behavior as a defensive mechanism.",
+      "E": "Mammals such as the California ground squirrel have no organ for sensing infrared energy."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Critic: Fillmore, an influential television executive,\nargues that watching television regularly is not\ndetrimental to very young children. Fillmore\nbases this on the claim, which I grant, that\nchildren can learn much that is beneficial from\ntelevision. But we should reject Fillmore’s\nargument, because clearly it is to Fillmore’s\nbenefit to convince parents that television is not\nharmful to their children.",
+    "questionStem": "Which one of the following most accurately describes a\nflaw in the critic’s reasoning?",
+    "answerChoices": {
+      "A": "It takes a necessary condition for something’s being harmful to be a sufficient condition for being harmful.",
+      "B": "It concludes that something is true merely on the grounds that there is no evidence to the contrary.",
+      "C": "It rejects an argument solely on the grounds that the argument could serve the interests of the person making that argument.",
+      "D": "It is based on an appeal to the views of someone with questionable authority on the subject matter.",
+      "E": "It bases its conclusion on claims that are inconsistent with one another."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "While grapefruit juice is a healthy drink, it has been\ndiscovered that a chemical in the juice affects how certain\nmedicines are absorbed, with the result that normal\nmedicinal doses act like higher doses. Getting the wrong\ndose is dangerous. Since it is always desirable to take the\nlowest effective dose, the best medical approach would\nbe to take lower doses of these medicines along with\nprescribed amounts of grapefruit juice.",
+    "questionStem": "Which one of the following, if true, most seriously\nweakens the argument?",
+    "answerChoices": {
+      "A": "The amount of the chemical in grapefruit juice is highly unpredictable from glass to glass.",
+      "B": "Grapefruit juice is less expensive than most of the medicines with which it interacts.",
+      "C": "When scientists removed the chemical from grapefruit juice, the juice no longer affected how certain medicines were absorbed.",
+      "D": "The chemical in grapefruit juice works by inhibiting an enzyme in the body that affects how certain medicines are metabolized.",
+      "E": "Long before the chemical in grapefruit juice was identified, doctors were advising patients who took certain medicines to avoid grapefruit juice."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A landlord needed to replace the air-conditioning unit\nin a small rental home. The salesperson at the appliance\nstore showed the landlord two air-conditioning units with\nidentical prices. She told the landlord that the Sno-Queen\nwas the most powerful unit for the price, but advised him\nto purchase the less powerful FreezAll unit, saying that\nthe FreezAll was powerful enough for his needs.",
+    "questionStem": "The salesperson’s advice to the landlord most closely\nconforms to which one of the following principles?",
+    "answerChoices": {
+      "A": "When the prices of two different brands of a particular home appliance are identical, either of the products can satisfy the needs of the consumer.",
+      "B": "When a consumer is choosing between two different brands of a particular home appliance, the consumer should select the less powerful product only if it is also less expensive.",
+      "C": "A salesperson should always recommend that a customer buy the product that represents the best value.",
+      "D": "When advising customers about a purchase of a home appliance, a salesperson should direct the customer toward the product that yields the highest commission for the salesperson.",
+      "E": "When a consumer is choosing a home appliance, that consumer should choose the least powerful product that meets his or her needs."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Editorial: Our political discussions tend to focus largely\non the flaws of our nation’s leaders, but we need\nto remind ourselves that these leaders were\nchosen democratically. The real question that\nneeds answering is how our nation’s institutions\nand procedures enable such people to attain\npositions of power. Thus, to focus our attention\non the flaws of our leaders is to indulge in a\npointless distraction.",
+    "questionStem": "Which one of the following is an assumption that the\nargument requires?",
+    "answerChoices": {
+      "A": "Examining an individual leader’s personal flaws does not reveal anything about how the nation’s institutions and procedures influence the selection of leaders.",
+      "B": "Political discussions that focus on the flaws of the nation’s leaders will become even more common if the nation’s institutions and procedures are not examined.",
+      "C": "The workings of the nation’s current institutions and procedures ensure that only flawed individuals will attain positions of power.",
+      "D": "As yet, no one in the nation has made the effort to critically examine the details of the nation’s institutions and procedures.",
+      "E": "Concentrating on the flaws of the nation’s leaders creates greater dissatisfaction with those leaders."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Many calcium supplements contain lead, a potentially\ndangerous substance even in small amounts. The body\ncan safely store in bones trace amounts of lead from food,\nbut high levels of lead in the blood are a major public\nhealth concern, associated with anemia and nerve damage.\nDespite this, many doctors contend that for some people\ncalcium supplements containing lead are preferable to no\ncalcium supplements at all.",
+    "questionStem": "Which one of the following, if true, would most help to\nresolve the apparent discrepancy in the information\nabove?",
+    "answerChoices": {
+      "A": "Some fruits and vegetables contain trace amounts of lead derived from the soil in which they are grown.",
+      "B": "It is difficult to ensure that one has completely eliminated trace amounts of lead from one’s diet.",
+      "C": "Lead is only one of the common public health concerns that are associated with anemia and nerve damage.",
+      "D": "A high-calcium diet decreases the amount of lead that the body is able to tolerate safely.",
+      "E": "When calcium intake is insufficient, the body draws calcium from bones, releasing stored lead into the bloodstream."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Principle: People should buy an expensive antique only if\nthey can be confident of its authenticity and they\nfind the piece desirable for its intrinsic qualities\nand not just for its value as an investment.\nApplication: Matilde should not buy the expensive antique\nvase offered for sale on the Internet.",
+    "questionStem": "Which one of the following, if true, most helps to justify\nthe above application of the principle?",
+    "answerChoices": {
+      "A": "While this style of vase is not currently sought after by other collectors, Matilde has acquired quite a few similar pieces and has developed significant expertise in identifying counterfeits.",
+      "B": "Although the seller is willing to take back the vase if Matilde cannot independently authenticate it, Matilde is not sure that the vase will appreciate much in value in the future.",
+      "C": "The seller of the vase has offered documentation of its age and origin, and Matilde is highly attracted to its shape and color; moreover, she suspects that it will be highly desirable to other collectors in the future.",
+      "D": "The asking price for the vase is significantly less than the amount Matilde thinks it is worth, and the vase is of a style that Matilde particularly likes.",
+      "E": "While Matilde likes the color and features of the vase, its particular style has frequently been reproduced for the mass market, and the vase cannot be examined closely or authenticated over the Internet."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Critic: In her presentation of important works of art\nin her art history textbook, Waverly claims to\nhave presented only objective accounts: “I have\nsought neither to advocate nor to denigrate what\nI included.” In writing about art, a pretense of\nobjectivity never succeeds: clearly, Waverly\nwrites much better about art she likes than about\nart to which she is indifferent.",
+    "questionStem": "The critic’s statements, if true, most strongly support\nwhich one of the following?",
+    "answerChoices": {
+      "A": "Waverly believes that a historian of art should not prefer certain works of art to other works of art.",
+      "B": "Waverly has only included works of art that she has strong opinions about in her textbook.",
+      "C": "Waverly wrote her textbook with the intention of advocating the works of art that she likes best.",
+      "D": "Waverly has not succeeded in her intended objectivity about works of art discussed in her textbook.",
+      "E": "Waverly does not really believe that objectivity is a desirable trait in an art history textbook."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Archaeologists are discovering a great deal about the Sals\nculture. For example, recent excavations have unearthed\nsmelting furnaces and tools of smelted copper and\nbronze. There were distinct Sals words for copper and\nfor bronze, but none for iron. Thus, the Sals did not smelt\niron.",
+    "questionStem": "The conclusion drawn above follows logically if which\none of the following is assumed?",
+    "answerChoices": {
+      "A": "If a culture had a distinct word for a metal, then it smelted that metal.",
+      "B": "If a culture was unfamiliar with a metal, then it did not have a distinct word for that metal.",
+      "C": "If a culture smelted copper and bronze, then it had distinct words for copper and bronze.",
+      "D": "If a culture did not smelt a metal, then it was unfamiliar with that metal.",
+      "E": "If a culture smelted a metal, then it had a distinct word for that metal."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Community organizations wanting to enhance support\nfor higher education programs need to convince the\npublic that such programs benefit society as a whole.\nTaking this approach makes the public more receptive. It\nis much easier, for example, to get the public to support\nroad building, which is seen as benefiting everyone, than\nit is to get them to support programs that are seen as\nbenefiting only a relatively small segment of society.",
+    "questionStem": "Which one of the following most accurately expresses\nthe overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Community organizations seeking to encourage higher education programs must persuade the public that these programs benefit society as a whole.",
+      "B": "It is easier to get the public to support programs that are seen as benefiting everyone than it is to get them to support programs that are seen as benefiting only a small segment of society.",
+      "C": "It is easy to get the public to support road building, because road building is seen as benefiting society as a whole.",
+      "D": "Convincing the public that higher education programs will benefit society as a whole makes the public more receptive to those programs.",
+      "E": "Higher education is similar to road building in that both are beneficial to society as a whole."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Analogies",
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Currently, no satellite orbiting Earth is at significant risk\nof colliding with other satellites or satellite fragments,\nbut the risk of such a collision is likely to increase\ndramatically in the future. After all, once such a collision\noccurs, it will probably produce thousands of satellite\nfragments, each large enough to shatter other satellites.\nThe resulting collisions will produce many more\nfragments, and so on, causing the space around Earth to\nbecome quite heavily cluttered with dangerous debris.",
+    "questionStem": "Which one of the following most accurately describes\nthe role played in the argument by the claim that the risk\nof a satellite orbiting Earth colliding with other satellites\nor satellite fragments is likely to increase dramatically in\nthe future?",
+    "answerChoices": {
+      "A": "It is an unsupported claim that is used to provide support for the argument’s conclusion.",
+      "B": "It is an unsupported claim that is used to support another claim that in turn supports the argument’s conclusion.",
+      "C": "It is a claim for which the argument provides some support, and which in turn is used to support the argument’s conclusion.",
+      "D": "It is a claim that serves as the argument’s conclusion.",
+      "E": "It is a claim that provides nonessential background information for the argument’s conclusion."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researcher: Salmonella bacteria are a major cause of\nillness in humans who consume poultry. Young\nchicks that underwent a new treatment exhibited\na lower incidence of Salmonella infection than\ndid untreated chicks, although one week after the\ntreatment was administered the treated chicks had\nhigher concentrations of a variety of bacteria than\ndid untreated chicks.",
+    "questionStem": "Which one of the following, if true, most helps to\nexplain the concentrations of bacteria one week after the\ntreatment?",
+    "answerChoices": {
+      "A": "The new treatment takes several weeks to administer.",
+      "B": "Levels of Salmonella bacteria in young chicks are generally not high to begin with.",
+      "C": "Most chicks develop resistance to many harmful bacteria by the time they reach adulthood.",
+      "D": "The untreated chicks experienced a higher incidence of illness from infection by bacteria other than Salmonella than did treated chicks.",
+      "E": "The bacteria found in the treated chicks were nonvirulent types whose growth is inhibited by Salmonella bacteria."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Debater: As a pedagogical practice, lecturing embodies\nhierarchy, since the lecturer is superior to the\nstudent in mastery of the subject. But people\nlearn best from peer interaction. Thus, the\nhierarchy in lecturing is a great weakness. Respondent: By definition, all teaching and learning are\nhierarchical, for all teaching and learning must\nproceed from simple to complex. In teaching\nmathematics, for example, arithmetic must\nprecede calculus. Thus, the hierarchy in lecturing\nis a strength.",
+    "questionStem": "The respondent’s reply to the debater’s argument is most\nvulnerable to criticism on the grounds that the\nrespondent",
+    "answerChoices": {
+      "A": "concedes one of the major assumptions on which the debater’s argument depends",
+      "B": "takes for granted that teaching methods that are effective in mathematics are also effective in other academic disciplines",
+      "C": "fails to consider the possibility that some characteristics of lecturing other than hierarchy are weaknesses",
+      "D": "applies a key concept to a different aspect of education than the aspect to which the debater applied it",
+      "E": "takes for granted that the conceptual structure of mathematics is sufficiently representative of the conceptual structure of at least some other academic disciplines"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "2-Speaker",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "How the pigment known as Han purple was synthesized\nby the ancient Chinese of the Qin and Han dynasties has\npuzzled scientists. The Chinese chemists employed the\nsame chemical ingredients used for Han purple in the\nproduction of a common type of white glass during that\nperiod. Both were produced in processes that involved\nsubjecting the mixtures to high heat and mixing in lead to\ndecrease the melting temperature. Thus, Han purple was\nprobably discovered by fortuitous accident during glass\nproduction.",
+    "questionStem": "Which one of the following, if true, would most\nstrengthen the argument?",
+    "answerChoices": {
+      "A": "Chemical analysis shows that most of the known fragments of both Han purple and the white glass were produced within a small geographical radius.",
+      "B": "Han purple was used for luxury and ceremonial items, whereas the white glass was used to make certain household items.",
+      "C": "The technique used for producing Han purple was known to very few people during the Qin and Han dynasties.",
+      "D": "The ingredients used in producing both Han purple and the white glass were easily obtainable during the Qin and Han dynasties.",
+      "E": "The white glass is found in more surviving artifacts from the Qin and Han dynasties than Han purple is."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Medical researcher: A survey of more than 1 million\nadults found that there was a greater frequency\nof illness among people who regularly slept at\nleast 8 hours a night than among people who\nslept significantly less. This shows that mild sleep\ndeprivation is not unhealthy and, in fact, probably\nbolsters the body’s defenses against illness.",
+    "questionStem": "The reasoning in the medical researcher’s argument is\nmost vulnerable to criticism on the grounds that the\nargument",
+    "answerChoices": {
+      "A": "fails to address the possibility that an observed correlation between two phenomena is due to another factor that causally contributes to both phenomena",
+      "B": "fails to consider that even if a given factor causally contributes to the occurrence of a given phenomenon, it may not be the only factor affecting the occurrence of that phenomenon",
+      "C": "concludes, from the claim that a certain phenomenon occurs and the claim that a certain condition is sufficient for that phenomenon to occur, that the condition also exists",
+      "D": "takes for granted that there will be an observable correlation between two phenomena if either of those phenomena causally contributes to the other",
+      "E": "fails to consider that even if a specific negative consequence is not associated with a given phenomenon, that phenomenon may have other negative consequences"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "If temperatures had dropped below freezing when I was\ngone last week, the impatiens in my garden would have\ndied. If the impatiens had died, they obviously could not\ncontinue to bloom. However, since the impatiens in my\ngarden are still in bloom today, temperatures did not drop\nbelow freezing last week.",
+    "questionStem": "The pattern of reasoning in which one of the following\narguments most closely parallels that in the argument\nabove?",
+    "answerChoices": {
+      "A": "If a species is highly adaptable, it will thrive when introduced into a new environment. If a species thrives in its new environment, it will have an adverse effect on species already existing in that environment. But, since this species has not had an adverse effect on any species already existing in its new environment, it is not highly adaptable.",
+      "B": "If a species thrives in a new environment, that species is adaptable. Species that adapt to new environments adversely affect some species already existing in those environments. So, if a species does not adversely affect any species already existing in its new environment, it has not adapted to it.",
+      "C": "If a species is introduced into a new environment, it adversely affects some species already existing in that environment, but only if it adapts well to it. Therefore, if a species does not adapt well to a new environment, it will not adversely affect any species already existing in it.",
+      "D": "If the introduction of a new species would adversely affect some species already existing in an environment, that species should not be introduced into it. Therefore, since the introduction of species into new environments will result in some species in those environments being adversely affected, species should probably not be introduced into new environments.",
+      "E": "If a new species would damage an environment, that species should not be introduced into it. If a new species is introduced, the risk can be reduced by controlling its population. Therefore, because the introduction of species into new environments is likely to happen, their populations should be controlled."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Contrapositive Logic",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "If the city builds the proposed convention center, several\nnational professional organizations will hold conventions\nthere. And if several large conventions are held in the\ncity, the total number of visitors will of course increase.\nTax revenues will certainly increase if the number of\nvisitors increases. Thus, building the convention center\nwill increase the city’s tax revenues.",
+    "questionStem": "The conclusion of the argument follows logically if\nwhich one of the following is assumed?",
+    "answerChoices": {
+      "A": "If the number of visitors to the city does not increase, then the city’s tax revenues will not increase.",
+      "B": "If the number of visitors to the city increases, then the amount of money spent by visitors will increase.",
+      "C": "The city’s tax revenues will not increase unless the convention center is built.",
+      "D": "People who are now regular visitors to the city will continue to visit the city if the new convention center is built.",
+      "E": "If several national professional organizations hold their conventions in the convention center, those conventions will be large."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "In a study, pairs of trained dogs were placed side by side\nand given a command such as “sit.” After both obeyed\nthe command, one dog was given a treat while its partner\nwas given no reward at all. Over time, the dogs who went\nunrewarded began to disobey the command. This shows\nthat dogs have an aversion to being treated unfairly.",
+    "questionStem": "Which one of the following would be most useful to\nknow in order to evaluate the argument?",
+    "answerChoices": {
+      "A": "Were dogs who were accustomed to receiving regular rewards prior to the study more inclined to obey the command?",
+      "B": "Is there a decline in obedience if rewards are withheld from both dogs in the pair?",
+      "C": "Were dogs who received treats in one trial ever used as dogs that did not receive treats in other trials?",
+      "D": "Were there any cases in which the dog who was given a reward became more inclined to obey the command?",
+      "E": "How many repetitions were required before the unrewarded dogs began to disobey the command?"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A study of 20,000 20- to 64-year-olds found that people’s\nsatisfaction with their incomes is not strongly correlated\nwith the amount they make. People tend to live in\nneighborhoods of people from their same economic class,\nand the study shows that people’s satisfaction with their\nincomes depends largely on how favorably their incomes\ncompare with those of their neighbors.",
+    "questionStem": "The statements above, if true, most strongly support\nwhich one of the following hypotheses?",
+    "answerChoices": {
+      "A": "People with high incomes are consistently more satisfied with their incomes than are people in the middle class.",
+      "B": "Older people are generally more satisfied with their incomes than are younger people.",
+      "C": "Satisfaction with income is strongly correlated with neighborhood.",
+      "D": "In general, people’s income levels have little effect on their level of satisfaction with life as a whole.",
+      "E": "An increase in everyone’s incomes is not likely to greatly increase people’s levels of satisfaction with their own incomes."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Geologist: The dominant view that petroleum formed\nfrom the fossilized remains of plants and animals\ndeep in the earth’s crust has been challenged\nby scientists who hold that it formed, not from\nliving material, but from deep carbon deposits\ndating from the formation of the earth. But their\ntheory is refuted by the presence in petroleum\nof biomarkers, molecules indicating the past or\npresent existence of a living organism.",
+    "questionStem": "Which one of the following, if true, most weakens the\ngeologist’s argument?",
+    "answerChoices": {
+      "A": "Fossils have been discovered that are devoid of biomarkers.",
+      "B": "Living organisms only emerged long after the earth’s formation.",
+      "C": "It would take many millions of years for organisms to become petroleum.",
+      "D": "Certain strains of bacteria thrive deep inside the earth’s crust.",
+      "E": "Some carbon deposits were formed from the fossilized remains of plants."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Science",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Any driver involved in an accident leading to personal\ninjury or property damage exceeding $500 is legally\nrequired to report the accident to the department of motor\nvehicles, unless the driver is incapable of doing so. Ted\nis not required to report the accident in which he was\ninvolved as a driver.",
+    "questionStem": "Which one of the following can be properly inferred\nfrom the statements above?",
+    "answerChoices": {
+      "A": "If Ted is incapable of reporting the accident, then the accident did not lead to property damage exceeding $500.",
+      "B": "If Ted’s car was damaged in excess of $500 in the accident, then he is incapable of reporting the accident to the department of motor vehicles.",
+      "C": "Someone other than Ted is legally required to report the accident to the department of motor vehicles.",
+      "D": "If Ted is incapable of reporting the accident to the department of motor vehicles, then he was injured in the accident.",
+      "E": "Either no one was injured in the accident or the accident did not lead to property damage exceeding $500."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Complex Conditionals",
+      "Conditional Diagramming",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Student: If a person has an immunity to infection by a\nmicroorganism, then that microorganism does\nnot cause them to develop harmful symptoms. Since many people are exposed to staphylococcus\nwithout developing any harmful symptoms, it\nfollows that they have an immunity to infection\nby this microorganism.",
+    "questionStem": "The student’s argument is most similar in its flawed\npattern of reasoning to which one of the following?",
+    "answerChoices": {
+      "A": "Everything morally right is just, but some actions that best serve the interests of everyone are not just. Thus, some morally right actions do not serve the interests of everyone.",
+      "B": "Advertisers try to persuade people that certain claims are true. Since writers of fiction are not advertisers, they probably never try to persuade people that certain claims are true.",
+      "C": "Isabel said that she would take the medication. Obviously, though, she did not do so, because medication either cures disease or alleviates its symptoms, and Isabel is still quite ill.",
+      "D": "When business owners are subjected to excessive taxation, they become less willing to expand their businesses. The recent decline in business expansions thus shows that their taxes are too high.",
+      "E": "Studies show that doctors tend to wash their hands less often than any other health care professionals. This shows that the procedure cannot be of much value in preventing disease."
+    },
+    "correctAnswer": "D"
+  }
+]

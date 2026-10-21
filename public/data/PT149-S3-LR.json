@@ -1,0 +1,647 @@
+[
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Advertisement: Most nutritionists recommend eating fish twice a week. Eating tilapia fillets is a perfect choice for those who want the benefits of eating fish but do not care for the taste of fish. Tilapia fillets lack the strong fishy taste that many people find objectionable.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the advertisement’s argument?",
+    "answerChoices": {
+      "A": "Eating more than the recommended amount of fish can cause toxins that are present in high concentrations in many varieties of fish to accumulate in a person’s body.",
+      "B": "Tilapia are invasive species that crowd out native species of fish in lakes throughout the world.",
+      "C": "Tilapia fillets contain little of the beneficial fish oils that are the main reason nutritionists recommend eating fish frequently.",
+      "D": "Most people who do not care for the taste of fish eat less fish than is recommended by most nutritionists.",
+      "E": "People who rarely or never eat fish usually dislike any food with a strong fishy taste."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Flawed Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Domestication of animals is a cooperative activity, and cooperative activities require a sophisticated means of communication. Language provides just such a means. It is likely, therefore, that language developed primarily to facilitate animal domestication.",
+    "questionStem": "A flaw in the argument is that the argument",
+    "answerChoices": {
+      "A": "conflates being necessary for the development of a phenomenon with guaranteeing the development of that phenomenon",
+      "B": "takes for granted that every phenomenon has a unique cause",
+      "C": "infers that the development of one phenomenon caused the development of another merely because the two phenomena developed around the same time",
+      "D": "draws a conclusion that merely restates a claim presented in support of that conclusion",
+      "E": "assumes that if something serves a purpose it must have developed in order to serve that purpose"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Many employers treat their employees fairly. Thus, using others as a means to one’s own ends is not always morally reprehensible or harmful to others.",
+    "questionStem": "The argument requires the assumption that",
+    "answerChoices": {
+      "A": "some employers act in a morally reprehensible manner only when they harm those whom they employ",
+      "B": "no employers who act morally use their employees as a means to their own ends",
+      "C": "some or all employers use their employees as a means to their own ends",
+      "D": "making a profit from the labor of others is personally advantageous but never harmful",
+      "E": "it is not possible to harm someone else without treating that person as a means to one’s own ends"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Refute a Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Flawed Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Editorial: It is common to find essays offering arguments that seem to show that our nation is in decline. There is no cause for alarm, however. The anxious tone of these essays shows that the problem is with the psychological state of their writers rather than with the actual condition of our nation.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the editorial’s reasoning?",
+    "answerChoices": {
+      "A": "The editorial dismisses a claim without considering any reasons presented in arguments for that claim.",
+      "B": "The editorial compares two situations without considering the obvious differences between them.",
+      "C": "The editorial confuses claims about a cultural decline with claims about a political decline.",
+      "D": "The editorial overlooks the possibility that the nation is neither thriving nor in decline.",
+      "E": "The editorial dismisses a particular view while offering evidence that actually supports that view."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Anti-Causal",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Eating turmeric, a spice commonly found in curries, probably helps prevent Alzheimer’s disease. More turmeric is consumed per capita in India than in the rest of the world, and the incidence of Alzheimer’s disease is much lower there than it is worldwide. Furthermore, Alzheimer’s disease is characterized by the buildup of amyloid protein plaques in the brain, and studies on animals found that curcumin—a compound found in turmeric—reduces the accumulation of amyloid proteins.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Rosemary and ginger, which contain compounds that affect amyloid protein accumulation much like curcumin does, are commonly found in the diets of people living in India.",
+      "B": "Many scientists believe that the buildup of amyloid protein plaques in the brain is a symptom of Alzheimer’s disease rather than a cause.",
+      "C": "The proportion of people living in India who fall within the age group that is most prone to developing Alzheimer’s disease is smaller than the proportion of people worldwide who fall within that age group.",
+      "D": "None of the other compounds found in turmeric have been studied to see whether they affect the accumulation of amyloid proteins.",
+      "E": "The parts of India that have the highest per capita rates of curry consumption have the lowest incidence of Alzheimer’s disease."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Breadcrumbs",
+      "Medical",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Role in Argument",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Forestry official: Many people think that if forest fires are not extinguished as quickly as possible, the Forestry Department is not doing its job properly. But relatively frequent, small fires clear out small trees and forest debris, which, if allowed to accumulate, would create the conditions for large, devastating fires. Therefore, it’s best to let small fires burn.",
+    "questionStem": "The statement that relatively frequent, small fires clear out small trees and forest debris plays which one of the following roles in the official’s argument?",
+    "answerChoices": {
+      "A": "It is offered as support for the contention that the Forestry Department is not doing its job properly if it does not extinguish forest fires as quickly as possible.",
+      "B": "It is used as evidence against the contention that the Forestry Department is not doing its job properly if it does not extinguish forest fires as quickly as possible.",
+      "C": "It is used to show what the consequences would be if the Forestry Department based its policies on the ideas most people have about how it should do its job.",
+      "D": "It is an example used to illustrate the claim that most people believe the Forestry Department should quickly extinguish all forest fires.",
+      "E": "It is a conclusion based on the premise in the argument that it is best to let small forest fires burn."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Point at Issue",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Gerald: Unless a consumer secures his or her home wireless Internet service, anyone strolling by is able to access that person’s service with certain laptop computers or smartphones. Such use cannot be considered illegal under current laws: it’s no more like trespassing than is enjoying music playing on someone’s radio as you walk down the street.\nKendra: But unlike hearing music while walking by, accessing wireless service requires stopping for a considerable length of time. And that could be considered loitering or even harassment.",
+    "questionStem": "Gerald’s and Kendra’s positions indicate that they disagree over whether accessing someone’s wireless Internet service while walking down the street",
+    "answerChoices": {
+      "A": "can be considered illegal under current law",
+      "B": "is like trespassing",
+      "C": "should be prohibited by law",
+      "D": "requires a considerable length of time",
+      "E": "could be done without intending to do so"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Over the last thousand years, plant species native to islands have gone extinct at a much faster rate than have those native to mainland regions. Biologists believe that this is because island plants have not adapted the defenses against being eaten by large land mammals that mainland plants have. Ordinarily, populations of large land mammals are not established on islands until after the island is colonized by humans.",
+    "questionStem": "Which one of the following, if true, most strongly supports the biologist’s explanation cited above?",
+    "answerChoices": {
+      "A": "Most of the plant species in the world that have not yet gone extinct are native to mainland regions.",
+      "B": "Many plant species that are not native to islands have become very well established on islands throughout the world.",
+      "C": "Commercial development on many islands has resulted in loss of habitat for many native plants.",
+      "D": "The rate of extinction of native plant species on an island tends to increase dramatically after human colonization.",
+      "E": "Large land mammals tend to prefer plants from species native to mainland regions over plants from species native to islands."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Complete the Argument",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "As regards memory, the brain responds best to repeated patterns, such as the melodic and rhythmic patterns of music. This is why we can remember long strings of information or text, which would normally be impossible to memorize, when they are put to music. Given that music aids memory, it might seem that funny jokes would be easy to remember, since, like music, they normally elicit an emotional response in us. However, jokes are usually very difficult to remember, since _______.",
+    "questionStem": "Which one of the following most logically completes the passage?",
+    "answerChoices": {
+      "A": "jokes, unlike music, always have content that is verbal or at least clearly symbolic",
+      "B": "some successful jokes are short and pithy, whereas others are long and involved",
+      "C": "jokes work not by conforming to repeated patterns but by breaking them",
+      "D": "for most people, certain memories elicit a strong emotional response",
+      "E": "people can hold in short-term memory only a few chunks of unpatterned information at a time"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs",
+      "Causal Difference-Maker",
+      "Logical Completion",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The prehistoric fish Tiktaalik is the earliest known animal with fingers. Since variations were so great among prehistoric fish species, Tiktaalik would not have stood out as unusual at the time. However, Tiktaalik’s fingers were an important development in animal evolution because it is likely that Tiktaalik is an ancestor to the many land animals with fingers.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Tiktaalik likely used its fingers to move on land.",
+      "B": "Tiktaalik’s fingers were its only feature to play a significant role in the development of modern land animals.",
+      "C": "Tiktaalik is not the ancestor of any currently surviving fish species.",
+      "D": "No fish without fingers would ever be able to move on land.",
+      "E": "The evolutionary significance of Tiktaalik could not be determined just through comparison to fish species of its time."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Point at Issue",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Gabriella: By raising interest rates, the government has induced people to borrow less money and therefore to spend less, thereby slowing the country’s economy.\nIvan: I disagree with your analysis. The country’s economy is tied to the global economy. Whatever happens to the global economy also happens here, and the global economy has slowed. Therefore, the government’s action did not cause the economy’s slowdown.",
+    "questionStem": "Gabriella and Ivan disagree about whether",
+    "answerChoices": {
+      "A": "the economic slowdown in the country has caused people to spend less",
+      "B": "the economy of the country is tied to the economies of other countries",
+      "C": "raising interest rates caused a significant decrease in borrowing",
+      "D": "raising interest rates caused the country’s economy to slow",
+      "E": "the global economy has slowed"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "2-Speaker",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Must Be False",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In a scene in an ancient Greek play, Knights, the character Demosthenes opens a writing tablet on which an oracle had written a prophecy, and while looking at the tablet, he continuously expresses his amazement at its contents. His companion presses him for information, whereupon Demosthenes explains what the oracle had written.",
+    "questionStem": "Of the following claims, which one can most justifiably be rejected on the basis of the statements above?",
+    "answerChoices": {
+      "A": "In ancient Greek plays, characters are presumed to know how to read unless their illiteracy is specifically mentioned.",
+      "B": "The character of Demosthenes in Knights is not based on a historical figure.",
+      "C": "In ancient Greek plays, the reading aloud of written texts commonly occurred as part of the on-stage action.",
+      "D": "In ancient Greece, people did not read silently to themselves.",
+      "E": "Only rarely in ancient Greece were prophecies written down on writing tablets."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Science cannot adequately explain emotional phenomena such as feeling frustrated, falling in love, or being moved by a painting. Since they cannot be explained by physics, chemistry, or neurophysiology, human emotions must not be physical phenomena.",
+    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Whatever is not a physical phenomenon cannot be explained by science.",
+      "B": "Nothing that can be felt by only one subject can be studied scientifically.",
+      "C": "Physics, chemistry, and neurophysiology have similar explanatory frameworks.",
+      "D": "Whatever is not a physical phenomenon is an emotional one.",
+      "E": "Every physical phenomenon can be explained by physics, chemistry, or neurophysiology."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Several Tyrannosaurus rex skeletons found in North America contain tooth marks that only a large carnivore could have made. At the time T. rex lived, it was the only large carnivore in North America. The tooth marks could have resulted only from combat or feeding. But such tooth marks would have been almost impossible to inflict on the skeleton of a live animal.",
+    "questionStem": "The information above most strongly supports which one of the following?",
+    "answerChoices": {
+      "A": "T. rex regularly engaged in combat with smaller carnivores.",
+      "B": "At the time T. rex lived, it was common for carnivores to feed on other carnivores.",
+      "C": "T. rex sometimes engaged in cannibalism.",
+      "D": "T. rex sometimes engaged in intraspecies combat.",
+      "E": "At the time T. rex lived, there were large carnivores on continents other than North America."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "There is a popular view among literary critics that a poem can never be accurately paraphrased because a poem is itself the only accurate expression of its meaning. But these same critics hold that their own paraphrases of particular poems are accurate. Thus, their view that poetry cannot be accurately paraphrased is false.",
+    "questionStem": "The reasoning in the argument is most vulnerable to the criticism that the argument",
+    "answerChoices": {
+      "A": "presupposes the falsity of the view that it sets out to refute",
+      "B": "takes for granted that the main purpose of poems is to convey information rather than express feelings",
+      "C": "takes for granted that a paraphrase of a poem cannot be useful to its readers unless it accurately expresses a poem’s meaning",
+      "D": "provides no justification for favoring one of the literary critics’ beliefs over the other",
+      "E": "provides no justification for following one particular definition of “paraphrase”"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Worst of the Worst",
+      "Rebuttals",
+      "Battle of Opinions",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Flawed Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The tax bill passed 2 years ago provides substantial incentives for businesses that move to this area and hire 50 or more employees. Critics say the bill reduces the government’s tax revenues. Yet clearly it has already created many jobs in this area. Last year, Plastonica qualified for incentives under the bill by opening a new plastics factory here that hired 75 employees.",
+    "questionStem": "The argument’s reasoning depends on which one of the following assumptions?",
+    "answerChoices": {
+      "A": "If Plastonica had not opened the plastics factory in the area, it would not have opened a plastics factory at all.",
+      "B": "Plastonica would not have opened the plastics factory in the area had it not been for the incentives.",
+      "C": "Most critics of the tax bill claim that it will not create any more new jobs.",
+      "D": "If Plastonica had not opened the plastics factory in the area, it would have opened it somewhere else.",
+      "E": "Critics of the tax bill believe that it has not created any jobs in the area."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Defender",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "When a chain of service stations began applying a surcharge of $0.25 per purchase on fuel paid for by credit card, the chain’s owners found that this policy made their customers angry. So they decided instead to simply raise the price of fuel a compensatory amount and give a $0.25 discount to customers paying with cash. Customers were much happier with this policy.",
+    "questionStem": "Which one of the following generalizations does the situation described above most clearly illustrate?",
+    "answerChoices": {
+      "A": "People usually adopt beliefs without carefully assessing the evidence for and against those beliefs.",
+      "B": "People’s perceptions of the fairness of a policy sometimes depend on whether that policy benefits them personally.",
+      "C": "People usually become emotional when considering financial issues.",
+      "D": "People often change their minds about issues that do not make significant differences to their lives.",
+      "E": "People’s evaluations of a situation sometimes depend less on the situation itself than on how it is presented to them."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Proposition/Generalization",
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Flawed Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Herbalist: Many herbal medicines work best when they have a chance to influence the body gently over several months. However, many of these herbal medicines have toxic side effects when taken daily for such long periods. Therefore, at least some people who use herbal medicines daily should occasionally skip their usual dose for a day or two, to give the body a chance to recuperate.",
+    "questionStem": "Which one of the following is an assumption required by the herbalist’s argument?",
+    "answerChoices": {
+      "A": "At least some people who use herbal medicines daily use them for periods long enough for the medicines to have side effects.",
+      "B": "At least some herbal medicines work less well in achieving their desired effects if one occasionally skips one’s usual dose than if one does not.",
+      "C": "Some herbal medicines have toxic side effects when taken for several months, even if the usual dose is occasionally skipped for a day or two to give the body a chance to recuperate.",
+      "D": "Anyone who uses herbal medicines should give those medicines a chance to influence the body gently over several months at least.",
+      "E": "One should occasionally skip one’s usual dose of an herbal medicine for a day or two only if doing so will reduce or eliminate toxic side effects from several months of use."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Defender",
+      "Medical",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Business owner: Around noon in one section of the city, food trucks that sell lunch directly to customers on the sidewalk occupy many of the limited metered parking spaces available, thus worsening already bad traffic congestion. This led the city council to consider a bill to prohibit food trucks from parking in metered spaces in any commercially zoned area. This bill should be rejected since there is plenty of available parking and little traffic congestion in most areas of the city.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the business owner's argument?",
+    "answerChoices": {
+      "A": "Unless a business provides a product or service that is valued by consumers, the business should not be allowed to make use of scarce city resources.",
+      "B": "If a serious problem exists in one part of a city, the city government should address the problem before it spreads to another area of the city.",
+      "C": "No proposed solution to a city problem should be implemented until the problem has been thoroughly studied.",
+      "D": "A law that would disadvantage businesses of a certain type throughout a city should not be used to solve a problem that does not affect most areas of the city.",
+      "E": "If a city has a serious problem, then it should not implement any policy that would aggravate that problem even if the policy would address another serious problem."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Michele: In my professional experience, it's usually not a good idea for a company to overhaul its databases. The rewards rarely exceed the problems experienced along the way, and I'd suggest that anyone considering a database overhaul think twice before proceeding.\n\nAlvaro: But the problems are always caused by a failure to recode the database properly. The best advice for a company considering a database overhaul is to do the job right.",
+    "questionStem": "Michele and Alvaro disagree with each other about which one of the following?",
+    "answerChoices": {
+      "A": "why companies should consider overhauling their databases",
+      "B": "whether the problems experienced during a database overhaul ever outweigh the rewards",
+      "C": "which kinds of database overhauls have more problems than are justified by the rewards",
+      "D": "what a company should do when considering a database overhaul",
+      "E": "when professional experience is required to correctly recode a database"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Must be True",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In an experiment, subjects were shown a series of images on a computer screen, appearing usually at the top but occasionally at the bottom. Subjects were asked to guess each time where the next image would appear on the screen. They guessed correctly less than half of the time. The subjects all reported that they based their guesses on patterns they believed they saw in the sequence. Instead, if they had simply guessed that the next image would always appear at the top, they would have been correct most of the time.",
+    "questionStem": "If all of the statements above are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "If the subjects had always guessed that the next image would appear at the top, they would not have been basing their guesses on any pattern they believed they saw in the sequence.",
+      "B": "Basing one's guesses about what will happen next on the basis of patterns one believes one sees is less likely to lead to correct guesses than always guessing that what has happened before will happen next.",
+      "C": "There was no predictable pattern that one could reasonably believe occurred in the series of images on the computer screen.",
+      "D": "Some of the subjects sometimes guessed that the next image would appear at the bottom of the computer screen, but were incorrect.",
+      "E": "The most rational strategy for guessing correctly where the next image would appear would have been simply to always guess that the image would appear at the top."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Paradox (EXCEPT)",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The temperature in Taychester is always at least 10 degrees lower than the temperature in Charlesville. However, the average resident of Charlesville spends 10 to 20 percent more on winter heating expenses than does the average resident of Taychester.",
+    "questionStem": "Each of the following, if true, helps to resolve the apparent paradox described above except:",
+    "answerChoices": {
+      "A": "Heat loss due to wind is less in Taychester than in Charlesville.",
+      "B": "Although Charlesville is always fairly warm during the daytime, temperatures in Charlesville drop steeply at night.",
+      "C": "Utility rates in Taychester are lower than utility rates in Charlesville.",
+      "D": "People who are used to warmer temperatures generally keep their homes warmer in the winter than do people who are used to colder temperatures.",
+      "E": "Houses in colder climates are usually better insulated than houses in warmer climates."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Parallel",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Each new car in the lot at Rollway Motors costs more than $18,000. Any car in their lot that is ten or more years old costs less than $5,000. Thus, if a car in Rollway's lot costs between $5,000 and $18,000, it is a used car that is less than ten years old.",
+    "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Each apartment above the fourth floor of the building has more than two bedrooms. But all apartments below the fourth floor have fewer than two bedrooms. Thus, any apartment on the fourth floor of the building has exactly two bedrooms.",
+      "B": "Each apartment above the fourth floor of the building has two or three bedrooms. But no apartment below the fourth floor has more than two bedrooms. Thus, all of the building's threebedroom apartments are on the fourth floor or higher.",
+      "C": "No apartment above the fourth floor of the building has fewer than three bedrooms. But all apartments below the fourth floor have fewer than two bedrooms. Thus, if there are apartments in the building with exactly two bedrooms, they are on the fourth floor.",
+      "D": "No apartment above the fourth floor of the building has more than two bedrooms. But only three-bedroom apartments have balconies. Thus, if any apartment in the building has a balcony, it is on the fourth floor or lower.",
+      "E": "Each apartment above the fourth floor of the building has more than two bedrooms. The building has no vacant apartments on or below the fourth floor. Thus, if there is any vacant apartment in the building, it will have more than two bedrooms."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Repetitive Answers",
+      "Conditional Diagramming",
+      "Contrapositive Logic",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Meteorologist: The number of tornadoes reported annually has more than doubled since the 1950s. But their actual number has probably not increased. Our ability to find tornadoes has improved, so we're probably just finding a higher percentage of them than we used to.",
+    "questionStem": "Which one of the following, if true, provides the most support for the meteorologist's argument?",
+    "answerChoices": {
+      "A": "The physical damage caused by the average tornado has remained roughly constant since the 1950s.",
+      "B": "The number of tornadoes hitting major population centers annually has more than doubled since the 1950s.",
+      "C": "The number of large and medium sized tornadoes reported annually has remained roughly constant since the 1950s.",
+      "D": "The annual number of deaths due to tornadoes has increased steadily since the 1950s.",
+      "E": "The geographic range in which tornadoes are most prevalent has remained roughly constant since the 1950s."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Explain Curious Fact",
+      "Timeframes",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Salesperson: If your vacuuming needs are limited to cleaning small areas of uncarpeted floors, an inexpensive handheld vacuum cleaner is likely to be sufficient. After all, most are easy to use and will likely satisfy all your vacuuming needs on wood and tile floors.",
+    "questionStem": "The conclusion of the salesperson's argument is most strongly supported if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The only types of floor surfaces that most consumers encounter are carpet, wood, and tile.",
+      "B": "Inexpensive handheld vacuum cleaners are sufficient for cleaning small areas of carpeted floors.",
+      "C": "Any handheld vacuum cleaner that is easy to use but sufficient only for cleaning small areas of uncarpeted floors is likely to be inexpensive.",
+      "D": "If your household cleaning needs include cleaning small areas of uncarpeted floors, it is likely that you will need a vacuum cleaner.",
+      "E": "The more versatile a vacuum cleaner is, the more likely it is to be expensive."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Conditional Conclusion",
+      "New Concept in Conclusion",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Decreased reliance on fossil fuels is required if global warming is to be halted. The current reliance would decrease if economic incentives to develop alternative energy sources were present. So ending global warming requires offering economic incentives to develop alternative energy sources.",
+    "questionStem": "The flawed pattern of reasoning exhibited by the argument above most closely parallels that exhibited by which one of the following?",
+    "answerChoices": {
+      "A": "If we end poverty we will end hunger. Ending unemployment will end poverty. So ending unemployment will end hunger.",
+      "B": "Daily exercise guarantees good health. Good health ensures a happy life. So daily exercise is required for good health.",
+      "C": "Going to college is required for getting a professional job. Graduating from high school is necessary for going to college. So graduating from high school is necessary for getting a professional job.",
+      "D": "Keeping good teachers is necessary for improving education. If teachers' salaries were improved, good teachers would remain in the profession. So an increase in teachers' salaries is necessary to improve education.",
+      "E": "Preventing abuse of prescription drugs requires expanding drug education efforts. Increased cooperation between schools and law enforcement agencies is needed if drug education efforts are to be expanded. So, if cooperation between law enforcement and schools increases, the abuse of prescription drugs will be prevented."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
+    ]
+  }
+]

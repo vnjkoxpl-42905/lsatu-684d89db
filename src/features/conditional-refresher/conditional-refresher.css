@@ -1,0 +1,109 @@
+/* Conditional Indicators Refresher — self-contained paper-and-ink surface.
+   Tokens are scoped to the page root so nothing here leaks into the rest of
+   the app, and no component hardcodes a colour utility. */
+
+.cir-root {
+  --cir-paper: #f6f2e8;
+  --cir-paper-raised: #fdfaf2;
+  --cir-ink: #13332a;
+  --cir-ink-soft: #3c574c;
+  --cir-ink-mute: #6d7f77;
+  --cir-rule: #d8cfbb;
+  --cir-rule-soft: #e7e0d0;
+  --cir-good: #1f5c4a;
+  --cir-bad: #8d3a33;
+  min-height: 100vh;
+  background: var(--cir-paper);
+  color: var(--cir-ink);
+  font-size: 16px;
+}
+
+.cir-shell { max-width: 1040px; margin: 0 auto; padding: 32px clamp(16px, 4vw, 44px) 80px; }
+
+.cir-title {
+  font-family: var(--font-display, Georgia, "Times New Roman", serif);
+  font-size: clamp(30px, 5vw, 46px);
+  line-height: 1.1;
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+.cir-sub { color: var(--cir-ink-mute); font-size: 14px; margin: 0 0 24px; }
+
+.cir-tabs { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--cir-rule); padding-bottom: 12px; margin-bottom: 28px; }
+.cir-tab {
+  border: 1px solid var(--cir-rule); background: transparent; color: var(--cir-ink-soft);
+  border-radius: 999px; padding: 8px 16px; font-size: 14px; cursor: pointer;
+}
+.cir-tab:hover { border-color: var(--cir-ink-mute); }
+.cir-tab[aria-selected="true"] { background: var(--cir-ink); color: var(--cir-paper-raised); border-color: var(--cir-ink); }
+
+.cir-lead { font-family: var(--font-display, Georgia, serif); font-size: clamp(20px, 3vw, 26px); margin: 0 0 20px; }
+
+/* Cheat sheet -------------------------------------------------------------- */
+.cir-quadrants { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cir-quad { background: var(--cir-paper-raised); border: 1px solid var(--cir-rule); border-radius: 14px; padding: clamp(18px, 2.4vw, 26px); }
+.cir-quad-n { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cir-ink-mute); }
+.cir-quad h2 { font-family: var(--font-display, Georgia, serif); font-size: 22px; margin: 6px 0 14px; font-weight: 600; }
+.cir-words { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.cir-word { border: 1px solid var(--cir-rule); border-radius: 8px; padding: 5px 10px; font-size: 14px; background: var(--cir-paper); }
+.cir-quad p { color: var(--cir-ink-soft); line-height: 1.65; font-size: 15px; margin: 0; }
+.cir-steps { margin: 0; padding-left: 20px; color: var(--cir-ink-soft); line-height: 1.7; font-size: 15px; }
+.cir-note { margin-top: 12px; font-size: 14px; color: var(--cir-ink-mute); font-style: italic; }
+.cir-legend { margin-top: 22px; border-top: 1px solid var(--cir-rule); padding-top: 18px; display: flex; flex-wrap: wrap; gap: 28px; align-items: center; color: var(--cir-ink-soft); font-size: 14px; }
+.cir-legend > div { display: flex; align-items: center; gap: 10px; }
+
+/* Notation ----------------------------------------------------------------- */
+.cir-neg { display: inline-block; position: relative; padding: 0 .08em; white-space: nowrap; }
+.cir-neg::after { content: ""; position: absolute; height: 1.5px; width: 150%; left: -25%; top: 50%; background: currentColor; transform: rotate(-52deg); pointer-events: none; }
+.cir-stack { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.25; }
+.cir-stack-join { font-size: .85em; color: var(--cir-ink-mute); }
+.cir-arrow { margin: 0 .55em; color: var(--cir-ink-soft); }
+.cir-diagram { font-size: clamp(18px, 2.4vw, 22px); display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+
+/* Shared drill furniture --------------------------------------------------- */
+.cir-card { background: var(--cir-paper-raised); border: 1px solid var(--cir-rule); border-radius: 14px; padding: clamp(20px, 3vw, 32px); }
+.cir-bar { height: 6px; border-radius: 999px; background: var(--cir-rule-soft); overflow: hidden; margin-bottom: 22px; }
+.cir-bar > span { display: block; height: 100%; background: var(--cir-good); transition: width .25s ease; }
+.cir-prompt { font-family: var(--font-display, Georgia, serif); font-size: clamp(22px, 3.4vw, 30px); line-height: 1.3; margin: 0 0 22px; }
+.cir-choices { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.cir-choice { text-align: left; border: 1px solid var(--cir-rule); background: var(--cir-paper); color: var(--cir-ink); border-radius: 10px; padding: 14px 16px; font-size: 15px; cursor: pointer; }
+.cir-choice:hover:not(:disabled) { border-color: var(--cir-ink-mute); }
+.cir-choice:disabled { cursor: default; }
+.cir-choice.is-right { border-color: var(--cir-good); color: var(--cir-good); }
+.cir-choice.is-wrong { border-color: var(--cir-bad); color: var(--cir-bad); }
+.cir-feedback { margin-top: 18px; font-size: 15px; color: var(--cir-ink-soft); }
+.cir-feedback strong { color: var(--cir-ink); }
+.cir-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.cir-btn { border: 1px solid var(--cir-ink); background: var(--cir-ink); color: var(--cir-paper-raised); border-radius: 10px; padding: 11px 18px; font-size: 14px; cursor: pointer; }
+.cir-btn.ghost { background: transparent; color: var(--cir-ink); border-color: var(--cir-rule); }
+.cir-btn:disabled { opacity: .45; cursor: not-allowed; }
+.cir-meta { font-size: 13px; color: var(--cir-ink-mute); margin-bottom: 14px; }
+
+/* Flashcards --------------------------------------------------------------- */
+.cir-step { border-left: 2px solid var(--cir-rule); padding: 4px 0 4px 16px; margin: 16px 0; color: var(--cir-ink-soft); line-height: 1.7; }
+.cir-step b { color: var(--cir-ink); }
+.cir-reveal { margin-top: 22px; border-top: 1px solid var(--cir-rule); padding-top: 20px; display: grid; gap: 14px; }
+.cir-reveal-row { display: grid; gap: 4px; }
+.cir-reveal-row span { font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--cir-ink-mute); }
+.cir-reveal-row p { margin: 0; line-height: 1.6; }
+
+/* Diagram builder ---------------------------------------------------------- */
+.cir-build { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; background: var(--cir-paper); border: 1px dashed var(--cir-rule); border-radius: 12px; padding: 18px; min-height: 84px; }
+.cir-slot { min-width: 120px; min-height: 42px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--cir-rule); padding: 6px 10px; font-size: 18px; }
+.cir-slot.active { border-color: var(--cir-ink); }
+.cir-palette { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.cir-token { border: 1px solid var(--cir-rule); background: var(--cir-paper); color: var(--cir-ink); border-radius: 8px; padding: 8px 14px; font-size: 15px; cursor: pointer; }
+.cir-token:hover { border-color: var(--cir-ink-mute); }
+.cir-side-toggle { display: flex; gap: 8px; margin-top: 14px; }
+
+/* Unless drill ------------------------------------------------------------- */
+.cir-timer { font-family: var(--font-display, Georgia, serif); font-size: clamp(34px, 6vw, 54px); text-align: center; margin: 0; }
+.cir-timer small { display: block; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--cir-ink-mute); font-family: inherit; }
+.cir-statement { font-family: var(--font-display, Georgia, serif); font-size: clamp(26px, 5vw, 40px); text-align: center; margin: 18px 0 26px; }
+.cir-summary-row { border-top: 1px solid var(--cir-rule); padding: 18px 0; display: grid; gap: 8px; }
+.cir-summary-row span { font-size: 12px; color: var(--cir-ink-mute); }
+
+@media (max-width: 720px) {
+  .cir-quadrants { grid-template-columns: minmax(0, 1fr); }
+  .cir-shell { padding-bottom: 56px; }
+}

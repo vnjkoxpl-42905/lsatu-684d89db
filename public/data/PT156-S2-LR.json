@@ -1,0 +1,633 @@
+[
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "When primatologist Akira Suzuki began studying snow\n monkeys in the 1950s, he found that they often roamed\n out of the mountains to feed in apple orchards. After a\n decade of observing this behavior, Suzuki began to feed\n the monkeys in their mountain habitat by providing them\n with soybeans to eat. The monkeys no longer raided the\n orchards. When Suzuki began his work, 23 snow monkeys\n lived in the region he studied. The population today is\n 270 snow monkeys and is expected to continue growing.",
+    "questionStem": "Which one of the following claims is most strongly\n supported by the information above?",
+    "answerChoices": {
+      "A": "Snow monkeys do not feed outside of their mountain habitat when food is readily available within it.",
+      "B": "For snow monkeys, soybeans provide more complete nutrition than other beans.",
+      "C": "In feeding soybeans to the monkeys, Suzuki did not intend to provoke the phenomenal population growth that resulted.",
+      "D": "Snow monkeys eat apples only if there is no other fruit to eat.",
+      "E": "Feeding soybeans to snow monkeys has proved to be an environmentally unsound policy."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Body temperature can be estimated by the relative\n proportion of two oxygen isotopes in bone. Such estimates\n derived from dinosaur fossils suggest that dinosaurs had\n nearly the same body temperature in their limbs as in the\n rest of their bodies. Typically, the core body temperature of\n cold-blooded animals today is much higher than the body\n temperature in their limbs. Thus, dinosaurs were probably\n warm-blooded.",
+    "questionStem": "Which one of the following, if true, most seriously\n weakens the argument?",
+    "answerChoices": {
+      "A": "Large warm-blooded animals keep their core body temperature slightly higher than the body temperature in their limbs.",
+      "B": "The fossilization process introduces changes to bones such that their original oxygen isotope ratios cannot be predicted.",
+      "C": "Oxygen was more abundant in Earth’s atmosphere during the period in which the dinosaurs lived.",
+      "D": "Small warm-blooded animals like mice tend to have more uniform body temperatures than do large warm-blooded animals like elephants.",
+      "E": "Warm-blooded animals are more active and use more oxygen than cold-blooded animals."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Focused on Evidence"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A recent study has found that, surprisingly, the risk of\n serious injuries to workers is higher in industries that\n are monitored by government safety inspectors than in\n industries that are not so monitored.",
+    "questionStem": "Which one of the following, if true, most helps to explain\n the surprising finding described above?",
+    "answerChoices": {
+      "A": "Government safety inspectors not only monitor but also train employees of the inspected firms to follow safe practices.",
+      "B": "Government safety inspectors do not have the authority to enforce safety regulations.",
+      "C": "Only those industries with an inherently high risk of on-the-job injury are monitored by government safety inspectors.",
+      "D": "Workers behave especially cautiously when they believe their performance is being monitored by government safety inspectors.",
+      "E": "Some of the industries that are monitored by government safety inspectors have much lower rates of injuries than do other industries that are also so monitored."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Role of Statement",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Business writer: Although the demand for Corinne wristwatches currently far outstrips supply, it would be a mistake for the manufacturer to increase supply to meet demand. The current demand results from the public's perception that the wristwatches are in short supply, and the wristwatches are in short supply merely because they are produced in very limited quantities. The excess demand creates the impression that the wristwatches are greatly desired, and that impression in turn helps account for consumers' desire for them. If the supply of Corinne wristwatches were to increase to meet demand, excess demand for them would be eliminated, with the result that the wristwatches would no longer be desired.",
+    "questionStem": "The claim that it would be a mistake for the manufacturer of Corinne wristwatches to increase supply to meet demand plays which one of the following roles in the business writer's argument?",
+    "answerChoices": {
+      "A": "an introductory claim that describes the position to be refuted by the argument",
+      "B": "a justification of the relevance of the evidence cited",
+      "C": "a premise of the argument",
+      "D": "an opinion offered in support of one of the argument's premises",
+      "E": "the conclusion toward which the argument is directed"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Dense Stimulus",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Evaluate",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Zobel: Peterson’s analytic concepts are wrong and should\n be rejected. As a psychoanalyst myself, however,\n I can understand why certain psychoanalysts\n adhere to them. These psychoanalysts acquired\n their “emotional certainty” that Peterson’s views\n are correct while training under her. This training\n includes one’s own psychoanalysis, in which\n the teacher interprets the actions, dreams, and\n fantasies of the student in analytic terms. Strong\n emotional bonds with the teacher are formed,\n bonds that predispose the student to accept\n the teacher’s analytic concepts as correct. It is\n thus impossible for a student to make unbiased\n judgments about the value of the teacher’s\n analytic concepts.",
+    "questionStem": "Based on the information in the passage, which one of\n the following is the most accurate assessment of Zobel’s\n claim that Peterson’s analytic concepts are wrong and\n should be rejected?",
+    "answerChoices": {
+      "A": "The claim is dubious because Zobel assumes without justification that she is qualified to judge Peterson’s analytic concepts.",
+      "B": "The claim has not been established because Zobel provides evidence that could show only that Peterson’s students are biased in the evaluation of Peterson’s analytic concepts.",
+      "C": "The claim cannot be evaluated because it is not possible for any psychoanalyst to provide an objective assessment of another psychoanalyst’s analytic concepts.",
+      "D": "The claim is questionable because it is obvious that Zobel has a professional rivalry with Peterson and cannot judge Peterson’s concepts fairly.",
+      "E": "The claim is acceptable because Zobel has effectively shown that Peterson’s analytic concepts are biased and based on emotion rather than rational thinking."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals",
+      "Science",
+      "First Sentence Conclusion",
+      "Intermediate Conclusions",
+      "Dense Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Some psychologists claim that empathic responses are\n forms of moral behavior. Having observed that young\n children who witness another’s distress respond by\n expressing sadness and offering help, these psychologists\n believe that moral behavior begins early in life. A second\n group of psychologists claims that empathic response is\n not, by itself, moral behavior and that in order to count as\n moral, behavior must be based on a clear understanding\n of moral principles and a certain degree of moral\n reasoning skill. On the basis of children’s unsophisticated\n verbal responses to hypothetical moral dilemmas, these\n psychologists conclude that children lack the degree\n of moral reasoning skill necessary for their behavior,\n however compassionate, to be considered moral.",
+    "questionStem": "Which one of the following, if true, most seriously\n undermines the conclusion drawn by the second group\n of psychologists?",
+    "answerChoices": {
+      "A": "The children studied by the second group of psychologists displayed a slightly higher level of moral reasoning when they were well rested than when they were tired.",
+      "B": "Adults who respond to hypothetical moral dilemmas display a much higher level of moral reasoning than do children who responded to the same hypothetical moral dilemmas.",
+      "C": "The children studied by the second group of psychologists displayed a slightly higher level of moral reasoning in response to hypothetical dilemmas involving adults than in response to hypothetical dilemmas involving children.",
+      "D": "In actual situations involving moral dilemmas, children display a much higher level of moral reasoning than did the children who, in the study by the second group of psychologists, responded only to hypothetical dilemmas.",
+      "E": "Some adults who respond to hypothetical moral dilemmas reason at about the same level as children who respond to the same hypothetical moral dilemmas."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Dense Stimulus",
+      "Focused on Evidence"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Mr. Xu: The arctic squirrel gets so cold while hibernating\n that its blood temperature falls well below the\n temperature at which water freezes. Although\n the squirrel’s blood is about 70 percent water,\n the blood never freezes while the squirrel is\n hibernating. The squirrel’s blood, therefore,\n must contain a substance that prevents the blood\n from freezing at the temperature at which water\n freezes. Ms. Yerky: The blood contains no such substance. Laboratory experiments involving a number of\n animals, including the arctic squirrel, have shown\n that a vial of blood from any of the animals\n freezes at just the same temperature as does a vial\n of water. Ms.",
+    "questionStem": "Yerky’s response proceeds by",
+    "answerChoices": {
+      "A": "presenting evidence that supports a conclusion inconsistent with Mr. Xu’s conclusion",
+      "B": "showing that the evidence offered by Mr. Xu was collected by means of unreliable methods",
+      "C": "offering an alternative explanation for why the squirrel’s blood fails to freeze at the temperature at which water freezes",
+      "D": "showing that a key term used by Mr. Xu is ambiguous",
+      "E": "showing that the evidence provided by Mr. Xu has no bearing on the point at issue"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "2-Speaker",
+      "Plausibility",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Historian: A democracy’s citizens must know some\n history if the democracy is to meet its challenges. However, popular historical awareness is\n inevitably distorted, for most people learn history\n through popular narratives that sustain readers’\n interest by implying that a few famous heroes and\n notorious villains have shaped all of history.",
+    "questionStem": "The historian’s argument depends on assuming which\n one of the following?",
+    "answerChoices": {
+      "A": "Historical awareness is distorted by the view that there have been only a few famous heroes or notorious villains.",
+      "B": "History cast in the narrative format inevitably distorts historical reality.",
+      "C": "Most historical narratives sustain interest by implying that a few famous heroes and notorious villains have shaped all of history.",
+      "D": "Only narratives written for a purpose other than sustaining readers’ interest can convey an undistorted awareness of history.",
+      "E": "The implication that a few famous heroes and notorious villains have shaped all of history distorts history."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Assumes Difference",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Editorialist: Evidence shows that restrictions on tobacco\n advertising have had a significant impact on\n smoking among adults. A recent survey has\n shown that a smaller percentage of adults now\n smoke than at any other time in the last two\n decades. The decline in the percentage of adults\n who smoke has been most marked during the last\n ten years, and, not coincidently, some of the most\n important restrictions on tobacco advertising\n came into force ten years ago.",
+    "questionStem": "The reasoning in the editorialist’s argument is most\n vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "fails to consider whether there have been any changes over the last two decades in the percentage of the teenage population who smoke",
+      "B": "uses evidence that describes only a percentage of the adult population to reach a conclusion about the entire adult population",
+      "C": "reaches a conclusion about smoking among today’s adults based on statistics from ten or twenty years ago",
+      "D": "neglects to take into account whether there have been restrictions on the advertising of other products besides tobacco in the past ten years",
+      "E": "fails to consider the possibility that factors other than restrictions on advertising have contributed to the decline in smoking among adults"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Alternatives",
+      "Percentages"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Medical researcher: Studies in North America have\n shown that the incidence of heart disease in a\n population is closely related to the average fat\n consumption for individuals in that population.\n However, although residents of France consume,\n on average, as much fat as residents of North\n America, heart disease presently occurs half as\n frequently among the French as among North\n Americans.",
+    "questionStem": "Which one of the following, if true, would most help to\n resolve the apparent conflict noted by the medical\n researcher?",
+    "answerChoices": {
+      "A": "The average level of fat consumption by the French has been falling for several decades.",
+      "B": "Other factors of diet besides high consumption of fat have not been similarly linked with incidence of heart disease.",
+      "C": "Heart disease takes years to develop and the average level of fat consumption in France increased to North American levels only a few years ago.",
+      "D": "Certain diseases other than heart disease have also been linked to average fat consumption, and the French have a higher incidence of these than do North Americans.",
+      "E": "Cigarette smoking significantly increases the risk of heart disease and France has a higher percentage of cigarette smokers in its population than does North America."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Professor Williams: Professor Thomas’s report\n characterizes our colleague Professor York\n as too flamboyant and confrontational in the\n classroom. But the argument given in this report\n sounds so much like the classic argument of the\n self-serving academic that one has to wonder if\n Professor Thomas simply is not the orator and\n entertainer Thomas would like to be, and so vents\n frustrations by condemning others—Professor\n York in particular.",
+    "questionStem": "Professor Williams’s argument is flawed because it",
+    "answerChoices": {
+      "A": "confuses the distinction between being overly confrontational and engaging students by entertaining them",
+      "B": "presupposes the point it is attempting to establish",
+      "C": "mistakes Professor Thomas’s characterization of a view for an endorsement of that view",
+      "D": "attacks Professor Thomas personally rather than addressing Professor Thomas’s argument",
+      "E": "rejects the possibility that Professor York is in fact too confrontational."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Politician: Tightening air quality standards that regulate\n industrial emissions would cause industries to\n move to locations with less stringent standards\n concerning these emissions. So current standards,\n which are already quite stringent, should not be\n raised, since there is not enough evidence that the\n decreased pollution that would admittedly result\n from raising the standards would compensate for\n the loss of jobs caused by the relocation of key\n industries.",
+    "questionStem": "Which one of the following principles, if valid, most\n helps to justify the politician’s reasoning?",
+    "answerChoices": {
+      "A": "Governmental policy should generally be designed to encourage the growth of key industries.",
+      "B": "The extent to which the people are willing to accept a governmental policy should be the only factor determining whether that policy is adopted.",
+      "C": "Governmental policy should be altered only if there is compelling evidence that the consequences of doing so are better than the consequences of not doing so.",
+      "D": "Governmental policy should be changed in those cases in which retaining the policy and changing it each have positive and negative consequences.",
+      "E": "If one lacks clear evidence about whether a given action will have a specified consequence, then one should assume that it will have that consequence when deciding whether to perform that action."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Santayana recommends that we study history to avoid the\n mistakes of the past. But we should not follow his advice.\n For, since history consists of unique and unrepeatable\n accidents, none of the crises we now face are the same as\n those our ancestors faced. Thus, studying history never\n enables one to avoid mistakes of the past.",
+    "questionStem": "Which one of the following most accurately expresses\n the main conclusion of the argument above?",
+    "answerChoices": {
+      "A": "People should not study history, since doing so leads them to misunderstand the crises they now face.",
+      "B": "Every historical period is different from every other historical period.",
+      "C": "Although the crises one generation faces may appear to be the same as those another generation faces, they never are.",
+      "D": "Studying history is valuable, but not for the reason that Santayana suggests.",
+      "E": "One should not try to avoid repeating the mistakes of previous generations by studying history."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Intermediate Conclusions",
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "When polar ice caps grow (during ice ages, for example),\n lighter forms of oxygen from water vapor and seawater\n accumulate in the frozen ice caps, leaving greater\n concentrations of one heavy form of oxygen behind in\n the sea, where it is absorbed by marine organisms. When\n and as the ice caps shrink, the concentrations of this\n heavy oxygen in seawater decrease. During one 30,000-\n year period, concentrations of this heavy oxygen in sea\n shellfish increased for about 20,000 years, then decreased\n for 10,000 years.",
+    "questionStem": "The information given most strongly supports which one\n of the following hypotheses about the period described\n above?",
+    "answerChoices": {
+      "A": "Average global temperatures 10,000 years after the beginning of the period approximately equaled average global temperatures 20,000 years later.",
+      "B": "Polar ice caps at the beginning of the period were larger than they were at the end of the period.",
+      "C": "The beginning of the period coincided with the onset of an ice age that lasted approximately 20,000 years.",
+      "D": "The polar ice caps grew for about 20,000 years after the period began, then began to shrink.",
+      "E": "An ice age was drawing to an end during the first 20,000 years of the period."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains",
+      "Causal Difference-Maker",
+      "Science",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "People would not follow a leader if they felt that there\n was nothing they could gain by following that leader.\n Therefore, even those leaders who are incompetent or\n evil bring some good to their followers.",
+    "questionStem": "Which one of the following is most similar in its flawed\n reasoning to the flawed reasoning in the argument\n above?",
+    "answerChoices": {
+      "A": "Because people expound upon only theories they believe are true, any theory that is expounded upon by someone contains at least a grain of truth.",
+      "B": "Because there is some good to be found in even the worst circumstances, the world’s most vicious people must have brought about at least some good.",
+      "C": "To be a worthy leader, one must bring some good to people. Therefore, those who bring about some good make worthy leaders.",
+      "D": "Because people can never completely separate what is true from what they wish to be true, no theory is ever completely true.",
+      "E": "Even leaders of scientific revolutions are influenced by the false theories of their predecessors. Therefore, the influence of earlier false theories never completely disappears."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Famous Flaws",
+      "Belief / Knowledge / Intent"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A recent study found that small rats were approximately\n twice as likely, and large rats only half as likely, to suffer\n from heart problems than were rats of average size.",
+    "questionStem": "Each of the following, if true, contributes to an\n explanation of the correlation given above between size\n and heart disease in rats except:",
+    "answerChoices": {
+      "A": "Small rats are more likely than large rats to suffer from fatal diseases that tend to strike earlier than do heart problems.",
+      "B": "Small rats generally have smaller blood vessels than do large rats, vessels that can more easily be clogged with fatty deposits.",
+      "C": "The larger a rat is, the more successful it will be at defending itself, and therefore the less stressful its existence will be.",
+      "D": "In addition to being the leading cause of weak hearts in adult rats, malnutrition at early stages of development causes rats to be undersized.",
+      "E": "Although large rats are no more active than rats of average size, they tend to be much more active than small rats, resulting in greater cardiovascular conditioning."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "To measure a small boat hull accurately, it is necessary to\n level the hull so that a baseline can be established. This\n does not require sophisticated tools, but it does require\n a leveling tool called a “line level.” When scientists\n discovered a small ninth-century boat, they wanted to\n record the dimensions of its hull accurately. None of the\n scientists, however, had any experience measuring hulls.\n Because of this they were not sure they had leveled the\n hull before establishing a baseline.",
+    "questionStem": "If the statements above are true, then which one of the\n following must also be true?",
+    "answerChoices": {
+      "A": "The scientists did not accurately measure the hull’s dimensions because they had no experience measuring hulls.",
+      "B": "The scientists accurately determined the hull’s dimensions, provided that they leveled the hull.",
+      "C": "If the scientists did not accurately determine the hull’s dimensions, it was because they did not have a line level.",
+      "D": "The scientists were able to accurately record the hull’s dimensions only if they used a line level.",
+      "E": "If the scientists had measured the hull’s dimensions accurately, then at least one of them would have had experience measuring hulls."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Dapolito: The city council recently passed a rent-control\n ordinance. But a recent study of fifteen local\n communities shows clearly that rent control\n increases the price and lowers the quality\n and availability of rental units. Thus, it can\n be concluded that it is not the city council’s\n objective to preserve the quality and availability\n of local rentals.",
+    "questionStem": "Dapolito’s conclusion follows logically if which one of\n the following is assumed?",
+    "answerChoices": {
+      "A": "The recent study of local rent-control ordinances was conducted by impartial investigators.",
+      "B": "Rent control is not an appropriate topic for consideration by the city council.",
+      "C": "The members of the city council who voted for rent control agree with the study’s conclusions about rent control.",
+      "D": "Some members of the city council who voted for rent control stand to profit from rent control.",
+      "E": "The city council sometimes acts in an arbitrary and irrational manner."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Argue the Anti-Conclusion",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Geologist: As a spinning object’s radius decreases, its rate\n of rotation increases; for example, figure skaters\n can twirl faster by bringing their arms closer to\n their sides. This law of physics helps to explain\n why, over the past decade, Earth’s rate of rotation\n increased. For earthquakes have increased in\n number and severity during the past decade; and\n since immediately after an earthquake Earth’s\n tectonic plates move toward the center of the\n earth, their movement causes Earth’s radius to\n decrease.",
+    "questionStem": "Which one of the following, if true, would most\n undermine the geologist’s explanation of why Earth’s\n rate of rotation increased over the last decade?",
+    "answerChoices": {
+      "A": "In the beginning of the twentieth century, geologists observed an increase in number and severity of earthquakes, accompanied by a decrease of Earth’s radius.",
+      "B": "During the past decade, other geological events have counteracted the movements of the tectonic plates that occur immediately after earthquakes.",
+      "C": "Only skillful figure skaters succeed in twirling faster by bringing their arms closer to their sides.",
+      "D": "Since the time of the ancient Egyptians, Earth’s rate of rotation has been known to fluctuate.",
+      "E": "Increased volcanic activity over the last ten years suggests that the overall movement of the tectonic plates has increased."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Dense Stimulus",
+      "Plausibility",
+      "Science",
+      "Timeframes",
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Economist: When national governments dispense funds\n to local governments to spend on local projects,\n any local government can receive a greater\n proportion of government funds by creating more\n local projects than other local governments create\n on average. Due to this added incentive to create\n more local projects, overall government spending\n and taxation are greater everywhere than they\n would be if local governments funded projects\n entirely by themselves.",
+    "questionStem": "Which one of the following most closely conforms to the\n proposition illustrated by the economist’s statements?",
+    "answerChoices": {
+      "A": "A large company invests in a new technology that greatly improves its product. Smaller companies, individually unable to match the large company’s investment, pool their resources and invest in the new technology in order to compete.",
+      "B": "A national government finances an irrigation project in order to turn an arid valley into fertile farmland. The food grown in the valley reduces local prices, which helps consumers in the valley but hurts farmers elsewhere.",
+      "C": "A sales manager offers prizes for the salesperson who sells the most products during a month. This causes each salesperson to try to undercut the prices of the other salespeople, and as a result profits are lower than they would otherwise be.",
+      "D": "People pool their money to buy certain foods in bulk in order to get a volume discount and reduce their bills. But after doing this, they eat more than they used to and so spend the same amount of money on food as they did before they pooled it.",
+      "E": "Several communities band together to build a large conference center. But the project nearly collapses as each community, because of the revenue the center will bring, fights to be the one in which it is built."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Philosopher: For some kinds of art, there is truth to the\n adage that beauty is in the eye of the beholder. A painting or sculpture that strikes one person\n as having artistic value may strike another as\n lacking such value. Consequently, there are no\n valid objective standards for determining the\n artistic value of a painting or a sculpture.",
+    "questionStem": "The philosopher’s reasoning is flawed because it",
+    "answerChoices": {
+      "A": "relies exclusively on an old adage whose truth has not been demonstrated",
+      "B": "ignores the fact that there are other kinds of art, such as literature and poetry, that may also occasion disagreement",
+      "C": "fails to consider whether there are valid objective standards for evaluating nonvisual art, such as music",
+      "D": "fails to consider that people who disagree about the artistic value of a given painting may be incorrectly applying the same evaluation criteria to that painting",
+      "E": "fails to consider that the individuals judging and disagreeing about works of art may be experts in making such judgments"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Researcher: Experiences that are accompanied by\n increased secretions of adrenaline—a hormone\n produced in situations involving fear—tend to be\n remembered more clearly than experiences not\n so accompanied. Thus, the details of frightening\n experiences tend to be remembered more clearly\n than do the details of nonfrightening experiences.",
+    "questionStem": "Which one of the following, if true, most seriously\n weakens the researcher’s argument?",
+    "answerChoices": {
+      "A": "Some experiences are so intense that an individual’s normal tendency to retain the details of them is reversed.",
+      "B": "An individual will tend to remember most clearly those details of a situation that are relevant to the satisfaction of desires.",
+      "C": "Highly pleasurable experiences are, like frightening experiences, accompanied by increased levels of adrenaline.",
+      "D": "Frightening experiences make up only a small fraction of experiences in general.",
+      "E": "If an individual perceives a dangerous situation as nonfrightening, then the experience of that situation will not be accompanied by increased adrenaline secretions."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Medical",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "When a resource’s price reflects its full cost to society,\n consumers pay directly for externalities—the unintended\n but harmful consequences to society of using a resource. Further, the price of a resource deters misuse of that\n resource only if it reflects the resource’s externalities. So, since sound management of a resource requires that\n the price of the resource deter its misuse, it also requires\n that the price reflect whatever unintended harm to the\n environment the use of that resource causes.",
+    "questionStem": "The conclusion follows logically if which one of the\n following is assumed?",
+    "answerChoices": {
+      "A": "Whatever constitutes unintended harm to the environment also constitutes unintended harm to society.",
+      "B": "A resource’s externalities are always taken into account in setting the price of that resource.",
+      "C": "When setting a resource’s price, it is possible to forecast completely and accurately all of the effects of using that resource.",
+      "D": "If a resource is soundly managed, then its externalities are precisely assessed.",
+      "E": "The price of a given resource is only one of several factors relevant to a decision about whether to use it."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "Dense Stimulus",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Researcher: Several chemical compounds found\n in soybeans are effective agents for cancer\n prevention in humans. These include isoflavones\n and phytosterols, which also occur in other plants\n but are especially concentrated in soybeans. In\n rats and larger mammals such as cheetahs and\n sheep, isoflavones have been shown to inhibit the\n production of estrogen, and estrogen is known\n to promote certain types of cancer. Phytosterols\n may slow cholesterol absorption and thus have\n anticancer effects.",
+    "questionStem": "Each of the following, if true, would reduce the support\n given by the researcher for the claim that several\n chemical compounds in soybeans are effective agents for\n human cancer prevention except:",
+    "answerChoices": {
+      "A": "The soybean derivatives used in most studies are the products of specialized processing techniques and are not yet widely available to consumers.",
+      "B": "While phytosterols, which occur in high concentrations in soybeans, have been shown to decrease cholesterol absorption in the body, new evidence suggests that this decrease is not large enough to reduce susceptibility to cancer.",
+      "C": "A study of people with high levels of blood cholesterol showed no significant reduction in cholesterol levels after switching to a soybean-rich diet.",
+      "D": "Consumption of soybean products might lower blood cholesterol in animals, but a study of people whose major source of protein is soybeans rather than animal products showed blood cholesterol levels no lower than normal.",
+      "E": "Preliminary studies have not shown isoflavones to have a significant effect on estrogen levels in humans."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "EXCEPT",
+      "Focused on Evidence",
+      "Medical",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "According to the Newtonian theory of gravity, the\n gravitational force between two bodies depends\n exclusively on their mass and the distance between them,\n but is independent of what the bodies are made of. Thus,\n according to the Newtonian theory, one does not need a\n theory of the structure and constitution of the Sun and the\n planets in order to calculate their orbits.",
+    "questionStem": "The conclusion of the argument above follows logically\n if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Mass is dependent on gravitational force.",
+      "B": "According to the Newtonian theory, the calculation of planetary orbits requires considering only their gravitational forces.",
+      "C": "The Newtonian theory of gravity is mistaken about the data needed to calculate gravitational force.",
+      "D": "Knowing what an object is made of is sufficient for determining its mass.",
+      "E": "The gravitational force between the Sun and a planet is a factor in determining the distance between them."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Refute a Conditional",
+      "Science"
+    ]
+  }
+]

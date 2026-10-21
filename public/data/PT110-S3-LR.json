@@ -1,0 +1,613 @@
+[
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Principle",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "If a doctor gives a patient only a few options for lifestyle modification, the patient is more likely to adhere to the doctor’s advice than if the doctor gives the patient many options.",
+    "questionStem": "Which one of the following most accurately expresses the principle illustrated above?",
+    "answerChoices": {
+      "A": "People are especially likely to ignore the advice they get from doctors if they are confused about that advice.",
+      "B": "People dislike calculating the best of a variety of choices unless they can see a clear difference among the benefits that would result from each choice.",
+      "C": "The tendency people have to alter their behavior varies inversely with the number of alternatives available to them for behavior modification.",
+      "D": "Most people are unlikely to follow their doctor’s advice unless they can vividly imagine the consequences of not following the advice.",
+      "E": "In getting good results, the clarity with which a doctor instructs a patient is of equal importance to the accuracy of the doctor’s diagnosis on which that instruction is based."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Paradox EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "To acquire a better understanding of the structure and development of the human personality, some psychologists study the personalities of animals.",
+    "questionStem": "Each of the following, if true, contributes to an explanation of the practice mentioned above EXCEPT:",
+    "answerChoices": {
+      "A": "The actions of humans and animals are believed to be motivated by similar instincts, but these instincts are easier to discern in animals.",
+      "B": "The law forbids certain experiments on humans but permits them on animals.",
+      "C": "It is generally less expensive to perform experiments on animals than it is to perform them on humans.",
+      "D": "Proper understanding of human personality is thought to provide a model for better understanding the personality of animals.",
+      "E": "Field observations of the behavior of young animals often inspire insightful hypotheses about human personality development."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Sigatoka disease drastically reduces the yield of banana trees and is epidemic throughout the areas of the world where bananas are grown. The fungus that causes the disease can be controlled with fungicides, but the fungicides can pose a health hazard to people living nearby. The fungicides are thus unsuitable for small banana groves in populated areas. Fortunately, most large banana plantations are in locations so isolated that fungicides can be used safely there. Therefore, most of the world’s banana crop is not seriously threatened by Sigatoka disease.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "It will eventually be possible to breed strains of bananas that are resistant to Sigatoka disease.",
+      "B": "Large plantations produce most or all of the world’s bananas.",
+      "C": "Sigatoka disease spreads more slowly on large plantations than in small banana groves.",
+      "D": "Sigatoka disease is the only disease that threatens bananas on a worldwide scale.",
+      "E": "Most of the banana trees that have not been exposed to the Sigatoka fungus grow in small banana groves."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion",
+      "Dense Stimulus",
+      "New Concept in Conclusion",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A group of 1,000 students was randomly selected from three high schools in a medium-sized city and asked the question, “Do you plan to finish your high school education?” More than 89 percent answered “Yes. ” This shows that the overwhelming majority of students want to finish high school, and that if the national dropout rate among high school students is high, it cannot be due to a lack of desire on the part of the students.",
+    "questionStem": "The reasoning of the argument above is questionable because the argument",
+    "answerChoices": {
+      "A": "fails to justify its presumption that 89 percent is an overwhelming majority",
+      "B": "attempts to draw two conflicting conclusions from the results of one survey",
+      "C": "overlooks the possibility that there may in fact not be a high dropout rate among high school students",
+      "D": "contradicts itself by admitting that there may be a high dropout rate among students while claiming that most students want to finish high school",
+      "E": "treats high school students from a particular medium-sized city as if they are representative of high school students nationwide"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Sampling",
+      "Anti-Causal",
+      "Conditional Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Columnist: A democratic society cannot exist unless its citizens have established strong bonds of mutual trust. Such bonds are formed and strengthened only by participation in civic organizations, political parties, and other groups outside the family. It is obvious then that widespread reliance on movies and electronic media for entertainment has an inherently corrosive effect on democracy.",
+    "questionStem": "Which one of the following is an assumption on which the columnist’s argument depends?",
+    "answerChoices": {
+      "A": "Anyone who relies on movies and electronic media for entertainment is unable to form a strong bond of mutual trust with a citizen.",
+      "B": "Civic organizations cannot usefully advance their goals by using electronic media.",
+      "C": "Newspapers and other forms of print media strengthen, rather than weaken, democratic institutions.",
+      "D": "Relying on movies and electronic media for entertainment generally makes people less likely to participate in groups outside their families.",
+      "E": "People who rely on movies and electronic media for entertainment are generally closer to their families than are those who do not."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Causal Chains",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Standard archaeological techniques make it possible to determine the age of anything containing vegetable matter, but only if the object is free of minerals containing carbon. Prehistoric artists painted on limestone with pigments composed of vegetable matter, but it is impossible to collect samples of this prehistoric paint without removing limestone, a mineral containing carbon, with the paint. Therefore, it is not possible to determine the age of prehistoric paintings on limestone using standard archaeological techniques.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "There exist several different techniques for collecting samples of prehistoric pigments on limestone.",
+      "B": "Laboratory procedures exist that can remove all the limestone from a sample of prehistoric paint on limestone.",
+      "C": "The age of the limestone itself can be determined from samples that contain no vegetable-based paint.",
+      "D": "Prehistoric artists did not use anything other than vegetable matter to make their paints.",
+      "E": "The proportion of carbon to other elements in limestone is the same in all samples of limestone."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Point at Issue",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Dr. Jones: The new technology dubbed “telemedicine” will provide sustained improvement in at least rural patient care since it allows rural physicians to televise medical examinations to specialists who live at great distances—specialists who will thus be able to provide advice the rural patient would otherwise not receive. Dr. Carabella: Not so. Telemedicine might help rural patient care initially. However, small hospitals will soon realize that they can minimize expenses by replacing physicians with technicians who can use telemedicine to transmit examinations to large medical centers, resulting in fewer patients being able to receive traditional, direct medical examinations. Eventually, it will be the rare individual who ever gets truly personal attention. Hence, rural as well as urban patient care will suffer.",
+    "questionStem": "Which one of the following is a point at issue between Dr. Jones and Dr. Carabella?",
+    "answerChoices": {
+      "A": "whether medical specialists in general offer better advice than rural physicians",
+      "B": "whether telemedicine technology will be installed only in rural hospitals and rural medical centers",
+      "C": "whether telemedicine is likely to be widely adopted in rural areas in future years",
+      "D": "whether the patients who most need the advice of medical specialists are likely to receive it through telemedicine",
+      "E": "whether the technology of telemedicine will benefit rural patients in the long run"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Dr. Jones: The new technology dubbed “telemedicine” will provide sustained improvement in at least rural patient care since it allows rural physicians to televise medical examinations to specialists who live at great distances-specialists who will thus be able to provide advice the rural patient would otherwise not receive.\n\nDr. Carabella: Not so. Telemedicine might help rural patient care initially. However, small hospitals will soon realize that they can minimize expenses by replacing physicians with technicians who can use telemedicine to transmit examinations to large medical centers, resulting in fewer patients being able to receive traditional, direct medical examination. Eventually, it will be the rare individual who ever gets truly personal attention. Hence, rural as well as urban patient care will suffer.",
+    "questionStem": "Dr. Carabella uses which one of the following strategies in responding to Dr. Jones?",
+    "answerChoices": {
+      "A": "listing a set of considerations to show that a prescribed treatment that seems to be benefiting a patient in fact harms that patient",
+      "B": "describing the application of the technology discussed by Dr. Jones as one step that initiates a process that leads to an undesirable end",
+      "C": "citing evidence that Dr. Jones lacks the professional training to judge the case at issue",
+      "D": "invoking medical statistics that cast doubt on the premises used in Dr. Jones’s argument",
+      "E": "providing grounds for dismissing Dr. Jones’s interpretation of a key term in medical technology"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Lines can be parallel in a Euclidean system of geometry. But the non-Euclidean system of geometry that has the most empirical verification is regarded by several prominent physicists as correctly describing the universe we inhabit. If these physicists are right, in our universe there are no parallel lines.",
+    "questionStem": "Which one of the following is an assumption that is required by the argument?",
+    "answerChoices": {
+      "A": "There are no parallel lines in the non-Euclidean system of geometry that has the most empirical verification.",
+      "B": "Most physicists have not doubted the view that the universe is correctly described by the non-Euclidean system of geometry that has the most empirical verification.",
+      "C": "There are no parallel lines in every non-Euclidean system of geometry that has any empirical verification.",
+      "D": "The universe is correctly described by the non-Euclidean system of geometry that has the most empirical verification if prominent physicists maintain that it is.",
+      "E": "Only physicists who are not prominent doubt the view that the universe is correctly described by the non-Euclidean system of geometry that has the most empirical verification."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Conditional Conclusion",
+      "Defender",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Philosopher: People are not intellectually well suited to live in large bureaucratic societies. Therefore, people can find happiness, if at all, only in smaller political units such as villages.",
+    "questionStem": "The reasoning in the philosopher’s argument is flawed because the argument takes for granted that",
+    "answerChoices": {
+      "A": "no one can ever be happy living in a society in which she or he is not intellectually well suited to live",
+      "B": "the primary purpose of small political units such as villages is to make people happy",
+      "C": "all societies that are plagued by excessive bureaucracy are large",
+      "D": "anyone who lives in a village or other small political unit that is not excessively bureaucratic can find happiness",
+      "E": "everyone is willing to live in villages or other small political units"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Binaries"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The present goal of the field of medicine seems to be to extend life indefinitely. Increasingly, the ability to transplant such organs as hearts, lungs, livers, and kidneys will allow us to live longer. But we can never achieve brain transplants. There are, for a start, ten million nerves running from the brain down the neck, not to mention the millions joining the brain to the sensing organs. Clearly, then, as the transplantation of organs allows more and more people to live longer, those with degenerative brain disorders will form an ever-increasing proportion of the population.",
+    "questionStem": "The argument above is based on which one of the following assumptions?",
+    "answerChoices": {
+      "A": "Degenerative brain disorders will increasingly strike younger and younger patients.",
+      "B": "It is still quite rare for people to live long enough to need more than one transplant of any given organ.",
+      "C": "There are degenerative brain disorders that will not be curable without brain transplants.",
+      "D": "Degenerative brain disorders account for a very small proportion of deaths in the population at large.",
+      "E": "More is being spent on research into degenerative brain disorders than on research into transplantation."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Defender",
+      "Dense Stimulus",
+      "Medical",
+      "Predictions",
+      "Science",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Flaw Fill-in",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Politician: My opponents argue that the future of our city depends on compromise—that unless the city’s leaders put aside their differences and work together toward common goals, the city will suffer. However, the founders of this city based the city’s charter on definite principles, and anyone who compromises those principles betrays the city founders’ goals. What my opponents are advocating, therefore, is nothing less than betraying the goals of the city’s founders. Critic: I’m afraid your argument is flawed. Unless you’re assuming that the differences among the city’s leaders are differences of principle, your argument depends on a misleading use of the term _______.",
+    "questionStem": "Which one of the following provides the most logical completion of the critic’s statement?",
+    "answerChoices": {
+      "A": "betray",
+      "B": "common",
+      "C": "compromise",
+      "D": "principles",
+      "E": "opponents"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "2-Speaker",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Though many insects die soon after reproducing for the first time, some may live for years after the survival of the next generation has been secured. Among the latter are some insects that work for the benefit of the ecosystem—for example, bees.",
+    "questionStem": "Which one of the following can be properly inferred from the information above?",
+    "answerChoices": {
+      "A": "Survival of the species, rather than of the individual, is the goal of most insect populations.",
+      "B": "Insects that do not play a vital role in the ecosystem are more likely to die after reproducing for the first time.",
+      "C": "Most bees live well beyond the onset of the generation that follows them.",
+      "D": "Those bees that reproduce do not always die soon after reproducing for the first time.",
+      "E": "Most insects are hatched self-sufficient and do not need to be cared for by adult insects."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Argument part",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "People’s political behavior frequently does not match their rhetoric. Although many complain about government intervention in their lives, they tend not to reelect inactive politicians. But a politician’s activity consists largely in the passage of laws whose enforcement affects voters’ lives. Thus, voters often reelect politicians whose behavior they resent.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that people tend not to reelect inactive politicians?",
+    "answerChoices": {
+      "A": "It describes a phenomenon for which the argument’s conclusion is offered as an explanation.",
+      "B": "It is a premise offered in support of the conclusion that voters often reelect politicians whose behavior they resent.",
+      "C": "It is offered as an example of how a politician’s activity consists largely in the passage of laws whose enforcement interferes with voters’ lives.",
+      "D": "It is a generalization based on the claim that people complain about government intervention in their lives.",
+      "E": "It is cited as evidence that people’s behavior never matches their political beliefs."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Point at Issue",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Lea: Contemporary art has become big business. Nowadays art has less to do with self-expression than with making money. The work of contemporary artists is utterly bereft of spontaneity and creativity, as a visit to any art gallery demonstrates.\n\nSusan: I disagree. One can still find spontaneous, innovative new artwork in most of the smaller, independent galleries.",
+    "questionStem": "Lea’s and Susan’s remarks provide the most support for holding that they disagree about whether",
+    "answerChoices": {
+      "A": "large galleries contain creative artwork",
+      "B": "most galleries contain some artwork that lacks spontaneity and creativity",
+      "C": "contemporary art has become big business",
+      "D": "some smaller art galleries still exhibit creative new artwork",
+      "E": "contemporary art, in general, is much less concerned with self-expression than older art is"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Ethicist: In a recent judicial decision, a contractor was ordered to make restitution to a company because of a bungled construction job, even though the company had signed a written agreement prior to entering into the contract that the contractor would not be financially liable should the task not be adequately performed. Thus, it was morally wrong for the company to change its mind and seek restitution.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the ethicist’s reasoning?",
+    "answerChoices": {
+      "A": "It is morally wrong for one party not to abide by its part of an agreement only if the other party abides by its part of the agreement.",
+      "B": "It is morally wrong to seek a penalty for an action for which the agent is unable to make restitution.",
+      "C": "It is morally wrong for one person to seek to penalize another person for an action that the first person induced the other person to perform.",
+      "D": "It is morally wrong to ignore the terms of an agreement that was freely undertaken only if there is clear evidence that the agreement was legally permissible.",
+      "E": "It is morally wrong to seek compensation for an action performed in the context of a promise to forgo such compensation."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Zoologist: Animals can certainly signal each other with sounds and gestures. However, this does not confirm the thesis that animals possess language, for it does not prove that animals possess the ability to use sounds or gestures to refer to concrete objects or abstract ideas.",
+    "questionStem": "Which one of the following is an assumption on which the zoologist’s argument depends?",
+    "answerChoices": {
+      "A": "Animals do not have the cognitive capabilities to entertain abstract ideas.",
+      "B": "If an animal’s system of sounds or gestures is not a language, then that animal is unable to entertain abstract ideas.",
+      "C": "When signaling each other with sounds or gestures, animals refer neither to concrete objects nor abstract ideas.",
+      "D": "If a system of sounds or gestures contains no expressions referring to concrete objects or abstract ideas, then that system is not a language.",
+      "E": "Some animals that possess a language can refer to both concrete objects and abstract ideas."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A person is more likely to become disabled as that person ages. Among adults in the country of East Wendell, however, the proportion receiving disability benefit payments shrinks from 4 percent among 55 to 64 year olds to 2 percent for those aged 65 to 74 and 1 percent for those aged 75 and older. The explanation of this discrepancy is that the proportion of jobs offering such a disability benefit has greatly increased in recent years.",
+    "questionStem": "Which one of the following, if true about East Wendell, shows that the explanation above is at best incomplete?",
+    "answerChoices": {
+      "A": "The treatment of newly incurred disabilities is more successful now than in the past in restoring partial function in the affected area within six months.",
+      "B": "Some people receive disability benefit payments under employers’ insurance plans, and some receive them from the government.",
+      "C": "Medical advances have prolonged the average lifespan beyond what it was 20 years ago.",
+      "D": "For persons receiving disability benefit payments, those payments on average represent a smaller share of their predisability income now than was the case 20 years ago.",
+      "E": "Under most employers’ plans, disability benefit payments stop when an employee with a disability reaches the usual retirement age of 65."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Light is registered in the retina when photons hit molecules of the pigment rhodopsin and change the molecules’ shape. Even when they have not been struck by photons of light, rhodopsin molecules sometimes change shape because of normal molecular motion, thereby introducing error into the visual system. The amount of this molecular motion is directly proportional to the temperature of the retina.",
+    "questionStem": "Which one of the following conclusions is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "The temperature of an animal’s retina depends on the amount of light the retina is absorbing.",
+      "B": "The visual systems of animals whose body temperature matches that of their surroundings are more error-prone in hot surroundings than in cold ones.",
+      "C": "As the temperature of the retina rises, rhodopsin molecules react more slowly to being struck by photons.",
+      "D": "Rhodopsin molecules are more sensitive to photons in animals whose retinas have large surface areas than in animals whose retinas have small surface areas.",
+      "E": "Molecules of rhodopsin are the only pigment molecules that occur naturally in the retina."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Critic: Political utility determines the popularity of a metaphor. In authoritarian societies, the metaphor of society as a human body governed by a head is pervasive. Therefore, the society-as-body metaphor, with its connection between society’s proper functioning and governance by a head, promotes greater acceptance of authoritarian repression than do other metaphors, such as likening society to a family.",
+    "questionStem": "Which one of the following statements, if true, most weakens the critic’s argument?",
+    "answerChoices": {
+      "A": "In authoritarian societies, the metaphor of society as a family is just as pervasive as the society-as-body metaphor.",
+      "B": "Every society tries to justify the legitimacy of its government through the use of metaphor.",
+      "C": "The metaphor of society as a human body is sometimes used in nonauthoritarian societies.",
+      "D": "Authoritarian leaders are always searching for new metaphors for society in their effort to maintain their power.",
+      "E": "The metaphor of society as a human body governed by a head is rarely used in liberal democracies."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "New Concept in Conclusion",
+      "Assumes Difference"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Thirty years ago, the percentage of their income that single persons spent on food was twice what it is today. Given that incomes have risen over the past thirty years, we can conclude that incomes have risen at a greater rate than the price of food in that period.",
+    "questionStem": "Which one of the following, if assumed, helps most to justify the conclusion drawn above?",
+    "answerChoices": {
+      "A": "The amount of food eaten per capita today is identical to the amount of food eaten per capita thirty years ago.",
+      "B": "In general, single persons today eat healthier foods and eat less than their counterparts of thirty years ago.",
+      "C": "Single persons today, on average, purchase the same kinds of food items in the same quantities as they did thirty years ago.",
+      "D": "The prices of nonfood items single persons purchase have risen faster than the price of food over the past thirty years.",
+      "E": "Unlike single persons, families today spend about the same percentage of their income on food as they did thirty years ago."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Must be false EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Viruses can have beneficial effects. For example, some kill more-complex microorganisms, some of which are deadly to humans. But viruses have such simple structures that replacing just a few of a beneficial virus’s several million atoms can make it deadly to humans. Clearly, since alterations of greater complexity than this are commonly produced by random mutations, any virus could easily become dangerous to humans.",
+    "questionStem": "If the statements above are true, then each of the following statements could also be true EXCEPT:",
+    "answerChoices": {
+      "A": "Random mutation makes some deadly viruses beneficial to humans.",
+      "B": "Some organisms of greater complexity than viruses are no more likely than viruses to undergo significant alterations through random mutation.",
+      "C": "Some microorganisms that are more complex than viruses are beneficial to humans.",
+      "D": "Some viruses that fail to kill other viruses that are deadly to humans are nevertheless beneficial to humans.",
+      "E": "No virus that is deadly to organisms of greater complexity than itself is beneficial to humans."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Parallel flawed method of reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Societies in which value is measured primarily in financial terms invariably fragment into isolated social units. But since money is not the main measure of value in nonindustrial societies, they must tend in contrast to be socially unified.",
+    "questionStem": "The flawed reasoning in which one of the following is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Animals of different genera cannot interbreed. But that does not prove that jackals and wolves cannot interbreed, for they belong to the same genus.",
+      "B": "Ecosystems close to the equator usually have more species than those closer to the poles. Thus, the Sahara Desert must contain more species than Siberia does, since the latter is farther from the equator.",
+      "C": "Insects pass through several stages of maturation: egg, larva, pupa, and adult. Since insects are arthropods, all arthropods probably undergo similar maturation processes.",
+      "D": "Poets frequently convey their thoughts via nonliteral uses of language such as metaphors and analogies. But journalists are not poets, so surely journalists always use language literally.",
+      "E": "Technologically sophisticated machines often cause us more trouble than simpler devices serving the same function. Since computers are more technologically sophisticated than pencils, they must tend to be more troublesome."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Ringtail opossums are an Australian wildlife species that is potentially endangered. A number of ringtail opossums that had been orphaned and subsequently raised in captivity were monitored after being returned to the wild. Seventy-five percent of these opossums were killed by foxes, a species not native to Australia. Conservationists concluded that the native ringtail opossum population was endangered not by a scarcity of food, as had been previously thought, but by non-native predator species against which the opossum had not developed natural defenses.",
+    "questionStem": "Which one of the following, if true, most strongly supports the conservationists’ argument?",
+    "answerChoices": {
+      "A": "There are fewer non-native predator species that prey on the ringtail opossum than there are native species that prey on the ringtail opossum.",
+      "B": "Foxes, which were introduced into Australia over 200 years ago, adapted to the Australian climate less successfully than did some other foreign species.",
+      "C": "The ringtail opossums that were raised in captivity were fed a diet similar to that which ringtail opossums typically eat in the wild.",
+      "D": "Few of the species that compete with the ringtail opossum for food sources are native to Australia.",
+      "E": "Ringtail opossums that grow to adulthood in the wild defend themselves against foxes no more successfully than do ringtail opossums raised in captivity."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Parallel method of reasoning",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Jordan: If a business invests the money necessary to implement ecologically sound practices, its market share will decrease. But if it doesn’t implement these practices, it pollutes the environment and wastes resources. Terry: But if consumers demand environmental responsibility of all businesses, no particular business will be especially hurt.",
+    "questionStem": "In which one of the following exchanges is the logical relationship between Jordan’s and Terry’s statements most similar to the logical relationship between their statements above?",
+    "answerChoices": {
+      "A": "Jordan: Either it will rain and our plans for a picnic will be thwarted or it won’t rain and the garden will go yet another day without much-needed watering. Terry: But if it doesn’t rain, we can buy a hose and water the garden with the hose.",
+      "B": "Jordan: Each person can have either an enjoyable life or a long life, for one must eat vegetables and exercise continuously to stay healthy. Terry: That’s not true: there are many happy health-conscious people.",
+      "C": "Jordan: If taxes are raised, many social problems could be solved, but if they’re lowered, the economy will grow again. So we can’t have both social reform and a growing economy. Terry: But if taxes remain at their current level, neither social problems nor the economy will get worse.",
+      "D": "Jordan: If we remodel the kitchen, the house will be more valuable, but even if we do, there’s no guarantee that we’ll actually get more for the house when we sell it. Terry: But if we don’t remodel the kitchen, we might get even less for the house than we paid for it.",
+      "E": "Jordan: If the dam’s spillway is opened, the river might flood the eastern part of town, but if the spillway is not opened, the dam might burst. Terry: There’s no real danger of the dam’s bursting, but if we get more heavy rain, opening the spillway is the most prudent policy."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT110",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Argument part",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "The media now devote more coverage to crime than they did ten years ago. Yet this is not because the crime rate has increased, but rather because the public is now more interested in reading and hearing about crime. After all, a crucial factor in the media’s decisions about what issues to cover and to what extent to cover them is the interests of their audiences.",
+    "questionStem": "The proposition that the public is now more interested in reading and hearing about crime plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It supports the conclusion that the media now devote more coverage to crime than the crime rate alone justifies.",
+      "B": "It is presented as evidence that the media decide what to cover and to what extent to cover it depending on the interests of the public.",
+      "C": "It is a counterexample to the claim that the media devote more coverage to crime now than they did ten years ago.",
+      "D": "It is a generalization based on the claim that the crime rate has increased over the past ten years.",
+      "E": "It is offered as an alternative explanation of why the media devote more coverage to crime now than they did ten years ago."
+    },
+    "correctAnswer": "E"
+  }
+]

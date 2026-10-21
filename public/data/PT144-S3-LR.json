@@ -1,0 +1,596 @@
+[
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "The television star Markus Hermann refuses to grant interviews with newspapers unless he is given the right to approve the article before publication. The Greyburg Messenger newspaper refuses to do anything that its editors believe will compromise their editorial integrity. So the Messenger will not interview Hermann, since _______.",
+    "questionStem": "The conclusion of the argument is properly drawn if which one of the following completes the passage?",
+    "answerChoices": {
+      "A": "the editors of the Messenger believe that giving an interviewee the right to approve an article before publication would compromise their editorial integrity",
+      "B": "the Messenger has never before given an interviewee the right to approve an article before publication",
+      "C": "most television stars are willing to grant interviews with the Messenger even if they are not given the right to approve the articles before publication",
+      "D": "Hermann usually requests substantial changes to interview articles before approving them",
+      "E": "Hermann believes that the Messenger frequently edits interviews in ways that result in unflattering portrayals of the interviewees"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Missing Link / Idea",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Columnist: An information design expert has argued that using the popular presentation-graphics software GIAPS, with its autopresentation wizard and simplistic premade templates, leads people to develop ineffective presentations. But that is absurd. GIAPS is just a tool, so it cannot be responsible for bad presentations. The responsibility must lie with those who use the tool poorly.",
+    "questionStem": "The columnist’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "bases its conclusion on claims that are inconsistent with each other",
+      "B": "takes for granted that any presentation that is not ineffective is a good presentation",
+      "C": "bases an endorsement of a product entirely on that product’s popularity",
+      "D": "fails to consider that a tool might not effectively perform its intended function",
+      "E": "rejects a claim because of its source rather than its content"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Editorial: The legislature is considering allowing oil drilling in the Cape Simmons Nature Preserve. Supporters claim that, because modern drilling methods will be used, there will be no damage to the environment. However, that claim is easily disproven by looking at nearby Alphin Bay, where oil drilling began five years ago. The land there is marred by industrial sprawl, drilling platforms, and thousands of miles of roads and pipelines.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument in the editorial?",
+    "answerChoices": {
+      "A": "The Cape Simmons Nature Preserve is one of the few areas of pristine wilderness in the region.",
+      "B": "The companies drilling for oil at Alphin Bay never claimed that drilling there would not cause any environmental damage.",
+      "C": "The editorialist believes that oil drilling should not be allowed in a nature preserve unless it would cause no environmental damage.",
+      "D": "There have been no significant changes in oil drilling methods in the last five years.",
+      "E": "Oil drilling is only one of several industrial activities that takes place at Alphin Bay."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Rebuttals",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Point at issue",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "James: Community colleges, by their very nature, work to meet the educational needs of the communities they are in. The same is not true of universities, whose primary goals differ from those of community colleges. Margaret: A primary goal of any university is to serve the needs of the community where it is located. The main reason people have for attending a university is the same as that for attending a community college: preparing oneself for a career.",
+    "questionStem": "James’s and Margaret’s statements provide the most support for the claim that they disagree over the truth of which one of the following?",
+    "answerChoices": {
+      "A": "A primary goal of any university is to serve the educational needs of its community.",
+      "B": "Most universities adequately serve the educational needs of the communities in which they are located.",
+      "C": "The main reason people have for attending a university is to prepare themselves for a career.",
+      "D": "In a typical community, the primary educational need is to prepare community residents for careers.",
+      "E": "The main reason people have for attending a university is the same as the main reason people have for attending a community college."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Most people who have taken a seminar for building organizational skills in the workplace have indeed become more organized as a result; however, despite having become more organized, few have become any more efficient.",
+    "questionStem": "Which one of the following, if true, would most help to resolve the apparent discrepancy described above?",
+    "answerChoices": {
+      "A": "Some of the people who are most efficient in the workplace are not among the most organized.",
+      "B": "Most people whose organizational skills in the workplace are below average do not take seminars for building organizational skills in the workplace.",
+      "C": "Most seminars for building organizational skills in the workplace are designed for people who have been selected for management training.",
+      "D": "Most people who have taken a seminar for building organizational skills in the workplace have below-average organizational skills before they enroll in the seminar.",
+      "E": "Most people who have taken a seminar for building organizational skills in the workplace consequently expend a great amount of time organizing their activities."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Problem: The Thimble Corporation recently distributed rebate coupons for one of its products. Some of the coupons bore an expiration date that was too early. This created an unfair situation in which some customers believed, incorrectly, that the rebate offer had already expired. Principle: Anyone who creates an unfair situation has an obligation to rectify any unfair result of that situation.",
+    "questionStem": "The principle, if valid, most helps to justify which one of the following judgments concerning the problem?",
+    "answerChoices": {
+      "A": "If a customer believed that the expiration date had passed but applied for the rebate anyway, the Thimble Corporation is not obligated to give a rebate to that customer.",
+      "B": "Because some customers who knew that they were eligible for the rebate chose not to apply for it, the Thimble Corporation is not solely responsible for creating the unfair situation.",
+      "C": "If there is a chance that any customers did not apply for the rebate because of an incorrect expiration date on their rebate coupon, the Thimble Corporation is obligated to try to identify them and offer them the rebate.",
+      "D": "Because it cannot identify all of the customers who were adversely affected by the incorrect expiration date, the Thimble Corporation should deny the rebate to all of the customers who applied for it.",
+      "E": "If a customer did not rely on an incorrect expiration date when applying for the rebate but was denied the rebate for any other reason, the Thimble Corporation is not obligated to offer that customer the rebate."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Critic: The recent biography of Shakespeare does not explain what is of most interest about him. It is by an expert on the history of Elizabethan England, and so does a good job of showing what life would have been like for Shakespeare as a man of that time. But it does not explain what made Shakespeare different from his contemporaries.",
+    "questionStem": "The conclusion of the argument can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "There is no way to know what made Shakespeare different from his contemporaries.",
+      "B": "The life of the average man in Elizabethan England is uninteresting.",
+      "C": "Shakespeare was very different from the other men of his time.",
+      "D": "A biography should always focus on what makes its subject distinctive.",
+      "E": "What is most interesting about Shakespeare is what made him different from his contemporaries."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Must be true",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The result of attempting to whip cream in a blender is a thick, velvety substance rather than fluffy whipped cream. This is because a blender’s container does not let in enough air to whip cream effectively. Although using a special whipping-cream attachment in a blender can help somewhat, it cannot fully compensate for the container’s poor air intake.",
+    "questionStem": "If all of the statements above are true, which one of the following must be true?",
+    "answerChoices": {
+      "A": "Cream that has been whipped ineffectively generally becomes a thick, velvety substance rather than fluffy whipped cream.",
+      "B": "The use of a special whipping-cream attachment in a blender does not suffice to whip cream completely effectively.",
+      "C": "When attempting to whip cream in a blender, using a special whipping-cream attachment always produces a fluffier result than could be obtained without using such an attachment.",
+      "D": "The use of a special whipping-cream attachment in a blender can reduce the total amount of air required to whip cream effectively in that blender.",
+      "E": "The use of a blender, with or without any special attachments, is not the most common way to attempt to produce whipped cream."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Astronomer: Proponents of the hypothesis that life evolved extraterrestrially and drifted here in spores point out that, 3.8 billion years ago, Earth was bombarded by meteorites that would have destroyed any life already here. Yet 3.5 billion years ago, Earth had life forms complex enough to leave fossil remains. Such life could not have evolved here in the 0.3 billion years following the meteorite bombardments, they claim. There is good reason to regard their hypothesis as false, however, for they merely offer empirical arguments against the view that life evolved on Earth; neither they nor anyone else has provided positive support for the extraterrestrial-spore theory of the origin of terrestrial life.",
+    "questionStem": "The reasoning in the astronomer’s argument is flawed because the argument",
+    "answerChoices": {
+      "A": "concludes, simply because there is no evidence in favor of a hypothesis, that there is evidence against that hypothesis",
+      "B": "fails to justify its claim that the view being criticized is inherently implausible",
+      "C": "reasons that a hypothesis is false simply because there is another hypothesis that is equally likely to be true",
+      "D": "attempts to derive a conclusion from premises that contradict it",
+      "E": "grants the truth of claims that are made by the advocates of the hypothesis but that do nothing to strengthen the astronomer’s own argument"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Parallel flawed method of reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Advertisement: VIVVY, a video-based foreign language course for children, was introduced seventeen years ago. Amy, Matt, and Evelyn were among the first children to use VIVVY. Now they are successful university students. So if your child uses VIVVY, you can expect him or her to become a successful university student.",
+    "questionStem": "Which one of the following demonstrates most effectively by parallel reasoning that the argument in the advertisement is flawed?",
+    "answerChoices": {
+      "A": "Similarly, you could conclude that you can expect to win the lottery if you carry a good-luck charm. After all, Annie, Francisco, and Sean carry good-luck charms, and these three people are lottery winners.",
+      "B": "Similarly, you could conclude that Jesse should not expect to get food poisoning. After all, Jesse, Doris, and Christine all attended the company picnic, and only Christine has gotten food poisoning as a result.",
+      "C": "Similarly, you could conclude that Eric, Diane, and Martin are the only employees who will be laid off. After all, any employee hired within the last year can expect to be laid off, and these three employees are the only ones who were hired within the last year.",
+      "D": "Similarly, you could conclude that Ken, Norma, and Mary routinely drive faster than the speed limit. After all, if you routinely exceed the speed limit, you can expect to get a speeding ticket eventually, and these three people have gotten speeding tickets.",
+      "E": "Similarly, you could conclude that Jack, Stephen, and Tina can expect to get jobs after they complete their university education. After all, these three people attend Perry University, and most people who graduated from Perry last year found jobs."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Except",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Activist: Accidents at the Three Mile Island and Chernobyl nuclear plants have shown the dangers of nuclear power. It was earlier argued that nuclear power was necessary because fossil fuels will eventually run out. Recently, however, a technology has been developed for deriving from sewage sludge an oil that can be used to generate power. This new technology, therefore, together with the possibility of using alternative sources of energy like solar, wind, and hydroelectric power, raises the hope that we can dispense altogether with nuclear power and that we can meet our energy needs in a way that better protects the environment from harm than we do at present.",
+    "questionStem": "Which one of the following considerations is least relevant in evaluating the degree of practicability of the hope expressed by the activist above?",
+    "answerChoices": {
+      "A": "whether the current methods of disposing of sewage sludge by dumping do environmental damage",
+      "B": "whether the processes that are used to turn sewage into clean water and sewage sludge have been improved in recent decades",
+      "C": "whether the cost of producing and using oil from sewage sludge would be economically sustainable",
+      "D": "whether the burning of oil from sewage sludge would, in contrast to nuclear power production, produce gases that would have a harmful warming effect on climate worldwide",
+      "E": "whether waste products that would be produced in deriving oil from sewage sludge and burning it would be as dangerous as those produced by the mining and use of nuclear fuel"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT",
+      "Plans / Recommendations",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Resolve reconcile or explain",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In a study of tropical forests it was found that while the species of trees that is most common in a particular forest also reproduces the most, trees of the species that is rarest there tend to survive longer. This pattern holds regardless of which species of trees is the most common and which is the rarest.",
+    "questionStem": "Which one of the following, if true, most helps to explain why trees of the rarest species tend to survive longer than trees of the most common species?",
+    "answerChoices": {
+      "A": "The species of trees that is most common in a forest thrives there because it is best suited to the local climate.",
+      "B": "Older trees tend to reproduce the least.",
+      "C": "The study tracked preexisting tree species but did not introduce any new species to the tropical forests.",
+      "D": "The survival of the trees of the rarer species enables tropical forests to recover more easily from moderate destruction.",
+      "E": "The trees of the common species have more competition for the resources they need than do the trees of the rare species."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The television network’s advertisement for its new medical drama grossly misrepresents what that program is like. Thus, it will not as effectively attract the sort of viewers likely to continue watching the program as would the advertisement that the program’s producers favored; people who tune in to the first episode based on false expectations will be unlikely to watch subsequent episodes.",
+    "questionStem": "The argument relies on which one of the following assumptions?",
+    "answerChoices": {
+      "A": "Most viewers who tune in to the first episode of the program will do so because of the network’s advertisement for the program.",
+      "B": "The advertisement that the program’s producers favored would not have grossly misrepresented what the program would be like.",
+      "C": "Most people who tune in to the first episode of the program and become loyal viewers will not have tuned in to the first episode as a result of the network’s advertisement for the program.",
+      "D": "If the advertisement that the program’s producers favored were used instead of the network’s advertisement, almost all of the viewers who tuned in to the first episode would tune in to subsequent episodes as well.",
+      "E": "Most people who become loyal viewers of a program do not miss the program’s first episode."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Sharon heard her favorite novelist speak out against a political candidate that Sharon has supported for years. As a result, Sharon’s estimation of the novelist declined but her estimation of the candidate did not change.",
+    "questionStem": "The situation described above conforms most closely to which one of the following principles?",
+    "answerChoices": {
+      "A": "Artists who speak out on political matters will have influence only among their most dedicated fans.",
+      "B": "A political statement from an artist should be considered only if the artist has established a reputation for being an honest and knowledgeable observer of politics.",
+      "C": "Artists should limit their public political statements to issues that are somehow related to the arts.",
+      "D": "Someone who hears testimony that contradicts a long-standing opinion will generally entertain doubts about the source of the testimony rather than the correctness of the opinion.",
+      "E": "People are far less likely to renounce an allegiance that they have had for many years than to renounce an allegiance that is new to them."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Advertisement: In a carefully controlled study, blindfolded volunteers were divided evenly into five groups. Each volunteer tasted Sparkle Cola and one of five competing colas, each group tasting a different cola. Most of the volunteers said they preferred Sparkle Cola to the competing cola tasted. This shows that Sparkle Cola elicits a more favorable response from consumers than any of the competing colas tested.",
+    "questionStem": "The reasoning in the advertisement is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It overlooks the possibility that a generalization true of the entire group of volunteers was not true of each of the five smaller groups.",
+      "B": "It takes for granted that most of the volunteers would buy Sparkle Cola rather than one of the other colas tasted, at least in situations where Sparkle Cola is not much more expensive.",
+      "C": "It overlooks the possibility that some cola not tested in the study would have elicited a more favorable response than Sparkle Cola.",
+      "D": "It overlooks the possibility that many people may prefer Sparkle Cola to competing colas for reasons such as the packaging or price of Sparkle Cola, rather than its taste.",
+      "E": "It is based on a study that does not elicit consumers’ responses to any beverages other than colas."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Evidently, watching too much television can lead people to overestimate the risks that the world poses to them. A recent study found that people are more likely to think that they will be victims of a natural disaster if they watch an above-average amount of television than if they do not.",
+    "questionStem": "Which one of the following, if true, most weakens the reasoning above?",
+    "answerChoices": {
+      "A": "Many people overestimate the dangers that the world poses to them, regardless of the amount of television they watch.",
+      "B": "A person is less likely to live in an area that is prone to natural disasters if that person watches an above-average amount of television than if that person watches a below-average amount of television.",
+      "C": "People who watch a below-average amount of television tend to have a fairly accurate idea of the likelihood that they will be victims of a natural disaster.",
+      "D": "People who are well informed about the risks posed by natural disasters tend to have become well informed in some way other than by watching television.",
+      "E": "A person is more likely to watch an above-average amount of television if that person lives in an area that is prone to natural disasters than if that person lives in an area that is not."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Argument part",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Meteorologist: Heavy downpours are likely to become more frequent if Earth’s atmosphere becomes significantly warmer. A warm atmosphere heats the oceans, leading to faster evaporation, and the resulting water vapor forms rain clouds more quickly. A warmer atmosphere also holds more moisture, resulting in larger clouds. In general, as water vapor in larger clouds condenses, heavier downpours are more likely to result.",
+    "questionStem": "Which one of the following most accurately describes the role played in the meteorologist’s argument by the claim that, in general, as water vapor in larger clouds condenses, heavier downpours are more likely to result?",
+    "answerChoices": {
+      "A": "It is the only conclusion in the argument.",
+      "B": "It is the conclusion of the argument as a whole but is not the only explicitly stated conclusion in the argument.",
+      "C": "It is a statement that the argument is intended to support but is not the conclusion of the argument as a whole.",
+      "D": "It is used to support the only conclusion in the argument.",
+      "E": "It provides a causal explanation of the phenomenon described by the conclusion of the argument as a whole, but it is not intended to provide support for that conclusion."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Except",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Field studies, which have long been a staple of anthropological research, involve the researcher living within the community being studied. However, the usefulness of field studies tends to be overrated by anthropologists. Although most anthropologists do realize that living within the community one is studying affects that community, they generally underestimate the extent of such effects.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Anthropologists tend to overestimate the value of field studies.",
+      "B": "In a field study, the researcher lives within the community being studied.",
+      "C": "Field studies have been a central feature of anthropological research for a long time.",
+      "D": "Most anthropologists know that when they live within a community being studied, the community is affected at least somewhat.",
+      "E": "Most anthropologists underestimate how much of an effect the researcher’s presence has on a community being studied."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Parallel method of reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Juarez thinks that the sales proposal will be rejected by the committee if it is not rewritten before they see it. Juarez’s opinion is very reliable on such matters. Thus, since the proposal will not be rewritten, it will probably be rejected by the committee.",
+    "questionStem": "The reasoning in which one of the following arguments is most similar to the reasoning in the argument above?",
+    "answerChoices": {
+      "A": "A leading science journal has concluded that data provided by the manufacturer of a certain controversial new medication are accurate. The journal is generally reliable on such matters. Thus, the medication is probably safe, for if the company’s data are accurate, the medication must be safe.",
+      "B": "The data from the manufacturer of a controversial new medication prove that the medication is safe, because a leading science journal has concluded that the medication is safe, and it would not have done so had the manufacturer’s data not proven that the medication is safe.",
+      "C": "A leading science journal states that a certain controversial new medication is safe if the data provided by the company that developed the drug are accurate. Thus, the medication is probably safe, for the science journal is rarely wrong about such matters, and the company’s data are accurate.",
+      "D": "A leading science journal states that the data provided by the manufacturer of a controversial new medication are probably accurate and that if they are accurate, the medication is safe. Thus, the manufacturer’s data are probably accurate, for the science journal is fairly reliable on such matters.",
+      "E": "The data from the manufacturer of a controversial new medication are probably accurate, because a leading science journal has published the data and has concluded that the data are probably accurate. Moreover, the journal is fairly reliable on such matters."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Conditional Diagramming",
+      "Repetitive Answers",
+      "Belief / Knowledge / Intent"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Advertisement: In a recent survey, a sample representative of all new Popelka Auto Insurance policyholders reported savings of $250 a year, on average, as a result of switching their auto insurance coverage to Popelka. Thus, most people who hold auto insurance policies with other companies could save hundreds of dollars by switching to Popelka.",
+    "questionStem": "The argument in the advertisement is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It overlooks the possibility that at least some of the new Popelka Auto Insurance policyholders surveyed reported that they saved little or no money when they switched their auto insurance coverage to Popelka.",
+      "B": "It takes for granted that the new Popelka Auto Insurance policyholders pay no less for their auto insurance, on average, than do people who have held Popelka Auto Insurance policies for a longer period of time.",
+      "C": "It fails to address adequately the possibility that switching to another insurance company would enable many auto insurance policyholders to save even more money than they would save by switching to Popelka.",
+      "D": "It takes for granted that few if any of the Popelka Auto Insurance policyholders surveyed underestimated how much they saved when they switched their auto insurance coverage to Popelka.",
+      "E": "It fails to address adequately the possibility that people capable of saving hundreds of dollars by switching their auto insurance coverage to Popelka are disproportionately represented among the new Popelka auto insurance policyholders."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Sampling"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Consumer magazine: Because front-loading washers use less water than top-loading washers, ordinary powder detergent does not dissolve readily in front-loading washers. So, to get clothes really clean in a front-loading machine you need to use a detergent formulated especially for front-loading washers, instead of ordinary powder detergent.",
+    "questionStem": "Which one of the following is an assumption required by the argument in the consumer magazine?",
+    "answerChoices": {
+      "A": "All top-loading washing machines use the same amount of water.",
+      "B": "A laundry detergent formulated especially for front-loading washers dissolves more readily in them than it does in top-loading washers.",
+      "C": "A washing machine gets clothes really clean only with a laundry detergent specially formulated for that machine.",
+      "D": "A laundry detergent does not get clothes really clean in a washer unless it dissolves readily in it.",
+      "E": "Washers that use more water get clothes cleaner than those that use less."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Must be true",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In marketing their products, drug companies often send gifts to physicians. According to a recent survey, most physicians believe that their own choices when prescribing drugs are not influenced by drug companies’ gifts. The same survey indicates that the majority of physicians believe that most other physicians’ prescription choices are influenced by such gifts.",
+    "questionStem": "If the survey results are accurate, which one of the following must be true?",
+    "answerChoices": {
+      "A": "Physicians who do not accept gifts from drug companies are less likely to prescribe unnecessary drugs than those who do accept such gifts.",
+      "B": "Most physicians believe that drug companies should adopt new guidelines that regulate their practices in sending gifts to physicians.",
+      "C": "Some physicians are mistaken either about the degree to which they are influenced by gifts from drug companies or about the degree to which such gifts influence other physicians.",
+      "D": "Some physicians who admit that their own choices when prescribing drugs are influenced by drug companies’ gifts believe that other physicians’ prescription choices are influenced to a greater degree by such gifts.",
+      "E": "All physicians who admit that their own choices when prescribing drugs are influenced by drug companies’ gifts believe that most other physicians’ prescription choices are also influenced by such gifts."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Columnist: Although most people favor the bill and the bill does not violate anyone’s basic human rights, it will not be passed for many years, if at all; nor will any similar bill. Those people who would be adversely affected were it to become law are very influential. This shows that, if this country is a democracy at all, it is not a well-functioning one.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the columnist’s reasoning?",
+    "answerChoices": {
+      "A": "In a well-functioning democracy, any bill that would benefit most people will be passed into law within a few years if it does not violate anyone’s basic human rights.",
+      "B": "If a democracy is well functioning, then any bill that is opposed by influential people but favored by most other people will eventually pass into law.",
+      "C": "In a well-functioning democracy, a bill that is favored by most people will become law within a few years only if those who oppose it are not very influential.",
+      "D": "Any bill passed into law in a well-functioning democracy will be favored by most people and be consistent with individuals’ basic human rights.",
+      "E": "A bill that most people favor will be passed promptly into law in a well-functioning democracy if the bill does not violate anyone’s basic human rights."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Complex Conditionals",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Most strongly supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Many homeowners regularly add commercial fertilizers to their lawns and gardens to maintain a healthy balance of nutrients in soil. The widely available commercial fertilizers contain only macronutrients—namely, nitrogen, phosphorus, and potassium. To remain healthy in the long term, soil for lawns requires the presence of these macronutrients and also trace amounts of micronutrients such as zinc, iron, and copper, which are depleted when grass clippings are raked up rather than allowed to decay and return to the soil.",
+    "questionStem": "Which one of the following can be properly inferred from the statements above?",
+    "answerChoices": {
+      "A": "There is no single fertilizer that provides both the macronutrients and micronutrients necessary for maintaining soil’s long-term health.",
+      "B": "The macronutrients nitrogen, phosphorus, and potassium are available to homeowners only in commercial fertilizers.",
+      "C": "Widely available commercial fertilizers are not alone sufficient to maintain a healthy balance of nutrients in soil for lawns where grass clippings are not allowed to decay and return to the soil.",
+      "D": "For soil to remain healthy in the long term, it requires the regular addition of both commercial fertilizers and a source of micronutrients such as grass clippings that are allowed to decay and return to the soil.",
+      "E": "Homeowners who rake up their grass clippings are unable to maintain the long-term health of the soil in their lawns and gardens."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In most industrial waste products that contain the toxic chemical XTX, the concentration of this chemical is approximately 1,000 parts per million. A federal law intended to reduce the harm that can result from the introduction of XTX into the environment permits a company to dispose of these waste products in a dump for hazardous waste, but only if the concentration of XTX is below 500 parts per million. Waste products with concentrations above that level must be destroyed by incineration. The law further specifies that manufacturers may not dilute XTX-containing waste products to bring their concentration of XTX down to a permissible level for dumping.",
+    "questionStem": "Which one of the following, if true, argues most strongly for the inclusion of the antidilution provision of the law?",
+    "answerChoices": {
+      "A": "If improperly incinerated, waste products containing undiluted concentrations of XTX can release into the environment a gaseous form of the chemical that is more than twice as toxic as XTX is in its usual liquid state.",
+      "B": "If present in the environment in sufficient quantities, the diluted XTX is as harmful as the more concentrated XTX.",
+      "C": "When XTX is exposed to sunlight and oxygen, it eventually breaks down into a number of components that individually and collectively carry no risk of environmental harm.",
+      "D": "Most owners of dumps for hazardous waste are willing to accept XTX for disposal in their facilities only in concentrations below 800 parts per million.",
+      "E": "To manufacturers, the cost of diluting and disposing of waste products containing XTX is approximately the same as the cost of destroying these products by incineration."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
+  }
+]

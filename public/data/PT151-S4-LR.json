@@ -1,0 +1,559 @@
+[
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Joe: All vampire stories are based on an absurd set of\npremises. Since, according to such stories, every\nvictim of a vampire becomes a vampire, and\nvampires have existed since ancient times and are\nimmortal, vampires would by now have almost\ncompletely eliminated their prey. Maria: In most of the vampire stories I am familiar with,\nvampires turn only a few of their victims into\nvampires. The rest are permanently dead.",
+    "questionStem": "Joe and Maria disagree over the truth of which one of\nthe following?",
+    "answerChoices": {
+      "A": "Vampires are always depicted in vampire stories as immortal.",
+      "B": "Vampires are always depicted in vampire stories as having existed since ancient times.",
+      "C": "No vampire stories are incoherent.",
+      "D": "No vampire stories depict the vampire population as being very large.",
+      "E": "In all vampire stories, every victim of a vampire becomes a vampire."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A company decided to scan all of its salespersons’\nimportant work that existed only in paper form into a\ncentral computer database that could be easily accessed\nusing portable computers, thereby saving salespersons\nthe effort of lugging their paper files all over the country.\nThe project was a dismal failure, however; salespersons\nrarely accessed the database and continued to rely on\nmany paper files, which they had refused to turn over to\nthe staff responsible for creating the database.",
+    "questionStem": "Which one of the following, if true, most helps to\naccount for the failure described above?",
+    "answerChoices": {
+      "A": "Some of the salespersons gave huge paper files to the staff responsible for creating the database while other salespersons gave them much smaller files.",
+      "B": "Most of the salespersons already had portable computers before the new database was created.",
+      "C": "The papers that the salespersons found most important all contained personal information about employees of client companies, which the salespersons did not want in a central database.",
+      "D": "All of the salespersons were required to attend a series of training sessions for the new database software even though many of them found the software easy to use even without training.",
+      "E": "The number of staff required to create the database turned out to be larger than anticipated, and the company had to pay overtime wages to some of them."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Politician: The legal right to free speech does not\nprotect all speech. For example, it is illegal\nto shout “Fire!” in a crowded mall if the\nonly intent is to play a practical joke; the\ngovernment may ban publication of information\nabout military operations and the identity of\nundercover agents; and extortion threats and\nconspiratorial agreements are also criminal acts. The criminalization of these forms of speech is\njustified, since, although they are very different\nfrom each other, they are all likely to lead directly\nto serious harm.",
+    "questionStem": "In the statements above, the politician argues that",
+    "answerChoices": {
+      "A": "it is legitimate to prohibit some forms of speech on the grounds that they are likely to lead directly to serious harm",
+      "B": "a form of speech can be restricted only if it is certain that it would lead directly to serious harm",
+      "C": "in all but a few cases, restricting speech eventually leads directly to serious harm",
+      "D": "any form of speech may, one way or another, lead directly to serious harm",
+      "E": "all but one of several possible reasons for restricting freedom of speech are unjustified"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies",
+      "Implied Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Art critic: Nowadays, museum visitors seldom pause to\nlook at a work of art for even a full minute. They\nlook, perhaps take a snapshot, and move on. This\ntells us something about how our relationship to\nart has changed over time. People have become\nless willing to engage with works of art than they\nonce were.",
+    "questionStem": "The art critic’s argument depends on the assumption that",
+    "answerChoices": {
+      "A": "museum visitors today generally look at more pieces of art during each museum visit than museum visitors looked at in the past",
+      "B": "the ease with which museum visitors can take snapshots of art contributes to the speed with which they move through art museums",
+      "C": "visitors would enjoy their museum experiences more if they took more time with individual works of art",
+      "D": "museum visitors who take snapshots of works of art rarely look at the pictures afterward",
+      "E": "the amount of time spent looking at a work of art is a reliable measure of engagement with that work"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Heavy tapestry fabrics are appropriate only for use in\napplications that will not need to be laundered frequently.\nThese applications do not include any types of clothing—\nsuch as skirts or even jackets—but instead include\nswags and balloon valances, which are types of window\ntreatments.",
+    "questionStem": "Which one of the following statements is most supported\nby the information above?",
+    "answerChoices": {
+      "A": "If a fabric is not a heavy tapestry fabric, then it is not appropriate for use in swags.",
+      "B": "Heavy tapestry fabrics should not be used unless swags or balloon valances are being made.",
+      "C": "If heavy tapestry fabrics are appropriate for a particular application, then that application must be a window treatment.",
+      "D": "If a fabric is appropriate for use in a skirt or jacket, then that fabric is not a heavy tapestry fabric.",
+      "E": "Heavy tapestry fabrics are sometimes appropriate for use in types of clothing other than skirts and jackets."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The construction of new apartments in Brewsterville\nincreased the supply of available housing there.\nOrdinarily, increasing the supply of available housing\nleads to lower rents for existing apartments. But in\nBrewsterville, rents for existing apartments rose.",
+    "questionStem": "Which one of the following, if true, most helps to\nexplain the discrepancy described above?",
+    "answerChoices": {
+      "A": "Fewer new apartments were constructed than originally planned.",
+      "B": "The new apartments were much more desirable than the existing apartments.",
+      "C": "Rents in some areas close to Brewsterville dropped as a result of the construction of the new apartments.",
+      "D": "A sizeable number of people moved out of the existing apartments while the new apartments were being constructed.",
+      "E": "The new apartments were constructed at the outset of a trend of increasing numbers of people seeking residence in Brewsterville."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Politicians often advocate increased overall economic\nproductivity while ignoring its drawbacks. For example,\nattempting to increase the productivity of a corporation\nmeans attempting to increase its profitability, which\ntypically leads to a reduction in the number of workers\nemployed by that corporation. Thus, attempting to\nincrease productivity in the economy as a whole may\nbenefit business owners, but will increase the number of\nunemployed workers.",
+    "questionStem": "The reasoning in the argument is most vulnerable to\ncriticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that increased unemployment is sufficient reason to abandon increased productivity as an economic goal",
+      "B": "fails to justify its presumption that attempting to increase productivity in the economy as a whole would produce results similar to those produced by attempting to increase productivity in a single corporation",
+      "C": "unfairly criticizes politicians in general on the basis of the actions of a few who are unwilling to consider the drawbacks of attempting to increase productivity",
+      "D": "fails to justify its presumption that attempting to increase productivity in the economy as a whole is always more important than the interests of workers or business owners",
+      "E": "fails to address all potential drawbacks and benefits of attempting to increase productivity at a single corporation"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "A good movie reviewer should be able to give favorable\nreviews of movies that are not to his or her taste. Because\nmovie reviewers have seen so many movies, their tastes\nare very different from and usually better informed than\nthose of most moviegoers. Yet the function of movie\nreviewers, as opposed to film critics, is to help people\ndetermine which movies they might enjoy seeing, not to\nhelp them better appreciate movies.",
+    "questionStem": "Which one of the following most accurately expresses\nthe overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Movie reviewers’ tastes in movies are very different from and usually better informed than those of most moviegoers.",
+      "B": "If a movie reviewer is good, he or she should be able to give favorable reviews of movies that are not to his or her taste.",
+      "C": "The function of a movie reviewer is different from that of a film critic.",
+      "D": "Movie reviewers see many more movies than most moviegoers see.",
+      "E": "The role of movie reviewers is to help people determine which movies they might enjoy seeing, not to help people better appreciate movies."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The brain area that enables one to distinguish the\ndifferent sounds made by a piano tends to be larger in a\nhighly skilled musician than in someone who has rarely,\nif ever, played a musical instrument. This shows that\npracticing on, and playing, a musical instrument actually\nalters brain structure.",
+    "questionStem": "Which one of the following most accurately describes a\nflaw in the argument?",
+    "answerChoices": {
+      "A": "The argument presumes, without providing justification, that what is true about the brain structures of highly skilled pianists is also true of the brain structures of other highly skilled musicians.",
+      "B": "The argument fails to address the possibility that people who become highly skilled musicians do so, in part, because of the size of a certain area of their brains.",
+      "C": "The argument draws a conclusion about a broad range of phenomena from evidence concerning a much narrower range of phenomena.",
+      "D": "The argument fails to address the possibility that a certain area of the brain is smaller in people who have listened to a lot of music but who have never learned to play a musical instrument than it is in people who have learned to play a musical instrument.",
+      "E": "The argument presumes, without providing justification, that highly skilled musicians practice more than other musicians."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researcher: Overhearing only one side of a cell-phone\nconversation diverts listeners’ attention from\nwhatever they are doing. Hearing only part of a\nconversation leaves listeners constantly trying\nto guess what the unheard talker has just said. Listeners’ attention is also diverted because cell-\nphone talkers speak abnormally loudly.",
+    "questionStem": "The researcher’s statements, if true, most strongly\nsupport which one of the following?",
+    "answerChoices": {
+      "A": "The risk that a driver will cause an accident is increased when the driver is talking on a cell phone.",
+      "B": "When a driver hears a passenger in the driver’s vehicle talking on a cell phone, that detracts from the driver’s performance.",
+      "C": "Overhearing one side of a conversation on a traditional telephone does not divert listeners’ attention from tasks at hand.",
+      "D": "People who overhear one side of a cell-phone conversation inevitably lose track of their thoughts.",
+      "E": "Conversing on a cell phone requires making more guesses about what one’s conversational partner means than other forms of conversation do."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A new treatment for muscle pain that looked very\npromising was tested in three separate studies. Although\nthe results were positive, it turned out that all three\nstudies had critical methodological flaws. So the\ntreatment is probably not actually effective.",
+    "questionStem": "The flawed nature of the argument above can most\neffectively be demonstrated by noting that, by parallel\nreasoning, we could conclude that",
+    "answerChoices": {
+      "A": "since the judges in a baking contest did not have uniform criteria for selecting a winner, the cake that won is probably a bad one",
+      "B": "since some people who fish seldom catch any fish, they probably have some reason for fishing other than catching fish",
+      "C": "since some foods have very little nutritional value, people who include those foods in their diets are probably malnourished",
+      "D": "since all scarves are at least somewhat decorative, it is likely that when scarves were first adopted, they were purely decorative",
+      "E": "since all members of the city council have a financial stake in the city’s development, any development proposal they make is likely to be motivated purely by self-interest"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "If future improvements to computer simulations of\nautomobile crashes enable computers to provide as much\nreliable information about the effectiveness of automobile\nsafety features as is provided by actual test crashes, then\nmanufacturers will use far fewer actual test crashes. For\nthe costs of designing and running computer simulations\nare much lower than those of actual test crashes.",
+    "questionStem": "Which one of the following, if true, most strongly\nsupports the argument?",
+    "answerChoices": {
+      "A": "Apart from information about safety features, actual test crashes provide very little information of importance to automobile manufacturers.",
+      "B": "It is highly likely that within the next 20 years computer simulations of automobile crashes will be able to provide a greater amount of reliable information about the effectiveness of automobile safety features than can be provided by actual test crashes.",
+      "C": "If computer simulations will soon be able to provide more information about the effectiveness of automobile safety features, automobile manufacturers will soon be able to produce safer cars.",
+      "D": "The cost per automobile of testing and designing safety features is decreasing and will continue to decrease for the foreseeable future.",
+      "E": "For years, the aviation industry has been successfully using computer simulations of airplane crashes to test the effectiveness of safety features of airplane designs."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Conditional Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Legislator: My colleague says we should reject this act\nbecause it would deter investment. But because\nin the past she voted for legislation that inhibited\ninvestment, this surely is not the real reason she\nopposes the act. Since she has not revealed her\nreal reason, it must not be very persuasive. So we\nshould vote to approve the act.",
+    "questionStem": "The reasoning in the legislator’s argument is most\nvulnerable to the criticism that the argument",
+    "answerChoices": {
+      "A": "treats a personal character trait as if it were evidence of the professional viewpoint of the person having that trait",
+      "B": "fails to address the grounds on which the colleague claims the act should be rejected",
+      "C": "presumes, without providing justification, that the colleague’s opposition to the act is the minority position in the legislature",
+      "D": "presumes, without providing justification, that voters will oppose legislation that deters investment",
+      "E": "fails to consider that the colleague’s opposition to the act may be a response to constituents’ wishes"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A new computer system will not significantly increase\nan organization’s efficiency unless the computer system\nrequires the organization’s employees to adopt new,\nmore productive ways of working. The Ministry of\nTransportation is having a new computer system custom\nbuilt to fit the ministry’s existing ways of working, so\n_______.",
+    "questionStem": "Which one of the following most logically completes the\nargument?",
+    "answerChoices": {
+      "A": "the new computer system will not increase the efficiency of the Ministry of Transportation to any appreciable degree",
+      "B": "it is likely that the new computer system will not function correctly when it is first installed",
+      "C": "the leaders of the Ministry of Transportation must not be concerned with the productivity of the ministry’s employees",
+      "D": "the new computer system will be worthwhile if it automates many processes that are currently performed manually",
+      "E": "it will be easy for employees of the Ministry of Transportation to learn to use the new computer system"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Logical Completion",
+      "Conditional Diagramming",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Columnist: Many car manufacturers trumpet their cars’\nfuel economy under normal driving conditions. For all three of the cars I have owned, I have\nbeen unable to get even close to the fuel economy\nthat manufacturers advertise for cars of those\nmakes. So manufacturers probably inflate those\nnumbers.",
+    "questionStem": "The reasoning in the columnist’s argument is most\nvulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "draws a conclusion on the basis of a sample that is too small",
+      "B": "presumes, without providing justification, that driving conditions are the same in every geographical region",
+      "C": "overlooks the possibility that the source of a cited claim may be biased and hence unreliable",
+      "D": "presumes, without providing justification, that car manufacturers knowingly market cars that fail to meet minimum fuel efficiency standards",
+      "E": "uses the term “fuel economy” in two different senses"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Tenants who do not have to pay their own electricity bills\ndo not have a financial incentive to conserve electricity.\nThus, if more landlords install individual electricity\nmeters on tenant dwellings so that tenants can be billed\nfor their own use, energy will be conserved as a result.",
+    "questionStem": "Which one of the following, if true, most weakens the\nargument?",
+    "answerChoices": {
+      "A": "Tenants who do not have to pay their own electricity bills generally must compensate by paying more rent.",
+      "B": "Many initiatives have been implemented to educate people about how much money they can save through energy conservation.",
+      "C": "Landlords who pay for their tenants’ electricity have a strong incentive to make sure that the appliances they provide for their tenants are energy efficient.",
+      "D": "Some tenant dwellings can only support individual electricity meters if the dwellings are rewired, which would be prohibitively expensive.",
+      "E": "Some people conserve energy for reasons that are not related to cost savings."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The position that punishment should be proportional to\nhow serious the offense is but that repeat offenders should\nreceive harsher punishments than first-time offenders is\nunsustainable. It implies that considerations as remote\nas what an offender did years ago are relevant to the\nseriousness of an offense. If such remote considerations\nwere relevant, almost every other consideration would be\ntoo. But this would make determining the seriousness of\nan offense so difficult that it would be impossible to apply\nthe proportionality principle.",
+    "questionStem": "The statement that considerations as remote as what an\noffender did years ago are relevant to the seriousness of\nan offense plays which one of the following roles in the\nargument?",
+    "answerChoices": {
+      "A": "It is a statement the argument provides grounds to accept and from which the overall conclusion is inferred.",
+      "B": "It is a statement inferred from a position the argument seeks to defend.",
+      "C": "It is the overall conclusion in favor of which the argument offers evidence.",
+      "D": "It is an allegedly untenable consequence of a view rejected in the argument’s overall conclusion.",
+      "E": "It is a premise offered in support of an intermediate conclusion of the argument."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Blogger: Traditionally, newspapers have taken objectivity\nto be an essential of good journalism. However,\ntoday’s newer media are more inclined to try\nto create a stir with openly partisan reporting.\nThis contrast in journalistic standards is best\nunderstood in terms of differing business\nstrategies. The newer media outlets need\nto differentiate themselves in a crowded\nmarketplace. The standard of objectivity\ndeveloped primarily among newspapers with no\nserious rivals, so the most important objective\nwas to avoid offending potential readers.",
+    "questionStem": "Which one of the following is an assumption required by\nthe blogger’s argument?",
+    "answerChoices": {
+      "A": "Journalists at traditional newspapers are just as partisan as journalists who work for newer media outlets.",
+      "B": "People prefer objective reporting to partisan reporting that merely reinforces their own partisan leanings.",
+      "C": "The newer media outlets are increasing in popularity at the expense of traditional newspapers.",
+      "D": "Newspapers have regarded objective reporting as less likely to offend people than openly partisan reporting.",
+      "E": "There can be no basis for taking objectivity to be an essential journalistic standard."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Defender",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Any government practice that might facilitate the abuse\nof power should not be undertaken except in cases in\nwhich there is a compelling reason to do so. The keeping\nof government secrets is one such practice. Though\ngovernment officials are sometimes justified in keeping\nsecrets, too often they keep secrets for insubstantial\nreasons, and in so doing they wind up enabling abuses\nof power. When government officials conceal from the\npublic the very fact that they are keeping a secret, this\npractice opens up even greater opportunity for abuse.",
+    "questionStem": "Which one of the following can be properly inferred\nfrom the statements above?",
+    "answerChoices": {
+      "A": "In most cases in which government officials conceal information from the public, they are not justified in doing so.",
+      "B": "In those cases in which government officials have a compelling reason to keep a secret, doing so does not facilitate an abuse of power.",
+      "C": "A government official who justifiably keeps a secret should not conceal its existence without having a compelling reason to do so.",
+      "D": "Government officials who conceal information without a compelling reason are thereby guilty of an abuse of power.",
+      "E": "Government officials should keep information secret only if doing so does not make it easier for those officials to abuse their power."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Complex Conditionals"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "According to a theory embraced by some contemporary\nmusicians, music is simply a series of sounds, bereft of\nmeaning. But these musicians, because they understand\nthat their theory is radically nonconformist, encourage\naudience acceptance by prefacing their performances\nwith explanations of their intentions. Thus, even their\nown music fails to conform to their theory.",
+    "questionStem": "Which one of the following, if assumed, enables the\nargument’s conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "The human ability to think symbolically and to invest anything with meaning makes it very difficult to create music that has no meaning.",
+      "B": "It will be possible for musicians to create music that means nothing only when listeners are able to accept such a theory of music.",
+      "C": "The fact that music is distinguishable from a random series of sounds only when it has meaning makes music with meaning more appealing to audiences than music without meaning.",
+      "D": "Music that opposes current popular conceptions of music is less likely to be enjoyed by audiences than is music that accords with such conceptions.",
+      "E": "Musicians whose music has no meaning do not preface their performances with explanations of their intentions."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Evolution does not always optimize survival of an\norganism. Male moose evolved giant antlers as a way\nof fighting other males for mates, giving those with the\nlargest antlers an evolutionary advantage. But those\nantlers also make it harder to escape predators, since they\ncan easily get tangled in trees. All male moose would be\nbetter off with antlers half the current size: they would all\nbe less vulnerable to predators, and those with the largest\nantlers would maintain their relative advantage.",
+    "questionStem": "Which one of the following is a technique of reasoning\nused in the argument?",
+    "answerChoices": {
+      "A": "citing an example to cast doubt on a competing argument",
+      "B": "employing an analogy in order to dispute a generalization",
+      "C": "challenging a general claim by presenting a counterexample",
+      "D": "disputing the relevance of an example thought to support an opposing view",
+      "E": "undermining a claim by showing that it is self-contradictory"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Biologist: When bacteria of a particular species are\nplaced in a test tube that has different areas lit\nwith different colors of light, the bacteria move\nonly into the areas lit with a particular shade of\nred. The bacteria contain chlorophyll, a chemical\nthat allows them to produce energy more\neffectively from this color of light than from any\nother. This suggests that the bacteria detect this\ncolor of light by monitoring how much energy\ntheir chlorophyll is producing.",
+    "questionStem": "Which one of the following, if true, most weakens the\nbiologist’s argument?",
+    "answerChoices": {
+      "A": "If the chlorophyll is removed from the bacteria, but the bacteria are otherwise unharmed, they no longer show any tendency to move into the areas lit with the particular shade of red.",
+      "B": "The bacteria show little tendency to move into areas containing light in colors other than the particular shade of red, even if their chlorophyll can produce some energy from light in those colors.",
+      "C": "The areas of the test tube lit with the particular shade of red favored by the bacteria are no warmer, on average, than areas lit with other colors.",
+      "D": "The bacteria show no tendency to move into areas lit with blue even when those areas are lit so brightly that the bacteria’s chlorophyll produces as much energy in those areas as it does in the red areas.",
+      "E": "There are species of bacteria that do not contain chlorophyll but do move into areas lit with particular colors when placed in a test tube lit with different colors in different places."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "If a piece of legislation is the result of negotiation and\ncompromise between competing interest groups, it will\nnot satisfy any of those groups. So, we can see that the\nrecently enacted trade agreement represents a series of\ncompromises among the various interest groups that are\nconcerned with it, because all of those groups are clearly\nunhappy with it.",
+    "questionStem": "Which one of the following most accurately describes a\nlogical flaw in the argument?",
+    "answerChoices": {
+      "A": "It draws a conclusion that is merely a disguised restatement of one of its premises.",
+      "B": "It concludes that a condition is necessary for a certain result merely from the claim that the condition leads to that result.",
+      "C": "It relies on understanding a key term in a quite different way in the conclusion from the way that term is understood in the premises.",
+      "D": "It takes for granted that no piece of legislation can ever satisfy all competing interest groups.",
+      "E": "It bases a conclusion about a particular case on a general principle that concerns a different kind of case."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "After a nuclear power plant accident, researchers found\nradioactive isotopes of iodine, tellurium, and cesium—\nbut no heavy isotopes—in the atmosphere downwind. This material came either from spent fuel rods or from\nthe plant’s core. Spent fuel rods never contain significant\nquantities of tellurium isotopes. Radioactive material\nejected into the atmosphere directly from the core would\ninclude heavy isotopes. After the accident, steam, which\nmay have been in contact with the core, was released\nfrom the plant. The core contains iodine, tellurium, and\ncesium isotopes, which are easily dissolved by steam.",
+    "questionStem": "Of the following statements, which one is most strongly\nsupported by the information above?",
+    "answerChoices": {
+      "A": "Radioactive material ejected into the environment directly from a nuclear power plant’s core would not include tellurium isotopes.",
+      "B": "The radioactive material detected by the researchers was carried into the atmosphere by the steam that was released from the plant.",
+      "C": "The nuclear power plant’s spent fuel rods were not damaged.",
+      "D": "The researchers found some radioactive material from spent fuel rods as well as some material that was ejected into the atmosphere directly from the plant’s core.",
+      "E": "Spent fuel rods do not contain heavy isotopes in significant quantities."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Ruling Out Options",
+      "Dense Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "If ecology and the physical sciences were evaluated by\nthe same criteria, ecology would fail to be a successful\nscience because it cannot be captured by a set of simple\nlaws. But ecology is a successful science, although of a\ndifferent sort from the physical sciences. Therefore, it\nclearly is not being evaluated by means of the criteria\nused to evaluate the physical sciences.",
+    "questionStem": "Which one of the following arguments is most similar in\nits reasoning to the argument above?",
+    "answerChoices": {
+      "A": "If sales taxes are increased, then either the price of woodchips will go up and the consumer will have to pay more for them, or the woodchip industry will disappear. But the market cannot bear an increase in the price of woodchips, so the woodchip industry will disappear.",
+      "B": "If this gallery could borrow some of Matisse’s early works, then, together with its own permanent collection of Matisse, the gallery could have the largest exhibition of Matisse ever. But there is no demand for larger exhibitions of Matisse’s work. Therefore, no gallery will be inclined to lend their early Matisses to this gallery.",
+      "C": "If cars of the future are made of lighter and stronger materials, then the number of fatalities due to driving accidents will be drastically reduced. It is obvious that cars will be made of lighter and stronger materials in the future. Therefore, the number of fatalities due to driving accidents will be drastically reduced.",
+      "D": "If physicists attempted research in the social sciences, they would probably be as successful in those areas as researchers who restrict their concentration to the social sciences. However, physicists rarely attempt social science research. Therefore, physicists are not among the most successful researchers in the social sciences.",
+      "E": "If any economic theory were an adequate description of the principles according to which economies operate, then it would be possible to make accurate economic forecasts. But accurate economic forecasts cannot be made. Therefore, no economic theory is an adequate description of the principles according to which economies operate."
+    },
+    "correctAnswer": "E"
+  }
+]

@@ -1,0 +1,616 @@
+[
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Many people who simply enjoy listening to popular\n music do not realize that it has been used to express\n religious and political messages. After all, popular music\n has repeatedly been adopted by social movements to\n express their viewpoints, since it has the potential to\n contribute to the “conversion” of nonmembers to the\n movement’s position, as well as to raise the morale and to\n express the solidarity of the movement’s participants.",
+    "questionStem": "Which one of the following most accurately expresses\n the main conclusion of the argument?",
+    "answerChoices": {
+      "A": "Popular music accounts for the success of social movements.",
+      "B": "Popular music’s entertainment value has been overemphasized.",
+      "C": "Popular music is the most effective way of converting people to social movements.",
+      "D": "Popular music has purposes other than mere entertainment.",
+      "E": "Popular music has a profound emotional impact on its listeners."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Council president: Councilmember Smith has proposed\n a new city ordinance prohibiting the use of the\n “bait-and-switch” sales tactic. Smith must have\n amnesia. Four years ago he owned an appliance\n store that was famous for its use of bait-and-\n switch. Clearly, Smith’s proposed ordinance does\n not even merit consideration.",
+    "questionStem": "The council president’s reasoning is most vulnerable to\n criticism on the grounds that the president",
+    "answerChoices": {
+      "A": "dismisses the proposed ordinance because of its source rather than because of its content",
+      "B": "takes a single fact that is incompatible with a claim as enough to show that claim to be false",
+      "C": "fails to make a needed distinction between deceptive sales tactics and legitimate methods of increasing sales",
+      "D": "draws a conclusion that simply restates a claim presented in support of that conclusion",
+      "E": "generalizes from a limited number of instances of a certain kind to all instances of that kind"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Bovine remains found in a certain region of Africa date\n back to a time when the climate was arid. While there\n were people in the region at this time, there were no\n other large mammals there. Any natural sources of water\n available to these bovines would have brought other\n large mammals to the area. Thus, these bovines had been\n domesticated and the people living in the region were no\n longer exclusively hunter-gatherers.",
+    "questionStem": "Which one of the following is an assumption on which\n the argument depends?",
+    "answerChoices": {
+      "A": "Unless they are domesticated, bovines are unlikely to exist in a region where there are no natural sources of water available to them.",
+      "B": "Domesticating animals is one of the first practices that a society must adopt in order to change from hunting and gathering to agriculture.",
+      "C": "With the help of humans, other large mammals would have been able to inhabit this arid region.",
+      "D": "No human culture obtains food both through agriculture and through hunting and gathering.",
+      "E": "Domesticated animals of a given size do not need as much water as do wild animals of comparable size."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Cerrato: Economists argue both that the higher turnover\n rate of part-time workers shows them to be\n much more likely to be dissatisfied with their\n jobs than full-time workers are and that lower-\n paid, part-time workers threaten to take jobs\n from full-time employees. But because job\n efficiency is positively correlated with job\n satisfaction, companies are unlikely to replace\n satisfied employees with dissatisfied ones.\n Therefore, _______.",
+    "questionStem": "Which one of the following most logically completes\n Cerrato’s argument?",
+    "answerChoices": {
+      "A": "full-time workers are likely to lose jobs to part-time workers",
+      "B": "the companies earning the greatest profits tend to be those that pay their workers the highest wages",
+      "C": "dissatisfied part-time workers are unlikely to threaten the jobs of full-time workers",
+      "D": "the higher turnover rate of part-time workers is only partly caused by their greater job dissatisfaction",
+      "E": "companies generally hire part-time workers only when they are unable to hire full-time ones"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "On the plains where it lives, an individual zebra stands\n out because of its black-and-white stripes, which contrast\n with the green or brown of the surrounding vegetation.\n Yet zebras are a prey species, and the lions that hunt them\n can see stripes clearly. It seems surprising that zebras\n would survive with such vivid markings.",
+    "questionStem": "Which one of the following, if true, most adequately\n resolves the problem raised above?",
+    "answerChoices": {
+      "A": "Because the vegetation on the open plains changes from green to brown as the season changes from wet to dry, true camouflage coloring for a prey species would have to change according to the seasons.",
+      "B": "Zebras are able to judge from the demeanor of lions they see in the vicinity whether or not those lions are preparing to hunt, and the zebras ignore the lions that are not.",
+      "C": "Lions that hunt zebras are themselves colored in a way that blends in with the brown color of dry vegetation, so that in the dry season, when prey is scarce, the lions can creep up on their prey to within a distance from which the lions have a favorable chance of succeeding in the hunt.",
+      "D": "When lions hunt, the whole pride shares in the food obtained when a prey animal is successfully brought down by one of the hunting lions.",
+      "E": "When zebras run in a group, as they generally do in response to danger, the stripe markings make it difficult for a predator pursuing a single individual to discern its outline."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Dark honey tends to have a higher antioxidant content\n than light-colored honey, and the most healthful strains\n of honey are all unusually high in antioxidants. However,\n certain strains of honey produced by bees harvesting\n primarily sage nectar are among the most healthful\n strains of honey, even though they are also among the\n lightest-colored strains of honey.",
+    "questionStem": "Which one of the following is most strongly supported\n by the information above?",
+    "answerChoices": {
+      "A": "Some strains of honey produced by bees harvesting sage nectar are unusually high in antioxidants.",
+      "B": "Most plants produce nectar that, when harvested by bees, results in light-colored honey.",
+      "C": "Light-colored honey tends to be more healthful than dark honey.",
+      "D": "Certain strains of honey produced by bees harvesting primarily sage nectar are unusually low in antioxidants.",
+      "E": "The strain of honey that has the highest antioxidant content is a light-colored honey."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Researcher: In a recent study of elementary school\n computers, we found that all keyboards and\n most monitors were positioned higher than\n recommended for children. Consequently,\n children were seated in ways that encouraged\n craned necks, awkwardly placed wrists, and other\n unhealthy postures. Evidently, most elementary\n school computers are installed without\n consideration of their effect on posture, and thus\n put children at the same risk for repetitive stress\n injuries as office workers.",
+    "questionStem": "Which one of the following, if true, most seriously\n weakens the researcher’s argument?",
+    "answerChoices": {
+      "A": "The recommended height for computers is different for children than for adults.",
+      "B": "Children spend more time working with computers at home than at school.",
+      "C": "The greater suppleness of children’s bodies makes them less susceptible than adults to repetitive stress injuries.",
+      "D": "Office workers’ keyboards and monitors are usually not at the recommended heights for healthy postures for adults.",
+      "E": "Office workers are more likely to report injuries than children are."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Intermediate Conclusions",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Sociologist: Some anthropologists claim that cultures can\n most effectively respond to the threat of cultural\n decay by replacing or abandoning many of their\n traditions so that other traditions may endure.\n But since each of its traditions is essential to a\n culture’s identity, this strategy _______.",
+    "questionStem": "Which one of the following most logically completes the\n sociologist’s argument?",
+    "answerChoices": {
+      "A": "can save those cultures capable of reflecting on their customs and envisioning alternatives",
+      "B": "will ensure the elimination of a culture rather than prevent its decay",
+      "C": "can be implemented by all and only those cultures studied by anthropologists",
+      "D": "constitutes the most effective response to the threat of cultural decay",
+      "E": "can succeed if adopted by cultures whose traditions have been adopted only recently"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Scholar: The purpose of a law is to deter certain actions\n by threatening to punish those performing the\n actions. This threat works only if potential\n violators believe that they are likely to be\n punished. But the likelihood that someone will\n be apprehended and punished for committing a\n prohibited act decreases as the number of types\n of prohibited actions increases. Therefore, a\n successful legal system prohibits only those few\n behaviors that citizens find absolutely intolerable.",
+    "questionStem": "Which one of the following most accurately describes\n the role played in the scholar’s argument by the\n statement that the purpose of a law is to deter certain\n actions by threatening to punish those performing the\n actions?",
+    "answerChoices": {
+      "A": "It is offered in support of the implicit conclusion that a legal system needs a significant number of police officers.",
+      "B": "It is the conclusion of the argument.",
+      "C": "It is a premise of the argument.",
+      "D": "It is an intermediate conclusion.",
+      "E": "It is the view that the argument as a whole is designed to discredit."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Historian: In the fourteenth and fifteenth centuries, the\n Swahili civilization of East Africa built tombs\n with large pillars and paneled facades. Such\n structures are widespread among the Oromo\n people of Somalia and Kenya, but are unknown\n among any other people with whom the Swahili\n civilization had contact. This indicates that\n Swahili culture was, to some extent, influenced\n by Oromo culture.",
+    "questionStem": "The historian’s argument is most vulnerable to criticism\n on the grounds that it",
+    "answerChoices": {
+      "A": "fails to address adequately the possibility that the Oromo people did not use the structures as tombs",
+      "B": "concludes, simply because one event occurred earlier than another event, that the first event caused the second event",
+      "C": "draws a restricted conclusion from premises that provide strong support for a much broader conclusion",
+      "D": "takes for granted that there was no third civilization responsible for creating the first tombs of the kind found in both the Oromo and Swahili cultures",
+      "E": "takes for granted that the Oromo people began constructing tombs with large pillars and paneled facades earlier than the Swahili civilization did"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility",
+      "Timeframes",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The chorus in a play, like a narrator in a novel, introduces\n a point of view not tied to any of the characters, and both\n chorus and narrator allow the author to comment on the\n characters’ actions and to introduce information about the\n context in which these actions take place. However, since\n the information introduced by the chorus in a play is\n sometimes not consistent with the rest of the information\n in the play, the chorus in a play is not equivalent to the\n narrator in a novel.",
+    "questionStem": "Which one of the following is an assumption on which\n the argument depends?",
+    "answerChoices": {
+      "A": "The narrator in a novel is never deceptive.",
+      "B": "The voice of a narrator is sometimes necessary in plays that employ a chorus.",
+      "C": "Information necessary for the audience to understand events in a play is sometimes introduced by the chorus.",
+      "D": "Information introduced by a narrator in a novel can never be inconsistent with the rest of the information in the novel.",
+      "E": "Authors sometimes use choruses in plays to mislead audiences about events in the plays."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Analogies",
+      "Assumes Difference"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Some of the rare pygmy bears should be moved from\n their native island to the neighboring island. The bears\n risk extinction from the loss of habitat on their native\n island, and since the neighboring island is the only place\n that has a similar habitat, this move represents the only\n viable chance of saving these valuable animals.",
+    "questionStem": "Which one of the following principles, if valid, most\n helps to justify the reasoning above?",
+    "answerChoices": {
+      "A": "Some species are more deserving of protection than are other species.",
+      "B": "Rare animals should not be moved from one habitat to another unless these habitats are similar to one another.",
+      "C": "If a species is in danger of extinction, whatever is most likely to prevent the extinction should be undertaken.",
+      "D": "The rarer a species of plant or animal is, the more that should be done to protect that species.",
+      "E": "If an animal’s original habitat is in danger of being lost, it is permissible to try to find a new habitat for the animal."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "The widespread use of encryption software, which makes\n electronic documents accessible by password only, will\n bring the writing of biographical history virtually to an\n end. Public figures’ private correspondence and diaries\n are intended to be confidential when written, but they\n later become biographers’ principal sources. In the future,\n most such documents are likely to be stored as encrypted\n text, so the most interesting, revealing material will be\n unavailable to historians unless they have the necessary\n passwords.",
+    "questionStem": "Which one of the following most accurately expresses\n the main conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "In the future, most private correspondence and diaries of public figures will be stored as encrypted text.",
+      "B": "The widespread use of encryption software will cause the writing of biographical history to decline significantly or cease.",
+      "C": "Historians will probably not have access to much of the private correspondence and diaries of public figures in the future.",
+      "D": "In the future, biographers’ access to the most interesting, revealing material will be determined by their knowledge of the necessary passwords.",
+      "E": "Public figures’ private correspondence and diaries are the most interesting and revealing sources for the writing of biographical history."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Unlike stars, planets do not generate light, but only reflect\n it. Besides stars, there are many other celestial objects in\n this galaxy that are not planets. Hence, there are celestial\n objects in this galaxy that generate light but are not stars.",
+    "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument fails to\n consider the possibility that",
+    "answerChoices": {
+      "A": "this galaxy contains no celestial objects that reflect light other than planets",
+      "B": "celestial objects in this galaxy comprise only a minute percentage of all the celestial objects in the universe",
+      "C": "celestial objects in this galaxy are not the only celestial objects that generate light",
+      "D": "there are numerous features that distinguish stars from planets besides the ability to generate light",
+      "E": "planets are not the only celestial objects that do not generate light"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws",
+      "Argue the Anti-Conclusion",
+      "Assumes Difference",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Psychologist: We measured the “cognitive plasticity,” or\n the willingness to accept new ideas, of a group of\n people of both genders and of all ages. The first-\n born children in the study consistently exhibited\n less cognitive plasticity than did their siblings.\n It is reasonable to think that those who are open\n to new ideas will be adventurous in other ways.\n Hence, our study suggests that siblings of first-\n born children will tend to be more adventurous\n than will the first-borns.",
+    "questionStem": "Which one of the following, if true, most strengthens the\n psychologist’s argument?",
+    "answerChoices": {
+      "A": "Some of the great creative geniuses in history were first-born children.",
+      "B": "In most cases, the more younger siblings one has, the greater one’s cognitive plasticity.",
+      "C": "Other studies have shown a correlation between cognitive plasticity and the willingness to take risks.",
+      "D": "A study of business executives shows that several industry leaders have older siblings.",
+      "E": "Most of the participants in the study had characterized themselves as more adaptable than other people."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Historians have found that significant intellectual\n advances generally occur in cities or countries that have\n a stable political system. But these same historians\n acknowledge that in ancient Athens, Plato and Aristotle\n made unparalleled intellectual progress during a period of\n great political and social unrest.",
+    "questionStem": "Which one of the following, if true, most helps to\n reconcile the historians’ apparent counterexample with\n their general rule?",
+    "answerChoices": {
+      "A": "The political systems that have emerged since the time of Plato and Aristotle have in various ways been different from the political system in ancient Athens.",
+      "B": "The citizens of ancient Athens generally held in high esteem people who were accomplished intellectually.",
+      "C": "Financial support for intellectual endeavors is typically unavailable in unstable political environments, but in ancient Athens such support was provided by wealthy citizens.",
+      "D": "Significant intellectual advances sometimes, though not always, lead to stable political environments.",
+      "E": "Many thinkers besides Plato and Aristotle contributed to the intellectual achievements of ancient Athens."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "To establish a human colony on Mars would involve\n assembling tremendous quantities of basic materials\n at the site of the colony. But because the costs of\n transporting such materials through space would be so\n high, it will not be economically feasible to\n colonize Mars.",
+    "questionStem": "Which one of the following is an assumption required by\n the argument?",
+    "answerChoices": {
+      "A": "Only if the cost of transporting materials from Earth to Mars decreases will human habitation be established on Mars.",
+      "B": "The cost of transporting basic materials through space is not expected to decrease in the near future.",
+      "C": "Earth is the only source of the basic materials that would be needed to establish human habitation on Mars.",
+      "D": "No significant benefit would result from establishing human habitation on Mars.",
+      "E": "Mars is not a practical source of the basic materials required for establishing human habitation there."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Alternatives",
+      "Argue the Anti-Conclusion",
+      "Net Effect",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Records reveal that of physical therapy patients who\n received less than six weeks of treatment, about 31\n percent showed major improvement, regardless of\n whether they were treated by a general practitioner or by\n a specialist. Of patients who received physical therapy\n for a longer time, again regardless of whether they were\n treated by a general practitioner or by a specialist, about\n 50 percent showed major improvement. Therefore,\n the choice between seeing a specialist or a general\n practitioner for necessary physical therapy will not affect\n one’s chances of major improvement.",
+    "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that effectiveness of different practitioners in bringing about major improvement cannot differ at all if their effectiveness in bringing about any improvement does not differ",
+      "B": "provides no information about the kinds of injuries that require short-term as opposed to long-term treatment",
+      "C": "overlooks the possibility that patients are more strongly biased to report favorably on one of the two types of medical professionals than on the other",
+      "D": "fails to indicate whether the number of patients surveyed who saw a general practitioner was equal to the number who saw a specialist",
+      "E": "overlooks the possibility that specialists and general practitioners each tend to excel at treating a different type of injury"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal",
+      "Assumes Similarity",
+      "Predictions",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The differences in distance from Earth between the stars\n in any one distant galaxy are negligible compared to the\n vast distance to the galaxy itself. Thus, if two stars are in\n the same distant galaxy, any significant difference in the\n apparent brightness of those stars results from differences\n in how brightly each is actually burning. Therefore,\n we should be able to determine how a star’s relative\n actual brightness correlates with other characteristics by\n studying stars in the same distant galaxy.",
+    "questionStem": "Which one of the following is an assumption the\n argument requires?",
+    "answerChoices": {
+      "A": "If two stars are in two different galaxies, it is not possible to determine whether or not they are approximately the same distance from Earth.",
+      "B": "If any two stars are in the same distant galaxy, differences in the elements each is burning will be detectable from Earth.",
+      "C": "The stars in our own galaxy are not all approximately the same distance from Earth.",
+      "D": "There are stars in distant galaxies that have characteristics, other than brightness, discernible from Earth.",
+      "E": "If there are significant differences in how far away two stars are from Earth, then those stars will differ significantly in apparent brightness."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender",
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A research psychologist used a personality test to classify\n high school students as “repressors”—people who\n repress upsetting thoughts and feelings from conscious\n awareness—or as “sensitizers”—those especially\n attuned to internal states who freely express distress.\n The researcher found that, compared to sensitizers,\n the repressors were less shy and anxious, could better\n tolerate frustration, and had superior social skills, higher\n grades, and a greater sense of self-esteem.",
+    "questionStem": "Each of the following, if true, contributes to an\n explanation of the repressors’ characteristics mentioned\n above except:",
+    "answerChoices": {
+      "A": "Repressors are better able than sensitizers to focus on their work and to avoid distractions.",
+      "B": "Repressors are less apt than sensitizers to alienate people by expressing their emotions.",
+      "C": "Parents and other caregivers tend to reward repressors more than they reward sensitizers for academic performance and social behavior deemed desirable.",
+      "D": "Some psychologists have hypothesized that the desire to maintain social and academic success and self-esteem strengthens repressors’ tendency to repress upsetting thoughts and feelings.",
+      "E": "Sensitizers tend to focus more than repressors do on the difficulties of succeeding in their projects rather than on factors that are likely to contribute to success."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "EXCEPT",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A geologist recently claimed to have discovered in clay\n a previously unknown form of life: “nanobes,” one-tenth\n the size of the smallest known bacteria. However, it is\n unlikely that nanobes truly are living things. They are\n probably inanimate artifacts of the clay’s microscopic\n structure, because a nanobe is too small to contain a\n reproductive mechanism, a prerequisite for life.",
+    "questionStem": "Which one of the following, if true, most seriously\n weakens the argument?",
+    "answerChoices": {
+      "A": "No known form of bacteria is complicated enough in structure to engage in a sexual type of reproduction.",
+      "B": "Single-celled creatures can combine to form a multicelled structure and then reproduce before they disband into separate single cells again.",
+      "C": "The material phenomena that some scientists claim are the fossilized remains of bacteria in meteorites from Mars are approximately the same size as nanobes.",
+      "D": "Previous definitions of life were based on research done with inferior microscopes no longer in use.",
+      "E": "Animals such as cold-blooded lizards can be physiologically simpler, though still larger, than other animals."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Devan has never bothered to be kind to me. Nor has he\n offered help or companionship. So, since he does not\n meet any of these basic criteria for friendship, he is my\n enemy.",
+    "questionStem": "Which one of the following exhibits flawed reasoning\n most similar to the flawed reasoning exhibited in the\n argument above?",
+    "answerChoices": {
+      "A": "Each officer of this club must be a member of two years standing, or be a committee member, or have special qualifications. Evelyn cannot be an officer, for she has only been a member for one year and is not a committee member.",
+      "B": "In order to thrive, this plant needs to be located in a sunny spot and to be watered regularly. So, since this spot is not sunny, and since I did not water this plant regularly, that explains why this plant is not as healthy as it should be.",
+      "C": "This book has been widely reviewed and hasn’t received even one hostile review. Hence we can conclude that, so far, all the critics have loved this book.",
+      "D": "A decision in favor of developing the northern border of the town logically implies that it would be equally acceptable to develop the southern, eastern, or western borders. So, it is possible that at least one of these other borders will also be developed.",
+      "E": "If everyone were an author, poet, or academic, then society would come crashing to a halt. But most people are not poets or authors. Nor are there many academics in our society. Therefore, our society will not come crashing to a halt."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Journalist: Drivers of sport utility vehicles correctly\n tend to believe that occupants of such vehicles\n carry lower risk of serious injury as a result of\n accidents, and such drivers therefore tend to drive\n less carefully than they would in more traditional\n vehicles. Thus, the discovery of powerful cures\n for certain high-incidence forms of cancer would\n probably trigger an increase in behaviors such as\n smoking and overexposure to sun that are known\n to increase the risks of such cancers.",
+    "questionStem": "The journalist’s reasoning most closely conforms to\n which one of the following principles?",
+    "answerChoices": {
+      "A": "When people believe that there are several measures they could take to reduce the risk associated with a certain activity, generally they will take only the measure that they believe will most reduce that risk.",
+      "B": "The development of ways to protect people from the consequences of behaviors that would normally harm them often makes people less careful to avoid such behaviors.",
+      "C": "People generally take special care to avoid behaviors that they believe would likely lead to serious injury to them and generally do not take special care to avoid behaviors that they believe will not harm them at all.",
+      "D": "People generally exercise more care when performing activities they know to have risky consequences than when performing activities of unknown risk.",
+      "E": "Avoiding serious harm to themselves is given a high priority by people in their behavior, but avoiding lesser harms is frequently outweighed by various desires."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity",
+      "Causal Difference-Maker",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Filmmaker: Many people feel that independent films\n have more integrity as works of art than films\n produced by major studios, since independent\n films are typically less conventional than major\n studio films. However, like major studios, all\n independent filmmakers need to make profits on\n their films, and this affects the artistic decisions\n made in creating most independent films. Thus,\n most independent films do not have absolute\n integrity as works of art.",
+    "questionStem": "The filmmaker’s conclusion is properly drawn if which\n one of the following is assumed?",
+    "answerChoices": {
+      "A": "A creation has absolute integrity as a work of art if the artistic decisions made in creating it were unaffected by the need to make profits.",
+      "B": "If any of the artistic decisions made in creating something were affected by the need to make profits, then that creation does not have absolute integrity as a work of art.",
+      "C": "The creations of individuals have more integrity as works of art, on average, than those of groups.",
+      "D": "The unconventionality of a creation has no bearing on its integrity as a work of art.",
+      "E": "A creation has no integrity as a work of art unless the artistic decisions made in creating it were unaffected by views about what is conventional."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "If you complete 24 graduate credits and a thesis in\n our department, you are eligible to receive a master’s\n degree. Roger has completed 24 graduate credits in our\n department, yet he is not eligible to receive a master’s\n degree. So he must not have finished his thesis yet.",
+    "questionStem": "The reasoning in the argument above is most similar to\n the reasoning in which one of the following?",
+    "answerChoices": {
+      "A": "If the mayor and the city council had approved the proposed budget, the botanical gardens would be able to open this week. The botanical gardens cannot open this week even though the city council approved the proposed budget. Thus, the mayor must not have approved the proposed budget.",
+      "B": "If I see a science fiction movie, I either love it or hate it. I do not hate the movie I am watching now. Therefore, I will probably end up loving the movie, since it is a science fiction movie.",
+      "C": "If the government or some other party had bought the processing plant, the local economy would have improved. But the local economy did not improve. Therefore, neither the government nor any other party bought the processing plant.",
+      "D": "Books at Falling Embers Bookshop are on sale only if they are either used books or paperbacks. The book I am looking for at Falling Embers is on sale. Therefore, if the book I am looking for is not a paperback, it is a used book.",
+      "E": "If Doria owes more money than she can pay back, then she must either get a higher paying job or declare bankruptcy. Doria does in fact owe more than she can pay back, yet she does not want to declare bankruptcy. So, Doria must get a higher paying job."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Contrapositive Logic"
+    ]
+  }
+]

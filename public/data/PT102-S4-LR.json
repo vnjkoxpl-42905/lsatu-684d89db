@@ -1,0 +1,585 @@
+[
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Taxpayer: For the last ten years, Metro City’s bridge-maintenance budget of $1 million annually has been a prime example of fiscal irresponsibility. In a well-run bridge program, the city would spend $15 million a year on maintenance, which would prevent severe deterioration, thus limiting capital expenses for needed bridge reconstruction to $10 million. However, as a result of its attempt to economize, the city is now faced with spending $400 million over two years on emergency reconstruction of its bridges.",
+    "questionStem": "The main point of the taxpayer’s argument is that Metro City",
+    "answerChoices": {
+      "A": "should have budgeted substantially more money for maintenance of its bridges",
+      "B": "would have had a well-run bridge program if it had spent more money for reconstruction of its bridges",
+      "C": "is spending more than it needs to on maintenance of its bridges",
+      "D": "is economizing on its bridge program to save money in case of emergencies",
+      "E": "has bridges that are more expensive to maintain than they were to build"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Twenty professional income-tax advisors were given identical records from which to prepare an income-tax return. The advisors were not aware that they were dealing with fictitious records compiled by a financial magazine. No two of the completed tax returns agreed with each other, and only one was technically correct.",
+    "questionStem": "If the information above is correct, which one of the following conclusions can be properly drawn on the basis of it?",
+    "answerChoices": {
+      "A": "Only one out of every twenty income-tax returns prepared by any given professional income-tax advisor will be correct.",
+      "B": "The fact that a tax return has been prepared by a professional income-tax advisor provides no guarantee that the tax return has been correctly prepared.",
+      "C": "In order to ensure that tax returns are correct, it is necessary to hire professional income-tax advisors to prepare them.",
+      "D": "All professional income-tax advisors make mistakes on at least some of the tax returns they prepare.",
+      "E": "People are more likely to have an incorrectly prepared tax return if they prepare their own tax returns than if they hire a professional income-tax advisor."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The manager of a nuclear power plant defended the claim that the plant was safe by revealing its rate of injury for current workers: only 3.2 injuries per 200,000 hours of work, a rate less than half the national average for all industrial plants. The manager claimed that, therefore, by the standard of how many injuries occur, the plant was safer than most other plants where the employees could work.",
+    "questionStem": "Which one of the following, if true, most calls into question the manager’s claim?",
+    "answerChoices": {
+      "A": "Workers at nuclear power plants are required to receive extra training in safety precautions on their own time and at their own expense.",
+      "B": "Workers at nuclear power plants are required to report to the manager any cases of accidental exposure to radiation.",
+      "C": "The exposure of the workers to radiation at nuclear power plants was within levels the government considers safe.",
+      "D": "Workers at nuclear power plants have filed only a few lawsuits against the management concerning unsafe working conditions.",
+      "E": "Medical problems arising from work at a nuclear power plant are unusual in that they are not likely to appear until after an employee has left employment at the plant."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Columnist: The country is presently debating legislation that, if passed, would force manufacturers to increase the number of paid vacation days for employees, to pay higher overtime wages, and to pay all day-care expenses for children of each employee. This legislation is being supported by members of groups that have resorted to violent tactics in the past, and by individuals who are facing indictment on tax-evasion charges. We must defeat this legislation and what it stands for.",
+    "questionStem": "The columnist’s argument is flawed because it",
+    "answerChoices": {
+      "A": "attacks legislation by calling into question the integrity of the originators of the legislation",
+      "B": "assails legislation on the basis of the questionable character of supporters of the legislation",
+      "C": "attempts to discredit legislation by appealing to public sentiment for those who would be adversely affected",
+      "D": "presupposes that legislation is bad legislation whenever it has only a small number of supporters outside the country’s national legislative body",
+      "E": "rejects legislation on the grounds that its supporters act inconsistently in seeking to place burdens on manufacturers upon whose business success the supporters depend"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Principle Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "If the ivory trade continues, experts believe, the elephant will soon become extinct in Africa, because poaching is rife in many areas. A total ban on ivory trading would probably prevent the extinction. However, the country of Zimbabwe—which has virtually eliminated poaching within its borders and which relies on income from carefully culling elephant herds that threaten to become too big—objects to such a ban. Zimbabwe holds that the problem lies not with the ivory trade but with the conservation policies of other countries.",
+    "questionStem": "Which one of the following principles forms a logical basis for Zimbabwe’s objection to a ban?",
+    "answerChoices": {
+      "A": "International measures to correct a problem should not adversely affect countries that are not responsible for the problem.",
+      "B": "Freedom of trade is not a right but a consequence of agreements among nations.",
+      "C": "Respecting a country’s sovereignty is more important than preventing the extinction of a species.",
+      "D": "Prohibitions affecting several countries should be enforced by a supranational agency.",
+      "E": "Effective conservation cannot be achieved without eliminating poaching."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The male sage grouse has air sacs that, when not inflated, lie hidden beneath the grouse’s neck feathers. During its spring courtship ritual, the male sage grouse inflates these air sacs and displays them to the female sage grouse. Some scientists hypothesize that this courtship ritual serves as a means for female sage grouse to select healthy mates.",
+    "questionStem": "Which one of the following, if true, most strongly supports the scientists’ hypothesis?",
+    "answerChoices": {
+      "A": "Some female sage grouse mate with unhealthy male sage grouse.",
+      "B": "When diseased male sage grouse were treated with antibiotics, they were not selected by female sage grouse during the courtship ritual.",
+      "C": "Some healthy male sage grouse do not inflate their air sacs as part of the courtship ritual.",
+      "D": "Male sage grouse are prone to parasitic infections that exhibit symptoms visible on the birds’ air sacs.",
+      "E": "The sage grouse is commonly afflicted with a strain of malaria that tends to change as the organism that causes it undergoes mutation."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Consumers will be hurt by the new lower ceilings on halibut catches. Given the law of supply and demand these restrictions are likely to result in an increase in the price of the fish.",
+    "questionStem": "Which one of the following, if assumed, would do most to justify the claim that the price of halibut will increase?",
+    "answerChoices": {
+      "A": "The demand for halibut will not decrease substantially after the new restrictions are imposed.",
+      "B": "There is a connection between the supply of halibut and the demand for it.",
+      "C": "The lost production of halibut will not be replaced by increased production of other fish.",
+      "D": "The demand for other fish will be affected by the new restrictions.",
+      "E": "The amount of halibut consumed represents a very small proportion of all fish consumed."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Knowledge of an ancient language is essential for reading original ancient documents. Most ancient historical documents, however, have been translated into modern languages, so scholars of ancient history can read them for their research without learning ancient languages. Therefore, aspirants to careers as ancient-history scholars no longer need to take the time to learn ancient languages.",
+    "questionStem": "The argument is vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It concludes that something is never necessary on the grounds that it is not always necessary.",
+      "B": "A statement of fact is treated as if it were merely a statement of opinion.",
+      "C": "The conclusion is no more than a restatement of the evidence provided as support of that conclusion.",
+      "D": "The judgment of experts is applied to a matter in which their expertise is irrelevant.",
+      "E": "Some of the evidence presented in support of the conclusion is inconsistent with other evidence provided."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The following passage is used for Section 4, questions 9 through 10. The Board of Trustees of the Federici Art Museum has decided to sell some works from its collection in order to raise the funds necessary to refurbish its galleries. Although this may seem like a drastic remedy, the curator has long maintained that among the paintings that the late Ms. Federici collected for the museum were several unsuccessful immature works by Renoir and Cézanne that should be sold because they are of inferior quality and so add nothing to the overall quality of the museum’s collection. Hence, the board’s action will not detract from the quality of the museum’s collection.",
+    "questionStem": "The conclusion drawn depends on which one of the following assumptions?",
+    "answerChoices": {
+      "A": "Art speculators are unable to distinguish an inferior painting by Renoir from a masterpiece by him.",
+      "B": "All of the paintings that the board of trustees sells will be among those that the curator recommends selling.",
+      "C": "All of the paintings by Renoir and Cézanne that are owned by the Federici Art Museum were purchased by Ms. Federici herself.",
+      "D": "Only an avid collector of paintings by Cézanne would be willing to pay a high price for early works by this artist.",
+      "E": "A great work of art can be truly appreciated only if it is displayed in a carefully designed and well-maintained gallery."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "The following passage is used for Section 4, questions 9 through 10. The Board of Trustees of the Federici Art Museum has decided to sell some works from its collection in order to raise the funds necessary to refurbish its galleries. Although this may seem like a drastic remedy, the curator has long maintained that among the paintings that the late Ms. Federici collected for the museum were several unsuccessful immature works by Renoir and Cézanne that should be sold because they are of inferior quality and so add nothing to the overall quality of the museum’s collection. Hence, the board’s action will not detract from the quality of the museum’s collection.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "The directors of an art museum can generally raise funds for refurbishing the building in which the museum’s collection is housed by means other than selling part of its collection.",
+      "B": "The quality of an art collection is determined not just by the quality of its paintings, but by what its collection demonstrates about the development of the artistic talent and ideas of the artists represented.",
+      "C": "The immature works by Renoir and Cézanne that were purchased by Ms. Federici were at that time thought by some critics to be unimportant juvenile works.",
+      "D": "Those people who speculate in art by purchasing artworks merely to sell them at much higher prices welcome inflation in the art market, but curators of art museums regret the inflation in the art market.",
+      "E": "The best work of a great artist demands much higher prices in the art market than the worst work of that same artist."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Weaken Except",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Taken together, some 2,000 stocks recommended on a popular television show over the course of the past 12 years by the show’s guests, most of whom are successful consultants for multibillion-dollar stock portfolios, performed less successfully than the market as a whole for this 12-year period. So clearly, no one should ever follow any recommendations by these so-called experts.",
+    "questionStem": "Each of the following, if true, weakens the argument except:",
+    "answerChoices": {
+      "A": "Taken together, the stocks recommended on the television show performed better than the market as a whole for the past year.",
+      "B": "Taken together, the stocks recommended on the television show performed better for the past 12-year period than stock portfolios that were actually selected by any other means.",
+      "C": "Performance of the stocks recommended on the television show was measured by stock dividends, whereas the performance of the market as a whole was measured by change in share value.",
+      "D": "Performance of the stocks recommended on the television show was measured independently by a number of analysts, and the results of all the measurements concurred.",
+      "E": "The stock portfolios for which the guests were consultants performed better for the past 12-year period than the market as a whole."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The school principal insisted that student failures are caused by bad teaching. In a relatively short time failing grades disappeared from the school. The principal happily recognized this as evidence that the teaching had improved at the school.",
+    "questionStem": "The flawed pattern of reasoning in the above is most similar to that in which one of the following?",
+    "answerChoices": {
+      "A": "The nutritionist insisted that the weight gain that team members complained of was caused by overeating. In a brief time all the members stopped overeating. The nutritionist was pleased to conclude that they had stopped gaining weight.",
+      "B": "The manager insisted that the workers who filed complaints had too many different tasks. The manager simplified the jobs, and complaints stopped. The manager happily concluded that the working environment had been improved.",
+      "C": "The nutritionist insisted that the weight gain that team members complained of was merely in their imagination. Members were given weight charts for the last three months. The nutritionist was pleased to conclude that the complaints of weight gain had stopped.",
+      "D": "The manager insisted that the workers who filed complaints did not have enough to do. Soon there were no more complaints filed. The manager was pleased to conclude that the workers were now productively filling their time.",
+      "E": "The nutritionist insisted that the weight gain that team members complained of was caused by their thinking of food too often. The nutritionist was happy to conclude that the weight gain had stopped once the team members reported that they had stopped thinking of food so often."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Unlike other primroses, self-pollinating primroses do not need to rely on insects for pollination. In many years insect pollinators are scarce, and in those years a typical non-self-pollinating primrose produces fewer seeds than does a typical self-pollinating primrose. In other years, seed production is approximately equal. Thus, self-pollinating primroses have the advantage of higher average seed production. Aside from seed production, these self-pollinating primroses are indistinguishable from non-self-pollinating primroses. Nevertheless, self-pollinating primrose plants remain rare among primroses.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Insects that collect pollen from primroses do not discriminate between self-pollinating primroses and non-self-pollinating primroses.",
+      "B": "When insect pollinators are scarce, non-self-pollinating primroses produce larger seeds that are more likely to germinate than are seeds from self-pollinating primroses.",
+      "C": "Self-pollinating primroses that are located in areas with few insects produce no fewer seeds than do self-pollinating primroses that are located in areas with many insects.",
+      "D": "Many primroses are located in areas in which the soil conditions that are optimal for seed germination are not present.",
+      "E": "Self-pollinating primroses can be assisted by insects during pollination but do not require the assistance of insects to be pollinated."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Principle Conform",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "We have a moral obligation not to destroy books, even if they belong to us. The reason is quite simple: If preserved, books will almost certainly contribute to the intellectual and emotional enrichment of future generations.",
+    "questionStem": "Which one of the following most accurately expresses the principle underlying the argument?",
+    "answerChoices": {
+      "A": "It is morally incumbent upon us to devote effort to performing actions that have at least some chance of improving other people’s lives.",
+      "B": "We are morally obligated to preserve anything that past generations had preserved for our intellectual and emotional enrichment.",
+      "C": "The moral commitments we have to future generations supersede the moral commitments we have to the present generation.",
+      "D": "We are morally obligated not to destroy anything that will most likely enrich, either intellectually or emotionally, our posterity.",
+      "E": "Being morally obligated not to destroy something requires that we be reasonably assured that that thing will lead to the betterment of someone we know."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Must Be False",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "The southern half of a certain region of the earth was covered entirely by water during the Cretaceous period, the last 75 million years of the Mesozoic era, the era when dinosaurs roamed the earth. Dinosaurs lived only on land. Thus, plesiosaurs—swimming reptiles that lived during the Cretaceous period exclusively—were not dinosaurs. No single species of dinosaur lived throughout the entire Mesozoic era.",
+    "questionStem": "If the statements in the passage are true, each of the following could be true except:",
+    "answerChoices": {
+      "A": "Dinosaurs inhabited the northern half of the region throughout the entire Mesozoic era.",
+      "B": "Plesiosaurs did not inhabit the southern half of the region during the Cretaceous period.",
+      "C": "Plesiosaurs did not inhabit the southern half of the region before the Cretaceous period.",
+      "D": "Dinosaurs did not inhabit the northern half of the region during the Cretaceous period.",
+      "E": "Dinosaurs inhabited the southern half of the region throughout the entire Mesozoic era."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Must Be False",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Essayist: Wisdom and intelligence are desirable qualities. However, being intelligent does not imply that one is wise, nor does being wise imply that one is intelligent. In my own experience, the people I meet have one or the other of these qualities but not both.",
+    "questionStem": "If the essayist’s statements are true, then each of the following could be true except:",
+    "answerChoices": {
+      "A": "Most people are neither intelligent nor wise.",
+      "B": "Most people are both intelligent and wise.",
+      "C": "No one is both wise and intelligent.",
+      "D": "No one is either wise or intelligent.",
+      "E": "Many people are intelligent and yet lack wisdom."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Concerned citizen: The mayor, an outspoken critic of the proposed restoration of city hall, is right when he notes that the building is outdated, but that the restoration would be expensive at a time when the budget is already tight. We cannot afford such a luxury item in this time of financial restraint, he says. However, I respectfully disagree. The building provides the last remaining link to the days of the city’s founding, and preserving a sense of municipal history is crucial to maintaining respect for our city government and its authority. So to the question, “Can we really afford to?” I can only respond, “Can we afford not to?”",
+    "questionStem": "Which one of the following most accurately characterizes a flaw in the concerned citizen's argument?",
+    "answerChoices": {
+      "A": "The argument is solely an emotional appeal to history.",
+      "B": "The argument ambiguously uses the word “afford.”",
+      "C": "The argument inappropriately appeals to the authority of the mayor.",
+      "D": "The argument incorrectly presumes that the restoration would be expensive.",
+      "E": "The argument inappropriately relies on the emotional connotations of words such as “outdated” and “luxury.”"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Obviously, we cannot in any real sense mistreat plants. Plants do not have nervous systems, and having a nervous system is necessary to experience pain.",
+    "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Any organism that can experience pain can be mistreated.",
+      "B": "Only organisms that have nervous systems can experience pain.",
+      "C": "Any organism that has a nervous system can experience pain.",
+      "D": "Only organisms that can experience pain can be mistreated.",
+      "E": "Any organism that has a nervous system can be mistreated."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Method",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Inez: In these poor economic times, people want to be sure they are getting good value for their money. I predict people would be more willing to buy antiques at our fair if we first have the objects inspected by professional appraisers who would remove any objects of questionable authenticity. Anika: I disagree with your prediction. Our customers already are antiques experts. Furthermore, hiring professional appraisers would push up our costs considerably, thus forcing us to raise the prices on all our antiques.",
+    "questionStem": "Anika’s response proceeds by",
+    "answerChoices": {
+      "A": "indicating that a particular plan would have an effect contrary to the anticipated effect",
+      "B": "claiming that a particular plan should not be adopted because, while effective, it would have at least one undesirable consequence",
+      "C": "arguing that an alternative plan could achieve a desired result more easily than the plan originally proposed",
+      "D": "questioning the assumption that authorities are available who have special knowledge of the problem under discussion",
+      "E": "offering a counterexample in order to show that a particular general claim is too broadly stated"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Parallel",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In some ill-considered popularizations of interesting current research, it is argued that higher apes have the capacity for language but have never put it to use—a remarkable biological miracle, given the enormous selectional advantage of even minimal linguistic skills. It is rather like claiming that some animal has wings adequate for flight but has never thought to fly.",
+    "questionStem": "Which one of the following is most similar in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "Arguing that there are some humans who never sleep is rather like discovering a species of lion that does not eat meat.",
+      "B": "Arguing that Earth has been visited by aliens from outer space is rather like claiming that early explorers had visited North America but never founded cities.",
+      "C": "Arguing that the human brain has telekinetic powers that no humans have ever exercised is rather like arguing that some insect has legs but never uses them to walk.",
+      "D": "Claiming that some people raised tobacco but did not smoke it is rather like claiming that a society that knew how to brew alcohol never drank it.",
+      "E": "Arguing that not all people with cars will drive them is rather like claiming that humans invented gasoline long before they used it as fuel for transportation."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Method",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "The following passage is used for Section 4, questions 21 through 22. Sarah: Some schools seek to foster a habit of volunteering in their students by requiring them to perform community service. But since a person who has been forced to do something has not really volunteered and since the habit of volunteering cannot be said to have been fostered in a person who has not yet volunteered for anything, there is no way this policy can succeed by itself. Paul: I disagree. Some students forced to perform community service have enjoyed it so much that they subsequently actually volunteer to do something similar. In such cases, the policy can clearly be said to have fostered a habit of volunteering.",
+    "questionStem": "Paul responds to Sarah’s argument using which one of the following argumentative techniques?",
+    "answerChoices": {
+      "A": "He argues that Sarah is assuming just what she sets out to prove.",
+      "B": "He argues that Sarah’s conception of what it means to volunteer excludes certain activities that ought to be considered instances of volunteering.",
+      "C": "He introduces considerations that call into question one of Sarah’s assumptions.",
+      "D": "He questions Sarah’s motives for advancing an argument against the school policy.",
+      "E": "He argues that a policy Sarah fails to consider could accomplish the same aim as the policy that Sarah considers."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "The following passage is used for Section 4, questions 21 through 22. Sarah: Some schools seek to foster a habit of volunteering in their students by requiring them to perform community service. But since a person who has been forced to do something has not really volunteered and since the habit of volunteering cannot be said to have been fostered in a person who has not yet volunteered for anything, there is no way this policy can succeed by itself. Paul: I disagree. Some students forced to perform community service have enjoyed it so much that they subsequently actually volunteer to do something similar. In such cases, the policy can clearly be said to have fostered a habit of volunteering.",
+    "questionStem": "The main point at issue between Sarah and Paul is whether",
+    "answerChoices": {
+      "A": "there are any circumstances under which an individual forced to perform a task can correctly be said to have genuinely volunteered to perform that task",
+      "B": "being forced to perform community service can provide enjoyment to the individual who is forced to perform such service",
+      "C": "being forced to perform community service can by itself encourage a genuine habit of volunteering in those students who are forced to perform such service",
+      "D": "it is possible for schools to develop policies that foster the habit of volunteering in their students",
+      "E": "students who develop a habit of volunteering while in school are inclined to perform community service later in their lives"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Only computer scientists understand the architecture of personal computers, and only those who understand the architecture of personal computers appreciate the advances in technology made in the last decade. It follows that only those who appreciate these advances are computer scientists.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the reasoning in the argument?",
+    "answerChoices": {
+      "A": "The argument contains no stated or implied relationship between computer scientists and those who appreciate the advances in technology in the last decade.",
+      "B": "The argument ignores the fact that some computer scientists may not appreciate the advances in technology made in the last decade.",
+      "C": "The argument ignores the fact that computer scientists may appreciate other things besides the advances in technology made in the last decade.",
+      "D": "The premises of the argument are stated in such a way that they exclude the possibility of drawing any logical conclusion.",
+      "E": "The premises of the argument presuppose that everyone understands the architecture of personal computers."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Sociologist: Research shows, contrary to popular opinion, that, all other things being equal, most people who have pets are less happy than most people who do not. Therefore, any person who wants to be as happy as possible would do well to consider not having a pet.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the sociologist’s argument?",
+    "answerChoices": {
+      "A": "Some people who have pets are happier than most people who do not.",
+      "B": "Most people who have no pets occasionally wish that they had pets.",
+      "C": "Most people who have pets are reasonably happy.",
+      "D": "Most people who have pets feel happier because they have pets.",
+      "E": "All people who have no pets admit to feeling unhappy sometimes."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Conditional Conclusion",
+      "Plausibility",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The dwarf masked owl, a rare migratory bird of prey, normally makes its winter home on the Baja peninsula, where it nests in the spiny cactus. In fact, there are no other suitable nesting sites for the dwarf masked owl on the Baja peninsula. But a blight last spring destroyed all of the spiny cacti on the Baja peninsula. So unless steps are taken to reestablish the spiny cactus population, the dwarf masked owl will not make its home on the Baja peninsula this winter.",
+    "questionStem": "The argument depends on assuming which one of the following?",
+    "answerChoices": {
+      "A": "No birds of prey other than the dwarf masked owl nest in the spiny cactus.",
+      "B": "If the Baja peninsula contains spiny cacti, then the dwarf masked owl makes its winter home there.",
+      "C": "On occasion the dwarf masked owl has been known to make its winter home far from its normal migratory route.",
+      "D": "The dwarf masked owl will not make its winter home on the Baja peninsula only if that region contains no spiny cacti.",
+      "E": "Suitable nesting sites must be present where the dwarf masked owl makes its winter home."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "Predictions",
+      "Science",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT102",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Must Be False",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "At night, a flock of crows will generally perch close together in a small place—often a piece of wooded land—called a roost. Each morning, the crows leave the roost and fan out in small groups to hunt and scavenge the surrounding area. For most flocks, the crows’ hunting extends as far as 100 to 130 kilometers (60 to 80 miles) from the roost. Normally, a flock will continue to occupy the same roost for several consecutive years, and when it abandons a roost site for a new one, the new roost is usually less than eight kilometers (five miles) away.",
+    "questionStem": "Of the following claims, which one can most justifiably be rejected on the basis of the statements above?",
+    "answerChoices": {
+      "A": "Crows will abandon their roost site only in response to increases in the population of the flock.",
+      "B": "When there is a shortage of food in the area in which a flock of crows normally hunts and scavenges, some members of the flock will begin to hunt and scavenge outside that area.",
+      "C": "Most of the hunting and scavenging that crows do occurs more than eight kilometers (five miles) from their roost.",
+      "D": "Once a flock of crows has settled on a new roost site, it is extremely difficult to force it to abandon that site for another.",
+      "E": "When a flock of crows moves to a new roost site, it generally does so because the area in which it has hunted and scavenged has been depleted of food sources."
+    },
+    "correctAnswer": "E"
+  }
+]

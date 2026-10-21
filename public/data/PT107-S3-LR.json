@@ -1,0 +1,594 @@
+[
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Braille is a method of producing text by means of raised dots that can be read by touch. A recent development in technology will allow flat computer screens to be made of a material that can be heated in patterns that replicate the patterns used in braille. Since the thermal device will utilize the same symbol system as braille, it follows that anyone who is accustomed to reading braille can easily adapt to the use of this electronic system.",
+    "questionStem": "Which one of the following is an assumption on which the conclusion depends?",
+    "answerChoices": {
+      "A": "Braille is the only symbol system that can be readily adapted for use with the new thermal screen.",
+      "B": "Only people who currently use braille as their sole medium for reading text will have the capacity to adapt to the use of the thermal screen.",
+      "C": "People with the tactile ability to discriminate symbols in braille have an ability to discriminate similar patterns on a flat heated surface.",
+      "D": "Some symbol systems encode a piece of text by using dots that replicate the shape of letters of the alphabet.",
+      "E": "Eventually it will be possible to train people to read braille by first training them in the use of the thermal screen."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity",
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Mayor of Outerville, a suburb of Center City: Outerville must grow if it is to survive, so, as we have agreed, efforts should be made to attract more residents. The best strategy for attracting residents is to renovate the train station. The numbers of jobs in Center City and of people who prefer to live in suburban towns are increasing. With the rise in tolls, driving into the city is becoming more expensive than train travel. Therefore, people want to live in towns where train travel is convenient and pleasant.",
+    "questionStem": "The argument leads to the conclusion that",
+    "answerChoices": {
+      "A": "the town of Outerville should attract more residents",
+      "B": "the train station in Outerville should be renovated",
+      "C": "residents of Outerville who are in need of work should look for jobs in Center City",
+      "D": "people who work in Center City but live in Outerville should commute by train rather than driving",
+      "E": "people who want to live where train travel is convenient and pleasant should live in Outerville"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Land developer: By attempting to preserve endangered species that otherwise would become extinct during our lifetime, we are wasting money on species that will disappear over time regardless of our efforts. Paleontologists have established that extinction is the normal fate of species on the geological time scale of millions of years. Environmentalist: To claim that we should let species disappear because all species eventually die out makes about as much sense as arguing that we should not spend money to find a cure for cancer because all humans are inevitably mortal.",
+    "questionStem": "The method the environmentalist uses to object to the land developer’s argument is to",
+    "answerChoices": {
+      "A": "clarify a dilemma that is embedded in the land developer’s argument",
+      "B": "attack the character of the land developer rather than the position the land developer is taking",
+      "C": "show that more evidence is needed to substantiate the land developer’s conclusion",
+      "D": "show that the land developer’s line of reasoning would lead to an unacceptable conclusion if applied to a different situation",
+      "E": "argue that there are problems that money, however judiciously spent, cannot solve"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Most small children are flat-footed. This failure of the foot to assume its natural arch, if it persists past early childhood, can sometimes result in discomfort and even pain later in life. Traditionally, flat-footedness in children has been treated by having the children wear special shoes that give extra support to the foot, in order to foster the development of the arch.",
+    "questionStem": "Which one of the following, if true, most calls into question the efficacy of the traditional treatment described above?",
+    "answerChoices": {
+      "A": "Many small children who have normal feet wear the same special shoes as those worn by flat-footed children.",
+      "B": "Studies of flat-footed adults show that flat feet are subject to fewer stress fractures than are feet with unusually high arches.",
+      "C": "Although most children’s flat-footedness is corrected by the time the children reach puberty, some people remain flat-footed for life.",
+      "D": "Flat-footed children who do not wear the special shoes are as likely to develop natural arches as are flat-footed children who wear the special shoes.",
+      "E": "Some children who are not flat-footed have hip and lower leg bones that are rotated excessively either inward or outward."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "The chances that tropical storms will develop in a given area increase whenever the temperature of a large body of water in that area exceeds 26 degrees Celsius to a depth of about 60 meters. If the amount of carbon dioxide in the Earth’s atmosphere continues to increase, the temperatures of all of the Earth’s waters will rise, with the result that the number of large bodies of water whose temperatures exceed 26 degrees Celsius to a depth of about 60 meters will eventually be greater than it is today.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following conclusions?",
+    "answerChoices": {
+      "A": "There are likely to be more tropical storms if the amount of carbon dioxide in the Earth’s atmosphere continues to increase.",
+      "B": "Tropical storms can occur only when the air temperature exceeds 26 degrees Celsius.",
+      "C": "The number of large bodies of water whose temperatures exceed 26 degrees Celsius to a depth of about 60 meters is greater today than it ever was.",
+      "D": "The ferocity of tropical storms does not depend on the amount of carbon dioxide in the Earth’s atmosphere.",
+      "E": "Any increase in the temperatures of the Earth’s oceans would cause the amount of carbon dioxide in the atmosphere to increase as well."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Causal Chains",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Astorga’s campaign promises are apparently just an attempt to please voters. What she says she will do if elected mayor is simply what she has learned from opinion polls that voters want the new mayor to do. Therefore, voters are not being told what Astorga actually intends to do if she becomes mayor.",
+    "questionStem": "Which one of the following is a questionable assumption on which the argument relies?",
+    "answerChoices": {
+      "A": "If she is elected mayor, Astorga will not be capable of carrying out the campaign promises she has made.",
+      "B": "The opinion polls on which Astorga’s promises are based do not accurately reflect what voters want the new mayor to do.",
+      "C": "Most voters are unlikely to be persuaded by Astorga’s campaign promises to vote for her in the mayoral election.",
+      "D": "Astorga has no strong opinions of her own about what the new mayor ought to do in office.",
+      "E": "Astorga does not actually intend, if elected, to do what she has learned from the public opinion polls that voters want the new mayor to do."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Newsletter for community-center volunteers: Retired persons who regularly volunteer their time to help others generally display fewer and milder effects of aging than their nonvolunteering contemporaries: in social resources, mental outlook, physical health, economic resources, and overall functioning, they are found to be substantially stronger than nonvolunteers. V olunteering is often described as doing good works to improve the lives of others. How good to know that there is evidence that it can equally benefit your own well-being!",
+    "questionStem": "The inference drawn above is unwarranted because",
+    "answerChoices": {
+      "A": "the center has a self-interested motive to attract new volunteers",
+      "B": "it interprets “well-being” as including the factors of social and economic resources, mental outlook, physical health, and overall functioning",
+      "C": "some of those who do not volunteer might be older than some volunteers and so could not be considered their peers",
+      "D": "growing older might not necessarily result in a change in mental outlook",
+      "E": "those with better resources, health, outlook, and functioning are more able to work as volunteers"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Weaken EXCEPT",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The following passage is used for Section 3, questions 8 through 9. The local agricultural official gave the fruit growers of the District 10 Farmers’ Cooperative a new pesticide that they applied for a period of three years to their pear orchards in place of the pesticide they had formerly applied. During those three years, the proportion of pears lost to insects was significantly less than it had been during the previous three-year period. On the basis of these results, the official concluded that the new pesticide was more effective than the old pesticide, at least in the short term, in limiting the loss of certain fruit to insects.",
+    "questionStem": "Each of the following, if true, weakens the official’s argument EXCEPT:",
+    "answerChoices": {
+      "A": "The amount of fruit that an orchard can potentially produce depends in part on how many mature trees it contains, and the number of mature pear trees in District 10 has declined steadily over the past eight years.",
+      "B": "During the past five years, the farmers of the District 10 Farmers’ Cooperative have been gradually implementing a variety of insect-abatement programs, and some of these programs have proven successful.",
+      "C": "Over the past five years, one of the several species of birds that typically prey on the insects that feed on pears has gradually shifted its migratory patterns, spending more and more months each year in the region that contains District 10.",
+      "D": "Some of the species of insects in District 10 that infest pear trees are water breeders, and the reservoirs and marshlands in this district have been shrinking rapidly over the past three years.",
+      "E": "The effects of certain pesticides, including the pesticide that had formerly been used in District 10, are cumulative and persist for several years after the pesticide is no longer applied."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The following passage is used for Section 3, questions 8 through 9. The local agricultural official gave the fruit growers of the District 10 Farmers’ Cooperative a new pesticide that they applied for a period of three years to their pear orchards in place of the pesticide they had formerly applied. During those three years, the proportion of pears lost to insects was significantly less than it had been during the previous three-year period. On the basis of these results, the official concluded that the new pesticide was more effective than the old pesticide, at least in the short term, in limiting the loss of certain fruit to insects.",
+    "questionStem": "The official’s conclusion is most strongly supported if which one of the following groups of trees did not show a reduction in losses of fruit to insects?",
+    "answerChoices": {
+      "A": "peach trees grown in the district that were treated with the new pesticide instead of the old pesticide",
+      "B": "peach trees grown in the district that were treated with the new pesticide in addition to the old pesticide",
+      "C": "pear trees grown in the district that were treated with the old pesticide instead of the new pesticide",
+      "D": "pear trees grown in a neighboring district that were treated with neither the old nor the new pesticide",
+      "E": "pear trees grown in a neighboring district that were treated with the new pesticide instead of the old pesticide"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The only motives that influence all human actions arise from self-interest. It is clear, therefore, that self-interest is the chief influence on human action.",
+    "questionStem": "The reasoning in the argument is fallacious because the argument",
+    "answerChoices": {
+      "A": "denies that an observation that a trait is common to all the events in a pattern can contribute to a causal explanation of the pattern",
+      "B": "takes the occurrence of one particular influence on a pattern or class of events as showing that its influence outweighs any other influence on those events",
+      "C": "concludes that a characteristic of a pattern or class of events at one time is characteristic of similar patterns or classes of events at all times",
+      "D": "concludes that, because an influence is the paramount influence on a particular pattern or class of events, that influence is the only influence on that pattern or class of events",
+      "E": "undermines its own premise that a particular attribute is present in all instances of a certain pattern or class of events"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Astronomer: Astronomical observations in many areas have become useless because light from nearby cities obscures the stars Many people argue that since streetlights are needed for safety, such interference from lights is inevitable. Here in Sandsville, however, the local observatory’s view remains relatively clear, since the city has restricted unnecessary lighting and installed special street lamps that direct all their light downward. It is therefore possible to have both well-lighted streets and relatively dark skies.",
+    "questionStem": "The astronomer’s argument proceeds by",
+    "answerChoices": {
+      "A": "appealing to a scientific authority to challenge a widely held belief",
+      "B": "questioning the accuracy of evidence given in support of the opposing position",
+      "C": "proposing an alternative scientific explanation for a natural phenomenon",
+      "D": "making a distinction between terms",
+      "E": "offering a counter example to a general claim"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Music critic: Some people argue that, unlike certain works of Handel, which set to music familiar religious texts, the organ symphonies of Louis Vierne are not religious music. Quite the contrary. Sitting in Notre Dame cathedral in Paris and hearing his organ symphonies demonstrates that Vierne’s works are divinely inspired.",
+    "questionStem": "The music critic’s reasoning is vulnerable to criticism on the ground that it",
+    "answerChoices": {
+      "A": "takes for granted that all religious music is inspiring",
+      "B": "confuses two different meanings of the term “religious”",
+      "C": "overlooks the possibility that some organ music is not divinely inspired",
+      "D": "confuses two different meanings of the term “symphonies”",
+      "E": "takes for granted that all organ symphonies are religious music"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The following passage is used for Section 3, questions 13 through 14. Charles: During recessions unemployment typically rises. Thus, during a recession air pollution due to automobile exhaust decreases, since fewer people commute in cars to jobs and so cars emitting pollutants into the air are used less. Darla: Why think that air pollution would decrease? During a recession fewer people can afford to buy new cars, and cars tend to emit more pollutants as they get older. 13.",
+    "questionStem": "Which one of the following most accurately describes how Darla’s response is related to Charles’s argument?",
+    "answerChoices": {
+      "A": "It calls into question the truth of the premises that Charles uses to support his conclusion.",
+      "B": "It makes an additional claim that can be true only if Charles’s conclusion is false.",
+      "C": "It presents an additional consideration that weakens the support given to Charles’s conclusion by his evidence.",
+      "D": "It argues that Charles’s conclusion is true, although not for the reasons Charles gives to support that conclusion.",
+      "E": "It presents an argument showing that the premises in Charles’s argument support an absurd conclusion that Charles has overlooked."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The following passage is used for Section 3, questions 13 through 14. Charles: During recessions unemployment typically rises. Thus, during a recession air pollution due to automobile exhaust decreases, since fewer people commute in cars to jobs and so cars emitting pollutants into the air are used less. Darla: Why think that air pollution would decrease? During a recession fewer people can afford to buy new cars, and cars tend to emit more pollutants as they get older. 13.",
+    "questionStem": "Which one of the following is an assumption on which Charles’s argument depends?",
+    "answerChoices": {
+      "A": "People who have never been employed drive no less frequently during a recession than they would otherwise.",
+      "B": "Most air pollution is caused by automobile exhaust emitted by cars used by people commuting to jobs.",
+      "C": "Most people who are employed do not use any form of public transportation to commute to their jobs.",
+      "D": "During a recession, decreases in the use of cars resulting from reductions in commuting to jobs are not offset by increased use of cars for other reasons.",
+      "E": "During a recession, a higher proportion of people who commute in cars to their jobs lose those jobs than do people who do not use cars to commute to their jobs."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Intermediate Conclusions",
+      "Net Effect",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "For the condor to survive in the wild, its breeding population must be greatly increased. But because only a few eggs can be produced by a breeding pair over their lifetime, any significant increase in the number of birds depends upon most of these eggs hatching, which is extremely unlikely in the wild due to environmental dangers. One possible way to eliminate the effects of these factors is to breed the birds in captivity and subsequently return them to the wild.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "The condor as a species will eventually become extinct in the wild.",
+      "B": "The best way to save the condor from extinction is to breed it in captivity.",
+      "C": "It is almost impossible to eliminate all the environmental threats to the eggs of condors.",
+      "D": "If more condor eggs do not hatch, the condor as a species will not survive in the wild.",
+      "E": "The most feasible way to save the condor from extinction is to increase egg production."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Parallel method of reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Allowing more steel imports would depress domestic steel prices and harm domestic steel manufacturers. Since the present government will not do anything that would harm the domestic steel industry, it will not lift restrictions on steel imports.",
+    "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following?",
+    "answerChoices": {
+      "A": "Building construction increases only when people are confident that the economy is doing well. Therefore, since people are now confident in the economy we can expect building construction to increase.",
+      "B": "Since workers are already guaranteed the right to a safe and healthful workplace by law, there is no need for the government to establish further costly health regulations for people who work all day at computer terminals.",
+      "C": "In countries that have deregulated their airline industry, many airlines have gone bankrupt. Since many companies in other transportation industries are in weaker economic condition than were those airlines, deregulating other transportation industries will probably result in bankruptcies as well.",
+      "D": "The chief executive officer of Silicon, Inc., will probably not accept stock in the company as a bonus next year, since next year’s tax laws will require companies to pay a new tax on stock given to executives.",
+      "E": "The installation of bright floodlights on campus would render the astronomy department’s telescope useless. The astronomy department will not support any proposal that would render its telescope useless; it will therefore not support proposals to install bright floodlights on campus."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Wild cheetahs live in the African grasslands. Previous estimates of the size that the wild cheetah population must be in order for these animals to survive a natural disaster in the African grasslands region were too small, and the current population barely meets the previous estimates. At present, however, there is not enough African grassland to support a wild cheetah population larger than the current population.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following conclusions?",
+    "answerChoices": {
+      "A": "Previous estimates of the size of the existing wild cheetah population were inaccurate.",
+      "B": "The cheetah’s natural habitat is decreasing in size at a faster rate than is the size of the wild cheetah population.",
+      "C": "The principal threat to the endangered wild cheetah population is neither pollution nor hunting, but a natural disaster.",
+      "D": "In the short term, the wild cheetah population will be incapable of surviving a natural disaster in the African grasslands.",
+      "E": "In regions where land is suitable for cheetah habitation, more natural disasters are expected to occur during the next decade than occurred during the past decade."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot",
+      "Math-y Stuff",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "To classify a work of art as truly great, it is necessary that the work have both originality and far-reaching influence upon the artistic community.",
+    "questionStem": "The principle above, if valid, most strongly supports which one of the following arguments?",
+    "answerChoices": {
+      "A": "By breaking down traditional schemes of representation, Picasso redefined painting. It is this extreme originality that warrants his work being considered truly great.",
+      "B": "Some of the most original art being produced today is found in isolated communities, but because of this isolation these works have only minor influence, and hence cannot be considered truly great.",
+      "C": "Certain examples of the drumming practiced in parts of Africa’s west coast employ a musical vocabulary that resists representation in Western notational schemes. This tremendous originality, coupled with the profound impact these pieces are having on musicians everywhere, is enough to consider these works to be truly great.",
+      "D": "The piece of art in the lobby is clearly not classified as truly great, so it follows that it fails to be original.",
+      "E": "Since Bach’s music is truly great, it not only has both originality and a major influence on musicians, it has broad popular appeal as well."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Necessary Assumption EXCEPT",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Professor Robinson: A large meteorite impact crater in a certain region was thought to be the clue to explaining the mass extinction of plant and animal species that occurred at the end of the Mesozoic era. However, the crystalline structure of rocks recovered at the site indicates that the impact that formed this crater was not the culprit. When molten rocks crystallize, they display the polarity of Earth’s magnetic field at that time. But the recrystallized rocks recovered at the site display normal magnetic polarity, even though Earth’s magnetic field was reversed at the time of the mass extinction.",
+    "questionStem": "Each of the following is an assumption on which Professor Robinson’s argument depends EXCEPT:",
+    "answerChoices": {
+      "A": "The crater indicates an impact of more than sufficient size to have caused the mass extinction.",
+      "B": "The recovered rocks recrystallized shortly after they melted.",
+      "C": "No other event caused the rocks to melt after the impact formed the crater.",
+      "D": "The recovered rocks melted as a result of the impact that formed the crater.",
+      "E": "The mass extinction would have occurred soon after the impact that supposedly caused it."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Defender",
+      "EXCEPT",
+      "Focused on Evidence",
+      "Rebuttals",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Pieces of music consist of sounds and silences presented to the listener in a temporal order. A painting, in contrast, is not presented one part at a time to the viewer; there is thus no particular path that the viewer’s eye must follow in order to “read” the painting. Therefore, an essential distinction between the experiences of hearing music and of viewing paintings is that hearing music has a temporal dimension but viewing a painting has none.",
+    "questionStem": "The reasoning in the argument is flawed because",
+    "answerChoices": {
+      "A": "the argument does not allow for the possibility of being immersed in experiencing a painting without being conscious of the passage of time",
+      "B": "the argument is based on a very general definition of music that does not incorporate any distinctions among particular styles",
+      "C": "the argument fails to bring out the aspects of music and painting that are common to both as forms of artistic expression",
+      "D": "relying on the metaphor of “reading” to characterize how a painting is viewed presupposes the correctness of the conclusion to be drawn on the basis of that characterization",
+      "E": "the absence of a particular path that the eye must follow does not entail that the eye follows no path"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Analogies",
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A study of the difference in earnings between men and women in the country of Naota found that the average annual earnings of women who are employed full time is 80 percent of the average annual earnings of men who are employed full time. However, other research consistently shows that, in Naota, the average annual earnings of all employed women is 65 percent of the average annual earnings of all employed men.",
+    "questionStem": "Which one of the following, if also established by research, most helps explain the apparent discrepancy between the research results described above?",
+    "answerChoices": {
+      "A": "In Naota, the difference between the average annual earnings of all female workers and the average annual earnings of all male workers has been gradually increasing over the past 30 years.",
+      "B": "In Naota, the average annual earnings of women who work full time in exactly the same occupations and under exactly the same conditions as men is almost the same as the men’s average annual earnings.",
+      "C": "In Naota, a growing proportion of female workers hold full-time managerial, supervisory, or professional positions, and such positions typically pay more than other types of positions pay.",
+      "D": "In Naota, a larger proportion of female workers than male workers are part-time workers, and part-time workers typically earn less than full-time workers earn.",
+      "E": "In ten other countries where the proportion of women in the work force is similar to that of Naota, the average annual earnings of women who work full time ranges from a low of 50 percent to a high of 90 percent of the average annual earnings of men who work full time."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Biologist: Some speculate that the unusually high frequency of small goats found in island populations is a response to evolutionary pressure to increase the number of goats so as to ensure a diverse gene pool. However, only the reproductive success of a trait influences its frequency in a population. So, the only kind of evolutionary pressure that can reduce the average size of the members of a goat population is that resulting from small goats achieving greater reproductive success than their larger cousins.",
+    "questionStem": "The biologist’s view, if true, provides the most support for which one of the following?",
+    "answerChoices": {
+      "A": "The evolutionary pressure to ensure a diverse gene pool could have the effect of increasing the frequency of a gene for small size.",
+      "B": "The unusual frequency of small goats in island populations is not a result of the greater reproductive success small goats possess when space is limited.",
+      "C": "Contrary to what some believe, large goats achieve greater reproductive success than small goats even when space is limited.",
+      "D": "The evolutionary pressure to ensure a diverse gene pool does not have the effect of increasing the frequency of a gene for small size.",
+      "E": "A diverse gene pool cannot be achieved in a goat population unless the average size of its members is reduced."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Parallel flawed method of reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Several carefully conducted studies showed that 75 percent of strict vegetarians reached age 50 without developing serious heart disease. We can conclude from this that avoiding meat increases one’s chances of avoiding serious heart disease. Therefore, people who want to reduce the risk of serious heart disease should not eat meat.",
+    "questionStem": "The flawed pattern of reasoning exhibited by which one of the following is most similar to that exhibited by the argument above?",
+    "answerChoices": {
+      "A": "The majority of people who regularly drive over the speed limit will become involved in traffic accidents. To avoid harm to people who do not drive over the speed limit, we should hire more police officers to enforce the speed laws.",
+      "B": "Studies have shown that cigarette smokers have a greater chance of incurring heart disease than people who do not smoke. Since cigarette smoking increases one’s chances of incurring heart disease, people who want to try to avoid heart disease should give up cigarette smoking.",
+      "C": "The majority of people who regularly drink coffee experience dental problems in the latter part of their lives. Since there is this correlation between drinking coffee and incurring dental problems, the government should make coffee less accessible to the general public.",
+      "D": "Studies show that people who do not exercise regularly have a shorter life expectancy than those who exercise regularly. To help increase their patients’ life expectancy, doctors should recommend regular exercise to their patients.",
+      "E": "Most people who exercise regularly are able to handle stress. This shows that exercising regularly decreases one’s chances of being overwhelmed by stress. So people who want to be able to handle stress should regularly engage in exercise."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Mr. Nance: Ms. Chan said that she retired from Quad Cities Corporation, and had received a watch and a wonderful party as thanks for her 40 years of loyal service. But I overheard a colleague of hers say that Ms. Chan will be gone for much of the next year on business trips and is now working harder than she ever did before; that does not sound like retirement to me. At least one of them is not telling the truth.",
+    "questionStem": "Mr. Nance’s reasoning is flawed because it",
+    "answerChoices": {
+      "A": "is based in part on hearsay",
+      "B": "criticizes Ms. Chan rather than the claims she made",
+      "C": "draws a conclusion based on equivocal language",
+      "D": "fails to consider that Ms. Chan’s colleague may have been deceived by her",
+      "E": "fails to infer that Ms. Chan must be a person of superior character, given her long loyal service"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Battle of Opinions"
+    ]
+  },
+  {
+    "practiceTest": "PT107",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A recent survey showed that 50 percent of people polled believe that elected officials should resign if indicted for a crime, whereas 35 percent believe that elected officials should resign only if they are convicted of a crime. Therefore, more people believe that elected officials should resign if indicted than believe that they should resign if convicted.",
+    "questionStem": "The reasoning above is flawed because it",
+    "answerChoices": {
+      "A": "draws a conclusion about the population in general based only on a sample of that population",
+      "B": "confuses a sufficient condition with a required condition",
+      "C": "is based on an ambiguity of one of its terms",
+      "D": "draws a conclusion about a specific belief based on responses to queries about two different specific beliefs",
+      "E": "contains premises that cannot all be true"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
+  }
+]

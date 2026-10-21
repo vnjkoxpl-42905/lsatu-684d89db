@@ -1,0 +1,587 @@
+[
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Over the long run, apple orchards that use organic\n farming methods cost no more to run than, and are just as\n productive as, apple orchards using conventional methods.\n However, organically grown apples tend to be better\n tasting, and thus, organic orchards are likely to be more\n profitable than conventional orchards in the long run.",
+    "questionStem": "Which one of the following, if true, most strengthens the\n argument?",
+    "answerChoices": {
+      "A": "The use of organic farming methods has recently increased in the commercial apple farming industry.",
+      "B": "The apple orchards that tend to be most profitable in the long run tend to be those that are most profitable in the short run.",
+      "C": "Demand for a given kind of apple is based primarily on flavor.",
+      "D": "Most people prefer to buy apples that have the lowest price.",
+      "E": "Many consumers prefer the appearance of apples grown using conventional methods to that of apples grown organically."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Banking industry visionaries foresee a bright day in\n the near future when customers will be able to transact\n all their financial business by means of computers or\n telephones from the comfort of their own homes. But\n that may be more of a paradise for banks than for their\n customers. As banks eliminate their branch offices and\n customer-service employees, customers will have to\n serve as their own tellers—and pay more transaction fees\n for their efforts.",
+    "questionStem": "Which one of the following most accurately expresses\n the conclusion of the argument?",
+    "answerChoices": {
+      "A": "In the near future, bank customers will be able to transact all their financial business by means of computers or telephones from their own homes.",
+      "B": "Enabling bank customers to transact all their financial business by means of computers or telephones from their own homes may be more beneficial to banks than to their customers.",
+      "C": "As banks eliminate branch offices and customer-service employees, bank customers will have to serve as their own tellers and pay more fees.",
+      "D": "Eliminating branch offices and customer-service employees would benefit the banking industry.",
+      "E": "Enabling customers to transact all their financial business by means of computers or telephones from their own homes would allow banks to eliminate branch offices and customer-service employees."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Rebuttals",
+      "Important Pivot",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Bernard: We should not invite Carl to speak at the\n forum. Carl’s views are clearly false, and worse,\n dangerous. To encourage their consideration\n will not only legitimize them but also help to\n promulgate them, both of which we should avoid,\n since we wish not to support their adoption.\n Ayla: The best way to combat false views is to challenge\n them in public. Once Carl’s views are subjected\n to the kind of public scrutiny the forum provides,\n people will see them for what they are because\n the forum will provide convincing arguments\n against them.",
+    "questionStem": "The dialogue provides the most support for the claim\n that Bernard and Ayla disagree about whether",
+    "answerChoices": {
+      "A": "one should always avoid legitimizing a view whose adoption one wishes not to support",
+      "B": "people will see the falsity of every dangerous idea for which they are furnished with forceful counterarguments",
+      "C": "the best way to fight erroneous ideas involves allowing the public expression of these ideas",
+      "D": "people who hold false views tend to pose a danger to society",
+      "E": "one should not encourage the adoption of dangerous views"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Principle: It is unethical for someone who has bought an\n item to return it to the store after getting all the\n use from it that he or she ever intended to get.\n Application: James purchased a video camera and\n returned it to the store two weeks later. This\n return was unethical.",
+    "questionStem": "Which one of the following, if true, most justifies the\n above application of the principle?",
+    "answerChoices": {
+      "A": "Before returning the camera, James used it extensively to record members of his family engaged in funny activities.",
+      "B": "James bought the camera to avoid having to hire a professional videographer for his sister’s graduation party, and he returned the camera immediately after the party.",
+      "C": "James used the camera several times but returned it after he had dropped it and then discovered that some of the features did not work.",
+      "D": "James returned the camera after he discovered that the same model was on sale at another store at a considerably lower price.",
+      "E": "James used the camera in the manner for which he bought it, and, though he generally enjoyed it, he thought a different one might work better with his new computer."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Taylorism, the early-twentieth-century industrial\n efficiency movement pioneered by Frederick Taylor,\n has had a profound effect on industrialized societies. Increased productivity resulting from greater efficiency\n has led to increases in most workers’ standards of living. At the same time, Taylor’s methods have tended to\n make these workers’ jobs routine and repetitive, thereby\n robbing their work of some of the intrinsic worth it\n possessed when it emphasized creativity and talent.",
+    "questionStem": "The situation described above most closely conforms to\n which one of the following generalizations?",
+    "answerChoices": {
+      "A": "Sometimes measures that appear to promote efficiency are actually deleterious to it.",
+      "B": "Some developments in industry can benefit workers financially while making their work less rewarding in other respects.",
+      "C": "Increased efficiency in industrial settings is sometimes accompanied by decreases in the amount of effort workers devote to their jobs.",
+      "D": "An increase in workers’ standards of living will likely involve an accompanying decrease in how much they value their jobs overall.",
+      "E": "Workers who have greater than average creativity and talent are sometimes less efficient than workers who have average creativity and talent."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains",
+      "Proposition/Generalization",
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Winchester Township cannot afford to keep its several\n small branch libraries supplied with a wide selection\n of current books. However, if the branch libraries were\n closed, then Winchester could afford to open one large\n library, which could carry broader and more current\n selections. Thus, Winchester would better meet its\n residents’ needs by closing its small branch libraries and\n opening one larger, well-supplied library.",
+    "questionStem": "Which one of the following, if true, most weakens the\n argument above?",
+    "answerChoices": {
+      "A": "Many Winchester residents never use the branch libraries because of the irregular hours each branch keeps.",
+      "B": "Most Winchester residents have complained about the selection of books at the branch libraries.",
+      "C": "The only possible site for a new library is not readily accessible to most Winchester residents.",
+      "D": "It would cost Winchester a significant amount of money to build a larger library.",
+      "E": "Each of Winchester’s branch libraries attempts to cater to the tastes of the residents of the entire township."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "News report: Some recently invented television screens\n are built out of small tiles seamlessly joined\n together, each tile a separate miniature screen.\n Television sets with these compound screens\n are just a few inches thick. For a noncompound\n screen in a set of this thickness, the larger the\n screen is, the dimmer it is. However, each tile in\n a compound screen is small enough to be quite\n bright. Moreover, an unlimited number of the\n tiles can be joined together, without making the\n resulting screen any less bright or the set any\n thicker.",
+    "questionStem": "Which one of the following can be properly inferred\n from the information in the news report?",
+    "answerChoices": {
+      "A": "The technology used to make compound television screens is not appropriate for television sets with relatively small screens.",
+      "B": "There is a great consumer demand for television sets that are just a few inches thick and that have very large screens.",
+      "C": "In a television set with a noncompound screen, the thicker the television set, the brighter the screen.",
+      "D": "Television sets that are just a few inches thick can now be made with screens that are both bright and very large.",
+      "E": "Television sets with compound screens do not have any disadvantages relative to sets with noncompound screens."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Anthropologist: For early humans who moved from\n a hunter-gatherer lifestyle to agriculture, the\n transition must have been traumatic. There would\n have been increased incidence of disease and\n injury and a more homogeneous diet lacking vital\n nutrients more easily obtainable from the richly\n varied diet of hunter-gatherers. Thus, groups that\n made the transition were likely motivated by\n certain benefits that accompany the settled life\n of the agriculturist, such as opportunities for the\n accumulation of wealth by those with specialized\n social roles.",
+    "questionStem": "Which one of the following most accurately describes\n the role played in the anthropologist’s overall argument\n by the statement that for early humans who moved from\n a hunter-gatherer lifestyle to agriculture, the transition\n must have been traumatic?",
+    "answerChoices": {
+      "A": "It is a premise for which another premise is offered as support.",
+      "B": "It is background information that plays no logical role in the argument.",
+      "C": "It is a premise for which no support is offered.",
+      "D": "It is the conclusion of the argument as a whole.",
+      "E": "It is a claim that the rest of the argument seeks to rebut."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Most lawyers hold that violations of the rights of those\n who possess sites on the web are best prevented using\n copyright law. Yet many of the words used to describe\n such sites evoke ideas that are usually associated with\n real estate: for example, the word “site” itself and the\n term “visiting” as applied to sites. The common law of\n trespass usually applies to cases of encroachment on real\n estate. Thus, it is reasonable to extend that law to protect\n against encroachments on property in cyberspace.",
+    "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "fails to provide adequate evidence that property in cyberspace is widely considered to be real estate",
+      "B": "has a premise that presupposes what the argument attempts to show in the conclusion",
+      "C": "itself provides significant evidence against the conclusion that it draws",
+      "D": "fails to provide evidence that the similarities that constitute the analogy are anything but merely verbal",
+      "E": "defends a view solely on the grounds that the view is held by many experts"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Journalist: Contrary to popular opinion, it is more\n dangerous for an individual to drive during the\n day than during the night. A recent study found\n that in each of the last ten years, the number of\n traffic accidents that resulted in death was greater\n during the day than during the night.",
+    "questionStem": "Each of the following, if true, helps to strengthen the\n argument except:",
+    "answerChoices": {
+      "A": "Only during the day are there more unsafe than safe vehicles on the road.",
+      "B": "There is decreased law enforcement presence during the day.",
+      "C": "Persons drive more cautiously during the night than during the day.",
+      "D": "The number of travelers per vehicle has increased over the past ten years.",
+      "E": "Persons drive faster during the day than during the night."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Biologist: The evolutionary advantage of sexual\n reproduction is that it increases the range of\n genetic variation in a species, which is an\n advantage for the species as a whole. However,\n an increased range of genetic variation in a\n species is not advantageous for any individual\n member of the species. It follows that the sole\n reason that sexual reproduction has become the\n rule among both animals and plants is that natural\n selection has favored some entire species over\n others.",
+    "questionStem": "The claim that an increased range of genetic variation in\n a species is not advantageous for any individual member\n of the species plays which one of the following roles in\n the biologist’s argument?",
+    "answerChoices": {
+      "A": "It is a claim offered in support of the argument’s conclusion.",
+      "B": "It is presented to raise a question that sheds doubt on the argument’s conclusion.",
+      "C": "It is a claim that the argument is designed to call into question.",
+      "D": "It describes an observed phenomenon for which the argument seeks an explanation.",
+      "E": "It is presented as the main explanation of the origin of an observed phenomenon."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Columnist: Vagrancy laws are supposed to reduce\n criminal activity, but they don’t. Making\n vagrancy illegal means transforming many\n innocuous everyday occurrences into crimes. Thus, vagrancy laws increase crime while\n purporting to reduce it.",
+    "questionStem": "The reasoning in the columnist’s argument is most\n vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "presumes, without providing any justification, that most innocuous everyday occurrences are harmful to society",
+      "B": "mistakenly infers, from the claim that vagrancy laws are associated with an increase in many innocuous everyday occurrences, that vagrancy laws cause that increase",
+      "C": "fails to specify what is meant by “innocuous everyday occurrences”",
+      "D": "fails to consider the possibility that crime will increase even in the absence of vagrancy laws",
+      "E": "does not adequately distinguish between an increase in criminal activity and the reclassification of certain occurrences as crimes."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Political theorist: The purpose of government is to\n prevent individuals from injuring others in the\n pursuit of their own welfare. Hence, if most\n individuals take a reasoned approach to getting\n what they want, the power of government should\n be less.",
+    "questionStem": "Which one of the following is an assumption required by\n the political theorist’s argument?",
+    "answerChoices": {
+      "A": "Governments alone are not able to convince individuals to take a reasoned approach to getting what they want.",
+      "B": "Government can serve its purpose without diminishing people’s ability to promote their own welfare.",
+      "C": "People who take a reasoned approach to getting what they want are less likely to injure other people than are those who do not.",
+      "D": "People who injure other people in the pursuit of their own welfare will eventually be treated in the same fashion by others.",
+      "E": "The more interest people have in promoting their own welfare, the less likely they are to be injured by others."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Food critic: One of the chief competitors of Chris’s\n restaurant claims that Chris’s okra supplier\n cannot reliably supply fresh okra. If this claim\n were true, Chris’s customers could not count on\n getting good seafood gumbo, Chris’s specialty,\n because the best seafood gumbo requires fresh\n okra.",
+    "questionStem": "The food critic’s argument is most subject to criticism\n because it",
+    "answerChoices": {
+      "A": "relies upon testimony that is likely to be biased",
+      "B": "illicitly presumes that a dish must lack a certain quality if one of its ingredients lacks that quality",
+      "C": "confuses a necessary condition for the best seafood gumbo with a sufficient condition for good seafood gumbo",
+      "D": "takes for granted that a necessary ingredient of the best seafood gumbo is also a necessary ingredient of good seafood gumbo",
+      "E": "fails to consider the possibility that on some days Chris’s might be serving seafood gumbo made with fresh okra."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Ants sometimes live in hollow places in the roots of\n a certain orchid species. Those orchids of that species\n that house ants are far healthier than those that do not.\n Since the ants store organic matter in the orchids’ roots,\n an explanation for the superior health of the orchids that\n house ants is that the organic matter stored by the ants\n provides those orchids with additional nutrients.",
+    "questionStem": "Which one of the following, if true, is an alternative\n explanation for the better health of orchids that house\n the ants?",
+    "answerChoices": {
+      "A": "Microscopic organisms that are present in the orchids’ roots break down the organic matter stored there by the ants.",
+      "B": "The nutrients present in the organic matter stored by the ants are the same as those present in the soil in which the orchids are found.",
+      "C": "The ants that live in hollow places in the roots of orchids prey on an insect species whose members eat the orchids’ roots.",
+      "D": "The ants that live in hollow places in the roots of orchids do not play a role in pollinating the flowers of the plant.",
+      "E": "Most plant species whose roots, stems, or leaves harbor insects are more prone to disease and rot than are other plants."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Future overall demand for professors can be predicted\n with reasonable accuracy from current birth rates. But\n the accuracy of predictions of future demand for music\n professors is lower, and that for jazz studies professors\n lower still.",
+    "questionStem": "The situation described above best illustrates which one\n of the following principles?",
+    "answerChoices": {
+      "A": "The more detailed and complete the evidence, the more precise predictions based on that evidence are.",
+      "B": "The more general the level of a prediction, the more accurate it is.",
+      "C": "Predicting future trends becomes more difficult as the events those predictions concern become more temporally remote.",
+      "D": "The more detailed and complete the evidence, the more confidence we can have in predictions based on that evidence.",
+      "E": "Predictions based only on general trends are unlikely to be accurate."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Anarchist: People can either fight for anarchy or they\n can tolerate totalitarian government control.\n But history shows that government control\n of all facets of human life destroys the spirit,\n making life miserable. So, people should fight\n for anarchy, which allows each individual the\n freedom to pursue a personal course of happiness.",
+    "questionStem": "Which one of the following most accurately describes a\n flaw in the argument’s reasoning?",
+    "answerChoices": {
+      "A": "Governments provide many social goods, and the argument does not attempt to explain why anarchy is a desirable alternative to government control of all facets of human life.",
+      "B": "By asserting that people both should and should not tolerate totalitarian government, the argument contradicts itself.",
+      "C": "The argument infers from the assertion that people should fight for anarchy that totalitarianism is objectionable.",
+      "D": "The argument offers no indication that there is evidence for its claim that totalitarianism destroys the spirit and makes life miserable.",
+      "E": "The argument sets out anarchy and totalitarianism as the only two political alternatives that are available."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Consumer demand for personal computers continues to\n increase each year, which might lead one to think that\n the profits earned selling personal computers at the retail\n level are very high relative to total retail sales of personal\n computers. Yet the retail profit margin on personal\n computer sales is extremely low compared to that of\n other popular high-technology items.",
+    "questionStem": "Each of the following, if true, helps to resolve the\n apparent discrepancy described above except:",
+    "answerChoices": {
+      "A": "Rapid innovation in computer technology increases the likelihood of a store’s stock becoming obsolete.",
+      "B": "Satisfaction with their first personal computer tends to make customers very loyal to that particular brand.",
+      "C": "A customer needs more help from store employees when buying a personal computer than when buying other high-technology items.",
+      "D": "Many retail stores have low prices on personal computers in order to bring in customers who might buy software and accessories.",
+      "E": "An increase in the number of discount retail outlets selling personal computers has intensified the competition for customers."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "If a film is accepted by the festival committee, then one\n of the distributors attending the festival buys it. If a\n distributor buys a film, the film’s financial backers are\n assured of recouping their investment. This film was\n not accepted by the festival committee, so this film’s\n financial backers will not recoup their investment.",
+    "questionStem": "Which one of the following arguments employs a flawed\n pattern of reasoning most similar to the flawed pattern of\n reasoning in the argument above?",
+    "answerChoices": {
+      "A": "If a film has a good story, it will be praised by critics. If a film is praised by critics, it will do well at the box office. This film did not do well at the box office, so it must not have a good story.",
+      "B": "If a film features several stars, it will be successful at the box office. A box office success has a long run at theaters. This film features only one star, so it will not have a long run at theaters.",
+      "C": "If a film is directed by a talented artist, it will be praised by critics. If a film is praised by critics, it will do well on video. This film did well on video, so it was directed by a talented artist.",
+      "D": "If a film is a box office success, then one of its stars is nominated for an award. If a star receives an award, the film is assured of doing well on video. This star was not nominated for an award, so the film will not do well on video.",
+      "E": "If a film has a big budget, it will be heavily promoted. A heavily promoted film will be released all over the country at once. This film has a big budget, so it will be released all over the country at once."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Psychologist: In an experiment, business managers who\n normally drank coffee on a daily basis were given\n more than their normal amount. The managers\n got faster at processing new information,\n but were less able to integrate it with past\n information when making decisions. Because\n successful management depends more on\n integrating information than on speed, this study\n demonstrates that drinking more coffee than usual\n impairs overall management ability.",
+    "questionStem": "Which one of the following is an assumption on which\n the psychologist’s argument depends?",
+    "answerChoices": {
+      "A": "The business managers in the experiment were different from each other in both the speed at which they processed information and in their ability to integrate information.",
+      "B": "Drinking less coffee than usual would not impede a manager’s overall management ability as much as would drinking more coffee than usual.",
+      "C": "There is no other factor that is more important to successful business management than either speed of processing information or ability to integrate it.",
+      "D": "In the experiment, drinking more coffee than usual did not have beneficial effects on overall management ability that outweighed the reduction in ability to integrate past information.",
+      "E": "The amount of coffee one drinks is the most important factor influencing the speed at which one processes new information."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender",
+      "Net Effect",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Orator: Moral excellence can be achieved only by\n repeatedly overcoming inclinations to do the\n wrong thing. Overcoming these inclinations is\n often difficult to do, even for a morally virtuous\n person, but the only way to become a morally\n virtuous person is through the achievement of\n moral excellence.",
+    "questionStem": "Which one of the following is a conclusion that follows\n logically from the orator’s statements?",
+    "answerChoices": {
+      "A": "A morally virtuous person is incapable of doing the wrong thing.",
+      "B": "Most people who achieve moral excellence are morally virtuous.",
+      "C": "Someone who has no inclination to do anything that is wrong has achieved moral excellence.",
+      "D": "Someone who is not morally virtuous is incapable of achieving moral excellence.",
+      "E": "Every morally virtuous person has been inclined to do something that is wrong."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Philosopher: Philosophers usually treat emotions as\n nonrational. But emotion is not nonrational: it\n only seems that way because language lacks\n the ability to convey adequate conceptions\n of emotion. The words we use to refer to\n emotions name only very general kinds of inner\n experience—excitement, calm, joy, and so on.\n Thus, for example, there is no language for\n describing just how one joy differs from another.",
+    "questionStem": "Which one of the following most accurately describes\n the role played in the philosopher’s argument by the\n proposition that there is no language for describing just\n how one joy differs from another?",
+    "answerChoices": {
+      "A": "It is an example of the phenomenon that the argument seeks to explain.",
+      "B": "It is the main conclusion of the argument.",
+      "C": "It is a specific instance illustrating a general claim, thereby indirectly supporting the conclusion.",
+      "D": "It is a concession to the view that the argument seeks to refute.",
+      "E": "It is the explanation proposed for the phenomenon the argument seeks to explain."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Intermediate Conclusions",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Superstring theory is a controversial new theory in\n physics that purports, unlike more established physical\n theories, to explain the nature and existence of gravity.\n A major problem with superstring theory is that to test it\n we would have to build a particle accelerator 100 trillion\n kilometers long. Another problem is that superstring\n theory has had no success in adequately explaining why\n the force of gravity is not stronger or weaker than it is.",
+    "questionStem": "Which one of the following is most strongly supported\n by the information above?",
+    "answerChoices": {
+      "A": "Superstring theory would be more successful if superstring theorists attempted to explain why the force of gravity is not stronger or weaker than it is.",
+      "B": "Physical theories that are better established than superstring theory provide better explanations of physical phenomena than does superstring theory.",
+      "C": "Some physical theory more established than superstring theory has had at least some success in explaining why the force of gravity is not stronger or weaker than it is.",
+      "D": "A physical theory cannot be true if testing that theory would require us to build a particle accelerator 100 trillion kilometers long.",
+      "E": "A theory that purports to explain the nature of a force is deficient if it cannot account for the strength of that force."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A smaller number of short documentary films than\n of full-length science-fiction films are commercially\n successful, even though there are more short\n documentary films than there are science-fiction films.\n Therefore, a higher proportion of full-length science-\n fiction films than of short documentary films are\n commercially successful.",
+    "questionStem": "Which one of the following arguments is most similar in\n its pattern of reasoning to the argument above?",
+    "answerChoices": {
+      "A": "A greater number of small modern apartments than of large Victorian apartments have freestanding bathtubs. Hence, a smaller percentage of large Victorian apartments than of small modern apartments have freestanding bathtubs.",
+      "B": "A greater number of large Victorian apartments than of modern apartments have freestanding bathtubs, even though there are more modern apartments than there are Victorian apartments. Thus, a higher proportion of large Victorian apartments than of modern apartments have freestanding bathtubs.",
+      "C": "A smaller number of small modern apartments than of large Victorian apartments have freestanding bathtubs. For even though there are more small modern apartments than there are Victorian apartments, a higher proportion of large Victorian apartments than of small modern apartments have freestanding bathtubs.",
+      "D": "A greater number of large Victorian apartments than of small modern apartments have freestanding bathtubs, so there are more small modern apartments than there are large Victorian apartments, since a higher percentage of large Victorian apartments than of small modern apartments have freestanding bathtubs.",
+      "E": "A smaller number of modern apartments than of Victorian apartments have freestanding bathtubs, even though there are fewer modern apartments than there are large Victorian apartments. This establishes that a higher proportion of Victorian apartments than of modern apartments have freestanding bathtubs."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Repetitive Answers",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT157",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "To test the claim that vitamin C is effective in treating\n acne, scientists administered it to one group of subjects\n and a placebo to a control group. The group receiving\n vitamin C had less severe acne during the study than\n did the control group. It was subsequently discovered,\n however, that half of the subjects in each group knew\n which kind of pill they were given. Among those who\n could not tell, no difference in the severity of acne\n was found between the two groups. Therefore, we can\n tentatively conclude that vitamin C has no real benefit in\n reducing the severity of acne.",
+    "questionStem": "Which one of the following, if true, most seriously\n weakens the argument?",
+    "answerChoices": {
+      "A": "The subjects who were given vitamin C had a history of suffering from more severe acne than did the subjects receiving a placebo.",
+      "B": "None of the subjects who were given vitamin C took additional doses of vitamin C on their own.",
+      "C": "During the study, the severity of the subjects’ acne was lower than the national average.",
+      "D": "Some of the subjects who were given placebos consumed foods during the study that are naturally rich in vitamin C.",
+      "E": "Some of the subjects who knew their pills were placebos did not actually take the pills they were given."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Medical"
+    ]
+  }
+]

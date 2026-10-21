@@ -1,0 +1,174 @@
+/*
+ * World shells: every Activity is its own place, floor to ceiling.
+ *
+ * Each Activity already owns the runner's left column through its world. This
+ * file extends that ownership to the REST of the chain — the intro page, the
+ * answer column, and the completion screen — so no two Activities ever share a
+ * surface. Like the bootcamps, each is a self-contained wing of the app: the
+ * list is just eight doors.
+ *
+ * Mechanism: the runner and intro wrappers carry `data-world="<slug>"` for
+ * known worlds. Each slug block below defines the world's shell vocabulary as
+ * `--aw-*` variables; mapping rules then translate them into the intro's
+ * `--act-*` tokens. The shadcn tokens are deliberately NOT flipped — the work
+ * cards inside the answer column keep their light reading context, floating on
+ * the world's own ground, the way the drill cards float on cream today.
+ */
+
+/* ---------- The eight shells ---------- */
+
+[data-world="negation-station"] {
+  --aw-page: 262 45% 5%;
+  --aw-page-2: 258 34% 10%;
+  --aw-surface: 256 28% 11%;
+  --aw-ink: 258 36% 94%;
+  --aw-soft: 256 18% 72%;
+  --aw-line: 258 26% 24%;
+  --aw-accent: 275 85% 70%;
+  --aw-accent-strong: 275 90% 76%;
+  --aw-on-accent: 262 45% 10%;
+  --aw-eyebrow: 275 85% 72%;
+  --aw-display: "Italiana", Georgia, serif;
+}
+
+[data-world="vocab-rehab"] {
+  --aw-page: 40 40% 91%;
+  --aw-page-2: 38 32% 86%;
+  --aw-surface: 43 55% 97%;
+  --aw-ink: 30 28% 15%;
+  --aw-soft: 30 14% 36%;
+  --aw-line: 36 24% 76%;
+  --aw-accent: 160 60% 30%;
+  --aw-accent-strong: 161 70% 24%;
+  --aw-on-accent: 42 60% 96%;
+  --aw-eyebrow: 161 70% 26%;
+  --aw-display: "EB Garamond", Georgia, serif;
+}
+
+[data-world="spot-the-relationship"] {
+  --aw-page: 236 50% 6%;
+  --aw-page-2: 233 40% 11%;
+  --aw-surface: 234 32% 12%;
+  --aw-ink: 44 35% 93%;
+  --aw-soft: 231 18% 72%;
+  --aw-line: 234 24% 26%;
+  --aw-accent: 45 85% 62%;
+  --aw-accent-strong: 45 90% 70%;
+  --aw-on-accent: 236 40% 10%;
+  --aw-eyebrow: 45 85% 64%;
+  --aw-display: "Marcellus", Georgia, serif;
+}
+
+[data-world="conditional-rephrase"] {
+  --aw-page: 214 26% 6%;
+  --aw-page-2: 213 22% 10%;
+  --aw-surface: 213 18% 12%;
+  --aw-ink: 38 32% 92%;
+  --aw-soft: 214 14% 70%;
+  --aw-line: 213 16% 26%;
+  --aw-accent: 36 90% 56%;
+  --aw-accent-strong: 36 95% 62%;
+  --aw-on-accent: 214 30% 8%;
+  --aw-eyebrow: 36 92% 58%;
+  --aw-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+}
+
+[data-world="find-the-conclusion"] {
+  --aw-page: 24 32% 7%;
+  --aw-page-2: 25 28% 11%;
+  --aw-surface: 26 22% 13%;
+  --aw-ink: 38 42% 93%;
+  --aw-soft: 32 18% 68%;
+  --aw-line: 30 20% 26%;
+  --aw-accent: 40 85% 58%;
+  --aw-accent-strong: 40 90% 64%;
+  --aw-on-accent: 26 30% 8%;
+  --aw-eyebrow: 40 86% 60%;
+  --aw-display: "Young Serif", Georgia, serif;
+}
+
+[data-world="rebuttal-rephrase"] {
+  --aw-page: 356 30% 6%;
+  --aw-page-2: 355 26% 10%;
+  --aw-surface: 355 26% 13%;
+  --aw-ink: 34 30% 93%;
+  --aw-soft: 20 14% 70%;
+  --aw-line: 355 22% 26%;
+  --aw-accent: 36 75% 64%;
+  --aw-accent-strong: 36 80% 70%;
+  --aw-on-accent: 356 28% 9%;
+  --aw-eyebrow: 36 76% 66%;
+  --aw-display: "Cinzel", Georgia, serif;
+}
+
+[data-world="dumb-it-down"] {
+  --aw-page: 19 20% 7%;
+  --aw-page-2: 21 18% 11%;
+  --aw-surface: 22 16% 12%;
+  --aw-ink: 39 40% 92%;
+  --aw-soft: 32 16% 66%;
+  --aw-line: 24 14% 26%;
+  --aw-accent: 14 80% 60%;
+  --aw-accent-strong: 14 85% 66%;
+  --aw-on-accent: 19 25% 8%;
+  --aw-eyebrow: 14 82% 62%;
+  --aw-display: "Bevan", Georgia, serif;
+}
+
+[data-world="spot-the-callback"] {
+  --aw-page: 238 48% 7%;
+  --aw-page-2: 236 40% 12%;
+  --aw-surface: 236 32% 13%;
+  --aw-ink: 43 40% 91%;
+  --aw-soft: 232 18% 70%;
+  --aw-line: 236 26% 26%;
+  --aw-accent: 42 85% 58%;
+  --aw-accent-strong: 42 90% 66%;
+  --aw-on-accent: 236 35% 9%;
+  --aw-eyebrow: 42 86% 60%;
+  --aw-display: "Alegreya", Georgia, serif;
+}
+
+/* ---------- The intro becomes the world's lobby ---------- */
+
+/* The intro skeleton reads entirely from its own --act-* tokens, so re-basing
+   those tokens on the world shell re-skins every element of the page: canvas,
+   cards, steps, orbs, crumb, and the Start action, with no markup change.
+   `.act-edit[data-world]` covers the intro when it renders without the page
+   wrapper (the dev lab). */
+.act-home[data-world],
+.act-edit[data-world] {
+  --act-canvas: var(--aw-page);
+  --act-canvas-2: var(--aw-page-2);
+  --act-surface: var(--aw-surface);
+  --act-ink: var(--aw-ink);
+  --act-ink-soft: var(--aw-soft);
+  --act-hairline: var(--aw-line);
+  --act-accent: var(--aw-accent);
+  --act-accent-strong: var(--aw-accent-strong);
+  --act-on-accent: var(--aw-on-accent);
+}
+
+/* The lobby's headline speaks in the world's own display face. */
+.act-home[data-world] .act-edit-title,
+.act-edit[data-world] .act-edit-title {
+  font-family: var(--aw-display);
+}
+
+/* On a dark lobby the ink-dark "Before" orb needs a rim to stand off the
+   canvas; on light lobbies the rim is invisible against the orb's own edge. */
+.act-home[data-world] .act-orb--before,
+.act-edit[data-world] .act-orb--before {
+  box-shadow: 0 0 0 1px hsl(var(--aw-ink) / 0.22);
+  border-radius: 999px;
+}
+
+/* ---------- The answer column and completion screen ---------- */
+
+/* Work cards float on the world's ground instead of sitting flush on cream:
+   the deeper shadow is what makes a light card read as an object in a dark
+   room rather than a hole in it. */
+[data-world] .ac-question-card > div > div[class*="bg-card"],
+[data-world] .ac-question-card [class*="bg-card"] {
+  box-shadow: 0 18px 44px -12px hsl(var(--aw-page) / 0.9);
+}

@@ -1,0 +1,618 @@
+[
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Community organizer: Before last year’s community cleanup, only 77 of the local residents signed up to participate, but then well over 100 actually participated. This year, 85 residents have signed up to participate. Since our community cleanup will be a success if we have at least 100 participants, we can be confident that this year’s cleanup will be a success.",
+    "questionStem": "The reasoning in the community organizer’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "generalizes about the outcome of an event based on a single observation of a similar situation",
+      "B": "takes for granted that people who participated in last year’s cleanup will participate this year",
+      "C": "confuses a condition that is required for an outcome with one that is sufficient for that outcome",
+      "D": "overlooks the possibility that the cleanup will attract participants who are not residents in the community",
+      "E": "defines a term in such a way as to ensure that whatever the outcome, it will be considered a positive outcome"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sampling",
+      "Assumes Similarity",
+      "Math-y Stuff",
+      "Predictions",
+      "Timeframes",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Bell: Commentators in the media are wrong to criticize the policies Klein implemented. Although her policies are unpopular, they avoided an impending catastrophe. Klein is just the person we need making important decisions in the future.\nSoltan: Klein’s policies have been effective, but politics matters. In the future, important decisions will need to be made, and she will not have the political support to make them. So she should step down.",
+    "questionStem": "Bell and Soltan disagree with each other about which one of the following?",
+    "answerChoices": {
+      "A": "Klein’s policies have been effective.",
+      "B": "Klein’s policies are unpopular.",
+      "C": "Klein should step down.",
+      "D": "There are important decisions to be made in the future.",
+      "E": "Klein’s policies were implemented in the face of an impending catastrophe."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Psychologist: In our study, participants who were offered the opportunity to purchase a coffee mug were not willing to pay more than $5. If, however, they were given a very similar mug and asked immediately afterwards how much they would be willing to sell it for, most of them held out for more than $5.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
+    "answerChoices": {
+      "A": "A person’s assessment of the value of an object depends on his or her evaluation of the inherent properties of the object.",
+      "B": "People are usually unable to judge the value of an object when they have possessed it for a long period of time.",
+      "C": "The amount a person is willing to spend on an object is determined by the amount that object sold for in the past.",
+      "D": "People tend to value an object that they do not own less than they value a very similar object that they already own.",
+      "E": "People are more likely to undervalue objects they have been given than objects they have purchased."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Ecologist: Before finding a mate, male starlings decorate their nests with fragments of aromatic plants rich in compounds known to kill parasitic insects. Since these parasites are potentially harmful to nestlings, some researchers have hypothesized that the function of these decorations is nestling protection. However, males cease to incorporate such greenery once egg laying starts, which suggests instead that the function of the decorations is to attract females.",
+    "questionStem": "Which one of the following, if true, most strengthens the support for the ecologist’s conclusion?",
+    "answerChoices": {
+      "A": "Adult starlings are able to defend themselves against parasitic insects.",
+      "B": "Male starlings do not decorate their nests in areas with unusually small populations of parasitic insects.",
+      "C": "Nestlings grow faster in nests that incorporate aromatic plants than in nests that do not.",
+      "D": "Male starlings tend to decorate their nests with a greater number of aromatic plants when a caged female is positioned adjacent to the nest.",
+      "E": "The compounds in the aromatic plants used by the male starlings to decorate their nests are harmless to nestlings."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A commission has been formed to report on the nation’s preparedness for a major natural disaster. The commission’s report will not be effective unless the commission speaks with a unified voice. Since individual members of the commission have repeatedly expressed their own opinions about disaster preparedness in the news media well in advance of completion of the report, it will not be effective.",
+    "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Commission members who have expressed their opinions about disaster preparedness in the news media have also emphasized their commitment to producing an effective report.",
+      "B": "News organizations should not provide a platform for members of the commission to express their opinions about disaster preparedness if doing so will undermine the effectiveness of the commission’s report.",
+      "C": "The commission will be able to speak with a uniform voice only if individual members’ opinions about disaster preparedness are not made public before the report is completed.",
+      "D": "If commission members had not expressed their opinions about disaster preparedness in the news media before the report was completed, there would have been much public speculation about what those views were.",
+      "E": "The commission’s report will not be effective if some of the commission members already had opinions about the nation’s disaster preparedness even before the commission was formed."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Links Between Premises",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Engineer: Wide roads free of obstructions have been shown to encourage drivers to take more risks. Likewise, a technical fix to slow or reverse global warming by blocking out a portion of the sun’s rays would encourage more carbon dioxide emissions, which might cause more global warming in the future.",
+    "questionStem": "The engineer’s argument can most reasonably be interpreted as invoking which one of the following principles?",
+    "answerChoices": {
+      "A": "Conditions that create a feeling of security also encourage risk taking.",
+      "B": "Problems created by humans require human-created solutions.",
+      "C": "Technical fixes are inevitably temporary.",
+      "D": "Technical fixes cannot discourage risk-taking behavior.",
+      "E": "The longer a problem goes unresolved, the worse it becomes."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies",
+      "Causal Difference-Maker",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Although some animals exhibit a mild skin reaction to urushiol, an oil produced by plants such as poison oak and poison ivy, it appears that only humans develop painful rashes from touching it. In fact, wood rats even use branches from the poison oak plant to build their nests. Therefore, urushiol probably did not evolve in these plants as a chemical defense.",
+    "questionStem": "Which one of the following, if true, adds the most support for the conclusion of the argument?",
+    "answerChoices": {
+      "A": "Wood rats build their nests using dead, brittle branches, not live ones.",
+      "B": "A number of different animals use poison oak and poison ivy as food sources.",
+      "C": "It is common for plants to defend themselves by producing chemical substances.",
+      "D": "In approximately 85 percent of the human population, very small amounts of urushiol can cause a rash.",
+      "E": "Poison oak and poison ivy grow particularly well in places where humans have altered natural forest ecosystems."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Principle Justify",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Politician: Some cities have reversed the decay of aging urban areas by providing tax incentives and zoning variances that encourage renovation and revitalization in selected areas. But such legislation should not be commended. Its principal beneficiaries have turned out to be well-to-do professionals who could afford the cost of restoring deteriorating buildings; the long-term residents these programs were intended to help now face displacement due to increased rent and taxes.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the politician’s criticism?",
+    "answerChoices": {
+      "A": "Evaluation of legislation should take into account actual results, not intentions alone.",
+      "B": "The wealthier members of a community should not have undue influence on its governance.",
+      "C": "A community’s tax laws and zoning regulations should apply equally to all individuals within selected areas.",
+      "D": "Legislation that is not to anyone’s benefit should not be commended.",
+      "E": "Laws that give advantage to the well-to-do can also benefit society as a whole."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Pundit: It is good to have national leaders voted out of office after a few years. The reason is that reforms are generally undertaken early in a new government. If leaders do not act quickly to solve a problem and it becomes an issue later, then they must either deny that there is a problem or deny that anything could have been done about it; otherwise, they will have to admit responsibility for the persistence of the problem.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion of the pundit’s argument?",
+    "answerChoices": {
+      "A": "If national leaders who fail to solve problems are voted out of office after a few years, new leaders will be more motivated to solve problems.",
+      "B": "National leaders who stay in power too long tend to deny responsibility for problems that they could have dealt with earlier.",
+      "C": "National leaders are most likely to undertake reforms early in a new government.",
+      "D": "National leaders who immediately respond to problems upon taking office should be given enough time to succeed at solving them.",
+      "E": "National leaders should be removed from office every few years by the voting in of new leaders."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Farmer: Agricultural techniques such as crop rotation that do not use commercial products may solve agricultural problems at least as well as any technique, such as pesticide application, that does use such products. Nonetheless, no private for-profit corporation will sponsor research that is unlikely to lead to marketable products. Thus, for the most part, only government-sponsored research investigates agricultural techniques that do not use commercial products.",
+    "questionStem": "Which one of the following, if true, most strengthens the farmer’s argument?",
+    "answerChoices": {
+      "A": "The government sponsors at least some investigations of agricultural techniques that are considered likely to solve agricultural problems and do not use commercial products.",
+      "B": "For almost any agricultural problem, there is at least one agricultural technique that does not use commercial products but that would solve that agricultural problem.",
+      "C": "Investigations of agricultural techniques are rarely sponsored by individuals or by any entity other than private for-profit corporations or the government.",
+      "D": "Most if not all investigations of agricultural techniques that use commercial products are sponsored by private for-profit corporations.",
+      "E": "Most if not all government-sponsored agricultural research investigates agricultural techniques that do not use commercial products."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "University spokesperson: Most of the students surveyed at the university said they would prefer that the current food vendor be replaced with a different food vendor next year. Several vendors have publicly expressed interest in working for the university. For a variety of reasons, however, the only alternative to the current vendor is Hall Dining Services, which served as the university’s food vendor up until this past year. Since, other things being equal, the preferences of the majority of students should be adhered to, we should rehire Hall Dining next year.",
+    "questionStem": "The spokesperson’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "overlooks the possibility that the students surveyed were unaware that only Hall Dining Services could be hired if the current vendor were not hired",
+      "B": "relies on a sample that is likely to be unrepresentative",
+      "C": "overlooks the possibility that student preference is not the only factor to be considered when it comes to deciding which food vendor the university should hire",
+      "D": "overlooks the possibility that there is disagreement among students concerning the issue of food vendors",
+      "E": "argues that a certain action ought to be undertaken merely on the grounds that it would be popular"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "On average, cats fed canned cat food eat fewer ounces of food per day than do cats fed dry cat food; the canned food contains more calories per ounce than does the dry food. Nonetheless, feeding a cat canned cat food typically costs more per day than does feeding it dry cat food.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "On average, cats fed canned cat food eat more calories per day than do cats fed dry cat food.",
+      "B": "Typically, cats are fed either canned cat food or dry cat food, or both.",
+      "C": "How much it costs to feed a cat a given kind of food depends only on how many calories per ounce that food contains.",
+      "D": "On average, it costs no less to feed a cat that eats fewer ounces of food per day than it does to feed a cat that eats more ounces of food per day.",
+      "E": "Canned cat food typically costs more per ounce than does dry cat food."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The Frauenkirche in Dresden, a historic church destroyed by bombing in World War II, has been reconstructed to serve as a place for church services and cultural events. The foundation doing the reconstruction took extraordinary care to return the church to its original form. It is a puzzle, then, why the foundation chose not to rebuild the eighteenth-century baroque organ originally designed for the church and instead built a modern organ, even though a donor had offered to pay the full cost of rebuilding the original.",
+    "questionStem": "Which one of the following, if true, would most help to resolve the puzzle described above?",
+    "answerChoices": {
+      "A": "An eighteenth-century baroque organ cannot adequately produce much of the organ music now played in church services and concerts.",
+      "B": "The organ originally designed for the church had some features that modern organs lack.",
+      "C": "The donation for rebuilding the original eighteenth-century baroque organ was designated for that purpose alone.",
+      "D": "By the time the church was destroyed in World War II, the eighteenth-century baroque organ had been modified several times.",
+      "E": "In the eighteenth century, the organ played an important role in church services at the Frauenkirche."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Principle: A government should reduce taxes on imports if doing so would financially benefit many consumers in its domestic economy. There is a notable exception, however: it should never reduce import taxes if one or more of its domestic industries would be significantly harmed by the added competition.\nConclusion: The government should not reduce taxes on textile imports.",
+    "questionStem": "Which one of the following is a statement from which the conclusion can be properly drawn using the principle?",
+    "answerChoices": {
+      "A": "Reducing taxes on textile imports would not financially benefit many consumers in the domestic economy.",
+      "B": "Reducing taxes on textile imports would financially benefit some consumers in the domestic economy but would not benefit the domestic textile industry.",
+      "C": "The domestic textile industry faces significant competition in many of its export markets.",
+      "D": "The domestic textile industry and consumers in the domestic economy would benefit less from reductions in taxes on textile imports than they would from other measures.",
+      "E": "The added competition produced by any reduction of taxes on imports would significantly harm the domestic textile industry."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Global warming has contributed to a rise in global sea level not only because it causes glaciers and ice sheets to melt, but also simply because when water is heated its volume increases. But this rise in global sea level is less than it otherwise would be, since over the years artificial reservoirs have been built all around the world that collectively contain a great deal of water that would otherwise reach the sea.",
+    "questionStem": "Which one of the following can most reasonably be concluded on the basis of the information above?",
+    "answerChoices": {
+      "A": "The exact magnitude of the rise in global sea level is in dispute.",
+      "B": "Rises in global sea level that occurred before the world’s reservoirs were built are difficult to explain.",
+      "C": "Little is known about the contribution of global warming to the rise in global sea level.",
+      "D": "The amount of water in the world’s reservoirs is about equal to the amount of water that results from the melting of glaciers and ice sheets.",
+      "E": "The amount of water that results from the melting of glaciers and ice sheets cannot be determined by looking at the rise in global sea level alone."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Last year, a software company held a contest to generate ideas for their new logo. According to the rules, everyone who entered the contest would receive several prizes, including a T-shirt with the company’s new logo. Juan has a T-shirt with the company’s new logo, so he must have entered the contest.",
+    "questionStem": "The reasoning in the argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "infers a causal relationship when the evidence only supports a correlation",
+      "B": "takes a condition that is sufficient for a particular outcome as one that is necessary for that outcome",
+      "C": "infers that every member of a group has a feature in common on the grounds that the group as a whole has that feature",
+      "D": "has a premise that presupposes the truth of the conclusion",
+      "E": "constructs a generalization on the basis of a single instance"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "When expert witnesses give testimony, jurors often do not understand the technical information and thereby are in no position to evaluate such testimony. Although expert witnesses on opposite sides often make conflicting claims, the expert witnesses on both sides frequently seem competent, leaving the jury unable to assess the reliability of their testimonies.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "There should be limits placed on how much technical information can be considered by both sides in preparing a legal case.",
+      "B": "Jury decisions in cases involving expert witness testimonies are not always determined by the reliability of those testimonies.",
+      "C": "Jurors who understand the technical information presented in a case can usually assess its legal implications accurately.",
+      "D": "Jury members should generally be selected on the basis of their technical expertise.",
+      "E": "Expert witnesses who testify on opposite sides in legal cases are likely to agree in their evaluations of technical claims."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Tax reformer: The proposed tax reform legislation is being criticized by political groups on the right for being too specific and by political groups on the left for being too vague. Since one and the same statement cannot be both too specific and too vague, the criticisms just go to show that the legislation is framed just as it should be.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "It is rare for political groups both on the right and on the left to criticize a particular tax reform proposal.",
+      "B": "Even an overly specific or vague tax reform proposal can be implemented in a way that produces beneficial results.",
+      "C": "The proposed legislation has not been criticized by any group that does not identify itself with the political right or the political left.",
+      "D": "The proposed legislation as it is framed was not meant to satisfy either political groups on the right or political groups on the left.",
+      "E": "The proposed legislation is not made up of a set of statements some of which are overly specific and some of which are overly vague."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Ruling Out Options",
+      "Argue the Anti-Conclusion",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Parallel",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Employee: The company I work for has installed website filtering software that blocks access to non-related websites. It claims that being able to visit such sites distracts us, keeping us from doing our best work. But offices that have windows or are nicely decorated can be highly distracting too, and no one claims that people do their best work in an undecorated, windowless room.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the employee's argument?",
+    "answerChoices": {
+      "A": "Some people advocate moderation in all things. But different people react differently to certain substances, so what counts as a moderate amount of, say, caffeine for you might be too much for me. So to talk about moderation is to fail to take into account people's basic biological differences.",
+      "B": "Activists are calling for an electronic device to be banned, for research has shown that prolonged exposure to the device while it is in use causes cancer in laboratory animals. But most chemicals probably cause cancer when administered in very high doses, yet no one would argue that we should ban all these chemicals for that reason.",
+      "C": "Acme expects that approximately 1,000 of its employees will retire over the next year. No one would claim that Acme does not need a work force as large as its present one. So Acme will need to hire approximately 1,000 people over the next year.",
+      "D": "In many creative writing classes, aspiring writers are told that if the characters they create are not engaging, their novels and stories will not sell. But this does not mean that engaging characters guarantee a sale--publishers and agents often reject manuscripts that emphasize character to the exclusion of other elements.",
+      "E": "In the movie industry, a film's success is judged in terms of its profit relative to its cost. This is misguided, because under this criterion an expensive movie that sells just as many tickets as a lower-budget movie would be less successful than the lower-budget movie, which is clearly counterintuitive."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "At Tromen University this semester, some students taking French Literature 205 are also taking Biology 218. Every student taking Biology 218 at Tromen is a biology major. Therefore, some of the students taking French Literature 205 are not French-literature majors.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed to be true at Tromen University?",
+    "answerChoices": {
+      "A": "French Literature 205 is a required course for French-literature majors.",
+      "B": "Only biology majors are allowed to take Biology 218.",
+      "C": "There are more biology majors than there are French-literature majors.",
+      "D": "There are more French-literature majors than there are biology majors.",
+      "E": "It is not possible to major in both biology and French literature."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Must be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Critic: To be a literary classic a book must reveal something significant about the human condition. Furthermore, nothing that is unworthy of serious study reveals anything significant about the human condition.",
+    "questionStem": "If the critic's statements are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Any book worthy of serious study is a literary classic.",
+      "B": "A book is a literary classic only if it is worthy of serious study.",
+      "C": "There are no literary classics worthy of serious study.",
+      "D": "Some books worthy of serious study do not reveal anything significant about the human condition.",
+      "E": "Some books that reveal something significant about the human condition are not literary classics."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Causal Chains"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Scientists once believed that the oversized head, long hind legs, and tiny forelimbs that characterized Tyrannosaurus rex developed in order to accommodate the great size and weight of this prehistoric predator. However, this belief must now be abandoned. The nearly complete skeleton of an earlier dinosaur has recently been discovered. This specimen had the characteristic T rex features but was one-fifth the size and one-hundredth the weight.",
+    "questionStem": "The answer to which one of the following questions would most help in evaluating the argument?",
+    "answerChoices": {
+      "A": "Was the ratio of the head size of the recently discovered dinosaur to its body size the same as that for T. rex?",
+      "B": "At what stage in its life did the recently discovered dinosaur die?",
+      "C": "Was T. rex the largest and heaviest prehistoric predator?",
+      "D": "Was the species to which the recently discovered dinosaur belonged related to T. rex?",
+      "E": "Did the recently discovered dinosaur prey on species as large as those that T. rex preyed on?"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "YXK is currently the television network with the highest overall number of viewers. Among YXK's programs, Bliss has the highest numbers of viewers. So Bliss currently has more viewers than any other program on television.",
+    "questionStem": "The flawed reasoning exhibited by the argument above is most similar to that exhibited by which one of the following?",
+    "answerChoices": {
+      "A": "Soccer players suffer more leg injuries, on average, than any other athletes at this university. Linda Wilson has suffered more leg injuries than any other soccer player at this university. Thus, Linda Wilson is the athlete at this university who has suffered the most leg injuries.",
+      "B": "Teachers at our school have won more teaching awards, on average, than teachers at any other school in this city. Janna Patel is the teacher who has won the most awards in the city. So Janna Patel is the best teacher at our school.",
+      "C": "The Olson Motor Company manufactures the three best-selling automobile models in the country. The Decade is the Olson Motor Company's best-selling model. Thus, the Decade is the best-selling model in the country.",
+      "D": "In this city the highest-paid police officer earns more than the highest-paid firefighter, and the lowest-paid police officer earns more than the lowest-paid firefighter. So in this city police officers earn more, on average, than firefighters do.",
+      "E": "Falling Fast is the film that is currently earning the most at the box office in the country. The most successful film in the country is typically the one that is showing in the most theaters. So Falling Fast is probably the film that is currently showing in the most theaters."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Principle Justify",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A contract between two parties is valid only if one party accepts a legitimate offer from the other; an offer is not legitimate if someone in the position of the party to whom it was made would reasonably believe the offer to be made in jest.",
+    "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
+    "answerChoices": {
+      "A": "Joe made a legitimate offer to buy Sandy’s car and Sandy has not rejected the offer. Thus, there was a valid contract.",
+      "B": "Kenta accepted Gus’s offer to buy a shipment of goods, but Gus, unknown to Kenta, made the offer in jest. Thus, the contract was not valid.",
+      "C": "Frank’s offer to buy Mindy’s business from her was legitimate. Thus, if Mindy is a reasonable person, she will accept the offer.",
+      "D": "Hai’s offer to sell artworks to Lea was made in such a way that no one in Lea’s position would have reasonably believed it to be made in jest. Thus, if Lea accepts the offer, they have a valid contract.",
+      "E": "The only offer that Sal made to Veronica was not a legitimate one. Thus, regardless of whether Sal made the offer in jest, there is no valid contract between them."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Scientist: A small group of islands near Australia is inhabited by several species of iguana; closely related species also exist in the Americas, but nowhere else. The islands in question formed long after the fragmentation of Gondwana, the ancient supercontinent that included present-day South America and Australia. Thus, these species’ progenitors must have rafted on floating debris across the Pacific Ocean from the Americas.",
+    "questionStem": "Which one of the following, if true, most weakens the scientist’s argument?",
+    "answerChoices": {
+      "A": "A number of animal species that inhabit the islands are not found in the Americas.",
+      "B": "Genetic analysis indicates that the iguana species on the islands are different in several respects from those found in the Americas.",
+      "C": "Documented cases of iguanas rafting long distances between land masses are uncommon.",
+      "D": "Fossils of iguana species closely related to those that inhabit the islands have been found in Australia.",
+      "E": "The lineages of numerous plant and animal species found in Australia or in South America date back to a period prior to the fragmentation of Gondwana."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A recent archaeological find in what was once the ancient kingdom of Macedonia contains the remains of the largest tomb ever found in the region. It must be the tomb of Alexander the Great since he was the greatest Macedonian in history, and so would have had the largest tomb. After all, he conquered an empire that stretched from Greece to much of Asia, though it collapsed after his death.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes for granted that greatness can be attained only by military conquest",
+      "B": "takes for granted that the largest tomb found so far must be the largest that was built",
+      "C": "does not show how the recently discovered tomb compares with other tombs from the same period that have been found in other regions",
+      "D": "fails to evaluate the significance of the fact that Alexander’s empire did not survive his death",
+      "E": "takes for granted that archaeologists can determine the size of the tomb from its remains"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Intermediate Conclusions",
+      "Explain Curious Fact"
+    ]
+  }
+]

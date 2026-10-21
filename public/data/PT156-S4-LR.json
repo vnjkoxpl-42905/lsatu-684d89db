@@ -1,0 +1,654 @@
+[
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Montoya: Many industrial chemical processes that\n currently use organic solvents could use ionic\n liquids instead. Ionic liquids are less hazardous\n to workers and generate less air pollution. Moreover, some reactions occur at a faster rate or\n yield smaller quantities of unwanted by-products\n when ionic liquids are used. So chemical\n companies should begin using ionic liquids\n for many reactions that currently use organic\n solvents. Peterson: Ionic liquids cost many times as much as\n organic solvents, so they are currently not\n practical for the chemical industry.",
+    "questionStem": "Of the following, which one, if true, is the strongest\n counter Montoya could make to Peterson’s argument?",
+    "answerChoices": {
+      "A": "The cost of organic solvents is only one of many expenses involved in industrial production of chemicals.",
+      "B": "New methods for removing by-products of chemical reactions have recently been developed.",
+      "C": "The chemical industry has historically been quick to adopt new techniques that increase the rate at which reactions occur.",
+      "D": "Ionic liquids can be reused many times, whereas organic solvents can be used only once.",
+      "E": "For the sake of public relations, companies will sometimes use a more environmentally friendly process even if it is slightly more expensive."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "The relationship between money and the things it allows\n one to purchase is like that between a tool and the tasks it\n enables its user to accomplish. Therefore, since tools are\n useless if there is no task that needs to be done, _______.",
+    "questionStem": "Which one of the following most logically completes the\n argument?",
+    "answerChoices": {
+      "A": "money should be thought of as no more useful than a tool",
+      "B": "any tool that enables its user to accomplish a task is valuable",
+      "C": "money is valueless in a world where nothing is for sale",
+      "D": "money should be regarded as a tool rather than a commodity",
+      "E": "the value of money derives from the tasks it allows one to accomplish"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "James: The world is increasingly divided between the\n computer literate and the computer illiterate. The economic gap between rich and poor is\n partly responsible for causing this division, but\n the economic gap will widen because of the\n increasing importance of computer literacy. Ariel: I disagree. Because of businesses’ increasing need\n for computer-literate employees, companies\n will have to train nearly all workers in computer\n skills. This will lessen the division between the\n computer literate and the computer illiterate. So\n whatever might cause the economic gap between\n rich and poor to widen in the future, it won’t be\n the importance of computer literacy.",
+    "questionStem": "James and Ariel disagree over whether",
+    "answerChoices": {
+      "A": "the economic gap between rich and poor will widen",
+      "B": "the economic gap between rich and poor is now partly responsible for causing the division between the computer literate and the computer illiterate",
+      "C": "businesses’ need for computer-literate employees will increase",
+      "D": "the economic gap between rich and poor will widen as a result of the increasing importance of computer literacy",
+      "E": "companies will have to train their employees in computer skills"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Predictions",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Overcrowding inclines human beings toward aggressive,\n competitive behavior. Just consider the behavior of\n normally considerate people driving in rush-hour traffic\n or attending crowded sporting events. This shows that, as\n world population continues to grow, aggressive behavior,\n including war and crime, will become more frequent and\n severe.",
+    "questionStem": "Each of the following, if true, strengthens the argument\n except:",
+    "answerChoices": {
+      "A": "The frequency and severity of overcrowding in the past have been roughly proportional to the size of world population.",
+      "B": "The frequency and severity of war and crime have generally increased in the past century, and world population also increased during that period.",
+      "C": "Some forms of aggressive, competitive behavior, including war, tend to occur even in situations in which human beings are not overcrowded.",
+      "D": "With respect to its effect on behavior, rush-hour traffic is an example of a situation in which human beings are overcrowded.",
+      "E": "Most mammals inhabiting a given region exhibit increasingly aggressive, competitive behavior as their population density in that region increases."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "EXCEPT",
+      "Intermediate Conclusions",
+      "Predictions",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Gahagan’s Greenstore sells a large volume of plants. The\n vast majority are sold wholesale to commercial buyers,\n most of them to landscape contractors. Gahagan’s also\n sells gardening implements, most of which are purchased\n retail by home gardeners.",
+    "questionStem": "Which one of the following is most strongly supported\n by the information above?",
+    "answerChoices": {
+      "A": "Gahagan’s makes a larger profit from the sale of plants than from the sale of all other products combined.",
+      "B": "Most of those who make regular wholesale purchases from Gahagan’s have never purchased gardening implements from Gahagan’s.",
+      "C": "There are more commercial buyers than home gardeners among Gahagan’s regular customers.",
+      "D": "Gahagan’s sells a few gardening implements wholesale to landscape contractors.",
+      "E": "A plant purchased from Gahagan’s is more likely to have been purchased by a landscape contractor than by a home gardener."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Anthropologist: During the last ice age, nomadic\n communities probably needed at least 15 or 20\n members to survive, and they were generally\n not much larger than this. Ice-age nomads are\n commonly portrayed as primarily big-game\n hunters, but most of their food must have in fact\n come from other sources, such as small game\n and plants. Hunting large animals is a dangerous\n activity that would have risked the lives of\n several members of the community.",
+    "questionStem": "Which one of the following most accurately describes\n the role played in the argumentation by the statement\n that ice-age nomads are commonly portrayed as\n primarily big-game hunters?",
+    "answerChoices": {
+      "A": "It is a premise used as support for the overall conclusion of the anthropologist’s argument.",
+      "B": "It is a clarification of one of the premises of the anthropologist’s argument.",
+      "C": "It is an objection that the anthropologist raises against an opposing theory.",
+      "D": "It is the overall conclusion of the anthropologist’s argument.",
+      "E": "It describes a claim that the anthropologist attempts to refute."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Rebuttals",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A truly visual art form—for example, painting—is one in\n which time plays no essential role. Though it takes time\n to look at a painting, there is no fixed order in which one\n must look at its parts, and no fixed amount of time one\n must spend examining it. In contrast, most art forms,\n such as poetry and music, are essentially temporal; that\n is, they require performance, which means they must\n be experienced in a fixed order and over a roughly fixed\n amount of time. Poetry, for instance, though often written\n down and thus seemingly a visual art, actually must\n be performed, even if the performance is only a silent\n reading to oneself.",
+    "questionStem": "If the statements above are true, then on the basis of\n them which one of the following must be true?",
+    "answerChoices": {
+      "A": "Truly visual art forms do not essentially involve performance.",
+      "B": "Poetry is less like music than it is like painting.",
+      "C": "Spatiality and temporality are mutually exclusive components of art forms.",
+      "D": "Art forms that must be examined for an extended period of time in order to be understood are essentially temporal.",
+      "E": "Anything capable of being performed is either musical or poetic, or both musical and poetic."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Actors generally learn their lines by focusing on the\n meanings of the words, the motivations of the characters\n uttering them, and the physical and emotional dimensions\n of their own performances. It seems likely that memory\n can be enhanced by factors such as emotion, action, and\n context, so this approach is probably more effective than\n mere rote memorization.",
+    "questionStem": "Each of the following, if true, adds support for the\n conclusion drawn above except:",
+    "answerChoices": {
+      "A": "Test subjects are best able to remember items on a shopping list when they are also told how those items will be used.",
+      "B": "The actors who are able to deliver the greatest amount of dialogue most effortlessly are those who have spent the most time learning their lines.",
+      "C": "Actors are more readily able to remember lines learned while making an appropriate motion— for example, walking across a stage—than lines learned without an accompanying action.",
+      "D": "People who try to memorize information by imagining that they are conveying it to somebody else who needs the information show higher retention than those who try to memorize the material by rote.",
+      "E": "People with no acting experience are able to memorize and deliver lines from a play more accurately after they have read and understood the entire play."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Journalists often claim that their investigation of the\n private lives of political leaders is an effort to improve\n society by forcing the powerful to conform to the same\n standards of conduct as the less powerful. In reality,\n however, the tactic is detrimental to society. It makes\n public figures more concerned with mere appearances,\n and makes everyone else cynical about the character of\n their leaders.",
+    "questionStem": "The claim that journalistic investigation of the private\n lives of political leaders is an effort to improve society\n plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It is a claim that the argument attempts to refute.",
+      "B": "It mentions a justification that is sometimes offered for a practice that, the argument concludes, has undesirable consequences.",
+      "C": "It is cited as evidence often given for an assertion that the argument concludes is false.",
+      "D": "It describes a phenomenon that, according to the argument, is much less damaging to society than journalists often assume.",
+      "E": "It gives an example of a phenomenon that the argument contends has very different effects from those it is generally assumed by everyone to have."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Rebuttals",
+      "Important Pivot",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "While the population of city X is approximately one-half\n that of city Y, the number of city X residents who are\n patients in hospitals is only one-fourth that of the number\n of city Y residents who are patients in hospitals.",
+    "questionStem": "Each of the following, if true, contributes to an\n explanation of the difference in the number of residents\n who are patients in hospitals except:",
+    "answerChoices": {
+      "A": "Preventive health programs are more prevalent in city X than in city Y.",
+      "B": "The hospitals in city X are noted as leaders in employing outpatient treatment wherever possible.",
+      "C": "The drinking water of city Y has dangerously high levels of pollutants, whereas this is not the case for city X.",
+      "D": "The hospitals in city Y are of very high quality, and residents of city X are often sent there for treatment.",
+      "E": "The lifestyle in city X is significantly less stressful than the lifestyle in city Y."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "EXCEPT",
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A law is futile unless most of the parties subject\n to it abide by it willingly. Thus, there can be no\n comprehensive international solution to the problem of\n pollution, since few nations would willingly give up their\n power over their own industries.",
+    "questionStem": "Which one of the following is an assumption required by\n the argument?",
+    "answerChoices": {
+      "A": "A comprehensive solution to the problems of pollution would require major changes in international law.",
+      "B": "Some nations would be required to give up some of their power over their own industries as part of any comprehensive solution to the problem of pollution.",
+      "C": "If most nations were willing to abide by international law, then there could be a comprehensive solution to the problem of pollution.",
+      "D": "The problems created by pollution affect most of the world’s nations, but the pollution itself is produced by the industries of relatively few nations.",
+      "E": "Most of the current international laws concerning pollution do not require nations to give up any of their power over their own industries."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Ecologist: El Niño, a global weather phenomenon that\n occurs once every several years, is expected to\n become more frequent in coming decades due to\n the global warming caused by air pollution. In\n region T, El Niño causes heavy winter rainfall.\n Since rodent populations typically increase\n during long periods of sustained rain, it is likely\n that average rodent populations in region T will\n also increase in coming decades.",
+    "questionStem": "Which one of the following, if true, would most weaken\n the ecologist’s argument?",
+    "answerChoices": {
+      "A": "In region T, there is typically much less rainfall in summer than there is in winter.",
+      "B": "Rodent populations in region T often diminish during long periods in which there are no heavy rains.",
+      "C": "In many regions that, on average, experience substantially more winter rainfall than region T does, average rodent populations are considerably lower than they are in region T.",
+      "D": "In region T, winters marked by relatively high rainfall have usually not been marked by long periods of sustained rain.",
+      "E": "The global warming caused by air pollution produces a number of effects, other than the increase in the frequency of El Niño, that could affect rodent populations."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains",
+      "Predictions",
+      "Timeframes",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "If the natural history museum stays within this year’s\n budget, it will be unable to stay within next year’s\n budget, for renovating next year will make the museum’s\n expenditures exceed next year’s very tight budget. After\n all, the museum will have to renovate next year if it\n does not do so this year, because work from previous\n renovations is deteriorating rapidly.",
+    "questionStem": "The argument’s conclusion can be properly inferred if\n which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The museum will stay within this year’s budget.",
+      "B": "This year’s budget is less than next year’s budget.",
+      "C": "The museum will not renovate next year.",
+      "D": "The museum will exceed this year’s budget if it renovates this year.",
+      "E": "The museum will stay within this year’s budget if it does not renovate this year."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "First Sentence Conclusion",
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "Intermediate Conclusions",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Science writer: Scientists often accept a scientific\n argument largely for social reasons, such as the\n argument’s acceptance by other scientists or the\n prestige of the scientist making the argument. But this is not at all to the sciences’ detriment,\n for similar social factors strongly influence every\n human endeavor.",
+    "questionStem": "The science writer’s argument is most vulnerable to\n criticism on the grounds that it",
+    "answerChoices": {
+      "A": "takes for granted that the only legitimate reasons for accepting an argument are social reasons",
+      "B": "takes for granted that whether a behavior obstructs the achievement of a particular endeavor’s goals depends on the prevalence of comparable behaviors in other endeavors",
+      "C": "fails to consider the possibility that scientists who accept an argument largely for social reasons also generally consider relevant scientific evidence before accepting the argument",
+      "D": "fails to consider the possibility that many scientists are unaware that they usually accept scientific arguments largely for social reasons",
+      "E": "takes for granted that a behavior that is not detrimental to the sciences will not be detrimental to any other human endeavor"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Anti-Causal",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Historian: Scholars writing histories of an era’s business\n practices must, of course, analyze the practices\n and strategies employed by firms of that era.\n But historians probably study successful firms\n more frequently than they do unsuccessful firms.\n Therefore, it is reasonable to think that business\n histories overestimate the successes of past\n businesses.",
+    "questionStem": "Which one of the following would, if true, most support\n the historian’s argument?",
+    "answerChoices": {
+      "A": "The specific factors that cause businesses to do poorly are often not inferable from historical records of business activity.",
+      "B": "Those who study past first-person accounts of business strategies inevitably approach them with certain present-day cultural assumptions.",
+      "C": "The many public legal documents that firms have had to file provide a record that is more objective than that provided by the firms’ own internal documents.",
+      "D": "The records of businesses that have gone bankrupt are destroyed more frequently than the records of other businesses.",
+      "E": "Scholars who study businesses of the past are usually trained in the effective techniques of business administration."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Manager: I plan to put together a successful marketing\n team by choosing highly skilled, independent\n workers who prefer not to work as part of a\n tightly knit group. This strategy is bound to\n succeed because recent research shows that when\n a common purpose is shared, the flexibility of\n loosely bound groups enables them to function\n better than tightly knit ones.",
+    "questionStem": "The reasoning in the manager’s argument is most\n vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "presumes that factors that are collectively sufficient for success are also individually necessary for success",
+      "B": "relies on research that has no apparent relevance to the manager’s proposed plan",
+      "C": "takes for granted that flexible teams always function significantly better than inflexible teams",
+      "D": "overlooks the possibility that people who prefer not to work in tightly knit groups may have difficulty committing to a common purpose",
+      "E": "confuses the goals that the manager is seeking to achieve with the goals that must be held in common by the members of the marketing team"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Different cultures have independently reached the\n conclusion that ingesting honey daily promotes vigor\n and longevity. Thus, unless strong evidence emerges\n contradicting this conclusion, we should assume that it\n is true.",
+    "questionStem": "The pattern of reasoning in which one of the following is\n most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Three engineers have inspected the bridge, and each has independently concluded that it is safe. So unless good evidence emerges that the bridge is unsafe, it should be considered safe.",
+      "B": "Numerous studies have concluded that most people benefit from weight-training exercises. Thus, since no other form of exercise has been shown to be more beneficial, most people should be encouraged to exercise with weights.",
+      "C": "The members of an independent group of scientists have concluded that human activities over the last century have disrupted global weather patterns. Thus, unless these scientists are working from questionable assumptions, we should conclude that their assessment is correct.",
+      "D": "Three theater critics, none of whom had any influence on the others, said that Tales in Tokyo was not worth the price of admission. Thus, unless each of these critics happened to attend the play on the same night, it is unlikely that the play will be successful.",
+      "E": "Several different physicians examined Janet, and none could agree on a diagnosis. Therefore, unless new evidence shows that Janet is unhealthy, she should instead assume that she is healthy."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Conditional Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Land developer: In a certain nation, stringent regulations\n prevent private landowners from building on\n their land if any endangered species is present\n on it. These regulations make the presence of\n endangered species a severe financial liability\n for many landowners and thereby discourage\n the landowners from protecting the endangered\n species on their land. Therefore, endangered\n species would very likely not be harmed by\n removal of the regulations on land development.",
+    "questionStem": "The reasoning in the land developer’s argument is most\n vulnerable to criticism on which one of the following\n grounds?",
+    "answerChoices": {
+      "A": "It confuses a condition whose presence would be required in order for a certain result to be produced with a condition whose presence would be required to prevent that result from occurring.",
+      "B": "It justifies a claim containing a value judgment solely on the basis of factual claims that do not in themselves entail that value judgment.",
+      "C": "It unjustifiably overlooks the possibility that even if certain factors tend to produce a given effect, they may be likely to produce stronger countervailing effects as well.",
+      "D": "It fails to take into account the possibility that policies that are not in the interest of land developers may well be in the interest of landowners.",
+      "E": "It fails to account for potential reactions from private landowners who do not have any endangered species on their land."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "I promised Bernie that I would answer his question.\n He asked me whether his project had been approved. I\n misunderstood and thought he had asked whether I had\n approved it. I said, truthfully, “I would approve it if I\n could, but I don’t have the authority to do so—that is up\n to Dorothy, and she hasn’t yet made a decision.” Thus, I\n fulfilled my promise to Bernie.",
+    "questionStem": "Which one of the following, if assumed, enables the\n conclusion above to be properly drawn?",
+    "answerChoices": {
+      "A": "All there is to answering a question is giving the questioner the information requested.",
+      "B": "No person can be held accountable for another person’s decisions.",
+      "C": "The person responsible for a decision is the one who should explain the decision.",
+      "D": "One need not fulfill a promise in order to do the best that could be done to fulfill it.",
+      "E": "Making a promise always obliges a person to keep it."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Clarification/Misunderstanding",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Azalea bushes flourish in acidic soil. Clay soil, while\n rarely acidic, can be mixed with other types of soil to\n create a soil that is acidic. Hence, azalea bushes can be\n made to flourish in clay soil.",
+    "questionStem": "Which one of the following is an assumption on which\n the argument depends?",
+    "answerChoices": {
+      "A": "Mixing an acidic soil with another type of soil always results in an acidic soil.",
+      "B": "Clay soil that is mixed with certain other types of soil is still clay soil.",
+      "C": "Whenever clay soil is mixed with other types of soil, an acidic soil results.",
+      "D": "Some plants do not flourish in acidic soil.",
+      "E": "Azalea bushes do as well in treated clay soils as in naturally acidic soils."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Company policy: Eligible employees will be granted up\n to six weeks of paid parental leave following\n the birth or adoption of a child. To be eligible,\n an employee must apply for the benefit at least\n three months prior to the beginning of the leave\n period and must have at least one year of full-\n time employment with the company at the time of\n application.",
+    "questionStem": "Which one of the following judgments most closely\n conforms to the company policy?",
+    "answerChoices": {
+      "A": "Mac is a full-time employee who has been with the company for exactly one year. He just adopted a child, and he applied for parental leave three months ago, so Mac should be granted the leave.",
+      "B": "Sara has worked full-time for the company for three years, and she applied for parental leave four months before the recent birth of her child. However, she should not be granted the leave because she took a leave of absence within the past year.",
+      "C": "Hal, a second-year, full-time employee, applied for parental leave three months ago. He wishes to stay at home for only two weeks following the impending birth of his child, so the company should not grant him parental leave.",
+      "D": "Dudley has worked part-time for the company for the past seven years. He applied for parental leave over three months before the birth of his child, so it should be granted to him.",
+      "E": "Maria has worked full-time for the company for the past two years and applied for parental leave six months prior to her adoption of a child, so she should be granted parental leave."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "An effective acting performance does not call the\n audience’s attention to the fact that it is a performance. That would make it more difficult for the audience to\n empathize with the character the actor is playing, and\n effective dramatic performances do not detract from the\n audience’s appreciation of a play.",
+    "questionStem": "The argument’s conclusion follows logically from the\n premises if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "An audience will not completely appreciate a play unless all of the acting performances in the play are effective.",
+      "B": "As long as an acting performance does not call the audience’s attention to the fact that it is a performance, it will not detract from the audience’s appreciation of a play.",
+      "C": "If a performance by an actor in a play enhances the audience’s appreciation of the play, then the play as a whole is better as a result.",
+      "D": "An effective dramatic performance in a play will enhance the audience’s appreciation of the play.",
+      "E": "A dramatic performance that makes it more difficult for the audience to empathize with the actor’s character detracts from the audience’s appreciation of the play."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Links Between Premises",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The computer software industry is rapidly growing and\n has been for some time. For a company to grow rapidly,\n it must be innovative, which means it must have creative\n employees or a management that is open to new ideas.\n Logichut is a software company that is said to have no\n creative employees. If so, its management is evidently\n open to new ideas.",
+    "questionStem": "The reasoning in the argument is flawed in that it",
+    "answerChoices": {
+      "A": "illicitly presumes that because a set of things has a certain property, each member of that set has the property",
+      "B": "confuses a necessary condition for a company’s being innovative with a sufficient condition for a company’s being innovative",
+      "C": "illicitly concludes that because many people believe something, it must be true",
+      "D": "confuses a necessary condition for a company to grow rapidly with a sufficient condition for a company to grow rapidly",
+      "E": "overlooks the possibility that a software company could have both creative employees and a management that is open to new ideas"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Famous Flaws",
+      "Part vs. Whole",
+      "Conditional Conclusion",
+      "Ruling Out Options",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A movie studio’s script readers discard all proposed\n scripts that are not submitted by agents, and they discard\n all scripts that are incorrectly formatted. So a script that\n is submitted by an agent and formatted correctly will not\n be discarded by the studio’s script readers.",
+    "questionStem": "Which one of the following exhibits a flawed pattern of\n reasoning that most closely parallels that in the argument\n above?",
+    "answerChoices": {
+      "A": "To be accepted, entries in the essay contest must be postmarked by the deadline and accompanied by a completed entry form. March 21 was the deadline. Thus, an entry that is accompanied by a completed entry form but postmarked March 22 will not be accepted.",
+      "B": "If your kitchen is well organized and you are a good cook, the meals you prepare will be delicious. The dinner Jon prepared last week was not at all tasty, so his kitchen must not be well organized.",
+      "C": "If Bob starts exercising daily, he will improve his fitness level. His fitness level will also improve if he quits smoking. So if he refuses to exercise and continues to smoke, his fitness level is not going to improve.",
+      "D": "The police are allowed to ticket any parked car that does not have a parking permit. They are also allowed to ticket any parked car whose parking permit has expired. Thus, the police are going to ticket Ruta’s car, for her parking permit has expired.",
+      "E": "Most dogs that have attended obedience classes respond correctly to basic commands, but only some are able to perform advanced tricks. Thus, any dog that has attended obedience classes and performs advanced tricks will be able to respond correctly to basic commands."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Conditional Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Translator: Dr. Abner, apparently scornful of my\n translation of an ancient poem on the grounds\n that it is inaccurate, says that my translation\n produces in most readers feelings other than\n those the original text was intended to produce. However, as Dr. Abner should realize, we do not\n know how people originally responded to the\n poem or how its author intended them to respond. So Dr. Abner’s criticism is unjustified.",
+    "questionStem": "The translator’s argument is flawed in that it",
+    "answerChoices": {
+      "A": "fails to adequately address the possibility that the original poem had more than one author",
+      "B": "draws a conclusion purely on the basis of an appeal to popular opinion",
+      "C": "fails to adequately address the possibility that the original text was not intended to produce any particular feelings in the reader",
+      "D": "rejects an argument merely because of the circumstances of the person who offered it",
+      "E": "concludes that we cannot know that certain effects were not what the author intended merely because we do not know what specific effects the author did intend"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT156",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Letter to the editor: In calling on antinuclear activists to\n “live up to their own ideals” and help find better\n ways of disposing of nuclear waste, advocates of\n nuclear power merely prove their own dishonesty.\n Everyone knows that antinuclear activists\n want the world rid of nuclear power as soon\n as possible, and they believe any other option\n is environmentally irresponsible. But finding\n better ways of disposing of nuclear waste would\n probably make nuclear power acceptable to more\n people and thus likelier to continue.",
+    "questionStem": "Which one of the following principles, if valid, most\n helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "If other options are available, it is irresponsible to take a possibly beneficial course of action that has the potential of causing harm.",
+      "B": "It is better to eliminate a potentially harmful practice than to try to improve it, if improving it will not significantly reduce its capacity to cause harm.",
+      "C": "If one is calling on people to act in a way that will possibly undermine their goals, it is dishonest to ask that they do so for the sake of their ideals.",
+      "D": "It is irresponsible to try to induce others to find a practice acceptable if it is not one’s own belief that that practice is acceptable.",
+      "E": "It is dishonest to ask people to live up to their ideals without revealing whether one’s own ideals conflict with theirs."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  }
+]

@@ -1,0 +1,63 @@
+project_id = "atrcqxpmqrynmtvvyjju"
+
+[functions.preview-transactional-email]
+verify_jwt = false
+
+[functions.public-booking]
+verify_jwt = false
+
+[functions.booking-upload]
+verify_jwt = false
+
+[functions.gemini-proxy]
+verify_jwt = false
+
+[functions.gcal-sync-pull]
+verify_jwt = false
+
+[functions.gcal-reconcile]
+verify_jwt = false
+
+[functions.gcal-event-write]
+verify_jwt = true
+
+[functions.gcal-list-calendars]
+verify_jwt = true
+
+[functions.gmail]
+verify_jwt = true
+
+[functions.gdrive]
+verify_jwt = true
+
+[functions.booking-pass]
+verify_jwt = false
+
+[functions.booking-pass-admin]
+verify_jwt = true
+
+[functions.booking-commerce-webhook]
+verify_jwt = false
+
+[functions.single-session]
+verify_jwt = false
+
+[functions.single-session-sweeper]
+verify_jwt = false
+
+[functions.single-session-outbox]
+verify_jwt = false
+
+[functions.mcp]
+verify_jwt = false
+
+[functions.gcal-smoke]
+verify_jwt = true
+
+# Authenticates with its own worker secret, like the other sweepers, because a
+# scheduler has no user session to present.
+[functions.sweep-rrc-grading]
+verify_jwt = false
+
+[functions.stripe-sync]
+verify_jwt = true

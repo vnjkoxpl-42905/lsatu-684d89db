@@ -1,0 +1,175 @@
+import { describe, expect, it } from 'vitest';
+import {
+  DEFAULT_RC_SEARCH_FILTERS,
+  buildRcSearchSnippet,
+  questionFiltersActive,
+  runRcSearch,
+  type RcSearchFilters,
+  type RcSearchPassage,
+} from './rcSearch';
+import type { RcQuestionIndexEntry } from './rcTypes';
+
+const passage = (over: Partial<RcSearchPassage>): RcSearchPassage => ({
+  passageId: 1,
+  section: 1,
+  setNumber: 1,
+  title: 'Risk Communication',
+  topic: 'Science',
+  format: 'Standard (Non-Comparative)',
+  frameworks: ['Problem / Solution'],
+  difficulty: 2,
+  questionCount: 2,
+  explainedCount: 2,
+  questionIds: [11, 12],
+  firstWords: 'To many developers…',
+  preptest: 101,
+  ...over,
+});
+
+const question = (over: Partial<RcQuestionIndexEntry>): RcQuestionIndexEntry => ({
+  questionId: 11,
+  passageId: 1,
+  preptest: 101,
+  section: 1,
+  setNumber: 1,
+  position: 1,
+  questionType: 'Main Point',
+  questionTypeFamily: 'Big Picture',
+  difficulty: 1,
+  features: [],
+  prompt: 'Which one of the following best expresses the main point of the passage?',
+  ...over,
+});
+
+const filters = (over: Partial<RcSearchFilters>): RcSearchFilters => ({
+  ...DEFAULT_RC_SEARCH_FILTERS,
+  ...over,
+});
+
+const P1 = passage({});
+const P2 = passage({
+  passageId: 2,
+  title: 'Comparative Law Passage',
+  topic: 'Law',
+  format: 'Comparative',
+  frameworks: ['Present Debate'],
+  difficulty: 4,
+  preptest: 150,
+  questionIds: [21],
+});
+const Q11 = question({});
+const Q12 = question({
+  questionId: 12,
+  position: 2,
+  questionType: 'Inference',
+  questionTypeFamily: 'Implied',
+  difficulty: 3,
+  features: ['EXCEPT', 'Must Be True'],
+  prompt: 'Which one of the following is most strongly supported by the passage?',
+});
+const Q21 = question({ questionId: 21, passageId: 2, preptest: 150, prompt: null });
+
+describe('runRcSearch', () => {
+  it('returns everything when no filters or query are set', () => {
+    const result = runRcSearch({
+      passages: [P1, P2],
+      questions: [Q11, Q12, Q21],
+      query: '',
+      filters: filters({}),
+    });
+    expect(result.totalPassages).toBe(2);
+    expect(result.totalQuestions).toBe(3);
+  });
+
+  it('filters passages by topic and PrepTest range', () => {
+    const byTopic = runRcSearch({
+      passages: [P1, P2],
+      questions: [Q11, Q12, Q21],
+      query: '',
+      filters: filters({ topics: ['Law'] }),
+    });
+    expect(byTopic.passages.map((r) => r.passage.passageId)).toEqual([2]);
+
+    const byRange = runRcSearch({
+      passages: [P1, P2],
+      questions: [Q11, Q12, Q21],
+      query: '',
+      filters: filters({ preptestMin: 120 }),
+    });
+    expect(byRange.passages.map((r) => r.passage.passageId)).toEqual([2]);
+  });
+
+  it('excludes passages with no question matching the question-level filters', () => {
+    const result = runRcSearch({
+      passages: [P1, P2],
+      questions: [Q11, Q12, Q21],
+      query: '',
+      filters: filters({ features: ['EXCEPT'] }),
+    });
+    expect(result.totalPassages).toBe(1);
+    expect(result.passages[0].matchedQuestionCount).toBe(1);
+    expect(result.questions.map((r) => r.question.questionId)).toEqual([12]);
+  });
+
+  it('ANDs across dimensions: a type inside the wrong family does not match', () => {
+    const result = runRcSearch({
+      passages: [P1],
+      questions: [Q11, Q12],
+      query: '',
+      filters: filters({ families: ['Implied'], questionTypes: ['Main Point'] }),
+    });
+    expect(result.totalPassages).toBe(0);
+  });
+
+  it('keeps a passage whose title matches the query even when no prompt does', () => {
+    const result = runRcSearch({
+      passages: [P1, P2],
+      questions: [Q11, Q12, Q21],
+      query: 'comparative law',
+      filters: filters({}),
+    });
+    expect(result.passages.map((r) => r.passage.passageId)).toEqual([2]);
+    expect(result.passages[0].titleMatched).toBe(true);
+    expect(result.totalQuestions).toBe(0);
+  });
+
+  it('returns a snippet centered on the prompt match', () => {
+    const result = runRcSearch({
+      passages: [P1],
+      questions: [Q11, Q12],
+      query: 'strongly supported',
+      filters: filters({}),
+    });
+    expect(result.totalQuestions).toBe(1);
+    expect(result.questions[0].snippet?.match).toBe('strongly supported');
+    // The match sits near the start of this short stem, so the window begins
+    // at the first character with no leading ellipsis.
+    expect(result.questions[0].snippet?.before).toBe('Which one of the following is most ');
+  });
+
+  it('questions with a null difficulty only match when no difficulty filter is set', () => {
+    const qNull = question({ questionId: 31, difficulty: null });
+    const filtered = runRcSearch({
+      passages: [P1],
+      questions: [qNull],
+      query: '',
+      filters: filters({ questionDifficulties: [1] }),
+    });
+    expect(filtered.totalQuestions).toBe(0);
+  });
+});
+
+describe('questionFiltersActive', () => {
+  it('is false for the defaults and true once any question dimension is set', () => {
+    expect(questionFiltersActive(filters({}))).toBe(false);
+    expect(questionFiltersActive(filters({ families: ['Implied'] }))).toBe(true);
+    expect(questionFiltersActive(filters({ questionDifficulties: [5] }))).toBe(true);
+  });
+});
+
+describe('buildRcSearchSnippet', () => {
+  it('is null when the query is absent or not found', () => {
+    expect(buildRcSearchSnippet('hello world', '')).toBeNull();
+    expect(buildRcSearchSnippet('hello world', 'absent')).toBeNull();
+  });
+});
