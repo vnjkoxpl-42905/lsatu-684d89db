@@ -19,6 +19,97 @@ const session = (id: string) => ({ id, userId: 'actor', passageIds: [10], config
 beforeEach(() => { vi.clearAllMocks(); localStorage.clear(); sessionStorage.clear(); mocks.exposure.mockResolvedValue(undefined); mocks.user = { id: 'actor' }; mocks.query = null; mocks.load.mockResolvedValue(passage); mocks.get.mockResolvedValue(null); mocks.create.mockImplementation(async (_c, _ids, req) => session(req.id)); });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 describe('read-only RC question lookup', () => {
+  it('opens passage-only metadata without selecting a question, revealing text or writing progress', async () => {
+    const storageSet = vi.spyOn(Object.getPrototypeOf(sessionStorage), 'setItem');
+    mount('passage=10');
+    await screen.findByRole('button', { name: 'Reveal passage' });
+    expect(screen.getByRole('heading', { name: 'Passage preview' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'PT 140 · Section 4 · Passage 1' })).toBeInTheDocument();
+    expect(screen.queryByText('Passage body')).not.toBeInTheDocument();
+    expect(screen.queryByText('Question stem 3')).not.toBeInTheDocument();
+    expect(mocks.exposure).not.toHaveBeenCalled(); expect(mocks.get).not.toHaveBeenCalled(); expect(mocks.create).not.toHaveBeenCalled(); expect(storageSet).not.toHaveBeenCalled();
+  });
+  it.each(['', '0', '-1', 'not-a-question', '1.5', '9007199254740992'])('rejects explicitly invalid q=%s instead of treating it as passage-only', async (q) => {
+    mount(`passage=10&q=${q}`);
+    expect(await screen.findByRole('alert')).toHaveTextContent('question address is invalid');
+    expect(mocks.load).not.toHaveBeenCalled(); expect(screen.queryByRole('button', { name: 'Start passage drill' })).toBeNull();
+  });
+  it('rejects passage-only metadata when the passage has no drillable questions', async () => {
+    mocks.load.mockResolvedValue({ ...passage, questions: [] });
+    mount('passage=10');
+    expect(await screen.findByRole('alert')).toHaveTextContent('no available questions');
+    expect(screen.queryByRole('button', { name: 'Start passage drill' })).toBeNull();
+  });
+  it('reveals only passage text after an acknowledged passage-only exposure', async () => {
+    let acknowledge!: () => void;
+    mocks.exposure.mockImplementation(() => new Promise<void>((resolve) => { acknowledge = resolve; }));
+    mount('passage=10');
+    fireEvent.click(await screen.findByRole('button', { name: 'Reveal passage' }));
+    await screen.findByRole('button', { name: 'Recording exposure…' });
+    expect(screen.queryByText('Passage body')).not.toBeInTheDocument();
+    acknowledge(); await screen.findByText('Passage body');
+    expect(mocks.exposure.mock.calls[0][0]).toMatchObject({ actorId: 'actor', passageId: 10, source: 'preview' });
+    expect(screen.queryByText('Question stem 3')).not.toBeInTheDocument(); expect(screen.queryByText('Choice text')).not.toBeInTheDocument();
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+  it('starts the whole passage without an arbitrary question-focus parameter', async () => {
+    mount('passage=10'); fireEvent.click(await screen.findByRole('button', { name: 'Start passage drill' }));
+    await waitFor(() => expect(mocks.navigate).toHaveBeenCalled());
+    expect(mocks.create).toHaveBeenCalledTimes(1); expect(mocks.create.mock.calls[0][1]).toEqual([10]);
+    const target = new URL(mocks.navigate.mock.calls[0][0], 'https://example.test');
+    expect(target.pathname).toBe('/rc/drill'); expect(target.searchParams.has('q')).toBe(false); expect(target.searchParams.get('returnTo')).toBe('/practice/drills?section=rc');
+  });
+  it('recovers the same passage-only request after refresh', async () => {
+    mocks.get.mockRejectedValueOnce(new Error('Offline'));
+    const first = mount('passage=10'); fireEvent.click(await screen.findByRole('button', { name: 'Start passage drill' })); await screen.findByRole('alert');
+    const id = mocks.get.mock.calls[0][0];
+    expect(JSON.parse(sessionStorage.getItem('lsatu:rc-preview-launch:v1:actor')!)).toMatchObject({ id, questionId: null });
+    first.unmount(); mount('passage=10'); fireEvent.click(await screen.findByRole('button', { name: 'Start passage drill' }));
+    await waitFor(() => expect(mocks.navigate).toHaveBeenCalled()); expect(mocks.create.mock.calls[0][2].id).toBe(id);
+  });
+  it.each([[null, 3], [3, null]])('rejects retained launch focus %s for current focus %s', async (savedFocus, currentFocus) => {
+    sessionStorage.setItem('lsatu:rc-preview-launch:v1:actor', JSON.stringify({ id: 'original', actorId: 'actor', passageId: 10, questionId: savedFocus, back: '/practice/drills?section=rc' }));
+    mount(`passage=10${currentFocus === null ? '' : `&q=${currentFocus}`}`);
+    fireEvent.click(await screen.findByRole('button', { name: 'Start passage drill' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('different passage launch'); expect(mocks.get).not.toHaveBeenCalled(); expect(mocks.create).not.toHaveBeenCalled(); expect(mocks.navigate).not.toHaveBeenCalled();
+    expect(sessionStorage.getItem('lsatu:rc-preview-launch:v1:actor')).toContain('original');
+  });
+  it('does not conflate missing q and malformed q while a passage-only launch is pending', async () => {
+    let resolve!: (value: null) => void;
+    mocks.get.mockImplementation(() => new Promise<null>((done) => { resolve = done; }));
+    const view = mount('passage=10'); fireEvent.click(await screen.findByRole('button', { name: 'Start passage drill' }));
+    await waitFor(() => expect(mocks.get).toHaveBeenCalled());
+    const id = mocks.get.mock.calls[0][0];
+    mocks.query = 'passage=10&q=invalid';
+    view.rerender(<MemoryRouter initialEntries={['/rc/preview?passage=10']}><RcQuestionPreview /></MemoryRouter>);
+    await screen.findByText('That question address is invalid.'); resolve(null);
+    expect(await screen.findByRole('alert')).toHaveTextContent('preview changed');
+    expect(mocks.create).not.toHaveBeenCalled(); expect(mocks.navigate).not.toHaveBeenCalled(); expect(sessionStorage.getItem('lsatu:rc-preview-launch:v1:actor')).toContain(id);
+  });
+  it('does not navigate or clear a passage-only launch when its account changes during creation', async () => {
+    let resolve!: (value: unknown) => void;
+    mocks.create.mockImplementation(() => new Promise((done) => { resolve = done; }));
+    const view = mount('passage=10'); fireEvent.click(await screen.findByRole('button', { name: 'Start passage drill' }));
+    await waitFor(() => expect(mocks.create).toHaveBeenCalledTimes(1));
+    const id = mocks.create.mock.calls[0][2].id;
+    mocks.user = { id: 'other-actor' };
+    view.rerender(<MemoryRouter initialEntries={['/rc/preview?passage=10']}><RcQuestionPreview /></MemoryRouter>);
+    resolve(session(id));
+    expect(await screen.findByRole('alert')).toHaveTextContent('account changed'); expect(mocks.navigate).not.toHaveBeenCalled();
+    expect(JSON.parse(sessionStorage.getItem('lsatu:rc-preview-launch:v1:actor')!)).toMatchObject({ id, questionId: null });
+  });
+  it('does not reveal passage-only text when a supplied question address replaces it during exposure recording', async () => {
+    let resolve!: () => void;
+    mocks.exposure.mockImplementation(() => new Promise<void>((done) => { resolve = done; }));
+    const view = mount('passage=10'); fireEvent.click(await screen.findByRole('button', { name: 'Reveal passage' }));
+    await waitFor(() => expect(mocks.exposure).toHaveBeenCalledTimes(1));
+    mocks.query = 'passage=10&q=3';
+    view.rerender(<MemoryRouter initialEntries={['/rc/preview?passage=10']}><RcQuestionPreview /></MemoryRouter>);
+    await screen.findByRole('button', { name: 'Recording exposure…' }); resolve();
+    await screen.findByRole('button', { name: 'Reveal passage and question' });
+    expect(screen.queryByText('Passage body')).not.toBeInTheDocument(); expect(screen.queryByText('Question stem 3')).not.toBeInTheDocument();
+    expect(sessionStorage.getItem('lsatu:rc-preview-exposure:v1:actor:10')).not.toBeNull();
+  });
   it('reveals text only after exact exposure acknowledgment and retries the same event after refresh', async () => {
     mocks.exposure.mockRejectedValueOnce(new Error('Exposure offline'));
     const first = mount();

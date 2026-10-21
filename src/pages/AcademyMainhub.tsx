@@ -457,7 +457,7 @@ export default function AcademyMainhub({
   }, [setOrbitalActive, stage]);
 
   return (
-    <div data-section={section} className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12">
+    <div data-section={section} className={cn("drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12", section === "rc" && "rc-practice-workspace")}>
       {/* 1140px and a 20px gap: the design's column. The three cards each carry
           26-30px of internal padding, so the gap between them stays smaller than
           their padding by design — they read as three objects on one field, not
@@ -514,12 +514,12 @@ export default function AcademyMainhub({
             })()}
           </section>
         ) : section === "rc" && stage !== "analytics" ? <>
-          <div className="drill-observatory-tools">
-            <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} />
+          <div className={`drill-observatory-tools${rcBuilderRequested ? ' rc-builder-question-shortcut' : ''}`}>
+            <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} triggerLabel="Find a passage or question" />
           </div>
           {rcBuilderRequested ? <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
             <button type="button" className="rc-practice-back" onClick={closeRcBuilder}>Back to RC practice</button>
-            <RcHubSurface embedded showHistory={false} />
+            <RcHubSurface embedded showHistory={false} openPickerOnEntry={searchParams.get('builder') === 'manual'} />
           </section> : <RcPracticeLanding
             onChooseAutomatic={() => openRcBuilder('automatic')}
             onChooseManual={() => openRcBuilder('manual')}
@@ -534,7 +534,7 @@ export default function AcademyMainhub({
                 })()}
               <button type="button" className="rc-practice-link" onClick={() => changeView('completed')}>View completed RC drills <span aria-hidden="true">→</span></button>
             </>}
-            assigned={<AssignedWorkPanel drillReturnTo={drillReturnTo} />}
+            assigned={<AssignedWorkPanel drillReturnTo={drillReturnTo} scope="rc" />}
           />}
         </> : <>
         {/* The address row rides above the hero rather than inside it: the

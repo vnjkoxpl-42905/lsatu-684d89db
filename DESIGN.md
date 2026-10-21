@@ -3,33 +3,36 @@ name: LSAT Academy
 description: Two registers under one roof - a dark marble hall at the door, a quiet neutral workroom inside.
 colors:
   # ── The Hall (unauthenticated register; dark ground) ──
-  hall-night: "#070606"
-  hall-night-raised: "#0a0908"
-  hall-marble: "#eae5da"
-  hall-marble-secondary: "#a6a093"
-  hall-marble-muted: "#6e695e"
+  hall-night: "#131718"
+  hall-night-raised: "#282b2c"
+  hall-marble: "#efede6"
+  hall-marble-secondary: "#babcb5"
+  hall-marble-muted: "#92988f"
   hall-bronze: "#c6a467"
   hall-bronze-bright: "#e8cf96"
   hall-bronze-deep: "#8a6f3e"
   hall-cyan: "#8ad8e2"
   hall-cyan-bright: "#c3eef4"
   # ── The Workroom (authenticated register; light is the shipped default) ──
-  workroom-page: "#fcfcfc"
-  workroom-card: "#ffffff"
-  workroom-raised: "#f7f7f7"
-  workroom-fill: "#f2f2f2"
-  workroom-ink: "#121212"
-  workroom-ink-muted: "#737373"
-  workroom-ink-faint: "#8c8c8c"
-  workroom-hairline: "#e0e0e0"
-  workroom-field: "#e6e6e6"
+  workroom-page: "#f7f4ee"
+  workroom-card: "#f7f4ee"
+  workroom-raised: "#eeebe2"
+  workroom-fill: "#eeebe2"
+  workroom-ink: "#252b26"
+  workroom-primary: "#131718"
+  workroom-primary-hover: "#2a2d2d"
+  workroom-on-primary: "#efede6"
+  workroom-ink-muted: "#64645b"
+  workroom-ink-faint: "#64645b"
+  workroom-hairline: "#d5d4ca"
+  workroom-field: "#747773"
   # ── The Workroom, dark alternate (opt-in via the theme toggle) ──
-  workroom-night-page: "#0a0a0a"
-  workroom-night-card: "#121212"
-  workroom-night-raised: "#1a1a1a"
-  workroom-night-ink: "#fafafa"
-  workroom-night-ink-muted: "#a3a3a3"
-  workroom-night-hairline: "#262626"
+  workroom-night-page: "#131718"
+  workroom-night-card: "#131718"
+  workroom-night-raised: "#282b2c"
+  workroom-night-ink: "#efede6"
+  workroom-night-ink-muted: "#babcb5"
+  workroom-night-hairline: "#747773"
   # ── Meaning (identical in both themes; semantic only) ──
   state-correct: "#10b77f"
   state-incorrect: "#f43e5c"
@@ -93,14 +96,14 @@ spacing:
   xl: "32px"
 components:
   button-primary:
-    backgroundColor: "{colors.workroom-ink}"
-    textColor: "{colors.workroom-page}"
+    backgroundColor: "{colors.workroom-primary}"
+    textColor: "{colors.workroom-on-primary}"
     rounded: "{rounded.md}"
     padding: "8px 16px"
     height: "44px"
   button-primary-hover:
-    backgroundColor: "{colors.workroom-ink}"
-    textColor: "{colors.workroom-page}"
+    backgroundColor: "{colors.workroom-primary-hover}"
+    textColor: "{colors.workroom-on-primary}"
   button-outline:
     backgroundColor: "{colors.workroom-page}"
     textColor: "{colors.workroom-ink}"
@@ -169,7 +172,7 @@ Two grounds, one shared vocabulary of meaning.
 
 ### Primary
 
-- **Workroom Ink** (`#121212`): the Workroom's near-black. It is the text colour, the fill of every primary button, and the colour of the focus ring. The Workroom has no accent, so ink carries emphasis by itself.
+- **Workroom Ink** (`#252b26`): the Workroom's near-black. It is the heading text and focus-ring colour. The light Workroom primary action uses the darker surface `#131718` with `#efede6` text. Its shared Button hover uses 90% primary over paper, rendering approximately `#2a2d2d`; this provides a visible tonal step without introducing an accent.
 - **Hall Bronze** (`#c6a467`): the Hall's warm light. Hairline borders on the call to action, a sheen across it on hover, and the selection highlight. It exists only on the Hall's night ground and never crosses into the Workroom.
 
 ### Secondary
@@ -185,11 +188,11 @@ Individual rooms carry their own palettes behind a wrapper class and are documen
 
 ### Neutral
 
-- **Workroom Page** (`#fcfcfc`) and **Card** (`#ffffff`): the page ground and the surface that sits on it. One step of separation, no more.
-- **Workroom Raised** (`#f7f7f7`) and **Fill** (`#f2f2f2`): the two tonal steps available for layering and for resting fills.
-- **Workroom Ink Muted** (`#737373`): secondary text. Measures 4.62:1 on the page, which clears the floor with almost nothing to spare. Do not lighten it.
-- **Workroom Hairline** (`#e0e0e0`) and **Field** (`#e6e6e6`): the borders that do the work shadows used to.
-- **Hall Marble** (`#eae5da`), with secondary (`#a6a093`) and muted (`#6e695e`) steps: warm off-white text on the night ground.
+- **Workroom Page** (`#f7f4ee`) and **Card** (`#f7f4ee`): the shared open paper ground. Use a restrained border when grouping needs a visible edge.
+- **Workroom Raised** (`#eeebe2`) and **Fill** (`#eeebe2`): the two tonal steps available for layering and for resting fills.
+- **Workroom Ink Muted** (`#64645b`): secondary text. Use it for supporting text on the approved paper canvas; preserve readable contrast.
+- **Workroom Hairline** (`#d5d4ca`) and **Field** (`#747773`): the borders that do the work shadows used to.
+- **Hall Marble** (`#efede6`), with secondary (`#babcb5`) and muted (`#92988f`) steps: warm off-white text on the night ground.
 
 ### State (semantic only, never decorative)
 
@@ -279,7 +282,7 @@ Borders are one pixel. There is no second border weight in the Workroom.
 
 - **Character:** precise and quiet. A button is a plain rectangle with a label. It darkens slightly on hover and does nothing else. It does not lift, does not cast a shadow, and does not scale on press.
 - **Shape:** gently rounded (6px).
-- **Primary:** ink fill (`#121212`), page-coloured label, 8px by 16px padding.
+- **Primary:** dark fill (`#131718`), on-dark label (`#efede6`), 8px by 16px padding. Hover is 90% primary over paper (approximately `#2a2d2d`); focus uses heading ink `#252b26`.
 - **Outline:** page background, one-pixel field border, ink label.
 - **Ghost:** no fill at rest, a tonal fill on hover.
 - **Sizes:** default 44px tall, small 40px, large 48px, icon 44 by 44. Every size clears the 44px touch minimum by being that height, never by relying on wrapped text or padding accidents.
@@ -414,3 +417,10 @@ than hidden; none of them were fixed by writing this file.
 5. Components are tactile today, not quiet. Buttons lift, scale on press, and gain
    a shadow on hover; cards carry `shadow-sm`. The record above chooses quiet and flat.
 -->
+
+
+## Approved paper and ink update, 2026-10-21
+
+Joshua approved the exact rendered palette in [the platform palette reference](docs/design/approved-platform-palette.md). The authenticated platform uses canvas `#f7f4ee`, heading ink `#252b26`, supporting ink `#64645b`, working surface `#131718`, dark fields `#282b2c`, on-dark text `#efede6`, field borders `#747773`, and on-dark primary action `#eeebe2` with text `#161d18`. The `--lsatu-*` aliases in `src/index.css` are the shared reference; classroom, practice and light Reading Center roles map to them. Feedback/status colors and saved immersive reader appearances retain their separate meaning. The approved open composition does not require enclosing every page in a dark panel.
+
+Shared neutral aliases also cover Booking (including portal dialogs), Testing Centre controls, Activity Centre workbook/entry surfaces, and Academy Hall grounds/text. Authored teaching-world visuals, Academy film/bronze/cyan, and semantic feedback retain their specialized colors. These are palette changes, not changes to workflow or layout.

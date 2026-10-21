@@ -6,37 +6,60 @@
 @tailwind utilities;
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
-All colors MUST be HSL.
+Semantic Tailwind channels use HSL. Exact shared palette aliases use hex.
 */
 
 @layer base {
   :root {
+    /* Approved paper and ink palette, 2026-10-21. Shared across platform rooms. */
+    --lsatu-canvas: #f7f4ee;
+    --lsatu-ink: #252b26;
+    --lsatu-ink-muted: #64645b;
+    --lsatu-surface-dark: #131718;
+    --lsatu-field-dark: #282b2c;
+    --lsatu-text-on-dark: #efede6;
+    --lsatu-field-border: #747773;
+    --lsatu-action-on-dark: #eeebe2;
+    --lsatu-action-ink: #161d18;
+    --lsatu-lookup-ink: #293328;
+    /* Channel aliases allow scoped HSL/alpha consumers to share exact roles. */
+    --lsatu-canvas-hsl: 40 36% 95.098%;
+    --lsatu-ink-hsl: 130 7.5% 15.686%;
+    --lsatu-ink-muted-hsl: 60 4.712% 37.451%;
+    --lsatu-surface-dark-hsl: 192 11.628% 8.431%;
+    --lsatu-field-dark-hsl: 195 4.762% 16.471%;
+    --lsatu-text-on-dark-hsl: 46.667 21.951% 91.961%;
+    --lsatu-field-border-hsl: 105 1.709% 45.882%;
+    --lsatu-action-on-dark-hsl: 45 26.087% 90.98%;
+    --lsatu-action-ink-hsl: 137.143 13.725% 10%;
+    --lsatu-lookup-ink-hsl: 114.545 12.088% 17.843%;
+
     color-scheme: dark;
 
     /* LSAT U — Dark-first design system.
        Tokens resolve to the dark palette by default.
        Add class="light" to <html> to switch to light mode.
     */
-    --background: 0 0% 3.9%;         /* neutral-950 */
-    --foreground: 0 0% 98%;           /* near white */
+    --background: 192 11.628% 8.431%;
+    --foreground: 46.667 21.951% 91.961%;           /* near white */
 
-    --card: 0 0% 7%;                  /* neutral-900 equivalent */
-    --card-foreground: 0 0% 98%;
+    --card: 192 11.628% 8.431%;
+    --card-foreground: 46.667 21.951% 91.961%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 195 4.762% 16.471%;
+    --popover-foreground: 46.667 21.951% 91.961%;
 
-    --primary: 0 0% 98%;              /* white — primary interactive on dark */
-    --primary-foreground: 0 0% 3.9%; /* dark text behind white elements */
+    --primary: 45 26.087% 90.98%;
+    --primary-foreground: 137.143 13.725% 10%;
 
-    --secondary: 0 0% 14.9%;          /* neutral-800 */
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 195 4.762% 16.471%;
+    --secondary-foreground: 46.667 21.951% 91.961%;
 
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;   /* neutral-500 */
+    --muted: 195 4.762% 16.471%;
+    --muted-foreground: 77.143 4.965% 72.353%;
 
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 195 4.762% 16.471%;
+    --accent-foreground: 46.667 21.951% 91.961%;
 
     /* Status colors */
     --success: 142 71% 45%;
@@ -68,9 +91,9 @@ All colors MUST be HSL.
     --state-warn: 38 92% 50%;         /* amber-500, mirrors --warning */
     --state-warn-foreground: 0 0% 98%;
 
-    --border: 0 0% 14.9%;             /* neutral-800 */
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;               /* neutral-300 */
+    --border: 105 1.709% 45.882%;
+    --input: 105 1.709% 45.882%;
+    --ring: 46.667 21.951% 91.961%;
 
     --radius: 0.5rem;
 
@@ -82,21 +105,21 @@ All colors MUST be HSL.
     --shadow-glow: 0 0 24px 0 rgba(255, 255, 255, 0.06);
 
     /* Surface elevation */
-    --surface-elevated: 0 0% 10%;
+    --surface-elevated: 195 4.762% 16.471%;
 
     /* Text hierarchy */
-    --text-primary: 0 0% 98%;
-    --text-secondary: 0 0% 63.9%;
-    --text-tertiary: 0 0% 45%;
+    --text-primary: 46.667 21.951% 91.961%;
+    --text-secondary: 77.143 4.965% 72.353%;
+    --text-tertiary: 77.143 4.965% 72.353%;
 
-    --sidebar-background: 0 0% 3.9%;
-    --sidebar-foreground: 0 0% 63.9%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 0 0% 3.9%;
-    --sidebar-accent: 0 0% 14.9%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 14.9%;
-    --sidebar-ring: 0 0% 83.1%;
+    --sidebar-background: 192 11.628% 8.431%;
+    --sidebar-foreground: 77.143 4.965% 72.353%;
+    --sidebar-primary: 45 26.087% 90.98%;
+    --sidebar-primary-foreground: 137.143 13.725% 10%;
+    --sidebar-accent: 195 4.762% 16.471%;
+    --sidebar-accent-foreground: 46.667 21.951% 91.961%;
+    --sidebar-border: 105 1.709% 45.882%;
+    --sidebar-ring: 46.667 21.951% 91.961%;
 
     /* ── Teacher workspace accent ─────────────────────────────────────────────
      * The Desk's warm amber, promoted from the hardcoded #c8841f it was written
@@ -115,70 +138,74 @@ All colors MUST be HSL.
   /* ── Light mode ── add class="light" to <html> to activate ───────────────── */
   .light {
     color-scheme: light;
-    --background: 0 0% 99%;
-    --foreground: 0 0% 7%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 7%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
-    --primary: 0 0% 7%;
-    --primary-foreground: 0 0% 99%;
-    --secondary: 0 0% 95%;
-    --secondary-foreground: 0 0% 7%;
-    --muted: 0 0% 95%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 0 0% 92%;
-    --accent-foreground: 0 0% 7%;
+    --background: 40 36% 95.098%;
+    --foreground: 130 7.5% 15.686%;
+    --card: 40 36% 95.098%;
+    --card-foreground: 130 7.5% 15.686%;
+    --popover: 40 36% 95.098%;
+    --popover-foreground: 130 7.5% 15.686%;
+    --primary: 192 11.628% 8.431%;
+    --primary-foreground: 46.667 21.951% 91.961%;
+    --secondary: 45 26.087% 90.98%;
+    --secondary-foreground: 130 7.5% 15.686%;
+    --muted: 45 26.087% 90.98%;
+    --muted-foreground: 60 4.712% 37.451%;
+    --accent: 45 26.087% 90.98%;
+    --accent-foreground: 130 7.5% 15.686%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 88%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 20%;
-    --surface-elevated: 0 0% 97%;
-    --text-primary: 0 0% 7%;
-    --text-secondary: 0 0% 45%;
-    --text-tertiary: 0 0% 55%;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 28%;
-    --sidebar-primary: 0 0% 7%;
-    --sidebar-primary-foreground: 0 0% 99%;
-    --sidebar-accent: 0 0% 92%;
-    --sidebar-accent-foreground: 0 0% 7%;
-    --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 0 0% 20%;
+    --border: 54.545 11.579% 81.373%;
+    --input: 105 1.709% 45.882%;
+    --ring: 130 7.5% 15.686%;
+    --surface-elevated: 40 36% 95.098%;
+    --text-primary: 130 7.5% 15.686%;
+    --text-secondary: 60 4.712% 37.451%;
+    --text-tertiary: 60 4.712% 37.451%;
+    --sidebar-background: 40 36% 95.098%;
+    --sidebar-foreground: 60 4.712% 37.451%;
+    --sidebar-primary: 192 11.628% 8.431%;
+    --sidebar-primary-foreground: 46.667 21.951% 91.961%;
+    --sidebar-accent: 45 26.087% 90.98%;
+    --sidebar-accent-foreground: 130 7.5% 15.686%;
+    --sidebar-border: 54.545 11.579% 81.373%;
+    --sidebar-ring: 130 7.5% 15.686%;
   }
 
   /* .dark mirrors .light — reserved alias */
   .dark {
     color-scheme: light;
-    --background: 0 0% 99%;
-    --foreground: 0 0% 7%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 7%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
-    --primary: 0 0% 7%;
-    --primary-foreground: 0 0% 99%;
-    --secondary: 0 0% 95%;
-    --secondary-foreground: 0 0% 7%;
-    --muted: 0 0% 95%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 0 0% 92%;
-    --accent-foreground: 0 0% 7%;
+    --background: 40 36% 95.098%;
+    --foreground: 130 7.5% 15.686%;
+    --card: 40 36% 95.098%;
+    --card-foreground: 130 7.5% 15.686%;
+    --popover: 40 36% 95.098%;
+    --popover-foreground: 130 7.5% 15.686%;
+    --primary: 192 11.628% 8.431%;
+    --primary-foreground: 46.667 21.951% 91.961%;
+    --secondary: 45 26.087% 90.98%;
+    --secondary-foreground: 130 7.5% 15.686%;
+    --muted: 45 26.087% 90.98%;
+    --muted-foreground: 60 4.712% 37.451%;
+    --accent: 45 26.087% 90.98%;
+    --accent-foreground: 130 7.5% 15.686%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 88%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 20%;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 28%;
-    --sidebar-primary: 0 0% 7%;
-    --sidebar-primary-foreground: 0 0% 99%;
-    --sidebar-accent: 0 0% 92%;
-    --sidebar-accent-foreground: 0 0% 7%;
-    --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 0 0% 20%;
-  }
+    --border: 54.545 11.579% 81.373%;
+    --input: 105 1.709% 45.882%;
+    --ring: 130 7.5% 15.686%;
+    --sidebar-background: 40 36% 95.098%;
+    --sidebar-foreground: 60 4.712% 37.451%;
+    --sidebar-primary: 192 11.628% 8.431%;
+    --sidebar-primary-foreground: 46.667 21.951% 91.961%;
+    --sidebar-accent: 45 26.087% 90.98%;
+    --sidebar-accent-foreground: 130 7.5% 15.686%;
+    --sidebar-border: 54.545 11.579% 81.373%;
+    --sidebar-ring: 130 7.5% 15.686%;
+    --surface-elevated: 40 36% 95.098%;
+    --text-primary: 130 7.5% 15.686%;
+    --text-secondary: 60 4.712% 37.451%;
+    --text-tertiary: 60 4.712% 37.451%;
+}
 }
 
 @layer base {

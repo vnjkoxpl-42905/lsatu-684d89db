@@ -29,25 +29,28 @@ vi.mock('@/components/drill/official/OfficialSmartDrillBar', () => ({
 }));
 vi.mock('../components/RcExamPane', () => ({
   rcTypeStyles: () => ({}),
-  RcExamPane: ({ question }: { question: ReactNode }) => <div>{question}</div>,
+  RcExamPane: ({ question, passage }: { question: ReactNode; passage: ReactNode }) => <div>{passage}{question}</div>,
 }));
 vi.mock('../components/RcQuestionPane', () => ({
-  RcQuestionPane: ({ item, eliminations, onToggleElimination, onSelect }: {
+  RcQuestionPane: ({ item, eliminations, onToggleElimination, onSelect, choicesHidden, trainingControls }: {
     item: { number: number }; eliminations: string[]; onToggleElimination: (letter: string) => void; onSelect: (letter: string) => void;
+    choicesHidden?: boolean; trainingControls?: ReactNode;
   }) => <div>
+    {trainingControls}
+    <p>Answer choices: {choicesHidden ? 'hidden' : 'visible'}</p>
     <p>Question {item.number} crossed: [{eliminations.join(',')}]</p>
     <button onClick={() => onToggleElimination('C')}>Cross out C</button>
     <button onClick={() => onToggleElimination('D')}>Cross out D</button>
     <button onClick={() => { onToggleElimination('C'); onToggleElimination('D'); }}>Cross out C and D together</button>
-    <button onClick={() => onSelect('C')}>Select C</button>
-    <button onClick={() => onSelect('D')}>Select D</button>
+    <button disabled={choicesHidden} onClick={() => onSelect('C')}>Select C</button>
+    <button disabled={choicesHidden} onClick={() => onSelect('D')}>Select D</button>
   </div>,
 }));
 vi.mock('../components/RcChrome', () => ({
   formatClock: (seconds: number) => String(seconds),
   RcToolbarButton: () => null, RcToolbarIcon: () => null, RcPager: () => null,
 }));
-vi.mock('../components/RcPassagePane', () => ({ RcPassagePane: () => null }));
+vi.mock('../components/RcPassagePane', () => ({ RcPassagePane: ({ readingControls, sentenceLimit }: { readingControls?: ReactNode; sentenceLimit?: number }) => <div>{readingControls}<p>Sentence limit: {sentenceLimit ?? 'none'}</p></div> }));
 vi.mock('../components/RcPassageSummary', () => ({ RcPassageSummary: () => null }));
 vi.mock('../components/RcModals', () => ({
   RcQuestionDetails: () => null, RcSubmitConfirm: () => null, RcTextSettings: () => null, RcLineSpacingMenu: () => null,
@@ -94,6 +97,25 @@ beforeEach(() => {
 afterEach(() => cleanup());
 
 describe('RC study aids in the mounted player', () => {
+  it('honors launch training flags and revealing choices does not reveal feedback or write an attempt', async () => {
+    api.getSession.mockResolvedValue({ ...session, config: { ...session.config, training: { anticipation: true, lineByLine: true } } });
+    render(tree());
+    expect(await screen.findByText('Answer choices: hidden')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Select C' })).toBeDisabled();
+    expect(screen.getByText('Sentence limit: 1')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Show answer choices' }));
+    expect(screen.getByText('Answer choices: visible')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Select C' })).toBeEnabled();
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(api.completeSession).not.toHaveBeenCalled();
+  });
+  it.each([{ source: 'assignment' as const }, { source: 'manual' as const, assignmentOrigin: true }])('ignores training on assigned work and resumable assignment-origin practice: %j', async origin => {
+    api.getSession.mockResolvedValue({ ...session, config: { ...session.config, ...origin, training: { anticipation: true, lineByLine: true } } });
+    render(tree());
+    expect(await screen.findByText('Answer choices: visible')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Show answer choices' })).not.toBeInTheDocument();
+    expect(screen.getByText('Sentence limit: none')).toBeInTheDocument();
+  });
   it('does not redirect a departed routed-state review after its parent check resolves', async () => {
     let releaseParent!: () => void;
     release.check.mockReturnValue(new Promise<void>(resolve => { releaseParent = resolve; }));

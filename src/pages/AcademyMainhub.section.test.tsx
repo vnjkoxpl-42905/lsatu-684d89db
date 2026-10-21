@@ -158,7 +158,7 @@ vi.mock("@/components/ui/splite", () => ({
 // RC's two data-backed pieces are stubbed: this file is about the section
 // switch, and both of them talk to Supabase or fetch the passage index.
 vi.mock("@/features/rc/components/RcHubSurface", () => ({
-  RcHubSurface: () => <div role="region" aria-label="RC drill builder"><button type="button">Reset filters</button></div>,
+  RcHubSurface: ({ openPickerOnEntry }: { openPickerOnEntry?: boolean }) => <div role="region" aria-label="RC drill builder" data-picker-entry={String(Boolean(openPickerOnEntry))}><button type="button">Reset filters</button></div>,
 }));
 
 vi.mock("@/features/rc/components/RcSavedSetsPanel", () => ({
@@ -223,7 +223,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
   it("returns a question preview to its Practice route instead of the scored drill destination", () => {
     renderHub("/practice/drills?section=rc");
-    fireEvent.click(screen.getByRole("button", { name: "Open a question" }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a passage or question" }));
     const dialog = screen.getByRole("dialog", { name: "Find a question" });
     fireEvent.change(within(dialog).getByRole("textbox"), { target: { value: "PT140 S4 Q17" } });
     fireEvent.click(within(dialog).getByRole("button", { name: "Open question" }));
@@ -253,14 +253,14 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     renderHub("/classroom/drill?section=rc");
     expect(screen.queryByText("DRILL / READING COMPREHENSION")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Smart Drill" })).not.toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Create RC drill" })).not.toBeInTheDocument();
     expect(rcSwitch()).toHaveAttribute("aria-pressed", "true");
   });
 
   it("opens RC choices and actual practice history at the Create URL", () => {
     renderHub("/practice/drills?section=rc&view=create");
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
     expect(screen.queryByText("Build a Set")).not.toBeInTheDocument();
     // Sitting a real section lives in the Testing Centre, in RC as in LR.
     expect(screen.queryByText("Full Section")).not.toBeInTheDocument();
@@ -272,20 +272,21 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.queryByRole("list", { name: "Insights" })).not.toBeInTheDocument();
   });
 
-  it.each([['Set up an RC drill', 'automatic'], ['Pick passages', 'manual']])('opens the explicit RC builder from %s', (label, mode) => {
+  it.each([['Build a drill', 'automatic'], ['Pick specific passages', 'manual']])('opens the explicit RC builder from %s', (label, mode) => {
     renderHub('/practice/drills?section=rc&view=create');
     fireEvent.click(screen.getByRole('button', { name: label }));
     expect(url().get('builder')).toBe(mode);
+    expect(screen.getByRole('region', { name: 'RC drill builder' })).toHaveAttribute('data-picker-entry', String(mode === 'manual'));
     expect(screen.getByRole('region', { name: 'RC drill builder' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Back to RC practice' }));
     expect(url().get('builder')).toBeNull();
-    expect(screen.getByRole('region', { name: 'Build an RC drill' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Create an RC drill' })).toBeInTheDocument();
   });
 
   it.each(['stage=type-drill', 'saved=exact-set', 'passages=1188', 'count=3&timing=standard', 'assignmentId=homework'])('preserves direct RC setup links: %s', query => {
     renderHub(`/practice/drills?section=rc&view=create&${query}`);
     expect(screen.getByRole('region', { name: 'RC drill builder' })).toBeInTheDocument();
-    expect(screen.queryByRole('region', { name: 'Build an RC drill' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Create an RC drill' })).not.toBeInTheDocument();
   });
 
   it('does not carry the RC builder mode into LR', () => {
@@ -309,10 +310,10 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it('returns through RC landing to the original LR page after closing setup', () => {
     renderHub('/practice/drills?section=lr');
     fireEvent.click(rcSwitch());
-    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Pick specific passages' }));
     expect(url().get('builder')).toBe('manual');
     fireEvent.click(screen.getByRole('button', { name: 'Back to RC practice' }));
-    expect(screen.getByRole('region', { name: 'Build an RC drill' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Create an RC drill' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'go back' }));
     expect(url().get('section')).toBe('lr');
     expect(screen.getByRole('button', { name: 'Smart Drill' })).toBeInTheDocument();
@@ -323,7 +324,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     fireEvent.click(screen.getByRole('button', { name: 'Back to RC practice' }));
     expect(url().get('passages')).toBeNull();
     expect(url().get('timing')).toBeNull();
-    expect(screen.getByRole('region', { name: 'Build an RC drill' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Create an RC drill' })).toBeInTheDocument();
   });
 
   it('loads only the newest eligible RC resume independently of LR history failures', async () => {
@@ -354,7 +355,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     renderHub("/classroom/drill");
     fireEvent.click(rcSwitch());
     expect(url().get("section")).toBe("rc");
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
     fireEvent.click(lrSwitch());
     expect(url().get("section")).toBe("lr");
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
@@ -366,7 +367,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     first.unmount();
 
     renderHub("/classroom/drill");
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
   });
 
   it("lets an explicit ?section=lr outrank the remembered RC", () => {
@@ -386,7 +387,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     fireEvent.click(rcSwitch());
     expect(url().get("stage")).toBeNull();
     expect(screen.queryByRole("region", { name: "Unified LR drill builder" })).not.toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
   });
 
   it("leaves the builder and switches sections without a confirmation prompt", () => {
@@ -406,16 +407,16 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
 
     fireEvent.click(rcSwitch());
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "go back" }));
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
-  it("shows assigned work alongside RC practice", () => {
+  it("shows RC-scoped assigned work alongside RC practice", () => {
     renderHub("/classroom/drill");
     fireEvent.click(rcSwitch());
-    expect(screen.getByRole("region", { name: "Assigned work" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Assigned RC work" })).toBeInTheDocument();
   });
 
   it("switches LR and RC in place without remounting or animating the surfaces", () => {
@@ -428,7 +429,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
     fireEvent.click(rcSwitch());
 
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
   });
 
   it("keeps legacy builder links working, shows Reset filters on Create, and keeps In progress reachable through its tab", async () => {
@@ -522,7 +523,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("section")).toBe("rc");
     expect(await screen.findByText("RC active sitting")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Create" }));
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
     expect(screen.queryByText("RC active sitting")).not.toBeInTheDocument();
   });
 
@@ -549,7 +550,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
     fireEvent.click(rcSwitch());
     expect(url().get("section")).toBe("rc");
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
   });
 });
 
@@ -576,7 +577,7 @@ describe("AcademyMainhub — Escape leaves a stage", () => {
 
     expect(url().get("stage")).toBeNull();
     expect(url().get("section")).toBe("rc");
-    expect(screen.getByRole("region", { name: "Build an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Create an RC drill" })).toBeInTheDocument();
   });
 
   it("leaves the stage alone while something modal is open", () => {

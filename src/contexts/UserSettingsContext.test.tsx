@@ -2,6 +2,7 @@ import * as React from 'react';
 import { act, cleanup, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { LEGACY_SETTINGS_KEY, settingsKeyFor } from '@/lib/studySettings';
+import { supabase } from '@/integrations/supabase/client';
 
 const auth = vi.hoisted(() => ({ user: null as { id: string } | null, authReady: true }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => auth }));
@@ -153,6 +154,28 @@ describe('UserSettingsProvider failed writes', () => {
 });
 
 describe('UserSettingsProvider stored data', () => {
+  it('settles profile loading when legacy settings supersede a pending profile read', async () => {
+    let finishRead: (value: any) => void;
+    const pendingRead = new Promise<any>(resolve => { finishRead = resolve; });
+    vi.spyOn(supabase.auth, 'getUser').mockReturnValue(pendingRead);
+    localStorage.setItem(LEGACY_SETTINGS_KEY, JSON.stringify({ defaultTimingMode: '70' }));
+    auth.user = { id: 'a' };
+    render(<Harness />);
+    expect(ctx.profileTimingStatus).toBe('loading');
+
+    act(() => { expect(ctx.adoptLegacy()).toBe(true); });
+    expect(ctx.profileTimingStatus).toBe('not-saved');
+    expect(ctx.settings.defaultTimingMode).toBe('70');
+
+    await act(async () => {
+      finishRead({ data: { user: { id: 'a', user_metadata: { lsatu_practice_timing: { version: 1, mode: '52.5' } } } }, error: null });
+      await pendingRead;
+    });
+    expect(ctx.profileTimingStatus).toBe('not-saved');
+    expect(ctx.settings.defaultTimingMode).toBe('70');
+    expect(stored('a').defaultTimingMode).toBe('70');
+  });
+
   it('repairs invalid stored fields without discarding good ones', () => {
     localStorage.setItem(settingsKeyFor('a'), JSON.stringify({ defaultTimingMode: 'fast', recycleAfterDays: 12 }));
     auth.user = { id: 'a' };

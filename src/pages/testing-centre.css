@@ -155,25 +155,23 @@
 html.dark .classroom-root .testing-panel,
 html.dark .classroom-root .testing-resume,
 html.dark .testing-menu {
-  --background: 245.5 21.6% 10%;
-  --foreground: 60 100% 99.8%;
-  --card: 246 35.7% 5.5%;
-  --card-foreground: 60 100% 99.8%;
-  --popover: 246.7 24.3% 7.3%;
-  --popover-foreground: 60 100% 99.8%;
-  --primary: 60 100% 99.8%;
-  --primary-foreground: 246 35.7% 5.5%;
-  --secondary: 244.6 20.6% 12.4%;
-  --secondary-foreground: 60 100% 99.8%;
-  --muted: 244.6 20.6% 12.4%;
-  --muted-foreground: 234.8 15% 70%;
-  --accent: 243.8 19% 16.5%;
-  --accent-foreground: 60 100% 99.8%;
-  --border: 250.9 12.1% 17.8%;
-  /* Control boundaries, not surface separators: 3.31:1 on the panel and
-     3.05:1 on the control's own fill, which is what 1.4.11 asks for. */
-  --input: 248.6 9.8% 42.2%;
-  --ring: 248.6 9.8% 42.2%;
+  --background: var(--lsatu-surface-dark-hsl);
+  --foreground: var(--lsatu-text-on-dark-hsl);
+  --card: var(--lsatu-surface-dark-hsl);
+  --card-foreground: var(--lsatu-text-on-dark-hsl);
+  --popover: var(--lsatu-field-dark-hsl);
+  --popover-foreground: var(--lsatu-text-on-dark-hsl);
+  --primary: var(--lsatu-action-on-dark-hsl);
+  --primary-foreground: var(--lsatu-action-ink-hsl);
+  --secondary: var(--lsatu-field-dark-hsl);
+  --secondary-foreground: var(--lsatu-text-on-dark-hsl);
+  --muted: var(--lsatu-field-dark-hsl);
+  --muted-foreground: 77.143 4.965% 72.353%;
+  --accent: var(--lsatu-field-dark-hsl);
+  --accent-foreground: var(--lsatu-text-on-dark-hsl);
+  --border: var(--lsatu-field-border-hsl);
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-text-on-dark-hsl);
 }
 
 /* The block above was only ever written for the dark ground. Light kept the
@@ -194,7 +192,7 @@ html.dark .testing-menu {
 .classroom-root .testing-panel,
 .classroom-root .testing-resume,
 .testing-menu {
-  --input: 26.1 10.4% 56.7%;
+  --input: var(--lsatu-field-border-hsl);
 }
 
 /* The token block above repaints the menu but not the scrollbar inside it. A

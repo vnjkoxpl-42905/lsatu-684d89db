@@ -13,23 +13,25 @@ const STATUS_LABEL = {
 
 export default function AssignedWorkPanel({
   drillReturnTo = "/classroom",
+  scope,
 }: {
   drillReturnTo?: string;
+  scope?: 'rc';
 }) {
   const navigate = useNavigate();
   const classroom = useOptionalClassroomLayout();
   const { rows, loading, failed, retry, evidenceWarnings = [] } = useAssignedTodoFeed();
-  const openRows = rows.filter((row) => row.status !== "completed");
+  const openRows = rows.filter((row) => row.status !== "completed" && (scope !== 'rc' || row.workSection === 'rc'));
   const shownRows = openRows.slice(0, 3);
 
   return (
-    <section aria-label="Assigned work" className="drill-observatory-today">
+    <section aria-label={scope === 'rc' ? 'Assigned RC work' : 'Assigned work'} className="drill-observatory-today">
       <div className="drill-observatory-today-inner flex flex-col">
         <div className="flex items-center justify-between gap-4 px-0.5">
           <h2 className="drill-observatory-label drill-observatory-ink-60">
-            Assigned work
+            {scope === 'rc' ? 'Assigned RC work' : 'Assigned work'}
           </h2>
-          {openRows.length > 3 && (
+          {(scope === 'rc' || openRows.length > 3) && (
             <button
               type="button"
               className="drill-observatory-insight-link"
@@ -78,7 +80,7 @@ export default function AssignedWorkPanel({
                     </span>
                   </span>
                   <span className="drill-observatory-ink-55 shrink-0 text-[11.5px]">
-                    {row.progressUnverified ? "Progress unverified" : index === 0 ? "Next" : STATUS_LABEL[row.status]}
+                    {row.progressUnverified ? "Progress unverified" : scope !== 'rc' && index === 0 ? "Next" : STATUS_LABEL[row.status]}
                   </span>
                 </button>
               </li>
@@ -97,7 +99,7 @@ export default function AssignedWorkPanel({
           </div>
         ) : (
           <div className="drill-observatory-today-quiet mt-3" aria-live="polite">
-            Nothing assigned right now.
+            {scope === 'rc' ? 'No RC work assigned right now. All your assigned work is available in My Work.' : 'Nothing assigned right now.'}
           </div>
         )}
       </div>

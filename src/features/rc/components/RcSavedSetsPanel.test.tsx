@@ -12,6 +12,49 @@ const saved = { id: 'saved-1', userId: 'owner', name: 'Science practice', create
 beforeEach(() => { vi.clearAllMocks(); localStorage.clear(); m.actor = 'owner'; m.list.mockResolvedValue([]); m.save.mockResolvedValue(saved); m.get.mockResolvedValue(saved); m.rename.mockResolvedValue(undefined); });
 const mount = () => render(<MemoryRouter><RcSavedSetsPanel recipe={recipe} /></MemoryRouter>);
 describe('saved RC controls', () => {
+  it('offers named contextual saving without loading or duplicating saved management', async () => {
+    m.list.mockResolvedValue([saved]);
+    render(<MemoryRouter><RcSavedSetsPanel variant="contextual" recipe={recipe} /></MemoryRouter>);
+    expect(screen.getByRole('heading', { name: 'Save this drill' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Save these settings' })).toBeDisabled();
+    expect(m.list).not.toHaveBeenCalled();
+    expect(screen.queryByRole('button', { name: 'Open Science practice' })).toBeNull();
+    fireEvent.change(screen.getByRole('textbox', { name: 'Saved RC name' }), { target: { value: 'My settings' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save these settings' }));
+    await screen.findByText('Saved to your account. Find it in Saved sets.');
+    expect(m.save).toHaveBeenCalledWith('owner', 'My settings', recipe, expect.any(String));
+    expect(m.list).not.toHaveBeenCalled();
+  });
+  it('explains exact-passage availability before Review without hiding the save choices', () => {
+    render(<MemoryRouter><RcSavedSetsPanel variant="contextual" /></MemoryRouter>);
+    expect(screen.getByRole('button', { name: 'Save these passages' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Save these settings' })).toBeDisabled();
+    expect(screen.getByText(/Review your selection to save these exact passages/)).toBeInTheDocument();
+    expect(screen.getByText(/Reusable settings are available with Tutor's choice/)).toBeInTheDocument();
+    expect(m.list).not.toHaveBeenCalled();
+  });
+  it('reports explicit demo success only after the adapter completes', async () => {
+    let complete!: (value: unknown) => void;
+    m.save.mockReturnValue(new Promise(resolve => { complete = resolve; }));
+    render(<MemoryRouter><RcSavedSetsPanel variant="contextual" recipe={recipe} saveSuccessMessage="Saved in this demo only. Reload resets it." /></MemoryRouter>);
+    fireEvent.change(screen.getByRole('textbox', { name: 'Saved RC name' }), { target: { value: 'Demo settings' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save these settings' }));
+    expect(screen.queryByText('Saved in this demo only. Reload resets it.')).toBeNull();
+    expect(screen.queryByText(/Saved to your account/)).toBeNull();
+    complete(saved);
+    await screen.findByText('Saved in this demo only. Reload resets it.');
+    expect(screen.queryByText(/Saved to your account/)).toBeNull();
+  });
+  it('recovers the original save in contextual mode without requiring the original setup', async () => {
+    const id = 'original-save-id';
+    localStorage.setItem('lsatu:rc-saved-definition:v1:owner', JSON.stringify({ id, key: JSON.stringify({ name: saved.name, payload: recipe }) }));
+    render(<MemoryRouter><RcSavedSetsPanel variant="contextual" /></MemoryRouter>);
+    fireEvent.click(await screen.findByRole('button', { name: 'Retry original RC save' }));
+    await screen.findByText('Saved to your account. Find it in Saved sets.');
+    expect(m.save).toHaveBeenCalledWith('owner', saved.name, recipe, id);
+    expect(localStorage.getItem('lsatu:rc-saved-definition:v1:owner')).toBeNull();
+    expect(m.list).not.toHaveBeenCalled();
+  });
   it('retries a failed recipe save using the same durable command id', async () => {
     m.save.mockRejectedValueOnce(new Error('Reply lost'));
     mount(); await screen.findByText('No saved passages or settings yet.');

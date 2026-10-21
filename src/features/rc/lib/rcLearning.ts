@@ -52,7 +52,7 @@ async function readSession(actorId: string, sessionId: string) {
   if (error) throw new Error(error.message);
   await requireActor(actorId);
   if (!data || data.id !== sessionId || data.user_id !== actorId || !data.config || typeof data.config !== 'object' || Array.isArray(data.config)) throw new Error('This learning session could not be loaded.');
-  if (!['manual', 'adaptive'].includes(data.config.source) || data.config.timedSectionSittingId || data.config.practiceTestRunId
+  if (data.config.assignmentOrigin || !['manual', 'adaptive'].includes(data.config.source) || data.config.timedSectionSittingId || data.config.practiceTestRunId
     || data.timed_section_sitting_id || data.practice_test_run_id || !['in_progress', 'completed'].includes(data.status)) {
     throw new Error('Training is only available in ordinary practice drills.');
   }

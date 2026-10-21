@@ -1,54 +1,37 @@
+/* Platform paper and ink roles. Status colors remain independent. Control
+   boundaries use the approved field border; dividers use a quieter neutral. */
 .classroom-root {
-  --classroom-line: #f3e3d6;
-  /* The boundary of a control, not of a surface. --classroom-line is a hairline
-     for separating things that are already identifiable; where the border IS
-     what tells you a region is clickable, WCAG 1.4.11 asks for 3:1 and the
-     hairline measures 1.22:1 against the page. Same warm family, darkened only
-     in value: 3.14:1 on the panel and 3.06:1 on the page. */
-  --classroom-line-strong: #9c8f85;
-  /* --classroom-line-strong is measured against the page and the panel. A control
-     that sits on a tinted ground instead (the toggle knob, on --classroom-hover)
-     reads under 3:1 there, so it takes this one. Same role, darker ground. */
-  --classroom-line-on-tint: #8a7d72;
-  /* The switch's on-track. Light is --classroom-active unchanged; dark is a
-     lighter sibling of it, because --classroom-active over the dark panel left
-     off-vs-on at 1.51:1 and knob position was carrying the state alone. Scoped
-     to the switch so the other 17 --classroom-active rules keep their colour. */
-  --classroom-toggle-on-track: #43403c;
-  --classroom-ink: #43403c;
-  --classroom-ink-body: #43403c;
-  --classroom-meta: 166, 162, 158;
-  --classroom-hover: rgba(246, 235, 225, 0.4);
+  --classroom-line: #d5d4ca;
+
+  --classroom-line-strong: var(--lsatu-field-border);
+
+  --classroom-line-on-tint: #64645b;
+
+  --classroom-toggle-on-track: var(--lsatu-surface-dark);
+  --classroom-ink: var(--lsatu-ink);
+  --classroom-ink-body: var(--lsatu-ink);
+  --classroom-meta: 100, 100, 91;
+  --classroom-hover: rgba(37, 43, 38, 0.05);
   --classroom-dash: rgba(0, 0, 0, 0.15);
-  --classroom-link: #ff8906;
-  /* Text-safe pair. --classroom-link and --classroom-meta are tuned for fills,
-     rules and decorative use, where WCAG 1.4.11's 3:1 does not apply. Against
-     white they measure 2.38:1 and 2.54:1, so they fail 1.4.3 as TEXT.
-     Use these two instead whenever the colour carries words or notation.
-     Same hue (32deg / 30deg), darkened only in value: 5.39:1 and 5.38:1 on
-     white, and >=4.5:1 on every 10% tint used in the classroom. */
-  --classroom-link-text: #a25704;
-  --classroom-meta-text: #6d6a67;
-  /* The unread badge carries a number, so it is text and owes 4.5:1. The
-     orange that works as a fill does not survive white on top of it: white on
-     --classroom-link measures 2.38:1. Each theme therefore picks the pairing
-     its own ground allows rather than sharing one. Light darkens the fill and
-     keeps white on it (5.39:1); dark keeps the bright fill and puts the page's
-     near-black on it (8.06:1). */
-  --classroom-accent: #a25704;
-  --classroom-accent-ink: #ffffff;
-  /* Kept as aliases so the badge rule reads in its own terms. */
+  --classroom-link: var(--lsatu-ink);
+
+  --classroom-link-text: var(--lsatu-ink);
+  --classroom-meta-text: var(--lsatu-ink-muted);
+
+  --classroom-accent: var(--lsatu-surface-dark);
+  --classroom-accent-ink: var(--lsatu-text-on-dark);
+
   --classroom-badge-fill: var(--classroom-accent);
   --classroom-badge-ink: var(--classroom-accent-ink);
-  /* The panel/card ground, so a token that names a surface actually resolves. */
-  --classroom-surface: #ffffff;
-  --classroom-active: #43403c;
-  --classroom-active-ink: #ffffff;
-  --classroom-meta-soft: rgba(67, 64, 60, 0.4);
-  --classroom-panel: #ffffff;
-  --classroom-page: #ffffff;
-  --classroom-drill-page: #fdf8f3;
-  --classroom-trigger: #fefcf7;
+
+  --classroom-surface: var(--lsatu-canvas);
+  --classroom-active: var(--lsatu-surface-dark);
+  --classroom-active-ink: var(--lsatu-text-on-dark);
+  --classroom-meta-soft: rgba(37, 43, 38, 0.4);
+  --classroom-panel: var(--lsatu-canvas);
+  --classroom-page: var(--lsatu-canvas);
+  --classroom-drill-page: var(--lsatu-canvas);
+  --classroom-trigger: var(--lsatu-canvas);
   --classroom-wrong: #9f1239;
   --classroom-unsure: #b45309;
   --classroom-correct: #047857;
@@ -69,36 +52,69 @@
 }
 
 html.dark .classroom-root {
-  --classroom-line: #17161c;
-  /* 3.21:1 on the dark page, 3.31:1 on the dark panel. */
-  --classroom-line-strong: #646176;
-  /* Lighter, not darker: on the dark theme the tinted ground is the lighter one. */
-  --classroom-line-on-tint: #7a7789;
-  --classroom-toggle-on-track: #6f6d80;
-  --classroom-ink: #fffffe;
-  --classroom-ink-body: #e5e5e5;
-  --classroom-meta: 167, 169, 190;
-  --classroom-hover: rgba(68, 64, 60, 0.4);
+  /* Shadcn primitives inherit the actual host theme. The global .dark alias
+     remains light outside ClassroomLayout; it must not ink these controls. */
+  color-scheme: dark;
+  --background: var(--lsatu-surface-dark-hsl);
+  --foreground: var(--lsatu-text-on-dark-hsl);
+  --card: var(--lsatu-surface-dark-hsl);
+  --card-foreground: var(--lsatu-text-on-dark-hsl);
+  --popover: var(--lsatu-field-dark-hsl);
+  --popover-foreground: var(--lsatu-text-on-dark-hsl);
+  --primary: var(--lsatu-action-on-dark-hsl);
+  --primary-foreground: var(--lsatu-action-ink-hsl);
+  --secondary: var(--lsatu-field-dark-hsl);
+  --secondary-foreground: var(--lsatu-text-on-dark-hsl);
+  --muted: var(--lsatu-field-dark-hsl);
+  --accent: var(--lsatu-field-dark-hsl);
+  --accent-foreground: var(--lsatu-text-on-dark-hsl);
+  --border: var(--lsatu-field-border-hsl);
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-text-on-dark-hsl);
+  --surface-elevated: var(--lsatu-field-dark-hsl);
+  --text-primary: var(--lsatu-text-on-dark-hsl);
+  --sidebar-background: var(--lsatu-surface-dark-hsl);
+  --sidebar-foreground: var(--lsatu-text-on-dark-hsl);
+  --sidebar-primary: var(--lsatu-action-on-dark-hsl);
+  --sidebar-primary-foreground: var(--lsatu-action-ink-hsl);
+  --sidebar-accent: var(--lsatu-field-dark-hsl);
+  --sidebar-accent-foreground: var(--lsatu-text-on-dark-hsl);
+  --sidebar-border: var(--lsatu-field-border-hsl);
+  --sidebar-ring: var(--lsatu-text-on-dark-hsl);
+  --muted-foreground: 77.143 4.965% 72.353%;
+  --text-secondary: 77.143 4.965% 72.353%;
+  --text-tertiary: 77.143 4.965% 72.353%;
+
+  --classroom-line: #3e4443;
+
+  --classroom-line-strong: var(--lsatu-field-border);
+
+  --classroom-line-on-tint: #8b8f87;
+  --classroom-toggle-on-track: var(--lsatu-action-on-dark);
+  --classroom-ink: var(--lsatu-text-on-dark);
+  --classroom-ink-body: var(--lsatu-text-on-dark);
+  --classroom-meta: 186, 188, 181;
+  --classroom-hover: rgba(239, 237, 230, 0.06);
   --classroom-dash: rgba(255, 255, 255, 0.15);
-  --classroom-active: #3d3c48;
-  --classroom-active-ink: #e5e5e5;
-  --classroom-meta-soft: #a7a9be;
-  /* On the dark page both base values already clear 8:1, so the text-safe pair
-     is the same colour here. Declared so the token means one thing everywhere. */
-  --classroom-link-text: #ff8906;
-  --classroom-meta-text: #a7a9be;
-  --classroom-accent: #ff8906;
-  --classroom-accent-ink: #0f0e17;
+  --classroom-active: var(--lsatu-action-on-dark);
+  --classroom-active-ink: var(--lsatu-action-ink);
+  --classroom-meta-soft: rgba(239, 237, 230, 0.4);
+
+  --classroom-link-text: var(--lsatu-text-on-dark);
+  --classroom-meta-text: #babcb5;
+  --classroom-accent: var(--lsatu-action-on-dark);
+  --classroom-accent-ink: var(--lsatu-action-ink);
   --classroom-badge-fill: var(--classroom-accent);
   --classroom-badge-ink: var(--classroom-accent-ink);
-  --classroom-surface: #0a0913;
-  --classroom-panel: #0a0913;
-  --classroom-page: #0f0e17;
-  --classroom-drill-page: #121019;
-  --classroom-trigger: #0a0913;
+  --classroom-surface: var(--lsatu-field-dark);
+  --classroom-panel: var(--lsatu-surface-dark);
+  --classroom-page: var(--lsatu-surface-dark);
+  --classroom-drill-page: var(--lsatu-surface-dark);
+  --classroom-trigger: var(--lsatu-field-dark);
   --classroom-wrong: #fb7185;
   --classroom-unsure: #fbbf24;
   --classroom-correct: #34d399;
+  --classroom-link: var(--lsatu-text-on-dark);
 }
 
 .classroom-root *,
@@ -860,13 +876,13 @@ html.dark .classroom-root .classroom-panel-wash-dark {
    column, and the rail's warm paper carried across the whole page instead of
    stopping at the rail's own edge. */
 .classroom-root.classroom-root-home .classroom-stage {
-  background: linear-gradient(180deg, #fffdfb, #fbf6f0);
+  background: var(--classroom-page);
   justify-content: flex-start;
   padding: 0;
 }
 
 html.dark .classroom-root.classroom-root-home .classroom-stage {
-  background: linear-gradient(180deg, #131219, #0f0e17);
+  background: var(--classroom-page);
 }
 
 .classroom-root.classroom-root-home .classroom-column {
@@ -907,17 +923,17 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .drill-setup-preview {
   /* Ink. One ivory, stepped by opacity. The ladder is closed — if a value is not
      on it, it does not belong on this page. */
-  --observatory-ink: #f4f1ea;
-  --observatory-ink-90: rgba(244, 241, 234, 0.9);
-  --observatory-ink-85: rgba(244, 241, 234, 0.85);
-  --observatory-ink-70: rgba(244, 241, 234, 0.7);
-  --observatory-ink-62: rgba(244, 241, 234, 0.62);
-  --observatory-ink-60: rgba(244, 241, 234, 0.6);
-  --observatory-ink-55: rgba(244, 241, 234, 0.55);
-  --observatory-ink-50: rgba(244, 241, 234, 0.5);
+  --observatory-ink: var(--lsatu-text-on-dark);
+  --observatory-ink-90: rgba(239, 237, 230, 0.9);
+  --observatory-ink-85: rgba(239, 237, 230, 0.85);
+  --observatory-ink-70: rgba(239, 237, 230, 0.7);
+  --observatory-ink-62: rgba(239, 237, 230, 0.62);
+  --observatory-ink-60: rgba(239, 237, 230, 0.6);
+  --observatory-ink-55: rgba(239, 237, 230, 0.55);
+  --observatory-ink-50: rgba(239, 237, 230, 0.5);
 
   /* Surfaces. Tinted blacks, never #000. */
-  --observatory-surface-card: #08080b;
+  --observatory-surface-card: var(--lsatu-surface-dark);
   --observatory-surface-image: #050507;
   --observatory-glass: rgba(6, 6, 9, 0.55);
   --observatory-glass-soft: rgba(6, 6, 9, 0.5);
@@ -925,12 +941,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   --observatory-well: rgba(0, 0, 0, 0.35);
 
   /* Rings and hairlines. The only borders on this page. */
-  --observatory-hairline: rgba(244, 241, 234, 0.09);
-  --observatory-ring: rgba(244, 241, 234, 0.1);
-  --observatory-ring-glass: rgba(244, 241, 234, 0.12);
-  --observatory-ring-quiet: rgba(244, 241, 234, 0.08);
-  --observatory-ring-strong: rgba(244, 241, 234, 0.2);
-  --observatory-ring-chip: rgba(244, 241, 234, 0.25);
+  --observatory-hairline: rgba(239, 237, 230, 0.09);
+  --observatory-ring: rgba(239, 237, 230, 0.1);
+  --observatory-ring-glass: rgba(239, 237, 230, 0.12);
+  --observatory-ring-quiet: rgba(239, 237, 230, 0.08);
+  --observatory-ring-strong: rgba(239, 237, 230, 0.2);
+  --observatory-ring-chip: rgba(239, 237, 230, 0.25);
 
   --observatory-shadow-card: 0 12px 32px rgba(0, 0, 0, 0.12);
   --observatory-shadow-image: 0 12px 32px rgba(0, 0, 0, 0.16);
@@ -938,11 +954,11 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
   /* Kept for the side rail, which is out of this redesign's scope and still
      draws its active dot from them. Nothing in the main column uses them. */
-  --observatory-field: #eceae4;
-  --observatory-shell: #08080b;
-  --observatory-light-ink: #f4f1ea;
-  --observatory-muted: rgba(244, 241, 234, 0.55);
-  --observatory-line: rgba(244, 241, 234, 0.09);
+  --observatory-field: var(--lsatu-action-on-dark);
+  --observatory-shell: var(--lsatu-surface-dark);
+  --observatory-light-ink: var(--lsatu-text-on-dark);
+  --observatory-muted: rgba(239, 237, 230, 0.55);
+  --observatory-line: rgba(239, 237, 230, 0.09);
   --observatory-blue: #79c4ff;
   --observatory-amber: #ff8a3d;
 
@@ -996,17 +1012,17 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   /* The stage the cards sit on is cream. The two controls that ride on it
      directly (the section switch, the jump row) are inked for the stage, not
      for the cards. Measured on #fbf8f3: ink 12.9:1, muted 5.3:1. */
-  --observatory-stage-well: #fbf8f3;
-  --observatory-stage-ink: #332f2c;
-  --observatory-stage-muted: #6b6662;
+  --observatory-stage-well: var(--lsatu-canvas);
+  --observatory-stage-ink: var(--lsatu-ink);
+  --observatory-stage-muted: var(--lsatu-ink-muted);
   --observatory-stage-hair: rgba(68, 64, 61, 0.09);
-  --observatory-stage-lit: #f5f1ec;
+  --observatory-stage-lit: var(--lsatu-action-on-dark);
 
   /* One focus treatment for every control on the black cards: a solid ivory
      outline offset from the edge, 15:1 against the card. Inset variant for
      full-bleed rows whose outline would be clipped by their container. */
-  --observatory-focus: rgba(244, 241, 234, 0.85);
-  --observatory-skeleton: rgba(244, 241, 234, 0.12);
+  --observatory-focus: rgba(239, 237, 230, 0.85);
+  --observatory-skeleton: rgba(239, 237, 230, 0.12);
 }
 
 /* Dark theme. ClassroomLayout sets html.dark from the theme, and the stage
@@ -1238,7 +1254,7 @@ html:not(.light) .drill-setup-preview {
   list-style: none;
   min-height: 44px;
   text-decoration: underline;
-  text-decoration-color: rgba(244, 241, 234, 0.55);
+  text-decoration-color: rgba(239, 237, 230, 0.55);
   text-underline-offset: 4px;
   transition: color var(--observatory-motion);
 }
@@ -1488,15 +1504,15 @@ html:not(.light) .drill-setup-preview {
 @keyframes drill-observatory-smart-drill-pulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(244, 241, 234, 0.55);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(239, 237, 230, 0.55);
   }
   50% {
     transform: scale(1.045);
-    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35), 0 0 0 10px rgba(244, 241, 234, 0.12);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35), 0 0 0 10px rgba(239, 237, 230, 0.12);
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 18px rgba(244, 241, 234, 0);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 18px rgba(239, 237, 230, 0);
   }
 }
 
@@ -1593,7 +1609,7 @@ html:not(.light) .drill-setup-preview {
   text-decoration: underline;
   /* The underline is the only thing marking this as a link, so it carries the
      affordance and 0.35 was too faint against the photograph. */
-  text-decoration-color: rgba(244, 241, 234, 0.55);
+  text-decoration-color: rgba(239, 237, 230, 0.55);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   text-underline-offset: 4px;
   transition: color var(--observatory-motion);
@@ -1615,7 +1631,7 @@ html:not(.light) .drill-setup-preview {
   min-height: 44px;
   padding: 0 4px;
   text-decoration: underline;
-  text-decoration-color: rgba(244, 241, 234, 0.3);
+  text-decoration-color: rgba(239, 237, 230, 0.3);
   text-underline-offset: 4px;
   transition: color var(--observatory-motion);
   white-space: nowrap;
@@ -1694,7 +1710,7 @@ html:not(.light) .drill-setup-preview {
 .drill-observatory-root .drill-observatory-console button[role="combobox"]:focus-visible {
   box-shadow:
     0 0 0 1px var(--observatory-ring-strong),
-    0 0 0 3px rgba(244, 241, 234, 0.14);
+    0 0 0 3px rgba(239, 237, 230, 0.14);
   outline: none;
 }
 
@@ -1726,7 +1742,7 @@ html:not(.light) .drill-setup-preview {
 }
 
 .drill-observatory-root .drill-observatory-console-start:not(:disabled) {
-  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.42);
+  box-shadow: 0 0 0 1px rgba(239, 237, 230, 0.42);
   color: var(--observatory-ink);
 }
 
@@ -1932,12 +1948,12 @@ html:not(.light) .drill-setup-preview {
 
 .drill-observatory-root .drill-observatory-rc-chip:hover {
   box-shadow: 0 0 0 1px var(--observatory-ring-strong);
-  color: rgba(244, 241, 234, 0.95);
+  color: rgba(239, 237, 230, 0.95);
 }
 
 .drill-observatory-root .drill-observatory-rc-chip.is-active {
-  background: rgba(244, 241, 234, 0.1);
-  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.45);
+  background: rgba(239, 237, 230, 0.1);
+  box-shadow: 0 0 0 1px rgba(239, 237, 230, 0.45);
   color: var(--observatory-ink);
 }
 
@@ -1957,7 +1973,7 @@ html:not(.light) .drill-setup-preview {
 
 .drill-observatory-root .drill-observatory-secondary-link:hover {
   border-color: var(--observatory-ring-strong);
-  color: rgba(244, 241, 234, 0.95);
+  color: rgba(239, 237, 230, 0.95);
 }
 
 .drill-observatory-root .drill-observatory-secondary-link:active {
@@ -2012,7 +2028,7 @@ html:not(.light) .drill-setup-preview {
   background: transparent;
   border: 0;
   border-radius: 999px;
-  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.16);
+  box-shadow: 0 0 0 1px rgba(239, 237, 230, 0.16);
   color: var(--observatory-ink-90);
   font-size: 12.5px;
   font-weight: 500;
@@ -2025,7 +2041,7 @@ html:not(.light) .drill-setup-preview {
 
 .drill-observatory-root .drill-observatory-insight-action:hover {
   background: transparent;
-  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.3);
+  box-shadow: 0 0 0 1px rgba(239, 237, 230, 0.3);
 }
 
 .drill-observatory-root .drill-observatory-insight-action:active {
@@ -2056,7 +2072,7 @@ html:not(.light) .drill-setup-preview {
 }
 
 .drill-observatory-root .drill-observatory-today-primary {
-  background: rgba(244, 241, 234, 0.04);
+  background: rgba(239, 237, 230, 0.04);
   border-radius: var(--observatory-radius-inner);
   box-shadow: 0 0 0 1px var(--observatory-ring);
   min-height: 0;
@@ -2096,11 +2112,11 @@ html:not(.light) .drill-setup-preview {
 }
 
 .drill-observatory-root .drill-observatory-today-action:hover:not(:disabled) {
-  background-color: rgba(244, 241, 234, 0.05);
+  background-color: rgba(239, 237, 230, 0.05);
 }
 
 .drill-observatory-root .drill-observatory-today-rail {
-  background: rgba(244, 241, 234, 0.035);
+  background: rgba(239, 237, 230, 0.035);
   border-radius: var(--observatory-radius-control);
   box-shadow: 0 0 0 1px var(--observatory-ring-quiet);
   padding: var(--observatory-space-3) var(--observatory-space-4);
@@ -2109,7 +2125,7 @@ html:not(.light) .drill-setup-preview {
 }
 
 .drill-observatory-root .drill-observatory-today-rail:hover {
-  background: rgba(244, 241, 234, 0.06);
+  background: rgba(239, 237, 230, 0.06);
   box-shadow: 0 0 0 1px var(--observatory-ring-glass);
   transform: translateY(-2px);
 }
@@ -2119,7 +2135,7 @@ html:not(.light) .drill-setup-preview {
 }
 
 .drill-observatory-root .drill-observatory-resume-row {
-  background: rgba(244, 241, 234, 0.035);
+  background: rgba(239, 237, 230, 0.035);
   border: 1px solid var(--observatory-ring-glass);
   border-radius: var(--observatory-radius-control);
   color: inherit;
@@ -2130,11 +2146,11 @@ html:not(.light) .drill-setup-preview {
 }
 
 .drill-observatory-root .drill-observatory-resume-row:hover {
-  background: rgba(244, 241, 234, 0.06);
+  background: rgba(239, 237, 230, 0.06);
 }
 
 .drill-observatory-root .drill-observatory-today-quiet {
-  background: rgba(244, 241, 234, 0.035);
+  background: rgba(239, 237, 230, 0.035);
   border-radius: var(--observatory-radius-control);
   box-shadow: 0 0 0 1px var(--observatory-ring-quiet);
   color: var(--observatory-ink-50);
@@ -2160,7 +2176,7 @@ html:not(.light) .drill-setup-preview {
 
 .drill-observatory-root .drill-observatory-analytics .bg-white,
 .drill-observatory-root .drill-observatory-analytics .bg-slate-100 {
-  background-color: rgba(244, 241, 234, 0.035);
+  background-color: rgba(239, 237, 230, 0.035);
 }
 
 .drill-observatory-root .drill-observatory-analytics .border-slate-200,
@@ -3710,23 +3726,23 @@ html:not(.light) .drill-setup-preview {
    dark palette that matches the hero and practice bay above them.
    ───────────────────────────────────────────────────────────────────────── */
 .drill-observatory-launcher-panel {
-  --background: 240 6% 7%;
-  --foreground: 40 20% 96%;
-  --card: 240 6% 10%;
-  --card-foreground: 40 20% 96%;
-  --popover: 240 6% 9%;
-  --popover-foreground: 40 20% 96%;
-  --primary: 40 20% 96%;
-  --primary-foreground: 240 6% 7%;
-  --secondary: 240 5% 16%;
-  --secondary-foreground: 40 20% 96%;
-  --muted: 240 5% 15%;
-  --muted-foreground: 40 8% 68%;
-  --accent: 240 5% 18%;
-  --accent-foreground: 40 20% 96%;
-  --border: 0 0% 100% / 0.12;
-  --input: 0 0% 100% / 0.14;
-  --ring: 40 20% 80%;
+  --background: 192 11.628% 8.431%;
+  --foreground: 46.667 21.951% 91.961%;
+  --card: 192 11.628% 8.431%;
+  --card-foreground: 46.667 21.951% 91.961%;
+  --popover: 195 4.762% 16.471%;
+  --popover-foreground: 46.667 21.951% 91.961%;
+  --primary: 45 26.087% 90.98%;
+  --primary-foreground: 137.143 13.725% 10%;
+  --secondary: 195 4.762% 16.471%;
+  --secondary-foreground: 46.667 21.951% 91.961%;
+  --muted: 195 4.762% 16.471%;
+  --muted-foreground: 77.143 4.965% 72.353%;
+  --accent: 195 4.762% 16.471%;
+  --accent-foreground: 46.667 21.951% 91.961%;
+  --border: 105 1.709% 45.882%;
+  --input: 105 1.709% 45.882%;
+  --ring: 46.667 21.951% 91.961%;
 
   color: hsl(var(--foreground));
 }

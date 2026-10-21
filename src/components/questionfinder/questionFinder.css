@@ -967,3 +967,20 @@ html.dark .qf-panel,
     transition: none !important;
   }
 }
+
+/* RC lookup names passage and optional question without crowding the address row. */
+.qf-browse[data-rc="true"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.qf-browse[data-rc="true"] .qf-go { grid-column: 1/-1; width: 100%; min-height: 44px; }
+.qf-browse[data-rc="true"] .qf-field-label { font-family: var(--qf-ui); font-size: 12px; letter-spacing: 0; text-transform: none; }
+.qf-more-results { padding: 12px 0; color: var(--qf-muted); font-family: var(--qf-ui); font-size: 13px; line-height: 1.5; }
+.qf-more-results button { border: 1px solid var(--qf-hair-12); border-radius: 8px; background: var(--qf-surface); color: var(--qf-ink); min-height: 44px; padding: 10px 14px; margin-top: 8px; }
+.qf-more-results button:focus-visible { outline: 2px solid var(--qf-accent); outline-offset: 3px; }
+@media(max-width:360px) { .qf-browse[data-rc="true"] { gap: 12px 8px; padding-inline: 14px; } }
+@media(max-width:600px) {
+ .qf-row.qf-row-rc { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 7px 12px; align-items: start; }
+ .qf-row-rc > .qf-addr { grid-column: 1; grid-row: 1; min-width: 0; }
+ .qf-row-rc > .qf-row-meta { grid-column: 2; grid-row: 1; }
+ .qf-row-rc > .qf-row-text { grid-column: 1/-1; grid-row: 2; min-width: 0; }
+ .qf-row-rc .qf-row-title { display: block; overflow: visible; white-space: normal; text-overflow: clip; font-size: 15px; line-height: 1.5; }
+ .qf-row-rc .qf-snippet, .qf-row-rc .qf-row-go { display: none; }
+}

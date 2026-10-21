@@ -265,3 +265,20 @@ describe("landing contracts against the runners that consume them", () => {
     expect(url.searchParams.get("questions")).toBeNull();
   });
 });
+
+describe('RC passage relevance and explicit addresses',()=>{
+ it('ranks an exact passage title ahead of six earlier question-prompt matches',()=>{
+  const rcPassages=Array.from({length:7},(_,i)=>({passageId:i+1,preptest:140+i,section:4,setNumber:1,title:i===6?'Marine ecosystems':'Other topic '+i,topic:'Science',questionCount:1,firstWords:'Synthetic opening'}));
+  const rcQuestions=Array.from({length:6},(_,i)=>({questionId:i+1,passageId:i+1,preptest:140+i,section:4,qnum:1,position:1,prompt:'Marine ecosystems are mentioned in the question'}));
+  const results=runFinderSearch({query:'Marine ecosystems',lr:[],rcPassages,rcQuestions,bank:'rc'});
+  expect(results.rc[0].passageId).toBe(7);expect(results.rc).toHaveLength(6);expect(results.rcTotal).toBe(7);
+ });
+ it('recognizes RC passage syntax only in RC-capable views and checks question membership',()=>{
+  const rcPassages=[{passageId:14,preptest:140,section:4,setNumber:1,title:'Marine',topic:'Science',questionCount:1,firstWords:'Ocean'},{passageId:15,preptest:140,section:4,setNumber:2,title:'Libraries',topic:'Society',questionCount:1,firstWords:'Books'}];
+  const rcQuestions=[{questionId:1588,passageId:14,preptest:140,section:4,qnum:1,position:1,prompt:'Main point'},{questionId:1594,passageId:15,preptest:140,section:4,qnum:7,position:7,prompt:'Main point'}];
+  expect(runFinderSearch({query:'PT140 S4 P2',lr:[],rcPassages,rcQuestions,bank:'rc'}).rc.map(hit=>hit.passageId)).toEqual([15]);
+  expect(runFinderSearch({query:'PT140 S4 P2 Q7',lr:[],rcPassages,rcQuestions,bank:'rc'}).rc[0]).toMatchObject({passageId:15,questionId:1594});
+  expect(runFinderSearch({query:'PT140 S4 P2 Q1',lr:[],rcPassages,rcQuestions,bank:'rc'}).rc).toEqual([]);
+  expect(runFinderSearch({query:'PT140 S4 P2',lr:[],rcPassages,rcQuestions,bank:'lr'}).address).toBeNull();
+ });
+});

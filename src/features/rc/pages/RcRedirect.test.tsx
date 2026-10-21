@@ -67,4 +67,12 @@ describe('RcRedirect', () => {
     const url = landOn('/rc?passages=1188#q3');
     expect(url.hash).toBe('#q3');
   });
+
+  it('carries known assignment origin through without inventing an assignment ID', () => {
+    const url = landOn('/rc?passages=1188&source=assignment#q3');
+    expect(url.searchParams.get('source')).toBe('assignment');
+    expect(url.searchParams.get('passages')).toBe('1188');
+    expect(url.searchParams.get('assignmentId')).toBeNull();
+    expect(url.hash).toBe('#q3');
+  });
 });

@@ -1,138 +1,64 @@
 import * as React from "react";
 import { questionBank } from "@/lib/questionLoader";
 import { loadRcIndex, loadRcQuestionIndex } from "@/features/rc/lib/rcBank";
-import type {
-  FinderLrSource,
-  FinderRcPassageSource,
-  FinderRcQuestionSource,
-} from "./questionFinderSearch";
+import type { FinderLrSource, FinderRcPassageSource, FinderRcQuestionSource, QuestionFinderBank } from "./questionFinderSearch";
 
-interface FinderBanks {
-  lr: FinderLrSource[];
-  rcPassages: FinderRcPassageSource[];
-  rcQuestions: FinderRcQuestionSource[];
-}
-
+interface FinderBanks { lr: FinderLrSource[]; rcPassages: FinderRcPassageSource[]; rcQuestions: FinderRcQuestionSource[]; }
 export interface FinderBanksState extends FinderBanks {
   loading: boolean;
-  /** Set only when BOTH banks failed; one bank down still gives real results. */
   error: string | null;
-  /** Named so a partial outage can be said out loud rather than silently halving results. */
   lrFailed: boolean;
   rcFailed: boolean;
   retry: () => void;
 }
+type LoadStatus = 'idle' | 'loading' | 'ready' | 'failed';
 
-const EMPTY: FinderBanks = { lr: [], rcPassages: [], rcQuestions: [] };
-
-/**
- * Loads what the Question finder searches, and not one byte before it is asked.
- *
- * `enabled` is the whole point. The RC index is ~646 KB across two files that
- * Classroom Home does not otherwise fetch, and Home is the page a student opens
- * most. Nothing here runs until the finder is actually opened, and once loaded
- * it stays for the life of the page — both loaders cache their own promises.
- *
- * The two banks are awaited independently: RC being unreachable must not cost
- * the student their LR results, and the reverse.
- */
-export function useQuestionFinderBanks(enabled: boolean): FinderBanksState {
-  const [banks, setBanks] = React.useState<FinderBanks>(EMPTY);
-  const [loading, setLoading] = React.useState(false);
-  const [lrFailed, setLrFailed] = React.useState(false);
-  const [rcFailed, setRcFailed] = React.useState(false);
+/** Load only the live bank view; switching banks retains already loaded indexes. */
+export function useQuestionFinderBanks(enabled: boolean, view: QuestionFinderBank | 'all' = 'all'): FinderBanksState {
+  const cache = React.useRef<{ lr: FinderLrSource[]; rcPassages: FinderRcPassageSource[]; rcQuestions: FinderRcQuestionSource[]; lrStatus: LoadStatus; rcStatus: LoadStatus }>({lr:[],rcPassages:[],rcQuestions:[],lrStatus:'idle',rcStatus:'idle'});
+  const mounted = React.useRef(true);
+  const [, refresh] = React.useReducer(value => value + 1, 0);
   const [attempt, setAttempt] = React.useState(0);
-
+  const wantsLr = view !== 'rc';
+  const wantsRc = view !== 'lr';
+  React.useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   React.useEffect(() => {
     if (!enabled) return;
-
-    /* No "have I started?" ref here, deliberately. A ref survives StrictMode's
-       double-mount but the `cancelled` flag does not: the first effect would
-       claim the work and then be cancelled, the second would see the ref and
-       return early, and nothing would ever clear `loading`. The panel hung on
-       "Loading questions…" forever. Both loaders cache their own promises —
-       `questionBank` is a singleton, `loadRcIndex`/`loadRcQuestionIndex` hold
-       theirs — so simply re-running the effect costs a map, not a fetch. */
-    let cancelled = false;
-    setLoading(true);
-    setLrFailed(false);
-    setRcFailed(false);
-
-    const lrLoad = (async (): Promise<FinderLrSource[]> => {
-      if (!questionBank.isReady()) await questionBank.load();
-      return questionBank.getAllQuestions().map((question) => ({
-        qid: question.qid,
-        pt: question.pt,
-        section: question.section,
-        qnum: question.qnum,
-        qtype: question.qtype,
-        stimulus: question.stimulus,
-        questionStem: question.questionStem,
-      }));
-    })();
-
-    const rcLoad = (async () => {
-      const [index, questionIndex] = await Promise.all([
-        loadRcIndex(),
-        loadRcQuestionIndex(),
-      ]);
-      const passages: FinderRcPassageSource[] = [];
-      for (const preptest of index.preptests) {
-        for (const passage of preptest.passages) {
-          // A passage with nothing drillable on it is not a result: opening it
-          // would ask the student nothing.
-          if (passage.questionCount === 0) continue;
-          passages.push({
-            passageId: passage.passageId,
-            preptest: preptest.preptest,
-            section: passage.section,
-            setNumber: passage.setNumber,
-            title: passage.title,
-            topic: passage.topic,
-            questionCount: passage.questionCount,
-            firstWords: passage.firstWords,
-          });
+    const changed = () => { if (mounted.current) refresh(); };
+    if (wantsLr && cache.current.lrStatus === 'idle') {
+      cache.current.lrStatus = 'loading';
+      void (async () => {
+        if (!questionBank.isReady()) await questionBank.load();
+        cache.current.lr = questionBank.getAllQuestions().map(question => ({qid:question.qid,pt:question.pt,section:question.section,qnum:question.qnum,qtype:question.qtype,stimulus:question.stimulus,questionStem:question.questionStem}));
+        cache.current.lrStatus = 'ready';
+      })().catch(() => { cache.current.lrStatus = 'failed'; }).finally(changed);
+      changed();
+    }
+    if (wantsRc && cache.current.rcStatus === 'idle') {
+      cache.current.rcStatus = 'loading';
+      void (async () => {
+        const [index, questionIndex] = await Promise.all([loadRcIndex(),loadRcQuestionIndex()]);
+        const passages: FinderRcPassageSource[] = [];
+        for (const test of index.preptests) for (const passage of test.passages) {
+          if (passage.questionCount <= 0) continue;
+          passages.push({passageId:passage.passageId,preptest:test.preptest,section:passage.section,setNumber:passage.setNumber,title:passage.title,topic:passage.topic,questionCount:passage.questionCount,firstWords:passage.firstWords});
         }
-      }
-      const questions: FinderRcQuestionSource[] = questionIndex.questions.map((entry) => ({
-        questionId: entry.questionId,
-        passageId: entry.passageId,
-        preptest: entry.preptest,
-        section: entry.section,
-        qnum: entry.position,
-        position: entry.position,
-        prompt: entry.prompt,
-      }));
-      return { passages, questions };
-    })();
-
-    void Promise.allSettled([lrLoad, rcLoad]).then(([lrResult, rcResult]) => {
-      if (cancelled) return;
-      const next: FinderBanks = { ...EMPTY };
-
-      if (lrResult.status === "fulfilled") next.lr = lrResult.value;
-      else setLrFailed(true);
-
-      if (rcResult.status === "fulfilled") {
-        next.rcPassages = rcResult.value.passages;
-        next.rcQuestions = rcResult.value.questions;
-      } else setRcFailed(true);
-
-      setBanks(next);
-      setLoading(false);
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [enabled, attempt]);
-
+        const passageIds = new Set(passages.map(passage => passage.passageId));
+        cache.current.rcPassages = passages;
+        cache.current.rcQuestions = questionIndex.questions.filter(question => passageIds.has(question.passageId)).map(question => ({questionId:question.questionId,passageId:question.passageId,preptest:question.preptest,section:question.section,qnum:question.position,position:question.position,prompt:question.prompt}));
+        cache.current.rcStatus = 'ready';
+      })().catch(() => { cache.current.rcStatus = 'failed'; }).finally(changed);
+      changed();
+    }
+  }, [enabled, wantsLr, wantsRc, attempt]);
+  const lrFailed = wantsLr && cache.current.lrStatus === 'failed';
+  const rcFailed = wantsRc && cache.current.rcStatus === 'failed';
+  const requested = [wantsLr ? cache.current.lrStatus : null, wantsRc ? cache.current.rcStatus : null].filter(Boolean);
+  const loading = enabled && requested.some(status => status === 'idle' || status === 'loading');
+  const allFailed = requested.length > 0 && requested.every(status => status === 'failed');
   return {
-    ...banks,
-    loading,
-    lrFailed,
-    rcFailed,
-    error: lrFailed && rcFailed ? "Questions could not be loaded." : null,
-    retry: () => setAttempt((value) => value + 1),
+    lr:cache.current.lr,rcPassages:cache.current.rcPassages,rcQuestions:cache.current.rcQuestions,
+    loading,lrFailed,rcFailed,error:allFailed ? view === 'rc' ? 'Reading Comprehension passages could not be loaded.' : view === 'lr' ? 'Logical Reasoning questions could not be loaded.' : 'Questions could not be loaded.' : null,
+    retry:() => { if(wantsLr && cache.current.lrStatus === 'failed') cache.current.lrStatus='idle'; if(wantsRc && cache.current.rcStatus === 'failed') cache.current.rcStatus='idle'; setAttempt(value=>value+1); },
   };
 }

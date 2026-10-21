@@ -38,6 +38,11 @@ describe('separate RC learning records', () => {
     store.row.config.source = 'assignment'; await expect(recordRcLearningEvent(request())).rejects.toThrow('ordinary practice'); expect(store.updates).toBe(0);
     store.row.config.source = 'manual'; store.row.config.timedSectionSittingId = 'protected'; await expect(recordRcLearningEvent(request())).rejects.toThrow('ordinary practice');
   });
+  it('rejects resumable assignment-origin learning writes', async () => {
+    store.row.config.assignmentOrigin = true;
+    await expect(recordRcLearningEvent(request())).rejects.toThrow('ordinary practice');
+    expect(store.updates).toBe(0);
+  });
   it('rejects a changed actor and a passage outside the saved selection', async () => {
     store.switchActor = true; await expect(recordRcLearningEvent(request())).rejects.toThrow('account changed'); expect(store.updates).toBe(0);
     store.switchActor = false; store.actor = 'owner'; await expect(recordRcLearningEvent({ ...request(), passageId: 99 })).rejects.toThrow('outside');
