@@ -1,0 +1,44 @@
+/* Paper for choosing. Ink for configuring. No enclosing dashboard card. */
+.refined.sculpted .shell{max-width:1160px;margin-top:28px}
+.refined.sculpted .builder{background:transparent;color:#282c28;border:0;border-radius:0;padding:0 0 24px;box-shadow:none}
+.refined.sculpted .back{color:#65645c;padding:0;min-height:30px;font-size:13px}
+.refined.sculpted .back:hover{background:transparent;color:#202620;text-decoration:underline;text-underline-offset:4px}
+.refined.sculpted .work{grid-template-columns:1fr 1.04fr;gap:58px;margin-top:24px;align-items:start}
+.refined.sculpted .intro{padding:17px 6px 0 0}
+.refined.sculpted h1{color:#252b26;font-size:45px;letter-spacing:-1.8px;line-height:1.09;max-width:390px;margin-bottom:21px;font-weight:620}
+.refined.sculpted .intro>div>p{color:#64645b;font-size:16px;line-height:1.65;margin:0 0 37px;max-width:350px}
+.refined.sculpted .lookup{border-top:1px solid #d0d1c5;padding-top:25px;color:#30362f}
+.refined.sculpted .lookup-heading{margin-bottom:10px}
+.refined.sculpted .lookup-heading svg{color:#686c61}
+.refined.sculpted .lookup h3{font-size:15px;color:#32392f;font-weight:600}
+.refined.sculpted .lookup .lookup-help{color:#66665b;font-size:13px;margin-bottom:23px}
+.refined.sculpted .lookup .address{gap:18px;grid-template-columns:1.15fr 1fr 1fr}
+.refined.sculpted .lookup .address label{color:#63675b;font-size:13px;margin-bottom:6px}
+.refined.sculpted .lookup select{background:transparent;color:#293328;border:0;border-bottom:1px solid #858e7e;border-radius:0;box-shadow:none;padding:9px 2px;min-height:46px;color-scheme:light;font-size:15px}
+.refined.sculpted .lookup select:disabled{background:transparent;border-color:#c5cabe;color:#7c8275;opacity:1}
+.refined.sculpted .lookup select:hover:not(:disabled){background:#efeee5;border-bottom-color:#373f33}
+.refined.sculpted .lookup select:focus-visible{outline:2px solid #707866;outline-offset:4px}
+.refined.sculpted .lookup option{background:#faf9f3;color:#283226}
+.refined.sculpted .lookup .lookup-status{color:#4f5b46;font-size:13px;margin-top:18px}
+.refined.sculpted .settings{position:relative;isolation:isolate;background:transparent;border:0;padding:34px 34px 31px;min-height:438px;color:#efede6}
+.refined.sculpted .settings::before{content:'';position:absolute;inset:0;background:#131718;border-radius:8px 38px 8px 38px;z-index:-1;box-shadow:0 18px 30px -27px #1e282966}
+.refined.sculpted .settings .row{grid-template-columns:120px minmax(0,1fr);gap:20px}
+.refined.sculpted .settings .next{margin-top:28px;border-color:#3c4540;padding-top:23px}
+.refined.sculpted .settings .custom{min-height:44px;min-width:150px}
+.refined.sculpted .settings .next .primary{border-radius:25px}
+.refined.sculpted #reviewPanel{padding:24px 0;color:#2d352b;max-width:950px}
+.refined.sculpted #reviewPanel .reviewTitle{color:#273224;font-size:31px;letter-spacing:-.7px}
+.refined.sculpted #reviewMeta{color:#626c5b}
+.refined.sculpted .review-list p{border-color:#cdd2c4;color:#2b3527}
+.refined.sculpted .review-list small{color:#65705e}
+.refined.sculpted #reviewPanel button:not(.primary){color:#3b4635;border-color:#a6af9b}
+.refined.sculpted #reviewPanel button:not(.primary):hover{background:#eaece1}
+.refined.sculpted #reviewPanel #start{background:#252928;color:#f1eee3;border-color:#252928}
+.refined.sculpted #reviewPanel #start:hover{background:#383d3b;border-color:#383d3b}
+.refined.sculpted #reviewPanel .foot{border-color:#d0d5c6;color:#65715c}
+.refined.sculpted #reviewPanel .foot button{color:#55604c}
+.refined.sculpted .note{margin-top:8px;color:#797a6d}
+@media(max-width:1000px){.refined.sculpted .work{gap:32px}.refined.sculpted h1{font-size:39px}.refined.sculpted .settings{padding:30px 26px}.refined.sculpted .settings .row{grid-template-columns:105px minmax(0,1fr);gap:15px}.refined.sculpted .lookup .address{gap:13px}}
+@media(max-width:720px){.refined.sculpted .work{display:block;max-width:580px;margin:18px auto 0}.refined.sculpted .intro{padding:7px 3px 0}.refined.sculpted h1{font-size:37px;max-width:350px}.refined.sculpted .intro>div>p{margin-bottom:26px;font-size:15px}.refined.sculpted .lookup{margin-bottom:32px;padding-top:22px}.refined.sculpted .lookup .lookup-help{margin-bottom:19px}.refined.sculpted .settings{padding:27px 25px;min-height:0}.refined.sculpted .settings::before{border-radius:7px 29px 7px 29px}.refined.sculpted .settings .next{margin-top:24px}.refined.sculpted .note{margin-top:6px}.refined.sculpted .settings .row{grid-template-columns:108px minmax(0,1fr);gap:14px}}
+@media(max-width:350px){.refined.sculpted .shell{padding:0 14px}.refined.sculpted h1{font-size:35px;letter-spacing:-1.2px}.refined.sculpted .settings{padding:24px 20px}.refined.sculpted .settings .row{grid-template-columns:99px minmax(0,1fr);gap:12px}.refined.sculpted .lookup .address{gap:13px}.refined.sculpted .lookup select{font-size:14px}.refined.sculpted .lookup .lookup-help{font-size:12px}}
+
