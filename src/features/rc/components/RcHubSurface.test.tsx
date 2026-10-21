@@ -119,6 +119,12 @@ function QueryDriver({ to }: { to: string }) {
   );
 }
 
+/** Mirrors the host prop that changes when Apply synchronizes builder=manual. */
+function RouteDrivenPickerSurface() {
+  const [params] = useSearchParams();
+  return <RcHubSurface embedded showHistory={false} openPickerOnEntry={params.get('builder') === 'manual'} />;
+}
+
 function ModeLocationProbe() {
   const location = useLocation();
   return <output data-testid="mode-location">{JSON.stringify({ search: location.search, state: location.state })}</output>;
@@ -262,7 +268,7 @@ describe('RC builder transactional drawers', () => {
     const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
     expect(within(drawer).getByText(/Matching passages are excluded by your active filters/)).toBeInTheDocument();
     fireEvent.click(within(drawer).getByRole('button', { name: 'Adjust passage filters' }));
-    expect(within(drawer).getByRole('button', { name: 'Apply' })).toBeDisabled();
+    expect(within(drawer).getByRole('button', { name: 'Apply' })).toBeEnabled();
     fireEvent.change(within(drawer).getByRole('combobox', { name: 'Practice history' }), { target: { value: 'any' } });
     fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
     expect(within(drawer).getByRole('button', { name: 'Apply' })).toBeEnabled();
@@ -386,6 +392,206 @@ describe('RC builder transactional drawers', () => {
   });
 });
 
+
+describe('RC refinement workflow regressions', () => {
+  beforeEach(() => {
+    sessionStorage.clear(); auth.id = 'owner'; navigate.mockClear(); createSession.mockClear(); loadPassages.mockClear();
+    getSession.mockReset().mockResolvedValue(null); adoption.enabled = false; adoption.sessions = [];
+  });
+
+  it('closes Apply when automatic entry changes the host prop to manual and does not reopen on Edit selection', async () => {
+    render(<MemoryRouter initialEntries={['/practice/drills?section=rc&builder=automatic']}><RouteDrivenPickerSurface /><ModeLocationProbe /></MemoryRouter>);
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    const opener = screen.getByRole('button', { name: 'Pick passages' });
+    fireEvent.click(opener);
+    const drawer = await screen.findByRole('dialog', { name: 'Pick passages' });
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Move Passage 1201 earlier' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.getByTestId('mode-location')).toHaveTextContent('builder=manual');
+    await waitFor(() => expect(opener).toHaveFocus());
+    fireEvent.click(screen.getByRole('button', { name: 'Edit selection' }));
+    const reopened = await screen.findByRole('dialog', { name: 'Pick passages' });
+    const selected = within(reopened).getByRole('list', { name: 'Selected passages' });
+    expect(within(selected).getAllByRole('listitem').map(row => row.textContent)).toEqual([expect.stringContaining('Passage 1201'), expect.stringContaining('Passage 1188')]);
+    fireEvent.click(within(reopened).getByRole('button', { name: 'Apply' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(createSession).not.toHaveBeenCalled();
+    previewDrill();
+    await screen.findByRole('button', { name: 'Start drill' });
+    expect(loadPassages).toHaveBeenLastCalledWith([1201, 1188]);
+  });
+
+  it('applies an empty manual selection and retains it when returning from automatic mode', async () => {
+    mount('/classroom/drill?section=rc&passages=1188,1201');
+    await screen.findByRole('button', { name: 'Edit selection' });
+    openSelectedPassages();
+    const drawer = await screen.findByRole('dialog');
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Clear selection' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.getByRole('button', { name: 'Choose passages' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Edit selection' })).not.toBeInTheDocument();
+    expect(createSession).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Choose for me' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    const empty = await screen.findByRole('dialog');
+    expect(within(within(empty).getByRole('list', { name: 'Selected passages' })).queryAllByRole('listitem')).toHaveLength(0);
+  });
+
+  it.each(['Timing', 'Show answers'] as const)('keeps automatically reviewed IDs after changing only %s', async control => {
+    mount('/classroom/drill?section=rc&count=2');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    previewDrill();
+    await screen.findByRole('button', { name: 'Start drill' });
+    const ids = [...loadPassages.mock.calls.at(-1)![0]];
+    editSetup();
+    fireEvent.change(screen.getByRole('combobox', { name: control }), { target: { value: control === 'Timing' ? 'standard' : 'end_of_set' } });
+    previewDrill();
+    await screen.findByRole('button', { name: 'Start drill' });
+    expect(loadPassages).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Start drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual(ids);
+    expect(createSession.mock.calls[0][0]).toMatchObject(control === 'Timing' ? { timing: { mode: 'per_passage_budget', secondsPerPassage: 525 } } : { reveal: 'end_of_set' });
+  });
+
+  it('keeps manual picks and order while browsing filters change without claiming a final topic restriction', async () => {
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
+    const drawer = await screen.findByRole('dialog');
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1188' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Add Passage 1201' }));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Move Passage 1201 earlier' }));
+    fireEvent.click(within(drawer).getByText('Filter passages'));
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Law' }));
+    expect(within(drawer).getByText(/Picks outside the current search or filters stay selected/)).toBeInTheDocument();
+    fireEvent.click(within(drawer).getByRole('button', { name: 'Apply' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    const selected = screen.getByRole('list', { name: 'Selected drill passages' });
+    expect(within(selected).getAllByRole('listitem').map(row => row.textContent)).toEqual([expect.stringContaining('Passage 1201'), expect.stringContaining('Passage 1188')]);
+    expect(screen.queryByText('Applied filters')).not.toBeInTheDocument();
+    expect(screen.queryByText('Topic', { exact: true })).not.toBeInTheDocument();
+    expect(screen.queryByText('Difficulty', { exact: true })).not.toBeInTheDocument();
+    previewDrill(); await screen.findByRole('button', { name: 'Start drill' });
+    expect(loadPassages).toHaveBeenLastCalledWith([1201, 1188]);
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('visibly preserves the manual no-recorded-exposure launch requirement and rechecks it at Start', async () => {
+    const exposure = await import('../api/rcExposure');
+    mount('/classroom/drill?section=rc&passages=1188');
+    await screen.findByRole('button', { name: 'Edit selection' });
+    selectStatus('No recorded exposure');
+    commitDrawerIfOpen();
+    expect(screen.getByText('Launch requirement: No recorded exposure')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    openOptions();
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Include passages whose earlier exposure is unknown' }));
+    commitDrawerIfOpen(); previewDrill();
+    await screen.findByRole('button', { name: 'Start drill' });
+    expect(screen.getByText('Launch requirement: No recorded exposure')).toBeInTheDocument();
+    vi.mocked(exposure.getRcExposureHistory).mockResolvedValueOnce(new Set([1188]));
+    fireEvent.click(screen.getByRole('button', { name: 'Start drill' }));
+    await screen.findByText(/A selected passage now has recorded exposure/);
+    expect(createSession).not.toHaveBeenCalled();
+    expect(loadPassages).toHaveBeenLastCalledWith([1188]);
+  });
+
+  it('blocks a selected attempted passage under the manual exposure requirement even without an exposure ledger row', async () => {
+    const progress = await import('../api/rcProgress');
+    vi.mocked(progress.getQuestionHistory).mockResolvedValue(new Map([[11880, {
+      questionId: 11880, attempts: 1, everIncorrect: false, incorrectOnLastTake: false, lastFirstTakeIncorrect: false,
+      incorrectCount: 0, answered: true, firstEverCorrect: true, firstTakeCorrect: true,
+      lastSeenAt: '2026-10-20T12:00:00Z', lastGradedAt: '2026-10-20T12:00:00Z',
+    }]]));
+    mount('/classroom/drill?section=rc&passages=1188');
+    await screen.findByRole('button', { name: 'Edit selection' });
+    selectStatus('No recorded exposure');
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Include passages whose earlier exposure is unknown' }));
+    commitDrawerIfOpen();
+    expect(screen.getByText('Launch requirement: No recorded exposure')).toBeInTheDocument();
+    expect(screen.getByText(/1 selected passage does not meet No recorded exposure/)).toBeInTheDocument();
+    expect(within(screen.getByRole('list', { name: 'Selected drill passages' })).getByText(/Does not meet No recorded exposure/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    expect(loadPassages).not.toHaveBeenCalled();
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('rechecks saved answer history at Start for strict manual picks even when no exposure row exists', async () => {
+    const progress = await import('../api/rcProgress');
+    mount('/classroom/drill?section=rc&passages=1188');
+    await screen.findByRole('button', { name: 'Edit selection' });
+    selectStatus('No recorded exposure');
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Include passages whose earlier exposure is unknown' }));
+    commitDrawerIfOpen(); previewDrill();
+    await screen.findByRole('button', { name: 'Start drill' });
+    const history = new Map([[11880, {
+      questionId: 11880, attempts: 1, everIncorrect: false, incorrectOnLastTake: false, lastFirstTakeIncorrect: false,
+      incorrectCount: 0, answered: true, firstEverCorrect: true, firstTakeCorrect: true,
+      lastSeenAt: '2026-10-21T12:00:00Z', lastGradedAt: '2026-10-21T12:00:00Z',
+    }]]);
+    const priorReads = vi.mocked(progress.getRcHistorySnapshot).mock.calls.length;
+    vi.mocked(progress.getRcHistorySnapshot).mockResolvedValueOnce({ history, displayHistory: history, hasHiddenGradedResults: false });
+    fireEvent.click(screen.getByRole('button', { name: 'Start drill' }));
+    await screen.findByText(/A selected passage now has saved answers and does not meet No recorded exposure/);
+    expect(vi.mocked(progress.getRcHistorySnapshot).mock.calls.length).toBeGreaterThan(priorReads);
+    expect(screen.getByText('Launch requirement: No recorded exposure')).toBeInTheDocument();
+    expect(loadPassages).toHaveBeenLastCalledWith([1188]);
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('keeps the reviewed set visible while a different automatic selection loads', async () => {
+    mount('/classroom/drill?section=rc');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    previewDrill(); await screen.findByRole('button', { name: 'Start drill' });
+    const originalLoad = loadPassages.getMockImplementation()!;
+    let release!: () => Promise<void>;
+    loadPassages.mockImplementationOnce(ids => new Promise(resolve => {
+      release = async () => resolve(await originalLoad(ids));
+    }));
+    fireEvent.click(screen.getByRole('button', { name: 'Choose different passages' }));
+    expect(screen.getByRole('heading', { name: 'Review your RC drill' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Build your RC drill' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Starting|Start drill/ })).toBeDisabled();
+    await act(async () => release());
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Start drill' })).toBeEnabled());
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('recomputes automatically reviewed selection when the requested count changes', async () => {
+    mount('/classroom/drill?section=rc&count=1');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Preview drill' })).toBeEnabled());
+    previewDrill(); await screen.findByRole('button', { name: 'Start drill' });
+    editSetup(); fireEvent.click(screen.getByRole('button', { name: 'More passages, 1 selected' }));
+    previewDrill(); await screen.findByRole('button', { name: 'Start drill' });
+    expect(loadPassages).toHaveBeenCalledTimes(2);
+    expect(loadPassages.mock.calls.at(-1)![0]).toHaveLength(2);
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('restores exact saved passages without presenting their obsolete browsing topic as a drill restriction', async () => {
+    const payload: RcSavedPayload = { kind: 'rc-builder', version: 1, mode: 'fixed', count: 2, passageIds: [1201, 1188], questionIds: [12010, 11880], config: { reveal: 'per_question', timing: { mode: 'unlimited' } }, filters: { topics: ['Law'], formats: [], frameworks: [], families: [], difficulties: [5], status: 'any', preptestMin: 101, preptestMax: 148 } };
+    vi.mocked(getRcSavedSet).mockResolvedValue({ id: 'mixed-fixed', userId: 'owner', name: 'Mixed exact selection', createdAt: '2026-10-17', payload, problem: null });
+    mount('/classroom/drill?saved=mixed-fixed');
+    await screen.findByText(/Opened Mixed exact selection/);
+    expect(screen.queryByText('Applied filters')).not.toBeInTheDocument();
+    expect(screen.queryByRole('group', { name: 'Passage topic' })).not.toBeInTheDocument();
+    expect(screen.getByText('Passage 1201')).toBeInTheDocument();
+    expect(screen.getByText('Passage 1188')).toBeInTheDocument();
+    expect(screen.getByText(/PT 141/)).toBeInTheDocument();
+    previewDrill(); await screen.findByRole('button', { name: 'Start drill' });
+    expect(loadPassages).toHaveBeenLastCalledWith([1201, 1188]);
+    fireEvent.click(screen.getByRole('button', { name: 'Start drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual([1201, 1188]);
+  });
+});
+
 describe('RcHubSurface autostart', () => {
   it('opens the manual landing entry without selecting or starting any passages', async () => {
     mount('/classroom/drill?section=rc&builder=manual');
@@ -397,7 +603,7 @@ describe('RcHubSurface autostart', () => {
     expect(screen.queryByRole('combobox', { name: 'Show answers' })).not.toBeInTheDocument();
     expect(screen.getByRole('combobox', { name: 'Sort passages' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /^More passages/ })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeEnabled();
     const firstRow = within(screen.getByRole('list', { name: 'Available passages' })).getAllByRole('listitem')[0];
     expect(firstRow.querySelector('details')).not.toHaveAttribute('open');
     expect(within(firstRow).getByText('Some opening words')).not.toBeVisible();
@@ -796,7 +1002,7 @@ describe('RcHubSurface autostart', () => {
     expect(loadPassages).toHaveBeenCalledWith([1188, 1201]);
     expect(createSession).not.toHaveBeenCalled();
     expect(screen.queryByText('What is the main point?')).not.toBeInTheDocument();
-    for (const button of screen.getAllByRole('button', { name: 'Reveal passage and questions' })) fireEvent.click(button);
+    for (const button of screen.getAllByRole('button', { name: 'Reveal passage and questions · records exposure' })) fireEvent.click(button);
     await waitFor(() => expect(screen.getAllByText('What is the main point?')).toHaveLength(2));
     expect(screen.queryByText('Secret explanation')).not.toBeInTheDocument();
     expect(screen.queryByText('Secret reason')).not.toBeInTheDocument();
@@ -837,7 +1043,7 @@ describe('RcHubSurface autostart', () => {
       expect(within(list).getByRole('button', { name: 'Remove Many 3000' })).toBeInTheDocument();
       fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'Many 3005' } });
       expect(within(list).getAllByRole('listitem')).toHaveLength(1);
-      expect(screen.getByText(/1 selected · 1 passages match your search and manual filters/)).toBeInTheDocument();
+      expect(screen.getByText(/1 selected · 1 passage matches your search and browsing filters/)).toBeInTheDocument();
     } finally {
       vi.mocked(bank.loadAllIndexPassages).mockReset().mockImplementation(async () =>
         [1188, 1201, 1202].map((passageId, i) => ({
@@ -851,7 +1057,7 @@ describe('RcHubSurface autostart', () => {
     mount('/classroom/drill?section=rc&count=3');
     await screen.findByRole('button', { name: 'Preview drill' });
     editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
-    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeEnabled();
     fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'PT 141' } });
     const list = screen.getByRole('list', { name: 'Available passages' });
     expect(within(list).getAllByRole('listitem')).toHaveLength(1);
@@ -1074,11 +1280,11 @@ describe('RcHubSurface launch truth (#171)', () => {
     expect(createSession).not.toHaveBeenCalled();
   });
 
-  it('marks an inspected set stale when a setting changes', async () => {
+  it('marks an inspected set stale when a selection-affecting setting changes', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
     fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
-    commitDrawerIfOpen(); editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
+    commitDrawerIfOpen(); editSetup(); fireEvent.click(screen.getByRole('button', { name: /^More passages/ }));
     expect(screen.getByText(/settings changed. Preview the drill again/)).toBeInTheDocument();
     expect(primary()).toHaveTextContent('Preview drill');
   });
@@ -1089,7 +1295,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
     editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
-    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeEnabled();
     fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
     previewDrill();
     expect(screen.getByRole('region', { name: 'Selected reading set' })).toBeInTheDocument();
@@ -1431,11 +1637,11 @@ describe('RcHubSurface launch truth (#171)', () => {
     expect(screen.getByRole('spinbutton', { name: 'Earliest PrepTest' })).toHaveValue(101);
   });
 
-  it('keeps automatic timing and count committed while an empty manual draft cannot apply', async () => {
+  it('keeps automatic timing and count committed when an empty manual draft is cancelled', async () => {
     mount('/classroom/drill?section=rc&count=3&timing=standard');
     await screen.findByRole('button', { name: 'Preview drill' });
     editSetup(); fireEvent.click(screen.getByRole('button', { name: 'Pick passages' }));
-    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeEnabled();
     fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
     expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
     expect(within(screen.getByRole('group', { name: 'Passages' })).getByText('3')).toBeInTheDocument();

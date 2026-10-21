@@ -514,7 +514,7 @@ export default function AcademyMainhub({
             })()}
           </section>
         ) : section === "rc" && stage !== "analytics" ? <>
-          <div className="drill-observatory-tools">
+          <div className={`drill-observatory-tools${rcBuilderRequested ? ' rc-builder-question-shortcut' : ''}`}>
             <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} />
           </div>
           {rcBuilderRequested ? <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">

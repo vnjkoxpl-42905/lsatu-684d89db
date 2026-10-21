@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { getRcSavedSet, listRcSavedSets, renameRcSet, saveRcSet, type RcSavedDefinition } from '../api/rcSavedSets';
 import { decodeRcSavedSet, type RcSavedPayload } from '../lib/rcSavedSetCodec';
 
-type SavedPanelProps = { recipe?: RcSavedPayload | null; fixed?: RcSavedPayload | null; variant?: 'management' | 'contextual' };
-export function RcSavedSetsPanel({ recipe, fixed, variant = 'management' }: SavedPanelProps) {
+type SavedPanelProps = { recipe?: RcSavedPayload | null; fixed?: RcSavedPayload | null; variant?: 'management' | 'contextual'; saveSuccessMessage?: string };
+export function RcSavedSetsPanel({ recipe, fixed, variant = 'management', saveSuccessMessage }: SavedPanelProps) {
   const { user } = useAuth();
-  return <ActorRcSavedSetsPanel key={user?.id ?? 'signed-out'} owner={user?.id ?? null} recipe={recipe} fixed={fixed} variant={variant} />;
+  return <ActorRcSavedSetsPanel key={user?.id ?? 'signed-out'} owner={user?.id ?? null} recipe={recipe} fixed={fixed} variant={variant} saveSuccessMessage={saveSuccessMessage} />;
 }
-function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant }: SavedPanelProps & { owner: string | null }) {
+function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant, saveSuccessMessage }: SavedPanelProps & { owner: string | null }) {
   const navigate = useNavigate();
   const [rows, setRows] = React.useState<RcSavedDefinition[]>([]);
   const [name, setName] = React.useState('');
@@ -21,6 +21,7 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant }: SavedPanelProp
   const [revision, retry] = React.useReducer(n => n + 1, 0);
   const [renaming, setRenaming] = React.useState<string | null>(null);
   const [newName, setNewName] = React.useState('');
+  const saveHelpId = React.useId();
   const lock = React.useRef(false);
   const alive = React.useRef(true);
   const pending = React.useRef<{ key: string; id: string } | null>(null);
@@ -69,7 +70,7 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant }: SavedPanelProp
     localStorage.removeItem(storageKey); pending.current = null;
     if (alive.current) setPendingVisible(false);
     if (!alive.current) return;
-    setName(''); setNotice(variant === 'contextual' ? 'Saved to your account. Find it in Saved sets.' : 'Saved to your account. Opening a saved item returns to the builder for inspection.'); retry();
+    setName(''); setNotice(saveSuccessMessage ?? (variant === 'contextual' ? 'Saved to your account. Find it in Saved sets.' : 'Saved to your account. Opening a saved item returns to the builder for inspection.')); retry();
   });
   const open = (id: string) => perform(async () => {
     if (!owner) return;
@@ -79,13 +80,14 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant }: SavedPanelProp
   });
   return <section className="rc-saved-panel" aria-label="Saved RC sets and recipes">
     <h2 className="text-lg font-semibold">{variant === 'contextual' ? 'Save this drill' : 'Saved passages and settings'}</h2>
-    <p className="text-sm">Saved passages keep the exact passages and questions. Saved settings choose passages again using your filters and current progress. Preview either before starting.</p>
+    <p className="text-sm">{variant === 'contextual' ? 'Save these passages to keep this exact selection, or save these settings to choose passages again next time.' : 'Saved passages keep the exact passages and questions. Saved settings choose passages again using your filters and current progress. Preview either before starting.'}</p>
     {!owner && <p>Sign in to save and reopen RC work.</p>}
-    {owner && (recipe || fixed) && <div className="rc-saved-form">
-      <input aria-label="Saved RC name" maxLength={100} value={name} onChange={e => setName(e.target.value)} placeholder="Name these passages or settings" className="rounded border px-3 py-2" />
-      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !fixed} onClick={() => fixed && void save(fixed, name)}>Save these passages</button>
-      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !recipe} onClick={() => recipe && void save(recipe, name)}>Save these settings</button>
+    {owner && (recipe || fixed || variant === 'contextual') && <div className="rc-saved-form">
+      <input aria-label="Saved RC name" aria-describedby={variant === 'contextual' ? saveHelpId : undefined} maxLength={100} value={name} onChange={e => setName(e.target.value)} placeholder="Name these passages or settings" className="rounded border px-3 py-2" />
+      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !fixed} aria-describedby={variant === 'contextual' ? saveHelpId : undefined} onClick={() => fixed && void save(fixed, name)}>Save these passages</button>
+      <button type="button" className="rc-chip" disabled={busy || pendingVisible || !name.trim() || !recipe} aria-describedby={variant === 'contextual' ? saveHelpId : undefined} onClick={() => recipe && void save(recipe, name)}>Save these settings</button>
     </div>}
+    {variant === 'contextual' && owner && <p id={saveHelpId} className="rc-field-hint">{!fixed ? 'Preview your selection to save these exact passages. ' : ''}{!recipe ? 'Reusable settings are available with Choose for me. ' : ''}Name your save above. Manage saved work in Saved sets.</p>}
     {pendingVisible && <div role="status"><p>A previous RC save still needs account confirmation. Retry that original name and selection before saving another item.</p>
       <button type="button" className="rc-chip" disabled={busy} onClick={() => {
         if (!pending.current) return;

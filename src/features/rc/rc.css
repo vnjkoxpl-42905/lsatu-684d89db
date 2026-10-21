@@ -2055,3 +2055,40 @@
   color: #b3ab9e;
   margin: 0 0 16px;
 }
+
+/* Manual setup presents exact choices, not discovery restrictions. */
+.rc-final-builder .rc-manual-controls { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.rc-final-builder .rc-manual-controls .rc-builder-timing,
+.rc-final-builder .rc-manual-controls .rc-builder-reveal { grid-column: auto !important; }
+.rc-selected-summary { margin: 22px 0 8px; padding-left: 24px; font-size: 15px; }
+.rc-selected-summary li { padding: 9px 0 9px 4px; }
+.rc-selected-summary strong { display: block; font-weight: 500; color: #eeeae3; }
+.rc-selected-summary span { display: block; margin-top: 3px; font-size: 13px; color: #aaa7a0; }
+.rc-picker-footer-count { font-size: 13px; color: #bcb9b3; }
+.rc-final-drawer-footer { flex-wrap: wrap; }
+.rc-final-drawer-footer > div { margin-left: auto; }
+.rc-final-ordered li { grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 4px; }
+.rc-final-ordered li > span { grid-column: auto; font-size: 14px; }
+.rc-final-ordered li .rc-chip { min-width: 44px; min-height: 44px; }
+@media(max-width:700px) {
+ .rc-final-builder .rc-manual-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+ .rc-final-builder .rc-manual-controls > .rc-field { grid-column: 1/-1; }
+ .rc-final-drawer-footer { gap: 8px; }
+ .rc-picker-footer-count { width: 100%; }
+ .rc-final-ordered li { grid-template-columns: minmax(0, 1fr) auto auto auto; }
+ .rc-final-ordered li > span { grid-column: auto; }
+}
+@media(max-width:400px) { .rc-final-builder .rc-manual-controls { grid-template-columns: minmax(0, 1fr); } }
+
+.rc-builder-question-shortcut { margin-block: -8px -6px; }
+.rc-builder-question-shortcut button { background: transparent !important; color: var(--classroom-ink-muted) !important; box-shadow: none !important; border-color: transparent !important; padding: 6px 2px; min-height: 32px; font-size: 13px; }
+
+.rc-final-ordered li { display: grid; padding: 10px 0; }
+.rc-final-ordered li > span { margin-bottom: 0; }
+
+/* Quiet secondary navigation must still be legible on the light host. */
+.classroom-root .rc-builder-question-shortcut button { color: #6d645b !important; }
+.rc-selected-summary { list-style: decimal !important; }
+.rc-selected-summary li { display: list-item; padding: 7px 0 7px 4px; }
+.rc-selected-summary li::marker { color: #aaa7a0; font-size: 13px; }
+.rc-selected-summary em { display: block; font-size: 13px; font-style: normal; }

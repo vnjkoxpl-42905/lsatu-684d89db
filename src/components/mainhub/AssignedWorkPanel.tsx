@@ -31,7 +31,7 @@ export default function AssignedWorkPanel({
           <h2 className="drill-observatory-label drill-observatory-ink-60">
             {scope === 'rc' ? 'Assigned RC work' : 'Assigned work'}
           </h2>
-          {openRows.length > 3 && (
+          {(scope === 'rc' || openRows.length > 3) && (
             <button
               type="button"
               className="drill-observatory-insight-link"

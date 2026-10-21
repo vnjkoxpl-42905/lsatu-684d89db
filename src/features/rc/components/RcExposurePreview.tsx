@@ -3,8 +3,8 @@ import { createRcExposureRequest, isRcExposureRequest, recordRcPassageExposure, 
 import type { RcPassage } from '../lib/rcTypes';
 import { RcMarkdown } from './RcMarkdown';
 
-export function RcExposurePreview({ actorId, passage, index, onExposed }: { actorId: string | null; passage: RcPassage; index: number; onExposed(id: number): void }) {
-  const [revealed, setRevealed] = useState(false);
+export function RcExposurePreview({ actorId, passage, index, alreadyRevealed = false, onExposed }: { actorId: string | null; passage: RcPassage; index: number; alreadyRevealed?: boolean; onExposed(id: number): void }) {
+  const [revealed, setRevealed] = useState(alreadyRevealed);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const request = useRef<RcExposureRequest | null>(null);
@@ -32,7 +32,7 @@ export function RcExposurePreview({ actorId, passage, index, onExposed }: { acto
   return <section className="mt-4 rounded border p-3" aria-label={`Preview passage ${index + 1}`}>
     <h3>{index + 1}. PT {passage.preptest} · S{passage.section} · P{passage.setNumber} · {passage.title || 'Untitled passage'}</h3>
     <p>{passage.topic || 'Topic not recorded'} · {passage.format || 'Format not recorded'} · {passage.difficulty == null ? 'Difficulty not recorded' : `Difficulty ${passage.difficulty}`} · {passage.questions.length} questions</p>
-    {!revealed && <button type="button" className="rc-chip min-h-11" disabled={!actorId || busy} onClick={() => void reveal()}>{busy ? 'Recording exposure…' : error ? 'Retry passage text reveal' : 'Reveal passage and questions'}</button>}
+    {!revealed && <button type="button" className="rc-chip min-h-11" disabled={!actorId || busy} onClick={() => void reveal()}>{busy ? 'Recording exposure…' : error ? 'Retry passage text reveal' : 'Reveal passage and questions · records exposure'}</button>}
     {error && <p role="alert">{error}</p>}
     {revealed && <div style={{ maxHeight: 560, overflowY: 'auto', padding: '12px 4px' }}>
       <RcMarkdown>{passage.text}</RcMarkdown>

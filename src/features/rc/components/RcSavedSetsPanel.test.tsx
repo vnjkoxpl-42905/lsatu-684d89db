@@ -25,6 +25,26 @@ describe('saved RC controls', () => {
     expect(m.save).toHaveBeenCalledWith('owner', 'My settings', recipe, expect.any(String));
     expect(m.list).not.toHaveBeenCalled();
   });
+  it('explains exact-passage availability before Preview without hiding the save choices', () => {
+    render(<MemoryRouter><RcSavedSetsPanel variant="contextual" /></MemoryRouter>);
+    expect(screen.getByRole('button', { name: 'Save these passages' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Save these settings' })).toBeDisabled();
+    expect(screen.getByText(/Preview your selection to save these exact passages/)).toBeInTheDocument();
+    expect(screen.getByText(/Reusable settings are available with Choose for me/)).toBeInTheDocument();
+    expect(m.list).not.toHaveBeenCalled();
+  });
+  it('reports explicit demo success only after the adapter completes', async () => {
+    let complete!: (value: unknown) => void;
+    m.save.mockReturnValue(new Promise(resolve => { complete = resolve; }));
+    render(<MemoryRouter><RcSavedSetsPanel variant="contextual" recipe={recipe} saveSuccessMessage="Saved in this demo only. Reload resets it." /></MemoryRouter>);
+    fireEvent.change(screen.getByRole('textbox', { name: 'Saved RC name' }), { target: { value: 'Demo settings' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save these settings' }));
+    expect(screen.queryByText('Saved in this demo only. Reload resets it.')).toBeNull();
+    expect(screen.queryByText(/Saved to your account/)).toBeNull();
+    complete(saved);
+    await screen.findByText('Saved in this demo only. Reload resets it.');
+    expect(screen.queryByText(/Saved to your account/)).toBeNull();
+  });
   it('recovers the original save in contextual mode without requiring the original setup', async () => {
     const id = 'original-save-id';
     localStorage.setItem('lsatu:rc-saved-definition:v1:owner', JSON.stringify({ id, key: JSON.stringify({ name: saved.name, payload: recipe }) }));

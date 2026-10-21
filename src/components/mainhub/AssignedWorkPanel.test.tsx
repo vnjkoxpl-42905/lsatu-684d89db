@@ -63,4 +63,5 @@ it('explains RC-scoped emptiness without claiming the general assigned list is e
   render(<MemoryRouter><AssignedWorkPanel scope="rc" /></MemoryRouter>);
   expect(screen.getByText('No RC work assigned right now. All your assigned work is available in My Work.')).toBeTruthy();
   expect(screen.queryByText('Nothing assigned right now.')).toBeNull();
+  expect(screen.getByRole('button', { name: 'View all assigned work' })).toBeTruthy();
 });
