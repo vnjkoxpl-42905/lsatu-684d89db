@@ -1,0 +1,81 @@
+/* Local comparison studies. All controls use the real RC builder fixture. */
+body[class*="rc-study-"] { margin: 0; background: #f8f5ef; }
+.rc-study-navigation { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; padding: 15px max(24px,calc((100vw - 1120px)/2)); border-bottom: 1px solid #e2ddd4; background: #f8f5ef; color: #292724; font-family: "RC Outfit", sans-serif; }
+.rc-study-navigation > span { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #756e65; }
+.rc-study-navigation > div { display: flex; flex-wrap: wrap; gap: 5px; }
+.rc-study-navigation a { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 15px; border-radius: 7px; color: #71695f; text-decoration: none; font-size: 14px; }
+.rc-study-navigation a[aria-current="page"] { background: #292724; color: #f5f1e8; }
+.rc-study-navigation a:focus-visible { outline: 3px solid #6a7f9a; outline-offset: 3px; }
+body[class*="rc-study-"] #root > aside { font-family: "RC Outfit",sans-serif; color: #766f65; background: #f8f5ef; padding: 7px 24px !important; font-size: 12px !important; }
+body[class*="rc-study-"] .rc-final-builder .rc-split-setup .rc-setup-workspace { min-height: 0 !important; }
+body[class*="rc-study-"] .rc-final-builder .rc-split-setup .rc-final-filter-strip .rc-chip { text-decoration: none !important; }
+body[class*="rc-study-"] .rc-selection-source { border-top: 0 !important; padding-top: 0 !important; }
+body[class*="rc-study-"] .rc-source-change,
+body[class*="rc-study-"] .rc-source-choice,
+body[class*="rc-study-"] .rc-source-control { min-height: 48px !important; border: 1px solid #494749 !important; border-radius: 10px !important; padding: 11px 16px !important; background: #19191b !important; font-size: 15px !important; }
+body[class*="rc-study-"] .rc-source-change:hover,
+body[class*="rc-study-"] .rc-source-choice:hover,
+body[class*="rc-study-"] .rc-source-control:hover { border-color: #a7a197 !important; background: #232325 !important; }
+
+/* 01 Balanced: familiar split, even proportions, comfortable compact controls. */
+body.rc-study-1 .rc-practice-workspace .drill-observatory-canvas { max-width: 1090px !important; }
+body.rc-study-1 .rc-final-builder .rc-split-setup { grid-template-columns: minmax(260px,.9fr) minmax(0,1.1fr) !important; gap: 38px !important; }
+body.rc-study-1 .rc-final-builder .rc-split-setup .rc-setup-heading { padding: 20px 0 !important; }
+body.rc-study-1 .rc-final-builder .rc-split-setup #rc-final-heading { font-size: clamp(32px,3.1vw,42px) !important; max-width: 350px !important; }
+body.rc-study-1 .rc-final-builder .rc-split-setup .rc-setup-workspace { padding: 26px !important; background: #141416 !important; border-color: #303033 !important; }
+body.rc-study-1 .rc-final-builder .rc-split-setup .rc-final-launch { margin-top: 26px !important; }
+body.rc-study-1 .rc-final-builder .rc-split-setup .rc-final-launch .rc-button-primary { width: 100% !important; }
+
+/* 02 Focused: a single compact surface with a direct top-to-bottom reading order. */
+body.rc-study-2 .rc-practice-workspace .drill-observatory-canvas { max-width: 800px !important; }
+body.rc-study-2 .rc-practice-workspace .rc-create-workspace { padding: 26px 34px !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup { display: block !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-setup-heading { display: grid !important; grid-template-columns: minmax(0,1fr) auto !important; align-items: center !important; column-gap: 24px !important; padding: 0 0 26px !important; border-bottom: 1px solid #2d2d30; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-setup-heading > div:first-child { grid-column: 1; grid-row: 1; }
+body.rc-study-2 .rc-final-builder .rc-split-setup #rc-final-heading { max-width: 390px !important; font-size: 32px !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-setup-eyebrow { margin-bottom: 10px !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-setup-description { grid-column: 1; grid-row: 2; margin: 12px 0 0 !important; font-size: 14px !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-setup-description br { display: none; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-selection-source { grid-column: 2; grid-row: 1 / 3; margin: 0 !important; max-width: 210px !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-setup-workspace { padding: 26px 0 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-final-filter-strip { margin-top: 24px !important; padding-top: 0 !important; border-top: 0 !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-final-filter-strip .rc-chip { min-width: 180px !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-final-launch { margin-top: 22px !important; padding-top: 22px !important; }
+body.rc-study-2 .rc-final-builder .rc-split-setup .rc-final-launch .rc-button-primary { width: 100% !important; }
+
+/* 03 Editorial: open space, fewer boxes, and a strong action at the end. */
+body.rc-study-3 .rc-practice-workspace .drill-observatory-canvas { max-width: 1080px !important; }
+body.rc-study-3 .rc-practice-workspace .rc-create-workspace { padding: 30px 36px !important; }
+body.rc-study-3 .rc-final-builder .rc-split-setup { grid-template-columns: minmax(250px,.78fr) minmax(0,1.22fr) !important; gap: 54px !important; }
+body.rc-study-3 .rc-final-builder .rc-split-setup .rc-setup-heading { padding: 8px 0 !important; }
+body.rc-study-3 .rc-final-builder .rc-split-setup #rc-final-heading { font-size: clamp(32px,3vw,40px) !important; max-width: 310px !important; }
+body.rc-study-3 .rc-final-builder .rc-split-setup .rc-setup-description { margin-top: 20px !important; font-size: 15px !important; }
+body.rc-study-3 .rc-final-builder .rc-split-setup .rc-selection-source { margin-top: 20px !important; }
+body.rc-study-3 .rc-final-builder .rc-split-setup .rc-setup-workspace { padding: 10px 0 0 30px !important; border: 0 !important; border-left: 1px solid #303033 !important; border-radius: 0 !important; background: transparent !important; }
+body.rc-study-3 .rc-final-builder .rc-split-setup .rc-final-filter-strip { margin-top: 24px !important; border-top: 0 !important; padding-top: 0 !important; }
+body.rc-study-3 .rc-final-builder .rc-split-setup .rc-final-launch { margin-top: 28px !important; padding-top: 24px !important; }
+body.rc-study-3 .rc-final-builder .rc-split-setup .rc-final-launch .rc-button-primary { width: 100% !important; border-radius: 10px !important; }
+
+@media(max-width:980px) {
+ body.rc-study-1 .rc-final-builder .rc-split-setup { gap: 26px !important; }
+ body.rc-study-3 .rc-final-builder .rc-split-setup { gap: 30px !important; }
+ body.rc-study-3 .rc-final-builder .rc-split-setup .rc-setup-workspace { padding-left: 24px !important; }
+}
+@media(max-width:760px) {
+ .rc-study-navigation { padding: 10px 16px; gap: 8px; }
+ .rc-study-navigation > span { font-size: 11px; }
+ .rc-study-navigation a { font-size: 12px; padding: 8px 11px; }
+ body[class*="rc-study-"] .rc-practice-workspace .rc-create-workspace { padding: 20px 18px !important; }
+ body.rc-study-1 .rc-final-builder .rc-split-setup,
+ body.rc-study-3 .rc-final-builder .rc-split-setup { display: grid !important; grid-template-columns: 1fr !important; gap: 24px !important; }
+ body[class*="rc-study-"] .rc-final-builder .rc-split-setup .rc-setup-heading { padding: 0 !important; }
+ body[class*="rc-study-"] .rc-final-builder .rc-split-setup #rc-final-heading { font-size: 29px !important; max-width: none !important; }
+ body[class*="rc-study-"] .rc-final-builder .rc-split-setup .rc-setup-description { margin: 12px 0 18px !important; font-size: 14px !important; }
+ body[class*="rc-study-"] .rc-final-builder .rc-split-setup .rc-selection-source { margin: 0 !important; max-width: none !important; }
+ body.rc-study-2 .rc-final-builder .rc-split-setup .rc-setup-heading { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 0 !important; padding-bottom: 22px !important; }
+ body.rc-study-2 .rc-final-builder .rc-split-setup .rc-setup-workspace { padding-top: 22px !important; }
+ body.rc-study-3 .rc-final-builder .rc-split-setup .rc-setup-workspace { padding: 22px 0 0 !important; border-left: 0 !important; border-top: 1px solid #303033 !important; }
+ body.rc-study-1 .rc-final-builder .rc-split-setup .rc-setup-workspace { padding: 18px 14px !important; }
+ body[class*="rc-study-"] .rc-final-builder .rc-split-setup .rc-final-launch { margin-top: 20px !important; }
+}
+@media(prefers-reduced-motion:reduce) { body[class*="rc-study-"] *, body[class*="rc-study-"] *::before, body[class*="rc-study-"] *::after { scroll-behavior: auto !important; } }

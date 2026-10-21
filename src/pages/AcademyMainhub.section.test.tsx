@@ -223,7 +223,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
   it("returns a question preview to its Practice route instead of the scored drill destination", () => {
     renderHub("/practice/drills?section=rc");
-    fireEvent.click(screen.getByRole("button", { name: "Open a question" }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a passage or question" }));
     const dialog = screen.getByRole("dialog", { name: "Find a question" });
     fireEvent.change(within(dialog).getByRole("textbox"), { target: { value: "PT140 S4 Q17" } });
     fireEvent.click(within(dialog).getByRole("button", { name: "Open question" }));

@@ -82,5 +82,5 @@
     "lsatu-rc-focus-release/src/lib/googleDrive.ts",
     "lsatu-rc-focus-release/supabase/functions/handle-email-events/index.ts"
   ],
-  "ciphertext_sha256": "b5d1ff1aa2e6f7bebd6385e610fbb715141879c740c8f4db687c8ade745d0833"
+  "ciphertext_sha256": "cbc96e4b68a4c14626b6d5f2e6f862aeb7f5e43853adf43cd34ad9d9e0ce2b9c"
 }

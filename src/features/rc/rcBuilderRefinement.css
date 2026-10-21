@@ -312,3 +312,81 @@
 .rc-final-builder .rc-split-setup .rc-setup-workspace { min-height: 480px; }
 .rc-final-builder .rc-split-setup .rc-final-picked-count { min-height: 46px; }
 @media(max-width:760px) { .rc-final-builder .rc-split-setup .rc-setup-workspace { min-height: 0; } }
+/* Selection is one setup. The rail handles the method and its details. */
+.rc-selection-source { margin-top: 28px; max-width: 355px; border-top: 1px solid #303033; padding-top: 22px; }
+.rc-source-label { display: block; color: #99968f; font-size: 13px; margin-bottom: 8px; }
+.rc-selection-source > strong { display: block; color: #eeeae1; font-size: 22px; font-weight: 500; }
+.rc-final-builder .rc-selection-source > p { color: #aaa79f; font-size: 14px; line-height: 1.6; margin: 10px 0 14px; }
+.rc-source-change { min-height: 44px; padding: 4px 0 !important; background: transparent !important; border: 0 !important; color: #e2ded5 !important; font-size: 14px; text-align: left; }
+.rc-source-change span { padding-left: 8px; color: #aaa79f; }
+.rc-drawer-methods { display: grid; gap: 8px; padding-bottom: 22px; margin-bottom: 22px; border-bottom: 1px solid #333336; }
+.rc-drawer-methods > button { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border: 1px solid #343437; border-radius: 10px; background: transparent; color: #c7c3ba; text-align: left; }
+.rc-drawer-methods > button[aria-pressed=true] { background: #222224; border-color: #aaa69d; color: #f0ece3; }
+.rc-drawer-methods strong { display: block; font-size: 15px; font-weight: 500; }
+.rc-drawer-methods small { display: block; font-size: 13px; line-height: 1.5; color: #a5a199; margin-top: 3px; }
+.rc-method-mark { font-size: 20px; }
+.rc-final-drawer .rc-filter-select { margin: 0 0 18px; border: 0; padding: 0; }
+.rc-filter-select > summary { list-style: none; position: relative; padding: 0; cursor: pointer; }
+.rc-filter-select > summary::-webkit-details-marker { display: none; }
+.rc-filter-select > summary > span { display: block; color: #aaa79f; font-size: 14px; margin-bottom: 8px; }
+.rc-filter-select > summary > strong { display: block; padding: 12px 38px 12px 14px; min-height: 46px; border: 1px solid #3b3b3e; border-radius: 9px; background: #1a1a1d; font-size: 15px; line-height: 1.4; font-weight: 400; }
+.rc-filter-select > summary::after { content: '⌄'; position: absolute; right: 15px; bottom: 13px; color: #a5a199; }
+.rc-filter-select[open] > summary::after { content: '⌃'; }
+.rc-filter-checklist { display: grid; max-height: 280px; overflow-y: auto; padding: 8px; margin-top: 6px; border: 1px solid #38383b; border-radius: 9px; background: #19191b; }
+.rc-filter-checklist > label { display: flex; align-items: center; gap: 12px; padding: 10px; min-height: 44px; cursor: pointer; font-size: 15px; border-radius: 6px; }
+.rc-filter-checklist > label:hover { background: #29292c; }
+.rc-filter-checklist input { width: 18px; height: 18px; margin: 0; accent-color: #e4e0d7; flex-shrink: 0; }
+.rc-filter-select > .rc-chip-row { padding: 12px 0 0; }
+.rc-filter-select > summary:focus-visible { outline: 3px solid #a4b9e8; outline-offset: 4px; border-radius: 9px; }
+@media(max-width:760px) { .rc-selection-source { margin-top: 4px; max-width: none; padding-top: 18px; } }
+/* Essential setup: count beside timing, answer conditions directly below. */
+.rc-final-builder .rc-split-setup .rc-config-groups { display: grid; grid-template-columns: 144px minmax(0,1fr); gap: 24px 20px; align-items: start; }
+.rc-split-setup .rc-config-group, .rc-split-setup .rc-passage-controls, .rc-final-builder .rc-split-setup .rc-builder-settings { display: contents !important; }
+.rc-split-setup .rc-config-group > legend { display: none; }
+.rc-split-setup .rc-builder-timing { grid-column: 2; }
+.rc-split-setup .rc-builder-reveal { grid-column: 1/-1; }
+.rc-split-setup .rc-selected-summary { grid-column: 1/-1; }
+.rc-split-setup .rc-config-groups:has(.rc-manual-passage-controls) > fieldset > .rc-manual-passage-controls > .rc-field { grid-column: 1/-1; }
+.rc-split-setup .rc-config-groups:has(.rc-manual-passage-controls) .rc-builder-timing { grid-column: 1/-1; }
+.rc-final-builder .rc-selection-source { margin-top: 24px; padding: 0; border: 0; }
+.rc-source-control { width: 100%; max-width: 310px; display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 52px; padding: 12px 18px; border: 1px solid #555459; border-radius: 10px; color: #ece8df; background: #18181a; font-size: 16px; text-align: left; }
+.rc-source-control:hover { background: #242426; border-color: #99968f; }
+.rc-final-builder .rc-split-setup .rc-final-filter-strip { margin-top: 24px; padding: 0; border: 0; }
+.rc-final-builder .rc-split-setup .rc-final-filter-strip .rc-chip { min-height: 48px; padding: 11px 20px !important; border: 1px solid #555459 !important; border-radius: 9px !important; text-decoration: none; font-size: 15px; color: #e8e4db; }
+.rc-final-builder .rc-split-setup .rc-final-filter-strip .rc-chip:hover { background: #242426 !important; }
+.rc-final-builder .rc-split-setup .rc-setup-workspace { min-height: 0; }
+@media(max-width:420px) {
+ .rc-final-builder .rc-split-setup .rc-config-groups { grid-template-columns: 112px minmax(0,1fr); gap: 22px 12px; }
+ .rc-final-builder .rc-split-setup .rc-stepper { width: 112px; }
+ .rc-final-builder .rc-split-setup .rc-stepper button { min-width: 40px; }
+ .rc-final-builder .rc-split-setup .rc-stepper-value { min-width: 24px; }
+ .rc-final-builder .rc-split-setup .rc-config-groups:has(.rc-manual-passage-controls) { grid-template-columns: 1fr; }
+}
+.rc-final-builder .rc-split-setup .rc-passage-controls > .rc-field { grid-column: 1 !important; }
+.rc-final-builder .rc-split-setup .rc-builder-settings > .rc-builder-timing { grid-column: 2 !important; grid-row: 1; }
+.rc-final-builder .rc-split-setup .rc-builder-settings > .rc-builder-reveal { grid-column: 1/-1 !important; grid-row: 2; }
+.rc-final-builder .rc-split-setup .rc-config-groups:has(.rc-manual-passage-controls) .rc-passage-controls > .rc-field { grid-column: 1/-1 !important; }
+.rc-final-builder .rc-split-setup .rc-config-groups:has(.rc-manual-passage-controls) .rc-builder-timing { grid-column: 1/-1 !important; grid-row: auto; }
+.rc-final-builder .rc-split-setup .rc-config-groups:has(.rc-manual-passage-controls) .rc-builder-reveal { grid-row: auto; }
+
+/* Editorial: one open composition, with the setup column leading directly to review. */
+.rc-final-builder .rc-split-setup { grid-template-columns: minmax(240px,.85fr) minmax(0,1.15fr) !important; gap: 36px !important; }
+.rc-final-builder .rc-split-setup .rc-setup-heading { padding-top: 6px; }
+.rc-final-builder .rc-split-setup .rc-setup-workspace { padding: 0 0 0 36px; border: 0; border-left: 1px solid #303033; border-radius: 0; background: transparent; }
+.rc-final-builder .rc-split-setup .rc-selection-source { margin: 0 0 26px; padding: 0; max-width: none; }
+.rc-split-setup .rc-source-label { color: #bcb9b2; font-size: 14px; margin-bottom: 8px; }
+.rc-split-setup .rc-source-control { width: 100%; max-width: none; min-height: 48px; padding: 11px 14px; border-color: #454548; background: #19191b; font-size: 15px; border-radius: 9px; }
+.rc-final-drawer .rc-drawer-preference { margin-top: 26px; padding-top: 20px; border-top: 1px solid #333336; }
+.rc-final-drawer .rc-drawer-preference > summary { min-height: 44px; color: #bcb9b2; font-size: 14px; cursor: pointer; }
+.rc-final-drawer .rc-drawer-preference .rc-field-hint { margin: 8px 0 14px; }
+.rc-final-drawer .rc-drawer-preference strong { color: #e8e4dc; font-weight: 500; }
+/* RC lookup stays identifiable on phones; the global masthead may remain icon-only. */
+.rc-practice-workspace .rc-builder-question-shortcut .qf-trigger { width: auto; min-width: 0; max-width: 100%; min-height: 44px; padding: 9px 12px; }
+.rc-practice-workspace .rc-builder-question-shortcut .qf-trigger-label { display: inline; }
+@media(max-width:760px) {
+ .rc-final-builder .rc-split-setup { grid-template-columns: 1fr !important; gap: 22px !important; }
+ .rc-final-builder .rc-split-setup .rc-setup-heading { padding: 0; }
+ .rc-final-builder .rc-split-setup .rc-setup-workspace { border-left: 0; border-top: 1px solid #303033; padding: 22px 0 0; }
+ .rc-final-builder .rc-split-setup .rc-selection-source { margin-bottom: 22px; }
+ .rc-final-builder .rc-split-setup .rc-setup-description { margin-bottom: 0; }
+}
