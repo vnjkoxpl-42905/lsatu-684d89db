@@ -628,6 +628,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
       }
       if (!uncertainStart.current && !handPickOpen && inspected!.ids.length < count
         && acceptedShortfall !== inspected!.key + '|' + inspected!.ids.join(',')) {
+        setReviewing(true);
         throw new Error('Confirm the smaller drill below before starting it.');
       }
       const chosen = uncertainStart.current?.ids ?? inspected!.ids;
@@ -754,7 +755,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
     }
     return true;
   });
-  const filteredSearchCount = searchMatches.filter(p => !matches(p, pickerCriteria)).length;
+  const excludedSearchMatches = searchMatches.filter(p => !matches(p, pickerCriteria));
+  const filteredSearchCount = excludedSearchMatches.length;
   const handPickRows = searchMatches.filter(p => matches(p, pickerCriteria)).sort((a, b) => {
     const address = () => a.preptest - b.preptest || a.section - b.section || a.setNumber - b.setNumber || a.passageId - b.passageId;
     return pickerSort === 'difficulty' ? (a.difficulty ?? 99) - (b.difficulty ?? 99) || address()
@@ -783,11 +785,26 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
     return true;
   }
 
-  const configurePreset = (wholeSection: boolean) => {
-    setAutoStart(false); setCount(wholeSection ? 4 : 1); setReveal(wholeSection ? 'end_of_set' : 'per_passage');
-    setTiming(wholeSection ? 'standard' : 'untimed'); switchSelectionMode(false); setSavedSnapshot(null); setSelectedSet(null);
-    setNotice(wholeSection ? 'Four passages at standard pace, with answers after the set. Preview before starting.' : 'One untimed passage, with feedback after the passage. Preview before starting.');
+  const exclusionReasons = (passage: RcIndexPassageWithPt): string => {
+    const reasons: string[] = [];
+    const criteria = pickerCriteria;
+    const status = statusOf(passage);
+    if (passage.preptest < criteria.preptestMin || passage.preptest > criteria.preptestMax) reasons.push(`outside PT ${criteria.preptestMin}–${criteria.preptestMax}`);
+    if (criteria.topics.length && (!passage.topic || !criteria.topics.includes(passage.topic))) reasons.push('topic does not match');
+    if (criteria.formats.length && (!passage.format || !criteria.formats.includes(passage.format))) reasons.push('format does not match');
+    if (criteria.frameworks.length && !passage.frameworks.some(value => criteria.frameworks.includes(value))) reasons.push('framework does not match');
+    if (criteria.difficulties.length && (passage.difficulty == null || !criteria.difficulties.includes(passage.difficulty))) reasons.push('difficulty does not match');
+    if (criteria.status === 'fresh' && status.state !== 'not_attempted') reasons.push('already attempted');
+    if (criteria.status === 'strict_no_exposure') {
+      if (exposureStatus !== 'ready') reasons.push('recorded exposure has not been verified');
+      if (exposures.has(passage.passageId)) reasons.push('has recorded passage exposure');
+      if (status.state !== 'not_attempted') reasons.push('already attempted');
+    }
+    if (criteria.status === 'incorrect_before' && !status.everIncorrect) reasons.push('no earlier incorrect answer');
+    if (criteria.status === 'incorrect_last' && !status.lastFirstTakeIncorrect) reasons.push('last first answer was not incorrect');
+    return reasons.join('; ');
   };
+
   const saveTimingDefault = () => {
     if (!actorId || customInvalid) return;
     try {
@@ -818,6 +835,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
             <select id="rc-builder-timing" value={timing} onChange={(event) => setTiming(event.target.value as typeof timing)}><option value="untimed">Untimed</option><option value="standard">Standard pace · 8:45 per passage</option><option value="custom">Custom time</option></select>
             {timing === 'custom' && <input type="text" inputMode="text" placeholder="8:45" aria-label="Minutes and seconds per passage" aria-invalid={customInvalid} aria-describedby={customInvalid ? 'rc-custom-pace-error' : undefined} className={`rc-segment${customInvalid ? ' rc-input-invalid' : ''}`} value={customText} onChange={(event) => { setCustomText(event.target.value); const parsed = parseCustomPace(event.target.value); if (parsed.ok) setCustomSeconds(parsed.seconds); }} onBlur={() => { if ('seconds' in customPace) setCustomText(mmss(customPace.seconds)); }} />}
             {customPaceError && <div className="rc-field-error" id="rc-custom-pace-error" role="alert">{customPaceError} Enter a valid time to continue.</div>}
+            <details className="rc-timing-preference"><summary>Timing preference</summary><button type="button" className="rc-chip" disabled={!actorId || customInvalid} onClick={saveTimingDefault}>Save timing default on this device</button></details>
             {timingDefaultNotice && <p className="rc-field-hint" role="status">{timingDefaultNotice}</p>}
           </div>
           <div className="rc-field rc-builder-reveal"><label className="rc-field-label" htmlFor="rc-builder-reveal">Show answers</label><select id="rc-builder-reveal" value={reveal} onChange={(event) => setReveal(event.target.value as RcRevealMode)}>{REVEAL_OPTIONS.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}</select></div>
@@ -918,7 +936,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
             {loadError}{' '}
             {passages.length > 0
               ? 'Your choices are kept. Preview and Start will be available once it loads.'
-              : 'No passage counts are shown until it loads.'}
+              : 'Preview is unavailable until the passage list loads.'}
           </span>
           <button type="button" className="rc-chip" onClick={retryLoad} disabled={indexStatus === 'loading'}>
             {indexStatus === 'loading' ? 'Retrying…' : 'Retry'}
@@ -992,14 +1010,14 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
               {drawer.ids.some(id => !handPickRows.some(value => value.passageId === id)) && <p className="rc-field-hint">Picks outside the current search or filters stay selected.</p>}
               <ul className="rc-passage-list" aria-label="Available passages">{handPickRows.slice(pickerLimit - RC_PICKER_PAGE, pickerLimit).map(passage => { const picked = drawer.ids.includes(passage.passageId); return <li key={passage.passageId} className={`rc-passage-option${picked ? ' rc-passage-picked' : ''}`}><div className="rc-passage-option-copy"><h3>{passage.title || `Passage ${passage.setNumber}`}</h3><div className="rc-passage-location">PT {passage.preptest} · Section {passage.section} · Passage {passage.setNumber} · {plural(passage.questionCount, 'question')}</div><details className="rc-passage-details"><summary>Passage details</summary>{passage.firstWords && <p className="rc-passage-opening">{passage.firstWords}</p>}<div className="rc-passage-metadata">{passage.topic && <span>{passage.topic}</span>}{passage.format && <span>{passage.format}</span>}{passage.difficulty != null && <span>Difficulty {passage.difficulty}/5</span>}<span>{formatPassageStatusLabel(statusOf(passage))}</span></div></details></div><button type="button" className={`rc-chip${picked ? ' rc-active' : ''}`} aria-label={`${picked ? 'Remove' : 'Add'} ${passage.title || `passage ${passage.passageId}`}`} aria-pressed={picked} onClick={() => changeDraftPick(passage.passageId)}>{picked ? 'Remove' : 'Add'}</button></li>; })}</ul>
               {handPickRows.length > RC_PICKER_PAGE && <div className="rc-actions"><p className="rc-field-hint">Showing {pickerLimit - RC_PICKER_PAGE + 1}–{Math.min(pickerLimit, handPickRows.length)} of {handPickRows.length} passages.</p><button type="button" className="rc-chip" disabled={pickerLimit === RC_PICKER_PAGE} onClick={() => setPickerLimit(value => value - RC_PICKER_PAGE)}>Previous passages</button><button type="button" className="rc-chip" disabled={pickerLimit >= handPickRows.length} onClick={() => setPickerLimit(value => value + RC_PICKER_PAGE)}>Next passages</button></div>}
-              {filteredSearchCount > 0 && <p className="rc-filter-exclusion" role="status">{plural(filteredSearchCount, 'matching passage')} excluded by active filters.</p>}{handPickRows.length === 0 && <div className="rc-empty"><p>{filteredSearchCount > 0 ? 'Matching passages are excluded by your active filters. Adjust them to include these passages.' : 'No passages match your search. Try a title or PrepTest number.'} Your selection is kept.</p><button type="button" className="rc-chip" onClick={event => { const details = event.currentTarget.closest('.rc-final-drawer-body')?.querySelector<HTMLDetailsElement>('.rc-final-pick-filters'); if (details) { details.open = true; details.querySelector<HTMLElement>('summary')?.focus(); } }}>Adjust passage filters</button></div>}{search && <button type="button" className="rc-chip" onClick={() => setSearch('')}>Clear search</button>}
+              {filteredSearchCount > 0 && <div className="rc-filter-exclusion"><p role="status">{plural(filteredSearchCount, 'matching passage')} excluded by active filters.</p><ul>{excludedSearchMatches.slice(0, 3).map(passage => <li key={passage.passageId}><strong>{passage.title || `Passage ${passage.setNumber}`}</strong> · PT {passage.preptest} · S{passage.section} · P{passage.setNumber}<span>{exclusionReasons(passage)}</span></li>)}</ul>{filteredSearchCount > 3 && <p>And {filteredSearchCount - 3} more. Adjust passage filters to include them.</p>}</div>}{handPickRows.length === 0 && <div className="rc-empty"><p>{filteredSearchCount > 0 ? 'Matching passages are excluded by your active filters. Adjust them to include these passages.' : 'No passages match your search. Try a title or PrepTest number.'} Your selection is kept.</p><button type="button" className="rc-chip" onClick={event => { const details = event.currentTarget.closest('.rc-final-drawer-body')?.querySelector<HTMLDetailsElement>('.rc-final-pick-filters'); if (details) { details.open = true; details.querySelector<HTMLElement>('summary')?.focus(); } }}>Adjust passage filters</button></div>}{search && <button type="button" className="rc-chip" onClick={() => setSearch('')}>Clear search</button>}
             </>}
           </div>
           <div className="rc-final-drawer-footer"><button type="button" className="rc-chip" onClick={() => setDrawer(previous => previous ? previous.kind === 'pick' ? { ...previous, ids: [] } : { ...previous, filters: cloneFilters(DEFAULT_FILTERS), range: null } : null)}>{drawer?.kind === 'pick' ? 'Clear selection' : 'Reset filters'}</button><div><button type="button" className="rc-chip" onClick={() => setDrawer(null)}>Cancel</button><button type="button" className="rc-button rc-button-primary" disabled={drawerRangeInvalid || (drawer?.kind === 'pick' && !drawer.ids.length)} onClick={applyDrawer}>Apply</button></div></div>
         </SheetContent>
       </Sheet>
 
-      <details className="rc-builder-saved"><summary>Save this drill or its settings</summary><div className="rc-actions" aria-label="RC practice presets"><button type="button" className="rc-chip" onClick={() => configurePreset(false)}>One passage with feedback</button><button type="button" className="rc-chip" onClick={() => configurePreset(true)}>Four passages, then review</button></div><button type="button" className="rc-chip" disabled={!actorId || customInvalid} onClick={saveTimingDefault}>Save timing default on this device</button><RcSavedSetsPanel variant="contextual"
+      <details className="rc-builder-saved"><summary>Save this drill or its settings</summary><RcSavedSetsPanel variant="contextual"
         recipe={builderReady && count <= 8 && !handPickOpen && !params.has('assignment') && !params.has('assignmentId') && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'recipe', config: { reveal, timing: config.timing }, filters, count, passageIds: [], questionIds: [] } : null}
         fixed={builderReady && activeSet && !params.has('assignment') && !params.has('assignmentId') && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'fixed', config: { reveal, timing: config.timing }, filters, count: activeSet.ids.length, passageIds: activeSet.ids, questionIds: activeSet.passages.flatMap(p => p.questions.map(q => q.questionId)) } : null}
       /></details>

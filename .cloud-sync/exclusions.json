@@ -320,6 +320,14 @@
     "reason": "link"
   },
   {
+    "path": "scripts/verification/export-rc-advisor.mjs",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": "scripts/verification/export-rc-advisor.mjs",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
     "path": "scripts/verification/start-rc-builder-preview.mjs",
     "reason": "gitleaks credential redacted in snapshot: generic-api-key"
   },

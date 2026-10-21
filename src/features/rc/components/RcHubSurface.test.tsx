@@ -149,7 +149,6 @@ const commitDrawerIfOpen = () => { const dialog = screen.queryByRole('dialog'); 
 const editSetup = () => { const button = screen.queryByRole('button', { name: 'Edit setup' }); if (button) fireEvent.click(button); };
 const openOptions = () => { editSetup(); if (!screen.queryByRole('dialog')) fireEvent.click(screen.getByRole('button', { name: 'Customize drill' })); };
 const openAdvancedOptions = () => { openOptions(); const details = document.querySelector<HTMLDetailsElement>('.rc-final-advanced'); if (details && !details.open) fireEvent.click(details.querySelector('summary')!); };
-const openSavedSettings = () => { const details = document.querySelector<HTMLDetailsElement>('.rc-builder-saved'); if (details && !details.open) fireEvent.click(details.querySelector('summary')!); };
 
 const openSelectedPassages = () => { editSetup(); if (!screen.queryByRole('dialog')) fireEvent.click(screen.getByRole('button', { name: 'Edit selection' })); };
 const selectStatus = (label: string) => { openOptions(); const values: Record<string, string> = { Any: 'any', 'Not attempted': 'fresh', 'No recorded exposure': 'strict_no_exposure', 'Incorrect before': 'incorrect_before', 'Incorrect on last try': 'incorrect_last' }; fireEvent.change(screen.getByRole('combobox', { name: 'Practice history' }), { target: { value: values[label] } }); };
@@ -512,13 +511,19 @@ describe('RcHubSurface autostart', () => {
     await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
     expect(createSession.mock.calls[0][0]).toMatchObject({ source: 'adaptive', reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 600 } });
   });
-  it('configures intent presets without creating work', async () => {
+  it('configures one-passage feedback and four-passage review from the main controls without creating work', async () => {
     mount('/classroom/drill'); await screen.findByRole('button', { name: 'Preview drill' });
-    openSavedSettings(); fireEvent.click(screen.getByRole('button', { name: 'Four passages, then review' }));
+    for (let i = 0; i < 3; i++) fireEvent.click(screen.getByRole('button', { name: /^More passages/ }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'end_of_set' } });
+    fireEvent.change(screen.getByRole('combobox', { name: 'Timing' }), { target: { value: 'standard' } });
+    expect(within(screen.getByRole('group', { name: 'Passages' })).getByText('4')).toBeInTheDocument();
     commitDrawerIfOpen(); editSetup(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('end_of_set');
     commitDrawerIfOpen(); editSetup(); expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('standard');
     expect(createSession).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button', { name: 'One passage with feedback' }));
+    for (let i = 0; i < 3; i++) fireEvent.click(screen.getByRole('button', { name: /^Fewer passages/ }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Show answers' }), { target: { value: 'per_passage' } });
+    fireEvent.change(screen.getByRole('combobox', { name: 'Timing' }), { target: { value: 'untimed' } });
+    expect(within(screen.getByRole('group', { name: 'Passages' })).getByText('1')).toBeInTheDocument();
     commitDrawerIfOpen(); editSetup(); expect(screen.getByRole('combobox', { name: 'Timing' })).toHaveValue('untimed');
     commitDrawerIfOpen(); editSetup(); expect(screen.getByRole('combobox', { name: 'Show answers' })).toHaveValue('per_passage');
   });
@@ -534,7 +539,7 @@ describe('RcHubSurface autostart', () => {
     mount('/classroom/drill'); await screen.findByText(/timing default could not be read/);
     commitDrawerIfOpen(); editSetup(); fireEvent.change(screen.getByRole('combobox', { name: 'Timing' }), { target: { value: 'standard' } });
     expect(localStorage.getItem('lsatu:rc-timing-default:v1:owner')).toBe('broken');
-    openSavedSettings(); fireEvent.click(screen.getByRole('button', { name: 'Save timing default on this device' }));
+    fireEvent.click(screen.getByText('Timing preference')); fireEvent.click(screen.getByRole('button', { name: 'Save timing default on this device' }));
     expect(JSON.parse(localStorage.getItem('lsatu:rc-timing-default:v1:owner')!)).toEqual({ mode: 'standard', seconds: 525 });
   });
   it('clears just passage filters without resetting the drill timing', async () => {

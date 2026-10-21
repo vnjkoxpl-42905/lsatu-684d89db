@@ -6,7 +6,7 @@
   "encrypted_original_context": {
     "enabled": true,
     "format": 2,
-    "file_count": 77,
+    "file_count": 78,
     "paths": [
       "lsatu-rc-focus-release/.agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
       "lsatu-rc-focus-release/.agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
@@ -80,12 +80,13 @@
       "lsatu-rc-focus-release/.claude/skills/notebooklm/tests/cassettes/sources_refresh.yaml",
       "lsatu-rc-focus-release/.claude/skills/notebooklm/tests/cassettes/sources_rename.yaml",
       "lsatu-rc-focus-release/.claude/skills/watch/scripts/setup.py",
+      "lsatu-rc-focus-release/scripts/verification/export-rc-advisor.mjs",
       "lsatu-rc-focus-release/scripts/verification/start-rc-builder-preview.mjs",
       "lsatu-rc-focus-release/scripts/verification/start-rc-builder-simple-preview.mjs",
       "lsatu-rc-focus-release/src/contexts/AuthContext.tsx",
       "lsatu-rc-focus-release/src/lib/googleDrive.ts",
       "lsatu-rc-focus-release/supabase/functions/handle-email-events/index.ts"
     ],
-    "ciphertext_sha256": "5b0342ac0b7733660bcab7014dadbcf91f31b209fdfc5d98c16b7d1bc9981739"
+    "ciphertext_sha256": "465a8b0545c3248570a5d3fb766e776550e3b76e2864b4fd15e3c0636abbcb90"
   }
 }

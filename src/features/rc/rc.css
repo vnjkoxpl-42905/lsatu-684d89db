@@ -1028,6 +1028,7 @@
 }
 
 /* Final RC builder: compact LR material, transactional options drawer. */
+.rc-final-builder #rc-final-heading:focus { outline: none; }
 
 .rc-final-builder {
   max-width: 980px !important;
@@ -1809,11 +1810,15 @@
 
 .rc-review-heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
   margin-bottom: 26px;
 }
+
+.rc-review-heading > div { flex: 1 1 160px; min-width: 0; }
+.rc-final-builder .rc-review-heading > button { flex: 0 0 auto; white-space: nowrap; }
 
 .rc-review-heading h2 {
   font: 600 clamp(28px, 2.6vw, 34px)/1.2 'Outfit', sans-serif !important;
@@ -1970,4 +1975,83 @@
   .rc-final-builder .rc-final-controls .rc-builder-reveal {
     grid-column: 1 / -1 !important;
   }
+}
+
+.rc-final-builder .rc-timing-preference {
+  margin-top: 10px;
+}
+
+.rc-final-builder .rc-timing-preference > summary {
+  cursor: pointer;
+  color: #aaa49a;
+  font-size: 12px;
+  min-height: 32px;
+  padding: 7px 0;
+}
+
+.rc-final-builder .rc-timing-preference .rc-chip {
+  margin-top: 8px;
+  font-size: 12px !important;
+}
+
+.rc-final-drawer .rc-filter-exclusion {
+  margin: 22px 0;
+  border-top: 1px solid #303034;
+  padding-top: 16px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #bfb7a9;
+}
+
+.rc-filter-exclusion ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.rc-filter-exclusion li {
+  margin: 10px 0;
+}
+
+.rc-filter-exclusion li strong {
+  font-weight: 500;
+  color: #ded7ca;
+}
+
+.rc-filter-exclusion li > span {
+  display: block;
+  color: #aaa49a;
+  font-size: 12px;
+}
+
+/* Review is a clear reading list, without competing card outlines. */
+.rc-final-builder .rc-review-heading h2 {
+  text-transform: none !important;
+  outline: none;
+}
+
+.rc-final-builder .rc-review-stage > section[aria-label^='Preview passage'] {
+  border-width: 1px 0 0;
+  border-style: solid;
+  border-color: #303034;
+  border-radius: 0;
+  background: transparent;
+  padding: 18px 0;
+  margin-top: 18px;
+}
+
+.rc-final-builder .rc-review-stage > section[aria-label^='Preview passage'] > h3 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #e8e1d4;
+  margin: 0 0 10px;
+}
+
+.rc-final-builder .rc-review-stage > section[aria-label^='Preview passage'] > p:not([role='alert']) {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #b3ab9e;
+  margin: 0 0 16px;
 }
