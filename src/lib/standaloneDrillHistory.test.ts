@@ -133,6 +133,13 @@ describe('buildStandaloneDrillHistory', () => {
     expect(rows.every(row => !['pt-rc', 'assigned-rc', 'section-rc', 'abandoned-rc'].includes(row.discardId ?? ''))).toBe(true);
   });
 
+  it('lists assignment-link practice with Resume and completed Review destinations', () => {
+    const config = { source: 'manual' as const, assignmentOrigin: true, reveal: 'end_of_set' as const, timing: { mode: 'unlimited' as const } };
+    const rows = buildStandaloneDrillHistory([], [rc('origin-active', { config }), rc('origin-complete', { config, status: 'completed' })], new Map());
+    expect(rows.find(row => row.key === 'rc:origin-active')?.continueTo).toBe('/rc/drill?sessionId=origin-active');
+    expect(rows.find(row => row.key === 'rc:origin-complete')?.reviewTo).toBe('/rc/drill?sessionId=origin-complete&review=1');
+  });
+
   it('shows a saved Smart Drill as one resumable row, never as completed history', () => {
     const rows = buildStandaloneDrillHistory([], [], new Map(), smart('in_progress', 1));
     expect(rows).toMatchObject([{

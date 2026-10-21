@@ -363,6 +363,18 @@ it('inserts the stable client launch UUID and verifies its account acknowledgeme
   expect(insert).toHaveBeenCalledWith(expect.objectContaining({ id: sessionId, user_id: owner, passage_ids: [3] }));
   expect(saved.id).toBe(sessionId);
 });
+it('persists and resumes validated presentation modes without changing the session clock', async () => {
+  const training = { anticipation: true, lineByLine: true };
+  const config = { ...clock.config, training } as RcDrillConfig;
+  insert.mockImplementationOnce((payload) => ({ select: () => ({ single: async () => ({ data: { ...payload, status: 'in_progress', started_at: '2026-10-02T00:00:00Z' }, error: null }) }) }));
+  const saved = await createSession(config, [3], { id: sessionId, actorId: owner });
+  expect(saved.config.training).toEqual(training);
+  expect(insert).toHaveBeenCalledWith(expect.objectContaining({ config: expect.objectContaining({ training }) }));
+  clock.config = saved.config;
+  await saveSessionClock(sessionId, 19, 0);
+  expect((await getSession(sessionId))?.config.training).toEqual(training);
+  expect(clock.config.timing).toEqual(config.timing);
+});
 it('does not carry another session draft answers into a newly created drill', async () => {
   insert.mockImplementationOnce((payload) => ({ select: () => ({ single: async () => ({ data: { ...payload, status: 'in_progress', started_at: '2026-10-02T00:00:00Z' }, error: null }) }) }));
   const saved = await createSession({ ...clock.config, draftAnswers: [draft], resultsRevealedAt: '2026-10-17T10:00:00Z', learningRecords: [{ id: 'old-reflection' }] } as RcDrillConfig, [3]);

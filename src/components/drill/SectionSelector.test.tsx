@@ -22,10 +22,12 @@ const rcTestState = vi.hoisted(() => ({
   freshness: new Map<string, SectionFreshness>(),
   manualEnabled: false,
   coverage: true,
+  timingMode: '35',
+  profileTimingStatus: 'saved',
 }));
 
 vi.mock('@/contexts/UserSettingsContext', () => ({
-  useUserSettings: () => ({ settings: { defaultTimingMode: '35' } }),
+  useUserSettings: () => ({ settings: { defaultTimingMode: rcTestState.timingMode }, profileTimingStatus: rcTestState.profileTimingStatus }),
 }));
 
 vi.mock('@/hooks/useClassId', () => ({
@@ -111,11 +113,13 @@ beforeEach(() => {
   rcTestState.freshness = new Map();
   rcTestState.manualEnabled = false;
   rcTestState.coverage = true;
+  rcTestState.timingMode = '35';
+  rcTestState.profileTimingStatus = 'saved';
 });
 
 /** Routed: the timing popover carries the accommodations note, which links out. */
-const renderSelector = (props?: Partial<Parameters<typeof SectionSelector>[0]>) =>
-  render(
+const renderSelector = (props?: Partial<Parameters<typeof SectionSelector>[0]>) => {
+  const ui = () => (
     <MemoryRouter>
       <SectionSelector
         manifest={manifest}
@@ -123,8 +127,11 @@ const renderSelector = (props?: Partial<Parameters<typeof SectionSelector>[0]>) 
         onCancel={vi.fn()}
         {...props}
       />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
+  const view = render(ui());
+  return { ...view, refresh: () => view.rerender(ui()) };
+};
 
 /**
  * Each trigger is found through the text it is currently showing, and opened by
@@ -161,6 +168,57 @@ const pickSection = async () => {
 };
 
 describe('SectionSelector', () => {
+  it('withholds an implicit stale clock until the profile check finishes', async () => {
+    rcTestState.profileTimingStatus = 'loading';
+    const onStartSection = vi.fn();
+    const view = renderSelector({ onStartSection });
+    await pickSection();
+    expect(screen.queryByRole('combobox', { name: /Timing/i })).not.toBeInTheDocument();
+    expect(screen.getByText('Checking profile timing…')).toBeInTheDocument();
+    const start = screen.getByRole('button', { name: /Start Section/i });
+    expect(start).toBeDisabled();
+    fireEvent.click(start);
+    expect(onStartSection).not.toHaveBeenCalled();
+
+    rcTestState.timingMode = '70';
+    rcTestState.profileTimingStatus = 'saved';
+    view.refresh();
+    await waitFor(() => expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toContain('70:00'));
+    fireEvent.click(start);
+    expect(onStartSection.mock.calls[0][0].timer.mode).toBe('70');
+  });
+
+  it('keeps an explicitly selected 35-minute clock when a late profile has double time', async () => {
+    rcTestState.profileTimingStatus = 'loading';
+    const onStartSection = vi.fn();
+    const view = renderSelector({ onStartSection, initialTiming: { mode: 'unlimited' } });
+    await pickSection();
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('combobox', { name: /Section/i })));
+    fireEvent.click(screen.getByRole('combobox', { name: /Timing/i }));
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('option', { name: /^Unlimited/ })));
+    fireEvent.click(await screen.findByRole('option', { name: /^Standard/ }));
+    await waitFor(() => expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toContain('35:00'));
+
+    rcTestState.timingMode = '70';
+    rcTestState.profileTimingStatus = 'saved';
+    view.refresh();
+    expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toContain('35:00');
+    fireEvent.click(screen.getByRole('button', { name: /Start Section/i }));
+    expect(onStartSection.mock.calls[0][0].timer.mode).toBe('35');
+  });
+
+  it('starts an explicit Standard clock with an Unlimited profile default', async () => {
+    rcTestState.timingMode = 'unlimited';
+    const onStartSection = vi.fn();
+    renderSelector({ onStartSection, initialTiming: { mode: 'timed', percent: 100 } });
+    await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
+    await pickSection();
+    await waitFor(() => expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toContain('35:00'));
+    fireEvent.click(screen.getByRole('button', { name: /Start Section/i }));
+    await waitFor(() => expect(onStartSection).toHaveBeenCalledTimes(1));
+    expect(onStartSection.mock.calls[0][0].timer.mode).toBe('35');
+  });
+
   it('names every field for a screen reader', async () => {
     renderSelector();
     await screen.findByText(/Select a PrepTest/);
@@ -434,6 +492,27 @@ describe('SectionSelector', () => {
     await waitFor(() => expect(onStartRcSection).toHaveBeenCalledTimes(1));
     await new Promise((resolve) => setTimeout(resolve, 20));
     expect(onStartRcSection).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['52.5', 'time-and-a-half'],
+    ['70', 'double-time'],
+    ['unlimited', 'untimed'],
+  ])('starts a new RC section with the saved %s profile timing', async (mode, expectedPace) => {
+    rcTestState.timingMode = mode;
+    rcTestState.passages = buildRcPassageFixtures(141, 1);
+    rcTestState.freshness = new Map([
+      ['141-1', { pt: 141, section: 1, total: 28, unseen: 28, percentFresh: 100, isFresh: true }],
+    ]);
+    rcTestState.manualEnabled = true;
+    const onStartRcSection = vi.fn();
+    renderSelector({ initialKind: 'rc', onStartRcSection });
+    await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
+    await openPrepTests(); fireEvent.click(await screen.findByText(/^PrepTest 141$/));
+    await openSelectShowing(/Select a section/); fireEvent.click(await screen.findByText(/^Section 1$/));
+    fireEvent.click(screen.getByRole('button', { name: /Start Section/i }));
+    await waitFor(() => expect(onStartRcSection).toHaveBeenCalledTimes(1));
+    expect(new URL(onStartRcSection.mock.calls[0][0], 'https://example.test').searchParams.get('pace')).toBe(expectedPace);
   });
 
   it('falls back to rcSectionHref when the timing pace does not map to a protected pace', async () => {

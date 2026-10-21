@@ -163,6 +163,24 @@ export type RcTiming =
   | { mode: 'unlimited' }
   | { mode: 'per_passage_budget'; secondsPerPassage: number };
 
+/** Presentation practice only; never an answer or feedback reveal permission. */
+export interface RcTrainingModes { anticipation: boolean; lineByLine: boolean }
+export function isRcTrainingModes(value: unknown): value is RcTrainingModes {
+  return !!value && typeof value === 'object' && !Array.isArray(value)
+    && typeof (value as RcTrainingModes).anticipation === 'boolean'
+    && typeof (value as RcTrainingModes).lineByLine === 'boolean';
+}
+export function readRcTrainingModes(value: unknown): RcTrainingModes {
+  return isRcTrainingModes(value)
+    ? { anticipation: value.anticipation, lineByLine: value.lineByLine }
+    : { anticipation: false, lineByLine: false };
+}
+export function rcPresentationTraining(config: RcDrillConfig, reviewOnly: boolean): RcTrainingModes {
+  return !reviewOnly && !config.assignmentOrigin && ['manual', 'adaptive'].includes(config.source)
+    && !config.timedSectionSittingId && !config.practiceTestRunId
+    ? readRcTrainingModes(config.training) : { anticipation: false, lineByLine: false };
+}
+
 /** Account-backed working choices. These are not scored or confirmed attempts. */
 export interface RcDraftAnswer {
   questionId: number;
@@ -197,6 +215,9 @@ export function readRcDraftAnswers(value: unknown): RcDraftAnswer[] {
 }
 
 export interface RcDrillConfig {
+  training?: RcTrainingModes;
+  /** Assignment-link provenance without claiming a separately tracked assignment session. */
+  assignmentOrigin?: boolean;
   /** A launch-time ledger observation, not proof of historically unseen material. */
   passageExposureAtStart?: Record<string, 'no-recorded-exposure' | 'recorded-exposure' | 'unknown'>;
   /** Explicit account-acknowledged release of ordinary drill scores and feedback. */

@@ -1,28 +1,26 @@
-/* Booking product theme: light Calendly-style base with a deep burgundy
-   holographic accent. Scoped under .booking-holo so it can wrap both the
-   admin workspace and the student-facing booking pages without touching
-   the rest of the app. Overrides the shadcn HSL tokens locally. */
+/* Booking shares the platform paper and ink palette. Local dark tokens also
+   cover portaled dialogs; destructive/status colors remain independent. */
 
 .booking-holo {
-  --background: 350 20% 99%;
-  --foreground: 345 30% 12%;
-  --card: 0 0% 100%;
-  --card-foreground: 345 30% 12%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 345 30% 12%;
-  --primary: 347 70% 27%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 348 30% 96%;
-  --secondary-foreground: 347 55% 25%;
-  --muted: 347 20% 96%;
-  --muted-foreground: 345 12% 44%;
-  --accent: 348 45% 94%;
-  --accent-foreground: 347 60% 24%;
+  --background: var(--lsatu-canvas-hsl);
+  --foreground: var(--lsatu-ink-hsl);
+  --card: var(--lsatu-canvas-hsl);
+  --card-foreground: var(--lsatu-ink-hsl);
+  --popover: var(--lsatu-canvas-hsl);
+  --popover-foreground: var(--lsatu-ink-hsl);
+  --primary: var(--lsatu-surface-dark-hsl);
+  --primary-foreground: var(--lsatu-text-on-dark-hsl);
+  --secondary: var(--lsatu-action-on-dark-hsl);
+  --secondary-foreground: var(--lsatu-ink-hsl);
+  --muted: var(--lsatu-action-on-dark-hsl);
+  --muted-foreground: var(--lsatu-ink-muted-hsl);
+  --accent: var(--lsatu-action-on-dark-hsl);
+  --accent-foreground: var(--lsatu-ink-hsl);
   --destructive: 0 72% 45%;
   --destructive-foreground: 0 0% 100%;
-  --border: 345 18% 90%;
-  --input: 345 18% 87%;
-  --ring: 347 70% 35%;
+  --border: 54.545 11.579% 81.373%;
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-ink-hsl);
   color: hsl(var(--foreground));
   background-color: hsl(var(--background));
 }
@@ -32,20 +30,20 @@
 }
 
 .holo-surface {
-  /* Static rich burgundy gradient — deliberately NOT animated. The shadcn
+  /* Static platform primary surface — deliberately NOT animated. The shadcn
      Button base applies `transition-all` and swaps background-color on hover,
      which fights any background keyframe animation frame-by-frame and reads
      as flicker. Buttons stay still; only the wordmark carries the sheen. */
-  background: linear-gradient(120deg, #4f0d1c, #6e1423 45%, #8e1d3a) !important;
-  color: #fff !important;
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
 }
 
 .holo-surface:hover { filter: brightness(1.12); }
 
-.holo-ring { box-shadow: 0 0 0 1px hsl(347 70% 35% / 0.35), 0 8px 30px hsl(347 70% 25% / 0.12); }
+.holo-ring { box-shadow: 0 0 0 1px hsl(var(--ring) / 0.35), 0 8px 30px hsl(var(--foreground) / 0.12); }
 
-/* Soft burgundy-tinted elevation, the Calendly modal-shadow trick re-tinted. */
-.booking-shadow { box-shadow: 0 24px 72px hsl(345 60% 20% / 0.09), 0 0 20px hsl(345 60% 20% / 0.06); }
+/* Neutral elevation, the Calendly modal-shadow trick re-tinted. */
+.booking-shadow { box-shadow: 0 24px 72px hsl(var(--foreground) / 0.09), 0 0 20px hsl(var(--foreground) / 0.06); }
 
 @media (prefers-reduced-motion: reduce) {
   .holo-surface { animation: none; }
@@ -64,34 +62,32 @@
    rendered as a 688x647 pure-white slab in a black page — the most jarring
    thing a student meets on their first click into dark mode.
 
-   This re-voices the same burgundy palette dark, and is scoped to the
+   This re-voices the shared platform palette dark, and is scoped to the
    classroom so /book/* stays light for prospects. It cannot live in the app's
    `.dark` class: that class is a deliberate alias that mirrors `.light`
    (see index.css), so every shadcn token in the app stays light by design and
    the classroom draws its own dark theme separately. */
 html.dark .classroom-root .booking-holo {
   color-scheme: dark;
-  --background: 345 12% 9%;
-  --foreground: 345 15% 95%;
-  --card: 345 12% 13%;
-  --card-foreground: 345 15% 95%;
-  --popover: 345 12% 13%;
-  --popover-foreground: 345 15% 95%;
-  /* Lightness is set by contrast, not by matching the light theme's 27%: the
-     accent is used as text on the card, and 58% measured 4.13:1 against it. */
-  --primary: 347 68% 68%;
-  --primary-foreground: 345 30% 10%;
-  --secondary: 345 12% 19%;
-  --secondary-foreground: 345 15% 93%;
-  --muted: 345 10% 18%;
-  --muted-foreground: 345 10% 70%;
-  --accent: 345 15% 23%;
-  --accent-foreground: 345 15% 94%;
+  --background: var(--lsatu-surface-dark-hsl);
+  --foreground: var(--lsatu-text-on-dark-hsl);
+  --card: var(--lsatu-surface-dark-hsl);
+  --card-foreground: var(--lsatu-text-on-dark-hsl);
+  --popover: var(--lsatu-field-dark-hsl);
+  --popover-foreground: var(--lsatu-text-on-dark-hsl);
+  --primary: var(--lsatu-action-on-dark-hsl);
+  --primary-foreground: var(--lsatu-action-ink-hsl);
+  --secondary: var(--lsatu-field-dark-hsl);
+  --secondary-foreground: var(--lsatu-text-on-dark-hsl);
+  --muted: var(--lsatu-field-dark-hsl);
+  --muted-foreground: 77.143 4.965% 72.353%;
+  --accent: var(--lsatu-field-dark-hsl);
+  --accent-foreground: var(--lsatu-text-on-dark-hsl);
   --destructive: 0 65% 58%;
   --destructive-foreground: 345 30% 10%;
-  --border: 345 10% 25%;
-  --input: 345 10% 27%;
-  --ring: 347 62% 52%;
+  --border: var(--lsatu-field-border-hsl);
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-text-on-dark-hsl);
 }
 
 /* DialogContent is portaled outside `.classroom-root`, so carry the same
@@ -99,23 +95,23 @@ html.dark .classroom-root .booking-holo {
    light because only the dialog opts into this selector. */
 html.dark .booking-dialog.booking-holo {
   color-scheme: dark;
-  --background: 345 12% 9%;
-  --foreground: 345 15% 95%;
-  --card: 345 12% 13%;
-  --card-foreground: 345 15% 95%;
-  --popover: 345 12% 13%;
-  --popover-foreground: 345 15% 95%;
-  --primary: 347 68% 68%;
-  --primary-foreground: 345 30% 10%;
-  --secondary: 345 12% 19%;
-  --secondary-foreground: 345 15% 93%;
-  --muted: 345 10% 18%;
-  --muted-foreground: 345 10% 70%;
-  --accent: 345 15% 23%;
-  --accent-foreground: 345 15% 94%;
+  --background: var(--lsatu-surface-dark-hsl);
+  --foreground: var(--lsatu-text-on-dark-hsl);
+  --card: var(--lsatu-surface-dark-hsl);
+  --card-foreground: var(--lsatu-text-on-dark-hsl);
+  --popover: var(--lsatu-field-dark-hsl);
+  --popover-foreground: var(--lsatu-text-on-dark-hsl);
+  --primary: var(--lsatu-action-on-dark-hsl);
+  --primary-foreground: var(--lsatu-action-ink-hsl);
+  --secondary: var(--lsatu-field-dark-hsl);
+  --secondary-foreground: var(--lsatu-text-on-dark-hsl);
+  --muted: var(--lsatu-field-dark-hsl);
+  --muted-foreground: 77.143 4.965% 72.353%;
+  --accent: var(--lsatu-field-dark-hsl);
+  --accent-foreground: var(--lsatu-text-on-dark-hsl);
   --destructive: 0 65% 58%;
   --destructive-foreground: 345 30% 10%;
-  --border: 345 10% 25%;
-  --input: 345 10% 27%;
-  --ring: 347 62% 52%;
+  --border: var(--lsatu-field-border-hsl);
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-text-on-dark-hsl);
 }

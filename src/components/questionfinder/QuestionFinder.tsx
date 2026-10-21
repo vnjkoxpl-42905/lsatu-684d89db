@@ -155,7 +155,14 @@ function FinderPanel({
 }) {
   const navigate = useNavigate();
   const [query, setQuery] = React.useState("");
+  const [retainedRcHit, setRetainedRcHit] = React.useState<{ passageId: number; pt: number; section: number; pnum: number; questionId: number | null; qnum: number | null } | null>(null);
+  // Address edits express fresh intent. Only a clicked result retains index provenance.
+  const writeQuery = React.useCallback((value: string) => {
+    setRetainedRcHit(null);
+    setQuery(value);
+  }, []);
   const [active, setActive] = React.useState(0);
+  const [rcLimit, setRcLimit] = React.useState(PER_BANK_LIMIT);
   /* Seeded from the host, not locked to it: the Drill hub opens the finder on
      its own side of the switch, and the student can still cross to the other. */
   const [view, setView] = React.useState<QuestionFinderBank | "all">(bank ?? "all");
@@ -164,12 +171,12 @@ function FinderPanel({
   const listRef = React.useRef<HTMLDivElement>(null);
 
   // Mounting the panel IS the request for the banks; nothing loads before it.
-  const banks = useQuestionFinderBanks(open);
+  const banks = useQuestionFinderBanks(open, view);
   const addressIndex = useFinderAddressIndex(open);
   React.useEffect(() => {
     setView(bank ?? "all");
-    setQuery("");
-  }, [bank]);
+    writeQuery("");
+  }, [bank, writeQuery]);
 
   const results = React.useMemo(
     () =>
@@ -179,9 +186,10 @@ function FinderPanel({
         rcPassages: banks.rcPassages,
         rcQuestions: banks.rcQuestions,
         limit: PER_BANK_LIMIT,
+        rcLimit,
         bank: view === "all" ? undefined : view,
       }),
-    [view, banks.lr, banks.rcPassages, banks.rcQuestions, query],
+    [view, banks.lr, banks.rcPassages, banks.rcQuestions, query, rcLimit],
   );
 
   const hits = React.useMemo<FinderHit[]>(
@@ -189,7 +197,8 @@ function FinderPanel({
     [results.lr, results.rc],
   );
 
-  React.useEffect(() => setActive(0), [query]);
+  React.useEffect(() => { setActive(0); setRcLimit(PER_BANK_LIMIT); }, [query, view]);
+  React.useEffect(() => setActive(index => Math.min(index, Math.max(0, hits.length - 1))), [hits.length, rcLimit]);
 
   /* Focus in, focus back out. The trigger must get focus again on close or a
      keyboard student is returned to the top of the document. */
@@ -205,23 +214,38 @@ function FinderPanel({
     };
   }, [open]);
 
-  const selectedTarget = React.useMemo(() => {
+  const addressTarget = React.useMemo(() => {
     const address = results.address;
-    if (!address?.qnum || !address.section || view === "lr") return null;
+    if (!address?.section || view === "lr" || (view === 'all' && results.exact)) return null;
     const section = addressIndex.tests.find((test) => test.pt === address.pt)?.sections.find((entry) => entry.section === address.section);
-    const matches = (section?.rc ?? []).flatMap((passage) => passage.questions.filter((q) => q.number === address.qnum).map((q) => ({ passageId: passage.id, questionId: q.id })));
+    const passages = (section?.rc ?? []).filter(passage => passage.questions.length > 0 && (address.pnum === undefined || passage.position === address.pnum));
+    if (address.qnum === undefined) return address.pnum !== undefined && passages.length === 1 ? { passageId: passages[0].id, questionId: null } : null;
+    const matches = passages.flatMap((passage) => passage.questions.filter((q) => q.number === address.qnum).map((q) => ({ passageId: passage.id, questionId: q.id })));
     return matches.length === 1 ? matches[0] : null;
-  }, [results.address, addressIndex.tests, view]);
+  }, [results.address, results.exact, addressIndex.tests, view]);
+  const retainedMismatch = React.useMemo(() => {
+    if (!retainedRcHit || addressIndex.loading || addressIndex.failed) return false;
+    const address = results.address;
+    const section = addressIndex.tests.find(test => test.pt === retainedRcHit.pt)?.sections.find(entry => entry.section === retainedRcHit.section);
+    const samePassage = section?.rc.some(passage => passage.id === retainedRcHit.passageId && passage.position === retainedRcHit.pnum && passage.questions.length > 0);
+    const sameAddress = address?.pt === retainedRcHit.pt && address.section === retainedRcHit.section && (address.pnum === undefined || address.pnum === retainedRcHit.pnum);
+    const sameQuestion = retainedRcHit.questionId === null ? address?.qnum === undefined && address?.pnum === retainedRcHit.pnum : address?.qnum === retainedRcHit.qnum;
+    return !samePassage || !sameAddress || !sameQuestion || !addressTarget || addressTarget.passageId !== retainedRcHit.passageId || addressTarget.questionId !== retainedRcHit.questionId;
+  }, [retainedRcHit, results.address, addressTarget, addressIndex.tests, addressIndex.loading, addressIndex.failed]);
+  const selectedTarget = retainedMismatch ? null : addressTarget;
   const openSelected = () => {
     if (!selectedTarget || addressIndex.loading || addressIndex.failed) return;
-    const params = new URLSearchParams({ passage: String(selectedTarget.passageId), q: String(selectedTarget.questionId), returnTo: safeRcReturnTo(returnTo) ?? "/practice/drills?section=rc" });
+    const params = new URLSearchParams({ passage: String(selectedTarget.passageId) });
+    if (selectedTarget.questionId !== null) params.set('q', String(selectedTarget.questionId));
+    params.set('returnTo', safeRcReturnTo(returnTo) ?? '/practice/drills?section=rc');
     onClose();
     navigate(`/rc/preview?${params}`);
   };
 
   const openHit = React.useCallback((hit: FinderHit) => {
+    setRetainedRcHit(hit.bank === 'rc' ? { passageId: hit.passageId, pt: hit.preptest, section: hit.section, pnum: hit.setNumber, questionId: hit.questionId ?? null, qnum: hit.qnum ?? null } : null);
     setView(hit.bank);
-    setQuery(hit.bank === "lr" ? `PT${hit.pt} S${hit.section} Q${hit.qnum}` : `PT${hit.preptest} S${hit.section}${hit.qnum ? ` Q${hit.qnum}` : ""}`);
+    setQuery(hit.bank === "lr" ? `PT${hit.pt} S${hit.section} Q${hit.qnum}` : `PT${hit.preptest} S${hit.section}${hit.qnum ? ` Q${hit.qnum}` : ` P${hit.setNumber}`}`);
   }, []);
 
   const onKeyDown = (event: React.KeyboardEvent) => {
@@ -233,7 +257,7 @@ function FinderPanel({
       event.preventDefault();
       // Escape clears a query before it closes the panel — the same two-step the
       // old drill console used, so a mistyped search is one key from fixed.
-      if (query) setQuery("");
+      if (query) writeQuery("");
       else onClose();
       return;
     }
@@ -302,7 +326,7 @@ function FinderPanel({
               Lab's does. The scrim still closes it; a titled dialog just
               should not depend on the student knowing that. */}
           <div className="qf-head">
-            <h2 className="qf-title">Question Finder</h2>
+            <h2 className="qf-title">{view === 'rc' ? 'Find a passage or question' : 'Question Finder'}</h2>
             <button
               type="button"
               className="qf-close"
@@ -325,7 +349,7 @@ function FinderPanel({
                   onClick={() => {
                     if (view !== tab.value) {
                       setView(tab.value);
-                      setQuery("");
+                      writeQuery("");
                     }
                   }}
                 >
@@ -342,13 +366,15 @@ function FinderPanel({
               bank={view === "all" ? undefined : view}
               loading={addressIndex.loading}
               failed={addressIndex.failed}
-              onPick={setQuery}
+              onPick={writeQuery}
               tests={addressIndex.tests}
               selectedAddress={results.address}
               canOpen={!!selectedTarget}
+              passageOnly={selectedTarget?.questionId === null}
               onOpen={openSelected}
             />
             {addressIndex.failed && <p className="qf-warn" role="alert">Question addresses could not be loaded. <button type="button" onClick={addressIndex.retry}>Retry</button></p>}
+            {retainedMismatch && <p className="qf-warn" role="alert">The passage address no longer matches this search result. Choose the passage using the selectors, or search again before opening it.</p>}
 
           <div className="qf-inputrow">
             <Search className="qf-inputrow-icon" size={18} strokeWidth={1.9} aria-hidden />
@@ -359,9 +385,9 @@ function FinderPanel({
               value={query}
               spellCheck={false}
               autoComplete="off"
-              placeholder="Search question text, or type PT90 S1 Q12"
+              placeholder={view === 'rc' ? 'Search passage titles, question text, or PT140 S4 P2' : 'Search question text, or type PT90 S1 Q12'}
               aria-label="Search question text, or type a question address"
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => writeQuery(event.target.value)}
             />
             {results.address && (
               <span className="qf-address">{formatQuestionAddress(results.address)}</span>
@@ -371,7 +397,7 @@ function FinderPanel({
                 type="button"
                 className="qf-clear"
                 onClick={() => {
-                  setQuery("");
+                  writeQuery("");
                   inputRef.current?.focus();
                 }}
                 aria-label="Clear search"
@@ -400,7 +426,7 @@ function FinderPanel({
             {!banks.loading && !banks.error && !hasQuery && (
               <div className="qf-hint">
                 <span>Type a phrase you remember, or an address like</span>
-                <code>PT90 S1 Q12</code>
+                <code>{view === 'rc' ? 'PT140 S4 P2 or PT140 S4 Q7' : 'PT90 S1 Q12'}</code>
               </div>
             )}
 
@@ -455,7 +481,7 @@ function FinderPanel({
                     <button
                       key={hit.key}
                       type="button"
-                      className="qf-row"
+                      className="qf-row qf-row-rc"
                       data-active={position === active}
                       onMouseMove={() => setActive(position)}
                       onClick={() => openHit(hit)}
@@ -478,6 +504,7 @@ function FinderPanel({
                     </button>
                   );
                 })}
+                {hasQuery && <div className="qf-more-results"><p role="status">Showing {results.rc.length} of {results.rcTotal} RC results.</p>{results.rc.length < results.rcTotal && rcLimit < 60 ? <button type="button" onClick={() => { setRcLimit(value => Math.min(60, value + PER_BANK_LIMIT)); setActive(0); }}>Show more RC results</button> : results.rcTotal > 60 ? <p>Showing the first 60 results. Refine your search to find a specific passage or question.</p> : null}</div>}
               </div>
             )}
 
@@ -569,6 +596,7 @@ function BrowseByTest({
   tests,
   selectedAddress,
   canOpen,
+  passageOnly,
   onOpen,
 }: {
   tone: "light" | "dark";
@@ -579,6 +607,7 @@ function BrowseByTest({
   tests: FinderAddressTest[];
   selectedAddress: QuestionAddress | null;
   canOpen: boolean;
+  passageOnly: boolean;
   onOpen: () => void;
 }) {
   /* Still disabled on either state; only the words differ. "Loading…" on a
@@ -591,52 +620,58 @@ function BrowseByTest({
      for — and left the row saying "PT 159 · Section 1 · Question" while the
      field below it said Q5. */
   const [qnum, setQnum] = React.useState("");
+  const [pnum, setPnum] = React.useState('');
 
-  const pts = tests.filter((test) => !bank || test.sections.some((entry) => bank === "rc" ? entry.rc.length > 0 : entry.lr.length > 0)).map((test) => test.pt).sort((a, b) => b - a);
+  const pts = tests.filter((test) => !bank || test.sections.some((entry) => bank === "rc" ? entry.rc.some(passage => passage.questions.length > 0) : entry.lr.length > 0)).map((test) => test.pt).sort((a, b) => b - a);
 
   const sections = React.useMemo(() => {
     if (!pt) return [] as number[];
     const entries = tests.find((test) => test.pt === Number(pt))?.sections ?? [];
-    return entries.filter((entry) => !bank || (bank === "rc" ? entry.rc.length > 0 : entry.lr.length > 0)).map((entry) => entry.section);
+    return entries.filter((entry) => !bank || (bank === "rc" ? entry.rc.some(passage => passage.questions.length > 0) : entry.lr.length > 0)).map((entry) => entry.section);
   }, [bank, tests, pt]);
 
   const qnums = React.useMemo(() => {
     if (!pt || !section) return [] as number[];
     const entry = tests.find((test) => test.pt === Number(pt))?.sections.find((candidate) => candidate.section === Number(section));
-    return entry?.lr.length ? entry.lr : (entry?.rc ?? []).flatMap((passage) => passage.questions.map((question) => question.number));
-  }, [tests, pt, section]);
-  const pick = React.useCallback((nextPt: string, nextSection: string, nextQnum: string) => {
+    return entry?.lr.length ? entry.lr : (entry?.rc ?? []).filter(passage => !pnum || passage.position === Number(pnum)).flatMap((passage) => passage.questions.map((question) => question.number));
+  }, [tests, pt, section, pnum]);
+  const pick = React.useCallback((nextPt: string, nextSection: string, nextQnum: string, nextPnum = '') => {
     if (!nextPt) return onPick("");
     let query = `PT${nextPt}`;
     if (nextSection) query += ` S${nextSection}`;
+    if (nextSection && nextPnum) query += ` P${nextPnum}`;
     if (nextSection && nextQnum) query += ` Q${nextQnum}`;
     onPick(query);
   }, [onPick]);
   React.useEffect(() => {
     if (bank === "rc" && selectedAddress?.pt === Number(pt) && sections.length === 1 && !section) {
       setSection(String(sections[0]));
-      pick(pt, String(sections[0]), "");
+      pick(pt, String(sections[0]), selectedAddress.qnum === undefined ? '' : String(selectedAddress.qnum));
     }
   }, [bank, selectedAddress, sections, section, pt, pick]);
   React.useEffect(() => {
     setPt("");
     setSection("");
     setQnum("");
+    setPnum('');
   }, [bank]);
   React.useEffect(() => {
     if (disabled) return;
     const test = tests.find((entry) => entry.pt === selectedAddress?.pt);
-    const validSections = test?.sections.filter((entry) => !bank || (bank === "rc" ? entry.rc.length > 0 : entry.lr.length > 0)) ?? [];
+    const validSections = test?.sections.filter((entry) => !bank || (bank === "rc" ? entry.rc.some(passage => passage.questions.length > 0) : entry.lr.length > 0)) ?? [];
     const entry = validSections.find((entry) => entry.section === selectedAddress?.section);
-    const numbers = entry ? (bank === "rc" ? entry.rc.flatMap((passage) => passage.questions.map((question) => question.number)) : bank === "lr" ? entry.lr : [...entry.lr, ...entry.rc.flatMap((passage) => passage.questions.map((question) => question.number))]) : [];
+    const matchingPassages = (entry?.rc ?? []).filter(passage => selectedAddress?.pnum === undefined || passage.position === selectedAddress.pnum);
+    const numbers = entry ? (bank === "rc" ? matchingPassages.flatMap((passage) => passage.questions.map((question) => question.number)) : bank === "lr" ? entry.lr : [...entry.lr, ...matchingPassages.flatMap((passage) => passage.questions.map((question) => question.number))]) : [];
     setPt(validSections.length ? String(test.pt) : "");
     setSection(entry ? String(entry.section) : "");
     setQnum(numbers.includes(selectedAddress?.qnum) ? String(selectedAddress.qnum) : "");
+    setPnum(entry?.rc.some(passage => passage.questions.length > 0 && passage.position === selectedAddress?.pnum) ? String(selectedAddress.pnum) : '');
   }, [selectedAddress, bank, tests, disabled]);
-  const rcGroups = tests.find((test) => test.pt === Number(pt))?.sections.find((entry) => entry.section === Number(section))?.rc ?? [];
+  const rcGroups = (tests.find((test) => test.pt === Number(pt))?.sections.find((entry) => entry.section === Number(section))?.rc ?? []).filter(passage => passage.questions.length > 0 && (!pnum || passage.position === Number(pnum)));
+  const rcPassages = (tests.find((test) => test.pt === Number(pt))?.sections.find((entry) => entry.section === Number(section))?.rc ?? []).filter(passage => passage.questions.length > 0);
 
   return (
-    <div className="qf-browse">
+    <div className="qf-browse" data-rc={bank === 'rc' || undefined}>
       <label className="qf-field">
         <span className="qf-field-label">Test</span>
         <select
@@ -647,6 +682,7 @@ function BrowseByTest({
             setPt(event.target.value);
             setSection("");
             setQnum("");
+            setPnum('');
             pick(event.target.value, "", "");
           }}
         >
@@ -668,6 +704,7 @@ function BrowseByTest({
           onChange={(event) => {
             setSection(event.target.value);
             setQnum("");
+            setPnum('');
             pick(pt, event.target.value, "");
           }}
         >
@@ -680,17 +717,19 @@ function BrowseByTest({
         </select>
       </label>
 
+      {bank === 'rc' && <label className="qf-field"><span className="qf-field-label">Passage</span><select className="qf-select" value={pnum} disabled={disabled || !section || rcPassages.length === 0} onChange={event => { setPnum(event.target.value); setQnum(''); pick(pt, section, '', event.target.value); }}><option value="">{section ? 'Choose a passage' : 'Pick a section'}</option>{rcPassages.map(passage => <option key={passage.id} value={String(passage.position)}>Passage {passage.position}{passage.title ? ` · ${passage.title}` : ''}</option>)}</select></label>}
       <label className="qf-field">
-        <span className="qf-field-label">Question</span>
+        <span className="qf-field-label">{bank === 'rc' ? 'Question (optional)' : 'Question'}</span>
         <Select
           value={qnum}
           disabled={disabled || !section || qnums.length === 0}
-          onValueChange={(value) => { setQnum(value); pick(pt, section, value); }}
+          onValueChange={(value) => { const next = value === '__passage__' ? '' : value; setQnum(next); pick(pt, section, next, pnum); }}
         >
           <SelectTrigger className="qf-select-radix" aria-label="Question">
-            <SelectValue placeholder={!section ? "Pick a section" : qnums.length === 0 ? "No questions" : "Question"} />
+            <SelectValue placeholder={!section ? "Pick a section" : qnums.length === 0 ? "No questions" : bank === 'rc' && pnum ? 'Whole passage' : 'Question'} />
           </SelectTrigger>
           <SelectContent className="qf qf-question-menu" data-tone={tone} position="popper" side="bottom" align="start">
+            {bank === 'rc' && pnum && <SelectItem value="__passage__">Whole passage</SelectItem>}
             {rcGroups.length ? rcGroups.map((passage, index) => {
               const numbers = passage.questions.map((question) => question.number);
               const range = numbers.length ? `Questions ${numbers[0]}–${numbers[numbers.length - 1]}` : "No questions";
@@ -716,9 +755,9 @@ function BrowseByTest({
         className="qf-go"
         disabled={disabled || !canOpen}
         onClick={onOpen}
-        title={canOpen ? "Open a read-only question preview" : "Choose an exact RC question. LR preview is not available yet."}
+        title={canOpen ? `Open a read-only ${passageOnly ? 'passage' : 'question'} preview` : "Choose an RC passage or an exact question. LR preview is not available yet."}
       >
-        Open question
+        {passageOnly ? 'Open passage' : 'Open question'}
       </button>
     </div>
   );

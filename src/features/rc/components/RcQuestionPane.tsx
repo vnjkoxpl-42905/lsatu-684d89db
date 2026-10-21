@@ -24,6 +24,7 @@ import {
 interface Props {
   actorId?: string | null;
   choicesHidden?: boolean;
+  choicesHiddenMessage?: string;
   trainingControls?: React.ReactNode;
   annotationsDisabled?: boolean;
   item: RcSessionItem;
@@ -70,6 +71,7 @@ interface Popover {
 export function RcQuestionPane({
   actorId,
   choicesHidden = false,
+  choicesHiddenMessage = 'Choices are hidden while you make a prediction. Open Training options to continue.',
   trainingControls,
   item,
   selected,
@@ -212,7 +214,7 @@ export function RcQuestionPane({
       </div>
 
       {trainingControls}
-      {choicesHidden && <p className="my-2 text-sm" role="status">Choices are hidden while you make a prediction. Open Training options to continue.</p>}
+      {choicesHidden && <p className="my-2 text-sm" role="status">{choicesHiddenMessage}</p>}
       {showFeedback && (
         <RcReviewLayer
           question={question}

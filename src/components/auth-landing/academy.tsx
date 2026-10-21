@@ -15,20 +15,21 @@ import { AcaDust, useMagnetic } from './fx';
  * All copy is LSAT U's warm coach voice, truthful, no em dashes.
  */
 
+// Shared neutral grounds and text; bronze, cyan and film retain their authored atmosphere.
 // ── Tokens ───────────────────────────────────────────────────────────────────
 export const ACA = {
-  bg: '#070606',
-  bg2: '#0A0908',
-  marble: '#EAE5DA',
-  marbleSec: '#A6A093',
-  marbleMut: '#6E695E',
+  bg: 'var(--lsatu-surface-dark)',
+  bg2: 'var(--lsatu-field-dark)',
+  marble: 'var(--lsatu-text-on-dark)',
+  marbleSec: '#babcb5',
+  marbleMut: '#92988f',
   bronze: '#C6A467',
   bronzeBright: '#E8CF96',
   bronzeDeep: '#8A6F3E',
   cyan: '#8AD8E2',
   cyanBright: '#C3EEF4',
-  hairline: 'rgba(234,229,218,0.09)',
-  hairlineStrong: 'rgba(234,229,218,0.19)',
+  hairline: 'rgba(239,237,230,0.09)',
+  hairlineStrong: 'rgba(239,237,230,0.19)',
   bronzeLine: 'rgba(198,164,103,0.32)',
   cyanLine: 'rgba(138,216,226,0.35)',
   serif: '"Fraunces", "Iowan Old Style", "Times New Roman", serif',
@@ -79,7 +80,7 @@ export const ACADEMY_CSS = `
 
   /* ── Nav ── */
   .aca .aca-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 40; border-bottom: 1px solid transparent; transition: background 420ms ${T.easeOut}, border-color 420ms ${T.easeOut}; }
-  .aca .aca-nav.is-scrolled { background: rgba(7,6,6,0.72); backdrop-filter: blur(18px) saturate(120%); -webkit-backdrop-filter: blur(18px) saturate(120%); border-bottom-color: ${T.hairline}; }
+  .aca .aca-nav.is-scrolled { background: rgba(19,23,24,0.72); backdrop-filter: blur(18px) saturate(120%); -webkit-backdrop-filter: blur(18px) saturate(120%); border-bottom-color: ${T.hairline}; }
   .aca .aca-nav-inner { max-width: 1360px; margin: 0 auto; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; }
   .aca .aca-wordmark { font-family: ${T.inscr}; font-weight: 500; font-size: 17px; letter-spacing: 0.34em; color: ${T.marble}; display: inline-flex; align-items: baseline; }
   .aca .aca-wordmark em { font-style: normal; color: ${T.bronze}; }
@@ -122,9 +123,9 @@ export const ACADEMY_CSS = `
   .aca .aca-hero-film video, .aca .aca-hero-film img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0; transition: opacity 2400ms ${T.easeOut}; }
   .aca .aca-hero-film.is-ready video, .aca .aca-hero-film.is-ready img { opacity: 0.92; }
   .aca .aca-hero-film::after { content: ''; position: absolute; inset: 0; background:
-    radial-gradient(58% 64% at 50% 47%, rgba(7,6,6,0.52), rgba(7,6,6,0.18) 55%, transparent 78%),
-    linear-gradient(to bottom, rgba(7,6,6,0.55) 0%, rgba(7,6,6,0.12) 30%, rgba(7,6,6,0.28) 62%, ${T.bg} 96%),
-    radial-gradient(120% 80% at 50% 40%, transparent 40%, rgba(7,6,6,0.68) 100%); }
+    radial-gradient(58% 64% at 50% 47%, rgba(19,23,24,0.52), rgba(19,23,24,0.18) 55%, transparent 78%),
+    linear-gradient(to bottom, rgba(19,23,24,0.55) 0%, rgba(19,23,24,0.12) 30%, rgba(19,23,24,0.28) 62%, ${T.bg} 96%),
+    radial-gradient(120% 80% at 50% 40%, transparent 40%, rgba(19,23,24,0.68) 100%); }
   .aca .aca-hero-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
   .aca .aca-hero h1 { font-size: clamp(56px, 9.6vw, 148px); line-height: 0.94; letter-spacing: -0.022em; font-weight: 340; margin: 34px 0 0; text-shadow: 0 6px 60px rgba(0,0,0,0.75); }
   .aca .aca-hero h1 .it { font-style: italic; font-weight: 380; color: #E9D9B4; }
@@ -205,7 +206,7 @@ export const ACADEMY_CSS = `
   .aca .aca-disc .aca-body { max-width: 440px; }
   .aca .aca-plate { position: relative; margin: 0; border-radius: 3px; overflow: hidden; border: 1px solid ${T.hairline}; background: radial-gradient(130% 130% at 25% 0%, rgba(198,164,103,0.05), transparent 55%), ${T.bg2}; aspect-ratio: 16 / 10; box-shadow: 0 34px 90px -30px rgba(0,0,0,0.9); transition: border-color 420ms ${T.easeOut}, box-shadow 420ms ${T.easeOut}; }
   .aca .aca-plate svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  .aca .aca-plate-tag { position: absolute; right: 14px; top: 12px; z-index: 2; font-family: ${T.mono}; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(234,229,218,0.7); background: rgba(7,6,6,0.55); border: 1px solid ${T.hairline}; padding: 6px 10px; border-radius: 2px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .aca .aca-plate-tag { position: absolute; right: 14px; top: 12px; z-index: 2; font-family: ${T.mono}; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(234,229,218,0.7); background: rgba(19,23,24,0.55); border: 1px solid ${T.hairline}; padding: 6px 10px; border-radius: 2px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   @media (hover: hover) and (pointer: fine) {
     .aca .aca-plate:hover { border-color: ${T.bronzeLine}; box-shadow: 0 38px 100px -26px rgba(0,0,0,0.95), 0 0 70px -24px rgba(198,164,103,0.35); }
   }
@@ -224,8 +225,8 @@ export const ACADEMY_CSS = `
   .aca .aca-justice { position: relative; min-height: 88svh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; border-top: 1px solid ${T.hairline}; border-bottom: 1px solid ${T.hairline}; }
   .aca .aca-justice-img { position: absolute; inset: -8%; background-image: url('/auth/justice.jpg'); background-size: cover; background-position: center 20%; will-change: transform; }
   .aca .aca-justice::after { content: ''; position: absolute; inset: 0; background:
-    linear-gradient(to bottom, ${T.bg} 0%, rgba(7,6,6,0.25) 26%, rgba(7,6,6,0.25) 70%, ${T.bg} 100%),
-    radial-gradient(90% 70% at 50% 50%, transparent 30%, rgba(7,6,6,0.7) 100%); }
+    linear-gradient(to bottom, ${T.bg} 0%, rgba(19,23,24,0.25) 26%, rgba(19,23,24,0.25) 70%, ${T.bg} 100%),
+    radial-gradient(90% 70% at 50% 50%, transparent 30%, rgba(19,23,24,0.7) 100%); }
   .aca .aca-justice-inner { position: relative; z-index: 1; max-width: 900px; padding: 120px 28px; }
   .aca .aca-justice blockquote { font-family: ${T.serif}; font-style: italic; font-weight: 350; font-size: clamp(30px, 4.4vw, 58px); line-height: 1.16; letter-spacing: -0.014em; color: ${T.marble}; margin: 22px 0 0; text-shadow: 0 4px 44px rgba(0,0,0,0.85); }
   .aca .aca-justice blockquote strong { font-weight: 480; color: ${T.bronzeBright}; }

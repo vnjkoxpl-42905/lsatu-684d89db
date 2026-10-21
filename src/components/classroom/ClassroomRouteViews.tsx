@@ -18,6 +18,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { isSelfContainedItem, resolveItemRoute } from "@/lib/classroomItems";
 import { launchDrill } from "@/lib/drillLaunch";
 import { markNoteRead } from "@/lib/markNoteRead";
+import { rcAssignmentHtml } from "@/lib/rcAssignmentLinks";
 import {
   groupNotes,
   NOTE_TYPES,
@@ -238,10 +239,11 @@ export function ClassroomItemView() {
     }
   }, [item, navigate]);
 
-  const safeHtml = React.useMemo(
-    () => sanitizeClassroomHtml(item?.content_html ?? ""),
-    [item?.content_html],
-  );
+  const assignmentContext = !!item && ["homework", "drill", "activity", "practice_test", "bootcamp_module", "weekly_plan_task"].includes(item.type);
+  const safeHtml = React.useMemo(() => {
+    const html = item?.content_html ?? "";
+    return sanitizeClassroomHtml(assignmentContext ? rcAssignmentHtml(html, window.location.origin) : html);
+  }, [item?.content_html, assignmentContext]);
 
   if (query.isLoading && !query.data) return <DetailLoading />;
   if (query.error) {
@@ -314,7 +316,7 @@ export function ClassroomItemView() {
           `- [ ] `, `**n. prompt**` and `_Answer:_` out of `body_markdown`. With
           no `white-space` on `.classroom-prose p`, a recap reached the student
           as one run-on line with its own syntax showing. */}
-      <ClassroomMarkdown>{item.content_markdown}</ClassroomMarkdown>
+      <ClassroomMarkdown assignmentContext={assignmentContext}>{item.content_markdown}</ClassroomMarkdown>
       {safeHtml ? (
         <article
           className="classroom-prose"
@@ -639,7 +641,7 @@ export function ClassroomTAAssignmentView() {
   }, [assignment, query]);
 
   const safeHtml = React.useMemo(
-    () => sanitizeClassroomHtml(assignment?.content_html ?? ""),
+    () => sanitizeClassroomHtml(rcAssignmentHtml(assignment?.content_html ?? "", window.location.origin)),
     [assignment?.content_html],
   );
 

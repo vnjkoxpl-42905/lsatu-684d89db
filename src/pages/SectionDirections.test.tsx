@@ -15,8 +15,9 @@ vi.mock('@/hooks/useStudentAssignments', () => ({
 }));
 
 const settings = vi.fn();
+const profileTiming = vi.hoisted(() => ({ status: 'saved' }));
 vi.mock('@/contexts/UserSettingsContext', () => ({
-  useUserSettings: () => ({ settings: settings() }),
+  useUserSettings: () => ({ settings: settings(), profileTimingStatus: profileTiming.status }),
 }));
 
 function sectionRow(over: Record<string, unknown> = {}) {
@@ -32,21 +33,26 @@ function sectionRow(over: Record<string, unknown> = {}) {
   };
 }
 
-function mount() {
-  return render(
+function PageHarness() {
+  return (
     <MemoryRouter initialEntries={['/section/hw-9']}>
       <Routes>
         <Route path="/section/:assignmentId" element={<SectionDirectionsPage />} />
         <Route path="/classroom/:assignmentId" element={<p>classroom detail</p>} />
         <Route path="/history" element={<p>history</p>} />
       </Routes>
-    </MemoryRouter>,
+    </MemoryRouter>
   );
+}
+
+function mount() {
+  return render(<PageHarness />);
 }
 
 describe('SectionDirectionsPage', () => {
   beforeEach(() => {
     navigate.mockReset();
+    profileTiming.status = 'saved';
     settings.mockReturnValue({ defaultTimingMode: '35' });
     assignment.mockReturnValue({ assignment: sectionRow(), loading: false, error: null });
   });
@@ -84,6 +90,32 @@ describe('SectionDirectionsPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'GO TO QUESTIONS' }));
     const p = new URLSearchParams((navigate.mock.calls[0][0] as string).slice('/drill?'.length));
     expect(p.get('timer')).toBe('52.5');
+  });
+
+  it('waits for profile timing before showing or launching the assigned section clock', () => {
+    profileTiming.status = 'loading';
+    const view = mount();
+    const start = screen.getByRole('button', { name: 'GO TO QUESTIONS' });
+    expect(start).toBeDisabled();
+    expect(screen.getByRole('status')).toHaveTextContent('Checking profile timing');
+    expect(screen.queryByText('Total Section Time - 35 minutes')).not.toBeInTheDocument();
+    fireEvent.click(start);
+    expect(navigate).not.toHaveBeenCalled();
+
+    settings.mockReturnValue({ defaultTimingMode: '70' });
+    profileTiming.status = 'saved';
+    view.rerender(<PageHarness />);
+    expect(screen.getByText('Total Section Time - 70 minutes')).toBeInTheDocument();
+    expect(start).toBeEnabled();
+    fireEvent.click(start);
+    expect(navigate).toHaveBeenCalledTimes(1);
+    const launchedUrl = navigate.mock.calls[0][0] as string;
+    expect(new URLSearchParams(launchedUrl.slice('/drill?'.length)).get('timer')).toBe('70');
+
+    settings.mockReturnValue({ defaultTimingMode: '35' });
+    view.rerender(<PageHarness />);
+    expect(navigate).toHaveBeenCalledTimes(1);
+    expect(navigate.mock.calls[0][0]).toBe(launchedUrl);
   });
 
   it('sends a mixed set back to the ordinary assignment page', () => {

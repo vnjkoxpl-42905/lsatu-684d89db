@@ -1,38 +1,31 @@
-/*
- * Activity Centre is an always-light warm workbook surface, even when the app is
- * toggled to dark. It fits the bootcamp's warm tactile palette (DESIGN.md): a
- * warm cream paper canvas, warm near-black ink, emerald as the single per-
- * activity accent. We pin warm token values onto the .activity-centre wrapper so
- * every shadcn primitive inside renders warm + light regardless of the ancestor
- * theme class, and override the global focus-visible ring (bronze) to emerald.
- * These tokens match the homepage scope (.act-home) so the intro and the drill
- * read as one continuous surface.
- */
+/* Activity Centre retains its teaching-world accents while shared neutral
+ * surfaces follow the approved platform paper and ink palette.
+ * The wrapper remains always-light; world contents retain their own themes. */
 
 .activity-centre {
   color-scheme: light;
-  --background: 38 36% 93%;      /* warm cream paper, matches .act-home canvas */
-  --foreground: 30 17% 9%;       /* warm near-black ink                        */
-  --card: 40 50% 98%;            /* card surface, lighter than canvas (G2)     */
-  --card-foreground: 30 17% 9%;
-  --popover: 40 50% 98%;
-  --popover-foreground: 30 17% 9%;
-  --primary: 30 17% 12%;
-  --primary-foreground: 40 44% 97%;
-  --secondary: 38 28% 89%;
-  --secondary-foreground: 30 17% 12%;
-  --muted: 38 26% 90%;
-  --muted-foreground: 30 8% 36%;
-  --accent: 38 30% 87%;
-  --accent-foreground: 30 17% 12%;
+  --background: var(--lsatu-canvas-hsl);
+  --foreground: var(--lsatu-ink-hsl);
+  --card: var(--lsatu-canvas-hsl);
+  --card-foreground: var(--lsatu-ink-hsl);
+  --popover: var(--lsatu-canvas-hsl);
+  --popover-foreground: var(--lsatu-ink-hsl);
+  --primary: var(--lsatu-surface-dark-hsl);
+  --primary-foreground: var(--lsatu-text-on-dark-hsl);
+  --secondary: var(--lsatu-action-on-dark-hsl);
+  --secondary-foreground: var(--lsatu-ink-hsl);
+  --muted: var(--lsatu-action-on-dark-hsl);
+  --muted-foreground: var(--lsatu-ink-muted-hsl);
+  --accent: var(--lsatu-action-on-dark-hsl);
+  --accent-foreground: var(--lsatu-ink-hsl);
   --destructive: 0 72% 51%;
   --destructive-foreground: 40 44% 97%;
-  --border: 36 20% 84%;
-  --input: 36 20% 82%;
-  --ring: 160 84% 32%; /* emerald, overriding the global bronze ring */
+  --border: 54.545 11.579% 81.373%;
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-ink-hsl);
 
-  /* Warm paper surface tone + emerald accent shorthand (matches .act-home). */
-  --ac-surface: 40 50% 98%;
+  /* Shared paper surface and preserved teaching-world accent. */
+  --ac-surface: var(--lsatu-canvas-hsl);
   --ac-emerald: 160 84% 32%;
   --ac-emerald-strong: 161 88% 24%;
 
@@ -77,13 +70,13 @@
 /* Warm-dark hero rail: the dark end of the warm ink ramp (same hue as --ink),
  * with a soft emerald glow for the activity's identity. Warm, not cool navy. */
 .activity-centre .ac-hero {
-  background-color: hsl(30 24% 12%);
+  background-color: var(--lsatu-surface-dark);
 }
 
 .activity-centre .ac-hero-bg {
   background:
     radial-gradient(120% 80% at 18% 18%, hsl(var(--ac-emerald) / 0.2), transparent 55%),
-    linear-gradient(165deg, hsl(30 22% 15%) 0%, hsl(28 26% 9%) 60%, hsl(32 20% 13%) 100%);
+    linear-gradient(165deg, var(--lsatu-field-dark), var(--lsatu-surface-dark));
   background-size: cover;
   background-position: center;
 }

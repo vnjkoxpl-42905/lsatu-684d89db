@@ -2,6 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { decodeRcSavedSet, isRcSavedState, type RcSavedPayload } from './rcSavedSetCodec';
 export const recipe: RcSavedPayload = { kind: 'rc-builder', version: 1, mode: 'recipe', config: { reveal: 'end_of_set', timing: { mode: 'unlimited' } }, filters: { topics: [], formats: [], frameworks: [], families: [], difficulties: [], status: 'fresh', preptestMin: 101, preptestMax: 148 }, count: 1, passageIds: [], questionIds: [] };
 describe('RC saved definition codec', () => {
+  it('retains presentation modes in recipes and exact sets and rejects non-boolean flags', () => {
+    const trained = { ...recipe, config: { ...recipe.config, training: { anticipation: true, lineByLine: false } } };
+    expect(decodeRcSavedSet(trained)).toEqual({ status: 'ok', value: trained });
+    const fixed = { ...trained, mode: 'fixed', passageIds: [7], questionIds: [70] };
+    expect(decodeRcSavedSet(fixed)).toEqual({ status: 'ok', value: fixed });
+    expect(decodeRcSavedSet({ ...trained, config: { ...trained.config, training: { anticipation: 'yes', lineByLine: true } } }).status).toBe('invalid');
+  });
   it('keeps fixed snapshots and recipes distinct', () => {
     expect(decodeRcSavedSet(recipe)).toEqual({ status: 'ok', value: recipe });
     const fixed = { ...recipe, mode: 'fixed', passageIds: [7], questionIds: [70, 71] };

@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
+import { rcAssignmentHref } from "@/lib/rcAssignmentLinks";
 
 /**
  * The one renderer for a note or recap body stored as markdown.
@@ -48,6 +49,12 @@ function splitTaskItem(children: React.ReactNode) {
   };
 }
 
+function renderLink(href: string | undefined, children: React.ReactNode, assignmentContext = false) {
+  const target = href && assignmentContext ? rcAssignmentHref(href, window.location.origin) : href;
+  const external = !!target && /^https?:\/\//i.test(target);
+  return <a href={target} {...(external ? { target: "_blank", rel: "noreferrer noopener" } : {})}>{children}</a>;
+}
+
 const components: Components = {
   h1: ({ children }) => <h2>{children}</h2>,
   h2: ({ children }) => <h2>{children}</h2>,
@@ -56,17 +63,7 @@ const components: Components = {
   h5: ({ children }) => <h3>{children}</h3>,
   h6: ({ children }) => <h3>{children}</h3>,
   img: () => null,
-  a: ({ href, children }) => {
-    const external = !!href && /^https?:\/\//i.test(href);
-    return (
-      <a
-        href={href}
-        {...(external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
-      >
-        {children}
-      </a>
-    );
-  },
+  a: ({ href, children }) => renderLink(href, children),
   li: ({ children }) => {
     const task = splitTaskItem(children);
     if (!task) return <li>{children}</li>;
@@ -84,17 +81,24 @@ const components: Components = {
   },
 };
 
+const assignmentComponents: Components = {
+  ...components,
+  a: ({ href, children }) => renderLink(href, children, true),
+};
+
 interface Props {
   children: string | null | undefined;
   /** The prose container class. Callers outside `.classroom-root` pass their own. */
   className?: string;
+  /** Only known assigned work opts in; notes and generic practice links do not. */
+  assignmentContext?: boolean;
 }
 
-export function ClassroomMarkdown({ children, className = "classroom-prose" }: Props) {
+export function ClassroomMarkdown({ children, className = "classroom-prose", assignmentContext = false }: Props) {
   if (!children || !children.trim()) return null;
   return (
     <article className={className}>
-      <ReactMarkdown components={components} skipHtml>
+      <ReactMarkdown components={assignmentContext ? assignmentComponents : components} skipHtml>
         {children}
       </ReactMarkdown>
     </article>

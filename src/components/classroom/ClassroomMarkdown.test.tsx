@@ -86,4 +86,16 @@ describe("a recap body written in markdown", () => {
     const { container } = render(<ClassroomMarkdown>{"   \n  "}</ClassroomMarkdown>);
     expect(container.firstChild).toBeNull();
   });
+
+  it("marks RC passage links only when rendering known assigned work", () => {
+    const source = "[Assigned passage](/rc?passages=1188&timing=standard#q3) and [external](https://external.example/rc?passages=1188)";
+    const { container, rerender } = render(<ClassroomMarkdown>{source}</ClassroomMarkdown>);
+    expect(container.querySelector('a')?.getAttribute('href')).toBe('/rc?passages=1188&timing=standard#q3');
+    rerender(<ClassroomMarkdown assignmentContext>{source}</ClassroomMarkdown>);
+    const links = container.querySelectorAll('a');
+    expect(links[0].getAttribute('href')).toBe('/rc?passages=1188&timing=standard&source=assignment#q3');
+    expect(links[0].getAttribute('target')).toBeNull();
+    expect(links[1].getAttribute('href')).toBe('https://external.example/rc?passages=1188');
+    expect(links[1].getAttribute('target')).toBe('_blank');
+  });
 });

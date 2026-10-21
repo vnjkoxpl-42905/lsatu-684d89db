@@ -3,8 +3,8 @@ import { createRcExposureRequest, isRcExposureRequest, recordRcPassageExposure, 
 import type { RcPassage } from '../lib/rcTypes';
 import { RcMarkdown } from './RcMarkdown';
 
-export function RcExposurePreview({ actorId, passage, index, onExposed }: { actorId: string | null; passage: RcPassage; index: number; onExposed(id: number): void }) {
-  const [revealed, setRevealed] = useState(false);
+export function RcExposurePreview({ actorId, passage, index, alreadyRevealed = false, onExposed }: { actorId: string | null; passage: RcPassage; index: number; alreadyRevealed?: boolean; onExposed(id: number): void }) {
+  const [revealed, setRevealed] = useState(alreadyRevealed);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const request = useRef<RcExposureRequest | null>(null);
@@ -29,10 +29,10 @@ export function RcExposurePreview({ actorId, passage, index, onExposed }: { acto
     } catch (failure) { if (mounted.current) setError(failure instanceof Error ? failure.message : 'Exposure did not save. Retry before revealing text.'); }
     finally { busyRef.current = false; if (mounted.current) setBusy(false); }
   };
-  return <section className="mt-4 rounded border p-3" aria-label={`Preview passage ${index + 1}`}>
-    <h3>{index + 1}. PT {passage.preptest} · S{passage.section} · P{passage.setNumber} · {passage.title || 'Untitled passage'}</h3>
-    <p>{passage.topic || 'Topic not recorded'} · {passage.format || 'Format not recorded'} · {passage.difficulty == null ? 'Difficulty not recorded' : `Difficulty ${passage.difficulty}`} · {passage.questions.length} questions</p>
-    {!revealed && <button type="button" className="rc-chip min-h-11" disabled={!actorId || busy} onClick={() => void reveal()}>{busy ? 'Recording exposure…' : error ? 'Retry passage text reveal' : 'Reveal passage and questions'}</button>}
+  return <section className="rc-review-passage" aria-label={`Preview passage ${index + 1}`}>
+    <h3><span className="rc-review-passage-number">{index + 1}.</span> {passage.title || 'Untitled passage'}</h3><p className="rc-review-passage-reference">PT {passage.preptest} · Section {passage.section} · Passage {passage.setNumber}</p>
+    <p className="rc-review-passage-metadata">{passage.topic || 'Topic not recorded'} · {passage.format || 'Format not recorded'} · {passage.difficulty == null ? 'Difficulty not recorded' : `Difficulty ${passage.difficulty}`} · {passage.questions.length} questions</p>
+    {!revealed && <button type="button" className="rc-chip rc-reveal-text-action min-h-11" aria-label={busy ? 'Recording exposure…' : error ? 'Retry passage text reveal' : 'Reveal passage and questions · records exposure'} disabled={!actorId || busy} onClick={() => void reveal()}>{busy ? 'Recording exposure…' : error ? 'Retry passage text reveal' : 'Reveal text · records exposure'}</button>}
     {error && <p role="alert">{error}</p>}
     {revealed && <div style={{ maxHeight: 560, overflowY: 'auto', padding: '12px 4px' }}>
       <RcMarkdown>{passage.text}</RcMarkdown>

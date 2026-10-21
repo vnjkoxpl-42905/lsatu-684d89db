@@ -23,7 +23,7 @@ import type {
   RcQuestionHistoryEntry,
   RcSessionStatus,
 } from '../lib/rcTypes';
-import { readRcDraftAnswers } from '../lib/rcTypes';
+import { readRcDraftAnswers, readRcTrainingModes } from '../lib/rcTypes';
 import { isActivePracticeTestDevice } from '@/lib/practiceTestStore';
 import { canRevealRcResults } from '../lib/rcResultsReveal';
 
@@ -75,6 +75,7 @@ export function toSession(row: RcDrillSessionRow): RcDrillSession {
     userId: row.user_id,
     config: {
       ...config,
+      ...(config.training === undefined ? {} : { training: readRcTrainingModes(config.training) }),
       ...(config.draftAnswers === undefined ? {} : { draftAnswers: readRcDraftAnswers(config.draftAnswers) }),
       timing,
       timedSectionSittingId: protectedId,

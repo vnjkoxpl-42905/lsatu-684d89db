@@ -24,7 +24,7 @@ import "./section-directions.css";
 export default function SectionDirectionsPage() {
   const { assignmentId } = useParams<{ assignmentId: string }>();
   const navigate = useNavigate();
-  const { settings } = useUserSettings();
+  const { settings, profileTimingStatus } = useUserSettings();
   const { assignment, loading, error } = useStudentAssignment(assignmentId);
 
   const section = React.useMemo(
@@ -74,12 +74,14 @@ export default function SectionDirectionsPage() {
   }
 
   const minutes = sectionMinutes(settings.defaultTimingMode);
+  const checkingProfileTiming = profileTimingStatus === "loading";
   const questionCount = assignment.question_qids.length;
   // Only LR sections are qid-shaped today; an RC assignment will arrive with
   // its own kind on the row rather than being inferred from a qid pattern.
   const directions = SECTION_DIRECTIONS.lr;
 
   const goToQuestions = () => {
+    if (checkingProfileTiming) return;
     const timerMode =
       settings.defaultTimingMode === "35" ? undefined : settings.defaultTimingMode;
     const query = launchDrill({
@@ -92,7 +94,7 @@ export default function SectionDirectionsPage() {
   };
 
   return (
-    <main className="section-directions">
+    <main className="section-directions" aria-busy={checkingProfileTiming}>
       <button
         type="button"
         className="section-directions-back"
@@ -100,16 +102,20 @@ export default function SectionDirectionsPage() {
       >
         ← Back to home
       </button>
-      <SectionDirectionsCard
+      {checkingProfileTiming ? <div className="section-directions-card">
+        <h1 className="section-directions-title">Section {section.section}</h1>
+        <p className="section-directions-status" role="status">Checking profile timing…</p>
+      </div> : <SectionDirectionsCard
         sectionNumber={section.section}
         minutes={minutes}
         questionCount={questionCount}
         directions={directions}
-      />
+      />}
       <button
         type="button"
         className="section-directions-go"
         onClick={goToQuestions}
+        disabled={checkingProfileTiming}
         autoFocus
       >
         GO TO QUESTIONS

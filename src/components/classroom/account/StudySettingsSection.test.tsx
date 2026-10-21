@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { settingsKeyFor } from '@/lib/studySettings';
 
 const auth = vi.hoisted(() => ({ user: { id: 'a' } as { id: string } | null, authReady: true }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => auth }));
+vi.mock('@/integrations/supabase/client', () => ({ supabase: { auth: {
+  getUser: async () => ({ data: { user: { id: auth.user?.id } }, error: null }),
+  updateUser: async ({ data }: { data: unknown }) => ({ data: { user: { id: auth.user?.id, user_metadata: data } }, error: null }),
+} } }));
 const resetPool = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/questionPoolService', () => ({ QuestionPoolService: { resetPool } }));
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
@@ -38,13 +42,16 @@ describe('StudySettingsSection', () => {
     expect(screen.queryByText(/AI tutor|Voice coach|Teach-back|transcript/i)).toBeNull();
   });
 
-  it('explains the timing consequence and updates it when the choice changes', () => {
+  it('explains the timing consequence and updates it only after an explicit profile save', async () => {
     render(ui());
-    const select = screen.getByRole('combobox', { name: 'Your standard section time' });
-    expect(select).toHaveAccessibleDescription(/35 minutes/);
+    const select = screen.getByRole('combobox', { name: 'Profile time accommodation' });
+    await waitFor(() => expect(select).not.toBeDisabled());
+    expect(screen.getByText(/give you 35 minutes/)).toBeInTheDocument();
     fireEvent.change(select, { target: { value: '70' } });
-    expect(select).toHaveAccessibleDescription(/70 minutes/);
-    expect(select).toHaveAccessibleDescription(/A section already running keeps its clock/);
+    expect(stored('a')).toBeNull();
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Save to profile' })); });
+    expect(screen.getByText(/give you 70 minutes/)).toBeInTheDocument();
+    expect(screen.getByText(/A section already running keeps its clock/)).toBeInTheDocument();
     expect(stored('a')).toMatchObject({ defaultTimingMode: '70' });
   });
 
@@ -78,17 +85,16 @@ describe('StudySettingsSection', () => {
     expect(screen.queryByRole('alert')).toBeNull();
   });
 
-  it('says when a change was not stored and recovers on retry', () => {
+  it('says when a local pool change was not stored and recovers on retry', () => {
     render(ui());
     const spy = vi.spyOn(window.localStorage, 'setItem').mockImplementation(() => {
       throw new Error('QuotaExceededError');
     });
-    fireEvent.change(screen.getByRole('combobox', { name: 'Your standard section time' }), { target: { value: '52.5' } });
     fireEvent.click(screen.getByRole('switch', { name: 'Allow repeats' }));
     expect(screen.getAllByText(/would not store your last change/).length).toBeGreaterThan(0);
     spy.mockRestore();
     fireEvent.click(screen.getAllByRole('button', { name: 'Try saving again' })[0]);
-    expect(stored('a')).toMatchObject({ defaultTimingMode: '52.5', allowRepeats: true });
+    expect(stored('a')).toMatchObject({ defaultTimingMode: '35', allowRepeats: true });
     expect(screen.queryByText(/would not store your last change/)).toBeNull();
     expect(screen.getAllByText(/Saved in this browser for your account/).length).toBeGreaterThan(0);
   });
@@ -109,10 +115,10 @@ describe('StudySettingsSection', () => {
   it('shows old device-wide settings as an offer, applying them only on an explicit choice', () => {
     window.localStorage.setItem('userSettings', JSON.stringify({ defaultTimingMode: '70' }));
     render(ui());
-    expect(screen.getByRole('combobox', { name: 'Your standard section time' })).toHaveValue('35');
+    expect(screen.getByRole('combobox', { name: 'Profile time accommodation' })).toHaveValue('35');
     expect(screen.getByTestId('legacy-offer')).toHaveTextContent('We cannot tell whose they are');
     fireEvent.click(screen.getByRole('button', { name: 'Use these settings for my account' }));
-    expect(screen.getByRole('combobox', { name: 'Your standard section time' })).toHaveValue('70');
+    expect(screen.getByRole('combobox', { name: 'Profile time accommodation' })).toHaveValue('70');
     expect(screen.queryByTestId('legacy-offer')).toBeNull();
     expect(stored('a')).toMatchObject({ defaultTimingMode: '70' });
   });

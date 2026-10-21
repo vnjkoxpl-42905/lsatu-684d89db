@@ -24,6 +24,8 @@ export interface FinderSnippet {
 export interface QuestionAddress {
   pt: number;
   section?: number;
+  /** RC-only passage position; never an internal passage id. */
+  pnum?: number;
   qnum?: number;
 }
 
@@ -112,6 +114,7 @@ export interface FinderResults {
   address: QuestionAddress | null;
   /** True when the address names one exact LR question that exists. */
   exact: FinderLrHit | null;
+  rcTotal: number;
 }
 
 /* ------------------------------------------------------------------ helpers */
@@ -209,6 +212,13 @@ export function parseQuestionAddress(input: string): QuestionAddress | null {
   return null;
 }
 
+/** Passage syntax is separate so the shared LR address grammar stays unchanged. */
+export function parseRcPassageAddress(input: string): QuestionAddress | null {
+  const match = normalizeFinderText(input).match(/^\s*(?:pt|preptest|practice\s*test|test)?\s*(\d{1,3})\s*(?:[-.,:/\s]\s*)?(?:s|sec|section)\s*(\d{1,2})\s*(?:[-.,:/\s]\s*)?(?:p|passage)\s*(\d{1,2})\s*(?:(?:[-.,:/\s]\s*)?(?:q|question)\s*(\d{1,3}))?\s*$/i);
+  if (!match) return null;
+  return { pt: Number(match[1]), section: Number(match[2]), pnum: Number(match[3]), ...(match[4] === undefined ? {} : { qnum: Number(match[4]) }) };
+}
+
 /**
  * Renders an address the way the finder shows it back.
  *
@@ -219,6 +229,7 @@ export function parseQuestionAddress(input: string): QuestionAddress | null {
 export function formatQuestionAddress(address: QuestionAddress): string {
   const parts = [`PT ${address.pt}`];
   if (address.section !== undefined) parts.push(`S${address.section}`);
+  if (address.pnum !== undefined) parts.push(`P${address.pnum}`);
   if (address.qnum !== undefined) parts.push(`Q${address.qnum}`);
   return parts.join(" · ");
 }
@@ -259,6 +270,7 @@ export interface FinderSearchInput {
   rcQuestions: FinderRcQuestionSource[];
   /** Per bank, not overall — the two groups never compete for the same slots. */
   limit?: number;
+  rcLimit?: number;
   /** When mounted from the drill hub, search only the active side of its switch. */
   bank?: QuestionFinderBank;
 }
@@ -276,10 +288,11 @@ export function runFinderSearch({
   rcPassages,
   rcQuestions,
   limit = 6,
+  rcLimit = limit,
   bank,
 }: FinderSearchInput): FinderResults {
   const text = normalizeFinderText(query);
-  const address = parseQuestionAddress(text);
+  const address = (bank !== 'lr' ? parseRcPassageAddress(text) : null) ?? parseQuestionAddress(text);
   /* An address is a filter, not a phrase. Searching stimulus text for "PT90 S1"
      would return nothing and make the finder look broken on its own syntax. */
   const phrase = address ? "" : text;
@@ -288,6 +301,7 @@ export function runFinderSearch({
   let exact: FinderLrHit | null = null;
 
   for (const question of bank === "rc" ? [] : lr) {
+    if (address?.pnum !== undefined) continue;
     if (!matchesAddress(address, question.pt, question.section, question.qnum)) continue;
 
     let snippet: FinderSnippet | null = null;
@@ -318,9 +332,9 @@ export function runFinderSearch({
     if (lrHits.length >= limit && (exact || address?.qnum === undefined)) break;
   }
 
-  const rcHits: FinderRcHit[] = [];
+  const rcCandidates: Array<{ hit: FinderRcHit; score: number }> = [];
   if (bank !== "lr") {
-    const passageById = new Map(rcPassages.map((passage) => [passage.passageId, passage]));
+    const passageById = new Map(rcPassages.filter(passage => passage.questionCount > 0).map((passage) => [passage.passageId, passage]));
     const passagesWithQuestionHits = new Set<number>();
 
     /* A question-address or prompt match is one precise result. It still opens
@@ -330,12 +344,13 @@ export function runFinderSearch({
         if (!matchesAddress(address, question.preptest, question.section, question.qnum)) continue;
         const passage = passageById.get(question.passageId);
         if (!passage) continue;
+        if (address?.pnum !== undefined && passage.setNumber !== address.pnum) continue;
         const snippet = phrase
           ? buildSmartFinderSnippet(question.prompt ?? "", phrase)
           : null;
         if (phrase && !snippet) continue;
 
-        rcHits.push({
+        rcCandidates.push({ score: address ? 100 : 40, hit: {
           bank: "rc",
           key: `rc-question:${question.questionId}`,
           passageId: passage.passageId,
@@ -349,29 +364,30 @@ export function runFinderSearch({
           qnum: question.qnum,
           matchedCount: 1,
           snippet,
-        });
+        } });
         passagesWithQuestionHits.add(passage.passageId);
-        if (rcHits.length >= limit) break;
       }
     }
 
     /* Partial addresses and passage-text queries resolve at passage scope. Do
        not repeat a passage already represented by a precise question hit. */
-    if (rcHits.length < limit && address?.qnum === undefined) {
-      for (const passage of rcPassages) {
+    if (address?.qnum === undefined) {
+      for (const passage of passageById.values()) {
         if (!matchesAddress(address, passage.preptest, passage.section)) continue;
-        if (passagesWithQuestionHits.has(passage.passageId)) continue;
+        if (address?.pnum !== undefined && passage.setNumber !== address.pnum) continue;
 
         let snippet: FinderSnippet | null = null;
+        let score = 100;
         if (phrase) {
-          snippet =
-            buildSmartFinderSnippet(passage.title ?? "", phrase) ??
-            buildSmartFinderSnippet(passage.firstWords, phrase) ??
-            buildSmartFinderSnippet(passage.topic ?? "", phrase);
+          const titleMatch = buildSmartFinderSnippet(passage.title ?? '', phrase);
+          if (passagesWithQuestionHits.has(passage.passageId) && !titleMatch) continue;
+          const openingMatch = buildSmartFinderSnippet(passage.firstWords, phrase);
+          snippet = titleMatch ?? openingMatch ?? buildSmartFinderSnippet(passage.topic ?? '', phrase);
           if (!snippet) continue;
+          score = titleMatch ? normalizeFinderText(passage.title ?? '').toLocaleLowerCase() === phrase.toLocaleLowerCase() ? 100 : 80 : openingMatch ? 30 : 20;
         }
 
-        rcHits.push({
+        rcCandidates.push({ score, hit: {
           bank: "rc",
           key: `rc:${passage.passageId}`,
           passageId: passage.passageId,
@@ -383,13 +399,13 @@ export function runFinderSearch({
           questionCount: passage.questionCount,
           matchedCount: 0,
           snippet,
-        });
-        if (rcHits.length >= limit) break;
+        } });
       }
     }
   }
 
-  return { lr: lrHits, rc: rcHits, address, exact };
+  const rc = rcCandidates.sort((a, b) => b.score - a.score).slice(0, Math.max(0, rcLimit)).map(candidate => candidate.hit);
+  return { lr: lrHits, rc, address, exact, rcTotal: rcCandidates.length };
 }
 
 /* -------------------------------------------------------------- landings */

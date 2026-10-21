@@ -131,8 +131,18 @@ function PracticeTestSelector({
   ) => void;
 }) {
   const [pt, setPt] = React.useState<number | null>(initialPt);
-  const [pace, setPace] = React.useState<PracticeTestPaceId>("standard");
-  const { settings } = useUserSettings();
+  const { settings, profileTimingStatus } = useUserSettings();
+  const profileBaseMinutes =
+    settings.defaultTimingMode === "52.5" ? 52.5 : settings.defaultTimingMode === "70" ? 70 : 35;
+  const [explicitBaseMinutes, setExplicitBaseMinutes] = React.useState<number | null>(null);
+  const [pace, setPace] = React.useState<PracticeTestPaceId>(() =>
+    settings.defaultTimingMode === "unlimited" ? "untimed" : "standard",
+  );
+  const paceTouched = React.useRef(false);
+  const checkingProfileTiming = profileTimingStatus === "loading" && !paceTouched.current;
+  const activePace: PracticeTestPaceId = paceTouched.current
+    ? pace
+    : settings.defaultTimingMode === "unlimited" ? "untimed" : "standard";
 
   /**
    * The student's own standard clock, the same reading the section door takes
@@ -141,10 +151,9 @@ function PracticeTestSelector({
    * door ignored the setting entirely before, which meant the same two words
    * named two different clocks in one room.
    */
-  const baseMinutes =
-    settings.defaultTimingMode === "52.5" ? 52.5 : settings.defaultTimingMode === "70" ? 70 : 35;
+  const baseMinutes = explicitBaseMinutes ?? profileBaseMinutes;
   const paces = React.useMemo(() => practiceTestPaces(baseMinutes * 60), [baseMinutes]);
-  const sectionSeconds = practiceTestSectionSeconds(pace, baseMinutes * 60);
+  const sectionSeconds = practiceTestSectionSeconds(activePace, baseMinutes * 60);
 
   // The combobox orders its own rows newest-first. This page still needs the
   // blueprint behind the chosen number, for the shape table below.
@@ -199,7 +208,11 @@ function PracticeTestSelector({
         <label htmlFor="testing-pace" id="testing-pace-label">
           Timing
         </label>
-        <Select value={pace} onValueChange={(v) => setPace(v as PracticeTestPaceId)}>
+        {checkingProfileTiming ? <p className="testing-note" id={beginHintId} role="status">Checking profile timing…</p> : <><Select value={activePace} onValueChange={(v) => {
+          paceTouched.current = true;
+          setExplicitBaseMinutes(baseMinutes);
+          setPace(v as PracticeTestPaceId);
+        }}>
           <SelectTrigger
             id="testing-pace"
             aria-labelledby="testing-pace-label testing-pace"
@@ -222,8 +235,11 @@ function PracticeTestSelector({
             nothing about the standing setting those percentages are taken
             from, on the longer of the two commitments. */}
         <p className="testing-note">
-          <AccommodationNote baseMinutes={baseMinutes} />
+          {explicitBaseMinutes !== null && explicitBaseMinutes !== profileBaseMinutes
+            ? 'Your selected timing is kept. New setups use your updated profile timing.'
+            : <AccommodationNote baseMinutes={profileBaseMinutes} />}
         </p>
+        </>}
       </div>
 
       {chosen && (
@@ -235,7 +251,7 @@ function PracticeTestSelector({
                 <span>{legLabel(leg as never)}</span>
                 <em>
                   {leg.questionCount} questions
-                  {clock ? ` · ${clock}` : ""}
+                  {!checkingProfileTiming && clock ? ` · ${clock}` : ""}
                 </em>
               </div>
             ))}
@@ -256,7 +272,7 @@ function PracticeTestSelector({
               The Reading Comprehension section on this PrepTest runs a few
               questions short, because only questions with a published
               explanation can be drilled. All four passages are there
-              {clock ? ` and the clock is the real ${clock}` : ""}, so the
+              {!checkingProfileTiming && clock ? ` and the clock is the real ${clock}` : ""}, so the
               reading load is unchanged. Your score is simply out of{" "}
               {chosen.questionCount} rather than the high seventies.
             </p>
@@ -273,12 +289,13 @@ function PracticeTestSelector({
           live region so the change is heard when the PrepTest is chosen. */}
       <div className="testing-actions">
         <Button
-          aria-disabled={!chosen}
-          aria-describedby={chosen ? undefined : beginHintId}
+          aria-disabled={!chosen || checkingProfileTiming}
+          aria-describedby={chosen && !checkingProfileTiming ? undefined : beginHintId}
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
           onClick={() => {
+            if (checkingProfileTiming) return;
             if (chosen) {
-              onBegin(chosen, pace, sectionSeconds);
+              onBegin(chosen, activePace, sectionSeconds);
               return;
             }
             document.getElementById("testing-pt")?.focus();
@@ -286,9 +303,9 @@ function PracticeTestSelector({
         >
           Begin practice test
         </Button>
-        <p className="testing-note testing-actions-hint" id={beginHintId} role="status">
+        {!checkingProfileTiming && <p className="testing-note testing-actions-hint" id={beginHintId} role="status">
           {chosen ? null : "Choose a PrepTest above to begin."}
-        </p>
+        </p>}
       </div>
     </div>
   );
