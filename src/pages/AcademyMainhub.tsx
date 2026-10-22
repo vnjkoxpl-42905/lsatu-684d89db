@@ -60,7 +60,7 @@ function MainhubHero({
   return (
     <Card
       data-section={section}
-      className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none"
+      data-motion-enter className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none"
     >
       <div className="drill-observatory-hero-grid">
         <div className="drill-observatory-smart flex flex-col justify-center">
@@ -463,7 +463,7 @@ export default function AcademyMainhub({
           their padding by design — they read as three objects on one field, not
           as one split surface. */}
       <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5">
-        <nav aria-label="Drills" className="drill-view-tabs flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
+        <nav data-motion-skip aria-label="Drills" className="drill-view-tabs flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
           <div className="drill-destination-tabs flex flex-wrap gap-2">
           {([ ["create", "Create"], ["in-progress", "In progress"], ["completed", "Completed"], ["saved", "Saved sets"] ] as const).map(([key, label]) => (
             <Button key={key} type="button" size="sm" variant={view === key ? "default" : "ghost"} aria-current={view === key ? "page" : undefined} onClick={() => changeView(key)}>{label}</Button>
@@ -472,18 +472,18 @@ export default function AcademyMainhub({
           {!(section === "lr" && view === "create" && isLauncherStage) && <SectionToggle section={section} onChange={changeSection} />}
         </nav>
         {view === "saved" ? (section === "rc" ? (
-          <section className="rc-page rc-embedded rc-saved-workspace" aria-label="Saved RC drills">
+          <section data-motion-enter className="rc-page rc-embedded rc-saved-workspace" aria-label="Saved RC drills">
             <h1>Saved RC drills</h1>
             <RcSavedSetsPanel />
           </section>
         ) : (
-          <section className="drill-history-workspace rounded-xl border border-border bg-card p-6" aria-label="Saved sets">
+          <section data-motion-enter className="drill-history-workspace rounded-xl border border-border bg-card p-6" aria-label="Saved sets">
             <h1 className="text-xl font-semibold">Saved LR sets</h1>
             <p className="mt-2 text-sm text-muted-foreground">Reusable saved sets support Logical Reasoning. Find your RC drills in In progress or Completed.</p>
             <Button className="mt-5" onClick={() => navigate("/practice/drills/saved")}>Open saved LR sets <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
           </section>
         )) : view === "in-progress" || view === "completed" ? (
-          <section className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
+          <section data-motion-enter className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
             <div className="flex items-center justify-between gap-3">
               <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
@@ -517,7 +517,7 @@ export default function AcademyMainhub({
           <div className={`drill-observatory-tools${rcBuilderRequested ? ' rc-builder-question-shortcut' : ''}`}>
             <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} triggerLabel="Find a passage or question" />
           </div>
-          {rcBuilderRequested ? <section className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
+          {rcBuilderRequested ? <section data-motion-enter className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
             <button type="button" className="rc-practice-back" onClick={closeRcBuilder}>Back to RC practice</button>
             <RcHubSurface embedded showHistory={false} openPickerOnEntry={searchParams.get('builder') === 'manual'} />
           </section> : <RcPracticeLanding
@@ -551,7 +551,7 @@ export default function AcademyMainhub({
             dark-on-black in dark theme, the mirror of the 1.07:1 ivory-on-cream
             fail it was written to fix. The section switch beside it follows the
             same stage tokens; the finder's trigger is a dark pill either way. */}
-        {!isLauncherStage && <div className="drill-observatory-tools">
+        {!isLauncherStage && <div data-motion-enter className="drill-observatory-tools">
           <QuestionJump
             ref={questionFinderRef}
             returnTo={lookupReturnTo}
@@ -602,7 +602,7 @@ export default function AcademyMainhub({
                 unchanged live-status sibling beside it. */}
             <section
               data-section={section}
-              className="drill-observatory-practice-bay"
+              data-motion-enter className="drill-observatory-practice-bay"
               aria-label={
                 stage === "default" ? "Practice and insight workspace" : "Drill launcher"
               }

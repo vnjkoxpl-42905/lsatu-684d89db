@@ -69,17 +69,17 @@ export function StudentDestination({ destination }: { destination: Destination }
 
   return (
     <div className="student-destination">
-      <header className="student-destination-heading">
+      <header data-motion-skip className="student-destination-heading">
         <div>
           <h1>{config.title}</h1>
           <p>{config.introduction}</p>
         </div>
       </header>
-      <nav className="student-destination-tabs" aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>
+      <nav data-motion-skip className="student-destination-tabs" aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>
         {renderTabs(config.tabs, "primary")}
       </nav>
       {showExamTabs ? (
-        <nav className="student-destination-subtabs" aria-label="Practice Exams pages" aria-busy={permissions.loading}>
+        <nav data-motion-skip className="student-destination-subtabs" aria-label="Practice Exams pages" aria-busy={permissions.loading}>
           {renderTabs(EXAM_TABS, "exams")}
         </nav>
       ) : null}
@@ -90,7 +90,7 @@ export function StudentDestination({ destination }: { destination: Destination }
           {permissions.has_chat_access || permissions.is_admin ? " If that looks wrong, message Joshua." : null}
         </p>
       ) : null}
-      <div className="student-destination-content">
+      <div data-motion-enter={pathname === "/practice/drills" || (destination === "progress" && pathname.endsWith("/overview")) ? undefined : ""} className="student-destination-content">
         <DestinationHeadingContext.Provider value>
           <Outlet />
         </DestinationHeadingContext.Provider>

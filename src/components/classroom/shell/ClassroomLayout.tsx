@@ -49,6 +49,8 @@ import { useDialogOverlay } from "@/components/classroom/shell/useDialogOverlay"
 import AssignedReadingCenterLink from '@/components/classroom/AssignedReadingCenterLink';
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import "@/components/classroom/classroom.css";
+import "@/styles/classroom-motion.css";
+import { ClassroomMotionContent } from "./ClassroomMotionContent";
 import { ClassroomLayoutContext, type ClassroomSection } from "./classroomLayoutContext";
 
 const SECTION_TITLES: Record<ClassroomSection, string> = {
@@ -1194,25 +1196,25 @@ export default function ClassroomLayout() {
 
         {journalDetail ? (
           <React.Suspense fallback={<StageFallback />}>
-            <Outlet context={contextValue} />
+            <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
           </React.Suspense>
         ) : messagesStage ? (
           <main className="classroom-messages-stage">
             <React.Suspense fallback={<StageFallback />}>
-              <Outlet context={contextValue} />
+              <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
             </React.Suspense>
           </main>
         ) : workspaceStage ? (
           <main className="classroom-workspace-stage">
             <React.Suspense fallback={<StageFallback />}>
-              <Outlet context={contextValue} />
+              <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
             </React.Suspense>
           </main>
         ) : (
           <main className="classroom-stage">
             <div className="classroom-column">
               <React.Suspense fallback={<StageFallback />}>
-                <Outlet context={contextValue} />
+                <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
               </React.Suspense>
             </div>
           </main>

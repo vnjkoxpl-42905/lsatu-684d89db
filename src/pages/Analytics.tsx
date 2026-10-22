@@ -6,7 +6,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useClassId } from '@/hooks/useClassId';
 import { questionBank } from '@/lib/questionLoader';
 import { computeAnalyticsFromRollup, type AnalyticsData, type OpportunityArea } from '@/lib/analyticsRollup';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
 import BreakdownPanel from '@/components/analytics/BreakdownPanel';
@@ -25,8 +24,6 @@ const Analytics = () => {
   const [loading, setLoading] = React.useState(true);
   const [loadError, setLoadError] = React.useState<string | null>(null);
   const { classId, loading: classIdLoading } = useClassId();
-  const opportunitiesRef = useScrollAnimation();
-  const performanceRef = useScrollAnimation();
 
   // SVG color helpers — adapt to current theme
   const svgTrack   = isLight ? 'rgba(0,0,0,0.07)'  : 'rgba(255,255,255,0.06)';
@@ -92,7 +89,7 @@ const Analytics = () => {
     // The Progress destination owns the page heading and classroom navigation.
     <div className="min-w-0 bg-background">
       <div className="mx-auto w-full min-w-0 max-w-7xl pb-16">
-        <div className="mb-10 min-w-0">
+        <div data-motion-enter className="mb-10 min-w-0">
           <FirstAnswerProgressPanel />
         </div>
 
@@ -102,10 +99,11 @@ const Analytics = () => {
 
         {/* Tag breakdowns. Self-contained: reads the student's own attempts and
             the question bank, so it renders regardless of the rollup below. */}
-        <div className="mb-10">
+        <div data-motion-reveal className="mb-10">
           <BreakdownPanel />
         </div>
 
+        <div data-motion-reveal>
         {classIdLoading || (classId && loading) ? (
           <div className="rounded-xl bg-card border border-border shadow-sm p-12 text-center" role="status">
             <p className="text-muted-foreground text-sm">Loading breakdown and opportunity charts…</p>
@@ -135,11 +133,7 @@ const Analytics = () => {
           <>
             {/* Top Opportunities */}
             <div
-              ref={opportunitiesRef.ref}
-              className={cn(
-                'mb-12 transition-all duration-700',
-                opportunitiesRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              )}
+              className="mb-12"
             >
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium mb-5">
                 Top Opportunities
@@ -194,11 +188,7 @@ const Analytics = () => {
 
             {/* Performance by Type + Matrix */}
             <div
-              ref={performanceRef.ref}
-              className={cn(
-                'grid lg:grid-cols-[1fr_auto] gap-8 transition-all duration-700 delay-150',
-                performanceRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              )}
+              className="grid lg:grid-cols-[1fr_auto] gap-8"
             >
               {/* Type Bars */}
               <div>
@@ -348,6 +338,8 @@ const Analytics = () => {
             </div>
           </>
         )}
+
+        </div>
 
         {/* Imported outside work (7Sage / PT). Renders whenever the student has
             any parsed uploads, even if they have no in-app attempts yet. */}
