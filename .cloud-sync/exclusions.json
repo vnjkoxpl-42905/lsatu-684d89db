@@ -313,7 +313,7 @@
   },
   {
     "path": "node_modules",
-    "reason": "link"
+    "reason": "excluded directory"
   },
   {
     "path": "scripts/verification/start-rc-builder-preview.mjs",

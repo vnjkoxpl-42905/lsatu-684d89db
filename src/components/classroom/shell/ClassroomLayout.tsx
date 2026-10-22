@@ -27,6 +27,7 @@ import { useUnreadMessageCount } from "@/hooks/useUnreadMessageCount";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useRailPrefs } from "@/hooks/useRailPrefs";
+import { useClassroomRailMotion } from "@/hooks/useClassroomRailMotion";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
 import { destinationLandingPath, railItemLocked } from "@/lib/destinationAccess";
 import { preloadDrillHub } from "@/lib/routePreload";
@@ -49,6 +50,9 @@ import { useDialogOverlay } from "@/components/classroom/shell/useDialogOverlay"
 import AssignedReadingCenterLink from '@/components/classroom/AssignedReadingCenterLink';
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import "@/components/classroom/classroom.css";
+import "@/styles/classroom-motion.css";
+import "@/styles/classroom-rail-motion.css";
+import { ClassroomMotionContent } from "./ClassroomMotionContent";
 import { ClassroomLayoutContext, type ClassroomSection } from "./classroomLayoutContext";
 
 const SECTION_TITLES: Record<ClassroomSection, string> = {
@@ -134,6 +138,8 @@ function ClassroomSidebar({
   const [menuOpen, setMenuOpen] = React.useState(false);
   const profileRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const navigationRef = React.useRef<HTMLElement>(null);
+  useClassroomRailMotion(navigationRef, `${location.pathname}|${activeSection ?? ""}`);
 
   React.useEffect(() => {
     if (!menuOpen) return;
@@ -284,7 +290,8 @@ function ClassroomSidebar({
           <span>LSAT U</span>
         </button>
 
-        <nav aria-label="Classroom navigation">
+        <nav aria-label="Classroom navigation" className="classroom-rail-motion" ref={navigationRef}>
+          <span className="classroom-rail-marker" data-rail-marker aria-hidden="true" />
           {railGroups.map((group) => (
             <div className="classroom-nav-group" key={group.id}>
               <b>{group.title}</b>
@@ -1194,25 +1201,25 @@ export default function ClassroomLayout() {
 
         {journalDetail ? (
           <React.Suspense fallback={<StageFallback />}>
-            <Outlet context={contextValue} />
+            <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
           </React.Suspense>
         ) : messagesStage ? (
           <main className="classroom-messages-stage">
             <React.Suspense fallback={<StageFallback />}>
-              <Outlet context={contextValue} />
+              <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
             </React.Suspense>
           </main>
         ) : workspaceStage ? (
           <main className="classroom-workspace-stage">
             <React.Suspense fallback={<StageFallback />}>
-              <Outlet context={contextValue} />
+              <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
             </React.Suspense>
           </main>
         ) : (
           <main className="classroom-stage">
             <div className="classroom-column">
               <React.Suspense fallback={<StageFallback />}>
-                <Outlet context={contextValue} />
+                <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
               </React.Suspense>
             </div>
           </main>

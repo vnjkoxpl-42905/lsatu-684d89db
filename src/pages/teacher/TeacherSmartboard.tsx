@@ -22,6 +22,7 @@ import {
 } from '@/hooks/useSmartboardAutosave';
 import { TemplatePalette, type ExcalidrawTemplateApi } from '@/components/whiteboard/TemplatePalette';
 import { formatDistanceToNowStrict } from 'date-fns';
+import { useClassroomMotion } from '@/hooks/useClassroomMotion';
 
 // Excalidraw is heavy; load only when this route mounts.
 const Excalidraw = safeLazy(() =>
@@ -52,6 +53,7 @@ export default function TeacherSmartboard() {
   const [scene, setScene] = useState<ExcalidrawSceneJson | null>(null);
   const apiRef = useRef<ExcalidrawApi>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  useClassroomMotion(containerRef, 'whiteboard:chrome');
   const [showTemplates, setShowTemplates] = useState(() => {
     try {
       return localStorage.getItem(TEMPLATES_STORAGE_KEY) === 'true';
@@ -145,7 +147,7 @@ export default function TeacherSmartboard() {
       className="flex flex-col h-screen w-screen bg-white"
     >
       <section className="flex flex-col flex-1 min-h-0">
-        <div className="px-3 sm:px-4 py-3 border-b border-black/12 flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
+        <div data-motion-enter className="px-3 sm:px-4 py-3 border-b border-black/12 flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
           {/* No rail on this route — the board owns the viewport — so this is
               the only way back to the workspace. */}
           <Button
@@ -246,7 +248,7 @@ export default function TeacherSmartboard() {
             Save now
           </Button>
         </div>
-        <div className="flex-1 min-h-0 flex">
+        <div data-motion="off" className="flex-1 min-h-0 flex">
           <div className="flex-1 min-w-0">
             <Suspense fallback={<div className="h-full flex items-center justify-center text-black/45">Loading board…</div>}>
               <Excalidraw

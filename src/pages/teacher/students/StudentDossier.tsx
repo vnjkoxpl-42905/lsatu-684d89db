@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
-import { NavLink, Outlet, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useClassroomMotion } from '@/hooks/useClassroomMotion';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { NavLink, Outlet, useLocation, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { ArrowLeft, Activity, Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import { useAuth } from '@/contexts/AuthContext';
@@ -39,6 +40,11 @@ const TABS = [
 ] as const;
 
 export default function StudentDossier() {
+  const motionBody = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+  // Message thread selection is in-room state; other dossier tabs get a body entrance.
+  const bodyKey = location.pathname.replace(/(\/messages)(?:\/.*)?$/, '$1');
+  useClassroomMotion(motionBody, `dossier:${bodyKey}`);
   const { studentId } = useParams<{ studentId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -141,7 +147,7 @@ export default function StudentDossier() {
         </nav>
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div ref={motionBody} className="classroom-motion-root classroom-motion-local min-h-0 flex-1 overflow-y-auto">
         <Outlet context={context} />
       </div>
 

@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import { classroomMotionKey, useClassroomMotion } from '@/hooks/useClassroomMotion';
 
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -82,6 +84,8 @@ export default function TeacherWorkspaceShell() {
 function WorkspaceLayout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const content = useRef<HTMLElement>(null);
+  useClassroomMotion(content, classroomMotionKey(location.pathname, location.search));
 
   return (
     // Fills the classroom stage it is mounted into rather than claiming the
@@ -159,7 +163,7 @@ function WorkspaceLayout() {
         </header>
 
         <div className="flex min-h-0 flex-1">
-          <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto">
+          <main ref={content} className="classroom-motion-root classroom-motion-local flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto">
             <Outlet />
           </main>
         </div>

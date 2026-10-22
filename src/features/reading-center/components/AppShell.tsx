@@ -11,6 +11,8 @@ import { Icon, MIcon, type IconName } from "./Icon";
 import { ConfirmDialog, PopMenu, TAG_COLORS, TagColorPicker, TagEditDialog, TagGlyph } from "./Tags";
 import { AddTextScreen } from "./AddText";
 import { ReadingExerciseLayout } from "./ReadingExerciseLayout";
+import { useClassroomMotion } from "@/hooks/useClassroomMotion";
+import "@/styles/classroom-motion.css";
 import { useRouteView } from "../hooks/useRouteView";
 
 /** The activity workspace stays light; the immersive reader keeps saved appearance. */
@@ -101,6 +103,9 @@ export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.Reac
   const tagsReturn = useTagsReturn(pathname);
   const content = useRef<HTMLDivElement>(null);
   const { remember } = useRouteView(content);
+  // Exercises keep their own focus, timers and full-screen geometry.
+  const motionKey = exerciseActive || /\/(?:read|attempt)\//.test(pathname) ? '' : `reading-room:${pathname}`;
+  useClassroomMotion(content, motionKey);
   useEffect(() => { if (narrow) setNavOpen(false); }, [pathname, narrow]);
   useEffect(() => {
     if (exerciseActive || !narrow || !navOpen) return;
@@ -205,7 +210,7 @@ export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.Reac
             </nav>
         {onTags && fullAccess && <TagsNav rail={rail} back={tagsReturn} onBack={() => navigate(tagsReturn.to)} onCreate={() => setCreatingTag(true)} />}
       </aside>}
-      <div ref={content} className="min-w-0 flex-1">
+      <div ref={content} className="classroom-motion-root classroom-motion-local min-w-0 flex-1">
         <Outlet />
       </div>
       {screen && <AddTextScreen mode={screen} onClose={() => setScreen(null)} onSaved={(slug) => { setScreen(null); navigate(RC_LIBRARY_PATH); void slug; }} />}
