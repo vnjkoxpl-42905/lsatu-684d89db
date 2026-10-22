@@ -187,7 +187,7 @@ function teacherModel(state: PreviewState, threads: TeacherHomeModel["unread"]["
     greeting: NOW.getHours() < 12 ? "Good morning" : NOW.getHours() < 18 ? "Good afternoon" : "Good evening",
     displayName: "Joshua",
     dateline: new Intl.DateTimeFormat("en-CA", { weekday: "long", month: "long", day: "numeric", year: "numeric" }).format(NOW),
-    unread: { state: "ready", total: threads.length + (threads.length ? 2 : 0), rows: threads },
+    unread: { state: "ready", total: threads.length, rows: threads },
     roster: {
       state: "ready",
       total: 5,
