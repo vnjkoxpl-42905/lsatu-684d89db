@@ -66,8 +66,8 @@ export function AllPracticeExams() {
   const [search, setSearch] = React.useState("");
   const shown = exams.filter((exam) => String(exam.pt).includes(search.trim())).reverse();
   return <ExamLayout>
-    <h1 className="classroom-title">All Practice Exams</h1>
-    <p className="testing-lede">Choose a PrepTest to see its sections and set up an exam.</p>
+    <h1 data-motion-item className="classroom-title">All Practice Exams</h1>
+    <p data-motion-item className="testing-lede">Choose a PrepTest to see its sections and set up an exam.</p>
     <label className="practice-exams-search-label" htmlFor="practice-exams-search">Find a PrepTest</label>
     <input
       id="practice-exams-search"
@@ -83,7 +83,7 @@ export function AllPracticeExams() {
     {!loading && !error && shown.length === 0 && <p className="testing-note">
       {assignedOnly ? "No PrepTest has been assigned to you yet." : "No matching PrepTests are available."}
     </p>}
-    <div className="practice-exams-list">
+    <div data-motion-item data-motion-ready={loading ? "false" : "true"} className="practice-exams-list">
       {!loading && !error && shown.map((exam) => <Link key={exam.pt} className="practice-exams-card" to={`/practice/exams/${exam.pt}`}>
         <span><strong>PrepTest {exam.pt}</strong><small>{exam.legs.length} sections · {exam.questionCount} questions</small></span>
         <span aria-hidden="true">View exam →</span>
@@ -115,15 +115,15 @@ export function PracticeExamDetail() {
   const related = (runs.data ?? []).filter((run) => run.pt === exam?.pt && run.status !== "abandoned");
   return <ExamLayout>
     <Link className="practice-exams-back" to="/practice/exams/all">← All Exams</Link>
-    <h1 className="classroom-title">PrepTest {pt}</h1>
+    <h1 data-motion-item className="classroom-title">PrepTest {pt}</h1>
     {loading && <p className="testing-note" role="status">Loading exam…</p>}
     {error && <p className="testing-note" role="alert">This exam could not be loaded. Refresh to try again.</p>}
     {!loading && !error && !exam && <p className="testing-note">This PrepTest is not available to your account.</p>}
     {!loading && !error && exam && <>
-      <p className="testing-lede">{exam.legs.length} scored sections · {exam.questionCount} questions</p>
+      <p data-motion-item className="testing-lede">{exam.legs.length} scored sections · {exam.questionCount} questions</p>
       <ExamSections exam={exam} />
       {!exam.rcFullLength && <p className="testing-note">This Reading Comprehension section has fewer scorable questions than a full section. All four passages are included.</p>}
-      <div className="testing-actions">
+      <div data-motion-item className="testing-actions">
         <Link className="practice-exams-primary-link" to={`/practice/exams?pt=${exam.pt}`}>Set up this exam</Link>
         <Link className="practice-exams-secondary-link" to="/practice/exams?view=section">Take one section</Link>
       </div>
@@ -202,9 +202,9 @@ export function PracticeExamAttempts() {
   };
   const navigate = useNavigate();
   return <ExamLayout>
-    <h1 className="classroom-title">Exam Attempts</h1>
-    <p className="testing-lede">Your unfinished and completed practice exams and timed sections.</p>
-    <div className="flex flex-wrap gap-2" role="group" aria-label="Filter exam attempts">
+    <h1 data-motion-item className="classroom-title">Exam Attempts</h1>
+    <p data-motion-item className="testing-lede">Your unfinished and completed practice exams and timed sections.</p>
+    <div data-motion-item className="flex flex-wrap gap-2" role="group" aria-label="Filter exam attempts">
       {([ ["all", "All"], ["unfinished", "Unfinished"], ["completed", "Completed"] ] as const).map(([value, label]) => (
         <button
           key={value}
@@ -226,7 +226,7 @@ export function PracticeExamAttempts() {
     {!exams.isLoading && !sections.isLoading && !exams.isError && !sections.isError && entries.length > 0 && visibleEntries.length === 0 && (
       <p className="testing-note">No {statusFilter === "completed" ? "completed" : "unfinished"} attempts yet.</p>
     )}
-    <div className="practice-exams-list">
+    <div data-motion-item data-motion-ready={exams.isLoading || sections.isLoading ? "false" : "true"} className="practice-exams-list">
       {visibleEntries.map((entry) => entry.canOpen
         ? <Link className="practice-exams-card" key={entry.id} to={entry.href}>
             <span><strong>{entry.title}</strong><small>{entry.status} · {entry.result ?? entry.detail} · Started {new Date(entry.at).toLocaleDateString()}</small></span>

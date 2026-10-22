@@ -36,11 +36,11 @@ export default function FirstAnswerProgressPanel({ studentId, hideWindowControl 
   const { resolution, progress, loading, error, refresh } = useFirstAnswerProgress(window, studentId);
 
   return (
-    <section className="w-full min-w-0 max-w-[calc(100vw-48px)] overflow-hidden rounded-xl border border-border bg-card p-4 text-card-foreground sm:p-5" aria-labelledby="first-answer-title">
+    <section data-motion-enter data-motion-group data-motion-ready={loading ? "false" : "true"} className="w-full min-w-0 max-w-[calc(100vw-48px)] overflow-hidden rounded-xl border border-border bg-card p-4 text-card-foreground sm:p-5" aria-labelledby="first-answer-title">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0 flex-1 basis-56">
-          <h2 id="first-answer-title" className="text-lg font-semibold">First-answer accuracy</h2>
-          <p className="mt-1 max-w-2xl text-xs leading-relaxed text-muted-foreground">
+          <h2 data-motion-item id="first-answer-title" className="text-lg font-semibold">First-answer accuracy</h2>
+          <p data-motion-item className="mt-1 max-w-2xl text-xs leading-relaxed text-muted-foreground">
             Each question counts once, using its first saved, graded answer. Repeats do not raise or lower this score.
           </p>
         </div>
@@ -65,7 +65,7 @@ export default function FirstAnswerProgressPanel({ studentId, hideWindowControl 
               Partial data: {progress.coverage.missingSources.map((item) => item.source.replace(/_/g, ' ')).join(', ')} could not be loaded. Affected accuracy is withheld until the complete first-answer history can be checked.
             </p>
           )}
-          <div className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2">
+          <div data-motion-item data-motion-id="first-answer-metrics" className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2">
             <AreaCard
               label="Logical Reasoning"
               result={progress.LR}

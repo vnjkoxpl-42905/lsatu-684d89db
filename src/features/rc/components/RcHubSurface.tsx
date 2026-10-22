@@ -1049,11 +1049,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
         <button type="button" className="rc-chip" disabled={starting} onClick={() => void start()}>Retry original launch</button>
       </div>}
 
-      {!reviewStage && <section className="rc-card rc-builder rc-final-panel rc-split-setup" aria-labelledby="rc-final-heading">
+      {!reviewStage && <section data-motion-group className="rc-card rc-builder rc-final-panel rc-split-setup" aria-labelledby="rc-final-heading">
         <header className="rc-setup-heading">
-          <div><p className="rc-setup-eyebrow">RC drill</p>{embedded ? <h2 id="rc-final-heading" tabIndex={-1}>Choose your next {requestedCount > 1 ? 'passages' : 'passage'}</h2> : <h1 id="rc-final-heading" tabIndex={-1}>Choose your next {requestedCount > 1 ? 'passages' : 'passage'}</h1>}</div>
-          <p className="rc-setup-description">Whole passages, with every question.</p>
-          <section className="rc-direct-lookup" aria-labelledby="rc-direct-lookup-heading">
+          <div data-motion-item data-motion-id="rc-setup-heading"><p className="rc-setup-eyebrow">RC drill</p>{embedded ? <h2 id="rc-final-heading" tabIndex={-1}>Choose your next {requestedCount > 1 ? 'passages' : 'passage'}</h2> : <h1 id="rc-final-heading" tabIndex={-1}>Choose your next {requestedCount > 1 ? 'passages' : 'passage'}</h1>}</div>
+          <p data-motion-item data-motion-id="rc-setup-description" className="rc-setup-description">Whole passages, with every question.</p>
+          <section data-motion-item data-motion-id="rc-setup-lookup" className="rc-direct-lookup" aria-labelledby="rc-direct-lookup-heading">
             <h3 id="rc-direct-lookup-heading">Have a passage in mind?</h3>
             <p>{handPickOpen ? 'Optional. Leave blank to keep your selection.' : 'Optional. Leave blank for Tutor’s choice.'}</p>
             <div className="rc-lookup-address">
@@ -1064,7 +1064,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
             {lookupActive && <div className="rc-lookup-status"><span role="status">{lookupPassage ? `PT ${lookupPassage.preptest} · Section ${lookupPassage.section} · Passage ${lookupPassage.setNumber}` : 'Choose a section and passage to continue.'}</span><button type="button" onClick={() => updateLookup({ pt: '', section: '', passage: '' })}>Clear</button></div>}
           </section>
         </header>
-        <div className="rc-setup-workspace">
+        <div data-motion-item data-motion-id="rc-setup-conditions" className="rc-setup-workspace">
         <div className="rc-config-groups">
           <fieldset className="rc-config-group" aria-label="Passage settings"><legend>{exactMode ? 'Your passages' : 'Passages'}</legend><div className={`rc-passage-controls${exactMode ? ' rc-manual-passage-controls' : ''}`}>
           <div className="rc-field"><div className="rc-field-label" id="rc-passage-count-label">{exactMode ? 'Selected passages' : 'Passages'}</div>{exactMode ? <div className="rc-final-picked-count"><span role="status">{exactIds.length} selected</span>{!lookupActive && <button ref={pickButton} type="button" className="rc-chip" onClick={event => openDrawer('pick', event.currentTarget)}>{exactIds.length > 0 ? 'Edit selection' : 'Choose passages'}</button>}</div> : <div className="rc-stepper" role="group" aria-label="Passages"><button type="button" aria-label={`Fewer passages, ${count} selected`} disabled={count <= 1} onClick={() => setCount(value => Math.max(1, value - 1))}>−</button><span className="rc-stepper-value" aria-live="polite">{count}</span><button type="button" aria-label={`More passages, ${count} selected`} disabled={count >= 8} onClick={() => setCount(value => Math.min(8, value + 1))}>+</button></div>}</div>

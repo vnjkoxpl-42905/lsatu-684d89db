@@ -9,7 +9,7 @@ export default function MyWorkPage({ completed }: { completed: boolean }) {
   const permissions = useUserPermissions();
   const readingCenter = useReadingCenterAccess(!permissions.is_admin);
   const generalAccess = permissions.is_admin || permissions.has_classroom_access;
-  if (permissions.loading) return <p role="status" className="student-destination-message">Loading your work…</p>;
+  if (permissions.loading) return <p data-motion-item data-motion-ready="false" role="status" className="student-destination-message">Loading your work…</p>;
   // The prescribed week sits above the to-do list so a student can scan the
   // whole week Joshua set before working down the list. It reads its own
   // query, so a failed plan read never hides assignments and vice versa.
@@ -28,7 +28,7 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
     ? readingCenterAllowed && row.refId === 'library'
     : generalAccess).filter((row) => (row.status === "completed") === completed);
 
-  if (loading) return <p className="student-destination-message" role="status">Loading your work…</p>;
+  if (loading) return <p data-motion-item data-motion-ready="false" className="student-destination-message" role="status">Loading your work…</p>;
   if (failed && rows.length === 0) return (
     <div className="student-destination-message" role="alert">
       <p>{evidenceWarnings.length > 0 ? `Could not confirm ${evidenceWarnings.join(", ")}. We could not confirm whether this list is complete.` : "We could not load your assignments."}</p>
@@ -37,7 +37,7 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
   );
 
   return (
-    <section className="student-work-list" aria-label={completed ? "Completed work" : "Work to do"}>
+    <section data-motion-item data-motion-ready={loading ? "false" : "true"} className="student-work-list" aria-label={completed ? "Completed work" : "Work to do"}>
       {failed && (
         <div className="student-destination-message" role="alert">
           <p>{evidenceWarnings.length > 0 ? `Could not confirm ${evidenceWarnings.join(", ")}. Available saved work is still shown.` : "Some assignments could not refresh. Your saved work is still shown."}</p>

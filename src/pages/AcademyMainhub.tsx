@@ -60,17 +60,17 @@ function MainhubHero({
   return (
     <Card
       data-section={section}
-      data-motion-enter className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none"
+      data-motion-enter data-motion-group className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none"
     >
       <div className="drill-observatory-hero-grid">
         <div className="drill-observatory-smart flex flex-col justify-center">
           <div className="flex flex-col gap-3">
-            <h1>Smart Drill</h1>
-            <p className="drill-observatory-ink-70 max-w-[42ch] text-sm leading-[1.6]">
+            <h1 data-motion-item>Smart Drill</h1>
+            <p data-motion-item className="drill-observatory-ink-70 max-w-[42ch] text-sm leading-[1.6]">
               Let Smart Drill choose what would be most useful to practice next.
             </p>
           </div>
-          <Button
+          <Button data-motion-item
             onClick={startSmartDrill}
             className="drill-observatory-cta drill-observatory-smart-drill-pulse mt-5 w-fit"
           >
@@ -78,7 +78,7 @@ function MainhubHero({
           </Button>
         </div>
 
-        <div className="drill-observatory-console w-full">
+        <div data-motion-item className="drill-observatory-console w-full">
           <div className="flex flex-col justify-center gap-5">
             <div className="space-y-3">
               <h2 className="drill-observatory-ink-full font-semibold leading-tight tracking-[-0.025em]">
@@ -484,11 +484,11 @@ export default function AcademyMainhub({
           </section>
         )) : view === "in-progress" || view === "completed" ? (
           <section data-motion-enter className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
-            <div className="flex items-center justify-between gap-3">
+            <div data-motion-item className="flex items-center justify-between gap-3">
               <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">{section === "rc" ? "Your Reading Comprehension drills." : "Your Smart Drill and Logical Reasoning drills."}</p>
+            <p data-motion-item className="mt-2 text-sm text-muted-foreground">{section === "rc" ? "Your Reading Comprehension drills." : "Your Smart Drill and Logical Reasoning drills."}</p>
             {section === 'rc' && <div className="mt-4 flex flex-wrap gap-4 text-sm">
               <label>Timing <select aria-label="Filter RC history by timing" className="ml-2 rounded border bg-background p-2" value={rcTimingFilter} onChange={event => setRcTimingFilter(event.target.value as typeof rcTimingFilter)}><option value="any">Any timing</option><option value="timed">Timed</option><option value="untimed">Untimed</option><option value="unknown">Timing unknown</option></select></label>
               <label>Take history <select aria-label="Filter RC history by exposure" className="ml-2 rounded border bg-background p-2" value={rcTakeFilter} onChange={event => setRcTakeFilter(event.target.value as typeof rcTakeFilter)}><option value="any">Any take history</option><option value="first-recorded">No recorded exposure at start</option><option value="repeat">Repeated passages</option><option value="mixed">Some passages repeated</option><option value="unknown">Exposure before take unknown</option></select></label>
@@ -500,7 +500,7 @@ export default function AcademyMainhub({
                 && (section !== 'rc' || (rcTimingFilter === 'any' || (run.rcTiming ?? 'unknown') === rcTimingFilter)
                   && (rcTakeFilter === 'any' || (run.rcTake ?? 'unknown') === rcTakeFilter)));
               return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill to see it here."}</p> : (
-                <ul className="mt-5 space-y-3">{selected.map((run) => (
+                <ul data-motion-item data-motion-id="drill-history-results" className="mt-5 space-y-3">{selected.map((run) => (
                   <li key={run.key} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
                     <div className="min-w-0">
                       <p className="font-medium">{run.title}</p>

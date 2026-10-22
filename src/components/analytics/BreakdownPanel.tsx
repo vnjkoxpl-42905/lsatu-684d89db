@@ -84,7 +84,7 @@ export default function BreakdownPanel() {
   }, [attempts]);
 
   return (
-    <section className="w-full min-w-0 max-w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+    <section data-motion-item data-motion-ready={isLoading || !bankReady ? "false" : "true"} className="w-full min-w-0 max-w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm">
       <header className="min-w-0 border-b border-border px-4 py-5 sm:px-6">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <h2 className="font-serif text-2xl font-semibold text-foreground">Logical Reasoning</h2>

@@ -45,3 +45,23 @@ This verifies major navigation surfaces, not every button or full application wo
 The earlier motion implementation received exactly two Claude Opus inspection rounds. This later platform extension and its final corrections have automated and signed-in browser verification, but no additional independent Claude inspection. Do not label the extension Claude-approved.
 
 Run `node scripts/verification/start-platform-motion-preview.mjs` for the real local app with normal authentication. It omits the development MCP bundler plugin. The live production site remains unchanged.
+
+## Live LexPrep comparison refinement, 2026-10-22
+
+The following is a new refinement against base `c0fe7c8b8343946339d34e202e395259ff6f76ca`, superseding the earlier entrance preset and inspection-status note above for these changed files.
+
+Visited the current public `https://www.lexprep.ai/` before implementation. Its 35 public same-origin static assets confirm the scroll-section preset: opacity 0 to 1, 14px rise, 10px blur clearing, 300ms CSS ease-out (`0,0,.58,1`), 50ms initial delay, 150ms stagger, once with a minus-100px viewport margin. Its hero separately uses 500ms/y10/blur8 and longer delays. Product navigation consistently uses the section preset.
+
+Reference URLs, snippets, byte offsets and source hashes: `C:/Users/Joshu/Downloads/LexPrep-Live-Motion-2026-10-22/reference.md`. App/reference screenshots, DOM measurements, responsive geometry, recording and review log: `C:/Users/Joshu/Downloads/LSAT-U-LexPrep-Motion-2026-10-22/`.
+
+The shared GSAP hook now supports granular items, asynchronous readiness, safe nested scrolling containers and new marked sections. Loading targets are armed before paint with a one-second visible fallback; the same identity cannot be hidden again after settling. Stable item identities prevent filter/refetch remounts from replaying. Persistent destination headings have their own destination key and stay still across inner tabs. Library search/dialogs are outside animated ancestors. Narrow Home CSS overrides preserve the timed-section briefing entrance. Active drills, reading work, drawing canvases and local motion owners remain protected.
+
+Fresh real signed-in browser coverage: Home including authenticated reload; My Work tabs; LR/RC and RC setup; Review; Library tabs; Progress Overview/History/Topics and date-window refresh; Reading Center Dashboard/Speed Reading; teacher workspace/Today; mobile left menu and right Notes list. Actual reveal styles were observed mid-flight, not inferred solely from screenshots. Lower loaded Progress sections were hidden below the trigger, then settled after native scrolling. Unchanged Progress headings remained opacity1/filter-none across inner tabs. Reduced motion rendered targets immediately visible without transforms. No runtime console errors observed.
+
+Actual CSS widths 320, 390, 768, 980 and 1440: no document horizontal overflow or settled in-view marked content left hidden. These checks do not prove every application workflow or a pixel-identical temporal match with the reference. Rare teacher editor/payment states and active student sessions were not exercised to completion.
+
+Final proof after review fixes: typecheck passed; production prebuild/build/postbuild passed; 277 tests across 12 relevant files passed. The Home test helper lost Router context on rerender against the baseline source too; using RTL's wrapper option corrected that harness without weakening its assertions. The unrelated generated MCP bundle was restored exactly to HEAD after the build.
+
+Claude Opus comparison round one confirmed the preset and requested fixes for readiness blinking, heading replay, refresh remounts, stagger indexing, the Library animation boundary and Home CSS scope. Accepted fixes were implemented and browser-checked. The second and final independent inspection is recorded in the external review log; its exact verdict and limits must be read there before claiming approval. Review CLI tools cannot run the browser or play motion recordings.
+
+Local branch only. No publication or merge is authorized by this refinement.

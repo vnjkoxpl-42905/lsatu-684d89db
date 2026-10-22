@@ -63,7 +63,7 @@ export default function FirstAnswerHistoryPanel({ window, studentId }: { window:
   }, [filtered]);
 
   return (
-    <section className="mb-7 min-w-0 rounded-xl border border-border bg-card p-4 sm:p-5" aria-labelledby="saved-answer-history-title">
+    <section data-motion-item data-motion-ready={loading ? "false" : "true"} className="mb-7 min-w-0 rounded-xl border border-border bg-card p-4 sm:p-5" aria-labelledby="saved-answer-history-title">
       <h2 id="saved-answer-history-title" className="text-lg font-semibold text-foreground">Saved answer history</h2>
       <p className="mt-1 text-xs text-muted-foreground">Completed, graded LR and RC answers in this window. Repeats appear here but do not enter first-answer accuracy.</p>
       {loading ? <p className="mt-4 text-sm text-muted-foreground" role="status">Loading saved answers…</p>

@@ -162,8 +162,8 @@ export default function ReviewQueuePage() {
   };
 
   return (
-    <section className="review-queue" aria-label="Work to review">
-      <div className="review-queue-intro">
+    <section data-motion-group className="review-queue" aria-label="Work to review">
+      <div data-motion-item className="review-queue-intro">
         <div>
           <h2>Work to review</h2>
           <p>This list includes saved LR wrong answers and flags, completed RC drills and PrepTests, flags in active RC drills, judged misses from Activities, earlier Intro to LR interactive exercises, Hard Sentences cluster and capstone submissions, and newly saved Main Conclusion, First-Sentence vs Rebuttal and Conclusion Type lab submissions. Teacher-selected tasks for the supported native labs and Hard Sentences include the teacher's reason. Completed review tasks stop appearing here for their exact saved submission; original attempts and flags remain. It also includes questions opened and left blank in completed LR sections. Active RC flags continue the drill without opening answer review. A question can appear in both its journal and a specific sitting. Older native lab answers that were never saved and other bootcamp exercises are not included here.</p>
@@ -171,7 +171,7 @@ export default function ReviewQueuePage() {
         <span className="review-queue-count" aria-live="polite">{loading ? "Loading…" : `${visibleItems.length} ${visibleItems.length === 1 ? "item" : "items"}`}</span>
       </div>
 
-      <div className="review-queue-controls">
+      <div data-motion-item className="review-queue-controls">
         <div className="review-queue-filters" role="group" aria-label="Review reason">
           {(["all", "missed", "flagged", "skipped", "teacher_selected"] as ReasonFilter[]).map((filter) => (
             <button key={filter} type="button" onClick={() => setParam("reason", filter === "all" ? null : filter)} aria-pressed={reason === filter} disabled={filter === "missed" && !canJournal && !canRc && !canActivity && !canPracticeTest && !canIntroLr || filter === "flagged" && !canFlag && !canRc && !canPracticeTest || filter === "skipped" && !canSection && !canPracticeTest}>
@@ -213,7 +213,7 @@ export default function ReviewQueuePage() {
           <p>{partialQueue ? "Some saved work could not be shown. Check the warning above for the affected source." : items.length > 0 ? "Try another reason or clear the search." : "Questions and Activities you miss or flag, or timed section questions you opened and left blank, will appear here."}</p>
         </div>
       ) : table ? (
-        <div className="review-queue-table-wrap">
+        <div data-motion-item data-motion-id="review-results" data-motion-ready={loading ? "false" : "true"} className="review-queue-table-wrap">
           <table className="review-queue-table">
             <thead><tr><th>Item</th><th>Area</th><th>Reason</th><th>First answer</th><th>Latest answer</th><th>Source</th><th>Note</th><th>Last activity</th></tr></thead>
             <tbody>{shownItems.map((item) => (
@@ -231,7 +231,7 @@ export default function ReviewQueuePage() {
           </table>
         </div>
       ) : (
-        <ul className="review-queue-list">{shownItems.map((item) => (
+        <ul data-motion-item data-motion-id="review-results" data-motion-ready={loading ? "false" : "true"} className="review-queue-list">{shownItems.map((item) => (
           <li key={item.key}>
             <Link className={`review-queue-card${selectedKey === item.key ? " review-queue-selected" : ""}`} to={detailLink(item)} aria-current={selectedKey === item.key ? "true" : undefined}>
               <span className="review-queue-card-main">

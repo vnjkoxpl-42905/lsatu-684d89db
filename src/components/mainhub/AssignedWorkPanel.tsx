@@ -25,7 +25,7 @@ export default function AssignedWorkPanel({
   const shownRows = openRows.slice(0, 3);
 
   return (
-    <section aria-label={scope === 'rc' ? 'Assigned RC work' : 'Assigned work'} className="drill-observatory-today">
+    <section data-motion-item data-motion-ready={loading ? "false" : "true"} aria-label={scope === 'rc' ? 'Assigned RC work' : 'Assigned work'} className="drill-observatory-today">
       <div className="drill-observatory-today-inner flex flex-col">
         <div className="flex items-center justify-between gap-4 px-0.5">
           <h2 className="drill-observatory-label drill-observatory-ink-60">

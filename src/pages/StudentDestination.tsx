@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { Lock } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -14,6 +15,7 @@ import {
 import { preserveRedirectLocation } from "@/lib/preserveRedirectLocation";
 import { DestinationHeadingContext } from "@/contexts/DestinationHeadingContext";
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
+import { useClassroomMotion } from '@/hooks/useClassroomMotion';
 
 function useDestinationPermissions(destination: Destination) {
   const permissions = useUserPermissions();
@@ -26,6 +28,8 @@ function useDestinationPermissions(destination: Destination) {
 
 export function StudentDestination({ destination }: { destination: Destination }) {
   const { pathname } = useLocation();
+  const headingRef = useRef<HTMLElement>(null);
+  useClassroomMotion(headingRef, `destination:${destination}`);
   const permissions = useDestinationPermissions(destination);
   const config = DESTINATIONS[destination];
   const showExamTabs = destination === "practice" && pathname.startsWith("/practice/exams");
@@ -69,10 +73,10 @@ export function StudentDestination({ destination }: { destination: Destination }
 
   return (
     <div className="student-destination">
-      <header data-motion-skip className="student-destination-heading">
+      <header ref={headingRef} data-motion-enter data-motion-group className="student-destination-heading classroom-motion-local">
         <div>
-          <h1>{config.title}</h1>
-          <p>{config.introduction}</p>
+          <h1 data-motion-item>{config.title}</h1>
+          <p data-motion-item>{config.introduction}</p>
         </div>
       </header>
       <nav data-motion-skip className="student-destination-tabs" aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>

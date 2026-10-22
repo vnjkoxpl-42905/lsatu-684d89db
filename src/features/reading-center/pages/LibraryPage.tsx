@@ -58,13 +58,14 @@ export default function LibraryPage(): React.ReactElement {
   );
 
   return (
-    <div className="min-h-screen">
+    <div data-motion-group className="min-h-screen">
       <TopBar query={query} onQuery={setQuery} placeholder="Search text" />
       <div className="px-5 pb-10">
-        <h1 className="mt-5 text-2xl font-semibold">{tag ? `Tagged: ${tag}` : "My Library"}</h1>
-        <p className="mt-2 text-sm" style={{ color: "var(--rc-text-2)" }}>{tag ? "Articles you grouped with this tag. Use an article's menu to change its tags." : "Read an article, add your own text, or search by title, author, or article text."}</p>
+        <h1 data-motion-item className="mt-5 text-2xl font-semibold">{tag ? `Tagged: ${tag}` : "My Library"}</h1>
+        <p data-motion-item className="mt-2 text-sm" style={{ color: "var(--rc-text-2)" }}>{tag ? "Articles you grouped with this tag. Use an article's menu to change its tags." : "Read an article, add your own text, or search by title, author, or article text."}</p>
         {passagesQuery.isLoading && <p className="mt-8" role="status">Loading your reading library.</p>}
         {passagesQuery.error && <p className="mt-8" role="alert">Your reading library could not load. {passagesQuery.error.message} <button type="button" className="underline" onClick={() => void passagesQuery.refetch()}>Try again</button></p>}
+        <div data-motion-item data-motion-id="reading-library-shelves" data-motion-ready={passagesQuery.isLoading ? "false" : "true"}>
         {tag && !results ? (
           visible.length === 0 ? <NothingHereYet /> : <Shelf title={tag} wrap>{visible.map((p) => card(p, "added"))}</Shelf>
         ) : results ? (
@@ -82,6 +83,7 @@ export default function LibraryPage(): React.ReactElement {
             ),
           )
         )}
+        </div>
       </div>
 
       {menu && (
