@@ -72,4 +72,17 @@ describe('classroom motion safety', () => {
     const { root, run } = mount('<header data-motion-skip>Practice</header><section data-motion-enter>Body</section>');
     run(); expect(mock.entrance.mock.calls[0][0]).toEqual([root.querySelector('section')]);
   });
+  it('leaves locally owned room content to its own motion boundary', () => {
+    const { run } = mount('<div class="classroom-motion-local"><section data-motion-enter>Room</section></div>');
+    run(); expect(mock.entrance).not.toHaveBeenCalled();
+  });
+  it('animates the body inside a local boundary without owning its outer navigation', () => {
+    const { root, run } = mount('<section data-motion-enter>Room body</section>');
+    root.classList.add('classroom-motion-local');
+    run(); expect(mock.entrance.mock.calls[0][0]).toEqual([root.querySelector('section')]);
+  });
+  it('allows RC Training entry pages while protecting the actual immersive runner', () => {
+    const { root, run } = mount('<main class="rct-page rct-entry-page" data-motion-enter>Instructions</main><main class="rct-run rct-continuous" data-motion-enter>Recording</main>');
+    run(); expect(mock.entrance.mock.calls[0][0]).toEqual([root.querySelector('.rct-entry-page')]);
+  });
 });

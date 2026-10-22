@@ -4,7 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const EXCLUDED = '[data-motion="off"], [data-motion-skip], .rct-page';
+// rct-page also names the instructions and picker; only rct-run is immersive work.
+const EXCLUDED = '[data-motion="off"], [data-motion-skip], .rct-run';
 
 export function classroomMotionKey(pathname: string, search: string) {
   const practice = pathname === '/practice/drills' || pathname === '/classroom/drill';
@@ -40,6 +41,8 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
         // Turning motion back on later must not replay an already-read page.
         if (performance.now() - enteredAt > 300) return;
         const eligible = (element: HTMLElement) => !element.closest(EXCLUDED) && !element.querySelector(EXCLUDED)
+          && (!element.closest('.classroom-motion-local') || element.closest('.classroom-motion-local') === root)
+          && !element.querySelector('.classroom-motion-local')
           && !element.contains(document.activeElement)
           && element.getBoundingClientRect().height > 0
           && !['SCRIPT', 'STYLE', 'NAV'].includes(element.tagName);

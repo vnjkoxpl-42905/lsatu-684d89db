@@ -27,6 +27,8 @@ import { useUnreadMessageCount } from "@/hooks/useUnreadMessageCount";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useRailPrefs } from "@/hooks/useRailPrefs";
+import { useClassroomRailMotion } from "@/hooks/useClassroomRailMotion";
+import { useClassroomOverlayMotion } from "@/hooks/useClassroomOverlayMotion";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
 import { destinationLandingPath, railItemLocked } from "@/lib/destinationAccess";
 import { preloadDrillHub } from "@/lib/routePreload";
@@ -50,6 +52,7 @@ import AssignedReadingCenterLink from '@/components/classroom/AssignedReadingCen
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import "@/components/classroom/classroom.css";
 import "@/styles/classroom-motion.css";
+import "@/styles/classroom-rail-motion.css";
 import { ClassroomMotionContent } from "./ClassroomMotionContent";
 import { ClassroomLayoutContext, type ClassroomSection } from "./classroomLayoutContext";
 
@@ -136,6 +139,8 @@ function ClassroomSidebar({
   const [menuOpen, setMenuOpen] = React.useState(false);
   const profileRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const navigationRef = React.useRef<HTMLElement>(null);
+  useClassroomRailMotion(navigationRef, `${location.pathname}|${activeSection ?? ""}`);
 
   React.useEffect(() => {
     if (!menuOpen) return;
@@ -286,7 +291,8 @@ function ClassroomSidebar({
           <span>LSAT U</span>
         </button>
 
-        <nav aria-label="Classroom navigation">
+        <nav aria-label="Classroom navigation" className="classroom-rail-motion" ref={navigationRef}>
+          <span className="classroom-rail-marker" data-rail-marker aria-hidden="true" />
           {railGroups.map((group) => (
             <div className="classroom-nav-group" key={group.id}>
               <b>{group.title}</b>
@@ -996,15 +1002,18 @@ export default function ClassroomLayout() {
   // because the section drawer takes its accessible name from it.
   const closeMobileMenu = React.useCallback(() => setMobileMenuOpen(false), []);
   const closeSectionOverlay = React.useCallback(() => setSectionOverlayOpen(false), []);
+  const mobileMenuMotion = useClassroomOverlayMotion(mobileMenuOpen, "left");
+  const sectionOverlayMotion = useClassroomOverlayMotion(Boolean(activeSection) && sectionOverlayOpen, "right");
+  const overlaySection = useRetainedValue(activeSection, Boolean(activeSection));
   const mobileMenuDialog = useDialogOverlay({
-    open: mobileMenuOpen,
+    open: mobileMenuMotion.present,
     onClose: closeMobileMenu,
     label: "Classroom menu",
   });
   const sectionOverlayDialog = useDialogOverlay({
-    open: Boolean(activeSection) && sectionOverlayOpen,
+    open: sectionOverlayMotion.present,
     onClose: closeSectionOverlay,
-    label: activeSection ? SECTION_TITLES[activeSection] : "Section list",
+    label: overlaySection ? SECTION_TITLES[overlaySection] : "Section list",
   });
 
   React.useEffect(() => {
@@ -1160,8 +1169,8 @@ export default function ClassroomLayout() {
           />
         </aside>
 
-        {mobileMenuOpen ? (
-          <div className="classroom-mobile-menu">
+        {mobileMenuMotion.present ? (
+          <div className="classroom-mobile-menu" ref={mobileMenuMotion.ref} style={{ overflow: "hidden" }}>
             <button
               type="button"
               className="classroom-overlay-backdrop"
@@ -1220,8 +1229,8 @@ export default function ClassroomLayout() {
           </main>
         )}
 
-        {activeSection && sectionOverlayOpen ? (
-          <div className="classroom-section-overlay">
+        {overlaySection && sectionOverlayMotion.present ? (
+          <div className="classroom-section-overlay" ref={sectionOverlayMotion.ref} style={{ overflow: "hidden" }}>
             <button
               type="button"
               className="classroom-overlay-backdrop"
@@ -1231,7 +1240,7 @@ export default function ClassroomLayout() {
             />
             <aside {...sectionOverlayDialog}>
               <SectionList
-                section={activeSection}
+                section={overlaySection}
                 activeId={activeId}
                 onClose={() => setSectionOverlayOpen(false)}
               />

@@ -1,3 +1,4 @@
+import { ArrowLeft, ChevronRight, MoreVertical, Upload } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -6,7 +7,7 @@ import { useDeletePassage, usePassages, useProgressList, useSaveProgress, useUps
 import { buildTextModel } from "../lib/spreeder";
 import { rcReaderPath, RC_LIBRARY_PATH } from "../lib/routes";
 import type { Passage, Progress } from "../lib/types";
-import { Icon, MIcon, type IconName } from "../components/Icon";
+import { Icon, type IconName } from "../components/Icon";
 import { TopBar } from "../components/AppShell";
 import { AddTextScreen } from "../components/AddText";
 import { ViewPanel } from "../components/ViewPanel";
@@ -119,11 +120,11 @@ function Shelf({ title, children, onViewAll, back, wrap = false }: { title: stri
   return (
     <section className="mb-[50px] mt-[25px]">
       <div className="mb-4 flex h-5 items-center gap-2">
-        {back && <button type="button" aria-label="Back" onClick={back} className="flex"><MIcon name="arrow_back" /></button>}
+        {back && <button type="button" aria-label="Back" onClick={back} className="flex"><ArrowLeft aria-hidden size={24} /></button>}
         <h2 className="text-lg font-bold leading-5" style={{ color: "var(--rc-strong)" }}>{title}</h2>
         {onViewAll && (
           <button type="button" onClick={onViewAll} className="ml-2 flex items-center text-sm font-medium" style={{ color: "#74b2e5" }}>
-            View All <MIcon name="navigate_next" size={20} />
+            View All <ChevronRight aria-hidden size={20} />
           </button>
         )}
       </div>
@@ -157,7 +158,7 @@ function PassageCard({ passage, onMenu }: { passage: Passage; onMenu: (anchor: D
           className="mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center"
           style={{ color: "var(--rc-strong)" }}
         >
-          <MIcon name="more_vert" size={22} />
+          <MoreVertical aria-hidden size={22} />
         </button>
       </div>
       {passage.author && <div className="mt-[3px] truncate text-[11.5px]" style={{ color: "#918f8f" }}>{passage.author}</div>}
@@ -227,7 +228,7 @@ function EditImageDialog({ passage, onClose }: { passage: Passage; onClose: () =
         </div>
         <div className="flex flex-1 justify-center pl-6">
           <label className="rc-outline-btn h-[38px] cursor-pointer gap-1 px-4" style={{ borderColor: "var(--rc-btn-secondary-border)" }}>
-            <MIcon name="upload" /> Upload Image
+            <Upload aria-hidden size={24} /> Upload Image
             <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && pickFile(e.target.files[0])} />
           </label>
         </div>
