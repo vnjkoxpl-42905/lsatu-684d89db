@@ -1276,7 +1276,7 @@
   color: #eeebe5 !important;
   border-color: #303034 !important;
   font-family: 'Outfit',sans-serif !important;
-  z-index: 60 !important;
+  z-index: 90 !important;
 }
 
 .rc-final-drawer-head {
