@@ -1097,7 +1097,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
       </section>}
 
       <Sheet open={drawerState !== null} onOpenChange={open => { if (!open) setDrawer(null); }}>
-        <SheetContent className="rc-final-drawer" onCloseAutoFocus={event => { event.preventDefault(); (drawerOpener.current?.isConnected ? drawerOpener.current : pickButton.current)?.focus(); }}>
+        <SheetContent className="rc-final-drawer" overlayClassName="rc-final-drawer-overlay" onCloseAutoFocus={event => { event.preventDefault(); (drawerOpener.current?.isConnected ? drawerOpener.current : pickButton.current)?.focus(); }}>
           <div className="rc-final-drawer-head"><SheetTitle>{drawer?.kind === 'pick' ? 'Pick passages' : 'Customize drill'}</SheetTitle><SheetDescription>{drawer?.kind === 'practice' ? 'Adjust how you practice this passage.' : drawer?.kind === 'pick' ? 'Choose whole passages and set their order. Apply when you are ready.' : handPickOpen ? 'Browsing filters help you find passages in the picker; your picks stay unchanged. No recorded exposure, if chosen, is also a launch requirement.' : 'Refine your passages and practice options. Apply when you are ready.'}</SheetDescription></div>
           <div className="rc-final-drawer-body">
             {drawer?.kind !== 'practice' && <div className="rc-drawer-methods" role="group" aria-label="Passage selection method">

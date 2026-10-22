@@ -389,6 +389,7 @@
 .rc-practice-workspace .rc-create-workspace:has(.rc-direct-lookup) { background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 12px 0 0 !important; }
 .rc-practice-workspace .rc-create-workspace:has(.rc-direct-lookup) > button { color: var(--lsatu-ink-muted, #64645b) !important; margin-bottom: 28px !important; }
 .rc-final-builder:has(.rc-direct-lookup) { color: var(--rc-paper-ink); background: transparent; }
+.rc-final-builder .rc-final-panel.rc-split-setup:has(.rc-direct-lookup) { display: grid !important; }
 .rc-final-builder .rc-split-setup:has(.rc-direct-lookup) { grid-template-columns: minmax(0,1fr) minmax(0,1.06fr) !important; gap: clamp(32px,5vw,64px) !important; background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
 .rc-final-builder .rc-split-setup .rc-setup-heading:has(.rc-direct-lookup) { padding: 18px 0 0; }
 .rc-final-builder .rc-setup-heading:has(.rc-direct-lookup) .rc-setup-eyebrow { display: none; }
@@ -449,6 +450,7 @@
 .rc-final-builder:has(.rc-review-stage) .rc-builder-saved { color: var(--rc-paper-ink); border-top-color: #d7d4cb !important; }
 .rc-final-builder:has(.rc-review-stage) .rc-builder-saved summary, .rc-final-builder:has(.rc-review-stage) .rc-contextual-save p { color: var(--rc-paper-muted) !important; }
 /* The rail uses the same contrast roles as the setup, with quieter method rows. */
+.rc-final-drawer-overlay { z-index: 89 !important; }
 .rc-final-drawer { background: var(--lsatu-surface-dark, #131718) !important; color: var(--lsatu-text-on-dark, #efede6) !important; }
 .rc-final-drawer select, .rc-final-drawer input[type=text], .rc-final-drawer input[type=number], .rc-final-drawer .rc-filter-select > summary > strong, .rc-final-drawer .rc-filter-checklist { background: var(--lsatu-field-dark, #282b2c) !important; color: var(--lsatu-text-on-dark, #efede6) !important; border-color: var(--lsatu-field-border, #747773) !important; }
 .rc-final-drawer .rc-final-drawer-footer .rc-button-primary { background: var(--lsatu-action-on-dark, #eeebe2) !important; color: var(--lsatu-action-ink, #161d18) !important; }
