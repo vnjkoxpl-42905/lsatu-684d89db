@@ -1,0 +1,21 @@
+/*
+ * The chamber's wing. Same room, so it inherits the palette from `.polarity`
+ * and adds only what the main stage does not have.
+ */
+
+.po-wing {
+  overflow-y: auto;
+}
+
+/* The plate in the wing does not turn, so it needs no perspective context and
+   no backface handling: it is a lit surface to read, not an object to invert. */
+.po-wing .po-face {
+  position: relative;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .po-wing .po-button {
+    transition-duration: 1ms !important;
+  }
+}

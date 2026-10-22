@@ -1,0 +1,601 @@
+/**
+ * The Testing Centre.
+ *
+ * Deliberately quieter than the drill hub: this is the room where a clock
+ * starts, so it reads as a lobby with two doors rather than a launcher with
+ * options. Colour is carried by the classroom tokens, so it follows light and
+ * dark with everything else.
+ *
+ * One rule about those tokens, learned the hard way. --classroom-meta is a bare
+ * channel triple for rgb(), and --classroom-meta-soft is a 0.4 alpha tuned for
+ * rules and fills. Both were used here as text colours: the first produced an
+ * invalid declaration that silently fell back to full ink, so the lede, the
+ * door copy and the score label rendered at the same weight as the headings;
+ * the second measured 2.10:1 on the light page and carried the clock, the
+ * question counts and the score-estimate caveat. Text on this surface uses
+ * --classroom-meta-text and nothing else.
+ */
+
+.classroom-root .testing-lede {
+  color: var(--classroom-meta-text);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: -12px 0 32px;
+  max-width: 62ch;
+}
+
+.classroom-root .testing-doors {
+  display: grid;
+  gap: 16px;
+  /* Close enough to the panel below for the open door's notch to bridge them. */
+  margin-bottom: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  .classroom-root .testing-doors {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.classroom-root .testing-door {
+  background: var(--classroom-panel);
+  /* The whole card is the control, so its border is the only thing saying where
+     the click lands. That makes it 1.4.11 information, not decoration. */
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  position: relative;
+  text-align: left;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease,
+    transform var(--classroom-transition) ease;
+}
+
+.classroom-root .testing-door:hover {
+  background: var(--classroom-hover);
+  transform: translateY(-1px);
+}
+
+.classroom-root .testing-door[aria-expanded='true'] {
+  border-color: var(--classroom-ink);
+}
+
+/* Which door opened the panel. The panel spans both doors and sits below them,
+   so without this the click reads as having produced a box from nowhere — and
+   on a narrow window the doors stack and the distance doubles. A notch is the
+   cheapest honest tether: it points from the open door at the panel's top edge,
+   and it costs nothing when no door is open. */
+.classroom-root .testing-door[aria-expanded='true']::after {
+  background: var(--classroom-panel);
+  border-left: 1px solid var(--classroom-line);
+  border-top: 1px solid var(--classroom-line);
+  bottom: -20px;
+  content: '';
+  height: 12px;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 50%) rotate(45deg);
+  width: 12px;
+}
+
+.classroom-root .testing-door-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.classroom-root .testing-door-body {
+  color: var(--classroom-meta-text);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.classroom-root .testing-door-meta {
+  color: var(--classroom-meta-text);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+.classroom-root .testing-panel {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  padding: 24px;
+}
+
+/* shadcn's --muted-foreground is #737373, which clears 4.5:1 on white but only
+   measures 4.24:1 on its own --muted fill — and that pairing is exactly the
+   segmented control in the section launcher, where the unpicked half is a
+   choice a student has to be able to read. Same hue, darkened to the
+   classroom's text-safe meta: 4.80:1 on the fill, 5.37:1 on the panel.
+
+   A menu needs one step further. Three of this room's dropdowns used to carry
+   the drill hub's token block, which is not media-gated: they opened as
+   near-black panels on the white page. Moving them onto the classroom's own
+   tokens fixed that and exposed the same pairing one layer out — the selected
+   row of a menu fills to #ebebeb, darker than the panel, and #737373 on it is
+   3.98:1. 41.6% would clear the bar at 4.51:1, which is a pass with nothing
+   left over; 39% is 5.00:1, and a 12px clock reading is not the place to spend
+   the last hundredth. */
+.classroom-root .testing-panel {
+  --muted-foreground: 30 2.8% 41.6%;
+}
+
+.testing-menu {
+  --muted-foreground: 30 2.8% 39%;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   shadcn controls, on the classroom's dark ground.
+
+   This app's shadcn token set is light-only on purpose: `.dark` in index.css
+   is an alias that mirrors `.light` and even sets `color-scheme: light`. The
+   classroom's dark theme is carried entirely by the --classroom-* tokens, so
+   any control written against `bg-background` / `border-input` keeps painting
+   near-white on it. Every dropdown and outline button in this room did: white
+   text on a white fill, 1.01:1, an unreadable block where a control should be.
+
+   classroom.css already solved this once for the drill hub by re-declaring the
+   token set for a subtree (.drill-observatory-launcher-panel). Same move here,
+   with values taken from the classroom's own dark palette rather than the
+   observatory's, so the controls match the room they are standing in.
+
+   .testing-menu is for the portalled ones — a popover or select menu renders
+   outside .classroom-root and inherits nothing from the panel that opened it.
+   ───────────────────────────────────────────────────────────────────────── */
+html.dark .classroom-root .testing-panel,
+html.dark .classroom-root .testing-resume,
+html.dark .testing-menu {
+  --background: var(--lsatu-surface-dark-hsl);
+  --foreground: var(--lsatu-text-on-dark-hsl);
+  --card: var(--lsatu-surface-dark-hsl);
+  --card-foreground: var(--lsatu-text-on-dark-hsl);
+  --popover: var(--lsatu-field-dark-hsl);
+  --popover-foreground: var(--lsatu-text-on-dark-hsl);
+  --primary: var(--lsatu-action-on-dark-hsl);
+  --primary-foreground: var(--lsatu-action-ink-hsl);
+  --secondary: var(--lsatu-field-dark-hsl);
+  --secondary-foreground: var(--lsatu-text-on-dark-hsl);
+  --muted: var(--lsatu-field-dark-hsl);
+  --muted-foreground: 77.143 4.965% 72.353%;
+  --accent: var(--lsatu-field-dark-hsl);
+  --accent-foreground: var(--lsatu-text-on-dark-hsl);
+  --border: var(--lsatu-field-border-hsl);
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-text-on-dark-hsl);
+}
+
+/* The block above was only ever written for the dark ground. Light kept the
+   global --input (0 0% 90%), so every control in this room drew a 1.25:1 edge
+   around a fill sitting 1.02:1 off the panel: the border was the only thing
+   saying where the control was, and it was invisible. 1.4.11 asks for 3:1 on
+   the visual boundary of an interactive control, and PRODUCT.md makes AA a
+   defect gate rather than an aspiration.
+
+   --classroom-line-strong (#9c8f85) is the token classroom.md reserves for
+   exactly this, "a border that is itself the affordance", and it measures
+   3.14:1 on the panel. --classroom-line is left alone: it stays hairline
+   separation between things, not the edge of a control.
+
+   --ring is deliberately not set here, unlike the dark block. Light's global
+   --ring is 0 0% 20%, near-black. Overwriting it with this mid grey would buy
+   a border fix at the cost of a weaker focus indicator. */
+.classroom-root .testing-panel,
+.classroom-root .testing-resume,
+.testing-menu {
+  --input: var(--lsatu-field-border-hsl);
+}
+
+/* The token block above repaints the menu but not the scrollbar inside it. A
+   PrepTest list is 54 rows in one door and 59 in the other, so both comboboxes
+   scroll, and index.css pins `color-scheme: light` even under .dark — which
+   left a white UA scrollbar running down the right edge of a near-black menu.
+   Scoped here rather than fixed in index.css: that alias is deliberate and the
+   whole app rides on it. Menus only — the panel has no native scroller, and
+   the search field inside the menu already paints its own background. */
+html.dark .testing-menu {
+  color-scheme: dark;
+}
+
+/* A note is the first thing in a panel often enough that it was carrying an
+   inline style at four call sites. */
+.classroom-root .testing-panel > .testing-note:first-child {
+  margin-top: 0;
+}
+
+/* One form measure, shared by both doors. A dropdown holding "PrepTest 103 · 79
+   questions" does not need 670px: the panel is wide because it spans the two
+   doors above it, and a column of fields is not. Held as a variable because the
+   two doors were disagreeing about it — the section launcher carried its own
+   max-w-2xl from the days when it was a page. */
+.classroom-root .testing-panel {
+  --testing-measure: 28rem;
+}
+
+.classroom-root .testing-field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 18px;
+  max-width: var(--testing-measure);
+}
+
+.classroom-root .testing-section-launcher {
+  max-width: var(--testing-measure);
+}
+
+.classroom-root .testing-field > label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.classroom-root .testing-shape {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: grid;
+  gap: 0;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.classroom-root .testing-shape-row {
+  align-items: baseline;
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.classroom-root .testing-shape-row + .testing-shape-row {
+  border-top: 1px solid var(--classroom-line);
+}
+
+.classroom-root .testing-shape-row b {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  min-width: 78px;
+  text-transform: uppercase;
+}
+
+.classroom-root .testing-shape-row span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.classroom-root .testing-shape-row em {
+  color: var(--classroom-meta-text);
+  font-size: 12.5px;
+  font-style: normal;
+  margin-left: auto;
+}
+
+/* Buttons on a row. Held apart from the em so the row's meta column stays a
+   meta column: this one carries controls, not a reading. */
+.classroom-root .testing-shape-actions {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* The question the inline discard confirm asks. It sits in the actions column
+   rather than replacing the row, so the sitting being asked about stays
+   readable while the question is on screen. --classroom-meta-text, not
+   --classroom-meta-soft: this is a word, and soft is a fill token that measures
+   1.85:1 as text. */
+.classroom-root .testing-confirm {
+  color: var(--classroom-meta-text);
+  font-size: 12.5px;
+}
+
+/* On a phone the three columns stop being three columns. Left alone, "Section 2
+   of 3" broke across two lines to make room for two buttons squeezed against
+   the right edge. The reading stays on one line and the controls take their own
+   row underneath. */
+@media (max-width: 560px) {
+  .classroom-root .testing-shape-row {
+    flex-wrap: wrap;
+  }
+
+  .classroom-root .testing-shape-actions {
+    flex-wrap: wrap;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* Full width so the two choices sit on their own line under the question
+     rather than being squeezed beside it on a phone. */
+  .classroom-root .testing-confirm {
+    width: 100%;
+  }
+}
+
+.classroom-root .testing-shape-row[data-state='done'] em {
+  color: var(--classroom-ink);
+  font-weight: 600;
+}
+
+/* The row a student is on. --classroom-active is the ink colour, so painting it
+   behind ink-coloured text rendered this row at 1.00:1 — a solid black bar over
+   the one line that says which section is next. --classroom-active-ink exists
+   for exactly this and had never been used. */
+.classroom-root .testing-shape-row[data-state='current'] {
+  background: var(--classroom-active);
+}
+
+.classroom-root .testing-shape-row[data-state='current'] b,
+.classroom-root .testing-shape-row[data-state='current'] span,
+.classroom-root .testing-shape-row[data-state='current'] em {
+  color: var(--classroom-active-ink);
+}
+
+.classroom-root .testing-shape-row[data-state='break'] b,
+.classroom-root .testing-shape-row[data-state='break'] span {
+  color: var(--classroom-meta-text);
+}
+
+.classroom-root .testing-note {
+  color: var(--classroom-meta-text);
+  font-size: 12.5px;
+  line-height: 1.55;
+  margin: 16px 0 0;
+  max-width: 68ch;
+}
+
+/* A caveat that changes how the number above it should be read is not fine
+   print. The score report's curve disclaimer sat at 12.5px under a 56px figure,
+   which told the student the opposite of what it said. */
+.classroom-root .testing-note-lead {
+  color: var(--classroom-ink-body);
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.classroom-root .testing-score {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.classroom-root .testing-score strong {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.classroom-root .testing-score span {
+  color: var(--classroom-meta-text);
+  font-size: 14px;
+}
+
+.classroom-root .testing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* A panel's own heading. Small and quiet — the page title has already named
+   the sitting — but a real h2, so the score report is not a region that opens
+   on a bare number with nothing to announce it. */
+.classroom-root .testing-heading {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+}
+
+.classroom-root .testing-resume {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.classroom-root .practice-exams-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 28px;
+  border-bottom: 1px solid var(--classroom-line);
+}
+
+.classroom-root .practice-exams-nav-link {
+  color: var(--classroom-meta-text);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.classroom-root .practice-exams-nav-link.active {
+  color: var(--classroom-ink);
+  border-bottom-color: var(--classroom-ink);
+}
+
+.classroom-root .practice-exams-search-label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.classroom-root .practice-exams-search {
+  width: min(100%, 320px);
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  background: var(--classroom-panel);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .practice-exams-list {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0;
+  max-width: 760px;
+}
+
+.classroom-root .practice-exams-card {
+  align-items: center;
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  min-height: 76px;
+  padding: 16px 20px;
+  transition: background-color var(--classroom-transition) ease;
+}
+
+.classroom-root .practice-exams-card:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .practice-exams-card > span:first-child {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.classroom-root .practice-exams-card small,
+.classroom-root .practice-exams-card > span:last-child {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+}
+
+.classroom-root .practice-exams-card > span:last-child {
+  flex-shrink: 0;
+}
+
+.classroom-root .practice-exams-primary-link,
+.classroom-root .practice-exams-secondary-link {
+  align-items: center;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  display: inline-flex;
+  justify-content: center;
+  min-height: 44px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.classroom-root .practice-exams-primary-link {
+  background: var(--classroom-active);
+  color: var(--classroom-active-ink);
+}
+
+.classroom-root .practice-exams-secondary-link {
+  background: var(--classroom-panel);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .practice-exams-subheading {
+  margin-top: 40px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.classroom-root .practice-exams-back {
+  color: var(--classroom-meta-text);
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+@media (max-width: 560px) {
+  .classroom-root .practice-exams-card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.classroom-root .practice-exams-preview-sidebar {
+  display: flex;
+  flex: 0 0 240px;
+  flex-direction: column;
+  gap: 13px;
+  min-height: 100dvh;
+  padding: 28px 20px;
+  border-right: 1px solid var(--classroom-line);
+}
+
+.classroom-root .practice-exams-preview-sidebar small {
+  color: var(--classroom-meta-text);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  margin-top: 18px;
+}
+
+.classroom-root .practice-exams-preview-sidebar span {
+  font-size: 13px;
+}
+
+.classroom-root .practice-exams-preview-sidebar .selected {
+  background: var(--classroom-active);
+  border-radius: 5px;
+  color: var(--classroom-active-ink);
+  padding: 9px;
+}
+
+.classroom-root .practice-exams-preview-main {
+  flex: 1;
+  min-width: 0;
+  max-width: 1100px;
+  padding: 42px clamp(20px, 6vw, 80px);
+}
+
+.classroom-root .practice-exams-preview-mobilebar { display: none; }
+
+@media (max-width: 1023px) {
+  .classroom-root .practice-exams-preview-sidebar { display: none; }
+  .classroom-root .practice-exams-preview-mobilebar {
+    align-items: center;
+    border-bottom: 1px solid var(--classroom-line);
+    display: flex;
+    gap: 22px;
+    min-height: 56px;
+    padding: 0 20px;
+    font-size: 13px;
+  }
+  .classroom-root .practice-exams-preview-main { padding: 24px 16px; }
+}
+
+.classroom-root .testing-resume h2 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+/* The line beside "Begin practice test" that names what is still missing. It
+   sits in the button row, so it drops the note's top margin and centres on
+   the button. It stays in the tree when empty (it is a live region, and a
+   region that is removed and re-added is not announced); an empty <p> in a
+   flex row has no size, so nothing shows. */
+.classroom-root .testing-actions-hint {
+  align-self: center;
+  margin: 0;
+}

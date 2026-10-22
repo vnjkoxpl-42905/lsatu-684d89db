@@ -1,0 +1,588 @@
+[
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Mary to Jamal: You acknowledge that as the legitimate\nowner of this business I have the legal right to\nsell it whenever I wish. But also you claim that\nbecause loyal employees will suffer if I sell it, I\ntherefore have no right to do so. Obviously, your\nstatements taken together are absurd.",
+    "questionStem": "Mary’s reasoning is most vulnerable to the criticism\nthat she",
+    "answerChoices": {
+      "A": "overlooks the possibility that when Jamal claims that she has no right to sell the business, he simply means she has no right to do so at this time",
+      "B": "overlooks the possibility that her employees also have rights related to the sale of the business",
+      "C": "provides no evidence for the claim that she does have a right to sell the business",
+      "D": "overlooks the possibility that Jamal is referring to two different kinds of right",
+      "E": "attacks Jamal’s character rather than his argument"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Since there is no survival value in an animal’s having an\norgan that is able to function when all its other organs\nhave broken down to such a degree that the animal dies,\nit is a result of the efficiency of natural selection that\nno organ is likely to evolve in such a way that it greatly\noutlasts the body’s other organs.",
+    "questionStem": "Of the following, which one illustrates a principle that is\nmost similar to the principle illustrated by the passage?",
+    "answerChoices": {
+      "A": "A store in a lower-income neighborhood finds that it is unable to sell its higher-priced goods and so stocks them only when ordered by a customer.",
+      "B": "The body of an animal with a deficient organ is often able to compensate for that deficiency when other organs perform the task the deficient one normally performs.",
+      "C": "One car model produced by an automobile manufacturer has a life expectancy that is so much longer than its other models that its great popularity requires the manufacturer to stop producing some of the other models.",
+      "D": "Athletes occasionally overdevelop some parts of their bodies to such a great extent that other parts of their bodies are more prone to injury as a result.",
+      "E": "Automotive engineers find that it is not cost-effective to manufacture a given automobile part of such high quality that it outlasts all other parts of the automobile, as doing so would not raise the overall quality of the automobile."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Implicit Principles",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Commentator: If a political administration is both\neconomically successful and successful at\nprotecting individual liberties, then it is an overall\nsuccess. Even an administration that fails to care\nfor the environment may succeed overall if it\nprotects individual liberties. So far, the present\nadministration has not cared for the environment\nbut has successfully protected individual liberties.",
+    "questionStem": "If all of the statements above are true, then which one of\nthe following must be true?",
+    "answerChoices": {
+      "A": "The present administration is economically successful.",
+      "B": "The present administration is not an overall success.",
+      "C": "If the present administration is economically successful, then it is an overall success.",
+      "D": "If the present administration had been economically successful, it would have cared for the environment.",
+      "E": "If the present administration succeeds at environmental protection, then it will be an overall success."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "The legislature is considering a proposed bill that would\nprohibit fishing in Eagle Bay. Despite widespread\nconcern over the economic effect this ban would have\non the local fishing industry, the bill should be enacted. The bay has one of the highest water pollution levels in\nthe nation, and a recent study of the bay’s fish found that\n80 percent of them contained toxin levels that exceed\ngovernmental safety standards. Continuing to permit\nfishing in Eagle Bay could thus have grave effects on\npublic health.",
+    "questionStem": "The argument proceeds by presenting evidence that",
+    "answerChoices": {
+      "A": "the toxic contamination of fish in Eagle Bay has had grave economic effects on the local fishing industry",
+      "B": "the moral principle that an action must be judged on the basis of its foreseeable effects is usually correct",
+      "C": "the opponents of the ban have failed to weigh properly its foreseeable negative effects against its positive ones",
+      "D": "failure to enact the ban would carry with it unacceptable risks for the public welfare",
+      "E": "the ban would reduce the level of toxins in the fish in Eagle Bay"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Focused on Evidence"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Vandenburg: This art museum is not adhering to its\npurpose. Its founders intended it to devote\nas much attention to contemporary art as to\nthe art of earlier periods, but its collection of\ncontemporary art is far smaller than its other\ncollections.\nSimpson: The relatively small size of the museum’s\ncontemporary art collection is appropriate. It’s\nan art museum, not an ethnographic museum\ndesigned to collect every style of every period.\nIts contemporary art collection is small because\nits curators believe that there is little high-quality\ncontemporary art.",
+    "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the reasoning in Simpson’s response to\nVandenburg?",
+    "answerChoices": {
+      "A": "An art museum should collect only works that its curators consider to be of high artistic quality.",
+      "B": "An art museum should not collect any works that violate the purpose defined by the museum’s founders.",
+      "C": "An art museum’s purpose need not be to collect every style of every period.",
+      "D": "An ethnographic museum’s purpose should be defined according to its curators’ beliefs.",
+      "E": "The intentions of an art museum’s curators should not determine what is collected by that museum."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Over the last five years, every new major alternative-energy initiative that initially was promised government\nfunding has since seen that funding severely curtailed.\nIn no such case has the government come even close to\nproviding the level of funds initially earmarked for these\nprojects. Since large corporations have made it a point\nto discourage alternative-energy projects, it is likely that\nthe corporations’ actions influenced the government’s\nfunding decisions.",
+    "questionStem": "Which one of the following, if true, most strengthens the\nreasoning above?",
+    "answerChoices": {
+      "A": "For the past two decades, most alternative-energy initiatives have received little or no government funding.",
+      "B": "The funding initially earmarked for a government project is always subject to change, given the mechanisms by which the political process operates.",
+      "C": "The only research projects whose government funding has been severely curtailed are those that large corporations have made it a point to discourage.",
+      "D": "Some projects encouraged by large corporations have seen their funding severely curtailed over the last five years.",
+      "E": "All large corporations have made it a point to discourage some forms of research."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Talbert: Chess is beneficial for school-age children. It is enjoyable, encourages foresight and\nlogical thinking, and discourages carelessness,\ninattention, and impulsiveness. In short, it\npromotes mental maturity. Sklar: My objection to teaching chess to children is that\nit diverts mental activity from something with\nsocietal value, such as science, into something\nthat has no societal value.",
+    "questionStem": "Talbert’s and Sklar’s statements provide the strongest\nsupport for holding that they disagree with each other\nover whether",
+    "answerChoices": {
+      "A": "chess promotes mental maturity",
+      "B": "many activities promote mental maturity just as well as chess does",
+      "C": "chess is socially valuable and science is not",
+      "D": "children should be taught to play chess",
+      "E": "children who neither play chess nor study science are mentally immature"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Marcia: Not all vegetarian diets lead to nutritional\ndeficiencies. Research shows that vegetarians can\nobtain a full complement of proteins and minerals\nfrom nonanimal foods. Theodora: You are wrong in claiming that vegetarianism\ncannot lead to nutritional deficiencies. If most\npeople became vegetarians, some of those losing\njobs due to the collapse of many meat-based\nindustries would fall into poverty and hence be\nunable to afford a nutritionally adequate diet.",
+    "questionStem": "Theodora’s reply to Marcia’s argument is most\nvulnerable to criticism on the grounds that her reply",
+    "answerChoices": {
+      "A": "is directed toward disproving a claim that Marcia did not make",
+      "B": "ignores the results of the research cited by Marcia",
+      "C": "takes for granted that no meat-based industries will collapse unless most people become vegetarians",
+      "D": "uses the word “diet” in a nontechnical sense whereas Marcia’s argument uses this term in a medical sense",
+      "E": "takes for granted that people losing jobs in meat-based industries would become vegetarians"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Musicologist: Classification of a musical instrument\ndepends on the mechanical action through which\nit produces music. So the piano is properly\ncalled a percussion instrument, not a stringed\ninstrument. Even though the vibration of the\npiano’s strings is what makes its sound, the\nstrings are caused to vibrate by the impact of\nhammers.",
+    "questionStem": "Which one of the following most accurately expresses\nthe main conclusion of the musicologist’s argument?",
+    "answerChoices": {
+      "A": "Musical instruments should be classified according to the mechanical actions through which they produce sound.",
+      "B": "Musical instruments should not be classified based on the way musicians interact with them.",
+      "C": "Some people classify the piano as a stringed instrument because of the way the piano produces sound.",
+      "D": "The piano should be classified as a stringed instrument rather than as a percussion instrument.",
+      "E": "It is correct to classify the piano as a percussion instrument rather than as a stringed instrument."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In a vast ocean region, phosphorus levels have doubled\nin the past few decades due to agricultural runoff pouring\nout of a large river nearby. The phosphorus stimulates\nthe growth of plankton near the ocean surface. Decaying\nplankton fall to the ocean floor, where bacteria devour\nthem, consuming oxygen in the process. Due to the\nresulting oxygen depletion, few fish can survive in this\nregion.",
+    "questionStem": "Which one of the following can be properly inferred\nfrom the information above?",
+    "answerChoices": {
+      "A": "The agricultural runoff pouring out of the river contributes to the growth of plankton near the ocean surface.",
+      "B": "Before phosphorus levels doubled in the ocean region, most fish were able to survive in that region.",
+      "C": "If agricultural runoff ceased pouring out of the river, there would be no bacteria on the ocean floor devouring decaying plankton.",
+      "D": "The quantity of agricultural runoff pouring out of the river has doubled in the past few decades.",
+      "E": "The amount of oxygen in a body of water is in general inversely proportional to the level of phosphorus in that body of water."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Chains",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Psychologists observing a shopping mall parking lot\nfound that, on average, drivers spent 39 seconds leaving\na parking space when another car was quietly waiting\nto enter it, 51 seconds if the driver of the waiting car\nhonked impatiently, but only 32 seconds leaving a space\nwhen no one was waiting. This suggests that drivers feel\npossessive of their parking spaces even when leaving\nthem, and that this possessiveness increases in reaction to\nindications that another driver wants the space.",
+    "questionStem": "Which one of the following, if true, most weakens the\nreasoning?",
+    "answerChoices": {
+      "A": "The more pressure most drivers feel because others are waiting for them to perform maneuvers with their cars, the less quickly they are able to perform them.",
+      "B": "The amount of time drivers spend entering a parking space is not noticeably affected by whether other drivers are waiting for them to do so, nor by whether those other drivers are honking impatiently.",
+      "C": "It is considerably more difficult and time-consuming for a driver to maneuver a car out of a parking space if another car waiting to enter that space is nearby.",
+      "D": "Parking spaces in shopping mall parking lots are unrepresentative of parking spaces in general with respect to the likelihood that other cars will be waiting to enter them.",
+      "E": "Almost any driver leaving a parking space will feel angry at another driver who honks impatiently, and this anger will influence the amount of time spent leaving the space."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Shark teeth are among the most common vertebrate\nfossils; yet fossilized shark skeletons are much less\ncommon—indeed, comparatively rare among fossilized\nvertebrate skeletons.",
+    "questionStem": "Which one of the following, if true, most helps to resolve\nthe apparent paradox described above?",
+    "answerChoices": {
+      "A": "Unlike the bony skeletons of other vertebrates, shark skeletons are composed of cartilage, and teeth and bone are much more likely to fossilize than cartilage is.",
+      "B": "The rare fossilized skeletons of sharks that are found are often found in areas other than those in which fossils of shark teeth are plentiful.",
+      "C": "Fossils of sharks’ teeth are quite difficult to distinguish from fossils of other kinds of teeth.",
+      "D": "Some species of sharks alive today grow and lose many sets of teeth during their lifetimes.",
+      "E": "The physical and chemical processes involved in the fossilization of sharks’ teeth are as common as those involved in the fossilization of shark skeletons."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Critic: Photographers, by deciding which subjects to\ndepict and how to depict them, express their\nown worldviews in their photographs, however\nrealistically those photographs may represent\nreality. Thus, photographs are interpretations of\nreality.",
+    "questionStem": "The argument’s conclusion is properly drawn if which\none of the following is assumed?",
+    "answerChoices": {
+      "A": "Even representing a subject realistically can involve interpreting that subject.",
+      "B": "To express a worldview is to interpret reality.",
+      "C": "All visual art expresses the artist’s worldview.",
+      "D": "Any interpretation of reality involves the expression of a worldview.",
+      "E": "Nonrealistic photographs, like realistic photographs, express the worldviews of the photographers who take them."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Geologists recently discovered marks that closely\nresemble worm tracks in a piece of sandstone. These\nmarks were made more than half a billion years earlier\nthan the earliest known traces of multicellular animal life.\nTherefore, the marks are probably the traces of geological\nprocesses rather than of worms.",
+    "questionStem": "Which one of the following, if true, most weakens the\nargument?",
+    "answerChoices": {
+      "A": "It is sometimes difficult to estimate the precise age of a piece of sandstone.",
+      "B": "Geological processes left a substantial variety of marks in sandstone more than half a billion years before the earliest known multicellular animal life existed.",
+      "C": "There were some early life forms other than worms that are known to have left marks that are hard to distinguish from those found in the piece of sandstone.",
+      "D": "At the place where the sandstone was found, the only geological processes that are likely to mark sandstone in ways that resemble worm tracks could not have occurred at the time the marks were made.",
+      "E": "Most scientists knowledgeable about early animal life believe that worms are likely to have been among the earliest forms of multicellular animal life on Earth, but evidence of their earliest existence is scarce because they are composed solely of soft tissue."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Anti-Causal",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Often a type of organ or body structure is the only\nphysically feasible means of accomplishing a given\ntask, so it should be unsurprising if, like eyes or wings,\nthat type of organ or body structure evolves at different\ntimes in a number of completely unrelated species. After\nall, whatever the difference of heritage and habitat, as\norganisms animals have fundamentally similar needs and\nso _______.",
+    "questionStem": "Which one of the following most logically completes the\nlast sentence of the passage?",
+    "answerChoices": {
+      "A": "will often live in the same environment as other species quite different from themselves",
+      "B": "will in many instances evolve similar adaptations enabling them to satisfy these needs",
+      "C": "will develop adaptations allowing them to satisfy these needs",
+      "D": "will resemble other species having different biological needs",
+      "E": "will all develop eyes or wings as adaptations"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Logical Completion",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Engineer: Thermophotovoltaic generators are devices\nthat convert heat into electricity. The process\nof manufacturing steel produces huge amounts\nof heat that currently go to waste. So if steel-manufacturing plants could feed the heat they\nproduce into thermophotovoltaic generators, they\nwould greatly reduce their electric bills, thereby\nsaving money.",
+    "questionStem": "Which one of the following is an assumption on which\nthe engineer’s argument depends?",
+    "answerChoices": {
+      "A": "There is no other means of utilizing the heat produced by the steel-manufacturing process that would be more cost effective than installing thermophotovoltaic generators.",
+      "B": "Using current technology, it would be possible for steel-manufacturing plants to feed the heat they produce into thermophotovoltaic generators in such a way that those generators could convert at least some of that heat into electricity.",
+      "C": "The amount steel-manufacturing plants would save on their electric bills by feeding heat into thermophotovoltaic generators would be sufficient to cover the cost of purchasing and installing those generators.",
+      "D": "At least some steel-manufacturing plants rely on electricity as their primary source of energy in the steel-manufacturing process.",
+      "E": "There are at least some steel-manufacturing plants that could greatly reduce their electricity bills only if they used some method of converting wasted heat or other energy from the steel-manufacturing process into electricity."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Herbalist: While standard antibiotics typically have\njust one active ingredient, herbal antibacterial\nremedies typically contain several. Thus, such\nherbal remedies are more likely to retain their\neffectiveness against new, resistant strains of\nbacteria than are standard antibiotics. For a strain\nof bacteria, the difficulty of developing resistance\nto an herbal antibacterial remedy is like a cook’s\ndifficulty in trying to prepare a single meal that\nwill please all of several dozen guests, a task far\nmore difficult than preparing one meal that will\nplease a single guest.",
+    "questionStem": "In the analogy drawn in the argument above, which one\nof the following corresponds to a standard antibiotic?",
+    "answerChoices": {
+      "A": "a single guest",
+      "B": "several dozen guests",
+      "C": "the pleasure experienced by a single guest",
+      "D": "a cook",
+      "E": "the ingredients available to a cook"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "To find out how barn owls learn how to determine the\ndirection from which sounds originate, scientists put\ndistorting lenses over the eyes of young barn owls\nbefore the owls first opened their eyes. The owls with\nthese lenses behaved as if objects making sounds were\nfarther to the right than they actually were. Once the owls\nmatured, the lenses were removed, yet the owls continued\nto act as if they misjudged the location of the source of\nsounds. The scientists consequently hypothesized that\nonce a barn owl has developed an auditory scheme for\nestimating the point from which sounds originate, it\nceases to use vision to locate sounds.",
+    "questionStem": "The scientists’ reasoning is vulnerable to which one of\nthe following criticisms?",
+    "answerChoices": {
+      "A": "It fails to consider whether the owls’ vision was permanently impaired by their having worn the lenses while immature.",
+      "B": "It assumes that the sense of sight is equally good in all owls.",
+      "C": "It attributes human reasoning processes to a nonhuman organism.",
+      "D": "It neglects to consider how similar distorting lenses might affect the behavior of other bird species.",
+      "E": "It uses as evidence experimental results that were irrelevant to the conclusion."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "As often now as in the past, newspaper journalists use\ndirect or indirect quotation to report unsupported or false\nclaims made by newsmakers. However, journalists are\nbecoming less likely to openly challenge the veracity of\nsuch claims within their articles.",
+    "questionStem": "Each of the following, if true, helps to explain the trend\nin journalism described above except:",
+    "answerChoices": {
+      "A": "Newspaper publishers have found that many readers will cancel a subscription simply because a view they take for granted has been disputed by the publication.",
+      "B": "The areas of knowledge on which journalists report are growing in specialization and diversity, while journalists themselves are not becoming more broadly knowledgeable.",
+      "C": "Persons supporting controversial views more and more frequently choose to speak only to reporters who seem sympathetic to their views.",
+      "D": "A basic principle of journalism holds that debate over controversial issues draws the attention of the public.",
+      "E": "Journalists who challenge the veracity of claims are often criticized for failing their professional obligation to be objective."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "When people show signs of having a heart attack an\nelectrocardiograph (EKG) is often used to diagnose\ntheir condition. In a study, a computer program for EKG\ndiagnosis of heart attacks was pitted against a very\nexperienced, highly skilled cardiologist. The program\ncorrectly diagnosed a significantly higher proportion of\nthe cases that were later confirmed to be heart attacks\nthan did the cardiologist. Interpreting EKG data,\ntherefore, should be left to computer programs.",
+    "questionStem": "Which one of the following, if true, most weakens the\nargument?",
+    "answerChoices": {
+      "A": "Experts agreed that the cardiologist made few obvious mistakes in reading and interpreting the EKG data.",
+      "B": "The practice of medicine is as much an art as a science, and computer programs are not easily adapted to making subjective judgments.",
+      "C": "The cardiologist correctly diagnosed a significantly higher proportion of the cases in which no heart attack occurred than did the computer program.",
+      "D": "In a considerable percentage of cases, EKG data alone are insufficient to enable either computer programs or cardiologists to make accurate diagnoses.",
+      "E": "The cardiologist in the study was unrepresentative of cardiologists in general with respect to skill and experience."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A government study indicates that raising speed limits\nto reflect the actual average speeds of traffic on level,\nstraight stretches of high-speed roadways reduces the\naccident rate. Since the actual average speed for level,\nstraight stretches of high-speed roadways tends to be\n120 kilometers per hour (75 miles per hour), that should\nbe set as a uniform national speed limit for level, straight\nstretches of all such roadways.",
+    "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the reasoning above?",
+    "answerChoices": {
+      "A": "Uniform national speed limits should apply only to high-speed roadways.",
+      "B": "Traffic laws applying to high-speed roadways should apply uniformly across the nation.",
+      "C": "A uniform national speed limit for high-speed roadways should be set only if all such roadways have roughly equal average speeds of traffic.",
+      "D": "Long-standing laws that are widely violated are probably not good laws.",
+      "E": "Any measure that reduces the rate of traffic accidents should be implemented."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Psychiatrist: In treating first-year students at this\nuniversity, I have noticed that those reporting the\nhighest levels of spending on recreation score\nat about the same level on standard screening\ninstruments for anxiety and depression as\nthose reporting the lowest levels of spending\non recreation. This suggests that the first-year\nstudents with high levels of spending on recreation\ncould reduce that spending without increasing\ntheir anxiety or depression.",
+    "questionStem": "Each of the following, if true, strengthens the\npsychiatrist’s argument except:",
+    "answerChoices": {
+      "A": "At other universities, first-year students reporting the highest levels of spending on recreation also show the same degree of anxiety and depression as do those reporting the lowest levels of such spending.",
+      "B": "Screening of first-year students at the university who report moderate levels of spending on recreation reveals that those students are less anxious and depressed than both those with the highest and those with the lowest levels of spending on recreation.",
+      "C": "Among adults between the ages of 40 and 60, increased levels of spending on recreation are strongly correlated with decreased levels of anxiety and depression.",
+      "D": "The screening instruments used by the psychiatrist are extremely accurate in revealing levels of anxiety and depression among university students.",
+      "E": "Several of the psychiatrist’s patients who are first-year students at the university have reduced their spending on recreation from very high levels to very low levels without increasing their anxiety or depression."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Every brick house on River Street has a front yard. Most\nof the houses on River Street that have front yards also\nhave two stories. So most of the brick houses on River\nStreet have two stories.",
+    "questionStem": "Which one of the following is most appropriate as an\nanalogy demonstrating that the reasoning in the\nargument above is flawed?",
+    "answerChoices": {
+      "A": "By that line of reasoning, we could conclude that most politicians have run for office, since all legislators are politicians and most legislators have run for office.",
+      "B": "By that line of reasoning, we could conclude that most public servants are legislators, since most legislators have run for office and most politicians who have run for office are public servants.",
+      "C": "By that line of reasoning, we could conclude that not every public servant has run for office, since every legislator is a public servant but some public servants are not legislators.",
+      "D": "By that line of reasoning, we could conclude that most legislators have never run for office, since most public servants have never run for office and all legislators are public servants.",
+      "E": "By that line of reasoning, we could conclude that most legislators are not public servants, since most public servants have not run for office and most legislators have run for office."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Historian: It is unlikely that someone would see history\nas the working out of moral themes unless he or\nshe held clear and unambiguous moral beliefs.\nHowever, one’s inclination to morally judge\nhuman behavior decreases as one’s knowledge of\nhistory increases. Consequently, the more history\na person knows, the less likely that person is to\nview history as the working out of moral themes.",
+    "questionStem": "The conclusion of the argument is properly drawn if\nwhich one of the following is assumed?",
+    "answerChoices": {
+      "A": "Historical events that fail to elicit moral disapproval are generally not considered to exemplify a moral theme.",
+      "B": "The less inclined one is to morally judge human behavior, the less likely it is that one holds clear and unambiguous moral beliefs.",
+      "C": "Only those who do not understand human history attribute moral significance to historical events.",
+      "D": "The more clear and unambiguous one’s moral beliefs, the more likely one is to view history as the working out of moral themes.",
+      "E": "People tend to be less objective regarding a subject about which they possess extensive knowledge than regarding a subject about which they do not possess extensive knowledge."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT142",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A recent poll revealed that most students at our university\nprefer that the university, which is searching for a new\npresident, hire someone who has extensive experience as\na university president. However, in the very same poll,\nthe person most students chose from among a list of\nleading candidates as the one they would most like to see\nhired was someone who has never served as a university\npresident.",
+    "questionStem": "Which one of the following, if true, most helps to\naccount for the apparent discrepancy in the students’\npreferences?",
+    "answerChoices": {
+      "A": "Because several of the candidates listed in the poll had extensive experience as university presidents, not all of the candidates could be differentiated on this basis alone.",
+      "B": "Most of the candidates listed in the poll had extensive experience as university presidents.",
+      "C": "Students taking the poll had fewer candidates to choose from than were currently being considered for the position.",
+      "D": "Most of the students taking the poll did not know whether any of the leading candidates listed in the poll had ever served as a university president.",
+      "E": "Often a person can be well suited to a position even though they have relatively little experience in such a position."
+    },
+    "correctAnswer": "D"
+  }
+]

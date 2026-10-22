@@ -1,0 +1,587 @@
+[
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Critic: While the political message in this short story is interesting enough that the author could have based an essay, or a different short story, around that message alone, it should not have been included in this story. The story’s primary focus is humor, and the political message distracts from the story’s humorous effect.",
+    "questionStem": "Which one of the following principles, if valid, most strongly supports the critic’s reasoning?",
+    "answerChoices": {
+      "A": "Authors should not convey political messages in their short stories.",
+      "B": "Nothing in a short story should distract from the story’s primary focus.",
+      "C": "Writers should not risk alienating readers who disagree with them politically.",
+      "D": "Political messages need to be developed differently in essays than in short stories.",
+      "E": "A short story’s political message is irrelevant to its artistic merit."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Entertainment reporter: Unlike most major motion pictures, the release of the upcoming film Escapade II has not been preceded by free, advance screenings that show the film to select audiences for promotional purposes. With movie research showing awareness of the film at 96 percent, and with around 60 percent of filmgoers indicating “definite interest” in the film, the film’s distributors must have decided not to do anything that could reduce interest in the film.",
+    "questionStem": "The entertainment reporter’s explanation for why there have been no advance screenings of Escapade II relies on assuming that the distributors believe that",
+    "answerChoices": {
+      "A": "advance screenings of Escapade II would cost them a significant amount that could much more effectively be spent on advertising",
+      "B": "advance screenings of Escapade II might lead to a dampening of the enthusiasm of filmgoers who would otherwise have an interest in seeing the film",
+      "C": "the select audiences who would normally be invited to free, advance screenings of a major motion picture would probably not enjoy Escapade II",
+      "D": "if 96 percent of the public is aware of the upcoming release of Escapade II, it is probable that 96 percent of the public intends to see the film",
+      "E": "the film Escapade II would most likely be viewed by approximately 60 percent of the public if no advance screenings are given"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Anthropology professor: The new class I’m offering has been listed in the course catalog as a literature class, but it should be listed instead as an anthropology class. The texts we will study are all novels, but we will be examining them as sources of information about different cultures. Dean: The class is listed as it should be. All the readings in the class are works of literature.",
+    "questionStem": "The dialogue provides the most support for the claim that the anthropology professor and the dean disagree over whether",
+    "answerChoices": {
+      "A": "all of the books that will be read in the new class are novels",
+      "B": "a class can be listed as both an anthropology class and a literature class",
+      "C": "the approach taken to the readings should be a crucial determinant of how a class is listed",
+      "D": "the dean has the power to decide how a new class is to be listed",
+      "E": "an anthropology professor should be permitted to teach a literature class"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Focused on Evidence",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Toy manufacturer: Our competitors argue that we should withdraw our KlopperKidz toys from stores because several children have allegedly been injured by them, and manufacturers should voluntarily withdraw toys that can lead to injury. Their allegations, however, have not been proved. Furthermore, even if they were proved, our competitors’ argument would still not merit serious attention, because their toys have caused injuries, and they have not volunteered to withdraw them from stores.",
+    "questionStem": "The toy manufacturer’s argument is most vulnerable to the criticism that it",
+    "answerChoices": {
+      "A": "attempts to justify a conclusion by offering reasons that are mutually exclusive",
+      "B": "rejects an argument on the grounds that those making it have a vested interest in convincing people of the truth of the conclusion",
+      "C": "assumes that merely because something has not been proved to be true, it must therefore be false",
+      "D": "rejects an argument on the grounds that those making it have failed to abide by what the argument recommends",
+      "E": "takes a necessary condition for a toy’s being unsafe to be a sufficient condition for its being unsafe"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researcher: Some scholars maintain that the first government other than China to issue any form of paper currency was the Massachusetts colony in 1690. But these scholars are incorrect. During a coin shortage in New France in 1685, its government was unable to use coins to pay soldiers stationed in Quebec. Instead, playing cards were assigned an official value and issued as pay. These cards, which could be used to buy goods, were convertible to coins, which later arrived on supply ships from France.",
+    "questionStem": "The researcher’s conclusion is properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The playing cards in use in Quebec in the late 1600s were made of paper.",
+      "B": "The Chinese government did not issue paper currency during the 1600s.",
+      "C": "Playing cards were not available to inhabitants of the Massachusetts colony before 1690.",
+      "D": "The Massachusetts colony’s issue of paper currency was not prompted by a coin shortage.",
+      "E": "Every government that issued paper currency in the 1600s left records pertaining to that currency."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Rebuttals",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "A tiny crab that lives 550 meters below the surface of the Gulf of Mexico has been found to have eyes that are sensitive to ultraviolet light. But ultraviolet light from the sun cannot penetrate to that depth. If the crab’s ultraviolet receptors developed as an adaptation to the depths, they are probably for detecting light from bioluminescent organisms. In that case, since the crab is not itself bioluminescent, it probably hunts bioluminescent prey.",
+    "questionStem": "Which one of the following, if true, would most weaken the argument?",
+    "answerChoices": {
+      "A": "A trait that serves no function tends to be lost over time.",
+      "B": "Prey is not plentiful at the depth at which the crabs are found.",
+      "C": "The crabs can detect each other by nonvisual means.",
+      "D": "It takes many generations to develop sensitivity to ultraviolet light.",
+      "E": "The crab’s most dangerous predators are bioluminescent."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Last year a local advertising agency produced many of its television commercials in a studio with improperly installed equipment. As a result, the sound in these commercials was not perfectly synchronized with the picture; this was particularly noticeable when people were shown talking, and it even prompted complaints from some viewers. However, local automobile dealerships that relied on television commercials from this agency tended to have greater sales increases during this period than did local dealerships using television commercials from other agencies instead.",
+    "questionStem": "Which one of the following, if true, most helps to explain the sales discrepancy described above?",
+    "answerChoices": {
+      "A": "Most viewers turned off the sound on their televisions when local automobile-dealership commercials aired during this period.",
+      "B": "People are more likely to recall a television commercial they have seen if the sound and pictures were not properly synchronized.",
+      "C": "Most of the advertisers that relied on commercials produced at the studio with improperly installed equipment were automobile dealerships.",
+      "D": "Not all of the commercials produced for automobile dealerships at this studio contained video of people talking.",
+      "E": "Most of the local automobile dealerships during this time did not rely heavily on television advertising."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Sinking large, obsolete pieces of equipment in coral areas is said to provide much-needed habitats for marine life. This, proponents say, shows that the practice is ecologically sound. However, it may be that this practice is ecologically unsound even if it does provide much-needed habitats, for the practice may upset an area’s ecological balance in unknown ways.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that the practice of sinking large, obsolete pieces of equipment in coral areas may upset an area’s ecological balance in unknown ways?",
+    "answerChoices": {
+      "A": "It is intended to be a summary of the argument.",
+      "B": "It is a claim that the argument purports to refute.",
+      "C": "It is a claim that the argument contends is insufficient to show what some have taken it to show.",
+      "D": "It is the main conclusion of the argument.",
+      "E": "It is a premise of the argument."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Having cameras at traffic intersections to automatically ticket cars that run red lights might raise revenue for municipalities but does not increase traffic safety. Accidents actually increase at intersections that have cameras: There are fewer side-impact collisions but significantly more rear-impact collisions.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "The revenue raised through automatically generated tickets can be used to address issues other than traffic safety.",
+      "B": "Automatically generated tickets for running red lights have been shown to generate some undeserved tickets.",
+      "C": "Side-impact collisions are generally the fault of the driver who drives through the red light.",
+      "D": "Side-impact collisions are a much greater safety threat than rear-impact collisions.",
+      "E": "Automatically generated tickets can punish the owner of the car rather than the driver of the car at the time of the infraction."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "For years, Glenville had the highest apartment rents in the metropolitan region in which it is located. This year, Glenville has only the third highest apartment rents in the region. Therefore, it must cost less to rent an apartment in Glenville now than it used to.",
+    "questionStem": "Which one of the following arguments demonstrates most effectively by parallel reasoning that the argument above is flawed?",
+    "answerChoices": {
+      "A": "Because Brenda’s kitten’s veterinary bills are lower than her puppy’s veterinary bills, the kitten must be healthier than the puppy.",
+      "B": "Because Brenda’s kitten was larger than her puppy a while ago but is now smaller than the puppy, the kitten must have shrunk.",
+      "C": "Because Brenda’s kitten was born a week before her puppy was, Brenda must have gotten the kitten first.",
+      "D": "Because Brenda’s kitten eats less than her puppy does, the kitten is unlikely to become overweight.",
+      "E": "Because Brenda’s kitten has become more friendly toward her puppy recently, the puppy must have become more friendly toward the kitten."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Relative vs. Absolute",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The crocodiles of Lake Victoria, in East Africa, sometimes attack humans that venture into their habitat. The number of attacks on people by these crocodiles has increased significantly in the last 20 years. This is despite the fact that the number of crocodiles in the lake has not increased in that time and the crocodiles have no less food available.",
+    "questionStem": "Which one of the following, if true, most helps to explain the increase in the incidence of crocodile attacks on humans?",
+    "answerChoices": {
+      "A": "Wildlife authorities on Lake Victoria sometimes destroy crocodiles that they believe to be responsible for attacks on humans.",
+      "B": "About 100 crocodiles inhabit the part of Lake Victoria where most of the attacks on humans have occurred.",
+      "C": "More attacks on humans by crocodiles occur in Lake Victoria than in any other part of Africa.",
+      "D": "Adult crocodiles in Lake Victoria are generally unafraid of humans or their boats.",
+      "E": "People now fish in more parts of Lake Victoria than they did in previous decades."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "When the annual period of daylight saving time begins, and clocks are set forward one hour, many people lose an hour of sleep. On the following day, according to government statistics, the incidence of traffic accidents is 7 percent greater than the average for that time of year. It is therefore likely that sleep deprivation is responsible for this spike in traffic accidents.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Many people forget to set their clocks forward when daylight saving time begins and are late for appointments on the following day as a result.",
+      "B": "Traffic accidents are less common in the spring, when the annual period of daylight saving time begins, than they are in the winter.",
+      "C": "The traffic accidents that occur on the day after daylight saving time begins are no more severe than normal.",
+      "D": "The higher incidence of accidents is most pronounced later in the day, when sleep-deprived people tend to be most drowsy.",
+      "E": "The effects of sleep deprivation can linger for several days."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Percentages",
+      "Plausibility",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Every human’s brain contains a mental representation of the external world. Yet, this representation necessarily leaves out much detail. After all, the external world is much larger and more complex than the human brain, and there is no way an object could completely represent something larger and more complex than itself.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "The human brain’s representation of the external world leaves out much detail.",
+      "B": "The external world is much larger and more complex than a human brain.",
+      "C": "The human brain cannot completely represent something larger and more complex than itself.",
+      "D": "The human brain contains a mental representation of the external world.",
+      "E": "It is impossible for any entity to completely represent anything larger and more complicated than itself."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Principle-Conform",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Generally, open discussion of a false and pernicious idea diminishes its appeal. Even in a flourishing democracy, however, certain misconceptions are so alluring that they tend to gain in popularity when they are debated.",
+    "questionStem": "Which one of the following principles is most clearly illustrated by the statements above?",
+    "answerChoices": {
+      "A": "Democratic governments should be allowed on occasion to suppress debate regarding certain misconceptions.",
+      "B": "Sometimes it is better to openly discuss an idea even though doing so will increase the popularity of a misconception.",
+      "C": "Not all pernicious ideas are misconceptions.",
+      "D": "Discussion and debate do not necessarily lead to a greater acceptance of the truth.",
+      "E": "One of the reasons some ideas are appealing is that they are false."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot",
+      "Principles in Answers",
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Schmidt: In enforcing township rules on how homeowners maintain their property, it is a mistake to encourage residents to report violations by their neighbors. Doing so engenders bad feelings among neighbors and leads to tips based on spite. Chandha: It’s not a mistake. Without rules on how homeowners maintain their property, a single homeowner could degrade the appearance of an entire neighborhood.",
+    "questionStem": "Chandha’s response is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "takes a criticism of the way in which certain rules are enforced to be a criticism of the rules themselves",
+      "B": "challenges the motivation behind Schmidt’s argument rather than Schmidt’s reasoning",
+      "C": "confuses a criticism of the consequences of having a set of rules with a criticism of the detailed provisions of the rules",
+      "D": "takes for granted that just because something is likely to happen on some occasions, it will always happen",
+      "E": "confuses the cause of bad feelings among neighbors with a consequence of bad feelings among neighbors"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Role",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Some have argued that once it becomes necessary for us to think about computers in terms of beliefs and desires in order to understand how they function, we can rightly say that computers have beliefs and desires. However, we already need to think about what computers believe and desire in order to understand how they function, and thus the suggested criterion for ascribing beliefs and desires to computers implies that the computers that exist now have beliefs and desires. So the suggested criterion is obviously flawed.",
+    "questionStem": "The claim that the computers that exist now have beliefs and desires plays which one of the following roles in the argument above?",
+    "answerChoices": {
+      "A": "It is held to be an unacceptable conclusion to which the suggested criterion would lead.",
+      "B": "It is a view the argument assumes is uncontroversial.",
+      "C": "It is an example given to clarify the criterion in question.",
+      "D": "It is the conclusion of the argument.",
+      "E": "It is a premise whose truth is necessary to the success of the argument."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rebuttals",
+      "Dense Stimulus",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Manufacturer: If our biggest competitor were to go out of business, some of the specialized suppliers that we both use would be bankrupted. So, in order for us to stay in business, our biggest competitor must stay in business.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The manufacturer’s specialized suppliers will not be bankrupted.",
+      "B": "The manufacturer will stay in business if its biggest competitor stays in business.",
+      "C": "If the manufacturer goes out of business, its biggest competitor will go out of business.",
+      "D": "The manufacturer will stay in business if its specialized suppliers are not bankrupted.",
+      "E": "The manufacturer will stay in business only if its specialized suppliers are not bankrupted."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Jack’s dog howls whenever a train goes by. Occasionally a train goes by while Jack is washing his dog. So Jack’s dog must sometimes howl while he is washing it.",
+    "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Every serious jogger can benefit from good running shoes. But there must be a few serious joggers who prefer to run in ordinary sneakers, since some people who can benefit from good running shoes prefer to run in ordinary sneakers.",
+      "B": "Most serious joggers can benefit from good running shoes. But some serious joggers prefer to run in ordinary sneakers. So some people who prefer to run in ordinary sneakers can benefit from good running shoes.",
+      "C": "Any serious jogger can benefit from good running shoes. But a few serious joggers prefer to run in ordinary sneakers. So some people who can benefit from good running shoes prefer to run in ordinary sneakers.",
+      "D": "At least some serious joggers can benefit from good running shoes. But there are serious joggers who prefer to run in ordinary sneakers. So some people who prefer to run in ordinary sneakers can benefit from good running shoes.",
+      "E": "Any serious jogger can benefit from good running shoes. But some serious joggers occasionally prefer to run in ordinary sneakers. So anyone who can benefit from good running shoes occasionally prefers to run in ordinary sneakers."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "When plants are growing quickly, they take more carbon dioxide out of the atmosphere than they release into it. But when they are growing very slowly, the reverse is true. Any substantial increase in the amount of carbon dioxide released into the atmosphere causes temperatures to increase in the tropics, where the bulk of Earth’s plants are found. And the more temperatures increase in the tropics, the more slowly, on average, the plants there grow.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "The amount of carbon dioxide released into the atmosphere will inevitably increase at a gradually accelerating rate of speed.",
+      "B": "If the amount of carbon dioxide released into the atmosphere increases substantially, the bulk of Earth’s plants will release more carbon dioxide into the atmosphere than they take out of it.",
+      "C": "Plants in the tropics will grow more slowly, on average, if they release enough carbon dioxide to increase substantially the total amount of carbon dioxide released into the atmosphere.",
+      "D": "If the plants in the tropics begin to grow more slowly, on average, the temperatures in the tropics will increase substantially as a result.",
+      "E": "Any increase in temperatures in the tropics will be associated with a substantial increase in the amount of carbon dioxide released into the atmosphere."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Essayist: Since ancient times humans have relied on myths to try to explain our place in the cosmos. In this respect the claims of science are not different from stories about the gods of Homer. The question of the truth of science, as with myth, is merely the question of how well it helps us to cope with the human condition. So while science undoubtedly can count some successes, that it falls short of complete truth is amply demonstrated by the degree to which science is responsible for the breakdown of society’s key institutions.",
+    "questionStem": "Which one of the following most accurately states the main conclusion of the essayist’s argument?",
+    "answerChoices": {
+      "A": "Science is at least in part responsible for the breakdown of key institutions in society.",
+      "B": "Science is no more true than the myth of the gods of Homer.",
+      "C": "Science is only partially true.",
+      "D": "Science is merely a myth.",
+      "E": "Science, like stories about the gods of Homer, attempts to explain our place in the cosmos."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Dense Stimulus",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Sodium nitrate is frequently added to sausages to make them pink. However, sodium nitrate does not contribute to preventing spoilage of the meat, and excessive use of it increases the level of sodium in the sausages beyond what is necessary for good taste. Because consumption of an excessive level of sodium can lead to health problems, clearly sodium nitrate should never be added to sausages.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "The argument makes a recommendation based on evidence from an insufficient sample.",
+      "B": "The argument does not address possible risks associated with the proposed recommendation.",
+      "C": "The argument presumes, without providing justification, that it is appropriate for the government to protect people from possible health threats without their consent.",
+      "D": "The argument does not provide sufficient justification for preferring the solution it recommends over more moderate alternatives.",
+      "E": "The argument does not distinguish adequately between medical and economic justifications for a policy."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Must Be True",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "For a zoo to make a valuable contribution to the community, it must be well run. All large zoos that are well run have some full-time veterinarians on staff, but many small zoos that are well run have only part-time veterinarians. In addition, there are many large zoos that make valuable contributions to their communities and are open all year, while most small zoos are closed in winter.",
+    "questionStem": "If the statements above are true, then which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Most large zoos are well run.",
+      "B": "No large, well-run zoos have any part-time veterinarians on staff.",
+      "C": "Some zoos that make valuable contributions to their communities have only part-time veterinarians on staff.",
+      "D": "Some zoos that are open all year have full-time veterinarians on staff.",
+      "E": "Most small zoos make valuable contributions to their communities."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Principal: All of our school’s rural students participate in the school’s lunch program because they live too far away to go home for lunch, while roughly one half of their urban counterparts also take part in the program. Some participants in this program, including some of the school’s strongest academic achievers, also participate in extracurricular activities such as sports and drama. Therefore, we know that some of the participants in extracurricular activities are rural students and some are urban students.",
+    "questionStem": "The reasoning in the principal’s argument is flawed because this argument",
+    "answerChoices": {
+      "A": "takes for granted that a greater number of strong academic achievers than those who are not strong academic achievers participate in extracurricular activities",
+      "B": "takes for granted that a greater number of rural students than urban students participate in extracurricular activities",
+      "C": "ignores the possibility that those who participate both in the lunch program and in extracurricular activities do not include both urban and rural students",
+      "D": "ignores the possibility that both rural and urban students have many other ways of occupying their time besides extracurricular activities",
+      "E": "at first uses the word “participate” in one sense and then illicitly allows the word’s meaning to change"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Principle: An author of an article that has appeared in a magazine should be allowed to respond in that magazine to harsh criticism of the article if the criticism was published in the same magazine, or, alternatively, if the criticism was published in another magazine and is unfair. Application: McFinton should be allowed to publish a response in Speculator’s Digest to Wallace’s most recent article, because Wallace’s article is harshly critical of McFinton’s essay on self-deception.",
+    "questionStem": "Which one of the following, if true, justifies the above application of the principle?",
+    "answerChoices": {
+      "A": "McFinton’s essay on self-deception appeared in Speculator’s Digest as well as in other magazines.",
+      "B": "Wallace’s most recent article was published in Speculator’s Digest as well as in other magazines.",
+      "C": "McFinton’s essay on self-deception appeared only in Speculator’s Digest, while Wallace’s article has been published in a wide array of other magazines.",
+      "D": "Both McFinton’s essay on self-deception and Wallace’s most recent article were published in Speculator’s Digest.",
+      "E": "Wallace’s most recent article appeared in Speculator’s Digest and was unfair in its harsh criticism of McFinton’s essay on self-deception."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Untriggered Conditional",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT159",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Paleontologist: Most biologists accept that birds evolved from dinosaurs known as maniraptors. Some biologists have not accepted this theory, because the oldest known bird fossils predate the oldest known maniraptor fossils by several million years. This reasoning is misguided, however; the fact that no maniraptor fossils of a certain age have been discovered hardly rules out the possibility that such fossils exist.",
+    "questionStem": "The paleontologist’s argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It overlooks the possibility that even if a particular argument against a theory is misguided, that theory may nonetheless be untrue.",
+      "B": "It fails to address adequately the possibility that even if maniraptors existed before the first birds did, there may not be any maniraptor fossils older than the oldest known bird fossils.",
+      "C": "It takes for granted that if there are any maniraptor fossils older than the oldest known bird fossils, this itself proves that birds evolved from maniraptors.",
+      "D": "It overlooks the possibility that there may be substantial evidence that birds did not evolve from maniraptors, but that this evidence may be unrelated to the ages of any known or unknown bird and maniraptor fossils.",
+      "E": "It fails to address adequately the possibility that it can be reasonable to refuse to accept a theory solely on the grounds that the evidence yet discovered for the theory appears to be insufficient."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
+    ]
+  }
+]

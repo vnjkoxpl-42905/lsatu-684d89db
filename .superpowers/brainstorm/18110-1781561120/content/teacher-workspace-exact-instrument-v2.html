@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Workspace Exact Instrument Direction</title>
+  <style>
+    :root {
+      --bg: #b9c0c5;
+      --bg2: #aeb9bf;
+      --ink: #060a12;
+      --ink2: rgba(6, 10, 18, .64);
+      --faint: rgba(6, 10, 18, .28);
+      --ghost: rgba(6, 10, 18, .11);
+      --active: #050912;
+      --white-fog: rgba(245, 249, 250, .16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: "Helvetica Neue", "SF Pro Display", Arial, sans-serif;
+      background:
+        linear-gradient(rgba(5, 9, 18, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(5, 9, 18, .035) 1px, transparent 1px),
+        radial-gradient(circle at 50% 48%, rgba(245, 250, 252, .35), transparent 31%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      background-size: 54px 54px, 54px 54px, 100% 100%, 100% 100%;
+    }
+
+    body:before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), transparent 36%, rgba(6,10,18,.04));
+      pointer-events: none;
+    }
+
+    .screen {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      padding: 32px 36px 30px;
+    }
+
+    .top {
+      position: absolute;
+      top: 32px;
+      left: 36px;
+      right: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+
+    .date {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .date-line {
+      width: 31px;
+      height: 1px;
+      background: rgba(6, 10, 18, .42);
+    }
+
+    .window-controls {
+      position: absolute;
+      top: 226px;
+      right: 226px;
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      color: rgba(6,10,18,.62);
+      font-size: 29px;
+      font-weight: 200;
+    }
+
+    .left-tools {
+      position: absolute;
+      top: 205px;
+      left: 91px;
+      width: 205px;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(6,10,18,.38);
+      margin-bottom: 14px;
+    }
+
+    .forms {
+      display: flex;
+      gap: 22px;
+      margin-bottom: 35px;
+      align-items: center;
+      color: rgba(6,10,18,.44);
+    }
+
+    .form-icon {
+      width: 15px;
+      height: 15px;
+      position: relative;
+    }
+
+    .form-cube {
+      border: 2px solid var(--ink);
+      transform: rotate(45deg);
+    }
+
+    .form-circle {
+      border: 1px solid rgba(6,10,18,.38);
+      border-radius: 50%;
+    }
+
+    .form-diamond {
+      border: 1px solid rgba(6,10,18,.32);
+      transform: rotate(45deg);
+    }
+
+    .form-stack:before,
+    .form-stack:after {
+      content: "";
+      position: absolute;
+      left: 2px;
+      right: 2px;
+      height: 5px;
+      border: 1px solid rgba(6,10,18,.28);
+      border-radius: 50%;
+    }
+
+    .form-stack:before { top: 1px; }
+    .form-stack:after { bottom: 1px; }
+
+    .dots {
+      width: 10px;
+      height: 17px;
+      background-image: radial-gradient(var(--ink) 1px, transparent 1px);
+      background-size: 5px 5px;
+    }
+
+    .tools {
+      margin-top: 6px;
+    }
+
+    .tool {
+      height: 37px;
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      align-items: center;
+      column-gap: 12px;
+      padding: 0 14px 0 7px;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(6,10,18,.78);
+      margin-bottom: 7px;
+    }
+
+    .tool.active {
+      background: var(--active);
+      color: white;
+    }
+
+    .tool svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .tool .count {
+      font-size: 12px;
+      font-weight: 700;
+      color: inherit;
+      opacity: .75;
+    }
+
+    .center-stage {
+      position: absolute;
+      left: 50%;
+      top: 54%;
+      transform: translate(-50%, -50%);
+      width: 560px;
+      height: 520px;
+    }
+
+    .central-copy {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 420px;
+      text-align: center;
+      color: rgba(6,10,18,.66);
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+
+    .central-copy strong {
+      display: block;
+      color: var(--ink);
+      font-size: 15px;
+      letter-spacing: -.02em;
+      margin-bottom: 4px;
+    }
+
+    .cube {
+      position: absolute;
+      top: 119px;
+      left: 183px;
+      width: 194px;
+      height: 194px;
+      transform-style: preserve-3d;
+    }
+
+    .cube svg {
+      width: 194px;
+      height: 194px;
+      overflow: visible;
+    }
+
+    .cube .heavy {
+      stroke: var(--ink);
+      stroke-width: 3.1;
+      fill: none;
+      stroke-linecap: square;
+      stroke-linejoin: miter;
+    }
+
+    .cube .light {
+      stroke: rgba(6,10,18,.20);
+      stroke-width: 1;
+      fill: none;
+    }
+
+    .orbit {
+      position: absolute;
+      left: 95px;
+      top: 263px;
+      width: 370px;
+      height: 133px;
+      border-bottom: 2px solid rgba(6,10,18,.55);
+      border-radius: 0 0 50% 50%;
+    }
+
+    .orbit:before,
+    .orbit:after {
+      content: "";
+      position: absolute;
+      top: 48px;
+      width: 1px;
+      height: 62px;
+      background: linear-gradient(transparent, rgba(6,10,18,.13));
+    }
+
+    .orbit:before { left: 2px; transform: rotate(-18deg); }
+    .orbit:after { right: 2px; transform: rotate(18deg); }
+
+    .orbit-marker {
+      position: absolute;
+      left: 50%;
+      bottom: -3px;
+      transform: translateX(-50%);
+      width: 61px;
+      height: 5px;
+      background: var(--ink);
+    }
+
+    .axis {
+      position: absolute;
+      left: 136px;
+      top: 376px;
+      color: rgba(6,10,18,.55);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .axis-lines {
+      position: relative;
+      width: 46px;
+      height: 42px;
+    }
+
+    .axis-lines span {
+      position: absolute;
+      background: rgba(6,10,18,.34);
+      transform-origin: left center;
+    }
+
+    .axis-x { left: 20px; top: 24px; width: 18px; height: 1px; transform: rotate(-25deg); }
+    .axis-y { left: 20px; top: 24px; width: 18px; height: 1px; transform: rotate(-90deg); }
+    .axis-z { left: 20px; top: 24px; width: 18px; height: 1px; transform: rotate(38deg); }
+
+    .axis-label-x { position: absolute; left: 37px; top: 11px; }
+    .axis-label-y { position: absolute; left: 12px; top: -1px; }
+    .axis-label-z { position: absolute; left: 38px; top: 30px; }
+
+    .readout {
+      position: absolute;
+      left: 50%;
+      top: 388px;
+      transform: translateX(-50%);
+      text-align: center;
+      color: rgba(6,10,18,.52);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .readout strong {
+      display: block;
+      color: var(--ink);
+      font-size: 35px;
+      font-weight: 500;
+      letter-spacing: -.04em;
+      margin-top: -2px;
+    }
+
+    .right-tools {
+      position: absolute;
+      top: 296px;
+      right: 104px;
+      width: 226px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 64px 64px;
+      gap: 7px;
+      margin-bottom: 29px;
+    }
+
+    .action {
+      width: 64px;
+      height: 58px;
+      border: 1px solid rgba(6,10,18,.42);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 7px;
+      padding: 8px 8px 7px;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(6,10,18,.76);
+      background: rgba(255,255,255,.08);
+    }
+
+    .action.active {
+      background: var(--active);
+      color: white;
+      border-color: var(--active);
+    }
+
+    .action-mark {
+      width: 18px;
+      height: 11px;
+      border-top: 3px solid currentColor;
+      border-radius: 50%;
+      opacity: .9;
+    }
+
+    .mini-grid {
+      width: 18px;
+      height: 18px;
+      background-image: radial-gradient(currentColor 1px, transparent 1px);
+      background-size: 5px 5px;
+      opacity: .7;
+      align-self: flex-end;
+    }
+
+    .corner-arrow {
+      width: 18px;
+      height: 18px;
+      border-top: 1px solid currentColor;
+      border-right: 1px solid currentColor;
+      align-self: flex-end;
+      opacity: .72;
+    }
+
+    .sun {
+      width: 14px;
+      height: 14px;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      align-self: flex-end;
+    }
+
+    .range-block {
+      margin-bottom: 20px;
+    }
+
+    .range-label {
+      font-size: 12px;
+      color: rgba(6,10,18,.42);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .range {
+      width: 154px;
+      height: 1px;
+      background: rgba(6,10,18,.45);
+      position: relative;
+    }
+
+    .range:after {
+      content: "";
+      position: absolute;
+      left: 57px;
+      top: -2px;
+      width: 35px;
+      height: 4px;
+      background: var(--ink);
+    }
+
+    .bottom-left {
+      position: absolute;
+      left: 36px;
+      bottom: 31px;
+      width: 50px;
+      height: 49px;
+      border: 1px solid rgba(6,10,18,.72);
+      padding: 9px 7px;
+      font-size: 10px;
+      line-height: 9px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .bottom-right {
+      position: absolute;
+      right: 38px;
+      bottom: 30px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .faint-note {
+      position: absolute;
+      left: 50%;
+      top: 73%;
+      transform: translateX(-50%);
+      width: 360px;
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.35;
+      color: rgba(6,10,18,.28);
+      font-weight: 600;
+    }
+
+    @media (max-width: 1050px) {
+      body { overflow: auto; }
+      .screen { min-height: 980px; height: auto; }
+      .left-tools { left: 36px; }
+      .right-tools { right: 36px; }
+      .center-stage { transform: translate(-50%, -42%) scale(.86); }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <header class="top">
+      <div class="date">
+        <span>Tue</span>
+        <span class="date-line"></span>
+        <span>16 June</span>
+      </div>
+      <span>Teacher Desk</span>
+    </header>
+
+    <div class="window-controls">
+      <span>&minus;</span>
+      <span>&times;</span>
+    </div>
+
+    <aside class="left-tools">
+      <div class="label">Spaces</div>
+      <div class="forms">
+        <span class="form-icon form-cube"></span>
+        <span class="form-icon form-circle"></span>
+        <span class="form-icon form-diamond"></span>
+        <span class="form-icon form-stack"></span>
+        <span class="dots"></span>
+      </div>
+
+      <div class="label">Today</div>
+      <div class="tools">
+        <div class="tool">
+          <svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4-8 4-8-4z"/><path d="M4 8v8l8 4 8-4V8"/><path d="M12 12v8"/></svg>
+          <span>Review</span>
+          <span class="count">4</span>
+        </div>
+        <div class="tool active">
+          <svg viewBox="0 0 24 24"><path d="M5 7h14v10H8l-3 3V7z"/></svg>
+          <span>Reply</span>
+          <span class="count">3</span>
+        </div>
+        <div class="tool">
+          <svg viewBox="0 0 24 24"><path d="M4 15l8-10 8 10H4z"/><path d="M8 15l4 5 4-5"/></svg>
+          <span>Assign</span>
+          <span class="count">2</span>
+        </div>
+        <div class="tool">
+          <svg viewBox="0 0 24 24"><path d="M6 5h12v14H6z"/><path d="M9 9h6M9 13h4"/></svg>
+          <span>Drafts</span>
+          <span class="count">1</span>
+        </div>
+        <div class="tool">
+          <svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/><circle cx="12" cy="12" r="6"/></svg>
+          <span>Watchlist</span>
+          <span class="count">5</span>
+        </div>
+        <div class="tool">
+          <svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M7 8h10"/></svg>
+          <span>Schedule</span>
+          <span class="count">3</span>
+        </div>
+      </div>
+    </aside>
+
+    <section class="center-stage" aria-label="Selected teacher task">
+      <div class="central-copy">
+        <strong>Reply to Meghan before assigning new work</strong>
+        Missed the last conditional drill and asked whether contrapositives always matter.
+      </div>
+
+      <div class="cube">
+        <svg viewBox="0 0 194 194" aria-hidden="true">
+          <path class="heavy" d="M97 2 L184 52 L184 143 L97 192 L10 143 L10 52 Z"/>
+          <path class="heavy" d="M10 52 L97 102 L184 52"/>
+          <path class="heavy" d="M97 102 L97 192"/>
+          <path class="light" d="M10 143 L97 102 L184 143"/>
+          <path class="light" d="M97 2 L97 102"/>
+        </svg>
+      </div>
+
+      <div class="orbit">
+        <div class="orbit-marker"></div>
+      </div>
+
+      <div class="axis">
+        <div class="axis-lines">
+          <span class="axis-x"></span>
+          <span class="axis-y"></span>
+          <span class="axis-z"></span>
+          <div class="axis-label-x">x</div>
+          <div class="axis-label-y">y</div>
+          <div class="axis-label-z">z</div>
+        </div>
+      </div>
+
+      <div class="readout">
+        Current move
+        <strong>Reply</strong>
+      </div>
+    </section>
+
+    <aside class="right-tools">
+      <div class="label">Controls</div>
+      <div class="action-grid">
+        <div class="action active">
+          <span class="action-mark"></span>
+          <span>Draft</span>
+        </div>
+        <div class="action">
+          <span class="mini-grid"></span>
+          <span>Assign</span>
+        </div>
+        <div class="action">
+          <span class="corner-arrow"></span>
+          <span>Student</span>
+        </div>
+        <div class="action">
+          <span class="sun"></span>
+          <span>Done</span>
+        </div>
+      </div>
+
+      <div class="range-block">
+        <div class="range-label">Urgency</div>
+        <div class="range"></div>
+      </div>
+      <div class="range-block">
+        <div class="range-label">Confidence</div>
+        <div class="range"></div>
+      </div>
+    </aside>
+
+    <div class="faint-note">
+      The page keeps the original interface structure. Only the nouns change: Forms become workspace spaces, Tools become Today task groups, Lighting becomes teacher controls.
+    </div>
+
+    <div class="bottom-left">LSAT<br />U<br />OPS</div>
+    <div class="bottom-right">015</div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-09-30",
+  "readOnly": true,
+  "containsUserRecords": false,
+  "functions": [
+    {
+      "definition": "CREATE OR REPLACE FUNCTION public.append_waj_wrong(p_class_id text, p_qid text, p_item jsonb, p_pt integer DEFAULT NULL::integer, p_section integer DEFAULT NULL::integer, p_qnum integer DEFAULT NULL::integer, p_qtype text DEFAULT NULL::text, p_level integer DEFAULT NULL::integer)\n RETURNS void\n LANGUAGE sql\n SET search_path TO 'public'\nAS $function$\n  insert into wrong_answer_journal\n    (class_id, qid, pt, section, qnum, qtype, level, last_status, revisit_count, history_json)\n  values\n    (p_class_id, p_qid, p_pt, p_section, p_qnum, p_qtype, p_level, 'wrong', 0, jsonb_build_array(p_item))\n  on conflict (class_id, qid) do update set\n    history_json  = wrong_answer_journal.history_json || p_item,\n    last_status   = 'wrong',\n    revisit_count = jsonb_array_length(wrong_answer_journal.history_json),\n    updated_at    = now();\n$function$\n",
+      "name": "append_waj_wrong"
+    }
+  ],
+  "checkedMissingFunctions": [
+    "get_user_class_id"
+  ]
+}

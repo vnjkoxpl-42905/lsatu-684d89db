@@ -1,0 +1,1 @@
+revoke execute on function public.guard_classroom_items_student_update() from public, anon, authenticated;
