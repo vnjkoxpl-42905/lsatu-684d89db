@@ -1,3 +1,4 @@
+import { ArrowLeft, ChevronRight, MoreVertical, Upload } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -6,7 +7,7 @@ import { useDeletePassage, usePassages, useProgressList, useSaveProgress, useUps
 import { buildTextModel } from "../lib/spreeder";
 import { rcReaderPath, RC_LIBRARY_PATH } from "../lib/routes";
 import type { Passage, Progress } from "../lib/types";
-import { Icon, MIcon, type IconName } from "../components/Icon";
+import { Icon, type IconName } from "../components/Icon";
 import { TopBar } from "../components/AppShell";
 import { AddTextScreen } from "../components/AddText";
 import { ViewPanel } from "../components/ViewPanel";
@@ -57,13 +58,14 @@ export default function LibraryPage(): React.ReactElement {
   );
 
   return (
-    <div className="min-h-screen">
+    <div data-motion-group className="min-h-screen">
       <TopBar query={query} onQuery={setQuery} placeholder="Search text" />
       <div className="px-5 pb-10">
-        <h1 className="mt-5 text-2xl font-semibold">{tag ? `Tagged: ${tag}` : "My Library"}</h1>
-        <p className="mt-2 text-sm" style={{ color: "var(--rc-text-2)" }}>{tag ? "Articles you grouped with this tag. Use an article's menu to change its tags." : "Read an article, add your own text, or search by title, author, or article text."}</p>
+        <h1 data-motion-item className="mt-5 text-2xl font-semibold">{tag ? `Tagged: ${tag}` : "My Library"}</h1>
+        <p data-motion-item className="mt-2 text-sm" style={{ color: "var(--rc-text-2)" }}>{tag ? "Articles you grouped with this tag. Use an article's menu to change its tags." : "Read an article, add your own text, or search by title, author, or article text."}</p>
         {passagesQuery.isLoading && <p className="mt-8" role="status">Loading your reading library.</p>}
         {passagesQuery.error && <p className="mt-8" role="alert">Your reading library could not load. {passagesQuery.error.message} <button type="button" className="underline" onClick={() => void passagesQuery.refetch()}>Try again</button></p>}
+        <div data-motion-item data-motion-id="reading-library-shelves" data-motion-ready={passagesQuery.isLoading ? "false" : "true"}>
         {tag && !results ? (
           visible.length === 0 ? <NothingHereYet /> : <Shelf title={tag} wrap>{visible.map((p) => card(p, "added"))}</Shelf>
         ) : results ? (
@@ -81,6 +83,7 @@ export default function LibraryPage(): React.ReactElement {
             ),
           )
         )}
+        </div>
       </div>
 
       {menu && (
@@ -119,11 +122,11 @@ function Shelf({ title, children, onViewAll, back, wrap = false }: { title: stri
   return (
     <section className="mb-[50px] mt-[25px]">
       <div className="mb-4 flex h-5 items-center gap-2">
-        {back && <button type="button" aria-label="Back" onClick={back} className="flex"><MIcon name="arrow_back" /></button>}
+        {back && <button type="button" aria-label="Back" onClick={back} className="flex"><ArrowLeft aria-hidden size={24} /></button>}
         <h2 className="text-lg font-bold leading-5" style={{ color: "var(--rc-strong)" }}>{title}</h2>
         {onViewAll && (
           <button type="button" onClick={onViewAll} className="ml-2 flex items-center text-sm font-medium" style={{ color: "#74b2e5" }}>
-            View All <MIcon name="navigate_next" size={20} />
+            View All <ChevronRight aria-hidden size={20} />
           </button>
         )}
       </div>
@@ -157,7 +160,7 @@ function PassageCard({ passage, onMenu }: { passage: Passage; onMenu: (anchor: D
           className="mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center"
           style={{ color: "var(--rc-strong)" }}
         >
-          <MIcon name="more_vert" size={22} />
+          <MoreVertical aria-hidden size={22} />
         </button>
       </div>
       {passage.author && <div className="mt-[3px] truncate text-[11.5px]" style={{ color: "#918f8f" }}>{passage.author}</div>}
@@ -227,7 +230,7 @@ function EditImageDialog({ passage, onClose }: { passage: Passage; onClose: () =
         </div>
         <div className="flex flex-1 justify-center pl-6">
           <label className="rc-outline-btn h-[38px] cursor-pointer gap-1 px-4" style={{ borderColor: "var(--rc-btn-secondary-border)" }}>
-            <MIcon name="upload" /> Upload Image
+            <Upload aria-hidden size={24} /> Upload Image
             <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && pickFile(e.target.files[0])} />
           </label>
         </div>

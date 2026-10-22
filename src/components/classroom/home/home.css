@@ -1765,6 +1765,12 @@ html.dark .classroom-root .classroom-home-shine {
   animation-delay: 70ms;
 }
 
+/* The shared entrance owns these targets and their settling ancestors. Keep
+   glows, unread pulses and decorative rule animations independent. */
+.classroom-root .classroom-home[data-motion-ready] :is(.classroom-home-top, .classroom-home-main-card, .classroom-home-message-card, .classroom-home-week, .classroom-home-masthead, .classroom-home-finderbar, .classroom-home-subtitle, .classroom-home-masthead-tools, .classroom-home-hero, .classroom-home-thread) {
+  animation: none;
+}
+
 @keyframes home-settle {
   from {
     opacity: 0;

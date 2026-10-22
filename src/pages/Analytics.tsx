@@ -103,7 +103,7 @@ const Analytics = () => {
           <BreakdownPanel />
         </div>
 
-        <div data-motion-reveal>
+        <div data-motion-reveal data-motion-group data-motion-ready={classIdLoading || (classId && loading) ? "false" : "true"}>
         {classIdLoading || (classId && loading) ? (
           <div className="rounded-xl bg-card border border-border shadow-sm p-12 text-center" role="status">
             <p className="text-muted-foreground text-sm">Loading breakdown and opportunity charts…</p>
@@ -132,7 +132,7 @@ const Analytics = () => {
         ) : (
           <>
             {/* Top Opportunities */}
-            <div
+            <div data-motion-item data-motion-id="analytics-opportunities"
               className="mb-12"
             >
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium mb-5">
@@ -187,7 +187,7 @@ const Analytics = () => {
             </div>
 
             {/* Performance by Type + Matrix */}
-            <div
+            <div data-motion-item data-motion-id="analytics-performance"
               className="grid lg:grid-cols-[1fr_auto] gap-8"
             >
               {/* Type Bars */}

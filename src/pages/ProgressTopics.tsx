@@ -18,7 +18,7 @@ export default function ProgressTopics({ studentId, hideWindowControl = false }:
   const partialLr = ledger?.coverage.missingSources.some((item) => ['lr_attempts', 'lr_section_history', 'practice_test_runs'].includes(item.source)) ?? false;
 
   return (
-    <section className="min-w-0 space-y-5" aria-labelledby="progress-topics-heading">
+    <section data-motion-item data-motion-ready={loading ? "false" : "true"} className="min-w-0 space-y-5" aria-labelledby="progress-topics-heading">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h2 id="progress-topics-heading" className="text-xl font-semibold text-foreground">Logical Reasoning topics</h2>

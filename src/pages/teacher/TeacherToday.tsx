@@ -54,18 +54,18 @@ export default function TeacherToday() {
   const rosterCount = rosterError ? null : students.length;
 
   return (
-    <div className="px-6 py-8 max-w-5xl space-y-8">
-      <div className="space-y-1.5">
+    <div data-motion-group className="px-6 py-8 max-w-5xl space-y-8">
+      <div data-motion-enter data-motion-group className="space-y-1.5">
         <div className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">
           Teacher
         </div>
-        <h2 className="text-2xl font-semibold tracking-tight">Today</h2>
-        <p className="text-sm text-zinc-400">
+        <h2 data-motion-item className="text-2xl font-semibold tracking-tight">Today</h2>
+        <p data-motion-item className="text-sm text-zinc-400">
           Quick view of what needs your attention before opening a student.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div data-motion-item className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <StatTile
           label="AI drafts pending"
           value={stats.pendingDrafts}
@@ -92,7 +92,7 @@ export default function TeacherToday() {
         />
       </div>
 
-      <section className="space-y-3">
+      <section data-motion-reveal className="space-y-3">
         <h3 className="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold">
           Quick actions
         </h3>

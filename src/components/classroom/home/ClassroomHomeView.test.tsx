@@ -22,7 +22,7 @@ vi.mock("@/components/questionfinder/useQuestionFinderBanks", () => ({
 /* Home never mounts outside a router, and since the address row navigates on
    pick it now says so: `useNavigate` throws without one. Every render here goes
    through the same wrapper so no test can drift back to a bare mount. */
-const render = (ui: React.ReactElement) => rtlRender(<MemoryRouter>{ui}</MemoryRouter>);
+const render = (ui: React.ReactElement) => rtlRender(ui, { wrapper: MemoryRouter });
 
 const EMPTY: ClassroomHomeModel = {
   greeting: "Good morning",
@@ -309,13 +309,11 @@ describe("ClassroomHomeView", () => {
     );
     expect(screen.getByLabelText("38 days to test day")).toBeInTheDocument();
     rerender(
-      <MemoryRouter>
-        <ClassroomHomeView
-          model={{ ...FULL, daysToTest: null }}
-          loading={false}
-          onOpen={vi.fn()}
-        />
-      </MemoryRouter>,
+      <ClassroomHomeView
+        model={{ ...FULL, daysToTest: null }}
+        loading={false}
+        onOpen={vi.fn()}
+      />,
     );
     expect(screen.queryByText("days to test day")).not.toBeInTheDocument();
   });

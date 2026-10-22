@@ -1,3 +1,4 @@
+import { MoreVertical } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
@@ -202,7 +203,7 @@ export function AppShell({ rrcOnly = false }: { rrcOnly?: boolean }): React.Reac
                     <>
                       {isActive && <span className="absolute inset-y-0 left-0 w-1 rounded-l-lg" style={{ background: "var(--rc-nav-active-fg)" }} />}
                       <Icon name={n.icon} size={18} className={rail ? "mx-auto" : "ml-[16px]"} />
-                      {!rail && <span className="ml-[17px]" style={{ color: isActive ? "var(--rc-nav-text)" : undefined }}>{n.label}</span>}
+                      {!rail && <span className="ml-[17px]" style={{ color: isActive ? "var(--rc-nav-active-fg)" : undefined }}>{n.label}</span>}
                     </>
                   )}
                 </NavLink>
@@ -269,7 +270,7 @@ function TagsNav({ rail, back, onBack, onCreate }: { rail: boolean; back: { to: 
                     setMenu({ tag: t, x: r.left, y: r.bottom, colours: false });
                   }}
                 >
-                  <MIcon name="more_vert" size={20} />
+                  <MoreVertical aria-hidden size={20} />
                 </button>
               )}
             </li>

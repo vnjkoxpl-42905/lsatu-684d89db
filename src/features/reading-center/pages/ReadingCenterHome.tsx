@@ -19,7 +19,7 @@ function Trend({ title, description, unit, points, loading, failed, empty, to, r
   title: string; description: string; unit: string; points: { label: string; date: string; value: number }[];
   loading: boolean; failed: boolean; empty: string; to: string; retry: () => void;
 }) {
-  return <section className="min-w-0 rounded-2xl border p-5 sm:p-6" style={panel} aria-label={`${title} progress`}>
+  return <section data-motion-reveal data-motion-ready={loading ? "false" : "true"} className="min-w-0 rounded-2xl border p-5 sm:p-6" style={panel} aria-label={`${title} progress`}>
     <div className="flex flex-wrap items-center justify-between gap-x-4">
       <h2 className="text-lg font-semibold">{title}</h2>
       <Link to={to} className={actionClass}>View activity <ArrowRight size={16} aria-hidden="true" /></Link>
@@ -61,10 +61,10 @@ export default function ReadingCenterHome() {
     { label: "Recorded practice", value: recall.isLoading || sessions.isLoading ? "…" : recall.isError || sessions.isError ? "Unavailable" : recordedTime(dashboard.practiceSeconds), icon: Clock3, detail: "Graded LR runs + active reading time" },
   ];
 
-  return <main className="mx-auto w-full max-w-6xl px-5 py-7 sm:px-8 sm:py-10" style={{ color: "var(--rc-text)" }}>
-    <h1 className="text-3xl font-semibold tracking-tight">Your reading dashboard</h1>
-    <p className="mt-2 max-w-2xl text-sm leading-7" style={muted}>Pick up your practice and see how each activity is progressing.</p>
-    <div className="mt-6 grid gap-3 sm:grid-cols-3">
+  return <main data-motion-group className="mx-auto w-full max-w-6xl px-5 py-7 sm:px-8 sm:py-10" style={{ color: "var(--rc-text)" }}>
+    <h1 data-motion-item className="text-3xl font-semibold tracking-tight">Your reading dashboard</h1>
+    <p data-motion-item className="mt-2 max-w-2xl text-sm leading-7" style={muted}>Pick up your practice and see how each activity is progressing.</p>
+    <div data-motion-item data-motion-ready={recall.isLoading || sessions.isLoading || progress.isLoading ? "false" : "true"} className="mt-6 grid gap-3 sm:grid-cols-3">
       {stats.map(({ label, value, icon: StatIcon, detail }) => <section key={label} className="min-w-0 rounded-2xl border p-5" style={panel} aria-label={label}>
         <div className="flex items-center gap-2 text-sm" style={muted}><StatIcon size={17} aria-hidden="true" />{label}</div>
         <p className="mt-3 break-words text-3xl font-semibold tabular-nums">{value}</p>
@@ -73,12 +73,12 @@ export default function ReadingCenterHome() {
     </div>
     <p className="mt-3 text-xs leading-5" style={muted}>All-time totals. Practice time excludes pauses and LR runs that have not been graded.</p>
     {(recall.isError || sessions.isError || progress.isError) && <button type="button" className={actionClass} onClick={() => { void recall.refetch(); void sessions.refetch(); void progress.refetch(); }}>Retry unavailable totals</button>}
-    <div className="mt-6 grid min-w-0 gap-5 xl:grid-cols-2">
+    <div data-motion-group className="mt-6 grid min-w-0 gap-5 xl:grid-cols-2">
       <Trend title="LR Training" description="How much of the original detail survived in your recall." unit="%" points={dashboard.recallTrend} loading={recall.isLoading} failed={recall.isError} empty="No graded LR runs yet. Complete a section to start your recall graph." to={RC_RRC_PATH} retry={() => { void recall.refetch(); }} />
       <Trend title="Speed Reading" description="Recorded pace, calculated from words read and active reading time." unit="WPM" points={dashboard.speedTrend} loading={sessions.isLoading} failed={sessions.isError} empty="No recorded reading sessions yet. Read a passage to start your pace graph." to={RC_LIBRARY_PATH} retry={() => { void sessions.refetch(); }} />
     </div>
     <div className="mt-6"><RcTrainingProgress compact /></div>
-    <section className="mt-6 rounded-2xl border p-5 sm:p-6" style={panel} aria-label="Recent practice">
+    <section data-motion-reveal data-motion-ready={recentLoading ? "false" : "true"} className="mt-6 rounded-2xl border p-5 sm:p-6" style={panel} aria-label="Recent practice">
       <h2 className="text-lg font-semibold">Recent practice</h2>
       <p className="mt-1 text-sm" style={muted}>Resume a drill, open its results or return to a passage.</p>
       {recentLoading && <p role="status" className="py-4 text-sm" style={muted}>Loading your recent practice…</p>}

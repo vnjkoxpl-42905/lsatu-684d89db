@@ -241,7 +241,7 @@ export function ClassroomHomeView({
   const nextAction = continueRow ? nextActionFor(continueRow) : null;
 
   return (
-    <div className="classroom-home">
+    <div data-motion-group data-motion-ready={loading ? "false" : "true"} className="classroom-home">
       <div className="classroom-home-glow classroom-home-glow-a" aria-hidden="true" />
       <div className="classroom-home-glow classroom-home-glow-b" aria-hidden="true" />
 
@@ -253,18 +253,18 @@ export function ClassroomHomeView({
         />
       ) : null}
 
-      <section className="classroom-home-top" aria-label="Today">
+      <section data-motion-enter data-motion-group className="classroom-home-top" aria-label="Today">
         <header className="classroom-home-masthead">
           <div className="classroom-home-masthead-text">
             <span className="classroom-home-eyebrow">
               <i className="classroom-home-eyebrow-dot" aria-hidden="true" />
               {model.dateline}
             </span>
-            <h1 className="classroom-home-title">
+            <h1 data-motion-item className="classroom-home-title">
               {model.greeting}
               {model.displayName ? <>, <em>{model.displayName}</em>.</> : "."}
             </h1>
-            <p className="classroom-home-subtitle" role={model.workFailed ? "alert" : undefined}>{model.subtitle}</p>
+            <p data-motion-item className="classroom-home-subtitle" role={model.workFailed ? "alert" : undefined}>{model.subtitle}</p>
             {model.workFailed && onRetryWork ? (
               <button type="button" className="classroom-home-work-retry" onClick={onRetryWork}>Retry assigned work</button>
             ) : model.workSummary && model.workSummary.open > 0 ? (
@@ -294,7 +294,7 @@ export function ClassroomHomeView({
               </div>
             ) : null}
           </div>
-          <div className="classroom-home-top-tools">
+          <div data-motion-item className="classroom-home-top-tools">
             <div className="classroom-home-finderbar">
               <QuestionFinder ref={finderRef} returnTo="/classroom" />
             </div>
@@ -398,7 +398,7 @@ export function ClassroomHomeView({
       </section>
 
       {hero || !(model.isAdmin && !model.rows.length) ? (
-        <section className="classroom-home-card classroom-home-main-card" aria-label="Assigned work">
+        <section data-motion-reveal className="classroom-home-card classroom-home-main-card" aria-label="Assigned work">
           <div className="classroom-home-main-content">
           {/* ── hero ─────────────────────────────────────────────────────── */}
           {hero ? (
@@ -529,7 +529,7 @@ export function ClassroomHomeView({
       ) : null}
 
       {model.access.messages && model.message ? (
-        <section className="classroom-home-thread classroom-home-message-card" aria-label="From Joshua">
+        <section data-motion-reveal className="classroom-home-thread classroom-home-message-card" aria-label="From Joshua">
           <header className="classroom-home-rule">
             <span className="classroom-home-card-label classroom-home-card-label-muted">
               {`FROM ${model.message.from.toUpperCase()}`}
@@ -561,7 +561,7 @@ export function ClassroomHomeView({
       ) : null}
 
       {/* ── this week ────────────────────────────────────────────────── */}
-      <section className="classroom-home-week" aria-label="Next seven days">
+      <section data-motion-reveal className="classroom-home-week" aria-label="Next seven days">
         <header className="classroom-home-rule">
           <span className="classroom-home-card-label">NEXT SEVEN DAYS</span>
           <i className="classroom-home-rule-draw" aria-hidden="true" />

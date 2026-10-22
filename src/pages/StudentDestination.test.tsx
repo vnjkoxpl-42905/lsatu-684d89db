@@ -1,10 +1,12 @@
 import React from "react";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 const BASE = { loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false, has_chat_access: false };
 const permissions = vi.hoisted(() => ({ loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false, has_chat_access: false }));
 const readingCenter = vi.hoisted(() => ({ allowed: false, isPending: false }));
+const headingMotion = vi.hoisted(() => vi.fn());
+vi.mock('@/hooks/useClassroomMotion', () => ({ useClassroomMotion: headingMotion }));
 vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
 vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => readingCenter }));
 import { DestinationIndex, StudentDestination } from "./StudentDestination";
@@ -12,6 +14,7 @@ afterEach(() => {
   cleanup();
   Object.assign(permissions, BASE);
   readingCenter.allowed = false; readingCenter.isPending = false;
+  headingMotion.mockClear();
 });
 
 function Where() {
@@ -20,6 +23,15 @@ function Where() {
 }
 
 describe("visible locked destination sections", () => {
+  it('keeps the persistent heading under one destination motion owner across tab changes', () => {
+    permissions.has_analytics_access = true;
+    render(<MemoryRouter initialEntries={['/progress/overview']}><Routes><Route path="/progress/*" element={<StudentDestination destination="progress" />} /></Routes></MemoryRouter>);
+    const heading = screen.getByRole('heading', { name: 'Progress', level: 1 });
+    expect(heading.closest('header')).toHaveClass('classroom-motion-local');
+    fireEvent.click(screen.getByRole('link', { name: 'History' }));
+    expect(screen.getByRole('heading', { name: 'Progress', level: 1 })).toBe(heading);
+    expect(headingMotion.mock.calls.every(([, key]) => key === 'destination:progress')).toBe(true);
+  });
   it('opens To do and Completed for a specific Reading Center grant while Notes stays locked', () => {
     readingCenter.allowed = true;
     render(<MemoryRouter initialEntries={['/my-work/to-do']}><StudentDestination destination="my-work" /></MemoryRouter>);

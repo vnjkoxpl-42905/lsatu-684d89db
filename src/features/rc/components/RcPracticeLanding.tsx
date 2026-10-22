@@ -9,8 +9,8 @@ interface RcPracticeLandingProps {
 
 export function RcPracticeLanding({ onChooseAutomatic, onChooseManual, practice, assigned }: RcPracticeLandingProps) {
   return <div className="rc-practice-landing">
-    <section data-motion-enter className="rc-practice-hero rc-practice-unified" aria-label="Create an RC drill">
-      <div className="rc-practice-choice"><h2>Create your own RC drill</h2><p>Choose your passages, set your pace, and review before starting.</p><div className="rc-practice-entry-actions"><button type="button" className="rc-practice-entry rc-practice-primary" onClick={onChooseAutomatic}>Build a drill</button><button type="button" className="rc-practice-secondary" onClick={onChooseManual}>Pick specific passages</button></div></div>
+    <section data-motion-enter data-motion-group className="rc-practice-hero rc-practice-unified" aria-label="Create an RC drill">
+      <div className="rc-practice-choice"><h2 data-motion-item>Create your own RC drill</h2><p data-motion-item>Choose your passages, set your pace, and review before starting.</p><div data-motion-item className="rc-practice-entry-actions"><button type="button" className="rc-practice-entry rc-practice-primary" onClick={onChooseAutomatic}>Build a drill</button><button type="button" className="rc-practice-secondary" onClick={onChooseManual}>Pick specific passages</button></div></div>
     </section>
     <div className="rc-practice-deck">
       <section data-motion-enter className="drill-observatory-practice-bay rc-practice-history" aria-label="Your practice">
