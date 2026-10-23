@@ -99,7 +99,7 @@ function expectNoStudentContent() {
   expect(screen.queryByLabelText("Assigned to you")).toBeNull();
   expect(screen.queryByText("Conditional Indicators Refresher")).toBeNull();
   expect(screen.queryByRole("button", { name: "Smart Drill" })).toBeNull();
-  expect(screen.queryByLabelText("Next seven days")).toBeNull();
+
   expect(screen.queryByText(/assigned to you/i)).toBeNull();
 }
 

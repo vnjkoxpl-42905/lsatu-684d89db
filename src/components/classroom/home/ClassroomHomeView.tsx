@@ -37,6 +37,7 @@ import { launchDrill } from "@/lib/drillLaunch";
 import { pickContinueWork } from "./homeModel";
 import { nextActionFor } from "./homeNextAction";
 import { useHomeEntrance } from "./useHomeEntrance";
+import { HomeWeekStrip } from "./HomeWeekStrip";
 import QuestionFinder, { type QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 
 function WorkRow({
@@ -571,54 +572,15 @@ export function ClassroomHomeView({
             </section>
           ) : null}
 
-          <section className="classroom-home-region classroom-home-week" aria-label="Next seven days" data-home-reveal>
-            <header className="classroom-home-region-head">
-              <h2>Next seven days</h2>
-              <span className="classroom-home-week-range">{model.weekLabel}</span>
-            </header>
-            <ol className="classroom-home-days">
-              {model.week.map((day) => {
-                const tone = day.isToday
-                  ? " classroom-home-day-today"
-                  : day.label
-                    ? " classroom-home-day-item"
-                    : "";
-                const body = (
-                  <>
-                    <span className="classroom-home-day-head">
-                      <span className="classroom-home-day-abbr">{day.abbr}</span>
-                      <span className="classroom-home-day-num">{day.dayNum}</span>
-                    </span>
-                    <span className="classroom-home-day-label">
-                      {day.label ?? (day.isToday ? "Today" : "")}
-                    </span>
-                  </>
-                );
 
-                // The band still reads without schedule access; it just stops
-                // being a control, rather than becoming a button onto a locked route.
-                return (
-                  <li key={day.iso}>
-                    {model.access.schedule ? (
-                      <button
-                        type="button"
-                        className={`classroom-home-day${tone}`}
-                        onClick={() => handleOpen("/schedule")}
-                      >
-                        {body}
-                      </button>
-                    ) : (
-                      <div className={`classroom-home-day${tone}`}>
-                        {body}
-                      </div>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </section>
         </aside>
       </div>
+      <HomeWeekStrip
+        days={model.week}
+        range={model.weekLabel}
+        onDayOpen={model.access.schedule ? () => handleOpen("/schedule") : undefined}
+        emptyLabel={loading ? "Loading…" : model.workFailed ? "Unavailable" : "No items shown"}
+      />
     </div>
   );
 }

@@ -68,7 +68,7 @@ function expectNoStudentContent() {
   expect(screen.queryByText(/assignments? (is|are) waiting/i)).toBeNull();
   expect(screen.queryByRole("button", { name: /smart drill/i })).toBeNull();
   expect(screen.queryByRole("button", { name: /book/i })).toBeNull();
-  expect(screen.queryByLabelText("Next seven days")).toBeNull();
+
 }
 
 describe("TeacherHomeView", () => {

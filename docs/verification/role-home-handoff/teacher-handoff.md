@@ -13,7 +13,7 @@ The companion `student-dashboard.html` is intentionally different. The teacher i
 - Preserve the approved warm white paper and ink contrast. Key colors: canvas `#f7f4ee`, ink `#252b26`, dark action surface `#131718`, action paper `#eeebe2`, on-dark text `#efede6`. Preserve the editorial display type and readable interface type. Do not add gold decoration, glass effects or fake premium styling.
 - The teacher's jobs are to assign work, find a student, open student context, see genuinely unread conversations, and understand scheduled teaching work. Prioritize useful actions over decorative metrics.
 - Keep the open, ruled composition and quiet supporting rail. Avoid boxed sections nested inside more boxes, duplicate actions and excess badges.
-- Joshua specifically liked the older sleek calendar strip. The current teacher version replaced it with an upcoming-sessions list because the old Open/Rest labels were not backed by schedule data. That visual removal was not his preference. Recommend a refined way to restore the strip using real dated events. Do not claim the existing list already implements that restoration.
+- Joshua specifically wants to retain the older sleek horizontal seven-day strip: rounded date cards, a dark current-day highlight and an inline week range. Keep it full-width below the dashboard grid rather than replacing it with a vertical list in the rail. Its labels must not invent availability or imply that a capped session feed is a complete calendar.
 - Current Home sessions come only from platform `student_sessions`. They do not establish Google Calendar availability or the teacher's complete schedule. Do not invent empty-day availability, sync status, financial queues, tasks or counts.
 - A conversation is unread when an incoming message is beyond the viewer's read receipt. Opening a loaded thread clears unread; responding is separate. The message must remain in history. The rail, Home and inbox should use the same unit: unread conversations.
 - The full inbox redesign is a separate queued project. Focus this review on Home and its entry points. Do not expand into unrelated bookings, payment systems, curriculum, drill builders or a platform navigation rebuild.
@@ -26,7 +26,7 @@ The companion `student-dashboard.html` is intentionally different. The teacher i
 4. Inspect empty, loading, error, cold-role loading/error and cached-role refresh-error states. Failed reads must not turn into confident Nothing unread or No sessions statements. Cached content should remain usable with a retry notice.
 5. Inspect conversation previews. Attention rows should show the unread incoming student message, even when the latest overall message is an outgoing teacher reply. Distinguish unread from needs reply.
 6. Review keyboard focus, accessible names, contrast, touch targets, wrapping, zoom and reduced motion. Watch the brief GSAP entrance for double animation, blurry text, delayed controls and count-triggered replays.
-7. Check whether a restored calendar strip would help the teacher orient to the week, and explain the exact event/date model it would need. Do not present a proposed calendar integration as implemented.
+7. Check the retained horizontal calendar strip, including its current-day highlight, small-screen scrolling and date labels. Distinguish displayed platform events from complete calendar availability. Do not present a proposed calendar integration as implemented.
 
 ## Output requested
 

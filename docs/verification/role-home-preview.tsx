@@ -208,8 +208,8 @@ function teacherModel(state: PreviewState, threads: TeacherHomeModel["unread"]["
     sessions: {
       state: "ready",
       rows: [
-        { id: "x1", name: "Dakota Reyes", dayLabel: "Today", timeLabel: "6:00 pm", durationLabel: "60 min", route: "/teacher/students/s4/schedule" },
-        { id: "x2", name: "Celia Moreno", dayLabel: "Tomorrow", timeLabel: "7:15 pm", durationLabel: "90 min", route: "/teacher/students/s1/schedule" },
+        { id: "x1", scheduledAt: atLocal(0, 18), name: "Dakota Reyes", dayLabel: "Today", timeLabel: "6:00 pm", durationLabel: "60 min", route: "/teacher/students/s4/schedule" },
+        { id: "x2", scheduledAt: atLocal(1, 19, 15), name: "Celia Moreno", dayLabel: "Tomorrow", timeLabel: "7:15 pm", durationLabel: "90 min", route: "/teacher/students/s1/schedule" },
       ],
     },
   };

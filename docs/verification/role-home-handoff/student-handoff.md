@@ -15,7 +15,7 @@ The companion `teacher-dashboard.html` has a separate role and job. Compare them
 - The primary student job is to understand the next piece of assigned work, resume saved progress, finish it, and understand what remains.
 - Show one featured assignment. Do not duplicate that exact instance in Up next. Repeated assignments with different instance keys remain distinct. Total open counts include the featured work.
 - Practice tools and supporting context must not push the next assignment down on a phone.
-- Joshua specifically liked the sleek calendar strip from the older design. Preserve the next-seven-days concept and explore how to make it visually useful. Do not substitute invented availability, decorative Open/Rest labels, or unsupported events.
+- Joshua specifically wants the sleek horizontal calendar strip retained: seven rounded date cards, a dark current-day highlight and an inline week range, full-width below the dashboard grid. Preserve that design instead of turning it into a vertical rail list. Do not substitute invented availability, decorative Open/Rest labels, or unsupported events.
 - Opening a conversation clears unread only after the displayed incoming message has loaded; replying is a separate action. History must remain available. These backend semantics are requirements to inspect in source, not claims proved by this offline export.
 - The full inbox redesign is a separate queued work item. Do not expand this review into unrelated drill builders, lessons, payments, bookings or platform-wide navigation changes.
 

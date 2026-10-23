@@ -20,6 +20,9 @@ import {
   ReloadIcon,
 } from "@radix-ui/react-icons";
 import { useHomeEntrance } from "../useHomeEntrance";
+import { HomeWeekStrip } from "../HomeWeekStrip";
+import { buildWeek, weekDates, weekLabelFor } from "../homeModel";
+import { localDayISO } from "@/lib/localDate";
 import type { TeacherHomeModel } from "./teacherHomeModel";
 import { filterStudents, teacherLede } from "./teacherHomeModel";
 
@@ -154,6 +157,14 @@ export function TeacherHomeView({
 }) {
   const rootRef = React.useRef<HTMLDivElement>(null);
   useHomeEntrance(rootRef, true);
+  const dates = weekDates();
+  const week = buildWeek(dates, model.sessions.rows.flatMap((row) => {
+    if (!row.scheduledAt || Number.isNaN(new Date(row.scheduledAt).getTime())) return [];
+    return [{ iso: localDayISO(new Date(row.scheduledAt)), label: `${row.timeLabel} · ${row.name}` }];
+  }));
+  const calendarEmptyLabel = model.sessions.state === "loading" ? "Loading…"
+    : model.sessions.state === "error" || model.sessions.refreshFailed ? "Unavailable"
+    : model.sessions.rows.length === 0 ? "No sessions" : "No sessions shown";
   const unreadTotal = model.unread.state === "ready" ? model.unread.total : null;
   const extraUnread =
     unreadTotal !== null && unreadTotal > model.unread.rows.length ? unreadTotal - model.unread.rows.length : 0;
@@ -303,6 +314,12 @@ export function TeacherHomeView({
           </section>
         </aside>
       </div>
+      <HomeWeekStrip
+        days={week}
+        range={weekLabelFor(dates)}
+        emptyLabel={calendarEmptyLabel}
+        description="Shows the upcoming platform sessions loaded above, not calendar availability."
+      />
     </div>
   );
 }

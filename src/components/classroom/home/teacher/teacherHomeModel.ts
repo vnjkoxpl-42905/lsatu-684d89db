@@ -45,6 +45,8 @@ export interface TeacherSessionRow {
   timeLabel: string;
   durationLabel: string | null;
   route: string;
+  /** Original timestamp retained for the seven-day strip. */
+  scheduledAt?: string;
 }
 
 export interface TeacherHomeModel {
@@ -194,6 +196,7 @@ export function buildSessions(
       timeLabel: clockLabel(start),
       durationLabel: session.duration_minutes ? `${session.duration_minutes} min` : null,
       route: `/teacher/students/${encodeURIComponent(session.student_id)}/schedule`,
+      scheduledAt: session.scheduled_at,
     };
   });
 }

@@ -819,66 +819,27 @@ html.dark .classroom-root .classroom-home-notice {
   overflow-wrap: anywhere;
 }
 
-.classroom-root .classroom-home-week-range {
-  color: var(--home-muted);
-  font-size: 13px;
-  margin-left: auto;
-}
-
-.classroom-root .classroom-home-day {
-  align-items: center;
-  background: none;
-  border: 0;
-  border-radius: 6px;
-  color: var(--home-ink);
-  display: grid;
-  gap: 12px;
-  grid-template-columns: 64px minmax(0, 1fr);
-  min-height: 40px;
-  padding: 6px;
-  text-align: left;
-  width: 100%;
-}
-
-.classroom-root button.classroom-home-day {
-  cursor: pointer;
-}
-
-.classroom-root button.classroom-home-day:hover {
-  background: var(--home-hover);
-}
-
-.classroom-root .classroom-home-day-head {
-  align-items: baseline;
-  color: var(--home-muted);
-  display: flex;
-  font-size: 12px;
-  font-weight: 600;
-  gap: 6px;
-  letter-spacing: 0.04em;
-}
-
-.classroom-root .classroom-home-day-num {
-  color: var(--home-ink);
-  font-size: 15px;
-}
-
-.classroom-root .classroom-home-day-label {
-  font-size: 13px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
+/* The seven-day band spans the dashboard beneath both content columns. */
+.classroom-root .classroom-home-week { min-width: 0; }
+.classroom-root .classroom-home-week-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.classroom-root .classroom-home-week-heading h2 { margin: 0; font-family: monospace; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; }
+.classroom-root .classroom-home-week-rule { flex: 1; border-top: 1px solid var(--home-line); }
+.classroom-root .classroom-home-week-range { color: var(--home-muted); font-size: 13px; white-space: nowrap; }
+.classroom-root .classroom-home-week-scroll { overflow-x: auto; padding: 5px 4px 12px; margin-inline: -4px; }
+.classroom-root .classroom-home-week-scroll:focus-visible { outline: 2px solid var(--home-ink); outline-offset: 3px; border-radius: 8px; }
+.classroom-root .classroom-home .classroom-home-days { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 8px; }
+.classroom-root .classroom-home-day { display: flex; flex-direction: column; gap: 16px; min-height: 96px; width: 100%; padding: 14px 16px; background: transparent; border: 1px solid var(--home-line); border-radius: 16px; color: var(--home-ink); text-align: left; }
+.classroom-root button.classroom-home-day { cursor: pointer; }
+.classroom-root button.classroom-home-day:hover { background: var(--home-hover); }
+.classroom-root .classroom-home-day-head { display: flex; align-items: baseline; justify-content: space-between; width: 100%; gap: 8px; color: var(--home-muted); }
+.classroom-root .classroom-home-day-abbr { font-family: monospace; font-size: 10px; letter-spacing: .13em; text-transform: uppercase; }
+.classroom-root .classroom-home-day-num { color: var(--home-ink); font-family: Georgia, serif; font-size: 25px; font-weight: 600; font-style: italic; line-height: 1; }
+.classroom-root .classroom-home-day-label { display: block; max-width: 100%; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.classroom-root .classroom-home-day-today,
+.classroom-root button.classroom-home-day-today:hover { background: var(--home-ink); border-color: var(--home-ink); color: var(--classroom-page); box-shadow: 0 4px 12px rgb(37 43 38 / .18); }
 .classroom-root .classroom-home-day-today .classroom-home-day-head,
-.classroom-root .classroom-home-day-today .classroom-home-day-label {
-  color: var(--home-ink);
-  font-weight: 600;
-}
-
-.classroom-root .classroom-home-day-today .classroom-home-day-abbr {
-  border-bottom: 2px solid var(--home-ink);
-}
+.classroom-root .classroom-home-day-today .classroom-home-day-num { color: inherit; }
+.classroom-root .classroom-home-day-today .classroom-home-day-label { font-weight: 600; }
 
 /* ── teacher ────────────────────────────────────────────────────────── */
 
