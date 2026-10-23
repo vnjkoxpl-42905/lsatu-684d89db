@@ -1,40 +1,28 @@
-# Review the LSAT U teacher and admin dashboard
+# Reimagine the LSAT U teacher homepage in Claude Code
 
-You are reviewing an implemented teacher Home, not creating a generic analytics dashboard. Open the accompanying `teacher-dashboard.html` in a browser first. If you cannot render HTML, inspect `teacher-dashboard.png` and the HTML source, and state that limitation. Do not claim browser or interaction verification from source alone.
+Take full creative ownership. Use the accompanying teacher-dashboard.html and screenshot to understand the current product, then design and implement a substantially better homepage. This is an ambitious redesign, not a cosmetic review. Impress the owner with an original, coherent, exceptionally well-crafted result.
 
-## What the attachment represents
+## Creative freedom
 
-This is a self-contained offline export compiled from the current production TeacherHomeView and typed sample-data preview. Fonts, CSS, JavaScript and GSAP are embedded. No login, backend connection or real student messages are included. Buttons simulate or log actions; this does not prove production authorization, roster completeness, read receipts, persistence or calendar integrations.
+The current export is a starting reference, not a visual specification. You may rethink the entire composition, information hierarchy, typography, palette, spacing, navigation within Home, calendar presentation, controls, and motion. No current card shape, seven-day strip, color token, or layout is mandatory. Keep or replace elements according to your strongest design judgment. Do not let the existing screenshot become a ceiling on the result.
 
-The companion `student-dashboard.html` is intentionally different. The teacher is Joshua Fisseha, the instructor/admin. He does not receive student homework. Never show Assigned to you, homework waiting for him, student drill prompts or booking-purchase prompts on his Home.
+Build a clear visual point of view around the real jobs below. Use relevant installed taste, frontend design, motion, and component skills when helpful. Study suitable references and understand why they work; synthesize an original direction rather than copying a template. Invest in typography, proportion, interaction details, and responsive composition. Avoid decorative complexity that makes useful actions harder.
 
-## The owner's direction
+## Product truth
 
-- Preserve the approved warm white paper and ink contrast. Key colors: canvas `#f7f4ee`, ink `#252b26`, dark action surface `#131718`, action paper `#eeebe2`, on-dark text `#efede6`. Preserve the editorial display type and readable interface type. Do not add gold decoration, glass effects or fake premium styling.
-- The teacher's jobs are to assign work, find a student, open student context, see genuinely unread conversations, and understand scheduled teaching work. Prioritize useful actions over decorative metrics.
-- Keep the open, ruled composition and quiet supporting rail. Avoid boxed sections nested inside more boxes, duplicate actions and excess badges.
-- Joshua specifically wants to retain the older sleek horizontal seven-day strip: rounded date cards, a dark current-day highlight and an inline week range. Keep it full-width below the dashboard grid rather than replacing it with a vertical list in the rail. Its labels must not invent availability or imply that a capped session feed is a complete calendar.
-- Current Home sessions come only from platform `student_sessions`. They do not establish Google Calendar availability or the teacher's complete schedule. Do not invent empty-day availability, sync status, financial queues, tasks or counts.
-- A conversation is unread when an incoming message is beyond the viewer's read receipt. Opening a loaded thread clears unread; responding is separate. The message must remain in history. The rail, Home and inbox should use the same unit: unread conversations.
-- The full inbox redesign is a separate queued project. Focus this review on Home and its entry points. Do not expand into unrelated bookings, payment systems, curriculum, drill builders or a platform navigation rebuild.
+Joshua is the teacher/admin. His Home should help him assign work, find students and student context, handle unread conversations, and understand scheduled teaching work. He does not receive student homework.
 
-## Inspect before recommending changes
+Preserve account permissions, real functionality, assignment identity and completion semantics. Message read receipts should clear unread status without deleting history. Use honest data, loading and error states. Unknown counts are not zero; platform sessions do not establish complete calendar availability. These are functional responsibilities, not restrictions on visual creativity.
 
-1. Render the full-data dashboard at 1440, 980, 768, 390 and 320 CSS pixels, and in a narrow content pane equivalent to a docked sidebar. Inspect below the fold and long names/messages.
-2. Assess the hierarchy between greeting, Assign work, unread conversations, student finder and upcoming sessions. Are the most useful actions clear without searching the page?
-3. Test student filtering, including a student outside the initially visible recent list, no matches, clearing, keyboard Enter and Escape. Avoid a UI implying it searches more than the available data.
-4. Inspect empty, loading, error, cold-role loading/error and cached-role refresh-error states. Failed reads must not turn into confident Nothing unread or No sessions statements. Cached content should remain usable with a retry notice.
-5. Inspect conversation previews. Attention rows should show the unread incoming student message, even when the latest overall message is an outgoing teacher reply. Distinguish unread from needs reply.
-6. Review keyboard focus, accessible names, contrast, touch targets, wrapping, zoom and reduced motion. Watch the brief GSAP entrance for double animation, blurry text, delayed controls and count-triggered replays.
-7. Check the retained horizontal calendar strip, including its current-day highlight, small-screen scrolling and date labels. Distinguish displayed platform events from complete calendar availability. Do not present a proposed calendar integration as implemented.
+## Work and verify
 
-## Output requested
+Read the companion role handoff and render both HTML files to understand the two audiences. Identify the highest-impact weaknesses, choose a bold coherent direction, and implement it locally without stopping at a list of suggestions. Use the actual source components when repository access is available. If working only from the export, produce a self-contained revised HTML prototype and clearly distinguish it from production integration.
 
-Give a candid overall assessment, then concrete prioritized findings. For each, include severity, selector or source path, observed evidence, teacher impact and a specific correction. Separate functional defects, visual issues and optional design opportunities. Do not invent a quota of findings.
+Visually inspect the finished experience at desktop and phone widths. Exercise its primary interactions, keyboard navigation, reduced motion, empty and loading/error states. Refine based on what you actually see. Deliver the finished result, screenshots, a concise rationale for the major choices, and verified versus unverified behavior. Do not claim browser verification when you could only read source.
 
-Preserve what works. If a revised design is useful, show a coherent hierarchy and calendar-strip proposal rather than scattered cosmetic changes. Explain effects on small screens, role isolation, data truthfulness, reading workflow and action count.
+## Files and limits
 
-End with a coverage table of widths, states, interactions, motion and accessibility, plus unverified production dependencies. This request is for review. Do not publish, send messages, modify student work, change roles, or claim fixture actions prove backend correctness.
+This portable HTML contains sample data and embedded fonts/CSS/JavaScript. It has no live backend and simulated actions do not prove persistence. The companion screenshot is visual reference only. Read README.md and START-HERE-PROMPT.md for exact local paths. Do not deploy, push, send messages, change roles, or modify live student records without authorization.
 
 ## Source orientation if the repository is available
 
