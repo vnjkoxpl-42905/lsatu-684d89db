@@ -1,10 +1,18 @@
-import { fireEvent, render, screen, cleanup } from "@testing-library/react";
-import { afterEach, expect, it, vi } from "vitest";
+import { act, fireEvent, render, screen, cleanup } from "@testing-library/react";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { ActivityIntro } from "./ActivityIntro";
+
+beforeEach(() => {
+  vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute("open", ""); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute("open"); };
+});
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
   vi.clearAllMocks();
+  vi.unstubAllGlobals();
 });
 const props = {
   title: "Spot the Relationship", subtitle: "Old subtitle",
@@ -12,10 +20,100 @@ const props = {
   itemCount: 48, maxAttempts: 2, onStart: vi.fn(), onExit: vi.fn(),
 };
 
+it("exposes controls and a named dialog only when expanded, preserving a paused player on reopen", () => {
+  render(<ActivityIntro {...props} />);
+  const video = screen.getByLabelText("How to play Spot the Relationship") as HTMLVideoElement;
+  const play = vi.spyOn(video, "play").mockResolvedValue(undefined);
+  const shell = screen.getByLabelText("How to play Spot the Relationship").closest("dialog")!;
+  expect(shell).toHaveAttribute("role", "group");
+  expect(shell).not.toHaveAttribute("aria-label");
+  expect(screen.queryByRole("dialog")).toBeNull();
+  video.currentTime = 31;
+  fireEvent.click(video);
+  expect(screen.getByRole("dialog", { name: "Video instructions" })).toBe(shell);
+  expect(video).toHaveAttribute("controls");
+  fireEvent.click(screen.getByRole("button", { name: "Close video" }));
+  expect(video.pause).toHaveBeenCalled();
+  expect(video.currentTime).toBe(31);
+  expect(video).not.toHaveAttribute("controls");
+  fireEvent.click(screen.getByRole("button", { name: "Expand video" }));
+  expect(screen.getByLabelText("How to play Spot the Relationship")).toBe(video);
+  expect(video.currentTime).toBe(31);
+  expect(play).not.toHaveBeenCalled();
+  // Native close events from both earlier close() calls may arrive later.
+  fireEvent(shell, new Event("close"));
+  expect(screen.getByRole("dialog")).toBe(shell);
+});
+
+it("normalizes unexpected native close without recursively closing the inline shell", () => {
+  render(<ActivityIntro {...props} />);
+  const expand = screen.getByRole("button", { name: "Expand video" });
+  fireEvent.click(expand);
+  const shell = screen.getByRole("dialog") as HTMLDialogElement;
+  const close = vi.spyOn(shell, "close");
+  shell.removeAttribute("open");
+  fireEvent(shell, new Event("close"));
+  expect(shell).toHaveAttribute("open");
+  expect(shell).not.toHaveAttribute("data-expanded");
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(expand).toHaveFocus();
+  expect(close).not.toHaveBeenCalled();
+  expect(HTMLMediaElement.prototype.pause).toHaveBeenCalled();
+  fireEvent(shell, new Event("close"));
+  expect(close).not.toHaveBeenCalled();
+});
+
+it.each([true, false])("restores inline immediately on repeated Escape (cancelable=%s) during animated close", async (cancelable) => {
+  let finish!: () => void;
+  const finished = new Promise<void>((resolve) => { finish = resolve; });
+  const cancel = vi.fn();
+  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({ left: 0, top: 0, width: 320, height: 180 } as DOMRect);
+  render(<ActivityIntro {...props} />);
+  const shell = screen.getByLabelText("How to play Spot the Relationship").closest("dialog")!;
+  expect(shell).toHaveAttribute("role", "group");
+  fireEvent.click(screen.getByRole("button", { name: "Expand video" }));
+  Object.defineProperty(shell, "animate", { value: () => ({ finished, cancel }), configurable: true });
+  fireEvent(shell, new Event("cancel", { cancelable: true }));
+  expect(screen.getByRole("dialog")).toBe(shell);
+  fireEvent(shell, new Event("cancel", { cancelable }));
+  expect(shell).toHaveAttribute("open");
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(screen.getByRole("button", { name: "Expand video" })).toHaveFocus();
+  // Emulate a noncancelable native default action after the handler returns.
+  if (!cancelable) {
+    shell.removeAttribute("open");
+    fireEvent(shell, new Event("close"));
+    expect(shell).toHaveAttribute("open");
+  }
+  fireEvent.click(screen.getByRole("button", { name: "Expand video" }));
+  await act(async () => { finish(); await finished; });
+  expect(screen.getByRole("dialog")).toBe(shell);
+  expect(cancel).toHaveBeenCalled();
+});
+
+it("does not close a detached shell or schedule focus after unmount during animated close", async () => {
+  let finish!: () => void;
+  const finished = new Promise<void>((resolve) => { finish = resolve; });
+  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({ left: 0, top: 0, width: 320, height: 180 } as DOMRect);
+  const frame = vi.spyOn(window, "requestAnimationFrame");
+  const view = render(<ActivityIntro {...props} />);
+  fireEvent.click(screen.getByRole("button", { name: "Expand video" }));
+  const shell = screen.getByRole("dialog");
+  const close = vi.spyOn(shell as HTMLDialogElement, "close");
+  const cancel = vi.fn();
+  Object.defineProperty(shell, "animate", { value: () => ({ finished, cancel }), configurable: true });
+  fireEvent.click(screen.getByRole("button", { name: "Close video" }));
+  view.unmount();
+  await act(async () => { finish(); await finished; });
+  expect(cancel).toHaveBeenCalled();
+  expect(close).not.toHaveBeenCalled();
+  expect(frame).not.toHaveBeenCalled();
+});
+
 it("keeps an accessible, captioned inline video supplementary to the written instructions", () => {
   render(<ActivityIntro {...props} />);
   const video = screen.getByLabelText("How to play Spot the Relationship");
-  expect(video).toHaveAttribute("controls");
+  expect(video).not.toHaveAttribute("controls");
   expect(video).toHaveAttribute("preload", "none");
   expect(video).toHaveAttribute("playsinline");
   expect(video).not.toHaveAttribute("autoplay");
@@ -114,4 +212,77 @@ it("omits Exit when no exit callback is provided and keeps the relationship refe
   expect(reference).toHaveTextContent("Comparative");
   expect(reference).toHaveTextContent("what is enough or what is required");
   expect(reference).toHaveTextContent("The comparison does not always use “than.”");
+});
+
+it("expands and closes the same player without resetting playback, with focus return", () => {
+  render(<ActivityIntro {...props} />);
+  const video = screen.getByLabelText("How to play Spot the Relationship") as HTMLVideoElement;
+  video.currentTime = 23;
+  const expand = screen.getByRole("button", { name: "Expand video" });
+  fireEvent.click(expand);
+  expect(expand).toHaveAttribute("aria-expanded", "true");
+  expect(screen.getByRole("button", { name: "Close video" })).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Close video" }));
+  expect(expand).toHaveFocus();
+  expect(expand).toHaveAttribute("aria-expanded", "false");
+  expect(screen.getByLabelText("How to play Spot the Relationship")).toBe(video);
+  expect(video.currentTime).toBe(23);
+  fireEvent.click(video);
+  fireEvent(screen.getByRole("dialog"), new Event("cancel", { cancelable: true }));
+  expect(expand).toHaveAttribute("aria-expanded", "false");
+  fireEvent.click(expand);
+  fireEvent.click(screen.getByRole("dialog"), { clientX: -1, clientY: -1 });
+  expect(expand).toHaveAttribute("aria-expanded", "false");
+  expect(video.currentTime).toBe(23);
+});
+
+it("clears a stale failure only after successful media loading", () => {
+  render(<ActivityIntro {...props} />);
+  const video = screen.getByLabelText("How to play Spot the Relationship");
+  fireEvent.error(video);
+  fireEvent.click(screen.getByRole("button", { name: "Expand video" }));
+  expect(screen.getByRole("status")).toBeVisible();
+  expect(screen.getByRole("dialog")).toContainElement(screen.getByRole("status"));
+  fireEvent.loadedData(video);
+  expect(screen.queryByRole("status")).toBeNull();
+});
+
+it("uses a deliberate 450ms expansion and skips it for reduced motion", () => {
+  const animate = vi.fn(() => ({ finished: Promise.resolve(), cancel: vi.fn() }));
+  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: false })));
+  const bounds = vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
+    left: 0, top: 0, right: 320, bottom: 180, width: 320, height: 180, x: 0, y: 0, toJSON: () => ({}),
+  });
+  const view = render(<ActivityIntro {...props} />);
+  const dialog = screen.getByLabelText("How to play Spot the Relationship").closest("dialog")!;
+  Object.defineProperty(dialog, "animate", { value: animate, configurable: true });
+  fireEvent.click(screen.getByRole("button", { name: "Expand video" }));
+  expect(animate).toHaveBeenCalledWith(expect.any(Array), expect.objectContaining({ duration: 450 }));
+  view.unmount();
+  animate.mockClear();
+  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: true })));
+  render(<ActivityIntro {...props} />);
+  Object.defineProperty(screen.getByLabelText("How to play Spot the Relationship").closest("dialog")!, "animate", { value: animate, configurable: true });
+  fireEvent.click(screen.getByRole("button", { name: "Expand video" }));
+  expect(animate).not.toHaveBeenCalled();
+  expect(screen.getByRole("button", { name: "Close video" })).toBeVisible();
+  bounds.mockRestore();
+});
+
+it("restores focus after queued native dialog teardown", () => {
+  let restoreFocus: FrameRequestCallback | undefined;
+  vi.stubGlobal("requestAnimationFrame", vi.fn((callback) => { restoreFocus = callback; return 1; }));
+  vi.stubGlobal("cancelAnimationFrame", vi.fn());
+  const view = render(<ActivityIntro {...props} />);
+  const expand = screen.getByRole("button", { name: "Expand video" });
+  fireEvent.click(expand);
+  fireEvent(screen.getByRole("dialog"), new Event("cancel", { cancelable: true }));
+  expand.blur();
+  expect(expand).not.toHaveFocus();
+  restoreFocus?.(0);
+  expect(expand).toHaveFocus();
+  fireEvent.click(expand);
+  fireEvent.click(screen.getByRole("button", { name: "Close video" }));
+  view.unmount();
+  expect(cancelAnimationFrame).toHaveBeenCalledWith(1);
 });
