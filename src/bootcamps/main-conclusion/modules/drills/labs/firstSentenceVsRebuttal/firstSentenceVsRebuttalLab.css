@@ -1,0 +1,1161 @@
+.fsvr-lab {
+  --fsvr-bg: #fafafc;
+  --fsvr-card: #ffffff;
+  --fsvr-control: #fbfbfd;
+  --fsvr-text: #1d1d1f;
+  --fsvr-muted: #86868b;
+  --fsvr-soft: #a1a1a6;
+  --fsvr-accent: #0071e3;
+  --fsvr-accent-soft: #e8f2fc;
+  --fsvr-border: #e5e5ea;
+  --fsvr-bar: #dedee6;
+  --fsvr-success: #34c759;
+  --fsvr-success-soft: #e8f8ee;
+  --fsvr-warning: #ff9500;
+  --fsvr-warning-soft: #fff5e5;
+  --fsvr-error: #ff3b30;
+  --fsvr-error-soft: #ffeceb;
+  --fsvr-pivot: #8e5cff;
+  --fsvr-conclusion: rgba(255, 214, 10, 0.5);
+  --fsvr-support: rgba(255, 149, 0, 0.28);
+  --fsvr-opposing: rgba(255, 59, 48, 0.17);
+  --fsvr-neutral: rgba(199, 199, 204, 0.32);
+  min-height: 100vh;
+  background: var(--fsvr-bg);
+  color: var(--fsvr-text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding: 24px 32px 40px;
+}
+
+.fsvr-lab * {
+  box-sizing: border-box;
+}
+
+.fsvr-lab__shell {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+}
+
+.fsvr-lab__topbar {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 44px;
+}
+
+.fsvr-lab__home {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--fsvr-muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
+}
+
+.fsvr-lab__home-icon,
+.fsvr-lab__nav-icon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.2;
+}
+
+.fsvr-lab__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 28px;
+  align-items: start;
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+.fsvr-lab__hero-copy {
+  padding-top: 2px;
+}
+
+.fsvr-lab__eyebrow,
+.fsvr-lab__review-label,
+.fsvr-lab__progress-label,
+.fsvr-lab__progress-row {
+  color: var(--fsvr-soft);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.fsvr-lab__hero h1,
+.fsvr-lab__review h1 {
+  margin: 10px 0 0;
+  color: var(--fsvr-text);
+  font-size: 24px;
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.fsvr-lab__progress-card {
+  width: 220px;
+  min-height: auto;
+  display: grid;
+  align-content: center;
+  padding: 16px 22px;
+  border: 1px solid rgba(229, 229, 234, 0.62);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.06);
+}
+
+.fsvr-lab__progress-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 9px;
+  margin-bottom: 8px;
+}
+
+.fsvr-lab__progress-value {
+  color: var(--fsvr-accent);
+  font-size: 26px;
+  font-weight: 750;
+  line-height: 1;
+}
+
+.fsvr-lab__progress-label {
+  color: var(--fsvr-accent);
+  font-size: 13px;
+}
+
+.fsvr-lab__progress-row {
+  margin-top: 8px;
+  font-size: 12px;
+  text-align: left;
+}
+
+.fsvr-lab__bar {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--fsvr-bar);
+}
+
+.fsvr-lab__bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--fsvr-accent), #55a8ff);
+  transition: width 240ms ease;
+}
+
+.fsvr-lab__workspace {
+  display: grid;
+  gap: 22px;
+}
+
+.fsvr-lab__stimulus {
+  min-height: auto;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(229, 229, 234, 0.5);
+  border-radius: 20px;
+  background: var(--fsvr-card);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.05);
+  padding: 40px 48px;
+}
+
+.fsvr-lab__stimulus-text {
+  width: 100%;
+  color: var(--fsvr-text);
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 400;
+  text-align: left;
+}
+
+.fsvr-lab__part,
+.fsvr-lab__plain-word,
+.fsvr-lab__indicator,
+.fsvr-lab__choice,
+.fsvr-lab__cta,
+.fsvr-lab__toggle,
+.fsvr-lab__nav-button {
+  border: 0;
+  font: inherit;
+}
+
+.fsvr-lab__part {
+  display: inline;
+  margin: -3px -5px;
+  padding: 3px 5px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.fsvr-lab__part:not(.fsvr-lab__part--reading) {
+  cursor: pointer;
+}
+
+.fsvr-lab__part--clickable:hover,
+.fsvr-lab__part--selected {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  border-color: var(--fsvr-border);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.fsvr-lab__part--conclusion {
+  background: var(--fsvr-conclusion);
+  color: #5a4a00;
+  border-color: rgba(255, 193, 7, 0.42);
+}
+
+.fsvr-lab__part--support {
+  background: var(--fsvr-support);
+  color: #9a5400;
+  border-color: rgba(255, 149, 0, 0.46);
+}
+
+.fsvr-lab__part--opposing {
+  background: var(--fsvr-opposing);
+  color: #b0241a;
+  border-color: rgba(255, 59, 48, 0.36);
+}
+
+.fsvr-lab__part--neutral {
+  background: var(--fsvr-neutral);
+  color: #636366;
+  border-color: rgba(142, 142, 147, 0.25);
+}
+
+.fsvr-lab__part-text {
+  line-height: inherit;
+}
+
+.fsvr-lab__plain-word {
+  padding: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.fsvr-lab__plain-word:hover {
+  background: rgba(0, 0, 0, 0.055);
+}
+
+.fsvr-lab__plain-word--miss {
+  background: var(--fsvr-error-soft);
+  color: #b0241a;
+  animation: fsvr-shake-flash 420ms ease-in-out;
+  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.18);
+}
+
+.fsvr-lab__indicator {
+  padding: 0 2px;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* An un-found indicator must be indistinguishable from a plain word in Step 1,
+   so it hovers identically and carries no tone color or underline until found. */
+.fsvr-lab__indicator:hover {
+  background: rgba(0, 0, 0, 0.055);
+}
+
+.fsvr-lab__indicator--found[data-tone='premise'] {
+  color: var(--fsvr-warning);
+}
+
+.fsvr-lab__indicator--found[data-tone='pivot'] {
+  color: var(--fsvr-pivot);
+}
+
+.fsvr-lab__indicator--found[data-tone='opposing'],
+.fsvr-lab__indicator--found[data-tone='concession'] {
+  color: var(--fsvr-error);
+}
+
+.fsvr-lab__indicator--found[data-tone='opinion'],
+.fsvr-lab__indicator--found[data-tone='conclusion'] {
+  color: var(--fsvr-accent);
+}
+
+.fsvr-lab__indicator--found {
+  border-bottom: 2px dashed currentColor;
+  background: rgba(0, 0, 0, 0.04);
+  animation: fsvr-indicator-pulse 3.8s ease-in-out infinite;
+}
+
+/* Revealed-indicator hover tooltip */
+.fsvr-lab__indicator[data-tip] {
+  position: relative;
+}
+
+.fsvr-lab__indicator[data-tip]:hover::after,
+.fsvr-lab__indicator[data-tip]:focus-visible::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--fsvr-text);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.fsvr-lab__indicator[data-tip]:hover::before,
+.fsvr-lab__indicator[data-tip]:focus-visible::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--fsvr-text);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.fsvr-lab__indicator--success {
+  background: var(--fsvr-success-soft);
+  color: #1e7135;
+  animation: fsvr-success-pulse 760ms ease-out;
+  box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.18), 0 0 22px rgba(52, 199, 89, 0.3);
+}
+
+.fsvr-lab__controls-card {
+  min-height: auto;
+  display: grid;
+  align-content: start;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 20px;
+  background: var(--fsvr-control);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.035);
+  padding: 28px 32px;
+}
+
+.fsvr-lab__instruction-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.fsvr-lab__step-badge {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--fsvr-text);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.fsvr-lab__step {
+  color: var(--fsvr-text);
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.fsvr-lab__step-copy {
+  margin: 0 0 16px;
+  color: var(--fsvr-muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.fsvr-lab__feedback {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 0 18px;
+  padding: 14px 18px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.055);
+  animation: fsvr-feedback-enter 220ms ease-out;
+}
+
+.fsvr-lab__feedback--correct {
+  background: var(--fsvr-success-soft);
+  border-color: rgba(52, 199, 89, 0.3);
+  color: #1e7135;
+}
+
+.fsvr-lab__feedback--wrong {
+  background: var(--fsvr-error-soft);
+  border-color: rgba(255, 59, 48, 0.3);
+  color: #b0241a;
+}
+
+.fsvr-lab__feedback--warning {
+  background: var(--fsvr-warning-soft);
+  border-color: rgba(255, 149, 0, 0.32);
+  color: #8a5300;
+}
+
+.fsvr-lab__feedback-icon {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.fsvr-lab__feedback--correct .fsvr-lab__feedback-icon {
+  background: var(--fsvr-success);
+}
+
+.fsvr-lab__feedback--wrong .fsvr-lab__feedback-icon {
+  background: var(--fsvr-error);
+}
+
+.fsvr-lab__feedback--warning .fsvr-lab__feedback-icon {
+  background: var(--fsvr-warning);
+}
+
+.fsvr-lab__feedback-copy {
+  color: inherit;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.fsvr-lab__choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0 0 28px;
+}
+
+.fsvr-lab__choice {
+  min-height: 50px;
+  border: 2px solid var(--fsvr-border);
+  border-radius: 14px;
+  background: #ffffff;
+  color: var(--fsvr-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.035);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.fsvr-lab__choice:hover,
+.fsvr-lab__choice--selected {
+  border-color: var(--fsvr-accent);
+  background: var(--fsvr-accent-soft);
+  color: var(--fsvr-accent);
+}
+
+.fsvr-lab__part--success,
+.fsvr-lab__choice--success {
+  border-color: rgba(52, 199, 89, 0.5);
+  background: var(--fsvr-success-soft);
+  color: #1e7135;
+  animation: fsvr-success-pulse 760ms ease-out;
+  box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.16), 0 0 22px rgba(52, 199, 89, 0.24);
+}
+
+.fsvr-lab__part--miss,
+.fsvr-lab__choice--miss {
+  border-color: rgba(255, 59, 48, 0.5);
+  background: var(--fsvr-error-soft);
+  color: #b0241a;
+  animation: fsvr-shake-flash 420ms ease-in-out;
+  box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.16), 0 0 18px rgba(255, 59, 48, 0.22);
+}
+
+.fsvr-lab__cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.fsvr-lab__cta {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: var(--fsvr-accent);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 160ms ease, opacity 160ms ease;
+}
+
+.fsvr-lab__cta:hover:not(:disabled) {
+  background: #005bb5;
+}
+
+.fsvr-lab__cta:disabled,
+.fsvr-lab__cta[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.66;
+}
+
+.fsvr-lab__cta[aria-disabled='true']:hover {
+  background: #72aaf0;
+}
+
+.fsvr-lab__cta--secondary {
+  background: #ffffff;
+  color: var(--fsvr-text);
+  border: 1px solid var(--fsvr-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
+}
+
+.fsvr-lab__cta--secondary:hover:not(:disabled) {
+  background: #ffffff;
+}
+
+.fsvr-lab__summary {
+  display: grid;
+  gap: 18px;
+}
+
+.fsvr-lab__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: var(--fsvr-muted);
+  font-size: 15px;
+}
+
+.fsvr-lab__legend b {
+  display: inline-block;
+  width: 16px;
+  height: 12px;
+  margin-right: 7px;
+  border-radius: 3px;
+}
+
+.fsvr-lab__footer-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--fsvr-border);
+}
+
+.fsvr-lab__nav-button {
+  min-width: 140px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--fsvr-text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.025);
+}
+
+.fsvr-lab__nav-button:disabled {
+  cursor: default;
+  color: var(--fsvr-muted);
+  opacity: 0.48;
+}
+
+.fsvr-lab__review {
+  display: grid;
+  gap: 28px;
+  padding: 42px;
+  border: 1px solid rgba(229, 229, 234, 0.62);
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.05);
+}
+
+.fsvr-lab__review p {
+  margin: 0;
+  color: var(--fsvr-muted);
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+.fsvr-lab__review-summary-grid,
+.fsvr-lab__review-callouts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.fsvr-lab__review-stat,
+.fsvr-lab__callout,
+.fsvr-lab__review-card {
+  border: 1px solid var(--fsvr-border);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.035);
+}
+
+.fsvr-lab__review-stat {
+  padding: 24px;
+}
+
+.fsvr-lab__review-kpi {
+  margin: 10px 0 16px;
+  color: var(--fsvr-text);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.fsvr-lab__review-kpi span {
+  color: var(--fsvr-accent);
+}
+
+.fsvr-lab__component-list {
+  display: grid;
+  gap: 10px;
+}
+
+.fsvr-lab__component-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 10px;
+  background: var(--fsvr-bg);
+  color: var(--fsvr-text);
+  font-size: 16px;
+}
+
+.fsvr-lab__component-row strong {
+  min-width: 30px;
+  padding: 3px 9px;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 999px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.fsvr-lab__callout {
+  display: flex;
+  gap: 16px;
+  padding: 22px;
+}
+
+.fsvr-lab__callout--strength {
+  background: var(--fsvr-success-soft);
+  border-color: rgba(52, 199, 89, 0.28);
+}
+
+.fsvr-lab__callout--weakness {
+  background: var(--fsvr-warning-soft);
+  border-color: rgba(255, 149, 0, 0.3);
+}
+
+.fsvr-lab__callout-icon {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.fsvr-lab__callout--strength .fsvr-lab__callout-icon {
+  background: var(--fsvr-success);
+}
+
+.fsvr-lab__callout--weakness .fsvr-lab__callout-icon {
+  background: var(--fsvr-warning);
+}
+
+.fsvr-lab__review-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.fsvr-lab__review-card {
+  overflow: hidden;
+}
+
+.fsvr-lab__toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px;
+  background: transparent;
+  color: var(--fsvr-text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.fsvr-lab__toggle:hover {
+  background: var(--fsvr-bg);
+}
+
+.fsvr-lab__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.fsvr-lab__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 999px;
+  background: var(--fsvr-bg);
+  color: var(--fsvr-muted);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.fsvr-lab__chip--clean {
+  background: var(--fsvr-success-soft);
+  color: #1e7135;
+}
+
+.fsvr-lab__chip--recovered {
+  background: var(--fsvr-warning-soft);
+  color: #8a5300;
+}
+
+.fsvr-lab__chip--assisted {
+  background: var(--fsvr-accent-soft);
+  color: var(--fsvr-accent);
+}
+
+.fsvr-lab__review-body {
+  display: grid;
+  gap: 18px;
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--fsvr-border);
+}
+
+.fsvr-lab__review-quote {
+  padding: 14px 16px;
+  border-left: 3px solid var(--fsvr-accent);
+  border-radius: 0 8px 8px 0;
+  background: var(--fsvr-bg);
+  color: var(--fsvr-text);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+@keyframes fsvr-feedback-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fsvr-success-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+  }
+
+  34% {
+    transform: scale(1.035);
+    box-shadow: 0 0 0 6px rgba(52, 199, 89, 0.18), 0 0 26px rgba(52, 199, 89, 0.34);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fsvr-shake-flash {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  18% {
+    transform: translateX(-4px);
+    background: #ffd7d4;
+  }
+
+  36% {
+    transform: translateX(4px);
+    background: #ffeceb;
+  }
+
+  54% {
+    transform: translateX(-3px);
+    background: #ffd7d4;
+  }
+
+  72% {
+    transform: translateX(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsvr-lab__feedback,
+  .fsvr-lab__indicator--success,
+  .fsvr-lab__plain-word--miss,
+  .fsvr-lab__part--success,
+  .fsvr-lab__part--miss,
+  .fsvr-lab__choice--success,
+  .fsvr-lab__choice--miss {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .fsvr-lab {
+    padding: 18px 18px 42px;
+  }
+
+  .fsvr-lab__topbar {
+    min-height: 52px;
+  }
+
+  .fsvr-lab__home {
+    height: 46px;
+    padding: 0 17px;
+    font-size: 16px;
+  }
+
+  .fsvr-lab__hero {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .fsvr-lab__progress-card {
+    width: 100%;
+    min-height: 104px;
+    padding: 20px 22px;
+  }
+
+  .fsvr-lab__progress-top {
+    justify-content: flex-start;
+  }
+
+  .fsvr-lab__stimulus {
+    min-height: 0;
+    padding: 34px 24px;
+  }
+
+  .fsvr-lab__stimulus-text {
+    font-size: 21px;
+    line-height: 1.62;
+  }
+
+  .fsvr-lab__controls-card {
+    min-height: 0;
+    padding: 28px 24px;
+  }
+
+  .fsvr-lab__step {
+    font-size: 22px;
+  }
+
+  .fsvr-lab__step-copy,
+  .fsvr-lab__feedback-copy {
+    font-size: 17px;
+  }
+
+  .fsvr-lab__choice-grid,
+  .fsvr-lab__review-summary-grid,
+  .fsvr-lab__review-callouts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .fsvr-lab {
+    padding: 14px 14px 34px;
+  }
+
+  .fsvr-lab__hero h1,
+  .fsvr-lab__review h1 {
+    font-size: 28px;
+  }
+
+  .fsvr-lab__workspace {
+    gap: 22px;
+  }
+
+  .fsvr-lab__stimulus,
+  .fsvr-lab__controls-card,
+  .fsvr-lab__review {
+    border-radius: 18px;
+  }
+
+  .fsvr-lab__cta-row,
+  .fsvr-lab__footer-nav {
+    flex-direction: column;
+  }
+
+  .fsvr-lab__cta,
+  .fsvr-lab__nav-button {
+    width: 100%;
+  }
+
+  .fsvr-lab__toggle {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fsvr-lab__chips {
+    justify-content: flex-start;
+  }
+}
+
+/* ───────────────────────── micro-interactions & polish ───────────────────────── */
+
+/* 9. Found / revealed indicator breathing pulse (glow in the word's own tone color) */
+@keyframes fsvr-indicator-pulse {
+  0%, 100% { text-shadow: 0 0 0 transparent; }
+  50% { text-shadow: 0 0 10px currentColor; }
+}
+
+/* 10. Wrong-answer shake + flash */
+@keyframes fsvr-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+.fsvr-lab__plain-word--miss {
+  animation: fsvr-shake-flash 420ms ease-in-out;
+}
+
+.fsvr-lab__part--wrong {
+  position: relative;
+  z-index: 1;
+  border-radius: 7px;
+  background: var(--fsvr-error-soft);
+  box-shadow: 0 0 0 1px rgba(255, 59, 48, 0.4);
+  animation: fsvr-shake 0.45s ease;
+}
+
+.fsvr-lab__part--selected {
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.16);
+}
+
+/* 12. Step-feedback banner slide-in */
+@keyframes fsvr-feedback-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fsvr-lab__feedback {
+  animation: fsvr-feedback-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 14. Autosave indicator */
+.fsvr-lab__save-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-right: auto;
+  align-self: center;
+  color: var(--fsvr-muted);
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.fsvr-lab__save-status--visible {
+  opacity: 1;
+}
+
+.fsvr-lab__save-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fsvr-success);
+  box-shadow: 0 0 6px var(--fsvr-success);
+}
+
+/* 6. Post-check breakdown disclosure */
+.fsvr-lab__breakdown {
+  margin-top: 6px;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 14px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.fsvr-lab__breakdown-summary {
+  padding: 14px 18px;
+  cursor: pointer;
+  color: var(--fsvr-text);
+  font-size: 15px;
+  font-weight: 650;
+  list-style: none;
+}
+
+.fsvr-lab__breakdown-summary::-webkit-details-marker {
+  display: none;
+}
+
+.fsvr-lab__breakdown-summary::after {
+  content: '▾';
+  float: right;
+  color: var(--fsvr-soft);
+  transition: transform 0.25s ease;
+}
+
+.fsvr-lab__breakdown[open] .fsvr-lab__breakdown-summary::after {
+  transform: rotate(180deg);
+}
+
+.fsvr-lab__breakdown-body {
+  display: grid;
+  gap: 16px;
+  padding: 4px 18px 18px;
+}
+
+.fsvr-lab__breakdown-body .fsvr-lab__review-quote + .fsvr-lab__review-quote {
+  margin-top: 8px;
+}
+
+.fsvr-lab__breakdown-body p {
+  margin: 0;
+  color: var(--fsvr-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* 7. Final interactive answer key */
+.fsvr-lab__answer-key {
+  display: grid;
+  gap: 12px;
+}
+
+.fsvr-lab__answer-key-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fsvr-lab__answer-key-num {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--fsvr-border);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--fsvr-text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 650;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.035);
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.fsvr-lab__answer-key-num:hover {
+  transform: translateY(-2px);
+  border-color: var(--fsvr-accent);
+  box-shadow: 0 8px 20px rgba(0, 113, 227, 0.14);
+}
+
+.fsvr-lab__answer-key-num--clean { border-color: rgba(52, 199, 89, 0.45); }
+.fsvr-lab__answer-key-num--recovered { border-color: rgba(255, 149, 0, 0.5); }
+.fsvr-lab__answer-key-num--assisted { border-color: rgba(0, 113, 227, 0.45); }
+
+.fsvr-lab__answer-key-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.fsvr-lab__stimulus--review {
+  min-height: 0;
+  padding: 32px 40px;
+}
+
+/* 15. Keyboard focus rings */
+.fsvr-lab__part:focus-visible,
+.fsvr-lab__indicator:focus-visible,
+.fsvr-lab__plain-word:focus-visible,
+.fsvr-lab__choice:focus-visible,
+.fsvr-lab__cta:focus-visible,
+.fsvr-lab__nav-button:focus-visible,
+.fsvr-lab__answer-key-num:focus-visible,
+.fsvr-lab__toggle:focus-visible,
+.fsvr-lab__breakdown-summary:focus-visible,
+.fsvr-lab__home:focus-visible {
+  outline: 3px solid rgba(0, 113, 227, 0.4);
+  outline-offset: 2px;
+}
+
+/* 16. Entrance animation — per-question view fade/slide (kept on the container so it
+   never competes with the per-part pulse/shake animations) */
+@keyframes fsvr-view-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fsvr-lab__workspace {
+  animation: fsvr-view-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Respect reduced-motion: disable pulses, shakes, and entrance motion */
+@media (prefers-reduced-motion: reduce) {
+  .fsvr-lab__indicator--found,
+  .fsvr-lab__plain-word--miss,
+  .fsvr-lab__part--wrong,
+  .fsvr-lab__part--selected,
+  .fsvr-lab__feedback,
+  .fsvr-lab__workspace {
+    animation: none !important;
+  }
+}
