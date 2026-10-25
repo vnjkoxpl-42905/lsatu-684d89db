@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-30",
+  "backend_deployed": true,
+  "deployment_evidence_source": "Root agent independently reviewed and deployed managed additive SQL; reported exact source preservation",
+  "existing_rows_preserved": { "bootcamp_kv": 213, "flagged_questions": 40, "intro_lr_attempts": 24, "student_profiles": 42, "user_roles": 2, "wrong_answer_journal": 706 },
+  "ui_connected": true,
+  "ui_connected_sources": ["NativeLabReviewDetail", "HardSentencesReviewDetail", "DossierReview teacher selections", "ReviewQueuePage exact active task projection"],
+  "detail_panel_service_tests_passed": 19,
+  "detail_browser_verification_complete": false,
+  "artifact": "docs/implementation-plans/artifacts/2026-09-30-review-episodes.sql",
+  "service": "src/lib/reviewEpisodes.ts",
+  "isolated_sql_assertions_passed": 22,
+  "client_tests_passed": 6,
+  "source_bindings": ["Owned intro_lr_attempts exact attempt ID and question_id", "Owned M5 calibration_attempts exact bootcamp_kv record_id, payload user_id and item_id"],
+  "implemented": ["Admin teacher selection with durable reason", "Student missed episodes with server-verified incorrect source", "A later source attempt creates a new episode", "Append-only event UUID replay", "Optional immutable blind answer before distinct reveal", "Missed completion requires error and right-answer diagnoses", "Completion leaves source attempts and flags unchanged", "Actor checks before transport and after acknowledgement"],
+  "teacher_helper_queue_tests_passed": 19,
+  "integrated_review_tests_passed": 57,
+  "typecheck_passed": true,
+  "eslint_passed": true,
+  "remaining": ["Teacher/student browser account walk and publication", "Other source-family ownership bindings", "Flagged and skipped episode opening", "Teacher feedback events", "Native lab pending-answer recovery across reload"]
+}

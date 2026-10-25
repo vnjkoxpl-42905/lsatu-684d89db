@@ -1,0 +1,492 @@
+[
+  [
+    "390.nonLrRefused",
+    true
+  ],
+  [
+    "390.addedCount",
+    "1 added to set"
+  ],
+  [
+    "390.pool",
+    "25 available from filters for 9 remaining places. 1 chosen question stays in the set outside these filters."
+  ],
+  [
+    "390.startLabel",
+    "Start drill (10)"
+  ],
+  [
+    "390.modeBeforeStart",
+    "1 chosen · 10 in set Clear Set size 10 25 available from filters for 9 remaining places. 1 chosen question stays outside the filters. Training set, not a timed test. No time limit; answers stay hidden unless you choose S"
+  ],
+  [
+    "390.overflow",
+    {
+      "scrollWidth": 390,
+      "clientWidth": 390
+    }
+  ],
+  [
+    "390.inspectRows",
+    [
+      "1. PT101 · S2 · Q1 · FlawChosen · L4",
+      "2. PT102 · S2 · Q25 · Sufficient AssumptionFrom filters · L4",
+      "3. PT102 · S2 · Q1 · Main ConclusionFrom filters · L2",
+      "4. PT102 · S2 · Q18 · FlawFrom filters · L3",
+      "5. PT102 · S2 · Q12 · Necessary AssumptionFrom filters · L3",
+      "6. PT102 · S2 · Q24 · Principle-ConformFrom filters · L4",
+      "7. PT102 · S2 · Q8 · Most Strongly SupportedFrom filters · L4",
+      "8. PT102 · S2 · Q4 · StrengthenFrom filters · L4",
+      "9. PT102 · S2 · Q11 · Principle-ConformFrom filters · L2",
+      "10. PT102 · S2 · Q15 · WeakenFrom filters · L3"
+    ]
+  ],
+  [
+    "390.exactPickOnce",
+    1
+  ],
+  [
+    "390.listHeight",
+    385.1238098144531
+  ],
+  [
+    "390.answerKeyLeak",
+    false
+  ],
+  [
+    "390.staleNotice",
+    1
+  ],
+  [
+    "390.startAfterChange",
+    0
+  ],
+  [
+    "390.shortageHint",
+    "The filters need 7 more questions. Try broader filters or a smaller set."
+  ],
+  [
+    "390.createDisabled",
+    true
+  ],
+  [
+    "700.nonLrRefused",
+    true
+  ],
+  [
+    "700.addedCount",
+    "1 added to set"
+  ],
+  [
+    "700.pool",
+    "25 available from filters for 9 remaining places. 1 chosen question stays in the set outside these filters."
+  ],
+  [
+    "700.startLabel",
+    "Start drill (10)"
+  ],
+  [
+    "700.modeBeforeStart",
+    "1 chosen · 10 in set Clear Set size 10 25 available from filters for 9 remaining places. 1 chosen question stays outside the filters. Training set, not a timed test. No time limit; answers stay hidden unless you choose S"
+  ],
+  [
+    "700.overflow",
+    {
+      "scrollWidth": 700,
+      "clientWidth": 700
+    }
+  ],
+  [
+    "700.inspectRows",
+    [
+      "1. PT101 · S2 · Q1 · FlawChosen · L4",
+      "2. PT102 · S2 · Q17 · ParadoxFrom filters · L3",
+      "3. PT102 · S2 · Q10 · StrengthenFrom filters · L3",
+      "4. PT102 · S2 · Q6 · Necessary AssumptionFrom filters · L3",
+      "5. PT102 · S2 · Q24 · Principle-ConformFrom filters · L4",
+      "6. PT102 · S2 · Q19 · Most Strongly SupportedFrom filters · L3",
+      "7. PT102 · S2 · Q18 · FlawFrom filters · L3",
+      "8. PT102 · S2 · Q8 · Most Strongly SupportedFrom filters · L4",
+      "9. PT102 · S2 · Q13 · Most Strongly SupportedFrom filters · L5",
+      "10. PT102 · S2 · Q5 · WeakenFrom filters · L2"
+    ]
+  ],
+  [
+    "700.exactPickOnce",
+    1
+  ],
+  [
+    "700.listHeight",
+    481.6499938964844
+  ],
+  [
+    "700.answerKeyLeak",
+    false
+  ],
+  [
+    "700.staleNotice",
+    1
+  ],
+  [
+    "700.startAfterChange",
+    0
+  ],
+  [
+    "700.shortageHint",
+    "The filters need 7 more questions. Try broader filters or a smaller set."
+  ],
+  [
+    "700.createDisabled",
+    true
+  ],
+  [
+    "820.nonLrRefused",
+    true
+  ],
+  [
+    "820.addedCount",
+    "1 added to set"
+  ],
+  [
+    "820.pool",
+    "25 available from filters for 9 remaining places. 1 chosen question stays in the set outside these filters."
+  ],
+  [
+    "820.startLabel",
+    "Start drill (10)"
+  ],
+  [
+    "820.modeBeforeStart",
+    "1 chosen · 10 in set Clear Set size 10 25 available from filters for 9 remaining places. 1 chosen question stays outside the filters. Training set, not a timed test. No time limit; answers stay hidden unless you choose S"
+  ],
+  [
+    "820.overflow",
+    {
+      "scrollWidth": 820,
+      "clientWidth": 820
+    }
+  ],
+  [
+    "820.inspectRows",
+    [
+      "1. PT101 · S2 · Q1 · FlawChosen · L4",
+      "2. PT102 · S2 · Q7 · Main ConclusionFrom filters · L3",
+      "3. PT102 · S2 · Q18 · FlawFrom filters · L3",
+      "4. PT102 · S2 · Q8 · Most Strongly SupportedFrom filters · L4",
+      "5. PT102 · S2 · Q25 · Sufficient AssumptionFrom filters · L4",
+      "6. PT102 · S2 · Q10 · StrengthenFrom filters · L3",
+      "7. PT102 · S2 · Q23 · Principle-StrengthenFrom filters · L4",
+      "8. PT102 · S2 · Q13 · Most Strongly SupportedFrom filters · L5",
+      "9. PT102 · S2 · Q1 · Main ConclusionFrom filters · L2",
+      "10. PT102 · S2 · Q12 · Necessary AssumptionFrom filters · L3"
+    ]
+  ],
+  [
+    "820.exactPickOnce",
+    1
+  ],
+  [
+    "820.listHeight",
+    509.78912353515625
+  ],
+  [
+    "820.answerKeyLeak",
+    false
+  ],
+  [
+    "820.staleNotice",
+    1
+  ],
+  [
+    "820.startAfterChange",
+    0
+  ],
+  [
+    "820.shortageHint",
+    "The filters need 7 more questions. Try broader filters or a smaller set."
+  ],
+  [
+    "820.createDisabled",
+    true
+  ],
+  [
+    "1280.nonLrRefused",
+    true
+  ],
+  [
+    "1280.addedCount",
+    "1 added to set"
+  ],
+  [
+    "1280.pool",
+    "25 available from filters for 9 remaining places. 1 chosen question stays in the set outside these filters."
+  ],
+  [
+    "1280.startLabel",
+    "Start drill (10)"
+  ],
+  [
+    "1280.modeBeforeStart",
+    "Training set, not a timed testNo time limit; a clock records your time. Answers stay hidden unless you choose Show Answer, and results come at the end."
+  ],
+  [
+    "1280.overflow",
+    {
+      "scrollWidth": 1280,
+      "clientWidth": 1280
+    }
+  ],
+  [
+    "1280.inspectRows",
+    [
+      "1. PT101 · S2 · Q1 · FlawChosen · L4",
+      "2. PT102 · S2 · Q11 · Principle-ConformFrom filters · L2",
+      "3. PT102 · S2 · Q14 · ParadoxFrom filters · L4",
+      "4. PT102 · S2 · Q21 · Must Be TrueFrom filters · L5",
+      "5. PT102 · S2 · Q16 · Necessary AssumptionFrom filters · L4",
+      "6. PT102 · S2 · Q7 · Main ConclusionFrom filters · L3",
+      "7. PT102 · S2 · Q23 · Principle-StrengthenFrom filters · L4",
+      "8. PT102 · S2 · Q17 · ParadoxFrom filters · L3",
+      "9. PT102 · S2 · Q5 · WeakenFrom filters · L2",
+      "10. PT102 · S2 · Q2 · Parallel FlawFrom filters · L2"
+    ]
+  ],
+  [
+    "1280.exactPickOnce",
+    1
+  ],
+  [
+    "1280.listHeight",
+    503.6260986328125
+  ],
+  [
+    "1280.answerKeyLeak",
+    false
+  ],
+  [
+    "1280.staleNotice",
+    1
+  ],
+  [
+    "1280.startAfterChange",
+    0
+  ],
+  [
+    "1280.shortageHint",
+    "The filters need 7 more questions. Try broader filters or a smaller set."
+  ],
+  [
+    "1280.createDisabled",
+    true
+  ],
+  [
+    "1440.nonLrRefused",
+    true
+  ],
+  [
+    "1440.addedCount",
+    "1 added to set"
+  ],
+  [
+    "1440.pool",
+    "25 available from filters for 9 remaining places. 1 chosen question stays in the set outside these filters."
+  ],
+  [
+    "1440.startLabel",
+    "Start this drill (10)"
+  ],
+  [
+    "1440.modeBeforeStart",
+    "Training set, not a timed test No time limit; a clock records your time. Answers stay hidden unless you choose Show Answer, and results come at the end."
+  ],
+  [
+    "1440.overflow",
+    {
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    }
+  ],
+  [
+    "1440.inspectRows",
+    [
+      "1. PT101 · S2 · Q1 · FlawChosen · L4",
+      "2. PT102 · S2 · Q7 · Main ConclusionFrom filters · L3",
+      "3. PT102 · S2 · Q1 · Main ConclusionFrom filters · L2",
+      "4. PT102 · S2 · Q13 · Most Strongly SupportedFrom filters · L5",
+      "5. PT102 · S2 · Q22 · Parallel ReasoningFrom filters · L5",
+      "6. PT102 · S2 · Q15 · WeakenFrom filters · L3",
+      "7. PT102 · S2 · Q3 · Most Strongly SupportedFrom filters · L1",
+      "8. PT102 · S2 · Q2 · Parallel FlawFrom filters · L2",
+      "9. PT102 · S2 · Q16 · Necessary AssumptionFrom filters · L4",
+      "10. PT102 · S2 · Q19 · Most Strongly SupportedFrom filters · L3"
+    ]
+  ],
+  [
+    "1440.exactPickOnce",
+    1
+  ],
+  [
+    "1440.listHeight",
+    503.63433837890625
+  ],
+  [
+    "1440.answerKeyLeak",
+    false
+  ],
+  [
+    "1440.staleNotice",
+    1
+  ],
+  [
+    "1440.startAfterChange",
+    0
+  ],
+  [
+    "1440.shortageHint",
+    "The filters need 7 more questions. Try broader filters or a smaller set."
+  ],
+  [
+    "1440.createDisabled",
+    true
+  ],
+  [
+    "390-text200.nonLrRefused",
+    true
+  ],
+  [
+    "390-text200.addedCount",
+    "1 added to set"
+  ],
+  [
+    "390-text200.pool",
+    "25 available from filters for 9 remaining places. 1 chosen question stays in the set outside these filters."
+  ],
+  [
+    "390-text200.startLabel",
+    "Start drill (10)"
+  ],
+  [
+    "390-text200.modeBeforeStart",
+    "1 chosen · 10 in set Clear Set size 10 25 available from filters for 9 remaining places. 1 chosen question stays outside the filters. Training set, not a timed test. No time limit; answers stay hidden unless you choose S"
+  ],
+  [
+    "390-text200.overflow",
+    {
+      "scrollWidth": 390,
+      "clientWidth": 390
+    }
+  ],
+  [
+    "390-text200.inspectRows",
+    [
+      "1. PT101 · S2 · Q1 · FlawChosen · L4",
+      "2. PT102 · S2 · Q1 · Main ConclusionFrom filters · L2",
+      "3. PT102 · S2 · Q13 · Most Strongly SupportedFrom filters · L5",
+      "4. PT102 · S2 · Q3 · Most Strongly SupportedFrom filters · L1",
+      "5. PT102 · S2 · Q12 · Necessary AssumptionFrom filters · L3",
+      "6. PT102 · S2 · Q9 · FlawFrom filters · L2",
+      "7. PT102 · S2 · Q20 · FlawFrom filters · L4",
+      "8. PT102 · S2 · Q25 · Sufficient AssumptionFrom filters · L4",
+      "9. PT102 · S2 · Q22 · Parallel ReasoningFrom filters · L5",
+      "10. PT102 · S2 · Q4 · StrengthenFrom filters · L4"
+    ]
+  ],
+  [
+    "390-text200.exactPickOnce",
+    1
+  ],
+  [
+    "390-text200.listHeight",
+    305.81109619140625
+  ],
+  [
+    "390-text200.answerKeyLeak",
+    false
+  ],
+  [
+    "390-text200.staleNotice",
+    1
+  ],
+  [
+    "390-text200.startAfterChange",
+    0
+  ],
+  [
+    "390-text200.shortageHint",
+    "The filters need 7 more questions. Try broader filters or a smaller set."
+  ],
+  [
+    "390-text200.createDisabled",
+    true
+  ],
+  [
+    "1440-text200.nonLrRefused",
+    true
+  ],
+  [
+    "1440-text200.addedCount",
+    "1 added to set"
+  ],
+  [
+    "1440-text200.pool",
+    "25 available from filters for 9 remaining places. 1 chosen question stays in the set outside these filters."
+  ],
+  [
+    "1440-text200.startLabel",
+    "Start this drill (10)"
+  ],
+  [
+    "1440-text200.modeBeforeStart",
+    "Training set, not a timed test No time limit; a clock records your time. Answers stay hidden unless you choose Show Answer, and results come at the end."
+  ],
+  [
+    "1440-text200.overflow",
+    {
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    }
+  ],
+  [
+    "1440-text200.inspectRows",
+    [
+      "1. PT101 · S2 · Q1 · FlawChosen · L4",
+      "2. PT102 · S2 · Q23 · Principle-StrengthenFrom filters · L4",
+      "3. PT102 · S2 · Q13 · Most Strongly SupportedFrom filters · L5",
+      "4. PT102 · S2 · Q1 · Main ConclusionFrom filters · L2",
+      "5. PT102 · S2 · Q21 · Must Be TrueFrom filters · L5",
+      "6. PT102 · S2 · Q6 · Necessary AssumptionFrom filters · L3",
+      "7. PT102 · S2 · Q4 · StrengthenFrom filters · L4",
+      "8. PT102 · S2 · Q10 · StrengthenFrom filters · L3",
+      "9. PT102 · S2 · Q5 · WeakenFrom filters · L2",
+      "10. PT102 · S2 · Q3 · Most Strongly SupportedFrom filters · L1"
+    ]
+  ],
+  [
+    "1440-text200.exactPickOnce",
+    1
+  ],
+  [
+    "1440-text200.listHeight",
+    304
+  ],
+  [
+    "1440-text200.answerKeyLeak",
+    false
+  ],
+  [
+    "1440-text200.staleNotice",
+    1
+  ],
+  [
+    "1440-text200.startAfterChange",
+    0
+  ],
+  [
+    "1440-text200.shortageHint",
+    "The filters need 7 more questions. Try broader filters or a smaller set."
+  ],
+  [
+    "1440-text200.createDisabled",
+    true
+  ]
+]

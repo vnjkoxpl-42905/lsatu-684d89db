@@ -1,0 +1,78 @@
+<h2>First Redesign Decision: Navigation</h2>
+<p class="subtitle">The current workspace feels chaotic partly because too many surfaces have equal weight. This screen compares the current pattern with a grouped version.</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">Current pattern: many equal tabs</div>
+    <div class="mockup-body">
+      <div style="display:grid; grid-template-columns:180px 1fr; min-height:360px; gap:18px;">
+        <div class="mock-sidebar">
+          <div style="font-weight:700; margin-bottom:14px;">Teacher Workspace</div>
+          <div>Command</div>
+          <div>Students</div>
+          <div>Conversations</div>
+          <div>Library</div>
+          <div>Activities</div>
+          <div>Whiteboard</div>
+          <div>Schedule</div>
+          <div>Insights</div>
+          <div>Admin</div>
+          <hr style="border:0; border-top:1px solid #ddd; margin:14px 0;">
+          <div>References</div>
+          <div>Tutor corpus</div>
+        </div>
+        <div class="mock-content">
+          <h3>Problem</h3>
+          <p>Everything looks like a destination. It makes Joshua decide where the app feature lives before he can do the teaching work.</p>
+          <div class="placeholder">Tasks, assistant, students, stats, shortcuts, and empty states compete.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">Recommended pattern: grouped teaching workspace</div>
+    <div class="mockup-body">
+      <div style="display:grid; grid-template-columns:180px 1fr; min-height:360px; gap:18px;">
+        <div class="mock-sidebar">
+          <div style="font-weight:700; margin-bottom:14px;">Teacher Workspace</div>
+          <div style="font-weight:700;">Desk</div>
+          <div style="font-weight:700;">Students</div>
+          <div style="font-weight:700;">Assign</div>
+          <div style="font-weight:700;">Review</div>
+          <div style="font-weight:700;">Library</div>
+          <div style="font-weight:700;">Insights</div>
+          <div style="font-weight:700;">Assistant</div>
+          <hr style="border:0; border-top:1px solid #ddd; margin:14px 0;">
+          <div>More</div>
+        </div>
+        <div class="mock-content">
+          <h3>Intent</h3>
+          <p>Fewer primary choices. Each top-level area maps to a teaching job instead of a pile of app pages.</p>
+          <div class="placeholder">Desk starts calm: tasks first, then one clear next action.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Question</h3>
+  <p>Should the first major frontend redesign move be reducing and regrouping the sidebar tabs?</p>
+  <div class="options">
+    <div class="option" data-choice="yes-regroup-sidebar" onclick="toggleSelect(this)">
+      <div class="letter">A</div>
+      <div class="content">
+        <h3>Yes, regroup the sidebar first</h3>
+        <p>Make the whole workspace easier to understand before redesigning the Desk page itself.</p>
+      </div>
+    </div>
+    <div class="option" data-choice="desk-first" onclick="toggleSelect(this)">
+      <div class="letter">B</div>
+      <div class="content">
+        <h3>No, redesign the Desk first</h3>
+        <p>Keep the sidebar mostly as-is for now and focus only on the homepage layout.</p>
+      </div>
+    </div>
+  </div>
+</div>

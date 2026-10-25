@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-18",
+  "ids": {
+    "onePassage": "85703227-ea03-4454-9bac-94c52903dd01",
+    "fourPassages": "fd7e5b4d-1ac2-4f59-9990-751d46c7af87",
+    "recordingPath": "d763bfe6-d710-4c4b-90ff-4b3a20929211/fd7e5b4d-1ac2-4f59-9990-751d46c7af87/acceptance-20261018-spoken-86c45b99-ee836053-ff57-40aa-a63f-78fa684d71db.mp3"
+  },
+  "results": [
+    {
+      "name": "tester_and_admin_authenticated",
+      "passed": true
+    },
+    {
+      "name": "rc_recall_attempts_readable",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "rc_recall_recaps_readable",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "create_1_passage_attempt",
+      "passed": true,
+      "status": 201,
+      "attemptId": "85703227-ea03-4454-9bac-94c52903dd01"
+    },
+    {
+      "name": "create_4_passage_attempt",
+      "passed": true,
+      "status": 201,
+      "attemptId": "fd7e5b4d-1ac2-4f59-9990-751d46c7af87"
+    },
+    {
+      "name": "create_silent_recap",
+      "passed": true,
+      "status": 201,
+      "recapId": "5ab25ffc-0d30-465f-80d6-f33605052eb2"
+    },
+    {
+      "name": "create_spoken_recap",
+      "passed": true,
+      "status": 201,
+      "recapId": "86c45b99-2722-45c2-b52c-2817fd173641"
+    },
+    {
+      "name": "synthetic_mp3_upload",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "saved_recap_readback",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "owner_signed_playback_link",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "signed_audio_fetch_matches",
+      "passed": true,
+      "status": 200,
+      "bytes": 8611
+    },
+    {
+      "name": "anonymous_public_audio_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "admin_audio_sign_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "admin_metadata_read",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "finalize_one",
+      "passed": true,
+      "status": 200,
+      "attemptId": "85703227-ea03-4454-9bac-94c52903dd01"
+    },
+    {
+      "name": "finalize_four",
+      "passed": true,
+      "status": 200,
+      "attemptId": "fd7e5b4d-1ac2-4f59-9990-751d46c7af87"
+    },
+    {
+      "name": "finished_attempt_update_denied",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "finished_attempt_unchanged",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "new_recap_after_finish_denied",
+      "passed": true,
+      "status": 403
+    },
+    {
+      "name": "anonymous_attempt_unreadable",
+      "passed": true,
+      "status": 200
+    }
+  ]
+}

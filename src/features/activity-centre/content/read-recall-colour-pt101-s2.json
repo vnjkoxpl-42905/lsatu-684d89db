@@ -1,0 +1,2800 @@
+{
+ "slug": "read-recall-colour-pt101-s2",
+ "title": "Read, Recall, Colour \u00b7 PT101 Section 2",
+ "subtitle": "A whole section, out loud, against the clock",
+ "item_format": "spoken-recall",
+ "mode": "section",
+ "time_goal_minutes": {
+  "standard": 25,
+  "accommodation_53": 38,
+  "accommodation_70": 50
+ },
+ "source_section": "PT101.S2",
+ "instructions": {},
+ "items": [
+  {
+   "order": 1,
+   "slug": "PT101_S2_Q1",
+   "prompt": "Press release: A comprehensive review evaluating the medical studies done up to the present time has found no reason to think that drinking coffee in normal amounts harms the coffee-drinker's heart. So coffee drinkers can relax and enjoy their beverage\u2014it is safe to drink coffee.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is a press release. \u00b7 A review has been done. \u00b7 The review is a comprehensive one. \u00b7 The review evaluated medical studies. \u00b7 Those studies were done up to the present time. \u00b7 The review found no reason to think something. \u00b7 The thing is that drinking coffee harms the heart. \u00b7 The amounts of coffee are normal ones. (2) This is the conclusion. \u00b7 Coffee drinkers can relax. \u00b7 They can enjoy their beverage. \u00b7 It is safe to drink coffee.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Press release: A comprehensive review evaluating the medical studies done up to the present time has found no reason to think that drinking coffee in normal amounts harms the coffee-drinker's heart.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a press release."
+      },
+      {
+       "n": 2,
+       "text": "A review has been done."
+      },
+      {
+       "n": 3,
+       "text": "The review is a comprehensive one."
+      },
+      {
+       "n": 4,
+       "text": "The review evaluated medical studies."
+      },
+      {
+       "n": 5,
+       "text": "Those studies were done up to the present time."
+      },
+      {
+       "n": 6,
+       "text": "The review found no reason to think something."
+      },
+      {
+       "n": 7,
+       "text": "The thing is that drinking coffee harms the heart."
+      },
+      {
+       "n": 8,
+       "text": "The amounts of coffee are normal ones."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "So coffee drinkers can relax and enjoy their beverage\u2014it is safe to drink coffee.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Coffee drinkers can relax."
+      },
+      {
+       "n": 3,
+       "text": "They can enjoy their beverage."
+      },
+      {
+       "n": 4,
+       "text": "It is safe to drink coffee."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because coffee isn't bad for your heart that doesn't mean it's safe overall? What if coffee makes your hair fall out?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q1",
+     "qnum": 1,
+     "question_type": "Classic Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 2,
+   "slug": "PT101_S2_Q2",
+   "prompt": "All people prefer colors that they can distinguish easily to colors that they have difficulty distinguishing. Infants can easily distinguish bright colors but, unlike adults, have difficulty distinguishing subtle shades. A brightly colored toy for infants sells better than the same toy in subtle shades at the same price.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about all people. \u00b7 People prefer some colors to others. \u00b7 The preferred colors are ones they can distinguish easily. \u00b7 The other colors are ones they have difficulty distinguishing. (2) This is about infants. \u00b7 Infants can distinguish bright colors easily. \u00b7 There is a contrast in this sentence. \u00b7 Infants have difficulty distinguishing subtle shades. \u00b7 Adults are unlike infants in this. (3) This is about a toy for infants. \u00b7 The toy is brightly colored. \u00b7 That toy sells better than another version. \u00b7 The other version is the same toy in subtle shades. \u00b7 The price of both is the same.",
+   "category": "Most Strongly Supported",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "All people prefer colors that they can distinguish easily to colors that they have difficulty distinguishing.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about all people."
+      },
+      {
+       "n": 2,
+       "text": "People prefer some colors to others."
+      },
+      {
+       "n": 3,
+       "text": "The preferred colors are ones they can distinguish easily."
+      },
+      {
+       "n": 4,
+       "text": "The other colors are ones they have difficulty distinguishing."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Infants can easily distinguish bright colors but, unlike adults, have difficulty distinguishing subtle shades.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about infants."
+      },
+      {
+       "n": 2,
+       "text": "Infants can distinguish bright colors easily."
+      },
+      {
+       "n": 3,
+       "text": "There is a contrast in this sentence."
+      },
+      {
+       "n": 4,
+       "text": "Infants have difficulty distinguishing subtle shades."
+      },
+      {
+       "n": 5,
+       "text": "Adults are unlike infants in this."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "A brightly colored toy for infants sells better than the same toy in subtle shades at the same price.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about a toy for infants."
+      },
+      {
+       "n": 2,
+       "text": "The toy is brightly colored."
+      },
+      {
+       "n": 3,
+       "text": "That toy sells better than another version."
+      },
+      {
+       "n": 4,
+       "text": "The other version is the same toy in subtle shades."
+      },
+      {
+       "n": 5,
+       "text": "The price of both is the same."
+      }
+     ]
+    }
+   ],
+   "the_read": "Infant toys may be purchased in color shades the infant prefers.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q2",
+     "qnum": 2,
+     "question_type": "Most Strongly Supported",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 3,
+   "slug": "PT101_S2_Q3",
+   "prompt": "A group of unusual meteorites was found in Shergotty, India. Their structure indicates that they originated on one of the geologically active planets, Mercury, Venus, or Mars. Because of Mercury's proximity to the Sun, any material dislodged from that planet's surface would have been captured by the Sun, rather than falling to Earth as meteorites. Nor could Venus be the source of the meteorites, because its gravity would have prevented dislodged material from escaping into space. The meteorites, therefore, probably fell to Earth after being dislodged from Mars, perhaps as the result of a collision with a large object.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A group of meteorites was found. \u00b7 The meteorites are unusual ones. \u00b7 They were found in Shergotty. \u00b7 Shergotty is in India. (2) This is about the meteorites' structure. \u00b7 The structure indicates where they originated. \u00b7 They originated on one planet. \u00b7 That planet is geologically active. \u00b7 Mercury is one of the named planets. \u00b7 Venus is another named planet. \u00b7 Mars is the third named planet. (3) This gives a reason. \u00b7 Mercury is close to the Sun. \u00b7 Material might be dislodged from that planet's surface. \u00b7 This holds for any such material. \u00b7 That material would have been captured by the Sun. \u00b7 It would not have fallen to Earth. \u00b7 Falling to Earth would have made it meteorites. (4) Venus could not be the source either. \u00b7 The source would be of the meteorites. \u00b7 A reason is given for this. \u00b7 Venus has its own gravity. \u00b7 Its gravity would have prevented something. \u00b7 Dislodged material could not escape into space. (5) This is the conclusion. \u00b7 The meteorites fell to Earth. \u00b7 That is probably what happened. \u00b7 They were dislodged from Mars first. \u00b7 A possible cause is offered. \u00b7 The cause is a collision. \u00b7 The collision was with a large object.",
+   "category": "Method",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A group of unusual meteorites was found in Shergotty, India.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A group of meteorites was found."
+      },
+      {
+       "n": 2,
+       "text": "The meteorites are unusual ones."
+      },
+      {
+       "n": 3,
+       "text": "They were found in Shergotty."
+      },
+      {
+       "n": 4,
+       "text": "Shergotty is in India."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Their structure indicates that they originated on one of the geologically active planets, Mercury, Venus, or Mars.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the meteorites' structure."
+      },
+      {
+       "n": 2,
+       "text": "The structure indicates where they originated."
+      },
+      {
+       "n": 3,
+       "text": "They originated on one planet."
+      },
+      {
+       "n": 4,
+       "text": "That planet is geologically active."
+      },
+      {
+       "n": 5,
+       "text": "Mercury is one of the named planets."
+      },
+      {
+       "n": 6,
+       "text": "Venus is another named planet."
+      },
+      {
+       "n": 7,
+       "text": "Mars is the third named planet."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Because of Mercury's proximity to the Sun, any material dislodged from that planet's surface would have been captured by the Sun, rather than falling to Earth as meteorites.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "Mercury is close to the Sun."
+      },
+      {
+       "n": 3,
+       "text": "Material might be dislodged from that planet's surface."
+      },
+      {
+       "n": 4,
+       "text": "This holds for any such material."
+      },
+      {
+       "n": 5,
+       "text": "That material would have been captured by the Sun."
+      },
+      {
+       "n": 6,
+       "text": "It would not have fallen to Earth."
+      },
+      {
+       "n": 7,
+       "text": "Falling to Earth would have made it meteorites."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Nor could Venus be the source of the meteorites, because its gravity would have prevented dislodged material from escaping into space.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Venus could not be the source either."
+      },
+      {
+       "n": 2,
+       "text": "The source would be of the meteorites."
+      },
+      {
+       "n": 3,
+       "text": "A reason is given for this."
+      },
+      {
+       "n": 4,
+       "text": "Venus has its own gravity."
+      },
+      {
+       "n": 5,
+       "text": "Its gravity would have prevented something."
+      },
+      {
+       "n": 6,
+       "text": "Dislodged material could not escape into space."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "The meteorites, therefore, probably fell to Earth after being dislodged from Mars, perhaps as the result of a collision with a large object.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "The meteorites fell to Earth."
+      },
+      {
+       "n": 3,
+       "text": "That is probably what happened."
+      },
+      {
+       "n": 4,
+       "text": "They were dislodged from Mars first."
+      },
+      {
+       "n": 5,
+       "text": "A possible cause is offered."
+      },
+      {
+       "n": 6,
+       "text": "The cause is a collision."
+      },
+      {
+       "n": 7,
+       "text": "The collision was with a large object."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the structural indications are misleading? What if Mars' gravity would also prevent meteors from escaping into space?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q3",
+     "qnum": 3,
+     "question_type": "Method",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 4,
+   "slug": "PT101_S2_Q4",
+   "prompt": "Because quitting smoking is very stressful and leads to weight gain, it is difficult to do. The key to quitting, however, may be as simple as replacing an unhealthy activity with a healthy one. In one study, half of those attempting to quit were assigned to a smoking-cessation program alone, and the other half were assigned to the same program plus fifteen weeks of aerobic exercise. At the one-month mark, none in the first group had quit, but 40 percent of those in the second group had not smoked.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This gives a reason. \u00b7 Quitting smoking is stressful. \u00b7 It is very stressful. \u00b7 Quitting smoking leads to weight gain. \u00b7 Quitting smoking is difficult to do. (2) This is a contrast with what came before. \u00b7 There is a key to quitting. \u00b7 The key may be simple. \u00b7 It may be as simple as a replacement. \u00b7 What is replaced is an unhealthy activity. \u00b7 What replaces it is a healthy activity. (3) There was one study. \u00b7 The study involved people attempting to quit. \u00b7 Half of them were assigned to something. \u00b7 What they were assigned to was a smoking-cessation program. \u00b7 That group got the program alone. (4) This is about the other half. \u00b7 They were assigned to the same program. \u00b7 They also got aerobic exercise. \u00b7 The exercise lasted fifteen weeks. (5) This is at the one-month mark. \u00b7 None in the first group had quit. \u00b7 There is a contrast in this sentence. \u00b7 Some of the second group had not smoked. \u00b7 That portion was 40 percent.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Because quitting smoking is very stressful and leads to weight gain, it is difficult to do.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "Quitting smoking is stressful."
+      },
+      {
+       "n": 3,
+       "text": "It is very stressful."
+      },
+      {
+       "n": 4,
+       "text": "Quitting smoking leads to weight gain."
+      },
+      {
+       "n": 5,
+       "text": "Quitting smoking is difficult to do."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The key to quitting, however, may be as simple as replacing an unhealthy activity with a healthy one.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "There is a key to quitting."
+      },
+      {
+       "n": 3,
+       "text": "The key may be simple."
+      },
+      {
+       "n": 4,
+       "text": "It may be as simple as a replacement."
+      },
+      {
+       "n": 5,
+       "text": "What is replaced is an unhealthy activity."
+      },
+      {
+       "n": 6,
+       "text": "What replaces it is a healthy activity."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "In one study, half of those attempting to quit were assigned to a smoking-cessation program alone,",
+     "details": [
+      {
+       "n": 1,
+       "text": "There was one study."
+      },
+      {
+       "n": 2,
+       "text": "The study involved people attempting to quit."
+      },
+      {
+       "n": 3,
+       "text": "Half of them were assigned to something."
+      },
+      {
+       "n": 4,
+       "text": "What they were assigned to was a smoking-cessation program."
+      },
+      {
+       "n": 5,
+       "text": "That group got the program alone."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "and the other half were assigned to the same program plus fifteen weeks of aerobic exercise.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the other half."
+      },
+      {
+       "n": 2,
+       "text": "They were assigned to the same program."
+      },
+      {
+       "n": 3,
+       "text": "They also got aerobic exercise."
+      },
+      {
+       "n": 4,
+       "text": "The exercise lasted fifteen weeks."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "At the one-month mark, none in the first group had quit, but 40 percent of those in the second group had not smoked.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is at the one-month mark."
+      },
+      {
+       "n": 2,
+       "text": "None in the first group had quit."
+      },
+      {
+       "n": 3,
+       "text": "There is a contrast in this sentence."
+      },
+      {
+       "n": 4,
+       "text": "Some of the second group had not smoked."
+      },
+      {
+       "n": 5,
+       "text": "That portion was 40 percent."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the aerobics group stopped smoking because they had less addictive personalities, and not because of the exercise?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q4",
+     "qnum": 4,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 5,
+   "slug": "PT101_S2_Q5",
+   "prompt": "Altogether, the students in Ms. Tarnowski's Milton Elementary School class collected more aluminum cans than did the students in any of the school's other classes. Therefore, the Milton student who collected the most aluminum cans was in Ms. Tarnowski's class.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This counts things altogether. \u00b7 The students are in Ms. Tarnowski's class. \u00b7 The class is at Milton Elementary School. \u00b7 Those students collected aluminum cans. \u00b7 They collected more than other students did. \u00b7 The comparison is with students in the school's other classes. \u00b7 It holds for any of those other classes. (2) This is the conclusion. \u00b7 One Milton student collected the most cans. \u00b7 The cans are aluminum ones. \u00b7 That student was in Ms. Tarnowski's class.",
+   "category": "Parallel Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Altogether, the students in Ms. Tarnowski's Milton Elementary School class collected more aluminum cans than did the students in any of the school's other classes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This counts things altogether."
+      },
+      {
+       "n": 2,
+       "text": "The students are in Ms. Tarnowski's class."
+      },
+      {
+       "n": 3,
+       "text": "The class is at Milton Elementary School."
+      },
+      {
+       "n": 4,
+       "text": "Those students collected aluminum cans."
+      },
+      {
+       "n": 5,
+       "text": "They collected more than other students did."
+      },
+      {
+       "n": 6,
+       "text": "The comparison is with students in the school's other classes."
+      },
+      {
+       "n": 7,
+       "text": "It holds for any of those other classes."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Therefore, the Milton student who collected the most aluminum cans was in Ms. Tarnowski's class.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "One Milton student collected the most cans."
+      },
+      {
+       "n": 3,
+       "text": "The cans are aluminum ones."
+      },
+      {
+       "n": 4,
+       "text": "That student was in Ms. Tarnowski's class."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if what is true of the class isn't necessarily true of the students in the class? What if one student in a low-overall-performing class collected more cans than any other individual?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q5",
+     "qnum": 5,
+     "question_type": "Parallel Flaw",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 6,
+   "slug": "PT101_S2_Q6",
+   "prompt": "Several excellent candidates have been proposed for the presidency of United Wire, and each candidate would bring to the job different talents and experience. If the others are compared with Jones, however, it will be apparent that none of them has her unique set of qualifications. Jones, therefore, is best qualified to be the new president of United Wire.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Several candidates have been proposed. \u00b7 The candidates are excellent ones. \u00b7 They were proposed for a presidency. \u00b7 The presidency is of United Wire. \u00b7 Each candidate would bring something to the job. \u00b7 What each would bring is different talents and experience. (2) This is a contrast with what came before. \u00b7 This states a condition. \u00b7 The condition is that the others are compared with Jones. \u00b7 Then something will be apparent. \u00b7 None of the others has her qualifications. \u00b7 Her set of qualifications is unique. (3) This is the conclusion. \u00b7 It is about Jones. \u00b7 She is best qualified. \u00b7 What she is qualified for is the presidency. \u00b7 She would be the new president of United Wire.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Several excellent candidates have been proposed for the presidency of United Wire, and each candidate would bring to the job different talents and experience.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Several candidates have been proposed."
+      },
+      {
+       "n": 2,
+       "text": "The candidates are excellent ones."
+      },
+      {
+       "n": 3,
+       "text": "They were proposed for a presidency."
+      },
+      {
+       "n": 4,
+       "text": "The presidency is of United Wire."
+      },
+      {
+       "n": 5,
+       "text": "Each candidate would bring something to the job."
+      },
+      {
+       "n": 6,
+       "text": "What each would bring is different talents and experience."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "If the others are compared with Jones, however, it will be apparent that none of them has her unique set of qualifications.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "This states a condition."
+      },
+      {
+       "n": 3,
+       "text": "The condition is that the others are compared with Jones."
+      },
+      {
+       "n": 4,
+       "text": "Then something will be apparent."
+      },
+      {
+       "n": 5,
+       "text": "None of the others has her qualifications."
+      },
+      {
+       "n": 6,
+       "text": "Her set of qualifications is unique."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Jones, therefore, is best qualified to be the new president of United Wire.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about Jones."
+      },
+      {
+       "n": 3,
+       "text": "She is best qualified."
+      },
+      {
+       "n": 4,
+       "text": "What she is qualified for is the presidency."
+      },
+      {
+       "n": 5,
+       "text": "She would be the new president of United Wire."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if unique qualifications aren't necessarily the best qualification?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q6",
+     "qnum": 6,
+     "question_type": "Classic Flaw",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 7,
+   "slug": "PT101_S2_Q7",
+   "prompt": "A neighborhood group plans to protest the closing of the neighborhood's only recreation center on the grounds that to do so would leave the neighborhood without local access to a recreation center. \"Our neighborhood already has the most residents per center of any neighborhood in the city,\" complained one resident, \"and closing this center would make the situation unacceptable since access to recreational facilities is a necessity for this neighborhood.\"",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A neighborhood group has a plan. \u00b7 The plan is to protest a closing. \u00b7 What would close is a recreation center. \u00b7 It is the neighborhood's only one. \u00b7 The protest has stated grounds. \u00b7 The grounds are that closing would leave the neighborhood without access. \u00b7 The access in question is local access. (2) This is spoken by one resident. \u00b7 The resident is complaining. \u00b7 The neighborhood has the most residents per center. \u00b7 It already has that. \u00b7 The comparison is with any neighborhood in the city. (3) This is an additional point. \u00b7 Closing this center would change the situation. \u00b7 The situation would become unacceptable. \u00b7 A reason is given for that. \u00b7 The reason is that access is a necessity. \u00b7 The access is to recreational facilities. \u00b7 The necessity is for this neighborhood.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "A neighborhood group plans to protest the closing of the neighborhood's only recreation center on the grounds that to do so would leave the neighborhood without local access to a recreation center.",
+     "details": [
+      {
+       "n": 1,
+       "text": "A neighborhood group has a plan."
+      },
+      {
+       "n": 2,
+       "text": "The plan is to protest a closing."
+      },
+      {
+       "n": 3,
+       "text": "What would close is a recreation center."
+      },
+      {
+       "n": 4,
+       "text": "It is the neighborhood's only one."
+      },
+      {
+       "n": 5,
+       "text": "The protest has stated grounds."
+      },
+      {
+       "n": 6,
+       "text": "The grounds are that closing would leave the neighborhood without access."
+      },
+      {
+       "n": 7,
+       "text": "The access in question is local access."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "\"Our neighborhood already has the most residents per center of any neighborhood in the city,\" complained one resident,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is spoken by one resident."
+      },
+      {
+       "n": 2,
+       "text": "The resident is complaining."
+      },
+      {
+       "n": 3,
+       "text": "The neighborhood has the most residents per center."
+      },
+      {
+       "n": 4,
+       "text": "It already has that."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with any neighborhood in the city."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "\"and closing this center would make the situation unacceptable since access to recreational facilities is a necessity for this neighborhood.\"",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "Closing this center would change the situation."
+      },
+      {
+       "n": 3,
+       "text": "The situation would become unacceptable."
+      },
+      {
+       "n": 4,
+       "text": "A reason is given for that."
+      },
+      {
+       "n": 5,
+       "text": "The reason is that access is a necessity."
+      },
+      {
+       "n": 6,
+       "text": "The access is to recreational facilities."
+      },
+      {
+       "n": 7,
+       "text": "The necessity is for this neighborhood."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the community needs fulfilled by the rec center will be filled by another facility (ie the library) once the center closes?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q7",
+     "qnum": 7,
+     "question_type": "Weaken",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 8,
+   "slug": "PT101_S2_Q8",
+   "prompt": "Sociologist: The claim that there is a large number of violent crimes in our society is false, for this claim is based upon the large number of stories in newspapers about violent crimes. But since violent crimes are very rare occurrences, newspapers are likely to print stories about them.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A sociologist is speaking. \u00b7 There is a claim at issue. \u00b7 The claim is that violent crimes are numerous. \u00b7 The number is said to be large. \u00b7 The crimes are in our society. \u00b7 The sociologist says the claim is false. (2) This gives a reason. \u00b7 The claim is based on something. \u00b7 It is based on stories in newspapers. \u00b7 The number of stories is large. \u00b7 The stories are about violent crimes. (3) This is a contrast with what came before. \u00b7 Violent crimes are rare occurrences. \u00b7 They are very rare. \u00b7 Newspapers are likely to print stories. \u00b7 The stories would be about violent crimes.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Sociologist: The claim that there is a large number of violent crimes in our society is false,",
+     "details": [
+      {
+       "n": 1,
+       "text": "A sociologist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "There is a claim at issue."
+      },
+      {
+       "n": 3,
+       "text": "The claim is that violent crimes are numerous."
+      },
+      {
+       "n": 4,
+       "text": "The number is said to be large."
+      },
+      {
+       "n": 5,
+       "text": "The crimes are in our society."
+      },
+      {
+       "n": 6,
+       "text": "The sociologist says the claim is false."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "for this claim is based upon the large number of stories in newspapers about violent crimes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "The claim is based on something."
+      },
+      {
+       "n": 3,
+       "text": "It is based on stories in newspapers."
+      },
+      {
+       "n": 4,
+       "text": "The number of stories is large."
+      },
+      {
+       "n": 5,
+       "text": "The stories are about violent crimes."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "But since violent crimes are very rare occurrences, newspapers are likely to print stories about them.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "Violent crimes are rare occurrences."
+      },
+      {
+       "n": 3,
+       "text": "They are very rare."
+      },
+      {
+       "n": 4,
+       "text": "Newspapers are likely to print stories."
+      },
+      {
+       "n": 5,
+       "text": "The stories would be about violent crimes."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we can't assume the truth of our conclusion?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q8",
+     "qnum": 8,
+     "question_type": "Classic Flaw",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 9,
+   "slug": "PT101_S2_Q9",
+   "prompt": "Historian: Anyone who thinks that the terrors of the ancient regime of Q were exclusively the work of fanatics is overlooking a basic truth: the regime was made up primarily of ordinary people enthusiastically seeking paradise. The regime executed many people in pursuit of its goal; but it later became clear that paradise, as they defined it, is unrealizable. So at least some of the ordinary people of Q were in fact murderers.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A historian is speaking. \u00b7 This is about anyone with a certain thought. \u00b7 The thought is that the terrors were the work of fanatics. \u00b7 The terrors belong to the regime of Q. \u00b7 That regime is an ancient one. \u00b7 The thought is that fanatics were exclusively responsible. \u00b7 Such a person is overlooking a truth. \u00b7 The truth is a basic one. (2) This is about the regime. \u00b7 The regime was made up of ordinary people. \u00b7 That was primarily so. \u00b7 Those people were seeking paradise. \u00b7 They sought it enthusiastically. (3) The regime executed people. \u00b7 It executed many of them. \u00b7 The executions were in pursuit of its goal. \u00b7 There is a contrast in this sentence. \u00b7 It later became clear that paradise is unrealizable. \u00b7 Paradise here is as they defined it. (4) This is the conclusion. \u00b7 Some of the ordinary people were murderers. \u00b7 It is at least some of them. \u00b7 Those people are the ordinary people of Q.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Historian: Anyone who thinks that the terrors of the ancient regime of Q were exclusively the work of fanatics is overlooking a basic truth:",
+     "details": [
+      {
+       "n": 1,
+       "text": "A historian is speaking."
+      },
+      {
+       "n": 2,
+       "text": "This is about anyone with a certain thought."
+      },
+      {
+       "n": 3,
+       "text": "The thought is that the terrors were the work of fanatics."
+      },
+      {
+       "n": 4,
+       "text": "The terrors belong to the regime of Q."
+      },
+      {
+       "n": 5,
+       "text": "That regime is an ancient one."
+      },
+      {
+       "n": 6,
+       "text": "The thought is that fanatics were exclusively responsible."
+      },
+      {
+       "n": 7,
+       "text": "Such a person is overlooking a truth."
+      },
+      {
+       "n": 8,
+       "text": "The truth is a basic one."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "the regime was made up primarily of ordinary people enthusiastically seeking paradise.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the regime."
+      },
+      {
+       "n": 2,
+       "text": "The regime was made up of ordinary people."
+      },
+      {
+       "n": 3,
+       "text": "That was primarily so."
+      },
+      {
+       "n": 4,
+       "text": "Those people were seeking paradise."
+      },
+      {
+       "n": 5,
+       "text": "They sought it enthusiastically."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The regime executed many people in pursuit of its goal; but it later became clear that paradise, as they defined it, is unrealizable.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The regime executed people."
+      },
+      {
+       "n": 2,
+       "text": "It executed many of them."
+      },
+      {
+       "n": 3,
+       "text": "The executions were in pursuit of its goal."
+      },
+      {
+       "n": 4,
+       "text": "There is a contrast in this sentence."
+      },
+      {
+       "n": 5,
+       "text": "It later became clear that paradise is unrealizable."
+      },
+      {
+       "n": 6,
+       "text": "Paradise here is as they defined it."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "So at least some of the ordinary people of Q were in fact murderers.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "Some of the ordinary people were murderers."
+      },
+      {
+       "n": 3,
+       "text": "It is at least some of them."
+      },
+      {
+       "n": 4,
+       "text": "Those people are the ordinary people of Q."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if executing people in pursuit of paradise isn't murder?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q9",
+     "qnum": 9,
+     "question_type": "Strengthen",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 10,
+   "slug": "PT101_S2_Q10",
+   "prompt": "Economist: The economy seems to be heading out of recession. Recent figures show that consumers are buying more durable goods than before, indicating that they expect economic growth in the near future.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) An economist is speaking. \u00b7 The economy seems to be doing something. \u00b7 It seems to be heading out of recession. (2) There are figures on this. \u00b7 The figures are recent ones. \u00b7 The figures show what consumers are buying. \u00b7 Consumers are buying durable goods. \u00b7 They are buying more than before. \u00b7 That indicates something about consumers. \u00b7 Consumers expect economic growth. \u00b7 The growth would come in the near future.",
+   "category": "Argument Part",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Economist: The economy seems to be heading out of recession.",
+     "details": [
+      {
+       "n": 1,
+       "text": "An economist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "The economy seems to be doing something."
+      },
+      {
+       "n": 3,
+       "text": "It seems to be heading out of recession."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Recent figures show that consumers are buying more durable goods than before, indicating that they expect economic growth in the near future.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There are figures on this."
+      },
+      {
+       "n": 2,
+       "text": "The figures are recent ones."
+      },
+      {
+       "n": 3,
+       "text": "The figures show what consumers are buying."
+      },
+      {
+       "n": 4,
+       "text": "Consumers are buying durable goods."
+      },
+      {
+       "n": 5,
+       "text": "They are buying more than before."
+      },
+      {
+       "n": 6,
+       "text": "That indicates something about consumers."
+      },
+      {
+       "n": 7,
+       "text": "Consumers expect economic growth."
+      },
+      {
+       "n": 8,
+       "text": "The growth would come in the near future."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the expectation of economic growth doesn't mean the economy is headed out of a recession?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q10",
+     "qnum": 10,
+     "question_type": "Argument Part",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 11,
+   "slug": "PT101_S2_Q11",
+   "prompt": "Not surprisingly, there are no professors under the age of eighteen. And, as is well known, no one under eighteen can vote legally. Finally, some brilliant people are professors, some are legal voters, and some are under eighteen.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is said to be unsurprising. \u00b7 There are no professors of one kind. \u00b7 Those would be under the age of eighteen. (2) This is an additional point. \u00b7 This is said to be well known. \u00b7 No one under eighteen can vote. \u00b7 The voting in question is legal voting. (3) This is the final point. \u00b7 It is about brilliant people. \u00b7 Some of them are professors. \u00b7 Some of them are legal voters. \u00b7 Some of them are under eighteen.",
+   "category": "Inference",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Not surprisingly, there are no professors under the age of eighteen.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is said to be unsurprising."
+      },
+      {
+       "n": 2,
+       "text": "There are no professors of one kind."
+      },
+      {
+       "n": 3,
+       "text": "Those would be under the age of eighteen."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "And, as is well known, no one under eighteen can vote legally.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "This is said to be well known."
+      },
+      {
+       "n": 3,
+       "text": "No one under eighteen can vote."
+      },
+      {
+       "n": 4,
+       "text": "The voting in question is legal voting."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Finally, some brilliant people are professors, some are legal voters, and some are under eighteen.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the final point."
+      },
+      {
+       "n": 2,
+       "text": "It is about brilliant people."
+      },
+      {
+       "n": 3,
+       "text": "Some of them are professors."
+      },
+      {
+       "n": 4,
+       "text": "Some of them are legal voters."
+      },
+      {
+       "n": 5,
+       "text": "Some of them are under eighteen."
+      }
+     ]
+    }
+   ],
+   "the_read": "There are some people who both cannot vote and are not professors.",
+   "the_read_type": "I",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q11",
+     "qnum": 11,
+     "question_type": "Inference",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 12,
+   "slug": "PT101_S2_Q12",
+   "prompt": "For years scientists have been scanning the skies in the hope of finding life on other planets. But in spite of the ever-increasing sophistication of the equipment they employ, some of it costing hundreds of millions of dollars, not the first shred of evidence of such life has been forthcoming. And there is no reason to think that these scientists will be any more successful in the future, no matter how much money is invested in the search. The dream of finding extraterrestrial life is destined to remain a dream, as science's experience up to this point should indicate.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about scientists. \u00b7 They have been scanning the skies. \u00b7 They have done so for years. \u00b7 They have a hope in doing it. \u00b7 The hope is to find life. \u00b7 The life would be on other planets. (2) This is a contrast with what came before. \u00b7 The scientists employ equipment. \u00b7 The equipment is sophisticated. \u00b7 Its sophistication is ever-increasing. (3) Some of the equipment costs a lot. \u00b7 The cost is hundreds of millions of dollars. \u00b7 No evidence has been forthcoming. \u00b7 Not the first shred of it has come. \u00b7 The evidence would be of such life. (4) This is an additional point. \u00b7 There is no reason to think something. \u00b7 The thought would be about these scientists. \u00b7 They would be more successful in the future. \u00b7 This holds no matter how much money is invested. \u00b7 The money would be invested in the search. (5) There is a dream at issue. \u00b7 The dream is of finding extraterrestrial life. \u00b7 It is destined to remain a dream. \u00b7 A basis is given for this. \u00b7 The basis is science's experience. \u00b7 That experience runs up to this point. \u00b7 That experience should indicate it.",
+   "category": "Conclusion",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "For years scientists have been scanning the skies in the hope of finding life on other planets.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about scientists."
+      },
+      {
+       "n": 2,
+       "text": "They have been scanning the skies."
+      },
+      {
+       "n": 3,
+       "text": "They have done so for years."
+      },
+      {
+       "n": 4,
+       "text": "They have a hope in doing it."
+      },
+      {
+       "n": 5,
+       "text": "The hope is to find life."
+      },
+      {
+       "n": 6,
+       "text": "The life would be on other planets."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "But in spite of the ever-increasing sophistication of the equipment they employ,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "The scientists employ equipment."
+      },
+      {
+       "n": 3,
+       "text": "The equipment is sophisticated."
+      },
+      {
+       "n": 4,
+       "text": "Its sophistication is ever-increasing."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "some of it costing hundreds of millions of dollars, not the first shred of evidence of such life has been forthcoming.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Some of the equipment costs a lot."
+      },
+      {
+       "n": 2,
+       "text": "The cost is hundreds of millions of dollars."
+      },
+      {
+       "n": 3,
+       "text": "No evidence has been forthcoming."
+      },
+      {
+       "n": 4,
+       "text": "Not the first shred of it has come."
+      },
+      {
+       "n": 5,
+       "text": "The evidence would be of such life."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "And there is no reason to think that these scientists will be any more successful in the future, no matter how much money is invested in the search.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "There is no reason to think something."
+      },
+      {
+       "n": 3,
+       "text": "The thought would be about these scientists."
+      },
+      {
+       "n": 4,
+       "text": "They would be more successful in the future."
+      },
+      {
+       "n": 5,
+       "text": "This holds no matter how much money is invested."
+      },
+      {
+       "n": 6,
+       "text": "The money would be invested in the search."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "The dream of finding extraterrestrial life is destined to remain a dream, as science's experience up to this point should indicate.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a dream at issue."
+      },
+      {
+       "n": 2,
+       "text": "The dream is of finding extraterrestrial life."
+      },
+      {
+       "n": 3,
+       "text": "It is destined to remain a dream."
+      },
+      {
+       "n": 4,
+       "text": "A basis is given for this."
+      },
+      {
+       "n": 5,
+       "text": "The basis is science's experience."
+      },
+      {
+       "n": 6,
+       "text": "That experience runs up to this point."
+      },
+      {
+       "n": 7,
+       "text": "That experience should indicate it."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if extraterrestrial life will come to us?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q12",
+     "qnum": 12,
+     "question_type": "Conclusion",
+     "correct_answer": "C"
+    }
+   ]
+  },
+  {
+   "order": 13,
+   "slug": "PT101_S2_Q13",
+   "prompt": "Carl's Coffee Emporium stocks only two decaffeinated coffees: French Roast and Mocha Java. Yusef only serves decaffeinated coffee, and the coffee he served after dinner last night was far too smooth and mellow to have been French Roast. So, if Yusef still gets all his coffee from Carl's, what he served last night was Mocha Java.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Carl's Coffee Emporium stocks coffees. \u00b7 It stocks only two decaffeinated ones. \u00b7 French Roast is one of them. \u00b7 Mocha Java is the other one. (2) This is about Yusef. \u00b7 He serves only decaffeinated coffee. \u00b7 He served coffee after dinner. \u00b7 That was last night. \u00b7 The coffee was smooth and mellow. \u00b7 It was far too much so. \u00b7 It could not have been French Roast. (3) This is the conclusion. \u00b7 It rests on a condition. \u00b7 The condition is that Yusef still gets his coffee from Carl's. \u00b7 He gets all of it there. \u00b7 What he served last night was Mocha Java.",
+   "category": "Parallel Reasoning",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Carl's Coffee Emporium stocks only two decaffeinated coffees: French Roast and Mocha Java.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Carl's Coffee Emporium stocks coffees."
+      },
+      {
+       "n": 2,
+       "text": "It stocks only two decaffeinated ones."
+      },
+      {
+       "n": 3,
+       "text": "French Roast is one of them."
+      },
+      {
+       "n": 4,
+       "text": "Mocha Java is the other one."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Yusef only serves decaffeinated coffee, and the coffee he served after dinner last night was far too smooth and mellow to have been French Roast.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about Yusef."
+      },
+      {
+       "n": 2,
+       "text": "He serves only decaffeinated coffee."
+      },
+      {
+       "n": 3,
+       "text": "He served coffee after dinner."
+      },
+      {
+       "n": 4,
+       "text": "That was last night."
+      },
+      {
+       "n": 5,
+       "text": "The coffee was smooth and mellow."
+      },
+      {
+       "n": 6,
+       "text": "It was far too much so."
+      },
+      {
+       "n": 7,
+       "text": "It could not have been French Roast."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "So, if Yusef still gets all his coffee from Carl's, what he served last night was Mocha Java.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It rests on a condition."
+      },
+      {
+       "n": 3,
+       "text": "The condition is that Yusef still gets his coffee from Carl's."
+      },
+      {
+       "n": 4,
+       "text": "He gets all of it there."
+      },
+      {
+       "n": 5,
+       "text": "What he served last night was Mocha Java."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the rules of conditional reasoning don't apply?\n\nWhat if the \"Carl's\" where we're assuming Yusef still gets his coffee is Carl's Coffee Super Mart, NOT Carl's Coffee Emporium?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q13",
+     "qnum": 13,
+     "question_type": "Parallel Reasoning",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 14,
+   "slug": "PT101_S2_Q14",
+   "prompt": "Steven: The allowable blood alcohol level for drivers should be cut in half. With this reduced limit, social drinkers will be deterred from drinking and driving, resulting in significantly increased highway safety.\n\nMiguel: No, lowering the current allowable blood alcohol level would have little effect on highway safety, because it would not address the most important aspect of the drunken driving problem, which is the danger to the public posed by heavy drinkers, who often drive with a blood alcohol level of twice the current legal limit.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Steven is the first speaker. \u00b7 There is an allowable blood alcohol level. \u00b7 The level applies to drivers. \u00b7 It should be cut in half. (2) This is about the reduced limit. \u00b7 Social drinkers will be deterred. \u00b7 What they are deterred from is drinking and driving. \u00b7 A result would follow from that. \u00b7 The result is increased highway safety. \u00b7 The increase would be significant. (3) Miguel is the second speaker. \u00b7 He disagrees with Steven. \u00b7 The level could be lowered. \u00b7 The level is the current allowable one. \u00b7 Lowering it would have little effect. \u00b7 The effect would be on highway safety. (4) This gives a reason. \u00b7 Lowering the level would not address something. \u00b7 What it misses is an aspect of the problem. \u00b7 The problem is drunken driving. \u00b7 That aspect is the most important one. (5) The aspect is a danger. \u00b7 The danger is to the public. \u00b7 Heavy drinkers pose that danger. \u00b7 Heavy drinkers drive at a certain level. \u00b7 They often do so. \u00b7 Their blood alcohol level is twice the legal limit. \u00b7 The limit is the current one.",
+   "category": "Controversy",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Steven: The allowable blood alcohol level for drivers should be cut in half.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Steven is the first speaker."
+      },
+      {
+       "n": 2,
+       "text": "There is an allowable blood alcohol level."
+      },
+      {
+       "n": 3,
+       "text": "The level applies to drivers."
+      },
+      {
+       "n": 4,
+       "text": "It should be cut in half."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "With this reduced limit, social drinkers will be deterred from drinking and driving, resulting in significantly increased highway safety.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about the reduced limit."
+      },
+      {
+       "n": 2,
+       "text": "Social drinkers will be deterred."
+      },
+      {
+       "n": 3,
+       "text": "What they are deterred from is drinking and driving."
+      },
+      {
+       "n": 4,
+       "text": "A result would follow from that."
+      },
+      {
+       "n": 5,
+       "text": "The result is increased highway safety."
+      },
+      {
+       "n": 6,
+       "text": "The increase would be significant."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Miguel: No, lowering the current allowable blood alcohol level would have little effect on highway safety,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Miguel is the second speaker."
+      },
+      {
+       "n": 2,
+       "text": "He disagrees with Steven."
+      },
+      {
+       "n": 3,
+       "text": "The level could be lowered."
+      },
+      {
+       "n": 4,
+       "text": "The level is the current allowable one."
+      },
+      {
+       "n": 5,
+       "text": "Lowering it would have little effect."
+      },
+      {
+       "n": 6,
+       "text": "The effect would be on highway safety."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "because it would not address the most important aspect of the drunken driving problem,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This gives a reason."
+      },
+      {
+       "n": 2,
+       "text": "Lowering the level would not address something."
+      },
+      {
+       "n": 3,
+       "text": "What it misses is an aspect of the problem."
+      },
+      {
+       "n": 4,
+       "text": "The problem is drunken driving."
+      },
+      {
+       "n": 5,
+       "text": "That aspect is the most important one."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "text": "which is the danger to the public posed by heavy drinkers, who often drive with a blood alcohol level of twice the current legal limit.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The aspect is a danger."
+      },
+      {
+       "n": 2,
+       "text": "The danger is to the public."
+      },
+      {
+       "n": 3,
+       "text": "Heavy drinkers pose that danger."
+      },
+      {
+       "n": 4,
+       "text": "Heavy drinkers drive at a certain level."
+      },
+      {
+       "n": 5,
+       "text": "They often do so."
+      },
+      {
+       "n": 6,
+       "text": "Their blood alcohol level is twice the legal limit."
+      },
+      {
+       "n": 7,
+       "text": "The limit is the current one."
+      }
+     ]
+    }
+   ],
+   "the_read": "The speakers disagree over whether cutting the allowable blood alcohol in half will improve highway safety.",
+   "the_read_type": "C",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q14",
+     "qnum": 14,
+     "question_type": "Controversy",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 15,
+   "slug": "PT101_S2_Q15",
+   "prompt": "The authors of a recent article examined warnings of an impending wave of extinctions of animal species within the next 100 years. These authors say that no evidence exists to support the idea that the rate of extinction of animal species is now accelerating. They are wrong, however. Consider only the data on fishes: 40 species and subspecies of North American fishes have vanished in the twentieth century, 13 between 1900 and 1950, and 27 since 1950.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is an article at issue. \u00b7 The article is a recent one. \u00b7 Its authors examined warnings. \u00b7 The warnings are of a wave of extinctions. \u00b7 The wave is impending. \u00b7 The extinctions would be of animal species. \u00b7 They would come within the next 100 years. (2) This is about those authors. \u00b7 They say no evidence exists. \u00b7 The evidence would support an idea. \u00b7 The idea concerns a rate of extinction. \u00b7 The rate is for animal species. \u00b7 The rate is now accelerating. (3) This is a contrast with what came before. \u00b7 This is about those authors. \u00b7 The authors are wrong. (4) We are asked to consider data. \u00b7 The data is only about fishes. \u00b7 Some species and subspecies have vanished. \u00b7 The number that vanished is 40. \u00b7 The fishes are North American ones. \u00b7 They vanished in the twentieth century. \u00b7 13 of them vanished between 1900 and 1950. \u00b7 27 of them vanished since 1950.",
+   "category": "Conclusion",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The authors of a recent article examined warnings of an impending wave of extinctions of animal species within the next 100 years.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is an article at issue."
+      },
+      {
+       "n": 2,
+       "text": "The article is a recent one."
+      },
+      {
+       "n": 3,
+       "text": "Its authors examined warnings."
+      },
+      {
+       "n": 4,
+       "text": "The warnings are of a wave of extinctions."
+      },
+      {
+       "n": 5,
+       "text": "The wave is impending."
+      },
+      {
+       "n": 6,
+       "text": "The extinctions would be of animal species."
+      },
+      {
+       "n": 7,
+       "text": "They would come within the next 100 years."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "These authors say that no evidence exists to support the idea that the rate of extinction of animal species is now accelerating.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about those authors."
+      },
+      {
+       "n": 2,
+       "text": "They say no evidence exists."
+      },
+      {
+       "n": 3,
+       "text": "The evidence would support an idea."
+      },
+      {
+       "n": 4,
+       "text": "The idea concerns a rate of extinction."
+      },
+      {
+       "n": 5,
+       "text": "The rate is for animal species."
+      },
+      {
+       "n": 6,
+       "text": "The rate is now accelerating."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "They are wrong, however.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "This is about those authors."
+      },
+      {
+       "n": 3,
+       "text": "The authors are wrong."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Consider only the data on fishes: 40 species and subspecies of North American fishes have vanished in the twentieth century, 13 between 1900 and 1950, and 27 since 1950.",
+     "details": [
+      {
+       "n": 1,
+       "text": "We are asked to consider data."
+      },
+      {
+       "n": 2,
+       "text": "The data is only about fishes."
+      },
+      {
+       "n": 3,
+       "text": "Some species and subspecies have vanished."
+      },
+      {
+       "n": 4,
+       "text": "The number that vanished is 40."
+      },
+      {
+       "n": 5,
+       "text": "The fishes are North American ones."
+      },
+      {
+       "n": 6,
+       "text": "They vanished in the twentieth century."
+      },
+      {
+       "n": 7,
+       "text": "13 of them vanished between 1900 and 1950."
+      },
+      {
+       "n": 8,
+       "text": "27 of them vanished since 1950."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if a jump from 13 to 27 is normal margin of error? What if only 2 subspecies of fish have gone extinct since 2000? What if the fish subspecies are not representative of all animal species?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q15",
+     "qnum": 15,
+     "question_type": "Conclusion",
+     "correct_answer": "A"
+    },
+    {
+     "citation": "PT101.S2.Q16",
+     "qnum": 16,
+     "question_type": "Evaluate",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 16,
+   "slug": "PT101_S2_Q17",
+   "prompt": "After the Second World War, the charter of the newly formed United Nations established an eleven-member Security Council and charged it with taking collective action in response to threats to world peace. The charter further provided that the five nations that were then the major powers would permanently have sole authority to cast vetoes. The reason given for this arrangement was that the burden of maintaining world peace would rest on the world's major powers, and no nation should be required to assume the burden of enforcing a decision it found repugnant.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This happened after the Second World War. \u00b7 The United Nations had a charter. \u00b7 The United Nations was newly formed. \u00b7 The charter established a Security Council. \u00b7 The Council had eleven members. \u00b7 The charter charged the Council with a task. \u00b7 The task is taking collective action. \u00b7 The action responds to threats to world peace. (2) This is a further provision of the charter. \u00b7 Certain nations were then the major powers. \u00b7 There were five of them. \u00b7 Those nations would have authority to cast vetoes. \u00b7 Their authority would be sole authority. \u00b7 They would have it permanently. (3) A reason was given for the arrangement. \u00b7 There is a burden at issue. \u00b7 The burden is maintaining world peace. \u00b7 That burden would rest on the major powers. \u00b7 Those are the world's major powers. (4) This is an additional point. \u00b7 No nation should be required to assume a burden. \u00b7 The burden is enforcing a decision. \u00b7 The nation would find that decision repugnant.",
+   "category": "Necessary Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "After the Second World War, the charter of the newly formed United Nations established an eleven-member Security Council and charged it with taking collective action in response to threats to world peace.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This happened after the Second World War."
+      },
+      {
+       "n": 2,
+       "text": "The United Nations had a charter."
+      },
+      {
+       "n": 3,
+       "text": "The United Nations was newly formed."
+      },
+      {
+       "n": 4,
+       "text": "The charter established a Security Council."
+      },
+      {
+       "n": 5,
+       "text": "The Council had eleven members."
+      },
+      {
+       "n": 6,
+       "text": "The charter charged the Council with a task."
+      },
+      {
+       "n": 7,
+       "text": "The task is taking collective action."
+      },
+      {
+       "n": 8,
+       "text": "The action responds to threats to world peace."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "The charter further provided that the five nations that were then the major powers would permanently have sole authority to cast vetoes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a further provision of the charter."
+      },
+      {
+       "n": 2,
+       "text": "Certain nations were then the major powers."
+      },
+      {
+       "n": 3,
+       "text": "There were five of them."
+      },
+      {
+       "n": 4,
+       "text": "Those nations would have authority to cast vetoes."
+      },
+      {
+       "n": 5,
+       "text": "Their authority would be sole authority."
+      },
+      {
+       "n": 6,
+       "text": "They would have it permanently."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "The reason given for this arrangement was that the burden of maintaining world peace would rest on the world's major powers,",
+     "details": [
+      {
+       "n": 1,
+       "text": "A reason was given for the arrangement."
+      },
+      {
+       "n": 2,
+       "text": "There is a burden at issue."
+      },
+      {
+       "n": 3,
+       "text": "The burden is maintaining world peace."
+      },
+      {
+       "n": 4,
+       "text": "That burden would rest on the major powers."
+      },
+      {
+       "n": 5,
+       "text": "Those are the world's major powers."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "and no nation should be required to assume the burden of enforcing a decision it found repugnant.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is an additional point."
+      },
+      {
+       "n": 2,
+       "text": "No nation should be required to assume a burden."
+      },
+      {
+       "n": 3,
+       "text": "The burden is enforcing a decision."
+      },
+      {
+       "n": 4,
+       "text": "The nation would find that decision repugnant."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if nations that were not major powers at the end of WWII later became major powers?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q17",
+     "qnum": 17,
+     "question_type": "Necessary Assumption",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 17,
+   "slug": "PT101_S2_Q18",
+   "prompt": "Environmental scientist: It is true that over the past ten years, there has been a sixfold increase in government funding for the preservation of wetlands, while the total area of wetlands needing such preservation has increased only twofold (although this area was already large ten years ago). Even when inflation is taken into account, the amount of funding now is at least three times what it was ten years ago. Nevertheless, the current amount of government funding for the preservation of wetlands is inadequate and should be augmented.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) An environmental scientist is speaking. \u00b7 This much is granted as true. \u00b7 The period is the past ten years. \u00b7 There has been an increase in funding. \u00b7 The increase is sixfold. \u00b7 The funding comes from government. \u00b7 The funding is for preserving wetlands. (2) This is set against the funding increase. \u00b7 There is a total area of wetlands. \u00b7 Those wetlands need such preservation. \u00b7 That area has increased twofold. \u00b7 The increase is only twofold. \u00b7 The area was already large ten years ago. (3) Inflation can be taken into account. \u00b7 This holds even then. \u00b7 There is an amount of funding now. \u00b7 It is compared with the amount ten years ago. \u00b7 It is at least three times that. (4) This is a contrast with what came before. \u00b7 There is a current amount of funding. \u00b7 The funding is from government. \u00b7 The funding is for preserving wetlands. \u00b7 That amount is inadequate. \u00b7 It should be augmented.",
+   "category": "Resolution",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Environmental scientist: It is true that over the past ten years, there has been a sixfold increase in government funding for the preservation of wetlands,",
+     "details": [
+      {
+       "n": 1,
+       "text": "An environmental scientist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "This much is granted as true."
+      },
+      {
+       "n": 3,
+       "text": "The period is the past ten years."
+      },
+      {
+       "n": 4,
+       "text": "There has been an increase in funding."
+      },
+      {
+       "n": 5,
+       "text": "The increase is sixfold."
+      },
+      {
+       "n": 6,
+       "text": "The funding comes from government."
+      },
+      {
+       "n": 7,
+       "text": "The funding is for preserving wetlands."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "while the total area of wetlands needing such preservation has increased only twofold (although this area was already large ten years ago).",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is set against the funding increase."
+      },
+      {
+       "n": 2,
+       "text": "There is a total area of wetlands."
+      },
+      {
+       "n": 3,
+       "text": "Those wetlands need such preservation."
+      },
+      {
+       "n": 4,
+       "text": "That area has increased twofold."
+      },
+      {
+       "n": 5,
+       "text": "The increase is only twofold."
+      },
+      {
+       "n": 6,
+       "text": "The area was already large ten years ago."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Even when inflation is taken into account, the amount of funding now is at least three times what it was ten years ago.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Inflation can be taken into account."
+      },
+      {
+       "n": 2,
+       "text": "This holds even then."
+      },
+      {
+       "n": 3,
+       "text": "There is an amount of funding now."
+      },
+      {
+       "n": 4,
+       "text": "It is compared with the amount ten years ago."
+      },
+      {
+       "n": 5,
+       "text": "It is at least three times that."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "Nevertheless, the current amount of government funding for the preservation of wetlands is inadequate and should be augmented.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "There is a current amount of funding."
+      },
+      {
+       "n": 3,
+       "text": "The funding is from government."
+      },
+      {
+       "n": 4,
+       "text": "The funding is for preserving wetlands."
+      },
+      {
+       "n": 5,
+       "text": "That amount is inadequate."
+      },
+      {
+       "n": 6,
+       "text": "It should be augmented."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if it has become much more expensive to maintain a given area of wetlands in the past ten years? What if wetland funding ten years ago was a total joke, and even this big increase still won't cut it?",
+   "the_read_type": "R",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q18",
+     "qnum": 18,
+     "question_type": "Resolution",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 18,
+   "slug": "PT101_S2_Q19",
+   "prompt": "In Australia the population that is of driving age has grown larger over the last five years, but the annual number of traffic fatalities has declined. This leads to the conclusion that, overall, the driving-age population of Australia consists of more skillful drivers now than five years ago.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about Australia. \u00b7 There is a population of driving age. \u00b7 That population has grown larger. \u00b7 This happened over the last five years. \u00b7 There is a contrast in this sentence. \u00b7 The number of traffic fatalities has declined. \u00b7 That number is an annual one. (2) This is the conclusion. \u00b7 It is about the driving-age population. \u00b7 That population is Australia's. \u00b7 It consists of more skillful drivers now. \u00b7 The comparison is with five years ago. \u00b7 This is said to hold overall.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "In Australia the population that is of driving age has grown larger over the last five years, but the annual number of traffic fatalities has declined.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about Australia."
+      },
+      {
+       "n": 2,
+       "text": "There is a population of driving age."
+      },
+      {
+       "n": 3,
+       "text": "That population has grown larger."
+      },
+      {
+       "n": 4,
+       "text": "This happened over the last five years."
+      },
+      {
+       "n": 5,
+       "text": "There is a contrast in this sentence."
+      },
+      {
+       "n": 6,
+       "text": "The number of traffic fatalities has declined."
+      },
+      {
+       "n": 7,
+       "text": "That number is an annual one."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "This leads to the conclusion that, overall, the driving-age population of Australia consists of more skillful drivers now than five years ago.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It is about the driving-age population."
+      },
+      {
+       "n": 3,
+       "text": "That population is Australia's."
+      },
+      {
+       "n": 4,
+       "text": "It consists of more skillful drivers now."
+      },
+      {
+       "n": 5,
+       "text": "The comparison is with five years ago."
+      },
+      {
+       "n": 6,
+       "text": "This is said to hold overall."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if the drop in fatalities has nothing to do with skill? What if cars are made much more safely now? What if speed limits were lowered?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q19",
+     "qnum": 19,
+     "question_type": "Weaken",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 19,
+   "slug": "PT101_S2_Q20",
+   "prompt": "Anthropological studies indicate that distinct cultures differ in their moral codes. Thus, as long as there are distinct cultures, there are no values shared across cultures.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There are studies on this. \u00b7 The studies are anthropological ones. \u00b7 The studies indicate something about cultures. \u00b7 The cultures are distinct ones. \u00b7 They differ in their moral codes. (2) This is the conclusion. \u00b7 It holds under a condition. \u00b7 The condition is that distinct cultures exist. \u00b7 There are no shared values. \u00b7 The sharing would be across cultures.",
+   "category": "Weaken",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Anthropological studies indicate that distinct cultures differ in their moral codes.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There are studies on this."
+      },
+      {
+       "n": 2,
+       "text": "The studies are anthropological ones."
+      },
+      {
+       "n": 3,
+       "text": "The studies indicate something about cultures."
+      },
+      {
+       "n": 4,
+       "text": "The cultures are distinct ones."
+      },
+      {
+       "n": 5,
+       "text": "They differ in their moral codes."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Thus, as long as there are distinct cultures, there are no values shared across cultures.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It holds under a condition."
+      },
+      {
+       "n": 3,
+       "text": "The condition is that distinct cultures exist."
+      },
+      {
+       "n": 4,
+       "text": "There are no shared values."
+      },
+      {
+       "n": 5,
+       "text": "The sharing would be across cultures."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if there are common values among many different moral codes?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q20",
+     "qnum": 20,
+     "question_type": "Weaken",
+     "correct_answer": "B"
+    }
+   ]
+  },
+  {
+   "order": 20,
+   "slug": "PT101_S2_Q21",
+   "prompt": "Newspaper editor: Law enforcement experts, as well as most citizens, have finally come to recognize that legal prohibitions against gambling all share a common flaw: no matter how diligent the effort, the laws are impossible to enforce. Ethical qualms notwithstanding, when a law fails to be effective, it should not be a law. That is why there should be no legal prohibition against gambling.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) A newspaper editor is speaking. \u00b7 Law enforcement experts have recognized something. \u00b7 Most citizens have recognized it too. \u00b7 They have finally come to recognize it. \u00b7 There are legal prohibitions against gambling. \u00b7 All of them share a flaw. \u00b7 The flaw is a common one. (2) The laws are impossible to enforce. \u00b7 This holds regardless of the effort. \u00b7 The effort might be a diligent one. (3) Ethical qualms are set aside here. \u00b7 This states a condition about a law. \u00b7 The condition is that the law fails to be effective. \u00b7 Then it should not be a law. (4) This is the conclusion. \u00b7 It follows from what came before. \u00b7 There should be no prohibition against gambling. \u00b7 The prohibition would be a legal one.",
+   "category": "Sufficient Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Newspaper editor: Law enforcement experts, as well as most citizens, have finally come to recognize that legal prohibitions against gambling all share a common flaw:",
+     "details": [
+      {
+       "n": 1,
+       "text": "A newspaper editor is speaking."
+      },
+      {
+       "n": 2,
+       "text": "Law enforcement experts have recognized something."
+      },
+      {
+       "n": 3,
+       "text": "Most citizens have recognized it too."
+      },
+      {
+       "n": 4,
+       "text": "They have finally come to recognize it."
+      },
+      {
+       "n": 5,
+       "text": "There are legal prohibitions against gambling."
+      },
+      {
+       "n": 6,
+       "text": "All of them share a flaw."
+      },
+      {
+       "n": 7,
+       "text": "The flaw is a common one."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "no matter how diligent the effort, the laws are impossible to enforce.",
+     "details": [
+      {
+       "n": 1,
+       "text": "The laws are impossible to enforce."
+      },
+      {
+       "n": 2,
+       "text": "This holds regardless of the effort."
+      },
+      {
+       "n": 3,
+       "text": "The effort might be a diligent one."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Ethical qualms notwithstanding, when a law fails to be effective, it should not be a law.",
+     "details": [
+      {
+       "n": 1,
+       "text": "Ethical qualms are set aside here."
+      },
+      {
+       "n": 2,
+       "text": "This states a condition about a law."
+      },
+      {
+       "n": 3,
+       "text": "The condition is that the law fails to be effective."
+      },
+      {
+       "n": 4,
+       "text": "Then it should not be a law."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "That is why there should be no legal prohibition against gambling.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It follows from what came before."
+      },
+      {
+       "n": 3,
+       "text": "There should be no prohibition against gambling."
+      },
+      {
+       "n": 4,
+       "text": "The prohibition would be a legal one."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if unenforceable laws are still effective? What if the law's mere existence is enough to deter people from gambling?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q21",
+     "qnum": 21,
+     "question_type": "Sufficient Assumption",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 21,
+   "slug": "PT101_S2_Q22",
+   "prompt": "Copernicus's astronomical system is superior to Ptolemy's and was so at the time it was proposed, even though at that time all observational evidence was equally consistent with both theories. Ptolemy believed that the stars revolved around the earth at great speeds. This struck Copernicus as unlikely; he correctly thought that a simpler theory is that the earth rotates on its axis.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) Copernicus had an astronomical system. \u00b7 Ptolemy had one too. \u00b7 Copernicus's system is superior. \u00b7 The comparison is with Ptolemy's system. \u00b7 It was superior at the time it was proposed. (2) This is a concession. \u00b7 It concerns that same time. \u00b7 There was observational evidence then. \u00b7 All of it was consistent with both theories. \u00b7 It was equally consistent with each. (3) This is about Ptolemy's belief. \u00b7 He believed the stars revolved. \u00b7 They revolved around the earth. \u00b7 They did so at great speeds. (4) This struck Copernicus a certain way. \u00b7 It struck him as unlikely. \u00b7 He thought of another theory. \u00b7 His thought was correct. \u00b7 That theory is a simpler one. \u00b7 The theory is that the earth rotates. \u00b7 The rotation is on its axis.",
+   "category": "Principle Conform",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Copernicus's astronomical system is superior to Ptolemy's and was so at the time it was proposed,",
+     "details": [
+      {
+       "n": 1,
+       "text": "Copernicus had an astronomical system."
+      },
+      {
+       "n": 2,
+       "text": "Ptolemy had one too."
+      },
+      {
+       "n": 3,
+       "text": "Copernicus's system is superior."
+      },
+      {
+       "n": 4,
+       "text": "The comparison is with Ptolemy's system."
+      },
+      {
+       "n": 5,
+       "text": "It was superior at the time it was proposed."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "even though at that time all observational evidence was equally consistent with both theories.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a concession."
+      },
+      {
+       "n": 2,
+       "text": "It concerns that same time."
+      },
+      {
+       "n": 3,
+       "text": "There was observational evidence then."
+      },
+      {
+       "n": 4,
+       "text": "All of it was consistent with both theories."
+      },
+      {
+       "n": 5,
+       "text": "It was equally consistent with each."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Ptolemy believed that the stars revolved around the earth at great speeds.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about Ptolemy's belief."
+      },
+      {
+       "n": 2,
+       "text": "He believed the stars revolved."
+      },
+      {
+       "n": 3,
+       "text": "They revolved around the earth."
+      },
+      {
+       "n": 4,
+       "text": "They did so at great speeds."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "This struck Copernicus as unlikely; he correctly thought that a simpler theory is that the earth rotates on its axis.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This struck Copernicus a certain way."
+      },
+      {
+       "n": 2,
+       "text": "It struck him as unlikely."
+      },
+      {
+       "n": 3,
+       "text": "He thought of another theory."
+      },
+      {
+       "n": 4,
+       "text": "His thought was correct."
+      },
+      {
+       "n": 5,
+       "text": "That theory is a simpler one."
+      },
+      {
+       "n": 6,
+       "text": "The theory is that the earth rotates."
+      },
+      {
+       "n": 7,
+       "text": "The rotation is on its axis."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if more complex theories are always better?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q22",
+     "qnum": 22,
+     "question_type": "Principle Conform",
+     "correct_answer": "D"
+    }
+   ]
+  },
+  {
+   "order": 22,
+   "slug": "PT101_S2_Q23",
+   "prompt": "Essayist: The existence of a moral order in the universe\u2014i.e., an order in which bad is always eventually punished and good rewarded\u2014depends upon human souls being immortal. In some cultures this moral order is regarded as the result of a karma that controls how one is reincarnated, in others it results from the actions of a supreme being who metes out justice to people after their death. But however a moral order is represented, if human souls are immortal, then it follows that the bad will be punished.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) An essayist is speaking. \u00b7 A moral order might exist in the universe. \u00b7 That order is defined here. \u00b7 In that order bad is punished. \u00b7 The punishment always comes eventually. \u00b7 In that order good is rewarded. \u00b7 The existence of that order depends on something. \u00b7 What it depends on is human souls being immortal. (2) This is about some cultures. \u00b7 In them the moral order is regarded as a result. \u00b7 The result comes from a karma. \u00b7 That karma controls reincarnation. \u00b7 It controls how one is reincarnated. (3) This is about other cultures. \u00b7 In those cultures the order is a result of actions. \u00b7 The actions are those of a supreme being. \u00b7 That being metes out justice to people. \u00b7 The justice comes after their death. (4) This is a contrast with what came before. \u00b7 It holds however a moral order is represented. \u00b7 This states a condition. \u00b7 The condition is that human souls are immortal. \u00b7 Then something is said to follow. \u00b7 The bad will be punished.",
+   "category": "Classic Flaw",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "Essayist: The existence of a moral order in the universe\u2014i.e., an order in which bad is always eventually punished and good rewarded\u2014depends upon human souls being immortal.",
+     "details": [
+      {
+       "n": 1,
+       "text": "An essayist is speaking."
+      },
+      {
+       "n": 2,
+       "text": "A moral order might exist in the universe."
+      },
+      {
+       "n": 3,
+       "text": "That order is defined here."
+      },
+      {
+       "n": 4,
+       "text": "In that order bad is punished."
+      },
+      {
+       "n": 5,
+       "text": "The punishment always comes eventually."
+      },
+      {
+       "n": 6,
+       "text": "In that order good is rewarded."
+      },
+      {
+       "n": 7,
+       "text": "The existence of that order depends on something."
+      },
+      {
+       "n": 8,
+       "text": "What it depends on is human souls being immortal."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "In some cultures this moral order is regarded as the result of a karma that controls how one is reincarnated,",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about some cultures."
+      },
+      {
+       "n": 2,
+       "text": "In them the moral order is regarded as a result."
+      },
+      {
+       "n": 3,
+       "text": "The result comes from a karma."
+      },
+      {
+       "n": 4,
+       "text": "That karma controls reincarnation."
+      },
+      {
+       "n": 5,
+       "text": "It controls how one is reincarnated."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "in others it results from the actions of a supreme being who metes out justice to people after their death.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about other cultures."
+      },
+      {
+       "n": 2,
+       "text": "In those cultures the order is a result of actions."
+      },
+      {
+       "n": 3,
+       "text": "The actions are those of a supreme being."
+      },
+      {
+       "n": 4,
+       "text": "That being metes out justice to people."
+      },
+      {
+       "n": 5,
+       "text": "The justice comes after their death."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "text": "But however a moral order is represented, if human souls are immortal, then it follows that the bad will be punished.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is a contrast with what came before."
+      },
+      {
+       "n": 2,
+       "text": "It holds however a moral order is represented."
+      },
+      {
+       "n": 3,
+       "text": "This states a condition."
+      },
+      {
+       "n": 4,
+       "text": "The condition is that human souls are immortal."
+      },
+      {
+       "n": 5,
+       "text": "Then something is said to follow."
+      },
+      {
+       "n": 6,
+       "text": "The bad will be punished."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if just because immortal souls are necessary for moral order, that doesn't mean they guarantee moral order?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q23",
+     "qnum": 23,
+     "question_type": "Classic Flaw",
+     "correct_answer": "A"
+    }
+   ]
+  },
+  {
+   "order": 23,
+   "slug": "PT101_S2_Q24",
+   "prompt": "No mathematical proposition can be proven true by observation. It follows that it is impossible to know any mathematical proposition to be true.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about mathematical propositions. \u00b7 No such proposition can be proven true. \u00b7 The proving would be by observation. (2) This is the conclusion. \u00b7 It follows from what came before. \u00b7 Something is said to be impossible. \u00b7 It is impossible to know a proposition to be true. \u00b7 This applies to any mathematical proposition.",
+   "category": "Sufficient Assumption",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "No mathematical proposition can be proven true by observation.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is about mathematical propositions."
+      },
+      {
+       "n": 2,
+       "text": "No such proposition can be proven true."
+      },
+      {
+       "n": 3,
+       "text": "The proving would be by observation."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "It follows that it is impossible to know any mathematical proposition to be true.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "It follows from what came before."
+      },
+      {
+       "n": 3,
+       "text": "Something is said to be impossible."
+      },
+      {
+       "n": 4,
+       "text": "It is impossible to know a proposition to be true."
+      },
+      {
+       "n": 5,
+       "text": "This applies to any mathematical proposition."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if we can know a mathematical proposition to be true without proving it through true observation?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q24",
+     "qnum": 24,
+     "question_type": "Sufficient Assumption",
+     "correct_answer": "E"
+    }
+   ]
+  },
+  {
+   "order": 24,
+   "slug": "PT101_S2_Q25",
+   "prompt": "The publisher of a best-selling self-help book had, in some promotional material, claimed that it showed readers how to become exceptionally successful. Of course, everyone knows that no book can deliver to the many what, by definition, must remain limited to the few: exceptional success. Thus, although it is clear that the publisher knowingly made a false claim, doing so should not be considered unethical in this case.",
+   "credited_answers": [],
+   "cumulative_after": [],
+   "explanation": "The details your recall has to carry, by chunk: (1) There is a publisher at issue. \u00b7 The publisher published a self-help book. \u00b7 The book is best-selling. \u00b7 The publisher made a claim. \u00b7 The claim was in some promotional material. \u00b7 The claim is that the book showed readers something. \u00b7 What it showed is how to become exceptionally successful. (2) This is said to be known by everyone. \u00b7 No book can deliver a certain thing. \u00b7 The delivery would be to the many. \u00b7 That thing must remain limited to the few. \u00b7 It is limited by definition. \u00b7 The thing is exceptional success. (3) This is the conclusion. \u00b7 This part is a concession. \u00b7 It is clear that the publisher made a false claim. \u00b7 The publisher made it knowingly. \u00b7 Making the claim should not be considered unethical. \u00b7 This is so in this case.",
+   "category": "Strengthen",
+   "chunks": [
+    {
+     "n": 1,
+     "text": "The publisher of a best-selling self-help book had, in some promotional material, claimed that it showed readers how to become exceptionally successful.",
+     "details": [
+      {
+       "n": 1,
+       "text": "There is a publisher at issue."
+      },
+      {
+       "n": 2,
+       "text": "The publisher published a self-help book."
+      },
+      {
+       "n": 3,
+       "text": "The book is best-selling."
+      },
+      {
+       "n": 4,
+       "text": "The publisher made a claim."
+      },
+      {
+       "n": 5,
+       "text": "The claim was in some promotional material."
+      },
+      {
+       "n": 6,
+       "text": "The claim is that the book showed readers something."
+      },
+      {
+       "n": 7,
+       "text": "What it showed is how to become exceptionally successful."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "text": "Of course, everyone knows that no book can deliver to the many what, by definition, must remain limited to the few: exceptional success.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is said to be known by everyone."
+      },
+      {
+       "n": 2,
+       "text": "No book can deliver a certain thing."
+      },
+      {
+       "n": 3,
+       "text": "The delivery would be to the many."
+      },
+      {
+       "n": 4,
+       "text": "That thing must remain limited to the few."
+      },
+      {
+       "n": 5,
+       "text": "It is limited by definition."
+      },
+      {
+       "n": 6,
+       "text": "The thing is exceptional success."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "text": "Thus, although it is clear that the publisher knowingly made a false claim, doing so should not be considered unethical in this case.",
+     "details": [
+      {
+       "n": 1,
+       "text": "This is the conclusion."
+      },
+      {
+       "n": 2,
+       "text": "This part is a concession."
+      },
+      {
+       "n": 3,
+       "text": "It is clear that the publisher made a false claim."
+      },
+      {
+       "n": 4,
+       "text": "The publisher made it knowingly."
+      },
+      {
+       "n": 5,
+       "text": "Making the claim should not be considered unethical."
+      },
+      {
+       "n": 6,
+       "text": "This is so in this case."
+      }
+     ]
+    }
+   ],
+   "the_read": "What if knowingly making a false claim is always unethical, whether or not people know it's false?",
+   "the_read_type": "L",
+   "questions": [
+    {
+     "citation": "PT101.S2.Q25",
+     "qnum": 25,
+     "question_type": "Strengthen",
+     "correct_answer": "A"
+    }
+   ]
+  }
+ ]
+}

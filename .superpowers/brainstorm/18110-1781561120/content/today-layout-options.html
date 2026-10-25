@@ -1,0 +1,83 @@
+<h2>Today Page Layout Options</h2>
+<p class="subtitle">The target is a calm daily command sheet: less dashboard, more “what needs my attention and what do I do next?”</p>
+
+<div class="cards">
+  <div class="card" data-choice="single-task-list" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup" style="margin:0;">
+        <div class="mockup-header">A. Single Task List First</div>
+        <div class="mockup-body">
+          <div style="display:grid; grid-template-columns:1fr 220px; gap:14px; min-height:260px;">
+            <div>
+              <div style="font-size:24px; font-weight:800; margin-bottom:8px;">Today</div>
+              <div class="placeholder" style="height:42px;">Top task: Lydia needs reply</div>
+              <div class="placeholder" style="height:42px;">Draft recap needs approval</div>
+              <div class="placeholder" style="height:42px;">Upload needs review</div>
+              <div class="placeholder" style="height:42px;">Meghan needs next work</div>
+            </div>
+            <div>
+              <div class="placeholder" style="height:90px;">Schedule preview</div>
+              <div class="placeholder" style="height:140px;">Student watchlist</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Single Task List First</h3>
+      <p>One prioritized list dominates. Best if “what should I do next?” is the core job.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="three-lanes" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup" style="margin:0;">
+        <div class="mockup-header">B. Three Calm Lanes</div>
+        <div class="mockup-body">
+          <div style="font-size:24px; font-weight:800; margin-bottom:12px;">Today</div>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; min-height:260px;">
+            <div class="placeholder">Needs response</div>
+            <div class="placeholder">Needs review</div>
+            <div class="placeholder">Needs assignment</div>
+          </div>
+          <div class="placeholder" style="height:54px;">Schedule strip</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Three Calm Lanes</h3>
+      <p>Grouped by work type. Easier scanning, but can recreate the “many boxes” problem.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="student-focus" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup" style="margin:0;">
+        <div class="mockup-header">C. Student Focus</div>
+        <div class="mockup-body">
+          <div style="display:grid; grid-template-columns:260px 1fr; gap:14px; min-height:260px;">
+            <div>
+              <div style="font-size:24px; font-weight:800; margin-bottom:8px;">Today</div>
+              <div class="placeholder" style="height:54px;">Lydia</div>
+              <div class="placeholder" style="height:54px;">Dakota</div>
+              <div class="placeholder" style="height:54px;">Meghan</div>
+            </div>
+            <div>
+              <div class="placeholder" style="height:90px;">Selected student context</div>
+              <div class="placeholder" style="height:120px;">Student tasks and next assignment</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Student Focus</h3>
+      <p>Useful if you think in people first, but it weakens the task-list model we just defined.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Recommendation</h3>
+  <p>I recommend <strong>A. Single Task List First</strong>. It best solves the “no clear start point” problem and keeps Today from feeling like another dashboard.</p>
+</div>

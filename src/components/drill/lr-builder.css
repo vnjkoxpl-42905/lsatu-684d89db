@@ -1,0 +1,79 @@
+/* LR builder only. Portalled controls opt into the same typography. */
+.drill-observatory-root .lr-builder,
+.lr-builder-panel {
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.drill-observatory-root .drill-observatory-launcher:has(.lr-builder) { box-shadow: none; }
+.drill-observatory-root .lr-builder { min-width: 0; gap: 24px; color: #efefed; }
+.drill-observatory-root .lr-builder h1 { margin: 0; font-family: "Outfit", ui-sans-serif, system-ui, sans-serif; font-size: 22px; line-height: 1.3; font-weight: 600; letter-spacing: -.025em; }
+.drill-observatory-root .lr-builder h2,
+.lr-builder-panel h2 { margin: 0; font-family: "Outfit", ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 1.45; font-weight: 600; letter-spacing: -.01em; }
+.drill-observatory-root .lr-builder p,
+.drill-observatory-root .lr-builder label,
+.drill-observatory-root .lr-builder button,
+.drill-observatory-root .lr-builder input,
+.drill-observatory-root .lr-builder span,
+.lr-builder-panel p,
+.lr-builder-panel label,
+.lr-builder-panel button,
+.lr-builder-panel input,
+.lr-builder-panel span { font-family: "Outfit", ui-sans-serif, system-ui, sans-serif; }
+.lr-builder-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.lr-builder-layout { display: grid; min-width: 0; grid-template-areas: "filters" "summary" "questions"; gap: 16px; align-items: start; }
+.lr-builder-filters { grid-area: filters; min-width: 0; padding: 20px; }
+.lr-builder-summary { grid-area: summary; min-width: 0; }
+.lr-builder-summary-card { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.lr-builder-specific { grid-area: questions; min-width: 0; border: 1px solid #38383a; border-radius: 8px; }
+.lr-builder-specific-content { min-width: 0; padding: 0 20px 20px; }
+.lr-builder-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.lr-builder-primary-filters { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.drill-observatory-root .lr-builder .lr-builder-disclosure { display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; font-size: 14px; font-weight: 500; text-align: left; color: inherit; }
+.lr-builder-specific > .lr-builder-disclosure { padding: 16px 20px !important; }
+.lr-builder-disclosure[aria-expanded=true] > svg { transform: rotate(180deg); }
+.lr-builder-count { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.drill-observatory-root .lr-builder .lr-builder-note { font-size: 13px; font-weight: 400; line-height: 1.55; color: #b6b6b3; }
+.drill-observatory-root .lr-builder .lr-builder-pool { font-size: 14px; font-weight: 400; line-height: 1.5; color: #ccc; }
+.lr-builder-actions { display: flex; flex-direction: column; gap: 8px; }
+.lr-builder-secondary-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 4px; }
+.drill-observatory-root .lr-builder [data-slot=card],
+.drill-observatory-root .lr-builder .lr-builder-filters,
+.drill-observatory-root .lr-builder .lr-builder-summary-card { border-color: #38383a; border-radius: 8px; background: #18181a; box-shadow: none; }
+.drill-observatory-root .lr-builder button,
+.drill-observatory-root .lr-builder input,
+.lr-builder-panel button,
+.lr-builder-panel input { font-weight: 400; }
+.drill-observatory-root .lr-builder button[role=combobox],
+.drill-observatory-root .lr-builder button[data-state]:not([role=checkbox]),
+.drill-observatory-root .lr-builder input,
+.lr-builder-panel input { min-height: 44px; border-radius: 6px; border-color: #454548; font-size: 14px; }
+.drill-observatory-root .lr-builder button:not([role=checkbox]):not(.lr-builder-disclosure) { min-height: 44px; }
+.drill-observatory-root .lr-builder .drill-setup-search { height: 44px; border-radius: 6px !important; background: #111113 !important; border: 1px solid #454548 !important; font-family: inherit !important; font-weight: 400 !important; box-shadow: none !important; }
+.drill-observatory-root .lr-builder button:focus-visible,
+.drill-observatory-root .lr-builder input:focus-visible,
+.lr-builder-panel button:focus-visible,
+.lr-builder-panel input:focus-visible { outline: 2px solid #d6d6d1; outline-offset: 3px; }
+.drill-observatory-root .lr-builder button:disabled { opacity: .45; cursor: not-allowed; }
+.drill-observatory-root .lr-builder .uppercase,
+.lr-builder-panel .uppercase { text-transform: none; letter-spacing: 0; font-weight: 500; }
+.lr-builder-panel { max-width: calc(100vw - 32px); }
+.lr-builder-panel [role=checkbox] { min-height: 16px; }
+.lr-builder-panel label { line-height: 1.5; padding-block: 6px; }
+@container (min-width: 860px) {
+ .lr-builder-layout { grid-template-columns: minmax(0,1fr) 280px; grid-template-rows: min-content 1fr; grid-template-areas: "filters summary" "questions summary"; }
+ .lr-builder-summary { position: sticky; top: 16px; }
+}
+@media (max-width: 480px) {
+ .lr-builder-primary-filters { grid-template-columns: minmax(0,1fr); }
+ .lr-builder-filters, .lr-builder-summary-card { padding: 16px; }
+ .lr-builder-specific-content { padding: 0 12px 12px; }
+ .lr-builder-header { gap: 8px; }
+ .lr-builder-header > button { padding-left: 0; }
+}
+
+@media (max-width: 640px) {
+ .drill-observatory-root .lr-builder input,
+ .lr-builder-panel input { font-size: 16px; }
+}
