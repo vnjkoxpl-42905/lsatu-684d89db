@@ -1,0 +1,31 @@
+{
+  "verifiedOn": "2026-10-01",
+  "assignmentId": "333838aa-cc3b-4789-a707-b8f50f918c25",
+  "responseId": "2d374247-f307-40d5-baf7-66eb5dd72213",
+  "authorizedSubmits": 1,
+  "performedSubmits": 1,
+  "liveGatewayRecord": {
+    "model": "google/gemini-3.1-flash-lite",
+    "inputTokens": 514,
+    "outputTokens": 51,
+    "durationMs": 910,
+    "lovableCredits": 0.0008,
+    "status": "success"
+  },
+  "savedResponse": { "attemptNo": 1, "judgeSource": "coach", "verdict": "correct" },
+  "savedAssignment": {
+    "status": "completed",
+    "score": 100,
+    "numerator": 1,
+    "judged": 1,
+    "total": 1,
+    "completedAt": "2026-10-01T04:09:48.597Z"
+  },
+  "reloadRetainedCompletion": true,
+  "libraryReturnedScore": true,
+  "teacherWorkMirrorVerified": false,
+  "allFeatureQualityVerified": false,
+  "newBackendFixDeployed": false,
+  "evidenceDirectory": "research/2026-09-30-lsatu-foundation-evidence",
+  "screenshots": ["activity-grading-completed-2026-10-01.png", "lovable-ai-live-model-2026-10-01.png"]
+}

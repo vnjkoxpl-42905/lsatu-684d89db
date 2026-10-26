@@ -1,0 +1,617 @@
+[
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Automated flight technology can guide an aircraft very reliably, from navigation to landing. Yet this technology, even when functioning correctly, is not a perfect safeguard against human error.",
+    "questionStem": "Which one of the following, if true, most helps to explain the situation described above?",
+    "answerChoices": {
+      "A": "Automated flight technology does not always function correctly.",
+      "B": "Smaller aircraft do not always have their automated flight technology updated regularly.",
+      "C": "If a plane’s automated flight technology malfunctions, crew members have to operate the plane manually.",
+      "D": "Some airplane crashes are due neither to human error nor to malfunction of automated flight technology.",
+      "E": "Automated flight technology invariably executes exactly the commands that humans give it."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "To keep one’s hands warm during the winter, one never needs gloves or mittens. One can always keep one’s hands warm simply by putting on an extra layer of clothing, such as a thermal undershirt or a sweater. After all, keeping one’s vital organs warm can keep one’s hands warm as well.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Maintaining the temperature of your hands is far less important, physiologically, than maintaining the temperature of your torso.",
+      "B": "Several layers of light garments will keep one’s vital organs warmer than will one or two heavy garments.",
+      "C": "Wearing an extra layer of clothing will not keep one’s hands warm at temperatures low enough to cause frostbite.",
+      "D": "Keeping one’s hands warm by putting on an extra layer of clothing is less effective than turning up the heat.",
+      "E": "The physical effort required to put on an extra layer of clothing does not stimulate circulation enough to warm your hands."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Focused on Evidence",
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The reason music with a simple recurring rhythm exerts a strong primordial appeal is that it reminds us of the womb environment. After all, the first sound heard within the womb is the comforting sound of the mother’s regular heartbeat. So in taking away from us the warmth and security of the womb, birth also takes away a primal and constant source of comfort. Thus it is extremely natural that in seeking sensations of warmth and security throughout life, people would be strongly drawn toward simple recurring rhythmic sounds.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in the reasoning above?",
+    "answerChoices": {
+      "A": "The explanation of the strong primordial appeal of music with a simple recurring rhythm is that it reminds us of the womb environment.",
+      "B": "The comforting sound of the mother’s regular heartbeat is the first sound that is heard inside the womb.",
+      "C": "Birth deprives us of a primal and constant source of comfort when it takes away the warmth and security of the womb.",
+      "D": "People seek sensations of warmth and security throughout life because birth takes away the warmth and security of the womb.",
+      "E": "The comforting sound of the mother’s regular heartbeat is a simple recurring rhythmic sound."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Linguist: Most people can tell whether a sequence of words in their own dialect is grammatical. Yet few people who can do so are able to specify the relevant grammatical rules.",
+    "questionStem": "Which one of the following best illustrates the principle underlying the linguist’s statements?",
+    "answerChoices": {
+      "A": "Some people are able to write cogent and accurate narrative descriptions of events. But these people are not necessarily also capable of composing emotionally moving and satisfying poems.",
+      "B": "Engineers who apply the principles of physics to design buildings and bridges must know a great deal more than do the physicists who discover these principles.",
+      "C": "Some people are able to tell whether any given piece of music is a waltz. But the majority of these people cannot state the defining characteristics of a waltz.",
+      "D": "Those travelers who most enjoy their journeys are not always those most capable of vividly describing the details of those journeys to others.",
+      "E": "Quite a few people know the rules of chess, but only a small number of them can play chess very well."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Important Pivot",
+      "Implicit Principles"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Company president: For the management consultant position, we shall interview only those applicants who have worked for management consulting firms generally recognized as in the top 1 percent of firms worldwide. When we finally select somebody, then, we can be sure to have selected one of the best management consultants available.",
+    "questionStem": "The company president’s reasoning is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "takes for granted that only the best management consultants have worked for the top management consulting firms",
+      "B": "generalizes from too small a sample of management consulting firms worldwide",
+      "C": "takes for granted that if something is true of each member of a collection, then it is also true of the collection as a whole",
+      "D": "presumes, without providing warrant, that persons who have worked for the top companies will accept a job offer",
+      "E": "presumes, without providing justification, that highly competent management consultants are highly competent at every task"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Part vs. Whole",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Beginners typically decide each chess move by considering the consequences. Expert players, in contrast, primarily use pattern-recognition techniques. That is, such a player recognizes having been in a similar position before and makes a decision based on information recalled about the consequences of moves chosen on that prior occasion.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Beginning chess players are better at thinking through the consequences of chess moves than experts are.",
+      "B": "A beginning chess player should use pattern-recognition techniques when deciding what move to make.",
+      "C": "One’s chess skills will improve only if one learns to use pattern-recognition techniques.",
+      "D": "In playing chess, an expert player relies crucially on his or her memory.",
+      "E": "Any chess player who played other games that require pattern-recognition skills would thereby improve his or her chess skills."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Farmer: Because water content is what makes popcorn pop, the kernels must dry at just the right speed to trap the correct amount of water. The best way to achieve this effect is to have the sun dry the corn while the corn is still in the field, but I always dry the ears on a screen in a warm, dry room.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy between the farmer’s theory and practice?",
+    "answerChoices": {
+      "A": "The region in which the farmer grows popcorn experiences a long, cloudy season that begins shortly before the popcorn in fields would begin to dry.",
+      "B": "Leaving popcorn to dry on its stalks in the field is the least expensive method of drying it.",
+      "C": "Drying popcorn on its stalks in the field is only one of several methods that allow the kernels’ water content to reach acceptable levels.",
+      "D": "When popcorn does not dry sufficiently, it will still pop, but it will take several minutes to do so, even under optimal popping conditions.",
+      "E": "If popcorn is allowed to dry too much, it will not pop."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Factory manager: One reason the automobile parts this factory produces are expensive is that our manufacturing equipment is outdated and inefficient. Our products would be more competitively priced if we were to refurbish the factory completely with new, more efficient equipment. Therefore, since to survive in today’s market we have to make our products more competitively priced, we must completely refurbish the factory in order to survive.",
+    "questionStem": "The reasoning in the factory manager’s argument is flawed because this argument",
+    "answerChoices": {
+      "A": "fails to recognize that the price of a particular commodity can change over time",
+      "B": "shifts without justification from treating something as one way of achieving a goal to treating it as the only way of achieving that goal",
+      "C": "argues that one thing is the cause of another when the evidence given indicates that the second thing may in fact be the cause of the first",
+      "D": "recommends a solution to a problem without first considering any possible causes of that problem",
+      "E": "fails to make a definite recommendation and instead merely suggests that some possible course of action might be effective"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Two months ago a major shipment of pythons arrived from Africa, resulting in a great number of inexpensive pythons in pet stores. Anyone interested in buying a python, however, should beware: many pythons hatched in Africa are afflicted with a deadly liver disease. Although a few pythons recently hatched in North America have this disease, a much greater proportion of African-hatched pythons have it. The disease is difficult to detect in its early stages, and all pythons die within six months of contracting the disease.",
+    "questionStem": "Which one of the following statements can be properly inferred from the statements above?",
+    "answerChoices": {
+      "A": "Some pythons hatched in North America may appear fine but will die within six months as a result of the liver disease.",
+      "B": "Pythons that hatch in Africa are more susceptible to the liver disease than are pythons that hatch in North America.",
+      "C": "Any python that has not died by the age of six months does not have the liver disease.",
+      "D": "The pythons are inexpensively priced because many of them suffer from the liver disease.",
+      "E": "Pythons hatched in neither Africa nor North America are not afflicted with the liver disease."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Nutritionists believe that a person’s daily requirement for vitamins can readily be met by eating five servings of fruits and vegetables daily. However, most people eat far less than this. Thus, most people need to take vitamin pills.",
+    "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "Even five servings of fruits and vegetables a day is insufficient unless the intake is varied to ensure that different vitamins are consumed.",
+      "B": "Certain commonly available fruits and vegetables contain considerably more nutrients than others.",
+      "C": "Nutritionists sometimes disagree on how much of a fruit or vegetable constitutes a complete serving.",
+      "D": "Many commonly consumed foods that are neither fruits nor vegetables are fortified by manufacturers with the vitamins found in fruits and vegetables.",
+      "E": "Fruits and vegetables are also important sources of fiber, in forms not found in vitamin pills."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Alternatives",
+      "Medical",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Researcher: This fall I returned to a research site to recover the armadillos I had tagged there the previous spring. Since a large majority of the armadillos I recaptured were found within a few hundred yards of the location of their tagging last spring, I concluded that armadillos do not move rapidly into new territories.",
+    "questionStem": "Which one of the following is an assumption required by the researcher’s argument?",
+    "answerChoices": {
+      "A": "Of the armadillos living in the area of the tagging site last spring, few were able to avoid being tagged by the researcher.",
+      "B": "Most of the armadillos tagged the previous spring were not recaptured during the subsequent fall.",
+      "C": "Predators did not kill any of the armadillos that had been tagged the previous spring.",
+      "D": "The tags identifying the armadillos cannot be removed by the armadillos, either by accident or deliberately.",
+      "E": "A large majority of the recaptured armadillos did not move to a new territory in the intervening summer and then move back to the old territory by the fall."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Defender",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Sahira: To make a living from their art, artists of great potential would have to produce work that would gain widespread popular acclaim, instead of their best work. That is why governments are justified in subsidizing artists. Rahima: Your argument for subsidizing art depends on claiming that to gain widespread popular acclaim, artists must produce something other than their best work; but this need not be true.",
+    "questionStem": "In her argument, Rahima",
+    "answerChoices": {
+      "A": "disputes an implicit assumption of Sahira’s",
+      "B": "presents independent support for Sahira’s argument",
+      "C": "accepts Sahira’s conclusion, but for reasons different from those given by Sahira",
+      "D": "uses Sahira’s premises to reach a conclusion different from that reached by Sahira",
+      "E": "argues that a standard that she claims Sahira uses is self-contradictory"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Adult frogs are vulnerable to dehydration because of their highly permeable skins. Unlike large adult frogs, small adult frogs have such a low ratio of body weight to skin surface area that they cannot survive in arid climates. The animals’ moisture requirements constitute the most important factor determining where frogs can live in the Yucatán peninsula, which has an arid climate in the north and a wet climate in the south.",
+    "questionStem": "The information above most strongly supports which one of the following conclusions about frogs in the Yucatán peninsula?",
+    "answerChoices": {
+      "A": "Large adult frogs cannot coexist with small adult frogs in the wet areas.",
+      "B": "Frogs living in wet areas weigh more on average than frogs in the arid areas.",
+      "C": "Large adult frogs can live in more of the area than small adult frogs can.",
+      "D": "Fewer small adult frogs live in the south than do large adult frogs.",
+      "E": "Small adult frogs in the south have less permeable skins than small adult frogs in the north."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Editorial: A recent survey shows that 77 percent of people feel that crime is increasing and that 87 percent feel the judicial system should be handing out tougher sentences. Therefore, the government must firmly address the rising crime rate.",
+    "questionStem": "The reasoning in the editorial’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "appeals to survey results that are inconsistent because they suggest that more people are concerned about the sentencing of criminals than are concerned about crime itself",
+      "B": "presumes, without providing justification, that there is a correlation between criminal offenders being treated leniently and a high crime rate",
+      "C": "fails to consider whether other surveys showing different results have been conducted over the years",
+      "D": "fails to distinguish between the crime rate’s actually rising and people’s believing that the crime rate is rising",
+      "E": "presumes, without providing justification, that tougher sentences are the most effective means of alleviating the crime problem"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Percentages",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Proofs relying crucially on computers provide less certainty than do proofs not requiring computers. Human cognition alone cannot verify computer-dependent proofs; such proofs can never provide the degree of certainty that attends our judgments concerning, for instance, simple arithmetical facts, which can be verified by human calculation. Of course, in these cases one often uses electronic calculators, but here the computer is a convenience rather than a supplement to human cognition.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Only if a proof’s result is arrived at without the help of a computer can one judge with any degree of certainty that the proof is correct.",
+      "B": "We can never be completely sure that proofs relying crucially on computers do not contain errors that humans do not detect.",
+      "C": "Whenever a computer replaces human calculation in a proof, the degree of certainty provided by the proof is reduced.",
+      "D": "If one can corroborate something by human calculation, one can be completely certain of it.",
+      "E": "It is impossible to supplement the cognitive abilities of humans by means of artificial devices such as computers."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Madden: Industrialists address problems by simplifying them, but in farming that strategy usually leads to oversimplification. For example, industrialists see water retention and drainage as different and opposite functions-that good topsoil both drains and retains water is a fact alien to industrial logic. To facilitate water retention, they use a terrace or a dam; to facilitate drainage, they use drain tile, a ditch, or a subsoiler. More farming problems are created than solved when agriculture is the domain of the industrialist, not of the farmer.",
+    "questionStem": "The situation as Madden describes it best illustrates which one of the following propositions?",
+    "answerChoices": {
+      "A": "The handling of water drainage and retention is the most important part of good farming.",
+      "B": "The problems of farming should be viewed in all their complexity.",
+      "C": "Farmers are better than anyone else at solving farming problems.",
+      "D": "Industrial solutions for problems in farming should never be sought.",
+      "E": "The approach to problem solving typical of industrialists is fundamentally flawed."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Critic: Works of modern literature cannot be tragedies as those of ancient playwrights and storytellers were unless their protagonists are seen as possessing nobility, which endures through the calamities that befall one. In an age that no longer takes seriously the belief that human endeavors are governed by fate, it is therefore impossible for a contemporary work of literature to be a tragedy.",
+    "questionStem": "Which one of the following is an assumption required by the critic’s argument?",
+    "answerChoices": {
+      "A": "Whether or not a work of literature is a tragedy should not depend on characteristics of its audience.",
+      "B": "The belief that human endeavors are governed by fate is false.",
+      "C": "Most plays that were once classified as tragedies were misclassified.",
+      "D": "Those whose endeavors are not regarded as governed by fate will not be seen as possessing nobility.",
+      "E": "If an ignoble character in a work of literature endures through a series of misfortunes, that work of literature is not a tragedy."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Links Between Premises",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Despite the efforts of a small minority of graduate students at one university to unionize, the majority of graduate students there remain unaware of the attempt. Most of those who are aware believe that a union would not represent their interests or that, if it did, it would not effectively pursue them. Thus, the graduate students at the university should not unionize, since the majority of them obviously disapprove of the attempt.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "tries to establish a conclusion simply on the premise that the conclusion agrees with a long-standing practice",
+      "B": "fails to exclude alternative explanations for why some graduate students disapprove of unionizing",
+      "C": "presumes that simply because a majority of a population is unaware of something, it must not be a good idea",
+      "D": "ignores the possibility that although a union might not effectively pursue graduate student interests, there are other reasons for unionizing",
+      "E": "blurs the distinction between active disapproval and mere lack of approval"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Intermediate Conclusions",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Anyone who believes in democracy has a high regard for the wisdom of the masses. Griley, however, is an elitist who believes that any artwork that is popular is unlikely to be good. Thus, Griley does not believe in democracy.",
+    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Anyone who believes that an artwork is unlikely to be good if it is popular is an elitist.",
+      "B": "Anyone who believes that if an artwork is popular it is unlikely to be good does not have a high regard for the wisdom of the masses.",
+      "C": "If Griley is not an elitist, then he has a high regard for the wisdom of the masses.",
+      "D": "Anyone who does not have a high regard for the wisdom of the masses is an elitist who believes that if an artwork is popular it is unlikely to be good.",
+      "E": "Unless Griley believes in democracy, Griley does not have a high regard for the wisdom of the masses."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Links Between Premises",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A recent study confirmed that salt intake tends to increase blood pressure and found that, as a result, people with high blood pressure who significantly cut their salt intake during the study had lower blood pressure by the end of the study. However, it was also found that some people who had very high salt intake both before and throughout the study maintained very low blood pressure.",
+    "questionStem": "Which one of the following, if true, contributes the most to an explanation of the results of the study?",
+    "answerChoices": {
+      "A": "Study participants with high blood pressure who cut their salt intake only slightly during the study did not have significantly lower blood pressure by the end of the study.",
+      "B": "Salt intake is only one of several dietary factors associated with high blood pressure.",
+      "C": "For most people who have high blood pressure, reducing salt intake is not the most effective dietary change they can make to reduce their blood pressure.",
+      "D": "At the beginning of the study, some people who had very low salt intake also had very high blood pressure.",
+      "E": "Persons suffering from abnormally low blood pressure have heightened salt cravings, which ensure that their blood pressure does not drop too low."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The odds of winning any major lottery jackpot are extremely slight. However, the very few people who do win major jackpots receive a great deal of attention from the media. Thus, since most people come to have at least some awareness of events that receive extensive media coverage, it is likely that many people greatly overestimate the odds of their winning a major jackpot.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Most people who overestimate the likelihood of winning a major jackpot do so at least in part because media coverage of other people who have won major jackpots downplays the odds against winning such a jackpot.",
+      "B": "Very few people other than those who win major jackpots receive a great deal of attention from the media.",
+      "C": "If it were not for media attention, most people who purchase lottery tickets would not overestimate their chances of winning a jackpot.",
+      "D": "Becoming aware of individuals who have won a major jackpot leads at least some people to incorrectly estimate their own chances of winning such a jackpot.",
+      "E": "At least some people who are heavily influenced by the media do not believe that the odds of their winning a major jackpot are significant."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A book tour will be successful if it is well publicized and the author is an established writer. Julia is an established writer, and her book tour was successful. So her book tour must have been well publicized.",
+    "questionStem": "Which one of the following exhibits a pattern of flawed reasoning most closely parallel to the pattern of flawed reasoning exhibited by the argument above?",
+    "answerChoices": {
+      "A": "This recipe will turn out only if one follows it exactly and uses high-quality ingredients. Arthur followed the recipe exactly and it turned out. Thus, Arthur must have used high-quality ingredients.",
+      "B": "If a computer has the fastest microprocessor and the most memory available, it will meet Aletha’s needs this year. This computer met Aletha’s needs last year. So it must have had the fastest microprocessor and the most memory available last year.",
+      "C": "If cacti are kept in the shade and watered more than twice weekly, they will die. This cactus was kept in the shade, and it is now dead. Therefore, it must have been watered more than twice weekly.",
+      "D": "A house will suffer from dry rot and poor drainage only if it is built near a high water table. This house suffers from dry rot and has poor drainage. Thus, it must have been built near a high water table.",
+      "E": "If one wears a suit that has double vents and narrow lapels, one will be fashionably dressed. The suit that Joseph wore to dinner last night had double vents and narrow lapels, so Joseph must have been fashionably dressed."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Eight large craters run in a long straight line across a geographical region. Although some of the craters contain rocks that have undergone high-pressure shocks characteristic of meteorites slamming into Earth, these shocks could also have been caused by extreme volcanic events. Because of the linearity of the craters, it is very unlikely that some of them were caused by volcanoes and others were caused by meteorites. Thus, since the craters are all different ages, they were probably caused by volcanic events rather than meteorites.",
+    "questionStem": "Which one of the following statements, if true, would most strengthen the argument?",
+    "answerChoices": {
+      "A": "A similar but shorter line of craters that are all the same age is known to have been caused by volcanic activity.",
+      "B": "No known natural cause would likely account for eight meteorite craters of different ages forming a straight line.",
+      "C": "There is no independent evidence of either meteorites or volcanic activity in the region where the craters are located.",
+      "D": "There is no independent evidence of a volcanic event strong enough to have created the high-pressure shocks that are characteristic of meteorites slamming into Earth.",
+      "E": "No known single meteor shower has created exactly eight impact craters that form a straight line."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Anti-Causal",
+      "Assumes Difference",
+      "Plausibility",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The genuine creative genius is someone who is dissatisfied with merely habitual assent to widely held beliefs; thus these rare innovators tend to anger the majority. Those who are dissatisfied with merely habitual assent to widely held beliefs tend to seek out controversy, and controversy seekers enjoy demonstrating the falsehood of popular viewpoints.",
+    "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "People become angry when they are dissatisfied with merely habitual assent to widely held beliefs.",
+      "B": "People who enjoy demonstrating the falsehood of popular viewpoints anger the majority.",
+      "C": "People tend to get angry with individuals who hold beliefs not held by a majority of people.",
+      "D": "People who anger the majority enjoy demonstrating the falsehood of popular viewpoints.",
+      "E": "People who anger the majority are dissatisfied with merely habitual assent to widely held beliefs."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "First Sentence Conclusion",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT130",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Claude: When I’m having lunch with job candidates, I watch to see if they salt their food without first tasting it. If they do, I count that against them, because they’re making decisions based on inadequate information. Larissa: That’s silly. It’s perfectly reasonable for me to wear a sweater whenever I go into a supermarket, because I already know supermarkets are always too cool inside to suit me. And I never open a credit card offer that comes in the mail, because I already know that no matter how low its interest rate may be, it will never be worthwhile for me.",
+    "questionStem": "The two analogies that Larissa offers can most reasonably be interpreted as invoking which one of the following principles to criticize Claude’s policy?",
+    "answerChoices": {
+      "A": "In matters involving personal preference, performing an action without first ascertaining whether it is appropriate in the specific circumstances should not be taken as good evidence of faulty decision making, because the action may be based on a reasoned policy relating to knowledge of a general fact about the circumstances.",
+      "B": "In professional decision-making contexts, those who have the responsibility of judging other people’s suitability for a job should not use observations of job-related behavior as a basis for inferring general conclusions about those people’s character.",
+      "C": "General conclusions regarding a job candidate’s suitability for a position should not be based exclusively on observations of the candidate’s behavior in situations that are neither directly job related nor likely to be indicative of a pattern of behavior that the candidate engages in.",
+      "D": "Individuals whose behavior in specific circumstances does not conform to generally expected norms should not automatically be considered unconcerned with meeting social expectations, because such individuals may be acting in accordance with reasoned policies that they believe should be generally adopted by people in similar circumstances.",
+      "E": "Evidence that a particular individual uses bad decision-making strategies in matters of personal taste should not be considered sufficient to warrant a negative assessment of his or her suitability for a job, because any good decision maker can have occasional lapses of rationality with regard to such matters."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies",
+      "Principles in Answers",
+      "Rebuttals"
+    ]
+  }
+]

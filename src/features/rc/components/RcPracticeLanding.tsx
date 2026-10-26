@@ -1,0 +1,30 @@
+import type { ReactNode } from 'react';
+
+interface RcPracticeLandingProps {
+  onChooseAutomatic: () => void;
+  onChooseManual: () => void;
+  practice: ReactNode;
+  assigned: ReactNode;
+}
+
+export function RcPracticeLanding({ onChooseAutomatic, onChooseManual, practice, assigned }: RcPracticeLandingProps) {
+  return <div className="rc-practice-landing">
+    <section data-motion-enter data-motion-group className="rc-practice-hero rc-practice-unified" aria-label="Create an RC drill">
+      <div className="rc-practice-choice"><h2 data-motion-item>Create your own RC drill</h2><p data-motion-item>Choose your passages, set your pace, and review before starting.</p><div data-motion-item className="rc-practice-entry-actions"><button type="button" className="rc-practice-entry rc-practice-primary" onClick={onChooseAutomatic}>Build a drill</button><button type="button" className="rc-practice-secondary" onClick={onChooseManual}>Pick specific passages</button></div></div>
+    </section>
+    <div className="rc-practice-deck">
+      <section data-motion-enter className="drill-observatory-practice-bay rc-practice-history" aria-label="Your practice">
+        <h2 className="sr-only">Your practice</h2>
+        {practice}
+      </section>
+      <section data-motion-enter className="drill-observatory-today-bay">{assigned}</section>
+    </div>
+  </div>;
+}
+
+export function RcPracticeResume({ title, detail, onResume }: { title: string; detail: string; onResume: () => void }) {
+  return <button type="button" className="rc-practice-resume" aria-label={`Resume RC drill: ${title}`} onClick={onResume}>
+    <span><span className="rc-practice-resume-label">Resume your drill</span><strong>{title}</strong><small>{detail}</small></span>
+    <span aria-hidden="true">→</span>
+  </button>;
+}
