@@ -279,19 +279,21 @@ function answerPairs(response: string) {
   // Confirm each type/indicator pair locally. A bag of words cannot distinguish
   // "causal, since; comparative, more evenly than" from the swapped labels.
   // Unstructured prose stays with the Coach rather than being guessed correct.
-  const boundary = new RegExp(`[,](?=\\s*(?:(?:a|an)\\s+)?(?:${Object.values(KIND_PATTERNS).join("|")})\\b)|[;\\n]+`, "i");
+  // A type word starts another pair only if it has an indicator after it.
+  // Otherwise Q5's unquoted "causal, caused" is split into two empty labels.
+  const boundary = new RegExp(`[,](?=\\s*(?:(?:a|an)\\s+)?(?:${Object.values(KIND_PATTERNS).join("|")})\\b(?=\\s*[:,]|\\s+\\S))|[;\\n]+`, "i");
   return response.split(boundary).filter((part) => part.trim()).map((part) => ({
     named: namedKinds(part),
     answer: normalize(part),
   }));
 }
 
-function matchedKinds(signal: Signal, response: string): RelationKind[] {
+function matchedKinds(signal: Signal, response: string, focusedQuotations = false): RelationKind[] {
   const pairs = answerPairs(response);
   return signal.relations.filter((r) => {
     const claimed = pairs.filter((pair) => pair.named.has(r.kind));
     return claimed.length > 0 && claimed.every((pair) =>
-      pair.named.size === 1 && confidentPair(r, pair.answer, signal.statement),
+      pair.named.size === 1 && confidentPair(r, pair.answer, signal.statement, signal.relations, focusedQuotations),
     );
   }).map((r) => r.kind);
 }
@@ -332,7 +334,7 @@ function indicatorIn(indicator: string, answer: string): boolean {
 /** Positive pairs only. Unknown prose and contradictory extras go to Coach.
  * Every consumed quotation is either an authored split or an exact source span
  * containing a credited indicator. No arbitrary gaps or reordered endpoints. */
-function confidentPair(r: Relation, answer: string, statement: string): boolean {
+function confidentPair(r: Relation, answer: string, statement: string, relations: Relation[], focusedQuotations = false): boolean {
   const cleaned = answer.replace(/\(\s*(?:not|no|never)\s+(?:a\s+|an\s+|the\s+)?(?:conditional|causal|comparative|comparison)\s*\)/gi, " ").trim();
   const label = PAIR_LABEL[r.kind];
   if (!label.test(cleaned)) return false;
@@ -354,6 +356,12 @@ function confidentPair(r: Relation, answer: string, statement: string): boolean 
       const candidate = unit.replace(/\s*(?:…|\.\.\.)\s*/g, " ... ").replace(/\s*,\s*/g, ", ");
       return forms.includes(candidate) && indicatorIn(split, source);
     })) return true;
+    // Repeating the prompt does not identify the supporting words. A shared
+    // span covering several types needs Coach judgment, not instant credit.
+    // Recognition for the illustration is not a correctness verdict. Keep
+    // valid wider quotations visible even when instant credit needs judgment.
+    if (focusedQuotations && (unit === trim(source) || relations.some((other) => other.kind !== r.kind
+      && other.indicators.some((indicator) => indicatorIn(indicator, unit))))) return false;
     return new RegExp(`\\b${escape(unit)}\\b`).test(source)
       && indicators.some((indicator) => indicatorIn(indicator, unit));
   };
@@ -384,8 +392,8 @@ export function matchesCredited(item: ActivityItem, response: string): boolean {
   const real = new Set(signal.relations.map((r) => r.kind));
   if (named.size !== real.size || [...named].some((k) => !real.has(k))) return false;
   if (!answerPairs(response).every((pair) => pair.named.size === 1 && signal.relations.some((r) =>
-    pair.named.has(r.kind) && confidentPair(r, pair.answer, signal.statement),
+    pair.named.has(r.kind) && confidentPair(r, pair.answer, signal.statement, signal.relations, true),
   ))) return false;
-  const matched = matchedKinds(signal, response);
+  const matched = matchedKinds(signal, response, true);
   return signal.relations.every((r) => matched.includes(r.kind));
 }

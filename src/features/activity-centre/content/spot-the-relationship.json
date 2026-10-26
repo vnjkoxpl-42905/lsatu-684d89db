@@ -22,6 +22,7 @@
       "grading_rubric": [
         "Grade each relationship as a pair: the type and its indicator words together. A correct indicator under the wrong type is a mislabel, not a match.",
         "Correct: every required type in the answer key is present with at least one valid indicator, with no invented type and no contradictory pair.",
+        "A quotation must identify the supporting word or phrase for its type. Repeating the whole sentence, or repeating the same span containing several types under every label, does not identify which words support each type. Mark that work partial when the types are right, and ask for a separate focused quotation for each. Do not require the shortest possible quotation: a wider clause is valid if it makes the supporting words clear.",
         "Partial: the answer contains valid work but misses a type, omits an indicator, gives a type with no indicator, quotes indicators with no type, or pairs an indicator with the wrong type.",
         "Incorrect: neither the relationship types nor the indicators show valid recognition.",
         "Accept equivalent type names: conditional, condition, conditions, necessary or sufficient condition, requirement or requirements, if-then; causal, cause, causes, caused, cause and effect, causation; comparative, comparison, comparisons, compare. Accept any capitalisation and quotation style.",
@@ -119,7 +120,7 @@
       "credited_answers": [
         "conditional, \"whenever\""
       ],
-      "explanation": "1 relationship in this sentence. *Whenever* states that the readings shift each time recalibration occurs. Reads like time, works like *if*.",
+      "explanation": "1 relationship in this sentence. *Whenever* says the readings shift each time the gauge is recalibrated. Recalibration is enough for the stated shift, just as it would be if the sentence began with *if*. The sentence does not claim that recalibration causes the shift.",
       "category": "Rung 1: Single relationship, classic indicators",
       "answer_key": {
         "relationships": [
@@ -219,11 +220,11 @@
     },
     {
       "order": 7,
-      "prompt": "Salt spray corroded the bridge's lower bolts.",
+      "prompt": "Salt spray corroded the bolts at the base of the bridge.",
       "credited_answers": [
         "causal, \"corroded\""
       ],
-      "explanation": "1 relationship in this sentence. *Corroded* identifies salt spray as producing damage to the bolts. Same shape, different verb. Say the verb aloud and the causation is audible.",
+      "explanation": "1 relationship in this sentence. *Corroded* says salt spray damaged the bolts. The verb itself expresses the cause; a word such as *because* is not needed. *At the base of the bridge* tells us where the bolts are.",
       "category": "Rung 1: Single relationship, classic indicators",
       "answer_key": {
         "relationships": [
@@ -232,13 +233,13 @@
             "indicators": [
               "corroded"
             ],
-            "connects": "salt spray -> corrosion of the bridge's lower bolts",
+            "connects": "salt spray -> corrosion of the bolts at the base of the bridge",
             "why": "'Corroded' identifies salt spray as producing damage to the bolts."
           }
         ],
         "traps": [
           "Missing the causal verb 'corroded'",
-          "Counting 'lower bolts' as a separate comparison"
+          "Treating the bolts' location as a relationship"
         ],
         "context_benchmark": null
       }
@@ -360,7 +361,7 @@
       "credited_answers": [
         "comparative, \"as strong as\""
       ],
-      "explanation": "1 relationship in this sentence. *As strong as* asserts equality of strength between the two supports. Equality, not superiority. Still comparative.",
+      "explanation": "1 relationship in this sentence. *As strong as* compares the oak beam with the steel channel in strength. The sentence says they are equal in strength, so neither support has to be stronger for this to be a comparison.",
       "category": "Rung 1: Single relationship, classic indicators",
       "answer_key": {
         "relationships": [
@@ -412,7 +413,7 @@
       "credited_answers": [
         "causal, \"raises\""
       ],
-      "explanation": "1 relationship in this sentence. *Raises* says closing the damper brings the kiln to cone 10. Same facts as the last sentence, and now it claims the closing *makes* the rise happen.",
+      "explanation": "1 relationship in this sentence. *Raises* says closing the damper brings the kiln to cone 10. The previous sentence describes the same kiln and damper, but makes a different claim: closing the damper is required. This sentence says the closing causes the rise.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -434,11 +435,11 @@
     },
     {
       "order": 15,
-      "prompt": "A stable emulsion requires an added lecithin.",
+      "prompt": "A stable emulsion requires added lecithin.",
       "credited_answers": [
         "conditional, \"requires\""
       ],
-      "explanation": "1 relationship in this sentence. *Requires* names what a stable emulsion needs. It is the most-missed conditional word in this set.",
+      "explanation": "1 relationship in this sentence. *Requires* makes added lecithin necessary for a stable emulsion. It does not say that adding lecithin guarantees stability or causes it.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -516,7 +517,7 @@
       "credited_answers": [
         "causal, \"secured\""
       ],
-      "explanation": "1 relationship in this sentence. Same facts as the last sentence, and now the pledge made the grant happen. *Secured* is the causal verb.",
+      "explanation": "1 relationship in this sentence. *Secured* says the county's matching pledge brought the grant about. The previous sentence makes the pledge a requirement for the grant. This sentence gives it a causal role.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -594,7 +595,7 @@
       "credited_answers": [
         "conditional, \"unless\""
       ],
-      "explanation": "1 relationship in this sentence. *Unless* with the negative main clause makes a signed report necessary for cataloguing. Negative main clause plus *unless*, the pair students scramble most.",
+      "explanation": "1 relationship in this sentence. *Unless* makes a conservator's signed report necessary for cataloguing. Without the signature, the manuscript is not catalogued. A signature alone does not guarantee that it will be catalogued.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -647,7 +648,7 @@
       "credited_answers": [
         "comparative, \"more extensive than\""
       ],
-      "explanation": "1 relationship in this sentence. *More extensive than* ranks the archive's holdings above the library's in extent. A clean comparative. Two named things, joined by *more extensive than*.",
+      "explanation": "1 relationship in this sentence. *More extensive than* compares the extent of the archive's holdings with the university library's. It says the archive's holdings are more extensive, without claiming what caused that difference.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -673,7 +674,7 @@
       "credited_answers": [
         "comparative, \"better than\""
       ],
-      "explanation": "1 relationship in this sentence. *Better than* compares how well the two soils hold water. Comparison of a capacity rather than a property.",
+      "explanation": "1 relationship in this sentence. *Better than* compares how well peat soils and sandy soils hold water. The sentence gives peat soils the advantage; it does not explain what causes that advantage.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -727,11 +728,11 @@
     },
     {
       "order": 26,
-      "prompt": "Because the sluice was left open, the lower field flooded.",
+      "prompt": "Because the sluice was left open, the meadow flooded.",
       "credited_answers": [
         "causal, \"because\""
       ],
-      "explanation": "1 relationship in this sentence. *Because* identifies the open sluice as the cause of flooding. The word that does double duty. Here it names a cause. In an argument the same word often marks support for a conclusion, so check what *because* is doing each time.",
+      "explanation": "1 relationship in this sentence. *Because* identifies the open sluice as the cause of the meadow flooding. Here it explains what made an event happen. In an argument, *because* can instead introduce evidence for a conclusion, so read the whole sentence before deciding.",
       "category": "Rung 2: Discrimination",
       "answer_key": {
         "relationships": [
@@ -740,13 +741,13 @@
             "indicators": [
               "because"
             ],
-            "connects": "the sluice being left open -> flooding of the lower field",
+            "connects": "the sluice being left open -> flooding of the meadow",
             "why": "'Because' identifies the open sluice as the cause of flooding."
           }
         ],
         "traps": [
-          "Treating 'because' as only argumentative support",
-          "Counting 'lower field' as a comparison"
+          "Missing the cause introduced by 'because'",
+          "Treating the flooding as causing the open sluice"
         ],
         "context_benchmark": null
       }
@@ -1219,7 +1220,7 @@
       "credited_answers": [
         "conditional, \"Only where\"; comparative, \"denser than\"; causal, \"because\" and \"dries\""
       ],
-      "explanation": "3 relationships in this sentence. *Only where* makes dense canopy a requirement for seedling survival. *Denser than* measures that canopy against sixty percent, so a number can be the second term of a comparison. *Because* and *dries* explain the cause: direct sun dries the litter layer. Finding a dense canopy alone doesn't prove the seedlings survive.",
+      "explanation": "3 relationships in this sentence. *Only where* makes a canopy denser than sixty percent a requirement for seedling survival. *Denser than* compares the canopy with that numerical benchmark. *Because* and *dries* explain the cause: direct sun dries the litter layer. A canopy above sixty percent alone does not guarantee survival.",
       "category": "Rung 3: Compound sentences",
       "answer_key": {
         "relationships": [
@@ -1398,8 +1399,8 @@
             "indicators": [
               "because"
             ],
-            "connects": "the gradient -> water movement along it, explaining the concentration requirement",
-            "why": "'Because' presents water following the gradient as the causal mechanism explaining the requirement."
+            "connects": "water following the gradient -> the explanation for the stated osmolality requirement for concentration",
+            "why": "'Because' uses water following the gradient to explain the osmolality requirement. The word 'follows' alone describes water movement; it does not express that explanatory link."
           }
         ],
         "traps": [
@@ -1441,8 +1442,8 @@
             "indicators": [
               "since"
             ],
-            "connects": "short series lengths -> increased spurious matches, explaining the acceptance requirement",
-            "why": "'Since' presents the increase in spurious matches at short lengths as the causal explanation. 'Inflate' alone describes an increase without identifying its cause."
+            "connects": "spurious matches increasing at short series lengths -> the explanation for the coefficient threshold required for acceptance",
+            "why": "'Since' uses the increase in spurious matches at short lengths to explain the acceptance requirement. 'Inflate' alone describes an increase without expressing that explanatory link."
           }
         ],
         "traps": [
@@ -1545,7 +1546,7 @@
       "credited_answers": [
         "conditional, \"Provided\"; comparative, \"finer than\"; causal, \"since\" and \"produces\""
       ],
-      "explanation": "3 relationships in this sentence. *Provided* gives a condition under which a null result is meaningful. *Finer than* compares the assay's detection limit with the regulatory threshold. *Since* and *produces* give the reason: a coarse assay can produce a null that tells us nothing useful. The cause explains why the detection limit matters.",
+      "explanation": "3 relationships in this sentence. *Provided* gives a sufficient condition for a null result to be meaningful: the assay's detection limit is finer than the regulatory threshold. *Finer than* compares the detection limit with that threshold. *Since* and *produces* give the reason: a coarse assay produces nulls that tell us nothing. The sentence does not say this detection limit is necessary for a meaningful result.",
       "category": "Rung 4: The same structures under jargon",
       "answer_key": {
         "relationships": [

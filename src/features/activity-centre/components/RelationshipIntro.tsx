@@ -95,7 +95,7 @@ export function RelationshipIntro({ title, resumeAt = 1, preview, canSaveProgres
             <h2 id="relationship-instructions-title">Instructions</h2>
             <ol>
               <li><strong>Read the whole sentence.</strong></li>
-              <li><strong>Give the type and a quotation.</strong> Quote the words you used to identify the relationship. If you find more than one type, include each one with its own quotation.</li>
+              <li><strong>Give the type and a quotation.</strong> Quote the word or phrase that tells you the type, rather than the whole sentence. If you find more than one type, give a separate quotation for each. One quotation per type is enough.</li>
             </ol>
           </section>
 
