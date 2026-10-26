@@ -32,22 +32,22 @@ const libraryAtoms = (() => {
   return libraryExample.atoms.map(atom => ({ ...atom, short: shortNames[atom.id] ?? atom.short }));
 })();
 
-function GroupMeaning({ connector }: { connector: 'AND' | 'OR' }) {
+function GroupMeaning({ connector, film }: { connector: 'AND' | 'OR'; film?: ReactNode }) {
   const isAnd = connector === 'AND';
   const rule = isAnd ? libraryExample.both : libraryExample.either;
   return <div className="ao-reading">
     <Section title={isAnd ? 'What AND does' : 'What OR does'} label={isAnd ? 'AND means both' : 'OR means one or both'}>
       <div className="ct-definition ao-definition">
-        <p className="ao-definition-lead">{isAnd ? 'AND conjoins two conditions.' : 'OR joins two conditions so that either one is enough.'}</p>
+        <p className="ao-definition-lead">{isAnd ? 'AND conjoins two conditions.' : 'OR joins two conditions.'}</p>
         <dl>
-          <div><dt>In the sufficient condition</dt><dd>{isAnd ? 'The necessary condition follows only when both conditions are met.' : 'The necessary condition follows when either condition is met, and also when both are.'}</dd></div>
-          <div><dt>In the necessary condition</dt><dd>{isAnd ? 'Both conditions follow together.' : 'At least one of the two follows.'}</dd></div>
+          <div><dt>In the sufficient condition</dt><dd>{isAnd ? 'The necessary condition follows only when both conditions are met.' : 'The necessary condition follows when either condition is met, or both.'}</dd></div>
+          <div><dt>In the necessary condition</dt><dd>{isAnd ? 'Both conditions follow together.' : 'At least one of the two conditions follows, and possibly both.'}</dd></div>
         </dl>
       </div>
       <p>{isAnd ? 'Here is a rule: ' : 'Here is a different rule: '}<strong>{isAnd ? 'A visitor gets a library card if the visitor shows photo ID and proof of address.' : 'A visitor gets a library card if the visitor shows photo ID or proof of address.'}</strong></p>
       <p>{isAnd
-        ? 'The word and puts both documents on the left side. Neither document is the trigger by itself. Each is half of it. Photo ID alone does not guarantee a card, and proof of address alone does not either. Show both, and the card is guaranteed.'
-        : 'The word or gives the visitor two routes to a card. Photo ID alone guarantees a card. Proof of address alone guarantees a card. A visitor who shows both also gets one, because OR does not shut out the second condition.'}</p>
+        ? 'The word “and” puts both documents on the left side. Neither document is the trigger by itself. Each is half of it. Photo ID alone does not guarantee a card, and proof of address alone does not either. Show both, and the card is guaranteed.'
+        : 'The word “or” gives the visitor two routes to a card. Photo ID alone guarantees a card. Proof of address alone guarantees a card. A visitor who shows both also gets one, because OR does not shut out the second condition.'}</p>
       <AndOrDiagram atoms={libraryAtoms} rule={rule}/>
     </Section>
     <Section title={isAnd ? 'Why one fact is not enough' : 'Why one fact is enough'}>
@@ -55,17 +55,18 @@ function GroupMeaning({ connector }: { connector: 'AND' | 'OR' }) {
         ? 'Answer choices often take one half of an AND and treat it as the whole trigger. If you see the and, you know a single fact never sets this rule off.'
         : 'Answer choices often treat OR as if it needed both, or as if both broke the rule. If you see the or, you know one fact is enough, and two facts are fine.'}</p>
     </Section>
+    {film}
     <Section title="Write the diagram" label="Write the diagram">
       <ol className="ct-moves">
         <li><strong>Find what is enough and what follows.</strong> Showing {isAnd ? 'both documents' : 'either document'} is enough. Getting a card is the result, so it goes on the right.</li>
         <li><strong>Shorten each condition.</strong> Write “Photo ID shown”, “Address proof shown” and “Gets card”. Keep the meaning, including any restriction or negative.</li>
-        <li><strong>Stack the two conditions on the same side.</strong> Put {isAnd ? 'a + between them to mean AND' : 'or between them'}. Draw the horizontal arrow level with {isAnd ? 'the + sign' : 'the word or'}, pointing to the result.</li>
+        <li><strong>Stack the two conditions on the same side.</strong> Put {isAnd ? 'a + between them to mean AND' : '“or” between them'}. Draw the horizontal arrow level with {isAnd ? 'the + sign' : 'the word “or”'}, pointing to the result.</li>
       </ol>
       <div className="ao-wrong-right">
         <p><span>Wrong</span>{isAnd ? 'Photo ID by itself guarantees a card.' : 'A visitor needs both documents to get a card under this rule.'}</p>
         <p><span>Right</span>{isAnd ? 'Photo ID and proof of address together guarantee a card.' : 'Either document guarantees a card. Both documents also qualify.'}</p>
       </div>
-      <p>{isAnd ? 'The + joins the two conditions. Do not draw a separate arrow from photo ID alone: that would say it is enough by itself.' : 'The or means either condition is enough. Do not replace it with +: that would wrongly require both documents.'}</p>
+      <p>{isAnd ? 'The + joins the two conditions. Do not draw a separate arrow from photo ID alone: that would say it is enough by itself.' : 'The “or” means either condition is enough. Do not replace it with +: that would wrongly require both documents.'}</p>
     </Section>
     <Section title="Check every case">
       <ScenarioChart connector={connector}/>
@@ -75,7 +76,6 @@ function GroupMeaning({ connector }: { connector: 'AND' | 'OR' }) {
       <p>{isAnd ? 'A visitor shows both documents but does not get a card. That breaks this conditional: its sufficient condition is met, but its necessary condition is false.' : 'A visitor shows photo ID but does not get a card. That breaks this conditional too. One document meets the OR condition, so the card must follow.'}</p>
       <p>{isAnd ? 'A different visitor shows photo ID and no proof of address. The AND condition is not met. This visitor could get a card through another route, or could leave without one. Either case fits this rule.' : 'A different visitor shows neither document. The OR condition is not met. This visitor could get a card through another route, or could leave without one. Either case fits this rule.'}</p>
       {isAnd ? <ReferenceQuestion prompt="Photo ID is shown. Nothing is said about proof of address. Do we know that both conditions are met?" options={['Yes, photo ID is enough','Not yet; proof of address is still unknown']} correct={1} feedback={['The AND rule needs both documents. One document is only part of its sufficient condition.','We do not know whether both conditions are met. Unknown proof of address does not mean proof of address is absent.']}/> : <>
-        <p><strong>Mistaken claim: “Both makes an OR false.”</strong> Showing both documents meets the OR condition because at least one condition is true.</p>
         <ReferenceQuestion prompt="A pass is valid if stamped or signed. This pass is both stamped and signed. Does this pass meet the OR condition?" options={['Yes, one or both is enough','No, OR allows only one']} correct={0} feedback={['Both is allowed. The pass meets the rule’s sufficient condition.','Plain OR allows both. Only wording such as but not both excludes that case.']}/>
       </>}
     </Section>
@@ -92,9 +92,8 @@ function AndMeaning() {
 
 function OrMeaning() {
   return <>
-    <GroupMeaning connector="OR"/>
-    <Section title="Watch the recap: AND and OR"><AndOrLecture lessonId="and-or-both-or-either"/></Section>
-    <Section title="A habit to keep"><p>When you see OR, one condition is enough. Both conditions together also meet it: plain OR allows both.</p></Section>
+    <GroupMeaning connector="OR" film={<Section title="Watch the recap: AND and OR"><AndOrLecture lessonId="and-or-both-or-either"/></Section>}/>
+    <Section title="A habit to keep"><p>When OR is in the sufficient condition, look for one condition the facts establish; one is all the rule needs. When OR is in the necessary condition, conclude only that at least one is true, never which one.</p></Section>
     <AndOrQuiz quizId="and-or-either-condition"/>
   </>;
 }

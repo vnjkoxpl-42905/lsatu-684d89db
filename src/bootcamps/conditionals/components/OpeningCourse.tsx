@@ -492,7 +492,6 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
   const chapterPart = chapterFromView(view);
   const allParts = [...new Set(steps.map(step => step.part ?? 1))];
   const chapterCount = allParts.length;
-  const chapterSlice = current && chapterCount > 1 ? allParts.indexOf(current.part ?? 1) / (chapterCount - 1) : 0.5;
   const isIndex = ['lessons', 'labs', 'practice', 'home'].includes(view) || chapterPart !== undefined;
   return <div ref={root} className={`oc-course-screen${view === 'foundation-practice' ? ' d1-screen' : ''}`}>
     {view === 'home' && <CourseHome steps={steps} url={url}/>}
@@ -514,12 +513,9 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
     {!projected && current?.type === 'drill' && !run && <DrillEntry step={current} url={url} storageScope={storageScope}/>}
     {!projected && current && (current.type === 'note' || run) && <div className={current.type === 'note' ? 'oc-course-note' : 'oc-drill-run-header'}>
       <div data-course-heading>{current.type === 'note' ? <header className="mb-10">
-        {current.lessonNumber && chapterCount > 1 && <Link className="oc-lesson-ribbon" to={url(chapterView(current.part ?? 1))} style={{ '--slice': chapterSlice } as CSSProperties}>
-          <span className="oc-lesson-ribbon-art" aria-hidden/>
-          <ArrowLeft size={16} aria-hidden/><span><span className="oc-lesson-ribbon-label">Chapter {current.part ?? 1}</span>{chapterTitles[current.part ?? 1]}</span>
-          <span className="oc-lesson-ribbon-num" aria-hidden>{current.part ?? 1}</span>
-        </Link>}
-        {current.lessonNumber && <p className="oc-label">Chapter {current.part ?? 1} · Lesson {current.lessonNumber}{current.requiredForEditionCompletion === false && ' · Optional'}</p>}
+        {current.lessonNumber && <p className={chapterCount > 1 ? 'oc-label oc-crumb' : 'oc-label'}>{chapterCount > 1
+          ? <><Link to={url(chapterView(current.part ?? 1))}>Chapter {current.part ?? 1}: {chapterTitles[current.part ?? 1]}</Link><span aria-hidden>›</span></>
+          : `Chapter ${current.part ?? 1} · `}Lesson {current.lessonNumber}{current.requiredForEditionCompletion === false && ' · Optional'}</p>}
         <h1 className="font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]">{current.title}</h1>
         <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>
       </header> : <header><p className="oc-label">{openingDrillNumber(current.id) ? `Drill ${openingDrillNumber(current.id)}` : 'Practice'}</p><h1>{current.title}</h1></header>}</div>

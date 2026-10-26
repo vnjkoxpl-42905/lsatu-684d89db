@@ -242,7 +242,7 @@
 /* Wrong/right pair in the diagram method: two quiet rows, labelled, not a box. */
 .ao-wrong-right{display:grid;gap:.5rem;margin:1.4rem 0}
 #root .ao-wrong-right p{display:grid;grid-template-columns:4.5rem 1fr;align-items:baseline;gap:1rem;margin:0;padding:.85rem 1.1rem;border-radius:10px;background:#f7f3ea;font-size:18px;line-height:1.6}
-.ao-wrong-right span{font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.ao-wrong-right span{font-size:.9rem;font-weight:600}
 .ao-wrong-right p:first-child span{color:#9a3b2b}
 .ao-wrong-right p:last-child span{color:#176447}
 @media(max-width:480px){#root .ao-wrong-right p{grid-template-columns:1fr;gap:.2rem}}
@@ -261,4 +261,4 @@
 @container (max-width:34rem){.ao-definition dl>div{grid-template-columns:1fr}}
 @media(max-width:560px){.ao-definition dl>div{grid-template-columns:1fr}}
 /* Keep a section heading close to the content it introduces. */
-#root .ao-reading .co-section-heading h2{margin-bottom:1rem}
+#root .oc-course-body:has(.ao-reading) .co-section-heading h2:not(.ct-popquiz){margin-bottom:1rem}

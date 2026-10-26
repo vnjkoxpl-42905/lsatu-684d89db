@@ -68,7 +68,7 @@ it('teaches AND and OR as separate lessons, each with its own quiz and no intern
   expect(within(quiz).getByText(wrong.hint)).toBeVisible();
   and.unmount();
   render(<MemoryRouter><AndOrLesson id="and-or-either-condition"/></MemoryRouter>);
-  expect(screen.getByText(/OR joins two conditions so that either one is enough/)).toBeVisible();
+  expect(screen.getByText(/OR joins two conditions\./)).toBeVisible();
   expect(screen.queryByText(/AND conjoins two conditions/)).toBeNull();
   expect(document.body.textContent).not.toMatch(/whole group|full group|Page \d of \d/i);
   const orTable=screen.getByRole('table',{name:'Does this meet the OR condition?'});
@@ -261,7 +261,7 @@ it('teaches diagram writing and distinguishes an unmet trigger from a broken con
  render(<MemoryRouter><AndOrLesson id="and-or-either-condition"/></MemoryRouter>);
  expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('photo ID but does not get a card');
  expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('shows neither document');
- expect(screen.getByRole('region', { name: 'Write the diagram' })).toHaveTextContent('or between them');
+ expect(screen.getByRole('region', { name: 'Write the diagram' })).toHaveTextContent('“or” between them');
 });
 
 it('derives both library contrapositives through all three student-controlled steps in the contrapositive lesson', () => {
