@@ -61,15 +61,15 @@ it.each(['', '/lessons'])('opens the same numbered Chapter 1 course at %s', path
 it('selects a compatible expanded assignment for a new step and preserves that row in links', () => {
   const expanded = { ...course, id: 'expanded', target: { ...course.target, curriculumVersion: 3 as const, courseEdition: 'full-conditionals-v3' as const } };
   mount(`${base}/opening/and-or-both-or-either`, [course, expanded]);
-  expect(screen.getByRole('heading', { name: 'AND vs OR' })).toBeTruthy();
-  expect(screen.getByRole('link', { name: /Next drill/ }).getAttribute('href')).toContain('assignment=expanded');
+  expect(screen.getByRole('heading', { level: 1, name: 'AND' })).toBeTruthy();
+  expect(screen.getByRole('link', { name: /Next lesson/ }).getAttribute('href')).toContain('assignment=expanded');
 });
 
 it('does not substitute another grant when an explicit old row denies a new chapter', () => {
   const expanded = { ...course, id: 'expanded', target: { ...course.target, curriculumVersion: 3 as const, courseEdition: 'full-conditionals-v3' as const } };
   mount(`${base}/opening/and-or-both-or-either?assignment=course`, [course, expanded]);
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeTruthy();
-  expect(screen.queryByRole('heading', { name: 'AND vs OR' })).toBeNull();
+  expect(screen.queryByRole('heading', { level: 1, name: 'AND' })).toBeNull();
 });
 it('shows only actual assigned course content and ignores forged broader query groups', () => {
   mount(`${base}?start=orientation&path=course&level=beginner`, [skill()]);

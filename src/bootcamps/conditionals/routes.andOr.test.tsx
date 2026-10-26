@@ -44,16 +44,16 @@ const cardTitles = (region: HTMLElement) => within(region).getAllByRole('heading
 beforeEach(() => { state.progress = emptyProgress(); state.updateCalls = 0; });
 afterEach(cleanup);
 
-const LESSONS = ['AND vs OR', 'Where the group sits', 'Deny the whole group'];
-const DRILLS = ['Check the whole group', 'Read the rule with a group in it', 'Say the opposite of the group', 'Diagram it and flip it'];
+const LESSONS = ['AND', 'OR', 'Where the group sits', 'Contrapositives with AND and OR'];
+const DRILLS = ['Check AND and OR', 'Read the rule with a group in it', 'Practice negating AND and OR', 'Diagram it and flip it'];
 
 it('shows the whole Chapter 2 to a teacher preview and to a full course assignment, after all of Chapter 1', () => {
   for (const [assignments, isAdmin] of [[[course], false], [[], true]] as const) {
     mount(`${base}/lessons${isAdmin ? `?edition=${edition}` : ''}`, [...assignments], isAdmin);
     const region = chapterTwo()!;
     expect(region).toBeVisible();
-    expect(cardTitles(region)).toEqual([LESSONS[0], DRILLS[0], LESSONS[1], DRILLS[1], LESSONS[2], DRILLS[2], DRILLS[3]]);
-    expect(within(region).getAllByText(/^2\.[123]$/)).toHaveLength(3);
+    expect(cardTitles(region)).toEqual([LESSONS[0], LESSONS[1], DRILLS[0], LESSONS[2], DRILLS[1], LESSONS[3], DRILLS[2], DRILLS[3]]);
+    expect(within(region).getAllByText(/^2\.[1234]$/)).toHaveLength(4);
     expect(within(screen.getByRole('region', { name: 'Chapter 1' })).getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
     cleanup();
   }
@@ -77,7 +77,7 @@ it('retains the frozen old course and refuses a new chapter even when an old row
 it('scopes And/Or and De Morgan selections to their own steps and refuses the other topic’s steps by URL', () => {
   const andOr = assignment('andor', ['and-or']);
   mount(`${base}/lessons?assignment=andor`, [andOr]);
-  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[0], DRILLS[0], LESSONS[1], DRILLS[1]]);
+  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[0], LESSONS[1], DRILLS[0], LESSONS[2], DRILLS[1]]);
   cleanup();
   mount(`${base}/opening/and-or-negate-group?assignment=andor`, [andOr]);
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
@@ -85,7 +85,7 @@ it('scopes And/Or and De Morgan selections to their own steps and refuses the ot
 
   const deMorgan = assignment('demorgan', ['de-morgan']);
   mount(`${base}/lessons?assignment=demorgan`, [deMorgan]);
-  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[2], DRILLS[2], DRILLS[3]]);
+  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[3], DRILLS[2], DRILLS[3]]);
   cleanup();
   mount(`${base}/opening/and-or-both-or-either?assignment=demorgan`, [deMorgan]);
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
@@ -127,7 +127,7 @@ it('keeps legacy read marks and the opening-edition membership separate from the
 it('records a fresh new lesson under its own step ID and leaves the legacy record alone', () => {
   state.progress!.lessons['and-or'] = '2026-09-01T12:00:00.000Z';
   mount(`${base}/opening/and-or-both-or-either?assignment=course`, [course]);
-  expect(screen.getByRole('heading', { level: 1, name: 'AND vs OR' })).toBeVisible();
+  expect(screen.getByRole('heading', { level: 1, name: 'AND' })).toBeVisible();
   expect(state.progress!.course?.[`${edition}:and-or-both-or-either`]?.status).toBe('started');
   expect(state.progress!.lessons).toEqual({ 'and-or': '2026-09-01T12:00:00.000Z' });
   expect(Object.keys(state.progress!.course ?? {})).toEqual([`${edition}:and-or-both-or-either`]);
@@ -137,10 +137,10 @@ it('moves across the chapter boundary in both directions', () => {
   mount(`${base}/opening/and-or-both-or-either?assignment=course`, [course]);
   const nav = screen.getByRole('navigation', { name: 'Course navigation' });
   expect(within(nav).getByRole('link', { name: /Previous drill.*Put it into practice/ })).toBeVisible();
-  expect(within(nav).getByRole('link', { name: /Next drill.*Check the whole group/ })).toBeVisible();
+  expect(within(nav).getByRole('link', { name: /Next lesson.*OR/ })).toBeVisible();
   cleanup();
   mount(`${base}/opening/source-independent?assignment=course&run=1`, [course]);
-  expect(within(screen.getByRole('navigation', { name: 'Course navigation' })).getByRole('link', { name: /Next lesson.*AND vs OR/ })).toBeVisible();
+  expect(within(screen.getByRole('navigation', { name: 'Course navigation' })).getByRole('link', { name: /Next lesson.*AND/ })).toBeVisible();
 });
 
 it('counts every Chapter 2 step in the course completion denominator', () => {
@@ -148,7 +148,7 @@ it('counts every Chapter 2 step in the course completion denominator', () => {
   expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain(`of ${COURSE_STEP_REGISTRY.filter(step => step.requiredForEditionCompletion !== false).length} steps done`);
   cleanup();
   mount(`${base}/lessons?assignment=andor`, [assignment('andor', ['and-or'])]);
-  expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('of 4 steps done');
+  expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('of 5 steps done');
 });
 
 // ---- Access matrix, built from the real assignment contract ---------------------------------------
@@ -173,8 +173,8 @@ const fromTarget = (target: ConditionalAssignmentTarget, id = 'matrix'): Resolve
   ...(target.scope !== 'course' && target.scope !== 'stage' ? { difficulty: target.difficulty } : {}),
 });
 const expectedTitles = (unitIds: string[]) => [
-  ...(unitIds.includes('and-or') ? [LESSONS[0], DRILLS[0], LESSONS[1], DRILLS[1]] : []),
-  ...(unitIds.includes('de-morgan') ? [LESSONS[2], DRILLS[2], DRILLS[3]] : []),
+  ...(unitIds.includes('and-or') ? [LESSONS[0], LESSONS[1], DRILLS[0], LESSONS[2], DRILLS[1]] : []),
+  ...(unitIds.includes('de-morgan') ? [LESSONS[3], DRILLS[2], DRILLS[3]] : []),
 ];
 
 it('shows each Chapter 2 step to exactly the assignment targets whose real unit membership reaches its topic', () => {

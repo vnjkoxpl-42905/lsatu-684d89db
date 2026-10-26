@@ -52,35 +52,32 @@ describe('permission and boundary wording', () => {
   });
 });
 
-it('teaches AND, OR and the contrapositive on three focused internal pages',()=>{
-  const ready: boolean[]=[];
-  render(<MemoryRouter><AndOrLesson id="and-or-both-or-either" onLastPageChange={value=>ready.push(value)}/></MemoryRouter>);
-  expect(screen.getByRole('heading',{name:'AND'})).toBeVisible();
+it('teaches AND and OR as separate lessons, each with its own quiz and no internal pages',()=>{
+  const and=render(<MemoryRouter><AndOrLesson id="and-or-both-or-either"/></MemoryRouter>);
   expect(screen.getByText('AND means BOTH conditions.')).toBeVisible();
-  expect(screen.queryByRole('heading',{name:'Pop Quiz'})).toBeNull();
-  expect(screen.getByRole('button',{name:'Previous page'})).toBeDisabled();
-  expect(ready.at(-1)).toBe(false);
-  fireEvent.click(screen.getByRole('button',{name:'Next page'}));
-  expect(screen.getByRole('heading',{name:'OR'})).toBeVisible();
-  expect(screen.getByText('OR means ONE OR BOTH conditions.')).toBeVisible();
-  expect(screen.getByRole('img',{name:'OR group. Group established.'})).toBeVisible();
-  fireEvent.click(screen.getByRole('button',{name:'Proof of address: not shown'}));
-  expect(screen.getByRole('img',{name:'OR group. Group established.'})).toBeVisible();
-  fireEvent.click(screen.getByRole('button',{name:'Next page'}));
-  expect(screen.getByRole('heading',{name:'The contrapositive'})).toBeVisible();
-  expect(screen.getByText('no photo ID OR no proof of address')).toBeVisible();
-  expect(screen.getByText('no photo ID AND no proof of address')).toBeVisible();
-  expect(screen.getByRole('heading',{name:'Pop Quiz'})).toBeVisible();
-  expect(ready.at(-1)).toBe(true);
+  expect(screen.queryByText('OR means ONE OR BOTH conditions.')).toBeNull();
+  expect(document.body.textContent).not.toMatch(/whole group|full group|Page \d of \d/i);
+  expect(screen.queryByRole('button',{name:/page/i})).toBeNull();
+  expect(screen.queryByText('no photo ID OR no proof of address')).toBeNull();
+  const andTable=screen.getByRole('table',{name:'Does this meet the AND condition?'});
+  expect(within(andTable).getAllByRole('row').slice(1).map(row=>within(row).getAllByRole('cell')[2].textContent)).toEqual(['✓Met','×Not met','×Not met','×Not met']);
+  expect(screen.getByText(/The visitor might still get a card/)).toBeVisible();
   const wrong=choiceStep(andOrQuizzes['and-or-both-or-either'][0])!.options.find(option=>!option.correct)!;
   const quiz=screen.getByRole('region',{name:'Pop Quiz'});
   fireEvent.click(within(quiz).getByRole('button',{name:new RegExp('^'+wrong.text.slice(0,15).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'))}));
   expect(within(quiz).getByText(wrong.hint)).toBeVisible();
-  fireEvent.click(screen.getByRole('button',{name:'Previous page'}));
-  expect(ready.at(-1)).toBe(false);
-  expect(screen.queryByRole('heading',{name:'Pop Quiz'})).toBeNull();
-  fireEvent.click(screen.getByRole('button',{name:'Next page'}));
-  expect(within(screen.getByRole('region',{name:'Pop Quiz'})).getByText(wrong.hint)).toBeVisible();
+  and.unmount();
+  render(<MemoryRouter><AndOrLesson id="and-or-either-condition"/></MemoryRouter>);
+  expect(screen.getByText('OR means ONE OR BOTH conditions.')).toBeVisible();
+  expect(screen.queryByText('AND means BOTH conditions.')).toBeNull();
+  expect(document.body.textContent).not.toMatch(/whole group|full group|Page \d of \d/i);
+  const orTable=screen.getByRole('table',{name:'Does this meet the OR condition?'});
+  expect(within(orTable).getAllByRole('row').slice(1).map(row=>within(row).getAllByRole('cell')[2].textContent)).toEqual(['✓Met','✓Met','✓Met','×Not met']);
+  expect(screen.getByRole('region',{name:'Pop Quiz'})).toBeVisible();
+});
+
+it('keeps contraposition out of the AND and OR quizzes, which come before it is taught',()=>{
+  for(const id of ['and-or-both-or-either','and-or-either-condition']) expect(andOrQuizzes[id].every(item=>item.task.kind==='status')).toBe(true);
 });
 
 describe('build feedback survives edits without going stale', () => {
@@ -252,4 +249,64 @@ describe('account-store path through the real course reducer', () => {
     expect(reopened.course!['source-independent'].status).toBe('done');
     expect(reopened.course![transfer.id]).not.toHaveProperty('reopen');
   });
+});
+
+it('teaches diagram writing and distinguishes an unmet trigger from a broken conditional in both lessons', () => {
+ const and = render(<MemoryRouter><AndOrLesson id="and-or-both-or-either"/></MemoryRouter>);
+ expect(screen.getByRole('region', { name: 'Write the diagram' })).toHaveTextContent('Draw the horizontal arrow level with the + sign');
+ expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('both documents but does not get a card');
+ expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('could get a card through another route, or could leave without one');
+ expect(screen.getByRole('region', { name: 'Write the diagram' })).toHaveTextContent('WrongPhoto ID by itself guarantees a card.');
+ and.unmount();
+ render(<MemoryRouter><AndOrLesson id="and-or-either-condition"/></MemoryRouter>);
+ expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('photo ID but does not get a card');
+ expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('shows neither document');
+ expect(screen.getByRole('region', { name: 'Write the diagram' })).toHaveTextContent('or between them');
+});
+
+it('derives both library contrapositives through all three student-controlled steps in the contrapositive lesson', () => {
+ render(<MemoryRouter><AndOrLesson id="and-or-negate-group"/></MemoryRouter>);
+ for (const name of ['The library rule: reverse, negate and switch', 'The OR library rule: reverse, negate and switch']) {
+  const demo = screen.getByRole('group', { name });
+  for (const step of [1,2,3]) fireEvent.click(within(demo).getByRole('button', { name: new RegExp(`Step ${step}\\.`) }));
+  expect(demo).toHaveAttribute('data-stage', '3');
+  const figure = within(demo).getByRole('figure');
+  const sides = figure.querySelectorAll('.ao-side');
+  expect(sides[0].querySelectorAll('.ao-member')).toHaveLength(1);
+  expect(sides[1].querySelectorAll('.ao-member')).toHaveLength(2);
+  expect(sides[1].querySelector('.ao-connector')).toHaveAttribute('data-op', name.includes('OR library') ? 'and' : 'or');
+  expect(within(demo).getByText(/If the visitor does not get a library card, then/)).toBeVisible();
+ }
+});
+
+it('uses the taught short phrases locally without changing the shared rule readbacks', () => {
+ const and = render(<MemoryRouter><AndOrLesson id="and-or-both-or-either"/></MemoryRouter>);
+ expect([...screen.getByRole('region', { name: 'AND means both' }).querySelectorAll('.ao-diagram .ct-pill')].map(node => node.textContent)).toEqual(['Photo ID shown', 'Address proof shown', 'Gets card']);
+ expect(within(screen.getByRole('region', { name: 'AND means both' })).getByText('If the visitor shows photo ID and the visitor shows proof of address, then the visitor gets a library card.')).toBeVisible();
+ and.unmount();
+ render(<MemoryRouter><AndOrLesson id="and-or-negate-group"/></MemoryRouter>);
+ expect(screen.getByText('Not both:')).toBeVisible();
+ expect(screen.getByText('Neither:')).toBeVisible();
+});
+
+it.each(['and-or-both-or-either', 'and-or-either-condition', 'and-or-either-side', 'and-or-negate-group'])('uses direct AND/OR wording instead of the rejected terminology in %s', id => {
+ const { container } = render(<MemoryRouter><AndOrLesson id={id}/></MemoryRouter>);
+ expect(container.textContent).not.toMatch(/\bconnectors?\b/i);
+});
+
+it('names the remaining necessary OR option when the trigger is met and one option is false', () => {
+ const required = placementExamples.find(entry => entry.id === 'one-required')!;
+ expect(describeProbe(required.item, { regional: true, laptop: false })).toContain('the team has a tablet');
+ expect(describeProbe(required.item, { regional: true, laptop: false })).not.toContain('narrows it');
+});
+
+it('keeps finished conditional readbacks inside the student-controlled demonstrations', () => {
+ const { container } = render(<MemoryRouter><AndOrLesson id="and-or-negate-group"/></MemoryRouter>);
+ const finished = [...container.querySelectorAll('p')].filter(node => /If (a|the) visitor does not get a library card, then/.test(node.textContent ?? ''));
+ expect(finished).toHaveLength(2);
+ for (const node of finished) {
+  expect(node.closest('.ao-demo')).not.toBeNull();
+  expect(node).toHaveAttribute('data-show', 'false');
+  expect(node).toHaveAttribute('aria-hidden', 'true');
+ }
 });

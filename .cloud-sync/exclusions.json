@@ -324,11 +324,39 @@
     "reason": "excluded file"
   },
   {
+    "path": "docs/conditionals/verification/2026-10-25/and-or-direct-wording-tests.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "docs/conditionals/verification/2026-10-25/and-or-edition-routes.log",
     "reason": "excluded file"
   },
   {
     "path": "docs/conditionals/verification/2026-10-25/and-or-learn-mode-routes.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/conditionals/verification/2026-10-25/and-or-second-correction-clean-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/conditionals/verification/2026-10-25/and-or-second-correction-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/conditionals/verification/2026-10-25/and-or-teaching-correction-clean-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/conditionals/verification/2026-10-25/and-or-teaching-correction-final-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/conditionals/verification/2026-10-25/and-or-teaching-correction-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/conditionals/verification/2026-10-25/and-or-teaching-revision-tests.log",
     "reason": "excluded file"
   },
   {

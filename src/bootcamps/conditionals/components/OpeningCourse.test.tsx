@@ -28,29 +28,27 @@ it.each([
   }
 });
 
-it('waits for the third AND vs OR page before observing lesson completion', () => {
+it('observes completion of the AND and OR lessons at the end of each page, with no page gate', () => {
   const callbacks: IntersectionObserverCallback[] = [];
-  const disconnect = vi.fn();
   vi.stubGlobal('IntersectionObserver', class {
     constructor(callback: IntersectionObserverCallback) { callbacks.push(callback); }
     observe() {}
     unobserve() {}
-    disconnect = disconnect;
+    disconnect() {}
   });
   try {
-    const save = vi.fn();
-    const step = COURSE_STEP_REGISTRY.find(item => item.id === 'and-or-both-or-either')!;
-    render(<MemoryRouter><OpeningCourseScreen view={step.id} url={url} steps={[step]} progressStore={{ steps: {}, save }}/></MemoryRouter>);
-    expect(screen.getByRole('heading', { level: 1, name: 'AND vs OR' })).toBeVisible();
-    expect(save).toHaveBeenCalledWith(step.id, {});
-    expect(callbacks).toHaveLength(0);
-    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
-    expect(callbacks).toHaveLength(0);
-    expect(save.mock.calls.some(([, update]) => update.status === 'done')).toBe(false);
-    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
-    expect(callbacks.length).toBeGreaterThan(0);
-    fireEvent.click(screen.getByRole('button', { name: 'Previous page' }));
-    expect(disconnect).toHaveBeenCalled();
+    for (const [id, title] of [['and-or-both-or-either', 'AND'], ['and-or-either-condition', 'OR']]) {
+      callbacks.length = 0;
+      const save = vi.fn();
+      const step = COURSE_STEP_REGISTRY.find(item => item.id === id)!;
+      render(<MemoryRouter><OpeningCourseScreen view={step.id} url={url} steps={[step]} progressStore={{ steps: {}, save }}/></MemoryRouter>);
+      expect(screen.getByRole('heading', { level: 1, name: title })).toBeVisible();
+      expect(save).toHaveBeenCalledWith(step.id, {});
+      expect(callbacks.length).toBeGreaterThan(0);
+      expect(screen.queryByRole('button', { name: /page/i })).toBeNull();
+      expect(document.body.textContent).not.toMatch(/Page \d of \d/);
+      cleanup();
+    }
   } finally {
     cleanup();
     vi.unstubAllGlobals();
@@ -202,7 +200,7 @@ it('focuses the destination after drawer navigation and restores the trigger aft
 
 it('retains legacy destinations without duplicating the numbered course', () => {
   expect(OPENING_COURSE_PATH.filter(step => step.type === 'note').map(step => step.lessonNumber)).toEqual(['1.1', '1.2', '1.3', '1.4', '1.5']);
-  expect(COURSE_STEP_REGISTRY.filter(step => step.type === 'note' && step.part === 2).map(step => step.lessonNumber)).toEqual(['2.1', '2.2', '2.3']);
+  expect(COURSE_STEP_REGISTRY.filter(step => step.type === 'note' && step.part === 2).map(step => step.lessonNumber)).toEqual(['2.1', '2.2', '2.3', '2.4']);
   expect(OPENING_COURSE_PATH.filter(step => step.part === 1 && step.type === 'note').map(step => step.lessonNumber)).toEqual(['1.1', '1.2', '1.3', '1.4', '1.5']);
   expect(OPENING_COURSE_PATH.findIndex(step => step.id === 'contrapositive')).toBeLessThan(OPENING_COURSE_PATH.findIndex(step => step.id === 'foundation-practice'));
   for (const step of LEGACY_OPENING_COURSE_STEPS) {

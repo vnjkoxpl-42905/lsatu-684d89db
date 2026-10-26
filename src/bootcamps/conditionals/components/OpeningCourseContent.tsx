@@ -440,6 +440,7 @@ function Content({ id, storageScope }: { id: string; storageScope?: string }) {
     case 'missing-requirement': return <MissingRequirementNote/>;
     case 'contrapositive': return <CombinedContrapositiveNote/>;
     case 'and-or-both-or-either':
+    case 'and-or-either-condition':
     case 'and-or-either-side':
     case 'and-or-negate-group': return <AndOrLesson id={id}/>;
     case 'foundation-practice': return <FoundationPractice/>;

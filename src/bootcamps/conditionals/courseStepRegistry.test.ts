@@ -12,7 +12,7 @@ describe('versioned numbered curriculum', () => {
     expect(courseStepsForEdition()).toBe(courseStepsForEdition());
     expect(courseStepsForEdition(edition)).toBe(COURSE_STEP_REGISTRY);
     expect(new Set(COURSE_STEP_REGISTRY.map(s => s.id)).size).toBe(COURSE_STEP_REGISTRY.length);
-    expect(COURSE_STEP_REGISTRY.filter(s => s.part === 2)).toHaveLength(7);
+    expect(COURSE_STEP_REGISTRY.filter(s => s.part === 2)).toHaveLength(8);
     expect([...new Set(COURSE_STEP_REGISTRY.map(s => s.part))]).toEqual([1,2,3,4,5,6,7]);
   });
   it('gives all thirty units exactly one disposition and every eligible target required work', () => {

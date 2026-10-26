@@ -13,13 +13,18 @@ import './and-or.css';
 const yesNo = (value: boolean) => value ? <><Check size={14} aria-hidden="true"/><span>Yes</span></> : <><X size={14} aria-hidden="true"/><span>No</span></>;
 
 /** One side of a diagram: the members stacked, with the connector sitting on its own line between them. */
-function SideStack({ atoms, side, toneOf, label, cancelled = [] }: { atoms: Atom[]; side: Side; toneOf: (atom: string) => 'amber' | 'teal'; label: string; cancelled?: string[] }) {
-  return <div className="ao-side" data-tone="plain">
+function SideStack({ atoms, side, toneOf, label, cancelled = [], rows, anchorRow }: { atoms: Atom[]; side: Side; toneOf: (atom: string) => 'amber' | 'teal'; label: string; cancelled?: string[]; rows: number; anchorRow: number }) {
+  // For an even number of connectors, use the lower middle connector consistently.
+  const connectorIndex = Math.min(side.members.length - 1, Math.ceil(side.members.length / 2));
+  const offset = side.members.length > 1 ? anchorRow - (connectorIndex * 2 + 1) : 0;
+  return <div className="ao-side" data-tone="plain" style={{ gridRow: `1 / span ${rows}` }}>
     <span className="ao-side-label">{label}</span>
-    <ul>{side.members.map((member, index) => <li key={`${member.atom}-${index}`} data-cancelled={cancelled.includes(member.atom)}>
-      {index > 0 && <span className="ao-connector" data-op={side.op}>{side.op.toUpperCase()}</span>}
-      <Pill text={literalShort(atoms, member)} tone={toneOf(member.atom)} negated={!!member.negated}/>
-      {cancelled.includes(member.atom) && <span className="ao-cancel">NOT + NOT = no NOT</span>}
+    <ul>{side.members.map((member, index) => <li key={`${member.atom}-${index}`}>
+      {index > 0 && <span className="ao-connector" data-op={side.op} data-arrow-anchor={index === connectorIndex} style={{ gridRow: index * 2 + 1 + offset }}><span aria-hidden="true">{side.op === 'and' ? '+' : 'or'}</span><span className="sr-only">{side.op.toUpperCase()}</span></span>}
+      <div className="ao-member" data-cancelled={cancelled.includes(member.atom)} style={{ gridRow: side.members.length === 1 ? anchorRow : index * 2 + 2 + offset }}>
+        <Pill text={literalShort(atoms, member)} tone={toneOf(member.atom)} negated={!!member.negated}/>
+        {cancelled.includes(member.atom) && <span className="ao-cancel">NOT + NOT = no NOT</span>}
+      </div>
     </li>)}</ul>
   </div>;
 }
@@ -33,16 +38,19 @@ function SideStack({ atoms, side, toneOf, label, cancelled = [] }: { atoms: Atom
  */
 export function AndOrDiagram({ atoms, rule, title, readback = true, cancelled, origin }: { atoms: Atom[]; rule: Rule; title?: string; readback?: boolean; cancelled?: string[]; origin?: Rule }) {
   const source = origin ?? rule;
+  const count = Math.max(2, rule.sufficient.members.length, rule.necessary.members.length);
+  const rows = count * 2;
+  const anchorRow = Math.ceil(count / 2) * 2 + 1;
   const toneOf = (atom: string): 'amber' | 'teal' => source.sufficient.members.some(member => member.atom === atom) ? 'amber' : 'teal';
-  return <figure className="ao-diagram" aria-label={`${title ? `${title}: ` : ''}${diagramText(atoms, rule)}`}>
+  return <div className="ao-diagram-frame"><figure className="ao-diagram" aria-label={`${title ? `${title}: ` : ''}${diagramText(atoms, rule)}`}>
     {title && <figcaption>{title}</figcaption>}
-    <div className="ao-diagram-row" aria-hidden="true">
-      <SideStack atoms={atoms} side={rule.sufficient} toneOf={toneOf} label="Left side · sufficient" cancelled={cancelled}/>
-      <span className="ao-arrow"><b>must</b><ArrowRight size={28} strokeWidth={3}/></span>
-      <SideStack atoms={atoms} side={rule.necessary} toneOf={toneOf} label="Right side · necessary" cancelled={cancelled}/>
+    <div className="ao-diagram-row" style={{ gridTemplateRows: `repeat(${rows}, auto)` }}>
+      <SideStack atoms={atoms} side={rule.sufficient} toneOf={toneOf} label="Left side · sufficient" cancelled={cancelled} rows={rows} anchorRow={anchorRow}/>
+      <span className="ao-arrow" style={{ gridRow: anchorRow }} aria-hidden="true"><b>must</b><ArrowRight size={28} strokeWidth={3}/></span>
+      <SideStack atoms={atoms} side={rule.necessary} toneOf={toneOf} label="Right side · necessary" cancelled={cancelled} rows={rows} anchorRow={anchorRow}/>
     </div>
     {readback && <p className="ao-readback">{ruleSentence(atoms, rule)}</p>}
-  </figure>;
+  </figure></div>;
 }
 
 // ---- Both, or at least one ------------------------------------------------------------------
@@ -119,13 +127,16 @@ export const describeProbe = (item: AndOrItem, facts: Facts) => {
     const everyMember = target.members.length > 1 && target.op === 'and';
     const oneOf = target.members.length > 1 && target.op === 'or';
     const stillOpen = oneOf && target.members.every(member => facts[member.atom] === undefined);
-    return `Given: ${known}. The whole sufficient side is established, so the rule applies: ${everyMember ? `every member of the requirement follows (${text(target)}).` : oneOf ? (stillOpen ? `at least one of the requirements follows (${text(target)}), but the rule does not say which.` : `the requirement follows (${text(target)}), and what is already ruled out narrows it.`) : `${text(target)} follows.`}`;
+    const remaining = target.members.filter(member => facts[member.atom] === undefined || facts[member.atom] !== !!member.negated);
+    const narrowed = oneOf && remaining.length === 1 && target.members.some(member => facts[member.atom] !== undefined && facts[member.atom] === !!member.negated);
+    if (narrowed) return `Given: ${known}. The sufficient condition is met. The rule requires ${text(target)}. The facts rule out the other option, so ${text({ op: 'and', members: remaining })}.`;
+    return `Given: ${known}. The sufficient condition is established, so the rule applies: ${everyMember ? `every member of the requirement follows (${text(target)}).` : oneOf ? (stillOpen ? `at least one of the requirements follows (${text(target)}), but the rule does not say which.` : `the requirement follows (${text(target)}), and what is already ruled out narrows it.`) : `${text(target)} follows.`}`;
   }
   // A denied requirement works backward through the rule: the whole sufficient side cannot be met.
   if (sideStatus(target, facts, ids) === 'not-met') {
-    return `Given: ${known}. The facts rule out the whole requirement (${text(target)}), so the sufficient side cannot be met. By the contrapositive: ${text(negateSide(item.rule.sufficient))}.`;
+    return `Given: ${known}. The facts rule out the necessary condition (${text(target)}), so the sufficient side cannot be met. By the contrapositive: ${text(negateSide(item.rule.sufficient))}.`;
   }
-  return `Given: ${known}. This does not establish the whole sufficient side (${text(item.rule.sufficient)}), so this rule gives no additional conclusion from these facts.`;
+  return `Given: ${known}. This does not establish the sufficient condition (${text(item.rule.sufficient)}), so this rule gives no additional conclusion from these facts.`;
 };
 
 /** Four different rules about one setting, one tab each. Pick a fact and read what the rule does and does not give. */
@@ -152,7 +163,7 @@ export function PlacementExplorer() {
       <p className="ao-rule-tag">Rule {index + 1} of {placementExamples.length}. A different rule from the others.</p>
       <p className="ao-sentence">{example.item.statement}</p>
       <AndOrDiagram atoms={example.item.atoms} rule={example.item.rule}/>
-      <p className="ao-probe-lead">Click a fact to test it against the whole group:</p>
+      <p className="ao-probe-lead">Choose a fact to check what follows:</p>
       <div className="ao-probes" role="group" aria-label="Facts to try">{example.probes.map((entry, i) => <button key={entry.label} type="button" aria-pressed={probe === i} onClick={() => setProbe(i)}>{entry.label}</button>)}</div>
       <p className="ao-probe-result" role="status">{probe === null ? 'Choose a fact to see what the rule gives.' : describeProbe(example.item, example.probes[probe].fact)}</p>
     </div>
@@ -184,13 +195,13 @@ export function ContrapositiveDemo({ item, label }: { item: AndOrItem; label: st
     'Start with the rule as it stands.',
     'Step 1. The sides switched places. Nothing is negated yet, so this is not a rule we can use.',
     cancelled.length
-      ? `Step 2. Every member now carries a NOT. ${cancelNames} already had one, so the two cancel and it reads positive again. The connectors have not changed yet.`
-      : 'Step 2. Every member now carries a NOT. The connectors have not changed yet.',
-    'Step 3. A group of two or more changes its connector when it is negated. Now the whole requirement is denied, member by member.',
+      ? `Step 2. Every member now carries a NOT. ${cancelNames} already had one, so the two cancel and it reads positive again. AND and OR have not changed yet.`
+      : 'Step 2. Every member now carries a NOT. AND and OR have not changed yet.',
+    'Step 3. Change AND to OR and OR to AND when negating connected conditions. Now each side is negated correctly. This version says the same thing as the original rule.',
   ];
   const ids = atomIdsOf([rule]);
   const rows = allAssignments(ids);
-  const steps: [string, string][] = [['Flip the sides', 'Click here to switch the left and right sides'], ['Put NOT on every member', 'Click here to negate each member'], ['Switch the connectors', 'Click here to change AND to OR and OR to AND']];
+  const steps: [string, string][] = [['Flip the sides', 'Click here to switch the left and right sides'], ['Put NOT on every member', 'Click here to negate each member'], ['Switch AND and OR', 'Click here to change AND to OR and OR to AND']];
   return <div className="ao-demo" data-stage={stage} role="group" aria-label={label}>
     <p className="ct-flip-sentence" data-kind="rule"><span>The rule</span>{ruleSentence(atoms, rule)}</p>
     <AndOrDiagram atoms={atoms} rule={shown} readback={false} title={stage === 0 ? 'Original' : stage === 3 ? 'Contrapositive' : `After step ${stage}`} cancelled={stage >= 2 ? cancelled : []} origin={rule}/>

@@ -3893,9 +3893,9 @@
           ],
           "answerIndex": 2,
           "explanation": "De Morgan changes OR to AND; denying not archived gives archived.",
-          "hint": "Track double negation separately from the connector.",
+          "hint": "Track double negation separately from AND and OR.",
           "reasoningSteps": [
-            "Track double negation separately from the connector.",
+            "Track double negation separately from AND and OR.",
             "De Morgan changes OR to AND; denying not archived gives archived."
           ]
         }
@@ -3928,9 +3928,9 @@
           ],
           "answerIndex": 1,
           "explanation": "Deny the outer AND with OR, then deny the inner OR with AND.",
-          "hint": "Work from the outermost connector inward.",
+          "hint": "Start with the outer AND, then handle the OR inside it.",
           "reasoningSteps": [
-            "Work from the outermost connector inward.",
+            "Start with the outer AND, then handle the OR inside it.",
             "Deny the outer AND with OR, then deny the inner OR with AND."
           ]
         },
@@ -3944,9 +3944,9 @@
           ],
           "answerIndex": 2,
           "explanation": "The denial of the complete trigger permits either absent A or failure of both B and C.",
-          "hint": "Keep the nested scope when switching connectors.",
+          "hint": "Keep the brackets in place when switching AND and OR.",
           "reasoningSteps": [
-            "Keep the nested scope when switching connectors.",
+            "Keep the brackets in place when switching AND and OR.",
             "The denial of the complete trigger permits either absent A or failure of both B and C."
           ]
         }
@@ -5617,9 +5617,9 @@
           ],
           "answerIndex": 1,
           "explanation": "Denying the consequence of an OR trigger excludes both alternative triggers.",
-          "hint": "Check both connector and direction.",
+          "hint": "Check both AND or OR and the arrow direction.",
           "reasoningSteps": [
-            "Check both connector and direction.",
+            "Check both AND or OR and the arrow direction.",
             "Denying the consequence of an OR trigger excludes both alternative triggers."
           ]
         },

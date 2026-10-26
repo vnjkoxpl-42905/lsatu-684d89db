@@ -10,7 +10,7 @@ const A = (id: string, short: string, yes: string, no: string): Atom => ({ id, s
 
 export interface AndOrDrillSet { id: string; title: string; description: string; instructions: string[]; items: AndOrItem[] }
 
-// ---- Practice 1: Check the whole group -------------------------------------------------
+// ---- Practice 1: Check AND and OR -------------------------------------------------
 
 const meaning: AndOrItem[] = [
   { id: 'ao-meaning-1', statement: 'A student gets a seat in the pottery workshop if the student registers and pays the fee.',
@@ -42,7 +42,7 @@ const meaning: AndOrItem[] = [
     atoms: [A('shift', 'Works the shift', 'the person works the lab shift', 'the person does not work the lab shift'), A('goggles', 'Goggles', 'the person wears goggles', 'the person does not wear goggles'), A('gloves', 'Gloves', 'the person wears gloves', 'the person does not wear gloves'), A('coat', 'Coat', 'the person wears a coat', 'the person does not wear a coat')],
     rule: { sufficient: group('and', lit('shift')), necessary: group('and', lit('goggles'), lit('gloves'), lit('coat')) },
     task: { kind: 'status', side: 'necessary', facts: { goggles: true, gloves: true } },
-    why: 'The requirement is the whole group of three. Goggles and gloves are met, but nobody has said anything about the coat, so the requirement is not yet established.' },
+    why: 'The rule requires goggles, gloves and a coat. Goggles and gloves are given, but nothing says whether the coat is worn, so we do not know whether all three requirements are met.' },
 ];
 
 // ---- Practice 2: Read the rule with a group in it ----------------------------------------
@@ -62,7 +62,7 @@ const placement: AndOrItem[] = [
     atoms: [A('win', 'Wins contest', 'the chef wins the contest', 'the chef does not win the contest'), A('trophy', 'Trophy', 'the chef gets a trophy', 'the chef does not get a trophy'), A('deal', 'Cookbook deal', 'the chef gets a cookbook deal', 'the chef does not get a cookbook deal')],
     rule: { sufficient: group('and', lit('win')), necessary: group('and', lit('trophy'), lit('deal')) },
     task: { kind: 'settles', facts: { win: true }, target: lit('deal') },
-    why: 'The requirement is the whole group. Winning brings every member with it, including the cookbook deal.' },
+    why: 'Winning guarantees both a trophy and a cookbook deal, so the cookbook deal follows.' },
   { id: 'ao-placement-4', statement: 'Every player selected for the team gets a locker or a parking spot.',
     atoms: [A('selected', 'Selected', 'the player is selected for the team', 'the player is not selected for the team'), A('locker', 'Locker', 'the player gets a locker', 'the player does not get a locker'), A('spot', 'Parking spot', 'the player gets a parking spot', 'the player does not get a parking spot')],
     rule: { sufficient: group('and', lit('selected')), necessary: group('or', lit('locker'), lit('spot')) },
@@ -123,12 +123,12 @@ const transfer: AndOrItem[] = [
     atoms: [A('clear', 'Weather clear', 'the weather is clear', 'the weather is not clear'), A('permit', 'Permit valid', 'the permit is valid', 'the permit is not valid'), A('cleared', 'Cleared to start', 'the hiker is cleared to start', 'the hiker is not cleared to start')],
     rule: { sufficient: group('and', lit('clear'), lit('permit')), necessary: group('and', lit('cleared')) },
     task: { kind: 'contrapositive' }, answerAt: 2,
-    why: 'Start from the denied requirement: the hiker is not cleared. Then the whole trigger cannot have been met, and a group of two joined by AND fails when at least one is missing.' },
+    why: 'If the hiker is not cleared to start, then the weather is not clear or the permit is not valid.' },
   { id: 'ao-transfer-2', statement: 'If the library lets a visitor stay late, then the visitor has a late pass or is not a minor.',
     atoms: [A('late', 'Allowed to stay late', 'the visitor is allowed to stay late', 'the visitor is not allowed to stay late'), A('pass', 'Late pass', 'the visitor has a late pass', 'the visitor has no late pass'), A('minor', 'Is a minor', 'the visitor is a minor', 'the visitor is not a minor')],
     rule: { sufficient: group('and', lit('late')), necessary: group('or', lit('pass'), lit('minor', true)) },
     task: { kind: 'contrapositive' }, answerAt: 0,
-    why: 'Deny the requirement as a whole: no late pass and a minor. The “not a minor” member loses its “not” when it is negated.' },
+    why: 'Deny the requirements together: no late pass and a minor. The “not a minor” member loses its “not” when it is negated.' },
   { id: 'ao-transfer-3', statement: 'A student gets a seat on the field trip if the permission slip is signed or a parent attends.',
     atoms: [A('slip', 'Slip signed', 'the permission slip is signed', 'the permission slip is not signed'), A('parent', 'Parent attends', 'a parent attends', 'no parent attends'), A('seat', 'Gets a seat', 'the student gets a seat', 'the student does not get a seat')],
     rule: { sufficient: group('or', lit('slip'), lit('parent')), necessary: group('and', lit('seat')) },
@@ -152,43 +152,67 @@ const transfer: AndOrItem[] = [
 ];
 
 export const andOrDrills: AndOrDrillSet[] = [
-  { id: 'and-or-meaning-practice', title: 'Check the whole group', description: 'Decide whether the facts establish a group joined by AND or by OR. Keep every member in view.',
-    instructions: ['Read the rule and the facts.', 'Decide whether the facts establish the whole group, rule it out, or leave it open. A member the facts never mention is not denied.', 'If your answer misses, read the hint and try again. You can ask to see the answer after a second miss.'], items: meaning },
+  { id: 'and-or-meaning-practice', title: 'Check AND and OR', description: 'Decide whether the given facts meet the conditions joined by AND or OR.',
+    instructions: ['Read the rule and the facts.', 'Decide whether the facts establish the AND or OR condition, rule it out, or leave it unknown. A condition the facts never mention is not denied.', 'If your answer misses, read the hint and try again. You can ask to see the answer after a second miss.'], items: meaning },
   { id: 'and-or-placement-practice', title: 'Read the rule with a group in it', description: 'Find which side the group is on, then decide what the rules and facts settle.',
     instructions: ['Find the group and the side of the rule it sits on.', 'Decide whether the rules and facts make the condition true, make it false, or leave it open.', 'A fact can reach one member of a group and leave the rest to be shown.'], items: placement },
-  { id: 'and-or-whole-group-practice', title: 'Say the opposite of the group', description: 'Choose the statement that denies a whole group, member by member.',
-    instructions: ['Read the group and picture a case where it fails.', 'Choose the statement that is true in exactly the cases where the group fails.', 'Some members already carry a “not.” Deny them carefully.'], items: wholeGroup },
+  { id: 'and-or-whole-group-practice', title: 'Practice negating AND and OR', description: 'Negate conditions joined by AND or OR without changing their meaning.',
+    instructions: ['Read the conditions joined by AND or OR.', 'Choose the statement that is true exactly when the original combination is false.', 'Some conditions already contain not. Negate each one carefully and switch AND and OR.'], items: wholeGroup },
   { id: 'and-or-transfer-practice', title: 'Diagram it and flip it', description: 'Build the diagram, take the contrapositive, and use it on fresh rules.',
-    instructions: ['Some questions ask you to choose the contrapositive. Others ask you to build the diagram yourself from short versions of the conditions you write.', 'When you build, place every condition, set each connector, and mark each NOT.', 'Your short versions are drafts for your own use. The check is on the arrangement, not on your wording.'], items: transfer },
+    instructions: ['Some questions ask you to choose the contrapositive. Others ask you to build the diagram yourself from short versions of the conditions you write.', 'When you build, place every condition, choose AND or OR where needed, and mark each NOT.', 'Your short versions are drafts for your own use. The check is on the arrangement, not on your wording.'], items: transfer },
 ];
 
 export function getAndOrDrill(id?: string): AndOrDrillSet | undefined {
   return andOrDrills.find(set => set.id === id);
 }
 
-// ---- Pop Quizzes (lesson 2.1 to 2.3) -------------------------------------------------------
+// ---- Pop Quizzes (lesson 2.1 to 2.4) -------------------------------------------------------
 
 const quiz1: AndOrItem[] = [
-  { id: 'ao-quiz-1-1', statement: 'The slide opens when the lifeguard is on duty and the water is clear.',
-    atoms: [A('guard', 'Lifeguard on duty', 'the lifeguard is on duty', 'the lifeguard is not on duty'), A('water', 'Water clear', 'the water is clear', 'the water is not clear'), A('slide', 'Slide opens', 'the slide opens', 'the slide does not open')],
+  { id: 'ao-quiz-1-1', statement: 'The projector runs when its cable is connected and its lamp works.',
+    atoms: [A('guard', 'Cable connected', 'the cable is connected', 'the cable is not connected'), A('water', 'Lamp works', 'the lamp works', 'the lamp does not work'), A('slide', 'Projector runs', 'the projector runs', 'the projector does not run')],
     rule: { sufficient: group('and', lit('guard'), lit('water')), necessary: group('and', lit('slide')) },
     task: { kind: 'status', side: 'sufficient', facts: { guard: true } },
-    why: 'The lifeguard is half of the group. AND needs the water to be clear too, and nobody has said so.' },
-  { id: 'ao-quiz-1-2', statement: 'An order ships free if it weighs over five kilos or it costs over fifty dollars.',
-    atoms: [A('heavy', 'Over five kilos', 'the order weighs over five kilos', 'the order weighs five kilos or less'), A('costly', 'Over fifty dollars', 'the order costs over fifty dollars', 'the order costs fifty dollars or less'), A('free', 'Ships free', 'the order ships free', 'the order does not ship free')],
-    rule: { sufficient: group('or', lit('heavy'), lit('costly')), necessary: group('and', lit('free')) },
-    task: { kind: 'status', side: 'sufficient', facts: { heavy: false, costly: true } },
-    why: 'OR needs one member, and the cost qualifies. The weight does not matter once one member is met.' },
+    why: 'A connected cable is only one condition; nothing says whether the lamp works, so we do not know whether both conditions are met.' },
   { id: 'ao-quiz-1-3', statement: 'The club trip runs if at least ten people sign up and a bus is booked.',
     atoms: [A('ten', 'Ten sign up', 'at least ten people sign up', 'fewer than ten people sign up'), A('bus', 'Bus booked', 'a bus is booked', 'no bus is booked'), A('runs', 'Trip runs', 'the club trip runs', 'the club trip does not run')],
     rule: { sufficient: group('and', lit('ten'), lit('bus')), necessary: group('and', lit('runs')) },
     task: { kind: 'status', side: 'sufficient', facts: { ten: false } },
-    why: 'Fewer than ten sign up, so one member of the AND is gone. The group cannot be established.' },
-  { id: 'ao-quiz-1-4', statement: 'A table is held if the guest confirms by email or confirms by phone.',
-    atoms: [A('email', 'Email confirm', 'the guest confirms by email', 'the guest does not confirm by email'), A('phone', 'Phone confirm', 'the guest confirms by phone', 'the guest does not confirm by phone'), A('held', 'Table held', 'the table is held', 'the table is not held')],
-    rule: { sufficient: group('or', lit('email'), lit('phone')), necessary: group('and', lit('held')) },
-    task: { kind: 'status', side: 'sufficient', facts: { email: false, phone: false } },
-    why: 'Both members are denied, and an OR fails only when every member fails. The group is not established.' },
+    why: 'Fewer than ten sign up, so the AND condition is not met; the trip might still run for another reason.' },
+  { id: 'ao-quiz-and-3', statement: 'A loan is approved if the applicant has a steady income and a good credit record.',
+    atoms: [A('income', 'Steady income', 'the applicant has a steady income', 'the applicant has no steady income'), A('credit', 'Good credit', 'the applicant has a good credit record', 'the applicant has no good credit record'), A('approved', 'Loan approved', 'the loan is approved', 'the loan is not approved')],
+    rule: { sufficient: group('and', lit('income'), lit('credit')), necessary: group('and', lit('approved')) },
+    task: { kind: 'status', side: 'sufficient', facts: { income: true, credit: true } },
+    why: 'The applicant has both a steady income and a good credit record, so the AND condition is met.' },
+  { id: 'ao-quiz-and-4', statement: 'The concert goes ahead outdoors if the forecast is dry and the stage is set up.',
+    atoms: [A('dry', 'Dry forecast', 'the forecast is dry', 'the forecast is not dry'), A('stage', 'Stage set up', 'the stage is set up', 'the stage is not set up'), A('outdoors', 'Outdoors', 'the concert goes ahead outdoors', 'the concert does not go ahead outdoors')],
+    rule: { sufficient: group('and', lit('dry'), lit('stage')), necessary: group('and', lit('outdoors')) },
+    task: { kind: 'status', side: 'sufficient', facts: { dry: true, stage: false } },
+    why: 'The stage is not set up, so the AND condition is not met, even with a dry forecast.' },
+];
+
+// 2.2 OR. Items keep their ids from the combined quiz; quiz answers are never stored, so nothing is lost.
+const quizOr: AndOrItem[] = [
+  { id: 'ao-quiz-1-2', statement: 'An order ships free if it weighs over five kilos or it costs over fifty dollars.',
+    atoms: [A('heavy', 'Over five kilos', 'the order weighs over five kilos', 'the order weighs five kilos or less'), A('costly', 'Over fifty dollars', 'the order costs over fifty dollars', 'the order costs fifty dollars or less'), A('free', 'Ships free', 'the order ships free', 'the order does not ship free')],
+    rule: { sufficient: group('or', lit('heavy'), lit('costly')), necessary: group('and', lit('free')) },
+    task: { kind: 'status', side: 'sufficient', facts: { heavy: false, costly: true } },
+    why: 'The cost meets one OR condition, so the weight does not change the result.' },
+  { id: 'ao-quiz-or-2', statement: 'A seminar counts toward the degree if a faculty member teaches it or the dean approves it.',
+    atoms: [A('faculty', 'Faculty teaches', 'a faculty member teaches the seminar', 'no faculty member teaches the seminar'), A('dean', 'Dean approves', 'the dean approves the seminar', 'the dean does not approve the seminar'), A('counts', 'Counts', 'the seminar counts toward the degree', 'the seminar does not count toward the degree')],
+    rule: { sufficient: group('or', lit('faculty'), lit('dean')), necessary: group('and', lit('counts')) },
+    task: { kind: 'status', side: 'sufficient', facts: { faculty: true, dean: true } },
+    why: 'A faculty member teaches it and the dean approves it. That meets the OR condition; plain OR allows both.' },
+  { id: 'ao-quiz-or-3', statement: 'The gate opens if a resident enters the code or a guard presses the button.',
+    atoms: [A('code', 'Code entered', 'a resident enters the code', 'no resident enters the code'), A('button', 'Button pressed', 'a guard presses the button', 'no guard presses the button'), A('opens', 'Gate opens', 'the gate opens', 'the gate does not open')],
+    rule: { sufficient: group('or', lit('code'), lit('button')), necessary: group('and', lit('opens')) },
+    task: { kind: 'status', side: 'sufficient', facts: { code: false, button: false } },
+    why: 'Neither condition holds, so the OR condition is not met. The gate might still open some other way.' },
+  { id: 'ao-quiz-or-4', statement: 'A student may enter the lab if the student wears goggles or works behind the shield.',
+    atoms: [A('goggles', 'Wears goggles', 'the student wears goggles', 'the student does not wear goggles'), A('shield', 'Behind shield', 'the student works behind the shield', 'the student does not work behind the shield'), A('enter', 'May enter', 'the student may enter the lab', 'the student may not enter the lab')],
+    rule: { sufficient: group('or', lit('goggles'), lit('shield')), necessary: group('and', lit('enter')) },
+    task: { kind: 'status', side: 'sufficient', facts: { goggles: false } },
+    why: 'No goggles, but nothing says whether the student works behind the shield. An unknown condition is not a false one, so the OR condition is still open.' },
 ];
 
 const quiz2: AndOrItem[] = [
@@ -206,7 +230,7 @@ const quiz2: AndOrItem[] = [
     atoms: [A('roster', 'On the roster', 'the player is on the roster', 'the player is not on the roster'), A('jersey', 'Jersey', 'the player has a jersey', 'the player has no jersey'), A('locker', 'Locker', 'the player has a locker', 'the player has no locker')],
     rule: { sufficient: group('and', lit('roster')), necessary: group('and', lit('jersey'), lit('locker')) },
     task: { kind: 'settles', facts: { roster: true }, target: lit('locker') },
-    why: 'The requirement is the whole group. A player on the roster has every member of it, the locker included.' },
+    why: 'A player on the roster has both a jersey and a locker, so the locker follows.' },
   { id: 'ao-quiz-2-4', statement: 'Every order over fifty dollars ships free or comes with a gift.',
     atoms: [A('over', 'Over fifty dollars', 'the order is over fifty dollars', 'the order is fifty dollars or less'), A('free', 'Ships free', 'the order ships free', 'the order does not ship free'), A('gift', 'Gift', 'the order comes with a gift', 'the order comes with no gift')],
     rule: { sufficient: group('and', lit('over')), necessary: group('or', lit('free'), lit('gift')) },
@@ -229,15 +253,15 @@ const quiz3: AndOrItem[] = [
     atoms: [A('audition', 'Auditions', 'the student auditions', 'the student does not audition'), A('rehearsal', 'Attends rehearsal', 'the student attends rehearsal', 'the student does not attend rehearsal'), A('choir', 'Joins the choir', 'the student joins the choir', 'the student does not join the choir')],
     rule: { sufficient: group('and', lit('audition'), lit('rehearsal')), necessary: group('and', lit('choir')) },
     task: { kind: 'contrapositive' }, answerAt: 1,
-    why: 'No choir means the whole trigger was not met, so at least one member is missing: no audition, or no rehearsal.' },
+    why: 'If the student does not join the choir, then the student did not audition or did not attend rehearsal.' },
   { id: 'ao-quiz-3-4', statement: 'If a tent is approved for the campsite, then it is waterproof or it has a rain cover.',
     atoms: [A('approved', 'Approved', 'the tent is approved', 'the tent is not approved'), A('waterproof', 'Waterproof', 'the tent is waterproof', 'the tent is not waterproof'), A('cover', 'Rain cover', 'the tent has a rain cover', 'the tent has no rain cover')],
     rule: { sufficient: group('and', lit('approved')), necessary: group('or', lit('waterproof'), lit('cover')) },
     task: { kind: 'contrapositive' }, answerAt: 0,
-    why: 'Deny the whole requirement: not waterproof and no rain cover. Then the tent cannot be approved.' },
+    why: 'If the tent is not waterproof and has no rain cover, then it cannot be approved.' },
 ];
 
-export const andOrQuizzes: Record<string, AndOrItem[]> = { 'and-or-both-or-either': quiz1, 'and-or-either-side': quiz2, 'and-or-negate-group': quiz3 };
+export const andOrQuizzes: Record<string, AndOrItem[]> = { 'and-or-both-or-either': quiz1, 'and-or-either-condition': quizOr, 'and-or-either-side': quiz2, 'and-or-negate-group': quiz3 };
 
 // ---- Worked examples carried through the lessons (never used as practice items) -------------
 

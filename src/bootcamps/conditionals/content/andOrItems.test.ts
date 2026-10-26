@@ -137,11 +137,11 @@ describe('Chapter 2 authored items', () => {
     const asMet = step.options.find(option => option.text.startsWith('Yes'))!;
     const asRuledOut = step.options.find(option => option.text.startsWith('No'))!;
     expect(asMet.hint).not.toBe(asRuledOut.hint);
-    expect(asMet.hint).toMatch(/AND needs every member/);
+    expect(asMet.hint).toMatch(/AND needs every condition/);
     expect(asRuledOut.hint).toMatch(/never mention|denies/);
     for (const hint of [asMet.hint, asRuledOut.hint]) expect(hint).not.toMatch(/not settled/i);
     const split = choiceStep(andOrDrills[1].items[0])!.options.find(option => option.text.startsWith('It must be true'))!;
-    expect(split.hint).toMatch(/whole sufficient side/);
+    expect(split.hint).toMatch(/sufficient conditions are met/);
   });
 
   it('checks a learner-built diagram structurally and points at the mistake without giving the arrangement', () => {
@@ -153,11 +153,11 @@ describe('Chapter 2 authored items', () => {
     const right = { ...blankBuilder(), place: { slip: 'left' as const, parent: 'left' as const, seat: 'right' as const }, leftOp: 'or' as const };
     expect(checkBuild(item, right, 'diagram').correct).toBe(true);
     const wrongConnector = { ...right, leftOp: 'and' as const };
-    expect(checkBuild(item, wrongConnector, 'diagram').hint).toMatch(/connector on the left/);
+    expect(checkBuild(item, wrongConnector, 'diagram').hint).toMatch(/AND or OR on the left/);
     expect(checkBuild(item, blankBuilder(), 'diagram').ready).toBe(false);
     const contra = { ...blankBuilder(), place: { slip: 'right' as const, parent: 'right' as const, seat: 'left' as const }, negated: { slip: true, parent: true, seat: true }, rightOp: 'and' as const };
     expect(checkBuild(item, contra, 'contra').correct).toBe(true);
-    expect(checkBuild(item, { ...contra, rightOp: 'or' }, 'contra').hint).toMatch(/connector on the right/);
+    expect(checkBuild(item, { ...contra, rightOp: 'or' }, 'contra').hint).toMatch(/AND or OR on the right/);
   });
 
   it('builds a contrapositive whose existing negative member flips back to positive', () => {
@@ -184,4 +184,17 @@ describe('side mistakes', () => {
       for (const mistake of wrong) expect(sidesOpposite(mistake.side, side, ids), item.id).toBe(false);
     }
   });
+});
+
+it('keeps plain course copy, and four-item AND and OR quizzes that wait for contraposition',()=>{
+  for(const [id,ids] of [['and-or-both-or-either',['ao-quiz-1-1','ao-quiz-1-3','ao-quiz-and-3','ao-quiz-and-4']],['and-or-either-condition',['ao-quiz-1-2','ao-quiz-or-2','ao-quiz-or-3','ao-quiz-or-4']]] as const){
+    const lesson=COURSE_STEP_REGISTRY.find(step=>step.id===id)!;
+    expect(lesson.description).not.toMatch(/(whole|full|complete|entire) group|connector/i);
+    const quiz=andOrQuizzes[lesson.id];
+    expect(quiz.map(item=>item.id)).toEqual(ids);
+    expect(quiz.every(item=>item.task.kind==='status')).toBe(true);
+    expect(quiz[0].statement).not.toMatch(/lifeguard|pool/i);
+    for(const item of quiz) for(const option of choiceStep(item)!.options) expect(option.hint).not.toMatch(/connector|member/i);
+  }
+  expect(andOrQuizzes['and-or-negate-group'].some(item=>item.task.kind==='contrapositive')).toBe(true);
 });

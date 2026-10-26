@@ -11,7 +11,7 @@ afterEach(cleanup);
 
 const lessons: { id: string; sections: string[] }[] = [
   { id: 'and-or-either-side', sections: ['The group can sit on either side', 'Why the side changes the answer', 'Watch the lesson', 'How to test a rule with a group in it', 'What it is not', 'A habit to keep', 'Pop Quiz'] },
-  { id: 'and-or-negate-group', sections: ['Start with when the group fails', 'Why the connector changes', 'Watch the lesson', 'How to flip a rule with a group', 'What it is not', 'A habit to keep', 'Pop Quiz'] },
+  { id: 'and-or-negate-group', sections: ['Start with when the group fails', 'Why AND and OR change', 'Watch the lesson', 'How to flip a rule with a group', 'What it is not', 'A habit to keep', 'Pop Quiz'] },
 ];
 const show = (id: string) => render(<MemoryRouter><AndOrLesson id={id}/></MemoryRouter>);
 const escaped = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -69,9 +69,9 @@ describe('the approved seven-section lesson shape', () => {
 describe('written procedure and operable demos', () => {
   it('states bold numbered steps before the learner-operated explorer in lesson 2.2', () => {
     show('and-or-either-side');
-    const step = screen.getByText(/Step 1: Find the whole group/);
+    const step = screen.getByText(/Step 1: Find the connected conditions/);
     expect(step.closest('strong')).not.toBeNull();
-    expect(screen.getByText(/Step 3: Test your facts against the whole group/)).toBeVisible();
+    expect(screen.getByText(/Step 3: Check the facts against those conditions/)).toBeVisible();
     const tabs = screen.getByRole('tablist');
     expect(step.compareDocumentPosition(tabs) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getAllByRole('tab')).toHaveLength(4);
@@ -80,11 +80,11 @@ describe('written procedure and operable demos', () => {
 
   it('names the click on every procedure control', () => {
     show('and-or-negate-group');
-    for (const name of [/Step 1\. Click here to switch the left and right sides/]) expect(screen.getAllByRole('button', { name }).length).toBe(2);
+    for (const name of [/Step 1\. Click here to switch the left and right sides/]) expect(screen.getAllByRole('button', { name }).length).toBe(4);
     cleanup();
     show('and-or-both-or-either');
-    expect(screen.getByRole('button', {name:'Photo ID: shown'})).toBeVisible();
-    expect(screen.getByRole('button', {name:'Proof of address: not shown'})).toBeVisible();
+    expect(screen.getByRole('table',{name:'Does this meet the AND condition?'})).toBeVisible();
+    expect(screen.getAllByRole('row')).toHaveLength(5);
   });
 
   it('shows a double negation cancelling in the second demo, not only saying so', () => {
@@ -137,7 +137,7 @@ describe('colour follows the idea, and 2.2 states its limits exactly', () => {
 
   it('limits the forward-only instruction, names the exact limit of one member, and shows the full OR rule', () => {
     const { container } = show('and-or-either-side');
-    expect(screen.getByText(/Going forward through the rule, wait until the whole left side is established/)).toBeVisible();
+    expect(screen.getByText(/Going forward through the rule, establish the sufficient condition first/)).toBeVisible();
     expect(screen.queryByText(/Use the rule only when/)).toBeNull();
     expect(screen.getByText(/A project alone gives no additional conclusion about whether a team is in the regional round/)).toBeVisible();
     expect(screen.queryByText(/may give you nothing/)).toBeNull();
@@ -163,19 +163,15 @@ describe('concise Pop Quiz feedback', () => {
     const contra = andOrQuizzes['and-or-negate-group'][2];
     expect(answerLine(contra)).toMatch(/^If .+, then .+\.$/);
     const status = andOrQuizzes['and-or-both-or-either'][0];
-    expect(answerLine(status)).toMatch(/^The facts do not establish the whole group yet: /);
+    expect(answerLine(status)).toMatch(/^The facts do not establish the AND condition yet: /);
     expect(answerLine(status)).not.toMatch(/^If /);
     show('and-or-both-or-either');
-    fireEvent.click(screen.getByRole('button',{name:'Next page'}));
-    fireEvent.click(screen.getByRole('button',{name:'Next page'}));
     pick(choiceStep(status)!.options.find(option => option.correct)!.text);
-    expect(screen.getByText(answerLine(status))).toBeVisible();
+    expect(screen.getByText(status.why)).toBeVisible();
   });
 
   it('keeps Not that one and a specific reason for a wrong choice', () => {
     show('and-or-both-or-either');
-    fireEvent.click(screen.getByRole('button',{name:'Next page'}));
-    fireEvent.click(screen.getByRole('button',{name:'Next page'}));
     const wrong = choiceStep(andOrQuizzes['and-or-both-or-either'][0])!.options.find(option => !option.correct)!;
     pick(wrong.text);
     expect(screen.getByText('Not that one.')).toBeVisible();

@@ -53,14 +53,14 @@ export function settleAnswer(item: AndOrItem): Settlement {
 
 const statusHints: Record<'and' | 'or' | 'single', Record<Status, Partial<Record<Status, string>>>> = {
   and: {
-    met: { 'not-met': 'Look for a fact that denies one of the members. Does any fact do that?', open: 'Check each member against the facts. Is any member left unmentioned?' },
-    'not-met': { met: 'AND needs every member at the same time. Check each member against the facts one by one.', open: 'Read the facts again. Does one of them deny a member of this group?' },
-    open: { met: 'AND needs every member. Is each one actually established, or only some of them?', 'not-met': 'Does any fact deny a member? A member the facts never mention has not been denied.' },
+    met: { 'not-met': 'Look for a fact that denies one of the conditions. Does any fact do that?', open: 'Check each condition against the facts. Is any condition left unmentioned?' },
+    'not-met': { met: 'AND needs every condition at the same time. Check each condition against the facts one by one.', open: 'Read the facts again. Does one of them deny a condition?' },
+    open: { met: 'AND needs every condition. Is each one actually established, or only some of them?', 'not-met': 'Does any fact deny a condition? A condition the facts never mention has not been denied.' },
   },
   or: {
-    met: { 'not-met': 'OR needs only one member. Do the facts establish at least one?', open: 'OR needs just one established member. Is there one already?' },
-    'not-met': { met: 'OR needs at least one member established. Do the facts establish any?', open: 'Check whether every member is denied. What happens to an OR when none of its members can be true?' },
-    open: { met: 'Is any member actually established? A member the facts never mention is not established.', 'not-met': 'An OR is ruled out only when every member is denied. Are they all denied?' },
+    met: { 'not-met': 'OR needs only one condition. Do the facts establish at least one?', open: 'OR needs just one established condition. Is there one already?' },
+    'not-met': { met: 'OR needs at least one condition established. Do the facts establish any?', open: 'Check whether every condition is denied. What happens to an OR when none of its conditions can be true?' },
+    open: { met: 'Is any condition actually established? A condition the facts never mention is not established.', 'not-met': 'An OR is ruled out only when every condition is denied. Are they all denied?' },
   },
   single: {
     met: { 'not-met': 'Check the fact against this condition again. Does it deny it?', open: 'Compare the facts with this condition. Do they establish it?' },
@@ -70,7 +70,7 @@ const statusHints: Record<'and' | 'or' | 'single', Record<Status, Partial<Record
 };
 export function statusHint(side: Side, correct: Status, chosen: Status): string {
   const kind = side.members.length > 1 ? side.op : 'single';
-  return statusHints[kind][correct][chosen] ?? 'Check each member of the group against the facts.';
+  return statusHints[kind][correct][chosen] ?? 'Check each condition against the facts.';
 }
 
 export function settleHint(item: AndOrItem, correct: Settlement, chosen: Settlement): string {
@@ -78,25 +78,25 @@ export function settleHint(item: AndOrItem, correct: Settlement, chosen: Settlem
   const ids = itemAtomIds(item);
   if (correct === 'open' && chosen === 'must') {
     const reaching = allRules(item).find(rule => rule.necessary.members.some(member => member.atom === task.target.atom));
-    if (reaching && sideStatus(reaching.sufficient, task.facts, ids) !== 'met') return 'A rule guarantees its requirement only when its whole sufficient side is established. Which part of that side do the facts still not supply?';
+    if (reaching && sideStatus(reaching.sufficient, task.facts, ids) !== 'met') return 'A rule guarantees its result when its sufficient conditions are met. Which condition do the facts still not supply?';
     if (reaching && reaching.necessary.members.length > 1 && reaching.necessary.op === 'or') return 'The rule guarantees at least one of the options, not a particular one. What else would have to be known to pick this one?';
     return 'Check what the facts actually establish. Does any rule reach this condition from them?';
   }
   if (correct === 'open') return 'Nothing here rules this condition out. Ask what would have to be false for it to be impossible.';
-  if (chosen === 'open') return 'Test the facts against each rule: do they establish a whole sufficient side, or deny a whole requirement? Then see what that forces.';
+  if (chosen === 'open') return 'Test the facts against each rule: are its sufficient conditions met, or is its required result absent? Then see what follows.';
   return 'Read the direction of each rule again. Which side do the facts reach, and what does that side guarantee?';
 }
 
 const negateHints: Record<string, string> = {
-  'keeps-connector': 'Every member is denied here, but the connector stayed the same. Try a case where only one member is true: does your choice agree with the opposite of the group?',
-  'flips-connector-only': 'The connector changed, but the members still say the same things. The opposite of a group has to deny its members.',
-  'negates-one': 'Only some members were denied. The opposite of the whole group has to account for every member.',
+  'keeps-connector': 'Each condition is negated here, but AND or OR stayed the same. Try a case where only one condition is true: does your choice give the opposite result?',
+  'flips-connector-only': 'AND or OR changed, but the conditions were not negated. Negate each condition as well.',
+  'negates-one': 'Only some conditions were negated. Check every condition.',
 };
 const contrapositiveHints: Record<string, string> = {
   converse: 'That reverses the sides but leaves every condition as it was. The contrapositive also negates.',
   inverse: 'That negates the conditions but leaves the sides where they were. The contrapositive also reverses them.',
-  'keeps-connector': 'The sides and the signs look right. Check the connectors: negating a whole group changes it.',
-  'negates-one': 'One member was not negated the way the others were. Negate the whole side, member by member.',
+  'keeps-connector': 'The sides and negations look right. Check AND and OR: these must switch too.',
+  'negates-one': 'One condition was not negated the way the others were. Check each condition on both sides.',
 };
 
 // ---- Choice steps ----------------------------------------------------------------------
@@ -115,7 +115,7 @@ export function choiceStep(item: AndOrItem): ChoiceStep | null {
     const correct = statusAnswer(item);
     const labels: Record<Status, string> = { met: 'Yes, the facts establish it.', 'not-met': 'No, the facts rule it out.', open: 'The facts do not settle it yet.' };
     return {
-      prompt: `${factLine(item, task.facts)} Do these facts establish the whole group: ${sideText(atoms, side)}?`,
+      prompt: `${factLine(item, task.facts)} Do these facts meet the ${side.members.length > 1 ? side.op.toUpperCase() + ' condition' : 'condition'}: ${sideText(atoms, side)}?`,
       options: (['met', 'not-met', 'open'] as Status[]).map(value => ({ text: labels[value], correct: value === correct, hint: value === correct ? '' : statusHint(side, correct, value) })),
     };
   }
@@ -160,7 +160,9 @@ export function answerLine(item: AndOrItem): string {
   if (task.kind === 'status') {
     const text = sideText(atoms, sideOf(item.rule, task.side));
     const status = statusAnswer(item);
-    return status === 'met' ? `The facts establish the whole group: ${text}.` : status === 'not-met' ? `The facts rule out the whole group: ${text}.` : `The facts do not establish the whole group yet: ${text}.`;
+    const side = sideOf(item.rule, task.side);
+    const name = side.members.length > 1 ? `${side.op.toUpperCase()} condition` : 'condition';
+    return status === 'met' ? `The facts establish the ${name}: ${text}.` : status === 'not-met' ? `The facts rule out the ${name}: ${text}.` : `The facts do not establish the ${name} yet: ${text}.`;
   }
   if (task.kind === 'settles') {
     const text = literalText(atoms, task.target);
@@ -210,7 +212,7 @@ export function diagnoseBuild(item: AndOrItem, built: Rule, stage: 'diagram' | '
   if (signs.length) return `Check the NOT on ${signs.map(id => literalShort(atoms, { atom: id })).join(' and ')}. Compare it with the complete condition and with what the rule says.`;
   const badLeft = built.sufficient.members.length > 1 && built.sufficient.op !== expected.sufficient.op;
   const badRight = built.necessary.members.length > 1 && built.necessary.op !== expected.necessary.op;
-  if (badLeft || badRight) return `Check the connector on the ${badLeft ? 'left' : 'right'} side. Does that side need every member, or at least one?${stage === 'contra' ? ' Remember what negating a whole group does to its connector.' : ''}`;
+  if (badLeft || badRight) return `Check AND or OR on the ${badLeft ? 'left' : 'right'} side. Does that side need all conditions, or at least one?${stage === 'contra' ? ' Remember to switch AND and OR when negating the conditions.' : ''}`;
   return 'Compare each side with the rule once more.';
 }
 

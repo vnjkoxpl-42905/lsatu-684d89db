@@ -63,7 +63,7 @@ export const drillDemos: Record<string, DrillDemo> = {
   'and-or-transfer-practice': { sentence: 'A room is booked if the form is sent and the fee is paid.', steps: [
     { title: 'Shorten the conditions', caption: 'Write a short phrase for each condition. Keep who it concerns, any restriction, and any negative.', frame: { kind: 'type', lines: [{ label: 'The form is sent', text: 'Form sent' }, { label: 'The fee is paid', text: 'Fee paid' }, { label: 'The room is booked', text: 'Room booked' }] } },
     { title: 'Build the diagram', caption: 'Put the group that is enough on the left and what it requires on the right.', frame: { kind: 'place', left: 'Form sent AND fee paid', right: 'Room booked' } },
-    { title: 'Flip it', caption: 'Switch the sides, put NOT on every member, and change the group’s connector.', frame: { kind: 'choose', question: 'Which is the contrapositive?', options: ['If the room is not booked, the form is not sent or the fee is not paid', 'If the room is not booked, the form is not sent and the fee is not paid'], correct: 0 } },
+    { title: 'Flip it', caption: 'Switch the sides, negate each condition, and switch AND to OR or OR to AND.', frame: { kind: 'choose', question: 'Which is the contrapositive?', options: ['If the room is not booked, the form is not sent or the fee is not paid', 'If the room is not booked, the form is not sent and the fee is not paid'], correct: 0 } },
   ] },
   'source-intro-identify': { sentence: 'You can board only if you have a ticket.', steps: [
     { title: 'Find the indicators', caption: 'Click each word of the indicator, then choose its group.', frame: { kind: 'pick', words: words('You can board only if you have a ticket.'), picks: [3, 4], chip: 'Group 2: necessary' } },

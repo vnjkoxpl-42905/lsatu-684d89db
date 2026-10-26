@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createEditionCourseStore, editionStorageScope } from './courseProgress';
 import { emptyProgress, parseConditionalProgress, recordCourseStep } from './progress';
 import { FULL_CONDITIONAL_EDITION as edition } from '@/lib/conditionalCourseEdition';
+import { COURSE_STEP_REGISTRY } from './openingCoursePath';
 describe('read-only completion compatibility', () => {
   it('projects only compatible course completion and performs zero writes until explicit resume', () => {
     const raw = { meaning: { status: 'done' as const, updatedAt: '2026-10-18', state: { answer: 'kept' } } };
@@ -48,4 +49,36 @@ it('exposes all edition-prefixed account tools without importing unprefixed draf
   const store = createEditionCourseStore(raw, vi.fn(), [{ id: 'meaning' }], edition);
   expect(store.steps['flashcards-indicators-group-1']).toBe(saved);
   expect(store.steps['flashcards-indicators-group-2']).toBeUndefined();
+});
+
+describe('AND/OR lesson split', () => {
+  const steps = COURSE_STEP_REGISTRY;
+  it('credits the OR lesson read-only from a completed combined lesson, and keeps the AND completion', () => {
+    const raw = { [`${edition}:and-or-both-or-either`]: { status: 'done' as const, updatedAt: '2026-10-20', contentRevision: 'and-or-20261019' } };
+    const bytes = JSON.stringify(raw); const save = vi.fn();
+    const store = createEditionCourseStore(raw, save, steps, edition);
+    expect(store.steps['and-or-both-or-either'].status).toBe('done');
+    expect(store.steps['and-or-either-condition'].status).toBe('done');
+    expect(store.priorCompletion!['and-or-either-condition']).toMatchObject({ sourceKey: `${edition}:and-or-both-or-either` });
+    store.save('and-or-either-condition', {}); expect(save).not.toHaveBeenCalled();
+    expect(JSON.stringify(raw)).toBe(bytes);
+    store.resume!('and-or-either-condition');
+    expect(save).toHaveBeenCalledWith(`${edition}:and-or-either-condition`, expect.objectContaining({ status: 'started', reopen: true, contentRevision: 'and-or-split-20261025' }));
+  });
+  it('credits nothing from a combined lesson that was only started, or from an AND lesson finished after the split', () => {
+    for (const record of [{ status: 'started' as const, updatedAt: 'd', contentRevision: 'and-or-20261019' }, { status: 'done' as const, updatedAt: 'd', contentRevision: 'and-or-split-20261025' }]) {
+      const store = createEditionCourseStore({ [`${edition}:and-or-both-or-either`]: record }, vi.fn(), steps, edition);
+      expect(store.steps['and-or-either-condition']).toBeUndefined();
+      expect(store.priorCompletion).toEqual({});
+    }
+  });
+  it('keeps the OR credit after the student reopens the AND lesson', () => {
+    let raw: Record<string, import('./progress').CourseStepProgress> = { [`${edition}:and-or-both-or-either`]: { status: 'done', updatedAt: '2026-10-20', contentRevision: 'and-or-20261019' } };
+    const saveRaw = (key: string, patch: object) => { raw = recordCourseStep({ ...emptyProgress(), course: raw }, key, patch).course!; };
+    createEditionCourseStore(raw, saveRaw, steps, edition).save('and-or-both-or-either', {});
+    expect(raw[`${edition}:and-or-both-or-either`].contentRevision).toBe('and-or-20261019');
+    const after = createEditionCourseStore(raw, saveRaw, steps, edition);
+    expect(after.steps['and-or-either-condition'].status).toBe('done');
+    expect(after.steps['and-or-both-or-either'].status).toBe('done');
+  });
 });

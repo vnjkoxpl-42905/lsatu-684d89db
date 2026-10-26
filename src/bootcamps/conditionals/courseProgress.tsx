@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import type { CourseStepProgress } from './progress';
 import { FULL_CONDITIONAL_EDITION } from '@/lib/conditionalCourseEdition';
+import { SPLIT_LESSON_SOURCES } from './openingCoursePath';
 
 export type CourseStepPatch = Partial<Omit<CourseStepProgress, 'updatedAt'>> & { reopen?: boolean };
 export interface CourseProgressStore {
@@ -32,20 +33,30 @@ export function createEditionCourseStore(raw: Record<string, CourseStepProgress>
     if (earlier?.status === 'done' && compatible) {
       projected[step.id] = { sourceKey: step.id, completedAt: earlier.updatedAt, contentRevision: step.contentRevision! };
       visible[step.id] = { status: 'done', done: earlier.done, total: earlier.total, updatedAt: earlier.updatedAt, contentRevision: step.contentRevision };
+      continue;
+    }
+    const split = SPLIT_LESSON_SOURCES[step.id];
+    const combined = split && raw[`${prefix}${split.sourceId}`];
+    if (split && combined?.status === 'done' && (!combined.contentRevision || combined.contentRevision === split.sourceRevision)) {
+      projected[step.id] = { sourceKey: `${prefix}${split.sourceId}`, completedAt: combined.updatedAt, contentRevision: split.sourceRevision };
+      visible[step.id] = { status: 'done', updatedAt: combined.updatedAt, contentRevision: split.sourceRevision };
     }
   }
+  const splitSourceIds = new Set(Object.values(SPLIT_LESSON_SOURCES).map(source => source.sourceId));
   return {
     steps: visible, priorCompletion: projected, storageScope,
     save: (id, patch) => {
       // A mount effect cannot promote completed-earlier work. Only resume can do that.
       if (projected[id]) return;
-      const revision = steps.find(step => step.id === id)?.contentRevision;
+      // A completed combined AND/OR lesson keeps its revision: the OR lesson's credit is read from it.
+      const keepsSplitSource = splitSourceIds.has(id) && raw[`${prefix}${id}`]?.status === 'done' && !patch.reopen;
+      const revision = keepsSplitSource ? undefined : steps.find(step => step.id === id)?.contentRevision;
       saveRaw(`${prefix}${id}`, { ...patch, ...(revision ? { contentRevision: revision } : {}) });
     },
     resume: id => {
       const sourceCompletion = projected[id];
       if (!sourceCompletion) return;
-      const previous = raw[id];
+      const previous = sourceCompletion.sourceKey === id ? raw[id] : undefined;
       const revision = steps.find(step => step.id === id)?.contentRevision ?? sourceCompletion.contentRevision;
       const changed = revision !== sourceCompletion.contentRevision;
       saveRaw(`${prefix}${id}`, { ...previous, state: previous?.state === undefined ? undefined : structuredClone(previous.state), sourceCompletion, contentRevision: revision, ...(changed ? { reopen: true, status: 'started' as const } : { status: 'done' as const }) });

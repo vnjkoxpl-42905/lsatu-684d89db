@@ -186,6 +186,9 @@ function DeviceCourseScreen(props: { view: string; run: boolean; url: OpeningCou
   return <CourseProgressProvider store={device}><CourseScreen {...props}/></CourseProgressProvider>;
 }
 
+/** The AND and OR lessons state their definition in the body, so the header carries only the title. */
+const FOCUSED_LESSONS = ['and-or-both-or-either', 'and-or-either-condition'];
+
 function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }: {
   view: string; run: boolean; url: OpeningCourseUrl; steps: OpeningCourseStep[]; recordedPractice?: ReactNode; storageScope?: string;
 }) {
@@ -193,8 +196,6 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
   const progress = useCourseProgress();
   const projected = !!progress?.priorCompletion?.[view];
   const [visited, setVisited] = useState<string[]>([]);
-  const [andOrLastPage, setAndOrLastPage] = useState(false);
-  const onAndOrLastPageChange = useCallback((ready: boolean) => setAndOrLastPage(ready), []);
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (current && !projected && (current.type === 'note' || run)) setVisited(prior => prior.includes(view) ? prior : [...prior, view]);
@@ -227,22 +228,22 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
     {projected && current && <section className="oc-course-note" data-course-heading><p className="oc-label">Completed earlier</p><h1>{current.title}</h1><p>Your completed work from the earlier course counts here. Open a new attempt to revise it.</p><button className="oc-action" onClick={() => progress?.resume?.(current.id)}>Resume and revise</button><Link className="oc-back" to={url('lessons')}>Return to course</Link></section>}
     {!projected && current?.type === 'drill' && !run && <DrillEntry step={current} url={url} storageScope={storageScope}/>}
     {!projected && current && (current.type === 'note' || run) && <div className={current.type === 'note' ? 'oc-course-note' : 'oc-drill-run-header'}>
-      <div data-course-heading>{current.type === 'note' ? <header className={current.id === 'and-or-both-or-either' ? 'oc-focused-lesson-header' : 'mb-10'}>
+      <div data-course-heading>{current.type === 'note' ? <header className={FOCUSED_LESSONS.includes(current.id) ? 'oc-focused-lesson-header' : 'mb-10'}>
         {current.lessonNumber && <p className="oc-label">Chapter {current.part ?? 1} · Lesson {current.lessonNumber}{current.requiredForEditionCompletion === false && ' · Optional'}</p>}
-        <h1 className={current.id === 'and-or-both-or-either' ? 'oc-focused-lesson-title' : 'font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]'}>{current.title}</h1>
-        {current.id !== 'and-or-both-or-either' && !fullCourseLessons.some(lesson => lesson.id === current.id) && <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>}
+        <h1 className={FOCUSED_LESSONS.includes(current.id) ? 'oc-focused-lesson-title' : 'font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]'}>{current.title}</h1>
+        {!FOCUSED_LESSONS.includes(current.id) && !fullCourseLessons.some(lesson => lesson.id === current.id) && <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>}
       </header> : <header><p className="oc-label">{openingDrillNumber(current.id) ? `Drill ${openingDrillNumber(current.id)}` : 'Practice'}</p><h1>{current.title}</h1></header>}</div>
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions</Link>}
     </div>}
-    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id) && !progress?.priorCompletion?.[step.id]).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}><CourseBody step={step} url={url} storageScope={storageScope ?? progress?.storageScope} onLastPageChange={step.id === 'and-or-both-or-either' ? onAndOrLastPageChange : undefined}/></CourseFlashcardUrl.Provider></div>)}</div>
-    {!projected && current?.type === 'note' && !fullCourseLessons.some(lesson => lesson.id === current.id) && <LessonCompletion key={current.id} stepId={current.id} canComplete={current.id !== 'and-or-both-or-either' || andOrLastPage}/>}
+    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id) && !progress?.priorCompletion?.[step.id]).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}><CourseBody step={step} url={url} storageScope={storageScope ?? progress?.storageScope}/></CourseFlashcardUrl.Provider></div>)}</div>
+    {!projected && current?.type === 'note' && !fullCourseLessons.some(lesson => lesson.id === current.id) && <LessonCompletion key={current.id} stepId={current.id}/>}
     {current && (current.type === 'note' || run) && <nav className="oc-course-turn" aria-label="Course navigation">{prior ? <Link to={url(prior.id)}><span>Previous {prior.type === 'note' ? 'lesson' : 'drill'}</span><strong>{prior.title}</strong></Link> : <Link to={url('lessons')}>Course</Link>}{next ? <Link to={url(next.id)}><span>Next {next.type === 'note' ? 'lesson' : 'drill'}</span><strong>{next.title}<ArrowRight size={18}/></strong></Link> : <Link to={url('lessons')}>Return to course<ArrowRight size={18}/></Link>}</nav>}
     {!isIndex && view !== 'tools' && !current && <div className="oc-course-note"><h1>This lesson is not available here.</h1><Link to={url('lessons')}>Return to course</Link></div>}
   </div>;
 }
 
-function CourseBody({ step, url, storageScope, onLastPageChange }: { step: OpeningCourseStep; url: OpeningCourseUrl; storageScope?: string; onLastPageChange?: (ready: boolean) => void }) {
-  if (step.id === 'and-or-both-or-either') return <AndOrLesson id={step.id} onLastPageChange={onLastPageChange}/>;
+function CourseBody({ step, url, storageScope }: { step: OpeningCourseStep; url: OpeningCourseUrl; storageScope?: string }) {
+  if (FOCUSED_LESSONS.includes(step.id)) return <AndOrLesson id={step.id}/>;
   const lesson = fullCourseLessons.find(item => item.id === step.id);
   if (lesson) return <FullCourseLesson lesson={lesson} courseStepId={step.id} media={fullCourseMedia[lesson.id]}/>;
   const drill = fullCourseDrillSets.find(item => item.id === step.id);

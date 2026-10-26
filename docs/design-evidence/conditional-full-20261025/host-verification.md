@@ -55,3 +55,11 @@ The second fresh Claude inspection returned REVISE after confirming first-round 
 Final affected proofs:11/11 edition/deck,113/113 assignment/routes and41/41 course-screen tests passed. TypeScript passed. Two inspections and two fix rounds exhausted the agreed budget; these final fixes are tested but have NOT received a third independent inspection. Do not label the final snapshot independently approved. No production release, RLS acceptance, live assignment or all-answer-path certification is implied.
 
 Final post-round2 production build/postbuild passed, exit0; incidental generated MCP stub restored. Final source remains uncommitted and unpublished. No further independent inspection was performed.
+
+## 2026-10-25 AND/OR wording and scenario-chart correction
+
+Joshua rejected whole group and full group as clunky and requested a checkmarked scenario chart. Written lesson2.1 now says Identify the two conditions and Check which conditions are met. Both four-row charts use text plus green Met checks and Not met labels: AND succeeds only when both documents are shown; OR succeeds for either or both. An unmet sufficient condition does not imply no library card, explicitly explained. The unknown-versus-false checkpoint remains. Adjacent drill is Check AND and OR; IDs and quiz keys unchanged. Shared quiz helper wording corrected without changing logical formulas.
+
+Focused tests70/70 passed (55lesson/teaching/items plus15routes). Final TypeScript/build/postbuild and diff-check passed. Actual localhost desktop1218, phone390 and docked683 images read; phone/docked document widths375/668 respectively, within viewport. Browser was connected Chrome extension, not automated Codex in-app browser. Proof screenshots in handoffs/conditional-full-20261025-build-review/scenario-charts/. Existing recap audio/VTT/transcript retained and still contains the historical phrase; no media rewrite claimed. Five teaching-preference mirrors synchronized plus COPY-CORRECTIONS, no native memory update.
+
+This subsequent requested UI change is outside the preceding scoped Claude approval snapshot. No fresh independent review, commit, push or publication was performed. The two previously reported progress follow-ups remain separate.

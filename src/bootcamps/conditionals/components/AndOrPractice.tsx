@@ -77,8 +77,8 @@ export interface ChoiceState { tried: number[]; outcome: Outcome }
 
 /** The learner's attempt always comes first. The first miss gets a hint for that choice; a second miss unlocks the answer. */
 export function ChoiceStepView({ item, step, state, onChange, idPrefix, concise = false }: { item: AndOrItem; step: ChoiceStep; state: ChoiceState; onChange: (next: ChoiceState) => void; idPrefix: string; concise?: boolean }) {
-  // A Pop Quiz answers in one natural sentence. Practice keeps the full authored reasoning.
-  const explanation = concise ? answerLine(item) : item.why;
+  // Status checks explain the decisive given or missing fact; conditional answers read back the rule.
+  const explanation = concise && item.task.kind !== 'status' ? answerLine(item) : item.why;
   const feedback = useRef<HTMLDivElement>(null);
   const first = useRef(true);
   const misses = state.tried.filter(index => !step.options[index]?.correct).length;
@@ -130,7 +130,7 @@ export function AndOrQuiz({ quizId }: { quizId: string }) {
     <div className="ao-quiz">
       <div className="ao-count"><span>Question {index + 1} of {items.length}</span><span className="ao-dots" aria-hidden="true">{items.map((entry, i) => <i key={entry.id} data-state={(states[entry.id]?.outcome ?? 'open') !== 'open' ? 'done' : i === index ? 'now' : 'todo'}/>)}</span></div>
       {finished
-        ? <div className="ao-feedback" data-kind="right"><strong>That is all four.</strong>You worked {solved} of {items.length} questions. <button type="button" className="ao-text-button" onClick={() => { setStates({}); setIndex(0); setFinished(false); }}>Try them again</button></div>
+        ? <div className="ao-feedback" data-kind="right"><strong>That is the last question.</strong>You worked {solved} of {items.length} questions. <button type="button" className="ao-text-button" onClick={() => { setStates({}); setIndex(0); setFinished(false); }}>Try them again</button></div>
         : <>
           <ChoiceStepView key={item.id} item={item} step={step} state={state} idPrefix={`${quizId}-${item.id}`} concise onChange={next => setStates(previous => ({ ...previous, [item.id]: next }))}/>
           {state.outcome !== 'open' && (index === items.length - 1
@@ -147,7 +147,7 @@ function Builder({ item, atoms, stage, state, onChange, disabled }: { item: AndO
   const ids = itemAtomIds(item);
   const placed = (where: 'left' | 'right') => ids.filter(id => state.place[id] === where).length;
   const built = builtRule(item, state);
-  const connector = (where: 'left' | 'right') => placed(where) > 1 && <div className="ao-build-op" role="group" aria-label={`Connector for the ${where} side`}>
+  const connector = (where: 'left' | 'right') => placed(where) > 1 && <div className="ao-build-op" role="group" aria-label={`AND or OR for the ${where} side`}>
     <span>{where === 'left' ? 'Left' : 'Right'} side joins its conditions with</span>
     {(['and', 'or'] as const).map(op => <button type="button" key={op} disabled={disabled} aria-pressed={(where === 'left' ? state.leftOp : state.rightOp) === op} onClick={() => onChange({ ...state, [where === 'left' ? 'leftOp' : 'rightOp']: op })}>{op.toUpperCase()}</button>)}
   </div>;
@@ -260,7 +260,7 @@ function AndOrRun({ set, run, startUrl, title, storageScope }: { set: NonNullabl
         <button type="button" className="ao-action" disabled={!labelsValid(item, state.labels)} onClick={() => { patchStep('labels', { outcome: 'done' }); nextStep(); }}>Next step<ArrowRight size={16} aria-hidden="true"/></button>
       </div>}
       {buildStage && <div className="ao-step">
-        <p className="ao-prompt">{buildStage === 'diagram' ? 'Place each condition on a side of the arrow, set each connector, and mark any NOT the rule contains.' : 'Now build the contrapositive: switch the sides, put NOT on every member, and change each group’s connector.'}</p>
+        <p className="ao-prompt">{buildStage === 'diagram' ? 'Place each condition on a side of the arrow, choose AND or OR where needed, and mark any NOT the rule contains.' : 'Now build the contrapositive: switch the sides, negate each condition, and switch AND to OR or OR to AND.'}</p>
         <Builder item={item} atoms={atoms} stage={buildStage} state={step.builder} disabled={step.outcome !== 'open'} onChange={next => patchStep(key, { builder: next })}/>
         <div role="status" aria-live="polite">
           {step.outcome === 'open' && step.hint && (step.checked === builderSignature(item, step.builder)

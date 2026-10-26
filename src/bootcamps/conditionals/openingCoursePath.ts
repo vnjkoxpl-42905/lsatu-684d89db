@@ -41,12 +41,13 @@ const PRESERVED_COURSE_STEPS: OpeningCourseStep[] = [
   { id: 'source-full-translation', type: 'drill', part: 1, title: 'Build both diagrams', description: 'Build the original and the contrapositive. Keep each complete condition intact.', unitId: 'group-2' },
   { id: 'source-independent', type: 'drill', part: 1, title: 'Put it into practice', description: 'Run the full process on your own. Work in short sessions and return where you left off.', unitId: 'group-2' },
   // Chapter 2. New IDs only: legacy and-or / de-morgan read marks and question runs are separate records and stay untouched.
-  { id: 'and-or-both-or-either', type: 'note', part: 2, lessonNumber: '2.1', title: 'AND vs OR', description: 'AND needs both. OR allows one or both. Then negate the complete group.', unitId: 'and-or' },
-  { id: 'and-or-either-side', type: 'note', part: 2, lessonNumber: '2.2', title: 'Where the group sits', description: 'A group on the left is enough. A group on the right is required.', unitId: 'and-or' },
-  { id: 'and-or-negate-group', type: 'note', part: 2, lessonNumber: '2.3', title: 'Deny the whole group', description: 'Say when a group fails, then take the contrapositive of a rule that contains one.', unitId: 'de-morgan' },
-  { id: 'and-or-meaning-practice', type: 'drill', part: 2, title: 'Check the whole group', description: 'Decide whether the facts establish a group joined by AND or by OR. Keep every member in view.', unitId: 'and-or' },
+  { id: 'and-or-both-or-either', type: 'note', part: 2, lessonNumber: '2.1', title: 'AND', description: 'AND needs both conditions.', unitId: 'and-or' },
+  { id: 'and-or-either-condition', type: 'note', part: 2, lessonNumber: '2.2', title: 'OR', description: 'OR needs one condition. Both also qualify.', unitId: 'and-or' },
+  { id: 'and-or-either-side', type: 'note', part: 2, lessonNumber: '2.3', title: 'Where the group sits', description: 'A group on the left is enough. A group on the right is required.', unitId: 'and-or' },
+  { id: 'and-or-negate-group', type: 'note', part: 2, lessonNumber: '2.4', title: 'Contrapositives with AND and OR', description: 'Reverse the sides, negate every condition, and switch AND and OR.', unitId: 'de-morgan' },
+  { id: 'and-or-meaning-practice', type: 'drill', part: 2, title: 'Check AND and OR', description: 'Decide whether the given facts meet the conditions joined by AND or OR.', unitId: 'and-or' },
   { id: 'and-or-placement-practice', type: 'drill', part: 2, title: 'Read the rule with a group in it', description: 'Find which side the group is on, then decide what the rules and facts settle.', unitId: 'and-or' },
-  { id: 'and-or-whole-group-practice', type: 'drill', part: 2, title: 'Say the opposite of the group', description: 'Choose the statement that denies a whole group, member by member.', unitId: 'de-morgan' },
+  { id: 'and-or-whole-group-practice', type: 'drill', part: 2, title: 'Practice negating AND and OR', description: 'Negate conditions joined by AND or OR without changing their meaning.', unitId: 'de-morgan' },
   { id: 'and-or-transfer-practice', type: 'drill', part: 2, title: 'Diagram it and flip it', description: 'Build the diagram, take the contrapositive, and use it on fresh rules.', unitId: 'de-morgan' },
 ];
 
@@ -63,8 +64,22 @@ const enrich = (step: OpeningCourseStep, legacy = false): OpeningCourseStep => (
 export const LEGACY_OPENING_COURSE_PATH: OpeningCourseStep[] = LEGACY_COURSE_STEP_IDS.map(id => enrich(PRESERVED_COURSE_STEPS.find(step => step.id === id)!, true));
 /** Historical consumers retain the frozen public edition by default. */
 export const OPENING_COURSE_PATH = LEGACY_OPENING_COURSE_PATH;
-const chapterTwo = PRESERVED_COURSE_STEPS.filter(step => step.part === 2).map(step => enrich(step));
-const chapterTwoOrder = ['and-or-both-or-either', 'and-or-meaning-practice', 'and-or-either-side', 'and-or-placement-practice', 'and-or-negate-group', 'and-or-whole-group-practice', 'and-or-transfer-practice'];
+/**
+ * 2026-10-25: the combined AND/OR lesson split into separate AND and OR lessons, and its contrapositive page moved
+ * into the compound-contrapositive lesson. A completion of the combined lesson (which required reaching its last page)
+ * stays on the AND lesson and also counts, read only, for the OR lesson. The new revision tells those older completions
+ * apart from AND completions made after the split, which say nothing about OR.
+ */
+export const AND_OR_SPLIT_REVISION = 'and-or-split-20261025';
+export const AND_OR_COMBINED_REVISION = 'and-or-20261019';
+const SPLIT_LESSON_IDS = ['and-or-both-or-either', 'and-or-either-condition', 'and-or-negate-group'];
+const chapterTwo = PRESERVED_COURSE_STEPS.filter(step => step.part === 2).map(step => enrich(step))
+  .map(step => SPLIT_LESSON_IDS.includes(step.id) ? { ...step, contentRevision: AND_OR_SPLIT_REVISION } : step);
+/** The OR lesson inherits a completion of the combined lesson. Read only: nothing is written on its behalf. */
+export const SPLIT_LESSON_SOURCES: Record<string, { sourceId: string; sourceRevision: string }> = {
+  'and-or-either-condition': { sourceId: 'and-or-both-or-either', sourceRevision: AND_OR_COMBINED_REVISION },
+};
+const chapterTwoOrder = ['and-or-both-or-either', 'and-or-either-condition', 'and-or-meaning-practice', 'and-or-either-side', 'and-or-placement-practice', 'and-or-negate-group', 'and-or-whole-group-practice', 'and-or-transfer-practice'];
 const later: OpeningCourseStep[] = fullCourseLessons.flatMap(lesson => [
   { id: lesson.id, type: 'note' as const, unitId: lesson.unitId, part: lesson.part, lessonNumber: lesson.lessonNumber as `${number}.${number}`, title: lesson.title, description: lesson.purpose, sourceProvenance: lesson.sourceRefs },
   ...fullCourseDrillSets.filter(set => set.afterLessonId === lesson.id).map(set => ({ id: set.id, type: 'drill' as const, unitId: set.unitId, part: set.part, title: set.title, description: set.instructions[0] ?? '', sourceProvenance: set.sourceRefs ?? [], requiredAllOfUnitIDs: set.requiredAllOfUnitIDs ?? [set.unitId] })),

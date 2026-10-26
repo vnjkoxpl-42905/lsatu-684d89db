@@ -111,7 +111,7 @@ it('checks a built diagram by structure, hints at the mistake, and clears the bu
   fireEvent.click(within(row('Parent attends')).getByRole('button', { name: 'Left' }));
   fireEvent.click(screen.getByRole('button', { name: 'AND' }));
   fireEvent.click(screen.getByRole('button', { name: 'Check this step' }));
-  expect(screen.getByText(/Check the connector on the left side/)).toBeVisible();
+  expect(screen.getByText(/Check AND or OR on the left side/)).toBeVisible();
   // One structural miss so far; an unplaced board never counted as a miss.
   expect(screen.queryByRole('button', { name: 'Show me the arrangement' })).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: 'OR' }));
@@ -150,7 +150,6 @@ it('lets a revealed build step complete without calling it built correctly', () 
 it('runs each lesson’s Pop Quiz one question at a time with a specific hint', () => {
   for (const id of Object.keys(andOrQuizzes)) {
     const view = render(<MemoryRouter><AndOrLesson id={id}/></MemoryRouter>);
-    if(id==='and-or-both-or-either'){fireEvent.click(screen.getByRole('button',{name:'Next page'}));fireEvent.click(screen.getByRole('button',{name:'Next page'}));}
     expect(screen.getByRole('heading', { name: 'Pop Quiz' })).toBeVisible();
     expect(screen.getByText('Question 1 of 4')).toBeVisible();
     const item = andOrQuizzes[id][0];
@@ -161,4 +160,15 @@ it('runs each lesson’s Pop Quiz one question at a time with a specific hint', 
     expect(screen.queryByRole('button', { name: /Next question/ })).toBeNull();
     view.unmount();
   }
+});
+
+it('explains the missing-lamp fact after a correct AND quiz response',()=>{
+  render(<MemoryRouter><AndOrLesson id="and-or-both-or-either"/></MemoryRouter>);
+  const item=andOrQuizzes['and-or-both-or-either'][0];
+  const correct=choiceStep(item)!.options.find(option=>option.correct)!;
+  const quiz=screen.getByRole('region',{name:'Pop Quiz'});
+  expect(within(quiz).queryByText(item.why)).toBeNull();
+  fireEvent.click(within(quiz).getByRole('button',{name:correct.text}));
+  expect(within(quiz).getByText(item.why)).toHaveTextContent('nothing says whether the lamp works');
+  expect(within(quiz).getByRole('button',{name:'Next question'})).toBeEnabled();
 });
