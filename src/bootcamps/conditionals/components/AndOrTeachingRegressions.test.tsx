@@ -54,8 +54,8 @@ describe('permission and boundary wording', () => {
 
 it('teaches AND and OR as separate lessons, each with its own quiz and no internal pages',()=>{
   const and=render(<MemoryRouter><AndOrLesson id="and-or-both-or-either"/></MemoryRouter>);
-  expect(screen.getByText('AND means BOTH conditions.')).toBeVisible();
-  expect(screen.queryByText('OR means ONE OR BOTH conditions.')).toBeNull();
+  expect(screen.getByText(/AND joins two conditions so they count as one/)).toBeVisible();
+  expect(screen.queryByText(/OR joins two conditions/)).toBeNull();
   expect(document.body.textContent).not.toMatch(/whole group|full group|Page \d of \d/i);
   expect(screen.queryByRole('button',{name:/page/i})).toBeNull();
   expect(screen.queryByText('no photo ID OR no proof of address')).toBeNull();
@@ -68,8 +68,8 @@ it('teaches AND and OR as separate lessons, each with its own quiz and no intern
   expect(within(quiz).getByText(wrong.hint)).toBeVisible();
   and.unmount();
   render(<MemoryRouter><AndOrLesson id="and-or-either-condition"/></MemoryRouter>);
-  expect(screen.getByText('OR means ONE OR BOTH conditions.')).toBeVisible();
-  expect(screen.queryByText('AND means BOTH conditions.')).toBeNull();
+  expect(screen.getByText(/OR joins two conditions so that either one is enough/)).toBeVisible();
+  expect(screen.queryByText(/AND joins two conditions/)).toBeNull();
   expect(document.body.textContent).not.toMatch(/whole group|full group|Page \d of \d/i);
   const orTable=screen.getByRole('table',{name:'Does this meet the OR condition?'});
   expect(within(orTable).getAllByRole('row').slice(1).map(row=>within(row).getAllByRole('cell')[2].textContent)).toEqual(['✓Met','✓Met','✓Met','×Not met']);

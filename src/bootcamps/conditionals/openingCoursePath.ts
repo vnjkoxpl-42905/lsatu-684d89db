@@ -41,8 +41,8 @@ const PRESERVED_COURSE_STEPS: OpeningCourseStep[] = [
   { id: 'source-full-translation', type: 'drill', part: 1, title: 'Build both diagrams', description: 'Build the original and the contrapositive. Keep each complete condition intact.', unitId: 'group-2' },
   { id: 'source-independent', type: 'drill', part: 1, title: 'Put it into practice', description: 'Run the full process on your own. Work in short sessions and return where you left off.', unitId: 'group-2' },
   // Chapter 2. New IDs only: legacy and-or / de-morgan read marks and question runs are separate records and stay untouched.
-  { id: 'and-or-both-or-either', type: 'note', part: 2, lessonNumber: '2.1', title: 'AND', description: 'AND needs both conditions.', unitId: 'and-or' },
-  { id: 'and-or-either-condition', type: 'note', part: 2, lessonNumber: '2.2', title: 'OR', description: 'OR needs one condition. Both also qualify.', unitId: 'and-or' },
+  { id: 'and-or-both-or-either', type: 'note', part: 2, lessonNumber: '2.1', title: 'AND', description: 'What AND does to a rule, how to diagram it, and when the rule is broken.', unitId: 'and-or' },
+  { id: 'and-or-either-condition', type: 'note', part: 2, lessonNumber: '2.2', title: 'OR', description: 'What OR does to a rule, how to diagram it, and why both still counts.', unitId: 'and-or' },
   { id: 'and-or-either-side', type: 'note', part: 2, lessonNumber: '2.3', title: 'Where the group sits', description: 'A group on the left is enough. A group on the right is required.', unitId: 'and-or' },
   { id: 'and-or-negate-group', type: 'note', part: 2, lessonNumber: '2.4', title: 'Contrapositives with AND and OR', description: 'Reverse the sides, negate every condition, and switch AND and OR.', unitId: 'de-morgan' },
   { id: 'and-or-meaning-practice', type: 'drill', part: 2, title: 'Check AND and OR', description: 'Decide whether the given facts meet the conditions joined by AND or OR.', unitId: 'and-or' },
@@ -80,8 +80,36 @@ export const SPLIT_LESSON_SOURCES: Record<string, { sourceId: string; sourceRevi
   'and-or-either-condition': { sourceId: 'and-or-both-or-either', sourceRevision: AND_OR_COMBINED_REVISION },
 };
 const chapterTwoOrder = ['and-or-both-or-either', 'and-or-either-condition', 'and-or-meaning-practice', 'and-or-either-side', 'and-or-placement-practice', 'and-or-negate-group', 'and-or-whole-group-practice', 'and-or-transfer-practice'];
+/** One-line summary shown under each Chapter 3 to 7 lesson title, matching Chapters 1 and 2. */
+const LESSON_SUMMARIES: Record<string, string> = {
+  'exception-language': 'Read unless, until and without as “if not”, and know when they set no rule.',
+  'exclusion-language': 'When two conditions cannot hold together, one requires the absence of the other.',
+  'negative-translation': 'Handle several negatives in one sentence, one complete idea at a time.',
+  'implicit-guarantees': 'Find the sufficient and necessary conditions when a rule never says if.',
+  'two-way-rules': 'A rule that runs both ways: each condition is enough for the other and required by it.',
+  'contextual-two-way': 'At least one, not both, and exactly one make three different claims.',
+  'deny-whole-rule': 'To show a conditional is false, describe the one case it rules out.',
+  'facts-with-rules': 'A rule says what would follow. A fact says what is true. Put them together.',
+  'direct-chains': 'Link rules when the result of one is exactly what triggers the next.',
+  'hidden-chain': 'Some rules connect only after you write one of them as its contrapositive.',
+  'failed-connections': 'Two rules that mention the same idea do not always connect.',
+  'same-domain': 'A rule covers only its stated subject and circumstances. Keep them when you link.',
+  'missing-bridges': 'Find the one added rule that carries the premises to the conclusion.',
+  'quantity-meaning': 'What some, most and all actually claim, and what each one allows.',
+  'quantity-denial': 'Negate a quantity statement by finding exactly what makes it false.',
+  'quantity-links': 'When quantity statements combine to guarantee a new conclusion.',
+  'quantity-gaps': 'When two quantity statements share a category but guarantee no overlap.',
+  'supported-inferences': 'Pick the answer the premises guarantee, or support most strongly.',
+  'sufficient-bridges': 'Find the assumption that, added to the premises, proves the conclusion.',
+  'necessary-assumptions': 'Find what the argument cannot work without.',
+  'apply-principle': 'Match a case to every condition of a principle before applying it.',
+  'match-structure': 'Find the argument with the same logical structure on a different topic.',
+  'conditional-flaws': 'Spot an argument that concludes more than its rule allows.',
+  'conditional-conclusions': 'Judge a conclusion that says one condition would be enough for another.',
+  'nested-extension': 'Read a rule whose result is itself another rule.',
+};
 const later: OpeningCourseStep[] = fullCourseLessons.flatMap(lesson => [
-  { id: lesson.id, type: 'note' as const, unitId: lesson.unitId, part: lesson.part, lessonNumber: lesson.lessonNumber as `${number}.${number}`, title: lesson.title, description: lesson.purpose, sourceProvenance: lesson.sourceRefs },
+  { id: lesson.id, type: 'note' as const, unitId: lesson.unitId, part: lesson.part, lessonNumber: lesson.lessonNumber as `${number}.${number}`, title: lesson.title, description: LESSON_SUMMARIES[lesson.id] ?? lesson.purpose, sourceProvenance: lesson.sourceRefs },
   ...fullCourseDrillSets.filter(set => set.afterLessonId === lesson.id).map(set => ({ id: set.id, type: 'drill' as const, unitId: set.unitId, part: set.part, title: set.title, description: set.instructions[0] ?? '', sourceProvenance: set.sourceRefs ?? [], requiredAllOfUnitIDs: set.requiredAllOfUnitIDs ?? [set.unitId] })),
 ]).map((step: OpeningCourseStep) => ({ ...enrich(step), contentRevision: 'full-20261025-r1', sourceProvenance: step.sourceProvenance, requiredAllOfUnitIDs: step.requiredAllOfUnitIDs ?? [],
   requiredForEditionCompletion: !step.id.includes('nested-extension'),

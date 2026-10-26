@@ -36,11 +36,20 @@ function GroupMeaning({ connector }: { connector: 'AND' | 'OR' }) {
   const isAnd = connector === 'AND';
   const rule = isAnd ? libraryExample.both : libraryExample.either;
   return <div className="ao-reading">
-    <Section title={isAnd ? 'Both conditions, together' : 'One condition is enough'} label={isAnd ? 'AND means both' : 'OR means one or both'}>
-      <p className="ct-definition"><strong>{isAnd ? 'AND means BOTH conditions.' : 'OR means ONE OR BOTH conditions.'}</strong></p>
-      <p>{isAnd ? 'A visitor gets a library card if the visitor shows photo ID and proof of address.' : 'A visitor gets a library card if the visitor shows photo ID or proof of address.'}</p>
+    <Section title={isAnd ? 'What AND does' : 'What OR does'} label={isAnd ? 'AND means both' : 'OR means one or both'}>
+      <p className="ct-definition">{isAnd
+        ? 'AND joins two conditions so they count as one. That side of the rule is met only when both conditions are true.'
+        : 'OR joins two conditions so that either one is enough. That side of the rule is met when one condition is true, and also when both are.'}</p>
+      <p>{isAnd ? 'Here is a rule: ' : 'Here is a different rule: '}<strong>{isAnd ? 'A visitor gets a library card if the visitor shows photo ID and proof of address.' : 'A visitor gets a library card if the visitor shows photo ID or proof of address.'}</strong></p>
+      <p>{isAnd
+        ? 'The word and puts both documents on the left side. Neither document is the trigger by itself. Each is half of it. Photo ID alone does not guarantee a card, and proof of address alone does not either. Show both, and the card is guaranteed.'
+        : 'The word or gives the visitor two routes to a card. Photo ID alone guarantees a card. Proof of address alone guarantees a card. A visitor who shows both also gets one, because OR does not shut out the second condition.'}</p>
       <AndOrDiagram atoms={libraryAtoms} rule={rule}/>
-      <p>{isAnd ? 'Photo ID alone is not enough. Proof of address alone is not enough either. Showing both meets the AND condition, so this rule guarantees a library card.' : 'Either document meets the OR condition. Showing both meets it too: OR does not exclude the second condition.'}</p>
+    </Section>
+    <Section title={isAnd ? 'Why one fact is not enough' : 'Why one fact is enough'}>
+      <p>{isAnd
+        ? 'Answer choices often take one half of an AND and treat it as the whole trigger. If you see the and, you know a single fact never sets this rule off.'
+        : 'Answer choices often treat OR as if it needed both, or as if both broke the rule. If you see the or, you know one fact is enough, and two facts are fine.'}</p>
     </Section>
     <Section title="Write the diagram" label="Write the diagram">
       <ol className="ct-moves">

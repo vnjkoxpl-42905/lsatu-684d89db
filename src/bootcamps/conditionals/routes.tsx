@@ -220,7 +220,10 @@ function Shell() {
   if (!isAdmin && active?.target.courseEdition) contextSearch.set('edition', active.target.courseEdition);
   const linkedSearch = contextSearch.toString() ? `?${contextSearch}` : '';
   const route = location.pathname.slice(BASE.length).replace(/\/$/, '');
-  const courseView = route.startsWith('/opening/') ? route.slice('/opening/'.length) : route === '' ? 'lessons' : ['/opening-practice', '/opening-labs', '/practice', '/simulator', '/hard-sentences', '/flashcards'].includes(route) ? 'practice' : route === '/opening-tools' ? 'tools' : ['/review', '/diagnostics'].includes(route) ? 'review' : route === '/journal' ? 'journal' : ['/reference', '/indicators'].includes(route) ? 'reference' : route === '/settings' ? 'settings' : 'lessons';
+  const fullEdition = (isAdmin ? params.get('edition') : active?.target.courseEdition) === FULL_CONDITIONAL_EDITION;
+  // Home and the chapter list cover only what this student may open.
+  const chapters = fullEdition ? [...new Set(courseStepsForEdition(FULL_CONDITIONAL_EDITION).filter(step => isAdmin || !!active && registryStepAllowed(active, step, active.difficulty)).map(step => step.part ?? 1))] : undefined;
+  const courseView = route.startsWith('/opening/') ? route.slice('/opening/'.length) : route === '' ? (fullEdition ? 'home' : 'lessons') : ['/opening-practice', '/opening-labs', '/practice', '/simulator', '/hard-sentences', '/flashcards'].includes(route) ? 'practice' : route === '/opening-tools' ? 'tools' : ['/review', '/diagnostics'].includes(route) ? 'review' : route === '/journal' ? 'journal' : ['/reference', '/indicators'].includes(route) ? 'reference' : route === '/settings' ? 'settings' : 'lessons';
   const workspaceLinks = { overview: `${BASE}${linkedSearch}`, review: `${BASE}/review${linkedSearch}`, journal: `${BASE}/journal${linkedSearch}`, reference: `${BASE}/reference${linkedSearch}` };
   const openingSurface = /^\/(?:lessons\/?|opening\/[^/]+\/?|opening-(?:practice|labs|tools)\/?)$/.test(location.pathname.slice(BASE.length));
   const saveMessages = {
@@ -230,7 +233,7 @@ function Shell() {
     unsaved: openingSurface ? 'Assigned work waiting to save' : 'Changes waiting to save',
     error: openingSurface ? 'Assigned work is not saved' : 'Changes are not saved',
   };
-  return <div className="cb-shell oc-workspace"><OpeningCourseNavigation view={courseView} url={courseUrl(linkedSearch)} workspaceLinks={workspaceLinks}/>
+  return <div className="cb-shell oc-workspace"><OpeningCourseNavigation view={courseView} url={courseUrl(linkedSearch)} workspaceLinks={workspaceLinks} chapters={chapters}/>
     <main className="cb-main" id="conditional-main"><header className="cb-workspace-bar cb-workspace-status"><div className="cb-save" role="status">{saveMessages[status]}</div></header>{error && <div className="cb-error" role="alert"><p>{error}</p>{progress ? <button onClick={() => void retry()}>Retry save</button> : <button onClick={() => window.location.reload()}>Reload saved work</button>}</div>}{!isAdmin && unavailableAssignments.map(item => <section key={item.id} className="cb-card" role="alert"><h2>This assignment needs an update from your teacher</h2><p>{item.title}</p><p>Your teacher can correct this assignment. Then reload your work.</p><button type="button" onClick={() => window.location.reload()}>Reload your assignments</button><Link to="/classroom">Back to Classroom</Link></section>)}{!blockedAssignment && (progress ? <Outlet /> : !error && <p>Loading your work...</p>)}</main></div>;
 }
 
@@ -247,7 +250,9 @@ function CourseLanding() {
   const earlier = expanded && progress && (Object.keys(progress.lessons).length > 0 || progress.attempts.length > 0 || Object.keys(progress.runs).length > 0 || Object.keys(progress.course ?? {}).some(key => !key.startsWith(`${FULL_CONDITIONAL_EDITION}:`)));
   const oldAssignment = assignments.find(item => !item.target.courseEdition);
   const earlierHref = oldAssignment ? `${BASE}?assignment=${encodeURIComponent(oldAssignment.id)}` : `${BASE}/review${active ? `?assignment=${encodeURIComponent(active.id)}` : ''}`;
-  return <><OpeningCourseRoute view="lessons"/>{earlier && <p className="cb-other-work"><Link to={earlierHref}>Earlier assigned work</Link></p>}{supplementaryUnits.length > 0 && <section className="cb-other-work"><h2>Additional explanations</h2>{supplementaryUnits.map(unit => <p key={unit.id}><Link to={actionUrl(unit, 'lesson', selection)}>{unit.title}</Link></p>)}</section>}{additionalUnits.length > 0 && <details className="cb-other-work"><summary>Additional assigned material</summary><p>This earlier or additional material remains available from your assignment, alongside the numbered course.</p><RecommendedForward selection={{ ...selection, allowedUnits: additionalUnits.map(unit => unit.id) }}/></details>}{assignments.length > 1 && !isAdmin && <section className="cb-other-work"><h2>Your other work</h2>{assignments.filter(item => item.id !== active?.id).map(item => <p key={item.id}><Link to={`${BASE}?assignment=${encodeURIComponent(item.id)}`}>{item.title}</Link></p>)}</section>}</>;
+  const [params] = useSearchParams();
+  const fullEdition = (isAdmin ? params.get('edition') : active?.target.courseEdition) === FULL_CONDITIONAL_EDITION;
+  return <><OpeningCourseRoute view={fullEdition ? 'home' : 'lessons'}/>{earlier && <p className="cb-other-work"><Link to={earlierHref}>Earlier assigned work</Link></p>}{supplementaryUnits.length > 0 && <section className="cb-other-work"><h2>Additional explanations</h2>{supplementaryUnits.map(unit => <p key={unit.id}><Link to={actionUrl(unit, 'lesson', selection)}>{unit.title}</Link></p>)}</section>}{additionalUnits.length > 0 && <details className="cb-other-work"><summary>Additional assigned material</summary><p>This earlier or additional material remains available from your assignment, alongside the numbered course.</p><RecommendedForward selection={{ ...selection, allowedUnits: additionalUnits.map(unit => unit.id) }}/></details>}{assignments.length > 1 && !isAdmin && <section className="cb-other-work"><h2>Your other work</h2>{assignments.filter(item => item.id !== active?.id).map(item => <p key={item.id}><Link to={`${BASE}?assignment=${encodeURIComponent(item.id)}`}>{item.title}</Link></p>)}</section>}</>;
 }
 
 function LearningPath() {

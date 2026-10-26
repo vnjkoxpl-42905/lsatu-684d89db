@@ -38,7 +38,7 @@
   --surface-elev:32 48 41;
 }
 .oc-workspace { min-height:100vh; background:var(--oc-canvas); color:var(--oc-ink); display:grid; grid-template-columns:220px minmax(0,1fr); }
-.oc-course-rail { position:sticky; top:0; height:100dvh; padding:30px 20px; border-right:1px solid var(--oc-line); background:var(--oc-canvas); overflow-y:auto; }
+.oc-course-rail { position:sticky; top:0; height:100dvh; padding:30px 20px; border-right:1px solid var(--oc-line); background:var(--oc-canvas); overflow-y:auto; scrollbar-width:thin; scrollbar-gutter:stable; }
 .oc-brand { font-family:Georgia,serif; font-size:1.375rem; margin:30px 0; }
 .oc-course-rail nav p,.oc-course-drawer nav p { font-size:.875rem; text-transform:uppercase; letter-spacing:.08em; color:var(--oc-muted); margin:28px 10px 10px; }
 .oc-course-rail nav a,.oc-course-drawer nav a { display:flex; align-items:center; gap:12px; padding:12px 10px; min-height:46px; border-radius:4px; color:var(--oc-muted); font-size:0.875rem; text-decoration:none; }
@@ -295,7 +295,112 @@
  .oc-course-index .oc-card-foot{grid-column:2;grid-row:5;align-items:flex-start}
  .oc-course-index .oc-card-foot .oc-action{padding-left:0}
 }
-.oc-focused-lesson-header{margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--lsatu-field-border,#747773)}
-.oc-focused-lesson-header .oc-label{margin:0 0 .75rem}
-.oc-course-screen [data-course-heading] .oc-focused-lesson-title{font-family:var(--font-sans,Outfit,system-ui,sans-serif);font-size:2.25rem;font-weight:650;line-height:1.15;letter-spacing:-.035em;margin:0;color:var(--lsatu-ink,#252b26)}
-@media(max-width:600px){.oc-course-screen [data-course-heading] .oc-focused-lesson-title{font-size:2rem}.oc-focused-lesson-header{margin-bottom:1.25rem}}
+
+/* Lessons in this chapter as one slim row of pills. The current lesson is filled and named; finished lessons carry a check. */
+.oc-chapter-cards{margin-top:1.5rem}
+.oc-chapter-cards ol{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:0;padding:0;list-style:none}
+.oc-chapter-cards a{display:inline-flex;align-items:center;gap:.4rem;min-height:2.25rem;padding:.3rem .8rem;border-radius:999px;border:1px solid var(--oc-line);background:transparent;color:var(--oc-muted);font-size:.85rem;font-weight:600;letter-spacing:.03em;text-decoration:none;transition:border-color .2s,background-color .2s,color .2s}
+.oc-chapter-cards a:hover{border-color:var(--oc-control-line);color:var(--oc-ink);background:var(--oc-hover)}
+.oc-chapter-cards a:focus-visible,.oc-home-card:focus-visible,.oc-chapter-lesson-main:focus-visible,.oc-chapter-drill:focus-visible{outline:3px solid var(--oc-accent);outline-offset:2px}
+.oc-chapter-cards a[aria-current=page]{background:var(--oc-ink);border-color:var(--oc-ink);color:var(--oc-canvas);padding-inline:.9rem 1rem}
+.oc-chapter-cards a svg{color:var(--oc-accent)}
+.oc-chapter-card-title{font-family:Georgia,serif;font-size:.95rem;font-weight:400;letter-spacing:0}
+
+/* Sidebar: Home, then Course opens to the chapters. */
+.oc-nav-course summary{display:flex;align-items:center;gap:12px;padding:12px 10px;min-height:46px;border-radius:4px;color:var(--oc-muted);font-size:.875rem;cursor:pointer;list-style:none}
+.oc-nav-course summary::-webkit-details-marker{display:none}
+.oc-nav-course summary:hover{background:var(--oc-hover);color:var(--oc-ink)}
+.oc-nav-course summary:focus-visible{outline:3px solid var(--oc-accent);outline-offset:-3px}
+.oc-nav-chevron{margin-left:auto;transition:transform .2s}
+.oc-nav-course[open] .oc-nav-chevron{transform:rotate(180deg)}
+.oc-nav-course>div{display:grid;gap:2px;margin:2px 0 6px 18px;padding-left:10px;border-left:1px solid var(--oc-line)}
+.oc-course-rail nav .oc-nav-course>div a,.oc-course-drawer nav .oc-nav-course>div a{display:grid;gap:1px;align-items:start;min-height:0;padding:7px 10px;font-size:.84rem;line-height:1.3}
+.oc-nav-course>div a span{font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--oc-muted);font-weight:500}
+
+/* Home: one charcoal focus card for the next step, then the chapters as an ordered sequence. */
+.oc-home{container-type:inline-size}
+.oc-home-head{margin-bottom:1.75rem}
+.oc-home-head .oc-label{margin-bottom:.6rem}
+.oc-home-overall{margin:.9rem 0 0;font-size:.9rem;color:var(--oc-muted)}
+.oc-focus{position:relative;display:grid;gap:.6rem;padding:clamp(1.5rem,4cqi,2.4rem);border-radius:20px;background:linear-gradient(130deg,#2d3138 0%,#1c1f25 70%);color:#f3f1ec;box-shadow:0 18px 40px -24px #1c1f25;margin-bottom:3rem;overflow:hidden}
+.oc-focus::after{content:"";position:absolute;inset:auto -10% -55% auto;width:55%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,#ffffff12,transparent);pointer-events:none}
+.oc-focus-kicker{margin:0;font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#b9c2c9}
+.oc-focus h2{margin:0;font-family:Georgia,serif;font-size:clamp(1.9rem,1.4rem + 2.2cqi,2.8rem);font-weight:400;line-height:1.08;letter-spacing:-.015em;max-width:22ch;text-wrap:balance}
+.oc-focus-summary{margin:0;max-width:52ch;font-size:1rem;line-height:1.55;color:#d3d8dc}
+.oc-focus-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1.5rem;margin-top:.9rem}
+.oc-focus-go{display:inline-flex;align-items:center;gap:.55rem;min-height:2.9rem;padding:.7rem 1.35rem;border-radius:999px;background:#f3f1ec;color:#1c1f25;font-weight:600;text-decoration:none;transition:transform .2s cubic-bezier(.16,1,.3,1),background-color .2s}
+.oc-focus-go:hover{background:#fff;transform:translateX(2px)}
+.oc-focus-go:active{transform:scale(.98)}
+.oc-focus-go:focus-visible,.oc-focus-then a:focus-visible{outline:3px solid #9fd0d8;outline-offset:3px}
+.oc-focus-then{margin:0;font-size:.9rem;color:#b9c2c9}
+.oc-focus-then a{color:#f3f1ec;text-underline-offset:3px}
+.oc-home-section{margin:0 0 1rem;font-family:Georgia,serif;font-size:1.5rem;font-weight:400}
+.oc-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:0;padding:0;list-style:none}
+.oc-home-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.1rem;height:100%;padding:1.35rem 1.4rem 1.2rem 1.1rem;border-radius:16px;border:1px solid var(--oc-line);background:var(--oc-surface);color:var(--oc-ink);text-decoration:none;transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .2s,box-shadow .25s}
+.oc-home-card:hover{transform:translateY(-2px);border-color:var(--oc-control-line);box-shadow:var(--oc-shadow-raised)}
+.oc-home-card:active{transform:translateY(0) scale(.99)}
+.oc-home-card[data-here]{border-color:var(--oc-accent);box-shadow:inset 0 0 0 1px var(--oc-accent)}
+.oc-home-numeral{font-family:Georgia,serif;font-style:italic;font-size:3.1rem;line-height:.8;color:var(--oc-control-line);min-width:2.2rem;text-align:center}
+.oc-home-card[data-here] .oc-home-numeral,.oc-home-card[data-complete] .oc-home-numeral{color:var(--oc-accent)}
+.oc-home-card-body{display:grid;gap:.4rem;align-content:start;min-width:0}
+.oc-home-card-label{display:flex;align-items:center;gap:.6rem;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--oc-muted)}
+.oc-home-here{padding:.12rem .5rem;border-radius:99px;background:var(--oc-accent);color:var(--oc-canvas);letter-spacing:.06em}
+.oc-home-card-done{display:inline-flex;align-items:center;gap:.25rem;color:var(--oc-accent);letter-spacing:.04em}
+.oc-home-card h3{margin:0;font-family:Georgia,serif;font-size:1.35rem;font-weight:400;line-height:1.2;text-wrap:balance}
+.oc-home-card-summary{font-size:.92rem;line-height:1.5;color:var(--oc-muted)}
+.oc-home-card-steps{display:flex;align-items:flex-end;gap:.75rem;margin-top:.35rem;font-size:.75rem;color:var(--oc-muted);white-space:nowrap}
+.oc-ticks{display:flex;align-items:flex-end;gap:3px;flex-wrap:wrap;min-width:0}
+.oc-ticks i{display:block;width:6px;height:16px;border-radius:2px;background:var(--oc-line)}
+.oc-ticks i[data-kind=drill]{height:9px}
+.oc-ticks i[data-state=started]{background:var(--oc-control-line)}
+.oc-ticks i[data-state=done]{background:var(--oc-accent)}
+.oc-home-tools{display:grid;align-content:start;gap:.35rem;height:100%;padding:1.35rem 1.2rem 1rem;border-radius:16px;border:1px dashed var(--oc-line)}
+.oc-home-tools .oc-home-card-label{margin:0 .4rem .35rem}
+.oc-home-tools a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.8rem;align-items:center;padding:.7rem .5rem;border-radius:10px;color:var(--oc-ink);text-decoration:none;font-size:.88rem;line-height:1.4}
+.oc-home-tools a+a{border-top:1px solid var(--oc-line);border-radius:0 0 10px 10px}
+.oc-home-tools a:hover{background:var(--oc-hover)}
+.oc-home-tools a span{display:grid;color:var(--oc-muted)}
+.oc-home-tools a strong{color:var(--oc-ink);font-weight:600}
+.oc-home-tools svg{color:var(--oc-muted)}
+.oc-home-card:focus-visible,.oc-home-tools a:focus-visible{outline:3px solid var(--oc-accent);outline-offset:2px}
+.oc-chapter-progress{display:flex;align-items:center;gap:.75rem;font-size:.78rem;color:var(--oc-muted);white-space:nowrap}
+.oc-chapter-progress-rail{flex:1;height:4px;border-radius:99px;background:var(--oc-line);overflow:hidden}
+.oc-chapter-progress-rail i{display:block;height:100%;background:var(--oc-accent);border-radius:inherit}
+@container (max-width:36rem){.oc-home-grid{grid-template-columns:1fr}.oc-home-numeral{font-size:2.5rem}}
+
+/* Chapter page: lessons in reading order, each drill inside its lesson. */
+.oc-chapter-back{display:inline-flex;align-items:center;gap:.4rem;margin-bottom:1.5rem}
+.oc-chapter-page header .oc-chapter-progress{margin-top:1.25rem;max-width:24rem}
+.oc-chapter-lessons{display:grid;gap:.85rem;margin:0;padding:0;list-style:none}
+.oc-chapter-lesson{border-radius:16px;border:1px solid var(--oc-line);background:var(--oc-surface);box-shadow:var(--oc-shadow-subtle);overflow:hidden;transition:border-color .2s}
+.oc-chapter-lesson[data-next]{box-shadow:inset 3px 0 0 var(--oc-accent),var(--oc-shadow-subtle)}
+.oc-chapter-lesson:hover{border-color:var(--oc-control-line)}
+.oc-chapter-lesson-main{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:1rem;align-items:center;padding:1.15rem 1.35rem;color:var(--oc-ink);text-decoration:none}
+.oc-chapter-lesson-number{display:grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;border:1px solid var(--oc-control-line);font-size:.85rem;font-weight:600;color:var(--oc-muted)}
+.oc-chapter-lesson-number[data-status=done]{background:var(--oc-accent);border-color:var(--oc-accent);color:var(--oc-canvas)}
+.oc-chapter-lesson-number[data-status=started]{border-color:var(--oc-accent);color:var(--oc-accent)}
+.oc-chapter-lesson-text{display:grid;gap:.25rem;min-width:0}
+.oc-chapter-start{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--oc-accent)}
+.oc-chapter-lesson-title{font-family:Georgia,serif;font-size:1.25rem;line-height:1.25}
+.oc-chapter-optional{font-family:inherit;font-size:.85rem;color:var(--oc-muted)}
+.oc-chapter-lesson-summary{font-size:.92rem;line-height:1.5;color:var(--oc-muted)}
+.oc-chapter-lesson-drills{display:grid;border-top:1px solid var(--oc-line)}
+.oc-chapter-drill{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;gap:.65rem;align-items:center;padding:.75rem 1.35rem .75rem 4.95rem;color:var(--oc-ink);text-decoration:none;font-size:.92rem}
+.oc-chapter-drill+.oc-chapter-drill{border-top:1px solid var(--oc-line)}
+.oc-chapter-drill:hover{background:var(--oc-hover)}
+.oc-chapter-drill svg{color:var(--oc-muted)}
+.oc-chapter-drill-kind{font-size:.7rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--oc-muted)}
+.oc-chapter-drill-title{min-width:0}
+.oc-chapter-drill[data-next]{box-shadow:inset 3px 0 0 var(--oc-accent)}
+.oc-chapter-drills{margin-top:2.5rem}
+.oc-chapter-drills h2{margin:0 0 .85rem;font-family:Georgia,serif;font-size:1.4rem;font-weight:400}
+.oc-chapter-drills>div{display:grid;border-radius:16px;border:1px solid var(--oc-line);background:var(--oc-surface);overflow:hidden}
+.oc-chapter-drills .oc-chapter-drill{padding-left:1.35rem}
+
+@media(max-width:640px){
+  .oc-chapter-lesson-main{grid-template-columns:auto minmax(0,1fr);padding:1rem}
+  .oc-chapter-lesson-main>.oc-status{grid-column:2;justify-self:start}
+  .oc-chapter-drill{grid-template-columns:auto minmax(0,1fr) auto;padding:.75rem 1rem}
+  .oc-chapter-drill-kind,.oc-chapter-drill>.oc-status{display:none}
+}
+@media(prefers-reduced-motion:reduce){.oc-chapter-cards a,.oc-home-card,.oc-nav-chevron,.oc-focus-go{transition:none}.oc-focus-go:hover,.oc-focus-go:active{transform:none}.oc-home-card:hover,.oc-home-card:active{transform:none}}
