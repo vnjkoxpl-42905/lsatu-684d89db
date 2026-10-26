@@ -1,0 +1,19 @@
+# Prescribed week and account settings prepared in isolation
+
+Baseline 72df6964df9177bc5971cac9fdb4512d0b545a17. Branch codex/week-settings-180. Not pushed or published; #180 remains open.
+
+Claude built this slice using observed claude-opus-5-5 at requested medium effort, then completed two bounded corrections. Work orders and result artifacts are in the AI OS research directory under 2026-10-01-week-settings-180. Codex owns the separate Progress checkout; no source files overlap.
+
+Student My Work shows one prescribed week with dates, stored status, authored order, disclosed unknown estimates and a finish criterion. Cached valid weeks survive failed refresh with warning/retry. Relation-ordered paginated reads keep far-future plans from hiding the current or nearest upcoming week, and item reads explicitly validate and filter the student subject. Invalid dates/status and fractional positive estimates are disclosed truthfully.
+
+Study settings have account-specific browser storage, immediate unsaved edits and retry, consequence copy for supported timing/question-pool choices, and no automatic anonymous-legacy attribution. Explicit adoption preserves the original legacy bytes. Unreadable storage is distinct from absent storage; failed read recovery merges only edits onto the saved settings. There is no cross-device settings server copy.
+
+Teacher publication stages an exact draft, task rows, hidden mirrors and acknowledged backlinks, then reveals mirrors and acknowledges final published status. Partially saved records are preserved; retries reuse stable plan/task IDs and existing mirror links. Automatic curriculum assignment was removed because its shared writer lacked stable idempotency and could make visible records or delete during rollback. Unassigned suggestions block before any write; teacher must first assign through the existing workflow and choose a saved assignment link.
+
+Final Codex takeover fixes added a teacher-only actor epoch so A-to-B-to-A suppresses stale notification, and compares the latest builder title/week/items against the published snapshot before clearing. Late edits survive. The source hook regression and draft acknowledgment regression passed. Authenticated actor is checked before subsequent publication writes; an already-sent request cannot be recalled.
+
+Independent host proof: 101 tests across 11 focused files passed after Claude's final round, then 22 tests across three affected files passed after Codex's takeover fixes (overlapping tests, not 123 distinct). Final typecheck passed. Production build passed and scanned 761 output files for canonical-content exclusion. Known generated bank/finder/MCP churn restored only in this owned checkout. Diff whitespace checks passed.
+
+Independent Codex agent reviewed every changed production file and the final fixes, finding no remaining material defect within that inspected scope. Fresh Codex CLI inspection claudex-eovg6b9t failed because configured gpt-6.1-sol is unsupported with that CLI account. Fresh Opus inspection claudex-pydlf0w6 failed with API 429 session limit, reset reported 10:10 America/Toronto. Neither failed call is an approval; fresh cross-provider inspection of the mixed source remains required.
+
+Remaining: real teacher/student publication, save failure/retry, account switch and responsive browser acceptance; exact authenticated live task walk; integration and release. The previous local RC browser pane was policy-blocked and no workaround was attempted. Recovery jobs last only for the mounted page; reload preserves server drafts but loses client resume metadata. Classroom rows can become visible before final plan publication. The writes are not one atomic transaction. Broader baseline suite had 14 failing files among 16 independently checked; no full-suite pass is claimed. No database writes, deployment, Lovable credit spend or historical attempt changes occurred in this pass.

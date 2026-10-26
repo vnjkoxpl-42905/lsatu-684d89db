@@ -1,0 +1,106 @@
+import { useEffect, useRef, useState } from "react";
+import "./RcTrainingFeedback.css";
+import { getRcGrades, gradeRcRecap, type RcGradeItem } from "./lib/grading";
+
+/** New paragraph exercises review once after final save; history never spends automatically. */
+export default function RcTrainingFeedback({ attemptId, enabled, displayLabels, autoReview = false }: { attemptId: string; enabled: boolean; displayLabels?: Record<string, string>; autoReview?: boolean }) {
+  const [items, setItems] = useState<RcGradeItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [checkingStatus, setCheckingStatus] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  const lock = useRef(false);
+  const generation = useRef(0);
+  const automaticallyReviewed = useRef<string | null>(null);
+  useEffect(() => {
+    const current = ++generation.current;
+    setItems([]); setLoaded(false); setError(null); setLoading(false); setCheckingStatus(false);
+    if (!enabled) return;
+    void getRcGrades(attemptId).then((response) => {
+      if (generation.current === current) { setItems(response.items); setLoaded(true); }
+    }).catch(() => {
+      if (generation.current === current) setError("Feedback could not be loaded. Your recordings are still saved. Try again.");
+    });
+    return () => { generation.current++; };
+  }, [attemptId, enabled]);
+
+  const refreshStatus = async () => {
+    if (lock.current || !enabled) return;
+    lock.current = true; setLoading(true); setCheckingStatus(true); setError(null);
+    const current = ++generation.current;
+    try {
+      const response = await getRcGrades(attemptId);
+      if (generation.current === current) { setItems(response.items); setLoaded(true); }
+    } catch {
+      if (generation.current === current) setError("Feedback status could not be refreshed. Your recordings and saved feedback have not changed.");
+    } finally {
+      lock.current = false;
+      if (generation.current === current) { setLoading(false); setCheckingStatus(false); }
+    }
+  };
+
+  const review = async (automatic = false) => {
+    if (lock.current || !enabled) return;
+    lock.current = true; setLoading(true); setError(null);
+    // An initial status read must not overwrite a later explicit review result.
+    const current = ++generation.current;
+    try {
+      let response = await getRcGrades(attemptId);
+      if (generation.current !== current) return;
+      setItems(response.items); setLoaded(true);
+      // One recording at a time. Ready feedback is cached by the server.
+      for (const item of response.items) {
+        if (item.status !== "ungraded" && !(item.status === "failed" && item.retryable && !automatic)) continue;
+        response = await gradeRcRecap(attemptId, item.recapId);
+        if (generation.current !== current) return;
+        const updatedItems = response.items;
+        setItems((previous) => previous.map((existing) => updatedItems.find((updated) => updated.recapId === existing.recapId) ?? existing));
+      }
+    } catch {
+      if (generation.current === current) setError("We could not finish the feedback. Your recordings and any completed feedback are saved. Try again.");
+    } finally {
+      lock.current = false;
+      if (generation.current === current) setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (!autoReview || !enabled || !loaded || error || loading || automaticallyReviewed.current === attemptId) return;
+    automaticallyReviewed.current = attemptId;
+    if (items.some((item) => item.status === "ungraded")) void review(true);
+  }, [autoReview, enabled, loaded, attemptId, items, error, loading]);
+  const needsReview = items.some((item) => item.status === "ungraded" || (item.status === "failed" && item.retryable));
+  const processing = items.some((item) => item.status === "processing");
+  return <section aria-labelledby="rc-feedback-heading" className="rct-feedback">
+    <h3 id="rc-feedback-heading" className="rct-feedback-title">Feedback on your recall</h3>
+    {!enabled ? <p role="status" className="mt-3 text-sm">Finish the attempt and save its recordings before requesting feedback. Silent recalls have no recording to review.</p> : <>
+      <p role="status" className="rct-feedback-status">{checkingStatus ? "Checking feedback status…" : loading ? "Preparing feedback from your saved recordings…" : !loaded && !error ? "Loading saved feedback…" : processing ? "Feedback is being prepared. Your recordings are saved." : needsReview ? "Saved recordings are ready for feedback." : items.some((item) => item.status === "ready") ? "Your feedback is ready." : null}</p>
+      <p className="rct-feedback-note">AI feedback can mishear you. Check it against your transcript and the paragraph.</p>
+      {error && <p role="alert" className="mt-3 text-sm">{error}</p>}
+      {(!loaded || needsReview || error) && <button type="button" disabled={loading} onClick={() => void review()} className="rct-feedback-action">{loading && !checkingStatus ? "Reviewing your recordings…" : "Get feedback on my recall"}</button>}
+      {processing && <button type="button" disabled={loading} onClick={() => void refreshStatus()} className="rct-feedback-action">{checkingStatus ? "Checking feedback status…" : "Check feedback status"}</button>}
+      {loaded && items.length === 0 && <p className="mt-3 text-sm">There are no recorded recalls in this attempt.</p>}
+      <div aria-live="polite" className="mt-4 space-y-3">{items.map((item, index) => <article key={item.recapId} className="rct-feedback-item">
+        <h4 className="font-semibold">{displayLabels?.[item.recapId] || item.label || `Recording ${index + 1}`}</h4>
+        {item.status !== "ready" && <p className="mt-2 text-sm">{item.reason || (item.status === "processing" ? "Feedback is being prepared. Check its status in a moment." : item.status === "ungraded" ? "Ready for feedback." : "This recording could not be reviewed.")}</p>}
+        {item.status === "ready" && item.grade && <>
+          {item.grade.assessment.coverage && <div className="rct-feedback-grade">
+            <p className="text-xl font-semibold">Recall grade: {item.grade.assessment.coverage.percent}%</p>
+            <p className="mt-1 text-sm">{item.grade.assessment.coverage.earned} / {item.grade.assessment.coverage.possible} meaning points</p>
+            <details className="mt-2 text-sm"><summary className="cursor-pointer">How this grade works</summary><p className="mt-2">The paragraph is divided into source units before grading. Each unit earns 2 points for keeping its complete meaning, 1 for keeping part of it, or 0 when it is missing or its meaning changes. The app calculates the total. This is an AI assessment of the transcript, not an LSAT score. Unclear recordings are left ungraded.</p></details>
+          </div>}
+          <p className="mt-2 text-sm">{item.grade.assessment.summary}</p>
+          <details className="mt-3"><summary className="cursor-pointer text-sm font-semibold">Your transcript and the source</summary>
+            <h5 className="mt-3 text-sm font-semibold">What the transcript heard</h5><p className="mt-1 whitespace-pre-wrap text-sm">{item.grade.transcript}</p>
+            <h5 className="mt-3 text-sm font-semibold">Original text</h5><p className="mt-1 whitespace-pre-wrap text-sm">{item.grade.sourceText}</p>
+          </details>
+          {[...item.grade.assessment.details, ...item.grade.assessment.relationships].length > 0 && <details className="mt-3 text-sm"><summary className="cursor-pointer font-semibold">See feedback for each source unit</summary><ul className="mt-3 space-y-4">{[...item.grade.assessment.details, ...item.grade.assessment.relationships].map((detail, detailIndex) => <li key={detailIndex}>
+            <strong>{detail.status === "kept" ? "Kept" : detail.status === "partial" ? "Partly kept" : detail.status === "missing" ? "Missing from the transcript" : "Meaning changed"}</strong>
+            <p>{detail.explanation}</p><blockquote className="mt-1 border-l-2 pl-3">Source: “{detail.sourceQuote}”{detail.recallQuote && <p>Your recall: “{detail.recallQuote}”</p>}</blockquote>
+          </li>)}</ul></details>}
+          <p className="mt-3 text-sm"><strong>For your next recall: </strong>{item.grade.assessment.nextStep}</p>
+        </>}
+      </article>)}</div>
+    </>}
+    <details className="rct-feedback-about"><summary>About this feedback</summary><p>Your grade compares the recalled speech in your transcript with the original paragraph. Reading and checking are excluded. Different wording is fine when it keeps the meaning.</p><p>This feedback is generated by AI. Check the transcript beside the source. If it misheard you, use the recording and paragraph to check the feedback.</p></details>
+  </section>;
+}

@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-19",
+  "scope": "Dedicated tester passage-progress acceptance. No deletion, audio, ASR or judging requests.",
+  "attempts": [
+    {
+      "id": "1fd04a0b-6210-4976-8bbc-43cb6f554630",
+      "purpose": "single-passage-monotonic-and-frozen-completion",
+      "passageIds": [
+        15
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "progress_schema_readable",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "single_attempt_created",
+      "passed": true,
+      "status": 201,
+      "attemptId": "1fd04a0b-6210-4976-8bbc-43cb6f554630"
+    },
+    {
+      "name": "initial_active_time_saved",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "active_time_increases",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "stale_rpc_does_not_reduce_active_time",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "direct_decrease_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "wrong_passage_id_denied",
+      "passed": true,
+      "status": 403
+    },
+    {
+      "name": "wrong_selected_position_denied",
+      "passed": true,
+      "status": 403
+    },
+    {
+      "name": "other_identity_write_denied",
+      "passed": true,
+      "status": 403
+    },
+    {
+      "name": "discarded_response_retry_returns_completion",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "later_completion_reuses_frozen_duration_and_timestamp",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "direct_completed_time_mutation_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "progress_identity_mutation_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "single_attempt_finalized",
+      "passed": true,
+      "status": 204
+    },
+    {
+      "name": "exact_completion_retry_after_finalization",
+      "passed": false,
+      "status": 403
+    }
+  ],
+  "firstCompletion": {
+    "attempt_id": "1fd04a0b-6210-4976-8bbc-43cb6f554630",
+    "passage_position": 1,
+    "student_id": "d763bfe6-d710-4c4b-90ff-4b3a20929211",
+    "passage_id": 15,
+    "active_ms": 3000,
+    "completed": true,
+    "completed_at": "2026-10-19T00:04:54.555379-04:00",
+    "created_at": "2026-10-19T00:04:53.134481-04:00",
+    "updated_at": "2026-10-19T00:04:54.555379-04:00"
+  },
+  "error": "exact_completion_retry_after_finalization"
+}

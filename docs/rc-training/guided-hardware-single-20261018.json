@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-19",
+  "fixture": "single",
+  "attempt": {
+    "id": "8a8b1a62-07d4-4c18-a973-8fbfb3ae0206",
+    "preptest": 140,
+    "section": 4,
+    "passage_ids": [
+      15
+    ],
+    "elapsed_seconds": 118,
+    "completed": true,
+    "started_at": "2026-10-19T03:41:46.791336+00:00",
+    "finished_at": "2026-10-19T03:55:26.065+00:00"
+  },
+  "recaps": [
+    {
+      "id": "c302b881-8913-4936-be32-71679dca374a",
+      "recap_key": "p1-para1-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recall_start_ms": 19195,
+      "recall_end_ms": 27141
+    },
+    {
+      "id": "bff47931-b3e3-4f20-bee7-704c52d354f0",
+      "recap_key": "p1-para2-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recall_start_ms": 67471,
+      "recall_end_ms": 68470
+    },
+    {
+      "id": "128332b7-f5a4-43d6-88ca-3a1e10461159",
+      "recap_key": "p1-para3-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recall_start_ms": 70470,
+      "recall_end_ms": 71470
+    },
+    {
+      "id": "621f7cdd-0bce-4fcb-af44-b563eb626fd3",
+      "recap_key": "p1-para4-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recall_start_ms": 73473,
+      "recall_end_ms": 74470
+    },
+    {
+      "id": "16ca3008-0245-4076-847f-bde31f16d628",
+      "recap_key": "p1-para5-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recall_start_ms": 76472,
+      "recall_end_ms": 77470
+    },
+    {
+      "id": "ff57040f-523c-4edf-8562-7602c5abedb3",
+      "recap_key": "p1-para6-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recall_start_ms": 79473,
+      "recall_end_ms": 80471
+    },
+    {
+      "id": "f87878da-affb-4d88-8f6d-540ef2e456fd",
+      "recap_key": "p1-para7-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recall_start_ms": 82472,
+      "recall_end_ms": 83472
+    },
+    {
+      "id": "8dc3c824-6fa4-4f94-b835-4032435c2fd2",
+      "recap_key": "p1-para8-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recall_start_ms": 85474,
+      "recall_end_ms": 86471
+    },
+    {
+      "id": "9ae51fb6-5c12-4c89-927a-c007ba122a30",
+      "recap_key": "p1-passage-recap",
+      "kind": "passage_recap",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recall_start_ms": 109474,
+      "recall_end_ms": 118459
+    }
+  ],
+  "captures": [
+    {
+      "id": "e89e8013-3520-49df-917f-cf6de5a07990",
+      "recording_state": "saved",
+      "duration_ms": 118751,
+      "created_at": "2026-10-19T03:53:24.067906+00:00",
+      "updated_at": "2026-10-19T03:55:25.245819+00:00"
+    }
+  ],
+  "progress": [
+    {
+      "attempt_id": "8a8b1a62-07d4-4c18-a973-8fbfb3ae0206",
+      "passage_position": 1,
+      "passage_id": 15,
+      "active_ms": 87469,
+      "completed": true,
+      "completed_at": "2026-10-19T03:54:51.887518+00:00",
+      "created_at": "2026-10-19T03:54:51.887518+00:00",
+      "updated_at": "2026-10-19T03:54:51.887518+00:00"
+    }
+  ],
+  "gradeCount": 0,
+  "checks": {
+    "allExpectedSpokenRecapsSaved": true,
+    "oneContinuousSavedCapture": true,
+    "validRecallWindows": true,
+    "completedPassageTimesMatchSelection": true,
+    "noAIGradeRows": true
+  }
+}
