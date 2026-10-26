@@ -1,0 +1,657 @@
+file,practiceTest,section,question,questionType,difficulty,stem
+PT101-S2-LR.json,PT101,2,12,Main Conclusion,4,Which one of the following findings would be most relevant to deciding whether the budget of the project should be reduced?
+PT101-S2-LR.json,PT101,2,13,Parallel,3,"Which one of the following, if true, most weakens the argument?"
+PT101-S3-LR.json,PT101,3,4,Flaw,3,P’s argument is vulnerable to which one of the following criticisms?
+PT101-S3-LR.json,PT101,3,7,Most Supported,1,"If the statements above are true, which one of the following claims is most strongly supported by them?"
+PT101-S3-LR.json,PT101,3,8,Must be True,3,It can be properly concluded from the information above that
+PT101-S3-LR.json,PT101,3,11,Must be True,4,Which one of the following can be properly inferred from the passage?
+PT101-S3-LR.json,PT101,3,12,Flaw,3,The reasoning in the argument is most vulnerable to criticism on which one of the following grounds?
+PT102-S2-LR.json,PT102,2,2,Parallel Flaw,2,The flawed reasoning in the argument above most closely parallels that in which one of the following?
+PT102-S3-LR.json,PT102,3,3,Most Supported,2,"The statements above, if true, provide most support for which one of the following conclusions?"
+PT102-S3-LR.json,PT102,3,4,Weaken,5,"Which one of the following, if true, would most seriously undermine the scientist's hypothesis?"
+PT102-S3-LR.json,PT102,3,5,Paradox,4,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT102-S3-LR.json,PT102,3,7,Flaw,3,The reasoning is flawed because the argument
+PT102-S3-LR.json,PT102,3,14,Flaw,1,The reasoning in the herbalist's argument is flawed because the argument
+PT102-S3-LR.json,PT102,3,20,Parallel,3,The pattern of reasoning displayed in the argument above most closely parallels that displayed in which one of the following?
+PT102-S3-LR.json,PT102,3,22,Parallel Flaw,5,The pattern of flawed reasoning exhibited by the argument above is most similar to that exhibited by which one of the following?
+PT102-S4-LR.json,PT102,4,2,Must Be True,2,"If the information above is correct, which one of the following conclusions can be properly drawn on the basis of it?"
+PT102-S4-LR.json,PT102,4,7,Sufficient Assumption,4,"Which one of the following, if assumed, would do most to justify the claim that the price of halibut will increase?"
+PT102-S4-LR.json,PT102,4,8,Flaw,2,The argument is vulnerable to criticism on which one of the following grounds?
+PT102-S4-LR.json,PT102,4,10,Weaken,2,"Which one of the following, if true, most weakens the argument?"
+PT102-S4-LR.json,PT102,4,13,Paradox,4,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT102-S4-LR.json,PT102,4,16,Must Be False,5,"If the essayist’s statements are true, then each of the following could be true except:"
+PT102-S4-LR.json,PT102,4,21,Method,2,Paul responds to Sarah’s argument using which one of the following argumentative techniques?
+PT102-S4-LR.json,PT102,4,26,Must Be False,5,"Of the following claims, which one can most justifiably be rejected on the basis of the statements above?"
+PT103-S1-LR.json,PT103,1,1,Flaw,3,The reasoning in the argument is flawed because the argument
+PT103-S1-LR.json,PT103,1,6,Flaw,2,The argument is most vulnerable to criticism on the grounds that it
+PT103-S1-LR.json,PT103,1,7,Strengthen,2,"Which one of the following, if true, most supports the archaeologists’ claim?"
+PT103-S1-LR.json,PT103,1,10,Weaken,5,"Which one of the following, if true, most seriously limits the effectiveness of adopting the argument’s recommendation?"
+PT103-S1-LR.json,PT103,1,11,Sufficient Assumption,3,"Which one of the following, if assumed, allows the conclusion above to be properly drawn?"
+PT103-S1-LR.json,PT103,1,12,Most Supported,4,"The statements above, if true, most strongly support which one of the following?"
+PT103-S1-LR.json,PT103,1,17,Role,4,"In Winifred’s response to Henry, the statement about how
+bees of some species navigate plays which one of the following roles?"
+PT103-S1-LR.json,PT103,1,19,Most Supported,2,"The statements above, if true, most strongly support which one of the following claims?"
+PT103-S1-LR.json,PT103,1,20,Paradox,3,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT103-S1-LR.json,PT103,1,22,Evaluate,5,Knowing which one of the following would be most useful in evaluating the argument?
+PT103-S2-LR.json,PT103,2,18,Most Supported,4,In which one of the following does the reasoning most closely parallel that employed in the passage?
+PT103-S2-LR.json,PT103,2,20,Weaken,2,"Which one of the following, if true, would most seriously weaken the commentator's argument?"
+PT103-S2-LR.json,PT103,2,21,Necessary Assumption,4,The argument depends on which one of the following assumptions?
+PT103-S2-LR.json,PT103,2,26,Sufficient Assumption,3,Which one of the following conclusions can be correctly drawn from the linguist's statements?
+PT103-S3-LR.json,PT103,3,1,Paradox Resolve / explain,1,"Which one of the following, if true, most helps explain why the Norse settlements in Greenland disappeared while the Inuit settlements survi"
+PT103-S3-LR.json,PT103,3,4,Role,2,The proposal about how the government’s budget should be redirected plays which one of the following roles in the argument?
+PT103-S3-LR.json,PT103,3,18,Paradox Resolve / explain discrepancy,4,"Which one of the following, if true, most helps to reconcile the discrepancy indicated above?"
+PT104-S4-LR.json,PT104,4,8,Paradox,4,"Which one of the following, if true, does most to explain the apparent counterexample described above?"
+PT105-S1-LR.json,PT105,1,5,Weaken,3,The reasoning is flawed because it fails to take into account the possibility that
+PT105-S1-LR.json,PT105,1,6,Must be True,4,"From the statements above, if true, which one of the following can be properly inferred?"
+PT105-S1-LR.json,PT105,1,7,Strengthen,4,"Which one of the following, if true, most strengthens the argument?"
+PT105-S1-LR.json,PT105,1,9,Sufficient Assumption,3,"Which one of the following, if assumed, allows the conclusion above to be properly drawn?"
+PT105-S1-LR.json,PT105,1,10,Weaken,3,"The reasoning in the argument is flawed because the
+argument fails to consider the possibility that"
+PT105-S2-LR.json,PT105,2,1,Most Supported,2,"The information above most strongly supports which
+one of the following?"
+PT105-S2-LR.json,PT105,2,2,Weaken,2,"Which one of the following, if true, most weakens the
+support offered by the company director for the claim
+concerning the marketing of vacc"
+PT105-S2-LR.json,PT105,2,5,Strengthen,1,"Which one of the following principles, if valid, justifies
+the archaeologist’s argument?"
+PT105-S2-LR.json,PT105,2,9,Strengthen,2,"Which one of the following, if true, provides the
+strongest support for the explanation?"
+PT105-S2-LR.json,PT105,2,10,Flaw,4,"The reasoning in the argument is flawed because the
+argument"
+PT105-S2-LR.json,PT105,2,14,Flaw,5,The reasoning in Arjun’s response is flawed because he
+PT105-S2-LR.json,PT105,2,17,Parallel Flaw,2,"Which one of the following contains flawed reasoning
+that most closely parallels that in the argument above?"
+PT105-S2-LR.json,PT105,2,18,Paradox,4,"Which one of the following, if true, most helps to resolve
+the apparent paradox in the information above?"
+PT105-S2-LR.json,PT105,2,19,Parallel,5,"The pattern of reasoning displayed in the argument
+above is most closely paralleled by that in which one of
+the following arguments?"
+PT105-S2-LR.json,PT105,2,23,Most Supported,4,"The statements above, if true, most strongly support which
+one of the following?"
+PT105-S2-LR.json,PT105,2,24,Must be True,5,"If the statements above are true, which one of the
+following must also be true on the basis of them?"
+PT105-S4-LR.json,PT105,4,5,Weaken,3,"Which one of the following statements, if true, most seriously weakens the argument?"
+PT105-S4-LR.json,PT105,4,11,Strengthen,3,"Which one of the following, if true, supports the developmental psychologist’s hypothesis?"
+PT105-S4-LR.json,PT105,4,15,Most Supported,5,Which one of the following statements is most strongly supported by the information above?
+PT105-S4-LR.json,PT105,4,16,Strengthen,3,"Which one of the following, if true, most strengthens the argument?"
+PT105-S4-LR.json,PT105,4,18,Weaken,4,"Which one of the following, if true, most weakens the argument?"
+PT105-S4-LR.json,PT105,4,19,Flaw,4,The reasoning above is most vulnerable to criticism on the grounds that it does not consider the possibility that
+PT105-S4-LR.json,PT105,4,20,Method,3,Marta responds to James’s argument by
+PT105-S4-LR.json,PT105,4,22,Sufficient Assumption,3,"Which one of the following, if assumed, enables the conclusion above to be properly inferred?"
+PT106-S2-LR.json,PT106,2,3,Weaken,2,"Which one of the following, if true, most substantially weakens the argument?"
+PT106-S2-LR.json,PT106,2,6,Must Be True,3,Which one of the following must be true on the basis of the information above?
+PT106-S2-LR.json,PT106,2,13,Most Strongly Supported Fill-in,4,Which one of the following most logically concludes the argument?
+PT106-S2-LR.json,PT106,2,14,Flaw,3,Which one of the following identifies a reasoning error in the argument?
+PT106-S2-LR.json,PT106,2,20,Parallel Flaw,4,The argument above exhibits an erroneous pattern of reasoning most similar to that exhibited by which one of the following?
+PT106-S3-LR.json,PT106,3,3,Paradox,2,"Which one of the following, if true, most helps to explain the anomalous behavior of the birds that fly into windowpanes?"
+PT107-S3-LR.json,PT107,3,2,Main Conclusion,3,The argument leads to the conclusion that
+PT107-S3-LR.json,PT107,3,7,Flaw,3,The inference drawn above is unwarranted because
+PT107-S3-LR.json,PT107,3,9,Strengthen,4,The official’s conclusion is most strongly supported if which one of the following groups of trees did not show a reduction in losses of fru
+PT107-S3-LR.json,PT107,3,13,Method of Reasoning,2,Which one of the following most accurately describes how Darla’s response is related to Charles’s argument?
+PT107-S3-LR.json,PT107,3,15,Most Strongly Supported,4,Which one of the following is most strongly supported by the information above?
+PT107-S3-LR.json,PT107,3,23,Parallel flawed method of reasoning,3,The flawed pattern of reasoning exhibited by which one of the following is most similar to that exhibited by the argument above?
+PT108-S2-LR.json,PT108,2,2,Flaw,1,Which one of the following is the strongest criticism of John’s reasoning?
+PT108-S2-LR.json,PT108,2,4,Paradox,3,"Which one of the following, if true, most helps to explain the unusual health condition of the residents of Limone?"
+PT108-S2-LR.json,PT108,2,6,Weaken,2,The news item’s argument is vulnerable to criticism because it fails to consider the possibility that
+PT108-S2-LR.json,PT108,2,7,Most Supported,2,Which one of the following is most strongly supported by the information above?
+PT108-S2-LR.json,PT108,2,10,Method,3,Lucy responds to Mario by
+PT108-S2-LR.json,PT108,2,14,Strengthen,4,"Which one of the following, if true, would most strengthen the essayist’s argument?"
+PT108-S2-LR.json,PT108,2,18,Flaw,2,Sid’s argument is questionable in that it
+PT108-S2-LR.json,PT108,2,19,Strengthen,2,"Which one of the following, if true, most strengthens the editorial’s argument?"
+PT108-S3-LR.json,PT108,3,2,Weaken,2,"Which one of the following, if true, most weakens the astronomer’s argument?"
+PT108-S3-LR.json,PT108,3,4,Sufficient Assumption,2,Which one of the following must be true?
+PT108-S3-LR.json,PT108,3,6,Paradox,4,"Which one of the following, if true, most helps to explain the increase in the algae population?"
+PT108-S3-LR.json,PT108,3,7,Strengthen,3,"Which one of the following, if true, most strengthens the psychologist’s reasoning?"
+PT108-S3-LR.json,PT108,3,9,Flaw,4,The reasoning in the botanist’s argument is most vulnerable to criticism on the grounds that the argument
+PT108-S3-LR.json,PT108,3,13,Method,2,Which one of the following principles most helps to justify the reasoning in the argument?
+PT108-S3-LR.json,PT108,3,24,Parallel,3,Which one of the following most logically completes the argument?
+PT109-S1-LR.json,PT109,1,1,Strengthen,2,"Which one of the following, if true, most supports the researchers’ hypothesis?"
+PT109-S1-LR.json,PT109,1,6,Strengthen,2,"Which one of the following, if true, most strengthens the argument?"
+PT109-S1-LR.json,PT109,1,8,Paradox,3,"Which one of the following, if true, least helps to explain the silver ant’s choice of scavenging times?"
+PT109-S1-LR.json,PT109,1,11,Must be True,5,Which one of the following can be logically concluded from the information above?
+PT109-S1-LR.json,PT109,1,14,Paradox,3,"Which one of the following, if true, most helps to resolve the apparent discrepancy presented above?"
+PT109-S3-LR.json,PT109,3,1,Paradox,1,"Which one of the following, if true, most helps to explain the difference in the ages of the cedars on cliff faces and those in forests?"
+PT109-S3-LR.json,PT109,3,14,Argument part,4,The statistics cited function in the argument to
+PT109-S3-LR.json,PT109,3,21,Sufficient Assumption,5,The argument’s conclusion follows logically if which one of the following is assumed?
+PT109-S4-LR.json,PT109,4,2,Sufficient Assumption,2,The conclusion of the argument is properly drawn if which one of the following is assumed?
+PT109-S4-LR.json,PT109,4,4,Must be True,4,John’s statements commit him to which one of the following positions?
+PT109-S4-LR.json,PT109,4,5,Sufficient Assumption,3,The astronaut’s conclusion follows logically if which one of the following is assumed?
+PT109-S4-LR.json,PT109,4,7,Must be True,4,"Which one of the following describes an injury for which the city of Grimchester is now liable, but should not be according to the principle"
+PT109-S4-LR.json,PT109,4,9,Flaw,3,The reasoning in the argument is flawed because the argument
+PT109-S4-LR.json,PT109,4,13,Sufficient Assumption,5,The argument’s main conclusion follows logically if which one of the following is assumed?
+PT109-S4-LR.json,PT109,4,14,Most Supported,4,"The statements above, if true, most strongly support which one of the following statements about a field that will be plowed in the spring a"
+PT109-S4-LR.json,PT109,4,17,Paradox,4,Which one of the following provides a resolution to the apparent inconsistency described by the council member?
+PT109-S4-LR.json,PT109,4,19,Weaken,5,"Which one of the following statements, if true, most weakens the speaker’s argument?"
+PT109-S4-LR.json,PT109,4,20,Parallel,5,The reasoning in which one of the following is most similar to the reasoning in the argument above?
+PT109-S4-LR.json,PT109,4,23,Method,2,The spokesperson proceeds by
+PT109-S4-LR.json,PT109,4,24,Weaken,5,The conclusion about whether there would be a resulting net increase in spending would not follow if the
+PT109-S4-LR.json,PT109,4,25,Must be True,3,"If the essayist’s statements are true, which one of the following must also be true?"
+PT110-S2-LR.json,PT110,2,4,Most Supported,2,Which one of the following is most reasonably supported by the information above?
+PT110-S2-LR.json,PT110,2,5,Paradox,1,"Which one of the following, if true, most helps to explain the students’ mixed reactions?"
+PT110-S2-LR.json,PT110,2,6,Parallel,3,Which one of the following arguments is most similar in its reasoning to the argument above?
+PT110-S2-LR.json,PT110,2,7,Paradox,2,"Which one of the following, if true, does the most to reconcile the apparent conflict in the moral system described above?"
+PT110-S2-LR.json,PT110,2,8,Method,2,The pilot counters the conservationist by
+PT110-S2-LR.json,PT110,2,10,Sufficient Assumption,4,The conclusion of the argument follows logically if which one of the following is assumed?
+PT110-S2-LR.json,PT110,2,12,Weaken,4,"Which one of the following statements, if true, most seriously weakens the argument?"
+PT110-S2-LR.json,PT110,2,22,Role,3,Which one of the following most accurately describes the role played in the passage by the point that capitalism and industrialization are d
+PT110-S2-LR.json,PT110,2,23,Must be True,5,Which one of the following logically follows from the statements above?
+PT110-S3-LR.json,PT110,3,12,Flaw Fill-in,3,Which one of the following provides the most logical completion of the critic’s statement?
+PT110-S3-LR.json,PT110,3,25,Parallel method of reasoning,5,In which one of the following exchanges is the logical relationship between Jordan’s and Terry’s statements most similar to the logical rela
+PT110-S3-LR.json,PT110,3,26,Argument part,4,The proposition that the public is now more interested in reading and hearing about crime plays which one of the following roles in the argu
+PT111-S1-LR.json,PT111,1,25,Paradox,2,"Which one of the following, if true, best helps to explain why the sale of the company’s cologne dropped that year?"
+PT111-S3-LR.json,PT111,3,1,Weaken,1,"Which one of the following, if true, most seriously weakens the argument given for the recommendation above?"
+PT111-S3-LR.json,PT111,3,3,Strengthen,1,"Which one of the following, if true, most strengthens the argument?"
+PT111-S3-LR.json,PT111,3,9,Weaken,4,"Which one of the following, if true, is evidence that the explanation given above is only a partial one?"
+PT111-S3-LR.json,PT111,3,16,Most Strongly Supported,2,Which one of the following statements is most strongly supported by the information above?
+PT111-S3-LR.json,PT111,3,20,Must Be True,5,following must also be true?
+PT111-S3-LR.json,PT111,3,23,Main Conclusion,4,following conclusions?
+PT111-S4-LR.json,PT111,4,2,Argument Part,2,The claim that bureaucratic mechanisms are engineered to resist change plays which one of the following roles in the argument?
+PT111-S4-LR.json,PT111,4,3,Most Strongly Supported,1,Which one of the following statements is most strongly supported by the information above?
+PT111-S4-LR.json,PT111,4,12,Paradox,2,"Which one of the following, if true, does most to resolve the apparent discrepancy in the information above?"
+PT111-S4-LR.json,PT111,4,14,Sufficient Assumption,3,The conclusion of the argument follows logically if which one of the following is assumed?
+PT111-S4-LR.json,PT111,4,15,Argument Part,3,The claim that cloning will not produce adults with identical personalities plays which one of the following roles in the geneticist’s argum
+PT111-S4-LR.json,PT111,4,21,Most Strongly Supported,5,Which one of the following can most reasonably be concluded on the basis of the information above?
+PT111-S4-LR.json,PT111,4,23,Parallel Method of Reasoning,4,Which one of the following arguments is most similar in its reasoning to the argument above?
+PT112-S3-LR.json,PT112,3,3,Main Conclusion,4,Which one of the following most accurately expresses the conclusion of the argument?
+PT112-S3-LR.json,PT112,3,17,Most Supported,4,"The statements above, if true, most strongly support which one of the following?"
+PT112-S4-LR.json,PT112,4,1,Sufficient Assumption,3,The main conclusion above follows logically if which one of the following is assumed?
+PT112-S4-LR.json,PT112,4,9,Parallel,3,The structure of which one of the following arguments is most similar to the structure of the argument above?
+PT112-S4-LR.json,PT112,4,18,Strengthen,3,"Which one of the following statements, if true, most strengthens the argument?"
+PT113-S2-LR.json,PT113,2,2,Must be True,3,Which one of the following can properly be inferred from the passage?
+PT113-S2-LR.json,PT113,2,4,Weaken,3,"Which one of the following statements, if true, most weakens the argument?"
+PT113-S2-LR.json,PT113,2,5,Sufficient Assumption,3,The conclusion of the argument follows logically if which one of the following is assumed?
+PT113-S2-LR.json,PT113,2,12,Must be True,3,Which one of the following can be properly inferred from Rosen's statement?
+PT113-S2-LR.json,PT113,2,17,Paradox,4,"Which one of the following, if true, does not help resolve the apparent discrepancy between the safety report and the city's public safety r"
+PT113-S2-LR.json,PT113,2,21,Parallel Flaw,3,The pattern of flawed reasoning in which one of the following is most similar to the pattern of flawed reasoning in the argument above?
+PT113-S3-LR.json,PT113,3,9,Main Conclusion,2,Which one of the following most accurately expresses the conclusion of the argument?
+PT113-S3-LR.json,PT113,3,11,Strengthen,1,"Which one of the following, if true, most strengthens Peter's argument?"
+PT113-S3-LR.json,PT113,3,13,Flaw,2,The argument is vulnerable to criticism because it ignores the possibility that
+PT113-S3-LR.json,PT113,3,18,Necessary Assumption,4,Which one of the following is an assumption required by the argument?
+PT113-S3-LR.json,PT113,3,19,Parallel Flaw,5,The flawed reasoning in the argument above most closely resembles that in which one of the following?
+PT113-S3-LR.json,PT113,3,20,Principle-Strengthen,5,"Which one of the following principles, if valid, most helps to justify the critic's reasoning?"
+PT113-S3-LR.json,PT113,3,25,Flaw,2,The anthropologist's argument is most vulnerable to criticism on the grounds that it fails to
+PT113-S3-LR.json,PT113,3,26,Strengthen,4,"Which one of the following, if true, most strengthens the argument that there is a fifth universal force?"
+PT113-S4-LR.json,PT113,4,2,Weaken,3,"Which one of the following, if true, most weakens the argument?"
+PT113-S4-LR.json,PT113,4,5,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT113-S4-LR.json,PT113,4,9,Sufficient Assumption,3,The conclusion drawn by the cultural historian follows logically if which one of the following is assumed?
+PT113-S4-LR.json,PT113,4,17,Flaw,5,The argument is most vulnerable to the criticism that it takes for granted that
+PT113-S4-LR.json,PT113,4,18,Weaken,3,"Which one of the following statements, if true, most seriously weakens the argument?"
+PT113-S4-LR.json,PT113,4,25,Strengthen,3,"Which one of the following, if true, most helps to support the historians' contention concerning the reasons for the decline in wheat produc"
+PT114-S1-LR.json,PT114,1,1,Necessary Assumption,2,The conclusion drawn by the physician follows logically if which one of the following is assumed?
+PT114-S1-LR.json,PT114,1,15,Most Supported,1,Which one of the following is most strongly supported by the information above?
+PT114-S1-LR.json,PT114,1,17,Weaken,1,"Which one of the following, if true, most undermines the argument?"
+PT114-S1-LR.json,PT114,1,19,Most Supported,2,Which one of the following most logically completes the final sentence of the essayist's argument?
+PT114-S1-LR.json,PT114,1,20,Most Supported,3,"The sociologist's statements, if true, most strongly support which one of the following?"
+PT114-S1-LR.json,PT114,1,21,Most Supported,4,The educators' reasoning provides grounds for accepting which one of the following statements?
+PT114-S2-LR.json,PT114,2,6,Most Supported,1,The survey results in the passage best support which one of the following conclusions?
+PT114-S2-LR.json,PT114,2,7,Paradox,2,"Which one of the following, if true, provides the best reason in favor of the airports' timing of their planned expansions?"
+PT114-S2-LR.json,PT114,2,8,Flaw,2,The reasoning above is most vulnerable to criticism because it
+PT114-S2-LR.json,PT114,2,15,Necessary Assumption,3,Joshua's remarks indicate that he interpreted Ashley's statement to imply that
+PT114-S2-LR.json,PT114,2,16,Role,3,The assertion that it is not illegal to use one person as a vehicle for another's ambitions is used in the ethicist's argument in which one 
+PT114-S2-LR.json,PT114,2,24,Weaken,4,"Which one of the following, if true, most seriously weakens the dealer's argument?"
+PT114-S4-LR.json,PT114,4,1,Inference,2,"1. If the principal is speaking sincerely, then it can be inferred from what the principal says that the principal believes that"
+PT114-S4-LR.json,PT114,4,15,Weaken,4,"Which one of the following, if true, most seriously weakens the reasoning above?"
+PT114-S4-LR.json,PT114,4,16,Sufficient Assumption,4,The conclusion above follows logically if which one of the following is assumed?
+PT114-S4-LR.json,PT114,4,17,Parallel Flaw,3,following?
+PT114-S4-LR.json,PT114,4,19,Evaluate,2,19.	 In evaluating Yang’s argument it would be most helpful to know whether
+PT115-S2-LR.json,PT115,2,3,Paradox,1,"Which one of the following, if true, does most to justify the apparently contradictory conclusion above?"
+PT115-S4-LR.json,PT115,4,5,Paradox,1,"Which one of the following, if true, most helps to resolve the apparent paradox described above?"
+PT115-S4-LR.json,PT115,4,6,Must be True,3,"If the statements above are all true, which one of the following statements must also be true?"
+PT115-S4-LR.json,PT115,4,9,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent conflict described above?"
+PT115-S4-LR.json,PT115,4,16,Most Supported,5,Which one of the following statements is most strongly supported by the information above?
+PT115-S4-LR.json,PT115,4,17,Necessary Assumption,5,The conclusion drawn above follows logically if which one of the following is assumed?
+PT115-S4-LR.json,PT115,4,23,Flaw,4,The editorial's argument is most vulnerable to criticism on the grounds that it
+PT116-S2-LR.json,PT116,2,15,Paradox,5,"Which one of the following, if true, most helps to resolve the apparent conflict between Kendrick's statements?"
+PT116-S3-LR.json,PT116,3,1,Necessary Assumption,3,Which one of the following is an assumption on which the argument depends?
+PT117-S2-LR.json,PT117,2,14,Main Conclusion,4,"Which one of the following, if true, does the most to justify the conclusion of the resident's argument?"
+PT117-S3-LR.json,PT117,3,5,Principle-Conform,2,Which one of the following judgments most closely conforms with the principle cited above?
+PT117-S3-LR.json,PT117,3,11,Must be True,3,"If all of the statements above are true, which one of the following must be true?"
+PT117-S3-LR.json,PT117,3,14,Flaw,3,The reasoning in the city council member's argument is flawed because
+PT117-S3-LR.json,PT117,3,18,Most Supported,4,Which one of the following is most strongly supported by the information above?
+PT117-S4-LR.json,PT117,4,6,Argument Part,3,The statement that moderate dietary changes often do not work to lower cholesterol levels plays which one of the following roles in the argu
+PT117-S4-LR.json,PT117,4,15,Must Be True,2,"If the statements above are true, then which one of the following must also be true?"
+PT117-S4-LR.json,PT117,4,20,Flaw,5,criticism on which one of the following grounds?
+PT117-S4-LR.json,PT117,4,21,Parallel Method of Reasoning,4,Which one of the following arguments employs reasoning most similar to that employed by the argument above?
+PT118-S1-LR.json,PT118,1,5,Agree/Disagree,2,The dialogue provides the most support for the claim that Maria and Theo disagree over whether
+PT118-S1-LR.json,PT118,1,8,Principle-Conform,2,"Which one of the following contains an inappropriate usage of a phrase, according to the principle stated above?"
+PT118-S1-LR.json,PT118,1,23,Flaw,4,Which one of the following is an error in the reasoning above?
+PT118-S3-LR.json,PT118,3,4,Sufficient Assumption,1,The conclusion of the argument follows logically if which one of the following is assumed?
+PT118-S3-LR.json,PT118,3,5,Paradox,3,"Which one of the following, if true, most helps to explain the finding of the nicotine study?"
+PT118-S3-LR.json,PT118,3,11,Strengthen,4,"Which one of the following, if true, most strengthens the biologist’s argument?"
+PT118-S3-LR.json,PT118,3,23,Argument Part,3,Which one of the following most accurately describes the role played in the argument by the supposition that eating meat is essential to goo
+PT118-S4-LR.json,PT118,4,18,Most Supported,5,The statements above most strongly support which one of the following?
+PT118-S4-LR.json,PT118,4,20,Parallel Flaw,5,Which one of the following uses flawed reasoning most similar to the flawed reasoning above?
+PT118-S4-LR.json,PT118,4,25,Principle-Strengthen,4,"Which one of the following generalizations, if applicable to Sarah's company, most helps to justify her reasoning?"
+PT119-S2-LR.json,PT119,2,4,Sufficient Assumption,3,"Which one of the following, if assumed, enables Chapin's conclusion to be properly drawn?"
+PT119-S2-LR.json,PT119,2,6,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the committee's position?"
+PT119-S2-LR.json,PT119,2,8,Paradox,2,"Each of the following, if true, helps to resolve the apparent paradox above except:"
+PT119-S2-LR.json,PT119,2,17,Paradox,3,"Which one of the following, if true, does not help resolve the apparent discrepancy between the safety report and the city's public safety r"
+PT119-S2-LR.json,PT119,2,19,Necessary Assumption,4,Which one of the following is an assumption on which the physician's argument relies?
+PT119-S2-LR.json,PT119,2,23,Sufficient Assumption,4,The conclusion follows logically if which one of the following is assumed?
+PT119-S3-LR.json,PT119,3,1,Paradox,2,The moralist's and the TV talk show host's statements provide the most support for holding that they disagree about whether
+PT119-S3-LR.json,PT119,3,2,Necessary Assumption,3,Which one of the following is an assumption on which the argument relies?
+PT119-S3-LR.json,PT119,3,7,Flaw,3,Which one of the following is most strongly supported by the passage?
+PT119-S3-LR.json,PT119,3,9,Flaw,4,"The statements in the editorial, if true, most strongly support which one of the following?"
+PT119-S3-LR.json,PT119,3,10,Method,3,Which one of the following strategies is used above to criticize Fred's reasoning?
+PT119-S3-LR.json,PT119,3,13,Flaw,5,Which one of the following most accurately describes a flaw in the reasoning above?
+PT119-S3-LR.json,PT119,3,16,Role,3,The view that children should never be reprimanded functions in the psychologist's argument as a statement of a position that the psychologi
+PT119-S3-LR.json,PT119,3,24,Principle-Strengthen,1,"Which one of the following principles, if established, would provide the strongest support for the town councillor's argument?"
+PT119-S4-LR.json,PT119,4,1,Paradox,1,"Which one of the following, if true, would most effectively resolve the apparent paradox above?"
+PT119-S4-LR.json,PT119,4,13,Strengthen,4,"Which one of the following, if true, most supports Maria's counter to James?"
+PT119-S4-LR.json,PT119,4,15,Flaw,3,Arthur's criticism suggests that he interpreted Marta to be
+PT119-S4-LR.json,PT119,4,21,Sufficient Assumption,4,"Which one of the following, if assumed, enables the argument's conclusion to be properly inferred?"
+PT120-S1-LR.json,PT120,1,6,Paradox,4,"Which one of the following, if true, contributes to a
+resolution of the apparent paradox?"
+PT120-S1-LR.json,PT120,1,9,Sufficient Assumption,1,The conclusion of the argument follows logically if which one of the following is assumed?
+PT120-S1-LR.json,PT120,1,15,Parallel,2,Which one of the following arguments is most similar in its reasoning to the argument above?
+PT120-S1-LR.json,PT120,1,19,Weaken,5,"Which one of the following, if true, most weakens the argument?"
+PT120-S1-LR.json,PT120,1,22,Weaken,5,"Which one of the following, if true, most seriously weakens the columnist’s argument?"
+PT120-S1-LR.json,PT120,1,26,Strengthen,5,"Which one of the following, if true, most strengthens the argument?"
+PT120-S3-LR.json,PT120,3,2,Strengthen,2,"Which one of the following, if true, most strengthens the argument?"
+PT120-S3-LR.json,PT120,3,3,Most Supported,1,Which one of the following inferences is most strongly supported by the rules described above?
+PT120-S3-LR.json,PT120,3,4,Weaken,3,"Which one of the following, if true, most weakens L.E.’s argument?"
+PT120-S3-LR.json,PT120,3,14,Weaken,5,"Which one of the following, if true, most weakens the recommendation that people wear adequate sunblock?"
+PT120-S3-LR.json,PT120,3,20,Method,5,Which one of the following most accurately describes a technique used in the philosopher’s argument?
+PT120-S3-LR.json,PT120,3,21,Sufficient Assumption,4,The conclusion follows logically if which one of the following is assumed?
+PT120-S4-LR.json,PT120,4,15,Sufficient Assumption,5,The conclusion of the argument follows logically if which one of the following is assumed?
+PT120-S4-LR.json,PT120,4,18,Paradox,1,"Which one of the following, if true, most helps to explain the viewpoint of the historians described above?"
+PT120-S4-LR.json,PT120,4,23,Flaw,5,The argument is most vulnerable to criticism on the grounds that it
+PT121-S1-LR.json,PT121,1,12,Parallel,1,The reasoning in the argument above is most closely paralleled by the argument that there is no reason to
+PT121-S1-LR.json,PT121,1,16,Most Supported,3,"Which one of the following, if valid, most helps to justify the reasoning above?"
+PT121-S1-LR.json,PT121,1,19,Weaken,3,"Which one of the following, if true, most seriously weakens the support for the analyst's conclusion?"
+PT121-S1-LR.json,PT121,1,21,Flaw,2,The reasoning in Catmull's argument is flawed because the argument
+PT121-S1-LR.json,PT121,1,22,Paradox,4,"Which one of the following, if true, most helps to resolve the apparent discrepancy described by the statements above?"
+PT121-S1-LR.json,PT121,1,26,Must be True,4,"If all of Reza's statements are true, then which one of the following must also be true?"
+PT121-S4-LR.json,PT121,4,5,Role,3,The claim that the fracture shows signs of partial healing figures in the argument in which one of the following ways?
+PT121-S4-LR.json,PT121,4,8,Main Conclusion,3,The conclusion is properly inferred if which one of the following is assumed?
+PT121-S4-LR.json,PT121,4,18,Must be False,3,"If all of the statements above are true, then which one of the following cannot be true?"
+PT121-S4-LR.json,PT121,4,19,Paradox,4,"Which one of the following, if true, most helps to explain all the data from the study?"
+PT121-S4-LR.json,PT121,4,20,Weaken,2,The advertisement is misleading if which one of the following is true?
+PT121-S4-LR.json,PT121,4,21,Sufficient Assumption,4,The sociologist's conclusion follows logically if which one of the following is assumed?
+PT121-S4-LR.json,PT121,4,23,Weaken,5,"Each of the following, if true, would weaken the support for the company president's recommendation except:"
+PT121-S4-LR.json,PT121,4,26,Weaken,4,"Which one of the following, if true, most seriously undermines the researcher's reasoning?"
+PT122-S1-LR.json,PT122,1,4,Paradox,3,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the passage above?"
+PT122-S1-LR.json,PT122,1,7,Must Be False,4,"If all of the statements above are true, then which one of the following must be false?"
+PT122-S1-LR.json,PT122,1,8,Strengthen,3,"Which one of the following, if true, contributes most to an explanation of the behavior of vervet monkeys described above?"
+PT122-S1-LR.json,PT122,1,9,Most Supported,3,"The statements above, if true, most strongly support which one of the following?"
+PT122-S2-LR.json,PT122,2,2,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent discrepancy described above?"
+PT122-S2-LR.json,PT122,2,12,Role,4,Which one of the following most accurately describes the role played in the argument by the claim that it is primarily by raising interest r
+PT122-S2-LR.json,PT122,2,20,Most Supported,3,"The environmentalist's statements, if true, most strongly support which one of the following inferences?"
+PT122-S4-LR.json,PT122,4,10,Must Be True,4,Which one of the following can be properly inferred from the statements above?
+PT122-S4-LR.json,PT122,4,11,Paradox,1,"Which one of the following, if true, most helps to resolve the apparent conflict in the consumer activist's statements?"
+PT122-S4-LR.json,PT122,4,14,Most Supported,4,"The statements above, if true, most strongly support which one of the following?"
+PT122-S4-LR.json,PT122,4,15,Method,2,The argument proceeds by
+PT122-S4-LR.json,PT122,4,17,Parallel,3,The pattern of reasoning in which one of the following arguments is most parallel to that in the argument above?
+PT122-S4-LR.json,PT122,4,18,Sufficient Assumption,4,The conclusion drawn above follows logically if which one of the following is assumed?
+PT122-S4-LR.json,PT122,4,19,Most Supported,4,"The forester's statements, if true, most strongly support which one of the following?"
+PT122-S4-LR.json,PT122,4,22,Sufficient Assumption,2,"Which one of the following, if assumed, enables the economist's conclusion to be properly drawn?"
+PT123-S2-LR.json,PT123,2,25,Paradox,4,"Which one of the following, if true, most helps to explain the difference between the amount of innovation in French painting and the amount"
+PT125-S2-LR.json,PT125,2,4,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent paradox described above?"
+PT125-S2-LR.json,PT125,2,17,Role,4,The claim that the penalties for drunk driving are far more severe when the drunk driver accidentally injures people than when no one is inj
+PT125-S4-LR.json,PT125,4,6,Paradox,2,"Which one of the following, if true, most helps to explain the results of the earthquake described above?"
+PT125-S4-LR.json,PT125,4,13,Paradox,3,"Which one of the following, if true, most helps to reconcile the apparent conflict described above?"
+PT125-S4-LR.json,PT125,4,21,Paradox,4,"Which one of the following, if true, most helps to resolve the apparent conflict in the results concerning the witnesses who gave testimony "
+PT126-S4-LR.json,PT126,4,2,Role,1,The claim that people have positive or negative responses to many nonsense words plays which one of the following roles in the argument?
+PT126-S4-LR.json,PT126,4,8,Agree/Disagree,3,Larew and Mendota disagree about whether
+PT127-S1-LR.json,PT127,1,5,Paradox,2,"Which one of the following, if true, most helps to explain the ability of newborn infants described above?"
+PT127-S1-LR.json,PT127,1,26,Must be True,3,"If all of the essayist’s statements are true, then which one of the following must be true?"
+PT128-S2-LR.json,PT128,2,4,Paradox,2,"Which one of the following, if true, most helps to explain the researchers' findings?"
+PT128-S2-LR.json,PT128,2,19,Paradox,5,"Which one of the following, if true, would most help to resolve the apparent discrepancy described by the criminologist?"
+PT128-S2-LR.json,PT128,2,26,Weaken,,"Which one of the following, if true, most seriously weakens the editorialist's argument?"
+PT128-S3-LR.json,PT128,3,3,Parallel,1,Which one of the following arguments is most similar in its logical features to the argument above?
+PT128-S3-LR.json,PT128,3,6,Flaw,2,The reasoning in Melchior's argument is most vulnerable to criticism on the grounds that it
+PT128-S3-LR.json,PT128,3,9,Flaw,2,The television commercial's argument is most vulnerable to criticism on the grounds that it
+PT128-S3-LR.json,PT128,3,10,Role,3,Which one of the following most accurately describes the role played in the argument by the claim that the biologists' announcements that a 
+PT128-S3-LR.json,PT128,3,11,Sufficient Assumption,3,The conclusion is properly drawn in the literary critic's argument if which one of the following is assumed?
+PT128-S3-LR.json,PT128,3,12,Flaw,2,The argument is most vulnerable to criticism on the grounds that it fails to consider the possibility that
+PT128-S3-LR.json,PT128,3,13,Must Be True,2,Which one of the following is a conclusion that can logically be drawn from the passage above?
+PT128-S3-LR.json,PT128,3,14,Flaw,3,Which one of the following most accurately describes a flaw in the reasoning in the argument?
+PT128-S3-LR.json,PT128,3,15,Paradox,5,"Which one of the following, if true, would most help to explain the apparent discrepancy described above?"
+PT128-S3-LR.json,PT128,3,16,Main Conclusion,2,Which one of the following most accurately expresses the conclusion of the argument?
+PT128-S3-LR.json,PT128,3,18,Flaw,4,The reasoning in the argument above is most vulnerable to criticism on the grounds that the argument
+PT128-S3-LR.json,PT128,3,23,Parallel Flaw,4,Which one of the following exhibits flawed reasoning most similar to the flawed reasoning exhibited by the argument above?
+PT128-S3-LR.json,PT128,3,24,Flaw,5,The reasoning in the historian's argument is flawed because the argument
+PT129-S1-LR.json,PT129,1,21,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent discrepancy indicated above?"
+PT129-S3-LR.json,PT129,3,4,Agree/Disagree,2,The dialogue between Huang and Suarez most strongly supports the claim that they disagree about whether
+PT130-S4-LR.json,PT130,4,1,Paradox,2,"Which one of the following, if true, most helps to explain the situation described above?"
+PT130-S4-LR.json,PT130,4,13,Most Strongly Supported,2,The information above most strongly supports which one of the following conclusions about frogs in the Yucatán peninsula?
+PT131-S1-LR.json,PT131,1,26,Method,4,The philosopher's argument proceeds by attempting to
+PT131-S2-LR.json,PT131,2,1,Principle Conform,1,The reasoning above most closely conforms to which one of the following principles?
+PT131-S2-LR.json,PT131,2,3,Paradox,1,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the statements above?"
+PT131-S2-LR.json,PT131,2,4,Flaw,1,The professor's reasoning is flawed in that it
+PT131-S2-LR.json,PT131,2,5,Strengthen,3,"Which one of the following, if true, most strengthens the argument above?"
+PT131-S2-LR.json,PT131,2,6,Flaw,2,The reasoning above is flawed in that it
+PT131-S2-LR.json,PT131,2,8,Flaw,2,The reasoning above is most vulnerable to criticism on the grounds that it
+PT131-S2-LR.json,PT131,2,11,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent conflict between the two statements above?"
+PT131-S2-LR.json,PT131,2,15,Flaw,5,The reasoning in Bowers's argument is most vulnerable to criticism on the grounds that
+PT131-S2-LR.json,PT131,2,20,Flaw,4,The reasoning in the quality control investigator's argument is flawed in that the argument
+PT131-S2-LR.json,PT131,2,21,Weaken,4,"Which one of the following, if true, most weakens the essayist's argument?"
+PT131-S2-LR.json,PT131,2,22,Strengthen,5,"Which one of the following, if true, most strengthens the argument?"
+PT131-S3-LR.json,PT131,3,1,Paradox,1,"Which one of the following, if true, most helps to explain the educators' findings?"
+PT131-S3-LR.json,PT131,3,3,Main Conclusion,1,Which one of the following most accurately expresses the conclusion of the argument as a whole?
+PT131-S3-LR.json,PT131,3,4,Flaw,3,Which one of the following describes a flaw in the politician's argument?
+PT131-S3-LR.json,PT131,3,5,Weaken,2,Which one of the following is most strongly supported by the information above?
+PT131-S3-LR.json,PT131,3,7,Most Supported,2,The information above most strongly supports the statement that the people who are most successful at ending their bad habits are those who
+PT131-S3-LR.json,PT131,3,8,Flaw,3,The argument's reasoning is most vulnerable to criticism on the grounds that the argument
+PT131-S3-LR.json,PT131,3,10,Sufficient Assumption,2,The producer's conclusion is properly inferred if which one of the following is assumed?
+PT131-S3-LR.json,PT131,3,11,Strengthen,2,"Which one of the following, if true, most strengthens the argument?"
+PT131-S3-LR.json,PT131,3,13,Weaken,4,"Which one of the following, if true, most seriously weakens the argument?"
+PT131-S3-LR.json,PT131,3,14,Method,2,The economist's argument employs which one of the following techniques?
+PT131-S3-LR.json,PT131,3,20,Most Supported,4,Which one of the following statements is most strongly supported by the musicologist's claims?
+PT131-S3-LR.json,PT131,3,22,Parallel Flaw,3,Which one of the following statements most accurately characterizes the argument's reasoning flaws?
+PT131-S3-LR.json,PT131,3,23,Method,4,Which one of the following most accurately describes the technique of reasoning employed by the argument?
+PT131-S3-LR.json,PT131,3,24,Flaw,4,The reasoning above is most vulnerable to criticism in that it
+PT132-S2-LR.json,PT132,2,4,Strengthen,2,"Which one of the following, if true, provides the most support for the industry analysts' prediction?"
+PT132-S2-LR.json,PT132,2,14,Method of Reasoning,3,The music critic's response to the music professor's argument
+PT132-S2-LR.json,PT132,2,24,Must Be True,3,"The statements above, if true, provide a basis for rejecting which one of the following claims?"
+PT132-S4-LR.json,PT132,4,8,Must Be True,4,The evidence cited above from the study of traditional narratives most supports which one of the following statements?
+PT132-S4-LR.json,PT132,4,13,Flaw,4,The reasoning above is most vulnerable to criticism on the grounds that it
+PT132-S4-LR.json,PT132,4,14,Weaken,4,"Which one of the following, if true, most weakens the politician's argument?"
+PT132-S4-LR.json,PT132,4,16,Sufficient Assumption,4,The conclusion of the argument follows logically if which one of the following is assumed?
+PT133-S1-LR.json,PT133,1,4,Strengthen,1,"Which one of the following, if true, most helps to account for the pest control experts' recommendation?"
+PT133-S2-LR.json,PT133,2,10,Strengthen/Explain,2,"Which one of the following, if true, most helps to explain why the Mississippi kite population does not follow the usual pattern?"
+PT133-S3-LR.json,PT133,3,5,Must Be True,1,Which one of the following can be inferred from the parent's statements?
+PT133-S3-LR.json,PT133,3,8,Paradox,4,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT133-S3-LR.json,PT133,3,9,Weaken,2,"Which one of the following, if true, most weakens the argument?"
+PT133-S3-LR.json,PT133,3,12,Strengthen/Explain,1,"Which one of the following, if true, most helps to explain why very young children find it easier to catch balls that are thrown at a faster"
+PT133-S3-LR.json,PT133,3,13,Most Supported,2,"The statements above, if true, most strongly support which one of the following?"
+PT133-S3-LR.json,PT133,3,25,Parallel Flaw,3,The flawed reasoning in the political philosopher's argument is most similar to that in which one of the following?
+PT134-S1-LR.json,PT134,1,2,Must Be True,3,"If the statements above are true, which one of the following must also be true?"
+PT134-S1-LR.json,PT134,1,3,Method of Reasoning,1,The political scientist's argument proceeds by
+PT134-S1-LR.json,PT134,1,6,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent discrepancy described above?"
+PT134-S1-LR.json,PT134,1,14,Role,3,The claim that superconductor development will probably improve industrial productivity plays which one of the following roles in the argume
+PT134-S1-LR.json,PT134,1,25,Role,4,The contention that the town would not have to spend as much as it does on removing trash if all town residents sorted their garbage plays w
+PT134-S2-LR.json,PT134,2,18,Unknown,2,"If the journalist’s statements are true, then each of the following could be true except:"
+PT134-S3-LR.json,PT134,3,8,Paradox,1,"Which one of the following, if true, most helps to explain the phenomenon described above?"
+PT134-S3-LR.json,PT134,3,10,Unknown,2,That we should learn the lessons of history figures in the argument in which one of the following ways?
+PT134-S3-LR.json,PT134,3,13,Paradox,3,"Which one of the following, if true, does most to explain why the estimates remain virtually unchanged?"
+PT134-S3-LR.json,PT134,3,16,Role,4,Which one of the following most accurately describes the role played in the editorial’s argument by the statement that cell-phone use would 
+PT134-S3-LR.json,PT134,3,26,Must Be True,5,The conclusion of the argument is properly drawn if which one of the following is assumed?
+PT135-S1-LR.json,PT135,1,12,Paradox,3,"Which one of the following, if true, most helps to explain the substantial genetic differences among the shrimp populations?"
+PT135-S4-LR.json,PT135,4,1,Paradox,2,"Which one of the following, if true, most helps to explain the greater decline among sugar maples?"
+PT135-S4-LR.json,PT135,4,9,Most Strongly Supported,3,"The statements above, if true, most strongly support which one of the following?"
+PT136-S2-LR.json,PT136,2,7,Principle Strengthen,2,"Which one of the following principles, if valid, would most help to justify Mike's reasoning?"
+PT136-S2-LR.json,PT136,2,12,Principle Strengthen,4,"Which one of the following principles, if valid, most helps to justify the argument's reasoning?"
+PT136-S2-LR.json,PT136,2,15,Flaw,3,The reasoning in the commentator's argument is most vulnerable to criticism on the grounds that it overlooks the possibility that
+PT136-S2-LR.json,PT136,2,16,Parallel,3,The reasoning in which one of the following is most similar to the reasoning in the argument above?
+PT136-S2-LR.json,PT136,2,17,Strengthen,2,"Which one of the following, if true, provides the most support for the president's prediction?"
+PT136-S2-LR.json,PT136,2,23,Paradox,2,"Which one of the following, if true, would do most to resolve the apparent discrepancy described above?"
+PT136-S2-LR.json,PT136,2,25,Method,4,Which one of the following most accurately describes the argumentative technique employed above?
+PT136-S4-LR.json,PT136,4,6,Weaken,3,"Of the following, which one, if true, is the strongest counter Patricia can make to Tamara's objection?"
+PT136-S4-LR.json,PT136,4,10,Paradox,3,"Assuming that the scientists' current belief about Earth's atmosphere at the time life began is correct, which one of the following, if true"
+PT136-S4-LR.json,PT136,4,13,Parallel,2,The pattern of reasoning in which one of the following is most similar to that in the argument above?
+PT136-S4-LR.json,PT136,4,15,Paradox,4,"Which one of the following, if true, most helps to explain the study's findings?"
+PT136-S4-LR.json,PT136,4,18,Paradox,4,"Which one of the following, if true, would most help to resolve the apparent conflict presented above?"
+PT136-S4-LR.json,PT136,4,22,Flaw,3,Which one of the following is a questionable reasoning technique employed in the argument?
+PT137-S2-LR.json,PT137,2,1,Weaken,2,"Which one of the following, if true, would most seriously weaken the argument?"
+PT137-S2-LR.json,PT137,2,2,Paradox,2,"Which one of the following, if true, most helps to explain the increased rate of population loss?"
+PT137-S2-LR.json,PT137,2,4,Paradox,3,"Each of the following, if true, helps to account for the greater cost of modular furniture except:"
+PT137-S2-LR.json,PT137,2,12,Method of Reasoning,4,Which one of the following most accurately describes the manner in which the doctor's second set of recommendations and the results of its a
+PT137-S2-LR.json,PT137,2,22,Role,3,Which one of the following most accurately describes the role played in the argument by the claim that whatever the basis of poetic excellen
+PT137-S3-LR.json,PT137,3,1,Paradox,1,"Which one of the following, if true, most helps to explain the discrepancy between the intended results of the highway improvements and the "
+PT137-S3-LR.json,PT137,3,17,Must Be True,4,"If the statements above are true, which one of the following must be true?"
+PT137-S4-LR.json,PT137,4,3,Paradox,2,"Which one of the following, if true, helps most to resolve the apparent paradox described above?"
+PT137-S4-LR.json,PT137,4,15,Most Strongly Supported,4,Which one of the following is most strongly supported by the information above?
+PT137-S4-LR.json,PT137,4,17,Must Be True,4,Which one of the following can be properly inferred from the information above?
+PT137-S4-LR.json,PT137,4,22,Role,3,The claim that there are paintings that are not works of art plays which one of the following roles in the linguist's argument?
+PT137-S4-LR.json,PT137,4,23,Paradox,4,"Which one of the following, if true, most helps to explain the biologists' findings?"
+PT138-S2-LR.json,PT138,2,1,Most Supported,1,Which one of the following can be properly inferred from the technician's statements?
+PT138-S2-LR.json,PT138,2,2,Evaluate,2,"In order to evaluate the argument above, it is necessary to determine whether"
+PT138-S2-LR.json,PT138,2,6,Paradox,2,"Which one of the following, if true, most helps to explain the difference between the goals of movie executives and those of television exec"
+PT138-S2-LR.json,PT138,2,9,Parallel Flaw,1,The reasoning in which one of the following arguments most closely resembles that in the argument above?
+PT138-S2-LR.json,PT138,2,11,Role,3,Which one of the following most accurately describes how the statement that most people are taught to be cautious interpreters of language f
+PT138-S2-LR.json,PT138,2,13,Strengthen,3,"Which one of the following, if true, most helps to justify the publisher's prediction?"
+PT138-S2-LR.json,PT138,2,20,Flaw,3,The argument is most vulnerable to criticism on the grounds that it
+PT138-S3-LR.json,PT138,3,9,Weaken,2,"Which one of the following, if true, most weakens the argument?"
+PT138-S3-LR.json,PT138,3,10,Most Strongly Supported,3,Which one of the following is most strongly supported by the information above?
+PT138-S3-LR.json,PT138,3,20,Method of Reasoning,5,The scientist’s argument proceeds by
+PT138-S4-LR.json,PT138,4,9,Paradox,5,"Which one of the following, if true, most helps to resolve the apparent discrepancy described above?"
+PT139-S1-LR.json,PT139,1,11,Role,2,The statement that the majority of students picked a twentieth-century poet functions primarily in the argument
+PT139-S1-LR.json,PT139,1,14,Parallel Flaw,2,The flawed pattern of reasoning in which one of the following arguments most closely resembles the flawed pattern of reasoning in the argume
+PT139-S1-LR.json,PT139,1,15,Resolve Paradox,3,"Which one of the following, if true, most helps to explain the apparently paradoxical result?"
+PT139-S4-LR.json,PT139,4,5,Resolve Paradox,2,"Which one of the following, if true, would most help to resolve the apparent discrepancy described by the physiologist?"
+PT139-S4-LR.json,PT139,4,14,Parallel Reasoning: Questionable,4,Which one of the following uses questionable reasoning most similar to that used in the argument above?
+PT139-S4-LR.json,PT139,4,15,Logical Counter,3,"Of the following, which one is the strongest logical counter that the linguist can make to the philosopher?"
+PT139-S4-LR.json,PT139,4,19,Weaken,5,"Which one of the following, if true, most weakens the professor's argument?"
+PT139-S4-LR.json,PT139,4,23,Strengthen,5,"Which one of the following, if true, most strengthens the botanist's argument?"
+PT140-S2-LR.json,PT140,2,7,Unknown,2,"Which one of the following would, if true, most contribute to an explanation of the phenomenon described above?"
+PT140-S2-LR.json,PT140,2,9,Flaw,3,The reasoning in the CEO’s argument is flawed in that it
+PT140-S2-LR.json,PT140,2,13,Paradox,4,"Which one of the following, if true, most helps to resolve the apparent paradox in the consultant’s statements?"
+PT140-S2-LR.json,PT140,2,14,Unknown,5,"If the professor’s statements are true, which one of the following must also be true?"
+PT140-S2-LR.json,PT140,2,18,Most Strongly Supported,5,Which one of the following statements is most supported by the information above?
+PT140-S3-LR.json,PT140,3,3,Paradox,3,"Which one of the following, if true, most helps to explain the information about how often threat gestures are accompanied by physical attac"
+PT140-S3-LR.json,PT140,3,26,Paradox,5,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT141-S2-LR.json,PT141,2,2,"Resolve, reconcile, or explain",2,"Which one of the following, if true, most helps to explain the discrepancy that Jeneta observes in people’s responses?"
+PT141-S2-LR.json,PT141,2,5,Flaw (Flaw),2,Which one of the following most accurately describes a flaw in the science writer’s reasoning?
+PT141-S2-LR.json,PT141,2,24,"Resolve, reconcile, or explain",5,"Which one of the following, if true, most helps to explain the apparent conflict in the concertgoers’ views, as revealed by the survey?"
+PT141-S4-LR.json,PT141,4,22,"Resolve, reconcile, or explain",5,"Which one of the following, if true, most helps to resolve the apparent discrepancy described above?"
+PT142-S1-LR.json,PT142,1,11,Most Strongly Supported,2,"The critic’s statements, if true, most strongly support
+which one of the following?"
+PT142-S1-LR.json,PT142,1,12,Sufficient Assumption,3,"The conclusion drawn above follows logically if which
+one of the following is assumed?"
+PT142-S1-LR.json,PT142,1,15,Most Strongly Supported,2,"Which one of the following, if true, most helps to
+explain the concentrations of bacteria one week after the
+treatment?"
+PT142-S1-LR.json,PT142,1,20,Sufficient Assumption,5,"The conclusion of the argument follows logically if
+which one of the following is assumed?"
+PT142-S1-LR.json,PT142,1,21,Evaluate,4,"Which one of the following would be most useful to
+know in order to evaluate the argument?"
+PT142-S1-LR.json,PT142,1,22,Most Strongly Supported,3,"The statements above, if true, most strongly support
+which one of the following hypotheses?"
+PT142-S1-LR.json,PT142,1,25,Flaw,4,"The student’s argument is most similar in its flawed
+pattern of reasoning to which one of the following?"
+PT142-S2-LR.json,PT142,2,3,Must Be True,2,"If all of the statements above are true, then which one of
+the following must be true?"
+PT142-S2-LR.json,PT142,2,9,Main Conclusion,3,"Which one of the following most accurately expresses
+the main conclusion of the musicologist’s argument?"
+PT142-S2-LR.json,PT142,2,25,Strengthen,2,"Which one of the following, if true, most helps to
+account for the apparent discrepancy in the students’
+preferences?"
+PT142-S4-LR.json,PT142,4,8,Most Strongly Supported,1,"To which one of the following criticisms is the argument
+most vulnerable?"
+PT142-S4-LR.json,PT142,4,9,Most Strongly Supported,4,"Which one of the following, if true, would most help to
+explain why people tend to have accurate beliefs about
+society despite the facts des"
+PT142-S4-LR.json,PT142,4,10,Evaluate,1,"The answer to which one of the following questions
+would be most useful to know in order to evaluate the
+argument?"
+PT142-S4-LR.json,PT142,4,11,Most Strongly Supported,3,"Which one of the following statements is most strongly
+supported by the information above?"
+PT142-S4-LR.json,PT142,4,12,Principle-Conform,2,"Which one of the following principles, if valid, most
+helps to reconcile the apparent conflict among the prime
+minister’s claims?"
+PT142-S4-LR.json,PT142,4,13,Most Strongly Supported,2,"If all of the mayor’s statements are true, then which one
+of the following must also be true?"
+PT142-S4-LR.json,PT142,4,17,Most Strongly Supported,3,"The argument uses which one of the following
+techniques in its attempt to undermine the position that
+it attributes to the proponents of jur"
+PT142-S4-LR.json,PT142,4,19,Method of Reasoning,5,"The pattern of reasoning in which one of the following is
+most similar to that in the argument above?"
+PT142-S4-LR.json,PT142,4,20,Most Strongly Supported,5,"The economist’s argument is most vulnerable to the
+criticism that it"
+PT142-S4-LR.json,PT142,4,21,Principle-Conform,5,"The argument in the letter conflicts with which one of
+the following principles?"
+PT142-S4-LR.json,PT142,4,23,Most Strongly Supported,5,"The government of Country F must violate at least one
+of the constitutional requirements described above if it is
+faced with which one of th"
+PT142-S4-LR.json,PT142,4,24,Weaken,4,"Which one of the following, if true, most weakens the
+argument?"
+PT142-S4-LR.json,PT142,4,25,Flaw,4,"Which one of the following arguments exhibits flawed
+reasoning that is most parallel to that in the argument
+above?"
+PT142-S4-LR.json,PT142,4,26,Strengthen,3,"Which one of the following, if true, most strengthens the
+argument?"
+PT143-S1-LR.json,PT143,1,6,Strengthen,3,"Which one of the following, if true, most helps to
+account for the response of auto safety experts to the
+popularity of SUVs?"
+PT143-S1-LR.json,PT143,1,12,Flaw,4,"The reasoning in the commentator’s argument is most
+vulnerable to criticism on the grounds that the argument"
+PT143-S1-LR.json,PT143,1,14,Most Strongly Supported,3,"Which one of the following most accurately describes
+the role played in the argument by the claim that society
+would not be better off if th"
+PT143-S1-LR.json,PT143,1,17,Most Strongly Supported,4,"The statements above, if true, most strongly support
+which one of the following?"
+PT143-S1-LR.json,PT143,1,20,Most Strongly Supported,3,"Which one of the following conclusions is most strongly
+supported by the information above?"
+PT143-S3-LR.json,PT143,3,5,Most Strongly Supported,2,"Which one of the following, if true, helps to resolve the
+apparent conflict described above?"
+PT143-S3-LR.json,PT143,3,11,Most Strongly Supported,4,"The literature professor argues that the conclusion drawn
+by the critics has not really been established, on the
+grounds that"
+PT143-S3-LR.json,PT143,3,14,Flaw,3,"Which one of the following demonstrates most
+effectively by parallel reasoning that Branson’s argument
+is flawed?"
+PT143-S4-LR.json,PT143,4,7,Most Strongly Supported,2,"The statements above, if true, most strongly support
+which one of the following?"
+PT143-S4-LR.json,PT143,4,22,Main Conclusion,2,"The claim that the town’s charter, if not restored, will
+soon deteriorate beyond repair plays which one of the
+following roles in the librar"
+PT143-S4-LR.json,PT143,4,24,Flaw,5,The reasoning in the argument is flawed in that it
+PT144-S2-LR.json,PT144,2,4,Flaw or descriptive weakening,1,Biologist: A careful study of the behavior of six individual chameleons concluded that lizards such as chameleons bask in the sun not only f
+PT144-S2-LR.json,PT144,2,7,Miscellaneous,3,"Which one of the following, if true, would most help to explain the decreasing engagement in international trade by the economist’s country?"
+PT144-S2-LR.json,PT144,2,11,Resolve reconcile or explain,3,"Which one of the following, if true, does most to explain the surprising result?"
+PT144-S3-LR.json,PT144,3,5,Miscellaneous,3,"Which one of the following, if true, would most help to resolve the apparent discrepancy described above?"
+PT144-S3-LR.json,PT144,3,12,Resolve reconcile or explain,1,"Which one of the following, if true, most helps to explain why trees of the rarest species tend to survive longer than trees of the most com"
+PT144-S3-LR.json,PT144,3,22,Must be true,2,which one of the following must be true?
+PT144-S4-LR.json,PT144,4,3,Miscellaneous,1,"Which one of the following, if true, does most to account for the increase in the rate of population decline described above?"
+PT144-S4-LR.json,PT144,4,25,Miscellaneous,3,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT145-S2-LR.json,PT145,2,20,Argument part,3,Which one of the following most accurately describes the role played in the critic’s argument by the claim that when we evaluate a work prin
+PT145-S4-LR.json,PT145,4,3,Resolve reconcile or explain,1,"Which one of the following, if true, would most help to explain the researchers’ surprising finding?"
+PT146-S3-LR.json,PT146,3,4,Role in Argument,2,The claim that more steel was purchased when it could be manufactured more cheaply plays which one of the following roles in the argument?
+PT146-S3-LR.json,PT146,3,9,Paradox,1,"Which one of the following, if true, most helps to explain the surprising finding?"
+PT146-S3-LR.json,PT146,3,16,Paradox,4,"Which one of the following, if true, would most help to explain the babblers’ strange behavior?"
+PT147-S1-LR.json,PT147,1,3,Paradox,1,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT147-S4-LR.json,PT147,4,3,Paradox,1,"Which one of the following, if true, most helps to resolve the apparent conflict in the information above?"
+PT147-S4-LR.json,PT147,4,5,Misinterpretation,3,Tyne’s response to Marisa suggests that Tyne has misinterpreted which one of the following words in Marisa’s remarks?
+PT148-S3-LR.json,PT148,3,11,Paradox,2,"Which one of the following, if true, most helps to explain why the profits of businesses that did not use customer surveys did not decline w"
+PT148-S4-LR.json,PT148,4,3,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent discrepancy described above?"
+PT148-S4-LR.json,PT148,4,10,Strengthen,5,"Which one of the following, if true, most strengthens the farmer’s argument?"
+PT148-S4-LR.json,PT148,4,13,Paradox,2,"Which one of the following, if true, would most help to resolve the puzzle described above?"
+PT149-S1-LR.json,PT149,1,13,Must Be True,4,"If the statements above are true, which one of the following must be true?"
+PT149-S3-LR.json,PT149,3,14,Most Strongly Supported,3,The information above most strongly supports which one of the following?
+PT149-S4-LR.json,PT149,4,5,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the safety expert’s statements?"
+PT149-S4-LR.json,PT149,4,12,Strengthen,2,"Which one of the following would, if true, most strengthen the argument above?"
+PT149-S4-LR.json,PT149,4,23,Parallel Reasoning,5,The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?
+PT149-S4-LR.json,PT149,4,25,Weaken,5,"Which one of the following, if true, most weakens the scientist’s argument?"
+PT149-S4-LR.json,PT149,4,26,Flaw,3,The reasoning in the argument is most vulnerable to criticism on the grounds that the argument
+PT150-S2-LR.json,PT150,2,6,Must be True,3,Which one of the following statements must be true if what John’s literature professor believes is true?
+PT150-S2-LR.json,PT150,2,7,Strengthen,3,"Which one of the following, if true, most helps to justify the advocates’ contention?"
+PT150-S2-LR.json,PT150,2,8,Role,2,The claim that one should not confuse a desire for money with a desire for material possessions plays which one of the following roles in th
+PT150-S2-LR.json,PT150,2,9,Weaken,3,"Which one of the following, if true, most undermines Yu’s claim?"
+PT150-S2-LR.json,PT150,2,11,Weaken,3,"Which one of the following, if true, most weakens the argument?"
+PT150-S2-LR.json,PT150,2,19,Parallel Flaw,5,Which one of the following is most closely parallel in its flawed reasoning to the flawed reasoning in the argument above?
+PT150-S2-LR.json,PT150,2,20,Must be True,3,"If the statements above are true, which one of the following must also be true?"
+PT150-S2-LR.json,PT150,2,24,Must be True,5,Which one of the following can be properly inferred from the legal theorist’s statements?
+PT150-S2-LR.json,PT150,2,25,Paradox,3,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT150-S3-LR.json,PT150,3,2,Most Strongly Supported,1,"Which one of the following, if true, most helps to
+ explain the surprising behavior described above?"
+PT150-S3-LR.json,PT150,3,4,Weaken,2,"Which one of the following, if true, most seriously
+ weakens the argument?"
+PT150-S3-LR.json,PT150,3,6,Most Strongly Supported,4,"Which one of the following, if true, provides the most
+ support for the argument’s conclusion?"
+PT150-S3-LR.json,PT150,3,9,Flaw,2,"The reasoning in the marketing agent’s argument is most
+ vulnerable to criticism on the grounds that the argument"
+PT150-S3-LR.json,PT150,3,16,Flaw,3,"The reasoning in the automobile executive’s argument is
+ most vulnerable to criticism on the grounds that it"
+PT150-S3-LR.json,PT150,3,17,Most Strongly Supported,4,"Which one of the following, if true, most helps to resolve
+ the apparent discrepancy described above?"
+PT150-S3-LR.json,PT150,3,24,Flaw,5,"The reasoning in the politician’s argument is flawed in
+ that the argument"
+PT151-S2-LR.json,PT151,2,11,Most Strongly Supported,2,"Which one of the following, if true, most helps to resolve
+the apparent discrepancy in the information above?"
+PT151-S3-LR.json,PT151,3,15,Method of Reasoning,3,The argument does which one of the following?
+PT151-S3-LR.json,PT151,3,23,Most Strongly Supported,2,"Which one of the following, if true, most helps to
+explain the researchers’ finding?"
+PT151-S4-LR.json,PT151,4,2,Most Strongly Supported,1,"Which one of the following, if true, most helps to
+account for the failure described above?"
+PT151-S4-LR.json,PT151,4,6,Most Strongly Supported,2,"Which one of the following, if true, most helps to
+explain the discrepancy described above?"
+PT151-S4-LR.json,PT151,4,7,Flaw,2,"The reasoning in the argument is most vulnerable to
+criticism on the grounds that the argument"
+PT151-S4-LR.json,PT151,4,9,Flaw,2,"Which one of the following most accurately describes a
+flaw in the argument?"
+PT151-S4-LR.json,PT151,4,10,Most Strongly Supported,2,"The researcher’s statements, if true, most strongly
+support which one of the following?"
+PT151-S4-LR.json,PT151,4,11,Flaw,2,"The flawed nature of the argument above can most
+effectively be demonstrated by noting that, by parallel
+reasoning, we could conclude that"
+PT151-S4-LR.json,PT151,4,17,Most Strongly Supported,4,"The statement that considerations as remote as what an
+offender did years ago are relevant to the seriousness of
+an offense plays which one "
+PT151-S4-LR.json,PT151,4,20,Sufficient Assumption,3,"Which one of the following, if assumed, enables the
+argument’s conclusion to be properly drawn?"
+PT151-S4-LR.json,PT151,4,21,Method of Reasoning,4,"Which one of the following is a technique of reasoning
+used in the argument?"
+PT151-S4-LR.json,PT151,4,23,Flaw,3,"Which one of the following most accurately describes a
+logical flaw in the argument?"
+PT151-S4-LR.json,PT151,4,24,Most Strongly Supported,5,"Of the following statements, which one is most strongly
+supported by the information above?"
+PT151-S4-LR.json,PT151,4,25,Method of Reasoning,4,"Which one of the following arguments is most similar in
+its reasoning to the argument above?"
+PT152-S1-LR.json,PT152,1,13,Paradox,3,"Which one of the following, if true, most helps to explain the failure of the native oyster populations to recover?"
+PT152-S1-LR.json,PT152,1,18,Paradox,3,"Which one of the following, if true, would most help to explain why, in this nature preserve, Common Eiders that lay their eggs in other bir"
+PT152-S1-LR.json,PT152,1,22,Most Strongly Supported,4,"The statements above, if true, most strongly support which one of the following?"
+PT152-S2-LR.json,PT152,2,1,Flaw,1,The reasoning in the student’s argument is most vulnerable to criticism on the grounds that the argument
+PT152-S2-LR.json,PT152,2,8,Paradox,1,"Which one of the following, if true, most helps to explain why cuttlefish use startle displays?"
+PT152-S2-LR.json,PT152,2,10,Main Conclusion,4,Which one of the following most accurately expresses the main conclusion drawn in Godinez’s argument?
+PT152-S2-LR.json,PT152,2,13,Paradox,3,"Which one of the following, if true, most helps to resolve the apparent conflict between Shelton’s and Russo’s statements?"
+PT152-S2-LR.json,PT152,2,15,Weaken,4,"Which one of the following, if true, most weakens the argument?"
+PT152-S2-LR.json,PT152,2,17,Paradox,4,"Which one of the following, if true, most helps to explain the tendency of corrections in the scientist’s field to favor Jones’s theory?"
+PT152-S2-LR.json,PT152,2,22,Flaw,5,Which one of the following most accurately describes a flaw in the argument’s reasoning?
+PT152-S2-LR.json,PT152,2,24,Must be false,4,"If the political scientist’s statements are true, which one of the following must be false?"
+PT152-S4-LR.json,PT152,4,14,Role,3,Cora’s claim that it is natural for humans to use technology to effect changes on the environment plays which one of the following roles in 
+PT152-S4-LR.json,PT152,4,23,Paradox,5,"Which one of the following, if true, would most help to explain the dramatic impact of the antitheft device?"
+PT153-S2-LR.json,PT153,2,20,Role,2,The claim that the literary theorists evaluate particular literary works as being ideological expressions that are more or less interesting 
+PT153-S2-LR.json,PT153,2,21,Must Be True,5,"If all of the official’s statements are true, which one of the following must be true?"
+PT153-S2-LR.json,PT153,2,23,Parallel,3,The pattern of reasoning in the critic’s argument is most similar to that in which one of the following arguments?
+PT153-S3-LR.json,PT153,3,4,Paradox,2,"Which one of the following, if true, most helps to explain the anomaly described above?"
+PT153-S3-LR.json,PT153,3,5,Main Conclusion,2,Which one of the following most accurately expresses the conclusion of the argument?
+PT153-S3-LR.json,PT153,3,24,Must Be True,3,"If the statements above are true, which one of the following must also be true?"
+PT154-S1-LR.json,PT154,1,2,Sufficient Assumption,1,The conclusion of the classicist’s argument follows logically if which one of the following is assumed?
+PT154-S1-LR.json,PT154,1,6,Paradox,1,"Which one of the following, if true, contributes to an explanation of the increase in sales at restaurants in the district?"
+PT154-S1-LR.json,PT154,1,9,Flaw,4,The reasoning in the argument is flawed in that it
+PT154-S1-LR.json,PT154,1,10,Parallel,1,Which one of the following arguments is most similar in its reasoning to the argument above?
+PT154-S1-LR.json,PT154,1,15,Method,2,Which one of the following descriptions best fits Bernd Heinrich’s study as reported in the passage above?
+PT154-S1-LR.json,PT154,1,16,Weaken,4,"Which one of the following, if true, would most weaken the argument above?"
+PT154-S1-LR.json,PT154,1,23,Must Be True,5,"If the inventor’s statements are true, which one of the following must also be true?"
+PT154-S1-LR.json,PT154,1,24,Paradox,3,"Which one of the following, if true, would most help to resolve the apparent discrepancy described above?"
+PT154-S1-LR.json,PT154,1,25,Parallel Flaw,5,Which one of the following arguments exhibits a pattern of questionable reasoning most similar to that exhibited by the argument above?
+PT154-S2-LR.json,PT154,2,12,Flaw,4,The reasoning in Bauer’s argument is most vulnerable to criticism on the grounds that the argument
+PT154-S2-LR.json,PT154,2,18,Role,3,Which one of the following most accurately describes the role played in the argument by the statement that under a certain conception of cul
+PT154-S2-LR.json,PT154,2,22,Must Be True,5,"If all of the art critic’s statements are true, which one of the following must also be true?"
+PT154-S2-LR.json,PT154,2,23,Paradox,3,"Which one of the following, if true, would most help to resolve the apparent paradox described above?"
+PT154-S4-LR.json,PT154,4,3,Strengthen,1,"Which one of the following, if true, most strengthens the audiologist’s argument?"
+PT154-S4-LR.json,PT154,4,5,Paradox,2,"Which one of the following, if true, most helps to explain the surprising fact stated by the professor?"
+PT154-S4-LR.json,PT154,4,7,Parallel Flaw,1,"The flawed nature of the argument can be most effectively demonstrated by noting that, by parallel reasoning, we could argue that"
+PT154-S4-LR.json,PT154,4,8,Weaken,1,"Which one of the following would, if true, most undermine the argument?"
+PT154-S4-LR.json,PT154,4,10,Flaw,1,The reasoning in the columnist’s argument is flawed because it fails to consider
+PT154-S4-LR.json,PT154,4,13,Role,3,Which one of the following most accurately describes the role played in Lindsey’s argument by the claim that an activity as profound and eng
+PT154-S4-LR.json,PT154,4,15,Flaw,4,The reasoning in the argument is flawed in that it
+PT154-S4-LR.json,PT154,4,18,Most Supported,4,"The economist’s statements, if true, most strongly support which one of the following?"
+PT154-S4-LR.json,PT154,4,20,Sufficient Assumption,4,The conclusion of the critic’s argument follows logically if which one of the following is assumed?
+PT154-S4-LR.json,PT154,4,21,Flaw,5,The engineer’s argument is most vulnerable to criticism on which one of the following grounds?
+PT154-S4-LR.json,PT154,4,26,Sufficient Assumption,3,The conclusion drawn above follows logically if which one of the following is assumed?
+PT155-S1-LR.json,PT155,1,3,Paradox,1,"Which one of the following would, if true, most help to resolve the apparent paradox described above?"
+PT155-S1-LR.json,PT155,1,18,Parallel,3,Which one of the following arguments is most similar in its reasoning to the argument above?
+PT156-S2-LR.json,PT156,2,3,Most Strongly Supported,1,"Which one of the following, if true, most helps to explain
+ the surprising finding described above?"
+PT156-S4-LR.json,PT156,4,15,Necessary Assumption,4,"Which one of the following would, if true, most support
+ the historian’s argument?"
+PT157-S2-LR.json,PT157,2,19,Most Strongly Supported,5,"Which one of the following can be properly inferred if the
+ chairperson’s statements are true?"
+PT157-S3-LR.json,PT157,3,18,Most Strongly Supported,5,"Each of the following, if true, helps to resolve the
+ apparent discrepancy described above except:"
+PT157-S3-LR.json,PT157,3,23,Most Strongly Supported,5,"Which one of the following is most strongly supported
+ by the information above?"
+PT158-S2-LR.json,PT158,2,5,Most Strongly Supported,3,"Which one of the following, if true, most adequately
+ resolves the problem raised above?"
+PT158-S3-LR.json,PT158,3,6,Most Strongly Supported,2,"Which one of the following, if true, most helps to
+ explain why pollution levels in Crystal Bay increase
+ after a heavy rainfall?"
+PT158-S3-LR.json,PT158,3,20,Most Strongly Supported,5,"Which one of the following can be properly inferred
+ from the information above?"
+PT159-S1-LR.json,PT159,1,4,Paradox,2,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the statements above?"
+PT159-S1-LR.json,PT159,1,9,Paradox,1,"Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?"
+PT159-S1-LR.json,PT159,1,14,Principle-Conform,4,"Which one of the following principles, if valid, most helps to justify the environmentalist’s reasoning?"
+PT159-S3-LR.json,PT159,3,6,Weaken,3,"Which one of the following, if true, would most weaken the argument?"
+PT159-S3-LR.json,PT159,3,7,Paradox,2,"Which one of the following, if true, most helps to explain the sales discrepancy described above?"

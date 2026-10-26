@@ -1,0 +1,563 @@
+practiceTest,section,question,questionType,status,lsatu_features,lab_reasoning,lab_dropped_tags,lab_raw_subtypes
+PT101,2,12,Main Conclusion,topic_only,,,Main Point,Main Point
+PT101,2,13,Parallel,blank_in_lab,,,,
+PT101,3,4,Flaw,reasoning_only,,Causation,,Causation
+PT101,3,7,Most Supported,reasoning_only,,Comparison,,Comparison
+PT101,3,8,Must be True,reasoning_only,,Conditional Logic,,Conditional Logic
+PT101,3,11,Must be True,filled_lsatu_feature,Causal Difference-Maker,Causation | Comparison,,Causation | Comparison | Causal Difference-Maker
+PT101,3,12,Flaw,blank_in_lab,,,,
+PT102,2,2,Parallel Flaw,reasoning_only,,Conditional Logic | Comparison,Conversational Abstraction,Conditional Logic | Comparison | Conversational Abstraction
+PT102,3,3,Most Supported,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT102,3,4,Weaken,reasoning_only,,Causation,,Causation
+PT102,3,5,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT102,3,7,Flaw,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT102,3,14,Flaw,blank_in_lab,,,,
+PT102,3,20,Parallel,reasoning_only,,Conditional Logic,,Conditional Logic
+PT102,3,22,Parallel Flaw,reasoning_only,,Conditional Logic,,Conditional Logic
+PT102,4,2,Must Be True,reasoning_only,,Comparison,,Comparison
+PT102,4,7,Sufficient Assumption,reasoning_only,,Comparison,,Comparison
+PT102,4,8,Flaw,reasoning_only,,Conditional Logic,,Conditional Logic
+PT102,4,10,Weaken,blank_in_lab,,,,
+PT102,4,13,Paradox,reasoning_only,,Comparison | Causation,,Comparison | Causation
+PT102,4,16,Must Be False,reasoning_only,,Conditional Logic,,Conditional Logic
+PT102,4,21,Method,blank_in_lab,,,,
+PT102,4,26,Must Be False,blank_in_lab,,,,
+PT103,1,1,Flaw,reasoning_only,,Causation,,Causation
+PT103,1,6,Flaw,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT103,1,7,Strengthen,reasoning_only,,Causation,,Causation
+PT103,1,10,Weaken,reasoning_only,,Comparison,,Comparison
+PT103,1,11,Sufficient Assumption,reasoning_only,,Comparison,,Comparison
+PT103,1,12,Most Supported,reasoning_only,,Conditional Logic | Causation,,Conditional Logic | Causation
+PT103,1,17,Role,blank_in_lab,,,,
+PT103,1,19,Most Supported,reasoning_only,,Conditional Logic | Comparison,,Conditional Logic | Comparison
+PT103,1,20,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT103,1,22,Evaluate,reasoning_only,,Conditional Logic | Comparison,,Conditional Logic | Comparison
+PT103,2,18,Most Supported,reasoning_only,,Conditional Logic,,Conditional Logic
+PT103,2,20,Weaken,reasoning_only,,Conditional Logic,,Conditional Logic
+PT103,2,21,Necessary Assumption,reasoning_only,,Conditional Logic,,Conditional Logic
+PT103,2,26,Sufficient Assumption,position_not_in_lab_lr,,,,
+PT103,3,1,Paradox Resolve / explain,blank_in_lab,,,,
+PT103,3,4,Role,topic_only,,,ROLE,ROLE
+PT103,3,18,Paradox Resolve / explain discrepancy,blank_in_lab,,,,
+PT104,4,8,Paradox,reasoning_only,,Comparison,,Comparison
+PT105,1,5,Weaken,blank_in_lab,,,,
+PT105,1,6,Must be True,reasoning_only,,Conditional Logic,Morality / Ethics / Philosophy | Fact Triggers a Rule,Conditional Logic | Morality / Ethics / Philosophy | Fact Triggers a Rule
+PT105,1,7,Strengthen,blank_in_lab,,,,
+PT105,1,9,Sufficient Assumption,reasoning_only,,Comparison,,Comparison
+PT105,1,10,Weaken,blank_in_lab,,,,
+PT105,2,1,Most Supported,reasoning_only,,Conditional Logic | Causation,,Conditional Logic | Causation
+PT105,2,2,Weaken,reasoning_only,,Comparison,,Comparison
+PT105,2,5,Strengthen,reasoning_only,,Comparison,,Comparison
+PT105,2,9,Strengthen,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT105,2,10,Flaw,reasoning_only,,Causation,,Causation
+PT105,2,14,Flaw,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT105,2,17,Parallel Flaw,reasoning_only,,Conditional Logic,,Conditional Logic
+PT105,2,18,Paradox,blank_in_lab,,,,
+PT105,2,19,Parallel,reasoning_only,,Conditional Logic,,Conditional Logic
+PT105,2,23,Most Supported,reasoning_only,,Causation,,Causation
+PT105,2,24,Must be True,reasoning_only,,Comparison,,Comparison
+PT105,4,5,Weaken,blank_in_lab,,,,
+PT105,4,11,Strengthen,blank_in_lab,,,,
+PT105,4,15,Most Supported,blank_in_lab,,,,
+PT105,4,16,Strengthen,blank_in_lab,,,,
+PT105,4,18,Weaken,blank_in_lab,,,,
+PT105,4,19,Flaw,blank_in_lab,,,,
+PT105,4,20,Method,blank_in_lab,,,,
+PT105,4,22,Sufficient Assumption,blank_in_lab,,,,
+PT106,2,3,Weaken,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT106,2,6,Must Be True,reasoning_only,,Conditional Logic,,Conditional Logic
+PT106,2,13,Most Strongly Supported Fill-in,reasoning_only,,Conditional Logic | Causation,,Conditional Logic | Causation
+PT106,2,14,Flaw,reasoning_only,,Comparison | Causation,,Comparison | Causation
+PT106,2,20,Parallel Flaw,blank_in_lab,,,,
+PT106,3,3,Paradox,reasoning_only,,Causation | Comparison,Animals,Causation | Comparison | Animals
+PT107,3,2,Main Conclusion,blank_in_lab,,,,
+PT107,3,7,Flaw,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT107,3,9,Strengthen,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT107,3,13,Method of Reasoning,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT107,3,15,Most Strongly Supported,reasoning_only,,Conditional Logic | Causation,,Conditional Logic | Causation
+PT107,3,23,Parallel flawed method of reasoning,reasoning_only,,Causation,,Causation
+PT108,2,2,Flaw,blank_in_lab,,,,
+PT108,2,4,Paradox,blank_in_lab,,,,
+PT108,2,6,Weaken,blank_in_lab,,,,
+PT108,2,7,Most Supported,topic_only,,,Animals,Animals
+PT108,2,10,Method,blank_in_lab,,,,
+PT108,2,14,Strengthen,blank_in_lab,,,,
+PT108,2,18,Flaw,blank_in_lab,,,,
+PT108,2,19,Strengthen,blank_in_lab,,,,
+PT108,3,2,Weaken,blank_in_lab,,,,
+PT108,3,4,Sufficient Assumption,blank_in_lab,,,,
+PT108,3,6,Paradox,reasoning_only,,Causation,,Causation
+PT108,3,7,Strengthen,blank_in_lab,,,,
+PT108,3,9,Flaw,blank_in_lab,,,,
+PT108,3,13,Method,blank_in_lab,,,,
+PT108,3,24,Parallel,blank_in_lab,,,,
+PT109,1,1,Strengthen,blank_in_lab,,,,
+PT109,1,6,Strengthen,blank_in_lab,,,,
+PT109,1,8,Paradox,blank_in_lab,,,,
+PT109,1,11,Must be True,blank_in_lab,,,,
+PT109,1,14,Paradox,blank_in_lab,,,,
+PT109,3,1,Paradox,reasoning_only,,Comparison,,Comparison
+PT109,3,14,Argument part,filled_lsatu_feature,Plans / Recommendations | Rebuttals | Implied Conclusion,Causation,,Causation | Plans / Recommendations | Rebuttals | Implied Conclusion
+PT109,3,21,Sufficient Assumption,blank_in_lab,,,,
+PT109,4,2,Sufficient Assumption,reasoning_only,,Conditional Logic,,Conditional Logic
+PT109,4,4,Must be True,filled_lsatu_feature,Refute a Conditional,Conditional Logic,,Conditional Logic | Refute a Conditional
+PT109,4,5,Sufficient Assumption,reasoning_only,,Conditional Logic,,Conditional Logic
+PT109,4,7,Must be True,blank_in_lab,,,,
+PT109,4,9,Flaw,reasoning_only,,Conditional Logic,,Conditional Logic
+PT109,4,13,Sufficient Assumption,reasoning_only,,Conditional Logic,,Conditional Logic
+PT109,4,14,Most Supported,reasoning_only,,Causation,,Causation
+PT109,4,17,Paradox,blank_in_lab,,,,
+PT109,4,19,Weaken,reasoning_only,,Conditional Logic,,Conditional Logic
+PT109,4,20,Parallel,reasoning_only,,Conditional Logic,,Conditional Logic
+PT109,4,23,Method,reasoning_only,,Comparison,,Comparison
+PT109,4,24,Weaken,blank_in_lab,,,,
+PT109,4,25,Must be True,reasoning_only,,Conditional Logic,,Conditional Logic
+PT110,2,4,Most Supported,reasoning_only,,Causation,,Causation
+PT110,2,5,Paradox,reasoning_only,,Comparison,,Comparison
+PT110,2,6,Parallel,blank_in_lab,,,,
+PT110,2,7,Paradox,reasoning_only,,Conditional Logic,Morality / Ethics / Philosophy,Conditional Logic | Morality / Ethics / Philosophy
+PT110,2,8,Method,blank_in_lab,,,,
+PT110,2,10,Sufficient Assumption,blank_in_lab,,,,
+PT110,2,12,Weaken,blank_in_lab,,,,
+PT110,2,22,Role,blank_in_lab,,,,
+PT110,2,23,Must be True,blank_in_lab,,,,
+PT110,3,12,Flaw Fill-in,blank_in_lab,,,,
+PT110,3,25,Parallel method of reasoning,blank_in_lab,,,,
+PT110,3,26,Argument part,blank_in_lab,,,,
+PT111,1,25,Paradox,blank_in_lab,,,,
+PT111,3,1,Weaken,blank_in_lab,,,,
+PT111,3,3,Strengthen,blank_in_lab,,,,
+PT111,3,9,Weaken,blank_in_lab,,,,
+PT111,3,16,Most Strongly Supported,reasoning_only,,Causation,,Causation
+PT111,3,20,Must Be True,blank_in_lab,,,,
+PT111,3,23,Main Conclusion,blank_in_lab,,,,
+PT111,4,2,Argument Part,blank_in_lab,,,,
+PT111,4,3,Most Strongly Supported,reasoning_only,,Causation,Art / Design,Causation | Art / Design
+PT111,4,12,Paradox,blank_in_lab,,,,
+PT111,4,14,Sufficient Assumption,blank_in_lab,,,,
+PT111,4,15,Argument Part,blank_in_lab,,,,
+PT111,4,21,Most Strongly Supported,reasoning_only,,Causation,Causal Connector Language | Money / Business / Economics,Causation | Causal Connector Language | Money / Business / Economics
+PT111,4,23,Parallel Method of Reasoning,blank_in_lab,,,,
+PT112,3,3,Main Conclusion,reasoning_only,,Conditional Logic,,Conditional Logic
+PT112,3,17,Most Supported,reasoning_only,,Conditional Logic,Conditional Chain | Art / Design,Conditional Logic | Conditional Chain | Art / Design
+PT112,4,1,Sufficient Assumption,blank_in_lab,,,,
+PT112,4,9,Parallel,blank_in_lab,,,,
+PT112,4,18,Strengthen,blank_in_lab,,,,
+PT113,2,2,Must be True,blank_in_lab,,,,
+PT113,2,4,Weaken,blank_in_lab,,,,
+PT113,2,5,Sufficient Assumption,blank_in_lab,,,,
+PT113,2,12,Must be True,blank_in_lab,,,,
+PT113,2,17,Paradox,blank_in_lab,,,,
+PT113,2,21,Parallel Flaw,blank_in_lab,,,,
+PT113,3,9,Main Conclusion,blank_in_lab,,,,
+PT113,3,11,Strengthen,blank_in_lab,,,,
+PT113,3,13,Flaw,reasoning_only,,Comparison,,Comparison
+PT113,3,18,Necessary Assumption,blank_in_lab,,,,
+PT113,3,19,Parallel Flaw,blank_in_lab,,,,
+PT113,3,20,Principle-Strengthen,blank_in_lab,,,,
+PT113,3,25,Flaw,position_not_in_lab_lr,,,,
+PT113,3,26,Strengthen,position_not_in_lab_lr,,,,
+PT113,4,2,Weaken,blank_in_lab,,,,
+PT113,4,5,Paradox,blank_in_lab,,,,
+PT113,4,9,Sufficient Assumption,blank_in_lab,,,,
+PT113,4,17,Flaw,blank_in_lab,,,,
+PT113,4,18,Weaken,blank_in_lab,,,,
+PT113,4,25,Strengthen,blank_in_lab,,,,
+PT114,1,1,Necessary Assumption,blank_in_lab,,,,
+PT114,1,15,Most Supported,blank_in_lab,,,,
+PT114,1,17,Weaken,blank_in_lab,,,,
+PT114,1,19,Most Supported,blank_in_lab,,,,
+PT114,1,20,Most Supported,blank_in_lab,,,,
+PT114,1,21,Most Supported,blank_in_lab,,,,
+PT114,2,6,Most Supported,blank_in_lab,,,,
+PT114,2,7,Paradox,blank_in_lab,,,,
+PT114,2,8,Flaw,reasoning_only,,Conditional Logic,Bias / Motive | Money / Business / Economics | Flaw (2-part description),Conditional Logic | Bias / Motive | Money / Business / Economics | Flaw (2-part description)
+PT114,2,15,Necessary Assumption,blank_in_lab,,,,
+PT114,2,16,Role,blank_in_lab,,,,
+PT114,2,24,Weaken,blank_in_lab,,,,
+PT114,4,1,Inference,reasoning_only,,Comparison,,Comparison
+PT114,4,15,Weaken,blank_in_lab,,,,
+PT114,4,16,Sufficient Assumption,blank_in_lab,,,,
+PT114,4,17,Parallel Flaw,blank_in_lab,,,,
+PT114,4,19,Evaluate,blank_in_lab,,,,
+PT115,2,3,Paradox,blank_in_lab,,,,
+PT115,4,5,Paradox,blank_in_lab,,,,
+PT115,4,6,Must be True,blank_in_lab,,,,
+PT115,4,9,Paradox,blank_in_lab,,,,
+PT115,4,16,Most Supported,blank_in_lab,,,,
+PT115,4,17,Necessary Assumption,blank_in_lab,,,,
+PT115,4,23,Flaw,blank_in_lab,,,,
+PT116,2,15,Paradox,blank_in_lab,,,,
+PT116,3,1,Necessary Assumption,blank_in_lab,,,,
+PT117,2,14,Main Conclusion,reasoning_only,,Causation,,Causation
+PT117,3,5,Principle-Conform,blank_in_lab,,,,
+PT117,3,11,Must be True,blank_in_lab,,,,
+PT117,3,14,Flaw,blank_in_lab,,,,
+PT117,3,18,Most Supported,blank_in_lab,,,,
+PT117,4,6,Argument Part,topic_only,,,ROLE,ROLE
+PT117,4,15,Must Be True,blank_in_lab,,,,
+PT117,4,20,Flaw,reasoning_only,,Causation,,Causation
+PT117,4,21,Parallel Method of Reasoning,blank_in_lab,,,,
+PT118,1,5,Agree/Disagree,position_not_in_lab_lr,,,,
+PT118,1,8,Principle-Conform,blank_in_lab,,,,
+PT118,1,23,Flaw,blank_in_lab,,,,
+PT118,3,4,Sufficient Assumption,blank_in_lab,,,,
+PT118,3,5,Paradox,blank_in_lab,,,,
+PT118,3,11,Strengthen,blank_in_lab,,,,
+PT118,3,23,Argument Part,blank_in_lab,,,,
+PT118,4,18,Most Supported,blank_in_lab,,,,
+PT118,4,20,Parallel Flaw,reasoning_only,,Causation,,Causation
+PT118,4,25,Principle-Strengthen,blank_in_lab,,,,
+PT119,2,4,Sufficient Assumption,blank_in_lab,,,,
+PT119,2,6,Paradox,reasoning_only,,Comparison,,Comparison
+PT119,2,8,Paradox,blank_in_lab,,,,
+PT119,2,17,Paradox,blank_in_lab,,,,
+PT119,2,19,Necessary Assumption,blank_in_lab,,,,
+PT119,2,23,Sufficient Assumption,blank_in_lab,,,,
+PT119,3,1,Paradox,blank_in_lab,,,,
+PT119,3,2,Necessary Assumption,reasoning_only,,Comparison,,Comparison
+PT119,3,7,Flaw,blank_in_lab,,,,
+PT119,3,9,Flaw,blank_in_lab,,,,
+PT119,3,10,Method,blank_in_lab,,,,
+PT119,3,13,Flaw,blank_in_lab,,,,
+PT119,3,16,Role,blank_in_lab,,,,
+PT119,3,24,Principle-Strengthen,blank_in_lab,,,,
+PT119,4,1,Paradox,reasoning_only,,Comparison | Causation,,Comparison | Causation
+PT119,4,13,Strengthen,reasoning_only,,Comparison | Causation,,Comparison | Causation
+PT119,4,15,Flaw,reasoning_only,,Comparison,,Comparison
+PT119,4,21,Sufficient Assumption,filled_lsatu_feature,New Concept in Conclusion | Missing Link / Idea,Comparison | Conditional Logic,,Comparison | New Concept in Conclusion | Missing Link / Idea | Conditional Logic
+PT120,1,6,Paradox,blank_in_lab,,,,
+PT120,1,9,Sufficient Assumption,blank_in_lab,,,,
+PT120,1,15,Parallel,blank_in_lab,,,,
+PT120,1,19,Weaken,topic_only,,,(AS) Inductive Reasoning | (AS) Pros/Cons,(AS) Inductive Reasoning | (AS) Pros/Cons
+PT120,1,22,Weaken,blank_in_lab,,,,
+PT120,1,26,Strengthen,filled_lsatu_feature,Explain Curious Fact | Plausibility | Focused on Evidence,Causation,Experiments / Studies | Statistical Correlation | School / Education ,Causation | Explain Curious Fact | Experiments / Studies | Plausibility | Focused on Evidence | Statistical Correlation | School / Education 
+PT120,3,2,Strengthen,blank_in_lab,,,,
+PT120,3,3,Most Supported,reasoning_only,,Conditional Logic,(AS) Inference-Compare,Conditional Logic | (AS) Inference-Compare
+PT120,3,4,Weaken,topic_only,,,(AS) Recommendations,(AS) Recommendations
+PT120,3,14,Weaken,topic_only,,,(AS) Recommendations,(AS) Recommendations
+PT120,3,20,Method,topic_only,,,(AS) Standards and Measurements,(AS) Standards and Measurements
+PT120,3,21,Sufficient Assumption,filled_lsatu_feature,Conditional Diagramming | First Sentence Conclusion | New Concept in Conclusion,Conditional Logic,Conditional Chain,Conditional Logic | Conditional Diagramming | First Sentence Conclusion | New Concept in Conclusion | Conditional Chain
+PT120,4,15,Sufficient Assumption,filled_lsatu_feature,Missing Link / Idea | Links Between Premises,Conditional Logic,,Conditional Logic | Missing Link / Idea | Links Between Premises
+PT120,4,18,Paradox,blank_in_lab,,,,
+PT120,4,23,Flaw,reasoning_only,,Comparison | Causation,,Comparison | Causation
+PT121,1,12,Parallel,reasoning_only,,Comparison,,Comparison
+PT121,1,16,Most Supported,reasoning_only,,Comparison,,Comparison
+PT121,1,19,Weaken,reasoning_only,,Comparison,,Comparison
+PT121,1,21,Flaw,reasoning_only,,Conditional Logic,,Conditional Logic
+PT121,1,22,Paradox,reasoning_only,,Comparison | Causation,,Comparison | Causation
+PT121,1,26,Must be True,reasoning_only,,Conditional Logic,,Conditional Logic
+PT121,4,5,Role,blank_in_lab,,,,
+PT121,4,8,Main Conclusion,blank_in_lab,,,,
+PT121,4,18,Must be False,blank_in_lab,,,,
+PT121,4,19,Paradox,blank_in_lab,,,,
+PT121,4,20,Weaken,blank_in_lab,,,,
+PT121,4,21,Sufficient Assumption,blank_in_lab,,,,
+PT121,4,23,Weaken,blank_in_lab,,,,
+PT121,4,26,Weaken,blank_in_lab,,,,
+PT122,1,4,Paradox,topic_only,,,(AS) Inductive Reasoning,(AS) Inductive Reasoning
+PT122,1,7,Must Be False,reasoning_only,,Conditional Logic,,Conditional Logic
+PT122,1,8,Strengthen,reasoning_only,,Comparison,,Comparison
+PT122,1,9,Most Supported,reasoning_only,,Conditional Logic | Causation,,Conditional Logic | Causation
+PT122,2,2,Paradox,blank_in_lab,,,,
+PT122,2,12,Role,blank_in_lab,,,,
+PT122,2,20,Most Supported,reasoning_only,,Causation,,Causation
+PT122,4,10,Must Be True,blank_in_lab,,,,
+PT122,4,11,Paradox,blank_in_lab,,,,
+PT122,4,14,Most Supported,blank_in_lab,,,,
+PT122,4,15,Method,reasoning_only,,Conditional Logic,,Conditional Logic
+PT122,4,17,Parallel,reasoning_only,,Causation,,Causation
+PT122,4,18,Sufficient Assumption,blank_in_lab,,,,
+PT122,4,19,Most Supported,blank_in_lab,,,,
+PT122,4,22,Sufficient Assumption,blank_in_lab,,,,
+PT123,2,25,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT125,2,4,Paradox,reasoning_only,,Causation | Comparison,Opposite of Expected Effect | Surprise Comes First,Causation | Comparison | Opposite of Expected Effect | Surprise Comes First
+PT125,2,17,Role,reasoning_only,,Comparison,Implied Difference | Two Principles | Politics / Government / Law | Morality / Ethics / Philosophy,Comparison | Implied Difference | Two Principles | Politics / Government / Law | Morality / Ethics / Philosophy
+PT125,4,6,Paradox,reasoning_only,,Causation | Comparison,Counterexample,Causation | Comparison | Counterexample
+PT125,4,13,Paradox,reasoning_only,,Causation | Comparison,Opposite of Expected Effect | Natural History / Environment / Anthropology | Reverse Causality,Causation | Comparison | Opposite of Expected Effect | Natural History / Environment / Anthropology | Reverse Causality
+PT125,4,21,Paradox,reasoning_only,,Causation | Comparison,Experiments / Studies | Third Factor,Causation | Comparison | Experiments / Studies | Third Factor
+PT126,4,2,Role,blank_in_lab,,,,
+PT126,4,8,Agree/Disagree,reasoning_only,,Comparison,,Comparison
+PT127,1,5,Paradox,reasoning_only,,Comparison | Causation,,Comparison | Causation
+PT127,1,26,Must be True,reasoning_only,,Conditional Logic,,Conditional Logic
+PT128,2,4,Paradox,reasoning_only,,Comparison,,Comparison
+PT128,2,19,Paradox,reasoning_only,,Comparison,,Comparison
+PT128,2,26,Weaken,position_not_in_lab_lr,,,,
+PT128,3,3,Parallel,reasoning_only,,Conditional Logic,,Conditional Logic
+PT128,3,6,Flaw,reasoning_only,,Comparison,,Comparison
+PT128,3,9,Flaw,reasoning_only,,Comparison,,Comparison
+PT128,3,10,Role,reasoning_only,,Conditional Logic,,Conditional Logic
+PT128,3,11,Sufficient Assumption,reasoning_only,,Conditional Logic | Comparison,,Conditional Logic | Comparison
+PT128,3,12,Flaw,reasoning_only,,Conditional Logic,,Conditional Logic
+PT128,3,13,Must Be True,reasoning_only,,Conditional Logic,,Conditional Logic
+PT128,3,14,Flaw,reasoning_only,,Causation,,Causation
+PT128,3,15,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT128,3,16,Main Conclusion,reasoning_only,,Causation | Conditional Logic,,Causation | Conditional Logic
+PT128,3,18,Flaw,reasoning_only,,Comparison,,Comparison
+PT128,3,23,Parallel Flaw,reasoning_only,,Comparison,,Comparison
+PT128,3,24,Flaw,reasoning_only,,Causation,,Causation
+PT129,1,21,Paradox,reasoning_only,,Conditional Logic | Causation | Comparison,,Conditional Logic | Causation | Comparison
+PT129,3,4,Agree/Disagree,reasoning_only,,Comparison,Experiments / Studies | Opposite of Expected Effect,Comparison | Experiments / Studies | Opposite of Expected Effect
+PT130,4,1,Paradox,reasoning_only,,Causation,Unintended Consequence,Causation | Unintended Consequence
+PT130,4,13,Most Strongly Supported,reasoning_only,,Comparison | Causation,Animals | Most Important Consideration,Comparison | Causation | Animals | Most Important Consideration
+PT131,1,26,Method,position_not_in_lab_lr,,,,
+PT131,2,1,Principle Conform,reasoning_only,,Causation,,Causation
+PT131,2,3,Paradox,reasoning_only,,Comparison,,Comparison
+PT131,2,4,Flaw,reasoning_only,,Causation,,Causation
+PT131,2,5,Strengthen,reasoning_only,,Comparison,,Comparison
+PT131,2,6,Flaw,reasoning_only,,Comparison,,Comparison
+PT131,2,8,Flaw,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT131,2,11,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT131,2,15,Flaw,reasoning_only,,Comparison,,Comparison
+PT131,2,20,Flaw,reasoning_only,,Comparison,,Comparison
+PT131,2,21,Weaken,reasoning_only,,Causation,,Causation
+PT131,2,22,Strengthen,filled_lsatu_feature,Explain Curious Fact | First Sentence Conclusion | Plausibility,Causation | Comparison,Experiments / Studies | Food / Agriculture,Causation | Comparison | Explain Curious Fact | First Sentence Conclusion | Experiments / Studies | Plausibility | Food / Agriculture
+PT131,3,1,Paradox,reasoning_only,,Causation,,Causation
+PT131,3,3,Main Conclusion,reasoning_only,,Comparison,,Comparison
+PT131,3,4,Flaw,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT131,3,5,Weaken,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT131,3,7,Most Supported,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT131,3,8,Flaw,reasoning_only,,Comparison,,Comparison
+PT131,3,10,Sufficient Assumption,reasoning_only,,Conditional Logic,,Conditional Logic
+PT131,3,11,Strengthen,reasoning_only,,Comparison,,Comparison
+PT131,3,13,Weaken,reasoning_only,,Comparison,,Comparison
+PT131,3,14,Method,reasoning_only,,Comparison,,Comparison
+PT131,3,20,Most Supported,reasoning_only,,Comparison,,Comparison
+PT131,3,22,Parallel Flaw,reasoning_only,,Conditional Logic,,Conditional Logic
+PT131,3,23,Method,reasoning_only,,Conditional Logic,,Conditional Logic
+PT131,3,24,Flaw,reasoning_only,,Comparison,,Comparison
+PT132,2,4,Strengthen,reasoning_only,,Causation,,Causation
+PT132,2,14,Method of Reasoning,blank_in_lab,,,,
+PT132,2,24,Must Be True,reasoning_only,,Causation,,Causation
+PT132,4,8,Must Be True,reasoning_only,,Comparison,,Comparison
+PT132,4,13,Flaw,reasoning_only,,Causation,,Causation
+PT132,4,14,Weaken,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT132,4,16,Sufficient Assumption,reasoning_only,,Conditional Logic,,Conditional Logic
+PT133,1,4,Strengthen,reasoning_only,,Comparison,,Comparison
+PT133,2,10,Strengthen/Explain,reasoning_only,,Causation | Comparison,Animals | Opposite of Expected Effect,Causation | Comparison | Animals | Opposite of Expected Effect
+PT133,3,5,Must Be True,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT133,3,8,Paradox,reasoning_only,,Causation,,Causation
+PT133,3,9,Weaken,reasoning_only,,Comparison,,Comparison
+PT133,3,12,Strengthen/Explain,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT133,3,13,Most Supported,reasoning_only,,Comparison,,Comparison
+PT133,3,25,Parallel Flaw,reasoning_only,,Comparison,,Comparison
+PT134,1,2,Must Be True,reasoning_only,,Conditional Logic,,Conditional Logic
+PT134,1,3,Method of Reasoning,reasoning_only,,Conditional Logic,,Conditional Logic
+PT134,1,6,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT134,1,14,Role,blank_in_lab,,,,
+PT134,1,25,Role,blank_in_lab,,,,
+PT134,2,18,Unknown,reasoning_only,,Comparison,Experiments / Studies,Comparison | Experiments / Studies
+PT134,3,8,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT134,3,10,Unknown,blank_in_lab,,,,
+PT134,3,13,Paradox,reasoning_only,,Comparison,,Comparison
+PT134,3,16,Role,reasoning_only,,Comparison,,Comparison
+PT134,3,26,Must Be True,reasoning_only,,Conditional Logic,,Conditional Logic
+PT135,1,12,Paradox,reasoning_only,,Comparison,,Comparison
+PT135,4,1,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT135,4,9,Most Strongly Supported,reasoning_only,,Conditional Logic,,Conditional Logic
+PT136,2,7,Principle Strengthen,reasoning_only,,Comparison,,Comparison
+PT136,2,12,Principle Strengthen,reasoning_only,,Comparison,,Comparison
+PT136,2,15,Flaw,reasoning_only,,Comparison,,Comparison
+PT136,2,16,Parallel,reasoning_only,,Comparison,,Comparison
+PT136,2,17,Strengthen,reasoning_only,,Causation,,Causation
+PT136,2,23,Paradox,reasoning_only,,Comparison,,Comparison
+PT136,2,25,Method,reasoning_only,,Conditional Logic,,Conditional Logic
+PT136,4,6,Weaken,reasoning_only,,Comparison,,Comparison
+PT136,4,10,Paradox,reasoning_only,,Conditional Logic | Causation,,Conditional Logic | Causation
+PT136,4,13,Parallel,reasoning_only,,Comparison,,Comparison
+PT136,4,15,Paradox,reasoning_only,,Comparison,,Comparison
+PT136,4,18,Paradox,reasoning_only,,Comparison,,Comparison
+PT136,4,22,Flaw,reasoning_only,,Conditional Logic | Comparison,,Conditional Logic | Comparison
+PT137,2,1,Weaken,reasoning_only,,Comparison,,Comparison
+PT137,2,2,Paradox,reasoning_only,,Comparison,(CL) Known Outcomes,Comparison | (CL) Known Outcomes
+PT137,2,4,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT137,2,12,Method of Reasoning,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT137,2,22,Role,blank_in_lab,,,,
+PT137,3,1,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT137,3,17,Must Be True,reasoning_only,,Conditional Logic,,Conditional Logic
+PT137,4,3,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT137,4,15,Most Strongly Supported,reasoning_only,,Conditional Logic,,Conditional Logic
+PT137,4,17,Must Be True,reasoning_only,,Comparison,,Comparison
+PT137,4,22,Role,blank_in_lab,,,,
+PT137,4,23,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT138,2,1,Most Supported,reasoning_only,,Conditional Logic,,Conditional Logic
+PT138,2,2,Evaluate,reasoning_only,,Comparison,,Comparison
+PT138,2,6,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT138,2,9,Parallel Flaw,reasoning_only,,Conditional Logic | Comparison,,Conditional Logic | Comparison
+PT138,2,11,Role,blank_in_lab,,,,
+PT138,2,13,Strengthen,reasoning_only,,Comparison,,Comparison
+PT138,2,20,Flaw,reasoning_only,,Conditional Logic | Comparison,,Conditional Logic | Comparison
+PT138,3,9,Weaken,reasoning_only,,Comparison,,Comparison
+PT138,3,10,Most Strongly Supported,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT138,3,20,Method of Reasoning,reasoning_only,,Conditional Logic,,Conditional Logic
+PT138,4,9,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT139,1,11,Role,reasoning_only,,Causation,ROLE,Causation | ROLE
+PT139,1,14,Parallel Flaw,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT139,1,15,Resolve Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT139,4,5,Resolve Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT139,4,14,Parallel Reasoning: Questionable,reasoning_only,,Conditional Logic,,Conditional Logic
+PT139,4,15,Logical Counter,reasoning_only,,Comparison,,Comparison
+PT139,4,19,Weaken,reasoning_only,,Comparison,,Comparison
+PT139,4,23,Strengthen,reasoning_only,,Comparison,,Comparison
+PT140,2,7,Unknown,reasoning_only,,Comparison,,Comparison
+PT140,2,9,Flaw,reasoning_only,,Comparison,,Comparison
+PT140,2,13,Paradox,reasoning_only,,Comparison,,Comparison
+PT140,2,14,Unknown,reasoning_only,,Causation,,Causation
+PT140,2,18,Most Strongly Supported,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT140,3,3,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT140,3,26,Paradox,reasoning_only,,Causation | Comparison,,Causation | Comparison
+PT141,2,2,"Resolve, reconcile, or explain",pt141_159_not_in_bank,,,,
+PT141,2,5,Flaw (Flaw),pt141_159_not_in_bank,,,,
+PT141,2,24,"Resolve, reconcile, or explain",pt141_159_not_in_bank,,,,
+PT141,4,22,"Resolve, reconcile, or explain",pt141_159_not_in_bank,,,,
+PT142,1,11,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,1,12,Sufficient Assumption,pt141_159_not_in_bank,,,,
+PT142,1,15,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,1,20,Sufficient Assumption,pt141_159_not_in_bank,,,,
+PT142,1,21,Evaluate,pt141_159_not_in_bank,,,,
+PT142,1,22,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,1,25,Flaw,pt141_159_not_in_bank,,,,
+PT142,2,3,Must Be True,pt141_159_not_in_bank,,,,
+PT142,2,9,Main Conclusion,pt141_159_not_in_bank,,,,
+PT142,2,25,Strengthen,pt141_159_not_in_bank,,,,
+PT142,4,8,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,4,9,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,4,10,Evaluate,pt141_159_not_in_bank,,,,
+PT142,4,11,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,4,12,Principle-Conform,pt141_159_not_in_bank,,,,
+PT142,4,13,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,4,17,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,4,19,Method of Reasoning,pt141_159_not_in_bank,,,,
+PT142,4,20,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,4,21,Principle-Conform,pt141_159_not_in_bank,,,,
+PT142,4,23,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT142,4,24,Weaken,pt141_159_not_in_bank,,,,
+PT142,4,25,Flaw,pt141_159_not_in_bank,,,,
+PT142,4,26,Strengthen,pt141_159_not_in_bank,,,,
+PT143,1,6,Strengthen,pt141_159_not_in_bank,,,,
+PT143,1,12,Flaw,pt141_159_not_in_bank,,,,
+PT143,1,14,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT143,1,17,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT143,1,20,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT143,3,5,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT143,3,11,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT143,3,14,Flaw,pt141_159_not_in_bank,,,,
+PT143,4,7,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT143,4,22,Main Conclusion,pt141_159_not_in_bank,,,,
+PT143,4,24,Flaw,pt141_159_not_in_bank,,,,
+PT144,2,4,Flaw or descriptive weakening,pt141_159_not_in_bank,,,,
+PT144,2,7,Miscellaneous,pt141_159_not_in_bank,,,,
+PT144,2,11,Resolve reconcile or explain,pt141_159_not_in_bank,,,,
+PT144,3,5,Miscellaneous,pt141_159_not_in_bank,,,,
+PT144,3,12,Resolve reconcile or explain,pt141_159_not_in_bank,,,,
+PT144,3,22,Must be true,pt141_159_not_in_bank,,,,
+PT144,4,3,Miscellaneous,pt141_159_not_in_bank,,,,
+PT144,4,25,Miscellaneous,pt141_159_not_in_bank,,,,
+PT145,2,20,Argument part,pt141_159_not_in_bank,,,,
+PT145,4,3,Resolve reconcile or explain,pt141_159_not_in_bank,,,,
+PT146,3,4,Role in Argument,pt141_159_not_in_bank,,,,
+PT146,3,9,Paradox,pt141_159_not_in_bank,,,,
+PT146,3,16,Paradox,pt141_159_not_in_bank,,,,
+PT147,1,3,Paradox,pt141_159_not_in_bank,,,,
+PT147,4,3,Paradox,pt141_159_not_in_bank,,,,
+PT147,4,5,Misinterpretation,pt141_159_not_in_bank,,,,
+PT148,3,11,Paradox,pt141_159_not_in_bank,,,,
+PT148,4,3,Paradox,pt141_159_not_in_bank,,,,
+PT148,4,10,Strengthen,pt141_159_not_in_bank,,,,
+PT148,4,13,Paradox,pt141_159_not_in_bank,,,,
+PT149,1,13,Must Be True,pt141_159_not_in_bank,,,,
+PT149,3,14,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT149,4,5,Paradox,pt141_159_not_in_bank,,,,
+PT149,4,12,Strengthen,pt141_159_not_in_bank,,,,
+PT149,4,23,Parallel Reasoning,pt141_159_not_in_bank,,,,
+PT149,4,25,Weaken,pt141_159_not_in_bank,,,,
+PT149,4,26,Flaw,pt141_159_not_in_bank,,,,
+PT150,2,6,Must be True,pt141_159_not_in_bank,,,,
+PT150,2,7,Strengthen,pt141_159_not_in_bank,,,,
+PT150,2,8,Role,pt141_159_not_in_bank,,,,
+PT150,2,9,Weaken,pt141_159_not_in_bank,,,,
+PT150,2,11,Weaken,pt141_159_not_in_bank,,,,
+PT150,2,19,Parallel Flaw,pt141_159_not_in_bank,,,,
+PT150,2,20,Must be True,pt141_159_not_in_bank,,,,
+PT150,2,24,Must be True,pt141_159_not_in_bank,,,,
+PT150,2,25,Paradox,pt141_159_not_in_bank,,,,
+PT150,3,2,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT150,3,4,Weaken,pt141_159_not_in_bank,,,,
+PT150,3,6,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT150,3,9,Flaw,pt141_159_not_in_bank,,,,
+PT150,3,16,Flaw,pt141_159_not_in_bank,,,,
+PT150,3,17,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT150,3,24,Flaw,pt141_159_not_in_bank,,,,
+PT151,2,11,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT151,3,15,Method of Reasoning,pt141_159_not_in_bank,,,,
+PT151,3,23,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT151,4,2,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT151,4,6,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT151,4,7,Flaw,pt141_159_not_in_bank,,,,
+PT151,4,9,Flaw,pt141_159_not_in_bank,,,,
+PT151,4,10,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT151,4,11,Flaw,pt141_159_not_in_bank,,,,
+PT151,4,17,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT151,4,20,Sufficient Assumption,pt141_159_not_in_bank,,,,
+PT151,4,21,Method of Reasoning,pt141_159_not_in_bank,,,,
+PT151,4,23,Flaw,pt141_159_not_in_bank,,,,
+PT151,4,24,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT151,4,25,Method of Reasoning,pt141_159_not_in_bank,,,,
+PT152,1,13,Paradox,pt141_159_not_in_bank,,,,
+PT152,1,18,Paradox,pt141_159_not_in_bank,,,,
+PT152,1,22,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT152,2,1,Flaw,pt141_159_not_in_bank,,,,
+PT152,2,8,Paradox,pt141_159_not_in_bank,,,,
+PT152,2,10,Main Conclusion,pt141_159_not_in_bank,,,,
+PT152,2,13,Paradox,pt141_159_not_in_bank,,,,
+PT152,2,15,Weaken,pt141_159_not_in_bank,,,,
+PT152,2,17,Paradox,pt141_159_not_in_bank,,,,
+PT152,2,22,Flaw,pt141_159_not_in_bank,,,,
+PT152,2,24,Must be false,pt141_159_not_in_bank,,,,
+PT152,4,14,Role,pt141_159_not_in_bank,,,,
+PT152,4,23,Paradox,pt141_159_not_in_bank,,,,
+PT153,2,20,Role,pt141_159_not_in_bank,,,,
+PT153,2,21,Must Be True,pt141_159_not_in_bank,,,,
+PT153,2,23,Parallel,pt141_159_not_in_bank,,,,
+PT153,3,4,Paradox,pt141_159_not_in_bank,,,,
+PT153,3,5,Main Conclusion,pt141_159_not_in_bank,,,,
+PT153,3,24,Must Be True,pt141_159_not_in_bank,,,,
+PT154,1,2,Sufficient Assumption,pt141_159_not_in_bank,,,,
+PT154,1,6,Paradox,pt141_159_not_in_bank,,,,
+PT154,1,9,Flaw,pt141_159_not_in_bank,,,,
+PT154,1,10,Parallel,pt141_159_not_in_bank,,,,
+PT154,1,15,Method,pt141_159_not_in_bank,,,,
+PT154,1,16,Weaken,pt141_159_not_in_bank,,,,
+PT154,1,23,Must Be True,pt141_159_not_in_bank,,,,
+PT154,1,24,Paradox,pt141_159_not_in_bank,,,,
+PT154,1,25,Parallel Flaw,pt141_159_not_in_bank,,,,
+PT154,2,12,Flaw,pt141_159_not_in_bank,,,,
+PT154,2,18,Role,pt141_159_not_in_bank,,,,
+PT154,2,22,Must Be True,pt141_159_not_in_bank,,,,
+PT154,2,23,Paradox,pt141_159_not_in_bank,,,,
+PT154,4,3,Strengthen,pt141_159_not_in_bank,,,,
+PT154,4,5,Paradox,pt141_159_not_in_bank,,,,
+PT154,4,7,Parallel Flaw,pt141_159_not_in_bank,,,,
+PT154,4,8,Weaken,pt141_159_not_in_bank,,,,
+PT154,4,10,Flaw,pt141_159_not_in_bank,,,,
+PT154,4,13,Role,pt141_159_not_in_bank,,,,
+PT154,4,15,Flaw,pt141_159_not_in_bank,,,,
+PT154,4,18,Most Supported,pt141_159_not_in_bank,,,,
+PT154,4,20,Sufficient Assumption,pt141_159_not_in_bank,,,,
+PT154,4,21,Flaw,pt141_159_not_in_bank,,,,
+PT154,4,26,Sufficient Assumption,pt141_159_not_in_bank,,,,
+PT155,1,3,Paradox,pt141_159_not_in_bank,,,,
+PT155,1,18,Parallel,pt141_159_not_in_bank,,,,
+PT156,2,3,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT156,4,15,Necessary Assumption,pt141_159_not_in_bank,,,,
+PT157,2,19,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT157,3,18,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT157,3,23,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT158,2,5,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT158,3,6,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT158,3,20,Most Strongly Supported,pt141_159_not_in_bank,,,,
+PT159,1,4,Paradox,pt141_159_not_in_bank,,,,
+PT159,1,9,Paradox,pt141_159_not_in_bank,,,,
+PT159,1,14,Principle-Conform,pt141_159_not_in_bank,,,,
+PT159,3,6,Weaken,pt141_159_not_in_bank,,,,
+PT159,3,7,Paradox,pt141_159_not_in_bank,,,,

@@ -1,0 +1,234 @@
+{
+  "date": "2026-10-18",
+  "attempt": {
+    "id": "2aae37e8-7c3d-4223-890c-5c4b691bd7d9",
+    "preptest": 140,
+    "section": 4,
+    "passage_ids": [
+      14,
+      15,
+      16,
+      18
+    ],
+    "elapsed_seconds": 63,
+    "completed": true,
+    "started_at": "2026-10-19T02:34:24.03384+00:00",
+    "finished_at": "2026-10-19T02:35:36.87+00:00"
+  },
+  "recaps": [
+    {
+      "id": "74db1870-675f-4bf9-9ffc-a0b50c6353c9",
+      "recap_key": "p1-para1-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 15852,
+      "recall_end_ms": 16250
+    },
+    {
+      "id": "0cfa4a6f-984a-4d84-bc9a-297950308ce8",
+      "recap_key": "p1-para2-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 29382,
+      "recall_end_ms": 30088
+    },
+    {
+      "id": "baa9588d-e29a-48a8-a756-a7df6eabdf4c",
+      "recap_key": "p1-para3-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 30956,
+      "recall_end_ms": 31601
+    },
+    {
+      "id": "d28c6a9a-4ddc-44e4-9b2c-e1520ae7f432",
+      "recap_key": "p2-para1-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 33317,
+      "recall_end_ms": 33751
+    },
+    {
+      "id": "b76b3b4a-f27c-47a5-bf81-cb68ff2f3132",
+      "recap_key": "p2-para2-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 34847,
+      "recall_end_ms": 35466
+    },
+    {
+      "id": "6b05bccf-a8b4-4bcd-a051-1054a1c1a3cb",
+      "recap_key": "p2-para3-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 36873,
+      "recall_end_ms": 37473
+    },
+    {
+      "id": "41587516-176c-46dd-9c8c-a23fb82a3448",
+      "recap_key": "p2-para4-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 38773,
+      "recall_end_ms": 39240
+    },
+    {
+      "id": "242a866c-6a61-40f0-a8c9-31cfeb7b61af",
+      "recap_key": "p2-para5-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 40619,
+      "recall_end_ms": 41051
+    },
+    {
+      "id": "e002a372-2b02-4447-a8e6-7d9c77f54267",
+      "recap_key": "p2-para6-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 42067,
+      "recall_end_ms": 42701
+    },
+    {
+      "id": "4062a946-6abe-43c8-a56b-e1d177d8e88b",
+      "recap_key": "p2-para7-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 43367,
+      "recall_end_ms": 44001
+    },
+    {
+      "id": "e76912c8-19a6-4de3-af89-9e3b6d5938bb",
+      "recap_key": "p2-para8-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 45017,
+      "recall_end_ms": 45435
+    },
+    {
+      "id": "2a2e45ed-bdd9-4366-b2cc-da300629e7f4",
+      "recap_key": "p3-para1-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 46987,
+      "recall_end_ms": 47418
+    },
+    {
+      "id": "5eed955f-ab23-4184-8eff-9159d37b9b02",
+      "recap_key": "p3-para2-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 52652,
+      "recall_end_ms": 53318
+    },
+    {
+      "id": "e60a8ea9-295c-4f81-8e3e-790a9c79adfd",
+      "recap_key": "p3-para3-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 54335,
+      "recall_end_ms": 55052
+    },
+    {
+      "id": "a27c6948-1a4a-4887-996b-30cb3881503f",
+      "recap_key": "p3-para4-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 55684,
+      "recall_end_ms": 56335
+    },
+    {
+      "id": "7845e205-722d-482d-87ba-ac37d957006a",
+      "recap_key": "p4-para1-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 57919,
+      "recall_end_ms": 58321
+    },
+    {
+      "id": "bd5cbf72-d198-4dfd-b063-ca58d0236378",
+      "recap_key": "p4-para2-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 58968,
+      "recall_end_ms": 59602
+    },
+    {
+      "id": "2fb75fc1-d3b8-4721-8372-60a466000c47",
+      "recap_key": "p4-para3-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 60252,
+      "recall_end_ms": 60902
+    },
+    {
+      "id": "7dfdd8c2-8b5d-484f-9b64-dab3a0ac8fd5",
+      "recap_key": "p4-para4-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recall_start_ms": 61518,
+      "recall_end_ms": 62170
+    }
+  ],
+  "captures": [
+    {
+      "id": "879942cb-0f96-4ed3-9ab9-c89faf1df922",
+      "recording_state": "saved",
+      "duration_ms": 63332,
+      "created_at": "2026-10-19T02:34:31.392941+00:00",
+      "updated_at": "2026-10-19T02:35:36.115723+00:00"
+    }
+  ],
+  "checks": {
+    "nineteenSavedSpokenParagraphRecaps": true,
+    "oneSavedCapture": true,
+    "oneLinkedCaptureId": true,
+    "expectedPassageCounts": true,
+    "allWindowBoundsValid": true,
+    "noGradingRequestsPersisted": true
+  },
+  "passageCounts": [
+    3,
+    8,
+    4,
+    4
+  ],
+  "gradeRowCount": 0
+}
