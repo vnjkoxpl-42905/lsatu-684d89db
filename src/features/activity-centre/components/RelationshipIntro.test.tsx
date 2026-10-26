@@ -161,7 +161,8 @@ it("replaces stale snapshot instructions with readable steps, one example and on
   expect(steps[0]).toHaveTextContent(/^Read the whole sentence\.$/);
   expect(screen.getByText("Read the whole sentence.")).toBeVisible();
   expect(screen.getByText("Give the type and a quotation.")).toBeVisible();
-  expect(screen.getByText(/If you find more than one type, include each one with its own quotation/)).toBeVisible();
+  expect(screen.getByText(/If you find more than one type, give a separate quotation for each/)).toBeVisible();
+  expect(screen.getByText(/rather than the whole sentence/)).toBeVisible();
   expect(screen.getByRole("heading", { name: "Example" })).toBeVisible();
   expect(screen.getByText("Answer", { exact: true })).toBeVisible();
   expect(screen.getAllByText("Conditional, “only if”")).toHaveLength(1);

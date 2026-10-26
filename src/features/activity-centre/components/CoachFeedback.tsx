@@ -66,6 +66,14 @@ export function CoachFeedback({
   const isRelationship = activitySlug === "spot-the-relationship";
   const explanation = isRelationship ? relationshipExplanation(item, activitySlug) : item.explanation;
   const feedbackText = isRelationship ? relationshipFeedback(feedback) : feedback;
+  // The snapshot's own key, never a canonical key overlaid on historical work.
+  const savedRelationships = item.answer_key?.relationships;
+  const relationshipAnswers = isRelationship && Array.isArray(savedRelationships) && savedRelationships.length > 0
+    && savedRelationships.every((relationship) => relationship
+      && ["conditional", "causal", "comparative"].includes(relationship.type)
+      && Array.isArray(relationship.indicators) && relationship.indicators.length > 0
+      && relationship.indicators.every((indicator) => typeof indicator === "string" && indicator.trim()))
+    ? savedRelationships : null;
   const style = VERDICT_STYLE[verdict];
   return (
     <div className="space-y-4">
@@ -88,10 +96,18 @@ export function CoachFeedback({
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             Credited answer
           </p>
-          <p className="mt-1.5 text-[15px] font-medium text-foreground">
+          {relationshipAnswers ? <div className="mt-1.5 space-y-2 text-[15px] text-foreground">
+            <p className="text-sm">One quotation for each relationship type is enough.</p>
+            <dl className="space-y-2">
+              {relationshipAnswers.map((relationship) => <div key={relationship.type}>
+                <dt className="font-semibold">{relationship.type === "comparative" ? "Comparative" : relationship.type === "causal" ? "Causal" : "Conditional"}</dt>
+                <dd>{relationship.indicators.map((indicator) => `“${indicator}”`).join(" or ")}</dd>
+              </div>)}
+            </dl>
+          </div> : <p className="mt-1.5 text-[15px] font-medium text-foreground">
             {item.credited_answers[0]}
-          </p>
-          {item.credited_answers.length > 1 && (
+          </p>}
+          {!relationshipAnswers && item.credited_answers.length > 1 && (
             <p className="mt-1 text-xs text-muted-foreground">
               {secondaryLabel || DEFAULT_SECONDARY_LABEL}: {item.credited_answers.slice(1).join(" · ")}
             </p>
