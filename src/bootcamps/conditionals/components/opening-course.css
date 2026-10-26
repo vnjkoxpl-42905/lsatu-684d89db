@@ -296,15 +296,6 @@
  .oc-course-index .oc-card-foot .oc-action{padding-left:0}
 }
 
-/* Lessons in this chapter as one slim row of pills. The current lesson is filled and named; finished lessons carry a check. */
-.oc-chapter-cards{margin-top:1.5rem}
-.oc-chapter-cards ol{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:0;padding:0;list-style:none}
-.oc-chapter-cards a{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:.3rem .8rem;border-radius:999px;border:1px solid var(--oc-line);background:transparent;color:var(--oc-muted);font-size:.85rem;font-weight:600;letter-spacing:.03em;text-decoration:none;transition:border-color .2s,background-color .2s,color .2s}
-.oc-chapter-cards a:hover{border-color:var(--oc-control-line);color:var(--oc-ink);background:var(--oc-hover)}
-.oc-chapter-cards a:focus-visible,.oc-home-card:focus-visible,.oc-chapter-lesson-main:focus-visible,.oc-chapter-drill:focus-visible{outline:2px solid var(--oc-ink);outline-offset:2px}
-.oc-chapter-cards a[aria-current=page]{background:var(--oc-ink);border-color:var(--oc-ink);color:var(--oc-canvas);padding-inline:.9rem 1rem}
-.oc-chapter-cards a svg{color:var(--oc-accent)}
-.oc-chapter-card-title{font-family:Georgia,serif;font-size:.95rem;font-weight:400;letter-spacing:0}
 
 /* Sidebar: Home, then Course opens to the chapters. */
 .oc-nav-course summary{display:flex;align-items:center;gap:12px;padding:12px 10px;min-height:46px;border-radius:4px;color:var(--oc-muted);font-size:.875rem;cursor:pointer;list-style:none}
@@ -455,7 +446,7 @@
 .oc-path-next-go:hover{opacity:.88}
 @container (max-width:34rem){.oc-path{--station:2.25rem}.oc-path-step{column-gap:.75rem}.oc-chapter-hero-num{font-size:7rem;color:rgb(239 237 230 / .22);text-shadow:none}.oc-path-row{grid-template-columns:minmax(0,1fr) auto}.oc-path-arrow{display:none}}
 @media(prefers-reduced-motion:reduce){.oc-chapter-hero-art,.oc-path-next{animation:none}.oc-path-row,.oc-path-arrow,.oc-path-next-go{transition:none}}
-@media(prefers-reduced-motion:reduce){.oc-chapter-cards a,.oc-home-card,.oc-nav-chevron,.oc-focus-go,.oc-chapter-lesson{transition:none}}
+@media(prefers-reduced-motion:reduce){.oc-home-card,.oc-nav-chevron,.oc-focus-go,.oc-chapter-lesson{transition:none}}
 
 /* Practice page: the same hero material and path, one section per chapter. */
 .oc-practice-hero{min-height:clamp(16rem,36cqi,21rem)}

@@ -49,14 +49,13 @@ export function OpeningCourseNavigation({ view, url, workspaceLinks, chapters }:
   function closeForNavigation() { focusDestination.current = open; setOpen(false); }
   const viewStep = openingCourseStep(view);
   const viewPart = viewStep?.type === 'note' ? viewStep.part ?? 1 : undefined;
-  const courseOpen = chapterFromView(view) !== undefined || viewPart !== undefined || view === 'lessons';
+  const courseOpen = chapterFromView(view) !== undefined || viewPart !== undefined;
   const navigation = <nav aria-label="Conditional course">
     <p>Learn</p>{chapters && chapters.length > 1 ? <>
       <Link aria-current={view === 'home' || view === 'overview' ? 'page' : undefined} to={workspaceLinks?.overview ?? url('home')} onClick={closeForNavigation}><Home size={18}/>Home</Link>
       <details className="oc-nav-course" open={courseOpen || undefined}>
-        <summary><BookOpen size={18}/>Course<ChevronDown size={16} className="oc-nav-chevron" aria-hidden/></summary>
-        <div>{chapters.map(part => <Link key={part} aria-current={view === chapterView(part) || viewPart === part ? 'page' : undefined} to={url(chapterView(part))} onClick={closeForNavigation}><span>Chapter {part}</span>{chapterTitles[part]}</Link>)}
-          <Link aria-current={view === 'lessons' ? 'page' : undefined} to={url('lessons')} onClick={closeForNavigation}><span>All</span>Lessons and drills</Link></div>
+        <summary><BookOpen size={18}/>Chapters<ChevronDown size={16} className="oc-nav-chevron" aria-hidden/></summary>
+        <div>{chapters.map(part => <Link key={part} aria-current={view === chapterView(part) || viewPart === part ? 'page' : undefined} to={url(chapterView(part))} onClick={closeForNavigation}><span>Chapter {part}</span>{chapterTitles[part]}</Link>)}</div>
       </details>
     </> : <Link aria-current={view === 'overview' || view === 'lessons' || openingCourseStep(view)?.type === 'note' ? 'page' : undefined} to={workspaceLinks?.overview ?? url('lessons')} onClick={closeForNavigation}><BookOpen size={18}/>Course</Link>}
     <Link aria-current={view === 'practice' || view === 'labs' || openingCourseStep(view)?.type === 'drill' ? 'page' : undefined} to={url('practice')} onClick={closeForNavigation}><DrillGlyph size={18}/>Practice drills</Link>
@@ -307,7 +306,8 @@ const stepAction = (step: OpeningCourseStep, status?: string) => `${status === '
 function CoursePath({ steps, url, label, laterLabel = 'Later in this chapter' }: { steps: OpeningCourseStep[]; url: OpeningCourseUrl; label: string; laterLabel?: string }) {
   const saved = useCourseProgress()?.steps ?? {};
   const next = steps.find(step => required(step) && saved[step.id]?.status !== 'done');
-  const [openId, setOpenId] = useState<string | undefined>(next?.id);
+  // The page's hero already starts the next step, so no card opens until the student picks one.
+  const [openId, setOpenId] = useState<string | undefined>();
   const nextStarted = next && saved[next.id]?.status === 'started';
   const nextIndex = next ? steps.indexOf(next) : steps.length;
   return <ol className="oc-path" aria-label={label}>{steps.map((step, index) => {
@@ -406,21 +406,6 @@ function ChapterPage({ part, steps, url }: { part: number; steps: OpeningCourseS
   </div>;
 }
 
-/** Every lesson in the current chapter as a slim numbered pill; only the current one shows its title. */
-function ChapterLessonCards({ current, steps, url }: { current: OpeningCourseStep; steps: OpeningCourseStep[]; url: OpeningCourseUrl }) {
-  const saved = useCourseProgress()?.steps ?? {};
-  const lessons = steps.filter(step => step.type === 'note' && step.lessonNumber && (step.part ?? 1) === (current.part ?? 1));
-  if (lessons.length < 2) return null;
-  return <nav className="oc-chapter-cards" aria-label={`Lessons in Chapter ${current.part ?? 1}`}>
-    <ol>{lessons.map(lesson => {
-      const here = lesson.id === current.id;
-      const done = saved[lesson.id]?.status === 'done';
-      return <li key={lesson.id}><Link to={url(lesson.id)} aria-current={here ? 'page' : undefined} data-done={done || undefined} title={here ? undefined : `${lesson.lessonNumber} ${lesson.title}`} aria-label={`Lesson ${lesson.lessonNumber}: ${lesson.title}${done ? ', done' : ''}`}>
-        {done && !here && <Check size={12} aria-hidden/>}<span>{lesson.lessonNumber}</span>{here && <span className="oc-chapter-card-title">{lesson.title}</span>}
-      </Link></li>;
-    })}</ol>
-  </nav>;
-}
 
 function CardStatus({ saved, drill }: { saved?: CourseProgressStore['steps'][string]; drill: boolean }) {
   if (!saved) return <span className="oc-status oc-status-new">Not started</span>;
@@ -537,7 +522,6 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
         {current.lessonNumber && <p className="oc-label">Chapter {current.part ?? 1} · Lesson {current.lessonNumber}{current.requiredForEditionCompletion === false && ' · Optional'}</p>}
         <h1 className="font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]">{current.title}</h1>
         <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>
-        <ChapterLessonCards current={current} steps={steps} url={url}/>
       </header> : <header><p className="oc-label">{openingDrillNumber(current.id) ? `Drill ${openingDrillNumber(current.id)}` : 'Practice'}</p><h1>{current.title}</h1></header>}</div>
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions</Link>}
     </div>}

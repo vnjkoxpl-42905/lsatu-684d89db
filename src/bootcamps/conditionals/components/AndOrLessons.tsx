@@ -37,9 +37,13 @@ function GroupMeaning({ connector }: { connector: 'AND' | 'OR' }) {
   const rule = isAnd ? libraryExample.both : libraryExample.either;
   return <div className="ao-reading">
     <Section title={isAnd ? 'What AND does' : 'What OR does'} label={isAnd ? 'AND means both' : 'OR means one or both'}>
-      <p className="ct-definition">{isAnd
-        ? 'AND joins two conditions so they count as one. That side of the rule is met only when both conditions are true.'
-        : 'OR joins two conditions so that either one is enough. That side of the rule is met when one condition is true, and also when both are.'}</p>
+      <div className="ct-definition ao-definition">
+        <p className="ao-definition-lead">{isAnd ? 'AND conjoins two conditions.' : 'OR joins two conditions so that either one is enough.'}</p>
+        <dl>
+          <div><dt>In the sufficient condition</dt><dd>{isAnd ? 'The necessary condition follows only when both conditions are met.' : 'The necessary condition follows when either condition is met, and also when both are.'}</dd></div>
+          <div><dt>In the necessary condition</dt><dd>{isAnd ? 'Both conditions follow together.' : 'At least one of the two follows.'}</dd></div>
+        </dl>
+      </div>
       <p>{isAnd ? 'Here is a rule: ' : 'Here is a different rule: '}<strong>{isAnd ? 'A visitor gets a library card if the visitor shows photo ID and proof of address.' : 'A visitor gets a library card if the visitor shows photo ID or proof of address.'}</strong></p>
       <p>{isAnd
         ? 'The word and puts both documents on the left side. Neither document is the trigger by itself. Each is half of it. Photo ID alone does not guarantee a card, and proof of address alone does not either. Show both, and the card is guaranteed.'
