@@ -693,7 +693,7 @@ it.each(['', '/lessons', '/opening/foundation'])('prefers the current edition at
  for (const rows of [[course, expanded], [expanded, course]]) {
   mount(`${base}${path}`, rows);
   // The full course lands on Home (chapter cards); /lessons keeps the full list.
-  if (path === '') expect(screen.getByRole('heading', { level: 3, name: 'AND, OR and the contrapositive' })).toBeVisible();
+  if (path === '') expect(screen.getByRole('link', { name: /^Chapter 2: AND, OR and the contrapositive\./ })).toBeVisible();
   if (path === '/lessons') expect(screen.getByRole('region', { name: 'Chapter 2' })).toBeVisible();
   expect(screen.getAllByRole('link').some(link => link.getAttribute('href')?.includes('assignment=z-current'))).toBe(true);
   cleanup();
@@ -713,6 +713,6 @@ it('shows a recoverable row-specific update notice and blocks an invalid explici
 it('does not render an empty Additional explanations section for a primary-only v3 skill', () => {
  const expanded = { ...skill(), target: { ...skill().target, curriculumVersion: 3 as const, courseEdition: 'full-conditionals-v3' as const } };
  mount(base, [expanded]);
- expect(screen.getByRole('heading', { level: 3, name: 'Read a conditional' })).toBeVisible();
+ expect(screen.getByRole('link', { name: /^Chapter 1: Read a conditional\./ })).toBeVisible();
  expect(screen.queryByRole('heading', { name: 'Additional explanations' })).toBeNull();
 });

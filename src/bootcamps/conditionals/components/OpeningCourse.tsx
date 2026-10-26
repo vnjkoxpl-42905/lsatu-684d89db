@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, BookOpen, Bookmark, Check, ChevronDown, Dumbbell, Home, Menu, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, Home, Menu } from 'lucide-react';
+import { CardsGlyph, DrillGlyph } from './CourseGlyphs';
 import { CourseProgressProvider, useCourseProgress, useDeviceCourseProgress, type CourseProgressStore } from '../courseProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -18,6 +19,7 @@ import { fullCourseLessons, fullCourseDrillSets } from '../content/fullCourseCon
 import { FullCourseLesson } from './FullCourseLesson';
 import { AndOrLesson } from './AndOrLessons';
 import { FullCourseDrill } from './FullCourseDrill';
+import { CourseVolume } from './CourseVolume';
 import { fullCourseMedia } from '../content/fullCourseMedia';
 import { FULL_CONDITIONAL_EDITION } from '@/lib/conditionalCourseEdition';
 import './opening-course.css';
@@ -57,8 +59,8 @@ export function OpeningCourseNavigation({ view, url, workspaceLinks, chapters }:
           <Link aria-current={view === 'lessons' ? 'page' : undefined} to={url('lessons')} onClick={closeForNavigation}><span>All</span>Lessons and drills</Link></div>
       </details>
     </> : <Link aria-current={view === 'overview' || view === 'lessons' || openingCourseStep(view)?.type === 'note' ? 'page' : undefined} to={workspaceLinks?.overview ?? url('lessons')} onClick={closeForNavigation}><BookOpen size={18}/>Course</Link>}
-    <Link aria-current={view === 'practice' || view === 'labs' || openingCourseStep(view)?.type === 'drill' ? 'page' : undefined} to={url('practice')} onClick={closeForNavigation}><Sparkles size={18}/>Practice drills</Link>
-    <p>Resources</p><Link aria-current={view === 'tools' ? 'page' : undefined} to={url('tools')} onClick={closeForNavigation}><Bookmark size={18}/>Flashcards</Link>
+    <Link aria-current={view === 'practice' || view === 'labs' || openingCourseStep(view)?.type === 'drill' ? 'page' : undefined} to={url('practice')} onClick={closeForNavigation}><DrillGlyph size={18}/>Practice drills</Link>
+    <p>Resources</p><Link aria-current={view === 'tools' ? 'page' : undefined} to={url('tools')} onClick={closeForNavigation}><CardsGlyph size={18}/>Flashcards</Link>
     {workspaceLinks && <Link aria-current={view === 'reference' ? 'page' : undefined} to={workspaceLinks.reference} onClick={closeForNavigation}><BookOpen size={18}/>Quick reference</Link>}
   </nav>;
   const classroom = <Link className="oc-classroom-footer" to="/classroom" onClick={closeForNavigation}><ArrowLeft size={15}/>Classroom</Link>;
@@ -81,9 +83,9 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
   const drill = step.type === 'drill';
   const count = drill ? (getSourceWorksheetDrill(step.id) ?? getAndOrDrill(step.id) ?? fullCourseDrillSets.find(set => set.id === step.id))?.items.length : undefined;
   return <li className={`oc-path-card${drill ? ' oc-drill-card' : ''}`} data-progress={saved?.status ?? 'new'} data-kind={step.type}>
-    <span className="oc-timeline-node" aria-hidden="true">{drill ? <Dumbbell size={20}/> : <BookOpen size={20}/>}</span>
+    <span className="oc-timeline-node" aria-hidden="true">{drill ? <DrillGlyph size={20}/> : <BookOpen size={20}/>}</span>
     <span className="oc-label">{step.requiredForEditionCompletion === false && 'Optional · '}{drill ? (step.part && step.part >= 3 ? 'Drill' : `Drill ${openingDrillNumber(step.id) ?? ''}`.trim()) : <>Lesson <span>{step.lessonNumber}</span></>}</span><CardStatus saved={saved} drill={drill}/><h3>{step.title}</h3><p>{step.description}</p>
-    <div className="oc-card-foot"><Link className="oc-action" to={url(step.id)}>{drill ? <Dumbbell size={16}/> : <BookOpen size={16}/>} {saved?.status === 'started' ? 'Continue' : saved?.status === 'done' ? (drill ? 'Review drill' : 'Read again') : drill ? 'View drill' : 'Read lesson'}</Link>{count !== undefined && <span className="oc-card-count">{count} questions</span>}</div>
+    <div className="oc-card-foot"><Link className="oc-action" to={url(step.id)}>{drill ? <DrillGlyph size={16}/> : <BookOpen size={16}/>} {saved?.status === 'started' ? 'Continue' : saved?.status === 'done' ? (drill ? 'Review drill' : 'Read again') : drill ? 'View drill' : 'Read lesson'}</Link>{count !== undefined && <span className="oc-card-count">{count} questions</span>}</div>
   </li>;
 }
 
@@ -147,7 +149,7 @@ const chapterSummaries: Record<number, string> = {
   4: 'Rules that run both ways, and what it takes to deny a rule.',
   5: 'Put a rule to work with a fact, and link rules into chains.',
   6: 'What quantity words claim, and how quantity statements connect.',
-  7: 'Use all of it on the question types the LSAT actually asks.',
+  7: 'Use everything so far on the question types the LSAT asks.',
 };
 
 export const chapterView = (part: number) => `chapter-${part}`;
@@ -178,61 +180,199 @@ function ChapterProgress({ steps }: { steps: OpeningCourseStep[] }) {
   return <div className="oc-chapter-progress"><span className="oc-chapter-progress-rail" aria-hidden><i style={{ width: `${counted.length ? done / counted.length * 100 : 0}%` }}/></span><span>{done} of {counted.length} done</span></div>;
 }
 
-/** One mark per step in reading order: tall for a lesson, short for a drill, filled when done. */
-function StepTicks({ steps }: { steps: OpeningCourseStep[] }) {
+/** One segment per lesson (its drills included); a chapter that lists drills after its lessons gets one Drills segment. */
+function lessonSegments(chapter: OpeningCourseStep[]) {
+  const { groups, drills } = chapterGroups(chapter);
+  const segments = groups.map(group => ({ key: group.lesson.id, label: group.lesson.lessonNumber ?? '', steps: [group.lesson, ...group.drills].filter(required) }));
+  if (drills.length) segments.push({ key: 'drills', label: 'Drills', steps: drills.filter(required) });
+  return segments.filter(segment => segment.steps.length);
+}
+
+function VolumeProgress({ chapter, next }: { chapter: OpeningCourseStep[]; next?: OpeningCourseStep }) {
   const saved = useCourseProgress()?.steps ?? {};
-  return <span className="oc-ticks" aria-hidden>{steps.map(step => <i key={step.id} data-kind={step.type} data-state={saved[step.id]?.status ?? 'new'}/>)}</span>;
+  const segments = lessonSegments(chapter);
+  const currentKey = segments.find(segment => segment.steps.some(step => saved[step.id]?.status !== 'done'))?.key;
+  return <span className="oc-vol-segments" aria-hidden>{segments.map(segment => {
+    const done = segment.steps.filter(step => saved[step.id]?.status === 'done').length;
+    const state = done === segment.steps.length ? 'done' : segment.key === currentKey && (done > 0 || chapter.some(step => step.id === next?.id)) ? 'current' : 'pending';
+    return <i key={segment.key} data-state={state} style={{ '--fill': `${done / segment.steps.length * 100}%` } as CSSProperties}/>;
+  })}</span>;
 }
 
 function CourseHome({ steps, url }: { steps: OpeningCourseStep[]; url: OpeningCourseUrl }) {
   const saved = useCourseProgress()?.steps ?? {};
+  const isDone = (step: OpeningCourseStep) => saved[step.id]?.status === 'done';
   const counted = steps.filter(required);
-  const done = counted.filter(step => saved[step.id]?.status === 'done').length;
-  const nextIndex = steps.findIndex(step => required(step) && saved[step.id]?.status !== 'done');
+  const done = counted.filter(isDone).length;
+  const nextIndex = steps.findIndex(step => required(step) && !isDone(step));
   const next = nextIndex < 0 ? undefined : steps[nextIndex];
   const then = next ? steps.slice(nextIndex + 1).find(required) : undefined;
   const started = next && saved[next.id]?.status === 'started';
   const parts = [...new Set(steps.map(step => step.part ?? 1))];
   const herePart = next ? next.part ?? 1 : undefined;
+  const hereSteps = counted.filter(step => (step.part ?? 1) === herePart);
+  const hereDone = hereSteps.filter(isDone).length;
+  const pad = (value: number) => String(value).padStart(2, '0');
+  const drills = counted.filter(step => step.type === 'drill');
+  const drillTotal = drills.length;
+  const drillsDone = drills.filter(isDone).length;
+  const nextDrill = drills.find(step => !isDone(step));
   return <div className="oc-course-index oc-home">
-    <div data-course-heading className="oc-home-head">
-      <p className="oc-label">Conditional logic</p>
-      <h1 className="font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]">Conditional reasoning.</h1>
-      <p className="oc-home-overall" role="progressbar" aria-label="Course completion" aria-valuemin={0} aria-valuemax={counted.length} aria-valuenow={done} aria-valuetext={`${done} of ${counted.length} steps done`}>{done} of {counted.length} steps done</p>
-    </div>
-    {next ? <section className="oc-focus" aria-label="Next step">
-      <p className="oc-focus-kicker">{started ? 'Pick up where you left off' : 'Next up'} · Chapter {next.part ?? 1}{next.lessonNumber ? ` · Lesson ${next.lessonNumber}` : ' · Drill'}</p>
-      <h2>{next.title}</h2>
-      {next.description && <p className="oc-focus-summary">{next.description}</p>}
-      <div className="oc-focus-actions">
-        <Link className="oc-focus-go" to={url(next.id, next.type === 'drill' && started)}>{started ? 'Continue' : 'Start'} {next.type === 'drill' ? 'drill' : 'lesson'}<ArrowRight size={17} aria-hidden/></Link>
-        {then && <p className="oc-focus-then">Then: <Link to={url(then.id)}>{then.title}</Link></p>}
+    <section className="oc-hero" aria-label={next ? 'Next step' : 'Course complete'}>
+      <div className="oc-hero-art" aria-hidden/>
+      <div className="oc-hero-main">
+        <div data-course-heading className="oc-hero-head">
+          <h1>Conditional reasoning</h1>
+          <p role="progressbar" aria-label="Course completion" aria-valuemin={0} aria-valuemax={counted.length} aria-valuenow={done} aria-valuetext={`${done} of ${counted.length} steps done`}>{done} of {counted.length} steps done</p>
+        </div>
+        {next ? <>
+          <p className="oc-hero-kicker">{started ? 'Pick up where you left off' : 'Next'}: Chapter {next.part ?? 1}, {next.lessonNumber ? `lesson ${next.lessonNumber}` : 'drill'}</p>
+          <h2>{next.title}</h2>
+          {next.description && <p className="oc-hero-summary">{next.description}</p>}
+          <div className="oc-hero-actions">
+            <Link className="oc-hero-go" to={url(next.id, next.type === 'drill' && started)}>{started ? 'Continue' : 'Start'} {next.type === 'drill' ? 'drill' : 'lesson'}<ArrowRight size={17} aria-hidden/></Link>
+            {then && <p className="oc-hero-then">Then: <Link to={url(then.id)}>{then.title}</Link></p>}
+          </div>
+        </> : <>
+          <p className="oc-hero-kicker">Course complete</p>
+          <h2>Every step is done.</h2>
+          <p className="oc-hero-summary">Open any chapter to review a lesson or redo a drill.</p>
+        </>}
       </div>
-    </section> : <section className="oc-focus" aria-label="Course complete"><p className="oc-focus-kicker">Course complete</p><h2>Every step is done.</h2><p className="oc-focus-summary">Open any chapter to review a lesson or redo a drill.</p></section>}
-    <h2 className="oc-home-section">The course</h2>
-    <ol className="oc-home-grid">
+      {next && herePart !== undefined && <Link className="oc-hero-place" to={url(chapterView(herePart))}>
+        <span className="oc-hero-place-label">Your place</span>
+        <span className="oc-hero-place-count"><strong>{pad(hereDone)}</strong><span>/{pad(hereSteps.length)}</span></span>
+        <span className="oc-hero-place-chapter">Chapter {herePart}<span>{chapterTitles[herePart]}</span></span>
+      </Link>}
+    </section>
+    <h2 className="oc-home-section">Chapters</h2>
+    <ol className="oc-volumes">
       {parts.map((part, index) => {
-        const chapter = steps.filter(step => (step.part ?? 1) === part);
-        const counted = chapter.filter(required);
-        const doneHere = counted.filter(step => saved[step.id]?.status === 'done').length;
-        const complete = counted.length > 0 && doneHere === counted.length;
+        const chapter = counted.filter(step => (step.part ?? 1) === part);
+        const doneHere = chapter.filter(isDone).length;
+        const complete = chapter.length > 0 && doneHere === chapter.length;
         const here = part === herePart;
-        return <li key={part}><Link className="oc-home-card" to={url(chapterView(part))} data-here={here || undefined} data-complete={complete || undefined}>
-          <span className="oc-home-numeral" aria-hidden>{part}</span>
-          <span className="oc-home-card-body">
-            <span className="oc-home-card-label">Chapter {part}{here && <span className="oc-home-here">You are here</span>}{complete && <span className="oc-home-card-done"><Check size={12} aria-hidden/>Done</span>}</span>
-            <h3>{chapterTitles[part]}</h3>
-            {chapterSummaries[part] && <span className="oc-home-card-summary">{chapterSummaries[part]}</span>}
-            <span className="oc-home-card-steps"><StepTicks steps={chapter}/><span>{doneHere} of {counted.length}</span></span>
-          </span>
-        </Link></li>;
+        const all = steps.filter(step => (step.part ?? 1) === part);
+        const lessonCount = all.filter(step => step.type === 'note').length;
+        // Name the next step only where the student has begun, so an untouched chapter reads as a choice, not a queue.
+        const chapterNext = doneHere > 0 || here ? chapter.find(step => !isDone(step)) : undefined;
+        return <li key={part}>
+          <CourseVolume to={url(chapterView(part))} slice={parts.length > 1 ? index / (parts.length - 1) : 0.5} progress={chapter.length ? doneHere / chapter.length : 0} here={here} complete={complete}
+            label={`Chapter ${part}: ${chapterTitles[part]}. ${doneHere} of ${chapter.length} steps done${here ? '. You are here' : ''}${chapterNext ? `. Next: ${chapterNext.title}` : ''}`}>
+            <span className="oc-vol-num" aria-hidden>{part}</span>
+            <span className="oc-vol-text" aria-hidden>
+              <span className="oc-vol-label">{here ? 'You are here' : complete ? <><Check size={13}/>Complete</> : `Chapter ${part}`}</span>
+              <span className="oc-vol-title">{chapterTitles[part]}</span>
+              <VolumeProgress chapter={steps.filter(step => (step.part ?? 1) === part)} next={next}/>
+              <span className="oc-vol-meta">{complete ? 'Every lesson and drill done' : chapterNext ? <>Next: {chapterNext.lessonNumber ? `${chapterNext.lessonNumber} ` : 'Drill: '}{chapterNext.title}</> : `${lessonCount} ${lessonCount === 1 ? 'lesson' : 'lessons'}`}</span>
+            </span>
+          </CourseVolume>
+        </li>;
       })}
-      {parts.length % 2 === 1 && <li><div className="oc-home-tools">
-        <span className="oc-home-card-label">Practice and review</span>
-        <Link to={url('practice')}><Sparkles size={17} aria-hidden/><span><strong>Practice drills</strong>Every drill in the course, in one place.</span><ArrowRight size={15} aria-hidden/></Link>
-        <Link to={url('tools')}><Bookmark size={17} aria-hidden/><span><strong>Flashcards</strong>Indicator words and core rules.</span><ArrowRight size={15} aria-hidden/></Link>
-      </div></li>}
+      <li className="oc-practice">
+        <div className="oc-practice-art" aria-hidden/>
+        <h3>Practice and review</h3>
+        {nextDrill ? <Link className="oc-practice-next" to={url(nextDrill.id)}>
+          <span className="oc-practice-next-label">{saved[nextDrill.id]?.status === 'started' ? 'Continue drill' : 'Next drill'} · Chapter {nextDrill.part ?? 1}</span>
+          <span className="oc-practice-next-title">{nextDrill.title}</span>
+          <ArrowRight size={18} aria-hidden/>
+        </Link> : <p className="oc-practice-next oc-practice-next-done">Every drill is done. Redo any of them from the full list.</p>}
+        <div className="oc-practice-links">
+          <Link to={url('practice')}><DrillGlyph size={20}/><strong>All drills</strong><span>{drillsDone} of {drillTotal} done</span></Link>
+          <Link to={url('tools')}><CardsGlyph size={20}/><strong>Flashcards</strong><span>Rules and indicator words</span></Link>
+        </div>
+      </li>
     </ol>
+  </div>;
+}
+
+/** Real question count for a drill, from whichever bank authored it. */
+function drillQuestionCount(id: string) {
+  return (getSourceWorksheetDrill(id) ?? getAndOrDrill(id) ?? fullCourseDrillSets.find(set => set.id === id))?.items.length;
+}
+
+/** Status words only where they say something: untouched is the quiet default. */
+function QuietStatus({ status }: { status?: string }) {
+  if (status === 'done') return <span className="oc-path-status" data-status="done"><Check size={13} aria-hidden/>Done</span>;
+  if (status === 'started') return <span className="oc-path-status" data-status="started">In progress</span>;
+  return null;
+}
+
+const stepAction = (step: OpeningCourseStep, status?: string) => `${status === 'done' ? 'Review' : status === 'started' ? 'Continue' : 'Start'} ${step.type === 'drill' ? 'drill' : `lesson ${step.lessonNumber}`}`;
+
+/**
+ * Steps in course order as stations on one line. One step is open as a raised card at a time:
+ * the next step by default, any other on click.
+ */
+function CoursePath({ steps, url, label, laterLabel = 'Later in this chapter' }: { steps: OpeningCourseStep[]; url: OpeningCourseUrl; label: string; laterLabel?: string }) {
+  const saved = useCourseProgress()?.steps ?? {};
+  const next = steps.find(step => required(step) && saved[step.id]?.status !== 'done');
+  const [openId, setOpenId] = useState<string | undefined>(next?.id);
+  const nextStarted = next && saved[next.id]?.status === 'started';
+  const nextIndex = next ? steps.indexOf(next) : steps.length;
+  return <ol className="oc-path" aria-label={label}>{steps.map((step, index) => {
+    const status = saved[step.id]?.status;
+    const isNext = step.id === next?.id;
+    const open = step.id === openId;
+    const state = status === 'done' ? 'done' : isNext ? 'next' : index < nextIndex ? 'open' : 'ahead';
+    const drill = step.type === 'drill';
+    const count = drill ? drillQuestionCount(step.id) : undefined;
+    const body = <>
+      <span className="oc-path-kicker">{drill ? 'Drill' : `Lesson ${step.lessonNumber}`}{step.requiredForEditionCompletion === false && ' · Optional'}{count ? ` · ${count} questions` : ''}</span>
+      <span className="oc-path-title">{step.title}</span>
+      {!drill && step.description && <span className="oc-path-summary">{step.description}</span>}
+    </>;
+    return <li key={step.id} className="oc-path-step" data-kind={step.type} data-state={state}>
+      <span className="oc-path-station" aria-hidden>{status === 'done' ? <Check size={drill ? 12 : 16}/> : drill ? <DrillGlyph size={14}/> : step.lessonNumber}</span>
+      {open ? <div className="oc-path-next">
+        <button type="button" className="oc-path-next-head" aria-expanded="true" onClick={() => setOpenId(undefined)}>
+          <span className="oc-path-next-flag">{isNext ? (nextStarted ? 'Pick up here' : 'Start here') : status === 'done' ? 'Done' : status === 'started' ? 'In progress' : index < nextIndex ? 'Not finished' : laterLabel}</span>
+          {body}
+        </button>
+        <Link className="oc-path-next-go" to={url(step.id, drill && status === 'started')}>{stepAction(step, status)}<ArrowRight size={16} aria-hidden/></Link>
+      </div> : <button type="button" className="oc-path-row" aria-expanded="false" onClick={() => setOpenId(step.id)}>
+        <span className="oc-path-text">{body}</span>
+        <QuietStatus status={status}/>
+        <ChevronDown size={16} aria-hidden className="oc-path-arrow"/>
+      </button>}
+    </li>;
+  })}</ol>;
+}
+
+/** Every drill, grouped by chapter, with the next one raised at the top. */
+function PracticePage({ steps, url, recordedPractice }: { steps: OpeningCourseStep[]; url: OpeningCourseUrl; recordedPractice?: ReactNode }) {
+  const saved = useCourseProgress()?.steps ?? {};
+  const drills = steps.filter(step => step.type === 'drill');
+  const counted = drills.filter(required);
+  const done = counted.filter(step => saved[step.id]?.status === 'done').length;
+  const next = counted.find(step => saved[step.id]?.status !== 'done');
+  const started = next && saved[next.id]?.status === 'started';
+  const parts = [...new Set(drills.map(step => step.part ?? 1))];
+  const allParts = [...new Set(steps.map(step => step.part ?? 1))];
+  const count = next ? drillQuestionCount(next.id) : undefined;
+  const slice = next && allParts.length > 1 ? allParts.indexOf(next.part ?? 1) / (allParts.length - 1) : 0.5;
+  return <div className="oc-course-index oc-chapter-page oc-practice-page">
+    <section className="oc-chapter-hero oc-practice-hero" style={{ '--slice': slice, '--p': counted.length ? done / counted.length : 0 } as CSSProperties} aria-label="Practice drills">
+      <span className="oc-chapter-hero-art" aria-hidden/>
+      <div className="oc-chapter-hero-body">
+        <div data-course-heading>
+          <p className="oc-chapter-hero-label">{done} of {counted.length} drills done</p>
+          <h1>Practice drills</h1>
+        </div>
+        {next ? <>
+          <p className="oc-chapter-hero-summary">{started ? 'Pick up where you left off' : 'Next'}: <strong>{next.title}</strong>, Chapter {next.part ?? 1}{count ? `, ${count} questions` : ''}.</p>
+          <Link className="oc-hero-go" to={url(next.id, started)}>{started ? 'Continue' : 'Start'} drill<ArrowRight size={17} aria-hidden/></Link>
+        </> : <p className="oc-chapter-hero-summary">Every drill is done. Open any of them below to redo it.</p>}
+      </div>
+    </section>
+    {parts.map(part => {
+      const chapterDrills = drills.filter(step => (step.part ?? 1) === part);
+      return <section key={part} className="oc-practice-chapter" aria-label={`Chapter ${part} drills`}>
+        <h2><span>Chapter {part}</span>{chapterTitles[part]}</h2>
+        <CoursePath steps={chapterDrills} url={url} label={`Chapter ${part} drills in order`} laterLabel="Later drill"/>
+      </section>;
+    })}
+    {recordedPractice}
   </div>;
 }
 
@@ -240,35 +380,29 @@ function ChapterPage({ part, steps, url }: { part: number; steps: OpeningCourseS
   const saved = useCourseProgress()?.steps ?? {};
   const chapter = steps.filter(step => (step.part ?? 1) === part);
   if (!chapter.length) return <div className="oc-course-note" data-course-heading><h1>This chapter is not available here.</h1><Link to={url('home')}>Return home</Link></div>;
-  const { groups, drills } = chapterGroups(chapter);
+  const parts = [...new Set(steps.map(step => step.part ?? 1))];
+  const slice = parts.length > 1 ? parts.indexOf(part) / (parts.length - 1) : 0.5;
+  const counted = chapter.filter(required);
+  const doneCount = counted.filter(step => saved[step.id]?.status === 'done').length;
   const next = chapter.find(step => required(step) && saved[step.id]?.status !== 'done');
-  const drillRow = (drill: OpeningCourseStep) => <Link key={drill.id} className="oc-chapter-drill" to={url(drill.id)} data-next={drill.id === next?.id || undefined}>
-    <Dumbbell size={15} aria-hidden/><span className="oc-chapter-drill-kind">Drill</span><span className="oc-chapter-drill-title">{drill.title}</span><CardStatus saved={saved[drill.id]} drill/><ArrowRight size={15} aria-hidden/>
-  </Link>;
+  const nextStarted = next && saved[next.id]?.status === 'started';
+
   return <div className="oc-course-index oc-chapter-page">
     <Link className="oc-back oc-chapter-back" to={url('home')}><ArrowLeft size={15} aria-hidden/>Home</Link>
-    <header data-course-heading className="mb-10">
-      <p className="oc-label">Chapter {part}</p>
-      <h1 className="font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]">{chapterTitles[part]}</h1>
-      {chapterSummaries[part] && <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{chapterSummaries[part]}</p>}
-      <ChapterProgress steps={chapter}/>
-    </header>
-    <ol className="oc-chapter-lessons">{groups.map(({ lesson, drills: own }) => {
-      const status = saved[lesson.id]?.status;
-      return <li key={lesson.id} className="oc-chapter-lesson" data-next={lesson.id === next?.id || undefined}>
-        <Link className="oc-chapter-lesson-main" to={url(lesson.id)}>
-          <span className="oc-chapter-lesson-number" data-status={status ?? 'new'} aria-hidden>{lesson.lessonNumber}</span>
-          <span className="oc-chapter-lesson-text">
-            {lesson.id === next?.id && <span className="oc-chapter-start">Start here</span>}
-            <span className="oc-chapter-lesson-title"><span className="sr-only">Lesson {lesson.lessonNumber}: </span>{lesson.title}{lesson.requiredForEditionCompletion === false && <span className="oc-chapter-optional"> · Optional</span>}</span>
-            <span className="oc-chapter-lesson-summary">{lesson.description}</span>
-          </span>
-          <CardStatus saved={saved[lesson.id]} drill={false}/>
-        </Link>
-        {own.length > 0 && <div className="oc-chapter-lesson-drills">{own.map(drillRow)}</div>}
-      </li>;
-    })}</ol>
-    {drills.length > 0 && <section className="oc-chapter-drills" aria-label="Drills in this chapter"><h2>Drills in this chapter</h2><div>{drills.map(drillRow)}</div></section>}
+    <section className="oc-chapter-hero" style={{ '--slice': slice, '--p': counted.length ? doneCount / counted.length : 0 } as CSSProperties} aria-label={`Chapter ${part}`}>
+      <span className="oc-chapter-hero-art" aria-hidden/>
+      <span className="oc-chapter-hero-num" aria-hidden>{part}</span>
+      <div className="oc-chapter-hero-body">
+        <div data-course-heading>
+          <p className="oc-chapter-hero-label">Chapter {part}</p>
+          <h1>{chapterTitles[part]}</h1>
+        </div>
+        {chapterSummaries[part] && <p className="oc-chapter-hero-summary">{chapterSummaries[part]}</p>}
+        <div className="oc-chapter-hero-progress"><VolumeProgress chapter={chapter} next={next}/><span>{doneCount === counted.length ? 'Every lesson and drill done' : `${doneCount} of ${counted.length} done`}</span></div>
+        {next && <Link className="oc-hero-go" to={url(next.id, next.type === 'drill' && nextStarted)}>{stepAction(next, saved[next.id]?.status)}<ArrowRight size={17} aria-hidden/></Link>}
+      </div>
+    </section>
+    <CoursePath steps={chapter} url={url} label={`Chapter ${part} in order`}/>
   </div>;
 }
 
@@ -371,11 +505,15 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
   const next = steps[index + 1];
   const list = view === 'labs' || view === 'practice' ? steps.filter(step => step.type === 'drill') : steps;
   const chapterPart = chapterFromView(view);
+  const allParts = [...new Set(steps.map(step => step.part ?? 1))];
+  const chapterCount = allParts.length;
+  const chapterSlice = current && chapterCount > 1 ? allParts.indexOf(current.part ?? 1) / (chapterCount - 1) : 0.5;
   const isIndex = ['lessons', 'labs', 'practice', 'home'].includes(view) || chapterPart !== undefined;
   return <div ref={root} className={`oc-course-screen${view === 'foundation-practice' ? ' d1-screen' : ''}`}>
     {view === 'home' && <CourseHome steps={steps} url={url}/>}
-    {chapterPart !== undefined && <ChapterPage part={chapterPart} steps={steps} url={url}/>}
-    {isIndex && view !== 'home' && chapterPart === undefined && <div className="oc-course-index">
+    {chapterPart !== undefined && <ChapterPage key={chapterPart} part={chapterPart} steps={steps} url={url}/>}
+    {view === 'practice' && <PracticePage steps={steps} url={url} recordedPractice={recordedPractice}/>}
+    {isIndex && view !== 'home' && view !== 'practice' && chapterPart === undefined && <div className="oc-course-index">
       <div data-course-heading><PageHeader noBloom eyebrow={view === 'lessons' ? 'Course' : 'Practice'} title={view === 'lessons' ? 'Conditional reasoning.' : view === 'labs' ? 'Make the move yourself.' : 'Practice the reasoning.'}/></div>
       <CourseTracker steps={list}/>
       {view === 'lessons' && <CourseContinue steps={list} url={url}/>}
@@ -391,6 +529,11 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
     {!projected && current?.type === 'drill' && !run && <DrillEntry step={current} url={url} storageScope={storageScope}/>}
     {!projected && current && (current.type === 'note' || run) && <div className={current.type === 'note' ? 'oc-course-note' : 'oc-drill-run-header'}>
       <div data-course-heading>{current.type === 'note' ? <header className="mb-10">
+        {current.lessonNumber && chapterCount > 1 && <Link className="oc-lesson-ribbon" to={url(chapterView(current.part ?? 1))} style={{ '--slice': chapterSlice } as CSSProperties}>
+          <span className="oc-lesson-ribbon-art" aria-hidden/>
+          <ArrowLeft size={16} aria-hidden/><span><span className="oc-lesson-ribbon-label">Chapter {current.part ?? 1}</span>{chapterTitles[current.part ?? 1]}</span>
+          <span className="oc-lesson-ribbon-num" aria-hidden>{current.part ?? 1}</span>
+        </Link>}
         {current.lessonNumber && <p className="oc-label">Chapter {current.part ?? 1} · Lesson {current.lessonNumber}{current.requiredForEditionCompletion === false && ' · Optional'}</p>}
         <h1 className="font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]">{current.title}</h1>
         <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>

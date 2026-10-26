@@ -299,9 +299,9 @@
 /* Lessons in this chapter as one slim row of pills. The current lesson is filled and named; finished lessons carry a check. */
 .oc-chapter-cards{margin-top:1.5rem}
 .oc-chapter-cards ol{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:0;padding:0;list-style:none}
-.oc-chapter-cards a{display:inline-flex;align-items:center;gap:.4rem;min-height:2.25rem;padding:.3rem .8rem;border-radius:999px;border:1px solid var(--oc-line);background:transparent;color:var(--oc-muted);font-size:.85rem;font-weight:600;letter-spacing:.03em;text-decoration:none;transition:border-color .2s,background-color .2s,color .2s}
+.oc-chapter-cards a{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:.3rem .8rem;border-radius:999px;border:1px solid var(--oc-line);background:transparent;color:var(--oc-muted);font-size:.85rem;font-weight:600;letter-spacing:.03em;text-decoration:none;transition:border-color .2s,background-color .2s,color .2s}
 .oc-chapter-cards a:hover{border-color:var(--oc-control-line);color:var(--oc-ink);background:var(--oc-hover)}
-.oc-chapter-cards a:focus-visible,.oc-home-card:focus-visible,.oc-chapter-lesson-main:focus-visible,.oc-chapter-drill:focus-visible{outline:3px solid var(--oc-accent);outline-offset:2px}
+.oc-chapter-cards a:focus-visible,.oc-home-card:focus-visible,.oc-chapter-lesson-main:focus-visible,.oc-chapter-drill:focus-visible{outline:2px solid var(--oc-ink);outline-offset:2px}
 .oc-chapter-cards a[aria-current=page]{background:var(--oc-ink);border-color:var(--oc-ink);color:var(--oc-canvas);padding-inline:.9rem 1rem}
 .oc-chapter-cards a svg{color:var(--oc-accent)}
 .oc-chapter-card-title{font-family:Georgia,serif;font-size:.95rem;font-weight:400;letter-spacing:0}
@@ -314,93 +314,163 @@
 .oc-nav-chevron{margin-left:auto;transition:transform .2s}
 .oc-nav-course[open] .oc-nav-chevron{transform:rotate(180deg)}
 .oc-nav-course>div{display:grid;gap:2px;margin:2px 0 6px 18px;padding-left:10px;border-left:1px solid var(--oc-line)}
-.oc-course-rail nav .oc-nav-course>div a,.oc-course-drawer nav .oc-nav-course>div a{display:grid;gap:1px;align-items:start;min-height:0;padding:7px 10px;font-size:.84rem;line-height:1.3}
-.oc-nav-course>div a span{font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--oc-muted);font-weight:500}
+.oc-course-rail nav .oc-nav-course>div a,.oc-course-drawer nav .oc-nav-course>div a{display:grid;gap:1px;align-content:center;min-height:44px;padding:6px 10px;font-size:.84rem;line-height:1.3}
+.oc-nav-course>div a span{font-size:.78rem;color:var(--oc-muted)}
 
-/* Home: one charcoal focus card for the next step, then the chapters as an ordered sequence. */
-.oc-home{container-type:inline-size}
-.oc-home-head{margin-bottom:1.75rem}
-.oc-home-head .oc-label{margin-bottom:.6rem}
-.oc-home-overall{margin:.9rem 0 0;font-size:.9rem;color:var(--oc-muted)}
-.oc-focus{position:relative;display:grid;gap:.6rem;padding:clamp(1.5rem,4cqi,2.4rem);border-radius:20px;background:linear-gradient(130deg,#2d3138 0%,#1c1f25 70%);color:#f3f1ec;box-shadow:0 18px 40px -24px #1c1f25;margin-bottom:3rem;overflow:hidden}
-.oc-focus::after{content:"";position:absolute;inset:auto -10% -55% auto;width:55%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,#ffffff12,transparent);pointer-events:none}
-.oc-focus-kicker{margin:0;font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#b9c2c9}
-.oc-focus h2{margin:0;font-family:Georgia,serif;font-size:clamp(1.9rem,1.4rem + 2.2cqi,2.8rem);font-weight:400;line-height:1.08;letter-spacing:-.015em;max-width:22ch;text-wrap:balance}
-.oc-focus-summary{margin:0;max-width:52ch;font-size:1rem;line-height:1.55;color:#d3d8dc}
-.oc-focus-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1.5rem;margin-top:.9rem}
-.oc-focus-go{display:inline-flex;align-items:center;gap:.55rem;min-height:2.9rem;padding:.7rem 1.35rem;border-radius:999px;background:#f3f1ec;color:#1c1f25;font-weight:600;text-decoration:none;transition:transform .2s cubic-bezier(.16,1,.3,1),background-color .2s}
-.oc-focus-go:hover{background:#fff;transform:translateX(2px)}
-.oc-focus-go:active{transform:scale(.98)}
-.oc-focus-go:focus-visible,.oc-focus-then a:focus-visible{outline:3px solid #9fd0d8;outline-offset:3px}
-.oc-focus-then{margin:0;font-size:.9rem;color:#b9c2c9}
-.oc-focus-then a{color:#f3f1ec;text-underline-offset:3px}
-.oc-home-section{margin:0 0 1rem;font-family:Georgia,serif;font-size:1.5rem;font-weight:400}
-.oc-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:0;padding:0;list-style:none}
-.oc-home-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.1rem;height:100%;padding:1.35rem 1.4rem 1.2rem 1.1rem;border-radius:16px;border:1px solid var(--oc-line);background:var(--oc-surface);color:var(--oc-ink);text-decoration:none;transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .2s,box-shadow .25s}
-.oc-home-card:hover{transform:translateY(-2px);border-color:var(--oc-control-line);box-shadow:var(--oc-shadow-raised)}
-.oc-home-card:active{transform:translateY(0) scale(.99)}
-.oc-home-card[data-here]{border-color:var(--oc-accent);box-shadow:inset 0 0 0 1px var(--oc-accent)}
-.oc-home-numeral{font-family:Georgia,serif;font-style:italic;font-size:3.1rem;line-height:.8;color:var(--oc-control-line);min-width:2.2rem;text-align:center}
-.oc-home-card[data-here] .oc-home-numeral,.oc-home-card[data-complete] .oc-home-numeral{color:var(--oc-accent)}
-.oc-home-card-body{display:grid;gap:.4rem;align-content:start;min-width:0}
-.oc-home-card-label{display:flex;align-items:center;gap:.6rem;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--oc-muted)}
-.oc-home-here{padding:.12rem .5rem;border-radius:99px;background:var(--oc-accent);color:var(--oc-canvas);letter-spacing:.06em}
-.oc-home-card-done{display:inline-flex;align-items:center;gap:.25rem;color:var(--oc-accent);letter-spacing:.04em}
-.oc-home-card h3{margin:0;font-family:Georgia,serif;font-size:1.35rem;font-weight:400;line-height:1.2;text-wrap:balance}
-.oc-home-card-summary{font-size:.92rem;line-height:1.5;color:var(--oc-muted)}
-.oc-home-card-steps{display:flex;align-items:flex-end;gap:.75rem;margin-top:.35rem;font-size:.75rem;color:var(--oc-muted);white-space:nowrap}
-.oc-ticks{display:flex;align-items:flex-end;gap:3px;flex-wrap:wrap;min-width:0}
-.oc-ticks i{display:block;width:6px;height:16px;border-radius:2px;background:var(--oc-line)}
-.oc-ticks i[data-kind=drill]{height:9px}
-.oc-ticks i[data-state=started]{background:var(--oc-control-line)}
-.oc-ticks i[data-state=done]{background:var(--oc-accent)}
-.oc-home-tools{display:grid;align-content:start;gap:.35rem;height:100%;padding:1.35rem 1.2rem 1rem;border-radius:16px;border:1px dashed var(--oc-line)}
-.oc-home-tools .oc-home-card-label{margin:0 .4rem .35rem}
-.oc-home-tools a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.8rem;align-items:center;padding:.7rem .5rem;border-radius:10px;color:var(--oc-ink);text-decoration:none;font-size:.88rem;line-height:1.4}
-.oc-home-tools a+a{border-top:1px solid var(--oc-line);border-radius:0 0 10px 10px}
-.oc-home-tools a:hover{background:var(--oc-hover)}
-.oc-home-tools a span{display:grid;color:var(--oc-muted)}
-.oc-home-tools a strong{color:var(--oc-ink);font-weight:600}
-.oc-home-tools svg{color:var(--oc-muted)}
-.oc-home-card:focus-visible,.oc-home-tools a:focus-visible{outline:3px solid var(--oc-accent);outline-offset:2px}
-.oc-chapter-progress{display:flex;align-items:center;gap:.75rem;font-size:.78rem;color:var(--oc-muted);white-space:nowrap}
+/* Home. The course's own artwork (the 07 Atmosphere paper strata) carries the depth:
+   a dark scene for the next step, and seven chapter volumes cut from the same landscape.
+   A volume's tone is its real progress: untouched chapters stay in mist, finished ones come up to full light. */
+.oc-home{container-type:inline-size;--oc-art:url("/conditionals/paper-landscape.jpg");--oc-night:#0e1112;--oc-mist:#efede6}
+.oc-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:2rem;min-height:clamp(26rem,52cqi,34rem);padding:clamp(1.5rem,4.5cqi,3rem);border-radius:20px;overflow:hidden;isolation:isolate;background:var(--oc-night);color:var(--oc-mist);margin-bottom:3.25rem;box-shadow:0 1px 0 rgb(255 255 255 / .06) inset,0 30px 60px -38px rgb(8 10 11 / .7)}
+.oc-hero-art{position:absolute;inset:-4%;z-index:-1;background:var(--oc-art) 78% 40%/cover no-repeat;animation:oc-settle 2.4s cubic-bezier(.22,1,.36,1) both;transform-origin:70% 40%}
+.oc-hero-art::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgb(14 17 18 / .92) 10%,rgb(14 17 18 / .55) 45%,rgb(14 17 18 / .05) 85%),linear-gradient(0deg,rgb(14 17 18 / .85),transparent 55%)}
+/* Settles once on arrival; no idle motion. */
+@keyframes oc-settle{from{transform:scale(1.1);opacity:.6}to{transform:scale(1.03);opacity:1}}
+.oc-hero-main{display:grid;gap:.6rem;align-content:end;max-width:40rem}
+.oc-hero-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem 1rem;margin-bottom:auto;padding-bottom:clamp(2.5rem,8cqi,5rem)}
+.oc-course-screen .oc-hero .oc-hero-head h1{margin:0;line-height:1.3;letter-spacing:.01em;font-style:normal;font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;font-weight:400;letter-spacing:.01em;color:var(--oc-mist)}
+.oc-hero-head p{margin:0;font-size:.88rem;color:rgb(239 237 230 / .62)}
+.oc-hero-kicker{margin:0;font-size:.95rem;color:rgb(239 237 230 / .72)}
+.oc-hero h2{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.6rem,1.6rem + 5cqi,4.6rem);font-weight:400;line-height:.98;letter-spacing:-.025em;text-wrap:balance}
+.oc-hero-summary{margin:.2rem 0 0;max-width:46ch;font-size:1.05rem;line-height:1.55;color:rgb(239 237 230 / .8)}
+.oc-hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.9rem 1.6rem;margin-top:1.1rem}
+.oc-hero-go{display:inline-flex;align-items:center;gap:.6rem;min-height:52px;padding:0 1.4rem;border-radius:10px;background:var(--oc-mist);color:#161d18;font-size:1rem;font-weight:600;text-decoration:none;box-shadow:0 10px 24px -14px rgb(0 0 0 / .8),inset 0 -1px 0 rgb(0 0 0 / .12);transition:background-color .2s,transform .2s cubic-bezier(.22,1,.36,1)}
+.oc-hero-go:hover{background:#fff;transform:translateY(-1px)}
+.oc-hero-go:active{transform:translateY(0)}
+.oc-hero-then{margin:0;font-size:.92rem;color:rgb(239 237 230 / .66)}
+.oc-hero-then a{color:var(--oc-mist);text-underline-offset:3px}
+.oc-hero-go:focus-visible,.oc-hero-then a:focus-visible,.oc-hero-place:focus-visible{outline:2px solid var(--oc-mist);outline-offset:3px}
+.oc-hero-place{display:grid;gap:.5rem;width:13rem;padding:1.15rem 1.25rem 1.2rem;border-radius:14px;background:rgb(22 26 28 / .55);border:1px solid rgb(239 237 230 / .14);box-shadow:inset 0 1px 0 rgb(255 255 255 / .1);backdrop-filter:blur(14px) saturate(1.1);-webkit-backdrop-filter:blur(14px) saturate(1.1);color:var(--oc-mist);text-decoration:none;transition:border-color .2s}
+.oc-hero-place:hover{border-color:rgb(239 237 230 / .3)}
+.oc-hero-place-label{font-size:.82rem;color:rgb(239 237 230 / .66)}
+.oc-hero-place-count{display:flex;align-items:baseline;font-family:Georgia,"Times New Roman",serif;line-height:.85;font-variant-numeric:lining-nums tabular-nums}
+.oc-hero-place-count strong{font-size:4.4rem;font-weight:400;letter-spacing:-.04em}
+.oc-hero-place-count span{font-size:1.25rem;color:rgb(239 237 230 / .6);margin-left:.15rem}
+.oc-hero-place-chapter{display:grid;gap:.1rem;font-size:.82rem;color:rgb(239 237 230 / .66)}
+.oc-hero-place-chapter span{font-size:.95rem;color:var(--oc-mist);line-height:1.3}
+
+.oc-home-section{margin:0 0 1rem;font-family:Georgia,"Times New Roman",serif;font-size:1.6rem;font-weight:400;color:var(--oc-ink)}
+.oc-volumes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin:0;padding:0;list-style:none;perspective:1100px}
+.oc-vol{display:block;height:100%;color:var(--oc-mist);text-decoration:none;border-radius:16px;outline-offset:3px}
+.oc-vol:focus-visible{outline:2px solid var(--oc-ink)}
+.oc-vol-body{position:relative;display:grid;align-content:space-between;min-height:17.5rem;height:100%;padding:1.1rem 1.15rem 1.15rem;border-radius:16px;overflow:hidden;isolation:isolate;transform-style:preserve-3d;background:var(--oc-night);box-shadow:inset 0 0 0 1px rgb(239 237 230 / .1),inset 0 1px 0 rgb(255 255 255 / .12),0 22px 40px -26px rgb(8 10 11 / .75);transition:box-shadow .3s}
+.oc-vol:hover .oc-vol-body{box-shadow:inset 0 0 0 1px rgb(239 237 230 / .2),inset 0 1px 0 rgb(255 255 255 / .16),0 34px 56px -28px rgb(8 10 11 / .8)}
+.oc-vol-art{position:absolute;inset:-6%;z-index:-3;background:var(--oc-art) no-repeat;background-size:auto 240%;background-position:calc(46% + var(--slice) * 54%) calc(28% + var(--slice) * 40%);filter:grayscale(1) brightness(calc(.78 + var(--p) * .4)) contrast(calc(1 + var(--p) * .25));transform:translateZ(-30px) scale(1.08);transition:filter .6s}
+.oc-vol:hover .oc-vol-art{filter:grayscale(1) brightness(calc(.88 + var(--p) * .4)) contrast(calc(1.05 + var(--p) * .25))}
+/* The mist lifts as the chapter's steps are done. */
+.oc-vol-mist{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgb(206 208 204 / .38),rgb(170 174 171 / .2) 55%,rgb(120 124 122 / .06));opacity:calc(1 - var(--p));transition:opacity .6s}
+.oc-vol-veil{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgb(14 17 18 / .2) 0%,transparent 35%,rgb(14 17 18 / .55) 62%,rgb(14 17 18 / .92) 100%)}
+.oc-vol-glare{position:absolute;inset:0;z-index:-1;background:radial-gradient(40rem circle at var(--gx,50%) var(--gy,0%),rgb(255 255 255 / .1),transparent 45%);opacity:0;transition:opacity .3s}
+.oc-vol:hover .oc-vol-glare{opacity:1}
+.oc-vol-num{font-variant-numeric:lining-nums;font-family:Georgia,"Times New Roman",serif;font-size:3.6rem;line-height:.8;letter-spacing:-.04em;color:rgb(239 237 230 / .92);transform:translateZ(46px);text-shadow:0 8px 24px rgb(0 0 0 / .45)}
+.oc-vol-text{display:grid;gap:.35rem;transform:translateZ(32px)}
+.oc-vol-label{display:inline-flex;align-items:center;gap:.3rem;font-size:.82rem;color:rgb(239 237 230 / .7)}
+.oc-vol[data-here] .oc-vol-label{color:var(--oc-mist);font-weight:600}
+.oc-vol[data-here] .oc-vol-label::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--oc-mist);box-shadow:0 0 0 4px rgb(239 237 230 / .18)}
+.oc-vol-title{font-family:Georgia,"Times New Roman",serif;font-size:1.3rem;line-height:1.15;text-wrap:balance}
+.oc-vol-meta{font-size:.82rem;color:rgb(239 237 230 / .66)}
+.oc-vol[data-here] .oc-vol-body{box-shadow:inset 0 0 0 1px rgb(239 237 230 / .38),inset 0 1px 0 rgb(255 255 255 / .2),0 26px 48px -26px rgb(8 10 11 / .8)}
+/* Lesson segments on a volume: done is solid mist, the current lesson glows, pending stays visible as glass. */
+.oc-vol-segments{display:flex;gap:4px;margin-top:.55rem}
+.oc-vol-segments i{position:relative;flex:1;height:5px;border-radius:99px;overflow:hidden;background:rgb(239 237 230 / .2);box-shadow:inset 0 0 0 1px rgb(239 237 230 / .1)}
+.oc-vol-segments i::after{content:"";position:absolute;inset:0;width:var(--fill);border-radius:inherit;background:rgb(239 237 230 / .92)}
+.oc-vol-segments i[data-state=current]{background:rgb(239 237 230 / .32);box-shadow:inset 0 0 0 1px rgb(239 237 230 / .45),0 0 12px rgb(239 237 230 / .35)}
+.oc-vol-segments i[data-state=done]{box-shadow:0 0 8px rgb(239 237 230 / .25)}
+.oc-vol-meta{display:block;margin-top:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Practice and review: the light counterpart to the volumes, cut from the same strata, inverted to paper. */
+.oc-practice{position:relative;display:grid;align-content:start;gap:.85rem;padding:1.2rem 1.15rem 1.1rem;border-radius:16px;overflow:hidden;isolation:isolate;background:#f4f2ec;color:#1f2422;box-shadow:inset 0 0 0 1px rgb(31 36 34 / .1),inset 0 1px 0 #fff,0 22px 40px -28px rgb(8 10 11 / .45)}
+.oc-practice-art{position:absolute;inset:0;z-index:-1;background:var(--oc-art) no-repeat;background-size:auto 240%;background-position:96% 62%;filter:grayscale(1) invert(1) contrast(.7) brightness(1.05);opacity:.32;mask-image:linear-gradient(200deg,#000 10%,transparent 70%)}
+.oc-practice h3{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;font-weight:400}
+.oc-practice-next{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.2rem .75rem;padding:.9rem 1rem;border-radius:12px;background:#161a1b;color:#efede6;text-decoration:none;box-shadow:inset 0 1px 0 rgb(255 255 255 / .1),0 12px 22px -16px rgb(0 0 0 / .7);transition:background-color .2s}
+.oc-practice-next:hover{background:#22272a}
+.oc-practice-next-label{grid-column:1;font-size:.8rem;color:rgb(239 237 230 / .66)}
+.oc-practice-next-title{grid-column:1;font-family:Georgia,"Times New Roman",serif;font-size:1.12rem;line-height:1.25}
+.oc-practice-next svg{grid-column:2;grid-row:1/3}
+.oc-practice-next-done{display:block;font-size:.92rem;line-height:1.5}
+.oc-practice-links{display:grid;gap:.45rem}
+.oc-practice-links a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:.7rem;min-height:52px;padding:.6rem .85rem;border-radius:10px;background:rgb(255 255 255 / .62);box-shadow:inset 0 0 0 1px rgb(31 36 34 / .12);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#1f2422;text-decoration:none;transition:background-color .2s}
+.oc-practice-links a:hover{background:#fff}
+.oc-practice-links a svg{grid-row:1/3;box-sizing:content-box;padding:8px;border-radius:10px;background:rgb(31 36 34 / .07);color:#262b29}
+.oc-practice-links a strong{grid-column:2;font-size:.92rem;font-weight:600;line-height:1.3}
+.oc-practice-links a span{grid-column:2;font-size:.8rem;line-height:1.35;color:#5d625f;font-variant-numeric:tabular-nums}
+.oc-practice-links a::after{content:"";grid-column:3;grid-row:1/3;width:7px;height:7px;border-top:1.75px solid #5d625f;border-right:1.75px solid #5d625f;transform:rotate(45deg);margin-right:3px}
+.oc-practice-next:focus-visible,.oc-practice-links a:focus-visible{outline:2px solid #1f2422;outline-offset:2px}
+.oc-chapter-progress{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--oc-muted);white-space:nowrap}
 .oc-chapter-progress-rail{flex:1;height:4px;border-radius:99px;background:var(--oc-line);overflow:hidden}
 .oc-chapter-progress-rail i{display:block;height:100%;background:var(--oc-accent);border-radius:inherit}
-@container (max-width:36rem){.oc-home-grid{grid-template-columns:1fr}.oc-home-numeral{font-size:2.5rem}}
+@container (max-width:56rem){.oc-volumes{grid-template-columns:repeat(2,minmax(0,1fr))}.oc-vol-body{min-height:14rem}}
+@container (max-width:40rem){.oc-hero{grid-template-columns:1fr;min-height:0}.oc-hero-place{width:auto;grid-template-columns:auto 1fr;align-items:end;column-gap:1.25rem}.oc-hero-place-label{grid-column:1/-1}.oc-hero-place-count strong{font-size:3.2rem}}
+@container (max-width:30rem){.oc-volumes{grid-template-columns:1fr}.oc-vol-body{min-height:9.5rem;grid-template-columns:auto 1fr;align-content:end;align-items:end;gap:1rem}.oc-vol-num{font-size:3rem}.oc-hero h2{font-size:2.4rem}}
+@media(prefers-reduced-motion:reduce){.oc-hero-art{animation:none}.oc-hero-go,.oc-vol-art,.oc-vol-body,.oc-vol-glare{transition:none}.oc-hero-go:hover{transform:none}}
 
-/* Chapter page: lessons in reading order, each drill inside its lesson. */
-.oc-chapter-back{display:inline-flex;align-items:center;gap:.4rem;margin-bottom:1.5rem}
-.oc-chapter-page header .oc-chapter-progress{margin-top:1.25rem;max-width:24rem}
-.oc-chapter-lessons{display:grid;gap:.85rem;margin:0;padding:0;list-style:none}
-.oc-chapter-lesson{border-radius:16px;border:1px solid var(--oc-line);background:var(--oc-surface);box-shadow:var(--oc-shadow-subtle);overflow:hidden;transition:border-color .2s}
-.oc-chapter-lesson[data-next]{box-shadow:inset 3px 0 0 var(--oc-accent),var(--oc-shadow-subtle)}
-.oc-chapter-lesson:hover{border-color:var(--oc-control-line)}
-.oc-chapter-lesson-main{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:1rem;align-items:center;padding:1.15rem 1.35rem;color:var(--oc-ink);text-decoration:none}
-.oc-chapter-lesson-number{display:grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;border:1px solid var(--oc-control-line);font-size:.85rem;font-weight:600;color:var(--oc-muted)}
-.oc-chapter-lesson-number[data-status=done]{background:var(--oc-accent);border-color:var(--oc-accent);color:var(--oc-canvas)}
-.oc-chapter-lesson-number[data-status=started]{border-color:var(--oc-accent);color:var(--oc-accent)}
-.oc-chapter-lesson-text{display:grid;gap:.25rem;min-width:0}
-.oc-chapter-start{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--oc-accent)}
-.oc-chapter-lesson-title{font-family:Georgia,serif;font-size:1.25rem;line-height:1.25}
-.oc-chapter-optional{font-family:inherit;font-size:.85rem;color:var(--oc-muted)}
-.oc-chapter-lesson-summary{font-size:.92rem;line-height:1.5;color:var(--oc-muted)}
-.oc-chapter-lesson-drills{display:grid;border-top:1px solid var(--oc-line)}
-.oc-chapter-drill{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;gap:.65rem;align-items:center;padding:.75rem 1.35rem .75rem 4.95rem;color:var(--oc-ink);text-decoration:none;font-size:.92rem}
-.oc-chapter-drill+.oc-chapter-drill{border-top:1px solid var(--oc-line)}
-.oc-chapter-drill:hover{background:var(--oc-hover)}
-.oc-chapter-drill svg{color:var(--oc-muted)}
-.oc-chapter-drill-kind{font-size:.7rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--oc-muted)}
-.oc-chapter-drill-title{min-width:0}
-.oc-chapter-drill[data-next]{box-shadow:inset 3px 0 0 var(--oc-accent)}
-.oc-chapter-drills{margin-top:2.5rem}
-.oc-chapter-drills h2{margin:0 0 .85rem;font-family:Georgia,serif;font-size:1.4rem;font-weight:400}
-.oc-chapter-drills>div{display:grid;border-radius:16px;border:1px solid var(--oc-line);background:var(--oc-surface);overflow:hidden}
-.oc-chapter-drills .oc-chapter-drill{padding-left:1.35rem}
+/* Chapter page. The volume opens into a hero cut from the same artwork, then the chapter runs as a path:
+   stations on one line, solid through finished work, one raised card for the next step. */
+.oc-chapter-page{container-type:inline-size;--oc-art:url("/conditionals/paper-landscape.jpg");--oc-night:#0e1112;--oc-mist:#efede6}
+.oc-chapter-back{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;margin-bottom:.75rem}
+.oc-chapter-hero{position:relative;display:grid;align-items:end;min-height:clamp(20rem,44cqi,26rem);padding:clamp(1.4rem,4.5cqi,2.6rem);border-radius:20px;overflow:hidden;isolation:isolate;background:var(--oc-night);color:var(--oc-mist);margin-bottom:2.75rem;box-shadow:inset 0 1px 0 rgb(255 255 255 / .06),0 30px 60px -38px rgb(8 10 11 / .7)}
+.oc-chapter-hero-art{position:absolute;inset:-4%;z-index:-2;background:var(--oc-art) no-repeat;background-size:auto 200%;background-position:calc(46% + var(--slice) * 54%) calc(28% + var(--slice) * 40%);filter:grayscale(1) brightness(calc(.8 + var(--p) * .35)) contrast(calc(1 + var(--p) * .2));animation:oc-settle 2.4s cubic-bezier(.22,1,.36,1) both}
+.oc-chapter-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgb(14 17 18 / .94) 8%,rgb(14 17 18 / .55) 55%,rgb(14 17 18 / .15)),linear-gradient(90deg,rgb(14 17 18 / .6),transparent 70%)}
+.oc-chapter-hero-num{position:absolute;top:clamp(1rem,3cqi,1.8rem);right:clamp(1.2rem,4cqi,2.4rem);font-family:Georgia,"Times New Roman",serif;font-variant-numeric:lining-nums;font-size:clamp(6rem,4rem + 10cqi,11rem);line-height:.8;letter-spacing:-.05em;color:rgb(239 237 230 / .9);text-shadow:0 12px 40px rgb(0 0 0 / .5)}
+.oc-chapter-hero-body{display:grid;gap:.6rem;max-width:36rem}
+.oc-chapter-hero-label{margin:0;font-size:.92rem;color:rgb(239 237 230 / .7)}
+.oc-course-screen .oc-chapter-hero h1{margin:.15rem 0 0;font-family:Georgia,"Times New Roman",serif;font-style:normal;font-weight:400;font-size:clamp(2.3rem,1.5rem + 4cqi,3.8rem);line-height:1;letter-spacing:-.025em;color:var(--oc-mist);text-wrap:balance}
+.oc-chapter-hero-summary{margin:0;font-size:1.02rem;line-height:1.55;color:rgb(239 237 230 / .78)}
+.oc-chapter-hero-progress{display:grid;gap:.3rem;max-width:22rem;margin:.35rem 0 .6rem;font-size:.85rem;color:rgb(239 237 230 / .7)}
+.oc-chapter-hero-progress .oc-vol-segments{margin-top:0}
+.oc-chapter-hero .oc-hero-go{justify-self:start}
 
-@media(max-width:640px){
-  .oc-chapter-lesson-main{grid-template-columns:auto minmax(0,1fr);padding:1rem}
-  .oc-chapter-lesson-main>.oc-status{grid-column:2;justify-self:start}
-  .oc-chapter-drill{grid-template-columns:auto minmax(0,1fr) auto;padding:.75rem 1rem}
-  .oc-chapter-drill-kind,.oc-chapter-drill>.oc-status{display:none}
-}
-@media(prefers-reduced-motion:reduce){.oc-chapter-cards a,.oc-home-card,.oc-nav-chevron,.oc-focus-go{transition:none}.oc-focus-go:hover,.oc-focus-go:active{transform:none}.oc-home-card:hover,.oc-home-card:active{transform:none}}
+/* The path */
+.oc-path{--station:2.75rem;position:relative;display:grid;margin:0;padding:0;list-style:none}
+.oc-path-step{position:relative;display:grid;grid-template-columns:var(--station) minmax(0,1fr);column-gap:1.1rem;padding-bottom:1.1rem}
+.oc-path-step::before{content:"";position:absolute;left:calc(var(--station) / 2 - 1px);top:0;bottom:0;width:2px;background:var(--oc-line)}
+.oc-path-step:first-child::before{top:calc(var(--station) / 2)}
+.oc-path-step:last-child::before{bottom:auto;height:calc(var(--station) / 2)}
+.oc-path-step[data-state=done]::before{background:var(--oc-ink)}
+.oc-path-station{position:relative;z-index:1;display:grid;place-items:center;width:var(--station);height:var(--station);border-radius:50%;border:1.5px solid var(--oc-control-line);background:var(--oc-canvas);color:var(--oc-muted);font-size:.85rem;font-weight:600;font-variant-numeric:tabular-nums}
+.oc-path-step[data-kind=drill] .oc-path-station{width:1.9rem;height:1.9rem;margin:.42rem auto 0;justify-self:center}
+.oc-path-step[data-state=done] .oc-path-station{background:var(--oc-ink);border-color:var(--oc-ink);color:var(--oc-canvas)}
+.oc-path-step[data-state=next] .oc-path-station{border:2px solid var(--oc-ink);color:var(--oc-ink);box-shadow:0 0 0 5px var(--oc-current)}
+.oc-path-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:.9rem;width:100%;min-height:var(--station);padding:.35rem .6rem .35rem .2rem;border:0;border-radius:10px;background:none;font:inherit;text-align:left;color:var(--oc-ink);cursor:pointer;transition:background-color .15s}
+.oc-path-row:hover{background:var(--oc-hover)}
+.oc-path-row:focus-visible,.oc-path-next-head:focus-visible,.oc-path-next-go:focus-visible{outline:2px solid var(--oc-ink);outline-offset:2px}
+.oc-path-text{display:grid;gap:.2rem;min-width:0}
+.oc-path-kicker{font-size:.82rem;color:var(--oc-muted)}
+.oc-path-title{font-family:Georgia,"Times New Roman",serif;font-size:1.22rem;line-height:1.25}
+.oc-path-step[data-kind=drill] .oc-path-title{font-size:1.05rem}
+.oc-path-summary{font-size:.92rem;line-height:1.5;color:var(--oc-muted);max-width:58ch}
+.oc-path-step[data-state=ahead] .oc-path-title{color:color-mix(in oklab,var(--oc-ink) 82%,var(--oc-canvas))}
+.oc-path-status{display:inline-flex;align-items:center;gap:.3rem;font-size:.82rem;font-weight:600;white-space:nowrap}
+.oc-path-status[data-status=done]{color:var(--oc-accent)}
+.oc-path-status[data-status=started]{color:var(--oc-ink)}
+.oc-path-arrow{color:var(--oc-muted);opacity:0;transition:opacity .15s}
+.oc-path-row:hover .oc-path-arrow,.oc-path-row:focus-visible .oc-path-arrow{opacity:1}
+.oc-path-next{display:grid;gap:.5rem;padding:1.1rem 1.25rem 1.2rem;border-radius:14px;background:var(--oc-surface);border:1px solid var(--oc-control-line);box-shadow:0 18px 36px -26px rgb(8 10 11 / .5)}
+.oc-path-next-flag{margin-bottom:.3rem;font-size:.82rem;font-weight:600;color:var(--oc-ink)}
+.oc-path-next-head{display:grid;gap:.2rem;width:100%;padding:0;border:0;background:none;font:inherit;text-align:left;color:var(--oc-ink);cursor:pointer}
+.oc-path-next{animation:oc-pop .32s cubic-bezier(.22,1,.36,1) both}
+@keyframes oc-pop{from{opacity:0;transform:translateY(4px) scale(.985)}to{opacity:1;transform:none}}
+.oc-path-next .oc-path-title{font-size:1.45rem}
+.oc-path-next-go{justify-self:start;display:inline-flex;align-items:center;gap:.5rem;min-height:44px;margin-top:.35rem;padding:0 1.1rem;border-radius:10px;background:var(--oc-ink);color:var(--oc-canvas);font-weight:600;text-decoration:none;transition:opacity .15s}
+.oc-path-next-go:hover{opacity:.88}
+@container (max-width:34rem){.oc-path{--station:2.25rem}.oc-path-step{column-gap:.75rem}.oc-chapter-hero-num{font-size:7rem;color:rgb(239 237 230 / .22);text-shadow:none}.oc-path-row{grid-template-columns:minmax(0,1fr) auto}.oc-path-arrow{display:none}}
+@media(prefers-reduced-motion:reduce){.oc-chapter-hero-art,.oc-path-next{animation:none}.oc-path-row,.oc-path-arrow,.oc-path-next-go{transition:none}}
+@media(prefers-reduced-motion:reduce){.oc-chapter-cards a,.oc-home-card,.oc-nav-chevron,.oc-focus-go,.oc-chapter-lesson{transition:none}}
+
+/* Practice page: the same hero material and path, one section per chapter. */
+.oc-practice-hero{min-height:clamp(16rem,36cqi,21rem)}
+.oc-practice-hero .oc-chapter-hero-summary strong{font-weight:600;color:var(--oc-mist)}
+.oc-practice-chapter{margin-bottom:2.25rem}
+.oc-practice-chapter h2{display:grid;gap:.15rem;margin:0 0 1rem;font-family:Georgia,"Times New Roman",serif;font-size:1.45rem;font-weight:400;line-height:1.2;color:var(--oc-ink)}
+.oc-practice-chapter h2 span{font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:.82rem;color:var(--oc-muted)}
+
+/* Lesson ribbon: a strip of the chapter's artwork that leads back to the chapter. */
+.oc-lesson-ribbon{--oc-art:url("/conditionals/paper-landscape.jpg");position:relative;display:flex;align-items:center;gap:.75rem;min-height:4.25rem;margin-bottom:1.6rem;padding:.75rem 1.2rem;border-radius:14px;overflow:hidden;isolation:isolate;background:#0e1112;color:#efede6;text-decoration:none;box-shadow:inset 0 1px 0 rgb(255 255 255 / .06),0 18px 34px -26px rgb(8 10 11 / .7)}
+.oc-lesson-ribbon-art{position:absolute;inset:0;z-index:-1;background:var(--oc-art) no-repeat;background-size:auto 420%;background-position:calc(46% + var(--slice) * 54%) calc(30% + var(--slice) * 40%);filter:grayscale(1) brightness(.85)}
+.oc-lesson-ribbon::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgb(14 17 18 / .92) 25%,rgb(14 17 18 / .35))}
+.oc-lesson-ribbon>span:not(.oc-lesson-ribbon-num):not(.oc-lesson-ribbon-art){display:grid;gap:.05rem;font-family:Georgia,"Times New Roman",serif;font-size:1.08rem;line-height:1.25}
+.oc-lesson-ribbon-label{font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:.78rem;color:rgb(239 237 230 / .68)}
+.oc-lesson-ribbon-num{margin-left:auto;font-family:Georgia,"Times New Roman",serif;font-variant-numeric:lining-nums;font-size:3.2rem;line-height:.8;color:rgb(239 237 230 / .85)}
+.oc-lesson-ribbon:hover .oc-lesson-ribbon-art{filter:grayscale(1) brightness(1)}
+.oc-lesson-ribbon:focus-visible{outline:2px solid var(--oc-ink);outline-offset:3px}
+@media(prefers-reduced-motion:no-preference){.oc-lesson-ribbon-art{transition:filter .3s}}
