@@ -9,7 +9,7 @@ const page = await browser.newPage({viewport:{width:1440,height:1000},reducedMot
 const errors=[];
 page.on('pageerror',error=>errors.push(error.message));
 await page.goto(`http://127.0.0.1:${baseline?8144:8143}/scripts/verification/my-work-preview.html`);
-await page.getByRole('heading',{name:'My Work',exact:true}).waitFor();
+await page.getByRole('heading',{name:'My Work',exact:true}).waitFor().catch(async error=>{console.log(JSON.stringify({errors,body:await page.locator('body').innerText()},null,2));await browser.close();throw error});
 await page.getByText('Conditional logic: checking the rule',{exact:true}).first().waitFor();
 await page.evaluate(()=>document.fonts.ready);
 await page.screenshot({path:resolve(output,baseline?'baseline-desktop.png':'desktop-1440.png'),fullPage:true});
