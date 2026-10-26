@@ -55,7 +55,7 @@ describe('permission and boundary wording', () => {
 it('teaches AND and OR as separate lessons, each with its own quiz and no internal pages',()=>{
   const and=render(<MemoryRouter><AndOrLesson id="and-or-both-or-either"/></MemoryRouter>);
   expect(screen.getByText(/AND conjoins two conditions/)).toBeVisible();
-  expect(screen.queryByText(/OR joins two conditions/)).toBeNull();
+  expect(screen.queryByText(/OR includes at least one/)).toBeNull();
   expect(document.body.textContent).not.toMatch(/whole group|full group|Page \d of \d/i);
   expect(screen.queryByRole('button',{name:/page/i})).toBeNull();
   expect(screen.queryByText('no photo ID OR no proof of address')).toBeNull();
@@ -68,11 +68,11 @@ it('teaches AND and OR as separate lessons, each with its own quiz and no intern
   expect(within(quiz).getByText(wrong.hint)).toBeVisible();
   and.unmount();
   render(<MemoryRouter><AndOrLesson id="and-or-either-condition"/></MemoryRouter>);
-  expect(screen.getByText(/OR joins two conditions\./)).toBeVisible();
+  expect(screen.getByText('OR includes at least one.')).toBeVisible();
   expect(screen.queryByText(/AND conjoins two conditions/)).toBeNull();
   expect(document.body.textContent).not.toMatch(/whole group|full group|Page \d of \d/i);
-  const orTable=screen.getByRole('table',{name:'Does this meet the OR condition?'});
-  expect(within(orTable).getAllByRole('row').slice(1).map(row=>within(row).getAllByRole('cell')[2].textContent)).toEqual(['✓Met','✓Met','✓Met','×Not met']);
+  const orTable=screen.getByRole('table',{name:'Does this fit “Mia will study on Saturday or on Sunday”?'});
+  expect(within(orTable).getAllByRole('row').slice(1).map(row=>within(row).getAllByRole('cell')[2].textContent)).toEqual(['✓Fits','✓Fits','✓Fits','×Ruled out']);
   expect(screen.getByRole('region',{name:'Pop Quiz'})).toBeVisible();
 });
 
@@ -259,9 +259,10 @@ it('teaches diagram writing and distinguishes an unmet trigger from a broken con
  expect(screen.getByRole('region', { name: 'Write the diagram' })).toHaveTextContent('WrongPhoto ID by itself guarantees a card.');
  and.unmount();
  render(<MemoryRouter><AndOrLesson id="and-or-either-condition"/></MemoryRouter>);
- expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('photo ID but does not get a card');
- expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('shows neither document');
- expect(screen.getByRole('region', { name: 'Write the diagram' })).toHaveTextContent('“or” between them');
+ expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('shows a document and still gets no card');
+ expect(screen.getByRole('region', { name: 'When would the rule be broken?' })).toHaveTextContent('shows neither document breaks nothing');
+ expect(screen.getByRole('region', { name: 'Write the diagram' })).toHaveTextContent('Negate one half.');
+ expect(screen.getByRole('region', { name: 'Write the diagram' })).toHaveTextContent('If Mia does not study on Saturday, she studies on Sunday.');
 });
 
 it('derives both library contrapositives through all three student-controlled steps in the contrapositive lesson', () => {

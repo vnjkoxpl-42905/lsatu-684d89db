@@ -42,7 +42,7 @@ const PRESERVED_COURSE_STEPS: OpeningCourseStep[] = [
   { id: 'source-independent', type: 'drill', part: 1, title: 'Put it into practice', description: 'Run the full process on your own. Work in short sessions and return where you left off.', unitId: 'group-2' },
   // Chapter 2. New IDs only: legacy and-or / de-morgan read marks and question runs are separate records and stay untouched.
   { id: 'and-or-both-or-either', type: 'note', part: 2, lessonNumber: '2.1', title: 'AND', description: 'What AND does to a rule, how to diagram it, and when the rule is broken.', unitId: 'and-or' },
-  { id: 'and-or-either-condition', type: 'note', part: 2, lessonNumber: '2.2', title: 'OR', description: 'What OR does to a rule, how to diagram it, and why both still counts.', unitId: 'and-or' },
+  { id: 'and-or-either-condition', type: 'note', part: 2, lessonNumber: '2.2', title: 'OR', description: 'Why OR includes at least one, how to write it as if/then, and why both still counts.', unitId: 'and-or' },
   { id: 'and-or-either-side', type: 'note', part: 2, lessonNumber: '2.3', title: 'Where the group sits', description: 'A group on the left is enough. A group on the right is required.', unitId: 'and-or' },
   { id: 'and-or-negate-group', type: 'note', part: 2, lessonNumber: '2.4', title: 'Contrapositives with AND and OR', description: 'Reverse the sides, negate every condition, and switch AND and OR.', unitId: 'de-morgan' },
   { id: 'and-or-meaning-practice', type: 'drill', part: 2, title: 'Check AND and OR', description: 'Decide whether the given facts meet the conditions joined by AND or OR.', unitId: 'and-or' },

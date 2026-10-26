@@ -253,7 +253,7 @@
 /* Definition panel: one lead sentence, then the two sides as labelled rows. Normal wrapping, not balanced, so lines run the full measure. */
 #root .co-section .ao-definition{display:grid;gap:1rem;margin:0 0 1.5rem;padding:1.4rem 1.6rem 1.5rem;border-radius:18px;background:linear-gradient(135deg,#0f2a38,#1d4b63);color:#fff;text-wrap:pretty;box-shadow:none}
 #root .co-section .ao-definition p{margin:0;color:inherit}
-.ao-definition-lead{font-size:clamp(1.3rem,1.15rem + .5vw,1.55rem);line-height:1.3;font-weight:600}
+.ao-definition-lead{font-size:1.2rem;line-height:1.35;font-weight:600}
 .ao-definition dl{display:grid;gap:.75rem;margin:0;padding-top:1rem;border-top:1px solid rgb(255 255 255 / .18)}
 .ao-definition dl>div{display:grid;grid-template-columns:minmax(9.5rem,13rem) minmax(0,1fr);gap:.25rem 1.25rem;align-items:baseline}
 .ao-definition dt{font-size:.82rem;font-weight:600;letter-spacing:.01em;color:rgb(255 255 255 / .7)}

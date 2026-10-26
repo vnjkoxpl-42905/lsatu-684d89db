@@ -457,8 +457,12 @@
 
 
 /* Lesson breadcrumb: the chapter (a link back to its page), then the lesson. */
-.oc-course-screen .oc-crumb{display:flex;flex-wrap:wrap;align-items:baseline;gap:.15rem .55rem;margin-bottom:.75rem;text-transform:none;letter-spacing:0;font-size:.92rem}
-.oc-crumb a{color:inherit;text-decoration:underline;text-decoration-color:color-mix(in oklab,currentColor 35%,transparent);text-underline-offset:4px;transition:text-decoration-color .15s,color .15s}
+.oc-course-screen .oc-crumb{display:flex;flex-wrap:wrap;align-items:baseline;gap:.1rem .45rem;margin:-2.75rem 0 2.25rem;text-transform:none;letter-spacing:.01em;font-size:.78rem;color:var(--oc-muted)}
+.oc-crumb a{color:inherit;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;transition:text-decoration-color .15s,color .15s}
 .oc-crumb a:hover{color:var(--oc-ink);text-decoration-color:currentColor}
 .oc-crumb a:focus-visible{outline:2px solid var(--oc-ink);outline-offset:3px;border-radius:2px}
 .oc-crumb span{color:var(--oc-control-line)}
+
+/* Lesson summary: no lone last word. */
+.oc-course-note header > p.font-mc-sans{text-wrap:pretty}
+@media(max-width:640px){.oc-course-screen .oc-crumb{margin-top:-1rem;margin-bottom:1.5rem}}
