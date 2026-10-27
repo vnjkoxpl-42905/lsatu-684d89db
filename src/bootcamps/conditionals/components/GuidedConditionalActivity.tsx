@@ -49,9 +49,9 @@ export function conditionalGuidedHistory(drill: GuidedDrill, assignments: Assign
 
 export function GuidedConditionalActivity(props: GuidedConditionalActivityProps) {
   const set = conditionalGuidedSet(props.slug);
-  if (!set) return <section className="cb-card"><h1>This guided activity is unavailable.</h1></section>;
+  if (!set) return <section className="cb-card"><h2>This guided activity is unavailable.</h2></section>;
   // A local preview must never instantiate the native runner or its account-writing effects.
-  if (props.localOnly) return <section className="cb-card"><span className="cb-label">Guided LSAT questions</span><h1>{set.title}</h1><p>Read the rules, identify what follows, and explain why the tempting inference fails.</p><p>This preview does not load student work. Open your assigned bootcamp while signed in to practise with the question bank.</p></section>;
+  if (props.localOnly) return <section className="cb-card"><span className="cb-label">Guided LSAT questions</span><h2>{set.title}</h2><p>Read the rules, identify what follows, and explain why the tempting inference fails.</p><p>This preview does not load student work. Open your assigned bootcamp while signed in to practise with the question bank.</p></section>;
   return <GuidedConditionalAccountActivity {...props} slug={set.slug} />;
 }
 
@@ -76,7 +76,7 @@ function GuidedConditionalAccountActivity({ slug, backUrl, launchUrl, runUrl, vi
     return () => { active = false; };
   }, [slug, user?.id, retry]);
   if (!user) return <section className="cb-card"><p>Sign in to open your guided practice.</p></section>;
-  if (error) return <section className="cb-card"><h1>Your guided work could not load.</h1><p>Your earlier answers remain saved. Retry before starting another sitting.</p><button onClick={() => setRetry(value => value + 1)}>Retry</button></section>;
+  if (error) return <section className="cb-card"><h2>Your guided work could not load.</h2><p>Your earlier answers remain saved. Retry before starting another sitting.</p><button onClick={() => setRetry(value => value + 1)}>Retry</button></section>;
   if (!history || history.actorId !== user.id || history.drill.slug !== slug || bankLoading) return <p role="status">Loading your guided work…</p>;
 
   const selectedAssignmentId = params.get('guidedAssignment');
@@ -85,7 +85,7 @@ function GuidedConditionalAccountActivity({ slug, backUrl, launchUrl, runUrl, vi
   const run = runId ? history.runs.find(row => row.id === runId) : undefined;
   const legacySlugRun = run?.source_key === guidedSessionKey({ slug });
   const unavailable = (selectedAssignmentId && !selectedAssignment) || (runId && !run);
-  const fail = <section className="cb-card"><h1>This saved guided work is unavailable.</h1><p>Return to this activity to choose work saved in your account.</p><button onClick={() => navigate(launchUrl)}>Return to activity</button></section>;
+  const fail = <section className="cb-card"><h2>This saved guided work is unavailable.</h2><p>Return to this activity to choose work saved in your account.</p><button onClick={() => navigate(launchUrl)}>Return to activity</button></section>;
   if (unavailable) return fail;
   if (params.get('view') === 'results' || params.get('view') === 'history') {
     if (!run || (params.get('view') === 'results' && run.session.status !== 'completed') || (params.get('view') === 'history' && !legacySlugRun)) return fail;

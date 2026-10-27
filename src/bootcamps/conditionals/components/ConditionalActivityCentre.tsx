@@ -1,10 +1,11 @@
-import { lazy, Suspense, type ReactNode } from 'react';
+import { lazy, Suspense, useRef, useState, type ReactNode } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { CONDITIONAL_ACTIVITIES, conditionalActivityAllowed, conditionalActivitySelection, normalizeConditionalActivityConfig, type ConditionalActivityConfig, type ConditionalActivityId } from '../activityRegistry';
 import { GROUP_LABEL } from '@/features/conditional-refresher/content';
 import { conditionalUnits } from '../content';
 import './activity-centre.css';
+import { useConditionalFeedbackMotion } from './useConditionalFeedbackMotion';
 
 const EmbeddedActivity = lazy(() => import('./EmbeddedConditionalActivity').then(module => ({ default: module.EmbeddedConditionalActivity })));
 const SkillActivity = lazy(() => import('@/features/conditional-refresher/ConditionalSkillActivity').then(module => ({ default: module.ConditionalSkillActivity })));
@@ -22,6 +23,9 @@ const sections: { title: string; description: string; ids: ConditionalActivityId
   { title: 'Recall and apply', description: 'Review a translation or apply conditional reasoning to LSAT questions.', ids: ['translate-cards', 'guided'] },
 ];
 export function ConditionalActivityCentre({ userId, grant, isAdmin, localOnly, config, href, courseHref, renderLegacy }: ConditionalActivityCentreProps) {
+  const surface = useRef<HTMLElement>(null);
+  useConditionalFeedbackMotion(surface);
+  const [settingsOpen, setSettingsOpen] = useState(() => typeof window.matchMedia !== 'function' || !window.matchMedia('(max-width: 600px)').matches);
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const permits = (candidate: ConditionalActivityConfig) => !!isAdmin || !!grant && conditionalActivityAllowed(grant, candidate);
@@ -39,15 +43,15 @@ export function ConditionalActivityCentre({ userId, grant, isAdmin, localOnly, c
     const candidate = update(patch);
     return candidate && permits(candidate) ? <Link key={label} aria-current={selected ? 'true' : undefined} to={href(candidate)}>{label}</Link> : null;
   };
-  return <section className="cc-centre" aria-label="Conditional practice centre">
+  return <section ref={surface} className={`cc-centre ${config ? 'cc-centre--activity' : 'cc-centre--home'}`} aria-label="Conditional practice centre">
     <nav className="cc-breadcrumb"><Link to={config ? href() : courseHref}><ArrowLeft size={15}/>{config ? 'Practice centre' : 'Back to the course'}</Link></nav>
-    <header data-course-heading><p className="oc-label">Conditional Logic Bootcamp</p><h1>{item?.title ?? 'Practice centre'}</h1><p className="cc-intro">{item?.purpose ?? 'Everything conditional, in one place. Choose the operation you want to practise, or return to a lesson and work through the course.'}</p></header>
+    <header className="cc-heading" data-course-heading><p className="cc-course-name">Conditional Logic Bootcamp</p><h1>{item?.title ?? 'Practice centre'}</h1><p className="cc-intro">{item?.purpose ?? 'Everything conditional, in one place. Choose the operation you want to practise, or return to a lesson and work through the course.'}</p></header>
     {!config ? <>
+      <div className="cc-families">{sections.map((section, index) => { const available = section.ids.map(id => ({ entry: CONDITIONAL_ACTIVITIES.find(item => item.id === id)!, config: defaultFor(id) })).filter(item => item.config); return available.length ? <section className={`cc-section cc-section--${index}`} key={section.title}><header><h2>{section.title}</h2><p>{section.description}</p></header><ol className="cc-activity-list">{available.map(({ entry, config: selected }) => <li key={entry.id}><div><h3><Link to={href(selected!)}>{entry.title}</Link></h3><p>{entry.purpose}</p></div><Link className="cc-open" aria-label={`Open ${entry.title}`} to={href(selected!)}><span>Open</span><ArrowRight size={17}/></Link></li>)}</ol></section> : null; })}</div>
       <p className="cc-orientation">Your existing attempts stay with their activities. Open an activity to continue your work or start another round.</p>
-      {sections.map(section => { const available = section.ids.map(id => ({ entry: CONDITIONAL_ACTIVITIES.find(item => item.id === id)!, config: defaultFor(id) })).filter(item => item.config); return available.length ? <section className="cc-section" key={section.title}><h2>{section.title}</h2><p>{section.description}</p><ol className="cc-activity-list">{available.map(({ entry, config: selected }) => <li key={entry.id}><div><h3><Link to={href(selected!)}>{entry.title}</Link></h3><p>{entry.purpose}</p></div><Link className="cc-open" aria-label={`Open ${entry.title}`} to={href(selected!)}>Open<ArrowRight size={17}/></Link></li>)}</ol></section> : null; })}
       {!CONDITIONAL_ACTIVITIES.some(entry => defaultFor(entry.id)) && <p>Your assignment has no activities available in this centre.</p>}
     </> : <>
-      {config.activity !== 'unless' && <div className="cc-settings" aria-label="Activity settings">
+      {config.activity !== 'unless' && config.activity !== 'guided' && <details className="cc-settings-panel" open={settingsOpen} onToggle={event => setSettingsOpen(event.currentTarget.open)}><summary>Practice settings<span>{config.groups ? config.groups.length === 4 ? 'All groups' : config.groups.map(group => `Group ${group.slice(1)}`).join(', ') : config.level === 'words' ? 'Words' : config.level === 'variables' ? 'Symbols' : 'Current selection'}</span></summary><div className="cc-settings" aria-label="Activity settings">
         {config.groups && <fieldset><legend>Topic</legend><div>{optionLink('All groups', { groups: ['g1', 'g2', 'g3', 'g4'] }, config.groups.length === 4)}{(['g1', 'g2', 'g3', 'g4'] as const).map(group => optionLink(GROUP_LABEL[group], { groups: [group], ...(config.activity === 'rephrase' && config.timing === 'progressive' ? { timing: 'untimed' } : {}) }, config.groups?.length === 1 && config.groups[0] === group))}{config.activity === 'sort' && optionLink('Groups 1 and 2', { groups: ['g1', 'g2'] }, config.groups.join(',') === 'g1,g2')}</div></fieldset>}
         {config.stage && <fieldset><legend>Task</legend><div>{optionLink('Translate', { stage: 'translate' }, config.stage === 'translate')}{optionLink('Add the contrapositive', { stage: 'contrapositive' }, config.stage === 'contrapositive')}</div></fieldset>}
         {config.review && <fieldset><legend>Cards</legend><div>{optionLink('All cards', { review: 'all' }, config.review === 'all')}{optionLink('Needs practice', { review: 'needs' }, config.review === 'needs')}</div></fieldset>}
@@ -58,7 +62,7 @@ export function ConditionalActivityCentre({ userId, grant, isAdmin, localOnly, c
           <fieldset><legend>Level</legend><div>{(['beginner', 'medium', 'advanced'] as const).map(difficulty => optionLink(difficulty[0].toUpperCase() + difficulty.slice(1), { difficulty }, config.difficulty === difficulty))}</div></fieldset>
           <fieldset><legend>Mode</legend><div>{(['practice', 'simulator', 'hard-sentences'] as const).map(mode => optionLink(mode === 'practice' ? 'Skill practice' : mode === 'simulator' ? 'Mixed application' : 'Hard sentences', { mode }, config.mode === mode))}</div></fieldset>
         </>}
-      </div>}
+      </div></details>}
       {config.activity === 'rephrase' && <p className="cc-selection-note">{conditionalActivitySelection(config).selectionLabel}</p>}
       <Suspense fallback={<p role="status">Loading your activity…</p>}>
         {['rephrase', 'linking', 'missing-links', 'must-be-true'].includes(config.activity) && <EmbeddedActivity key={`${userId}:${config.activity}:${JSON.stringify(config)}`} activity={config.activity as 'rephrase'|'linking'|'missing-links'|'must-be-true'} userId={userId} backUrl={href()} localOnly={localOnly} {...conditionalActivitySelection(config)} allowedItemOrders={constrained?.selectedItemOrders} allowedQuestionIds={constrained?.selectedQuestionIds}/>}

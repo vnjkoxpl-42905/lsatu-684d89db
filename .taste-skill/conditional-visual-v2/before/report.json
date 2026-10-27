@@ -1,0 +1,1761 @@
+{
+ "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3",
+ "at": "2026-10-27T11:47:03.258Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.98,
+    0.96,
+    0.97
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1818,
+     "screens": 2,
+     "words": 219,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 20,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Practice centre",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 54,
+     "vw": 3.7,
+     "font": "Georgia",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 157,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Practice centre",
+     "words": 2,
+     "lines": 1,
+     "size": 53.6,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Practice centre",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 53.6,
+      "vw": 3.7,
+      "font": "Georgia",
+      "weight": 500,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.67,
+      "top": 157,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Translate the language",
+      "words": 3,
+      "chars": 22,
+      "lines": 1,
+      "size": 29.6,
+      "vw": 2.1,
+      "font": "Georgia",
+      "weight": 500,
+      "tracking": 0,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.67,
+      "top": 409,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Connect rules and draw conclusions",
+      "words": 5,
+      "chars": 34,
+      "lines": 1,
+      "size": 29.6,
+      "vw": 2.1,
+      "font": "Georgia",
+      "weight": 500,
+      "tracking": 0,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.67,
+      "top": 921,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Recall and apply",
+      "words": 3,
+      "chars": 16,
+      "lines": 1,
+      "size": 29.6,
+      "vw": 2.1,
+      "font": "Georgia",
+      "weight": 500,
+      "tracking": 0,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.67,
+      "top": 1432,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 4,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.93,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.07,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      17,
+      22,
+      30,
+      54
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 14,
+      "leading": 1.65,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": null
+     },
+     "measureChars": 88,
+     "max": {
+      "size": 53.6,
+      "vw": 3.7,
+      "font": "Georgia",
+      "text": "Practice centre"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 1,
+     "microLabelShare": 0.016,
+     "microSamples": [
+      "Conditional Logic Bootcamp"
+     ],
+     "upperShare": 0.03,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "Conditional Logic Bootcamp",
+      "above": "Practice centre",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 126
+     },
+     {
+      "text": "Open",
+      "above": "Connect rules and draw conclusions",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14.4,
+      "top": 811
+     },
+     {
+      "text": "Open",
+      "above": "Recall and apply",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14.4,
+      "top": 1322
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#4f5c54",
+       "share": 0.46
+      },
+      {
+       "color": "#26352e",
+       "share": 0.25
+      },
+      {
+       "color": "#42544b",
+       "share": 0.23
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.03
+      },
+      {
+       "color": "#234b3e",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#e8e4dd",
+      "hsl": {
+       "h": 38,
+       "s": 0.19,
+       "l": 0.89
+      },
+      "fg": "#1a1a1a"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 11,
+     "inHero": 5,
+     "radius": 5,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Practice centre",
+      "Open",
+      "Open",
+      "Open",
+      "Open"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 17,
+     "hairlineSamples": [
+      "aside.oc-course-rail 220px",
+      "div 151px",
+      "header.cb-workspace-bar.cb-workspace-status 1220px",
+      "p.cc-orientation 618px",
+      "ol.cc-activity-list 960px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1818,
+    "margins": {
+     "left": 30,
+     "right": 170
+    },
+    "sections": [
+     {
+      "sel": "header",
+      "tag": "header",
+      "top": 126,
+      "height": 163,
+      "words": 27,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Practice centre",
+       "size": 54,
+       "tag": "h1"
+      },
+      "left": 350,
+      "right": 356,
+      "textLeft": 350,
+      "textRight": 356,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.cc-section",
+      "tag": "section",
+      "top": 409,
+      "height": 472,
+      "words": 51,
+      "media": 0,
+      "middle": 411,
+      "heading": {
+       "text": "Translate the language",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 350,
+      "right": 170,
+      "textLeft": 350,
+      "textRight": 170,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.cc-section",
+      "tag": "section",
+      "top": 921,
+      "height": 472,
+      "words": 56,
+      "media": 0,
+      "middle": 382,
+      "heading": {
+       "text": "Connect rules and draw conclusions",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 350,
+      "right": 170,
+      "textLeft": 350,
+      "textRight": 170,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.cc-section",
+      "tag": "section",
+      "top": 1432,
+      "height": 282,
+      "words": 34,
+      "media": 0,
+      "middle": 419,
+      "heading": {
+       "text": "Recall and apply",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 350,
+      "right": 170,
+      "textLeft": 350,
+      "textRight": 170,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Practice centre",
+      "size": 54,
+      "top": 157,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 350,
+      "n": 9
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.16,
+    "voidBox": {
+     "x": 720,
+     "y": 480,
+     "w": 480,
+     "h": 420
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": {
+     "w": 220,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.15
+    },
+    "topbar": {
+     "h": 48
+    },
+    "canvas": {
+     "left": 130,
+     "right": 145
+    },
+    "hero": {
+     "text": "Practice centre",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 54,
+     "vw": 3.7,
+     "font": "Georgia",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 157,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 4,
+     "radii": [
+      [
+       0,
+       4
+      ]
+     ],
+     "heavyBorders": 3,
+     "borderSamples": [
+      "#cfc7b9 on #f5f2ed (1.5:1)",
+      "#cfc7b9 on #f5f2ed (1.5:1)",
+      "#cfc7b9 on #f5f2ed (1.5:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.03,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      17,
+      22,
+      30,
+      54
+     ]
+    },
+    "title": {
+     "text": "Practice centre",
+     "size": 54,
+     "top": 157
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.96,
+    0.94
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 1776,
+     "screens": 1.7,
+     "words": 219,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 20,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Practice centre",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 35,
+     "vw": 4.5,
+     "font": "Georgia",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 157,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Practice centre",
+     "words": 2,
+     "lines": 1,
+     "size": 34.6,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Practice centre",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 34.6,
+      "vw": 4.5,
+      "font": "Georgia",
+      "weight": 500,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.71,
+      "top": 157,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.93,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.07,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      17,
+      22,
+      24,
+      35
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 14,
+      "leading": 1.65,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": null
+     },
+     "measureChars": 64,
+     "max": {
+      "size": 34.6,
+      "vw": 4.5,
+      "font": "Georgia",
+      "text": "Practice centre"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 1,
+     "microLabelShare": 0.016,
+     "microSamples": [
+      "Conditional Logic Bootcamp"
+     ],
+     "upperShare": 0.03,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "Conditional Logic Bootcamp",
+      "above": "Practice centre",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 126
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#4f5c54",
+       "share": 0.46
+      },
+      {
+       "color": "#26352e",
+       "share": 0.25
+      },
+      {
+       "color": "#42544b",
+       "share": 0.23
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.03
+      },
+      {
+       "color": "#234b3e",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#e8e4dd",
+      "hsl": {
+       "h": 38,
+       "s": 0.19,
+       "l": 0.89
+      },
+      "fg": "#1a1a1a"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 11,
+     "inHero": 6,
+     "radius": 5,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Practice centre",
+      "Open",
+      "Open",
+      "Open",
+      "Open"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 17,
+     "hairlineSamples": [
+      "aside.oc-course-rail 180px",
+      "div 123px",
+      "header.cb-workspace-bar.cb-workspace-status 588px",
+      "p.cc-orientation 542px",
+      "ol.cc-activity-list 542px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 1024,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 1776,
+    "margins": {
+     "left": 24,
+     "right": 25
+    },
+    "sections": [
+     {
+      "sel": "header",
+      "tag": "header",
+      "top": 126,
+      "height": 142,
+      "words": 27,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Practice centre",
+       "size": 35,
+       "tag": "h1"
+      },
+      "left": 203,
+      "right": 25,
+      "textLeft": 203,
+      "textRight": 25,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.cc-section",
+      "tag": "section",
+      "top": 388,
+      "height": 465,
+      "words": 51,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Translate the language",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 203,
+      "right": 63,
+      "textLeft": 203,
+      "textRight": 63,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.cc-section",
+      "tag": "section",
+      "top": 892,
+      "height": 465,
+      "words": 56,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Connect rules and draw conclusions",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 203,
+      "right": 63,
+      "textLeft": 203,
+      "textRight": 63,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.cc-section",
+      "tag": "section",
+      "top": 1397,
+      "height": 275,
+      "words": 34,
+      "media": 0,
+      "middle": 1,
+      "heading": {
+       "text": "Recall and apply",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 203,
+      "right": 63,
+      "textLeft": 203,
+      "textRight": 63,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Practice centre",
+      "size": 35,
+      "top": 157,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [
+     {
+      "text": "Conditional logic",
+      "side": "left",
+      "px": 14
+     }
+    ],
+    "edges": [
+     {
+      "x": 203,
+      "n": 9
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": {
+     "w": 180,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.23
+    },
+    "topbar": {
+     "h": 48
+    },
+    "canvas": {
+     "left": 23,
+     "right": 25
+    },
+    "hero": {
+     "text": "Practice centre",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 35,
+     "vw": 4.5,
+     "font": "Georgia",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 157,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 4,
+     "radii": [
+      [
+       0,
+       4
+      ]
+     ],
+     "heavyBorders": 3,
+     "borderSamples": [
+      "#cfc7b9 on #f5f2ed (1.5:1)",
+      "#cfc7b9 on #f5f2ed (1.5:1)",
+      "#cfc7b9 on #f5f2ed (1.5:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.03,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      17,
+      22,
+      24,
+      35
+     ]
+    },
+    "title": {
+     "text": "Practice centre",
+     "size": 35,
+     "top": 157
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.93,
+    0.95,
+    0.83
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 2180,
+     "screens": 2.6,
+     "words": 209,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 20,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Practice centre",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 34,
+     "vw": 8.6,
+     "font": "Georgia",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 237,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Practice centre",
+     "words": 2,
+     "lines": 1,
+     "size": 33.6,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Practice centre",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Georgia",
+      "weight": 500,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 237,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Translate the language",
+      "words": 3,
+      "chars": 22,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Georgia",
+      "weight": 500,
+      "tracking": 0,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 518,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Connect rules and draw conclusions",
+      "words": 5,
+      "chars": 34,
+      "lines": 2,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Georgia",
+      "weight": 500,
+      "tracking": 0,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 1121,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Recall and apply",
+      "words": 3,
+      "chars": 16,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Georgia",
+      "weight": 500,
+      "tracking": 0,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 1728,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 4,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.92,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.08,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      17,
+      24,
+      34
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 14,
+      "leading": 1.65,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": null
+     },
+     "measureChars": 42,
+     "max": {
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Georgia",
+      "text": "Practice centre"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 1,
+     "microLabelShare": 0.02,
+     "microSamples": [
+      "Conditional Logic Bootcamp"
+     ],
+     "upperShare": 0.02,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "Conditional Logic Bootcamp",
+      "above": "Practice centre",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 206
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#4f5c54",
+       "share": 0.57
+      },
+      {
+       "color": "#26352e",
+       "share": 0.31
+      },
+      {
+       "color": "#42544b",
+       "share": 0.05
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.03
+      },
+      {
+       "color": "#234b3e",
+       "share": 0.03
+      }
+     ],
+     "button": null,
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 10,
+     "inHero": 2,
+     "radius": 5,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Open",
+      "Open"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 16,
+     "hairlineSamples": [
+      "div.oc-mobile-nav 390px",
+      "header.cb-workspace-bar.cb-workspace-status 390px",
+      "p.cc-orientation 358px",
+      "ol.cc-activity-list 358px",
+      "li 358px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 2180,
+    "margins": {
+     "left": 16,
+     "right": 18
+    },
+    "sections": [
+     {
+      "sel": "header",
+      "tag": "header",
+      "top": 206,
+      "height": 169,
+      "words": 27,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Practice centre",
+       "size": 34,
+       "tag": "h1"
+      },
+      "left": 16,
+      "right": 18,
+      "textLeft": 16,
+      "textRight": 18,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.cc-section",
+      "tag": "section",
+      "top": 518,
+      "height": 563,
+      "words": 51,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Translate the language",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 52,
+      "textLeft": 16,
+      "textRight": 52,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.cc-section",
+      "tag": "section",
+      "top": 1121,
+      "height": 568,
+      "words": 56,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Connect rules and draw conclusions",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 31,
+      "textLeft": 16,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.cc-section",
+      "tag": "section",
+      "top": 1728,
+      "height": 348,
+      "words": 34,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Recall and apply",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 21,
+      "textLeft": 16,
+      "textRight": 21,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Practice centre",
+      "size": 34,
+      "top": 237,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 16,
+      "n": 9
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": null,
+    "topbar": {
+     "h": 69
+    },
+    "canvas": {
+     "left": 16,
+     "right": 18
+    },
+    "hero": {
+     "text": "Practice centre",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 34,
+     "vw": 8.6,
+     "font": "Georgia",
+     "weight": 500,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 237,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 4,
+     "radii": [
+      [
+       0,
+       4
+      ]
+     ],
+     "heavyBorders": 3,
+     "borderSamples": [
+      "#cfc7b9 on #f5f2ed (1.5:1)",
+      "#cfc7b9 on #f5f2ed (1.5:1)",
+      "#cfc7b9 on #f5f2ed (1.5:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.03,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      22,
+      24,
+      34
+     ]
+    },
+    "title": {
+     "text": "Practice centre",
+     "size": 34,
+     "top": 237
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "micro-label",
+   "width": 1440,
+   "message": "1 tiny uppercase letter-spaced label(s): \"Conditional Logic Bootcamp\"",
+   "fix": "Prefer sentence case at body size.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "palette-cream",
+   "width": 1440,
+   "message": "Yellow-cream background (page background #f7f4ee, section #f5f2ed, button #e8e4dd).",
+   "fix": "Use the drawn palette. If you want warmth, take a low-chroma stone or bone, not a yellow cream.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "dev-server",
+   "width": 1440,
+   "message": "This page is served by a development server (Vite, webpack or Next in dev mode).",
+   "fix": "Run the last gate on the production build too (vite build && vite preview, next build && next start, or the built index.html): minifiers and bundlers change the CSS a visitor receives.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "heavy-borders",
+   "width": 1440,
+   "message": "3 panel borders are dark against their ground: #cfc7b9 on #f5f2ed (1.5:1) | #cfc7b9 on #f5f2ed (1.5:1) | #cfc7b9 on #f5f2ed (1.5:1)",
+   "fix": "A panel border is a whisper: about 1.1–1.3:1 against its ground on a light screen (#e5e7eb–#ededed on white), and about 1.2–1.5:1 on a dark one (#1a1a1a on #000, #2e2e2e on #111). Darker lines turn the screen into a grid of boxes; keep the stronger line for controls.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "app-title-size",
+   "width": 1440,
+   "message": "The h1 is 54px (\"Practice centre\").",
+   "fix": "An app screen is not a landing page: the title is 18-32px (20-24px on a phone).",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "edge-text",
+   "width": 768,
+   "message": "1 text block(s) sit within 16px of the screen edge: \"Conditional logic\" (14px from the left)",
+   "fix": "Keep text inside the page margin (16–32px or more). Only display type deliberately bled past the edge may touch it."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-visual-v2\\before\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-visual-v2\\before\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-visual-v2\\before\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-visual-v2\\before\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-visual-v2\\before\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-visual-v2\\before\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

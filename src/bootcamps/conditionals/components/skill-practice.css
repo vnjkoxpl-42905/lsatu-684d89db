@@ -10,3 +10,54 @@
 .oc-course-screen .skill-settings a[aria-current=true]{background:#243d34;border-color:#243d34;color:#fff}.skill-settings a:hover{box-shadow:0 1px 4px #0002}.skill-practice-hub a:focus-visible,.skill-lesson-links a:focus-visible{outline:3px solid #537668;outline-offset:3px}
 .skill-practice-hub .cir-root{background:transparent;padding:0;min-height:0}.skill-practice-hub .cir-card{margin-inline:0;max-width:100%}
 @media(max-width:600px){.skill-practice-hub{padding-top:1rem}.skill-settings{display:block}.skill-settings fieldset+fieldset{margin-top:1rem}.skill-practice-choices{grid-template-columns:1fr}}
+
+/* Course practice is a working sheet with a quiet, consistent settings rail. */
+.oc-course-screen .skill-practice-hub { max-width: 100%; padding-top: 1rem; }
+.oc-course-screen .skill-practice-hub h1 {
+  max-width: 26ch;
+  margin: .5rem 0 .8rem;
+  font-size: clamp(1.8rem, 3.3vw, 2.65rem);
+  font-weight: 400;
+  letter-spacing: -.025em;
+  line-height: 1.16;
+  color: #292f2a;
+  text-wrap: balance;
+}
+.oc-course-screen .skill-practice-hub header > p { font-size: .96rem; color: #48534b; line-height: 1.65; }
+.oc-course-screen .skill-return { gap: .5rem 1.5rem; margin-bottom: 1.4rem; }
+.oc-course-screen .skill-return a { min-height: 44px; display: inline-flex; align-items: center; font-size: .875rem; text-decoration-color: #c2bdae; }
+.oc-course-screen .skill-settings { gap: 1rem 1.8rem; padding: 1.1rem 0; margin: 1.25rem 0 1.8rem; border-color: #ded9cd; }
+.oc-course-screen .skill-settings legend { font-size: .8rem; font-weight: 500; color: #62695f; margin-bottom: .6rem; }
+.oc-course-screen .skill-settings fieldset > div { gap: .4rem; }
+.oc-course-screen .skill-settings a {
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: .65rem .9rem;
+  border-color: transparent;
+  border-radius: 6px;
+  background: #eae6db;
+  color: #48534b;
+  font-size: .825rem;
+  font-weight: 500;
+  transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+}
+.oc-course-screen .skill-settings a[aria-current=true] { background: #30372f; border-color: #30372f; color: #fffdf7; }
+.oc-course-screen .skill-settings a:active { box-shadow: inset 0 2px 3px #292f2a20; }
+.oc-course-screen .skill-settings a:focus-visible { outline: 2px solid #30372f; outline-offset: 3px; transition: none; }
+.oc-course-screen .skill-practice-choices { gap: 1rem; }
+.oc-course-screen .skill-practice-choices > div { padding: 1.4rem; border: 0; border-radius: 12px; background: #eeeadf; }
+.oc-course-screen .skill-practice-choices h3 { font-size: 1rem; font-weight: 550; color: #292f2a; }
+.oc-course-screen .skill-practice-choices p { font-size: .92rem; line-height: 1.65; color: #48534b; }
+@media (hover: hover) and (pointer: fine) {
+  .oc-course-screen .skill-settings a:hover:not([aria-current=true]) { background: #ded9cd; box-shadow: none; }
+}
+@media (max-width: 600px) {
+  .oc-course-screen .skill-practice-hub h1 { font-size: 1.85rem; }
+  .oc-course-screen .skill-settings { display: flex; gap: 1rem; }
+  .oc-course-screen .skill-settings fieldset { flex: 1 1 100%; }
+  .oc-course-screen .skill-settings fieldset + fieldset { margin-top: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .oc-course-screen .skill-settings a { transition: none; }
+}
