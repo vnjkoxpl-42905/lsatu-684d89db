@@ -62,19 +62,23 @@ html.dark .notes-select-content { --menu-paper: #282e29; --menu-ink: #f1eee6; --
 .notes-select-option[data-disabled] { opacity: 1; color: #77746e; cursor: not-allowed; }
 .notes-select-option > span:first-child { left: 12px; }
 
-.classroom-root .teaching-notes-month { margin: 20px 0 8px; font-size: .8125rem; }
+.classroom-root .teaching-notes-month { display: flex; align-items: center; gap: 12px; margin: 28px 0 8px; font: 500 .8125rem/1.5 Outfit,sans-serif; color: var(--notes-meta); }
+.classroom-root .teaching-notes-month::after { content: ''; flex: 1; height: 1px; background: var(--notes-edge); }
 .classroom-root .teaching-note-card { padding: 20px 8px; gap: 12px; border-bottom-color: var(--notes-edge); }
 .classroom-root .teaching-note-card-content { gap: 6px 24px; }
 .classroom-root .teaching-note-title { font-size: 1.25rem; letter-spacing: -.01em; font-weight: 450; }
 .classroom-root .teaching-note-meta,.classroom-root .teaching-note-card time { font-size: .8125rem; }
 .classroom-root .teaching-note-card time { font-variant-numeric: tabular-nums; }
+.classroom-root .teaching-note-date-label { color: var(--notes-meta); }
+.classroom-root .teaching-note-card[data-read-state=unread] .teaching-note-document { color: var(--notes-ink); }
+.classroom-root .teaching-note-card[data-read-state=read] .teaching-note-document { color: var(--notes-meta); }
 .classroom-root .teaching-note-excerpt { font-size: .9375rem; line-height: 1.6; max-width: 64ch; }
-.classroom-root .teaching-note-unread { border-radius: 4px; font-weight: 500; }
+.classroom-root .teaching-note-unread { border-radius: 4px; font-weight: 500; background: var(--notes-ink); color: var(--notes-paper); padding: 2px 6px; }
 .classroom-root .teaching-notes-organized .teaching-note-lead { background: var(--notes-plane); border-color: transparent; border-radius: 10px; padding: 20px 16px; margin: 0; }
 .classroom-root .teaching-note-lead .teaching-note-title { font-size: 1.5rem; line-height: 1.3; }
 .classroom-root .teaching-note-lead .teaching-note-read { min-height: 44px; border-radius: 8px; }
 .classroom-root .teaching-note-read { min-height: 44px; }
-.classroom-root .teaching-note-lead .teaching-note-unread { background: var(--notes-paper); }
+.classroom-root .teaching-note-lead .teaching-note-unread { background: var(--notes-ink); color: var(--notes-paper); }
 .classroom-root .teaching-note-card:last-child { border-bottom-color: transparent; }
 .classroom-root .teaching-notes-load { border-radius: 8px; margin-top: 20px; }
 

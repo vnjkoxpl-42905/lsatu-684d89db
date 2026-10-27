@@ -5,6 +5,7 @@ import { CustomEase } from 'gsap/CustomEase';
 
 gsap.registerPlugin(ScrollTrigger, CustomEase);
 CustomEase.create('classroom-reference-out', '0,0,0.58,1');
+export const CLASSROOM_LIST_REVEAL = { duration: 0.24, ease: 'power3.out', y: 8, opacity: 0 } as const;
 export const CLASSROOM_REVEAL = { duration: 0.3, ease: 'classroom-reference-out', y: 14, opacity: 0, filter: 'blur(10px)' } as const;
 
 // rct-page also names the instructions and picker; only rct-run is immersive work.
@@ -57,7 +58,8 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           return `slot:${parts.join('/')}`;
         };
         const pending = new Map<string, { element: HTMLElement; timer: ReturnType<typeof setTimeout>; index: number }>();
-        const records: Array<{ element: HTMLElement; tween: gsap.core.Tween; scroller?: HTMLElement }> = [];
+        const records: Array<{ element: HTMLElement; tween: gsap.core.Tween; scroller?: HTMLElement; list: boolean }> = [];
+        let listInteraction = false;
         const selector = '[data-motion-item], [data-motion-enter], [data-motion-reveal]';
         const eligible = (element: HTMLElement) => !element.closest(EXCLUDED) && !element.querySelector(EXCLUDED)
           && (!element.closest('.classroom-motion-local') || element.closest('.classroom-motion-local') === root)
@@ -77,7 +79,23 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           const box = viewport(scroller), rect = element.getBoundingClientRect();
           return rect.top < box.top + box.height - 100 && rect.bottom > box.top;
         };
-        const settle = ({ tween }: typeof records[number]) => { tween.scrollTrigger?.kill(); tween.progress(1); };
+        const entering = new Map<gsap.core.Tween, HTMLElement>();
+        let revealFrame: number | undefined;
+        const queueListEntry = (tween: gsap.core.Tween, element: HTMLElement) => {
+          entering.set(tween, element);
+          if (revealFrame !== undefined) return;
+          revealFrame = requestAnimationFrame(() => {
+            revealFrame = undefined;
+            const batch = [...entering.entries()].sort((a, b) => {
+              const order = a[1].compareDocumentPosition(b[1]);
+              return order & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : order & Node.DOCUMENT_POSITION_PRECEDING ? 1 : 0;
+            });
+            entering.clear();
+            const stagger = Math.min(0.05, 0.15 / Math.max(1, batch.length - 1));
+            batch.forEach(([animation], index) => animation.delay(index * stagger).restart(true));
+          });
+        };
+        const settle = ({ tween }: typeof records[number]) => { entering.delete(tween); tween.scrollTrigger?.kill(); tween.progress(1); };
         const finishPending = (id: string) => {
           const waiting = pending.get(id);
           if (!waiting) return;
@@ -100,6 +118,7 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           // A loaded pane may introduce granular items after its loading wrapper.
           // Release that wrapper before its children animate; never blur both levels.
           pending.forEach((waiting, id) => { if (waiting.element.querySelector('[data-motion-item]')) finishPending(id); });
+          records.filter(record => record.element.querySelector('[data-motion-item]')).forEach(settle);
           candidates = candidates.filter(element => !element.querySelector('[data-motion-item]'));
           candidates = candidates.filter(element => !candidates.some(other => other !== element && other.contains(element)));
           candidates.filter(element => element.contains(document.activeElement)).forEach(element => {
@@ -107,13 +126,16 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           });
           candidates.filter(element => !seen.has(element) && !completedIds.has(identity(element)) && eligible(element)).forEach(element => {
             const id = identity(element);
-            const group = element.closest('[data-motion-group]') ?? element.parentElement ?? root;
+            const list = !!element.closest('[data-motion-list]');
+            if (list && listInteraction) { seen.add(element); completedIds.add(id); return; }
+            const preset = list ? CLASSROOM_LIST_REVEAL : CLASSROOM_REVEAL;
+            const group = element.closest('[data-motion-group], [data-motion-list]') ?? element.parentElement ?? root;
             const groupId = group === root ? 'root' : identity(group);
             const waiting = pending.get(id);
             const index = waiting?.index ?? groups.get(groupId) ?? 0;
             if (!waiting) {
-              if (index >= 4 || count >= 24) { seen.add(element); completedIds.add(id); return; }
-              groups.set(groupId, index + 1); count++;
+              if (!list && (index >= 4 || count >= 24)) { seen.add(element); completedIds.add(id); return; }
+              groups.set(groupId, index + 1); if (!list) count++;
             }
             const scroller = scrollContainer(element);
             if (scroller === null) { completedIds.add(id); return; }
@@ -127,18 +149,22 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
               if (waiting) waiting.element = element;
               else pending.set(id, { element, index, timer: setTimeout(() => scope.add(() => finishPending(id)), 1000) });
               // Never paint an in-view loading target and then hide it when ready.
-              gsap.set(element, { y: CLASSROOM_REVEAL.y, opacity: CLASSROOM_REVEAL.opacity, filter: CLASSROOM_REVEAL.filter });
+              gsap.set(element, { y: preset.y, opacity: preset.opacity, ...(list ? {} : { filter: CLASSROOM_REVEAL.filter }) });
               return;
             }
             if (waiting) { clearTimeout(waiting.timer); pending.delete(id); }
             seen.add(element); completedIds.add(id);
             const tween = gsap.fromTo(element,
-              { y: CLASSROOM_REVEAL.y, opacity: CLASSROOM_REVEAL.opacity, filter: CLASSROOM_REVEAL.filter },
-              { y: 0, opacity: 1, filter: 'blur(0px)', duration: CLASSROOM_REVEAL.duration, ease: CLASSROOM_REVEAL.ease,
-                delay: 0.05 + (reachable ? 0 : 0.15 * index), clearProps: 'transform,opacity,filter',
-                ...(reachable ? { immediateRender: true, scrollTrigger: { trigger: element, scroller, start: 'clamp(top bottom-=100)', once: true, toggleActions: 'play none none none' } } : {}),
+              { y: preset.y, opacity: preset.opacity, ...(list ? {} : { filter: CLASSROOM_REVEAL.filter }) },
+              { y: 0, opacity: 1, ...(list ? {} : { filter: 'blur(0px)' }), duration: preset.duration, ease: preset.ease,
+                delay: list ? (reachable ? 0 : Math.min(index * 0.05, 0.15)) : 0.05 + (reachable ? 0 : 0.15 * index), clearProps: 'transform,opacity,filter',
+                ...(reachable ? { immediateRender: true, ...(list ? { paused: true } : {}), scrollTrigger: {
+                  trigger: element, scroller, start: 'clamp(top bottom-=100)', once: true,
+                  toggleActions: list ? 'none none none none' : 'play none none none',
+                  ...(list ? { onEnter: (trigger: ScrollTrigger) => { if (trigger.animation) queueListEntry(trigger.animation as gsap.core.Tween, element); } } : {}),
+                } } : {}),
               });
-            records.push({ element, tween, scroller });
+            records.push({ element, tween, scroller, list });
           });
         };
         scope.add(() => discover(true));
@@ -163,10 +189,19 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           records.filter(record => record.element.contains(event.target as Node)).forEach(settle);
           pending.forEach((waiting, id) => { if (waiting.element.contains(event.target as Node)) scope.add(() => finishPending(id)); });
         };
+        // Once someone starts using a list, filtering and keyboard travel must stay immediate.
+        const useList = () => {
+          listInteraction = true;
+          records.filter(record => record.list).forEach(settle);
+          pending.forEach((waiting, id) => { if (waiting.element.closest('[data-motion-list]')) scope.add(() => finishPending(id)); });
+        };
+        root.addEventListener('keydown', useList); root.addEventListener('input', useList); root.addEventListener('change', useList);
         root.addEventListener('focusin', interact); root.addEventListener('pointerdown', interact);
         return () => {
+          root.removeEventListener('keydown', useList); root.removeEventListener('input', useList); root.removeEventListener('change', useList);
           root.removeEventListener('focusin', interact); root.removeEventListener('pointerdown', interact);
           mutations.disconnect(); resize?.disconnect(); clearTimeout(timer);
+          if (revealFrame !== undefined) cancelAnimationFrame(revealFrame); entering.clear();
           pending.forEach(waiting => clearTimeout(waiting.timer)); pending.clear(); scope.revert();
         };
       });

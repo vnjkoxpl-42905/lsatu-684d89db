@@ -51,7 +51,7 @@ describe('reference motion safety', () => {
       if (vars.clearProps) { element.style.opacity = ''; element.style.filter = ''; }
       else { element.style.opacity = String(vars.opacity); element.style.filter = String(vars.filter); }
     });
-    mock.fromTo.mockImplementation(() => ({ progress: vi.fn(), scrollTrigger: { refresh: vi.fn(), kill: vi.fn() } }));
+    mock.fromTo.mockImplementation(() => { const animation = { delay: vi.fn(), play: vi.fn(), restart: vi.fn(), progress: vi.fn(), scrollTrigger: { refresh: vi.fn(), kill: vi.fn() } }; animation.delay.mockReturnValue(animation); return animation; });
     return { root, run: () => renderHook(() => useClassroomMotion({ current: root }, 'destination')) };
   }
   it('uses the verified uniform preset and bounds a group to four blocks', () => {
@@ -60,6 +60,59 @@ describe('reference motion safety', () => {
     expect(CLASSROOM_REVEAL).toMatchObject({ duration: 0.3, y: 14, opacity: 0, filter: 'blur(10px)' });
     expect(mock.fromTo.mock.calls[0][2]).toMatchObject({ delay: 0.05, filter: 'blur(0px)' });
     expect(mock.fromTo.mock.calls[3][2].delay).toBeCloseTo(0.5);
+  });
+  it('opts reading lists into crisp bounded stagger beyond the ordinary group and page caps', () => {
+    const { run } = mount('<div data-motion-list>'+Array.from({ length: 30 }, (_, i) => `<a data-motion-item data-motion-id="note:${i}">Note ${i}</a>`).join('')+'</div>');
+    run(); expect(mock.fromTo).toHaveBeenCalledTimes(30);
+    expect(mock.fromTo.mock.calls[0][1]).toEqual({ y: 8, opacity: 0 });
+    expect(mock.fromTo.mock.calls[0][2]).toMatchObject({ duration: 0.24, delay: 0 });
+    expect(mock.fromTo.mock.calls[27][2].delay).toBeCloseTo(0.15);
+    expect(mock.fromTo.mock.calls[29][2].delay).toBe(0.15);
+    expect(mock.fromTo.mock.calls[0][2].filter).toBeUndefined();
+  });
+  it('reveals offscreen list rows once at the scroll boundary and settles keyboard travel immediately', () => {
+    const { root, run } = mount('<div data-motion-list><a data-motion-item data-motion-id="note:one" data-below>Later note</a></div>');
+    run(); expect(mock.fromTo.mock.calls[0][2]).toMatchObject({ delay: 0, scrollTrigger: { once: true } });
+    root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    expect(mock.fromTo.mock.results[0].value.progress).toHaveBeenCalledWith(1);
+  });
+  it('staggers actual same-frame scroll entries in DOM order across former index wrap boundaries', () => {
+    let frame: FrameRequestCallback | undefined;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frame = callback; return 91; });
+    const { root, run } = mount('<div data-motion-list>'+Array.from({ length: 5 }, (_, i) => `<a data-motion-item data-motion-id="note:${i}" ${i >= 3 ? 'data-below' : ''}>Note ${i}</a>`).join('')+'</div>');
+    run();
+    const fourth = mock.fromTo.mock.results[3].value, fifth = mock.fromTo.mock.results[4].value;
+    // Simulate callbacks arriving in reverse order during one scroll frame.
+    mock.fromTo.mock.calls[4][2].scrollTrigger.onEnter({ animation: fifth });
+    mock.fromTo.mock.calls[3][2].scrollTrigger.onEnter({ animation: fourth });
+    expect(fourth.restart).not.toHaveBeenCalled(); frame!(0);
+    expect(fourth.delay).toHaveBeenCalledWith(0);
+    expect(fifth.delay).toHaveBeenCalledWith(0.05);
+    expect(fourth.restart).toHaveBeenCalledWith(true); expect(fifth.restart).toHaveBeenCalledWith(true);
+    expect(root.querySelectorAll('[data-motion-item]')).toHaveLength(5);
+  });
+  it('distributes larger scroll batches across 150ms without identical trailing delays', () => {
+    let frame: FrameRequestCallback | undefined;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frame = callback; return 92; });
+    const { run } = mount('<div data-motion-list>'+Array.from({ length: 8 }, (_, i) => `<a data-motion-item data-motion-id="note:${i}" data-below>Note ${i}</a>`).join('')+'</div>');
+    run();
+    mock.fromTo.mock.calls.forEach((call, index) => call[2].scrollTrigger.onEnter({ animation: mock.fromTo.mock.results[index].value }));
+    frame!(0);
+    const delays = mock.fromTo.mock.results.map(result => result.value.delay.mock.calls[0][0] as number);
+    expect(new Set(delays).size).toBe(8);
+    expect(delays[0]).toBe(0); expect(delays[7]).toBeCloseTo(0.15);
+    expect(delays.every((delay, index) => index === 0 || delay > delays[index - 1])).toBe(true);
+  });
+  it('does not replay filtered list identities or animate new results after input', async () => {
+    const { root, run } = mount('<div data-motion-list><a data-motion-item data-motion-id="note:one">One</a></div>');
+    run(); const group = root.firstElementChild!;
+    const replacement = document.createElement('a'); replacement.dataset.motionItem = ''; replacement.dataset.motionId = 'note:one'; geometry(replacement);
+    group.replaceChildren(replacement); await Promise.resolve();
+    expect(mock.fromTo).toHaveBeenCalledTimes(1);
+    root.dispatchEvent(new Event('input', { bubbles: true }));
+    const result = document.createElement('a'); result.dataset.motionItem = ''; result.dataset.motionId = 'note:two'; geometry(result);
+    group.replaceChildren(result); await Promise.resolve();
+    expect(mock.fromTo).toHaveBeenCalledTimes(1);
   });
   it('prefers items over panes and protects navigation, local boundaries, focus and active runners', () => {
     const { root, run } = mount('<header data-motion-skip>Practice</header><div data-motion-enter><section data-motion-item>Body</section></div><main class="rct-run" data-motion-item>Recording</main><div class="classroom-motion-local"><section data-motion-item>Room</section></div><section data-motion-item><button>Focused</button></section>');
@@ -124,6 +177,16 @@ describe('reference motion safety', () => {
     const late = document.createElement('section'); late.dataset.motionItem = ''; late.dataset.motionId = 'late'; geometry(late); root.append(late);
     await waitFor(() => expect(mock.fromTo).toHaveBeenCalledTimes(2));
     expect(mock.fromTo.mock.calls[1][2].delay).toBeCloseTo(0.2);
+  });
+  it('settles an entering parent when asynchronous granular rows take ownership', async () => {
+    const { root, run } = mount('<section data-motion-enter>Loading pane</section>'); run();
+    const parentTween = mock.fromTo.mock.results[0].value;
+    const group = document.createElement('div'); group.dataset.motionList = '';
+    const item = document.createElement('a'); item.dataset.motionItem = ''; item.dataset.motionId = 'note:loaded'; geometry(item); group.append(item);
+    root.firstElementChild!.replaceChildren(group);
+    await waitFor(() => expect(mock.fromTo).toHaveBeenCalledTimes(2));
+    expect(parentTween.progress).toHaveBeenCalledWith(1);
+    expect(mock.fromTo.mock.calls[1][1].filter).toBeUndefined();
   });
   it('uses rendered slots to avoid refresh replays without an explicit id', async () => {
     const { root, run } = mount('<section data-motion-item>First</section>'); run();

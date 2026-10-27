@@ -65,3 +65,14 @@ Final proof after review fixes: typecheck passed; production prebuild/build/post
 Claude Opus comparison round one confirmed the preset and requested fixes for readiness blinking, heading replay, refresh remounts, stagger indexing, the Library animation boundary and Home CSS scope. Accepted fixes were implemented and browser-checked. The second and final independent inspection is recorded in the external review log; its exact verdict and limits must be read there before claiming approval. Review CLI tools cannot run the browser or play motion recordings.
 
 Local branch only. No publication or merge is authorized by this refinement.
+
+
+## Reading-list extension, 2026-10-27
+
+Local My Work refinement, not published. Reuse `useClassroomMotion` for scroll reveals rather than adding a second observer or scroll wrapper. Mark a list container `data-motion-list`, its rows `data-motion-item`, and each row with a stable domain identity such as `data-motion-id="teaching-note:<id>"`. The enclosing real shell must own the hook. A synthetic preview must include `ClassroomMotionContent` to test the same lifecycle.
+
+The opt-in list preset keeps text crisp: 8px rise, opacity entrance, 240ms power3.out, and 50ms stagger capped at150ms. Below-fold native-scroll entries are batched in the current animation frame and sorted in DOM order, so crossing an old four-row index boundary cannot reverse their sequence. It bypasses the ordinary four-block and 24-block page budgets so loaded archive rows can reveal consistently. Ordinary page blocks retain their existing preset and budgets. No CSS initially hides rows; reduced motion leaves all content visible.
+
+Stable identities prevent a previously revealed row from replaying after filtering/refetch. Keyboard, search input and native change events settle current list entrances and make later list discoveries immediate for that route visit. Focus and pointer interactions settle the target immediately. Slow-loading wrappers settle before granular rows take ownership, avoiding a blurred parent around crisp text. ScrollTrigger uses the actual overflow scroller, once-only entry, unreachable-target visibility and scope cleanup. No global wheel interception or active exercise choreography is introduced.
+
+Source checks: shared motion suite 22 tests passed, including list budgets/stagger, offscreen triggering and same-frame ordering across index boundaries, keyboard settlement, filtered identities and asynchronous parent ownership. Archive 17 and assigned-work organization 3 tests passed before the final shared-hook adjustment; the parent task owns final integrated build and rendered desktop/phone evidence. This addition does not extend the historical signed-in coverage or independent Claude review above.

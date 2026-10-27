@@ -7,6 +7,7 @@ import MyWorkNotesPage from '../../src/pages/MyWorkNotesPage';
 import MyWorkPage from '../../src/pages/MyWorkPage';
 import { StudentDestination } from '../../src/pages/StudentDestination';
 import { ClassroomItemView } from '../../src/components/classroom/ClassroomRouteViews';
+import { ClassroomMotionContent } from '../../src/components/classroom/shell/ClassroomMotionContent';
 import '../../src/index.css';
 import '../../src/components/classroom/classroom.css';
 
@@ -54,7 +55,7 @@ function Fixture() {
   fixtureWindow.__fixtureQuery = query;
   return <div className="classroom-root classroom-root-destination">
     <aside className="notes-fixture-rail"><Link to="/my-work/notes" className="notes-fixture-logo">LSAT U</Link><span>CLASSROOM</span>{['Home', 'My Work', 'Practice', 'Review', 'Progress', 'Library'].map(label => <Link key={label} to={label === 'My Work' ? '/my-work/notes' : '/my-work/to-do'} className={label === 'My Work' ? 'active' : ''}>{label}</Link>)}</aside>
-    <main className="classroom-column notes-fixture-main"><Routes>
+    <main className="classroom-column notes-fixture-main"><ClassroomMotionContent><Routes>
       <Route element={<StudentDestination destination="my-work" />}>
         <Route path="/my-work/notes" element={<MyWorkNotesPage />} />
         <Route path="/my-work/to-do" element={<MyWorkPage completed={false} />} />
@@ -62,7 +63,7 @@ function Fixture() {
       </Route>
       <Route path="/classroom/item/:itemId" element={<ClassroomItemView />} />
       <Route path="/classroom/recaps" element={<MyWorkNotesPage />} />
-    </Routes><footer className="notes-fixture-disclaimer">Local preview · Synthetic student data · No production writes</footer></main>
+    </Routes></ClassroomMotionContent><footer className="notes-fixture-disclaimer">Local preview · Synthetic student data · No production writes</footer></main>
   </div>;
 }
 const style = document.createElement('style');
