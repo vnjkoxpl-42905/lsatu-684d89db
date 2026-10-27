@@ -8,7 +8,7 @@ import { DeadDrillLinkError } from '@/lib/drillLaunchResolve';
 import type { DrillRunSpec } from '@/lib/drillRunSpec';
 
 vi.mock('@/contexts/AuthContext', () => ({
-  useAuth: () => ({ user: { id: 'user_1' } }),
+  useAuth: () => ({ user: { id: 'user_1' }, authReady: true }),
 }));
 
 const resolveDrillLaunch = vi.fn();
@@ -83,6 +83,15 @@ const specOf = (): DrillRunSpec => JSON.parse(screen.getByTestId('spec').textCon
 const queueOf = () => (specOf().config as { selectedQids?: string[] } | undefined)?.selectedQids;
 
 describe('the gate', () => {
+  it('runs a trusted embedded guided launch without rewriting or mistaking the enclosing course assignment', async () => {
+    resolveDrillLaunch.mockResolvedValue(['q1']);
+    render(<MemoryRouter initialEntries={['/bootcamp/conditionals/centre/guided/run?assignment=course-grant']}><DrillLaunchGate launch={{ kind: 'guided-drill', drillId: 'native-id', options: { returnTo: '/bootcamp/conditionals/centre' } }}><Runner /></DrillLaunchGate></MemoryRouter>);
+    await screen.findByTestId('runner');
+    expect(searchOf().get('assignment')).toBe('course-grant');
+    expect(specOf().guidedDrillId).toBe('native-id');
+    expect(specOf().guidedAssignmentId).toBeUndefined();
+    expect(specOf().returnTo).toBe('/bootcamp/conditionals/centre');
+  });
   beforeEach(() => {
     resolveDrillLaunch.mockReset();
     recordExposures.mockReset();

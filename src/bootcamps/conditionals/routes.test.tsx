@@ -173,8 +173,8 @@ it('keeps destinations in one course navigation and preserves assignment context
 it.each([false, true])('marks the preserved lab alias as practice for admin=%s', isAdmin => {
   mount(`${base}/opening-labs?assignment=course`, [course], isAdmin);
   const nav = screen.getByRole('navigation', { name: 'Conditional course' });
-  expect(within(nav).getByRole('link', { name: 'Practice drills' })).toHaveAttribute('aria-current', 'page');
-  expect(within(nav).getByRole('link', { name: 'Practice drills' })).toHaveAttribute('href', `${base}/opening-practice?assignment=course`);
+  expect(within(nav).getByRole('link', { name: 'Course drills' })).toHaveAttribute('aria-current', 'page');
+  expect(within(nav).getByRole('link', { name: 'Course drills' })).toHaveAttribute('href', `${base}/opening-practice?assignment=course`);
   expect(within(nav).getByRole('link', { name: 'Course' })).not.toHaveAttribute('aria-current');
 });
 

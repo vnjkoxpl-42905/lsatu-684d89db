@@ -83,6 +83,23 @@ describe("Spot the Relationship answer key", () => {
 });
 
 describe("instant grading stays confident-only", () => {
+  it("accepts the unquoted causal indicator without treating it as another type label", () => {
+    for (const answer of ['Causal, caused', 'Causal, "caused"', 'causal: caused', 'cause and effect, caused'])
+      expect(matchesCredited(byOrder(5), answer), answer).toBe(true);
+  });
+  it("refers whole sentences and shared multi-type spans instead of guessing pair recognition", () => {
+    const q28 = byOrder(28);
+    expect(matchesCredited(byOrder(5), `causal, ${byOrder(5).prompt}`)).toBe(false);
+    expect(matchesCredited(q28, `comparative, ${q28.prompt}; causal, ${q28.prompt}`)).toBe(false);
+    expect(matchesCredited(byOrder(34), 'comparative, harder ... than; causal, so masons reserve it for thresholds, but only if; conditional, so masons reserve it for thresholds, but only if')).toBe(false);
+    expect(matchesCredited(byOrder(26), 'causal, because the sluice was left open')).toBe(true);
+    expect(matchesCredited(q28, 'comparative, more evenly than; causal, since its flue draws efficiently')).toBe(true);
+    expect(matchesCredited(byOrder(34), 'comparative, harder stone than; causal, so; conditional, only if')).toBe(true);
+  });
+  it("preserves comma-delimited separate types and rejects swapped pairs", () => {
+    expect(matchesCredited(byOrder(28), 'comparative, more evenly than, causal, since')).toBe(true);
+    expect(matchesCredited(byOrder(28), 'comparative, since, causal, more evenly than')).toBe(false);
+  });
   it.each(items.map((i) => [i.order, i]))("credits the keyed answer for item %s instantly", (_n, i) => {
     expect(matchesCredited(i as ActivityItem, correct(i as ActivityItem))).toBe(true);
   });
@@ -128,7 +145,9 @@ describe("approved contextual corrections", () => {
         `${r.type}, "${r.type === "causal" ? quote : r.indicators[0]}"`).join("; ");
       expect(matchesCredited(item, answer(String(removed)))).toBe(false);
       expect(matchesCredited(item, answer(String(connective)))).toBe(true);
-      const clause = item.prompt.slice(item.prompt.toLowerCase().indexOf(String(connective).toLowerCase()));
+      const tail = item.prompt.slice(item.prompt.toLowerCase().indexOf(String(connective).toLowerCase()));
+      // Q35 starts with Because; quoting its entire tail now repeats the prompt.
+      const clause = Number(order) === 35 ? tail.split(',')[0] : tail;
       expect(matchesCredited(item, answer(clause))).toBe(true);
     },
   );

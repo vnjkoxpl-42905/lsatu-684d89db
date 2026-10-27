@@ -11,6 +11,20 @@ const signals = drill.items.map((i) => parseSignal(i)!);
 const byOrder = (n: number) => signals.find((s) => s.order === n)!;
 
 describe("comparison and grading regressions", () => {
+  it("keeps valid clause recognition separate from eligibility for instant credit", () => {
+    const cases = [
+      [31, 'comparative, heavier; causal, which is why the foundry cast the alarm bell in the larger mould'],
+      [38, 'conditional, only where the canopy is denser than sixty percent; comparative, denser than; causal, dries'],
+      [5, `causal, ${drill.items.find((item) => item.order === 5)!.prompt}`],
+    ] as const;
+    for (const [order, answer] of cases) {
+      const item = drill.items.find((candidate) => candidate.order === order)!;
+      expect(matchesCredited(item, answer), answer).toBe(false);
+      // The stage must not say a relationship is missing just because the
+      // quotation needs a Coach judgment about how focused it is.
+      expect(readAnswer(parseSignal(item)!, answer).missed, answer).toEqual([]);
+    }
+  });
   it("defers negated indicators and uncredited extra indicators instead of awarding instant credit", () => {
     const item = drill.items[0];
     for (const answer of ["conditional, only if is not the indicator", "conditional, only if and because"]) {

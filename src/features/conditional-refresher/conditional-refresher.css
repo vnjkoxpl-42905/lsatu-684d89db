@@ -53,8 +53,8 @@
 .cir-legend > div { display: flex; align-items: center; gap: 10px; }
 
 /* Notation ----------------------------------------------------------------- */
-.cir-neg { display: inline-block; position: relative; padding: 0 .08em; white-space: nowrap; }
-.cir-neg::after { content: ""; position: absolute; height: 1.5px; width: 150%; left: -25%; top: 50%; background: currentColor; transform: rotate(-52deg); pointer-events: none; }
+.cir-neg { display: inline; text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.cir-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .cir-stack { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.25; }
 .cir-stack-join { font-size: .85em; color: var(--cir-ink-mute); }
 .cir-arrow { margin: 0 .55em; color: var(--cir-ink-soft); }
@@ -93,6 +93,38 @@
 .cir-build { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; background: var(--cir-paper); border: 1px dashed var(--cir-rule); border-radius: 12px; padding: 18px; min-height: 84px; }
 .cir-slot { min-width: 120px; min-height: 42px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--cir-rule); padding: 6px 10px; font-size: 18px; }
 .cir-slot.active { border-color: var(--cir-ink); }
+.cir-skill-activity { --cir-paper: #f6f2e8; --cir-paper-raised: #fdfaf2; --cir-ink: #243b34; --cir-ink-soft: #3c574c; --cir-ink-mute: #52665e; --cir-rule: #d8cfbb; --cir-rule-soft: #e7e0d0; --cir-good: #1f5c4a; color: var(--cir-ink); box-shadow: 0 2px 3px #31291f08, 0 8px 18px #31291f04; min-width: 0; }
+.cir-skill-activity p { line-height: 1.65; }
+.cir-skill-activity h2 { font: 600 26px/1.25 Georgia, serif; margin: 16px 0; }
+.cir-skill-activity h3 { font-size: 16px; font-weight: 600; margin: 0 0 10px; }
+.cir-skill-activity .cir-prompt { margin-top: 14px; }
+.cir-skill-activity .cir-save { font-size: 12px; color: var(--cir-ink-soft); margin: 0 0 18px; }
+.cir-skill-activity .cir-slot { background: transparent; color: var(--cir-ink); border: 1px solid var(--cir-rule); border-radius: 8px; flex: 1 1 130px; min-width: 0; overflow-wrap: anywhere; }
+.cir-skill-activity .cir-slot[aria-pressed="true"] { border-color: var(--cir-ink); box-shadow: inset 0 0 0 1px var(--cir-ink); }
+.cir-skill-activity .cir-slot b { width: 100%; font-size: 11px; letter-spacing: .1em; }
+.cir-skill-activity .cir-token { max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+.cir-skill-activity .cir-answer + .cir-answer { border-top: 1px solid var(--cir-rule-soft); padding-top: 16px; }
+.cir-skill-activity .cir-comparison { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px; margin: 20px 0; }
+.cir-skill-activity .cir-comparison > p { margin: 0; padding: 18px; background: var(--cir-paper); border: 1px solid var(--cir-rule); border-radius: 8px; font: 500 clamp(20px, 2.6vw, 26px)/1.45 Georgia, serif; text-wrap: pretty; }
+.cir-skill-activity .cir-comparison > span { font-size: 13px; font-weight: 600; color: var(--cir-ink-soft); }
+.cir-skill-activity .cir-comparison > h2 { grid-column: 1 / -1; margin: 4px 0 0; font-family: inherit; font-size: 18px; font-weight: 600; line-height: 1.5; }
+.cir-skill-activity .cir-answer { min-width: 0; }
+.cir-skill-activity .cir-answer > p { max-width: 70ch; margin: 10px 0 0; }
+.cir-skill-activity .cir-reveal { gap: 20px; }
+.cir-skill-activity .cir-btn:disabled, .cir-skill-activity .cir-token:disabled { cursor: default; }
+.cir-skill-activity .cir-token:hover:disabled { border-color: var(--cir-rule); }
+.cir-meaning-legend { display: grid; gap: 10px; margin: 18px 0; padding: 14px; background: var(--cir-paper); border-radius: 8px; font-size: 13px; }
+.cir-meaning-legend dt { font-weight: 600; }
+.cir-meaning-legend dd { margin: 2px 0 0; line-height: 1.5; }
+.cir-settings { display: flex; flex-wrap: wrap; gap: 14px; margin: 0 0 20px; padding: 14px; border: 1px solid var(--cir-rule); border-radius: 10px; }
+.cir-settings legend { padding: 0 8px; font-size: 14px; }
+.cir-settings label { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 14px; }
+.cir-settings select { background: var(--cir-paper-raised); color: var(--cir-ink); border: 1px solid var(--cir-rule); border-radius: 6px; min-height: 40px; padding: 6px; }
+.cir-group-settings { display: flex; flex-wrap: wrap; gap: 14px; width: 100%; }
+.cir-skill-activity .cir-round-controls { border-top: 1px solid var(--cir-rule-soft); padding-top: 12px; }
+.cir-skill-activity button:focus-visible { outline: 2px solid var(--cir-ink); outline-offset: 3px; }
+@media (max-width: 620px) { .cir-skill-activity .cir-comparison { grid-template-columns: minmax(0, 1fr); gap: 10px; } .cir-skill-activity .cir-comparison > span { justify-self: center; } }
+@media (max-width: 480px) { .cir-skill-activity { padding: 18px; } .cir-skill-activity .cir-choices { grid-template-columns: minmax(0, 1fr); } }
 .cir-palette { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .cir-token { min-height: 44px; border: 1px solid var(--cir-rule); background: var(--cir-paper); color: var(--cir-ink); border-radius: 6px; padding: 8px 14px; font-size: 15px; cursor: pointer; transition: background-color .15s cubic-bezier(.25, 1, .5, 1), border-color .15s cubic-bezier(.25, 1, .5, 1); }
 .cir-token:active:not(:disabled) { background: var(--cir-rule-soft); }
@@ -194,4 +226,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .cir-root *, .cir-root *::before, .cir-root *::after { transition: none !important; animation: none !important; }
+  .cir-skill-activity *, .cir-skill-activity *::before, .cir-skill-activity *::after { transition: none !important; animation: none !important; }
 }

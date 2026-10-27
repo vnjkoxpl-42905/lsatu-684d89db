@@ -140,8 +140,8 @@ it('exposes only the permitted content and flashcard families', () => {
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
   expect(document.querySelector('.opening-course-content')).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={steps} url={url}/></MemoryRouter>);
-  // The mixed word deck is the only indicator set, and it is always there.
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Group 1 words' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Indicator words' })).toBeNull();
   expect(screen.queryByRole('heading', { name: 'Group 2 words' })).toBeNull();
   const both = OPENING_COURSE_PATH.filter(step => step.unitId === 'group-1' || step.unitId === 'group-2');
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={both} url={url}/></MemoryRouter>);

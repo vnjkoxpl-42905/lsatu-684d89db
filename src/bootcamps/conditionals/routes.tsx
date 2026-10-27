@@ -13,6 +13,11 @@ import { conditionalAssignmentAllowsAction, registryStepAllowed, type Unavailabl
 import { FULL_CONDITIONAL_EDITION } from '@/lib/conditionalCourseEdition';
 import { createEditionCourseStore, editionStorageScope } from './courseProgress';
 import { applyConditionalRequirements, resolveConditionalRequirements } from './courseRequirements';
+import { clearSkillQuery } from './skillPractice';
+import { ConditionalActivityCentre } from './components/ConditionalActivityCentre';
+import { conditionalLegacyPracticeUnits } from './centreAccess';
+import { ConditionalActivityIdentity } from './activityIdentity';
+import { CONDITIONAL_ACTIVITY_QUERY_KEYS, conditionalActivityAllowed, conditionalActivitySearch, normalizeConditionalActivityConfig, parseConditionalActivitySearch, type ConditionalActivityConfig } from './activityRegistry';
 import { ConditionalLessonNote } from './components/ConditionalLessonNote';
 import { OpeningCourseNavigation, OpeningCourseScreen, type OpeningCourseUrl } from './components/OpeningCourse';
 import { CHAPTER_TWO_LEGACY_UNIT_IDS, OPENING_COURSE_PATH, openingCourseStep, openingStepAccessUnits, courseStepsForEdition, LEGACY_UNIT_DISPOSITIONS, LEGACY_OPENING_COURSE_STEPS } from './openingCoursePath';
@@ -24,7 +29,7 @@ const Context = createContext<ReturnType<typeof useConditionalProgress> | null>(
 function useCourse() { const value = useContext(Context); if (!value) throw new Error('Conditional course provider is missing'); return value; }
 
 type NextStep = { mode: 'learn' | 'practice'; unitId?: string; label: string; difficulty: ConditionalDifficulty; phase: ConditionalUnit['phase'] };
-type PathSelection = { allowedUnits?: string[]; assignmentId?: string; practiceOnly?: boolean; scope: 'course' | 'area' | 'skill' | 'practice'; area?: ConditionalArea; unitId?: string; start?: string; assignedLevel?: boolean; difficulty: ConditionalDifficulty; phase?: ConditionalUnit['phase'] };
+type PathSelection = { allowedUnits?: string[]; assignmentId?: string; practiceOnly?: boolean; scope: 'course' | 'area' | 'skill' | 'practice' | 'activity'; area?: ConditionalArea; unitId?: string; start?: string; assignedLevel?: boolean; difficulty: ConditionalDifficulty; phase?: ConditionalUnit['phase'] };
 const WorkContext = createContext<{ selection: PathSelection; assignments: ConditionalAssignment[]; unavailableAssignments: UnavailableConditionalAssignment[]; active?: ConditionalAssignment; isAdmin: boolean; userId?: string } | null>(null);
 function useWork() { const value = useContext(WorkContext); if (!value) throw new Error('Conditional work provider missing'); return value; }
 function useSelection() { return useWork().selection; }
@@ -33,6 +38,7 @@ function selectedUnits(selection: PathSelection) {
 }
 function assignmentSelection(assignment: ConditionalAssignment): PathSelection {
   const target = assignment.target;
+  if (target.scope === 'activity') return { scope: 'activity', allowedUnits: [], assignmentId: assignment.id, practiceOnly: true, assignedLevel: true, difficulty: target.difficulty };
   return { allowedUnits: assignment.unitIds, assignmentId: assignment.id, practiceOnly: assignment.mode === 'practice',
     scope: target.scope === 'skill' ? 'skill' : target.scope === 'area' ? 'area' : target.scope === 'general' ? 'practice' : 'course',
     unitId: target.scope === 'skill' ? target.unitId : undefined,
@@ -110,10 +116,15 @@ export function ConditionalBootcampRoutes({ userId, isAdmin = false, assignments
   // Prefer the current edition deliberately; an explicit row below remains authoritative.
   const orderedAssignments = [...assignments].sort((a, b) => Number(b.target.courseEdition === FULL_CONDITIONAL_EDITION) - Number(a.target.courseEdition === FULL_CONDITIONAL_EDITION));
   const matching = requestedUnit ? orderedAssignments.find(item => openingStep ? registryStepAllowed(item, openingStep, params.has('level') ? difficultyFrom(params) : item.difficulty) : conditionalAssignmentAllowsAction(item, { unitId: requestedUnit, action: requestedAction, difficulty: params.has('level') ? difficultyFrom(params) : item.difficulty ?? getCurriculumDifficulty(requestedUnit) })) : undefined;
-  const active = params.has('assignment') ? assignments.find(item => item.id === params.get('assignment')) : matching ?? orderedAssignments[0];
+  const activityId = location.pathname.match(/\/centre\/([^/]+)/)?.[1];
+  const activityConfig = activityId ? parseConditionalActivitySearch(params, activityId) : undefined;
+  const activityMatch = activityConfig ? orderedAssignments.find(item => conditionalActivityAllowed(item, activityConfig)) : undefined;
+  const active = params.has('assignment') ? assignments.find(item => item.id === params.get('assignment')) : activityMatch ?? matching ?? orderedAssignments[0];
   const selection = isAdmin ? pathSelection(params, /\/(practice|simulator|hard-sentences)$/.test(location.pathname)) : active ? assignmentSelection(active) : { scope: 'course' as const, allowedUnits: [], difficulty: 'beginner' as const };
-  return <Context.Provider value={course}><WorkContext.Provider value={{ selection, assignments, unavailableAssignments, active, isAdmin, userId }}><Routes><Route element={<Shell />}>
+  return <ConditionalActivityIdentity.Provider value={{ userId, localOnly: false }}><Context.Provider value={course}><WorkContext.Provider value={{ selection, assignments, unavailableAssignments, active, isAdmin, userId }}><Routes><Route element={<Shell />}>
     <Route index element={<CourseLanding />} />
+    <Route path="centre" element={<ActivityCentreRoute/>}/>
+    <Route path="centre/:activityId" element={<ActivityCentreRoute/>}/>
     <Route path="lessons" element={<OpeningCourseRoute view="lessons"/>} />
     <Route path="opening/:stepId" element={<OpeningCourseRoute/>} />
     <Route path="opening-practice" element={<OpeningCourseRoute view="practice"/>} />
@@ -132,7 +143,7 @@ export function ConditionalBootcampRoutes({ userId, isAdmin = false, assignments
     <Route path="journal" element={<Journal />} />
     <Route path="settings" element={<Settings />} />
     <Route path="*" element={<Navigate to={BASE} replace />} />
-  </Route></Routes></WorkContext.Provider></Context.Provider>;
+  </Route></Routes></WorkContext.Provider></Context.Provider></ConditionalActivityIdentity.Provider>;
 }
 function ActionGate({ action, children }: { action: 'lesson' | 'guided' | 'practice'; children: React.ReactNode }) {
   const { isAdmin, active, selection } = useWork();
@@ -169,15 +180,45 @@ function UnitActions({ unit, selection }: { unit: ConditionalUnit; selection: Pa
     {([['lesson', '1. Learn'], ['guided', '2. Guided activity'], ['practice', '3. Skill drill'], ['repair', '4. Review the move']] as const).map(([action, label]) => <Link key={action} to={actionUrl(unit, action, selection)}>{label}</Link>)}
   </nav>;
 }
-function courseUrl(search: string): OpeningCourseUrl {
+export function courseUrl(search: string): OpeningCourseUrl {
   return (destination, run = false) => {
-    const params = new URLSearchParams(search);
+    const original = new URLSearchParams(search);
+    const wasActivity = original.has('activity');
+    const params = clearSkillQuery(original);
     params.delete('run');
+    if (wasActivity) for (const key of CONDITIONAL_ACTIVITY_QUERY_KEYS) params.delete(key);
+    for (const key of ['practiceRun', 'activityAssignment', 'guidedAssignment', 'view', 'returnTo', 'source', 'qid', 'qids', 'sessionKey', 'drillId', 'drill', 'guidedDrill', 'minutes', 'label', 'initialIndex']) params.delete(key);
     if (run) params.set('run', '1');
-    const route = destination === 'lessons' ? 'lessons' : destination === 'practice' ? 'opening-practice' : destination === 'labs' ? 'opening-labs' : destination === 'tools' ? 'opening-tools' : `opening/${destination}`;
+    const route = destination === 'centre' ? 'centre' : destination === 'lessons' ? 'lessons' : destination === 'practice' ? 'opening-practice' : destination === 'labs' ? 'opening-labs' : destination === 'tools' ? 'opening-tools' : `opening/${destination}`;
     const query = params.toString();
     return `${BASE}/${route}${query ? `?${query}` : ''}`;
   };
+}
+
+/** Navigation context is preserved; only fetched grants decide activity access. */
+export function conditionalCentreUrl(search: string, config?: ConditionalActivityConfig) {
+  const params = new URLSearchParams(search);
+  for (const key of [...CONDITIONAL_ACTIVITY_QUERY_KEYS, 'run', 'practiceRun', 'activityAssignment', 'guidedAssignment', 'view', 'returnTo', 'source', 'qid', 'qids', 'sessionKey', 'drillId', 'drill', 'guidedDrill', 'minutes', 'label', 'initialIndex', 'item', 'card', 'deck', 'round', 'from']) params.delete(key);
+  if (config) conditionalActivitySearch(config).forEach((value, key) => params.set(key, value));
+  const query = params.toString();
+  return `${BASE}/centre${config ? `/${config.activity}` : ''}${query ? `?${query}` : ''}`;
+}
+function ActivityCentreRoute() {
+  const { activityId } = useParams();
+  const location = useLocation();
+  const [params] = useSearchParams();
+  const work = useWork();
+  const { active, isAdmin, userId, selection } = work;
+  const contextual = new URLSearchParams(location.search);
+  if (!isAdmin && active) contextual.set('assignment', active.id);
+  const config = activityId ? parseConditionalActivitySearch(params, activityId) : undefined;
+  if (!isAdmin && !active) return <section className="cb-card"><h1>No conditional activity is available.</h1><Link to="/classroom">Back to Classroom</Link></section>;
+  const href = (next?: ConditionalActivityConfig) => conditionalCentreUrl(contextual.toString(), next);
+  return <ConditionalActivityCentre userId={userId!} grant={active} isAdmin={isAdmin} config={config} href={href} courseHref={courseUrl(contextual.toString())('lessons')} renderLegacy={chosen => {
+    const eligible = conditionalLegacyPracticeUnits(active, chosen, isAdmin);
+    const nextSelection: PathSelection = { ...selection, scope: 'practice', allowedUnits: eligible, unitId: chosen.unit, area: undefined, assignedLevel: true, difficulty: chosen.difficulty ?? 'beginner', phase: 'conditional', practiceOnly: true };
+    return <WorkContext.Provider value={{ ...work, selection: nextSelection }}><Practice simulator={chosen.mode === 'simulator'} hardLanguage={chosen.mode === 'hard-sentences'} centreConfig={chosen}/></WorkContext.Provider>;
+  }}/>;
 }
 
 function OpeningCourseRoute({ view: surface }: { view?: string }) {
@@ -227,11 +268,11 @@ function Shell() {
   const fullEdition = (isAdmin ? params.get('edition') : active?.target.courseEdition) === FULL_CONDITIONAL_EDITION;
   // Home and the chapter list cover only what this student may open.
   const chapters = fullEdition ? [...new Set(courseStepsForEdition(FULL_CONDITIONAL_EDITION).filter(step => isAdmin || !!active && registryStepAllowed(active, step, active.difficulty)).map(step => step.part ?? 1))] : undefined;
-  const courseView = route.startsWith('/opening/') ? route.slice('/opening/'.length) : route === '' ? (fullEdition ? 'home' : 'lessons') : ['/opening-practice', '/opening-labs', '/practice', '/simulator', '/hard-sentences', '/flashcards'].includes(route) ? 'practice' : route === '/opening-tools' ? 'tools' : ['/review', '/diagnostics'].includes(route) ? 'review' : route === '/journal' ? 'journal' : ['/reference', '/indicators'].includes(route) ? 'reference' : route === '/settings' ? 'settings' : 'lessons';
+  const courseView = route.startsWith('/centre') ? 'centre' : route.startsWith('/opening/') ? route.slice('/opening/'.length) : route === '' ? (fullEdition ? 'home' : 'lessons') : ['/opening-practice', '/opening-labs', '/practice', '/simulator', '/hard-sentences', '/flashcards'].includes(route) ? 'practice' : route === '/opening-tools' ? 'tools' : ['/review', '/diagnostics'].includes(route) ? 'review' : route === '/journal' ? 'journal' : ['/reference', '/indicators'].includes(route) ? 'reference' : route === '/settings' ? 'settings' : 'lessons';
   const workspaceLinks = { overview: `${BASE}${linkedSearch}`, review: `${BASE}/review${linkedSearch}`, journal: `${BASE}/journal${linkedSearch}`, reference: `${BASE}/reference${linkedSearch}` };
   const openingSurface = /^\/(?:lessons\/?|opening\/[^/]+\/?|opening-(?:practice|labs|tools)\/?)$/.test(location.pathname.slice(BASE.length));
   const saveMessages = {
-    saved: openingSurface ? 'Assigned work saved to your account' : 'Saved to your account',
+    saved: courseView === 'centre' ? 'Course progress saved to your account' : openingSurface ? 'Assigned work saved to your account' : 'Saved to your account',
     loading: openingSurface ? 'Loading your saved assigned work...' : 'Loading your saved work...',
     saving: openingSurface ? 'Saving your assigned work...' : 'Saving your changes...',
     unsaved: openingSurface ? 'Assigned work waiting to save' : 'Changes waiting to save',
@@ -244,6 +285,11 @@ function Shell() {
 function CourseLanding() {
   const { active, assignments, isAdmin, selection } = useWork();
   const { progress } = useCourse();
+  const [params] = useSearchParams();
+  if (active?.target.scope === 'activity') {
+    const chosen = normalizeConditionalActivityConfig({ activity: active.target.activityId, ...(active.target.activitySettings ?? {}) });
+    return chosen ? <Navigate replace to={conditionalCentreUrl(`assignment=${encodeURIComponent(active.id)}`, chosen)}/> : <p>This activity needs an update from your teacher.</p>;
+  }
   // Keep independently assigned legacy skills reachable until their authored
   // material is integrated into the numbered course.
   const hasCourseSteps = isAdmin || !!active && courseStepsForEdition(active.target.courseEdition).some(step => registryStepAllowed(active, step, active.difficulty));
@@ -254,7 +300,6 @@ function CourseLanding() {
   const earlier = expanded && progress && (Object.keys(progress.lessons).length > 0 || progress.attempts.length > 0 || Object.keys(progress.runs).length > 0 || Object.keys(progress.course ?? {}).some(key => !key.startsWith(`${FULL_CONDITIONAL_EDITION}:`)));
   const oldAssignment = assignments.find(item => !item.target.courseEdition);
   const earlierHref = oldAssignment ? `${BASE}?assignment=${encodeURIComponent(oldAssignment.id)}` : `${BASE}/review${active ? `?assignment=${encodeURIComponent(active.id)}` : ''}`;
-  const [params] = useSearchParams();
   const fullEdition = (isAdmin ? params.get('edition') : active?.target.courseEdition) === FULL_CONDITIONAL_EDITION;
   return <><OpeningCourseRoute view={fullEdition ? 'home' : 'lessons'}/>{earlier && <p className="cb-other-work"><Link to={earlierHref}>Earlier assigned work</Link></p>}{supplementaryUnits.length > 0 && <section className="cb-other-work"><h2>Additional explanations</h2>{supplementaryUnits.map(unit => <p key={unit.id}><Link to={actionUrl(unit, 'lesson', selection)}>{unit.title}</Link></p>)}</section>}{additionalUnits.length > 0 && <details className="cb-other-work"><summary>Additional assigned material</summary><p>This earlier or additional material remains available from your assignment, alongside the numbered course.</p><RecommendedForward selection={{ ...selection, allowedUnits: additionalUnits.map(unit => unit.id) }}/></details>}{assignments.length > 1 && !isAdmin && <section className="cb-other-work"><h2>Your other work</h2>{assignments.filter(item => item.id !== active?.id).map(item => <p key={item.id}><Link to={`${BASE}?assignment=${encodeURIComponent(item.id)}`}>{item.title}</Link></p>)}</section>}</>;
 }
@@ -307,10 +352,10 @@ function ExpandedLessonReview({ questions, selection }: { questions: PracticeQue
     && (isAdmin || (active && conditionalAssignmentAllowsAction(active, { unitId: unit.id, action: 'lesson', difficulty: selection.difficulty }))));
   return units.length ? <div className="cb-actions">{units.map(unit => <Link key={unit.id} className="cb-button" to={actionUrl(unit, 'lesson', selection)}>Review expanded lesson: {unit.title}</Link>)}</div> : null;
 }
-function Practice({ simulator = false, hardLanguage = false }: { simulator?: boolean; hardLanguage?: boolean }) {
+function Practice({ simulator = false, hardLanguage = false, centreConfig }: { simulator?: boolean; hardLanguage?: boolean; centreConfig?: ConditionalActivityConfig }) {
   const [params] = useSearchParams();
   const activeWork = useSelection();
-  const unitId = params.get('unit') ?? activeWork.unitId;
+  const unitId = centreConfig ? centreConfig.unit : params.get('unit') ?? activeWork.unitId;
   const unit = findConditionalUnit(unitId ?? '');
   const activeSelection = useSelection();
   const selection = unit ? { ...activeSelection, difficulty: activeSelection.assignedLevel ? activeSelection.difficulty : getCurriculumDifficulty(unit) } : activeSelection;

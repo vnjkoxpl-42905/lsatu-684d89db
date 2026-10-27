@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, Home, Menu } from 'lucide-react';
 import { CardsGlyph, DrillGlyph } from './CourseGlyphs';
 import { CourseProgressProvider, useCourseProgress, useDeviceCourseProgress, type CourseProgressStore } from '../courseProgress';
@@ -22,6 +22,7 @@ import { FullCourseDrill } from './FullCourseDrill';
 import { CourseVolume } from './CourseVolume';
 import { fullCourseMedia } from '../content/fullCourseMedia';
 import { FULL_CONDITIONAL_EDITION } from '@/lib/conditionalCourseEdition';
+import { LessonSkillLinks, SkillPracticeHub, SkillPracticeLinks } from './SkillPracticeHub';
 import './opening-course.css';
 
 export type OpeningCourseUrl = (destination: string, run?: boolean) => string;
@@ -58,7 +59,8 @@ export function OpeningCourseNavigation({ view, url, workspaceLinks, chapters }:
         <div>{chapters.map(part => <Link key={part} aria-current={view === chapterView(part) || viewPart === part ? 'page' : undefined} to={url(chapterView(part))} onClick={closeForNavigation}><span>Chapter {part}</span>{chapterTitles[part]}</Link>)}</div>
       </details>
     </> : <Link aria-current={view === 'overview' || view === 'lessons' || openingCourseStep(view)?.type === 'note' ? 'page' : undefined} to={workspaceLinks?.overview ?? url('lessons')} onClick={closeForNavigation}><BookOpen size={18}/>Course</Link>}
-    <Link aria-current={view === 'practice' || view === 'labs' || openingCourseStep(view)?.type === 'drill' ? 'page' : undefined} to={url('practice')} onClick={closeForNavigation}><DrillGlyph size={18}/>Practice drills</Link>
+    <Link aria-current={view === 'centre' ? 'page' : undefined} to={url('centre')} onClick={closeForNavigation}><DrillGlyph size={18}/>Practice centre</Link>
+    <Link aria-current={view === 'practice' || view === 'labs' || openingCourseStep(view)?.type === 'drill' ? 'page' : undefined} to={url('practice')} onClick={closeForNavigation}><DrillGlyph size={18}/>Course drills</Link>
     <p>Resources</p><Link aria-current={view === 'tools' ? 'page' : undefined} to={url('tools')} onClick={closeForNavigation}><CardsGlyph size={18}/>Flashcards</Link>
     {workspaceLinks && <Link aria-current={view === 'reference' ? 'page' : undefined} to={workspaceLinks.reference} onClick={closeForNavigation}><BookOpen size={18}/>Quick reference</Link>}
   </nav>;
@@ -470,6 +472,8 @@ const FOCUSED_LESSONS = ['and-or-both-or-either', 'and-or-either-condition'];
 function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }: {
   view: string; run: boolean; url: OpeningCourseUrl; steps: OpeningCourseStep[]; recordedPractice?: ReactNode; storageScope?: string;
 }) {
+  const [params] = useSearchParams();
+  const skillActivity = (view === 'practice' || view === 'tools') && params.has('activity');
   const current = steps.find(step => step.id === view);
   const progress = useCourseProgress();
   const projected = !!progress?.priorCompletion?.[view];
@@ -496,7 +500,8 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
   return <div ref={root} className={`oc-course-screen${view === 'foundation-practice' ? ' d1-screen' : ''}`}>
     {view === 'home' && <CourseHome steps={steps} url={url}/>}
     {chapterPart !== undefined && <ChapterPage key={chapterPart} part={chapterPart} steps={steps} url={url}/>}
-    {view === 'practice' && <PracticePage steps={steps} url={url} recordedPractice={recordedPractice}/>}
+    {skillActivity && <SkillPracticeHub steps={steps} url={url} storageScope={storageScope ?? progress?.storageScope}/>}
+    {view === 'practice' && !skillActivity && <><PracticePage steps={steps} url={url} recordedPractice={recordedPractice}/><SkillPracticeLinks steps={steps} url={url}/></>}
     {isIndex && view !== 'home' && view !== 'practice' && chapterPart === undefined && <div className="oc-course-index">
       <div data-course-heading><PageHeader noBloom eyebrow={view === 'lessons' ? 'Course' : 'Practice'} title={view === 'lessons' ? 'Conditional reasoning.' : view === 'labs' ? 'Make the move yourself.' : 'Practice the reasoning.'}/></div>
       <CourseTracker steps={list}/>
@@ -508,7 +513,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
       </section>)}
       {!list.length && <p>No opening lessons are available in this work.</p>}
     </div>}
-    {view === 'tools' && <FlashcardTools url={url} storageScope={expandedDraftScope(storageScope ?? progress?.storageScope)} allowed={[...(steps.some(step => step.unitId === 'orientation' || step.unitId === 'sufficient-necessary') ? ['foundation'] : []), ...(steps.some(step => step.unitId === 'group-1' || step.id === 'sufficient') ? ['group-1'] : []), ...(steps.some(step => step.unitId === 'group-2' || step.id === 'necessary') ? ['group-2'] : [])]}/>}
+    {view === 'tools' && !skillActivity && <><FlashcardTools url={url} storageScope={storageScope ?? progress?.storageScope ?? 'anonymous'} allowed={[...(steps.some(step => step.unitId === 'orientation' || step.unitId === 'sufficient-necessary') ? ['foundation'] : []), ...(steps.some(step => step.unitId === 'group-1' || step.id === 'sufficient') ? ['group-1'] : []), ...(steps.some(step => step.unitId === 'group-2' || step.id === 'necessary') ? ['group-2'] : [])]}/><SkillPracticeLinks steps={steps} url={url} cardsOnly/></>}
     {projected && current && <section className="oc-course-note" data-course-heading><p className="oc-label">Completed earlier</p><h1>{current.title}</h1><p>Your completed work from the earlier course counts here. Open a new attempt to revise it.</p><button className="oc-action" onClick={() => progress?.resume?.(current.id)}>Resume and revise</button><Link className="oc-back" to={url('lessons')}>Return to course</Link></section>}
     {!projected && current?.type === 'drill' && !run && <DrillEntry step={current} url={url} storageScope={storageScope}/>}
     {!projected && current && (current.type === 'note' || run) && <div className={current.type === 'note' ? 'oc-course-note' : 'oc-drill-run-header'}>
@@ -522,6 +527,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions</Link>}
     </div>}
     <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id) && !progress?.priorCompletion?.[step.id]).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}><CourseBody step={step} url={url} storageScope={storageScope ?? progress?.storageScope}/></CourseFlashcardUrl.Provider></div>)}</div>
+    {!projected && current?.type === 'note' && <LessonSkillLinks lessonId={current.id} steps={steps} url={url}/>}
     {!projected && current?.type === 'note' && !fullCourseLessons.some(lesson => lesson.id === current.id) && <LessonCompletion key={current.id} stepId={current.id}/>}
     {current && (current.type === 'note' || run) && <nav className="oc-course-turn" aria-label="Course navigation">{prior ? <Link to={url(prior.id)}><span>Previous {prior.type === 'note' ? 'lesson' : 'drill'}</span><strong>{prior.title}</strong></Link> : <Link to={url('lessons')}>Course</Link>}{next ? <Link to={url(next.id)}><span>Next {next.type === 'note' ? 'lesson' : 'drill'}</span><strong>{next.title}<ArrowRight size={18}/></strong></Link> : <Link to={url('lessons')}>Return to course<ArrowRight size={18}/></Link>}</nav>}
     {!isIndex && view !== 'tools' && !current && <div className="oc-course-note"><h1>This lesson is not available here.</h1><Link to={url('lessons')}>Return to course</Link></div>}

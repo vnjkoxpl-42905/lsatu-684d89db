@@ -2,7 +2,10 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { OpeningCourseScreen } from './OpeningCourse';
-import { flashcardUrl } from './FlashcardTools';
+import { FlashcardTools, flashcardUrl } from './FlashcardTools';
+import { advance, cardById, newRound, pick } from '../indicatorWordDeck';
+import { displayWord, indicatorWordCards } from '../content/indicatorWordCards';
+import { FULL_CONDITIONAL_EDITION } from '@/lib/conditionalCourseEdition';
 beforeEach(() => localStorage.clear());
 afterEach(cleanup);
 const url = (id: string) => `/dev/conditional-opening-preview?page=${id}`;
@@ -33,7 +36,8 @@ it('lists the mixed deck and distinct group decks beside the concept cards', () 
 });
 it('does not expose a concept set the work does not include', () => {
   render(<MemoryRouter initialEntries={[`${url('tools')}&deck=foundation`]}><OpeningCourseScreen view="tools" steps={[]} url={url}/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
+  expect(screen.getByText('No flashcards are available in this work.')).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Indicator words' })).toBeNull();
   expect(screen.queryByRole('heading', { name: 'Sufficient and necessary' })).toBeNull();
 });
 it('turns a key-term card with one tap and moves on', () => {
@@ -53,4 +57,34 @@ it.each([1, 2])('keeps Group %s cards and saved progress separate from the mixed
  expect(saved.queue.length).toBeGreaterThan(0);
  expect(saved.queue.every((entry: { id: string }) => entry.id.startsWith(`g${group}-`))).toBe(true);
  expect(localStorage.getItem('conditional-indicator-words-v1')).toBe(mixed);
+});
+
+it.each([undefined, 1, 2] as const)('resumes the existing legacy device fallback for group %s through tools given a raw actor scope', group => {
+ const cards = indicatorWordCards.filter(card => !group || card.group === group);
+ let state = newRound(undefined, () => 0.5, cards);
+ state = advance(pick(state, cardById(state.queue[0].id)!.group));
+ state = pick(state, cardById(state.queue[state.index].id)!.group);
+ const key = `conditional-indicator-words-v1${group ? `-group-${group}` : ''}`;
+ const deck = group ? `group-${group}` : 'indicators';
+ localStorage.setItem(key, JSON.stringify(state));
+ const mount = () => render(<MemoryRouter initialEntries={[`${url('tools')}&deck=${deck}`]}><FlashcardTools url={url} allowed={['foundation', 'group-1', 'group-2']} storageScope="legacy-student-actor"/></MemoryRouter>);
+ const first = mount();
+ expect(screen.getByText(`Card 2 of ${cards.length}`)).toBeVisible();
+ expect(document.querySelector('.iw-front .iw-word')).toHaveTextContent(displayWord(cardById(state.queue[state.index].id)!.word));
+ expect(document.querySelector('.iw-stage')).toHaveAttribute('data-result', 'right');
+ fireEvent.click(screen.getByRole('button', { name: 'Next card' }));
+ expect(JSON.parse(localStorage.getItem(key)!).index).toBe(2);
+ expect(localStorage.getItem(`${key}:legacy-student-actor`)).toBeNull();
+ first.unmount(); mount();
+ expect(screen.getByText(`Card 3 of ${cards.length}`)).toBeVisible();
+});
+
+it('keeps expanded-edition indicator storage scoped without importing the legacy fallback', () => {
+ const state = pick(newRound(undefined, () => 0.5), 1);
+ const legacy = JSON.stringify(state);
+ localStorage.setItem('conditional-indicator-words-v1', legacy);
+ render(<MemoryRouter initialEntries={[`${url('tools')}&deck=indicators`]}><FlashcardTools url={url} allowed={['group-1', 'group-2']} storageScope={`expanded-student:${FULL_CONDITIONAL_EDITION}`}/></MemoryRouter>);
+ expect(document.querySelector('.iw-stage')).not.toHaveAttribute('data-result');
+ expect(localStorage.getItem('conditional-indicator-words-v1')).toBe(legacy);
+ expect(localStorage.getItem(`conditional-indicator-words-v1:expanded-student:${FULL_CONDITIONAL_EDITION}`)).not.toBeNull();
 });

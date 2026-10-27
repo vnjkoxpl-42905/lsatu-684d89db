@@ -1,0 +1,26 @@
+.missing-links { color: #252923; line-height: 1.65; }
+.missing-links h2 { margin-top: 1.6rem; }
+.missing-links button,.missing-links select { color: #263d34; background: #faf8f1; border: 1px solid #cfc6b4; border-radius: .45rem; padding: .55rem .8rem; min-height: 44px; font: inherit; line-height: 1.35; }
+.missing-links button:not(:disabled):hover { background: #e9eee4; color: #163c32; }
+.missing-links button[aria-pressed=true],.missing-links button.fc-primary { background: #173d32; color: #fff; border-color: #173d32; }
+.missing-links button:disabled { opacity: .5; }
+.missing-links button:focus-visible,.missing-links select:focus-visible,.missing-links input:focus-visible { outline: 3px solid #53796c; outline-offset: 3px; }
+.missing-links button { cursor: pointer; }
+.missing-links fieldset { min-width: 0; border: 0; padding: 0; margin: 1.3rem 0; }
+.missing-links legend { font-weight: 650; margin-bottom: .7rem; }
+.ml-rounds,.ml-actions,.ml-palette { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
+.missing-links select { max-width:100%; display:block; margin:.4rem 0 1rem; }
+.ml-problem { padding:1.2rem; background:#f6f3e9; border:1px solid #ddd4c3; border-radius:.7rem; margin:1rem 0; box-shadow:0 2px 4px #30271708; }
+.ml-premise { display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin:.65rem 0; }
+.ml-label { font-size:.9rem; font-weight:650; margin-bottom:.3rem; }
+.ml-rule,.ml-chain { font-size:1.25rem; font-weight:550; letter-spacing:.025em; }
+.ml-negative { text-decoration:line-through; text-decoration-thickness:2px; }
+.ml-builder { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin:1rem 0; }
+.ml-builder>div { display:flex; flex-direction:column; gap:.5rem; min-width:0; }
+.ml-builder>div>span { font-size:.9rem; font-weight:650; }
+.ml-builder button { overflow-wrap:anywhere; }
+.ml-proof { margin:1.2rem 0; border-left:3px solid #42715c; padding:.2rem 1rem; background:#edf1e7; }
+.ml-new-arrow { color:#165b3b; background:#d7e9c7; border-radius:.2rem; font-weight:800; padding:0 .25rem; }
+.ml-formative { border-top:1px solid #d9d1c0; padding:1rem 0; margin:1.4rem 0; }
+.ml-formative label { display:flex; align-items:baseline; gap:.6rem; margin:.65rem 0; }
+@media(max-width:500px) { .ml-builder { grid-template-columns:1fr; } .ml-problem { padding:.9rem; } }

@@ -1,0 +1,12 @@
+.oc-course-screen .skill-practice-list,.oc-course-screen .skill-lesson-links{margin:2rem 0;padding:1.5rem 0;border-top:1px solid #d6cdbf}
+.oc-course-screen .skill-practice-list h2,.oc-course-screen .skill-lesson-links h2{font-family:Georgia,serif;font-size:1.6rem;line-height:1.25;margin:0 0 .6rem}
+.skill-practice-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:1.2rem;margin-top:1.4rem}
+.skill-practice-choices>div{padding:1.25rem;background:#faf7ef;border:1px solid #d8cfbf;border-radius:10px}
+.skill-practice-choices h3{font-size:1.1rem;margin:0 0 .5rem}.skill-practice-choices p{line-height:1.6;margin:0 0 1rem}
+.skill-practice-hub{max-width:850px;padding:1.5rem 0 3rem;min-width:0}.skill-practice-hub h1{font-family:Georgia,serif;font-size:clamp(2rem,5vw,3.3rem);line-height:1.1;margin:.6rem 0 1rem;color:#26352e}
+.skill-practice-hub header>p{line-height:1.6;max-width:65ch}.skill-return{display:flex;flex-wrap:wrap;gap:.8rem 1.5rem;margin-bottom:1.5rem}.skill-return a{text-decoration:underline;text-underline-offset:4px}
+.skill-settings{display:flex;flex-wrap:wrap;gap:1rem;padding:1.2rem 0;margin:1rem 0 1.5rem;border-block:1px solid #d6cdbf}.skill-settings fieldset{border:0;padding:0;margin:0;min-width:0}.skill-settings legend{font-weight:650;margin-bottom:.5rem}.skill-settings fieldset>div{display:flex;flex-wrap:wrap;gap:.4rem}
+.oc-course-screen .skill-settings a{display:inline-flex;padding:.55rem .8rem;border:1px solid #cfc6b8;border-radius:6px;background:#faf7ef;color:#203f36;font-size:.88rem;line-height:1.3;text-decoration:none}
+.oc-course-screen .skill-settings a[aria-current=true]{background:#243d34;border-color:#243d34;color:#fff}.skill-settings a:hover{box-shadow:0 1px 4px #0002}.skill-practice-hub a:focus-visible,.skill-lesson-links a:focus-visible{outline:3px solid #537668;outline-offset:3px}
+.skill-practice-hub .cir-root{background:transparent;padding:0;min-height:0}.skill-practice-hub .cir-card{margin-inline:0;max-width:100%}
+@media(max-width:600px){.skill-practice-hub{padding-top:1rem}.skill-settings{display:block}.skill-settings fieldset+fieldset{margin-top:1rem}.skill-practice-choices{grid-template-columns:1fr}}
