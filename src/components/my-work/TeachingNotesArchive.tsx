@@ -1,9 +1,10 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigationType, useSearchParams } from 'react-router-dom';
 import { ArrowRight, BookOpen, FileText, Search } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useNotesSelectMotion } from '@/hooks/useNotesSelectMotion';
 import { useNotesArchiveScroll } from '@/hooks/useNotesArchiveScroll';
+import { notifyClassroomListIntent } from '@/hooks/useClassroomMotion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
 import { isNoteUnread } from '@/components/classroom/classroomData';
@@ -20,6 +21,7 @@ function dateLabel(value: string, monthOnly = false) {
 
 export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNotes?: () => void }) {
   const query = useClassroomItems();
+  const archiveRef = useRef<HTMLElement>(null);
   const typeLabelId = useId();
   const searchRef = useRef<HTMLInputElement>(null);
   const recoverTypeFocus = useRef(false);
@@ -53,12 +55,13 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
   const storageKey = `my-work-notes-anchor:${user?.id ?? 'anonymous'}:${archivePath}`;
   const cards = useRef(new Map<string, HTMLAnchorElement>());
   const restored = useRef('');
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (query.isLoading || query.error || restored.current === storageKey) return;
     try {
       const stored = sessionStorage.getItem(storageKey);
       if (!stored) return;
       const anchor = JSON.parse(stored) as { id: string; ids: string[]; pointer?: boolean };
+      notifyClassroomListIntent(archiveRef.current, 'restore');
       const targetId = nearestArchiveNote(anchor.ids, anchor.id, visible.map((note) => note.id));
       const target = targetId && cards.current.get(targetId);
       if (target) { target.focus({ preventScroll: true }); returnToNote(target, anchor.pointer === true && navigationType !== 'POP'); }
@@ -68,6 +71,7 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
     } catch { /* Storage is optional; the archive remains navigable. */ }
   }, [query.isLoading, query.error, storageKey, visible, returnToNote, navigationType]);
   function update(key: 'q' | 'filter' | 'shown' | 'type', value: string, replace = false) {
+    if (key !== 'shown') notifyClassroomListIntent(archiveRef.current, 'filter');
     const next = new URLSearchParams(params);
     if (value) next.set(key, key === 'q' ? value.slice(0, 500) : value); else next.delete(key);
     if (key !== 'shown') next.delete('shown');
@@ -85,7 +89,7 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
     const body = text.get(note.id) ?? '';
     const description = note.description?.trim();
     const excerpt = description || (body.startsWith(note.title) && (!body[note.title.length] || /[\s.:;!?]/.test(body[note.title.length])) ? body.slice(note.title.length).replace(/^[\s.:;!?]+/, '') : body);
-    return <Link key={note.id} data-motion-item data-motion-id={`teaching-note:${note.id}`} aria-label={`Read ${note.title}. ${kinds[note.type] ?? 'Note'}. ${dateLabel(note.created_at)}. ${isNoteUnread(note) ? 'Unread' : 'Read'}.`} to={notesDetailRoute(note.id, archivePath)} onClick={(event) => remember(note.id, event.detail > 0)} ref={(node) => { if (node) cards.current.set(note.id, node); else cards.current.delete(note.id); }} data-read-state={isNoteUnread(note) ? 'unread' : 'read'} className={`teaching-note-card${featured ? ' teaching-note-lead' : ''}`}>
+    return <Link key={note.id} data-motion-item data-motion-id={`teaching-note:${note.id}`} aria-label={`Read ${note.title}. ${kinds[note.type] ?? 'Note'}. Shared ${dateLabel(note.created_at)}. ${isNoteUnread(note) ? 'Unread' : 'Read'}.`} to={notesDetailRoute(note.id, archivePath)} onClick={(event) => remember(note.id, event.detail > 0)} ref={(node) => { if (node) cards.current.set(note.id, node); else cards.current.delete(note.id); }} data-read-state={isNoteUnread(note) ? 'unread' : 'read'} className={`teaching-note-card${featured ? ' teaching-note-lead' : ''}`}>
       <span className="teaching-note-document" aria-hidden="true"><FileText size={featured ? 30 : 22} /></span>
       <span className="teaching-note-card-content"><span className="teaching-note-meta">{featured ? 'Most recent · ' : ''}{kinds[note.type] ?? 'Note'}{isNoteUnread(note) ? <span className="teaching-note-unread">Unread</span> : null}</span>
       <strong className="teaching-note-title">{note.title}</strong><time dateTime={note.created_at} title="Date shared"><span className="teaching-note-date-label">Shared </span>{dateLabel(note.created_at)}</time>
@@ -101,7 +105,7 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
   }, []);
   const leadId = !search && !unreadOnly && !selectedType ? visible[0]?.id : undefined;
   const personalPath = `${archivePath}${archivePath.includes('?') ? '&' : '?'}view=mine`;
-  return <section className="teaching-notes-home teaching-notes-organized" aria-labelledby="notes-archive-heading">
+  return <section ref={archiveRef} className="teaching-notes-home teaching-notes-organized" aria-labelledby="notes-archive-heading">
     <div className="teaching-notes-archive teaching-notes-organized-paper">
       <div className="teaching-notes-intro">
         <div><h2 id="notes-archive-heading" tabIndex={-1}>Teaching notes</h2><p>Notes and recaps to return to as you practise.</p></div>
@@ -110,8 +114,8 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
     {query.isLoading && !query.data ? <p role="status" className="teaching-notes-state">Loading your notes…</p> : query.error ? <div role="alert" className="teaching-notes-state"><p>Your notes could not be loaded. Try again to see the complete archive.</p><button type="button" className="classroom-button" onClick={() => void query.refetch()}>Try again</button></div> : !notes.length ? <div className="teaching-notes-empty"><BookOpen size={28} aria-hidden="true" /><h3>Your notes will live here.</h3><p>Notes and recaps shared after your sessions will be easy to find here.</p></div> : <>
       <div className="teaching-notes-archive-heading"><span role="status">{filtered.length} {filtered.length === 1 ? 'note' : 'notes'}{search || unreadOnly || selectedType ? ' found' : ''}</span></div>
       <div className="teaching-notes-controls"><label className="teaching-notes-search"><Search size={18} aria-hidden="true" /><span className="sr-only">Search notes</span><input ref={searchRef} type="search" value={search} placeholder="Search titles and notes…" onChange={(event) => update('q', event.target.value, true)} /></label><div className="teaching-notes-filters" role="group" aria-label="Filter notes"><button type="button" aria-label="All" aria-pressed={!unreadOnly} onClick={() => update('filter', '')}>All <span className="teaching-notes-filter-count" aria-hidden="true">{scopeNotes.length}</span></button><button type="button" aria-label="Unread" aria-pressed={unreadOnly} onClick={() => update('filter', 'unread')}>Unread <span className="teaching-notes-filter-count" aria-hidden="true">{unreadCount}</span></button></div>{showTypes ? <div className="teaching-notes-type"><span className="teaching-notes-type-label" id={typeLabelId}>Type</span><Select open={selectOpen} onOpenChange={setSelectOpen} value={selectedType || 'all-types'} onValueChange={changeType}><SelectTrigger className="notes-select-trigger" aria-labelledby={typeLabelId} onPointerDown={() => setSelectModality('pointer')} onKeyDown={() => setSelectModality('keyboard')}><SelectValue /></SelectTrigger><SelectContent ref={selectMotionRef} className="notes-select-content" data-input-modality={selectModality}><SelectItem className="notes-select-option" value="all-types">All types</SelectItem>{TEACHING_NOTE_TYPES.filter((type) => availableTypes.includes(type) || type === selectedType).map((type) => <SelectItem className="notes-select-option" key={type} value={type}>{typeLabels[type]}</SelectItem>)}</SelectContent></Select></div> : null}</div>
-      {!filtered.length ? <div className="teaching-notes-no-results"><p>No notes match these filters.</p><button className="classroom-button" type="button" onClick={() => { const next = new URLSearchParams(params); ['q', 'filter', 'type', 'shown'].forEach((key) => next.delete(key)); setParams(next); }}>Clear filters</button></div> : groups.map((group) => <section key={group.key} aria-label={hasMultipleMonths ? group.label : 'All notes'}>{hasMultipleMonths ? <h3 className="teaching-notes-month">{group.label}</h3> : null}<div className="teaching-notes-grid" data-motion-list>{group.notes.map((note) => card(note, note.id === leadId))}</div></section>)}
-      {visible.length < filtered.length ? <button className="classroom-button teaching-notes-load" type="button" onClick={() => update('shown', String(shown + 12))}>Load more notes <span>({filtered.length - visible.length} remaining)</span></button> : null}
+      {!filtered.length ? <div className="teaching-notes-no-results"><p>No notes match these filters.</p><button className="classroom-button" type="button" onClick={() => { notifyClassroomListIntent(archiveRef.current, 'filter'); const next = new URLSearchParams(params); ['q', 'filter', 'type', 'shown'].forEach((key) => next.delete(key)); setParams(next); }}>Clear filters</button></div> : groups.map((group) => <section key={group.key} aria-label={hasMultipleMonths ? group.label : 'All notes'}>{hasMultipleMonths ? <h3 className="teaching-notes-month">{group.label}</h3> : null}<div className="teaching-notes-grid" data-motion-list>{group.notes.map((note) => card(note, note.id === leadId))}</div></section>)}
+      {visible.length < filtered.length ? <button className="classroom-button teaching-notes-load" type="button" onClick={(event) => { if (event.detail > 0) notifyClassroomListIntent(archiveRef.current, 'paginate'); update('shown', String(shown + 12)); }}>Load more notes <span>({filtered.length - visible.length} remaining)</span></button> : null}
     </>}
     </div>
   </section>;

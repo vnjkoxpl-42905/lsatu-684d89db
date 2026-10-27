@@ -28,7 +28,7 @@
 .my-work-row-action { display: flex; align-items: center; gap: 12px; flex-shrink: 0; color: var(--classroom-ink); }
 .my-work-organized .student-work-status { font-size: .8125rem; }
 .my-work-organized :is(a, button, input, select):focus-visible { outline: 2px solid var(--classroom-ink); outline-offset: 3px; }
-@media (max-width: 600px) { .my-work-organized { padding: 16px; } .my-work-organized .student-work-row { align-items: flex-start; flex-direction: column; gap: 10px; } .my-work-row-action { align-self: flex-end; } .my-work-subject { flex: 1 1 100%; } .my-work-subject select { width: 100%; font-size: 1rem; } }
+@media (max-width: 600px) { .my-work-organized { padding: 16px; } .classroom-root .my-work-organized .student-work-row { align-items: flex-start; flex-direction: column; gap: 10px; } .my-work-row-action { align-self: flex-end; } .my-work-subject { flex: 1 1 100%; } .my-work-subject select { width: 100%; font-size: 1rem; } }
 @media (prefers-reduced-motion: reduce) { .my-work-organized :is(a, button, input, select) { transition: none; } }
 @media (forced-colors: active) { .my-work-organized { border-color: CanvasText; box-shadow: none; } .my-work-search, .my-work-subject select { border-color: ButtonText; } }
 @media (max-width:600px) { .my-work-filter-select { flex: 1 1 9rem; } .classroom-root .my-work-filter-select .notes-select-trigger { width: 100%; min-width: 0; } }

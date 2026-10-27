@@ -6,7 +6,7 @@
   "encrypted_original_context": {
     "enabled": true,
     "format": 2,
-    "file_count": 76,
+    "file_count": 77,
     "paths": [
       "lsatu-my-work-20261026/.agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
       "lsatu-my-work-20261026/.agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
@@ -80,11 +80,12 @@
       "lsatu-my-work-20261026/.claude/skills/notebooklm/tests/cassettes/sources_refresh.yaml",
       "lsatu-my-work-20261026/.claude/skills/notebooklm/tests/cassettes/sources_rename.yaml",
       "lsatu-my-work-20261026/.claude/skills/watch/scripts/setup.py",
+      "lsatu-my-work-20261026/docs/plans/my-work-remediation-review-log.md",
       "lsatu-my-work-20261026/scripts/verification/start-rc-builder-preview.mjs",
       "lsatu-my-work-20261026/src/contexts/AuthContext.tsx",
       "lsatu-my-work-20261026/src/lib/googleDrive.ts",
       "lsatu-my-work-20261026/supabase/functions/handle-email-events/index.ts"
     ],
-    "ciphertext_sha256": "2e6630dd941a7cfae3b017516610742e629c1e2b2fae38287353aed65b0c0b16"
+    "ciphertext_sha256": "7e4bba9b17c049f38b342bde354fd0df2a17be0248ef5989a8346ec3113400cf"
   }
 }

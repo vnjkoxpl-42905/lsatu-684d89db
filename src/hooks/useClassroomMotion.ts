@@ -10,6 +10,16 @@ export const CLASSROOM_REVEAL = { duration: 0.3, ease: 'classroom-reference-out'
 
 // rct-page also names the instructions and picker; only rct-run is immersive work.
 const EXCLUDED = '[data-motion="off"], [data-motion-skip], .rct-run';
+export type ClassroomListIntent = 'filter' | 'restore' | 'paginate';
+const listOwners = new WeakMap<HTMLElement, (intent: ClassroomListIntent) => void>();
+
+/** Resolve the first actual owner, including a reduced-motion owner, across portals via the caller's page ref. */
+export function notifyClassroomListIntent(element: HTMLElement | null, intent: ClassroomListIntent) {
+  for (let node = element; node; node = node.parentElement) {
+    const owner = listOwners.get(node);
+    if (owner) { owner(intent); return; }
+  }
+}
 
 export function classroomMotionKey(pathname: string, search: string) {
   const practice = pathname === '/practice/drills' || pathname === '/classroom/drill';
@@ -38,6 +48,9 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
   useLayoutEffect(() => {
     const root = ref.current;
     if (!root || !motionKey || root.closest(EXCLUDED)) return;
+    let handleIntent = (_intent: ClassroomListIntent) => {};
+    const owner = (intent: ClassroomListIntent) => handleIntent(intent);
+    listOwners.set(root, owner);
     const enteredAt = performance.now();
     const media = gsap.matchMedia();
     const context = gsap.context(() => {
@@ -60,8 +73,12 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
         const pending = new Map<string, { element: HTMLElement; timer: ReturnType<typeof setTimeout>; index: number }>();
         const records: Array<{ element: HTMLElement; tween: gsap.core.Tween; scroller?: HTMLElement; list: boolean }> = [];
         let listInteraction = false;
+        let keyboardInteraction = false;
         const selector = '[data-motion-item], [data-motion-enter], [data-motion-reveal]';
+        const listOnly = (element: HTMLElement) => !!element.closest('[data-motion-policy="list-only"]');
         const eligible = (element: HTMLElement) => !element.closest(EXCLUDED) && !element.querySelector(EXCLUDED)
+          && (!listOnly(element) || !!element.closest('[data-motion-list]'))
+          && !element.querySelector('[data-motion-policy="list-only"]')
           && (!element.closest('.classroom-motion-local') || element.closest('.classroom-motion-local') === root)
           && !element.querySelector('.classroom-motion-local') && !element.contains(document.activeElement)
           && !element.matches('nav, script, style, [role="status"], [data-motion-loading]')
@@ -118,9 +135,16 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           // A loaded pane may introduce granular items after its loading wrapper.
           // Release that wrapper before its children animate; never blur both levels.
           pending.forEach((waiting, id) => { if (waiting.element.querySelector('[data-motion-item]')) finishPending(id); });
-          records.filter(record => record.element.querySelector('[data-motion-item]')).forEach(settle);
+          records.filter(record => record.element.querySelector('[data-motion-list] [data-motion-item]')
+            || record.element.closest('[data-motion-policy="list-only"]') && record.element.querySelector('[data-motion-item]')).forEach(settle);
           candidates = candidates.filter(element => !element.querySelector('[data-motion-item]'));
           candidates = candidates.filter(element => !candidates.some(other => other !== element && other.contains(element)));
+          // Child layout restoration can focus a cached row before this parent
+          // owner registers. Suppress the whole list before any first-paint tween.
+          if (initial && candidates.some(element => element.closest('[data-motion-list]') && element.contains(document.activeElement))) {
+            listInteraction = true;
+            records.filter(record => record.list).forEach(settle);
+          }
           candidates.filter(element => element.contains(document.activeElement)).forEach(element => {
             const id = identity(element); finishPending(id); seen.add(element); completedIds.add(id);
           });
@@ -157,14 +181,15 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
             const tween = gsap.fromTo(element,
               { y: preset.y, opacity: preset.opacity, ...(list ? {} : { filter: CLASSROOM_REVEAL.filter }) },
               { y: 0, opacity: 1, ...(list ? {} : { filter: 'blur(0px)' }), duration: preset.duration, ease: preset.ease,
-                delay: list ? (reachable ? 0 : Math.min(index * 0.05, 0.15)) : 0.05 + (reachable ? 0 : 0.15 * index), clearProps: 'transform,opacity,filter',
-                ...(reachable ? { immediateRender: true, ...(list ? { paused: true } : {}), scrollTrigger: {
+                delay: list ? 0 : 0.05 + (reachable ? 0 : 0.15 * index), ...(list ? { paused: true } : {}), clearProps: 'transform,opacity,filter',
+                ...(reachable ? { immediateRender: true, scrollTrigger: {
                   trigger: element, scroller, start: 'clamp(top bottom-=100)', once: true,
                   toggleActions: list ? 'none none none none' : 'play none none none',
                   ...(list ? { onEnter: (trigger: ScrollTrigger) => { if (trigger.animation) queueListEntry(trigger.animation as gsap.core.Tween, element); } } : {}),
                 } } : {}),
               });
             records.push({ element, tween, scroller, list });
+            if (list && !reachable) queueListEntry(tween, element);
           });
         };
         scope.add(() => discover(true));
@@ -190,22 +215,30 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           pending.forEach((waiting, id) => { if (waiting.element.contains(event.target as Node)) scope.add(() => finishPending(id)); });
         };
         // Once someone starts using a list, filtering and keyboard travel must stay immediate.
-        const useList = () => {
+        const settleLists = () => {
           listInteraction = true;
           records.filter(record => record.list).forEach(settle);
           pending.forEach((waiting, id) => { if (waiting.element.closest('[data-motion-list]')) scope.add(() => finishPending(id)); });
         };
+        handleIntent = intent => {
+          if (intent === 'paginate') { if (!keyboardInteraction) listInteraction = false; return; }
+          settleLists();
+        };
+        const useList = () => { keyboardInteraction = true; settleLists(); };
         root.addEventListener('keydown', useList); root.addEventListener('input', useList); root.addEventListener('change', useList);
         root.addEventListener('focusin', interact); root.addEventListener('pointerdown', interact);
+        window.addEventListener('beforeprint', settleLists);
         return () => {
           root.removeEventListener('keydown', useList); root.removeEventListener('input', useList); root.removeEventListener('change', useList);
           root.removeEventListener('focusin', interact); root.removeEventListener('pointerdown', interact);
+          window.removeEventListener('beforeprint', settleLists);
           mutations.disconnect(); resize?.disconnect(); clearTimeout(timer);
           if (revealFrame !== undefined) cancelAnimationFrame(revealFrame); entering.clear();
           pending.forEach(waiting => clearTimeout(waiting.timer)); pending.clear(); scope.revert();
+          handleIntent = () => {};
         };
       });
     }, root);
-    return () => { media.revert(); context.revert(); };
+    return () => { media.revert(); context.revert(); if (listOwners.get(root) === owner) listOwners.delete(root); };
   }, [ref, motionKey]);
 }

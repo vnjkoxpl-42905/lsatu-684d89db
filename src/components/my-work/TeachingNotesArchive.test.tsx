@@ -5,6 +5,8 @@ import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import { TeachingNotesArchive } from './TeachingNotesArchive';
 
 const state = vi.hoisted(() => ({ data: [] as ClassroomItem[], error: null as Error | null, loading: false, refetch: vi.fn() }));
+const listIntent = vi.hoisted(() => vi.fn());
+vi.mock('@/hooks/useClassroomMotion', () => ({ notifyClassroomListIntent: listIntent }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'student-a' } }) }));
 vi.mock('@/hooks/useClassroomItems', () => ({ useClassroomItems: () => ({ data: state.data, isLoading: state.loading, error: state.error, refetch: state.refetch }) }));
 function openTypes() {
@@ -24,6 +26,7 @@ function note(index: number): ClassroomItem {
 }
 describe('TeachingNotesArchive', () => {
   beforeEach(() => {
+    listIntent.mockReset();
     HTMLElement.prototype.hasPointerCapture = () => false;
     HTMLElement.prototype.setPointerCapture = () => undefined;
     HTMLElement.prototype.releasePointerCapture = () => undefined;
@@ -52,6 +55,34 @@ describe('TeachingNotesArchive', () => {
     fireEvent.click(screen.getByRole('link', { name: /Reference 14/ }));
     const entry = sessionStorage.getItem('my-work-notes-anchor:student-a:/my-work/notes?shown=24');
     expect(JSON.parse(entry!)).toMatchObject({ id: 'note-14' });
+  });
+  it('signals pointer pagination separately from filtering and does not re-enable keyboard pagination', () => {
+    const view = show();
+    fireEvent.click(screen.getByRole('button', { name: /Load more notes/ }), { detail: 1 });
+    expect(listIntent).toHaveBeenLastCalledWith(document.querySelector('.teaching-notes-home'), 'paginate');
+    view.unmount(); listIntent.mockClear(); show();
+    fireEvent.click(screen.getByRole('button', { name: /Load more notes/ }), { detail: 0 });
+    expect(listIntent).not.toHaveBeenCalled();
+  });
+  it('signals filter intent before pointer Unread, search and Clear URL changes', () => {
+    show();
+    listIntent.mockImplementation(() => expect(screen.getByLabelText('Location').textContent).toBe(''));
+    fireEvent.click(screen.getByRole('button', { name: 'Unread' }), { detail: 1 });
+    expect(listIntent).toHaveBeenCalledWith(document.querySelector('.teaching-notes-home'), 'filter');
+    listIntent.mockImplementation(() => {});
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'absent' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
+    expect(listIntent.mock.calls.map(call => call[1])).toEqual(['filter', 'filter', 'filter']);
+  });
+  it('signals a portaled type choice against the archive ref before committing the URL', async () => {
+    state.data[0].type = 'session_recap'; show();
+    listIntent.mockImplementation((element, intent) => {
+      expect(element).toBe(document.querySelector('.teaching-notes-home'));
+      expect(intent).toBe('filter'); expect(screen.getByLabelText('Location').textContent).toBe('');
+    });
+    await chooseType('Session recaps');
+    expect(listIntent).toHaveBeenCalledOnce();
+    expect(screen.getByLabelText('Location')).toHaveTextContent('type=session_recap');
   });
   it('shows a retryable failure instead of empty notes or misleading totals', () => {
     state.error = new Error('Network');
@@ -103,6 +134,17 @@ describe('TeachingNotesArchive', () => {
     expect(JSON.parse(sessionStorage.getItem('my-work-notes-anchor:student-a:/my-work/notes')!)).toMatchObject({ id: 'note-0' });
     fireEvent.click(screen.getByRole('link', { name: 'Back to notes' }));
     expect(screen.getByRole('link', { name: /Reference 0/ })).toHaveFocus();
+    expect(listIntent).toHaveBeenLastCalledWith(document.querySelector('.teaching-notes-home'), 'restore');
+  });
+  it('settles restoration before focus and chooses the nearest surviving unread note', () => {
+    state.data[0].metadata_json = { read_at: '2026-10-27' };
+    sessionStorage.setItem('my-work-notes-anchor:student-a:/my-work/notes?filter=unread', JSON.stringify({ id: 'note-0', ids: ['note-0', 'note-1', 'note-2'], pointer: true }));
+    listIntent.mockImplementation((_element, intent) => {
+      expect(intent).toBe('restore'); expect(document.activeElement?.tagName).not.toBe('A');
+    });
+    show('/my-work/notes?filter=unread');
+    expect(listIntent).toHaveBeenCalledOnce();
+    expect(screen.getByRole('link', { name: /Reference 1\./ })).toHaveFocus();
   });
 
   it('combines exact type with unread and search while preserving type on detail links', async () => {
