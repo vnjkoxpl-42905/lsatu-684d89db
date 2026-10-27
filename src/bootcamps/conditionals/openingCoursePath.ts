@@ -82,7 +82,7 @@ export const SPLIT_LESSON_SOURCES: Record<string, { sourceId: string; sourceRevi
 const chapterTwoOrder = ['and-or-both-or-either', 'and-or-either-condition', 'and-or-meaning-practice', 'and-or-either-side', 'and-or-placement-practice', 'and-or-negate-group', 'and-or-whole-group-practice', 'and-or-transfer-practice'];
 /** One-line summary shown under each Chapter 3 to 7 lesson title, matching Chapters 1 and 2. */
 const LESSON_SUMMARIES: Record<string, string> = {
-  'exception-language': 'Read unless, until and without as “if not”, and know when they set no rule.',
+  'exception-language': 'Learn one method for translating unless, until and without into if/then statements.',
   'exclusion-language': 'When two conditions cannot hold together, one requires the absence of the other.',
   'negative-translation': 'Handle several negatives in one sentence, one complete idea at a time.',
   'implicit-guarantees': 'Find the sufficient and necessary conditions when a rule never says if.',

@@ -286,3 +286,5 @@
 .ao-breakdown li:last-child::before{background:#176447}
 .ao-breakdown span{font-size:.82rem;font-weight:700;letter-spacing:.02em;color:#64645b;line-height:2rem}
 #root .co-section .ao-breakdown p{margin:0;font-size:1.05rem;line-height:1.6}
+
+#root .co-section p.ao-plain{font-size:1.25rem;line-height:1.55;color:#173544}

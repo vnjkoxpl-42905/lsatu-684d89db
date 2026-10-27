@@ -37,6 +37,10 @@ function GroupMeaning({ connector, film }: { connector: 'AND' | 'OR'; film?: Rea
   const isAnd = connector === 'AND';
   const rule = isAnd ? libraryExample.both : libraryExample.either;
   return <div className="ao-reading">
+    {isAnd && <Section title="What AND is" label="What AND is">
+      <p className="ao-plain">AND joins two things and says <strong>both of them are true</strong>.</p>
+      <p>Not just the first. Not just the second. <strong>Both</strong>. If either one is missing, the AND is not met.</p>
+    </Section>}
     <Section title={isAnd ? 'What AND does' : 'What OR does'} label={isAnd ? 'AND means both' : 'OR means one or both'}>
       <div className="ct-definition ao-definition">
         <p className="ao-definition-lead">{isAnd ? 'AND conjoins two conditions.' : 'OR joins two conditions.'}</p>
@@ -124,7 +128,12 @@ function InclusionCases() {
 function OrMeaning() {
   return <>
     <div className="ao-reading">
-      <Section title="What OR does" label="OR means one or both">
+      <Section title="What OR is" label="OR means one or both">
+        <p className="ao-plain">OR is an <strong>inclusion</strong> word. It joins two things and says <strong>at least one of them is true</strong>.</p>
+        <p>It can be the first. It can be the second. It can be both. The only thing OR rules out is <strong>neither</strong>.</p>
+        <p>Here is a statement: <strong>Mia will study on Saturday or on Sunday.</strong> Mia studies on at least one of those days, and maybe both.</p>
+      </Section>
+      <Section title="What OR does">
         <div className="ct-definition ao-definition">
           <p className="ao-definition-lead">OR includes at least one.</p>
           <dl>
@@ -133,20 +142,18 @@ function OrMeaning() {
             <div><dt>It becomes</dt><dd>If one is not true, the other must be.</dd></div>
           </dl>
         </div>
-        <p>Here is a statement: <strong>Mia will study on Saturday or on Sunday.</strong></p>
-        <InclusionCases/>
-        <p className="ao-takeaway">Only <strong>skipping both</strong> is ruled out. So if Mia <strong>did not study on Saturday</strong>, then <strong>she studies on Sunday</strong>.</p>
-        <AndOrDiagram atoms={studyAtoms} rule={orFromSaturday}/>
       </Section>
-      <Section title="Why OR turns into an if/then" label="Inclusion breakdown">
+      <Section title="Walk through it" label="Inclusion breakdown">
         <ol className="ao-breakdown">
-          <li><span>Name it</span><p>OR is an <strong>inclusion</strong> word. It forces you to include at least one of the two things it joins.</p></li>
-          <li><span>Read it the LSAT way</span><p>In everyday speech, “Saturday or Sunday” often means one or the other. On the LSAT it means <strong>at least one</strong>. Both days still count.</p></li>
           <li><span>Ask the question</span><p>What fact would <strong>force</strong> Mia to study on a particular day?</p></li>
           <li><span>Take one half away</span><p>Suppose Mia <strong>did not study on Saturday</strong>. She still has to study on at least one day, and only Sunday is left. So <strong>she studies on Sunday</strong>.</p></li>
           <li><span>Write the rule</span><p>That gives the if/then: <strong>if Mia does not study on Saturday, then she studies on Sunday.</strong> The missing half goes on the left; the other half follows on the right.</p></li>
         </ol>
-        <p>The reverse gives you nothing. Learning that Mia studied on Saturday says nothing about Sunday.</p>
+        <AndOrDiagram atoms={studyAtoms} rule={orFromSaturday}/>
+      </Section>
+      <Section title="Check it">
+        <InclusionCases/>
+        <p className="ao-takeaway">Only <strong>skipping both</strong> is ruled out. And the reverse gives you nothing: learning that Mia <strong>studied on Saturday</strong> says <strong>nothing about Sunday</strong>.</p>
       </Section>
       <Section title="Watch the lesson"><AndOrLecture lessonId="and-or-either-condition"/></Section>
       <Section title="Write the diagram" label="Write the diagram">

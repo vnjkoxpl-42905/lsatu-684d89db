@@ -1,65 +1,93 @@
 WEBVTT
 
 1
-00:00:00.600 --> 00:00:06.808
-Unless means “if not.” When the unless condition is absent, the other part of the sentence must be true.
+00:00:00.600 --> 00:00:03.416
+Unless, until and without all use one method.
 
 2
-00:00:07.108 --> 00:00:10.351
-The survey continues unless the hillside is unsafe.
+00:00:03.716 --> 00:00:05.444
+Find the two complete ideas.
 
 3
-00:00:10.651 --> 00:00:12.805
-Suppose the hillside is not unsafe.
+00:00:05.744 --> 00:00:07.472
+Choose either one and negate it.
 
 4
-00:00:13.105 --> 00:00:16.476
-The stated exception is absent, so the survey continues.
+00:00:07.772 --> 00:00:10.652
+That negated idea is the sufficient condition.
 
 5
-00:00:16.776 --> 00:00:19.165
-Now suppose the survey does not continue.
+00:00:10.952 --> 00:00:12.829
+Leave the other idea unchanged.
 
 6
-00:00:19.465 --> 00:00:22.751
-The exception must be present: the hillside is unsafe.
+00:00:13.129 --> 00:00:15.049
+The game is played unless it rains.
 
 7
-00:00:23.051 --> 00:00:27.531
-But an unsafe hillside alone does not tell us whether the survey continues.
+00:00:15.349 --> 00:00:16.864
+Choose the idea it rains.
 
 8
-00:00:27.831 --> 00:00:30.327
-The rule has not made that reverse guarantee.
+00:00:17.164 --> 00:00:21.644
+Its negation is it does not rain, so if it does not rain, the game is played.
 
 9
-00:00:30.627 --> 00:00:33.827
-The LSAT can express a requirement without only if.
+00:00:21.944 --> 00:00:24.504
+Now choose the other idea, the game is played.
 
 10
-00:00:34.127 --> 00:00:41.423
-Translating both equivalent forms lets you recognize that requirement even when an answer starts from the other idea.
+00:00:24.804 --> 00:00:29.519
+Its negation is the game is not played, so if the game is not played, it rains.
 
 11
-00:00:41.723 --> 00:00:45.819
-The two ideas are the survey continues and the hillside is unsafe.
+00:00:29.819 --> 00:00:34.171
+Both versions rule out the same situation: no rain and no game.
 
 12
-00:00:46.119 --> 00:00:48.657
-Keep any existing negative or restriction.
+00:00:34.471 --> 00:00:36.497
+They are contrapositives of each other.
 
 13
-00:00:48.957 --> 00:00:51.624
-Negate your chosen idea and put it on the left.
+00:00:36.797 --> 00:00:39.016
+The rule also leaves some facts open.
 
 14
-00:00:51.924 --> 00:00:56.383
-Before using an exception, say what the sentence guarantees when it is absent.
+00:00:39.316 --> 00:00:42.260
+If it rains, we cannot tell whether the game is played.
 
 15
-00:00:56.683 --> 00:01:03.168
-With until, retain the time boundary and leave later behavior open unless a second statement settles it.
+00:00:42.560 --> 00:00:45.568
+If the game is played, we cannot tell whether it rains.
 
 16
-00:01:03.468 --> 00:01:08.524
-Begin with accurate translation; optional timed Unless practice comes afterward.
+00:00:45.868 --> 00:00:49.815
+You might expect rain to cancel the game, but this rule never says so.
+
+17
+00:00:50.115 --> 00:00:52.611
+Sometimes an idea already contains not.
+
+18
+00:00:52.911 --> 00:00:56.089
+The store does not open unless the manager arrives.
+
+19
+00:00:56.389 --> 00:00:59.739
+Negate the store does not open, and you get the store opens.
+
+20
+00:01:00.039 --> 00:01:02.791
+So if the store opens, the manager arrives.
+
+21
+00:01:03.091 --> 00:01:04.819
+Find the two complete ideas.
+
+22
+00:01:05.119 --> 00:01:08.468
+Choose one, negate it, and make it the sufficient condition.
+
+23
+00:01:08.768 --> 00:01:12.117
+Keep the other unchanged, and read the rule back in English.

@@ -14,19 +14,6 @@ export const fullCourseMedia: Record<string, FullCourseMedia> = {
       "Ask what cannot coexist. If the sentence is a policy, keep the policy in the result: prohibited entry does not establish that nobody entered. If it is a descriptive rule, apply it as the stated factual guarantee."
     ]
   },
-  "exception-language": {
-    "src": "/media/conditionals/full-course/exception-language.mp4",
-    "poster": "/media/conditionals/full-course/exception-language.jpg",
-    "captions": "/media/conditionals/full-course/exception-language.vtt",
-    "transcript": [
-      "Unless means “if not.” When the unless condition is absent, the other part of the sentence must be true.",
-      "The survey continues unless the hillside is unsafe.",
-      "Suppose the hillside is not unsafe. The stated exception is absent, so the survey continues. Now suppose the survey does not continue. The exception must be present: the hillside is unsafe. But an unsafe hillside alone does not tell us whether the survey continues. The rule has not made that reverse guarantee.",
-      "The LSAT can express a requirement without only if. Translating both equivalent forms lets you recognize that requirement even when an answer starts from the other idea.",
-      "The two ideas are the survey continues and the hillside is unsafe. Keep any existing negative or restriction. Negate your chosen idea and put it on the left.",
-      "Before using an exception, say what the sentence guarantees when it is absent. With until, retain the time boundary and leave later behavior open unless a second statement settles it. Begin with accurate translation; optional timed Unless practice comes afterward."
-    ]
-  },
   "negative-translation": {
     "src": "/media/conditionals/full-course/negative-translation.mp4",
     "poster": "/media/conditionals/full-course/negative-translation.jpg",
@@ -324,6 +311,19 @@ export const fullCourseMedia: Record<string, FullCourseMedia> = {
       "A negation test fails if you make the candidate much stronger than its actual denial. Count boundaries precisely before using the result to evaluate an argument.",
       "For all, every member must fit. For some, one is enough. For most, the number must be strictly above half of the same reference group.",
       "Try the smallest change that defeats the claim. If one exception or an exact tie is enough, keep that case available instead of strengthening the negation for convenience. With five files, most needs three; denying most permits two, one or none."
+    ]
+  },
+  "exception-language": {
+    "src": "/media/conditionals/full-course/exception-language.mp4",
+    "poster": "/media/conditionals/full-course/exception-language.jpg",
+    "captions": "/media/conditionals/full-course/exception-language.vtt",
+    "transcript": [
+      "Unless, until and without all use one method. Find the two complete ideas. Choose either one and negate it. That negated idea is the sufficient condition. Leave the other idea unchanged.",
+      "The game is played unless it rains.",
+      "Choose the idea it rains. Its negation is it does not rain, so if it does not rain, the game is played. Now choose the other idea, the game is played. Its negation is the game is not played, so if the game is not played, it rains. Both versions rule out the same situation: no rain and no game. They are contrapositives of each other.",
+      "The rule also leaves some facts open. If it rains, we cannot tell whether the game is played. If the game is played, we cannot tell whether it rains. You might expect rain to cancel the game, but this rule never says so.",
+      "Sometimes an idea already contains not. The store does not open unless the manager arrives. Negate the store does not open, and you get the store opens. So if the store opens, the manager arrives.",
+      "Find the two complete ideas. Choose one, negate it, and make it the sufficient condition. Keep the other unchanged, and read the rule back in English."
     ]
   }
 };

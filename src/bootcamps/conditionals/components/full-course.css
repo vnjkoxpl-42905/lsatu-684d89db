@@ -25,3 +25,24 @@
 .fc-chain-rule button{margin:.25rem .5rem .25rem 0}
 .fc-film{container-type:inline-size}
 @container(max-width:560px){.fc-film video{aspect-ratio:1;height:auto;object-fit:contain}}
+/* Lesson 3.1: one worked sentence, then the other cases. */
+.fc-unless .fc-u-method{font-size:1.2rem;line-height:1.6;font-weight:600}
+.fc-u-section{border-top:1px solid var(--fc-line);padding-top:2rem}
+.fc-u-rule{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin:1.2rem 0}
+.fc-u-rule>span:first-child,.fc-u-rule>span:last-child{padding:.55rem 1rem;border-radius:8px;border:1.5px solid}
+.fc-u-rule>span:first-child{background:#f6e7c2;border-color:#b58a3a}
+.fc-u-rule>span:last-child{background:#d8ece6;border-color:#5f9a8c}
+.fc-u-rule>span:nth-child(2){font-size:1.4rem}
+.fc-u-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin:1rem 0}
+.fc-u-pair>div{padding:.9rem 1rem;border:1px solid var(--fc-line);border-radius:10px;background:var(--fc-paper)}
+.fc-u-pair span{display:block;font-size:.85rem;color:var(--fc-muted)}
+.fc-u-moves{list-style:none;padding:0;display:grid;gap:.6rem}
+.fc-u-moves>li{display:grid;grid-template-columns:minmax(0,12rem) minmax(0,1fr);gap:1rem;align-items:baseline}
+.fc-u-moves p{margin:0}
+.fc-u-move{font-size:.85rem;font-weight:700;color:var(--fc-teal)}
+.fc-u-table-wrap{overflow-x:auto;margin:1rem 0}
+.fc-u-table{width:100%;border-collapse:collapse;font-size:.98rem}
+.fc-u-table th,.fc-u-table td{text-align:left;padding:.6rem .75rem;border-bottom:1px solid var(--fc-line);vertical-align:top}
+.fc-u-table th{font-size:.85rem;color:var(--fc-muted);font-weight:700}
+.fc-unless .fc-comparisons strong{display:block;margin-top:.25rem}
+@media(max-width:560px){.fc-u-pair,.fc-u-moves>li{grid-template-columns:minmax(0,1fr)}}
