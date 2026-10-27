@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Check, X } from 'lucide-react';
 import { ReferenceQuestion } from './ConditionalReferenceSequence';
 import { PulseWord, PunchWord } from './ContrapositiveVisuals';
 import { AndOrDiagram, AndOrLecture, ContrapositiveDemo, ErrorCards, FourCombos, GroupCheck, PlacementExplorer } from './AndOrVisuals';
@@ -84,7 +85,7 @@ function GroupMeaning({ connector, film }: { connector: 'AND' | 'OR'; film?: Rea
 
 function AndMeaning() {
   return <>
-    <GroupMeaning connector="AND"/>
+    <GroupMeaning connector="AND" film={<Section title="Watch the lesson"><AndOrLecture lessonId="and-or-both-or-either"/></Section>}/>
     <Section title="A habit to keep"><p>When you see AND, check that the facts give you both conditions. One condition by itself does not meet the AND condition, so the rule guarantees nothing yet.</p></Section>
     <AndOrQuiz quizId="and-or-both-or-either"/>
   </>;
@@ -99,16 +100,25 @@ const studyAtoms: Atom[] = [
 const orFromSaturday: Rule = { sufficient: group('and', lit('sat', true)), necessary: group('and', lit('sun')) };
 const orFromSunday: Rule = { sufficient: group('and', lit('sun', true)), necessary: group('and', lit('sat')) };
 
-function InclusionChart() {
-  const rows: [boolean, boolean][] = [[true, true], [true, false], [false, true], [false, false]];
-  return <div className="ao-scenario-scroll"><table className="ao-scenario-chart">
-    <caption>Does this fit “Mia will study on Saturday or on Sunday”?</caption>
-    <thead><tr><th scope="col">Saturday</th><th scope="col">Sunday</th><th scope="col">Fits the statement</th></tr></thead>
-    <tbody>{rows.map(([sat, sun]) => {
-      const fits = sat || sun;
-      return <tr key={`${sat}-${sun}`}><td>{sat ? 'Studies' : 'Does not'}</td><td>{sun ? 'Studies' : 'Does not'}</td><td><span className="ao-scenario-result" data-met={fits}><span aria-hidden="true">{fits ? '✓' : '×'}</span>{fits ? 'Fits' : 'Ruled out'}</span></td></tr>;
-    })}</tbody>
-  </table></div>;
+/** The four possible weekends as tiles: which days Mia studies, and whether the OR statement allows it. */
+function InclusionCases() {
+  const cases: { sat: boolean; sun: boolean; label: string }[] = [
+    { sat: true, sun: false, label: 'Saturday only' },
+    { sat: false, sun: true, label: 'Sunday only' },
+    { sat: true, sun: true, label: 'Both days' },
+    { sat: false, sun: false, label: 'Neither day' },
+  ];
+  const day = (name: string, on: boolean) => <span className="ao-case-day" data-on={on}>{on ? <Check size={14} aria-hidden/> : <X size={14} aria-hidden/>}{name}</span>;
+  return <ul className="ao-cases" aria-label="Every weekend Mia could have">
+    {cases.map(c => {
+      const ok = c.sat || c.sun;
+      return <li key={c.label} className="ao-case" data-ok={ok} aria-label={`${c.label}: ${ok ? 'allowed' : 'ruled out'}`}>
+        <span className="ao-case-label">{c.label}</span>
+        <span className="ao-case-days">{day('Sat', c.sat)}{day('Sun', c.sun)}</span>
+        <span className="ao-case-verdict">{ok ? <Check size={15} aria-hidden/> : <X size={15} aria-hidden/>}{ok ? 'Allowed' : 'Ruled out'}</span>
+      </li>;
+    })}
+  </ul>;
 }
 
 function OrMeaning() {
@@ -124,11 +134,19 @@ function OrMeaning() {
           </dl>
         </div>
         <p>Here is a statement: <strong>Mia will study on Saturday or on Sunday.</strong></p>
-        <p>Mia can study on Saturday, on Sunday, or on both days. The one thing the statement rules out is skipping both. So if you learn that Mia did not study on Saturday, Sunday is settled: she studies on Sunday.</p>
+        <InclusionCases/>
+        <p className="ao-takeaway">Only <strong>skipping both</strong> is ruled out. So if Mia <strong>did not study on Saturday</strong>, then <strong>she studies on Sunday</strong>.</p>
         <AndOrDiagram atoms={studyAtoms} rule={orFromSaturday}/>
       </Section>
-      <Section title="Why one missing settles it">
-        <p>On the LSAT, OR does not mean pick one. It means you cannot drop both. That is what turns an OR statement into a conditional: take one away, and the other has to be there. The reverse gives you nothing. Learning that Mia studied on Saturday tells you nothing about Sunday.</p>
+      <Section title="Why OR turns into an if/then" label="Inclusion breakdown">
+        <ol className="ao-breakdown">
+          <li><span>Name it</span><p>OR is an <strong>inclusion</strong> word. It forces you to include at least one of the two things it joins.</p></li>
+          <li><span>Read it the LSAT way</span><p>In everyday speech, “Saturday or Sunday” often means one or the other. On the LSAT it means <strong>at least one</strong>. Both days still count.</p></li>
+          <li><span>Ask the question</span><p>What fact would <strong>force</strong> Mia to study on a particular day?</p></li>
+          <li><span>Take one half away</span><p>Suppose Mia <strong>did not study on Saturday</strong>. She still has to study on at least one day, and only Sunday is left. So <strong>she studies on Sunday</strong>.</p></li>
+          <li><span>Write the rule</span><p>That gives the if/then: <strong>if Mia does not study on Saturday, then she studies on Sunday.</strong> The missing half goes on the left; the other half follows on the right.</p></li>
+        </ol>
+        <p>The reverse gives you nothing. Learning that Mia studied on Saturday says nothing about Sunday.</p>
       </Section>
       <Section title="Watch the lesson"><AndOrLecture lessonId="and-or-either-condition"/></Section>
       <Section title="Write the diagram" label="Write the diagram">
@@ -143,10 +161,6 @@ function OrMeaning() {
           <p><span>Right</span>If Mia does not study on Saturday, she studies on Sunday.</p>
         </div>
         <p>The wrong version reads OR as “only one.” Nothing in the statement stops Mia from studying on both days.</p>
-      </Section>
-      <Section title="Check every case">
-        <InclusionChart/>
-        <p>Only one case breaks the statement: Mia studies on neither day.</p>
       </Section>
       <Section title="OR inside a longer rule" label="When would the rule be broken?">
         <p>OR also sits inside if/then rules: <strong>A visitor gets a library card if the visitor shows photo ID or proof of address.</strong> Here the OR is in the sufficient condition, so either document is enough for a card, and so are both. When an OR is in the necessary condition, at least one of the two follows.</p>

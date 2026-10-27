@@ -71,8 +71,8 @@ it('teaches AND and OR as separate lessons, each with its own quiz and no intern
   expect(screen.getByText('OR includes at least one.')).toBeVisible();
   expect(screen.queryByText(/AND conjoins two conditions/)).toBeNull();
   expect(document.body.textContent).not.toMatch(/whole group|full group|Page \d of \d/i);
-  const orTable=screen.getByRole('table',{name:'Does this fit “Mia will study on Saturday or on Sunday”?'});
-  expect(within(orTable).getAllByRole('row').slice(1).map(row=>within(row).getAllByRole('cell')[2].textContent)).toEqual(['✓Fits','✓Fits','✓Fits','×Ruled out']);
+  const cases=within(screen.getByRole('list',{name:'Every weekend Mia could have'})).getAllByRole('listitem').map(item=>item.getAttribute('aria-label'));
+  expect(cases).toEqual(['Saturday only: allowed','Sunday only: allowed','Both days: allowed','Neither day: ruled out']);
   expect(screen.getByRole('region',{name:'Pop Quiz'})).toBeVisible();
 });
 

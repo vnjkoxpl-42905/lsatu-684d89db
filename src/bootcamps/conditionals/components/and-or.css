@@ -262,3 +262,27 @@
 @media(max-width:560px){.ao-definition dl>div{grid-template-columns:1fr}}
 /* Keep a section heading close to the content it introduces. */
 #root .oc-course-body:has(.ao-reading) .co-section-heading h2:not(.ct-popquiz){margin-bottom:1rem}
+
+/* OR case tiles: the two days filled (studied) or empty (not), and the verdict. The ruled-out case is the only red tile. */
+.ao-cases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem;margin:1.4rem 0 1rem;padding:0;list-style:none}
+.ao-case{display:grid;gap:.6rem;align-content:start;padding:.85rem .8rem .8rem;border-radius:12px;border:1px solid var(--oc-line,#dedbd5);background:var(--oc-surface,#fffefa)}
+.ao-case[data-ok=false]{border-color:#e3b3a6;background:#fbefeb}
+.ao-case-label{font-size:.88rem;font-weight:600;color:#173544}
+.ao-case-days{display:flex;flex-wrap:wrap;gap:.35rem}
+.ao-case-day{display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .5rem;border-radius:999px;font-size:.8rem;font-weight:600}
+.ao-case-day[data-on=true]{background:#d6edf0;color:#0e3b42;box-shadow:inset 0 0 0 1px #a9d3d9}
+.ao-case-day[data-on=false]{background:transparent;color:#7b8a8f;box-shadow:inset 0 0 0 1px #d5d4ca;text-decoration:line-through;text-decoration-color:#b8391f}
+.ao-case-verdict{display:inline-flex;align-items:center;gap:.3rem;font-size:.85rem;font-weight:700;color:#176447}
+.ao-case[data-ok=false] .ao-case-verdict{color:#9a3b2b}
+#root .co-section p.ao-takeaway{margin:.4rem 0 1.2rem;padding:.9rem 1.1rem;border-radius:10px;background:#f7f3ea;font-size:1.08rem;line-height:1.6}
+.ao-takeaway strong{font-weight:700;color:#173544}
+@media(max-width:700px){.ao-cases{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Inclusion breakdown: one reasoning move per step, labelled, on a numbered rail. */
+.ao-breakdown{counter-reset:step;display:grid;gap:0;margin:0 0 1.2rem;padding:0;list-style:none}
+.ao-breakdown li{counter-increment:step;position:relative;display:grid;gap:.2rem;padding:0 0 1.1rem 3rem}
+.ao-breakdown li::before{content:counter(step);position:absolute;left:0;top:0;display:grid;place-items:center;width:2rem;height:2rem;border-radius:50%;background:#173544;color:#fff;font-size:.9rem;font-weight:700}
+.ao-breakdown li:not(:last-child)::after{content:"";position:absolute;left:calc(1rem - 1px);top:2.2rem;bottom:.2rem;width:2px;background:#d5d4ca}
+.ao-breakdown li:last-child::before{background:#176447}
+.ao-breakdown span{font-size:.82rem;font-weight:700;letter-spacing:.02em;color:#64645b;line-height:2rem}
+#root .co-section .ao-breakdown p{margin:0;font-size:1.05rem;line-height:1.6}

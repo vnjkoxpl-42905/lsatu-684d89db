@@ -9,26 +9,32 @@ export interface AndOrLecture { slug: string; title: string; scenes: AndOrLectur
 
 export const andOrLectures: Record<string, AndOrLecture> = {
   'and-or-both-or-either': {
-    slug: 'both-or-either',
-    title: 'Both, or at least one',
+    slug: 'and-both',
+    title: 'AND needs both',
     scenes: [
       { id: 'rule', sentences: [
         "Here's a rule: a visitor gets a library card if the visitor shows photo ID and proof of address.",
-        "That word if covers a whole group, and the word and joins its two members.",
+        "AND conjoins those two conditions. On the left side, the card follows only when both are met.",
       ] },
-      { id: 'and', sentences: [
-        "AND needs both. Photo ID shown, proof of address shown: the group is established, and the rule applies.",
-        "Photo ID shown, nothing about proof of address. The group is not established yet. That doesn't mean it fails. We're still waiting on the second member. Unknown is not the same as denied, so a member the facts never mention hasn't been ruled out.",
-        "No photo ID at all? Then the group fails, whatever the address says.",
+      { id: 'cases', sentences: [
+        "Photo ID shown. Proof of address shown. Both conditions are met, so the card is guaranteed.",
+        "Photo ID shown, but no proof of address. Only one condition is met, so this rule guarantees nothing.",
+        "The visitor might still get a card some other way. The rule just doesn't say.",
       ] },
-      { id: 'or', sentences: [
-        "Now a different rule: a pass is valid if it is stamped or signed.",
-        "OR needs at least one. Stamped is enough. Stamped and signed is enough too, because an OR doesn't push the second one away.",
-        "An OR fails only when every member fails.",
+      { id: 'unknown', sentences: [
+        "Now photo ID shown, and nothing said about proof of address.",
+        "Unknown is not the same as missing. We don't know yet whether both conditions are met.",
+      ] },
+      { id: 'broken', sentences: [
+        "So when is the rule broken? Only when both conditions are met and the visitor still gets no card.",
+      ] },
+      { id: 'necessary', sentences: [
+        "AND works on the right side too. If a visitor gets a card, then the visitor has shown photo ID and proof of address.",
+        "On that side, both conditions follow together.",
       ] },
       { id: 'habit', sentences: [
-        "So before you decide anything, find the whole group the word if covers.",
-        "Then say it out loud: both, or at least one?",
+        "So when you see AND, check the facts for both conditions.",
+        "One alone does not trigger the rule.",
       ] },
     ],
   },
