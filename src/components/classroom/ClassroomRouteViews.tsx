@@ -1,5 +1,7 @@
 import * as React from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
+import { validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
+import { htmlToArchiveText } from "@/components/my-work/teachingNotesArchiveData";
 import { toast } from "sonner";
 import { useClassroomItems } from "@/hooks/useClassroomItems";
 import {
@@ -87,8 +89,8 @@ function stripMarkdown(source: string) {
  * First ~55 words of a note, for the landing preview.
  *
  * Notes are authored HTML and may carry their own <style>, so the tags are
- * stripped through a detached element rather than a regex, and any <style> or
- * <script> subtree is dropped first so CSS text never leaks into the excerpt.
+ * reduced through the shared sanitized, inert archive extractor so preview
+ * extraction never inserts authored markup into a live document element.
  */
 function noteExcerpt(item: {
   description: string | null;
@@ -99,10 +101,7 @@ function noteExcerpt(item: {
   if (!source) return "";
   let text = source;
   if (/[<>]/.test(source)) {
-    const holder = document.createElement("div");
-    holder.innerHTML = source;
-    holder.querySelectorAll("style, script").forEach((node) => node.remove());
-    text = holder.textContent ?? "";
+    text = htmlToArchiveText(source);
   } else {
     text = stripMarkdown(text);
   }
@@ -191,6 +190,8 @@ function DetailHeading({
 
 export function ClassroomItemView() {
   const { itemId } = useParams<{ itemId: string }>();
+  const location = useLocation();
+  const notesReturnTo = validateNotesReturnTo(new URLSearchParams(location.search).get("returnTo"));
   const navigate = useNavigate();
   const query = useClassroomItems();
   const item = React.useMemo(
@@ -282,7 +283,7 @@ export function ClassroomItemView() {
         <button
           type="button"
           className="classroom-button mb-4"
-          onClick={() => navigate("/classroom/recaps")}
+          onClick={() => navigate(notesReturnTo)}
         >
           Back to notes
         </button>
@@ -343,9 +344,9 @@ export function ClassroomItemView() {
           <button
             type="button"
             className="classroom-button"
-            onClick={() => navigate("/classroom/recaps")}
+            onClick={() => navigate(notesReturnTo)}
           >
-            Back to notes and recaps
+            Back to notes
           </button>
         </div>
       ) : null}

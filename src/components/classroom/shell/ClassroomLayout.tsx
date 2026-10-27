@@ -1,3 +1,4 @@
+import { notesDetailRoute, validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
 import * as React from "react";
 import {
   ChevronsUpDown,
@@ -553,7 +554,7 @@ function StandardSectionList({
   onClose?: () => void;
 }) {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const itemsQuery = useClassroomItems();
   const homeworkQuery = useStudentAssignments();
   const taQuery = useStudentTAAssignments();
@@ -696,7 +697,7 @@ function StandardSectionList({
                   type="button"
                   key={item.id}
                   className={`classroom-panel-item${activeId === item.id ? " classroom-panel-item-active" : ""}`}
-                  onClick={() => openRow(`/classroom/item/${encodeURIComponent(item.id)}`)}
+                  onClick={() => openRow(notesDetailRoute(item.id, validateNotesReturnTo(new URLSearchParams(search).get("returnTo"))))}
                 >
                   <h3>
                     {isNoteUnread(item) ? (

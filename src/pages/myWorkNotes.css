@@ -2,7 +2,7 @@
 .classroom-root.classroom-root-destination .classroom-column, .classroom-root .student-destination, .classroom-root .student-destination-heading { min-width: 0; }
 .classroom-root .student-destination-heading p { max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
 .classroom-root .my-work-notes-heading { align-items: start; display: flex; gap: 20px; justify-content: space-between; }
-.classroom-root .my-work-notes-heading h2, .classroom-root .my-work-teacher-notes > h2 { font-family: Georgia, serif; font-size: 25px; font-weight: 400; margin: 0; }
+.classroom-root .my-work-notes-heading h2 { font-family: Georgia, serif; font-size: 25px; font-weight: 400; margin: 0; }
 .classroom-root .my-work-notes-heading p { color: var(--classroom-meta-text); font-size: 14px; margin: 8px 0 0; }
 .classroom-root .my-work-notes-heading button { flex: none; }
 .classroom-root .my-work-notes-workspace { border: 1px solid var(--classroom-line); border-radius: 12px; display: grid; grid-template-columns: minmax(180px, 30%) minmax(0, 1fr); margin-top: 20px; min-height: 280px; overflow: hidden; }
@@ -22,8 +22,109 @@
 .classroom-root .my-work-notes-prompt { align-items: center; color: var(--classroom-meta-text); display: flex; font-size: 14px; justify-content: center; padding: 20px; }
 .classroom-root .my-work-note-error { color: var(--classroom-wrong); font-size: 13px; margin: 0; }
 .classroom-root .my-work-note-saved { color: var(--classroom-correct); font-size: 13px; margin: 0; }
-.classroom-root .my-work-teacher-notes { border-top: 1px solid var(--classroom-line); margin-top: 44px; padding-top: 32px; }
-.classroom-root .my-work-teacher-notes > .classroom-title { display: none; }
-.classroom-root .my-work-teacher-notes > h2 { margin-bottom: 18px; }
-.classroom-root .my-work-notes-page button:focus-visible, .classroom-root .my-work-notes-page input:focus-visible, .classroom-root .my-work-notes-page textarea:focus-visible { outline: 2px solid var(--classroom-accent); outline-offset: 3px; }
+.classroom-root .my-work-notes-page button:focus-visible, .classroom-root .my-work-notes-page input:focus-visible, .classroom-root .my-work-notes-page textarea:focus-visible { outline: 2px solid var(--notes-focus); outline-offset: 3px; }
 @media (max-width: 700px) { .classroom-root .my-work-notes-workspace { grid-template-columns: 1fr; } .classroom-root .my-work-notes-list { border-bottom: 1px solid var(--classroom-line); border-right: 0; max-height: 220px; overflow-y: auto; } .classroom-root .my-work-notes-heading { flex-direction: column; } }
+
+/* Material scope: Notes only. Current warm-paper brief supersedes the older flat preset. */
+.classroom-root .my-work-notes-page {
+  --notes-paper: #fffdf8;
+  --notes-plane: #f2ede4;
+  --notes-hover: #f7f2e9;
+  --notes-ink: #282d28;
+  --notes-meta: #625f57;
+  --notes-edge: #d8d0c4;
+  --notes-control-edge: #837c70;
+  --notes-focus: #444c43;
+  --notes-shadow: 0 1px 2px rgb(55 43 26 / .06), 0 8px 20px -12px rgb(55 43 26 / .22);
+  color: var(--notes-ink);
+}
+html.dark .classroom-root .my-work-notes-page {
+  --notes-paper: #222724;
+  --notes-plane: #2c322d;
+  --notes-hover: #303630;
+  --notes-ink: #f1eee6;
+  --notes-meta: #c2bfb6;
+  --notes-edge: #495048;
+  --notes-control-edge: #90988c;
+  --notes-focus: #e4dfd3;
+  --notes-shadow: 0 1px 2px rgb(0 0 0 / .2), 0 8px 20px -12px rgb(0 0 0 / .5);
+}
+.classroom-root .teaching-notes-home { padding-top: .25rem; }
+.classroom-root .teaching-notes-intro { display:flex; justify-content:space-between; align-items:center; gap:1.5rem; margin:0 0 1.25rem; }
+.classroom-root .teaching-notes-intro h2 { font:400 clamp(1.5rem,2.5vw,1.875rem)/1.2 Fraunces,'Iowan Old Style',Georgia,serif; margin:0 0 .5rem; }
+.classroom-root .teaching-notes-intro p { color:var(--notes-meta); font-size:.9375rem; line-height:1.6; margin:0; max-width:58ch; }
+.classroom-root .teaching-notes-personal-link { flex:none; background:transparent; color:var(--notes-ink); border-color:var(--notes-control-edge); min-height:44px; font-size:.875rem; white-space:normal; }
+.classroom-root .teaching-notes-archive { background:var(--notes-paper); border:1px solid var(--notes-edge); border-radius:14px; box-shadow:var(--notes-shadow); padding:1.25rem 1.5rem; }
+.classroom-root .teaching-notes-archive-heading { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:.875rem; }
+.classroom-root .teaching-notes-archive-heading h3 { font:400 1.25rem/1.3 Fraunces,'Iowan Old Style',Georgia,serif; margin:0; }
+.classroom-root .teaching-notes-archive-heading > span { color:var(--notes-meta); font-size:.75rem; line-height:1.5; text-align:right; }
+.classroom-root .teaching-notes-controls { display:flex; gap:.75rem; margin-bottom:1.25rem; }
+.classroom-root .teaching-notes-search { display:flex; align-items:center; gap:.625rem; border:1px solid var(--notes-control-edge); background:var(--notes-paper); padding:0 .75rem; border-radius:7px; min-height:44px; flex:1; min-width:0; color:var(--notes-meta); }
+.classroom-root .teaching-notes-search svg { flex:none; }
+.classroom-root .teaching-notes-search input { width:100%; min-width:0; background:transparent; color:var(--notes-ink); outline:none; border:0; font:inherit; font-size:.875rem; padding:.625rem 0; }
+.classroom-root .teaching-notes-search input::placeholder { color:var(--notes-meta); opacity:1; }
+.classroom-root .teaching-notes-filters { display:flex; gap:.25rem; align-items:stretch; }
+.classroom-root .teaching-notes-filters button { min-height:44px; padding:.5rem .875rem; border:1px solid transparent; border-radius:7px; font-size:.875rem; color:var(--notes-ink); }
+.classroom-root .teaching-notes-filters button[aria-pressed=true] { background:var(--notes-plane); border-color:var(--notes-control-edge); font-weight:600; text-decoration:underline; text-underline-offset:.3em; }
+.classroom-root .teaching-notes-filter-count { display:inline-block; margin-left:.25rem; font-size:.75rem; color:var(--notes-meta); }
+.classroom-root .teaching-notes-month { color:var(--notes-meta); font-size:.75rem; font-weight:500; line-height:1.5; margin:1.5rem 0 .5rem; }
+.classroom-root .teaching-note-card { display:grid; grid-template-columns:2rem minmax(0,1fr); gap:1rem; color:var(--notes-ink); text-decoration:none; border:0; border-bottom:1px solid var(--notes-edge); border-radius:0; background:transparent; box-shadow:none; padding:1.25rem .5rem; min-width:0; transition:background-color .15s,border-color .15s; }
+.classroom-root .teaching-note-document { color:var(--notes-meta); padding-top:.25rem; display:flex; justify-content:center; }
+.classroom-root .teaching-note-card-content { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:.375rem 1.25rem; min-width:0; }
+.classroom-root .teaching-note-meta { grid-column:1/-1; grid-row:1; color:var(--notes-meta); font-size:.75rem; display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; line-height:1.5; }
+.classroom-root .teaching-note-unread { background:var(--notes-plane); color:var(--notes-ink); font-size:.75rem; line-height:1.5; padding:0 .375rem; border-radius:4px; font-weight:600; }
+.classroom-root .teaching-note-title { grid-column:1; grid-row:2; font:500 1.25rem/1.35 Fraunces,'Iowan Old Style',Georgia,serif; overflow-wrap:anywhere; }
+.classroom-root .teaching-note-card time { grid-column:2; grid-row:2; color:var(--notes-meta); font-size:.75rem; line-height:1.5; padding-top:.25rem; }
+.classroom-root .teaching-note-excerpt { grid-column:1; grid-row:3; color:var(--notes-meta); font-size:.9375rem; line-height:1.6; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; max-width:68ch; }
+.classroom-root .teaching-note-read { grid-column:2; grid-row:3; align-self:end; display:flex; justify-content:flex-end; align-items:center; gap:.5rem; font-size:.875rem; font-weight:600; line-height:1.5; padding:.5rem 0; }
+.classroom-root .teaching-note-read svg { flex:none; }
+.classroom-root .teaching-note-lead { background:var(--notes-hover); border:1px solid var(--notes-edge); border-radius:9px; padding:1.25rem; margin:.5rem 0; }
+.classroom-root .teaching-note-lead .teaching-note-title { font-size:clamp(1.375rem,2.2vw,1.75rem); font-weight:400; }
+.classroom-root .teaching-note-lead .teaching-note-excerpt { -webkit-line-clamp:3; }
+.classroom-root .teaching-note-lead .teaching-note-read { background:var(--notes-ink); color:var(--notes-paper); border:1px solid var(--notes-ink); border-radius:6px; padding:.625rem .75rem; }
+.classroom-root .teaching-note-card:hover { background:var(--notes-hover); border-color:var(--notes-control-edge); }
+.classroom-root .teaching-notes-home button:hover { border-color:var(--notes-control-edge); }
+.classroom-root .teaching-notes-home a:active,.classroom-root .teaching-notes-home button:active { background:var(--notes-plane); }
+.classroom-root .teaching-notes-home a:focus-visible,.classroom-root .teaching-notes-home button:focus-visible,.classroom-root .my-work-notes-page input:focus-visible,.classroom-root .my-work-notes-page textarea:focus-visible { outline:2px solid var(--notes-focus); outline-offset:3px; }
+.classroom-root .teaching-notes-search:focus-within { outline:2px solid var(--notes-focus); outline-offset:3px; }
+.classroom-root .teaching-notes-home input:focus-visible { outline:0; }
+.classroom-root .teaching-notes-load { display:flex; align-items:center; justify-content:center; gap:.5rem; min-height:44px; margin:1.5rem auto .25rem; font-size:.875rem; color:var(--notes-ink); border-color:var(--notes-control-edge); }
+.classroom-root .teaching-notes-load span { color:var(--notes-meta); }
+.classroom-root .teaching-notes-state,.classroom-root .teaching-notes-no-results,.classroom-root .teaching-notes-empty { padding:1.5rem; border:1px solid var(--notes-edge); border-radius:10px; color:var(--notes-meta); background:var(--notes-paper); font-size:.9375rem; line-height:1.6; }
+.classroom-root .teaching-notes-no-results { border:0; padding:1rem 0; }
+.classroom-root .teaching-notes-empty h3 { font:400 1.5rem/1.3 Fraunces,'Iowan Old Style',Georgia,serif; color:var(--notes-ink); }
+.classroom-root .my-work-notes-heading h2 { font:400 1.5rem/1.3 Fraunces,'Iowan Old Style',Georgia,serif; }
+.classroom-root .my-work-notes-heading p,.classroom-root .my-work-notes-editor label,.classroom-root .my-work-notes-list > p,.classroom-root .my-work-notes-prompt { color:var(--notes-meta); font-size:.875rem; }
+.classroom-root .my-work-notes-editor input,.classroom-root .my-work-notes-editor textarea { color:var(--notes-ink); background:var(--notes-paper); border-color:var(--notes-control-edge); font-size:.9375rem; }
+.classroom-root .my-work-notes-workspace { background:var(--notes-paper); border-color:var(--notes-edge); box-shadow:var(--notes-shadow); }
+.classroom-root .my-work-notes-list span { color:var(--notes-meta); font-size:.75rem; }
+@media (max-width:700px) {
+ .classroom-root .teaching-notes-intro { flex-wrap:wrap; gap:.75rem; margin-bottom:1rem; }
+ .classroom-root .teaching-notes-archive { padding:1rem; }
+ .classroom-root .teaching-notes-controls { flex-wrap:wrap; gap:.5rem; }
+ .classroom-root .teaching-notes-search { flex-basis:100%; }
+ .classroom-root .teaching-note-card { display:block; padding:1rem .25rem; }
+ .classroom-root .teaching-note-document { display:none; }
+ .classroom-root .teaching-note-card-content { grid-template-columns:minmax(0,1fr); gap:.375rem; }
+ .classroom-root .teaching-note-title { grid-column:1;grid-row:2; }
+ .classroom-root .teaching-note-card time { grid-column:1;grid-row:3;padding-top:0; }
+ .classroom-root .teaching-note-excerpt { grid-column:1;grid-row:4; }
+ .classroom-root .teaching-note-read { grid-column:1;grid-row:5;justify-self:start; }
+ .classroom-root .teaching-note-lead { padding:1rem; }
+}
+@media (prefers-reduced-motion:reduce) { .classroom-root .teaching-note-card { transition:none; } }
+@media (forced-colors:active) {
+ .classroom-root .teaching-notes-archive,.classroom-root .teaching-note-lead { border:1px solid CanvasText; box-shadow:none; }
+ .classroom-root .teaching-note-card { border-bottom:1px solid CanvasText; }
+ .classroom-root .teaching-notes-filters button[aria-pressed=true] { border:2px solid Highlight; text-decoration:underline; }
+ .classroom-root .teaching-notes-home a:focus-visible,.classroom-root .teaching-notes-home button:focus-visible,.classroom-root .teaching-notes-search:focus-within { outline:2px solid Highlight; }
+}
+
+.classroom-root .my-work-notes-page .classroom-button { font-size:.875rem; }
+
+.classroom-root .teaching-note-lead:hover { background:var(--notes-plane); }
+.classroom-root .my-work-note-notice { color:var(--notes-meta); background:var(--notes-plane); border:1px solid var(--notes-edge); border-radius:8px; padding:1rem; font-size:.875rem; line-height:1.6; }
+.classroom-root .my-work-note-notice .classroom-button { min-height:44px; margin:.5rem .5rem 0 0; max-width:100%; white-space:normal; }
+@media (forced-colors:active) { .classroom-root .my-work-notes-page button:focus-visible,.classroom-root .my-work-notes-page input:focus-visible,.classroom-root .my-work-notes-page textarea:focus-visible { outline:2px solid Highlight; } }
+
+@media (prefers-reduced-motion:reduce) { .classroom-root .my-work-notes-page .classroom-button,.classroom-root .teaching-notes-filters button { transition:none; } }

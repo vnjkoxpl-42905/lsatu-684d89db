@@ -60,15 +60,23 @@ export function useClassroomItems() {
     staleTime: 60_000,
     refetchOnWindowFocus: false,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('classroom_items')
-        .select('*')
-        .eq('student_id', user!.id)
-        .order('priority', { ascending: false })
-        .order('due_at', { ascending: true, nullsFirst: false })
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      return (data ?? []) as ClassroomItem[];
+      const items = new Map<string, ClassroomItem>();
+      const pageSize = 1000;
+      for (let offset = 0; ; offset += pageSize) {
+        const { data, error } = await supabase
+          .from('classroom_items')
+          .select('*')
+          .eq('student_id', user!.id)
+          .order('priority', { ascending: false })
+          .order('due_at', { ascending: true, nullsFirst: false })
+          .order('created_at', { ascending: false })
+          .order('id', { ascending: true })
+          .range(offset, offset + pageSize - 1);
+        if (error) throw error;
+        const page = (data ?? []) as ClassroomItem[];
+        for (const item of page) if (!items.has(item.id)) items.set(item.id, item);
+        if (page.length < pageSize) return [...items.values()];
+      }
     },
   });
 }

@@ -35,12 +35,12 @@ export interface DestinationConfig {
 export const DESTINATIONS: Record<Destination, DestinationConfig> = {
   "my-work": {
     title: "My Work",
-    introduction: "Assignments and notes from your work with Joshua.",
+    introduction: "Your session notes and assigned work, together.",
     path: "/my-work",
     tabs: [
-      { label: "To do", path: "/my-work/to-do", flags: ["has_classroom_access"], readingCenterEligible: true },
+      { label: "Notes", path: "/my-work/notes", flags: ["has_classroom_access"] },
+      { label: "Assigned work", path: "/my-work/to-do", flags: ["has_classroom_access"], readingCenterEligible: true },
       { label: "Completed", path: "/my-work/completed", flags: ["has_classroom_access"], readingCenterEligible: true },
-      { label: "Notes & recaps", path: "/my-work/notes", flags: ["has_classroom_access"] },
     ],
   },
   practice: {
@@ -127,6 +127,9 @@ export function tabAccess(tab: DestinationTab, permissions: AccessView): TabAcce
  * route explains the lock.
  */
 export function destinationLandingPath(destination: Destination, permissions: AccessView): string {
+  if (destination === "my-work") {
+    return permissions.is_admin || permissions.has_classroom_access ? "/my-work/notes" : "/my-work/to-do";
+  }
   const { tabs } = DESTINATIONS[destination];
   const path = (tabs.find((tab) => tabAccess(tab, permissions) === "open") ?? tabs[0]).path;
   return path === "/practice/exams" ? practiceExamLandingPath(permissions) : path;
