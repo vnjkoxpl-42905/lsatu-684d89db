@@ -10,7 +10,7 @@ export function validateNotesReturnTo(value: string | null | undefined): string 
     if (url.searchParams.get("filter") === "unread") params.set("filter", "unread");
     const shown = url.searchParams.get("shown");
     if (shown && /^\d+$/.test(shown) && Number(shown) >= 12 && Number(shown) <= 10000) params.set("shown", String(Number(shown)));
-    return fallback + (params.size ? `?${params}` : "");
+    return fallback + (params.toString() ? `?${params}` : "");
   } catch { return fallback; }
 }
 

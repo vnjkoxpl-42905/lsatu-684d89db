@@ -1,5 +1,9 @@
 # My Work notes-first review log
 
+## Implementation checkpoint: 2026-10-26
+
+Joshua approved implementation and requested no instructor name in new interface furniture, higher-quality component consideration and restrained refinement. Codex implemented in the isolated branch. Final proof:129 tests/11files, typecheck, build/postbuild, diff check and browser matrix320-1440 pass. Independent Codex source review found no remaining high-confidence important defects. Exactly two Claude plan invocations were used; no Claude code inspection performed or claimed. Full scope, amendments, evidence and remaining limits are recorded in docs/verification/my-work-notes/README.md. No commit, push, merge, deployment or production data write.
+
 2026-10-26: Codex host/planner, Claude independent plan reviewer. No model override requested; CLI configured default is unresolved until returned evidence. Plan: docs/plans/my-work-notes-first.md. Isolated branch codex/my-work-notes-plan-20261026 at eaf82e506bbeb3b5e86f1310f98bad3e818b926a. Scope: notes-first My Work redesign proposal, not app implementation. Maximum two Claude plan-review invocations/rounds. Code inspection remains required if a build is later authorized; no inspection opt-out. Run diagnostics outside checkout. User clarification: notes primary, assignments secondary, useful visual components and engaging navigation. Screenshot Teacher identity cannot prove student runtime behavior.
 
 ## Round 1

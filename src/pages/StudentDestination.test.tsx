@@ -32,23 +32,23 @@ describe("visible locked destination sections", () => {
     expect(screen.getByRole('heading', { name: 'Progress', level: 1 })).toBe(heading);
     expect(headingMotion.mock.calls.every(([, key]) => key === 'destination:progress')).toBe(true);
   });
-  it('opens To do and Completed for a specific Reading Center grant while Notes stays locked', () => {
+  it('opens Assigned work and Completed for a specific Reading Center grant while Notes stays locked', () => {
     readingCenter.allowed = true;
     render(<MemoryRouter initialEntries={['/my-work/to-do']}><StudentDestination destination="my-work" /></MemoryRouter>);
-    expect(screen.getByRole('link', { name: 'To do' })).toHaveAttribute('href', '/my-work/to-do');
+    expect(screen.getByRole('link', { name: 'Assigned work' })).toHaveAttribute('href', '/my-work/to-do');
     expect(screen.getByRole('link', { name: 'Completed' })).toHaveAttribute('href', '/my-work/completed');
-    expect(screen.queryByRole('link', { name: 'Notes & recaps' })).toBeNull();
-    expect(screen.getByText('Notes & recaps')).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.queryByRole('link', { name: 'Notes' })).toBeNull();
+    expect(screen.getByText('Notes')).toHaveAttribute('aria-disabled', 'true');
   });
   it('holds assignment-aware tabs until the Reading Center grant is verified', () => {
     readingCenter.isPending = true;
     render(<MemoryRouter initialEntries={['/my-work/to-do']}><StudentDestination destination="my-work" /></MemoryRouter>);
     expect(screen.getByRole('navigation')).toHaveAttribute('aria-busy', 'true');
-    expect(screen.queryByRole('link', { name: 'To do' })).toBeNull();
-    expect(screen.getByText('To do')).toHaveAttribute('title', 'Checking access');
+    expect(screen.queryByRole('link', { name: 'Assigned work' })).toBeNull();
+    expect(screen.getByText('Assigned work')).toHaveAttribute('title', 'Checking access');
   });
   it.each([
-    ["my-work", "/my-work/to-do", "My Work sections", ["To do", "Completed", "Notes & recaps"]],
+    ["my-work", "/my-work/to-do", "My Work sections", ["Notes", "Assigned work", "Completed"]],
     ["progress", "/progress/overview", "Progress sections", ["Overview", "History", "Topics"]],
   ] as const)("keeps %s sections visible while access is locked", (destination, path, label, tabs) => {
     render(<MemoryRouter initialEntries={[path]}><Routes><Route path="/*" element={<StudentDestination destination={destination} />} /></Routes></MemoryRouter>);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
-import { archiveShown, filterTeachingNotes, htmlToArchiveText, nearestArchiveNote, orderedTeachingNotes, teachingNoteText } from './teachingNotesArchive';
+import { archiveShown, filterTeachingNotes, htmlToArchiveText, nearestArchiveNote, orderedTeachingNotes, teachingNoteText } from './teachingNotesArchiveData';
 
 function note(id: string, overrides: Partial<ClassroomItem> = {}) {
   return { id, type: 'note', title: id, created_at: '2026-10-26T12:00:00Z', content_html: '', content_markdown: null, description: null, metadata_json: {}, status: 'assigned', ...overrides } as ClassroomItem;

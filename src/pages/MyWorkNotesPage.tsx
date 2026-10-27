@@ -129,5 +129,5 @@ function StudentNotesSection() {
 export default function MyWorkNotesPage() {
   const [params, setParams] = useSearchParams();
   const personal = params.get("view") === "mine" || params.has("note");
-  return <div className="my-work-notes-page">{personal ? <StudentNotesSection /> : <><div className="my-work-notes-heading"><p>Teaching notes, session recaps and your assigned work.</p><button type="button" className="classroom-button" onClick={() => { const next = new URLSearchParams(params); next.set("view", "mine"); setParams(next); }}>My notes</button></div><TeachingNotesArchive /></>}</div>;
+  return <div className="my-work-notes-page">{personal ? <StudentNotesSection /> : <TeachingNotesArchive onOpenPersonalNotes={() => { const next = new URLSearchParams(params); next.set("view", "mine"); setParams(next); }} />}</div>;
 }

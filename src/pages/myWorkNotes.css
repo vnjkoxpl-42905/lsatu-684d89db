@@ -84,4 +84,22 @@
 @media (max-width: 1050px) { .classroom-root .teaching-notes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .classroom-root .teaching-note-featured { padding: 20px; gap: 15px; } }
 @media (max-width: 700px) { .classroom-root .teaching-notes-intro { flex-direction: column; gap: 14px; } .classroom-root .teaching-notes-shelf { grid-template-columns: 1fr; } .classroom-root .teaching-notes-side { display: grid; grid-template-columns: 1fr 1fr; } .classroom-root .teaching-notes-totals button { padding: 12px; } .classroom-root .teaching-notes-assigned { padding: 12px; } .classroom-root .teaching-notes-controls { flex-wrap: wrap; } .classroom-root .teaching-notes-search { flex-basis: 100%; } }
 @media (max-width: 440px) { .classroom-root .teaching-notes-grid { grid-template-columns: 1fr; } .classroom-root .teaching-note-card { flex-direction: row; gap: 13px; padding: 16px; } .classroom-root .teaching-note-card .teaching-note-title { font-size: 20px; } .classroom-root .teaching-notes-side { grid-template-columns: 1fr; } .classroom-root .teaching-notes-assigned { padding: 14px; } .classroom-root .teaching-notes-assigned > span:last-child { display: none; } .classroom-root .teaching-note-featured > .teaching-note-document { display: none; } }
-@media (prefers-reduced-motion: reduce) { .classroom-root .teaching-note-card { transition: none; } }
+.classroom-root .teaching-note-card { height: 100%; }
+.classroom-root .teaching-note-card .teaching-note-card-content { flex: 1; }
+.classroom-root .teaching-note-card .teaching-note-excerpt { margin-bottom: 18px; }
+.classroom-root .teaching-note-card .teaching-note-read { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--classroom-line); width: 100%; justify-content: space-between; }
+.classroom-root .teaching-note-read svg, .classroom-root .teaching-notes-assigned svg { transition: transform .15s ease; }
+.classroom-root .teaching-note-card:hover .teaching-note-read svg, .classroom-root .teaching-note-featured:hover .teaching-note-read svg, .classroom-root .teaching-notes-assigned:hover svg { transform: translateX(3px); }
+.classroom-root .teaching-notes-totals button:hover { background: var(--classroom-hover); }
+.classroom-root .teaching-notes-filters button:hover { border-color: var(--classroom-line-strong); }
+.classroom-root .teaching-notes-assigned:hover { border-color: #7c8773; }
+.classroom-root .teaching-notes-side { background: #f0f0eb; border: 1px solid var(--classroom-line); border-radius: 7px; padding: 16px; gap: 12px; }
+.classroom-root .teaching-notes-side > h3 { color: var(--classroom-meta-text); font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; margin: 0; }
+.classroom-root .teaching-notes-side .teaching-notes-assigned { background: transparent; border: 0; border-radius: 0; padding: 4px 0 16px; flex: none; border-bottom: 1px solid var(--classroom-line); }
+.classroom-root .teaching-notes-personal { display: flex; flex-direction: column; gap: 9px; align-items: flex-start; }
+.classroom-root .teaching-notes-personal > span { color: var(--classroom-meta-text); font-size: 11px; line-height: 1.5; }
+.classroom-root .teaching-notes-personal .classroom-button { min-height: 44px; font-size: 12px; }
+.classroom-root .teaching-notes-filter-count { display: inline-flex; align-items: center; justify-content: center; min-width: 21px; padding: 2px 5px; margin-left: 6px; background: #f5f4ef; border-radius: 3px; font-size: 10px; color: var(--classroom-meta-text); }
+@media (max-width: 700px) { .classroom-root .teaching-notes-side { grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; padding: 14px; } .classroom-root .teaching-notes-side > h3 { grid-column: 1 / -1; } .classroom-root .teaching-notes-side .teaching-notes-assigned { padding: 0; border: 0; align-self: center; } .classroom-root .teaching-notes-personal { border-left: 1px solid var(--classroom-line); padding-left: 16px; justify-content: center; } .classroom-root .teaching-notes-personal > span { display: none; } }
+@media (max-width: 360px) { .classroom-root .teaching-notes-side { gap: 10px; } .classroom-root .teaching-notes-personal { padding-left: 10px; } .classroom-root .teaching-notes-personal .classroom-button { padding: 8px; } }
+@media (prefers-reduced-motion: reduce) { .classroom-root .teaching-note-card, .classroom-root .teaching-note-read svg, .classroom-root .teaching-notes-assigned svg { transition: none; } .classroom-root .teaching-note-card:hover .teaching-note-read svg, .classroom-root .teaching-note-featured:hover .teaching-note-read svg, .classroom-root .teaching-notes-assigned:hover svg { transform: none; } }

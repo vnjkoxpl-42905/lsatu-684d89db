@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
 import { validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
-import { htmlToArchiveText } from "@/components/my-work/teachingNotesArchive";
+import { htmlToArchiveText } from "@/components/my-work/teachingNotesArchiveData";
 import { toast } from "sonner";
 import { useClassroomItems } from "@/hooks/useClassroomItems";
 import {
@@ -89,8 +89,8 @@ function stripMarkdown(source: string) {
  * First ~55 words of a note, for the landing preview.
  *
  * Notes are authored HTML and may carry their own <style>, so the tags are
- * stripped through a detached element rather than a regex, and any <style> or
- * <script> subtree is dropped first so CSS text never leaks into the excerpt.
+ * reduced through the shared sanitized, inert archive extractor so preview
+ * extraction never inserts authored markup into a live document element.
  */
 function noteExcerpt(item: {
   description: string | null;

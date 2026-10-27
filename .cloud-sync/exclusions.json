@@ -308,6 +308,14 @@
     "reason": "excluded file"
   },
   {
+    "path": "dist",
+    "reason": "excluded directory"
+  },
+  {
+    "path": "docs/verification/my-work-notes/node_modules",
+    "reason": "link"
+  },
+  {
     "path": "node_modules",
     "reason": "link"
   },

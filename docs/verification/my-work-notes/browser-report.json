@@ -1,0 +1,66 @@
+{
+  "baseline": false,
+  "errors": [],
+  "at1440": {
+    "scrollWidth": 1440,
+    "width": 1440,
+    "archiveLinks": 13,
+    "body": "LSAT U\nCLASSROOM\nHome\nMy Work\nPractice\nReview\nProgress\nLibrary\nMy Work\n\nYour session notes and assigned work, together.\n\nNotes\nAssigned work\nCompleted\n\nYOUR REFERENCE SHELF\n\nNotes & recaps\n\nSession notes, explanations and recaps. Find what you need and return to it as you practise.\n\nMost recent · Session recap\nUnread\nConditional logic: checking the rule\nOct 25, 2026\nConditional logic: checking the rule Local verification content, not a published student note. Write the reasoning before choosing an answer. Keep the full condition and check the relationship carefully.\nRead note\nALSO IN MY WORK\nAssigned work\nOpen your tasks and continue where you left off.\nWrite something for yourself.\nPersonal notes\nBrowse your notes\n16 notes\nSearch notes\nAll 16\nUnread 3\nOctober 2026\nSession recap\nUnread\nConditional logic: checking the rule\nOct 25, 2026\nConditional logic: checking the rule Local verificati"
+  },
+  "matrix": [
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "archiveLinks": 12,
+      "searchWidth": 807.90625
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "archiveLinks": 12,
+      "searchWidth": 664.015625
+    },
+    {
+      "width": 1024,
+      "scrollWidth": 1024,
+      "archiveLinks": 12,
+      "searchWidth": 433.984375
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "archiveLinks": 12,
+      "searchWidth": 204.5625
+    },
+    {
+      "width": 683,
+      "scrollWidth": 683,
+      "archiveLinks": 12,
+      "searchWidth": 593.78125
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "archiveLinks": 12,
+      "searchWidth": 301.453125
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "archiveLinks": 12,
+      "searchWidth": 231.828125
+    }
+  ],
+  "bodySearchAndReturn": true,
+  "loadMoreAndClear": true,
+  "unreadReturn": true,
+  "inertHtmlExtraction": true,
+  "personalDraftRecoveryAndSave": true,
+  "empty": true,
+  "retry": true,
+  "textZoom": true,
+  "keyboardFocus": {
+    "tag": "A",
+    "outline": "solid"
+  }
+}

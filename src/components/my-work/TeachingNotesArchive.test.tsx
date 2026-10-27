@@ -28,7 +28,7 @@ describe('TeachingNotesArchive', () => {
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Complete conditions' } });
     expect(screen.getByText('Reference 14')).toBeInTheDocument();
     expect(screen.getByLabelText('Location')).toHaveTextContent('q=Complete+conditions');
-    expect(screen.getByRole('status')).toHaveTextContent('1 note found');
+    expect(screen.getByText('1 note found')).toHaveAttribute('role', 'status');
   });
   it('loads the next group and stores a user-scoped return anchor', () => {
     show();
@@ -43,6 +43,8 @@ describe('TeachingNotesArchive', () => {
     show();
     expect(screen.getByRole('alert')).toHaveTextContent('complete archive');
     expect(screen.queryByText('All notes')).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Assigned work/ })).toHaveAttribute('href', '/my-work/to-do');
+    expect(screen.getByRole('link', { name: 'Personal notes' })).toHaveAttribute('href', '/my-work/notes?view=mine');
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
     expect(state.refetch).toHaveBeenCalledOnce();
   });

@@ -6,7 +6,7 @@ import type { JournalPage } from "@/lib/journalService";
 import MyWorkNotesPage from "./MyWorkNotesPage";
 const mocks = vi.hoisted(() => ({ listPages: vi.fn(), createPage: vi.fn(), updateMyNotePage: vi.fn(), user: "student-1" }));
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: mocks.user } }) }));
-vi.mock("@/components/my-work/TeachingNotesArchive", () => ({ TeachingNotesArchive: () => <h2>Teaching notes archive</h2> }));
+vi.mock("@/components/my-work/TeachingNotesArchive", () => ({ TeachingNotesArchive: ({ onOpenPersonalNotes }: { onOpenPersonalNotes: () => void }) => <><h2>Teaching notes archive</h2><button type="button" onClick={onOpenPersonalNotes}>Personal notes</button></> }));
 vi.mock("@/lib/journalService", () => ({ listPages: mocks.listPages, createPage: mocks.createPage, updateMyNotePage: mocks.updateMyNotePage }));
 function note(overrides: Partial<JournalPage> = {}): JournalPage {
   return { id: "note-1", user_id: "student-1", parent_page_id: null, title: "My first note", icon: null, type: "doc", body: { type: "doc", content: [] }, properties: {}, sort_order: 0, is_archived: false, created_at: "2026-09-28T00:00:00Z", updated_at: "2026-09-28T00:00:00Z", ...overrides };
@@ -20,7 +20,7 @@ describe("My Work notebook", () => {
   afterEach(() => { cleanup(); vi.restoreAllMocks(); });
   it("defaults to teaching notes with a secondary personal notebook", async () => {
     renderPage(); expect(screen.getByRole("heading", { name: "Teaching notes archive" })).toBeInTheDocument();
-    expect(mocks.listPages).not.toHaveBeenCalled(); fireEvent.click(screen.getByRole("button", { name: "My notes" }));
+    expect(mocks.listPages).not.toHaveBeenCalled(); fireEvent.click(screen.getByRole("button", { name: "Personal notes" }));
     expect(await screen.findByRole("button", { name: /My first note/ })).toBeInTheDocument();
   });
   it("preserves owner filtering and supports legacy personal links", async () => {
