@@ -128,3 +128,21 @@ html.dark .classroom-root .my-work-notes-page {
 @media (forced-colors:active) { .classroom-root .my-work-notes-page button:focus-visible,.classroom-root .my-work-notes-page input:focus-visible,.classroom-root .my-work-notes-page textarea:focus-visible { outline:2px solid Highlight; } }
 
 @media (prefers-reduced-motion:reduce) { .classroom-root .my-work-notes-page .classroom-button,.classroom-root .teaching-notes-filters button { transition:none; } }
+
+/* Teaching-note organization: one archive heading and independent type selection. */
+.classroom-root .teaching-notes-organized .teaching-notes-intro { align-items:flex-start; margin-bottom:1rem; }
+.classroom-root .teaching-notes-organized .teaching-notes-archive-heading { margin-bottom:.75rem; }
+.classroom-root .teaching-notes-type { display:flex; align-items:center; gap:.625rem; color:var(--notes-meta); font-size:.875rem; margin:0 0 1rem; flex-wrap:wrap; }
+.classroom-root .teaching-notes-type select { min-height:44px; max-width:100%; border:1px solid var(--notes-control-edge); border-radius:7px; padding:.5rem 2rem .5rem .75rem; background:var(--notes-paper); color:var(--notes-ink); font:inherit; }
+.classroom-root .teaching-notes-type select:focus-visible { outline:2px solid var(--notes-focus); outline-offset:3px; }
+.classroom-root .teaching-notes-organized .teaching-notes-state,.classroom-root .teaching-notes-organized .teaching-notes-empty { border:0; padding:1rem 0; }
+.classroom-root .teaching-notes-organized .teaching-note-lead { padding:1rem; }
+@media(max-width:700px) { .classroom-root .teaching-notes-organized .teaching-note-lead { padding:.875rem; } }
+@media(forced-colors:active) { .classroom-root .teaching-notes-type select:focus-visible { outline:2px solid Highlight; } }
+
+.classroom-root .teaching-notes-organized .teaching-notes-controls { align-items:center; flex-wrap:wrap; }
+.classroom-root .teaching-notes-organized .teaching-notes-search { flex:1 1 14rem; }
+.classroom-root .teaching-notes-organized .teaching-notes-type { flex:0 1 auto; margin:0; gap:.5rem; }
+.classroom-root .teaching-notes-organized .teaching-notes-type select { max-width:13rem; }
+@media(max-width:700px) { .classroom-root .teaching-notes-organized .teaching-notes-search { flex-basis:100%; } }
+@media(max-width:420px) { .classroom-root .teaching-notes-organized .teaching-notes-type { width:100%; } .classroom-root .teaching-notes-organized .teaching-notes-type select { flex:1; max-width:none; min-width:0; } }

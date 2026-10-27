@@ -85,6 +85,14 @@ describe('nextActionFor', () => {
   });
 });
 
+it('keeps old conditional card links exact and contextualizes only explicit expanded cards', () => {
+  const source_id = '/bootcamp/conditionals?edition=full-conditionals-v3&scope=course&assignment=item-1#lesson';
+  expect(resolveItemRoute(makeItem({ type: 'bootcamp_module', source_id: '/bootcamp/conditionals' }))).toBe('/bootcamp/conditionals');
+  const route = resolveItemRoute(makeItem({ type: 'bootcamp_module', source_id, metadata_json: { conditional_target: { courseEdition: 'full-conditionals-v3' } } }));
+  expect(route).toBe(source_id);
+  expect(resolveItemRoute(makeItem({ type: 'bootcamp_module', source_id: '/bootcamp/conditionals?assignment=wrong', metadata_json: { conditional_target: { courseEdition: 'full-conditionals-v3' } } }))).toBe('/bootcamp/conditionals?assignment=item-1');
+});
+
 // ─── resolveItemRoute ────────────────────────────────────────────────────────
 
 describe('resolveItemRoute', () => {

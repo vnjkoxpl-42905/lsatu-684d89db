@@ -50,11 +50,26 @@ afterEach(cleanup);
 it.each(['', '/lessons'])('opens the same numbered Chapter 1 course at %s', path => {
   state.progress!.lessons.orientation = '2026-10-01T12:00:00.000Z';
   mount(`${base}${path}`);
-  expect(screen.getByText('Chapter 1')).toBeVisible();
-  expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
+  expect(screen.getByRole('region', { name: 'Chapter 1' })).toBeVisible();
+  expect(within(screen.getByRole('region', { name: 'Chapter 1' })).getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
+  expect(screen.queryByRole('region', { name: 'Chapter 2' })).toBeNull();
   expect(screen.getByText('1.5')).toBeVisible();
   expect(screen.queryByRole('link', { name: 'Begin lesson' })).toBeNull();
   expect(state.updateCalls).toBe(0);
+});
+
+it('selects a compatible expanded assignment for a new step and preserves that row in links', () => {
+  const expanded = { ...course, id: 'expanded', target: { ...course.target, curriculumVersion: 3 as const, courseEdition: 'full-conditionals-v3' as const } };
+  mount(`${base}/opening/and-or-both-or-either`, [course, expanded]);
+  expect(screen.getByRole('heading', { level: 1, name: 'AND' })).toBeTruthy();
+  expect(screen.getByRole('link', { name: /Next lesson/ }).getAttribute('href')).toContain('assignment=expanded');
+});
+
+it('does not substitute another grant when an explicit old row denies a new chapter', () => {
+  const expanded = { ...course, id: 'expanded', target: { ...course.target, curriculumVersion: 3 as const, courseEdition: 'full-conditionals-v3' as const } };
+  mount(`${base}/opening/and-or-both-or-either?assignment=course`, [course, expanded]);
+  expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeTruthy();
+  expect(screen.queryByRole('heading', { level: 1, name: 'AND' })).toBeNull();
 });
 it('shows only actual assigned course content and ignores forged broader query groups', () => {
   mount(`${base}?start=orientation&path=course&level=beginner`, [skill()]);
@@ -66,7 +81,7 @@ it('shows only actual assigned course content and ignores forged broader query g
 it('retains additional assigned skills outside Chapter 1 without recommending unassigned material', () => {
   const mixed = { ...course, id: 'mixed', unitIds: ['orientation', 'group-3'] };
   mount(`${base}?assignment=mixed`, [mixed]);
-  expect(screen.getByText('Chapter 1')).toBeVisible();
+  expect(screen.getByRole('region', { name: 'Chapter 1' })).toBeVisible();
   const extra = screen.getByText('Additional assigned material').closest('details')!;
   fireEvent.click(screen.getByText('Additional assigned material'));
   const continuation = within(extra).getByRole('link', { name: /^Continue:/ });
@@ -671,4 +686,33 @@ it('retains the retired roles drill URL and saved draft without recommending it'
  expect(screen.getByRole('heading', { level: 1, name: 'Place the conditions' })).toBeVisible();
  expect(state.progress!.course['source-roles'].state).toEqual({ retainedDraft: 'original work' });
  expect(screen.queryByRole('link', { name: /Continue drill.*Place the conditions/ })).toBeNull();
+});
+
+it.each(['', '/lessons', '/opening/foundation'])('prefers the current edition at shared destination %s and retains context', path => {
+ const expanded = { ...course, id: 'z-current', target: { ...course.target, curriculumVersion: 3 as const, courseEdition: 'full-conditionals-v3' as const } };
+ for (const rows of [[course, expanded], [expanded, course]]) {
+  mount(`${base}${path}`, rows);
+  // The full course lands on Home (chapter cards); /lessons keeps the full list.
+  if (path === '') expect(screen.getByRole('link', { name: /^Chapter 2: AND, OR and the contrapositive\./ })).toBeVisible();
+  if (path === '/lessons') expect(screen.getByRole('region', { name: 'Chapter 2' })).toBeVisible();
+  expect(screen.getAllByRole('link').some(link => link.getAttribute('href')?.includes('assignment=z-current'))).toBe(true);
+  cleanup();
+ }
+});
+
+it('shows a recoverable row-specific update notice and blocks an invalid explicit assignment even beside a valid grant', () => {
+ const unavailableAssignments = [{ id: 'invalid-row', title: 'Teacher assigned Chapter 3', reason: 'teacher-update' as const }];
+ render(<MemoryRouter initialEntries={[`${base}/opening/foundation?assignment=invalid-row`]}><Routes><Route path={`${base}/*`} element={<ConditionalBootcampRoutes userId="student" assignments={[course]} unavailableAssignments={unavailableAssignments}/>}/></Routes></MemoryRouter>);
+ expect(screen.getByRole('heading', { name: 'This assignment needs an update from your teacher' })).toBeVisible();
+ expect(screen.getByText('Teacher assigned Chapter 3')).toBeVisible();
+ expect(screen.getByRole('button', { name: 'Reload your assignments' })).toBeEnabled();
+ expect(screen.queryByRole('region', { name: 'Chapter 1' })).toBeNull();
+ expect(state.updateCalls).toBe(0);
+});
+
+it('does not render an empty Additional explanations section for a primary-only v3 skill', () => {
+ const expanded = { ...skill(), target: { ...skill().target, curriculumVersion: 3 as const, courseEdition: 'full-conditionals-v3' as const } };
+ mount(base, [expanded]);
+ expect(screen.getByRole('link', { name: /^Chapter 1: Read a conditional\./ })).toBeVisible();
+ expect(screen.queryByRole('heading', { name: 'Additional explanations' })).toBeNull();
 });

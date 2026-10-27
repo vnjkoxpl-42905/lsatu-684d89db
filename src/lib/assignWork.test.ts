@@ -37,6 +37,7 @@ function selectableRow(row: Record<string, unknown>) {
 }
 
 beforeEach(() => {
+  vi.unstubAllEnvs();
   vi.clearAllMocks();
   inserted = {};
   deleted = {};
@@ -247,6 +248,35 @@ describe('assignWork', () => {
     }));
     expect(inserted).toEqual({});
     expect(mockNotify).not.toHaveBeenCalled();
+  });
+  it('rejects unreleased full-edition production before any classroom write or notification', async () => {
+    vi.stubEnv('VITE_CONDITIONAL_FULL_COURSE_ASSIGNMENTS_RELEASED', undefined);
+    const conditionalTarget = { scope: 'course', mode: 'learn', difficulty: 'beginner', curriculumVersion: 3, courseEdition: 'full-conditionals-v3' } as const;
+    const result = await assignWork({ teacherId: TEACHER, studentIds: ['student-a'], item: { kind: 'bootcamp', topicId: 'conditionals', conditionalTarget } });
+    expect(result.ok).toEqual([]);
+    expect(result.failed).toEqual([{ studentId: 'student-a', error: 'Full conditional course assignments are not released yet.' }]);
+    expect(mockCreateClassroomItem).not.toHaveBeenCalled();
+    expect(mockNotify).not.toHaveBeenCalled();
+  });
+  it('uses one preallocated v3 row identity in its protected route, metadata, notification and returned link', async () => {
+    mockCreateClassroomItem.mockImplementation(async (input: { id: string }) => ({ id: input.id }));
+    vi.stubEnv('VITE_CONDITIONAL_FULL_COURSE_ASSIGNMENTS_RELEASED', 'true');
+    const conditionalTarget = { scope: 'course', mode: 'learn', difficulty: 'beginner', curriculumVersion: 3, courseEdition: 'full-conditionals-v3' } as const;
+    const result = await assignWork({ teacherId: TEACHER, studentIds: ['student-a'], item: { kind: 'bootcamp', topicId: 'conditionals', conditionalTarget } });
+    expect(result.failed).toEqual([]);
+    const input = mockCreateClassroomItem.mock.lastCall![0];
+    const url = new URL(input.sourceId, 'https://local.invalid');
+    expect(url.searchParams.get('assignment')).toBe(input.id);
+    expect(url.searchParams.get('edition')).toBe('full-conditionals-v3');
+    expect(url.searchParams.get('curriculumVersion')).toBe('3');
+    expect(input.metadata.assigned_route).toBe(input.sourceId);
+    expect(input.metadata.conditional_target_key).toBe('course:v3');
+    expect(input.metadata.conditional_requirements).toMatchObject({ version: 1, revision: 'conditional-required-20261027-r1' });
+    expect(input.metadata.conditional_requirements.requiredStepIds).toContain('and-or-negate-conditions');
+    expect(input.metadata.conditional_requirements.requiredStepIds).toHaveLength(71);
+    expect(result.ok[0].classroomItemId).toBe(input.id);
+    expect(result.ok[0].route).toBe(input.sourceId);
+    expect(mockNotify).toHaveBeenCalledWith(expect.objectContaining({ route: input.sourceId }));
   });
 
   it('rejects an unknown conditional skill before writing or notifying', async () => {

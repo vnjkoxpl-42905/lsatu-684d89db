@@ -1,0 +1,42 @@
+import { act, cleanup, renderHook, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+const fixture = vi.hoisted(() => ({ user: { id: 'a' } as { id: string } | null, loadError: false, saveError: false, rows: [] as { section_id: string }[], insert: vi.fn() }));
+vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: fixture.user }) }));
+vi.mock('@/integrations/supabase/client', () => ({ supabase: { from: () => ({ select: () => ({ eq: () => ({ eq: async () => ({ data: fixture.rows, error: fixture.loadError ? { message: 'offline' } : null }) }) }), insert: (value: unknown) => { fixture.insert(value); return Promise.resolve({ error: fixture.saveError ? { message: 'refused' } : null }); } }) } }));
+import { unlessMilestoneKey, useUnlessMilestones } from './unlessProgress';
+beforeEach(() => { fixture.user = { id: 'a' }; fixture.rows = []; fixture.loadError = false; fixture.saveError = false; fixture.insert.mockClear(); localStorage.clear(); });
+afterEach(cleanup);
+it('does not import old unscoped or another accounts unlocks', async () => {
+  localStorage.setItem('lsatu.unless-drill.milestones.v1', '["cleared-10s","cleared-5s"]');
+  const hook = renderHook(() => useUnlessMilestones());
+  await waitFor(() => expect(hook.result.current.loading).toBe(false));
+  expect(hook.result.current.milestones.size).toBe(0);
+  await act(async () => { await hook.result.current.record('cleared-10s'); });
+  expect(hook.result.current.milestones.has('cleared-10s')).toBe(true);
+  fixture.user = { id: 'b' }; hook.rerender();
+  expect(hook.result.current.milestones.size).toBe(0);
+  await waitFor(() => expect(hook.result.current.loading).toBe(false));
+  expect(hook.result.current.milestones.size).toBe(0);
+  expect(localStorage.getItem('lsatu.unless-drill.milestones.v1')).toContain('cleared-5s');
+  expect(unlessMilestoneKey('a')).not.toBe(unlessMilestoneKey('b'));
+});
+it('does not announce a failed insert as an unlock and retries the same milestone', async () => {
+  const hook = renderHook(() => useUnlessMilestones());
+  await waitFor(() => expect(hook.result.current.loading).toBe(false));
+  fixture.saveError = true;
+  await act(async () => { expect(await hook.result.current.record('cleared-10s')).toBe(false); });
+  expect(hook.result.current.milestones.has('cleared-10s')).toBe(false);
+  expect(hook.result.current.error).toContain('not saved');
+  fixture.saveError = false;
+  await act(async () => { await hook.result.current.retry(); });
+  expect(hook.result.current.milestones.has('cleared-10s')).toBe(true);
+  expect(fixture.insert).toHaveBeenLastCalledWith(expect.objectContaining({ user_id: 'a', section_id: 'cleared-10s' }));
+});
+it('keeps a failed account read empty rather than trusting a browser cache', async () => {
+  fixture.loadError = true;
+  localStorage.setItem(unlessMilestoneKey('a'), '["cleared-5s"]');
+  const hook = renderHook(() => useUnlessMilestones());
+  await waitFor(() => expect(hook.result.current.loading).toBe(false));
+  expect(hook.result.current.milestones.size).toBe(0);
+  expect(hook.result.current.error).toContain('could not be loaded');
+});

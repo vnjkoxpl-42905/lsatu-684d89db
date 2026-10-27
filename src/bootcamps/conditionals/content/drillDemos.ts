@@ -49,6 +49,22 @@ export const drillDemos: Record<string, DrillDemo> = {
     { title: 'Does the meaning change?', caption: 'Compare two wordings and decide whether they say the same thing.', frame: { kind: 'choose', question: 'Does “Only runners in red bibs get water first” say the same thing?', options: ['Yes, same rule', 'No, it changes the rule'], correct: 1 } },
     { title: 'Try unfamiliar cases', caption: 'Use the same reasoning on new wording.', frame: { kind: 'choose', question: 'Guests must sign in. What does this tell you?', options: ['Every guest did sign in', 'Signing in is required of every guest'], correct: 1 } },
   ] },
+  'and-or-meaning-practice': { sentence: 'A bike is ready to ride if the tires are full and the chain is oiled.', steps: [
+    { title: 'Read the facts', caption: 'Check each member of the group against the facts. AND needs every member.', frame: { kind: 'choose', question: 'The tires are full. Nothing is said about the chain. Do the facts establish the whole group?', options: ['Yes, established', 'No, ruled out', 'Not settled yet'], correct: 2 } },
+    { title: 'Try an OR', caption: 'OR needs at least one member, and both is allowed.', frame: { kind: 'choose', question: 'Group: the tires are full or the chain is oiled. Both are true. Established?', options: ['Yes, at least one is true', 'No, an OR allows only one'], correct: 0 } },
+  ] },
+  'and-or-placement-practice': { sentence: 'A ticket scans if the barcode is clear or the number is typed in.', steps: [
+    { title: 'Find the group', caption: 'Say which side of the rule holds the group, and whether it is AND or OR.', frame: { kind: 'place', left: 'Barcode clear OR number typed in', right: 'Ticket scans' } },
+    { title: 'Decide what the facts settle', caption: 'A fact that reaches one member may settle the rule, or may leave it open.', frame: { kind: 'choose', question: 'The number is typed in. Does the ticket scan?', options: ['It must scan', 'It cannot scan', 'It could be either'], correct: 0 } },
+  ] },
+  'and-or-whole-group-practice': { sentence: 'A lamp works if the bulb is fitted and the switch is on.', steps: [
+    { title: 'Say when the group fails', caption: 'A group fails differently from how it holds. Choose the statement true exactly when it fails.', frame: { kind: 'choose', question: 'Which is the opposite of: the bulb is fitted and the switch is on?', options: ['The bulb is not fitted or the switch is off', 'The bulb is not fitted and the switch is off', 'The bulb is fitted or the switch is off'], correct: 0 } },
+  ] },
+  'and-or-transfer-practice': { sentence: 'A room is booked if the form is sent and the fee is paid.', steps: [
+    { title: 'Shorten the conditions', caption: 'Write a short phrase for each condition. Keep who it concerns, any restriction, and any negative.', frame: { kind: 'type', lines: [{ label: 'The form is sent', text: 'Form sent' }, { label: 'The fee is paid', text: 'Fee paid' }, { label: 'The room is booked', text: 'Room booked' }] } },
+    { title: 'Build the diagram', caption: 'Put the group that is enough on the left and what it requires on the right.', frame: { kind: 'place', left: 'Form sent AND fee paid', right: 'Room booked' } },
+    { title: 'Flip it', caption: 'Switch the sides, negate each condition, and switch AND to OR or OR to AND.', frame: { kind: 'choose', question: 'Which is the contrapositive?', options: ['If the room is not booked, the form is not sent or the fee is not paid', 'If the room is not booked, the form is not sent and the fee is not paid'], correct: 0 } },
+  ] },
   'source-intro-identify': { sentence: 'You can board only if you have a ticket.', steps: [
     { title: 'Find the indicators', caption: 'Click each word of the indicator, then choose its group.', frame: { kind: 'pick', words: words('You can board only if you have a ticket.'), picks: [3, 4], chip: 'Group 2: necessary' } },
   ] },

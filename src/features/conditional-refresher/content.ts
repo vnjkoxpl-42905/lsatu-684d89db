@@ -39,7 +39,7 @@ export const GROUPS: GroupDef[] = [
       "Put the negated idea on the left of the arrow.",
       "Keep the other complete idea unchanged on the right.",
     ],
-    note: "Choosing the other starting idea gives you the contrapositive.",
+    note: "Choosing the other starting idea gives you the contrapositive. With until, preserve the time boundary: the rule does not promise the action after that boundary.",
   },
   {
     id: "g4",
@@ -185,7 +185,7 @@ export const FLASHCARDS: FlashCard[] = [
     id: "f11", kind: "translation", front: "Nina will not sign until the terms change.",
     conditional: "/terms change \u2192 /signs", contrapositive: "signs \u2192 terms change",
     englishConditional: "If the terms do not change, then Nina does not sign.", englishContrapositive: "If Nina signs, then the terms changed.",
-    note: "Group 3: \u201cuntil\u201d behaves exactly like \u201cunless\u201d.",
+    note: "Before the terms change, Nina does not sign. A change in terms permits signing under this restriction; it does not guarantee that she signs.",
   },
   {
     id: "f12", kind: "indicator", front: "\u201crequires\u201d \u2014 which side of the arrow does it introduce?",

@@ -1,3 +1,5 @@
+import { conditionalFullCourseAssignmentsReleased } from '@/lib/conditionalCourseEdition';
+import { snapshotConditionalRequirements } from '@/bootcamps/conditionals/courseRequirements';
 import { supabase } from '@/integrations/supabase/client';
 import { BOOTCAMPS } from '@/lib/bootcamps';
 import { createClassroomItem } from '@/lib/classroomItems';
@@ -5,7 +7,7 @@ import type { ClassroomItemType } from '@/hooks/useClassroomItems';
 import { notifyStudentOfClassroomItem, type NotifyResult } from '@/lib/classroomNotify';
 import { parseLocalDay } from '@/lib/localDate';
 import { coerceStudentLevel, type StudentLevel } from '@/lib/studentLevel';
-import { resolveConditionalAssignment, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
+import { conditionalProtectedGrantRoute, resolveConditionalAssignment, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
 import { assignReadingCenter, READING_CENTER_PATH } from '@/lib/readingCenterAccess';
 
 /**
@@ -326,6 +328,7 @@ async function planFor(
       if (!bootcamp) throw new Error(`Unknown bootcamp: ${item.topicId}`);
       if (item.conditionalTarget && item.topicId !== 'conditionals') throw new Error('Conditional targets apply only to Conditional Logic Bootcamp.');
       const conditional = item.topicId === 'conditionals' ? await resolveConditionalAssignment(item.conditionalTarget) : null;
+      if (conditional?.target.courseEdition && !conditionalFullCourseAssignmentsReleased()) throw new Error('Full conditional course assignments are not released yet.');
       const assignedRoute = conditional?.route ?? bootcamp.route;
 
       return {
@@ -341,7 +344,8 @@ async function planFor(
         route: () => assignedRoute,
         unlockAt,
         dueAt: null,
-        metadata: { bootcamp_id: bootcamp.id, ...(conditional ? { conditional_target: conditional.target, conditional_target_key: conditional.key } : {}) },
+        metadata: { bootcamp_id: bootcamp.id, ...(conditional ? { conditional_target: conditional.target, conditional_target_key: conditional.key,
+          ...(conditional.target.courseEdition ? { conditional_requirements: snapshotConditionalRequirements(conditional.target) } : {}) } : {}) },
       };
     }
   }
@@ -583,23 +587,28 @@ async function runAssign(input: {
         written.push(record);
 
         record.assignmentId = await plan.insertRow(studentId);
-        const route = plan.route(record.assignmentId);
+        const expandedTarget = plan.metadata.conditional_target as ConditionalAssignmentTarget | undefined;
+        const classroomIdentity = expandedTarget?.courseEdition === 'full-conditionals-v3' ? crypto.randomUUID() : undefined;
+        if (classroomIdentity) record.classroomItemId = classroomIdentity;
+        const route = classroomIdentity ? conditionalProtectedGrantRoute(expandedTarget!, classroomIdentity) : plan.route(record.assignmentId);
         routes.push(route);
 
         const classroomItem = await createClassroomItem({
+          ...(classroomIdentity ? { id: classroomIdentity } : {}),
           studentId,
           createdBy: teacherId,
           type: plan.type,
           title: plan.title,
           description: plan.description,
           sourceTable: plan.sourceTable,
-          sourceId: plan.sourceId(record.assignmentId),
+          sourceId: classroomIdentity ? route : plan.sourceId(record.assignmentId),
           unlockAt: plan.unlockAt,
           dueAt: plan.dueAt,
           visibleToStudent: true,
           status: 'assigned',
           metadata: { ...plan.metadata, assigned_route: route },
         });
+        if (classroomIdentity && classroomItem.id !== classroomIdentity) throw new Error('The assigned course identity did not match its saved row. No notification was sent.');
         record.classroomItemId = classroomItem.id;
       }
 

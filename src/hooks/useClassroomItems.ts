@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -54,11 +55,21 @@ export interface ClassroomItem {
  */
 export function useClassroomItems() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const userId = user?.id;
+  useEffect(() => {
+    if (!userId) return;
+    const channel = supabase.channel(`classroom-items-${userId}-${Math.random().toString(36).slice(2)}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'classroom_items', filter: `student_id=eq.${userId}` }, () => {
+        void queryClient.invalidateQueries({ queryKey: ['classroom-items', userId] });
+      }).subscribe();
+    return () => { void supabase.removeChannel(channel); };
+  }, [queryClient, userId]);
   return useQuery<ClassroomItem[]>({
     queryKey: ['classroom-items', user?.id],
     enabled: !!user,
     staleTime: 60_000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     queryFn: async () => {
       const items = new Map<string, ClassroomItem>();
       const pageSize = 1000;

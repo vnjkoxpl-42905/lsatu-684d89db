@@ -17,3 +17,25 @@ it('authors new stage grants using the current teaching order through the persis
   expect(assigned.target.curriculumVersion).toBe(2);
   expect(conditionalAssignmentUnitIds(assigned.target)).toContain('contraposition');
 });
+
+it('authors an explicit full edition and hides unsupported scope and supplementary skill choices', async () => {
+  vi.stubEnv('VITE_CONDITIONAL_FULL_COURSE_ASSIGNMENTS_RELEASED', 'true');
+  const onChange = vi.fn();
+  const view = render(<ConditionalAssignmentFields value={DEFAULT_CONDITIONAL_TARGET} onChange={onChange}/>);
+  fireEvent.change(screen.getByRole('combobox', { name: 'Conditional course edition' }), { target: { value: 'full-conditionals-v3' } });
+  const full = onChange.mock.lastCall![0] as ConditionalAssignmentTarget;
+  expect(full).toMatchObject({ courseEdition: 'full-conditionals-v3', curriculumVersion: 3, scope: 'course' });
+  view.rerender(<ConditionalAssignmentFields value={{ ...full, scope: 'skill', unitId: 'group-3' }} onChange={onChange}/>);
+  await waitFor(() => expect(screen.getByRole('option', { name: /^Group 3:/ })).toBeTruthy());
+  expect(screen.queryByRole('option', { name: 'Start at a curriculum stage' })).toBeNull();
+  expect(screen.queryByRole('option', { name: 'General practice' })).toBeNull();
+  expect(screen.queryByRole('option', { name: 'Say Exactly What Is Not True' })).toBeNull();
+  expect(screen.queryByRole('combobox', { name: 'Conditional learning mode' })).toBeNull();
+  expect((await resolveConditionalAssignment({ ...full, scope: 'skill', unitId: 'group-3' })).key).toBe('skill:v3:group-3:learn:beginner');
+});
+
+it('does not offer unreleased v3 assignments by default', () => {
+ vi.stubEnv('VITE_CONDITIONAL_FULL_COURSE_ASSIGNMENTS_RELEASED', undefined);
+ render(<ConditionalAssignmentFields value={DEFAULT_CONDITIONAL_TARGET} onChange={vi.fn()}/>);
+ expect(screen.queryByRole('option', { name: 'Full course: Chapters 1–7' })).toBeNull();
+});

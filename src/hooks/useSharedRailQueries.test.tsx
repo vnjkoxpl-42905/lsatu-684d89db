@@ -24,16 +24,25 @@ vi.mock("@/integrations/supabase/client", () => ({
       const result = () => Promise.resolve(table === 'ta_assignments' && taFailure
         ? { data: null, error: new Error('TA read failed') }
         : { data: rows[table], error: null });
-      chain.select = () => {
-        reads.push(table);
+      chain.select = (_columns?: string, options?: { count?: string }) => {
+        if (options?.count) {
+          chain.then = (onOk: (v: unknown) => unknown) => Promise.resolve({ data: null, error: null, count: rows[table].filter((row) => !row.read).length }).then(onOk);
+        } else reads.push(table);
         return chain;
       };
-      chain.update = () => chain;
-      chain.eq = () => chain;
+      let update: Record<string, unknown> | undefined;
+      const filters: Array<[string, unknown]> = [];
+      chain.update = (value: Record<string, unknown>) => { update = value; return chain; };
+      chain.eq = (key: string, value: unknown) => { filters.push([key, value]); return chain; };
       chain.order = () => chain;
       chain.limit = () => result();
       chain.then = (onOk: (v: unknown) => unknown, onErr?: (e: unknown) => unknown) =>
-        result().then(onOk, onErr);
+        Promise.resolve().then(() => {
+          if (update) rows[table].forEach((row) => {
+            if (filters.every(([key, value]) => row[key] === value)) Object.assign(row, update);
+          });
+          return result();
+        }).then(onOk, onErr);
       return chain;
     },
     channel: () => {

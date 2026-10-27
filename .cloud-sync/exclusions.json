@@ -308,6 +308,14 @@
     "reason": "excluded file"
   },
   {
+    "path": ".taste-skill/dev-preview.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".taste-skill/prod-preview.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "dist",
     "reason": "excluded directory"
   },

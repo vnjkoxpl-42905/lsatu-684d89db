@@ -4,6 +4,8 @@ import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import { isReadingCenterAssignment, READING_CENTER_PATH } from '@/lib/readingCenterAccess';
 
 interface CreateClassroomItemInput {
+  /** Preallocated for contextual assignment links. Other callers keep database-generated IDs. */
+  id?: string;
   studentId: string;
   createdBy: string;
   type: ClassroomItem['type'];
@@ -22,9 +24,11 @@ interface CreateClassroomItemInput {
 }
 
 export async function createClassroomItem(input: CreateClassroomItemInput) {
+  if (input.id && !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.id)) throw new Error('Invalid classroom item identity.');
   const { data, error } = await supabase
     .from('classroom_items')
     .insert({
+      ...(input.id ? { id: input.id } : {}),
       student_id: input.studentId,
       created_by: input.createdBy,
       type: input.type,
@@ -44,6 +48,7 @@ export async function createClassroomItem(input: CreateClassroomItemInput) {
     .select()
     .single();
   if (error) throw error;
+  if (input.id && (data?.id !== input.id || data.student_id !== input.studentId || data.source_id !== input.sourceId)) throw new Error('The assignment identity or route could not be verified. No notification was sent.');
   return data as ClassroomItem;
 }
 
@@ -194,6 +199,12 @@ export function resolveItemRoute(item: ClassroomItem): string | null {
       // assigned PrepTests for a student without the Practice tests switch.
       return '/testing';
     case 'bootcamp_module':
+      if ((item.metadata_json?.conditional_target as { courseEdition?: string })?.courseEdition === 'full-conditionals-v3' && item.source_id?.startsWith('/bootcamp/conditionals?')) {
+        const url = new URL(item.source_id, 'https://local.invalid');
+        if (url.pathname !== '/bootcamp/conditionals' || url.origin !== 'https://local.invalid') return null;
+        url.searchParams.set('assignment', item.id);
+        return `${url.pathname}${url.search}${url.hash}`;
+      }
       if (item.source_id) return item.source_id; // expected to be a /bootcamp/* path
       return '/bootcamps';
     case 'session_recap':

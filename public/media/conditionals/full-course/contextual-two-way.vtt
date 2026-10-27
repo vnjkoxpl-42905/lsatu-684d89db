@@ -1,0 +1,69 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:04.952
+At least one, not both and exactly one make different claims about a pair.
+
+2
+00:00:05.252 --> 00:00:06.767
+At least one allows both.
+
+3
+00:00:07.067 --> 00:00:08.581
+Not both allows neither.
+
+4
+00:00:08.881 --> 00:00:11.420
+Exactly one combines the two restrictions.
+
+5
+00:00:11.720 --> 00:00:14.216
+The label is red or blue, but not both.
+
+6
+00:00:14.516 --> 00:00:16.969
+The first part requires at least one color.
+
+7
+00:00:17.269 --> 00:00:19.296
+The second excludes the joint case.
+
+8
+00:00:19.596 --> 00:00:24.396
+So red without blue and blue without red are allowed; neither and both are not.
+
+9
+00:00:24.696 --> 00:00:27.811
+The phrase or by itself would not have excluded both.
+
+10
+00:00:28.111 --> 00:00:31.503
+The phrase not both by itself would not have excluded neither.
+
+11
+00:00:31.803 --> 00:00:35.451
+A short answer may preserve one restriction while losing the other.
+
+12
+00:00:35.751 --> 00:00:41.063
+Separate them so you can tell whether the proposed rule keeps exactly the stated cases.
+
+13
+00:00:41.363 --> 00:00:45.224
+For a pair, ask whether neither is allowed and whether both are allowed.
+
+14
+00:00:45.524 --> 00:00:50.473
+For otherwise, write the rule for the first case and the rule for the other case separately.
+
+15
+00:00:50.773 --> 00:00:54.251
+Ask separately what the sentence requires and what it forbids.
+
+16
+00:00:54.551 --> 00:00:57.047
+With neither/nor, deny each member.
+
+17
+00:00:57.347 --> 00:01:02.232
+With otherwise, read both clauses before deciding whether the rule goes both ways.

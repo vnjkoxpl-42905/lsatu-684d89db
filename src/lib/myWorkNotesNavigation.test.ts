@@ -14,4 +14,10 @@ describe("notes return navigation", () => {
     expect(url.pathname).toBe("/classroom/item/id%2F1");
     expect(url.searchParams.get("returnTo")).toBe("/my-work/notes?q=rule&shown=24");
   });
+  it('preserves only exact teaching-note types at the return boundary', () => {
+    expect(validateNotesReturnTo('/my-work/notes?q=rule&filter=unread&type=session_recap&shown=24')).toBe('/my-work/notes?q=rule&filter=unread&type=session_recap&shown=24');
+    expect(validateNotesReturnTo('/my-work/notes?type=made-up')).toBe('/my-work/notes');
+    expect(validateNotesReturnTo('/my-work/notes?type=note')).toBe('/my-work/notes?type=note');
+  });
+
 });

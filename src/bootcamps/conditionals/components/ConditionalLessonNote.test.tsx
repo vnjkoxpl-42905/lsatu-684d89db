@@ -1,11 +1,14 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { afterEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { setImmediate as yieldToWorker } from 'node:timers/promises';
 import { conditionalUnits } from '../content';
 import { ConditionalLessonNote } from './ConditionalLessonNote';
 import { diagramExamples, flashcardExamples } from './ConditionalOpeningLesson';
 vi.mock('@/components/ui/dynamic-island-toc', () => ({ DynamicIslandTOC: () => null }));
-afterEach(cleanup);
+// Yield real macrotasks so exhaustive formative-choice checks do not starve Vitest RPC.
+beforeEach(async () => { await yieldToWorker(); });
+afterEach(async () => { cleanup(); await yieldToWorker(); });
 
 function mount(id: string) {
   const unit = conditionalUnits.find(item => item.id === id)!;
@@ -145,7 +148,7 @@ it('provides separate original transfer banks without repeating recorded drills'
   for (const item of transfer) expect(drills).not.toContain(item.sentence);
 });
 
-it('gives each formative choice its own reasoning without marking the lesson read', () => {
+it('gives each formative choice its own reasoning without marking the lesson read', async () => {
   for (const id of ['orientation', 'sufficient-necessary', 'group-1', 'group-2']) {
     const { container, complete, unmount } = mount(id);
     const checks = [...container.querySelectorAll<HTMLElement>('.co-check:not(.cr-integrated-item)')];
@@ -160,11 +163,13 @@ it('gives each formative choice its own reasoning without marking the lesson rea
         const feedback = check.querySelector('.co-feedback, .cr-feedback');
         expect(feedback?.textContent?.trim()).toBeTruthy();
         explanations.push(feedback!.textContent!);
+        await yieldToWorker();
       }
       expect(new Set(explanations).size).toBe(choices.length);
     }
     expect(complete).not.toHaveBeenCalled();
     unmount();
+    await yieldToWorker();
   }
 });
 
