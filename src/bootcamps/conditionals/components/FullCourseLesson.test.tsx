@@ -23,11 +23,38 @@ it('teaches unless from meaning to both translations before until, without and t
   const lesson = fullCourseLessons.find(entry => entry.id === 'exception-language')!;
   const { container } = render(<FullCourseLesson lesson={lesson} media={media}/>);
   const headings = [...container.querySelectorAll('article > section > h2')].map(node => node.textContent);
-  expect(headings).toEqual(['One method for unless, until and without', 'Start with what the sentence says', 'Find the two complete ideas', 'Choose one idea and negate it', 'Build the rule and read it back', 'What if we choose the other idea?', 'Watch the lesson', 'What the rule leaves open', 'When an idea already contains not', 'Without: name the second idea in full', 'Until: keep the timing', 'Read the whole sentence', 'Pop Quiz']);
+  expect(headings).toEqual(['If not … then …', 'What does it say?', 'Find the two complete ideas', 'Negate one idea', 'Either idea works', 'Watch the lesson', 'What the rule leaves open', 'What if an idea already has “not”?', 'Without: name the second idea in full', 'Until: keep the timing', 'Read the whole sentence', 'Pop Quiz']);
+  const gameChoice = screen.getByRole('button', { name: 'Choose “the game is played”' });
+  fireEvent.click(gameChoice);
+  expect(gameChoice).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByText('Only Played changed. Rains was left alone.')).toBeVisible();
+  const rainChoice = screen.getByRole('button', { name: 'Choose “it rains”' });
+  expect(rainChoice).toHaveAttribute('aria-pressed', 'false');
+  fireEvent.click(rainChoice);
+  expect(screen.getByText('Only Rains changed. Played was left alone.')).toBeVisible();
+  expect(container.textContent).not.toMatch(/\/[RGMOTAI]\b/);
+  const negated = [...container.querySelectorAll('.fc-u-idea[data-negated=true]')];
+  expect(negated.length).toBeGreaterThan(10);
+  expect(negated.every(token => token.querySelector('.fc-u-sr')?.textContent === 'not ')).toBe(true);
+  expect(screen.getByRole('img', { name: 'If the store opens, then the manager arrives' })).toBeVisible();
+  expect(screen.getByRole('img', { name: 'If the inspection is not complete yet, then the lab has not opened yet' })).toBeVisible();
   expect(screen.queryByText(/Wrong/)).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: 'The game is played' }));
   expect(screen.getByText(/With no rain, the game is played/)).toBeVisible();
   expect(container.querySelector('track')).toHaveAttribute('kind', 'captions');
+});
+
+it('gives a repair before the meaning answer and resets the attempt', () => {
+  const lesson = fullCourseLessons.find(entry => entry.id === 'exception-language')!;
+  render(<FullCourseLesson lesson={lesson} media={media}/>);
+  fireEvent.click(screen.getByRole('button', { name: 'We cannot tell' }));
+  expect(screen.getByText(/Reread what it promises/)).toBeVisible();
+  expect(screen.queryByText(/With no rain, the game is played/)).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+  expect(screen.queryByText('Not quite.')).toBeNull();
+  expect(screen.getByRole('button', { name: 'The game is played' })).toHaveFocus();
+  fireEvent.click(screen.getByRole('button', { name: /not\s+Rains\s*:\s*it does not rain/ }));
+  expect(screen.getByText(/Negating an idea says that it is not true/)).toBeVisible();
 });
 
 it('renders the written fallback only when requested or when playback fails', async () => {

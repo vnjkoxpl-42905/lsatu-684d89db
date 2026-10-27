@@ -384,6 +384,18 @@
     "reason": "excluded file"
   },
   {
+    "path": "docs/design-evidence/conditional-full-20261025/unless-focused-tests-20261027.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/design-evidence/conditional-full-20261025/unless-tests-20261027.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/design-evidence/conditional-full-20261025/unless-typecheck-20261027.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "node_modules",
     "reason": "excluded directory"
   },
