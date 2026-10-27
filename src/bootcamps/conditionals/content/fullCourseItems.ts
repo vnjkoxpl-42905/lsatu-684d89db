@@ -56,7 +56,7 @@ const PROVENANCE = ['src/bootcamps/conditionals/content/foundations.source.ts', 
 
 export const fullCourseQuiz: Record<string, FullCourseChoiceItem[]> = {
   'exception-language': translations('exception-language', [
-    ['The rehearsal continues unless the power fails.', 'the power fails', 'the rehearsal continues', 'Choose the power fails and negate it: the power does not fail. Keep the rehearsal unchanged. If the power does not fail, the rehearsal continues. A power failure alone does not establish that the rehearsal stops.'],
+    ['The rehearsal continues unless the power is out.', 'the power is out', 'the rehearsal continues', 'Choose the power is out and negate it: the power is not out. Keep the rehearsal unchanged. If the power is not out, the rehearsal continues. An outage alone does not establish that the rehearsal stops.'],
     ['Without a heat shield, the probe overheats.', 'a heat shield is present', 'the probe overheats', 'If a heat shield is not present, the probe overheats.'],
     ['Until the river freezes, the ferry operates.', 'the river has frozen', 'the ferry operates', 'Before the river freezes, the ferry operates; nothing here guarantees what happens after freezing.'],
     ['The sample is retained except if its label is torn.', 'the label is torn', 'the sample is retained', 'If the label is not torn, the sample is retained. A torn label alone does not establish that the sample is discarded.'],
@@ -200,7 +200,7 @@ fullCourseQuiz['quantity-gaps'] = [
 ];
 
 const familyChoiceHints:Record<string,[string,string]>={
- 'exception-language-quiz-1':['You treated a power failure as enough to stop the rehearsal. The sentence does not give you that guarantee. Start with the idea the power fails, negate it, and keep the rehearsal continues unchanged.','You reversed the rule. A continuing rehearsal does not tell you whether the power failed. Negate the power fails and make that the if side.'],
+ 'exception-language-quiz-1':['You treated an outage as enough to stop the rehearsal. The sentence does not give you that guarantee. Start with the idea the power is out, negate it, and keep the rehearsal continues unchanged.','You reversed the rule. A continuing rehearsal does not tell you whether the power is out. Negate the power is out and make that the if side.'],
  'exception-language-quiz-2':['The rule says what happens without a heat shield, not that a shield prevents every possible overheating event.','Overheating could have another source. Does the sentence identify a missing shield as its only possible source?'],
  'exception-language-quiz-3':['Until fixes what holds before the river freezes. It does not settle the ferry’s later operation.','The ferry’s operation does not prove the river has not frozen; the stated boundary leaves the later case open.'],
  'exception-language-quiz-4':['A torn label is the stated exception, not a guarantee that the sample is discarded. Negate the label is torn and make that the if side.','The sentence does not forbid keeping a sample with a torn label. Start from the label is not torn.'],
