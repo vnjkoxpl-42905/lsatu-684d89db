@@ -1,0 +1,20 @@
+/* Locally bundled Outfit keeps RC typography available offline and in exports.
+   The renamed family prevents this face from changing the shared LR font stack. */
+@font-face {
+  font-family: "RC Outfit";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./assets/outfit-latin.woff2") format("woff2");
+}
+
+.rc-practice-workspace,
+.rc-final-builder,
+.rc-final-drawer,
+.rc-practice-landing,
+.rc-saved-workspace,
+.rc-final-builder :is(h1, h2, h3),
+.rc-final-drawer :is(h1, h2, h3),
+.rc-practice-landing :is(h1, h2, h3) {
+  font-family: "RC Outfit", "Outfit", ui-sans-serif, system-ui, sans-serif !important;
+}

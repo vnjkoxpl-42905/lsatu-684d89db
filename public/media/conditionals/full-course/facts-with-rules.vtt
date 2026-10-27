@@ -1,0 +1,61 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:03.011
+A fact asserts that something is true in a case.
+
+2
+00:00:03.311 --> 00:00:07.812
+A conditional rule says what would have to be true if its sufficient condition held.
+
+3
+00:00:08.112 --> 00:00:09.925
+Every sealed sample is logged.
+
+4
+00:00:10.225 --> 00:00:11.569
+Sample M is sealed.
+
+5
+00:00:11.869 --> 00:00:14.323
+The first sentence covers any sealed sample.
+
+6
+00:00:14.623 --> 00:00:16.671
+The second tells us that M is one.
+
+7
+00:00:16.971 --> 00:00:18.208
+So M is logged.
+
+8
+00:00:18.508 --> 00:00:25.100
+If the given fact instead said M was not logged, the requirement would be missing and M could not be sealed.
+
+9
+00:00:25.400 --> 00:00:30.520
+But logged alone would not prove sealed, and not sealed alone would not prove not logged.
+
+10
+00:00:30.820 --> 00:00:35.535
+The same rule can be useful or inconclusive depending on the fact supplied.
+
+11
+00:00:35.835 --> 00:00:40.912
+Keeping all four situations distinct prevents guesses from becoming conclusions.
+
+12
+00:00:41.212 --> 00:00:43.217
+Write the facts for this same subject.
+
+13
+00:00:43.517 --> 00:00:50.067
+A hypothetical sufficient condition is not an observed fact; do not fill it in from the rule’s existence.
+
+14
+00:00:50.367 --> 00:00:53.183
+Name what is given before naming what follows.
+
+15
+00:00:53.483 --> 00:01:00.928
+When a fact proves nothing about the other condition, leave that condition open and keep the rule available for later information.

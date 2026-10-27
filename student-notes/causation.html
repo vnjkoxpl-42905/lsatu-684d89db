@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causal Reasoning | LSAT U</title>
+<style>
+:root{
+  --bg:#FBFAF8; --card:#FFFFFF; --glass:rgba(251,250,248,.86);
+  --ink:#17171A; --ink-2:#3E3E45; --ink-3:#8A8A93; --ink-4:#B4B4BC;
+  --rule:#E7E4DE; --rule-soft:#F0EEE9;
+  --accent:#0071E3; --accent-soft:#EAF3FD;
+  --bronze:#A97A45; --bronze-soft:#FAF3E9; --bronze-line:#E8D8BF;
+  --green:#2E9E52; --green-soft:#EDF8F0;
+  --amber-soft:#FDF4E3; --amber-ink:#8A5A10; --amber-line:#F0DFBE;
+  --red:#C0392B; --red-soft:#FCEFED;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --r:12px; --r-lg:18px; --r-full:9999px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --measure:34rem;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--serif);font-size:19px;line-height:1.72;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+@media(max-width:640px){body{font-size:17.5px;line-height:1.68}}
+
+#progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--bronze);z-index:300;transition:width .1s linear}
+
+/* ---------- chrome ---------- */
+nav{position:sticky;top:0;z-index:200;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--rule-soft)}
+.navi{max-width:1160px;margin:0 auto;padding:.7rem 1.75rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.brand{font-family:var(--sans);font-weight:700;font-size:.8rem;letter-spacing:.02em}
+.brand span{color:var(--bronze)}
+.navlinks{display:flex;gap:1.1rem;flex-wrap:wrap;font-family:var(--sans)}
+.navlinks a{color:var(--ink-4);text-decoration:none;font-size:.74rem;font-weight:600;letter-spacing:.01em;transition:color .2s ease}
+.navlinks a:hover{color:var(--ink)}
+@media(max-width:940px){.navlinks{display:none}}
+
+/* ---------- shell ---------- */
+.shell{max-width:1160px;margin:0 auto;padding:0 1.75rem}
+.col{max-width:var(--measure);margin:0 auto}
+
+/* ---------- hero ---------- */
+.hero{padding:6rem 0 3rem;border-bottom:1px solid var(--rule)}
+.hero h1{
+  font-size:clamp(2.9rem,8vw,4.6rem);line-height:.98;letter-spacing:-.038em;font-weight:600;
+  margin-bottom:1.6rem;
+}
+.hero .kick{
+  font-family:var(--sans);font-size:1.06rem;line-height:1.55;color:var(--ink-2);
+  max-width:30rem;font-weight:400;
+}
+@media(max-width:640px){.hero{padding:3.5rem 0 2.25rem}}
+
+/* ---------- sections ---------- */
+section{padding:3.75rem 0}
+section + section{border-top:1px solid var(--rule-soft)}
+.shead{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.75rem}
+.snum{
+  font-family:var(--sans);font-size:.68rem;font-weight:800;letter-spacing:.16em;
+  color:var(--bronze);flex-shrink:0;padding-top:.5rem;
+}
+h2{font-size:clamp(1.75rem,4vw,2.35rem);line-height:1.12;letter-spacing:-.028em;font-weight:600}
+h3{font-size:1.24rem;line-height:1.3;letter-spacing:-.016em;font-weight:600;margin:2.5rem 0 .75rem}
+h4{font-family:var(--sans);font-size:.84rem;font-weight:700;letter-spacing:.02em;color:var(--ink);margin:1.9rem 0 .4rem}
+
+p{margin-bottom:1.35rem;color:var(--ink-2)}
+p:last-child{margin-bottom:0}
+.lede{font-size:1.16em;line-height:1.62;color:var(--ink)}
+strong{color:var(--ink);font-weight:600}
+em{font-style:italic}
+.beat{font-size:1.22em;line-height:1.4;letter-spacing:-.018em;color:var(--ink);font-weight:600;margin:2rem 0}
+
+ul,ol{margin:0 0 1.35rem 0;padding-left:1.35rem;color:var(--ink-2)}
+li{margin-bottom:.7rem;padding-left:.2rem}
+li:last-child{margin-bottom:0}
+li::marker{color:var(--ink-4)}
+
+/* ---------- stimulus ---------- */
+.stim{
+  position:relative;background:var(--card);border:1px solid var(--rule);border-radius:var(--r);
+  padding:1.6rem 1.7rem 1.45rem;margin:2rem 0;
+}
+.stim::before{
+  content:attr(data-label);position:absolute;top:-.55rem;left:1.3rem;background:var(--bg);
+  padding:0 .55rem;font-family:var(--sans);font-size:.6rem;font-weight:800;letter-spacing:.16em;color:var(--bronze);
+}
+.stim p{color:var(--ink);margin-bottom:0}
+.stim .stem{
+  display:block;margin-top:1rem;padding-top:.85rem;border-top:1px solid var(--rule-soft);
+  font-family:var(--sans);font-size:.82rem;font-weight:600;color:var(--ink-3);
+}
+
+/* ---------- pull quote ---------- */
+.pull{
+  margin:2.6rem 0;padding-left:1.5rem;border-left:2px solid var(--bronze);
+  font-size:1.32em;line-height:1.38;letter-spacing:-.02em;color:var(--ink);font-weight:500;
+}
+.pull cite{display:block;margin-top:.7rem;font-family:var(--sans);font-size:.68rem;font-style:normal;
+  font-weight:700;letter-spacing:.12em;color:var(--ink-4)}
+
+/* ---------- callouts ---------- */
+.note{border-radius:var(--r);padding:1.3rem 1.45rem;margin:2.1rem 0;border:1px solid transparent}
+.note .lab{font-family:var(--sans);font-size:.62rem;font-weight:800;letter-spacing:.16em;display:block;margin-bottom:.5rem}
+.note p{font-size:.97em;margin-bottom:.9rem}
+.note p:last-child{margin-bottom:0}
+.note.warn{background:var(--amber-soft);border-color:var(--amber-line)}
+.note.warn .lab{color:var(--amber-ink)} .note.warn p{color:#6E4A0E} .note.warn strong{color:#4E340A}
+.note.good{background:var(--green-soft);border-color:#CDEBD6}
+.note.good .lab{color:#1D7A3C} .note.good p{color:#1D5732} .note.good strong{color:#123D22}
+.note.key{background:var(--card);border-color:var(--rule);border-left:3px solid var(--ink)}
+.note.key .lab{color:var(--ink-3)} .note.key p{color:var(--ink)}
+
+/* ---------- tabs ---------- */
+.tabs{margin:2.1rem 0}
+.tabbar{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;font-family:var(--sans)}
+.tabbar button{
+  font-family:inherit;font-size:.78rem;font-weight:600;letter-spacing:.005em;padding:.5rem .9rem;
+  border-radius:var(--r-full);border:1px solid var(--rule);background:var(--card);color:var(--ink-3);
+  cursor:pointer;transition:all .3s var(--ease);
+}
+.tabbar button:hover{color:var(--ink);border-color:var(--ink-4)}
+.tabbar button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.panel{display:none;background:var(--card);border:1px solid var(--rule);border-radius:var(--r-lg);padding:1.65rem 1.75rem}
+.panel.on{display:block;animation:rise .45s var(--ease)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.panel h4{margin-top:0;font-family:var(--serif);font-size:1.18rem;letter-spacing:-.018em;font-weight:600}
+.panel .sub{font-family:var(--sans);font-size:.65rem;font-weight:800;letter-spacing:.14em;color:var(--red);display:block;margin-bottom:.9rem}
+.panel p{font-size:.99em}
+
+/* ---------- reveal ---------- */
+.reveal{margin:1.9rem 0}
+.reveal>button{
+  font-family:var(--sans);font-size:.79rem;font-weight:700;letter-spacing:.01em;color:var(--ink);
+  background:var(--card);border:1px solid var(--rule);border-radius:var(--r-full);
+  padding:.62rem 1.15rem;cursor:pointer;transition:all .3s var(--ease);
+  display:inline-flex;align-items:center;gap:.55rem;
+}
+.reveal>button:hover{border-color:var(--ink-4);background:#fff}
+.reveal>button:active{transform:scale(.98)}
+.chev{display:inline-block;transition:transform .35s var(--ease);color:var(--bronze);font-weight:800}
+.reveal.open .chev{transform:rotate(90deg)}
+.reveal .body{max-height:0;overflow:hidden;opacity:0;transition:max-height .6s var(--ease),opacity .35s ease}
+.reveal.open .body{max-height:3200px;opacity:1;margin-top:1.4rem}
+.reveal .inner{border-left:1px solid var(--rule);padding-left:1.5rem}
+.reveal .inner>*:last-child{margin-bottom:0}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;margin:2rem 0;border:1px solid var(--rule);border-radius:var(--r);background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:440px;font-family:var(--sans);font-size:.87rem;line-height:1.5}
+th,td{text-align:left;padding:.8rem 1.1rem;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+th{font-size:.62rem;letter-spacing:.14em;font-weight:800;color:var(--ink-4);background:#FDFCFA}
+tr:last-child td{border-bottom:none}
+td{color:var(--ink-2)}
+td.flat{color:var(--ink-4)}
+td.force strong{color:var(--red);font-weight:700}
+td.job{color:var(--ink);font-weight:600;white-space:nowrap}
+
+/* ---------- flipper ---------- */
+.flip{background:var(--card);border:1px solid var(--rule);border-radius:var(--r-lg);padding:1.6rem 1.75rem;margin:2rem 0}
+.fr{padding:.95rem 0;border-bottom:1px solid var(--rule-soft)}
+.fr:first-child{padding-top:0}
+.fr:last-of-type{border-bottom:none;padding-bottom:.4rem}
+.fr .txt{font-size:1.03rem;color:var(--ink);transition:color .35s ease}
+.fr .vd{font-family:var(--sans);font-size:.6rem;font-weight:800;letter-spacing:.15em;color:var(--ink-4);margin-top:.4rem;transition:color .35s ease}
+.fr.on .vd{color:var(--red)}
+.flip button{
+  margin-top:1.1rem;font-family:var(--sans);font-size:.78rem;font-weight:700;background:var(--ink);color:#fff;
+  border:none;border-radius:var(--r-full);padding:.6rem 1.2rem;cursor:pointer;transition:all .3s var(--ease);
+}
+.flip button:active{transform:scale(.98)}
+
+/* ---------- quiz ---------- */
+.quiz{background:var(--card);border:1px solid var(--rule);border-radius:var(--r-lg);padding:1.75rem;margin-top:1.9rem}
+.qi{padding:1.4rem 0;border-bottom:1px solid var(--rule-soft)}
+.qi:first-child{padding-top:0}
+.qi:last-of-type{border-bottom:none}
+.qt{font-size:1.02rem;color:var(--ink);margin-bottom:1rem}
+.qt b{font-family:var(--sans);font-size:.72rem;font-weight:800;color:var(--bronze);letter-spacing:.1em;margin-right:.55rem;vertical-align:1px}
+.opts{display:flex;gap:.4rem;flex-wrap:wrap;font-family:var(--sans)}
+.opts button{
+  font-family:inherit;font-size:.77rem;font-weight:600;padding:.46rem .82rem;border-radius:var(--r-full);
+  border:1px solid var(--rule);background:#fff;color:var(--ink-2);cursor:pointer;transition:all .25s var(--ease);
+}
+.opts button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.opts button:disabled{cursor:default;opacity:.45}
+.opts button.yes{background:var(--green-soft);border-color:var(--green);color:#155F2E;opacity:1}
+.opts button.no{background:var(--red-soft);border-color:var(--red);color:#96271B;opacity:1}
+.exp{margin-top:1rem;font-size:.95rem;line-height:1.62;color:var(--ink-2);background:#FCFBF9;border:1px solid var(--rule-soft);
+  border-radius:var(--r);padding:.9rem 1.1rem;display:none}
+.exp.show{display:block;animation:rise .4s var(--ease)}
+#score{margin-top:1.5rem;font-family:var(--sans);font-size:.79rem;font-weight:700;color:var(--ink-4);letter-spacing:.01em}
+
+/* ---------- homework ---------- */
+.hw{background:var(--card);border:1px solid var(--rule);border-radius:var(--r-lg);padding:1.7rem 1.8rem}
+.hwj{font-family:var(--sans);font-size:.63rem;font-weight:800;letter-spacing:.15em;color:var(--bronze);margin-top:1.9rem}
+.hw>.hwj:first-child{margin-top:0}
+.hw ul{margin:.55rem 0 0;font-family:var(--sans);font-size:.87rem}
+.hw li{margin-bottom:.4rem;color:var(--ink-2)}
+.hw .gloss{margin-top:.65rem;font-size:.93rem;color:var(--ink-3)}
+
+/* ---------- card ---------- */
+.card{background:var(--ink);color:#fff;border-radius:var(--r-lg);padding:2rem 2.1rem;margin-top:1.5rem}
+.card .ct{font-family:var(--sans);font-size:.63rem;font-weight:800;letter-spacing:.16em;color:rgba(255,255,255,.42);margin-bottom:1.1rem}
+.card ol{padding-left:1.3rem;margin-bottom:0}
+.card li{color:rgba(255,255,255,.76);margin-bottom:.62rem}
+.card li::marker{color:rgba(255,255,255,.34)}
+.card strong{color:#fff;font-weight:600}
+.card .sig{margin-top:1.6rem;padding-top:1.1rem;border-top:1px solid rgba(255,255,255,.14);font-size:1rem;color:rgba(255,255,255,.5)}
+
+footer{border-top:1px solid var(--rule);margin-top:2rem}
+footer .col{padding:2.25rem 0 4rem;font-family:var(--sans);font-size:.76rem;line-height:1.7;color:var(--ink-4)}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="navi">
+    <div class="brand">LSAT <span>U</span></div>
+    <div class="navlinks">
+      <a href="#correlation">Correlation</a>
+      <a href="#slogan">Evidence</a>
+      <a href="#movement">The verb</a>
+      <a href="#disguise">Disguises</a>
+      <a href="#alibi">The alibi</a>
+      <a href="#worked">Worked example</a>
+      <a href="#stems">Stem map</a>
+      <a href="#quiz">Self-check</a>
+      <a href="#card">The card</a>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+<header class="hero">
+  <div class="col">
+    <h1>Causal<br>Reasoning</h1>
+  </div>
+</header>
+
+<section id="open">
+  <div class="col">
+    <p class="lede">Everyone already knows what cause and effect means, and that is the problem. Causation feels familiar, so it gets filed under <em>things I already have</em> and never studied properly. The test is built for people who make that assumption.</p>
+
+    <p>One sentence to prove it:</p>
+
+    <div class="stim" data-label="TRY IT">
+      <p>Every time you drink coffee, thirty minutes later you feel energized.</p>
+      <span class="stem">Correlation, or a causal claim?</span>
+    </div>
+
+    <p>Most people say causal. Read it again. It reported that two things keep showing up near each other, and that is all it reported. No mechanism. Not even a hint of one.</p>
+    <p>You supplied the rest. Instantly, silently, for free.</p>
+    <p class="beat">Telling you what happens is not telling you why it happens.</p>
+    <p>Your brain is a pattern machine, and it is good at this because the person who connected the rustling bush to the predator lived longer than the person who did not. Excellent software, wrong problem. The LSAT points about twenty five questions a test straight at it.</p>
+    <p>So the work here is not learning definitions. It is catching the moment you autofill, which is fast and does not announce itself.</p>
+    <p class="beat">Let's build that.</p>
+  </div>
+</section>
+
+<section id="transport">
+  <div class="shead"><span class="snum">01</span><h2>Why you can see these coming</h2></div>
+  <div class="col">
+    <p>Before causation specifically, one piece of framing that makes the whole thing cheaper to run.</p>
+    <p>An argument, technically, is just a relationship between premise and conclusion. Not "someone being disagreeable at Thanksgiving." A starting point and a destination.</p>
+    <p>So picture a trip. You need to know where you are leaving from, that is the evidence. You need to know where you are landing, that is the conclusion. Then the interesting question, the one most students never think to ask: <strong>how are they getting there?</strong> Flight, train, bike, or walking.</p>
+    <p>On this test there are basically three vehicles. The author advances from premise to conclusion by <strong>conditional</strong> reasoning, by <strong>causal</strong> reasoning, or by <strong>comparison</strong>. You can make the same argument in any of them.</p>
+    <p>Why bother identifying the vehicle? Because <strong>each one breaks in its own predictable way.</strong> Spot conditional and you are already watching for a sufficient condition getting flipped into a necessary one. Spot causal and you already know the three attacks before you have read a single answer choice.</p>
+
+    <div class="note key">
+      <span class="lab">WORTH SITTING WITH</span>
+      <p>You should be able to name the vehicle from the first sentence or two. It is usually that detectable. And naming it early is not a party trick. It is what lets you predict instead of browse.</p>
+    </div>
+
+    <p>One more thing while we are here, because it sets the tone for everything below. The evidence never actually gets you to the conclusion. Not "rarely." Never. There is always a gap between where the author started and where the author landed.</p>
+    <p>Sorry to ruin the party. But that is good news, because it means there is always something to find.</p>
+  </div>
+</section>
+
+<section id="correlation">
+  <div class="shead"><span class="snum">02</span><h2>What you are actually looking at</h2></div>
+  <div class="col">
+    <p>Two words carry this entire topic, and the difference between them is the difference between a fact and a theory.</p>
+    <p>A <strong>correlation</strong> is a descriptive claim. It tells you what is happening. Two things keep showing up together, and that is the whole content of it.</p>
+    <p><strong>Causation</strong> is a different species of claim. It tells you <em>why</em> it is happening. It takes the observation and runs it through a story about how the world produced it.</p>
+    <p>One is a photograph. The other is a theory about what happened just before the shutter opened.</p>
+
+    <h3>Two ways a correlation shows up</h3>
+    <p>Both are just co-occurrence. But they do not feel the same, and knowing which one is in front of you tells you where the answer is going to live.</p>
+
+    <h4>Statistical</h4>
+    <p>Two things move together across a group.</p>
+    <div class="stim" data-label="STATISTICAL"><p>People who drink three cups of coffee a day report more energy than people who drink none.</p></div>
+    <p><strong>Spot it by:</strong> percentages, rates, studies, surveys, "more likely," "associated with," any comparison between two groups. Also disproportion, which the test loves. When a group is 12 percent of the population and 40 percent of some category, that lumpiness is an invitation to ask why, and the author is about to answer it for you.</p>
+
+    <h4>Temporal</h4>
+    <p>Two things happen in sequence.</p>
+    <div class="stim" data-label="TEMPORAL"><p>Ever since the city added bike lanes, obesity has fallen.</p></div>
+    <p><strong>Spot it by:</strong> after, since, ever since, following, once, then, in the years since.</p>
+
+    <h3>The armor</h3>
+    <p>Temporal correlation feels much more causal than statistical does, and here is the part worth knowing: that feeling is not you being sloppy. There is a real reason for it.</p>
+    <p>Sequence eliminates one attack for free. If X happened first, Y could not have caused X. The backwards story is gone before you have done a minute of work.</p>
+    <p>So a temporal argument walks in wearing armor on one side. And that is exactly where students get robbed, because armor anywhere reads as strength everywhere. It is not. The hidden third factor is wide open. Coincidence is wide open. That is where the credited answer is sitting, every time.</p>
+    <p>The reverse is worth knowing too. A statistical correlation with no timeline leaves all three attacks available. Weaker argument, and it feels weaker, so your instincts and the test agree for once.</p>
+    <p class="beat">Enjoy that. It does not happen often.</p>
+
+    <div class="reveal">
+      <button type="button"><span class="chev">›</span> Quick check: "Ever since the new principal arrived, test scores are up."</button>
+      <div class="body"><div class="inner">
+        <p>Temporal. Now the real question: which alibi did that sentence just take away from you?</p>
+        <p>Backwards. Scores going up did not cause the principal to arrive, because the principal came first. Reaching for it here wastes your time and, worse, makes you feel like you did the work.</p>
+        <p>What is still live is a third suspect (a new curriculum, a funding round, an easier cohort) or the comparison itself.</p>
+        <p><strong>Naming the type tells you which attack is still on the table. That is the only reason to bother naming it.</strong></p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section id="slogan">
+  <div class="shead"><span class="snum">03</span><h2>They are not opposites</h2></div>
+  <div class="col">
+    <p>Now I have to take something away from you, because it is probably the one line about this topic you already know, and it has been quietly teaching you the wrong thing.</p>
+    <p><em>Correlation does not imply causation.</em> You have heard it a thousand times. It gets repeated so mechanically that almost nobody stops to ask what it means, and what most people absorb is that correlation and causation are on opposite teams. That catching a correlation somehow tells you it is <em>not</em> causal.</p>
+
+    <p class="beat">It does not. They were never opponents.</p>
+
+    <p>Sit with this one, because it reorganizes everything above it: <strong>every causal relationship is a correlation.</strong> If X genuinely causes Y, then X and Y turn up together. They have to. Correlation is not the enemy of causation, it is the footprint causation leaves behind.</p>
+    <p>Which means a correlation is real evidence, and a real requirement. You cannot have a causal relationship without one.</p>
+    <p>What the line is clumsily reaching for is narrower and far more useful. Correlation alone does not <em>guarantee</em> causation. It gets you into the room. It does not close the case.</p>
+    <p>And this is not a philosophical footnote, it costs points. Students who believe correlation rules causation out start eliminating correct answers on principle. They meet a strengthener that adds correlational support and throw it away, and it was the credited answer. More correlation genuinely does strengthen a causal claim, and the strongest support this test ever hands you is a control group: cause absent, effect absent.</p>
+
+    <div class="note key">
+      <span class="lab">THE ACCURATE VERSION</span>
+      <p>Correlation is necessary for causation and it is evidence for causation. It is simply not proof of causation.</p>
+      <p>So your job is never to reject the causal story because a correlation showed up. It is to ask what <em>else</em> could have left the same footprint.</p>
+    </div>
+  </div>
+</section>
+
+<section id="movement">
+  <div class="shead"><span class="snum">04</span><h2>Read the verb</h2></div>
+  <div class="col">
+    <p>So if the two claims look so similar on the page, how do you tell them apart in the moment?</p>
+    <p>You look at the verb connecting the two things, and that is the whole tool. It costs about half a second.</p>
+    <p>Causal verbs have force in them. Something is pushing something. Correlation verbs just sit there like furniture.</p>
+
+    <div class="tw">
+    <table>
+      <thead><tr><th>SITS STILL · CORRELATION</th><th>MOVES · CAUSATION</th></tr></thead>
+      <tbody>
+        <tr><td class="flat">are, is, tend to be</td><td class="force"><strong>makes, causes, produces</strong></td></tr>
+        <tr><td class="flat">associated with, linked to</td><td class="force"><strong>leads to, brings about, drives</strong></td></tr>
+        <tr><td class="flat">more likely, correlated with</td><td class="force"><strong>reduces, increases, prevents</strong></td></tr>
+        <tr><td class="flat">accompanied by, found among</td><td class="force"><strong>improves, triggers, results in</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>Same facts, one word apart</h3>
+    <p>Three ordinary observations below. Hit the button and watch a single word change what each of them owes you.</p>
+
+    <div class="flip" id="flip">
+      <div class="fr" data-r="Students who sleep eight hours score higher" data-c="Sleeping eight hours raises scores">
+        <div class="txt">Students who sleep eight hours score higher</div>
+        <div class="vd">REPORTS</div>
+      </div>
+      <div class="fr" data-r="Neighborhoods with more police have less crime" data-c="More police reduce crime">
+        <div class="txt">Neighborhoods with more police have less crime</div>
+        <div class="vd">REPORTS</div>
+      </div>
+      <div class="fr" data-r="Exercise is associated with longer life" data-c="Exercise extends life">
+        <div class="txt">Exercise is associated with longer life</div>
+        <div class="vd">REPORTS</div>
+      </div>
+      <button type="button">Flip to the causal version</button>
+    </div>
+
+    <h3>Two things that will talk you out of it</h3>
+    <p>The verb test is reliable, but there are two moments where your intuition will shout over it. Both are deliberate, and both are worth more points than they should be.</p>
+
+    <h4>"More likely"</h4>
+    <p>Try one. <em>People who study for the LSAT are more likely to do better.</em> Correlation or causation?</p>
+    <p>Correlation. Flat verb, nothing pushing anything. But watch what just happened in your head, because "it's because of the studying" arrived before you finished reading. The test chooses subject matter that drags your intuition exactly where it wants you.</p>
+    <p>So treat this family as a tell: <strong>more likely, less likely, more frequently, less frequently.</strong> When one shows up, expect correlation. Then add a single word of motion, <em>makes</em> more likely, and it flips to causal.</p>
+    <p class="beat">One word. That is the whole distance.</p>
+
+    <h4>"Every time"</h4>
+    <p>This one catches almost everybody, and it is the real reason the coffee sentence fooled you.</p>
+    <p><strong>How often something happens has nothing to do with whether it is causal.</strong> "Every time" is not a causal indicator, it is a strength indicator, and a relationship can hold one hundred percent of the time and still be pure correlation.</p>
+    <p>Here is the proof. Since the day you were born, someone somewhere has died every single day. Perfect record. Never once broken.</p>
+    <p class="beat">Does waking up kill people?</p>
+    <p>Frequency tells you how tight a pattern is. It tells you nothing about what is producing it. Never let "every time" or "in every case" talk you into a causal reading the verb never made.</p>
+
+    <h3>Where else it hides in the sentence</h3>
+    <p>The verb is the main event, but two other parts of speech will smuggle causation past you.</p>
+    <p><strong>Nouns.</strong> Cause, effect, factor, reason, explanation, result, consequence, impact, influence, driver. If one of those is sitting in the conclusion, you are in causal territory no matter how flat the verb looked.</p>
+    <p><strong>The quiet phrases.</strong> Explains, accounts for, is behind, is due to, stems from, is why. They read like description and they function like causation.</p>
+    <p>Even <em>because</em> is hiding in plain sight. Look at the word for a second: <em>be-cause</em>. It has been telling you the whole time.</p>
+  </div>
+</section>
+
+<section id="claim">
+  <div class="shead"><span class="snum">05</span><h2>What a causal claim actually says</h2></div>
+  <div class="col">
+    <p>Most people attack a causal argument without ever saying out loud what was claimed. They start swinging at answer choices while the argument itself is still a blur. Do not be one of them.</p>
+    <p><em>X causes Y</em> says X <strong>makes</strong> Y happen. One thing producing another, not two things standing near each other looking suspicious. Underneath sits a promise: had X not happened, Y would not have happened either.</p>
+    <p>Two properties do all the work.</p>
+    <p><strong>It has a direction.</strong> "A causes B" and "B causes A" are different claims about the world. A correlation has no direction in it at all, which is precisely why it can never hand you one. You cannot get an arrow out of a photograph.</p>
+    <p><strong>It cannot be proven from the stimulus.</strong> A correlation is observed, a causal claim is inferred. An observation is a fact, and facts are not attackable. An inference is a claim, and every claim leaves a gap with other explanations still standing in it, unbothered, never addressed.</p>
+
+    <div class="pull">
+      That gap is the rest of this note.
+    </div>
+
+    <p>One more thing about how the LSAT author thinks, because it explains why these arguments are so fragile. In the real world, causation is messy. Many things contribute. Nothing is certain. You know that a bad night of sleep makes you grumpy, and also that some days you are grumpy for entirely different reasons.</p>
+    <p>The LSAT author does not live there. When this author says A causes B, they mean it in an absolute, tunnel-vision way: A is <em>the</em> driver, essentially to the exclusion of everything else, and the connection is stable rather than a one-off.</p>
+    <p>That is not how careful people reason. It is a bad scientist seeing two things happen and leaping. Which is exactly why you can take these arguments apart so reliably: <strong>you are not arguing with reality, you are exposing an overconfidence the author committed to on paper.</strong></p>
+  </div>
+</section>
+
+<section id="disguise">
+  <div class="shead"><span class="snum">06</span><h2>The words the test hides behind</h2></div>
+  <div class="col">
+    <p>So far we have been reading the verb. That works when the author is willing to sound causal. Often they are not.</p>
+    <p>The LSAT rarely uses the word "cause" at all. It uses disguises instead, and almost nobody gets taught them, which frustrates me every time it comes up with a student.</p>
+    <p>There are three big ones. Learn them and you will know a causal question is coming before the argument has finished setting up.</p>
+
+    <div class="tabs">
+      <div class="tabbar" id="dbar">
+        <button class="on" data-p="d1">Explanation</button>
+        <button data-p="d2">A study</button>
+        <button data-p="d3">Phenomenon &amp; hypothesis</button>
+      </div>
+
+      <div class="panel on" id="d1">
+        <span class="sub">DISGUISE ONE</span>
+        <h4>Explanation means cause. Every time.</h4>
+        <p>Not sometimes. Not usually. Every time, without exception, on this test.</p>
+        <p>In ordinary English "explanation" often means a definition or some added detail. Here it has one strict meaning. Whenever you see it, swap in "cause" and read the sentence again. It will still work, and it will be clearer.</p>
+        <p>Why? Go back to what we established. A correlation tells you <em>that</em> something happened. Causation tells you <em>how</em> or <em>why</em>. An explanation, by definition, tells you how something came to be. So an explanation just <em>is</em> a causal claim.</p>
+        <p>Same for <em>explains</em>, <em>accounts for</em>, <em>the reason for</em>, <em>is why</em>.</p>
+      </div>
+
+      <div class="panel" id="d2">
+        <span class="sub">DISGUISE TWO</span>
+        <h4>A study means causation is coming</h4>
+        <p>Science, as a discipline, is the study of causation. That is what it is for. Control groups exist to isolate which variable produces which outcome. An experiment is structured play with what might be causing what.</p>
+        <p>So when a stimulus opens with "a recent study," "researchers found," or "in an experiment," your causation brain should switch on before you read the next clause. You are now waiting for a causal claim.</p>
+        <p>It is coming. It always is.</p>
+      </div>
+
+      <div class="panel" id="d3">
+        <span class="sub">DISGUISE THREE</span>
+        <h4>Phenomenon is the effect. Hypothesis is the proposed cause.</h4>
+        <p>A phenomenon is just an observed event or state of affairs. The crime rate rose. Sales dropped. The birds left early.</p>
+        <p>A hypothesis is a proposed cause. Potential causation, nothing more. Someone's story about what produced the phenomenon.</p>
+        <p>Which means the question tag "phenomenon-hypothesis" is literally naming the pattern: here is an effect, here is a story about its cause. If that tag has been sitting flat in your analytics, this is why. It was never a separate skill.</p>
+      </div>
+    </div>
+
+    <div class="note good">
+      <span class="lab">A FREE ELIMINATION, WORTH REAL POINTS</span>
+      <p>This cuts the other direction too, and it is one of the most practical things on this page.</p>
+      <p>If you identified the argument as <strong>conditional</strong> (language like <em>requires</em>, <em>only if</em>, <em>unless</em>) and then an answer choice says the author <em>"provides an alternate explanation"</em> or <em>"infers a cause from a correlation,"</em> you can dismiss it immediately. Explanation means cause, and there is no causal argument in front of you, so that choice has no way to be true.</p>
+      <p>Certain vocabulary is friendly with certain arguments. Once you know which words belong to which vehicle, whole answer choices stop being candidates.</p>
+    </div>
+  </div>
+</section>
+
+<section id="alibi">
+  <div class="shead"><span class="snum">07</span><h2>The alibi move</h2></div>
+  <div class="col">
+    <p>This is the frame that does the most work, so let's go slowly.</p>
+    <p>Think of it as a court case. Once evidence is admitted, you do not get to deny it. You accept the evidence. What you fight for is the verdict.</p>
+    <p>That maps exactly. The premises are admitted evidence, and you never dispute them. The conclusion is the prosecution's verdict, and you are on the other side of the room.</p>
+    <p>So the author stands up: something happened, and my suspect did it. The coffee did it. The bike lanes did it. The four-day week did it.</p>
+
+    <p class="beat">You are defense counsel.</p>
+
+    <p>And here is the part that changes how much work you think you owe: <strong>you do not have to prove your client innocent.</strong> You never did. You only have to put one other story on the table that the prosecution never bothered to rule out. Reasonable doubt is the entire job.</p>
+    <p>You might be thinking that sounds like cheating. It is not, and the reason matters. The prosecution made the enormous claim, so the prosecution carries the burden. Yours is small on purpose.</p>
+    <p>Three alibis. They never change, and the test has been running these same three since the beginning.</p>
+
+    <div class="tabs">
+      <div class="tabbar" id="abar">
+        <button class="on" data-p="a1">1 · Backwards</button>
+        <button data-p="a2">2 · Third suspect</button>
+        <button data-p="a3">3 · Two cells</button>
+      </div>
+
+      <div class="panel on" id="a1">
+        <span class="sub">THE ARROW POINTS THE OTHER WAY</span>
+        <h4>You have it backwards</h4>
+        <p>Maybe coffee is not producing the energy. Maybe energetic people are the ones up early and out buying coffee.</p>
+        <p>Or take a real one. Musicians have a larger sound-processing region in the brain, so playing music must be growing it. Or, quietly, the other way: people born with that region are the ones who end up becoming musicians.</p>
+        <p><strong>The tell:</strong> the two things could plausibly push each other in either direction. Anything involving health, motivation, wealth, skill, or mood is a live candidate. Ask it as a sentence: could B have caused A? If you can tell that story in one line, this is your alibi.</p>
+      </div>
+
+      <div class="panel" id="a2">
+        <span class="sub">HIDDEN COMMON CAUSE</span>
+        <h4>A third suspect did both</h4>
+        <p>Maybe people with office jobs drink more coffee <em>and</em> keep a structured sleep schedule. The third factor produces both halves of the correlation, and coffee is just the guy who happened to be standing near the crime scene.</p>
+        <p>This is the most common of the three, so check it first. Ask whether some background condition would produce both at once: income, schedule, weather, a policy change, self-selection, the kind of person who signs up for the thing in the first place.</p>
+        <p><strong>Do not confuse it with Backwards.</strong> Backwards keeps the author's two variables and flips them. Third suspect says both of the author's variables are effects, and the real cause never appeared in the stimulus at all.</p>
+      </div>
+
+      <div class="panel" id="a3">
+        <span class="sub">CAUSE WITHOUT EFFECT · EFFECT WITHOUT CAUSE</span>
+        <h4>The two-cell test</h4>
+        <p>Find the cause happening without the effect, or the effect happening without the cause.</p>
+        <p>If people who never touch coffee report identical energy, the coffee story is in serious trouble. If the war started three months before the arms buildup, the buildup did not cause the war.</p>
+        <p>These are <strong>one move, not two.</strong> Both show cause and effect failing to travel together, which is the cleanest possible damage you can do to a causal claim. It is also why the mirror image, cause absent and effect absent, is the strongest strengthener the test hands out.</p>
+      </div>
+    </div>
+
+    <h3>Run it live</h3>
+    <div class="stim" data-label="STIMULUS">
+      <p>A study found that people who drink three or more cups of coffee a day report higher energy than people who drink none. So coffee increases energy.</p>
+      <span class="stem">Before you attack anything: say the claim.</span>
+    </div>
+
+    <p><strong>Coffee increases energy.</strong> Out loud, if you are somewhere that allows it.</p>
+    <p>Half the difficulty in this family is students arguing with an argument they never named. You cannot cross-examine a blur.</p>
+
+    <div class="reveal">
+      <button type="button"><span class="chev">›</span> Show the three alibis, then how the test writes them</button>
+      <div class="body"><div class="inner">
+        <p><strong>Backwards.</strong> Energy drives the coffee. People who already have energy are the ones up early and out buying it.</p>
+        <p><strong>Third suspect.</strong> An office job produces both the coffee habit and the structured schedule that keeps energy up. Coffee is standing near the crime scene.</p>
+        <p><strong>Two cells.</strong> Non-drinkers report the same energy anyway, so cause and effect are not travelling together.</p>
+        <p>Now watch what those look like once the test writes them up in its own voice:</p>
+        <div class="tw">
+        <table>
+          <thead><tr><th>YOU ASK</th><th>THE ANSWER CHOICE SOUNDS LIKE</th></tr></thead>
+          <tbody>
+            <tr><td class="job">Cause without effect?</td><td><em>Among participants drinking four or more cups daily, energy was no higher than the study average.</em></td></tr>
+            <tr><td class="job">Effect without cause?</td><td><em>Participants consuming no caffeine reported energy comparable to daily drinkers.</em></td></tr>
+            <tr><td class="job">Is the study sound?</td><td><em>Energy was self-reported, and drinkers were surveyed shortly after their morning cup.</em></td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>Those three are one move wearing three outfits. Each shows cause and effect failing to travel together.</p>
+      </div></div>
+    </div>
+
+    <div class="note good">
+      <span class="lab">THE HABIT TO BUILD</span>
+      <p>Before you look at the answers, write your own attack. Then read the five choices.</p>
+      <p>You will find the test wrote one of your predictions almost word for word. That only ever happens if you predict first, which is the entire reason this pattern is worth learning as a unit.</p>
+    </div>
+
+    <div class="note warn">
+      <span class="lab">THE MISTAKE THAT MAKES ANSWERS FEEL RANDOM</span>
+      <p>Offering reverse causation and calling it a two-cell attack, or the other way around. Naming it wrong is exactly what makes answer choices start to feel arbitrary two weeks from now.</p>
+      <p>Say which of the three you are running. Out loud. Until it is automatic.</p>
+    </div>
+  </div>
+</section>
+
+<section id="catches">
+  <div class="shead"><span class="snum">08</span><h2>Three things that catch strong students</h2></div>
+  <div class="col">
+    <p>These are not beginner errors. These are the ones that show up around 165 and quietly hold you there.</p>
+
+    <h4>1. Anti-causal claims carry the same burden</h4>
+    <p>"X did not cause Y" owes you exactly as much proof as "X caused Y." Same three alibis, same job.</p>
+    <p>But debunking <em>sounds</em> so sensible. So measured. So much like the voice of reason in the room. Students hand it a free pass and move on. Skepticism is a claim too, and it can be lazy.</p>
+
+    <h4>2. Check the units</h4>
+    <p>A favorite trap compares two facts measured differently. Weekly time against per-meal quality. Totals against rates. Raw counts against a population that is four times bigger.</p>
+    <p>Name the mismatch and the puzzle frequently dissolves before you have attacked anything at all.</p>
+    <p class="beat">Half the discrepancies on this test are two units wearing the same coat.</p>
+
+    <h4>3. "That wasn't mentioned in the stimulus"</h4>
+    <p>This one only kills an answer on Must Be True and Most Strongly Supported. Nowhere else.</p>
+    <p>On any if-true stem, the new fact is the entire point of the question. You are being handed fresh information and asked what it does to the argument. Rejecting it for being new is like refusing to hear a witness on the grounds that you had not previously met them.</p>
+    <p>That reflex costs more points than almost any other habit on this test. If you catch yourself using it, stop mid-sentence and go re-read the stem.</p>
+  </div>
+</section>
+
+<section id="beats">
+  <div class="shead"><span class="snum">09</span><h2>The three beats</h2></div>
+  <div class="col">
+    <p>Everything above compresses into this, and it runs before you touch a single answer choice.</p>
+    <ol>
+      <li><strong>What happened?</strong> The phenomenon. The thing that needs explaining.</li>
+      <li><strong>Who is the suspect?</strong> The author's proposed cause.</li>
+      <li><strong>What is my alibi?</strong> Backwards, third suspect, or two cells.</li>
+    </ol>
+    <p>Three lines. Maybe eight seconds once it is a habit.</p>
+    <p>Know which alibi you are hunting and the credited answer walks out of the lineup by itself. Skip the beats and all five choices look reasonable, because all five were engineered to look reasonable, and now you are reading them one at a time while two minutes come off the clock.</p>
+    <p class="beat">Predict, then match. Never browse.</p>
+  </div>
+</section>
+
+<section id="worked">
+  <div class="shead"><span class="snum">10</span><h2>One worked example</h2></div>
+  <div class="col">
+    <p>Machinery on the table. Read this, then stop before the answer choices and do the beats yourself.</p>
+
+    <div class="stim" data-label="STIMULUS">
+      <p>Households in which every adult works outside the home spend, on average, ninety minutes less per week on laundry than households with a stay-at-home adult. Contrary to expectation, however, clothing in the two types of household is not measurably less clean or less well maintained.</p>
+      <span class="stem">Which of the following, if true, most helps to explain the result described above?</span>
+    </div>
+
+    <p>First question, before anything else. What kind of question is this going to be, and which phrase told you?</p>
+
+    <div class="reveal">
+      <button type="button"><span class="chev">›</span> The tell, the beats, the crack, then every choice</button>
+      <div class="body"><div class="inner">
+        <p><strong>"Contrary to expectation."</strong> That is a discrepancy: two facts that do not want to sit in the same room.</p>
+        <p>And notice that a Resolve question is a causation question in a costume. Your whole job is to find the causal explanation for why this happened although that other thing was true. Explanation means cause. Same machinery, different label.</p>
+
+        <p><strong>What happened?</strong> Less laundry time per week in the all-working households, but the clothes come out just as clean.</p>
+        <p><strong>What expectation got violated?</strong> Less time on laundry should mean worse laundry. There is a causal story hiding inside that expectation: time produces quality.</p>
+        <p><strong>Now check the units.</strong> The ninety minutes is per <em>week</em>. Is cleanliness measured per week? No. It is per garment, per load, per household.</p>
+        <p>There is the crack. Nothing in that stimulus says the two groups run the same <em>number</em> of loads. If the all-working households do fewer, they spend less time per week and exactly the same time per load. Both facts sit together perfectly, no contradiction left.</p>
+
+        <p><strong>Now the choices, and watch how fast this goes when the work is already done.</strong></p>
+        <ul>
+          <li><strong>(A) Stay-at-home households' detergent use compared with manufacturer guidelines.</strong> Who invited the guidelines? The comparison here is between two groups, not against an outside standard. Gone.</li>
+          <li><strong>(B) The two groups spend similar time on dishwashing.</strong> We are talking about laundry. Gone. Though notice it is attempting the right <em>move</em>, a difference between the groups, on the wrong chore.</li>
+          <li><strong>(C) All-working households spend two hours less per day on household tasks generally, including laundry.</strong> The trap, and it is a good one. Does it explain anything? No. It restates the puzzle louder. They spend less time, and we still have no idea why the clothes are equally clean. <strong>A resolver has to hand you the why, not repeat the what.</strong></li>
+          <li><strong>(D) All-working households wash clothing twenty percent less often.</strong> There it is. Fewer loads, so less weekly time, same time per load, same result. Your prediction, word for word.</li>
+          <li><strong>(E) All-working households sort their laundry less carefully.</strong> Runs the wrong direction entirely. Less sorting should make outcomes <em>worse</em>, which deepens the discrepancy instead of resolving it. On a Resolve question, an answer that makes the puzzle stranger is the opposite of correct.</li>
+        </ul>
+        <p>Name what just happened: you predicted the credited answer before reading a single choice. That is what this pattern gives you, and it is that predictable.</p>
+      </div></div>
+    </div>
+
+    <div class="note key">
+      <span class="lab">KEEP THIS FOREVER</span>
+      <p>When a stimulus hands you a number, check its unit. Per week is not per load.</p>
+    </div>
+  </div>
+</section>
+
+<section id="stems">
+  <div class="shead"><span class="snum">11</span><h2>One argument, five jobs</h2></div>
+  <div class="col">
+    <p>Nearly every causal question is built the same way:</p>
+    <ol>
+      <li><strong>Premise:</strong> a correlation.</li>
+      <li><strong>Conclusion:</strong> one causal explanation of it.</li>
+      <li><strong>The gap:</strong> every other explanation, still standing, never addressed.</li>
+    </ol>
+    <p>Every question type is just a different demand on that one gap. Which is exactly why causation is worth learning as a single topic instead of five separate ones.</p>
+
+    <div class="tw">
+    <table>
+      <thead><tr><th>STEM</th><th>YOUR JOB</th></tr></thead>
+      <tbody>
+        <tr><td class="job">Flaw</td><td>Name the crime</td></tr>
+        <tr><td class="job">Weaken</td><td>Argue an alibi</td></tr>
+        <tr><td class="job">Strengthen</td><td>Kill an alibi, including no cause and no effect</td></tr>
+        <tr><td class="job">Necessary Assumption</td><td>Defend against an alibi. Negate it and plug it back in</td></tr>
+        <tr><td class="job">Resolve or Explain</td><td>Supply the difference-maker</td></tr>
+        <tr><td class="job">Most Supported / Must Be True</td><td>Move forward along the chain only</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>On Weaken and Strengthen especially: you are not evaluating five answers on their individual merits. You are scanning for the one that touches an alibi. Faster, more reliable, and it protects your clock.</p>
+
+    <div class="note key">
+      <span class="lab">SAY THIS UNTIL IT IS YOURS</span>
+      <p>The flaw, named: <strong>overconfidently concluding one causal interpretation of a curious fact, usually a correlation, when other interpretations are still available.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section id="shapes">
+  <div class="shead"><span class="snum">12</span><h2>Two other shapes</h2></div>
+  <div class="col">
+    <h3>The difference-maker</h3>
+    <p>Sometimes the stimulus hands you the linchpin outright, the thing that tipped the outcome, and the question is just testing whether you caught it. The clutch factor. The crucial element.</p>
+    <p>Listen for the language that announces it: <em>because of this, due to this, this allows, this makes possible, this leads to.</em> When a sentence opens that way, it is telling you there is a causal connection to the sentence before it.</p>
+    <p>The logic is counterfactual, and on Most Supported it is legal to say: had the difference-maker not been present, the effect probably would not have shown up, or less of it would have. Comparison arguments live here too, since whatever breaks the symmetry between two sides is almost always the causal difference-maker.</p>
+
+    <h3>Causal chains</h3>
+    <p>Reading a long time gives Jorge a headache. Headaches make Jorge lie down.</p>
+    <div class="stim" data-label="THE CHAIN"><p>Read long time &nbsp;→&nbsp; Headache &nbsp;→&nbsp; Lie down</p></div>
+    <p>Forward is fair: if you do not want the effect, do not trigger the cause. So if Jorge needs to be alert this afternoon, he should not read for a long time after lunch.</p>
+    <p>Backward is not. <em>Jorge is lying down, so he must have been reading.</em> That treats one possible cause as the only cause, which is the same overconfidence we have been dismantling all chapter.</p>
+    <p>And the flaws get built at the joints, usually with a swapped phrase. "Reading for a long time" quietly becomes "reading anything." "He should not read Pam's essay" quietly assumes Pam's essay is long.</p>
+    <p class="beat">Space the links out. Go slowly. The trick is always at a joint.</p>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="shead"><span class="snum">13</span><h2>Self-check</h2></div>
+  <div class="col">
+    <p>Seven arguments. Name the alibi you would run, or the check you would make. The explanation only appears after you commit, so commit. Guessing first is the point.</p>
+
+    <div class="quiz" id="quiz">
+      <div class="qi" data-a="1">
+        <p class="qt"><b>01</b>A study found that adults who report high levels of loneliness watch significantly more television than adults who do not. Excessive television viewing is therefore a cause of loneliness.</p>
+        <div class="opts"></div>
+        <div class="exp"><strong>Backwards.</strong> Lonely people plausibly watch more television <em>because</em> they are lonely. Same correlation, arrow reversed, conclusion collapses. Classic setup: two variables where either direction tells a believable story.</div>
+      </div>
+
+      <div class="qi" data-a="2">
+        <p class="qt"><b>02</b>Neighborhoods with more coffee shops have lower rates of vacant storefronts. Coffee shops, then, revitalize commercial districts.</p>
+        <div class="opts"></div>
+        <div class="exp"><strong>Third suspect.</strong> Rising neighborhood income brings the coffee shops <em>and</em> fills the storefronts. They are cousins, not parent and child. Note this is statistical with no timeline, so all three alibis were open and you got to pick the strongest.</div>
+      </div>
+
+      <div class="qi" data-a="3">
+        <p class="qt"><b>03</b>Researchers concluded that a new fertilizer causes higher crop yields. But three untreated control plots on the same farm produced yields identical to the treated plots.</p>
+        <div class="opts"></div>
+        <div class="exp"><strong>Two cells.</strong> Effect without cause: the yield showed up where the fertilizer did not. Cause and effect are not travelling together, which is the cleanest break you can make. This is also exactly what a Strengthen answer looks like in the mirror.</div>
+      </div>
+
+      <div class="qi" data-a="4">
+        <p class="qt"><b>04</b>Residents of Ferndale spend forty percent less per month on restaurant meals than residents of neighboring Alder. Yet surveys show Ferndale residents eat out just as well, reporting equal satisfaction per meal.</p>
+        <div class="opts"></div>
+        <div class="exp"><strong>Check the units.</strong> Per month against per meal. If Ferndale residents simply eat out less often, they spend less per month and exactly the same per meal, and both facts sit together with no causal story required at all.</div>
+      </div>
+
+      <div class="qi" data-a="1">
+        <p class="qt"><b>05</b>Students who report high confidence before an exam tend to earn higher grades. Confidence, the researchers concluded, improves academic performance.</p>
+        <div class="opts"></div>
+        <div class="exp"><strong>Backwards.</strong> Students who prepared well and know the material are the ones who feel confident walking in. Capability produces the confidence, not the reverse. Anything involving belief, motivation, or self-report is a live backwards candidate. Also note the verb: <em>improves</em>. Motion. That is your causal conclusion.</div>
+      </div>
+
+      <div class="qi" data-a="2">
+        <p class="qt"><b>06</b>Ever since Ferndale extended its library hours, standardized test scores in the district have risen. The extended hours are clearly responsible for the improvement.</p>
+        <div class="opts"></div>
+        <div class="exp"><strong>Third suspect.</strong> And notice why backwards is unavailable: this is a <em>temporal</em> correlation, so the sequence already killed that alibi for free. The argument arrived wearing armor. What is still wide open is a common cause, such as a district funding increase that paid for both the hours and new teachers.</div>
+      </div>
+
+      <div class="qi" data-a="3">
+        <p class="qt"><b>07</b>A wellness columnist argues that standing desks do not reduce back pain, citing a survey in which standing-desk users reported back pain at the same rate as everyone else.</p>
+        <div class="opts"></div>
+        <div class="exp"><strong>Two cells.</strong> And here is the point worth catching: this is an <em>anti-causal</em> argument, and it carries exactly the same burden as a causal one. The columnist is running the cause-without-effect move. Attack it the way you would attack any causal claim. Debunking arguments get an unearned pass from most students.</div>
+      </div>
+
+      <div id="score">Answered 0 of 7.</div>
+    </div>
+  </div>
+</section>
+
+<section id="homework">
+  <div class="shead"><span class="snum">14</span><h2>Homework</h2></div>
+  <div class="col">
+    <p>The order below is not easy to hard. It is sorted by <strong>what each stem asks you to do with the same argument.</strong></p>
+    <p>That is the entire reason causation is worth learning as one topic. One causal argument sits in the middle. Flaw asks you to name the crime, Weaken to argue an alibi, Strengthen to kill one, Necessary Assumption to defend against one. Learn the argument once and five question types open at the same time.</p>
+    <p>So do these in order, and say out loud which job you are doing before each set.</p>
+
+    <div class="hw">
+      <div class="hwj">RESOLVE AND EXPLAIN · LEARN THE MACHINERY</div>
+      <ul>
+        <li>Explain Curious Fact (First Taste) · 8 questions · untimed</li>
+        <li>Explain Curious Fact (Easier) Set 2 · 6 questions · untimed</li>
+      </ul>
+      <p class="gloss">Before a single answer choice: write the curious fact as a question, and write the author's explanation with every link spelled out.</p>
+
+      <div class="hwj">FLAW · NAME THE CRIME</div>
+      <ul><li>Anti-Causal Set 1 · 5 questions · untimed</li></ul>
+      <p class="gloss">Arguments claiming something did <em>not</em> cause something. Hunt this wording: <em>infers a causal relation from a correlation</em>, <em>overlooks an alternative explanation</em>.</p>
+
+      <div class="hwj">WEAKEN · ARGUE THE ALIBI</div>
+      <ul>
+        <li>Weaken + Explain Curious Fact · 5 questions · timed</li>
+        <li>Anti-Causal Set 2 · 8 questions · timed</li>
+      </ul>
+      <p class="gloss">Three beats before the answers, every single question. And do not eliminate an answer here because the stimulus never mentioned it.</p>
+
+      <div class="hwj">STRENGTHEN · KILL THE ALIBI</div>
+      <ul>
+        <li>Strengthen (First Taste) · 6 questions · timed</li>
+        <li>Strengthen / Weaken + Science · 10 questions · timed</li>
+      </ul>
+      <p class="gloss">Rule out the reverse story, rule out the third suspect, or show no cause and no effect. The science set is where the units check earns its place.</p>
+
+      <div class="hwj">NECESSARY ASSUMPTION · DEFEND AGAINST THE ALIBI</div>
+      <ul><li>Necessary Assumption (First Taste) · 10 questions · timed</li></ul>
+      <p class="gloss">Expect a defender: an answer with a "not" in it, quietly protecting the suspect from an alibi the author never raised.</p>
+
+      <div class="hwj">THEN THE TWO OTHER SHAPES</div>
+      <ul>
+        <li>Causal Chains · 3 questions, then Causal Chains (Mini Set) · 4 questions</li>
+        <li>Causal Difference-Maker (First Taste) · 6 questions, then Set 1 · 6 questions</li>
+      </ul>
+    </div>
+
+    <h3>How to run all of them</h3>
+    <ol>
+      <li><strong>Predict before you read the choices.</strong> Phenomenon, suspect, alibi. Three lines, every question, no exceptions.</li>
+      <li><strong>Blind review before you score.</strong> The question to answer in review is not "what is the answer." It is "how do I get this in ninety seconds."</li>
+      <li><strong>For every miss, write two things:</strong> which alibi was actually in play, and which one you reached for instead. That single line is where the improvement lives.</li>
+      <li><strong>Say the name out loud.</strong> Backwards, third suspect, two cells.</li>
+    </ol>
+    <p>Speed built on a method holds up. Speed built on instinct does not. That is the entire reason for the order.</p>
+  </div>
+</section>
+
+<section id="close">
+  <div class="col">
+    <h2>Before you go drill</h2>
+    <p>You have the machinery now. Correlation on one side and causation on the other, a verb test that separates them in half a second, three disguises the test hides behind, and three alibis that have never once changed.</p>
+    <p>Here is what that buys you beyond points.</p>
+    <p>You can hear the leap now. Not read it, <em>hear</em> it, the way a trained ear catches a wrong note before it can explain why. In the health article your aunt forwards. In the podcast about why one country is thriving. In the consultant's slide showing that companies who did the thing outperformed companies who did not. In the political line about what happened to this city after those people moved into it, which is the same move, running on the same reflex, doing considerably more damage.</p>
+    <p>Almost nobody walks around with this. People confuse "these went together" with "this made that happen" every day, publicly, confidently, and it costs them real decisions and real money. You are being trained out of it deliberately. Law school will spend three years sharpening the same edge, because arguing about what caused what <em>is</em> most of what lawyers do.</p>
+    <p>So do not expect all of it to land today. Expect to catch two of the three alibis for a couple of weeks. Expect to misname them. Expect to feel slow while you say the beats out loud, because that is what learning a method feels like from the inside.</p>
+    <p>Then somewhere around the third drill set, you will catch yourself prephrasing "third suspect" before you have finished the stimulus, and the answer will already be sitting there waiting for you.</p>
+    <p>That moment is the whole point. It comes from reps.</p>
+    <p class="beat">Onward.</p>
+  </div>
+</section>
+
+<section id="card">
+  <div class="col">
+    <h2>The card</h2>
+    <div class="card">
+      <div class="ct">CAUSAL REASONING · SEVEN LINES</div>
+      <ol>
+        <li><strong>Spot it.</strong> Active verb, or a study, an explanation, a phenomenon.</li>
+        <li><strong>What happened?</strong></li>
+        <li><strong>Who is the suspect?</strong></li>
+        <li><strong>What is my alibi?</strong> Backwards, third suspect, two cells.</li>
+        <li><strong>Check the units.</strong></li>
+        <li><strong>Match, do not evaluate.</strong></li>
+        <li><strong>Ninety seconds.</strong> Then flag and move.</li>
+      </ol>
+      <div class="sig">Joshua</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer><div class="shell"><div class="col">
+  LSAT U · Causal Reasoning<br>
+  All example arguments in this note were written for LSAT U and are not reproduced from licensed LSAC material.
+</div></div></footer>
+
+<script>
+window.addEventListener('scroll',function(){
+  var h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(h>0?(window.scrollY/h)*100:0)+'%';
+},{passive:true});
+
+document.querySelectorAll('.reveal').forEach(function(r){
+  r.querySelector('button').addEventListener('click',function(){ r.classList.toggle('open'); });
+});
+
+function wireTabs(id){
+  var bar=document.getElementById(id); if(!bar) return;
+  var ids=[].map.call(bar.querySelectorAll('button'),function(b){return b.dataset.p;});
+  bar.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    bar.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});
+    ids.forEach(function(i){var p=document.getElementById(i); if(p)p.classList.remove('on');});
+    b.classList.add('on');
+    var p=document.getElementById(b.dataset.p); if(p)p.classList.add('on');
+  });
+}
+wireTabs('dbar'); wireTabs('abar');
+
+(function(){
+  var box=document.getElementById('flip'); if(!box) return;
+  var btn=box.querySelector('button'), on=false;
+  btn.addEventListener('click',function(){
+    on=!on;
+    box.querySelectorAll('.fr').forEach(function(r){
+      r.querySelector('.txt').textContent = on ? r.dataset.c : r.dataset.r;
+      r.querySelector('.vd').textContent  = on ? 'OWES YOU PROOF' : 'REPORTS';
+      r.classList.toggle('on',on);
+    });
+    btn.textContent = on ? 'Flip back to the correlation version' : 'Flip to the causal version';
+  });
+})();
+
+var LABELS=['Backwards','Third suspect','Two cells','Check the units'];
+var answered=0,correct=0,TOTAL=7;
+document.querySelectorAll('#quiz .qi').forEach(function(item){
+  var opts=item.querySelector('.opts'), ans=parseInt(item.dataset.a,10);
+  LABELS.forEach(function(label,i){
+    var b=document.createElement('button');
+    b.type='button'; b.textContent=label; b.dataset.v=String(i+1);
+    opts.appendChild(b);
+  });
+  opts.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b||item.dataset.done) return;
+    item.dataset.done='1';
+    var picked=parseInt(b.dataset.v,10);
+    opts.querySelectorAll('button').forEach(function(x){
+      x.disabled=true;
+      var v=parseInt(x.dataset.v,10);
+      if(v===ans) x.classList.add('yes');
+      else if(v===picked) x.classList.add('no');
+    });
+    if(picked===ans) correct++;
+    answered++;
+    item.querySelector('.exp').classList.add('show');
+    var s=document.getElementById('score');
+    s.textContent='Answered '+answered+' of '+TOTAL+'.  Correct: '+correct+'.';
+    if(answered===TOTAL){
+      s.textContent += correct>=6 ? '  You are naming the alibi, not guessing at it. Take it into timed sets.'
+                     : correct>=4 ? '  Good. Re-read the one you misnamed, then run the Weaken sets with three beats before every question.'
+                     : '  Back to section 07. Say the three alibis out loud on each argument before you pick. Naming it wrong is what makes answers feel arbitrary.';
+    }
+  });
+});
+</script>
+</body>
+</html>

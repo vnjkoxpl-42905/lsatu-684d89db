@@ -1,0 +1,31 @@
+[
+  { "qid": "PT101-S2-Q12", "features": [] },
+  { "qid": "PT101-S2-Q13", "features": [
+    { "name": "Focused on Evidence", "rationale": "Correct answer (B) undermines whether whitecaps actually exist, attacking the evidence rather than the conclusion." }
+  ] },
+  { "qid": "PT101-S3-Q4", "features": [
+    { "name": "2-Speaker", "rationale": "Named dialogue between speakers M and P." },
+    { "name": "Rebuttals", "rationale": "P rebuts M's hypothesis ('Your hypothesis is laughable!')." }
+  ] },
+  { "qid": "PT101-S3-Q7", "features": [] },
+  { "qid": "PT101-S3-Q8", "features": [] },
+  { "qid": "PT101-S3-Q12", "features": [
+    { "name": "Famous Flaws", "rationale": "Intent vs. Result: 'never knowingly damage' is treated as meaning nothing to fear, ignoring unintentional harm (answer D)." }
+  ] },
+  { "qid": "PT102-S2-Q2", "features": [] },
+  { "qid": "PT102-S3-Q3", "features": [
+    { "name": "Causal Chains", "rationale": "Explicit causal chain (spending down -> layoffs -> jobless up; recovery -> need workers but hiring delayed); answer D synthesizes it." }
+  ] },
+  { "qid": "PT102-S3-Q4", "features": [
+    { "name": "Explain Curious Fact", "rationale": "Curious fact = surprisingly low CO2 with high ferrous in ice-age air; scientist proposes a causal hypothesis (ferrous -> algae bloom)." },
+    { "name": "Science", "rationale": "Geological/biological jargon: ferrous dust, ice-age atmosphere, diatoms, algae." }
+  ] },
+  { "qid": "PT102-S3-Q5", "features": [] },
+  { "qid": "PT102-S3-Q7", "features": [
+    { "name": "Relative vs. Absolute", "rationale": "Flaw uses raw accident counts while ignoring that left-handers are a small fraction of the population (answer B)." }
+  ] },
+  { "qid": "PT102-S3-Q14", "features": [
+    { "name": "Famous Flaws", "rationale": "Ad Hominem: dismisses doctors by impugning their motive (monopoly) rather than addressing the claim (answer C)." },
+    { "name": "Medical", "rationale": "Stimulus is about herbs, doctors, and medical therapies." }
+  ] }
+]

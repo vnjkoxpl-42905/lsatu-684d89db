@@ -1,0 +1,5 @@
+/* GSAP alone owns entrance transforms. Preserve every control's existing style. */
+.classroom-root .classroom-motion-root { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .classroom-motion-root { scroll-behavior: auto; }
+}

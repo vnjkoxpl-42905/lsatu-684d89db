@@ -1,0 +1,986 @@
+/* ── Question finder ───────────────────────────────────────────────────
+   One control that turns something a student can say about a question into
+   that question opened. Mounted on Classroom Home and in the Drill landing
+   workspace, so it carries its own token block rather than inheriting either
+   host's palette: the trigger takes the host's tone, the panel floats above
+   the page and always looks like itself.
+
+   Follows the Classroom's rules, because Home is where it is seen most:
+   every hairline is a box-shadow ring rather than a border, so a hover state
+   cannot shift anything by a pixel; every animation is transform/opacity only,
+   so nothing here can reflow while it moves. */
+
+.qf {
+  --qf-ink: #332f2c;
+  --qf-ink-mid: #5c5751;
+  --qf-body: #6b6660;
+  --qf-soft: #8a857f;
+  --qf-muted: #a7a29f;
+
+  --qf-surface: #ffffff;
+  --qf-surface-warm: #fffdf9;
+  --qf-row-hover: #fdf7ef;
+  --qf-sunk: #f8f4ee;
+
+  --qf-accent: #ff8906;
+  --qf-accent-text: #e5730a;
+  --qf-gold: #c5820a;
+
+  --qf-hair-06: rgba(68, 64, 61, 0.06);
+  --qf-hair-08: rgba(68, 64, 61, 0.08);
+  --qf-hair-12: rgba(68, 64, 61, 0.12);
+
+  --qf-ui: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --qf-mono: "JetBrains Mono", ui-monospace, monospace;
+  --qf-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* The Drill landing workspace is a near-black surface. Its trigger takes the
+   dark tone directly; the panel gets it through the portal so the overlay does
+   not flash a warm-paper card over a black page. */
+.qf[data-tone="dark"],
+html.dark .qf {
+  --qf-ink: #f5f1ec;
+  --qf-ink-mid: #cfc8c0;
+  --qf-body: #b3aca4;
+  --qf-soft: #9b948d;
+  --qf-muted: #8b837b;
+
+  --qf-surface: #17161c;
+  --qf-surface-warm: #1a1820;
+  --qf-row-hover: #221f28;
+  --qf-sunk: #121116;
+
+  --qf-hair-06: rgba(255, 255, 255, 0.06);
+  --qf-hair-08: rgba(255, 255, 255, 0.09);
+  --qf-hair-12: rgba(255, 255, 255, 0.14);
+}
+
+/* ── trigger ──────────────────────────────────────────────────────────
+   Sits in the masthead beside the due pill, so it matches that pill's ring,
+   radius and mono voice rather than introducing a third idiom. */
+
+.qf-trigger {
+  min-height: 44px;
+  align-items: center;
+  background: var(--qf-surface);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--qf-hair-08), 0 6px 16px -12px rgba(68, 64, 61, 0.4);
+  color: var(--qf-soft);
+  cursor: pointer;
+  display: flex;
+  flex: none;
+  font-family: var(--qf-ui);
+  font-size: 13px;
+  gap: 10px;
+  min-width: 232px;
+  padding: 9px 10px 9px 14px;
+  text-align: left;
+  transition: box-shadow 200ms var(--qf-ease), transform 200ms var(--qf-ease),
+    color 200ms var(--qf-ease);
+}
+
+.qf-trigger:hover {
+  box-shadow: 0 0 0 1px var(--qf-hair-12), 0 10px 22px -14px rgba(68, 64, 61, 0.45);
+  color: var(--qf-body);
+  transform: translateY(-1px);
+}
+
+.qf-trigger:focus-visible {
+  outline: 2px solid var(--qf-accent);
+  outline-offset: 2px;
+}
+
+.qf-trigger-icon {
+  color: var(--qf-muted);
+  flex: none;
+}
+
+.qf-trigger-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qf-trigger[aria-label="Open a question"] {
+  min-width: 0;
+  width: auto;
+}
+
+.qf-trigger[aria-label="Open a question"] .qf-trigger-label {
+  display: inline;
+}
+
+
+/* Phones: the masthead is already carrying the greeting and the due pill, so
+   the label and the shortcut hint fall away and the trigger becomes an icon.
+   The button itself is unchanged — same control, same accessible name — which
+   is why there is no second trigger to hide. */
+@media (max-width: 720px) {
+  .qf-trigger {
+    min-width: 0;
+    padding: 10px;
+  }
+
+  .qf-trigger-label,
+  .qf-trigger-hint {
+    display: none;
+  }
+}
+
+/* ── portal, scrim, panel ─────────────────────────────────────────────── */
+
+.qf-portal {
+  /* flex-start, not the default stretch: a stretched panel paints its surface
+     down to the bottom of the viewport and the content sits in the top third of
+     an empty card. The panel must be exactly as tall as what is in it. */
+  align-items: flex-start;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  padding: 12vh 20px 20px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 90;
+}
+
+.qf-scrim {
+  animation: qfFade 180ms var(--qf-ease) both;
+  backdrop-filter: blur(3px) saturate(1.08);
+  background: rgba(28, 25, 23, 0.34);
+  inset: 0;
+  position: absolute;
+}
+
+html.dark .qf-scrim {
+  background: rgba(6, 6, 8, 0.6);
+}
+
+.qf-panel {
+  animation: qfRise 240ms var(--qf-ease) both;
+  background: var(--qf-surface-warm);
+  border-radius: 20px;
+  box-shadow:
+    0 0 0 1px var(--qf-hair-12),
+    0 40px 80px -40px rgba(28, 25, 23, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--qf-ui);
+  max-height: 100%;
+  max-width: 640px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+html.dark .qf-panel,
+.qf[data-tone="dark"] .qf-panel {
+  box-shadow:
+    0 0 0 1px var(--qf-hair-12),
+    0 40px 80px -40px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* One gold thread along the top edge. The Classroom's hero carries a gold ring;
+   this is the same signature at the weight a utility deserves. */
+.qf-panel::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(197, 130, 10, 0.45) 30%,
+    rgba(255, 137, 6, 0.5) 50%,
+    rgba(197, 130, 10, 0.45) 70%,
+    transparent
+  );
+  content: "";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* ── head ─────────────────────────────────────────────────────────────
+   The dialog says its own name. LSAT Lab's finder does the same, and a titled
+   panel is the difference between "a search box appeared" and a place the
+   student knows they are in. */
+
+.qf-head {
+  align-items: center;
+  box-shadow: 0 1px 0 var(--qf-hair-08);
+  display: flex;
+  flex: none;
+  gap: 12px;
+  padding: 16px 16px 16px 20px;
+}
+
+.qf-title {
+  color: var(--qf-ink);
+  flex: 1;
+  font-family: var(--qf-ui);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  min-width: 0;
+}
+
+.qf-close {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 9px;
+  color: var(--qf-muted);
+  cursor: pointer;
+  display: flex;
+  flex: none;
+  justify-content: center;
+  padding: 6px;
+  transition: background 140ms var(--qf-ease), color 140ms var(--qf-ease);
+}
+
+.qf-close:hover {
+  background: var(--qf-sunk);
+  color: var(--qf-ink);
+}
+
+.qf-close:focus-visible {
+  outline: 2px solid var(--qf-accent);
+  outline-offset: 1px;
+}
+
+/* ── controls ─────────────────────────────────────────────────────────
+   Everything that starts a search, in one band: which bank, which address,
+   and the words. It is one block so the body below it is unambiguously
+   results and nothing else. */
+
+.qf-controls {
+  background: var(--qf-sunk);
+  box-shadow: 0 1px 0 var(--qf-hair-08);
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  container-type: inline-size;
+}
+
+/* The segmented switch. LSAT Lab's slot holds Modern|Legacy, which splits a
+   bank we do not have two of — ours is PT101-159 throughout. The switch that
+   means something here is the one between Logical Reasoning and Reading
+   Comprehension, so that is what sits in it. */
+.qf-banks {
+  align-self: flex-end;
+  background: var(--qf-surface);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--qf-hair-08);
+  display: flex;
+  gap: 2px;
+  margin: 14px 20px 0;
+  padding: 3px;
+}
+
+.qf-bank {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--qf-soft);
+  cursor: pointer;
+  font-family: var(--qf-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  min-width: 46px;
+  padding: 6px 12px;
+  transition: background 160ms var(--qf-ease), color 160ms var(--qf-ease);
+}
+
+.qf-bank:hover {
+  color: var(--qf-ink);
+}
+
+.qf-bank[data-on="true"] {
+  background: var(--qf-ink);
+  color: var(--qf-surface);
+}
+
+.qf-bank:focus-visible {
+  outline: 2px solid var(--qf-accent);
+  outline-offset: 2px;
+}
+
+/* ── input row ────────────────────────────────────────────────────────── */
+
+.qf-inputrow {
+  align-items: center;
+  /* A flex row whose children all refuse to shrink is how a panel grows wider
+     than the phone it is on. */
+  min-width: 0;
+  background: var(--qf-surface);
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--qf-hair-08);
+  display: flex;
+  flex: none;
+  gap: 12px;
+  margin: 0 20px 16px;
+  padding: 12px 14px;
+}
+
+.qf-inputrow-icon {
+  color: var(--qf-muted);
+  flex: none;
+}
+
+.qf-input {
+  background: transparent;
+  border: 0;
+  color: var(--qf-ink);
+  flex: 1;
+  font-family: var(--qf-ui);
+  font-size: 17px;
+  /* Never smaller than a few characters: the field the student is typing into
+     must not be squeezed to nothing by the chip that confirms what they typed. */
+  min-width: 7ch;
+  outline: 0;
+  padding: 0;
+}
+
+.qf-input::placeholder {
+  color: var(--qf-muted);
+}
+
+/* The address chip is the finder showing its work: the moment a query parses as
+   PT / Section / Question it says so, which is how the syntax gets learned
+   without a help page. */
+.qf-address {
+  animation: qfPop 200ms var(--qf-ease) both;
+  background: rgba(255, 137, 6, 0.1);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(255, 137, 6, 0.24);
+  color: var(--qf-accent-text);
+  flex: none;
+  font-family: var(--qf-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  min-width: 0;
+  overflow: hidden;
+  padding: 5px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qf-clear {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--qf-muted);
+  cursor: pointer;
+  display: grid;
+  flex: none;
+  height: 26px;
+  place-items: center;
+  transition: background 160ms var(--qf-ease), color 160ms var(--qf-ease);
+  width: 26px;
+}
+
+.qf-clear:hover {
+  background: var(--qf-row-hover);
+  color: var(--qf-body);
+}
+
+/* ── body ─────────────────────────────────────────────────────────────── */
+
+/* The panel hugs its content rather than filling the viewport: an empty finder
+   stretched to 500px of nothing reads as broken, not as spacious. The body
+   grows with the results and only starts scrolling once there are more than a
+   screenful, so the panel is small when there is little to show and never
+   taller than this. */
+.qf-body {
+  max-height: min(46vh, 360px);
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px 0;
+}
+
+.qf-group {
+  padding: 8px 0 2px;
+}
+
+.qf-grouphead {
+  align-items: center;
+  color: var(--qf-muted);
+  display: flex;
+  font-family: var(--qf-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  gap: 10px;
+  letter-spacing: 0.16em;
+  padding: 6px 20px 8px;
+  text-transform: uppercase;
+}
+
+.qf-grouphead i {
+  background: var(--qf-hair-08);
+  display: block;
+  flex: 1;
+  height: 1px;
+}
+
+/* The RC group says what context opens before anything is clicked. */
+.qf-grouphead-note {
+  color: var(--qf-soft);
+  flex: none;
+  font-family: var(--qf-ui);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.qf-row {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font-family: var(--qf-ui);
+  gap: 12px;
+  padding: 10px 20px;
+  text-align: left;
+  transition: background 140ms var(--qf-ease);
+  width: 100%;
+}
+
+.qf-row[data-active="true"] {
+  background: var(--qf-row-hover);
+}
+
+.qf-row[data-active="true"] .qf-row-go {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.qf-addr {
+  background: var(--qf-sunk);
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px var(--qf-hair-06);
+  color: var(--qf-ink-mid);
+  flex: none;
+  font-family: var(--qf-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 5px 8px;
+  white-space: nowrap;
+}
+
+.qf-row-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.qf-row-title {
+  color: var(--qf-ink);
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qf-snippet {
+  color: var(--qf-soft);
+  font-size: 12px;
+  line-height: 1.45;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qf-snippet mark {
+  background: rgba(255, 137, 6, 0.18);
+  border-radius: 3px;
+  color: var(--qf-ink);
+  font-weight: 600;
+  padding: 0 2px;
+}
+
+.qf-row-meta {
+  align-items: center;
+  display: flex;
+  flex: none;
+  gap: 10px;
+}
+
+.qf-tag {
+  color: var(--qf-soft);
+  font-family: var(--qf-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.qf-count {
+  background: rgba(255, 137, 6, 0.1);
+  border-radius: 999px;
+  color: var(--qf-accent-text);
+  font-family: var(--qf-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+
+.qf-row-go {
+  color: var(--qf-muted);
+  flex: none;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 160ms var(--qf-ease), transform 160ms var(--qf-ease);
+}
+
+/* ── empty, loading, states ───────────────────────────────────────────── */
+
+.qf-state {
+  color: var(--qf-soft);
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 22px 20px;
+  text-align: center;
+}
+
+.qf-hint {
+  align-items: center;
+  color: var(--qf-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  gap: 8px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.qf-hint code {
+  background: var(--qf-sunk);
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px var(--qf-hair-06);
+  color: var(--qf-ink-mid);
+  font-family: var(--qf-mono);
+  font-size: 11px;
+  padding: 3px 7px;
+}
+
+.qf-warn {
+  color: var(--qf-soft);
+  font-size: 11.5px;
+  padding: 4px 20px 10px;
+  text-align: center;
+}
+
+/* ── doors ────────────────────────────────────────────────────────────── */
+
+.qf-doors {
+  box-shadow: 0 -1px 0 var(--qf-hair-08);
+  display: flex;
+  flex: none;
+  flex-direction: column;
+}
+
+.qf-door {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--qf-ink-mid);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--qf-ui);
+  font-size: 13px;
+  font-weight: 500;
+  gap: 11px;
+  padding: 13px 20px;
+  text-align: left;
+  transition: background 140ms var(--qf-ease), color 140ms var(--qf-ease);
+  width: 100%;
+}
+
+.qf-door:hover {
+  background: var(--qf-row-hover);
+  color: var(--qf-ink);
+}
+
+.qf-door-icon {
+  color: var(--qf-muted);
+  flex: none;
+}
+
+.qf-door-grow {
+  flex: 1;
+}
+
+.qf-door-chevron {
+  color: var(--qf-muted);
+  flex: none;
+  transition: transform 200ms var(--qf-ease);
+}
+
+.qf-door[aria-expanded="true"] .qf-door-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── browse by test ───────────────────────────────────────────────────── */
+
+/* Three selectors and the door they open, on one line. The arrow is the
+   selectors' Enter key, so it belongs in their row rather than under it. */
+.qf-browse {
+  align-items: end;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  padding: 12px 20px 14px;
+}
+
+.qf-go {
+  align-items: center;
+  background: var(--qf-ink);
+  border: 0;
+  border-radius: 9px;
+  color: var(--qf-surface);
+  cursor: pointer;
+  display: flex;
+  flex: none;
+  height: 40px;
+  justify-content: center;
+  grid-column: 1 / -1;
+  min-width: 0;
+  white-space: nowrap;
+  transition: background 160ms var(--qf-ease), opacity 160ms var(--qf-ease),
+    transform 160ms var(--qf-ease);
+  width: 100%;
+}
+
+.qf-go:hover:not(:disabled) {
+  background: var(--qf-accent-text);
+  transform: translateY(-1px);
+}
+
+/* Disabled rather than hidden: the arrow is where the jump lives, and a control
+   that vanishes teaches nothing about why it is not available yet. */
+.qf-go:disabled {
+  background: var(--qf-hair-12);
+  color: var(--qf-muted);
+  cursor: not-allowed;
+}
+
+.qf-go:focus-visible {
+  outline: 2px solid var(--qf-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 560px) {
+  .qf-browse {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .qf-go {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+.qf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.qf-field-label {
+  color: var(--qf-muted);
+  font-family: var(--qf-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.qf-select {
+  appearance: none;
+  background: var(--qf-surface);
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 13px center, right 8px center;
+  background-repeat: no-repeat;
+  background-size: 5px 5px, 5px 5px;
+  border: 0;
+  border-radius: 9px;
+  box-shadow: 0 0 0 1px var(--qf-hair-08);
+  color: var(--qf-ink);
+  cursor: pointer;
+  font-family: var(--qf-ui);
+  font-size: 13px;
+  min-width: 0;
+  padding: 9px 28px 9px 11px;
+  transition: box-shadow 160ms cubic-bezier(0.25, 1, 0.5, 1);
+  width: 100%;
+}
+
+/* These three are the first controls on the drill hub and had no hover state
+   at all: :disabled and :focus-visible existed, nothing answered a pointer.
+   The ring is mixed from --qf-ink rather than a fixed hairline so it lands
+   right in both the light row and the dark tone, where the ink flips. */
+.qf-select:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--qf-ink) 26%, transparent);
+}
+
+.qf-select:disabled {
+  color: var(--qf-muted);
+  cursor: not-allowed;
+}
+
+.qf-select:focus-visible {
+  outline: 2px solid var(--qf-accent);
+  outline-offset: 1px;
+}
+
+.qf-select-radix.qf-select-radix {
+  min-height: 44px;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  border-radius: 9px;
+  background: var(--qf-surface);
+  box-shadow: 0 0 0 1px var(--qf-hair-08);
+  color: var(--qf-ink);
+  font-family: var(--qf-ui);
+  font-size: 13px;
+}
+
+.qf-select-radix:focus-visible {
+  outline: 2px solid var(--qf-accent);
+  outline-offset: 1px;
+}
+
+.qf-question-menu {
+  z-index: 9999 !important;
+  max-height: min(360px, var(--radix-select-content-available-height, 360px));
+  min-width: var(--radix-select-trigger-width);
+  max-width: min(520px, calc(100vw - 24px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.qf-passage-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 2px;
+  padding: 7px 10px 7px 32px;
+  white-space: normal;
+  color: var(--qf-ink-mid);
+  background: var(--qf-sunk);
+  font-family: var(--qf-mono);
+  font-size: 10px;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+.qf-passage-title {
+  color: var(--qf-soft);
+  font-family: var(--qf-ui);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.qf-passage-separator {
+  height: 1px;
+  margin: 12px 8px 10px;
+  background: var(--qf-hair-12);
+}
+
+.qf-select optgroup {
+  background: var(--qf-sunk);
+  color: var(--qf-ink-mid);
+  font-weight: 700;
+}
+
+.qf-select option[aria-label] {
+  background: var(--qf-surface);
+  color: var(--qf-ink);
+}
+
+/* ── keyboard legend ──────────────────────────────────────────────────── */
+
+.qf-legend {
+  align-items: center;
+  box-shadow: 0 -1px 0 var(--qf-hair-08);
+  color: var(--qf-muted);
+  display: flex;
+  flex: none;
+  font-size: 11px;
+  gap: 16px;
+  padding: 10px 20px;
+}
+
+.qf-legend span {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.qf-legend kbd {
+  background: var(--qf-sunk);
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px var(--qf-hair-06);
+  color: var(--qf-soft);
+  font-family: var(--qf-mono);
+  font-size: 9.5px;
+  padding: 3px 5px;
+}
+
+/* Touch has no keyboard to legend, and no hover to reveal the chevron. */
+@media (hover: none) {
+  .qf-legend {
+    display: none;
+  }
+  .qf-row-go {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── phones ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 720px) {
+  .qf-portal {
+    padding: 0;
+  }
+
+  .qf-panel {
+    align-self: stretch;
+    animation-name: qfRiseSheet;
+    border-radius: 0;
+    height: 100%;
+    max-height: 100%;
+    max-width: none;
+  }
+
+  /* Full-screen on a phone, so here the body DOES take the slack — otherwise
+     the doors and the results would bunch at the top of an empty sheet. */
+  .qf-body {
+    flex: 1;
+    max-height: none;
+  }
+
+}
+
+@container (max-width: 520px) {
+  .qf-browse {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .qf-go {
+    width: 100%;
+  }
+
+  .qf-trigger[aria-label="Open a question"] {
+    padding-inline: 11px;
+  }
+}
+
+/* ── motion ───────────────────────────────────────────────────────────── */
+
+@keyframes qfFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes qfRise {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes qfRiseSheet {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes qfPop {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* The finder must be complete and usable with every animation removed. */
+/* .qj is listed alongside .qf because the jump row uses .qf-select and now
+   transitions it. The row is covered today only because it happens to sit
+   inside .drill-observatory-root, whose own reduced-motion block catches it;
+   that is incidental, and would fall away the moment the row were used
+   anywhere else. The guarantee belongs next to the rule that needs it. */
+@media (prefers-reduced-motion: reduce) {
+  .qf *,
+  .qf *::before,
+  .qf *::after,
+  .qf-portal *,
+  .qf-portal *::before,
+  .qf-portal *::after,
+  .qj *,
+  .qj *::before,
+  .qj *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* RC lookup names passage and optional question without crowding the address row. */
+.qf-browse[data-rc="true"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.qf-browse[data-rc="true"] .qf-go { grid-column: 1/-1; width: 100%; min-height: 44px; }
+.qf-browse[data-rc="true"] .qf-field-label { font-family: var(--qf-ui); font-size: 12px; letter-spacing: 0; text-transform: none; }
+.qf-more-results { padding: 12px 0; color: var(--qf-muted); font-family: var(--qf-ui); font-size: 13px; line-height: 1.5; }
+.qf-more-results button { border: 1px solid var(--qf-hair-12); border-radius: 8px; background: var(--qf-surface); color: var(--qf-ink); min-height: 44px; padding: 10px 14px; margin-top: 8px; }
+.qf-more-results button:focus-visible { outline: 2px solid var(--qf-accent); outline-offset: 3px; }
+@media(max-width:360px) { .qf-browse[data-rc="true"] { gap: 12px 8px; padding-inline: 14px; } }
+@media(max-width:600px) {
+ .qf-row.qf-row-rc { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 7px 12px; align-items: start; }
+ .qf-row-rc > .qf-addr { grid-column: 1; grid-row: 1; min-width: 0; }
+ .qf-row-rc > .qf-row-meta { grid-column: 2; grid-row: 1; }
+ .qf-row-rc > .qf-row-text { grid-column: 1/-1; grid-row: 2; min-width: 0; }
+ .qf-row-rc .qf-row-title { display: block; overflow: visible; white-space: normal; text-overflow: clip; font-size: 15px; line-height: 1.5; }
+ .qf-row-rc .qf-snippet, .qf-row-rc .qf-row-go { display: none; }
+}

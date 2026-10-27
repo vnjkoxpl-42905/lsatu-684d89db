@@ -1,0 +1,429 @@
+{
+  "landing": [
+    {
+      "enter": [
+        {
+          "height": 48,
+          "top": 191.1999969482422
+        }
+      ],
+      "overflow": false,
+      "video": true,
+      "width": 390
+    },
+    {
+      "enter": [
+        {
+          "height": 48,
+          "top": 175.60000610351562
+        }
+      ],
+      "overflow": false,
+      "video": true,
+      "width": 650
+    },
+    {
+      "enter": [
+        {
+          "height": 48,
+          "top": 119.5999984741211
+        }
+      ],
+      "overflow": false,
+      "video": true,
+      "width": 768
+    },
+    {
+      "enter": [
+        {
+          "height": 48,
+          "top": 46.79999923706055
+        }
+      ],
+      "overflow": false,
+      "video": true,
+      "width": 1000
+    },
+    {
+      "enter": [
+        {
+          "height": 48,
+          "top": 46.79999923706055
+        }
+      ],
+      "overflow": false,
+      "video": true,
+      "width": 1440
+    }
+  ],
+  "selector": [
+    {
+      "clockChoice": false,
+      "firstStart": [
+        {
+          "height": 48,
+          "width": 317.6000061035156
+        }
+      ],
+      "mainWidth": 375.2000122070313,
+      "overflow": false,
+      "width": 390
+    },
+    {
+      "clockChoice": false,
+      "firstStart": [
+        {
+          "height": 48,
+          "width": 170.6125030517578
+        }
+      ],
+      "mainWidth": 635.2000122070312,
+      "overflow": false,
+      "width": 650
+    },
+    {
+      "clockChoice": false,
+      "firstStart": [
+        {
+          "height": 48,
+          "width": 170.6125030517578
+        }
+      ],
+      "mainWidth": 522.7999877929688,
+      "overflow": false,
+      "width": 768
+    },
+    {
+      "clockChoice": false,
+      "firstStart": [
+        {
+          "height": 48,
+          "width": 170.6125030517578
+        }
+      ],
+      "mainWidth": 754.7999877929688,
+      "overflow": false,
+      "width": 1000
+    },
+    {
+      "clockChoice": false,
+      "firstStart": [
+        {
+          "height": 48,
+          "width": 170.6125030517578
+        }
+      ],
+      "mainWidth": 1194.800048828125,
+      "overflow": false,
+      "width": 1440
+    }
+  ],
+  "prestart": [
+    {
+      "buttons": [
+        "Start exercise",
+        "Choose another passage"
+      ],
+      "overflow": false,
+      "width": 390
+    },
+    {
+      "buttons": [
+        "Start exercise",
+        "Choose another passage"
+      ],
+      "overflow": false,
+      "width": 650
+    },
+    {
+      "buttons": [
+        "Start exercise",
+        "Choose another passage"
+      ],
+      "overflow": false,
+      "width": 768
+    },
+    {
+      "buttons": [
+        "Start exercise",
+        "Choose another passage"
+      ],
+      "overflow": false,
+      "width": 1000
+    },
+    {
+      "buttons": [
+        "Start exercise",
+        "Choose another passage"
+      ],
+      "overflow": false,
+      "width": 1440
+    }
+  ],
+  "running": [
+    {
+      "hide": [],
+      "overflow": false,
+      "recording": true,
+      "sidebar": false,
+      "width": 390
+    },
+    {
+      "hide": [],
+      "overflow": false,
+      "recording": true,
+      "sidebar": false,
+      "width": 650
+    },
+    {
+      "hide": [],
+      "overflow": false,
+      "recording": true,
+      "sidebar": false,
+      "width": 768
+    },
+    {
+      "hide": [],
+      "overflow": false,
+      "recording": true,
+      "sidebar": false,
+      "width": 1000
+    },
+    {
+      "hide": [],
+      "overflow": false,
+      "recording": true,
+      "sidebar": false,
+      "width": 1440
+    }
+  ],
+  "fullSectionActions": [
+    {
+      "action": "Hide paragraph (Space)",
+      "recording": true,
+      "time": "Passage practice time: 0:28Total practice time: 0:28\nShow instructions\nRead paragraph\n\nTo ma"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:38Total practice time: 0:38\nShow instructions\nRead paragraph\n\nTo ma"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:39Total practice time: 0:39\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:40Total practice time: 0:40\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Next paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:54Total practice time: 0:54\nShow instructions\nCheck your recall\n\nTo"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:55Total practice time: 0:55\nShow instructions\nRead paragraph\n\nSince"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:56Total practice time: 0:56\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Next paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:58Total practice time: 0:57\nShow instructions\nCheck your recall\n\nTo"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:58Total practice time: 0:58\nShow instructions\nRead paragraph\n\nRisk "
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:59Total practice time: 0:59\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Finish passage",
+      "recording": true,
+      "time": "Passage practice time: 1:01Total practice time: 1:00\nShow instructions\nCheck your recall\n\nTo"
+    },
+    {
+      "action": "Skip optional recall",
+      "recording": true,
+      "time": "Passage practice time: 1:01Total practice time: 1:01\nShow instructions\nRecall paragraph\n\nOpt"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:14Total practice time: 1:17\nShow instructions\nRead paragraph\n\nIn Ap"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:16Total practice time: 1:18\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Next paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:17Total practice time: 1:19\nShow instructions\nCheck your recall\n\nIn"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:18Total practice time: 1:20\nShow instructions\nRead paragraph\n\nFirst"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:18Total practice time: 1:21\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Next paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:20Total practice time: 1:22\nShow instructions\nCheck your recall\n\nIn"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:20Total practice time: 1:23\nShow instructions\nRead paragraph\n\nThe r"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:22Total practice time: 1:24\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Next paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:23Total practice time: 1:25\nShow instructions\nCheck your recall\n\nIn"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:24Total practice time: 1:26\nShow instructions\nRead paragraph\n\nThe P"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:25Total practice time: 1:27\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Finish passage",
+      "recording": true,
+      "time": "Passage practice time: 0:26Total practice time: 1:28\nShow instructions\nCheck your recall\n\nIn"
+    },
+    {
+      "action": "Skip optional recall",
+      "recording": true,
+      "time": "Passage practice time: 0:26Total practice time: 1:29\nShow instructions\nRecall paragraph\n\nOpt"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:00Total practice time: 1:30\nShow instructions\nRead paragraph\n\nIn re"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:01Total practice time: 1:31\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Next paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:02Total practice time: 1:32\nShow instructions\nCheck your recall\n\nIn"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:03Total practice time: 1:33\nShow instructions\nRead paragraph\n\nOf fu"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:04Total practice time: 1:34\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Next paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:05Total practice time: 1:35\nShow instructions\nCheck your recall\n\nIn"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:05Total practice time: 1:36\nShow instructions\nRead paragraph\n\nTwo d"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:07Total practice time: 1:37\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Finish passage",
+      "recording": true,
+      "time": "Passage practice time: 0:08Total practice time: 1:38\nShow instructions\nCheck your recall\n\nIn"
+    },
+    {
+      "action": "Skip optional recall",
+      "recording": true,
+      "time": "Passage practice time: 0:08Total practice time: 1:39\nShow instructions\nRecall paragraph\n\nOpt"
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:00Total practice time: 1:40\nShow instructions\nRead paragraph\n\nA fak"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:01Total practice time: 1:41\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Next paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:02Total practice time: 1:42\nShow instructions\nCheck your recall\n\nA "
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:03Total practice time: 1:43\nShow instructions\nRead paragraph\n\nThe g"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:04Total practice time: 1:44\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Next paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:05Total practice time: 1:45\nShow instructions\nCheck your recall\n\nA "
+    },
+    {
+      "action": "Hide paragraph",
+      "recording": true,
+      "time": "Passage practice time: 0:06Total practice time: 1:46\nShow instructions\nRead paragraph\n\n*Fake"
+    },
+    {
+      "action": "Check recall",
+      "recording": true,
+      "time": "Passage practice time: 0:07Total practice time: 1:47\nShow instructions\nRecall paragraph\n\nRet"
+    },
+    {
+      "action": "Finish passage",
+      "recording": true,
+      "time": "Passage practice time: 0:08Total practice time: 1:48\nShow instructions\nCheck your recall\n\nA "
+    },
+    {
+      "action": "Skip optional recall",
+      "recording": true,
+      "time": "Passage practice time: 0:09Total practice time: 1:49\nShow instructions\nRecall paragraph\n\nOpt"
+    }
+  ],
+  "fullSectionResult": "Practice complete; saved 1:50; 13 paragraph recalls ready; microphone continuous; no grading requested",
+  "singleResult": "Practice complete; saved 1:58; 8 paragraph recalls and optional whole passage; no grading requested"
+}

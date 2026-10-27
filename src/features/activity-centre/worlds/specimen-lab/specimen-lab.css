@@ -1,0 +1,617 @@
+/*
+ * The Specimen Lab: Vocab Rehab's world.
+ *
+ * A Victorian naturalist's study at lamp hour. Deep botanical-green walls, a
+ * parchment bench warmed by a single hanging lamp, and the collected word under
+ * a glass bell jar on a brass plinth. The field note is an aged collecting
+ * journal; the instruments are brass devices on a walnut rail that stay dark
+ * until the student's own reasoning drives their needles.
+ *
+ * Still the one light world in the Centre — the room changes, and this room is
+ * daylight and lamplight where the others are night. Emerald remains the only
+ * meaning color: it marks what the student earned. Brass is material, never
+ * verdict.
+ */
+
+.specimen-lab {
+  --sl-wall: 162 30% 16%;
+  --sl-wall-deep: 164 34% 11%;
+  --sl-bench: 40 40% 90%;
+  --sl-bench-deep: 38 32% 84%;
+  --sl-paper: 43 55% 96%;
+  --sl-ink: 30 28% 15%;
+  --sl-ink-dim: 30 14% 36%;
+  --sl-edge: 36 26% 72%;
+  --sl-brass: 40 58% 50%;
+  --sl-brass-deep: 36 52% 34%;
+  --sl-madder: 8 58% 40%;
+  --sl-glass: 175 24% 86%;
+  --sl-earned: 160 84% 32%;
+
+  position: relative;
+  background: hsl(var(--sl-bench));
+  color: hsl(var(--sl-ink));
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.specimen-lab > :not(.sl-room) {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- The study ---------- */
+
+.sl-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* The green wall above the bench line, with the faint sheen of oil paint. */
+.sl-wall {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 34%;
+  background:
+    linear-gradient(180deg, hsl(var(--sl-wall-deep)), hsl(var(--sl-wall)) 60%),
+    hsl(var(--sl-wall));
+  box-shadow: inset 0 -18px 30px -18px hsl(var(--sl-wall-deep));
+}
+
+/* Wainscot rail where wall meets bench: a strip of brass over walnut. */
+.sl-wall::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 6px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--sl-brass) / 0.9),
+    hsl(var(--sl-brass-deep))
+  );
+  box-shadow: 0 2px 4px hsl(var(--sl-wall-deep) / 0.5);
+}
+
+/* The lamp pool: one warm cone of light falling on the bench. */
+.sl-lamplight {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 52% at 50% 30%, hsl(46 80% 82% / 0.5), transparent 70%),
+    radial-gradient(120% 70% at 50% 108%, hsl(var(--sl-bench-deep)) 30%, transparent 74%);
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
+/* The bench's paper tooth: a whisper of grain so the light has something to sit on. */
+.sl-grain {
+  position: absolute;
+  inset: 34% 0 0 0;
+  background:
+    repeating-linear-gradient(
+      88deg,
+      transparent 0 7px,
+      hsl(30 30% 40% / 0.025) 7px 8px
+    ),
+    repeating-linear-gradient(
+      2deg,
+      transparent 0 11px,
+      hsl(30 30% 40% / 0.02) 11px 12px
+    );
+}
+
+/* A botanical shadow in the wall's corner: fern fronds cast by the lamp. */
+.sl-fern {
+  position: absolute;
+  top: -4%;
+  right: -3%;
+  width: 240px;
+  height: 34%;
+  background:
+    radial-gradient(10px 46px at 82% 22%, hsl(var(--sl-wall-deep) / 0.9), transparent 70%),
+    radial-gradient(9px 40px at 66% 12%, hsl(var(--sl-wall-deep) / 0.8), transparent 70%),
+    radial-gradient(8px 36px at 92% 8%, hsl(var(--sl-wall-deep) / 0.8), transparent 70%),
+    radial-gradient(10px 42px at 74% 34%, hsl(var(--sl-wall-deep) / 0.7), transparent 70%);
+  filter: blur(2px);
+  opacity: 0.8;
+}
+
+/* ---------- Type ---------- */
+
+.specimen-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* The collector's hand: engraved-label small caps. */
+.specimen-label {
+  font-family: "EB Garamond", var(--ac-serif, Georgia, serif);
+  font-variant: small-caps;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+}
+
+.specimen-serif {
+  font-family: "EB Garamond", var(--ac-serif, Georgia, serif);
+}
+
+/* ---------- The bell jar ---------- */
+
+.sl-vitrine-scene {
+  perspective: 1000px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 0 0;
+}
+
+/* A glass bell jar rather than a box: domed crown, straight walls, and the
+   specimen suspended inside as it turns. */
+.sl-vitrine {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  max-width: 100%;
+  min-height: 150px;
+  padding: 34px 34px 26px;
+  transform-style: preserve-3d;
+  border: 1px solid hsl(var(--sl-glass));
+  border-radius: 110px 110px 10px 10px;
+  background:
+    linear-gradient(
+      145deg,
+      hsl(var(--sl-paper) / 0.82),
+      hsl(var(--sl-glass) / 0.3) 58%,
+      hsl(var(--sl-paper) / 0.6)
+    );
+  backdrop-filter: blur(2px);
+  box-shadow:
+    inset 0 2px 0 hsl(0 0% 100% / 0.95),
+    inset 8px 0 22px -12px hsl(0 0% 100% / 0.9),
+    inset -10px -4px 24px -14px hsl(var(--sl-wall) / 0.35),
+    0 22px 38px -8px hsl(30 24% 30% / 0.35);
+}
+
+/* The long specular streak that sells the glass while it turns. */
+.sl-vitrine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 28%,
+    hsl(0 0% 100% / 0.6) 42%,
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+/* The jar's knob: a small glass bead at the crown. */
+.sl-vitrine::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    hsl(0 0% 100% / 0.95),
+    hsl(var(--sl-glass)) 70%
+  );
+  border: 1px solid hsl(var(--sl-glass));
+  box-shadow: 0 2px 4px hsl(30 24% 30% / 0.25);
+}
+
+.sl-specimen {
+  font-family: "EB Garamond", var(--ac-serif, Georgia, serif);
+  font-style: italic;
+  font-weight: 500;
+  text-align: center;
+  color: hsl(var(--sl-ink));
+  backface-visibility: visible;
+  text-shadow: 0 1px 0 hsl(0 0% 100% / 0.6);
+}
+
+/* The brass plinth the jar stands on. Capped so it stays a pedestal under the
+   jar rather than a rail across the room when the scene runs wide. */
+.sl-plinth {
+  width: 78%;
+  max-width: 300px;
+  height: 12px;
+  border-radius: 3px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--sl-brass)) 0%,
+    hsl(var(--sl-brass-deep)) 55%,
+    hsl(36 40% 22%) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 hsl(46 80% 78% / 0.9),
+    0 6px 14px hsl(30 24% 30% / 0.35);
+}
+
+.sl-plinth::after {
+  content: "";
+  display: block;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 18px,
+    hsl(46 80% 78% / 0.18) 18px 19px
+  );
+}
+
+/* ---------- The label plate ---------- */
+
+/* Unidentified: a parchment tag on a string. Identified: an engraved brass
+   plaque, screwed to the plinth. */
+.sl-plate {
+  border: 1px solid hsl(var(--sl-edge));
+  background: hsl(var(--sl-paper));
+  box-shadow: 0 3px 10px hsl(30 24% 30% / 0.14);
+  transition:
+    border-color 400ms ease,
+    background 400ms ease,
+    box-shadow 400ms ease;
+}
+
+.sl-plate[data-engraved="true"] {
+  position: relative;
+  border-color: hsl(var(--sl-brass-deep) / 0.7);
+  background: linear-gradient(
+    168deg,
+    hsl(44 62% 74%) 0%,
+    hsl(var(--sl-brass) / 0.85) 48%,
+    hsl(44 62% 70%) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 hsl(46 90% 86%),
+    inset 0 -1px 0 hsl(var(--sl-brass-deep)),
+    0 4px 12px hsl(30 24% 30% / 0.3);
+}
+
+/* Corner screws on the engraved plaque. */
+.sl-plate[data-engraved="true"]::before,
+.sl-plate[data-engraved="true"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, hsl(46 70% 76%), hsl(var(--sl-brass-deep)));
+  box-shadow: inset 0 0 1px hsl(36 40% 18%);
+}
+
+.sl-plate[data-engraved="true"]::before {
+  left: 7px;
+}
+
+.sl-plate[data-engraved="true"]::after {
+  right: 7px;
+}
+
+.sl-plate[data-engraved="true"] p {
+  color: hsl(36 45% 16%);
+  text-shadow: 0 1px 0 hsl(46 80% 80% / 0.8);
+}
+
+/* ---------- The field note ---------- */
+
+/* A page of the collecting journal: faint feint-rules, a red margin line, and
+   a lifted corner of shadow. */
+.sl-fieldnote {
+  position: relative;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 27px,
+      hsl(200 30% 55% / 0.12) 27px 28px
+    ),
+    hsl(var(--sl-paper));
+  border: 1px solid hsl(var(--sl-edge));
+  box-shadow:
+    0 1px 0 hsl(0 0% 100%) inset,
+    0 14px 30px -8px hsl(30 24% 30% / 0.28);
+}
+
+.sl-fieldnote::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 18px;
+  width: 1px;
+  background: hsl(var(--sl-madder) / 0.35);
+}
+
+.sl-fieldnote p {
+  font-family: "EB Garamond", var(--ac-serif, Georgia, serif);
+  font-size: 1.1rem;
+}
+
+/* The collected word, marked in the collector's red ink. */
+.sl-target {
+  font-style: italic;
+  font-weight: 600;
+  padding: 0 2px;
+  color: hsl(var(--sl-madder));
+  border-bottom: 1px solid hsl(var(--sl-madder) / 0.55);
+}
+
+/* Wording the student actually cited, picked out only after the reading. */
+.sl-cited {
+  background: hsl(var(--sl-earned) / 0.14);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+  box-shadow: inset 0 -1px 0 hsl(var(--sl-earned) / 0.45);
+}
+
+/* ---------- Instruments ---------- */
+
+/* Brass devices on a walnut rail. Dark until the student's reasoning powers
+   them; lit, the brass warms and the emerald verdict lamp comes on. */
+.sl-instrument {
+  position: relative;
+  border: 1px solid hsl(36 30% 30% / 0.55);
+  background:
+    linear-gradient(180deg, hsl(32 28% 26%), hsl(30 30% 18%) 80%);
+  box-shadow:
+    inset 0 1px 0 hsl(38 30% 44% / 0.6),
+    0 8px 18px -6px hsl(var(--sl-wall-deep) / 0.5);
+  opacity: 0.82;
+  transition:
+    opacity 420ms ease,
+    border-color 420ms ease,
+    box-shadow 420ms ease;
+}
+
+.sl-instrument .specimen-mono {
+  color: hsl(40 30% 68%);
+}
+
+.sl-instrument p {
+  color: hsl(40 26% 78%);
+}
+
+.sl-instrument[data-lit="true"] {
+  opacity: 1;
+  border-color: hsl(var(--sl-brass) / 0.8);
+  box-shadow:
+    inset 0 1px 0 hsl(46 70% 60% / 0.7),
+    0 0 0 1px hsl(var(--sl-earned) / 0.25),
+    0 8px 22px -6px hsl(var(--sl-earned) / 0.3);
+}
+
+.sl-instrument[data-lit="true"] .specimen-mono {
+  color: hsl(46 70% 74%);
+}
+
+/* The charge gauge: three brass notches, the called one struck emerald. */
+.sl-gauge {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 22px;
+}
+
+/* The notch keeps a fixed box and rises by scaling from its base rather than
+   animating height: the scale is composited and reads identically. */
+.sl-gauge-notch {
+  flex: 1;
+  height: 22px;
+  border-radius: 2px;
+  background: hsl(36 24% 38%);
+  transform: scaleY(0.364);
+  transform-origin: bottom center;
+  transition:
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 320ms ease,
+    box-shadow 320ms ease;
+}
+
+.sl-gauge-notch[data-active="true"] {
+  transform: scaleY(1);
+  background: hsl(var(--sl-earned));
+  box-shadow: 0 0 10px hsl(var(--sl-earned) / 0.5);
+}
+
+/* The contrast detector: twin brass brackets that clamp when lit. */
+.sl-brackets {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  height: 22px;
+}
+
+.sl-brackets span {
+  width: 9px;
+  height: 18px;
+  border: 1px solid hsl(36 24% 44%);
+  transition:
+    transform 320ms cubic-bezier(0.7, 0, 0.18, 1),
+    border-color 320ms ease;
+}
+
+.sl-brackets span:first-child {
+  border-right: 0;
+}
+
+.sl-brackets span:last-child {
+  border-left: 0;
+}
+
+.sl-instrument[data-lit="true"] .sl-brackets span {
+  border-color: hsl(var(--sl-earned));
+}
+
+.sl-instrument[data-lit="true"] .sl-brackets span:first-child {
+  transform: translateX(9px);
+}
+
+.sl-instrument[data-lit="true"] .sl-brackets span:last-child {
+  transform: translateX(-9px);
+}
+
+/* The relation lens: a brass ring that closes on what it circles. */
+.sl-lens {
+  width: 22px;
+  height: 22px;
+  margin: 0 auto;
+  border-radius: 999px;
+  border: 1px solid hsl(36 24% 44%);
+  transition:
+    border-color 320ms ease,
+    box-shadow 320ms ease,
+    transform 320ms ease;
+}
+
+.sl-instrument[data-lit="true"] .sl-lens {
+  border-color: hsl(var(--sl-earned));
+  transform: scale(0.86);
+  box-shadow: 0 0 0 3px hsl(var(--sl-earned) / 0.2);
+}
+
+/* ---------- The precision boundary ---------- */
+
+/* The near-miss the item polices, pinned outside a red survey line. */
+.sl-boundary {
+  width: 100%;
+  border: 1px dashed hsl(var(--sl-edge));
+  border-top: 1px solid hsl(var(--sl-madder) / 0.6);
+  background: hsl(var(--sl-paper) / 0.6);
+}
+
+.sl-trap {
+  font-family: "EB Garamond", var(--ac-serif, Georgia, serif);
+  text-decoration: line-through;
+  text-decoration-color: hsl(var(--sl-madder) / 0.7);
+  text-decoration-thickness: 1px;
+  opacity: 0.85;
+}
+
+/* ---------- The specimen drawer ---------- */
+
+/* Glass slides in a felt-lined tray. */
+.sl-slide {
+  width: 12px;
+  height: 16px;
+  border-radius: 2px;
+  border: 1px solid hsl(var(--sl-edge));
+  background: linear-gradient(160deg, hsl(0 0% 100% / 0.85), hsl(var(--sl-glass) / 0.6));
+  box-shadow: 0 1px 2px hsl(30 24% 30% / 0.2);
+}
+
+.sl-slide[data-outcome="correct"] {
+  background: hsl(var(--sl-earned) / 0.8);
+  border-color: hsl(var(--sl-earned));
+}
+
+.sl-slide[data-outcome="partial"] {
+  background: linear-gradient(
+    to top,
+    hsl(var(--sl-earned) / 0.75) 50%,
+    hsl(var(--sl-paper)) 50%
+  );
+  border-color: hsl(var(--sl-earned) / 0.6);
+}
+
+.sl-slide[data-outcome="incorrect"] {
+  background: hsl(var(--sl-bench-deep));
+}
+
+.sl-slide[data-current="true"] {
+  box-shadow: 0 0 0 2px hsl(var(--sl-brass-deep) / 0.8);
+}
+
+/* ---------- Entrance ---------- */
+
+/* The study at ignition: five brass lamps come up along the rail, then the
+   bell jar descends to its plinth, turning as it settles. */
+@keyframes sl-lamp-on {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: brightness(0.6);
+  }
+  60% {
+    opacity: 1;
+    filter: brightness(1.35);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: brightness(1);
+  }
+}
+
+.sl-lamp {
+  animation: sl-lamp-on 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* The jar swings in as it settles; it must land face-on, never mirrored, since
+   it carries its own label text. */
+@keyframes sl-descend {
+  from {
+    opacity: 0;
+    transform: translateY(-46px) rotateY(-26deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateY(0deg);
+  }
+}
+
+.sl-entrance-vitrine {
+  animation: sl-descend 1200ms cubic-bezier(0.22, 1, 0.36, 1) 620ms both;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .specimen-lab *,
+  .specimen-lab *::before,
+  .specimen-lab *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  /* The jar's turn is ambience, not information. Stop it outright rather than
+     spinning it at 1ms, which would strobe. */
+  .sl-vitrine {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .sl-lamp,
+  .sl-entrance-vitrine {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
