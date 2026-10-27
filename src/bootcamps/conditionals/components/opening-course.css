@@ -135,7 +135,7 @@
 @media(max-width:900px) {
   .oc-workspace { grid-template-columns:180px minmax(0,1fr); }
   .oc-course-rail { padding:24px 14px; }
-  .oc-course-screen { padding:48px 24px 70px; }
+  .oc-course-screen { padding:48px 24px 70px; --oc-crumb-x:24px; }
   .oc-course-body .co-section { padding:30px 26px; }
 }
 @media(max-width:640px) {
@@ -144,7 +144,7 @@
   .oc-mobile-nav { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--oc-line); }
   .oc-mobile-nav>a { display:inline-flex; align-items:center; min-height:44px; font-family:Georgia,serif; color:var(--oc-ink); font-size:1.0625rem; }
   .oc-mobile-nav button { display:flex; align-items:center; gap:8px; font-size:.875rem; min-height:44px; padding:8px; }
-  .oc-course-screen { padding:32px 16px 60px; }
+  .oc-course-screen { padding:32px 16px 60px; --oc-crumb-x:16px; }
   .oc-course-index>div[data-course-heading] { margin-bottom:36px; }
   .oc-course-path { gap:24px; }
   .oc-path-card { padding:24px 20px; }
@@ -457,7 +457,10 @@
 
 
 /* Lesson breadcrumb: the chapter (a link back to its page), then the lesson. */
-.oc-course-screen .oc-crumb{display:flex;flex-wrap:wrap;align-items:baseline;gap:.1rem .45rem;margin:-2.75rem 0 2.25rem;text-transform:none;letter-spacing:.01em;font-size:.78rem;color:var(--oc-muted)}
+.oc-course-screen{position:relative}
+/* Pinned in the top-left corner of the content area, out of the layout flow. */
+.oc-course-screen .oc-crumb{position:absolute;top:1.1rem;left:var(--oc-crumb-x,40px);right:var(--oc-crumb-x,40px);display:flex;flex-wrap:nowrap;align-items:baseline;gap:.4rem;margin:0;text-transform:none;letter-spacing:.01em;font-size:.75rem;line-height:1.4;color:var(--oc-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oc-course-screen .oc-crumb a{overflow:hidden;text-overflow:ellipsis}
 .oc-crumb a{color:inherit;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;transition:text-decoration-color .15s,color .15s}
 .oc-crumb a:hover{color:var(--oc-ink);text-decoration-color:currentColor}
 .oc-crumb a:focus-visible{outline:2px solid var(--oc-ink);outline-offset:3px;border-radius:2px}
@@ -465,4 +468,4 @@
 
 /* Lesson summary: no lone last word. */
 .oc-course-note header > p.font-mc-sans{text-wrap:pretty}
-@media(max-width:640px){.oc-course-screen .oc-crumb{margin-top:-1rem;margin-bottom:1.5rem}}
+@media(max-width:640px){.oc-course-screen .oc-crumb{top:.55rem}}

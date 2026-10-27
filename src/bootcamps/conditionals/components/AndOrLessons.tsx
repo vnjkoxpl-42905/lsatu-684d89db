@@ -130,7 +130,7 @@ function OrMeaning() {
       <Section title="Why one missing settles it">
         <p>On the LSAT, OR does not mean pick one. It means you cannot drop both. That is what turns an OR statement into a conditional: take one away, and the other has to be there. The reverse gives you nothing. Learning that Mia studied on Saturday tells you nothing about Sunday.</p>
       </Section>
-      <Section title="Watch the recap: AND and OR"><AndOrLecture lessonId="and-or-both-or-either"/></Section>
+      <Section title="Watch the lesson"><AndOrLecture lessonId="and-or-either-condition"/></Section>
       <Section title="Write the diagram" label="Write the diagram">
         <ol className="ct-moves">
           <li><strong>Negate one half.</strong> Put it in the sufficient condition: “Does not study Saturday.”</li>

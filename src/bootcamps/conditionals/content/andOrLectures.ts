@@ -32,6 +32,38 @@ export const andOrLectures: Record<string, AndOrLecture> = {
       ] },
     ],
   },
+  'and-or-either-condition': {
+    slug: 'or-inclusion',
+    title: 'OR includes at least one',
+    scenes: [
+      { id: 'statement', sentences: [
+        "Here's a statement: Mia will study on Saturday or on Sunday.",
+        "On the LSAT, OR means at least one of the two. Mia could study on Saturday, on Sunday, or on both days.",
+      ] },
+      { id: 'rules-out', sentences: [
+        "So what does this statement rule out? Only one case: Mia skips both days.",
+        "That's the whole job of OR. It won't let you drop both.",
+      ] },
+      { id: 'write', sentences: [
+        "Now turn it into a conditional. Take one half away, and the other has to be there.",
+        "Negate one half and put it on the left: Mia does not study on Saturday.",
+        "Keep the other half exactly as it is on the right: Mia studies on Sunday.",
+        "If Mia does not study on Saturday, then she studies on Sunday.",
+      ] },
+      { id: 'flip', sentences: [
+        "You can start with either half. If Mia does not study on Sunday, then she studies on Saturday.",
+        "That's the contrapositive of the first rule, so the two say the same thing.",
+      ] },
+      { id: 'trap', sentences: [
+        "Here's the trap. Mia studied on Saturday. What about Sunday?",
+        "The statement doesn't say. She might study on Sunday too. OR never limits her to one.",
+      ] },
+      { id: 'habit', sentences: [
+        "So when you see OR, ask one question: what if one half is missing?",
+        "Then the other half has to be there.",
+      ] },
+    ],
+  },
   'and-or-either-side': {
     slug: 'group-placement',
     title: 'Where the group sits',
