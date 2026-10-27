@@ -499,7 +499,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
     {view === 'home' && <CourseHome steps={steps} url={url}/>}
     {chapterPart !== undefined && <ChapterPage key={chapterPart} part={chapterPart} steps={steps} url={url}/>}
     {skillActivity && <SkillPracticeHub steps={steps} url={url} storageScope={storageScope ?? progress?.storageScope}/>}
-    {view === 'practice' && !skillActivity && <><PracticePage steps={steps} url={url} recordedPractice={recordedPractice}/><SkillPracticeLinks steps={steps} url={url}/></>}
+    {view === 'practice' && !skillActivity && <><PracticePage steps={steps} url={url} recordedPractice={recordedPractice}/><SkillPracticeLinks steps={steps} url={url} excludeCards/></>}
     {isIndex && view !== 'home' && view !== 'practice' && chapterPart === undefined && <CourseLessonIndex steps={list} url={url} view={view}/>}
     {view === 'tools' && !skillActivity && <><FlashcardTools url={url} authorizedSteps={steps} storageScope={storageScope ?? progress?.storageScope} allowed={[...(steps.some(step => step.unitId === 'orientation' || step.unitId === 'sufficient-necessary') ? ['foundation'] : []), ...(steps.some(step => step.unitId === 'group-1' || step.id === 'sufficient') ? ['group-1'] : []), ...(steps.some(step => step.unitId === 'group-2' || step.id === 'necessary') ? ['group-2'] : [])]}/></>}
     {projected && current && <section className="oc-course-note" data-course-heading><p className="oc-label">Completed earlier</p><h1>{current.title}</h1><p>Your completed work from the earlier course counts here. Open a new attempt to revise it.</p><button className="oc-action" onClick={() => progress?.resume?.(current.id)}>Resume and revise</button><Link className="oc-back" to={url('lessons')}>Return to course</Link></section>}
@@ -514,7 +514,7 @@ function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }:
       </header> : <header><p className="oc-label">{openingDrillNumber(current.id) ? `Drill ${openingDrillNumber(current.id)}` : 'Practice'}</p><h1>{current.title}</h1></header>}</div>
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions</Link>}
     </div>}
-    {current && <RelatedCourseWork current={current} steps={steps} url={url}/>}
+    {current && (current.type === 'note' || !run) && <RelatedCourseWork current={current} steps={steps} url={url}/>}
     <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id) && !progress?.priorCompletion?.[step.id]).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}><CourseBody step={step} url={url} storageScope={storageScope ?? progress?.storageScope}/></CourseFlashcardUrl.Provider></div>)}</div>
     {!projected && current?.type === 'note' && <LessonSkillLinks lessonId={current.id} steps={steps} url={url}/>}
     {!projected && current?.type === 'note' && !fullCourseLessons.some(lesson => lesson.id === current.id) && <LessonCompletion key={current.id} stepId={current.id}/>}

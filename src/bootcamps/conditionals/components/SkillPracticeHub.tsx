@@ -20,12 +20,12 @@ const descriptions: Record<SkillKind, string> = {
   sort: 'Choose the group, then explain where its condition goes.', 'translate-cards': 'Recall a translation, compare the answer, and keep track of what needs another look.',
   diagram: 'Place the conditions, keep every negative, and check the rule.', unless: 'Practise the four unless forms after the untimed lesson checks.', 'missing-links': 'Supply the rule that connects the given rules to the conclusion.',
 };
-export function SkillPracticeLinks({ steps, url, cardsOnly = false }: { steps: OpeningCourseStep[]; url: OpeningCourseUrl; cardsOnly?: boolean }) {
+export function SkillPracticeLinks({ steps, url, cardsOnly = false, excludeCards = false }: { steps: OpeningCourseStep[]; url: OpeningCourseUrl; cardsOnly?: boolean; excludeCards?:boolean }) {
   const kinds: SkillKind[] = cardsOnly ? ['translate-cards'] : ['sort', 'translate-cards', 'diagram', 'unless', 'missing-links'];
   const groups = allowedSkillGroups(steps);
   return <section className="skill-practice-list" aria-label="More skill practice"><h2>{cardsOnly ? 'Sentence flashcards' : 'Practise a specific skill'}</h2><p>Choose the task you need. This extra practice keeps its own place and does not change course completion.</p>
-    <div className="skill-practice-choices">{kinds.filter(kind => skillKindAllowed(kind, steps)).map(kind => <div key={kind}><h3>{labels[kind]}</h3><p>{descriptions[kind]}</p><Link className="oc-action" to={skillPracticeUrl(url, { kind, groups: kind === 'unless' ? ['g3'] : groups })}>Open {labels[kind]}</Link></div>)}</div>
-    {!kinds.some(kind => skillKindAllowed(kind, steps)) && <p>No additional activities are available in this work.</p>}
+    <div className="skill-practice-choices">{kinds.filter(kind => (!excludeCards || kind !== 'translate-cards') && skillKindAllowed(kind, steps)).map(kind => <div key={kind}><h3>{labels[kind]}</h3><p>{descriptions[kind]}</p><Link className="oc-action" to={skillPracticeUrl(url, { kind, groups: kind === 'unless' ? ['g3'] : groups })}>Open {labels[kind]}</Link></div>)}</div>
+    {!kinds.some(kind => (!excludeCards || kind !== 'translate-cards') && skillKindAllowed(kind, steps)) && <p>No additional activities are available in this work.</p>}
   </section>;
 }
 export function LessonSkillLinks({ lessonId, steps, url }: { lessonId: string; steps: OpeningCourseStep[]; url: OpeningCourseUrl }) {

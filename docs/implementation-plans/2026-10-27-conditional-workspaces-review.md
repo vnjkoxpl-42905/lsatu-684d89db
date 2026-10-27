@@ -136,3 +136,54 @@ Host dispositions:
 - F3 rejected as a regression claim for this task. The pre-edit snapshot at C:/Users/Joshu/AppData/Local/Temp/conditional-workspaces-20261027/before/src/bootcamps/conditionals/components/FlashcardTools.tsx lines36 and39 already restricted the mixed indicator deck to both group1/group2, and validated from against authorizedSteps with empty default. These constraints were part of the immediately preceding authorized navigation work. They remain intended: an empty grant cannot validate a lesson return or supply an unauthorized mixed deck. The allowed-only compatibility guarantee preserves the permitted core decks. Current tests explicitly cover these conditions. This is not restoring a historical unsafe allowlist from HEAD.
 
 Rendered refinement after inspection1: matched Flashcards and course lists to one860px frame, matching28px desktop/24px phone titles, identical progress aria and readback, consistent descriptions and local font inheritance. These source/CSS changes are in the second inspection snapshot.
+
+
+## Implementation inspection 2
+
+{
+  "verdict": "REVISE",
+  "summary": "The URL-context, validation and chapter-scoping logic I read is mostly consistent with the plan. I found one remaining spec gap and two lower-severity issues. The gap: the legacy courseContent=all mixed chapter list still turns into Lessons-only when \"All chapters\" is chosen. I ran no tests, typecheck or build.",
+  "findings": [
+    {
+      "id": "R1",
+      "severity": "medium",
+      "path": "src/bootcamps/conditionals/components/OpeningCourse.tsx (CourseIndexFilters.change, CourseLessonIndex)",
+      "evidence": "On a chapter page with courseContent=all, browseKind is 'all'. Choosing 'All chapters' makes change() compute target = patch.chapter ? chapterView : (browseKind==='drills' ? 'practice' : 'lessons'), which is the global 'lessons' destination. The URL becomes lessons?courseContent=all. CourseLessonIndex then renders CourseBrowsePage with kind=\"lessons\" hard-coded, so the mixed 'Lessons and drills' list silently becomes Lessons-only while the URL still says all. This breaks the plan pin that explicit courseContent=all stays a mixed list. The inspection-1 F2 fix covered only reset and chapter-to-chapter changes, not this path.",
+      "fix": "For browseKind 'all', do not move to a global destination that forces lessons. Either keep the mixed view at the chapter destination, or drop courseContent=all when leaving chapter scope. Add a route test: courseContent=all chapter, choose All chapters, assert a lessons-only result with no courseContent=all in the URL."
+    },
+    {
+      "id": "R2",
+      "severity": "low",
+      "path": "src/bootcamps/conditionals/components/OpeningCourse.tsx (CourseScreen: view==='practice' renders SkillPracticeLinks; RelatedCourseWork)",
+      "evidence": "The global Drills destination still renders SkillPracticeLinks without cardsOnly. That list includes an 'Open Translate and recall' sentence-flashcards entry, which duplicates the unified library and carries no chapter or from context. Outcome 3 says Drills shows drills only, and outcome 9 says to remove duplicate card sections. Separately, RelatedCourseWork renders for any `current` step, including while a drill is running (run=1) and when the step is a projected read-only view. That adds navigation links inside the drill run header area.",
+      "fix": "Pass a filter that excludes 'translate-cards' from SkillPracticeLinks on the Drills page, or confirm in the plan that it is intended. Render RelatedCourseWork only for lessons or for the drill landing page, not while run is true."
+    },
+    {
+      "id": "R3",
+      "severity": "low",
+      "path": "src/bootcamps/conditionals/courseNavigation.ts:58 and OpeningCourse.tsx CourseIndexFilters",
+      "evidence": "courseListUrl now always emits courseContent when content is 'all'. The CourseIndexFilters handlers spread the parsed filters, whose default content is 'all'. As a result, a home-page filter change adds a redundant courseContent=all to the home URL. Any later link built from that URL then carries an explicit mixed marker where the default was previously absent. This is harmless on home but blurs the 'absent means default' contract.",
+      "fix": "Emit courseContent=all only when the caller explicitly requests it, for example only for chapter destinations. Alternatively strip content from the filters for the home destination."
+    }
+  ],
+  "coverage": [
+    "Read in full: courseBrowse.ts, courseCardLinks.ts, CourseBrowseNavigation.tsx, courseNavigation.ts.",
+    "Read SkillPracticeHub.tsx lines 1-80 (SkillPracticeLinks, LessonSkillLinks, browse-context handling).",
+    "Reviewed the supplied tracked diffs of FlashcardTools.tsx, OpeningCourse.tsx and the FlashcardTools, OpeningCourse, routes and routes.andOr tests.",
+    "Read the TermDeck storageScope and initialCardId handling and OpeningCourse expandedDraftScope; the storage-scope handoff to the indicator deck appears equivalent to the old host behaviour.",
+    "Traced the from and courseChapter validation and re-add flow through chooser, player, config and return links."
+  ],
+  "limitations": [
+    "No tests, typecheck, build or browser checks were run, and none are claimed to pass.",
+    "Did not open the CSS files, the new test files (CourseBrowseNavigation, courseBrowse, courseCardLinks, courseNavigation, OpeningCourse.navigation, SkillPracticeHub tests), or flashcardNavigation.ts.",
+    "Did not verify the real-registry chapter-to-card mapping for Chapters 1-7, or the zero-store-writes assertions.",
+    "Visual, responsive and accessibility outcomes were not evaluated.",
+    "Out-of-scope files such as routes.tsx, skillPractice.ts, IndicatorWordDeck, ConditionalFilters and the rest of the TermDeck behaviour are unreviewed and not covered by this verdict."
+  ]
+}
+
+Host dispositions:
+- R1 and R3 accepted. Emit explicit content=all only for chapter destinations. Leaving a mixed chapter for All chapters now opens Lessons with no stale mixed marker. Added URL regression.
+- R2 accepted. Global Drills excludes Translate and recall; related-work navigation appears on lesson and drill landing pages, not during active drill runs. Added regression tests.
+
+Both inspection rounds used. Final small fixes were host-tested after inspection 2 and were not independently re-reviewed. No implementation APPROVED verdict is claimed. Final typecheck and production build passed. Agreed suite: 201 tests passed across ten files before the final fixes; affected suite: 30 tests passed across three files after the final fixes.

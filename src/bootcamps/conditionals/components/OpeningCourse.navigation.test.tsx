@@ -207,3 +207,20 @@ it.each(['sufficient-practice','contrapositive-practice'])('opens the preserved 
   expect(instructions.querySelectorAll('li').length).toBeGreaterThan(2);
   expect(screen.getByRole('link',{name:'Start practice'})).toHaveAttribute('href',expect.stringContaining('run=1'));
 });
+
+it('leaves a mixed chapter for global Lessons with no stale mixed marker',()=>{
+  const result=mount('chapter-1','&courseContent=all');
+  fireEvent.click(screen.getByRole('button',{name:'Filters'}));
+  fireEvent.change(screen.getByRole('combobox',{name:'Chapter'}),{target:{value:''}});
+  expect(new URLSearchParams(result.getSearch()).has('courseContent')).toBe(false);
+  expect(screen.getByRole('heading',{level:1,name:'Lessons'})).toBeVisible();
+  expect(result.container.querySelector('[data-kind="drill"]')).toBeNull();
+  expect(result.save).not.toHaveBeenCalled();expect(result.resume).not.toHaveBeenCalled();
+});
+it('keeps card discovery in Flashcards and related navigation outside an active drill attempt',()=>{
+  mount('practice');
+  expect(screen.queryByRole('link',{name:'Open Translate and recall'})).toBeNull();
+  cleanup();
+  render(<MemoryRouter><OpeningCourseScreen view="sufficient-practice" run steps={NAV_STEPS} url={courseUrl(identity)}/></MemoryRouter>);
+  expect(screen.queryByRole('navigation',{name:'This topic'})).toBeNull();
+});

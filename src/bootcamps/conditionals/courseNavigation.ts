@@ -55,7 +55,7 @@ export function courseListUrl(url: OpeningCourseUrl, destination: string, filter
   const params = new URLSearchParams(query);
   COURSE_LIST_QUERY_KEYS.forEach(key => params.delete(key));
   if (Number.isInteger(filters.chapter) && filters.chapter! > 0) params.set('courseChapter', String(filters.chapter));
-  if (filters.content === 'all' || filters.content === 'lessons' || filters.content === 'drills') params.set('courseContent', filters.content);
+  if (filters.content === 'lessons' || filters.content === 'drills' || (filters.content === 'all' && destination.startsWith('chapter-'))) params.set('courseContent', filters.content);
   if (['not-started', 'in-progress', 'completed'].includes(filters.status ?? '')) params.set('courseStatus', filters.status!);
   const search = params.toString();
   return `${path}${search ? `?${search}` : ''}`;
