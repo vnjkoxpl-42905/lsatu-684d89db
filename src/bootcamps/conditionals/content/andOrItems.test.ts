@@ -99,7 +99,7 @@ describe('Chapter 2 authored items', () => {
       expect(set.items.length, set.id).toBeLessThanOrEqual(8);
       for (const item of set.items) expect(item.why.length, item.id).toBeGreaterThan(30);
     }
-    for (const quiz of Object.values(andOrQuizzes)) expect(quiz).toHaveLength(4);
+    for (const [id, quiz] of Object.entries(andOrQuizzes)) expect(quiz).toHaveLength(['and-or-negate-conditions', 'and-or-negate-group'].includes(id) ? 2 : 4);
   });
 
   it('never reuses a worked example in practice or the Pop Quizzes', () => {

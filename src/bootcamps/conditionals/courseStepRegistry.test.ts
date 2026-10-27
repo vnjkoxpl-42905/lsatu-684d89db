@@ -12,8 +12,21 @@ describe('versioned numbered curriculum', () => {
     expect(courseStepsForEdition()).toBe(courseStepsForEdition());
     expect(courseStepsForEdition(edition)).toBe(COURSE_STEP_REGISTRY);
     expect(new Set(COURSE_STEP_REGISTRY.map(s => s.id)).size).toBe(COURSE_STEP_REGISTRY.length);
-    expect(COURSE_STEP_REGISTRY.filter(s => s.part === 2)).toHaveLength(8);
+    expect(COURSE_STEP_REGISTRY.filter(s => s.part === 2).map(s => s.id)).toEqual([
+      'and-or-both-or-either', 'and-or-either-condition', 'and-or-meaning-practice',
+      'and-or-either-side', 'and-or-placement-practice', 'and-or-negate-conditions',
+      'and-or-whole-group-practice', 'and-or-negate-group', 'and-or-transfer-practice',
+    ]);
     expect([...new Set(COURSE_STEP_REGISTRY.map(s => s.part))]).toEqual([1,2,3,4,5,6,7]);
+  });
+  it('places new 2.4 before negation practice and preserves 2.5 as a de-morgan-only lesson', () => {
+    const negation = COURSE_STEP_REGISTRY.find(step => step.id === 'and-or-negate-conditions')!;
+    const contraposition = COURSE_STEP_REGISTRY.find(step => step.id === 'and-or-negate-group')!;
+    expect(negation).toMatchObject({ type: 'note', lessonNumber: '2.4', unitId: 'de-morgan', primaryUnitId: 'de-morgan', accessAnyOfUnitIDs: ['de-morgan'], allowedAction: 'learn' });
+    expect(contraposition).toMatchObject({ type: 'note', lessonNumber: '2.5', unitId: 'de-morgan', primaryUnitId: 'de-morgan', accessAnyOfUnitIDs: ['de-morgan'], allowedAction: 'learn' });
+    expect(registryStepAllowed(assignment({ ...full, scope: 'skill', unitId: 'de-morgan' }), negation)).toBe(true);
+    expect(registryStepAllowed(assignment({ ...full, scope: 'skill', unitId: 'and-or' }), negation)).toBe(false);
+    expect(LEGACY_OPENING_COURSE_PATH.some(step => step.id === negation.id)).toBe(false);
   });
   it('gives all thirty units exactly one disposition and every eligible target required work', () => {
     expect(Object.keys(LEGACY_UNIT_DISPOSITIONS).sort()).toEqual(conditionalUnits.map(u => u.id).sort());

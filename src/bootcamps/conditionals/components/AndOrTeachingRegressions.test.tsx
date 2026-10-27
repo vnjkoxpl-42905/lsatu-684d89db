@@ -285,12 +285,12 @@ it('uses the taught short phrases locally without changing the shared rule readb
  expect([...screen.getByRole('region', { name: 'AND means both' }).querySelectorAll('.ao-diagram .ct-pill')].map(node => node.textContent)).toEqual(['Photo ID shown', 'Address proof shown', 'Gets card']);
  expect(within(screen.getByRole('region', { name: 'AND means both' })).getByText('If the visitor shows photo ID and the visitor shows proof of address, then the visitor gets a library card.')).toBeVisible();
  and.unmount();
- render(<MemoryRouter><AndOrLesson id="and-or-negate-group"/></MemoryRouter>);
- expect(screen.getByText('Not both:')).toBeVisible();
- expect(screen.getByText('Neither:')).toBeVisible();
+ render(<MemoryRouter><AndOrLesson id="and-or-negate-conditions"/></MemoryRouter>);
+ expect(screen.getByText(/Not both.*does not mean.*neither/)).toBeVisible();
+ expect(screen.getByRole('heading', { name: 'An OR fails only when neither condition holds' })).toBeVisible();
 });
 
-it.each(['and-or-both-or-either', 'and-or-either-condition', 'and-or-either-side', 'and-or-negate-group'])('uses direct AND/OR wording instead of the rejected terminology in %s', id => {
+it.each(['and-or-both-or-either', 'and-or-either-condition', 'and-or-either-side', 'and-or-negate-conditions', 'and-or-negate-group'])('uses direct AND/OR wording instead of the rejected terminology in %s', id => {
  const { container } = render(<MemoryRouter><AndOrLesson id={id}/></MemoryRouter>);
  expect(container.textContent).not.toMatch(/\bconnectors?\b/i);
 });

@@ -36,3 +36,22 @@ Actual MP4 frames inspected at 0, 10, 14, 20, 29, 48, 62 and 70 seconds, coverin
 - `unless-words-phone.png`: hero and first question at 375px.
 
 No commit, push, database write, deployment or publication was performed. Existing unrelated staged and unstaged work was preserved.
+
+## All accepted Claude findings implemented, 2026-10-27
+
+Joshua subsequently authorized every accepted correction. This section supersedes the initial film hash and test count above for the revised local implementation.
+
+- Added Played/Rains definitions in the sentence scene before either chip, retained the existing pick-scene key, and added the same definitions in the open-facts scene. The sentence-scene key starts at 12.679s; first Played chip starts at 14.185s.
+- Moved the store sentence earlier: fully visible at 50.515s. Opens/Arrives definitions are fully visible at 50.865s. The first crossed-out Opens chip starts at 51.363s. Definitions remain visible with tokens; the explanation was moved to y580 to preserve space.
+- Broadened notation checks to slash/tilde before any letter, case-insensitively. Checks cover the rendered article, formula accessible names, authored lesson/quiz data and actual film transcript. Provenance path metadata is excluded because directory separators are not teaching notation. A new regression test brings the suite to 621 tests.
+- Prefixed all lesson-specific fc-u rules with fc-unless. Removed duplicate viewport stacking; the content-width container query is now the single stacking rule. Widened English readbacks to their grid column, removing the final-word wrap in the desktop screenshot.
+
+Verification: **621/621 tests passed in 46 files**, final typecheck passed and production build passed. The built dist MP4 hash matches the app public MP4 exactly. Logs: `unless-review-fixes-tests-20261027.log`, `unless-review-fixes-typecheck-20261027.log`, `unless-review-fixes-build-20261027.log`.
+
+Browser checks after CSS corrections: 375px document/article 375/343px; 768px 768/540px; 980px 980/680px; 1280px 1280/860px. No formula overflow. Stacked at 375 and 768; paired at 980 and 1280. At desktop both readbacks have the same top and 54px reserved height, with max-width none. Choice targets remain 48px; keyboard selection/focus works; reduced-motion transition is 0s; no console errors. New images: `unless-review-fixes-desktop.png`, `unless-review-fixes-phone.png`. Measurements: `unless-review-fixes-layout.json`.
+
+Final film remains 73.633333 seconds, 1920x1080, 30fps, AAC. Narration and captions unchanged; no provider calls. Final MP4 SHA256: `b6c79bac6783a3de6383ef154886c5c068c24f9407043a15f0e79aec6341619e`. Source-render/app MP4, JPG and VTT match. The build output MP4 also matches. HyperFrames check passes with zero craft/layout warnings; the four pre-existing fade contrast samples at 36.809s remain.
+
+Actual final MP4 frames before/at/after first chip: main 14.166667, 14.233333 and 14.8 seconds; store 51.333333, 51.4 and 52.0 seconds. Both keys are stable and readable before their tokens enter, without overlap. Boundary contact sheet: `C:/Users/Joshu/dev/ai-os-projects/conditional-full-course-video-20261025/exception-language/review-label-timing.jpg`. All six scenes: `review-contact-sheet.jpg` in the same directory. Timing, frame paths and hashes: `label-timing-verification.json` in that directory. These are sampled-frame checks, not a claim of continuous film/audio playback.
+
+Fresh Claude final inspection follows against these exact corrected files. The earlier inspection does not cover these later edits.

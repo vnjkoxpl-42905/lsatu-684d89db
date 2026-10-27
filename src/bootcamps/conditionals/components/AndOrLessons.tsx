@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Check, X } from 'lucide-react';
 import { ReferenceQuestion } from './ConditionalReferenceSequence';
 import { PulseWord, PunchWord } from './ContrapositiveVisuals';
@@ -7,11 +7,30 @@ import { AndOrQuiz } from './AndOrPractice';
 import { libraryExample, negationExamples, placementExamples } from '../content/andOrItems';
 import { contrapositive, group, lit, ruleMistakes, ruleSentence, type Atom, type Rule } from '../content/andOrLogic';
 
-// Every lesson follows the approved page shape: what it is, why it matters, the film, how to do it, what it is not,
-// one habit, and the Pop Quiz. One main example runs through each page, with at most one fresh second example.
+// Teach the meaning and operation before fresh formative attempts. The separated negation and contrapositive
+// lessons omit the earlier mixed-scope film; their written procedures and quizzes remain independently usable.
 
 function Section({ title, label, children }: { title: string; label?: string; children: ReactNode }) {
   return <section className="co-section" aria-label={label}><div className="co-section-heading"><h2>{title}</h2></div>{children}</section>;
+}
+
+/** Formative only: no course or drill record. A miss keeps the answer hidden and offers another attempt. */
+function LessonCheck({ prompt, options, correct, hints, explanation }: { prompt: string; options: string[]; correct: number; hints: string[]; explanation: string }) {
+  const id = useId();
+  const first = useRef<HTMLButtonElement>(null);
+  const [tried, setTried] = useState<number[]>([]);
+  const [outcome, setOutcome] = useState<'open' | 'correct' | 'revealed'>('open');
+  const resetFocus = useRef(false);
+  useEffect(() => { if (!tried.length && resetFocus.current) { first.current?.focus(); resetFocus.current = false; } }, [tried.length]);
+  const last = tried[tried.length - 1];
+  const misses = tried.filter(index => index !== correct).length;
+  return <div className="cr-question co-check ao-lesson-check" data-formative-check>
+    <h3 id={id}>{prompt}</h3>
+    <div className="cr-answer-options" role="group" aria-labelledby={id}>{options.map((option, index) => <button ref={index === 0 ? first : undefined} type="button" key={option} disabled={outcome !== 'open' || tried.includes(index)} data-state={outcome !== 'open' && index === correct ? 'right' : tried.includes(index) ? 'wrong' : 'open'} onClick={() => { setTried(previous => [...previous, index]); if (index === correct) setOutcome('correct'); }}>{option}</button>)}</div>
+    <div role="status" aria-live="polite">{outcome === 'open' && last !== undefined && <div className="cr-feedback cr-revise"><strong>Not yet.</strong><p>{hints[last]}</p><p>Try another answer.</p></div>}{outcome !== 'open' && <div className="cr-feedback cr-correct"><strong>{outcome === 'correct' ? 'That works.' : 'Here is the answer.'}</strong><p>{explanation}</p>{outcome === 'revealed' && <p>You looked at the answer. This check does not count as an independent success.</p>}</div>}</div>
+    {outcome === 'open' && misses >= 2 && <button type="button" className="ao-text-button" onClick={() => setOutcome('revealed')}>Show me the answer</button>}
+    {tried.length > 0 && <button type="button" className="cr-reset" onClick={() => { resetFocus.current = true; setTried([]); setOutcome('open'); }}>Try again</button>}
+  </div>;
 }
 
 // ---- 2.1 AND and 2.2 OR ---------------------------------------------------------------------
@@ -80,8 +99,12 @@ function GroupMeaning({ connector, film }: { connector: 'AND' | 'OR'; film?: Rea
     <Section title="When would the rule be broken?" label="When would the rule be broken?">
       <p>{isAnd ? 'A visitor shows both documents but does not get a card. That breaks this conditional: its sufficient condition is met, but its necessary condition is false.' : 'A visitor shows photo ID but does not get a card. That breaks this conditional too. One document meets the OR condition, so the card must follow.'}</p>
       <p>{isAnd ? 'A different visitor shows photo ID and no proof of address. The AND condition is not met. This visitor could get a card through another route, or could leave without one. Either case fits this rule.' : 'A different visitor shows neither document. The OR condition is not met. This visitor could get a card through another route, or could leave without one. Either case fits this rule.'}</p>
-      {isAnd ? <ReferenceQuestion prompt="Photo ID is shown. Nothing is said about proof of address. Do we know that both conditions are met?" options={['Yes, photo ID is enough','Not yet; proof of address is still unknown']} correct={1} feedback={['The AND rule needs both documents. One document is only part of its sufficient condition.','We do not know whether both conditions are met. Unknown proof of address does not mean proof of address is absent.']}/> : <>
-        <ReferenceQuestion prompt="A pass is valid if stamped or signed. This pass is both stamped and signed. Does this pass meet the OR condition?" options={['Yes, one or both is enough','No, OR allows only one']} correct={0} feedback={['Both is allowed. The pass meets the rule’s sufficient condition.','Plain OR allows both. Only wording such as but not both excludes that case.']}/>
+      {isAnd ? <ReferenceQuestion prompt="Photo ID is shown. Nothing is said about proof of address. Do we know that both conditions are met?" options={['Yes, photo ID is enough','Not yet; proof of address is still unknown']} correct={1} feedback={['Look at the fact about proof of address. Does the question say it was shown?','We do not know whether both conditions are met. Unknown proof of address does not mean proof of address is absent.']}/> : <>
+        <ReferenceQuestion prompt="A pass is valid if stamped or signed. This pass is both stamped and signed. Does this pass meet the OR condition?" options={['Yes, one or both is enough','No, OR allows only one']} correct={0} feedback={['Both is allowed. The pass meets the rule’s sufficient condition.','Does plain OR exclude both? Compare this case with Mia studying on both days.']}/>
+      </>}
+      {isAnd && <>
+        <LessonCheck prompt="A tray is ready if it is washed and dried. It is washed but not dried. Has the sufficient condition been met?" options={['Yes, washing is enough', 'No, one required condition is false', 'We cannot tell whether it is dried']} correct={1} hints={['Check the word joining washed and dried. Does washing meet both conditions?', '', 'Compare the question with the fact about drying. Is drying unmentioned or denied?']} explanation="No. Drying is false, so both conditions are not met. This rule gives no guarantee that the tray is ready."/>
+        <LessonCheck prompt="A badge is issued if a form is signed and a fee is paid. Neither happens, and no badge is issued. Does this break the rule?" options={['Yes, every person must get a badge', 'No, the sufficient condition is not met', 'Yes, a missing fee proves the badge should be issued']} correct={1} hints={['Who does this rule promise a badge to?', '', 'Does the rule make a missing fee sufficient for anything?']} explanation="No. The promise applies when the form is signed and the fee is paid. Neither is true here. Not issuing a badge does not break this rule."/>
       </>}
     </Section>
   </div>;
@@ -90,7 +113,7 @@ function GroupMeaning({ connector, film }: { connector: 'AND' | 'OR'; film?: Rea
 function AndMeaning() {
   return <>
     <GroupMeaning connector="AND" film={<Section title="Watch the lesson"><AndOrLecture lessonId="and-or-both-or-either"/></Section>}/>
-    <Section title="A habit to keep"><p>When you see AND, check that the facts give you both conditions. One condition by itself does not meet the AND condition, so the rule guarantees nothing yet.</p></Section>
+    <Section title="A habit to keep"><p>When AND is in the sufficient condition, check that both conditions are met before using the guarantee. When AND is in the necessary condition, both conditions follow whenever the sufficient condition is met.</p></Section>
     <AndOrQuiz quizId="and-or-both-or-either"/>
   </>;
 }
@@ -173,10 +196,13 @@ function OrMeaning() {
         <p>OR also sits inside if/then rules: <strong>A visitor gets a library card if the visitor shows photo ID or proof of address.</strong> Here the OR is in the sufficient condition, so either document is enough for a card, and so are both. When an OR is in the necessary condition, at least one of the two follows.</p>
         <AndOrDiagram atoms={libraryAtoms} rule={libraryExample.either}/>
         <p>That rule is broken only when a visitor shows a document and still gets no card. A visitor who shows neither document breaks nothing: the rule says nothing about that visitor.</p>
-        <ReferenceQuestion prompt="A pass is valid if stamped or signed. This pass is both stamped and signed. Does this pass meet the OR condition?" options={['Yes, one or both is enough','No, OR allows only one']} correct={0} feedback={['Both is allowed. The pass meets the rule’s sufficient condition.','Plain OR allows both. Only wording such as but not both excludes that case.']}/>
+        <p>Keep these two uses apart. “Mia studies Saturday or Sunday” tells us at least one happens. If Saturday is ruled out, Sunday must happen. But the library rule only says what showing a document guarantees. Learning that photo ID was not shown does not prove proof of address was shown. Neither document may have been shown.</p>
+        <LessonCheck prompt="A parcel gets a red label if it is fragile or heavy. It is not fragile. Nothing says whether it is heavy. Must it be heavy?" options={['Yes, one OR condition must always hold', 'No; whether it is heavy is still open', 'No; it must be light']} correct={1} hints={['Is fragile or heavy asserted as a fact, or does it describe when a red label is guaranteed?', '', 'Does not fragile tell us anything about weight?']} explanation="Whether it is heavy is still open. The rule gives a label if either condition is met. It never says that every parcel meets one of them."/>
+        <LessonCheck prompt="A letter is sent if a form is signed or stamped. We know it is not signed, but nothing about the stamp. Is the OR condition ruled out?" options={['Yes, one false condition rules out OR', 'No, the stamp is still unknown', 'Yes, an unknown stamp counts as absent']} correct={1} hints={['How many conditions must fail before an OR is false?', '', 'A fact we have not been given is different from a fact that has been denied.']} explanation="No. A stamp could still meet the OR condition. Unknown is not the same as false."/>
+        <ReferenceQuestion prompt="A pass is valid if stamped or signed. This pass is both stamped and signed. Does this pass meet the OR condition?" options={['Yes, one or both is enough','No, OR allows only one']} correct={0} feedback={['Both is allowed. The pass meets the rule’s sufficient condition.','Does plain OR exclude both? Compare this case with Mia studying on both days.']}/>
       </Section>
     </div>
-    <Section title="A habit to keep"><p>When you see OR, ask what happens if one half is missing: the other half must be there. Never conclude which one is true, and never rule out both.</p></Section>
+    <Section title="A habit to keep"><p>When a statement asserts A or B, at least one must be true. If A is false, B must be true. When OR sits inside a conditional, first check what the rule and facts actually establish. An untriggered rule does not make either of its conditions happen.</p></Section>
     <AndOrQuiz quizId="and-or-either-condition"/>
   </>;
 }
@@ -229,62 +255,67 @@ function EitherSide() {
   </>;
 }
 
-// ---- 2.4 Contrapositives with AND and OR -----------------------------------------------------------------------
+// ---- 2.4 Negate AND and OR ---------------------------------------------------------------------
+
+function NegateConditions() {
+  const [brakes, lights] = negationExamples[0].item.atoms;
+  return <>
+    <Section title="Start with when the statement fails">
+      <p className="ct-definition"><strong>Negate a statement by treating it as not true.</strong> Ask what would make it false.</p>
+      <p>Suppose both statements are true: <strong>the brakes pass AND the lights work.</strong> For that combination to fail, at least one must be false. The brakes do not pass, or the lights do not work. Both may fail, but one failure is enough.</p>
+      <p>That is why negating AND gives OR. “Not both” does not mean “neither.” It still allows one condition to hold.</p>
+      <FourCombos first={brakes} second={lights} mode="opposite"/>
+      <LessonCheck prompt="The screen works AND the speaker works. Which statement is its negation?" options={['The screen does not work AND the speaker does not work', 'The screen does not work OR the speaker does not work', 'The screen works OR the speaker works']} correct={1} hints={['Would the original statement already fail if just the screen stopped working?', '', 'Changing AND to OR alone leaves both conditions positive. Have you negated them?']} explanation="The screen does not work OR the speaker does not work. At least one failure makes the original AND statement false. Both failures are allowed too."/>
+    </Section>
+    <Section title="An OR fails only when neither condition holds">
+      <p>Now a different statement: <strong>the brakes pass OR the lights work.</strong> One passing condition keeps that statement true. To make it false, both must fail: the brakes do not pass AND the lights do not work.</p>
+      <p>So negating OR gives AND. We need both denials, because either original condition would have been enough.</p>
+      <LessonCheck prompt="A parcel is fragile OR it is heavy. Which statement is its negation?" options={['The parcel is not fragile OR it is not heavy', 'The parcel is fragile AND it is heavy', 'The parcel is not fragile AND it is not heavy']} correct={2} hints={['Try a fragile, light parcel. Is the original OR true? Would this proposed negation also be true?', 'Both conditions holding would satisfy the original OR. Would that negate it?', '']} explanation="The parcel is not fragile AND it is not heavy. Neither condition holds, so the original OR is false."/>
+    </Section>
+    <Section title="Negate each condition, including an existing not">
+      <ol className="ct-moves"><li><strong>Keep each complete condition.</strong> Keep its subject and every restriction.</li><li><strong>Negate each one.</strong> A condition that already says not becomes positive.</li><li><strong>Switch AND and OR.</strong> AND becomes OR; OR becomes AND.</li></ol>
+      <p>For example, negate <strong>the door is locked AND the alarm is not armed</strong>. You get <strong>the door is not locked OR the alarm is armed</strong>. Negating “not armed” gives “armed.”</p>
+      <LessonCheck prompt="The project is finished AND the permit has not expired. Which statement is its negation?" options={['The project is not finished OR the permit has expired', 'The project is not finished AND the permit has expired', 'The project is not finished OR the permit has not expired']} correct={0} hints={['', 'Does an AND need both conditions to fail, or would one failure be enough?', 'Look at has not expired. What happens when you negate that complete idea?']} explanation="The project is not finished OR the permit has expired. At least one original condition is false. Negating has not expired gives has expired."/>
+    </Section>
+    <Section title="This is not the negation of an entire conditional"><p>Here we negated conditions joined by AND or OR. We did not claim an if/then rule was false. Next, we will use these denials when writing a conditional’s contrapositive.</p></Section>
+    <AndOrQuiz quizId="and-or-negate-conditions"/>
+  </>;
+}
+
+// ---- 2.5 Contrapositives with AND and OR ----------------------------------------------------------
 
 function NegateGroup() {
   const float = negationExamples[0].item;
-  const [brakes, lights] = float.atoms;
   const mistakes = ruleMistakes(float.rule);
   const reverse = mistakes.find(mistake => mistake.kind === 'converse')!.rule;
   const keeps = mistakes.find(mistake => mistake.kind === 'keeps-connector')!.rule;
   return <>
-    <Section title="Start with when the group fails">
-      <p className="ct-definition"><strong>To deny a group, ask when it fails. Then say that.</strong></p>
-      <p>Here is a rule: <strong>A parade float is approved if its brakes pass and its lights work.</strong> That group fails when at least one member is missing: the brakes do not pass, or the lights do not work.</p>
+    <Section title="Use the denial inside the contrapositive">
+      <p>A contrapositive says the same thing as the original conditional. If a rule’s necessary condition is false, its sufficient condition cannot be true.</p>
+      <p>You already know how to negate conditions joined by AND or OR. Now reverse the two sides of a conditional and negate each side. Keep every condition on its own side together as you do it.</p>
+      <p>This is an equivalent rule. It is different from saying that the original conditional is false.</p>
     </Section>
-    <Section title="Why AND and OR change">
-      <p>AND changes to OR, and OR changes to AND, because you are denying that those conditions hold together. <PulseWord>Deny AND</PulseWord> and you get at least one is missing, an OR of denials. <PulseWord>Deny OR</PulseWord> and you get every one is missing, an AND of denials.</p>
-      <p>For the contrapositive, reverse the sides and negate both complete sides. Within a group, negate every condition and switch AND to OR, or OR to AND. This switch expresses the denial of the connected conditions.</p>
-    </Section>
-    <Section title="Watch the lesson">
-      <AndOrLecture lessonId="and-or-negate-group"/>
-    </Section>
-    <Section title="How to flip a rule with a group">
-      <p>See when the float group fails. Set the facts and compare three statements: both hold, not both, and neither.</p>
-      <FourCombos first={brakes} second={lights} mode="opposite"/>
-      <p>“Not both” is true in three of the four cases. “Neither” is true in only one. They are different statements, and the denial of <em>both</em> is <strong>not both</strong>. For an OR the logic runs the other way: it fails only when every member fails, so its denial is <strong>neither</strong>.</p>
-      <ol className="ct-moves">
-        <li><strong>Step 1: Flip the sides.</strong> The right side goes on the left, and the left side goes on the right.</li>
-        <li><strong>Step 2: Put NOT on every member.</strong> If a member already has a NOT, the two cancel.</li>
-        <li><strong>Step 3: Switch AND and OR.</strong> AND becomes OR, and OR becomes AND. A single condition has no AND or OR to change.</li>
-      </ol>
-      <p>Here is the switch on its own, using the library documents from Lessons 2.1 and 2.2:</p>
-      <dl className="ao-reading-transformations">
-        <div><dt>Photo ID AND proof of address</dt><dd>no photo ID OR no proof of address</dd><dd><strong>Not both:</strong> at least one condition is absent.</dd></div>
-        <div><dt>Photo ID OR proof of address</dt><dd>no photo ID AND no proof of address</dd><dd><strong>Neither:</strong> both conditions are absent.</dd></div>
-      </dl>
-      <p>Now use that denial in the library rule from Lesson 2.1. The original says showing both documents guarantees a card.</p>
+    <Section title="How to take the contrapositive">
+      <ol className="ct-moves"><li><strong>Step 1: Flip the sides.</strong> The original necessary condition goes on the if side.</li><li><strong>Step 2: Negate every condition.</strong> If a condition already has a not, the two cancel.</li><li><strong>Step 3: Switch AND and OR.</strong> AND becomes OR; OR becomes AND. A single condition has neither to change.</li></ol>
+      <p>Start with the library rule from Lesson 2.1: showing both documents guarantees a card. Try the steps before revealing the finished contrapositive.</p>
       <ContrapositiveDemo item={{ id: 'library-contrapositive-demo', statement: 'A visitor gets a library card if the visitor shows photo ID and proof of address.', atoms: libraryAtoms, rule: libraryExample.both, task: { kind: 'contrapositive' }, why: 'Without a card, at least one document must be absent.' }} label="The library rule: reverse, negate and switch"/>
       <p>At least one document must be missing; it need not be both.</p>
-      <p>Compare the OR rule from Lesson 2.2: showing either document is enough for a card. Without a card, neither document can have been shown. If one had been shown, this rule would require a card.</p>
+      <p>Compare the OR rule from Lesson 2.2: showing either document guarantees a card. What must be true if the visitor does not get a card?</p>
       <ContrapositiveDemo item={{ id: 'library-or-contrapositive-demo', statement: 'A visitor gets a library card if the visitor shows photo ID or proof of address.', atoms: libraryAtoms, rule: libraryExample.either, task: { kind: 'contrapositive' }, why: 'Without a card, neither document can have been shown.' }} label="The OR library rule: reverse, negate and switch"/>
-      <p>Both documents must be absent. Switching or to + without reversing the sides and negating each condition gives the wrong rule.</p>
-      <p>Back to the parade float:</p>
-      <ContrapositiveDemo item={float} label="Flip, deny and switch: the parade float"/>
-      <p>Now a fresh rule where a NOT is already there, and the group is on the right:</p>
+    </Section>
+    <Section title="An existing negative still cancels">
+      <p>Now a fresh rule where a not is already there and the OR is in the necessary condition. Negate each condition and change OR to AND.</p>
       <ContrapositiveDemo item={negationExamples[1].item} label="Flip, deny and switch: the pool"/>
     </Section>
-    <Section title="What it is not">
-      <p>Two look-alikes fail. Wrong answer choices use them on purpose.</p>
-      <ErrorCards start={{ text: ruleSentence(float.atoms, float.rule) }} cards={[
-        { verdict: 'wrong', how: 'Flip the sides and change nothing else.', diagram: <AndOrDiagram atoms={float.atoms} rule={reverse} origin={float.rule}/> },
-        { verdict: 'wrong', how: 'Deny every member but keep the AND.', diagram: <AndOrDiagram atoms={float.atoms} rule={keeps} origin={float.rule}/> },
-        { verdict: 'right', how: 'Flip the sides, deny each condition, switch AND and OR.', diagram: <AndOrDiagram atoms={float.atoms} rule={contrapositive(float.rule)} origin={float.rule}/> },
-      ]}/>
+    <Section title="Try a fresh rule">
+      <LessonCheck prompt="If a shed is open, its door is unlocked OR its side gate is open. Which statement is the contrapositive?" options={['If the door is not unlocked AND the side gate is not open, the shed is not open', 'If the door is not unlocked OR the side gate is not open, the shed is not open', 'If the door is unlocked OR the side gate is open, the shed is open']} correct={0} hints={['', 'To deny the original OR, would one false condition be enough?', 'This starts from the original result. Did you both reverse and negate?']} explanation="If the door is not unlocked AND the side gate is not open, the shed is not open. Both alternatives in the required OR are denied. An open shed would have to meet at least one of them."/>
     </Section>
-    <Section title="A habit to keep">
-      <p>You do not need to write the contrapositive of every rule. Write it when a requirement is denied, or when a chain needs it. When you do, look at each group and ask when it fails.</p>
-    </Section>
+    <Section title="What it is not"><p>Compare these changes to the parade-float rule.</p><ErrorCards start={{ text: ruleSentence(float.atoms, float.rule) }} cards={[
+      { verdict: 'wrong', how: 'Flip the sides and change nothing else.', diagram: <AndOrDiagram atoms={float.atoms} rule={reverse} origin={float.rule}/> },
+      { verdict: 'wrong', how: 'Negate each condition but keep the AND.', diagram: <AndOrDiagram atoms={float.atoms} rule={keeps} origin={float.rule}/> },
+      { verdict: 'right', how: 'Flip the sides, negate each condition, switch AND and OR.', diagram: <AndOrDiagram atoms={float.atoms} rule={contrapositive(float.rule)} origin={float.rule}/> },
+    ]}/></Section>
+    <Section title="A habit to keep"><p>You do not need to write the contrapositive of every rule. Use it when a requirement is denied or when another rule connects to it. Reverse the sides and negate each complete side. Check AND, OR and every original not.</p></Section>
     <AndOrQuiz quizId="and-or-negate-group"/>
   </>;
 }
@@ -294,6 +325,7 @@ export function AndOrLesson({ id }: { id: string }) {
     case 'and-or-both-or-either': return <AndMeaning/>;
     case 'and-or-either-condition': return <OrMeaning/>;
     case 'and-or-either-side': return <EitherSide/>;
+    case 'and-or-negate-conditions': return <NegateConditions/>;
     case 'and-or-negate-group': return <NegateGroup/>;
     default: throw new Error(`Unknown And/Or lesson: ${id}`);
   }

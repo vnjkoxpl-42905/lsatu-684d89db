@@ -12,6 +12,7 @@ import { getCurriculumDifficulty, getCurriculumUnits } from './curriculumPath';
 import { conditionalAssignmentAllowsAction, registryStepAllowed, type UnavailableConditionalAssignment, type ResolvedConditionalAssignment as ConditionalAssignment } from './assignments';
 import { FULL_CONDITIONAL_EDITION } from '@/lib/conditionalCourseEdition';
 import { createEditionCourseStore, editionStorageScope } from './courseProgress';
+import { applyConditionalRequirements, resolveConditionalRequirements } from './courseRequirements';
 import { ConditionalLessonNote } from './components/ConditionalLessonNote';
 import { OpeningCourseNavigation, OpeningCourseScreen, type OpeningCourseUrl } from './components/OpeningCourse';
 import { CHAPTER_TWO_LEGACY_UNIT_IDS, OPENING_COURSE_PATH, openingCourseStep, openingStepAccessUnits, courseStepsForEdition, LEGACY_UNIT_DISPOSITIONS, LEGACY_OPENING_COURSE_STEPS } from './openingCoursePath';
@@ -198,7 +199,10 @@ function OpeningCourseRoute({ view: surface }: { view?: string }) {
   const stableEditionStore = useMemo(() => ({ ...editionStore, save: saveEdition, resume: resumeEdition }), [editionStore, saveEdition, resumeEdition]);
   const requestedStep = openingCourseStep(stepId);
   const candidates = requestedStep && !editionSteps.some(step => step.id === requestedStep.id) && !edition ? [...editionSteps, requestedStep] : editionSteps;
-  const steps = candidates.filter(step => isAdmin ? editionSteps.some(entry => entry.id === step.id) || !edition && LEGACY_OPENING_COURSE_STEPS.some(entry => entry.id === step.id) : !!active && registryStepAllowed(active, step, params.has('level') ? difficultyFrom(params) : active.difficulty));
+  const visibleSteps = candidates.filter(step => isAdmin ? editionSteps.some(entry => entry.id === step.id) || !edition && LEGACY_OPENING_COURSE_STEPS.some(entry => entry.id === step.id) : !!active && registryStepAllowed(active, step, params.has('level') ? difficultyFrom(params) : active.difficulty));
+  const steps = edition && !isAdmin && active
+    ? applyConditionalRequirements(visibleSteps, active.requirements ?? resolveConditionalRequirements(active.target))
+    : visibleSteps;
   // Chapter 2 topics keep their recorded skill drills reachable here without joining the opening-edition membership.
   const units = selectedUnits(selection).filter(unit => edition ? LEGACY_UNIT_DISPOSITIONS[unit.id]?.kind === 'primary' && steps.some(step => step.primaryUnitId === unit.id && (isAdmin || !!active && registryStepAllowed(active, step, active.difficulty))) : CONDITIONAL_OPENING_UNIT_IDS.some(id => id === unit.id));
   const recordedPractice = <section className="cb-card"><h2>Your assigned skill drills</h2><p>These drills record your responses and reasoning in your existing work.</p><div className="cb-actions">{units.filter(unit => isAdmin || !!active && conditionalAssignmentAllowsAction(active, { unitId: unit.id, action: 'practice', difficulty: active.difficulty ?? getCurriculumDifficulty(unit) })).map(unit => <Link key={unit.id} className="cb-button" to={actionUrl(unit, 'practice', selection)}>{unit.title}<ArrowRight size={16}/></Link>)}</div></section>;

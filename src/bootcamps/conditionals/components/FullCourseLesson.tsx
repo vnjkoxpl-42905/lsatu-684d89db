@@ -2,6 +2,8 @@ import { useState } from 'react';
 import type { FullCourseLesson as Lesson, FullCourseMedia } from '../content/fullCourseTypes';
 import { FullCourseDrill } from './FullCourseDrill';
 import { UnlessLesson } from './UnlessLesson';
+import { ExclusionLesson } from './ExclusionLesson';
+import { NegativeTranslationLesson } from './NegativeTranslationLesson';
 import './full-course.css';
 
 function Demonstration({ demo }: { demo: Lesson['demos'][number] }) {
@@ -15,8 +17,11 @@ function LessonFilm({ media }: { media: FullCourseMedia }) {
 }
 /** The course host supplies the edition-aware progress store and verified media manifest. */
 export function FullCourseLesson({ lesson, courseStepId, media }: { lesson: Lesson; courseStepId?: string; media?: FullCourseMedia }) {
-  const quiz = <section className="fc-quiz"><h2>Pop Quiz</h2><FullCourseDrill key={lesson.id} courseStepId={courseStepId ?? lesson.id} embedded autoStart drill={{ id: lesson.id, title: 'Pop quiz', unitId: lesson.unitId, part: lesson.part, afterLessonId: lesson.id, instructions: [], items: lesson.quiz }}/></section>;
+  const targeted = ['exception-language', 'exclusion-language', 'negative-translation'].includes(lesson.id);
+  const quiz = <section className="fc-quiz"><h2>Pop Quiz</h2><FullCourseDrill key={lesson.id} courseStepId={courseStepId ?? lesson.id} embeddedSuccessExplanation={targeted ? 'full' : 'first-sentence'} embedded autoStart drill={{ id: lesson.id, title: 'Pop quiz', unitId: lesson.unitId, part: lesson.part, afterLessonId: lesson.id, instructions: [], items: lesson.quiz }}/></section>;
   if (lesson.id === 'exception-language') return <UnlessLesson lesson={lesson} film={media && <LessonFilm media={media}/>} quiz={quiz}/>;
+  if (lesson.id === 'exclusion-language') return <ExclusionLesson film={media && <LessonFilm media={media}/>} quiz={quiz}/>;
+  if (lesson.id === 'negative-translation') return <NegativeTranslationLesson quiz={quiz}/>;
   const contextHeading = lesson.id === 'exclusion-language' ? 'Not both, not all and cannot' : undefined;
   return <article className="fc-lesson">
     <section className="fc-definition"><h2>What it is</h2>{(contextHeading ? lesson.definition.slice(0, 1) : lesson.definition).map((paragraph, i) => <p key={i}>{paragraph}</p>)}<div className="fc-main-example"><p className="fc-sentence">{lesson.mainExample.sentence}</p><p>{lesson.mainExample.explanation}</p><p className="fc-diagram">{lesson.mainExample.diagram}</p></div>{contextHeading && <details className="fc-context"><summary>{contextHeading}</summary>{lesson.definition.slice(1).map((paragraph, i) => <p key={i}>{paragraph}</p>)}</details>}</section>

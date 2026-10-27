@@ -11,7 +11,7 @@ afterEach(cleanup);
 
 const lessons: { id: string; sections: string[] }[] = [
   { id: 'and-or-either-side', sections: ['The group can sit on either side', 'Why the side changes the answer', 'Watch the lesson', 'How to test a rule with a group in it', 'What it is not', 'A habit to keep', 'Pop Quiz'] },
-  { id: 'and-or-negate-group', sections: ['Start with when the group fails', 'Why AND and OR change', 'Watch the lesson', 'How to flip a rule with a group', 'What it is not', 'A habit to keep', 'Pop Quiz'] },
+  { id: 'and-or-negate-group', sections: ['Use the denial inside the contrapositive', 'How to take the contrapositive', 'An existing negative still cancels', 'Try a fresh rule', 'What it is not', 'A habit to keep', 'Pop Quiz'] },
 ];
 const show = (id: string) => render(<MemoryRouter><AndOrLesson id={id}/></MemoryRouter>);
 const escaped = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -22,7 +22,7 @@ describe('the approved seven-section lesson shape', () => {
     expect(screen.getAllByRole('heading', { level: 2 }).map(heading => heading.getAttribute('aria-label') ?? heading.textContent)).toEqual(sections);
   });
 
-  it.each(lessons)('gives $id a user-started film with captions and a poster, and no always-open transcript', ({ id }) => {
+  it.each(lessons.filter(lesson => lesson.id === 'and-or-either-side'))('gives $id a user-started film with captions and a poster, and no always-open transcript', ({ id }) => {
     const { container } = show(id);
     const video = container.querySelector('video')!;
     const slug = andOrLectures[id].slug;
@@ -80,7 +80,7 @@ describe('written procedure and operable demos', () => {
 
   it('names the click on every procedure control', () => {
     show('and-or-negate-group');
-    for (const name of [/Step 1\. Click here to switch the left and right sides/]) expect(screen.getAllByRole('button', { name }).length).toBe(4);
+    for (const name of [/Step 1\. Click here to switch the left and right sides/]) expect(screen.getAllByRole('button', { name }).length).toBe(3);
     cleanup();
     show('and-or-both-or-either');
     expect(screen.getByRole('table',{name:'Does this meet the AND condition?'})).toBeVisible();
@@ -155,12 +155,11 @@ describe('concise Pop Quiz feedback', () => {
     show('and-or-negate-group');
     const item = andOrQuizzes['and-or-negate-group'][0];
     fireEvent.click(within(screen.getByRole('region', { name: 'Pop Quiz' })).getByRole('button', { name: new RegExp(`^${escaped(choiceStep(item)!.options.find(option => option.correct)!.text)}`) }));
-    expect(screen.getByText(answerLine(item))).toBeVisible();
-    expect(screen.queryByText(item.why)).toBeNull();
+    expect(screen.getByRole('region', { name: 'Pop Quiz' }).querySelector('.ao-feedback[data-kind=right]')).toHaveTextContent(answerLine(item));
   });
 
   it('reads a conditional answer back as if/then, but leaves a status answer as a plain sentence', () => {
-    const contra = andOrQuizzes['and-or-negate-group'][2];
+    const contra = andOrQuizzes['and-or-negate-group'][0];
     expect(answerLine(contra)).toMatch(/^If .+, then .+\.$/);
     const status = andOrQuizzes['and-or-both-or-either'][0];
     expect(answerLine(status)).toMatch(/^The facts do not establish the AND condition yet: /);

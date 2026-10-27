@@ -86,8 +86,11 @@ it('reopens completed credit only when the actual item signature changes', () =>
   const save = vi.fn();
   const state = { version: 1, signature: 'old item revision', index: 0, started: true, answers: {} };
   render(<CourseProgressProvider store={{ steps: { 'fresh-rule': { status: 'done', state, updatedAt: '2026-10-25' } }, save }}><FullCourseDrill drill={drill} autoStart/></CourseProgressProvider>);
-  choose('Sufficient condition', 'Parcel is express');
+  expect(save).not.toHaveBeenCalled();
+  expect(screen.getByRole('link', { name: 'Download the saved attempt' })).toBeTruthy();
+  fireEvent.click(screen.getByRole('button', { name: 'Start revised practice' }));
   expect(save.mock.calls.at(-1)?.[1]).toMatchObject({ status: 'started', reopen: true });
+  choose('Sufficient condition', 'Parcel is express');
   choose('Necessary condition', 'Parcel is tracked');
   expect(save.mock.calls.at(-1)?.[1]).not.toHaveProperty('reopen');
 });

@@ -413,7 +413,7 @@ fullCoursePractice['quantity-gaps'].push(
 );
 
 const drillTitles:Record<string,string>={
- 'exception-language':'Group 3: Translate the conditional','exclusion-language':'Group 4: Translate the conditional','negative-translation':'Use Groups 3 and 4 together','implicit-guarantees':'Translate guarantees and requirements','contextual-two-way':'Build two-way rules and pair constraints','deny-whole-rule':'Construct a counterexample to a rule','facts-with-rules':'Use the facts the rules actually cover','hidden-chain':'Build direct and hidden chains','failed-connections':'Test a proposed connection','same-domain':'Check subjects and restrictions','missing-bridges':'Build the missing connection','quantity-meaning':'Test what quantity words allow','quantity-denial':'Construct precise quantity denials','quantity-links':'Follow witnesses and compare groups','quantity-gaps':'Construct a quantity counterexample','supported-inferences':'Test a proposed inference','sufficient-bridges':'Complete an argument','necessary-assumptions':'Separate required from sufficient','apply-principle':'Match a case to a principle','match-structure':'Rebuild the same reasoning','conditional-flaws':'Show why the conclusion fails','conditional-conclusions':'Cumulative: Build and test conditional conclusions','nested-extension':'Cumulative extension: Read nested conditionals',
+ 'exception-language':'Translate unless, until and without','exclusion-language':'Translate no, none and never','negative-translation':'Translate sentences with existing negatives','implicit-guarantees':'Translate guarantees and requirements','contextual-two-way':'Build two-way rules and pair constraints','deny-whole-rule':'Construct a counterexample to a rule','facts-with-rules':'Use the facts the rules actually cover','hidden-chain':'Build direct and hidden chains','failed-connections':'Test a proposed connection','same-domain':'Check subjects and restrictions','missing-bridges':'Build the missing connection','quantity-meaning':'Test what quantity words allow','quantity-denial':'Construct precise quantity denials','quantity-links':'Follow witnesses and compare groups','quantity-gaps':'Construct a quantity counterexample','supported-inferences':'Test a proposed inference','sufficient-bridges':'Complete an argument','necessary-assumptions':'Separate required from sufficient','apply-principle':'Match a case to a principle','match-structure':'Rebuild the same reasoning','conditional-flaws':'Show why the conclusion fails','conditional-conclusions':'Cumulative: Build and test conditional conclusions','nested-extension':'Cumulative extension: Read nested conditionals',
 };
 const drillInstructions:Record<string,string[]>={
  'exception-language':['Build conditional statements from unless, until and without sentences. Either logically equivalent orientation is accepted.','Then test proposed reversals by constructing a permitted case. Keep time boundaries and existing negatives.'],
@@ -447,3 +447,84 @@ const drillAccess:Record<string,string[]>={
  'conditional-conclusions':['mbt','direct-linking','and-or'],
  'nested-extension':['mbt','and-or'],
 };
+
+// Selected Joshua-authored homework, independently adjudicated before grading.
+// Append-only IDs preserve existing exercise order. A larger membership is a new
+// practice generation; the drill runner retains the earlier run as history.
+const HOMEWORK_LEDGER = 'docs/conditionals/2026-10-27-homework-adjudication.md';
+const HOMEWORK_ROOT = 'Final Set';
+function homeworkBuild(
+  id: string, prompt: string, names: string[], left: Formula, right: Formula,
+  hint: string, explanation: string, source: string,
+): FullCourseItem {
+  return { ...build(id, prompt, names, left, right, hint, explanation), sourceRefs: [HOMEWORK_LEDGER + '#' + id, HOMEWORK_ROOT + '/' + source] };
+}
+
+fullCoursePractice['exception-language'].push(
+  homeworkBuild('hw-g3-badge-20261027',
+    'Unless the badge is scanned, entry will not open at the turnstile. Build an equivalent conditional.',
+    ['the badge is scanned', 'entry opens at the turnstile'], b, a,
+    'Keep the original not open in mind. Negating that idea makes it opens.',
+    'If entry opens at the turnstile, the badge was scanned. Equivalently, if the badge was not scanned, entry will not open. A scanned badge alone does not guarantee that entry opens.',
+    '08 Group 3 (Sep 10)/Homework/2025-09-10_Group3Conditionals.pdf#page=3'),
+  homeworkBuild('hw-g3-carbon-20261027',
+    'Plant life cannot survive without atmospheric carbon. Build an equivalent conditional.',
+    ['plant life can survive', 'atmospheric carbon is present'], a, b,
+    'Without names the missing condition. Do not include the word without in the idea you place.',
+    'If plant life can survive, atmospheric carbon is present. If atmospheric carbon is absent, plant life cannot survive. Carbon is required here; the sentence does not say that carbon by itself makes survival possible.',
+    '06 Group 3 and 4 Homework PT 1/Homework/2025-07-03_Group3&4 homework PT 1 (1).pdf#page=1'),
+  homeworkBuild('hw-g3-paragraph-20261027',
+    'Announcements are posted before each session. Unless the presenter arrives by ten after the hour, the teaching assistant begins the lecture and records attendance. Laptops are permitted on silent. Find the unless sentence and build its conditional.',
+    ['the presenter arrives by ten after the hour', 'the teaching assistant begins the lecture', 'the teaching assistant records attendance'], not(a), and(b, c),
+    'Keep the arrival deadline. What two things does the sentence promise if that deadline is missed?',
+    'If the presenter has not arrived by ten after the hour, the assistant begins the lecture and records attendance. Equivalently, if the assistant does not begin the lecture or does not record attendance, the presenter arrived by ten after. Missing either promised action is enough for that contrapositive; neither the announcements nor laptop rule belongs in this diagram.',
+    '08 Group 3 (Sep 10)/Homework/2025-09-10_Group3Conditionals.pdf#page=10'),
+  homeworkBuild('hw-g3-repair-20261027',
+    'Unless the roster is finalized, tournament seeding stays provisional. Someone writes: If seeding stays provisional, the roster is finalized. Repair the rule by building an equivalent conditional for the original sentence.',
+    ['the roster is finalized', 'tournament seeding stays provisional'], not(a), b,
+    'The proposed rule has not performed the Group 3 negation. Start again from the original sentence.',
+    'If the roster is not finalized, seeding stays provisional. Equivalently, if seeding does not stay provisional, the roster is finalized. A provisional seeding with an unfinished roster is allowed by the original and disproves the proposed rule.',
+    '08 Group 3 (Sep 10)/Homework/2025-09-10_Group3Conditionals.pdf#page=15'),
+);
+
+fullCoursePractice['exclusion-language'].push(
+  homeworkBuild('hw-g4-late-entry-20261027',
+    'None of the late entries are scored. Build an equivalent conditional about the same entry.',
+    ['this entry is late', 'this entry is scored'], a, not(b),
+    'The sentence excludes one entry having both properties. Keep either idea on the if side and negate the other on the then side.',
+    'If this entry is late, it is not scored. Equivalently, if it is scored, it is not late. An entry that is neither late nor scored is still allowed.',
+    '09 Group 4 Worksheet (no key was sent)/Homework/2025-09-10_Group4 Worksheet.html#section-2-item-9'),
+  homeworkBuild('hw-g4-revisions-20261027',
+    'The first revision and the second revision are not both approved this cycle. Build an equivalent conditional.',
+    ['the first revision is approved this cycle', 'the second revision is approved this cycle'], a, not(b),
+    'Not both forbids the two approvals together. It does not require an approval.',
+    'If the first revision is approved this cycle, the second is not approved this cycle. Equivalently, approval of the second rules out approval of the first. Both can be unapproved; the sentence does not require exactly one approval.',
+    '09 Group 4 Worksheet (no key was sent)/Homework/2025-09-10_Group4 Worksheet.html#section-2-item-6'),
+  homeworkBuild('hw-g4-paragraph-20261027',
+    'Registrars publish calendars each term. No student on probation receives travel funding. Forms are downloadable online. Deadlines appear on the portal. Find the exclusion and build its conditional about the same student.',
+    ['this student is on probation', 'this student receives travel funding'], a, not(b),
+    'Which sentence rules out two properties occurring together for the same student?',
+    'If this student is on probation, the student does not receive travel funding. Equivalently, a student who receives travel funding is not on probation. A student outside probation need not receive funding; the calendar and forms add no funding guarantee.',
+    '09 Group 4 Worksheet (no key was sent)/Homework/2025-09-10_Group4 Worksheet.html#section-3-item-8'),
+);
+
+fullCoursePractice['negative-translation'].push(
+  homeworkBuild('hw-mixed-calibration-20261027',
+    'The lab cannot certify results from uncalibrated devices. Build an equivalent conditional for results from the same device.',
+    ['the device is calibrated', 'the lab can certify these results'], b, a,
+    'Keep cannot certify and uncalibrated distinct. Do not change ability to certify into actual certification.',
+    'If the lab can certify these results, the device is calibrated. Equivalently, if the device is uncalibrated, the lab cannot certify its results. Calibration alone does not establish ability to certify, and ability does not establish that certification happened.',
+    '09 Group 4 Worksheet (no key was sent)/Homework/2025-09-10_Group4 Worksheet.html#section-2-item-8'),
+  homeworkBuild('hw-mixed-team-20261027',
+    'A team will not win the championship unless they work together and train hard. Build an equivalent conditional.',
+    ['the team wins the championship', 'the team works together', 'the team trains hard'], a, and(b, c),
+    'Keep both requirements. A failure to meet either requirement matters when you take the contrapositive.',
+    'If the team wins the championship, it works together and trains hard. Equivalently, if it does not work together or does not train hard, it will not win. Working together without hard training does not meet both requirements; satisfying both does not guarantee victory.',
+    '05 And-Or/Homework/2025-07-03_And_Or worksheet (1) (1).pdf#page=1-item-12'),
+  homeworkBuild('hw-mixed-career-or-20261027',
+    'You will not be successful in your career or personal life without good time management. Build an equivalent conditional.',
+    ['you are successful in your career', 'you are successful in your personal life', 'you have good time management'], or(a, b), c,
+    'Either kind of success requires time management. Do not replace the original OR with AND.',
+    'If you are successful in your career or personal life, you have good time management. Equivalently, without good time management you are successful in neither. Either kind of success triggers the requirement, and both kinds can occur together. Time management alone does not guarantee success.',
+    '05 And-Or/Homework/2025-07-03_And_Or worksheet (1) (1).pdf#page=1-item-2'),
+);

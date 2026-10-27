@@ -1,7 +1,8 @@
 import { conditionalAssignmentUnitIds } from './assignments';
 import { describe, expect, it } from 'vitest';
-import { conditionalAssignmentAllowsAction, resolveConditionalAssignments, type ConditionalAssignmentRow } from './assignments';
-import { DEFAULT_CONDITIONAL_TARGET } from '@/lib/conditionalBootcampAssignment';
+import { conditionalAssignmentAllowsAction, resolveConditionalAssignments, readConditionalAssignments, type ConditionalAssignmentRow } from './assignments';
+import { DEFAULT_CONDITIONAL_TARGET, conditionalProtectedGrantRoute, conditionalTargetKey } from '@/lib/conditionalBootcampAssignment';
+import { snapshotConditionalRequirements } from './courseRequirements';
 
 const row = (patch: Partial<ConditionalAssignmentRow> = {}): ConditionalAssignmentRow => ({
   id: 'work-1', student_id: 'student', type: 'bootcamp_module', title: 'Assigned work',
@@ -9,6 +10,24 @@ const row = (patch: Partial<ConditionalAssignmentRow> = {}): ConditionalAssignme
   status: 'assigned', visible_to_student: true, unlock_at: null, ...patch,
 });
 const targetRow = (target: unknown) => row({ metadata_json: { bootcamp_id: 'conditionals', conditional_target: target } });
+
+it('reads frozen requirements only from valid fetched grant metadata and rejects malformed snapshots', async () => {
+  const target = { scope: 'course', mode: 'learn', difficulty: 'beginner', curriculumVersion: 3, courseEdition: 'full-conditionals-v3' } as const;
+  const original = row({ source_table: 'bootcamps', source_id: conditionalProtectedGrantRoute(target, 'work-1'),
+    metadata_json: { bootcamp_id: 'conditionals', conditional_target: target, conditional_target_key: conditionalTargetKey(target) } });
+  const before = JSON.stringify(original);
+  const [older] = await resolveConditionalAssignments([original], 'student');
+  expect(older.requirements).toMatchObject({ source: 'pre-split-default' });
+  expect(older.requirements?.requiredStepIds).not.toContain('and-or-negate-conditions');
+  const current = { ...original, metadata_json: { ...original.metadata_json, conditional_requirements: snapshotConditionalRequirements(target) } };
+  const [newer] = await resolveConditionalAssignments([current], 'student');
+  expect(newer.requirements?.requiredStepIds).toContain('and-or-negate-conditions');
+  const invalid = { ...current, metadata_json: { ...current.metadata_json, conditional_requirements: { version: 999 } } };
+  expect(await readConditionalAssignments([invalid], 'student')).toMatchObject({ assignments: [], unavailableAssignments: [{ id: 'work-1', reason: 'teacher-update' }] });
+  const forgedUrl = { ...current, source_id: `${current.source_id}&requirements=anything` };
+  expect(await resolveConditionalAssignments([forgedUrl], 'student')).toEqual([]);
+  expect(JSON.stringify(original)).toBe(before);
+});
 describe('trusted conditional assignments', () => {
   it('updates exact former generated display copy while keeping teacher wording and assigned level', async () => {
     const target = { scope: 'skill', mode: 'practice', difficulty: 'advanced', unitId: 'group-2' } as const;

@@ -1,4 +1,5 @@
 import { conditionalFullCourseAssignmentsReleased } from '@/lib/conditionalCourseEdition';
+import { snapshotConditionalRequirements } from '@/bootcamps/conditionals/courseRequirements';
 import { supabase } from '@/integrations/supabase/client';
 import { BOOTCAMPS } from '@/lib/bootcamps';
 import { createClassroomItem } from '@/lib/classroomItems';
@@ -343,7 +344,8 @@ async function planFor(
         route: () => assignedRoute,
         unlockAt,
         dueAt: null,
-        metadata: { bootcamp_id: bootcamp.id, ...(conditional ? { conditional_target: conditional.target, conditional_target_key: conditional.key } : {}) },
+        metadata: { bootcamp_id: bootcamp.id, ...(conditional ? { conditional_target: conditional.target, conditional_target_key: conditional.key,
+          ...(conditional.target.courseEdition ? { conditional_requirements: snapshotConditionalRequirements(conditional.target) } : {}) } : {}) },
       };
     }
   }

@@ -9,6 +9,7 @@ import { conditionalProtectedGrantRoute, conditionalTargetKey, type ConditionalA
 import { FULL_CONDITIONAL_EDITION as edition } from '@/lib/conditionalCourseEdition';
 import { needsExpandedConditionalLessonReview, CONDITIONAL_OPENING_UNIT_IDS } from './openingRevision';
 import { COURSE_STEP_REGISTRY } from './openingCoursePath';
+import { PRE_SPLIT_REQUIRED_STEP_IDS, resolveConditionalRequirements, snapshotConditionalRequirements } from './courseRequirements';
 import type { ResolvedConditionalAssignment } from './assignments';
 
 const state = vi.hoisted(() => ({ progress: null as ConditionalProgress | null, updateCalls: 0 }));
@@ -36,6 +37,30 @@ function assignment(id: string, unitIds: string[], mode: 'learn' | 'practice' = 
 }
 const course: ResolvedConditionalAssignment = { id: 'course', title: 'Conditional Logic', route: base, target: trustedTarget('course', fullTarget), unitIds: conditionalUnits.map(unit => unit.id), mode: 'learn' };
 const legacyCourse = { ...course, target: { scope: 'course', mode: 'learn', difficulty: 'beginner' } as const };
+
+it('keeps historical 100 percent while making new 2.4 optional, but requires it for newly snapshotted work', () => {
+  state.progress!.course = Object.fromEntries(PRE_SPLIT_REQUIRED_STEP_IDS.map(id => [`${edition}:${id}`, { status: 'done' as const, updatedAt: '2026-10-20', contentRevision: id === 'and-or-negate-group' ? 'unknown' : 'old' }]));
+  mount(`${base}/lessons?assignment=course`, [course]);
+  expect(screen.getByRole('progressbar', { name: 'Course completion' })).toHaveAttribute('aria-valuetext', '100% complete, 70 of 70 steps done');
+  const newCard = screen.getByRole('heading', { level: 3, name: 'Negate AND and OR' }).closest('li')!;
+  expect(within(newCard).getByText(/Optional/)).toBeVisible();
+  expect(state.updateCalls).toBe(0);
+  cleanup();
+  const newer = { ...course, requirements: resolveConditionalRequirements(fullTarget, snapshotConditionalRequirements(fullTarget)) };
+  mount(`${base}/lessons?assignment=course`, [newer]);
+  expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('70 of 71 steps done');
+  expect(within(screen.getByRole('heading', { level: 3, name: 'Negate AND and OR' }).closest('li')!).queryByText(/Optional/)).toBeNull();
+});
+
+it('freezes de-morgan requirements and refuses a requirements query override', () => {
+  const grant = assignment('demorgan', ['de-morgan']);
+  mount(`${base}/lessons?assignment=demorgan&requirements=current`, [grant]);
+  expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('of 3 steps done');
+  expect(within(screen.getByRole('heading', { level: 3, name: 'Negate AND and OR' }).closest('li')!).getByText(/Optional/)).toBeVisible();
+  cleanup();
+  mount(`${base}/lessons?assignment=demorgan`, [{ ...grant, requirements: resolveConditionalRequirements(grant.target, snapshotConditionalRequirements(grant.target)) }]);
+  expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('of 4 steps done');
+});
 function mount(path: string, assignments: ResolvedConditionalAssignment[], isAdmin = false) {
   return render(<MemoryRouter initialEntries={[path]}><Routes><Route path={`${base}/*`} element={<ConditionalBootcampRoutes userId="student" assignments={assignments} isAdmin={isAdmin}/>}/></Routes></MemoryRouter>);
 }
@@ -44,16 +69,16 @@ const cardTitles = (region: HTMLElement) => within(region).getAllByRole('heading
 beforeEach(() => { state.progress = emptyProgress(); state.updateCalls = 0; });
 afterEach(cleanup);
 
-const LESSONS = ['AND', 'OR', 'Where the group sits', 'Contrapositives with AND and OR'];
-const DRILLS = ['Check AND and OR', 'Read the rule with a group in it', 'Practice negating AND and OR', 'Diagram it and flip it'];
+const LESSONS = ['AND', 'OR', 'AND and OR on either side of the arrow', 'Negate AND and OR', 'Contrapositives with AND and OR'];
+const DRILLS = ['Check AND and OR', 'What follows from AND and OR?', 'Practice negating AND and OR', 'Build the diagram and its contrapositive'];
 
 it('shows the whole Chapter 2 to a teacher preview and to a full course assignment, after all of Chapter 1', () => {
   for (const [assignments, isAdmin] of [[[course], false], [[], true]] as const) {
     mount(`${base}/lessons${isAdmin ? `?edition=${edition}` : ''}`, [...assignments], isAdmin);
     const region = chapterTwo()!;
     expect(region).toBeVisible();
-    expect(cardTitles(region)).toEqual([LESSONS[0], LESSONS[1], DRILLS[0], LESSONS[2], DRILLS[1], LESSONS[3], DRILLS[2], DRILLS[3]]);
-    expect(within(region).getAllByText(/^2\.[1234]$/)).toHaveLength(4);
+    expect(cardTitles(region)).toEqual([LESSONS[0], LESSONS[1], DRILLS[0], LESSONS[2], DRILLS[1], LESSONS[3], DRILLS[2], LESSONS[4], DRILLS[3]]);
+    expect(within(region).getAllByText(/^2\.[12345]$/)).toHaveLength(5);
     expect(within(screen.getByRole('region', { name: 'Chapter 1' })).getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
     cleanup();
   }
@@ -85,7 +110,7 @@ it('scopes And/Or and De Morgan selections to their own steps and refuses the ot
 
   const deMorgan = assignment('demorgan', ['de-morgan']);
   mount(`${base}/lessons?assignment=demorgan`, [deMorgan]);
-  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[3], DRILLS[2], DRILLS[3]]);
+  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[3], DRILLS[2], LESSONS[4], DRILLS[3]]);
   cleanup();
   mount(`${base}/opening/and-or-both-or-either?assignment=demorgan`, [deMorgan]);
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
@@ -145,7 +170,7 @@ it('moves across the chapter boundary in both directions', () => {
 
 it('counts every Chapter 2 step in the course completion denominator', () => {
   mount(`${base}/lessons`, [course]);
-  expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain(`of ${COURSE_STEP_REGISTRY.filter(step => step.requiredForEditionCompletion !== false).length} steps done`);
+  expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain(`of ${PRE_SPLIT_REQUIRED_STEP_IDS.length} steps done`);
   cleanup();
   mount(`${base}/lessons?assignment=andor`, [assignment('andor', ['and-or'])]);
   expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('of 5 steps done');
@@ -174,7 +199,7 @@ const fromTarget = (target: ConditionalAssignmentTarget, id = 'matrix'): Resolve
 });
 const expectedTitles = (unitIds: string[]) => [
   ...(unitIds.includes('and-or') ? [LESSONS[0], LESSONS[1], DRILLS[0], LESSONS[2], DRILLS[1]] : []),
-  ...(unitIds.includes('de-morgan') ? [LESSONS[3], DRILLS[2], DRILLS[3]] : []),
+  ...(unitIds.includes('de-morgan') ? [LESSONS[3], DRILLS[2], LESSONS[4], DRILLS[3]] : []),
 ];
 
 it('shows each Chapter 2 step to exactly the assignment targets whose real unit membership reaches its topic', () => {

@@ -6,6 +6,7 @@ import { classroomItemMatchesBootcamp } from '@/lib/bootcamps';
 import { FULL_CONDITIONAL_EDITION, validConditionalEditionTarget } from '@/lib/conditionalCourseEdition';
 import { conditionalTargetKey } from '@/lib/conditionalBootcampAssignment';
 import { LEGACY_OPENING_COURSE_PATH, LEGACY_OPENING_COURSE_STEPS, type OpeningCourseStep } from './openingCoursePath';
+import { resolveConditionalRequirements, type ConditionalRequirements } from './courseRequirements';
 
 export interface ConditionalAssignmentRow {
   id: string; student_id: string; type: string; title: string; description?: string | null;
@@ -15,6 +16,7 @@ export interface ConditionalAssignmentRow {
 export interface ResolvedConditionalAssignment {
   id: string; title: string; description?: string; route: string; target: ConditionalAssignmentTarget;
   unitIds: string[]; mode: 'learn' | 'practice'; difficulty?: ConditionalDifficulty;
+  requirements?: ConditionalRequirements;
 }
 export function parseTarget(value: unknown): ConditionalAssignmentTarget | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
@@ -91,9 +93,15 @@ export async function readConditionalAssignments(rows: ConditionalAssignmentRow[
       if (isExpanded) unavailableAssignments.push({ id: row.id, title: row.title, reason: 'teacher-update' });
       continue;
     }
+    let requirements: ConditionalRequirements | undefined;
+    if (target.courseEdition === FULL_CONDITIONAL_EDITION) {
+      try { requirements = resolveConditionalRequirements(target, metadata?.conditional_requirements); }
+      catch { unavailableAssignments.push({ id: row.id, title: row.title, reason: 'teacher-update' }); continue; }
+    }
     const resolved = await resolveConditionalAssignment(target);
     result.push({ id: row.id, ...conditionalAssignmentDisplayCopy(resolved.target, resolved, row), route: resolved.route, target: resolved.target,
       unitIds: conditionalAssignmentUnitIds(resolved.target), mode: resolved.target.mode,
+      ...(requirements ? { requirements } : {}),
       ...(target.scope !== 'course' && target.scope !== 'stage' ? { difficulty: resolved.target.difficulty } : {}) });
   }
   return { assignments: result, unavailableAssignments };

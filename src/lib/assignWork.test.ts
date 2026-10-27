@@ -271,6 +271,9 @@ describe('assignWork', () => {
     expect(url.searchParams.get('curriculumVersion')).toBe('3');
     expect(input.metadata.assigned_route).toBe(input.sourceId);
     expect(input.metadata.conditional_target_key).toBe('course:v3');
+    expect(input.metadata.conditional_requirements).toMatchObject({ version: 1, revision: 'conditional-required-20261027-r1' });
+    expect(input.metadata.conditional_requirements.requiredStepIds).toContain('and-or-negate-conditions');
+    expect(input.metadata.conditional_requirements.requiredStepIds).toHaveLength(71);
     expect(result.ok[0].classroomItemId).toBe(input.id);
     expect(result.ok[0].route).toBe(input.sourceId);
     expect(mockNotify).toHaveBeenCalledWith(expect.objectContaining({ route: input.sourceId }));

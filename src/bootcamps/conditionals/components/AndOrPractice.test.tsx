@@ -151,11 +151,11 @@ it('runs each lesson’s Pop Quiz one question at a time with a specific hint', 
   for (const id of Object.keys(andOrQuizzes)) {
     const view = render(<MemoryRouter><AndOrLesson id={id}/></MemoryRouter>);
     expect(screen.getByRole('heading', { name: 'Pop Quiz' })).toBeVisible();
-    expect(screen.getByText('Question 1 of 4')).toBeVisible();
+    expect(screen.getByText(`Question 1 of ${andOrQuizzes[id].length}`)).toBeVisible();
     const item = andOrQuizzes[id][0];
     const options = choiceStep(item)!.options;
     const wrong = options.find(option => !option.correct)!;
-    fireEvent.click(within(screen.getByRole('region', { name: 'Pop Quiz' })).getByRole('button', { name: new RegExp(`^${wrong.text.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`) }));
+    fireEvent.click(within(screen.getByRole('region', { name: 'Pop Quiz' })).getByRole('button', { name: wrong.text }));
     expect(screen.getByText(wrong.hint)).toBeVisible();
     expect(screen.queryByRole('button', { name: /Next question/ })).toBeNull();
     view.unmount();
@@ -171,4 +171,22 @@ it('explains the missing-lamp fact after a correct AND quiz response',()=>{
   fireEvent.click(within(quiz).getByRole('button',{name:correct.text}));
   expect(within(quiz).getByText(item.why)).toHaveTextContent('nothing says whether the lamp works');
   expect(within(quiz).getByRole('button',{name:'Next question'})).toBeEnabled();
+});
+
+
+it('retains attempts, reveal history and position after a why-only copy edit and reload', () => {
+  const item = transfer.items[1];
+  const storageKey = `conditional-and-or-v1:${transfer.id}`;
+  localStorage.setItem(storageKey, JSON.stringify({ version: 1, current: 1, items: { [item.id]: { stepIndex: 0, labels: {}, steps: { answer: { tried: [0, 1], outcome: 'revealed', misses: 2, hint: 'Earlier hint', checked: '', everRevealed: true, builder: { place: {}, negated: {}, leftOp: 'and', rightOp: 'and' } } } } } }));
+  const originalWhy = item.why;
+  try {
+    item.why = `${originalWhy} Keep the original permission in the conclusion.`;
+    render(<AndOrDrill setId={transfer.id} run/>);
+    expect(screen.getByRole('heading', { name: 'Question 2 of 6' })).toBeVisible();
+    expect(screen.getByText(item.why, { exact: false })).toBeVisible();
+    const restored = JSON.parse(localStorage.getItem(storageKey)!);
+    expect(restored.current).toBe(1);
+    expect(restored.items[item.id].steps.answer).toMatchObject({ tried: [0, 1], outcome: 'revealed', misses: 2, everRevealed: true });
+    expect(screen.getByText(/completed, not as answered correctly/)).toBeVisible();
+  } finally { item.why = originalWhy; }
 });

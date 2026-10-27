@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createEditionCourseStore, editionStorageScope } from './courseProgress';
 import { emptyProgress, parseConditionalProgress, recordCourseStep } from './progress';
 import { FULL_CONDITIONAL_EDITION as edition } from '@/lib/conditionalCourseEdition';
-import { COURSE_STEP_REGISTRY } from './openingCoursePath';
+import { COURSE_STEP_REGISTRY, AND_OR_NEGATION_REVISION, AND_OR_CONTRAPOSITIVE_REVISION } from './openingCoursePath';
 describe('read-only completion compatibility', () => {
   it('projects only compatible course completion and performs zero writes until explicit resume', () => {
     const raw = { meaning: { status: 'done' as const, updatedAt: '2026-10-18', state: { answer: 'kept' } } };
@@ -30,6 +30,61 @@ describe('read-only completion compatibility', () => {
     const raw = { meaning: { status: 'done' as const, updatedAt: 'date', contentRevision: 'r0' } };
     expect(createEditionCourseStore(raw, vi.fn(), [{ id: 'meaning', contentRevision: 'r1', compatibleLegacyRevision: 'r1' }], edition).steps).toEqual({});
     expect(createEditionCourseStore({}, vi.fn(), [{ id: 'meaning', contentRevision: 'r1' }], edition).steps).toEqual({});
+  });
+});
+
+describe('negation and contrapositive split provenance', () => {
+  const source = `${edition}:and-or-negate-group`;
+  const target = `${edition}:and-or-negate-conditions`;
+  for (const contentRevision of ['and-or-split-20261025', 'and-or-20261019']) {
+    it(`projects ${contentRevision} into both destinations without a write or date change`, () => {
+      const raw = { [source]: { status: 'done' as const, updatedAt: '2026-10-20T12:00:00Z', contentRevision, state: { oldAnswer: 'kept' } } };
+      const bytes = JSON.stringify(raw); const save = vi.fn();
+      const store = createEditionCourseStore(raw, save, COURSE_STEP_REGISTRY, edition);
+      for (const id of ['and-or-negate-group', 'and-or-negate-conditions']) {
+        expect(store.steps[id]).toMatchObject({ status: 'done', updatedAt: raw[source].updatedAt });
+        expect(store.steps[id].state).toBeUndefined();
+        store.save(id, { status: 'started' });
+        expect(store.priorCompletion?.[id]?.sourceKey).toBe(source);
+      }
+      expect(save).not.toHaveBeenCalled(); expect(JSON.stringify(raw)).toBe(bytes);
+    });
+  }
+  it.each([
+    { status: 'started' as const, contentRevision: 'and-or-split-20261025' },
+    { status: 'done' as const, contentRevision: undefined },
+    { status: 'done' as const, contentRevision: 'unknown' },
+    { status: 'done' as const, contentRevision: AND_OR_CONTRAPOSITIVE_REVISION },
+  ])('does not invent sibling credit from $status/$contentRevision', record => {
+    const store = createEditionCourseStore({ [source]: { ...record, updatedAt: 'date' } }, vi.fn(), COURSE_STEP_REGISTRY, edition);
+    expect(store.steps['and-or-negate-conditions']).toBeUndefined();
+  });
+  it('preserves the original attempt and sibling credit after retained-ID resume and recompletion', () => {
+    let progress = recordCourseStep(emptyProgress(), source, { status: 'done', contentRevision: 'and-or-split-20261025', state: { old: 'draft' } }, '2026-10-20');
+    const save = (id: string, patch: Parameters<typeof recordCourseStep>[2]) => { progress = recordCourseStep(progress, id, patch, '2026-10-27'); };
+    const first = createEditionCourseStore(progress.course!, save, COURSE_STEP_REGISTRY, edition);
+    first.resume!('and-or-negate-group');
+    expect(progress.course![source]).toMatchObject({ status: 'started', contentRevision: AND_OR_CONTRAPOSITIVE_REVISION,
+      sourceCompletion: { completedAt: '2026-10-20', contentRevision: 'and-or-split-20261025' }, priorAttempts: [{ state: { old: 'draft' }, updatedAt: '2026-10-20' }] });
+    expect(progress.course![source].completedAt).toBeUndefined();
+    const resumed = createEditionCourseStore(progress.course!, save, COURSE_STEP_REGISTRY, edition);
+    expect(resumed.priorCompletion?.['and-or-negate-group']).toBeUndefined();
+    expect(resumed.steps['and-or-negate-conditions']).toMatchObject({ status: 'done', updatedAt: '2026-10-20' });
+    resumed.save('and-or-negate-group', { status: 'done' });
+    expect(progress.course![source].completedAt).toBe('2026-10-27');
+    progress = parseConditionalProgress(JSON.parse(JSON.stringify(progress)));
+    const reloaded = createEditionCourseStore(progress.course!, save, COURSE_STEP_REGISTRY, edition);
+    expect(reloaded.steps['and-or-negate-conditions'].updatedAt).toBe('2026-10-20');
+    reloaded.resume!('and-or-negate-conditions');
+    expect(progress.course![target]).toMatchObject({ status: 'started', contentRevision: AND_OR_NEGATION_REVISION });
+    expect(progress.course![source].status).toBe('done');
+  });
+  it('a new negation completion does not grant the contrapositive lesson or import flat records', () => {
+    const save = vi.fn();
+    const record = { status: 'done' as const, updatedAt: 'date', contentRevision: AND_OR_NEGATION_REVISION };
+    const store = createEditionCourseStore({ [target]: record, 'and-or-negate-group': { ...record, contentRevision: 'and-or-split-20261025' } }, save, COURSE_STEP_REGISTRY, edition);
+    expect(store.steps['and-or-negate-group']).toBeUndefined();
+    expect(store.priorCompletion).toEqual({}); expect(save).not.toHaveBeenCalled();
   });
 });
 

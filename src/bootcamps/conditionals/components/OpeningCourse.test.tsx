@@ -200,7 +200,7 @@ it('focuses the destination after drawer navigation and restores the trigger aft
 
 it('retains legacy destinations without duplicating the numbered course', () => {
   expect(OPENING_COURSE_PATH.filter(step => step.type === 'note').map(step => step.lessonNumber)).toEqual(['1.1', '1.2', '1.3', '1.4', '1.5']);
-  expect(COURSE_STEP_REGISTRY.filter(step => step.type === 'note' && step.part === 2).map(step => step.lessonNumber)).toEqual(['2.1', '2.2', '2.3', '2.4']);
+  expect(COURSE_STEP_REGISTRY.filter(step => step.type === 'note' && step.part === 2).map(step => step.lessonNumber)).toEqual(['2.1', '2.2', '2.3', '2.4', '2.5']);
   expect(OPENING_COURSE_PATH.filter(step => step.part === 1 && step.type === 'note').map(step => step.lessonNumber)).toEqual(['1.1', '1.2', '1.3', '1.4', '1.5']);
   expect(OPENING_COURSE_PATH.findIndex(step => step.id === 'contrapositive')).toBeLessThan(OPENING_COURSE_PATH.findIndex(step => step.id === 'foundation-practice'));
   for (const step of LEGACY_OPENING_COURSE_STEPS) {

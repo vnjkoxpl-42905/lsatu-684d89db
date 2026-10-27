@@ -288,3 +288,10 @@
 #root .co-section .ao-breakdown p{margin:0;font-size:1.05rem;line-height:1.6}
 
 #root .co-section p.ao-plain{font-size:1.25rem;line-height:1.55;color:#173544}
+
+/* Fresh formative checks stay readable beside the operation, with the same keyboard controls at narrow widths. */
+.ao-lesson-check .cr-answer-options{grid-template-columns:minmax(0,1fr);gap:.65rem}
+.ao-lesson-check .cr-answer-options button{min-height:44px;white-space:normal;overflow-wrap:anywhere;text-align:left;line-height:1.5}
+.ao-lesson-check .cr-answer-options button[data-state=wrong]{border-style:dashed}
+.ao-lesson-check .cr-answer-options button:focus-visible{outline:3px solid var(--co-polish-control-line,#385d70);outline-offset:3px}
+.ao-lesson-check .cr-reset{margin-inline-start:.75rem}

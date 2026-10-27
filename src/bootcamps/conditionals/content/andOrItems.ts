@@ -128,7 +128,7 @@ const transfer: AndOrItem[] = [
     atoms: [A('late', 'Allowed to stay late', 'the visitor is allowed to stay late', 'the visitor is not allowed to stay late'), A('pass', 'Late pass', 'the visitor has a late pass', 'the visitor has no late pass'), A('minor', 'Is a minor', 'the visitor is a minor', 'the visitor is not a minor')],
     rule: { sufficient: group('and', lit('late')), necessary: group('or', lit('pass'), lit('minor', true)) },
     task: { kind: 'contrapositive' }, answerAt: 0,
-    why: 'Deny the requirements together: no late pass and a minor. The “not a minor” member loses its “not” when it is negated.' },
+    why: 'Deny the requirements together: no late pass and a minor. The “not a minor” condition loses its “not” when negated. If the visitor has no late pass and is a minor, then the visitor is not allowed to stay late.' },
   { id: 'ao-transfer-3', statement: 'A student gets a seat on the field trip if the permission slip is signed or a parent attends.',
     atoms: [A('slip', 'Slip signed', 'the permission slip is signed', 'the permission slip is not signed'), A('parent', 'Parent attends', 'a parent attends', 'no parent attends'), A('seat', 'Gets a seat', 'the student gets a seat', 'the student does not get a seat')],
     rule: { sufficient: group('or', lit('slip'), lit('parent')), necessary: group('and', lit('seat')) },
@@ -154,11 +154,11 @@ const transfer: AndOrItem[] = [
 export const andOrDrills: AndOrDrillSet[] = [
   { id: 'and-or-meaning-practice', title: 'Check AND and OR', description: 'Decide whether the given facts meet the conditions joined by AND or OR.',
     instructions: ['Read the rule and the facts.', 'Decide whether the facts establish the AND or OR condition, rule it out, or leave it unknown. A condition the facts never mention is not denied.', 'If your answer misses, read the hint and try again. You can ask to see the answer after a second miss.'], items: meaning },
-  { id: 'and-or-placement-practice', title: 'Read the rule with a group in it', description: 'Find which side the group is on, then decide what the rules and facts settle.',
+  { id: 'and-or-placement-practice', title: 'What follows from AND and OR?', description: 'Find which side the group is on, then decide what the rules and facts settle.',
     instructions: ['Find the group and the side of the rule it sits on.', 'Decide whether the rules and facts make the condition true, make it false, or leave it open.', 'A fact can reach one member of a group and leave the rest to be shown.'], items: placement },
-  { id: 'and-or-whole-group-practice', title: 'Practice negating AND and OR', description: 'Negate conditions joined by AND or OR without changing their meaning.',
+  { id: 'and-or-whole-group-practice', title: 'Practice negating AND and OR', description: 'Find the opposite of an AND or OR statement while keeping each condition intact.',
     instructions: ['Read the conditions joined by AND or OR.', 'Choose the statement that is true exactly when the original combination is false.', 'Some conditions already contain not. Negate each one carefully and switch AND and OR.'], items: wholeGroup },
-  { id: 'and-or-transfer-practice', title: 'Diagram it and flip it', description: 'Build the diagram, take the contrapositive, and use it on fresh rules.',
+  { id: 'and-or-transfer-practice', title: 'Build the diagram and its contrapositive', description: 'Build the diagram, take the contrapositive, and use it on fresh rules.',
     instructions: ['Some questions ask you to choose the contrapositive. Others ask you to build the diagram yourself from short versions of the conditions you write.', 'When you build, place every condition, choose AND or OR where needed, and mark each NOT.', 'Your short versions are drafts for your own use. The check is on the arrangement, not on your wording.'], items: transfer },
 ];
 
@@ -166,7 +166,7 @@ export function getAndOrDrill(id?: string): AndOrDrillSet | undefined {
   return andOrDrills.find(set => set.id === id);
 }
 
-// ---- Pop Quizzes (lesson 2.1 to 2.4) -------------------------------------------------------
+// ---- Pop Quizzes (lessons 2.1 to 2.5) -------------------------------------------------------
 
 const quiz1: AndOrItem[] = [
   { id: 'ao-quiz-1-1', statement: 'The projector runs when its cable is connected and its lamp works.',
@@ -261,7 +261,7 @@ const quiz3: AndOrItem[] = [
     why: 'If the tent is not waterproof and has no rain cover, then it cannot be approved.' },
 ];
 
-export const andOrQuizzes: Record<string, AndOrItem[]> = { 'and-or-both-or-either': quiz1, 'and-or-either-condition': quizOr, 'and-or-either-side': quiz2, 'and-or-negate-group': quiz3 };
+export const andOrQuizzes: Record<string, AndOrItem[]> = { 'and-or-both-or-either': quiz1, 'and-or-either-condition': quizOr, 'and-or-either-side': quiz2, 'and-or-negate-conditions': quiz3.filter(item => item.task.kind === 'negate'), 'and-or-negate-group': quiz3.filter(item => item.task.kind === 'contrapositive') };
 
 // ---- Worked examples carried through the lessons (never used as practice items) -------------
 

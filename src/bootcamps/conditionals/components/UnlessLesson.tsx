@@ -1,5 +1,7 @@
 import { useId, useRef, useState, type ReactNode } from 'react';
 import type { FullCourseLesson as Lesson } from '../content/fullCourseTypes';
+import { IdeaBoard } from './IdeaBoard';
+import { LessonPractice } from './LessonPractice';
 
 /** Lesson 3.1, built on Joshua's "Either idea works" panel (Group3_Either_Idea, 2026-10-27).
  *  One sentence carries the reasoning from meaning to both translations to what stays open; then the
@@ -15,7 +17,7 @@ function Key({ children }: { children: ReactNode }) {
   return <p className="fc-u-key">{children}</p>;
 }
 // Scoped to this lesson so its word notation does not change other lessons' questions.
-function Question({ prompt, options, correct, feedback }: { prompt: string; options: ReactNode[]; correct: number; feedback: string[] }) {
+export function LessonQuestion({ prompt, options, correct, feedback }: { prompt: string; options: ReactNode[]; correct: number; feedback: string[] }) {
   const [choice, setChoice] = useState<number | null>(null);
   const id = useId();
   const first = useRef<HTMLButtonElement>(null);
@@ -25,9 +27,11 @@ function Question({ prompt, options, correct, feedback }: { prompt: string; opti
     {choice !== null && <button type="button" className="fc-u-reset" onClick={() => { setChoice(null); first.current?.focus(); }}>Try again</button>}
   </div>;
 }
-function Section({ title, kicker, children }: { title: string; kicker?: string; children: ReactNode }) {
+export function LessonSection({ title, kicker, children }: { title: string; kicker?: string; children: ReactNode }) {
   return <section className="fc-u-section">{kicker && <p className="fc-u-overline">{kicker}</p>}<h2>{title}</h2>{children}</section>;
 }
+const Question = LessonQuestion;
+const Section = LessonSection;
 function Proposal({ children, status, formula }: { children: ReactNode; status: 'same' | 'no'; formula: ReactNode }) {
   return <div className={status === 'same' ? 'fc-right' : 'fc-wrong'}>{formula}<strong>{status === 'same' ? 'Same rule, other choice' : 'Does not follow from this rule'}</strong>{children}</div>;
 }
@@ -82,16 +86,18 @@ export function UnlessLesson({ film, quiz }: { lesson: Lesson; film: ReactNode; 
     </Section>
 
     <Section title="Negate one idea">
-      <Question prompt="What is the negation of “it rains”?" options={[<><Idea not>Rains</Idea>: it does not rain</>, <><Idea not>Played</Idea>: the game is not played</>, 'It always rains']} correct={0} feedback={[
-        'Yes. Negating an idea says that it is not true. Nothing else changes.',
-        'That negates the other idea. We chose “it rains.” Keep your attention on that statement and try again.',
-        'That makes a stronger claim. Negating “it rains” says that the statement is not true. Try again without adding “always.”']}/>
+      <p>Negate means treat an idea as not true. For “it rains,” that gives “it does not rain”: <Idea>Rains</Idea> becomes <Idea not>Rains</Idea>. Keep the same statement. Do not switch to the game or add “always.”</p>
     </Section>
 
     <Section kicker="Two correct starting choices" title="Either idea works">
       <EitherIdea/>
       <p>Why do both work? The first rule says that with no rain, there must be a game. So if there is no game, it cannot have been a day without rain. It rains.</p>
       <p><strong>Both versions rule out the same situation: no rain and no game.</strong> Choosing the other idea changes how you write the rule, not what it means.</p>
+      <details className="lesson-extra"><summary>Rehearse the example with prompts</summary><IdeaBoard guided title="Try the steps on the example" family={3} sentence="The game is played unless it rains." ideas={[{ id: 'played', word: 'Played', positive: 'the game is played', negative: 'the game is not played' }, { id: 'rain', word: 'Rains', positive: 'it rains', negative: 'it does not rain' }]}/></details>
+    </Section>
+
+    <Section title="Now build a fresh rule">
+      <IdeaBoard family={3} sentence="The path is open unless the river floods." ideas={[{ id: 'open', word: 'Open', positive: 'the path is open', negative: 'the path is not open' }, { id: 'floods', word: 'Floods', positive: 'the river floods', negative: 'the river does not flood' }]}/>
     </Section>
 
     {film}
@@ -120,6 +126,7 @@ export function UnlessLesson({ film, quiz }: { lesson: Lesson; film: ReactNode; 
         <div><Formula left={<Idea>Opens</Idea>} right={<Idea>Arrives</Idea>} label="If the store opens, then the manager arrives"/><p>Choose “the store does not open,” <Idea not>Opens</Idea>, and negate it. That gives <Idea>Opens</Idea>. <Idea>Arrives</Idea> stays unchanged.</p></div>
       </div>
       <p>So the manager’s arrival is required for the store to open. <strong>Negating an idea does not always mean adding not.</strong> When the idea already says “does not open,” its negation is “opens.” Negating a crossed-out idea removes the line.</p>
+      <IdeaBoard family={3} sentence="The gate does not open unless the guard arrives." ideas={[{ id: 'opens', word: 'Opens', positive: 'the gate opens', negative: 'the gate does not open', originalNot: true }, { id: 'arrives', word: 'Arrives', positive: 'the guard arrives', negative: 'the guard does not arrive' }]}/>
     </Section>
 
     <Section title="Without: name the second idea in full">
@@ -136,6 +143,7 @@ export function UnlessLesson({ film, quiz }: { lesson: Lesson; film: ReactNode; 
         <div><Formula left={<Idea not>Ticket</Idea>} right={<Idea not>Admitted</Idea>} label="If the visitor does not have a ticket, then the visitor is not admitted"/><p>Choose “the visitor has a ticket” and negate it to <Idea not>Ticket</Idea>. <Idea not>Admitted</Idea> keeps its original negative.</p></div>
       </div>
       <p>A ticket is required for admission. Having one does not, by itself, guarantee that you get in.</p>
+      <details className="lesson-extra"><summary>Check the idea behind “a ticket”</summary><Question prompt="Which complete idea does Ticket stand for?" options={['The visitor has a ticket', 'Without a ticket', 'The visitor is admitted']} correct={0} feedback={['Yes. Now that statement can be kept or negated.', 'Without links the ideas. Expand the noun into a statement about the visitor.', 'That is the other idea. What does the ticket statement say?']}/></details>
     </Section>
 
     <Section title="Until: keep the timing">
@@ -147,6 +155,7 @@ export function UnlessLesson({ film, quiz }: { lesson: Lesson; film: ReactNode; 
         <div><Formula left={<Idea not>Complete</Idea>} right={<Idea not>Opens</Idea>} label="If the inspection is not complete yet, then the lab has not opened yet"/><p>Choose “the inspection is complete” and negate it: the inspection is not complete <strong>yet</strong>. Then the lab has not opened yet.</p></div>
       </div>
       <p>While the inspection is unfinished, the lab stays closed. Finishing the inspection does not, from this rule alone, mean the lab opens right away.</p>
+      <Question prompt="The inspection is complete, but the lab stays closed. Does that break this rule?" options={['No. Completion does not guarantee immediate opening.', 'Yes. The lab must open immediately.']} correct={0} feedback={['The rule prevents opening too soon. It does not require opening as soon as the inspection ends.', 'Read the direction again. Opening requires an inspection complete by then. Does completing it require opening?']}/>
     </Section>
 
     <Section title="Read the whole sentence">
@@ -161,5 +170,6 @@ export function UnlessLesson({ film, quiz }: { lesson: Lesson; film: ReactNode; 
 
     <p className="fc-habit">Find the two complete ideas. Choose either one, negate it, and make it sufficient. Keep the other exactly as stated. Then read the rule back in English and check that it still says what the sentence says.</p>
     {quiz}
+    <LessonPractice family={3}/>
   </article>;
 }

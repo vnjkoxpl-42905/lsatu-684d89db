@@ -4,9 +4,10 @@ import { chainRule, checkResponse, findChain } from '../content/fullCourseLogic'
 import type { Atom, Formula, FullCourseDrillSet, FullCourseItem, ItemResponse, QuantityStatement } from '../content/fullCourseTypes';
 import { DrillProgress } from './DrillProgress';
 import './full-course.css';
+import { gradingSignature, knownLocalSignature, appendOnlyRevision, DRILL_GRADING_REVISION } from '../content/drillCompatibility';
 
 type Answer = { response?: ItemResponse; misses: number; resolved: boolean; correct: boolean; revealed: boolean; hint?: string };
-type Run = { version: 1; signature: string; index: number; started: boolean; answers: Record<string, Answer> };
+type Run = { version: 1 | 2; signature: string; gradingRevision?: string; gradingItems?: Record<string, string>; requiredItemIds?: string[]; earlierCompletion?: { completedAt: string; done: number; total: number }; index: number; started: boolean; answers: Record<string, Answer>; history?: { state: unknown; completedAt?: string; status?: string }[] };
 const emptyAnswer = (): Answer => ({ misses: 0, resolved: false, correct: false, revealed: false });
 export function formulaText(formula: Formula, atoms: Atom[] = []): string {
   if ('atom' in formula) return atoms.find(a => a.id === formula.atom)?.label ?? formula.atom;
@@ -86,16 +87,22 @@ function selectedHint(item: FullCourseItem, response?: ItemResponse) {
   if (item.kind === 'argument' && response?.kind === 'argument') return item.assumptions.find(o => o.id === response.assumptionId)?.hint ?? item.hint;
   return item.hint;
 }
-export function FullCourseDrill({ drill, courseStepId, autoStart = false, embedded = false, onComplete }: { drill: FullCourseDrillSet; courseStepId?: string; autoStart?: boolean; embedded?: boolean; onComplete?: () => void }) {
+export function FullCourseDrill({ drill, courseStepId, autoStart = false, embedded = false, onComplete, embeddedSuccessExplanation = 'first-sentence' }: { drill: FullCourseDrillSet; courseStepId?: string; autoStart?: boolean; embedded?: boolean; onComplete?: () => void; embeddedSuccessExplanation?: 'first-sentence' | 'full' }) {
   const course = useCourseStep(courseStepId ?? drill.id);
-  const signature = JSON.stringify(drill.items);
+  const signature = gradingSignature(drill.items);
+  const gradingItems = Object.fromEntries(drill.items.map(item => [item.id, gradingSignature([item])]));
+  const requiredItemIds = drill.items.map(item => item.id);
   const priorRun = course?.saved?.state as Run | undefined;
-  const revisionChanged = useRef(!!priorRun?.signature && priorRun.signature !== signature);
+  const appendedAfter = priorRun ? appendOnlyRevision(drill.id, priorRun, drill.items) : 0;
+  const preserveCompletion = appendedAfter > 0 && course?.saved?.status === 'done';
+  const compatible = !!priorRun && ((priorRun.version === 2 && priorRun.gradingRevision === DRILL_GRADING_REVISION && priorRun.signature === signature) || (priorRun.version === 1 && (priorRun.signature === JSON.stringify(drill.items) || knownLocalSignature(drill.id, priorRun.signature, drill.items))));
+  const [revisionPending, setRevisionPending] = useState(!!priorRun && !compatible);
+  const revisionChanged = useRef(!!priorRun && !compatible && !preserveCompletion);
   const completedPreviously = useRef(course?.saved?.status === 'done' && !revisionChanged.current);
   const [run, setRun] = useState<Run>(() => {
     const prior = course?.saved?.state as Run | undefined;
-    if (prior?.version === 1 && prior.signature === signature && prior.answers && typeof prior.answers === 'object') return { ...prior, index: Math.max(0, Math.min(drill.items.length - 1, prior.index || 0)), started: autoStart || prior.started };
-    return { version: 1, signature, index: 0, started: autoStart || embedded, answers: {} };
+    if (compatible && prior.answers && typeof prior.answers === 'object') return { ...prior, history: Array.isArray(prior.history) ? prior.history.filter(entry => entry && typeof entry === 'object' && 'state' in entry).map(entry => ({ ...entry, completedAt: typeof entry.completedAt === 'string' ? entry.completedAt : undefined })) : [], version: 2, signature, gradingRevision: DRILL_GRADING_REVISION, gradingItems, requiredItemIds, index: Math.max(0, Math.min(drill.items.length - 1, prior.index || 0)), started: autoStart || prior.started };
+    return { version: 2, signature, gradingRevision: DRILL_GRADING_REVISION, gradingItems, requiredItemIds, index: preserveCompletion ? appendedAfter : 0, started: autoStart || embedded, answers: preserveCompletion ? Object.fromEntries(drill.items.slice(0, appendedAfter).filter(item => prior.answers?.[item.id]).map(item => [item.id, prior.answers[item.id]])) : {}, ...(preserveCompletion ? { earlierCompletion: { completedAt: course.saved.completedAt ?? course.saved.updatedAt, done: course.saved.done ?? appendedAfter, total: course.saved.total ?? appendedAfter } } : {}), ...(prior ? { history: [...(Array.isArray(prior.history) ? prior.history.filter(entry => entry && typeof entry === 'object' && 'state' in entry).map(entry => ({ ...entry, completedAt: typeof entry.completedAt === 'string' ? entry.completedAt : undefined })) : []), { state: { ...prior, history: undefined }, completedAt: course?.saved?.completedAt ?? course?.saved?.updatedAt, status: course?.saved?.status }] } : {}) };
   });
   const [message, setMessage] = useState('');
   const heading = useRef<HTMLHeadingElement>(null);
@@ -105,13 +112,14 @@ export function FullCourseDrill({ drill, courseStepId, autoStart = false, embedd
   const response = answer.response ?? initialResponse(item);
   const done = drill.items.map((question, index) => run.answers[question.id]?.resolved ? index : -1).filter(index => index >= 0);
   const complete = done.length === drill.items.length;
-  const explanation = embedded && answer.correct ? item.explanation.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim() ?? item.explanation : item.explanation;
+  const explanation = embedded && answer.correct && embeddedSuccessExplanation === 'first-sentence' ? item.explanation.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim() ?? item.explanation : item.explanation;
   const rejectedCase = answer.revealed && 'atoms' in item ? checkResponse(item, response).counterexample : undefined;
   function persist(next: Run) {
     setRun(next);
     const count = drill.items.filter(question => next.answers[question.id]?.resolved).length;
     if (count === drill.items.length) completedPreviously.current = true;
-    course?.record({ status: completedPreviously.current ? 'done' : 'started', ...(revisionChanged.current ? { reopen: true } : {}), done: count, total: drill.items.length, state: next });
+    const historical = next.earlierCompletion && count < drill.items.length ? next.earlierCompletion : undefined;
+    course?.record({ status: completedPreviously.current ? 'done' : 'started', ...(revisionChanged.current ? { reopen: true } : {}), ...(historical ? { completedAt: historical.completedAt } : {}), done: historical?.done ?? count, total: historical?.total ?? drill.items.length, state: next });
     revisionChanged.current = false;
     if (count === drill.items.length) onComplete?.();
   }
@@ -128,8 +136,10 @@ export function FullCourseDrill({ drill, courseStepId, autoStart = false, embedd
     persist({ ...run, answers: { ...run.answers, [item.id]: nextAnswer } });
   }
   function go(index: number) { setMessage(''); persist({ ...run, index }); requestAnimationFrame(() => heading.current?.focus()); }
+  if (revisionPending) return <section className="fc-drill fc-entry"><h2>This practice has changed</h2><p>Your previous answers and completion remain saved. The questions or required items now differ, or this saved version could not be verified. Start a separate attempt when you are ready.</p><p><a download="saved-practice.json" href={`data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify({ state: priorRun, completedAt: course?.saved?.completedAt ?? course?.saved?.updatedAt, status: course?.saved?.status }, null, 2))}`}>Download the saved attempt</a></p><button type="button" className="fc-primary" onClick={() => { setRevisionPending(false); persist({ ...run, started: true }); }}>Start revised practice</button></section>;
   if (!run.started) return <section className="fc-drill fc-entry"><h2>{drill.title}</h2>{drill.instructions.map((instruction, i) => <p key={i}>{instruction}</p>)}<button type="button" className="fc-primary" onClick={() => persist({ ...run, started: true })}>{done.length ? 'Continue practice' : 'Start practice'}</button></section>;
   return <section className={`fc-drill${embedded ? ' fc-embedded' : ''}`} aria-label={embedded ? 'Pop quiz' : drill.title}>
+    {!!run.history?.length && <details className="fc-entry"><summary>Earlier attempts</summary>{run.history.map((entry, index) => <p key={index}><a download={`practice-attempt-${index + 1}.json`} href={`data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(entry, null, 2))}`}>Download attempt {index + 1}{entry.completedAt ? ` · saved ${entry.completedAt.slice(0, 10)}` : ''}</a></p>)}</details>}
     <DrillProgress completed={done.length} total={drill.items.length} current={run.index} completedIndices={done} label={embedded ? 'Pop quiz progress' : 'Drill progress'}/>
     <div className="fc-task"><h2 ref={heading} tabIndex={-1}>{item.prompt}</h2><Task item={item} response={response} setResponse={update} disabled={answer.resolved}/>
       {!answer.resolved && <div className="fc-actions"><button type="button" className="fc-primary" onClick={check}>Check my answer</button>{answer.misses > 0 && <button type="button" className="fc-secondary" onClick={() => {

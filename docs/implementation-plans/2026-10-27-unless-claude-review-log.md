@@ -144,3 +144,96 @@ No application code, CSS, tests, media or publication state was changed in this 
 
 Post-inspection hash readback: film scene source, contact sheet and app MP4 all exactly match their pre-inspection SHA256 values recorded above. External evidence remained unchanged during both review passes.
 
+
+## 2026-10-27: authorized implementation of all accepted findings
+
+Joshua explicitly requested all implementation. Codex is builder; fresh Claude is inspector. Existing plan/log paths and CLI defaults retained; no inspection opt-out. Limits remain five plan rounds, two inspections (the next is inspection2 after accepted fixes). Pre-fix HEAD remains 6a167c8555b4a404334310aad48a5d748b1b0861; prior unrelated changes preserved.
+
+Resumed plan review2: APPROVED, no findings, observed claude-opus-5-5. Result: C:/Users/Joshu/AppData/Local/Temp/claudex-unless-review-20261027/plan-r2/claudex-jbfe4f5t/result.json. Plan SHA256 e537bee7629cf83f809bfe869096da234f4551084698007a27740a6826393688. Approval check passed before implementation.
+
+{
+  "verdict": "APPROVED",
+  "summary": "The revised plan covers all four findings from round 1 and is sufficient as an implementation contract. Each finding has a specific fix and a way to check it. F1: item 10 now requires Played/Rains to be defined before the first chip in the sentence scene, and the store scene to show the full sentence plus Opens/Arrives definitions before its first chip, with no overlap or clipping. Acceptance now requires fresh frames sampled before and at the first token in both scenes, and marks the old hash and contact sheet as pre-fix. F2: item 9 now requires every fc-u selector to be prefixed with fc-unless and stacking to use only the existing content-width container query. Treating this as maintenance cleanup rather than shown leakage is accurate. F3: the guard is widened to a slash or tilde before any letter, including lowercase. It applies to the rendered article, the formula accessible names, and the lesson, quiz and transcript strings. Frame inspection stays separate. I accept the host's correction that my original claim about table text was overstated: textContent already included the table cells. F4: item 9 widens the readback from its 32ch cap to the column width and requires alignment to be rechecked at the responsive widths. Scope limits are unchanged: no commits, no paid narration calls, no other lessons, and no course redesign. The implementation itself has not been checked in this round. As the plan states, it gets a separate fresh inspection.",
+  "findings": [],
+  "coverage": [
+    "Compared the revised plan (SHA e537bee7…) item by item against round-1 findings F1–F4 and the host's notes on each.",
+    "Rechecked the film scene source's negative-scene timing (neg chip at T(negative,0,0.2), sentence fade at T(negative,1,0)) and the sentence scene (chips pop at T(sentence,0,0.55–0.7) with no key). Plan item 10 now covers both.",
+    "Rechecked full-course.css lines 30–108: unscoped fc-u selectors, the duplicate @media stacking rule on line 74, and the .fc-u-english 32ch cap on line 59. Plan item 9 now covers all three.",
+    "Rechecked FullCourseLesson.test.tsx line 35 and confirmed the host's correction: container.textContent already includes table cells.",
+    "Grepped the exception-language entries in fullCourseItems.ts (feedback lines 203–206, the practice items, and the instructions at line 419) for content the wider slash/tilde guard might wrongly flag. None of the visible lines contains such a pattern.",
+    "Previously read in round 1: UnlessLesson.tsx, FullCourseLesson.tsx routing, the fullCourseContent/fullCourseMedia entries, the contact sheet and both page screenshots (image reads succeeded)."
+  ],
+  "limitations": [
+    "This round reviews the plan only. The pending code, CSS, test and film fixes were not checked and none are claimed to exist.",
+    "I didn't read the full translations() quiz block on fullCourseItems.ts line 58 or the omitted long lines 226 and 416. I couldn't fully confirm that the wider guard won't flag legitimate quiz text such as 'if/then'. The implementer should check this when adding the guard.",
+    "No tests, builds, renders or hash checks were run. The 620/620, typecheck and build results remain unverified host evidence.",
+    "The post-fix film frames, hashes and duration don't exist yet and couldn't be inspected."
+  ]
+}
+
+## Completed authorized fixes and proof before final inspection2
+
+All four first-pass findings and both final-inspection suggestions implemented. Codex authored CSS/tests; Codex film worker authored film changes. No Claude-authored code. Source, page/film outputs and screenshots are now stable. The revised plan's SHA remains e537bee7629cf83f809bfe869096da234f4551084698007a27740a6826393688.
+
+Proof:621/621 tests,46files; typecheck exit0; production build exit0. Dist and public film MP4 hashes match b6c79bac6783a3de6383ef154886c5c068c24f9407043a15f0e79aec6341619e. Browser375/768/980/1280 no formula/document overflow, content-width stacking correct,48px targets, keyboard selection/focus and reduced-motion0s correct, no console errors. Evidence report updated before inspection. Known generated mcp stub restored to prior HEAD. Initial broader guard failure was metadata path separators; provenance excluded, actual lesson/quiz/transcript/formula checks retained.
+
+Film actual first-token boundary frames reviewed by worker and host. Main14.166667 before,14.233333 entering,14.8 visible. Store51.333333 before,51.4 entering,52visible. Complete sentence/keys visible first. Duration/narration/VTT unchanged. No provider calls. External files before inspection2: sceneCD38C01EA3639E50D5A18983C1E5FD024755258E91874B88F08A07C22AA99849; all-scene imageFD7934D07D83315BADB9884BEA2C4BD746BAE6A8FCA405CB0F5B70637ED831C2; timing imageC6F6F1F769A3BA528E7F472914A6D2D18FDEE01DC4422283A40039E91798DB29. App MP4B6C79BAC6783A3DE6383EF154886C5C068C24F9407043A15F0E79AEC6341619E.
+
+## Fresh corrected-code inspection2 and final dispositions
+
+Result: C:/Users/Joshu/AppData/Local/Temp/claudex-unless-review-20261027/inspect-r2/claudex-gg_a4j_z/result.json
+Verdict: APPROVED. Observed model: ['claude-sonnet-5-5']. Snapshot SHA256: ff1d8e89147e1237d9a1a8b796d6777ed18b87fd6b7e4ba9e9ad5a7032c2eb57. Plan hash unchanged. Full response:
+
+{
+  "verdict": "APPROVED",
+  "summary": "I found no material correctness, logic or accessibility defects in the lesson 3.1 source. The word-and-strike notation is applied consistently, every formula name matches its diagram, and the logical limits are preserved. Those limits are that rain does not guarantee cancellation, a ticket does not guarantee admission, and finishing the inspection does not guarantee immediate opening. The film scene source and VTT agree with the lesson. There are three low-severity items. Two are evidence and reporting inconsistencies and one is a film timing nit. I did not run tests, verify hashes, or inspect any video frames.",
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "low",
+      "path": "docs/design-evidence/conditional-full-20261025/unless-review-fixes-layout.json",
+      "evidence": "The layout JSON reports buttonHeights of [46,46] at 375, 768 and 980px. The evidence report says choice targets are 48px, and the CSS sets min-height:48px on .fc-u-choose (full-course.css:52). Those values disagree. The JSON also has no 1280px entry, although the report cites 1280px measurements (article 860px). 46px still meets the plan's 44px minimum, but the stated 48px claim is not backed by the artifact.",
+      "fix": "Re-measure the choose buttons and regenerate the JSON, including 1280px. Or correct the report to the measured values, or find which rule is overriding min-height."
+    },
+    {
+      "id": "F2",
+      "severity": "low",
+      "path": "C:/Users/Joshu/dev/ai-os-projects/conditional-full-course-video-20261025/scenes/exception-language.scenes.js:46-49",
+      "evidence": "In the pick scene the definition key fades in over 0.4s starting at T('pick',0,0). The first chip (top.l) pops in at T('pick',0,0.1). The chip therefore appears while the key is still fading in, though the key is already visible with it. This is a narrow gap against the plan's requirement that definitions appear before the first chip. The sentence and store scenes avoid it.",
+      "fix": "Start the pick-scene key fade slightly earlier, or move the first chip to at least 0.4s after the key starts. Alternatively, accept this as satisfied because the key is already visible on screen from the previous scene."
+    },
+    {
+      "id": "F3",
+      "severity": "low",
+      "path": "src/bootcamps/conditionals/components/FullCourseLesson.test.tsx:51-60",
+      "evidence": "The regex /[\\/~][a-z]/i is applied to JSON.stringify of the lesson content, which includes the hero and Question strings authored in UnlessLesson.tsx. It would not catch a future slash-letter notation introduced in JSX literals. The rendered-article check at line 36 covers those literals, but the film scene frames are covered only by the transcript string test. The plan states that string tests do not prove video imagery, so this is a known limit and not a defect.",
+      "fix": "Optionally add a grep-style check on exception-language.scenes.js for slash or tilde letter notation inside the word() calls. The rendered frames still need separate inspection."
+    }
+  ],
+  "coverage": [
+    "Read UnlessLesson.tsx in full. I checked the Idea, Formula, Question and EitherIdea components, every section's content and logic, the aria labels, and the strike and screen-reader-text rendering.",
+    "Read the full-course.css fc-unless block. I checked that every lesson-specific selector is prefixed, the single container-query stacking rule at 620px, the reduced-motion rule, the focus-visible, hover and selected states, and the English readback width.",
+    "Read FullCourseLesson.test.tsx in full. I checked the heading order, notation guards, formula aria-label checks, the hint and reset test, and the focus-return test.",
+    "Read the exception-language entry in fullCourseMedia.ts and the full exception-language.vtt, and compared both with the scene source and the lesson. The narration contains no spoken slashes or letters.",
+    "Read the film scene source exception-language.scenes.js. I checked the key-before-chip ordering, the word() strike helper, the 28px kicker, and the caption that limits what this rule says.",
+    "Grepped for exception-language and UnlessLesson across src/bootcamps/conditionals. The routing in FullCourseLesson.tsx:19 is limited to this lesson id. Lines 203-206, 283-286, 416 and 419 of fullCourseItems.ts were visible only as grep excerpts, and two other matches in that file were omitted as long lines. I saw nothing wrong in the excerpts I could read.",
+    "Read the evidence report and unless-review-fixes-layout.json. Viewed unless-review-fixes-desktop.png successfully. It shows both translations side by side, the struck words, the selected state with a check mark, the underline in the source sentence, and aligned readbacks."
+  ],
+  "limitations": [
+    "I did not run tests, typecheck or build, and I did not verify the claimed 621/621 result. I did not check the SHA-256 hashes of the MP4, JPG or VTT, or any dimension, duration or audio probe.",
+    "I did not open or decode exception-language.mp4 or the review contact sheets, so I did not inspect any rendered film frames. The film review is limited to scene source and VTT text. I did not verify the first-chip timing claims against rendered output, or that the definitions do not overlap or clip.",
+    "I did not view unless-review-fixes-phone.png or exception-language.jpg. I did not read the full fullCourseContent.ts, the full fullCourseItems.ts, or the rest of fullCourseMedia.ts beyond the exception-language entry.",
+    "I did not verify the CSS cascade against global stylesheets. The 46px versus 48px button height discrepancy is unresolved.",
+    "I did not check real screen-reader output, physical-device behavior, signed-in production behavior, continuous playback, or audio.",
+    "Files outside the explicit inspection scope, such as the shared quiz component and the other lessons' templates, are unreviewed. This is not whole-repository approval."
+  ]
+}
+
+Host dispositions:
+- F1 accepted as evidence clarification, not an application sizing defect. The original JSON measured clientHeight (inner height), 46px. New explicitly labelled artifact unless-review-fixes-layout-border-box.json includes all four widths375/768/980/1280 and measures clientHeight46px versus border-box48px. Desktop article860px confirmed. Kept the original inspected artifact immutable so its meaning and reviewed snapshot remain traceable. This additional measurement artifact was generated after inspection and was not independently reviewed. No source changed.
+- F2 no change warranted: Played and Rains are already fully defined before their first use in the preceding sentence scene, and that key stays visible there. The pick scene repeats those previously defined words. The plan specifically requires before-first-use keys in sentence and store, now verified in actual MP4 boundary frames. Inspector explicitly offers this interpretation as acceptable. Do not add an unnecessary rerender.
+- F3 no additional implementation warranted: the reviewer labels it a known limit, not a defect. Rendered-article/formula-name checks cover JSX; authored data/quiz/transcript checks cover their separate sources. The report explicitly distinguishes string tests from actual-frame inspection, which the host/worker performed. The review claim that lesson JSON includes JSX strings is inaccurate, but does not affect its conclusion. A source grep cannot replace rendered frame inspection.
+
+Final verification: every file in the recorded scoped snapshot still matches its inspection SHA256. External scene and both frame-sheet hashes also match their pre-inspection values. No application code, tests, CSS, media or inspected evidence changed after inspection. The new border-box measurement artifact above is supplementary evidence only. Two plan reviews and two fresh inspections completed; approved revised plan and corrected-code source inspection achieved within budget. No remaining material findings. Final reviewer did not view film frames or phone screenshot, run checks, verify hashes, exercise a browser or play/listen to film; those remain host/worker evidence, not independent visual/playback acceptance.
+
+All accepted original corrections are implemented. All621 conditional tests, typecheck and production build passed. Local browser checks and actual rendered boundary frames passed. All changes remain local and uncommitted; no push, publication, database write or paid narration calls. Unrelated existing work preserved.

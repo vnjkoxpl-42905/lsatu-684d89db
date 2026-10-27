@@ -38,8 +38,12 @@ export interface CourseStepProgress {
   total?: number;
   state?: unknown;
   updatedAt: string;
+  /** First earned completion of this attempt; updatedAt remains its latest edit. */
+  completedAt?: string;
   contentRevision?: string;
   sourceCompletion?: { sourceKey: string; completedAt: string; contentRevision: string };
+  /** Bounded snapshots retained when the learner explicitly starts a revised lesson. */
+  priorAttempts?: Array<Omit<CourseStepProgress, 'priorAttempts'>>;
 }
 export interface ConditionalProgress {
   id: 'conditionals-v1';
@@ -59,18 +63,26 @@ export function markConditionalLessonRead(progress: ConditionalProgress, unitId:
   return { ...progress, lessons: { ...progress.lessons, [unitId]: readAt, ...(editionKey ? { [editionKey]: readAt } : {}) } };
 }
 /** `reopen` lets a step that tracks live work (Chapter 2 practice) drop from done to started when required work is invalidated. Without it, finishing is permanent. */
-export function recordCourseStep(progress: ConditionalProgress, stepId: string, patch: Partial<Omit<CourseStepProgress, 'updatedAt'>> & { reopen?: boolean }, at = new Date().toISOString()): ConditionalProgress {
-  const prior = progress.course?.[stepId];
+export function nextCourseStep(prior: CourseStepProgress | undefined, patch: Partial<Omit<CourseStepProgress, 'updatedAt'>> & { reopen?: boolean }, at = new Date().toISOString()): CourseStepProgress {
   const { reopen, ...rest } = patch;
   // Finishing is permanent: revisiting or resetting a drill never un-completes it, unless the step asks to reopen.
   const status = prior?.status === 'done' && !reopen ? 'done' : rest.status ?? (reopen ? 'started' : prior?.status) ?? 'started';
-  return { ...progress, course: { ...progress.course, [stepId]: { ...prior, ...rest, status, updatedAt: at } } };
+  // Unstamped historical completions migrate lazily on an actual save. Reading
+  // never writes; their old update date is the best preserved completion date.
+  const completedAt = status === 'done'
+    ? prior?.status === 'done' && !reopen ? prior.completedAt ?? prior.updatedAt : reopen ? at : rest.completedAt ?? at
+    : undefined;
+  return { ...prior, ...rest, status, updatedAt: at, completedAt };
+}
+export function recordCourseStep(progress: ConditionalProgress, stepId: string, patch: Partial<Omit<CourseStepProgress, 'updatedAt'>> & { reopen?: boolean }, at = new Date().toISOString()): ConditionalProgress {
+  return { ...progress, course: { ...progress.course, [stepId]: nextCourseStep(progress.course?.[stepId], patch, at) } };
 }
 function cleanCourse(course: unknown): Record<string, CourseStepProgress> | undefined {
   if (course === undefined) return undefined;
   if (!course || typeof course !== 'object') return {};
   const entries = Object.entries(course as Record<string, Partial<CourseStepProgress>>).filter(([, step]) =>
     !!step && (step.status === 'started' || step.status === 'done') && typeof step.updatedAt === 'string'
+    && (step.completedAt === undefined || typeof step.completedAt === 'string')
     && (step.done === undefined || Number.isInteger(step.done)) && (step.total === undefined || Number.isInteger(step.total)));
   return Object.fromEntries(entries) as Record<string, CourseStepProgress>;
 }

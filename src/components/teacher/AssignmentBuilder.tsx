@@ -27,6 +27,8 @@ import { cn } from '@/lib/utils';
 import { ConditionalAssignmentFields } from '@/components/teacher/ConditionalAssignmentFields';
 import { conditionalTargetKey, DEFAULT_CONDITIONAL_TARGET, resolveConditionalAssignment, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
 import { protectedConditionalTarget } from '@/bootcamps/conditionals/assignments';
+import { hasCurrentConditionalRequirements } from '@/bootcamps/conditionals/courseRequirements';
+import { ConditionalRequirementsSummary } from './ConditionalRequirementsSummary';
 
 interface Props {
   studentId: string;
@@ -156,6 +158,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
           i.metadata_json?.bootcamp_id === bootcampId &&
           (bootcampId !== 'conditionals' || (conditionalTarget.courseEdition
             ? protectedConditionalTarget(i)?.courseEdition === conditionalTarget.courseEdition && i.metadata_json?.conditional_target_key === conditionalTargetKey(conditionalTarget)
+              && hasCurrentConditionalRequirements(conditionalTarget, i.metadata_json?.conditional_requirements)
             : (i.metadata_json?.conditional_target_key ?? 'course') === conditionalTargetKey(conditionalTarget))) &&
           i.status !== 'archived' &&
           i.status !== 'completed',
@@ -172,6 +175,17 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     }
     return false;
   }, [type, bootcampId, homeworkSetId, existingItems, conditionalTarget]);
+
+  const conditionalRequirementsPreview = useMemo(() => {
+    if (type !== 'bootcamp_module' || bootcampId !== 'conditionals' || !conditionalTarget.courseEdition) return [];
+    let targetKey: string;
+    try { targetKey = conditionalTargetKey(conditionalTarget); } catch { return []; }
+    return existingItems.flatMap(item => {
+      const target = protectedConditionalTarget(item);
+      if (!target || conditionalTargetKey(target) !== targetKey) return [];
+      return [item.metadata_json?.conditional_requirements];
+    });
+  }, [type, bootcampId, conditionalTarget, existingItems]);
 
   const resetForm = () => {
     setTitle('');
@@ -392,7 +406,9 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
               </select>
             </div>
 
-            {bootcampId === 'conditionals' ? <><ConditionalAssignmentFields value={conditionalTarget} onChange={setConditionalTarget} disabled={submitting} />{conditionalTargetError && <p role="alert" className="text-sm text-destructive">{conditionalTargetError}</p>}</> : <DayPicker
+            {bootcampId === 'conditionals' ? <><ConditionalAssignmentFields value={conditionalTarget} onChange={setConditionalTarget} disabled={submitting} />
+              <ConditionalRequirementsSummary target={conditionalTarget} existingSnapshots={conditionalRequirementsPreview}/>
+              {conditionalTargetError && <p role="alert" className="text-sm text-destructive">{conditionalTargetError}</p>}</> : <DayPicker
               bootcampId={bootcampId}
               value={assignedDayIds}
               onChange={setAssignedDayIds}
