@@ -4,6 +4,7 @@ const state = vi.hoisted(() => ({ user: { id: 'viewer-a' } as { id: string } | n
 vi.mock('@/hooks/useNotifications', () => ({ clearConversationNotifications: vi.fn().mockResolvedValue(undefined) }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: state.user }) }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: {
+  auth: { getUser: async () => ({ data: { user: state.user }, error: null }) },
   from: (table: string) => {
     let update = false;
     let values: any;
@@ -90,6 +91,12 @@ describe('conversation read acknowledgment', () => {
     await waitFor(() => expect(state.read).toHaveBeenCalledTimes(1));
     expect(state.read.mock.calls[0][0].last_read_at).toBe('2026-10-27T14:00:00.000Z');
     expect(state.messages).toHaveBeenCalledTimes(2);
+  });
+
+  it('rejects a mismatched authenticated reader before writing any participant', async () => {
+    state.user = { id: 'viewer-b' };
+    await expect(acknowledgeConversationMessages('viewer-a', 'c1', '2026-10-27T12:00:00.000Z')).rejects.toThrow('signed-in reader changed');
+    expect(state.read).not.toHaveBeenCalled();
   });
 
 });

@@ -357,6 +357,9 @@ export function useInbox() {
 
 /** Acknowledge only messages actually loaded for this viewer, never client wall-clock time. */
 export async function acknowledgeConversationMessages(userId: string, conversationId: string, through: string) {
+  const { data: auth, error: authError } = await supabase.auth.getUser();
+  if (authError) throw authError;
+  if (auth.user?.id !== userId) throw new Error('The signed-in reader changed before this conversation could be marked read');
   const { data, error } = await supabase.from('conversation_participants')
     .update({ last_read_at: through })
     .eq('conversation_id', conversationId).eq('user_id', userId)
