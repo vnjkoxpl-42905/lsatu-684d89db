@@ -1,0 +1,21 @@
+.oc-course-screen .co-card-library,.oc-course-screen .co-card-player{max-width:100%;padding-top:0}
+.co-card-lesson-return{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:14px;color:var(--oc-ink,#30352f);text-underline-offset:4px}
+.co-card-collections{display:grid;gap:28px;margin-top:26px}
+.co-card-collection>header{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px}
+.oc-course-screen .co-card-collection>header h2{margin:0;font:500 16px/1.5 "LSATU Inter",Inter,system-ui,sans-serif;color:var(--oc-ink,#30352f);letter-spacing:0}
+.co-card-collection>header p{margin:0;font-size:13px;line-height:1.5;color:var(--oc-muted,#60665e)}
+.co-card-collection ul{list-style:none;padding:0;margin:0;background:var(--oc-card,#faf8f1);border:1px solid var(--oc-line,#dcd7cb);border-radius:12px;overflow:hidden}
+.co-card-collection li{display:grid;grid-template-columns:minmax(0,1fr) 70px auto;align-items:center;gap:20px;padding:18px 20px}
+.co-card-collection li+li{border-top:1px solid var(--oc-line,#e1dcd0)}
+.oc-course-screen .co-card-collection h3{margin:0;font:500 16px/1.5 "LSATU Inter",Inter,system-ui,sans-serif;color:var(--oc-ink,#30352f)}
+.co-card-collection li p{margin:4px 0 0;font-size:13px;line-height:1.55;color:var(--oc-muted,#60665e);max-width:65ch}
+.co-card-count{font-size:13px;font-variant-numeric:tabular-nums;color:var(--oc-muted,#60665e);white-space:nowrap;text-align:right}
+.co-card-open{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:10px 14px;border-radius:6px;background:var(--oc-paper,#eeeadd);color:var(--oc-ink,#30352f);font-size:14px;font-weight:500;text-decoration:none!important}
+.co-card-open:focus-visible,.co-card-lesson-return:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.co-card-open:active{background:var(--oc-line,#dcd7cb)}
+.co-card-empty{margin:26px 0;padding:24px;background:var(--oc-card,#faf8f1);border-radius:10px;font-size:15px;color:var(--oc-muted,#60665e)}
+.oc-course-screen .co-card-player .co-flashcard-return{margin-bottom:18px}
+.oc-course-screen .co-card-player .oc-browse-header{margin-top:0;margin-bottom:18px}
+.oc-course-screen .co-card-player .oc-browse-header h1{font-size:clamp(25px,3vw,32px)}
+@media(hover:hover)and(pointer:fine){.co-card-open:hover{background:var(--oc-line,#dfd9cc)}}
+@media(max-width:600px){.co-card-collections{gap:24px;margin-top:22px}.co-card-collection>header{display:block}.co-card-collection>header p{margin-top:4px}.co-card-collection li{grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;padding:16px}.co-card-collection li>div{grid-column:1/-1}.co-card-count{text-align:left}.co-card-open{min-width:90px}.oc-course-screen .co-card-player .oc-browse-header h1{font-size:26px}}

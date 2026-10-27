@@ -7,6 +7,10 @@ import { GROUP_LABEL } from '@/features/conditional-refresher/content';
 import type { GroupId } from '@/features/conditional-refresher/content';
 import './skill-practice.css';
 import { ConditionalActivityIdentity } from '../activityIdentity';
+import { ConditionalFilters, activityFiltersDefaultOpen } from './ConditionalFilters';
+import { courseBrowseUrl, readCourseBrowseContext, withCourseBrowseContext } from '../courseBrowse';
+import { CourseBrowseHeader } from './CourseBrowseNavigation';
+import './flashcard-library.css';
 
 const ConditionalSkillActivity = lazy(() => import('@/features/conditional-refresher/ConditionalSkillActivity').then(module => ({ default: module.ConditionalSkillActivity })));
 const EmbeddedConditionalActivity = lazy(() => import('./EmbeddedConditionalActivity').then(module => ({ default: module.EmbeddedConditionalActivity })));
@@ -42,10 +46,14 @@ export function LessonSkillLinks({ lessonId, steps, url }: { lessonId: string; s
 export function SkillPracticeHub({ steps, url, storageScope }: { steps: OpeningCourseStep[]; url: OpeningCourseUrl; storageScope?: string }) {
   const [params] = useSearchParams();
   const identity = useContext(ConditionalActivityIdentity);
+  const browseContext = readCourseBrowseContext(params, steps);
   const config = parseSkillConfig(params, steps);
   if (!config) return <section className="skill-practice-hub" data-course-heading><h1>This activity is not available here.</h1><p>Choose an activity from the lessons available in this work.</p><Link className="oc-action" to={url('practice')}>Choose practice</Link></section>;
   const allowed = allowedSkillGroups(steps);
-  const update = (patch: Partial<SkillConfig>) => skillPracticeUrl(url, { ...config, itemId: undefined, round: undefined, ...patch });
+  const update = (patch: Partial<SkillConfig>) => {
+    const href = skillPracticeUrl(url, { ...config, itemId: undefined, round: undefined, ...patch });
+    return config.kind === 'translate-cards' ? withCourseBrowseContext(href, browseContext) : href;
+  };
   const topicOptions: Array<{ label: string; groups: GroupId[] }> = [
     ...(allowed.length > 1 ? [{ label: 'All available groups', groups: allowed }] : []),
     ...allowed.map(group => ({ label: GROUP_LABEL[group], groups: [group] })),
@@ -54,14 +62,14 @@ export function SkillPracticeHub({ steps, url, storageScope }: { steps: OpeningC
   const actor = identity.userId ?? 'anonymous';
   const localOnly = identity.localOnly || !identity.userId;
   const configKey = `${actor}:${config.kind}:${config.groups.join(',')}:${config.stage}:${config.review}`;
-  return <section className="skill-practice-hub">
-    <nav className="skill-return"><Link to={url(config.kind === 'translate-cards' ? 'tools' : 'practice')}>All {config.kind === 'translate-cards' ? 'flashcards' : 'practice'}</Link>{config.from && <Link to={url(config.from)}>Back to {steps.find(step => step.id === config.from)?.title}</Link>}</nav>
-    <header data-course-heading><p className="oc-label">Optional practice</p><h1>{labels[config.kind]}</h1><p>{descriptions[config.kind]}</p></header>
-    {!['unless', 'missing-links'].includes(config.kind) && <div className="skill-settings" aria-label="Practice settings">
+  return <section className={`skill-practice-hub${config.kind === 'translate-cards' ? ' co-card-player' : ''}`}>
+    <nav className="skill-return"><Link to={config.kind === 'translate-cards' ? courseBrowseUrl(url, 'flashcards', browseContext.chapter, browseContext.from) : url('practice')}>All {config.kind === 'translate-cards' ? 'flashcards' : 'practice'}</Link>{config.from && <Link to={url(config.from)}>Back to {steps.find(step => step.id === config.from)?.title}</Link>}</nav>
+    {config.kind === 'translate-cards' ? <CourseBrowseHeader title={labels[config.kind]} description={descriptions[config.kind]} eyebrow={browseContext.chapter ? `Chapter ${browseContext.chapter} flashcards` : 'Flashcards'}/> : <header data-course-heading><p className="oc-label">Optional practice</p><h1>{labels[config.kind]}</h1><p>{descriptions[config.kind]}</p></header>}
+    {!['unless', 'missing-links'].includes(config.kind) && <ConditionalFilters defaultOpen={activityFiltersDefaultOpen()} summary={`${config.groups.map(group => `Group ${group.slice(1)}`).join(', ')} · ${config.stage === 'translate' ? 'Translation' : 'Translation and contrapositive'}${config.kind === 'translate-cards' ? config.review === 'needs' ? ' · Needs practice' : ' · All cards' : ''}`}><div className="skill-settings" aria-label="Practice settings">
       <fieldset><legend>Topic</legend><div>{topicOptions.map(option => <Link key={option.groups.join(',')} aria-current={option.groups.join(',') === config.groups.join(',') ? 'true' : undefined} to={update({ groups: option.groups })}>{option.label}</Link>)}</div></fieldset>
       {config.kind !== 'sort' && <fieldset><legend>Task</legend><div>{(['translate', 'contrapositive'] as const).map(stage => <Link key={stage} aria-current={config.stage === stage ? 'true' : undefined} to={update({ stage })}>{stage === 'translate' ? 'Translate the rule' : 'Add the contrapositive'}</Link>)}</div></fieldset>}
       {config.kind === 'translate-cards' && <fieldset><legend>Cards</legend><div>{(['all', 'needs'] as const).map(review => <Link key={review} aria-current={config.review === review ? 'true' : undefined} to={update({ review })}>{review === 'all' ? 'All cards' : 'Needs practice'}</Link>)}</div></fieldset>}
-    </div>}
+    </div></ConditionalFilters>}
     <Suspense fallback={<p role="status">Loading practice…</p>}>
       {config.kind === 'missing-links' ? <EmbeddedConditionalActivity key={`${actor}:missing-links`} activity="missing-links" userId={actor} backUrl={url(config.from ?? 'practice')} localOnly={localOnly} />
         : config.kind === 'unless' ? localOnly ? <p>The Unless Drill uses account milestones. Open it from your signed-in bootcamp to practise the four forms.</p> : <div className="cir-root"><p>Start with the untimed lesson checks. This drill keeps the same speed milestones as the Group 3 activity.</p><UnlessDrill edition="full-conditionals-v3"/></div>

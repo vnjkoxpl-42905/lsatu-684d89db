@@ -6,6 +6,7 @@ import { GROUP_LABEL } from '@/features/conditional-refresher/content';
 import { conditionalUnits } from '../content';
 import './activity-centre.css';
 import { useConditionalFeedbackMotion } from './useConditionalFeedbackMotion';
+import { ConditionalFilters, activityFiltersDefaultOpen } from './ConditionalFilters';
 
 const EmbeddedActivity = lazy(() => import('./EmbeddedConditionalActivity').then(module => ({ default: module.EmbeddedConditionalActivity })));
 const SkillActivity = lazy(() => import('@/features/conditional-refresher/ConditionalSkillActivity').then(module => ({ default: module.ConditionalSkillActivity })));
@@ -25,7 +26,7 @@ const sections: { title: string; description: string; ids: ConditionalActivityId
 export function ConditionalActivityCentre({ userId, grant, isAdmin, localOnly, config, href, courseHref, renderLegacy }: ConditionalActivityCentreProps) {
   const surface = useRef<HTMLElement>(null);
   useConditionalFeedbackMotion(surface);
-  const [settingsOpen, setSettingsOpen] = useState(() => typeof window.matchMedia !== 'function' || !window.matchMedia('(max-width: 600px)').matches);
+  const [family, setFamily] = useState('all');
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const permits = (candidate: ConditionalActivityConfig) => !!isAdmin || !!grant && conditionalActivityAllowed(grant, candidate);
@@ -47,11 +48,12 @@ export function ConditionalActivityCentre({ userId, grant, isAdmin, localOnly, c
     <nav className="cc-breadcrumb"><Link to={config ? href() : courseHref}><ArrowLeft size={15}/>{config ? 'Practice centre' : 'Back to the course'}</Link></nav>
     <header className="cc-heading" data-course-heading><p className="cc-course-name">Conditional Logic Bootcamp</p><h1>{item?.title ?? 'Practice centre'}</h1><p className="cc-intro">{item?.purpose ?? 'Everything conditional, in one place. Choose the operation you want to practise, or return to a lesson and work through the course.'}</p></header>
     {!config ? <>
-      <div className="cc-families">{sections.map((section, index) => { const available = section.ids.map(id => ({ entry: CONDITIONAL_ACTIVITIES.find(item => item.id === id)!, config: defaultFor(id) })).filter(item => item.config); return available.length ? <section className={`cc-section cc-section--${index}`} key={section.title}><header><h2>{section.title}</h2><p>{section.description}</p></header><ol className="cc-activity-list">{available.map(({ entry, config: selected }) => <li key={entry.id}><div><h3><Link to={href(selected!)}>{entry.title}</Link></h3><p>{entry.purpose}</p></div><Link className="cc-open" aria-label={`Open ${entry.title}`} to={href(selected!)}><span>Open</span><ArrowRight size={17}/></Link></li>)}</ol></section> : null; })}</div>
+      <ConditionalFilters summary={sections.find(section => section.title === family)?.title ?? 'All activity types'}><label>Activity type<select value={family} onChange={event => setFamily(event.target.value)}><option value="all">All activity types</option>{sections.filter(section => section.ids.some(id => defaultFor(id))).map(section => <option key={section.title} value={section.title}>{section.title}</option>)}</select></label></ConditionalFilters>
+      <div className="cc-families" data-filtered={family !== 'all'}>{sections.map((section, index) => { const available = section.ids.map(id => ({ entry: CONDITIONAL_ACTIVITIES.find(item => item.id === id)!, config: defaultFor(id) })).filter(item => item.config); return available.length && (family === 'all' || family === section.title) ? <section className={`cc-section cc-section--${index}`} key={section.title}><header><h2>{section.title}</h2><p>{section.description}</p></header><ol className="cc-activity-list">{available.map(({ entry, config: selected }) => <li key={entry.id}><div><h3><Link to={href(selected!)}>{entry.title}</Link></h3><p>{entry.purpose}</p></div><Link className="cc-open" aria-label={`Open ${entry.title}`} to={href(selected!)}><span>Open</span><ArrowRight size={17}/></Link></li>)}</ol></section> : null; })}</div>
       <p className="cc-orientation">Your existing attempts stay with their activities. Open an activity to continue your work or start another round.</p>
       {!CONDITIONAL_ACTIVITIES.some(entry => defaultFor(entry.id)) && <p>Your assignment has no activities available in this centre.</p>}
     </> : <>
-      {config.activity !== 'unless' && config.activity !== 'guided' && <details className="cc-settings-panel" open={settingsOpen} onToggle={event => setSettingsOpen(event.currentTarget.open)}><summary>Practice settings<span>{config.groups ? config.groups.length === 4 ? 'All groups' : config.groups.map(group => `Group ${group.slice(1)}`).join(', ') : config.level === 'words' ? 'Words' : config.level === 'variables' ? 'Symbols' : 'Current selection'}</span></summary><div className="cc-settings" aria-label="Activity settings">
+      {config.activity !== 'unless' && config.activity !== 'guided' && <ConditionalFilters defaultOpen={activityFiltersDefaultOpen()} summary={config.groups ? config.groups.length === 4 ? 'All groups' : config.groups.map(group => `Group ${group.slice(1)}`).join(', ') : config.level === 'words' ? 'Words' : config.level === 'variables' ? 'Symbols' : 'Current selection'}><div className="cc-settings" aria-label="Activity settings">
         {config.groups && <fieldset><legend>Topic</legend><div>{optionLink('All groups', { groups: ['g1', 'g2', 'g3', 'g4'] }, config.groups.length === 4)}{(['g1', 'g2', 'g3', 'g4'] as const).map(group => optionLink(GROUP_LABEL[group], { groups: [group], ...(config.activity === 'rephrase' && config.timing === 'progressive' ? { timing: 'untimed' } : {}) }, config.groups?.length === 1 && config.groups[0] === group))}{config.activity === 'sort' && optionLink('Groups 1 and 2', { groups: ['g1', 'g2'] }, config.groups.join(',') === 'g1,g2')}</div></fieldset>}
         {config.stage && <fieldset><legend>Task</legend><div>{optionLink('Translate', { stage: 'translate' }, config.stage === 'translate')}{optionLink('Add the contrapositive', { stage: 'contrapositive' }, config.stage === 'contrapositive')}</div></fieldset>}
         {config.review && <fieldset><legend>Cards</legend><div>{optionLink('All cards', { review: 'all' }, config.review === 'all')}{optionLink('Needs practice', { review: 'needs' }, config.review === 'needs')}</div></fieldset>}
@@ -62,7 +64,7 @@ export function ConditionalActivityCentre({ userId, grant, isAdmin, localOnly, c
           <fieldset><legend>Level</legend><div>{(['beginner', 'medium', 'advanced'] as const).map(difficulty => optionLink(difficulty[0].toUpperCase() + difficulty.slice(1), { difficulty }, config.difficulty === difficulty))}</div></fieldset>
           <fieldset><legend>Mode</legend><div>{(['practice', 'simulator', 'hard-sentences'] as const).map(mode => optionLink(mode === 'practice' ? 'Skill practice' : mode === 'simulator' ? 'Mixed application' : 'Hard sentences', { mode }, config.mode === mode))}</div></fieldset>
         </>}
-      </div></details>}
+      </div></ConditionalFilters>}
       {config.activity === 'rephrase' && <p className="cc-selection-note">{conditionalActivitySelection(config).selectionLabel}</p>}
       <Suspense fallback={<p role="status">Loading your activity…</p>}>
         {['rephrase', 'linking', 'missing-links', 'must-be-true'].includes(config.activity) && <EmbeddedActivity key={`${userId}:${config.activity}:${JSON.stringify(config)}`} activity={config.activity as 'rephrase'|'linking'|'missing-links'|'must-be-true'} userId={userId} backUrl={href()} localOnly={localOnly} {...conditionalActivitySelection(config)} allowedItemOrders={constrained?.selectedItemOrders} allowedQuestionIds={constrained?.selectedQuestionIds}/>}

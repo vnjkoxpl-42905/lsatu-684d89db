@@ -1,3 +1,4 @@
+import { COURSE_LIST_QUERY_KEYS } from './courseNavigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Navigate, Outlet, Route, Routes, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, Clock, RotateCcw } from 'lucide-react';
@@ -185,6 +186,7 @@ export function courseUrl(search: string): OpeningCourseUrl {
     const original = new URLSearchParams(search);
     const wasActivity = original.has('activity');
     const params = clearSkillQuery(original);
+    COURSE_LIST_QUERY_KEYS.forEach(key => params.delete(key));
     params.delete('run');
     if (wasActivity) for (const key of CONDITIONAL_ACTIVITY_QUERY_KEYS) params.delete(key);
     for (const key of ['practiceRun', 'activityAssignment', 'guidedAssignment', 'view', 'returnTo', 'source', 'qid', 'qids', 'sessionKey', 'drillId', 'drill', 'guidedDrill', 'minutes', 'label', 'initialIndex']) params.delete(key);
@@ -198,10 +200,25 @@ export function courseUrl(search: string): OpeningCourseUrl {
 /** Navigation context is preserved; only fetched grants decide activity access. */
 export function conditionalCentreUrl(search: string, config?: ConditionalActivityConfig) {
   const params = new URLSearchParams(search);
+  COURSE_LIST_QUERY_KEYS.forEach(key => params.delete(key));
   for (const key of [...CONDITIONAL_ACTIVITY_QUERY_KEYS, 'run', 'practiceRun', 'activityAssignment', 'guidedAssignment', 'view', 'returnTo', 'source', 'qid', 'qids', 'sessionKey', 'drillId', 'drill', 'guidedDrill', 'minutes', 'label', 'initialIndex', 'item', 'card', 'deck', 'round', 'from']) params.delete(key);
   if (config) conditionalActivitySearch(config).forEach((value, key) => params.set(key, value));
   const query = params.toString();
   return `${BASE}/centre${config ? `/${config.activity}` : ''}${query ? `?${query}` : ''}`;
+}
+
+/** Workspace destinations retain assignment identity, never an activity or list's transient selection. */
+export function conditionalWorkspaceSearch(search: string) {
+  const params = new URLSearchParams(search);
+  const wasActivity = params.has('activity');
+  clearSkillQuery(params);
+  COURSE_LIST_QUERY_KEYS.forEach(key => params.delete(key));
+  // Legacy skill navigation still uses unit/level/returnTo. Activity configuration
+  // uses some of the same names, so discard those only when leaving an activity.
+  if (wasActivity) for (const key of [...CONDITIONAL_ACTIVITY_QUERY_KEYS, 'returnTo']) params.delete(key);
+  for (const key of ['run', 'practiceRun', 'activityAssignment', 'guidedAssignment', 'view', 'source', 'qid', 'qids', 'sessionKey', 'drillId', 'drill', 'guidedDrill', 'minutes', 'label', 'initialIndex']) params.delete(key);
+  const query = params.toString();
+  return query ? `?${query}` : '';
 }
 function ActivityCentreRoute() {
   const { activityId } = useParams();
@@ -263,7 +280,7 @@ function Shell() {
   const contextSearch = new URLSearchParams(location.search);
   if (!isAdmin && active) contextSearch.set('assignment', active.id);
   if (!isAdmin && active?.target.courseEdition) contextSearch.set('edition', active.target.courseEdition);
-  const linkedSearch = contextSearch.toString() ? `?${contextSearch}` : '';
+  const linkedSearch = conditionalWorkspaceSearch(contextSearch.toString());
   const route = location.pathname.slice(BASE.length).replace(/\/$/, '');
   const fullEdition = (isAdmin ? params.get('edition') : active?.target.courseEdition) === FULL_CONDITIONAL_EDITION;
   // Home and the chapter list cover only what this student may open.

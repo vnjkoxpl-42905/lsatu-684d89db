@@ -71,25 +71,27 @@ it.each(['meaning', 'source-intro-diagrams'])('keeps completed-earlier %s read-o
   readDevice.mockRestore();
 });
 
-it('offers five numbered lessons in Chapter 1 and eleven interleaved drill entries', () => {
-  render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
+it('offers five numbered lessons and eleven drills in their separate Chapter 1 destinations', () => {
+  const {rerender}=render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
   expect(screen.getByRole('region', { name: 'Chapter 1' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: /^Chapter 1 ·/ })).toBeVisible();
+  expect(screen.getByRole('heading', { level:1,name:'Lessons' })).toBeVisible();
   expect(screen.queryByText('Part 1')).toBeNull();
   const chapterOne = within(screen.getByRole('region', { name: 'Chapter 1' }));
-  expect(document.querySelector<HTMLElement>('ol.oc-course-path')!.children).toHaveLength(16);
-  expect(chapterOne.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
-  expect(chapterOne.getAllByRole('link', { name: /View drill/ })).toHaveLength(11);
+  expect(document.querySelector<HTMLElement>('ol.oc-path')!.children).toHaveLength(5);
+  expect(chapterOne.getAllByRole('link', { name: /Start lesson/ })).toHaveLength(5);
+  expect(chapterOne.queryByRole('link', { name: /Start drill/ })).toBeNull();
+  rerender(<MemoryRouter><OpeningCourseScreen view="practice" url={url}/></MemoryRouter>);
+  expect(within(screen.getByRole('region',{name:'Chapter 1 drills'})).getAllByRole('link',{name:/Start drill:/})).toHaveLength(11);
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'contrapositive', 'foundation-practice']);
 });
 
 it('shows the rule count in plain words and never says statements or practise', () => {
-  render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
-  const card = screen.getByRole('heading', { name: /Find the indicators/ }).closest('li')!;
-  expect(within(card).getByText('28 questions')).toBeVisible();
+  render(<MemoryRouter><OpeningCourseScreen view="practice" url={url}/></MemoryRouter>);
+  const card = screen.getByRole('link', { name: /Start drill: Find the indicators/ }).closest('li')!;
+  expect(within(card).getByText(/28 questions/)).toBeVisible();
   expect(within(card).queryByRole('list')).toBeNull();
-  expect(document.querySelector('ol.oc-course-path')!.textContent).not.toMatch(/statements|Practise/i);
+  expect(document.querySelector('ol.oc-path')!.textContent).not.toMatch(/statements|Practise/i);
 });
 
 it('teaches each prerequisite before the source drills that use it', () => {
@@ -141,11 +143,11 @@ it('exposes only the permitted content and flashcard families', () => {
   expect(document.querySelector('.opening-course-content')).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={steps} url={url}/></MemoryRouter>);
   expect(screen.getByRole('heading', { name: 'Group 1 words' })).toBeVisible();
-  expect(screen.queryByRole('heading', { name: 'Indicator words' })).toBeNull();
+  expect(document.querySelector('a[href*="deck=indicators"]')).toBeNull();
   expect(screen.queryByRole('heading', { name: 'Group 2 words' })).toBeNull();
   const both = OPENING_COURSE_PATH.filter(step => step.unitId === 'group-1' || step.unitId === 'group-2');
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={both} url={url}/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
+  expect(document.querySelector('a[href*="deck=indicators"]')).not.toBeNull();
   expect(screen.queryByRole('heading', { name: 'Sufficient and necessary' })).toBeNull();
 });
 
@@ -191,7 +193,7 @@ it('focuses the destination after drawer navigation and restores the trigger aft
   fireEvent.click(screen.getByRole('button', { name: 'Course menu' }));
   fireEvent.click(within(screen.getByRole('dialog')).getByRole('link', { name: 'Course' }));
   await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
-  await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Conditional reasoning.' })).toHaveFocus());
+  await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Lessons' })).toHaveFocus());
   fireEvent.click(screen.getByRole('button', { name: 'Course menu' }));
   fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
   await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
@@ -221,7 +223,8 @@ it('offers one course destination and keeps optional review routes out of primar
 it('continues the first unfinished course step without skipping prerequisites for a later draft', () => {
   const progressStore = { steps: { meaning: { status: 'done' as const, updatedAt: '2026-10-17' }, 'sufficient-practice': { status: 'started' as const, updatedAt: '2026-10-17', state: { draft: 'retained' } } }, save: () => {} };
   render(<MemoryRouter><OpeningCourseScreen url={url} progressStore={progressStore}/></MemoryRouter>);
-  expect(screen.getByRole('link', { name: /Start lesson 1.2/ })).toHaveAttribute('href', '/course/sufficient');
+  expect(document.querySelector('.oc-browse-continue')).toHaveAttribute('href', '/course/sufficient');
+  expect(document.querySelector('.oc-browse-continue')).toHaveTextContent('Start lesson 1.2');
   expect(progressStore.steps['sufficient-practice'].state.draft).toBe('retained');
 });
 
@@ -232,14 +235,15 @@ it('shows completion as a percentage of the available steps', () => {
  expect(screen.getByRole('progressbar', { name: 'Course completion' })).toHaveAttribute('aria-valuenow', '33');
  expect(screen.getByText((_, node) => node?.tagName === 'STRONG' && node.textContent === '33% complete')).toBeVisible();
 });
-it('distinguishes lesson and drill timeline nodes with text and icons', () => {
- render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
+it('distinguishes direct lesson and drill rows with text and their appropriate stations', () => {
+ const {rerender}=render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
  const lesson = document.querySelector('[data-kind="note"]')!;
- const drill = document.querySelector('[data-kind="drill"]')!;
- expect(within(lesson as HTMLElement).getByText('Lesson')).toBeVisible();
- expect(within(drill as HTMLElement).getByText('Drill 1')).toBeVisible();
- expect(lesson.querySelector('.oc-timeline-node svg')).not.toBeNull();
- expect(drill.querySelector('.oc-timeline-node svg')).not.toBeNull();
+ expect(within(lesson as HTMLElement).getByText('Lesson 1.1')).toBeVisible();
+ expect(lesson.querySelector('.oc-path-station')).toHaveTextContent('1.1');
+ rerender(<MemoryRouter><OpeningCourseScreen view="practice" url={url}/></MemoryRouter>);
+ const drill=document.querySelector('[data-kind="drill"]')!;
+ expect(within(drill as HTMLElement).getByText(/Drill/)).toBeVisible();
+ expect(drill.querySelector('.oc-path-station svg')).not.toBeNull();
 });
 it('places Classroom after the course resources in the rail and mobile drawer', () => {
  render(<MemoryRouter><OpeningCourseNavigation view="lessons" url={url}/></MemoryRouter>);
@@ -252,8 +256,8 @@ it('places Classroom after the course resources in the rail and mobile drawer', 
 it.each([[0, 200, '0% complete'], [66, 200, '33% complete'], [199, 200, '99% complete'], [200, 200, '99% complete']] as const)('shows honest partial drill percentage for %s of %s', (done, total, label) => {
  const step = OPENING_COURSE_PATH.find(step => step.id === 'foundation-practice')!;
  const progressStore = { steps: { [step.id]: { status: 'started' as const, updatedAt: '2026-10-17', done, total } }, save: () => {} };
- render(<MemoryRouter><OpeningCourseScreen steps={[step]} progressStore={progressStore} url={url}/></MemoryRouter>);
- expect(screen.getByText(label)).toBeVisible();
+ render(<MemoryRouter><OpeningCourseScreen view="practice" steps={[step]} progressStore={progressStore} url={url}/></MemoryRouter>);
+ expect(within(document.querySelector('.oc-path-step') as HTMLElement).getByText(label)).toBeVisible();
  expect(screen.getByRole('progressbar', { name: 'Course completion' })).toHaveAttribute('aria-valuenow', '0');
 });
 it('shows 100 percent only after all available course steps are done', () => {
@@ -271,7 +275,7 @@ it('numbers the fifteen active drills once, Chapter 2 continuing after Chapter 1
  expect(drills.every(step => !/Drill \d/.test(step.title))).toBe(true);
  expect(openingCourseStep('source-roles')?.title).toBe('Place the conditions');
  expect(openingDrillNumber('source-roles')).toBeUndefined();
- render(<MemoryRouter><OpeningCourseScreen steps={[drills[3]]} url={url}/></MemoryRouter>);
- expect(screen.getByText('Drill 4')).toBeVisible();
+ render(<MemoryRouter><OpeningCourseScreen view="practice" steps={[drills[3]]} progressStore={{steps:{},save:vi.fn()}} url={url}/></MemoryRouter>);
+ expect(screen.getByRole('link',{name:`Start drill: ${drills[3].title}`})).toBeVisible();
  expect(screen.queryByRole('heading', { name: 'Place the conditions' })).toBeNull();
 });

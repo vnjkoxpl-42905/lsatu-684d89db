@@ -27,3 +27,16 @@ it('keeps one actor/deck place across requested-card and ordinary openings', () 
   expect(screen.getByText('Your saved place takes priority over the card in this link.')).toBeVisible();
   expect(localStorage.getItem('conditional-term-cards-v2:actor')).toBe(saved);
 });
+
+it('does not save on mount or flip, and never uses an anonymous device key', () => {
+  const write = vi.spyOn(Storage.prototype, 'setItem');
+  const scoped = render(<TermDeck storageScope="actor"/>);
+  expect(write).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: /Turn the card/ }));
+  expect(write).not.toHaveBeenCalled();
+  scoped.unmount();
+  render(<TermDeck/>);
+  fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+  expect(write).not.toHaveBeenCalled();
+  write.mockRestore();
+});

@@ -20,7 +20,7 @@ vi.mock('./useConditionalProgress', async () => {
     return { progress: state.progress, savedProgress: state.saved, status: state.status, error: state.error, retry: vi.fn(() => { state.retryCalls++; }), update };
   } };
 });
-import { ConditionalBootcampRoutes } from './routes';
+import { ConditionalBootcampRoutes, conditionalWorkspaceSearch } from './routes';
 const base = '/bootcamp/conditionals';
 const course: ResolvedConditionalAssignment = { id: 'course', title: 'Conditional Logic', route: base, target: { scope: 'course', mode: 'learn', difficulty: 'beginner' }, unitIds: conditionalUnits.map(unit => unit.id), mode: 'learn' };
 function skill(mode: 'learn' | 'practice' = 'learn'): ResolvedConditionalAssignment {
@@ -47,11 +47,27 @@ function finishPractice(unitId: string, difficulty: ConditionalAttempt['difficul
 beforeEach(() => { state.progress = emptyProgress(); state.saved = state.progress; state.status = 'saved'; state.error = ''; state.retryCalls = 0; state.updateCalls = 0; });
 afterEach(cleanup);
 
+it('cleans list and activity selections from workspace destinations while retaining identity', () => {
+  const search='assignment=expanded&edition=full-conditionals-v3&courseChapter=3&courseContent=drills&courseStatus=completed&activity=translate-cards&groups=g3&stage=contrapositive&review=needs&deck=foundation&card=one&from=sufficient&run=1&guidedAssignment=other';
+  const cleaned=new URLSearchParams(conditionalWorkspaceSearch(search));
+  expect([...cleaned.keys()].sort()).toEqual(['assignment','edition']);
+  expect(cleaned.get('assignment')).toBe('expanded');
+  expect(cleaned.get('edition')).toBe('full-conditionals-v3');
+  const expanded={...course,id:'expanded',target:{...course.target,curriculumVersion:3 as const,courseEdition:'full-conditionals-v3' as const}};
+  const {container}=mount(`${base}/journal?${search}`,[expanded]);
+  for(const link of container.querySelectorAll<HTMLAnchorElement>('nav[aria-label="Conditional course"] a')){
+    const params=new URL(link.href).searchParams;
+    for(const key of ['courseChapter','courseContent','courseStatus','activity','deck','card','from','groups','stage','review','run','guidedAssignment'])expect(params.has(key)).toBe(false);
+    expect(params.get('assignment')).toBe('expanded');
+    expect(params.get('edition')).toBe('full-conditionals-v3');
+  }
+});
+
 it.each(['', '/lessons'])('opens the same numbered Chapter 1 course at %s', path => {
   state.progress!.lessons.orientation = '2026-10-01T12:00:00.000Z';
   mount(`${base}${path}`);
   expect(screen.getByRole('region', { name: 'Chapter 1' })).toBeVisible();
-  expect(within(screen.getByRole('region', { name: 'Chapter 1' })).getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
+  expect(within(screen.getByRole('region', { name: 'Chapter 1' })).getAllByRole('link', { name: /Start lesson/ })).toHaveLength(5);
   expect(screen.queryByRole('region', { name: 'Chapter 2' })).toBeNull();
   expect(screen.getByText('1.5')).toBeVisible();
   expect(screen.queryByRole('link', { name: 'Begin lesson' })).toBeNull();
@@ -73,7 +89,7 @@ it('does not substitute another grant when an explicit old row denies a new chap
 });
 it('shows only actual assigned course content and ignores forged broader query groups', () => {
   mount(`${base}?start=orientation&path=course&level=beginner`, [skill()]);
-  expect(screen.getByRole('heading', { name: 'The Necessary Condition' })).toBeVisible();
+  expect(screen.getByText('The Necessary Condition',{selector:'.oc-path-title'})).toBeVisible();
   expect(screen.getByText('1.3')).toBeVisible();
   expect(screen.queryByText('1.1')).toBeNull();
   expect(screen.queryByRole('heading', { name: 'The Sufficient Condition' })).toBeNull();
@@ -151,7 +167,8 @@ it('fails closed when no assignments are available', () => {
 });
 it('allows teacher preview through the same numbered course entry', () => {
   mount(`${base}?unit=group-3&level=advanced`, [], true);
-  expect(screen.getByRole('link', { name: /Start lesson 1.1/ }).getAttribute('href')).toContain('/opening/meaning');
+  expect(document.querySelector('.oc-browse-continue')?.getAttribute('href')).toContain('/opening/meaning');
+  expect(document.querySelector('.oc-browse-continue')).toHaveTextContent('Start lesson 1.1');
   expect(document.querySelector('.cb-sequence')).toBeNull();
 });
 it('keeps destinations in one course navigation and preserves assignment context', () => {
@@ -567,8 +584,9 @@ it.each([false, true])('excludes edition metadata from acknowledged lesson total
 
 it('filters the new course index by existing teacher authorization', () => {
   mount(`${base}/lessons?assignment=skill&level=advanced`, [skill()]);
-  expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(1);
-  expect(screen.getByRole('heading', { name: 'The Necessary Condition' })).toBeVisible();
+  expect(document.querySelectorAll('.oc-path-step[data-kind="note"]')).toHaveLength(1);
+  expect(within(document.querySelector('.oc-path-step[data-kind="note"]') as HTMLElement).getByRole('link',{name:'Start lesson 1.3: The Necessary Condition'})).toBeVisible();
+  expect(screen.getByText('The Necessary Condition',{selector:'.oc-path-title'})).toBeVisible();
   expect(screen.getByText('1.3')).toBeVisible();
   expect(screen.queryByRole('heading', { name: 'The sufficient condition' })).toBeNull();
   expect(state.updateCalls).toBe(0);
@@ -586,7 +604,8 @@ it('rejects an unassigned new note and does not widen practice-only assignments'
 it('keeps assignment context without recording legacy completion on new course navigation', () => {
   mount(`${base}/opening/necessary-words?assignment=skill&level=advanced&path=skill&start=group-2`, [skill()]);
   fireEvent.click(screen.getByRole('link', { name: 'Return to course' }));
-  fireEvent.click(screen.getByRole('heading', { name: 'Find the indicators' }).closest('li')!.querySelector('a')!);
+  fireEvent.click(within(screen.getByRole('navigation',{name:'Choose work'})).getByRole('link',{name:'Drills'}));
+  fireEvent.click(screen.getByRole('link',{name:'Start drill: Find the indicators'}));
   expect(screen.getByRole('heading', { level: 1, name: 'Find the indicators' })).toBeVisible();
   const next = screen.getByRole('link', { name: /Start practice/ }).getAttribute('href')!;
   expect(next).toContain('assignment=skill');

@@ -1,0 +1,1553 @@
+{
+ "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=tools&edition=full-conditionals-v3&courseChapter=1",
+ "at": "2026-10-27T20:41:23.931Z",
+ "allow": [
+  "palette-cream"
+ ],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    1,
+    1
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1386,
+     "screens": 1.5,
+     "words": 205,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 19,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Read a conditional",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 32,
+     "vw": 2.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 193,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Read a conditional",
+     "words": 3,
+     "lines": 1,
+     "size": 32,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Read a conditional",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 32,
+      "vw": 2.2,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 193,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "LSATU Inter",
+       "share": 0.71,
+       "mono": false
+      },
+      {
+       "family": "Inter",
+       "share": 0.26,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.02,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      16,
+      18,
+      20,
+      32
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "LSATU Inter",
+      "size": 13,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.5
+     },
+     "measureChars": 82,
+     "max": {
+      "size": 32,
+      "vw": 2.2,
+      "font": "Georgia",
+      "text": "Read a conditional"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "Chapter 1",
+      "above": "Read a conditional",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 13,
+      "top": 165
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#64665f",
+       "share": 0.79
+      },
+      {
+       "color": "#252824",
+       "share": 0.18
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#eeeadd",
+      "hsl": {
+       "h": 46,
+       "s": 0.33,
+       "l": 0.9
+      },
+      "fg": "#252824"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 12,
+     "inHero": 9,
+     "radius": 6,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Flashcards",
+      "Lessons",
+      "Drills",
+      "Flashcards",
+      "Filters"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 7,
+     "hairlineSamples": [
+      "aside.oc-course-rail 220px",
+      "div 143px",
+      "header.cb-workspace-bar.cb-workspace-status 1220px",
+      "li 1138px",
+      "li 1138px"
+     ],
+     "outlinedBoxes": 3,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 3,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "lsatu inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1386,
+    "margins": {
+     "left": 34,
+     "right": 40
+    },
+    "sections": [
+     {
+      "sel": "section.co-card-collection",
+      "tag": "section",
+      "top": 460,
+      "height": 153,
+      "words": 20,
+      "media": 0,
+      "middle": 514,
+      "heading": {
+       "text": "Concepts",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 260,
+      "right": 101,
+      "textLeft": 260,
+      "textRight": 101,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.co-card-collection",
+      "tag": "section",
+      "top": 640,
+      "height": 323,
+      "words": 49,
+      "media": 0,
+      "middle": 378,
+      "heading": {
+       "text": "Indicator words",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 260,
+      "right": 101,
+      "textLeft": 260,
+      "textRight": 101,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.co-card-collection",
+      "tag": "section",
+      "top": 991,
+      "height": 323,
+      "words": 70,
+      "media": 0,
+      "middle": 201,
+      "heading": {
+       "text": "Sentence translations",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 260,
+      "right": 101,
+      "textLeft": 260,
+      "textRight": 101,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Read a conditional",
+      "size": 32,
+      "top": 193,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 260,
+      "n": 5
+     },
+     {
+      "x": 446,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 6,
+    "bodySize": 13,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.14,
+    "voidBox": {
+     "x": 840,
+     "y": 300,
+     "w": 300,
+     "h": 600
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": {
+     "w": 220,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.15
+    },
+    "topbar": {
+     "h": 51
+    },
+    "canvas": {
+     "left": 40,
+     "right": 40
+    },
+    "hero": {
+     "text": "Read a conditional",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 32,
+     "vw": 2.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 193,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 3,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       0,
+       4
+      ],
+      [
+       12,
+       3
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.03,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      16,
+      18,
+      20,
+      32
+     ]
+    },
+    "title": {
+     "text": "Read a conditional",
+     "size": 32,
+     "top": 193
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    1,
+    1
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 1716,
+     "screens": 1.7,
+     "words": 205,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 19,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Read a conditional",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 32,
+     "vw": 4.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 212,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Read a conditional",
+     "words": 3,
+     "lines": 1,
+     "size": 32,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Read a conditional",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.67,
+      "top": 212,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "LSATU Inter",
+       "share": 0.71,
+       "mono": false
+      },
+      {
+       "family": "Inter",
+       "share": 0.26,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.02,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      16,
+      18,
+      20,
+      32
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "LSATU Inter",
+      "size": 13,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.5
+     },
+     "measureChars": 57,
+     "max": {
+      "size": 32,
+      "vw": 4.2,
+      "font": "Georgia",
+      "text": "Read a conditional"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "Chapter 1",
+      "above": "Read a conditional",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 13,
+      "top": 185
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#64665f",
+       "share": 0.79
+      },
+      {
+       "color": "#252824",
+       "share": 0.18
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#eeeadd",
+      "hsl": {
+       "h": 46,
+       "s": 0.33,
+       "l": 0.9
+      },
+      "fg": "#252824"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 12,
+     "inHero": 8,
+     "radius": 6,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Flashcards",
+      "Lessons",
+      "Drills",
+      "Flashcards",
+      "Filters"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 7,
+     "hairlineSamples": [
+      "aside.oc-course-rail 208px",
+      "div 131px",
+      "header.cb-workspace-bar.cb-workspace-status 560px",
+      "li 510px",
+      "li 510px"
+     ],
+     "outlinedBoxes": 3,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 3,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 1024,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "lsatu inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 1716,
+    "margins": {
+     "left": 34,
+     "right": 51
+    },
+    "sections": [
+     {
+      "sel": "header.oc-browse-header",
+      "tag": "header",
+      "top": 185,
+      "height": 135,
+      "words": 19,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Read a conditional",
+       "size": 32,
+       "tag": "h1"
+      },
+      "left": 232,
+      "right": 51,
+      "textLeft": 232,
+      "textRight": 51,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.oc-browse-toolbar",
+      "tag": "div",
+      "top": 400,
+      "height": 154,
+      "words": 7,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 232,
+      "right": 275,
+      "textLeft": 254,
+      "textRight": 275,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.co-card-collections",
+      "tag": "div",
+      "top": 580,
+      "height": 1066,
+      "words": 139,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Concepts",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 62,
+      "textLeft": 232,
+      "textRight": 62,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Read a conditional",
+      "size": 32,
+      "top": 212,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 232,
+      "n": 6
+     }
+    ],
+    "leftBlocks": 6,
+    "bodySize": 13,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": {
+     "w": 208,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.27
+    },
+    "topbar": {
+     "h": 71
+    },
+    "canvas": {
+     "left": 24,
+     "right": 24
+    },
+    "hero": {
+     "text": "Read a conditional",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 32,
+     "vw": 4.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 212,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 3,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       0,
+       4
+      ],
+      [
+       12,
+       3
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.03,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      16,
+      18,
+      20,
+      32
+     ]
+    },
+    "title": {
+     "text": "Read a conditional",
+     "size": 32,
+     "top": 212
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    1,
+    1,
+    1
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 2102,
+     "screens": 2.5,
+     "words": 195,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 19,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Read a conditional",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 32,
+     "vw": 8.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 258,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Read a conditional",
+     "words": 3,
+     "lines": 1,
+     "size": 32,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Read a conditional",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 32,
+      "vw": 8.2,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 258,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "LSATU Inter",
+       "share": 0.91,
+       "mono": false
+      },
+      {
+       "family": "Inter",
+       "share": 0.06,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.03,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      16,
+      17,
+      18,
+      32
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "LSATU Inter",
+      "size": 13,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.5
+     },
+     "measureChars": 40,
+     "max": {
+      "size": 32,
+      "vw": 8.2,
+      "font": "Georgia",
+      "text": "Read a conditional"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.02,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "Chapter 1",
+      "above": "Read a conditional",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 13,
+      "top": 231
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#faf8f1",
+       "top": 1032,
+       "hsl": {
+        "h": 47,
+        "s": 0.47,
+        "l": 0.96
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#64665f",
+       "share": 0.74
+      },
+      {
+       "color": "#252824",
+       "share": 0.24
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#eeeadd",
+      "hsl": {
+       "h": 46,
+       "s": 0.33,
+       "l": 0.9
+      },
+      "fg": "#252824"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 11,
+     "inHero": 5,
+     "radius": 6,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Lessons",
+      "Drills",
+      "Flashcards",
+      "Filters",
+      "Open"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 6,
+     "hairlineSamples": [
+      "div.oc-mobile-nav 390px",
+      "header.cb-workspace-bar.cb-workspace-status 390px",
+      "li 356px",
+      "li 356px",
+      "li 356px"
+     ],
+     "outlinedBoxes": 3,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 3,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "lsatu inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 2102,
+    "margins": {
+     "left": 16,
+     "right": 24
+    },
+    "sections": [
+     {
+      "sel": "header.oc-browse-header",
+      "tag": "header",
+      "top": 231,
+      "height": 135,
+      "words": 19,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Read a conditional",
+       "size": 32,
+       "tag": "h1"
+      },
+      "left": 16,
+      "right": 36,
+      "textLeft": 16,
+      "textRight": 36,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.oc-browse-toolbar",
+      "tag": "div",
+      "top": 459,
+      "height": 142,
+      "words": 7,
+      "media": 0,
+      "middle": 18,
+      "heading": null,
+      "left": 16,
+      "right": 51,
+      "textLeft": 51,
+      "textRight": 51,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.co-card-collection",
+      "tag": "section",
+      "top": 623,
+      "height": 259,
+      "words": 20,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Concepts",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 64,
+      "textLeft": 16,
+      "textRight": 64,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.co-card-collection",
+      "tag": "section",
+      "top": 907,
+      "height": 526,
+      "words": 49,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Indicator words",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 26,
+      "textLeft": 16,
+      "textRight": 26,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.co-card-collection",
+      "tag": "section",
+      "top": 1456,
+      "height": 586,
+      "words": 70,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Sentence translations",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 44,
+      "textLeft": 16,
+      "textRight": 44,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Read a conditional",
+      "size": 32,
+      "top": 258,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 16,
+      "n": 6
+     }
+    ],
+    "leftBlocks": 6,
+    "bodySize": 13,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": null,
+    "topbar": {
+     "h": 69
+    },
+    "canvas": {
+     "left": 16,
+     "right": 24
+    },
+    "hero": {
+     "text": "Read a conditional",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 32,
+     "vw": 8.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 258,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 3,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       0,
+       4
+      ],
+      [
+       12,
+       3
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.03,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      16,
+      17,
+      18,
+      20,
+      32
+     ]
+    },
+    "title": {
+     "text": "Read a conditional",
+     "size": 32,
+     "top": 258
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "font-count",
+   "width": 1440,
+   "message": "3 typefaces in use (LSATU Inter, Inter, Georgia).",
+   "fix": "Two at most.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "dev-server",
+   "width": 1440,
+   "message": "This page is served by a development server (Vite, webpack or Next in dev mode).",
+   "fix": "Run the last gate on the production build too (vite build && vite preview, next build && next start, or the built index.html): minifiers and bundlers change the CSS a visitor receives.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "app-title-size",
+   "width": 390,
+   "message": "The h1 is 32px (\"Read a conditional\").",
+   "fix": "An app screen is not a landing page: the title is 18-32px (20-24px on a phone)."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\after-cards-r1\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\after-cards-r1\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\after-cards-r1\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\after-cards-r1\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\after-cards-r1\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\after-cards-r1\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

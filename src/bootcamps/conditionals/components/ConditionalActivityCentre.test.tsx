@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 vi.mock('./EmbeddedConditionalActivity', () => ({ EmbeddedConditionalActivity: (props: unknown) => <output data-testid="embedded-player">{JSON.stringify(props)}</output> }));
 vi.mock('@/features/conditional-refresher/ConditionalSkillActivity', () => ({ ConditionalSkillActivity: (props: unknown) => <output data-testid="skill-player">{JSON.stringify(props)}</output> }));
@@ -17,6 +17,26 @@ function mount(extra: Partial<ConditionalActivityCentreProps> = {}, query = '') 
 }
 function config(value: ConditionalActivityConfig) { return normalizeConditionalActivityConfig(value)!; }
 describe('the integrated conditional activity centre', () => {
+  it('filters visible activity families without exposing unassigned collections or mounting players', () => {
+    mount({ grant: g3 });
+    fireEvent.click(screen.getByRole('button', { name: 'Filters' }));
+    const select = screen.getByRole('combobox', { name: 'Activity type' });
+    expect(screen.queryByRole('link', { name: 'Open Missing Links' })).toBeNull();
+    fireEvent.change(select, { target: { value: 'Recall and apply' } });
+    expect(screen.getByRole('link', { name: 'Open Sentence flashcards' })).toBeVisible();
+    expect(screen.queryByRole('link', { name: 'Open Unless Drill' })).toBeNull();
+    expect(screen.queryByTestId('skill-player')).toBeNull();
+    fireEvent.change(select, { target: { value: 'all' } });
+    expect(screen.getByRole('link', { name: 'Open Unless Drill' })).toBeVisible();
+  });
+  it('collapses settings without remounting the active sentence player', async () => {
+    mount({ config: config({ activity: 'translate-cards', groups: ['g3'] }) });
+    const player = await screen.findByTestId('skill-player');
+    fireEvent.click(screen.getByRole('button', { name: 'Filters' }));
+    expect(screen.getByTestId('skill-player')).toBe(player);
+    fireEvent.click(screen.getByRole('button', { name: 'Filters' }));
+    expect(screen.getByTestId('skill-player')).toBe(player);
+  });
   it('lists the ten full-course collections without mounting any hidden players', () => {
     mount();
     for (const title of ['Conditional Rephrase', 'Linking', 'Missing Links', 'Must Be True', 'Sort indicator words', 'Diagram practice', 'Sentence flashcards', 'Unless Drill', 'Conditional bank practice', 'Guided LSAT questions']) expect(screen.getByRole('link', { name: `Open ${title}` })).toBeTruthy();
@@ -72,6 +92,11 @@ describe('the integrated conditional activity centre', () => {
     await screen.findByRole('heading', { name: 'Easier' });
     expect(screen.getAllByRole('link', { name: 'Open set' })).toHaveLength(13);
     for (const band of ['Easier', 'Medium', 'Harder']) expect(screen.getByRole('heading', { name: band })).toBeTruthy();
+    expect(screen.queryByTestId('guided-player')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Filters' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Level' }), { target: { value: 'Harder' } });
+    expect(screen.getAllByRole('link', { name: 'Open set' })).toHaveLength(4);
+    expect(screen.queryByRole('heading', { name: 'Easier' })).toBeNull();
     expect(screen.queryByTestId('guided-player')).toBeNull();
   });
   it('opens a specifically assigned guided set internally with its selected context', async () => {

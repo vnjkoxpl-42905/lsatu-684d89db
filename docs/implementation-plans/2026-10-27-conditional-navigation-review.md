@@ -123,3 +123,129 @@ Result: C:\Users\Joshu\AppData\Local\Temp\conditional-navigation-20261027\plan2\
   ]
 }
 Host: R2-1 through R2-4 accepted with explicit shared href helper, chapter status rules, validated general lesson return, and save/resume spies. Earlier F1 withdrawn by reviewer.
+
+## Plan round 3
+Result: C:\Users\Joshu\AppData\Local\Temp\conditional-navigation-20261027\plan3\claudex-ae4c26lh\result.json
+
+{
+  "verdict": "APPROVED",
+  "summary": "The round 2 pins resolve my four open findings (R2-1 to R2-4), and I found no new material defects. R2-1: direct step links share one helper that keeps the existing `url(id, drill && started)` rule, the Start/Continue/Review labels, the projected-complete screen and the no-resume rule. R2-2: step and chapter progress filters are fully defined, including chapters with zero required steps. R2-3: `from` is accepted only for notes in the authorized edition-adjusted steps and is rendered through `url(from)`, so there is no arbitrary redirect. R2-4: the tests use the real `save` and `resume` spies and are limited to list-page filter interactions. Round 1 items F2 to F6 remain resolved. F1 stays withdrawn. Nothing was run, and the plan describes no implementation yet. The remaining risk is in execution: the code inspection should confirm the zero-write assertions and that no course-list query keys leak through courseUrl or conditionalCentreUrl.",
+  "findings": [],
+  "coverage": [
+    "Compared the revised plan with the round 2 pins and my earlier findings R2-1 to R2-4.",
+    "Re-checked the pins against code I read earlier: OpeningCourse.tsx 140-520 (CoursePath, stepAction, DrillEntry gating at line 518, the projected-complete screen at line 517, CardStatus, LessonCompletion), FlashcardTools.tsx (`from` handling at line 42, `allowed` at line 516), routes.tsx 160-230, and the store API in courseProgress.tsx."
+  ],
+  "limitations": [
+    "Plan-level review only; no implementation, diff, tests, build or browser output exists, and nothing was run.",
+    "Did not read courseProgress.tsx, routes.tsx 240-420, SkillPracticeHub or ConditionalActivityCentre in full.",
+    "Did not trace the assignment and grant producers beyond the URL builders.",
+    "APPROVED applies to the plan's design only, not to any later code."
+  ]
+}
+Approved plan SHA256 48ee2cff07fbbf30c48d983b2b4c82dc0912f13bf9b76b0740e2bea63de5c0a1. CLI observed model claude-sonnet-5-5. Plan approval only, independent implementation inspection still required.
+
+
+## Implementation inspection 1
+
+{
+  "verdict": "REVISE",
+  "summary": "The core helpers (courseNavigation.ts, courseCardLinks.ts) are consistent with the plan's pins: status mapping, chapter classification, the zero-required case, and group/deck relevance matching FlashcardTools' own availability rules. Two material defects remain. List filters leak into the workspace links built in routes.tsx. TermDeck gains new localStorage persistence on mount, which contradicts the plan's \"no mount/persistence changes for card state\". One low-severity accessibility regression is also listed. I could not run tests, and the review was not exhaustive (see limitations).",
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "medium",
+      "path": "src/bootcamps/conditionals/routes.tsx:266-275",
+      "evidence": "Shell builds `linkedSearch` from the raw `location.search` and uses it for `workspaceLinks.overview/review/journal/reference`. courseUrl() strips COURSE_LIST_QUERY_KEYS, but these four links do not. Scenario: a student is on `/lessons?courseStatus=completed&courseChapter=2`. The sidebar's Course/overview link becomes `BASE?courseStatus=completed&courseChapter=2`, so Home (and review/journal/reference) opens with a stale filter, or stale deck/card/activity/from keys. This violates the requirement to clear course-list query parameters when navigating to a different list or unrelated page, and the rule that filters must not be inherited.",
+      "fix": "Build the workspace links from a copy of the context that deletes COURSE_LIST_QUERY_KEYS. Preferably also delete the skill/activity, deck, card and from keys, the same set courseUrl clears. Add a routes test that the overview and review links carry no course* keys when the current URL has them."
+    },
+    {
+      "id": "F2",
+      "severity": "medium",
+      "path": "src/bootcamps/conditionals/components/TermDeck.tsx:14-24",
+      "evidence": "The new `useEffect` writes `conditional-term-cards-v2:${storageScope}` to localStorage on every mount, before any interaction. `storageScope` defaults to 'anonymous'. The plan says native card state is unchanged and there are no mount/persistence changes for card state. Merely opening the Foundation deck, or Filters, now writes storage. FlashcardTools' own test, 'filters only available decks\u2026without writing progress', only avoids this because it never mounts a deck. Anonymous or unscoped users share one key on a shared device. The filter-change guard in the plan ('zero writes') is also weakened for this deck.",
+      "fix": "If saved place is intended prior-authorized behaviour, record that as an explicit scope change and write only after the user changes the card (inside `go`), not on mount. Otherwise revert to non-persistent TermDeck. Either way, make the key scope explicit and add a test that mount causes no write."
+    },
+    {
+      "id": "F3",
+      "severity": "low",
+      "path": "src/bootcamps/conditionals/components/OpeningCourse.tsx (CoursePath)",
+      "evidence": "The direct-link row sets `aria-label={`${target.label}: ${step.title}`}` on a link whose visible content includes the kicker, optional marker, summary and saved status. The aria-label replaces the accessible name, so screen readers lose the description, the Optional marker and the saved status. The plan says CoursePath direct links retain description, optional marker and saved status. The mismatch also fails the 'label in name' principle.",
+      "fix": "Drop the aria-label, or include status and optional text in it. Alternatively keep the visible text as the name and add the action label as visually-hidden text."
+    },
+    {
+      "id": "F4",
+      "severity": "low",
+      "path": "src/bootcamps/conditionals/components/OpeningCourse.tsx",
+      "evidence": "The CoursePath rewrite removed the accordion. `laterLabel` is now an unused prop, and `stepAction`, `ChevronDown` and `useState` may be left unused or only partially used. I did not run lint or typecheck, but this is likely to produce no-unused-vars warnings. Also, `CourseCard` and `CoursePath` now derive the Start/Continue/Review wording from different code (inline versus `courseStepLink().label`). The plan asked for one helper for both href and label.",
+      "fix": "Remove dead props and imports. Have CourseCard use `courseStepLink().label` or a shared label function so label and href share one source."
+    }
+  ],
+  "coverage": [
+    "Plan read in full.",
+    "Read in full: courseNavigation.ts, courseCardLinks.ts, ConditionalFilters.tsx.",
+    "Read from the diff, with surrounding source for skillPractice.ts (allowedSkillGroups, skillPracticeUrl) and routes.tsx (courseUrl, conditionalCentreUrl, Shell, OpeningCourseRoute): OpeningCourse.tsx, FlashcardTools.tsx, IndicatorWordDeck.tsx, TermDeck.tsx.",
+    "Checked: step and chapter status classification against the plan pins, deck and group relevance against FlashcardTools availability, `from` validation, filter URL construction and reset behaviour, projected-completion link behaviour, and the leak of list filters into workspace links.",
+    "Spot-checked only: courseProgress.tsx priorCompletion handling, for projected-complete steps in the visible steps map."
+  ],
+  "limitations": [
+    "I could not run tests, typecheck, build or a browser. Nothing here claims passing tests, and visual, responsive, keyboard and reduced-motion criteria are unverified.",
+    "I did not read the test files in full (courseNavigation.test.ts, OpeningCourse.navigation.test.tsx, courseCardLinks.test.ts), so I did not assess their coverage against the plan's required assertions, such as zero save/resume calls and the no-nested-anchors check.",
+    "I did not inspect the new files in the manifest beyond the three I read: the ActivityCentre, SkillPracticeHub, GuidedConditionalActivity, MissingLinks and activity registry code, the assignments and requirements changes, and the CSS files.",
+    "Callers outside src/bootcamps/conditionals (for example src/dev/ConditionalOpeningPreview.tsx and the teacher assignment UI) were not reviewed. Whether the preview url helper clears course-list keys is unverified.",
+    "The prior uncommitted local work is mixed into the diff against HEAD, so I could not separate this plan's changes from earlier authorized ones."
+  ]
+}
+
+Host dispositions: F1 accepted; clean workspace navigation context and test it. F2 accepted: saved card place is prior-authorized integration work, but mount writes were unnecessary. Persist only explicit Next/Back changes with an explicit actor scope; unscoped decks retain session state only. Mount/flip/unscoped zero-write test added. F3 accepted: preserve accessible description and optional/saved state. F4 accepted: remove obsolete props and derive card action from shared helper.
+
+Visual refinement after rendered inspection: retained approved landscape material while reducing hero size, oversized progress numeral, text shadows and floating shadows. These CSS refinements will be included in inspection 2.
+
+
+## Implementation inspection 2
+
+{
+  "verdict": "REVISE",
+  "summary": "Round-1 fixes F1, F3 and F4 are resolved in the code I read. F1: `conditionalWorkspaceSearch` now cleans the workspace links. F3: the CoursePath rows use `aria-describedby`. F4: the dead imports and props are gone. The filter, status and chapter-progress helpers match the plan's pins. One material defect remains. The F2 fix is incomplete: the Flashcards tools screen still passes a shared `'anonymous'` storage scope, so TermDeck persists card position under a shared key. Two low-severity items are also listed. Nothing was run, so no test results are claimed.",
+  "findings": [
+    {
+      "id": "R3-1",
+      "severity": "medium",
+      "path": "src/bootcamps/conditionals/components/OpeningCourse.tsx (tools view, CourseScreen) and src/bootcamps/conditionals/components/TermDeck.tsx:14-28",
+      "evidence": "The host disposition for F2 said unscoped decks keep session state only and persist only with an explicit actor scope. But CourseScreen passes `storageScope={storageScope ?? progress?.storageScope ?? 'anonymous'}` to FlashcardTools, which forwards it unchanged to TermDeck. With no actor scope, TermDeck still reads and writes `conditional-term-cards-v2:anonymous` on every Next/Back. Two students on one shared device then inherit each other's card position. TermDeck also shows 'saved in this browser' for that shared key. The plan says native card state has no persistence changes, and TermDeck previously persisted nothing. The deck-level test 'opening deck filters preserves\u2026' uses an explicit scope, so the 'anonymous' default is not covered by any test I read.",
+      "fix": "Do not default the scope to 'anonymous'. Pass `storageScope ?? progress?.storageScope` and let TermDeck stay session-only when it is undefined. Alternatively, make 'anonymous' an explicit sentinel that TermDeck treats as unscoped. Add a test that mounting or using the Foundation deck with no actor scope makes no localStorage write."
+    },
+    {
+      "id": "R3-2",
+      "severity": "low",
+      "path": "src/bootcamps/conditionals/components/OpeningCourse.tsx (CourseLessonIndex, EmptyCourseList)",
+      "evidence": "The old 'No opening lessons are available in this work.' message is replaced by EmptyCourseList for every empty list. When the authorized list is empty, not filtered to empty, the learner sees 'No work matches these filters' and a Reset filters link that goes nowhere useful. CourseContinue also still builds its Start/Continue label inline instead of using `courseStepLink`, so the plan's single shared label helper is not fully applied.",
+      "fix": "Show EmptyCourseList only when `steps.length > 0` and the filtered list is empty. Otherwise keep the original no-work message. Have CourseContinue use `courseStepLink`."
+    },
+    {
+      "id": "R3-3",
+      "severity": "low",
+      "path": "src/bootcamps/conditionals/components/OpeningCourse.tsx (CourseIndexFilters on PracticePage)",
+      "evidence": "On the drills page the chapter dropdown lists every part found in `steps`, including chapters that have no drills. Choosing one gives an empty result. `change` also writes `courseContent=drills` into the URL for a page that already forces drills.",
+      "fix": "Build the part list from the drills on that page. Omit `content` from the URL when `content={false}`."
+    }
+  ],
+  "coverage": [
+    "Read in full: courseNavigation.ts, courseCardLinks.ts, ConditionalFilters.tsx, TermDeck.tsx.",
+    "Read the tracked diff for OpeningCourse.tsx, FlashcardTools.tsx, IndicatorWordDeck.tsx, routes.tsx (courseUrl, conditionalCentreUrl, conditionalWorkspaceSearch, Shell), assignments.ts, courseRequirements.ts and the CSS files.",
+    "Spot-checked source: skillPractice.ts (allowedSkillGroups, SKILL_QUERY_KEYS), the OpeningCourse.tsx CourseCard, CourseContinue, LessonCompletion and CourseScreen entry points, courseProgress.tsx storageScope plumbing, and conditionalTargetKey in conditionalBootcampAssignment.ts. The target key covers activity settings, so the URL-versus-metadata comparison for activity assignments is sound.",
+    "Checked these against the plan pins: filter and status semantics, chapter classification including the zero-required case, `from` validation, and deck relevance against FlashcardTools availability."
+  ],
+  "limitations": [
+    "I did not run tests, typecheck, build or a browser. The visual, responsive, keyboard, reduced-motion and Taste-inspector criteria are unverified.",
+    "I did not read the test files (courseNavigation.test.ts, OpeningCourse.navigation.test.tsx, courseCardLinks.test.ts), so I did not check them against the plan's required assertions: zero save/resume calls on filter interactions, no nested anchors, and the edition-adjusted fixtures.",
+    "I did not review ConditionalActivityCentre, SkillPracticeHub, GuidedConditionalActivity, MissingLinks, the activity registry or centreAccess beyond how routes.tsx calls them.",
+    "The assignment-grant changes (activity scope in assignments.ts and courseRequirements.ts) were checked only for the target-key comparison.",
+    "Files outside src/bootcamps/conditionals were not reviewed: ConditionalOpeningPreview, the teacher assignment UI and the drill gate. I did not verify that the preview URL helper clears course-list keys.",
+    "Prior uncommitted local work is mixed into the diff against HEAD, so I could not separate this plan's changes from earlier authorized work.",
+    "Because the CSS changed after the inspection-1 fixes, any later changes made after this snapshot are not covered."
+  ]
+}
+
+Host dispositions: all findings accepted and fixed after inspection. R3-1: removed the anonymous fallback at actual CourseScreen and added an unscoped Foundation Next zero-write regression. R3-2: empty authorized work now says no work available without a dead reset link; CourseContinue uses the shared helper. R3-3: practice chapter filters derive from authorized drills, and hidden content filters are omitted from generated URLs. Focused final rerun: 68 tests across OpeningCourse, navigation, and routes.andOr passed. The two inspection rounds are exhausted. These final fixes have host tests, not another independent approval.
+
+An initial inspection-2 launch failed before reviewer invocation because the feedback path was relative to the host working directory. Retried with the absolute path; no verdict inferred from the failed launch.

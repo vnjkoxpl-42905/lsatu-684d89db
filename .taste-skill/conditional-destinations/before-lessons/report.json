@@ -1,0 +1,1912 @@
+{
+ "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=lessons&edition=full-conditionals-v3&courseContent=lessons",
+ "at": "2026-10-27T20:20:08.812Z",
+ "allow": [
+  "palette-cream"
+ ],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.99,
+    0.99,
+    0.99,
+    0.99,
+    0.99,
+    0.99,
+    0.98
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 5692,
+     "screens": 6.3,
+     "words": 913,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 82,
+     "sections": 8,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Lessons and drills",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 40,
+     "vw": 2.8,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 134,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Lessons and drills",
+     "words": 3,
+     "lines": 1,
+     "size": 40,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Lessons and drills",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 40,
+      "vw": 2.8,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": true,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.21,
+      "top": 134,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "0% complete",
+      "words": 2,
+      "chars": 11,
+      "lines": 1,
+      "size": 30,
+      "vw": 2.1,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.1,
+      "top": 235,
+      "tag": "strong",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 2,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.99,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.01,
+       "mono": false
+      },
+      {
+       "family": "LSATU Inter",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      20,
+      22,
+      24,
+      30,
+      40
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 14.8,
+      "leading": 1.45,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.2
+     },
+     "measureChars": 78,
+     "max": {
+      "size": 40,
+      "vw": 2.8,
+      "font": "Georgia",
+      "text": "Lessons and drills"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 1
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#64665f",
+       "share": 0.6
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.17
+      },
+      {
+       "color": "#245b91",
+       "share": 0.17
+      },
+      {
+       "color": "#252824",
+       "share": 0.06
+      },
+      {
+       "color": "#f5f2ed",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#fffefa",
+      "hsl": {
+       "h": 48,
+       "s": 1,
+       "l": 0.99
+      },
+      "fg": "#252824"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 5,
+     "inHero": 5,
+     "radius": 6,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Filters",
+      "Start lesson 1.1 What conditionals are",
+      "Home",
+      "Practice centre",
+      "Flashcards"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 3,
+     "hairlineSamples": [
+      "aside.oc-course-rail 220px",
+      "div 143px",
+      "header.cb-workspace-bar.cb-workspace-status 1220px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "lsatu inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 5692,
+    "margins": {
+     "left": 62,
+     "right": 180
+    },
+    "sections": [],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Lessons and drills",
+      "size": 40,
+      "top": 134,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 400,
+      "n": 8
+     },
+     {
+      "x": 520,
+      "n": 7
+     }
+    ],
+    "leftBlocks": 15,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.11,
+    "voidBox": {
+     "x": 960,
+     "y": 300,
+     "w": 480,
+     "h": 300
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": {
+     "w": 220,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.15
+    },
+    "topbar": {
+     "h": 51
+    },
+    "canvas": {
+     "left": 180,
+     "right": 180
+    },
+    "hero": {
+     "text": "Lessons and drills",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 40,
+     "vw": 2.8,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 134,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 0,
+     "firstScreen": 0,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 0,
+     "radii": [],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 35,
+     "hues": 1,
+     "samples": [
+      {
+       "hue": 37,
+       "size": 42,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 42,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 42,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 42,
+       "radius": "50%"
+      }
+     ]
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 35,
+     "tabularShare": 0,
+     "kpiMax": 12
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.13,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      20,
+      22,
+      24,
+      40
+     ]
+    },
+    "title": {
+     "text": "Lessons and drills",
+     "size": 40,
+     "top": 134
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 9,
+   "filled": [
+    1,
+    0.96,
+    1,
+    0.98,
+    1,
+    0.97,
+    0.99,
+    0.98,
+    1
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 8778,
+     "screens": 8.6,
+     "words": 913,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 82,
+     "sections": 8,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Lessons and drills",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 153,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Lessons and drills",
+     "words": 3,
+     "lines": 1,
+     "size": 28,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Lessons and drills",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": true,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.28,
+      "top": 153,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "0% complete",
+      "words": 2,
+      "chars": 11,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.19,
+      "top": 241,
+      "tag": "strong",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 2,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.99,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.01,
+       "mono": false
+      },
+      {
+       "family": "LSATU Inter",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      20,
+      22,
+      24,
+      28,
+      30
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 14.8,
+      "leading": 1.45,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.2
+     },
+     "measureChars": 63,
+     "max": {
+      "size": 30,
+      "vw": 3.9,
+      "font": "Georgia",
+      "text": "0%"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 1
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#64665f",
+       "share": 0.6
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.17
+      },
+      {
+       "color": "#245b91",
+       "share": 0.17
+      },
+      {
+       "color": "#252824",
+       "share": 0.06
+      },
+      {
+       "color": "#f5f2ed",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#fffefa",
+      "hsl": {
+       "h": 48,
+       "s": 1,
+       "l": 0.99
+      },
+      "fg": "#252824"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 5,
+     "inHero": 5,
+     "radius": 6,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Filters",
+      "Start lesson 1.1 What conditionals are",
+      "Home",
+      "Practice centre",
+      "Flashcards"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 3,
+     "hairlineSamples": [
+      "aside.oc-course-rail 208px",
+      "div 131px",
+      "header.cb-workspace-bar.cb-workspace-status 560px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 1024,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "lsatu inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 8778,
+    "margins": {
+     "left": 62,
+     "right": 30
+    },
+    "sections": [
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 543,
+      "height": 1089,
+      "words": 101,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 42,
+      "textLeft": 232,
+      "textRight": 42,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 1661,
+      "height": 1174,
+      "words": 135,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 27,
+      "textLeft": 232,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 2866,
+      "height": 950,
+      "words": 113,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 44,
+      "textLeft": 232,
+      "textRight": 44,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 3846,
+      "height": 705,
+      "words": 82,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 30,
+      "textLeft": 232,
+      "textRight": 30,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 4581,
+      "height": 1356,
+      "words": 160,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 28,
+      "textLeft": 232,
+      "textRight": 28,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 5967,
+      "height": 950,
+      "words": 96,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 30,
+      "textLeft": 232,
+      "textRight": 30,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 6947,
+      "height": 1761,
+      "words": 183,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 36,
+      "textLeft": 232,
+      "textRight": 36,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Lessons and drills",
+      "size": 28,
+      "top": 153,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 232,
+      "n": 8
+     },
+     {
+      "x": 352,
+      "n": 7
+     }
+    ],
+    "leftBlocks": 15,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": {
+     "w": 208,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.27
+    },
+    "topbar": {
+     "h": 71
+    },
+    "canvas": {
+     "left": 24,
+     "right": 30
+    },
+    "hero": {
+     "text": "Lessons and drills",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 153,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 0,
+     "firstScreen": 0,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 0,
+     "radii": [],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 35,
+     "hues": 1,
+     "samples": [
+      {
+       "hue": 37,
+       "size": 42,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 42,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 42,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 42,
+       "radius": "50%"
+      }
+     ]
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 35,
+     "tabularShare": 0,
+     "kpiMax": 12
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.13,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      20,
+      22,
+      24,
+      28
+     ]
+    },
+    "title": {
+     "text": "Lessons and drills",
+     "size": 28,
+     "top": 153
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 12,
+   "filled": [
+    1,
+    0.95,
+    1,
+    0.98,
+    0.93,
+    0.93,
+    0.95,
+    1,
+    1,
+    1,
+    0.98,
+    0.91
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 9325,
+     "screens": 11,
+     "words": 903,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 82,
+     "sections": 8,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Lessons and drills",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 203,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Lessons and drills",
+     "words": 3,
+     "lines": 1,
+     "size": 28,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Lessons and drills",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": true,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.55,
+      "top": 203,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "0% complete",
+      "words": 2,
+      "chars": 11,
+      "lines": 1,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.38,
+      "top": 291,
+      "tag": "strong",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 1 · Read a conditional",
+      "words": 6,
+      "chars": 30,
+      "lines": 1,
+      "size": 22.4,
+      "vw": 5.7,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.6,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 593,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 2 · AND, OR and the contrapositive",
+      "words": 8,
+      "chars": 42,
+      "lines": 2,
+      "size": 22.4,
+      "vw": 5.7,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.6,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 1733,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 3 · Group 3 and Group 4",
+      "words": 8,
+      "chars": 31,
+      "lines": 1,
+      "size": 22.4,
+      "vw": 5.7,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.6,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 3020,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 4 · Two-way rules and denying a rule",
+      "words": 9,
+      "chars": 44,
+      "lines": 2,
+      "size": 22.4,
+      "vw": 5.7,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.6,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 4021,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 5 · Use facts and connect rules",
+      "words": 8,
+      "chars": 39,
+      "lines": 2,
+      "size": 22.4,
+      "vw": 5.7,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.6,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 4813,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 6 · Some, most and all",
+      "words": 7,
+      "chars": 30,
+      "lines": 1,
+      "size": 22.4,
+      "vw": 5.7,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.6,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 6352,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 7 · Reason through an argument",
+      "words": 7,
+      "chars": 38,
+      "lines": 2,
+      "size": 22.4,
+      "vw": 5.7,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": 0,
+      "leading": 1.6,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 7358,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 9,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 8,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.99,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.01,
+       "mono": false
+      },
+      {
+       "family": "LSATU Inter",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      17,
+      18,
+      22,
+      24,
+      28,
+      30
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 14.8,
+      "leading": 1.45,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.2
+     },
+     "measureChars": 42,
+     "max": {
+      "size": 30,
+      "vw": 7.7,
+      "font": "Georgia",
+      "text": "0%"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 1
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#64665f",
+       "share": 0.57
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.18
+      },
+      {
+       "color": "#245b91",
+       "share": 0.18
+      },
+      {
+       "color": "#252824",
+       "share": 0.06
+      },
+      {
+       "color": "#f5f2ed",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#fffefa",
+      "hsl": {
+       "h": 48,
+       "s": 1,
+       "l": 0.99
+      },
+      "fg": "#252824"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 5,
+     "inHero": 5,
+     "radius": 6,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Filters",
+      "Start lesson 1.1 What conditionals are",
+      "Home",
+      "Practice centre",
+      "Flashcards"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 2,
+     "hairlineSamples": [
+      "div.oc-mobile-nav 390px",
+      "header.cb-workspace-bar.cb-workspace-status 390px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "lsatu inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 9325,
+    "margins": {
+     "left": 16,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 593,
+      "height": 1110,
+      "words": 101,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 20,
+      "textLeft": 16,
+      "textRight": 20,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 1733,
+      "height": 1257,
+      "words": 135,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 16,
+      "textLeft": 16,
+      "textRight": 16,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 3020,
+      "height": 972,
+      "words": 113,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 17,
+      "textLeft": 16,
+      "textRight": 17,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 4021,
+      "height": 762,
+      "words": 82,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 25,
+      "textLeft": 16,
+      "textRight": 25,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 4813,
+      "height": 1509,
+      "words": 160,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 17,
+      "textLeft": 16,
+      "textRight": 17,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 6352,
+      "height": 975,
+      "words": 96,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 20,
+      "textLeft": 16,
+      "textRight": 20,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-course-part",
+      "tag": "section",
+      "top": 7358,
+      "height": 1908,
+      "words": 183,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Chapter",
+       "size": 22,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 20,
+      "textLeft": 16,
+      "textRight": 20,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Lessons and drills",
+      "size": 28,
+      "top": 203,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 16,
+      "n": 12
+     },
+     {
+      "x": 136,
+      "n": 3
+     }
+    ],
+    "leftBlocks": 15,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": null,
+    "topbar": {
+     "h": 69
+    },
+    "canvas": {
+     "left": 16,
+     "right": 20
+    },
+    "hero": {
+     "text": "Lessons and drills",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 203,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 0,
+     "firstScreen": 0,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 0,
+     "radii": [],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 35,
+     "hues": 1,
+     "samples": [
+      {
+       "hue": 37,
+       "size": 36,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 36,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 36,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 36,
+       "radius": "50%"
+      }
+     ]
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 35,
+     "tabularShare": 0,
+     "kpiMax": 12
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.13,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      22,
+      24,
+      28
+     ]
+    },
+    "title": {
+     "text": "Lessons and drills",
+     "size": 28,
+     "top": 203
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "dev-server",
+   "width": 1440,
+   "message": "This page is served by a development server (Vite, webpack or Next in dev mode).",
+   "fix": "Run the last gate on the production build too (vite build && vite preview, next build && next start, or the built index.html): minifiers and bundlers change the CSS a visitor receives.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "icon-chips",
+   "width": 1440,
+   "message": "35 icons sit in tinted squares or circles.",
+   "fix": "This is the commonest tell of a generated dashboard. Drop the tinted square: a KPI is a label and a number; an icon, if it helps, is plain and in the text colour.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "tabular",
+   "width": 1440,
+   "message": "Only 0% of the figures use tabular numerals.",
+   "fix": "Set font-variant-numeric: tabular-nums on tables, KPIs and anything that updates, so digits keep their width.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "app-title-size",
+   "width": 1440,
+   "message": "The h1 is 40px (\"Lessons and drills\").",
+   "fix": "An app screen is not a landing page: the title is 18-32px (20-24px on a phone)."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-lessons\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-lessons\\desktop-page-01.jpg",
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-lessons\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-lessons\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-lessons\\tablet-page-01.jpg",
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-lessons\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-lessons\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-lessons\\mobile-page-01.jpg",
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-lessons\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

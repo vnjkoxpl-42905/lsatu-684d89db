@@ -1,0 +1,2088 @@
+{
+ "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=practice&edition=full-conditionals-v3",
+ "at": "2026-10-27T20:26:05.344Z",
+ "allow": [
+  "palette-cream"
+ ],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.85,
+    0.74,
+    0.85,
+    0.79,
+    0.82,
+    0.67,
+    0.99
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 6281,
+     "screens": 7,
+     "words": 1151,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 88,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 1,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Practice drills",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 32,
+     "vw": 2.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 189,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Practice drills",
+     "words": 2,
+     "lines": 1,
+     "size": 32,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Practice drills",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 32,
+      "vw": 2.2,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.4,
+      "top": 189,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.79,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.19,
+       "mono": false
+      },
+      {
+       "family": "LSATU Inter",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      23,
+      26,
+      32
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 14.7,
+      "leading": 1.5,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.2
+     },
+     "measureChars": 73,
+     "max": {
+      "size": 32,
+      "vw": 2.2,
+      "font": "Georgia",
+      "text": "Practice drills"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "0 of 37 drills done",
+      "above": "Practice drills",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14.7,
+      "top": 163
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#64665f",
+       "share": 0.7
+      },
+      {
+       "color": "#454843",
+       "share": 0.13
+      },
+      {
+       "color": "#252824",
+       "share": 0.06
+      },
+      {
+       "color": "#48534b",
+       "share": 0.05
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#252824",
+      "hsl": {
+       "h": 105,
+       "s": 0.05,
+       "l": 0.15
+      },
+      "fg": "#f5f2ed"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 8,
+     "inHero": 3,
+     "radius": 8,
+     "height": 46,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Course drills",
+      "Start drill",
+      "Filters"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 1,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "section.oc-chapter-hero.oc-practice-hero → rgba(0, 0, 0, 0.06) 0px 3px 12px 0px"
+     ],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "aside.oc-course-rail 220px",
+      "div 143px",
+      "header.cb-workspace-bar.cb-workspace-status 1220px",
+      "section.skill-practice-list 1140px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 6,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 1,
+     "mediaRadius": 20,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 5709
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "bg-image",
+      "ratio": 0.2
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "lsatu inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 6281,
+    "margins": {
+     "left": 62,
+     "right": 153
+    },
+    "sections": [],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Practice drills",
+      "size": 32,
+      "top": 189,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 400,
+      "n": 7
+     },
+     {
+      "x": 282,
+      "n": 3
+     },
+     {
+      "x": 260,
+      "n": 2
+     },
+     {
+      "x": 571,
+      "n": 2
+     },
+     {
+      "x": 860,
+      "n": 2
+     },
+     {
+      "x": 1149,
+      "n": 2
+     },
+     {
+      "x": 428,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 19,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.18,
+    "voidBox": {
+     "x": 1020,
+     "y": 360,
+     "w": 420,
+     "h": 540
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": {
+     "w": 220,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.15
+    },
+    "topbar": {
+     "h": 51
+    },
+    "canvas": {
+     "left": 82,
+     "right": 147
+    },
+    "hero": {
+     "text": "Practice drills",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 32,
+     "vw": 2.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 189,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 2,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       12,
+       5
+      ],
+      [
+       20,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 1,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 38,
+     "hues": 1,
+     "samples": [
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      }
+     ]
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.01,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      23,
+      26,
+      32
+     ]
+    },
+    "title": {
+     "text": "Practice drills",
+     "size": 32,
+     "top": 189
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.83,
+    0.8,
+    0.84,
+    0.79,
+    0.79,
+    0.88,
+    1
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 6882,
+     "screens": 6.7,
+     "words": 1151,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 88,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 1,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Practice drills",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 32,
+     "vw": 4.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 209,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Practice drills",
+     "words": 2,
+     "lines": 1,
+     "size": 32,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Practice drills",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.59,
+      "top": 209,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.79,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.19,
+       "mono": false
+      },
+      {
+       "family": "LSATU Inter",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      23,
+      26,
+      32
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 14.7,
+      "leading": 1.5,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.2
+     },
+     "measureChars": 59,
+     "max": {
+      "size": 32,
+      "vw": 4.2,
+      "font": "Georgia",
+      "text": "Practice drills"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "0 of 37 drills done",
+      "above": "Practice drills",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14.7,
+      "top": 183
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#64665f",
+       "share": 0.7
+      },
+      {
+       "color": "#454843",
+       "share": 0.13
+      },
+      {
+       "color": "#252824",
+       "share": 0.06
+      },
+      {
+       "color": "#48534b",
+       "share": 0.05
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#252824",
+      "hsl": {
+       "h": 105,
+       "s": 0.05,
+       "l": 0.15
+      },
+      "fg": "#f5f2ed"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 8,
+     "inHero": 3,
+     "radius": 8,
+     "height": 46,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Course drills",
+      "Start drill",
+      "Filters"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 1,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "section.oc-chapter-hero.oc-practice-hero → rgba(0, 0, 0, 0.06) 0px 3px 12px 0px"
+     ],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "aside.oc-course-rail 208px",
+      "div 131px",
+      "header.cb-workspace-bar.cb-workspace-status 560px",
+      "section.skill-practice-list 512px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 6,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 1,
+     "mediaRadius": 20,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 6060
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "bg-image",
+      "ratio": 0.2
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 1024,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "lsatu inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 6882,
+    "margins": {
+     "left": 62,
+     "right": 49
+    },
+    "sections": [
+     {
+      "sel": "section.oc-chapter-hero.oc-practice-hero",
+      "tag": "section",
+      "top": 119,
+      "height": 260,
+      "words": 14,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Practice drills",
+       "size": 32,
+       "tag": "h1"
+      },
+      "left": 260,
+      "right": 243,
+      "textLeft": 260,
+      "textRight": 243,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 467,
+      "height": 1374,
+      "words": 233,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Read a conditional",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 49,
+      "textLeft": 232,
+      "textRight": 49,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 1877,
+      "height": 547,
+      "words": 98,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "AND, OR and the contrapositive",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 59,
+      "textLeft": 232,
+      "textRight": 59,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 2460,
+      "height": 547,
+      "words": 104,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Group 3 and Group 4",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 59,
+      "textLeft": 232,
+      "textRight": 59,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 3043,
+      "height": 349,
+      "words": 68,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Two-way rules and denying a rule",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 56,
+      "textLeft": 232,
+      "textRight": 56,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 3428,
+      "height": 713,
+      "words": 137,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Use facts and connect rules",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 55,
+      "textLeft": 232,
+      "textRight": 55,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 4177,
+      "height": 591,
+      "words": 121,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Some, most and all",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 55,
+      "textLeft": 232,
+      "textRight": 55,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 4804,
+      "height": 1054,
+      "words": 211,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reason through an argument",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 57,
+      "textLeft": 232,
+      "textRight": 57,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.skill-practice-list",
+      "tag": "section",
+      "top": 5927,
+      "height": 853,
+      "words": 111,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Practise a specific skill",
+       "size": 26,
+       "tag": "h2"
+      },
+      "left": 232,
+      "right": 33,
+      "textLeft": 232,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Practice drills",
+      "size": 32,
+      "top": 209,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 232,
+      "n": 9
+     },
+     {
+      "x": 254,
+      "n": 6
+     },
+     {
+      "x": 518,
+      "n": 4
+     }
+    ],
+    "leftBlocks": 19,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": {
+     "w": 208,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.27
+    },
+    "topbar": {
+     "h": 71
+    },
+    "canvas": {
+     "left": 24,
+     "right": -39
+    },
+    "hero": {
+     "text": "Practice drills",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 32,
+     "vw": 4.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 209,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 2,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       12,
+       5
+      ],
+      [
+       20,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 1,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 38,
+     "hues": 1,
+     "samples": [
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      }
+     ]
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.01,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      23,
+      26,
+      32
+     ]
+    },
+    "title": {
+     "text": "Practice drills",
+     "size": 32,
+     "top": 209
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 10,
+   "filled": [
+    0.88,
+    0.77,
+    0.78,
+    0.83,
+    0.88,
+    0.93,
+    0.83,
+    0.88,
+    1,
+    1
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 8072,
+     "screens": 9.6,
+     "words": 1141,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 88,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 1,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Practice drills",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 247,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Practice drills",
+     "words": 2,
+     "lines": 1,
+     "size": 28,
+     "font": "Georgia"
+    },
+    "headings": [
+     {
+      "text": "Practice drills",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 247,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 1 Read a conditional",
+      "words": 5,
+      "chars": 28,
+      "lines": 2,
+      "size": 23.2,
+      "vw": 5.9,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 497,
+      "mixedFonts": [
+       "Georgia",
+       "LSATU Inter"
+      ],
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 2 AND, OR and the contrapositive",
+      "words": 7,
+      "chars": 40,
+      "lines": 2,
+      "size": 23.2,
+      "vw": 5.9,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 2084,
+      "mixedFonts": [
+       "Georgia",
+       "LSATU Inter"
+      ],
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 3 Group 3 and Group 4",
+      "words": 7,
+      "chars": 29,
+      "lines": 2,
+      "size": 23.2,
+      "vw": 5.9,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 2710,
+      "mixedFonts": [
+       "Georgia",
+       "LSATU Inter"
+      ],
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 4 Two-way rules and denying a rule",
+      "words": 8,
+      "chars": 42,
+      "lines": 2,
+      "size": 23.2,
+      "vw": 5.9,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 3445,
+      "mixedFonts": [
+       "Georgia",
+       "LSATU Inter"
+      ],
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 5 Use facts and connect rules",
+      "words": 7,
+      "chars": 37,
+      "lines": 2,
+      "size": 23.2,
+      "vw": 5.9,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 3895,
+      "mixedFonts": [
+       "Georgia",
+       "LSATU Inter"
+      ],
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 6 Some, most and all",
+      "words": 6,
+      "chars": 28,
+      "lines": 2,
+      "size": 23.2,
+      "vw": 5.9,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 4754,
+      "mixedFonts": [
+       "Georgia",
+       "LSATU Inter"
+      ],
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Chapter 7 Reason through an argument",
+      "words": 6,
+      "chars": 36,
+      "lines": 2,
+      "size": 23.2,
+      "vw": 5.9,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 5470,
+      "mixedFonts": [
+       "Georgia",
+       "LSATU Inter"
+      ],
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Practise a specific skill",
+      "words": 4,
+      "chars": 25,
+      "lines": 1,
+      "size": 25.6,
+      "vw": 6.6,
+      "font": "Georgia",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 6814,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 9,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 7,
+     "mixedFontHeadings": 7
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.78,
+       "mono": false
+      },
+      {
+       "family": "Georgia",
+       "share": 0.2,
+       "mono": false
+      },
+      {
+       "family": "LSATU Inter",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      23,
+      26,
+      28
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 14.7,
+      "leading": 1.5,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.2
+     },
+     "measureChars": 38,
+     "max": {
+      "size": 28,
+      "vw": 7.2,
+      "font": "Georgia",
+      "text": "Practice drills"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f2ed",
+       "top": 0,
+       "hsl": {
+        "h": 37,
+        "s": 0.29,
+        "l": 0.95
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#64665f",
+       "share": 0.69
+      },
+      {
+       "color": "#454843",
+       "share": 0.14
+      },
+      {
+       "color": "#252824",
+       "share": 0.06
+      },
+      {
+       "color": "#48534b",
+       "share": 0.05
+      },
+      {
+       "color": "#1a1a1a",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#252824",
+      "hsl": {
+       "h": 105,
+       "s": 0.05,
+       "l": 0.15
+      },
+      "fg": "#f5f2ed"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 2,
+     "radius": 8,
+     "height": 46,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Start drill",
+      "Filters"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 1,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "section.oc-chapter-hero.oc-practice-hero → rgba(0, 0, 0, 0.06) 0px 3px 12px 0px"
+     ],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 3,
+     "hairlineSamples": [
+      "div.oc-mobile-nav 390px",
+      "header.cb-workspace-bar.cb-workspace-status 390px",
+      "section.skill-practice-list 358px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 6,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 1,
+     "mediaRadius": 20,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "bg-image",
+      "ratio": 0.3
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "lsatu inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 8072,
+    "margins": {
+     "left": 16,
+     "right": 29
+    },
+    "sections": [
+     {
+      "sel": "section.oc-chapter-hero.oc-practice-hero",
+      "tag": "section",
+      "top": 169,
+      "height": 240,
+      "words": 14,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Practice drills",
+       "size": 28,
+       "tag": "h1"
+      },
+      "left": 40,
+      "right": 85,
+      "textLeft": 40,
+      "textRight": 85,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 497,
+      "height": 1551,
+      "words": 233,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Read a conditional",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 41,
+      "textLeft": 16,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 2084,
+      "height": 590,
+      "words": 98,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "AND, OR and the contrapositive",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 41,
+      "textLeft": 16,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 2710,
+      "height": 700,
+      "words": 104,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Group 3 and Group 4",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 51,
+      "textLeft": 16,
+      "textRight": 51,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 3445,
+      "height": 414,
+      "words": 68,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Two-way rules and denying a rule",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 29,
+      "textLeft": 16,
+      "textRight": 29,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 3895,
+      "height": 823,
+      "words": 137,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Use facts and connect rules",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 43,
+      "textLeft": 16,
+      "textRight": 43,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 4754,
+      "height": 680,
+      "words": 121,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Some, most and all",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 42,
+      "textLeft": 16,
+      "textRight": 42,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.oc-practice-chapter",
+      "tag": "section",
+      "top": 5470,
+      "height": 1251,
+      "words": 211,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reason through an argument",
+       "size": 23,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 42,
+      "textLeft": 16,
+      "textRight": 42,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.skill-practice-list",
+      "tag": "section",
+      "top": 6789,
+      "height": 1191,
+      "words": 111,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Practise a specific skill",
+       "size": 26,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 27,
+      "textLeft": 16,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Practice drills",
+      "size": 28,
+      "top": 247,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 38,
+      "n": 10
+     },
+     {
+      "x": 16,
+      "n": 9
+     }
+    ],
+    "leftBlocks": 19,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": null,
+    "topbar": {
+     "h": 69
+    },
+    "canvas": {
+     "left": 16,
+     "right": -47
+    },
+    "hero": {
+     "text": "Practice drills",
+     "words": 2,
+     "chars": 15,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "Georgia",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.12,
+     "top": 247,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 2,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       12,
+       5
+      ],
+      [
+       20,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 1,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 38,
+     "hues": 1,
+     "samples": [
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      },
+      {
+       "hue": 37,
+       "size": 30,
+       "radius": "50%"
+      }
+     ]
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.01,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      23,
+      26,
+      28
+     ]
+    },
+    "title": {
+     "text": "Practice drills",
+     "size": 28,
+     "top": 247
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "dev-server",
+   "width": 1440,
+   "message": "This page is served by a development server (Vite, webpack or Next in dev mode).",
+   "fix": "Run the last gate on the production build too (vite build && vite preview, next build && next start, or the built index.html): minifiers and bundlers change the CSS a visitor receives.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "icon-chips",
+   "width": 1440,
+   "message": "38 icons sit in tinted squares or circles.",
+   "fix": "This is the commonest tell of a generated dashboard. Drop the tinted square: a KPI is a label and a number; an icon, if it helps, is plain and in the text colour.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "mixed-font-headline",
+   "width": 390,
+   "message": "7 headline(s) switch typeface or to italic mid-line (the \"one italic serif word\" move).",
+   "fix": "Set the whole headline in one face. Emphasis comes from the words."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-drills\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-drills\\desktop-page-01.jpg",
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-drills\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-drills\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-drills\\tablet-page-01.jpg",
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-drills\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-drills\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-drills\\mobile-page-01.jpg",
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-full-20261025\\.taste-skill\\conditional-destinations\\before-drills\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}
