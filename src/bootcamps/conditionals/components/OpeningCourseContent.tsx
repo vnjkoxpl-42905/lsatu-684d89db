@@ -10,6 +10,7 @@ import './must-arrow-note.css';
 import './missing-requirement-note.css';
 import { MustArrowPractice } from './MustArrowPractice';
 import { SufficientConditionFilm } from './SufficientConditionFilm';
+import { AndOrLesson } from './AndOrLessons';
 
 type ContentSection = ReactElement<{ id?: string; number?: number; title?: string; children?: ReactNode; dark?: boolean; 'data-reference-boundary'?: boolean }>;
 
@@ -427,7 +428,7 @@ function PermissionBoundary() {
   return <NoteSection title="Keep permission and instructions distinct"><p>A conditional can give permission or an instruction. Keep that strength instead of turning it into a report of what someone did.</p>{Children.toArray(boundary.props.children).slice(3)}</NoteSection>;
 }
 
-function Content({ id }: { id: string }) {
+function Content({ id, storageScope }: { id: string; storageScope?: string }) {
   switch (id) {
     case 'meaning': return <ReferenceBody number={1} omitTransition/>;
     case 'sufficient': return <SufficientNote/>;
@@ -438,15 +439,20 @@ function Content({ id }: { id: string }) {
     case 'whole-meaning': return <WholeMeaningNote/>;
     case 'missing-requirement': return <MissingRequirementNote/>;
     case 'contrapositive': return <CombinedContrapositiveNote/>;
+    case 'and-or-both-or-either':
+    case 'and-or-either-condition':
+    case 'and-or-either-side':
+    case 'and-or-negate-conditions':
+    case 'and-or-negate-group': return <AndOrLesson id={id}/>;
     case 'foundation-practice': return <FoundationPractice/>;
-    case 'sufficient-practice': return <StagedReasoningDrill mode="sufficient"/>;
-    case 'mixed-practice': return <StagedReasoningDrill mode="mixed"/>;
-    case 'contrapositive-practice': return <StagedReasoningDrill mode="contrapositive"/>;
+    case 'sufficient-practice': return <StagedReasoningDrill storageScope={storageScope} mode="sufficient"/>;
+    case 'mixed-practice': return <StagedReasoningDrill storageScope={storageScope} mode="mixed"/>;
+    case 'contrapositive-practice': return <StagedReasoningDrill storageScope={storageScope} mode="contrapositive"/>;
     default: throw new Error(`Unknown opening course content: ${id}`);
   }
 }
 
 /** Article body only. Course routes own titles, navigation and completion. */
-export function OpeningCourseContent({ id }: { id: string }) {
-  return <div className={id === 'foundation-practice' ? 'opening-course-content' : 'co-opening cr-sequence opening-course-content'}><Content key={id} id={id}/></div>;
+export function OpeningCourseContent({ id, storageScope }: { id: string; storageScope?: string }) {
+  return <div className={id === 'foundation-practice' ? 'opening-course-content' : 'co-opening cr-sequence opening-course-content'}><Content key={`${storageScope ?? "legacy"}:${id}`} id={id} storageScope={storageScope}/></div>;
 }

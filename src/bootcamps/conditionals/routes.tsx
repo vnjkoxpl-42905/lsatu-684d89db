@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Navigate, Outlet, Route, Routes, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, Clock, RotateCcw } from 'lucide-react';
 import { conditionalUnits, findConditionalUnit, getConditionalQuestions } from './content';
@@ -9,10 +9,13 @@ import { needsExpandedConditionalLessonReview, CONDITIONAL_OPENING_UNIT_IDS } fr
 import { useConditionalProgress } from './useConditionalProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { getCurriculumDifficulty, getCurriculumUnits } from './curriculumPath';
-import { conditionalAssignmentAllowsAction, type ResolvedConditionalAssignment as ConditionalAssignment } from './assignments';
+import { conditionalAssignmentAllowsAction, registryStepAllowed, type UnavailableConditionalAssignment, type ResolvedConditionalAssignment as ConditionalAssignment } from './assignments';
+import { FULL_CONDITIONAL_EDITION } from '@/lib/conditionalCourseEdition';
+import { createEditionCourseStore, editionStorageScope } from './courseProgress';
+import { applyConditionalRequirements, resolveConditionalRequirements } from './courseRequirements';
 import { ConditionalLessonNote } from './components/ConditionalLessonNote';
 import { OpeningCourseNavigation, OpeningCourseScreen, type OpeningCourseUrl } from './components/OpeningCourse';
-import { OPENING_COURSE_PATH, openingCourseStep, openingStepAccessUnits } from './openingCoursePath';
+import { CHAPTER_TWO_LEGACY_UNIT_IDS, OPENING_COURSE_PATH, openingCourseStep, openingStepAccessUnits, courseStepsForEdition, LEGACY_UNIT_DISPOSITIONS, LEGACY_OPENING_COURSE_STEPS } from './openingCoursePath';
 
 const BASE = '/bootcamp/conditionals';
 const names: Record<ConditionalArea, string> = { understanding: 'Understand the rule', translation: 'Translate the language', linking: 'Link the rules', inference: 'Draw conclusions', complex: 'Handle complex rules', application: 'Apply to LR', quantifiers: 'Some, most, and all' };
@@ -22,7 +25,7 @@ function useCourse() { const value = useContext(Context); if (!value) throw new 
 
 type NextStep = { mode: 'learn' | 'practice'; unitId?: string; label: string; difficulty: ConditionalDifficulty; phase: ConditionalUnit['phase'] };
 type PathSelection = { allowedUnits?: string[]; assignmentId?: string; practiceOnly?: boolean; scope: 'course' | 'area' | 'skill' | 'practice'; area?: ConditionalArea; unitId?: string; start?: string; assignedLevel?: boolean; difficulty: ConditionalDifficulty; phase?: ConditionalUnit['phase'] };
-const WorkContext = createContext<{ selection: PathSelection; assignments: ConditionalAssignment[]; active?: ConditionalAssignment; isAdmin: boolean; userId?: string } | null>(null);
+const WorkContext = createContext<{ selection: PathSelection; assignments: ConditionalAssignment[]; unavailableAssignments: UnavailableConditionalAssignment[]; active?: ConditionalAssignment; isAdmin: boolean; userId?: string } | null>(null);
 function useWork() { const value = useContext(WorkContext); if (!value) throw new Error('Conditional work provider missing'); return value; }
 function useSelection() { return useWork().selection; }
 function selectedUnits(selection: PathSelection) {
@@ -96,7 +99,7 @@ function RecommendedForward({ selection }: { selection?: PathSelection }) {
   </div>;
 }
 
-export function ConditionalBootcampRoutes({ userId, isAdmin = false, assignments = [] }: { userId: string; isAdmin?: boolean; assignments?: ConditionalAssignment[] }) {
+export function ConditionalBootcampRoutes({ userId, isAdmin = false, assignments = [], unavailableAssignments = [] }: { userId: string; isAdmin?: boolean; assignments?: ConditionalAssignment[]; unavailableAssignments?: UnavailableConditionalAssignment[] }) {
   const course = useConditionalProgress(userId);
   const [params] = useSearchParams();
   const location = useLocation();
@@ -104,10 +107,12 @@ export function ConditionalBootcampRoutes({ userId, isAdmin = false, assignments
   const openingStep = openingCourseStep(location.pathname.match(/\/opening\/([^/]+)/)?.[1]);
   const requestedUnit = openingStep?.unitId ?? pathUnit ?? params.get('unit');
   const requestedAction = openingStep ? openingStep.type === 'note' ? 'lesson' : 'guided' : location.pathname.includes('/lessons/') ? 'lesson' : location.pathname.includes('/activities/') ? 'guided' : 'practice';
-  const matching = requestedUnit ? assignments.find(item => (openingStep ? openingStepAccessUnits(openingStep) : [requestedUnit]).some(unitId => conditionalAssignmentAllowsAction(item, { unitId, action: requestedAction, difficulty: params.has('level') ? difficultyFrom(params) : item.difficulty ?? getCurriculumDifficulty(unitId) }))) : undefined;
-  const active = params.has('assignment') ? assignments.find(item => item.id === params.get('assignment')) : matching ?? assignments[0];
+  // Prefer the current edition deliberately; an explicit row below remains authoritative.
+  const orderedAssignments = [...assignments].sort((a, b) => Number(b.target.courseEdition === FULL_CONDITIONAL_EDITION) - Number(a.target.courseEdition === FULL_CONDITIONAL_EDITION));
+  const matching = requestedUnit ? orderedAssignments.find(item => openingStep ? registryStepAllowed(item, openingStep, params.has('level') ? difficultyFrom(params) : item.difficulty) : conditionalAssignmentAllowsAction(item, { unitId: requestedUnit, action: requestedAction, difficulty: params.has('level') ? difficultyFrom(params) : item.difficulty ?? getCurriculumDifficulty(requestedUnit) })) : undefined;
+  const active = params.has('assignment') ? assignments.find(item => item.id === params.get('assignment')) : matching ?? orderedAssignments[0];
   const selection = isAdmin ? pathSelection(params, /\/(practice|simulator|hard-sentences)$/.test(location.pathname)) : active ? assignmentSelection(active) : { scope: 'course' as const, allowedUnits: [], difficulty: 'beginner' as const };
-  return <Context.Provider value={course}><WorkContext.Provider value={{ selection, assignments, active, isAdmin, userId }}><Routes><Route element={<Shell />}>
+  return <Context.Provider value={course}><WorkContext.Provider value={{ selection, assignments, unavailableAssignments, active, isAdmin, userId }}><Routes><Route element={<Shell />}>
     <Route index element={<CourseLanding />} />
     <Route path="lessons" element={<OpeningCourseRoute view="lessons"/>} />
     <Route path="opening/:stepId" element={<OpeningCourseRoute/>} />
@@ -183,22 +188,47 @@ function OpeningCourseRoute({ view: surface }: { view?: string }) {
   const { progress, update } = useCourse();
   const saveStep = useCallback((stepId: string, patch: Parameters<typeof recordCourseStep>[2]) => update(prior => recordCourseStep(prior, stepId, patch)), [update]);
   const progressStore = useMemo(() => ({ steps: progress?.course ?? {}, save: saveStep }), [progress?.course, saveStep]);
+  const edition = isAdmin ? params.get('edition') === FULL_CONDITIONAL_EDITION ? FULL_CONDITIONAL_EDITION : undefined : active?.target.courseEdition;
+  const editionSteps = courseStepsForEdition(edition);
+  const scopedStorage = editionStorageScope(userId, edition);
+  const editionStore = useMemo(() => createEditionCourseStore(progress?.course ?? {}, saveStep, editionSteps, edition, scopedStorage), [progress?.course, saveStep, editionSteps, edition, scopedStorage]);
+  const editionStoreRef = useRef(editionStore);
+  editionStoreRef.current = editionStore;
+  const saveEdition = useCallback((id: string, patch: Parameters<typeof recordCourseStep>[2]) => editionStoreRef.current.save(id, patch), []);
+  const resumeEdition = useCallback((id: string) => editionStoreRef.current.resume?.(id), []);
+  const stableEditionStore = useMemo(() => ({ ...editionStore, save: saveEdition, resume: resumeEdition }), [editionStore, saveEdition, resumeEdition]);
   const requestedStep = openingCourseStep(stepId);
-  const candidates = requestedStep && !OPENING_COURSE_PATH.some(step => step.id === requestedStep.id) ? [...OPENING_COURSE_PATH, requestedStep] : OPENING_COURSE_PATH;
-  const steps = candidates.filter(step => isAdmin || !!active && openingStepAccessUnits(step).some(unitId => conditionalAssignmentAllowsAction(active, {
-    unitId, action: step.type === 'note' ? 'lesson' : 'guided', difficulty: active.difficulty ?? getCurriculumDifficulty(unitId),
-  })));
-  const units = selectedUnits(selection).filter(unit => CONDITIONAL_OPENING_UNIT_IDS.some(id => id === unit.id));
+  const candidates = requestedStep && !editionSteps.some(step => step.id === requestedStep.id) && !edition ? [...editionSteps, requestedStep] : editionSteps;
+  const visibleSteps = candidates.filter(step => isAdmin ? editionSteps.some(entry => entry.id === step.id) || !edition && LEGACY_OPENING_COURSE_STEPS.some(entry => entry.id === step.id) : !!active && registryStepAllowed(active, step, params.has('level') ? difficultyFrom(params) : active.difficulty));
+  const steps = edition && !isAdmin && active
+    ? applyConditionalRequirements(visibleSteps, active.requirements ?? resolveConditionalRequirements(active.target))
+    : visibleSteps;
+  // Chapter 2 topics keep their recorded skill drills reachable here without joining the opening-edition membership.
+  const units = selectedUnits(selection).filter(unit => edition ? LEGACY_UNIT_DISPOSITIONS[unit.id]?.kind === 'primary' && steps.some(step => step.primaryUnitId === unit.id && (isAdmin || !!active && registryStepAllowed(active, step, active.difficulty))) : CONDITIONAL_OPENING_UNIT_IDS.some(id => id === unit.id));
   const recordedPractice = <section className="cb-card"><h2>Your assigned skill drills</h2><p>These drills record your responses and reasoning in your existing work.</p><div className="cb-actions">{units.filter(unit => isAdmin || !!active && conditionalAssignmentAllowsAction(active, { unitId: unit.id, action: 'practice', difficulty: active.difficulty ?? getCurriculumDifficulty(unit) })).map(unit => <Link key={unit.id} className="cb-button" to={actionUrl(unit, 'practice', selection)}>{unit.title}<ArrowRight size={16}/></Link>)}</div></section>;
-  return <OpeningCourseScreen view={surface ?? stepId} run={params.get('run') === '1'} url={courseUrl(location.search)} steps={steps} recordedPractice={recordedPractice} storageScope={userId} progressStore={progressStore}/>;
+  const contextualParams = new URLSearchParams(location.search);
+  if (!isAdmin && active) contextualParams.set('assignment', active.id);
+  if (edition) contextualParams.set('edition', edition); else contextualParams.delete('edition');
+  if (isAdmin && params.has('edition') && !['legacy', FULL_CONDITIONAL_EDITION].includes(params.get('edition')!)) return <div className="cb-card"><h1>This course edition is not available.</h1><Link to={`${BASE}/lessons`}>Return to the existing course</Link></div>;
+  return <>{isAdmin && <label>Course edition <select aria-label="Preview course edition" value={edition ?? 'legacy'} onChange={event => { const next = new URLSearchParams(location.search); if (event.target.value === FULL_CONDITIONAL_EDITION) next.set('edition', FULL_CONDITIONAL_EDITION); else next.delete('edition'); window.location.assign(`${location.pathname}?${next}`); }}><option value="legacy">Existing course</option><option value={FULL_CONDITIONAL_EDITION}>Full course: Chapters 1–7</option></select></label>}<OpeningCourseScreen key={`${userId}:${edition ?? 'legacy'}`} view={surface ?? stepId} run={params.get('run') === '1'} url={courseUrl(contextualParams.toString())} steps={steps} recordedPractice={recordedPractice} storageScope={scopedStorage} progressStore={edition ? stableEditionStore : progressStore}/></>;
 }
 
 function Shell() {
   const { status, error, retry, progress } = useCourse();
+  const { active, isAdmin, unavailableAssignments } = useWork();
+  const [params] = useSearchParams();
+  const blockedAssignment = !isAdmin && unavailableAssignments.some(item => item.id === params.get('assignment'));
   const location = useLocation();
+  const contextSearch = new URLSearchParams(location.search);
+  if (!isAdmin && active) contextSearch.set('assignment', active.id);
+  if (!isAdmin && active?.target.courseEdition) contextSearch.set('edition', active.target.courseEdition);
+  const linkedSearch = contextSearch.toString() ? `?${contextSearch}` : '';
   const route = location.pathname.slice(BASE.length).replace(/\/$/, '');
-  const courseView = route.startsWith('/opening/') ? route.slice('/opening/'.length) : route === '' ? 'lessons' : ['/opening-practice', '/opening-labs', '/practice', '/simulator', '/hard-sentences', '/flashcards'].includes(route) ? 'practice' : route === '/opening-tools' ? 'tools' : ['/review', '/diagnostics'].includes(route) ? 'review' : route === '/journal' ? 'journal' : ['/reference', '/indicators'].includes(route) ? 'reference' : route === '/settings' ? 'settings' : 'lessons';
-  const workspaceLinks = { overview: `${BASE}${location.search}`, review: `${BASE}/review${location.search}`, journal: `${BASE}/journal${location.search}`, reference: `${BASE}/reference${location.search}` };
+  const fullEdition = (isAdmin ? params.get('edition') : active?.target.courseEdition) === FULL_CONDITIONAL_EDITION;
+  // Home and the chapter list cover only what this student may open.
+  const chapters = fullEdition ? [...new Set(courseStepsForEdition(FULL_CONDITIONAL_EDITION).filter(step => isAdmin || !!active && registryStepAllowed(active, step, active.difficulty)).map(step => step.part ?? 1))] : undefined;
+  const courseView = route.startsWith('/opening/') ? route.slice('/opening/'.length) : route === '' ? (fullEdition ? 'home' : 'lessons') : ['/opening-practice', '/opening-labs', '/practice', '/simulator', '/hard-sentences', '/flashcards'].includes(route) ? 'practice' : route === '/opening-tools' ? 'tools' : ['/review', '/diagnostics'].includes(route) ? 'review' : route === '/journal' ? 'journal' : ['/reference', '/indicators'].includes(route) ? 'reference' : route === '/settings' ? 'settings' : 'lessons';
+  const workspaceLinks = { overview: `${BASE}${linkedSearch}`, review: `${BASE}/review${linkedSearch}`, journal: `${BASE}/journal${linkedSearch}`, reference: `${BASE}/reference${linkedSearch}` };
   const openingSurface = /^\/(?:lessons\/?|opening\/[^/]+\/?|opening-(?:practice|labs|tools)\/?)$/.test(location.pathname.slice(BASE.length));
   const saveMessages = {
     saved: openingSurface ? 'Assigned work saved to your account' : 'Saved to your account',
@@ -207,20 +237,26 @@ function Shell() {
     unsaved: openingSurface ? 'Assigned work waiting to save' : 'Changes waiting to save',
     error: openingSurface ? 'Assigned work is not saved' : 'Changes are not saved',
   };
-  return <div className="cb-shell oc-workspace"><OpeningCourseNavigation view={courseView} url={courseUrl(location.search)} workspaceLinks={workspaceLinks}/>
-    <main className="cb-main" id="conditional-main"><header className="cb-workspace-bar cb-workspace-status"><div className="cb-save" role="status">{saveMessages[status]}</div></header>{error && <div className="cb-error" role="alert"><p>{error}</p>{progress ? <button onClick={() => void retry()}>Retry save</button> : <button onClick={() => window.location.reload()}>Reload saved work</button>}</div>}{progress ? <Outlet /> : !error && <p>Loading your work...</p>}</main></div>;
+  return <div className="cb-shell oc-workspace"><OpeningCourseNavigation view={courseView} url={courseUrl(linkedSearch)} workspaceLinks={workspaceLinks} chapters={chapters}/>
+    <main className="cb-main" id="conditional-main"><header className="cb-workspace-bar cb-workspace-status"><div className="cb-save" role="status">{saveMessages[status]}</div></header>{error && <div className="cb-error" role="alert"><p>{error}</p>{progress ? <button onClick={() => void retry()}>Retry save</button> : <button onClick={() => window.location.reload()}>Reload saved work</button>}</div>}{!isAdmin && unavailableAssignments.map(item => <section key={item.id} className="cb-card" role="alert"><h2>This assignment needs an update from your teacher</h2><p>{item.title}</p><p>Your teacher can correct this assignment. Then reload your work.</p><button type="button" onClick={() => window.location.reload()}>Reload your assignments</button><Link to="/classroom">Back to Classroom</Link></section>)}{!blockedAssignment && (progress ? <Outlet /> : !error && <p>Loading your work...</p>)}</main></div>;
 }
 
 function CourseLanding() {
   const { active, assignments, isAdmin, selection } = useWork();
+  const { progress } = useCourse();
   // Keep independently assigned legacy skills reachable until their authored
   // material is integrated into the numbered course.
-  const hasCourseSteps = isAdmin || !!active && OPENING_COURSE_PATH.some(step => openingStepAccessUnits(step).some(unitId => conditionalAssignmentAllowsAction(active, {
-    unitId, action: step.type === 'note' ? 'lesson' : 'guided', difficulty: active.difficulty ?? getCurriculumDifficulty(unitId),
-  })));
+  const hasCourseSteps = isAdmin || !!active && courseStepsForEdition(active.target.courseEdition).some(step => registryStepAllowed(active, step, active.difficulty));
   if (!hasCourseSteps) return <LearningPath/>;
-  const additionalUnits = !isAdmin && active ? selectedUnits(selection).filter(unit => !CONDITIONAL_OPENING_UNIT_IDS.some(id => id === unit.id)) : [];
-  return <><OpeningCourseRoute view="lessons"/>{additionalUnits.length > 0 && <details className="cb-other-work"><summary>Additional assigned material</summary><p>This material remains available from your assignment, outside the numbered Part 1 course.</p><RecommendedForward selection={{ ...selection, allowedUnits: additionalUnits.map(unit => unit.id) }}/></details>}{assignments.length > 1 && !isAdmin && <section className="cb-other-work"><h2>Your other work</h2>{assignments.filter(item => item.id !== active?.id).map(item => <p key={item.id}><Link to={`${BASE}?assignment=${encodeURIComponent(item.id)}`}>{item.title}</Link></p>)}</section>}</>;
+  const additionalUnits = !isAdmin && active && !active.target.courseEdition ? selectedUnits(selection).filter(unit => !CONDITIONAL_OPENING_UNIT_IDS.some(id => id === unit.id)) : [];
+  const expanded = active?.target.courseEdition === FULL_CONDITIONAL_EDITION;
+  const supplementaryUnits = expanded ? selectedUnits(selection).filter(unit => LEGACY_UNIT_DISPOSITIONS[unit.id]?.kind === 'supplementary' && (isAdmin || !!active && conditionalAssignmentAllowsAction(active, { unitId: unit.id, action: 'lesson' }))) : [];
+  const earlier = expanded && progress && (Object.keys(progress.lessons).length > 0 || progress.attempts.length > 0 || Object.keys(progress.runs).length > 0 || Object.keys(progress.course ?? {}).some(key => !key.startsWith(`${FULL_CONDITIONAL_EDITION}:`)));
+  const oldAssignment = assignments.find(item => !item.target.courseEdition);
+  const earlierHref = oldAssignment ? `${BASE}?assignment=${encodeURIComponent(oldAssignment.id)}` : `${BASE}/review${active ? `?assignment=${encodeURIComponent(active.id)}` : ''}`;
+  const [params] = useSearchParams();
+  const fullEdition = (isAdmin ? params.get('edition') : active?.target.courseEdition) === FULL_CONDITIONAL_EDITION;
+  return <><OpeningCourseRoute view={fullEdition ? 'home' : 'lessons'}/>{earlier && <p className="cb-other-work"><Link to={earlierHref}>Earlier assigned work</Link></p>}{supplementaryUnits.length > 0 && <section className="cb-other-work"><h2>Additional explanations</h2>{supplementaryUnits.map(unit => <p key={unit.id}><Link to={actionUrl(unit, 'lesson', selection)}>{unit.title}</Link></p>)}</section>}{additionalUnits.length > 0 && <details className="cb-other-work"><summary>Additional assigned material</summary><p>This earlier or additional material remains available from your assignment, alongside the numbered course.</p><RecommendedForward selection={{ ...selection, allowedUnits: additionalUnits.map(unit => unit.id) }}/></details>}{assignments.length > 1 && !isAdmin && <section className="cb-other-work"><h2>Your other work</h2>{assignments.filter(item => item.id !== active?.id).map(item => <p key={item.id}><Link to={`${BASE}?assignment=${encodeURIComponent(item.id)}`}>{item.title}</Link></p>)}</section>}</>;
 }
 
 function LearningPath() {

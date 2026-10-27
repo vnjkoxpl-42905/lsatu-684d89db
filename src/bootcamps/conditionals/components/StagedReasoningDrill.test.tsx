@@ -144,3 +144,14 @@ it('uses authored contextual revision feedback and discards the grade when writi
   expect(stored.answers['0:3'].grade).toBeUndefined();
   expect(stored.answers['0:3'].accepted).toBe(false);
 });
+it('isolates scoped v3 drafts from legacy and other-account staged bytes', () => {
+  const legacy = JSON.stringify({ index: 2, step: 0, answers: {}, fingerprint: JSON.stringify(sufficientStagedItems) });
+  localStorage.setItem('conditional-staged-v1:sufficient', legacy);
+  localStorage.setItem('conditional-staged-v1:other:conditional-full-v3:sufficient', legacy);
+  render(<MemoryRouter><StagedReasoningDrill mode="sufficient" storageScope="alice:conditional-full-v3"/></MemoryRouter>);
+  expect(screen.getByText(sufficientStagedItems[0].sentence)).toBeInTheDocument();
+  fireEvent.click(within(screen.getByRole('group', { name: 'Answer choices' })).getAllByRole('button')[0]);
+  expect(localStorage.getItem('conditional-staged-v1:sufficient')).toBe(legacy);
+  expect(localStorage.getItem('conditional-staged-v1:other:conditional-full-v3:sufficient')).toBe(legacy);
+  expect(localStorage.getItem('conditional-staged-v1:alice:conditional-full-v3:sufficient')).not.toBeNull();
+});

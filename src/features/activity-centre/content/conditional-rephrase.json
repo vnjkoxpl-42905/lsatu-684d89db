@@ -8,29 +8,29 @@
       "drill": "a conditional-translation drill: the student rewrites a statement as If [sufficient], then [necessary] and gives its contrapositive",
       "rubric": [
         "Two forms are credited and they are the same statement: the if-then form, and its contrapositive. A student who gives either one has translated correctly. On an ordinary one-way conditional, nothing else counts as a direction: the converse (swapping the two sides) and the inverse (negating both without swapping) are errors, not alternative phrasings. Biconditional items are the stated exception, covered below.",
-        "The core judgment is which condition is sufficient and which is necessary. Words like if, when, whenever, every, all and the only mark the sufficient side. Words like only if, only when, unless, without, except, requires, presupposes, depends on, necessitates and must mark the necessary side.",
+        "The core judgment is which complete condition guarantees the other. Read each indicator in its sentence. If and whenever can introduce a sufficient condition; only if and requires can identify a requirement. Unless, without and except require translating the complete exception claim, preserving any existing negative, rather than placing a word mechanically on one side.",
         "Compound conditions (both X and Y) and internal contrasts (X rather than Y) must be carried into the answer whole, not simplified away.",
         "The compound flip is a correctness rule, not a stylistic one. Contraposing \"If A and B, then C\" yields \"If not C, then not A or not B\". A student who carries the and through unchanged has written a stronger claim than the statement supports, and that is an error to name, not a phrasing quibble. The same applies in reverse: an or on the trigger side becomes an and.",
         "Two errors have names worth using in the feedback, and both apply to one-way conditionals, not to biconditionals. Reversing the arrow is treating the necessary condition as if meeting it guaranteed the trigger. Negating the trigger is concluding that because the trigger did not fire, the outcome cannot happen. Say which one the student made.",
-        "Unless, until and without translate as if not on the trigger side. When the idea being negated there is itself a compound, the and or or inside it flips too.",
-        "With no and none the negation attaches to the necessary side, never to the trigger. The subject of the sentence still goes on the if side, intact.",
+        "For a conditional use of unless or without, negate one complete idea, make it sufficient, and keep the other idea unchanged as necessary. Cancel any resulting double negative. Choosing the other starting idea gives the equivalent contrapositive. Until retains a time boundary: not acting until a condition occurs does not promise acting once it occurs. Without may instead describe a single event, so check whether an exceptionless rule was stated. Negating a whole AND group gives OR between its negated members; negating a whole OR group gives AND.",
+        "No X is Y excludes joint X and Y: X implies not Y, equivalently Y implies not X. Either form is credited. Preserve existing negatives and the complete restricted subjects. No X is Y is not the same as not all X are Y; not all asserts at least one X that is not Y. Not both permits neither, and neither/nor denies both. A prohibition must remain a prohibition rather than being turned into proof that nobody violates it.",
         "If and only if and then and only then are biconditionals, where the arrow genuinely runs both ways and the converse is therefore credited. Only on these items. A student may write both conditionals, or a single two-way statement, or say that the two sides stand or fall together. Do not credit an exclusive either-or, which says something different. Otherwise is not a biconditional; it means if the first alternative does not happen, the stated consequence follows.",
         "Wording is free. Judge the logical structure, not the phrasing."
       ],
       "partial_rule": "Mark 'partial' when the student produces a well-formed conditional but reverses sufficiency and necessity, drops a negation, or trims a compound or contrasting condition down to one part. Mark 'incorrect' when the response is not a conditional at all, or states a relationship the statement does not support."
     },
-    "tagline": "Find the trigger word, and it tells you which side is which.",
+    "tagline": "Read the complete rule, then show what guarantees what.",
     "task": "Diagram the statement on paper first. Then choose the one diagram that expresses the complete statement. Your contrapositive is equivalent even when it looks different from the credited diagram.",
     "rules": [
-      "Some words introduce the sufficient condition and some introduce the necessary one. That is the whole game.",
+      "Identify both complete conditions, including their subjects, restrictions and negatives. Ask what the rule guarantees.",
       "If, when, whenever, every, all, the only: these mark the sufficient side, the trigger.",
-      "Only if, only when, unless, without, requires, depends on, must: these mark the necessary side, what is required.",
-      "A necessary condition is required but never a guarantee. It can be met and the thing still not happen.",
-      "Unless, until and without all mean the same thing. Read them as if not, or ask yourself what is being required and put that on the then side.",
-      "With no and none, the negation belongs to the second half. No X does Y becomes: if it is an X, then it does not do Y.",
+      "Only if, only when, requires, depends on and must can identify what is required. Read their force in the full sentence; permission and obligation are not reports of action.",
+      "A one-way rule makes its necessary condition required. Meeting that condition alone does not prove the sufficient condition.",
+      "Unless or conditional without: negate one idea on the left; keep the other unchanged on the right. Negatives can cancel. Until keeps a time boundary, without promising later action.",
+      "No X does Y excludes the combination: X implies not Y, equivalently Y implies not X. Not all X do Y instead says at least one X does not do Y. Keep those different claims separate.",
       "Contrapositive: negate both sides and swap them.",
       "When you contrapose a compound, and becomes or, and or becomes and. If a thing needs both X and Y, then losing either one alone is enough to sink it.",
-      "Two moves are always wrong. Running the arrow backwards, and deciding that because the trigger did not fire the outcome cannot happen.",
+      "On an ordinary one-way rule, reversing the arrow or negating both sides without swapping adds a claim the original did not guarantee. A separately stated converse can establish a two-way rule.",
       "If and only if and then and only then make the arrow run both ways. Otherwise means if not; it does not make the converse valid."
     ],
     "worked_example": {
@@ -39,7 +39,7 @@
         "If you master the LSAT, then you master conditional reasoning.",
         "If you don't master conditional reasoning, you won't master the LSAT."
       ],
-      "explanation": "Without marks the necessary condition, so mastering conditional reasoning goes on the then side. Both forms above are credited: the second is just the contrapositive of the first."
+      "explanation": "Start with no conditional mastery: the statement rules out LSAT mastery in that case. No conditional mastery implies no LSAT mastery. Its contrapositive is LSAT mastery implies conditional mastery. Both preserve the stated requirement."
     },
     "answer_label": "Your paper diagram",
     "answer_placeholder": "Choose the diagram that matches your paper",

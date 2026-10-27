@@ -18,20 +18,20 @@ it('shows one foundation question at a time and retains checked feedback when re
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   expect(screen.getByRole('heading', { level: 2, name: /It's Friday/ })).toHaveFocus();
   fireEvent.click(screen.getByRole('button', { name: 'In the town hall.' }));
-  expect(screen.queryByText(/You treated the rule as a weather report/)).toBeNull();
+  expect(screen.queryByText(/A rule about rain is not a weather forecast/)).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
-  expect(screen.getByText(/You treated the rule as a weather report/)).toBeVisible();
+  expect(screen.getByText(/A rule about rain is not a weather forecast/)).toBeVisible();
   expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
   fireEvent.click(screen.getByRole('button', { name: "The rule alone doesn't settle it." }));
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   expect(screen.getByRole('heading', { level: 2, name: /Saturday arrives/ })).toHaveFocus();
-  expect(screen.queryByText(/The rule describes what would happen if it rains/)).toBeNull();
+  expect(screen.queryByText(/We have no weather fact for Saturday/)).toBeNull();
   expect(container.querySelectorAll('[data-practice-task]')).toHaveLength(1);
   fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
   expect(screen.getByRole('button', { name: /^The rule alone doesn't settle it\. Correct answer$/ })).toHaveAttribute('aria-pressed', 'true');
-  expect(screen.getByText(/The rule describes what would happen if it rains/)).toBeVisible();
+  expect(screen.getByText(/We have no weather fact for Saturday/)).toBeVisible();
 });
 
 it('runs sufficient-side practice as the staged drill and keeps a fresh counterexample item', () => {

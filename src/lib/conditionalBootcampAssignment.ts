@@ -1,4 +1,5 @@
 import type { ConditionalArea, ConditionalDifficulty } from '@/bootcamps/conditionals/content/types';
+import { FULL_CONDITIONAL_EDITION, validConditionalEditionTarget, type ConditionalCourseEdition } from './conditionalCourseEdition';
 
 export interface ConditionalAssignmentTarget {
   scope: 'course' | 'stage' | 'area' | 'skill' | 'general';
@@ -7,7 +8,8 @@ export interface ConditionalAssignmentTarget {
   unitId?: string;
   area?: ConditionalArea;
   /** Unmarked stage grants keep their original membership. New grants use this teaching order. */
-  curriculumVersion?: 2;
+  curriculumVersion?: 2 | 3;
+  courseEdition?: ConditionalCourseEdition;
 }
 export const DEFAULT_CONDITIONAL_TARGET: ConditionalAssignmentTarget = {
   scope: 'course', mode: 'learn', difficulty: 'beginner',
@@ -22,6 +24,8 @@ export const CONDITIONAL_AREAS: { id: ConditionalArea; title: string }[] = [
   { id: 'quantifiers', title: 'Quantifier reasoning' },
 ];
 export function conditionalTargetKey(target: ConditionalAssignmentTarget = DEFAULT_CONDITIONAL_TARGET): string {
+  if (!validConditionalEditionTarget(target)) throw new Error('This conditional course edition or assignment scope is unsupported. Reopen the assignment form.');
+  if (target.courseEdition === FULL_CONDITIONAL_EDITION) return target.scope === 'course' ? 'course:v3' : [target.scope, 'v3', target.scope === 'skill' ? target.unitId : target.area, 'learn', target.difficulty].join(':');
   if (target.scope === 'course') return 'course';
   if (target.scope === 'stage') return target.curriculumVersion === 2 ? `stage:v2:${target.unitId}` : `stage:${target.unitId}`;
   return [target.scope, target.scope === 'skill' ? target.unitId : target.scope === 'area' ? target.area : 'conditional',
@@ -31,14 +35,15 @@ export async function resolveConditionalAssignment(target: ConditionalAssignment
   if (!['course', 'stage', 'area', 'skill', 'general'].includes(target.scope) ||
       !['learn', 'practice'].includes(target.mode) ||
       !['beginner', 'medium', 'advanced'].includes(target.difficulty) ||
-      (target.curriculumVersion !== undefined && target.curriculumVersion !== 2)) {
+      !validConditionalEditionTarget(target)) {
     throw new Error('Choose a valid conditional scope, learning mode and difficulty.');
   }
   const base = '/bootcamp/conditionals';
+  const edition = target.courseEdition === FULL_CONDITIONAL_EDITION ? { courseEdition: FULL_CONDITIONAL_EDITION, curriculumVersion: 3 as const } : {};
   if (target.scope === 'course') return {
-    route: base, title: 'Conditional Logic Bootcamp',
+    route: target.courseEdition ? conditionalProtectedGrantRoute(target) : base, title: 'Conditional Logic Bootcamp',
     description: 'The teaching sequence from the beginning, with activity levels set at each stage. Quantifiers follow conditionals.',
-    target: { ...DEFAULT_CONDITIONAL_TARGET }, key: 'course',
+    target: { ...DEFAULT_CONDITIONAL_TARGET, ...edition }, key: conditionalTargetKey({ ...DEFAULT_CONDITIONAL_TARGET, ...edition }),
   };
   if (target.scope === 'stage') {
     const { findConditionalUnit } = await import('@/bootcamps/conditionals/content');
@@ -71,12 +76,23 @@ export async function resolveConditionalAssignment(target: ConditionalAssignment
   const route = mode === 'practice' ? `${base}/practice?${params}` : target.scope === 'skill'
     ? `${base}/lessons/${encodeURIComponent(target.unitId!)}?${params}` : `${base}?${params}`;
   return {
-    route, title: `${label}: ${mode === 'learn' ? 'learning and practice' : 'practice'}`,
+    route: target.courseEdition ? conditionalProtectedGrantRoute(target) : route, title: `${label}: ${mode === 'learn' ? 'learning and practice' : 'practice'}`,
     description: mode === 'learn' ? 'Teaching, guided activities and practice.' : 'Practice with explanations and optional hints.',
-    target: { scope: target.scope, mode, difficulty: target.difficulty,
+    target: { scope: target.scope, mode, difficulty: target.difficulty, ...edition,
       ...(target.scope === 'skill' ? { unitId: target.unitId } : {}), ...(target.scope === 'area' ? { area: target.area } : {}) } as ConditionalAssignmentTarget,
     key: conditionalTargetKey({ ...target, mode }),
   };
+}
+
+/** The database-protected source route carries the complete grant, not a browser entitlement. */
+export function conditionalProtectedGrantRoute(target: ConditionalAssignmentTarget, assignmentId?: string): string {
+  conditionalTargetKey(target);
+  if (target.courseEdition !== FULL_CONDITIONAL_EDITION) throw new Error('A protected grant route requires the full conditional edition.');
+  const params = new URLSearchParams({ curriculumVersion: '3', edition: FULL_CONDITIONAL_EDITION, scope: target.scope, mode: 'learn', difficulty: target.scope === 'course' ? 'beginner' : target.difficulty });
+  if (target.scope === 'skill') params.set('unitId', target.unitId!);
+  if (target.scope === 'area') params.set('area', target.area!);
+  if (assignmentId) params.set('assignment', assignmentId);
+  return `/bootcamp/conditionals?${params}`;
 }
 
 /** Normalize only exact former generated copy; teacher-written wording stays intact. */

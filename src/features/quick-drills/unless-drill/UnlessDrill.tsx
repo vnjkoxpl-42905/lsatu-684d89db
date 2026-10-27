@@ -5,6 +5,8 @@ import {
 } from "@/features/conditional-refresher/content";
 import { Diagram, Tok } from "@/features/conditional-refresher/Notation";
 import { useUnlessMilestones } from "./unlessProgress";
+import { useAuth } from '@/contexts/AuthContext';
+import { unlessLockTiming } from './unlessTiming';
 import "@/features/conditional-refresher/conditional-refresher.css";
 
 /* The timed Unless drill. Used as a tab of the Conditional Indicators
@@ -24,11 +26,11 @@ const WARN_MS = 1500;
 
 interface Saved { pace?: number; rounds?: number; bestPerfectAvg?: number }
 
-function readSaved(): Saved {
-  try { return JSON.parse(localStorage.getItem(KEY) || "{}") as Saved; } catch { return {}; }
+function readSaved(key = KEY): Saved {
+  try { return JSON.parse(localStorage.getItem(key) || "{}") as Saved; } catch { return {}; }
 }
-function writeSaved(patch: Saved) {
-  try { localStorage.setItem(KEY, JSON.stringify({ ...readSaved(), ...patch })); } catch { /* storage unavailable */ }
+function writeSaved(patch: Saved, key = KEY) {
+  try { localStorage.setItem(key, JSON.stringify({ ...readSaved(key), ...patch })); } catch { /* storage unavailable */ }
 }
 
 function shuffle<T>(items: T[]): T[] {
@@ -70,12 +72,17 @@ const VERDICT_TEXT: Record<Exclude<UnlessVerdict, "correct">, string> = {
   other: "Each side needs a different idea: one from each part of the statement.",
 };
 
-export default function UnlessDrill() {
+export default function UnlessDrill({ edition = 'legacy' }: { edition?: string } = {}) {
+  const { user } = useAuth();
+  return <UnlessRun key={`${user?.id ?? 'anonymous'}:${edition}`} actor={user?.id ?? 'anonymous'} edition={edition}/>;
+}
+function UnlessRun({ actor, edition }: { actor: string; edition: string }) {
+  const deviceKey = `${KEY}:v2:${actor}:${edition}`;
   const [phase, setPhase] = useState<Phase>("idle");
-  const { milestones, loading: milestonesLoading, record } = useUnlessMilestones();
+  const { milestones, loading: milestonesLoading, record, pending, error: saveError, retry } = useUnlessMilestones(edition);
   const fastUnlocked = milestones.has("cleared-10s");
   const cleared = milestones.has("cleared-5s");
-  const [chosenPace, setPace] = useState<number>(() => readSaved().pace ?? SLOW_MS);
+  const [chosenPace, setPace] = useState<number>(() => readSaved(deviceKey).pace ?? SLOW_MS);
   // A remembered 5-second choice only applies once the account has unlocked it.
   const pace = fastUnlocked ? chosenPace : SLOW_MS;
   const [justUnlocked, setJustUnlocked] = useState(false);
@@ -86,7 +93,7 @@ export default function UnlessDrill() {
   const [results, setResults] = useState<UnlessResult[]>([]);
   const [remaining, setRemaining] = useState(pace);
   const [ready, setReady] = useState(READY_STEPS);
-  const [best, setBest] = useState<number | undefined>(() => readSaved().bestPerfectAvg);
+  const [best, setBest] = useState<number | undefined>(() => readSaved(deviceKey).bestPerfectAvg);
 
   // The clock reads these through refs so one animation loop serves the whole
   // statement and the result is recorded exactly once.
@@ -105,7 +112,9 @@ export default function UnlessDrill() {
     const round = roundsRef.current[indexRef.current];
     if (!round) return;
     const { left, right } = placedRef.current;
-    const seconds = timedOut ? pace / 1000 : (performance.now() - startedAt.current) / 1000;
+    const timing = unlessLockTiming(startedAt.current, performance.now(), pace, timedOut);
+    timedOut = timing.timedOut;
+    const seconds = timing.seconds;
     setResults(r => [...r, {
       ...round, chosenLeft: left, chosenRight: right, seconds, timedOut,
       verdict: gradeUnless(round, left, right),
@@ -156,13 +165,13 @@ export default function UnlessDrill() {
   useEffect(() => {
     if (phase !== "summary" || !results.length || recorded.current === results) return;
     recorded.current = results;
-    const saved = readSaved();
+    const saved = readSaved(deviceKey);
     const patch: Saved = { rounds: (saved.rounds ?? 0) + 1 };
-    const perfect = results.every(r => r.verdict === "correct");
+    const perfect = results.every(r => r.verdict === "correct" && !r.timedOut);
     // Only a full round of all four counts toward the unlock, not a retry of misses.
     if (perfect && results.length === 4) {
-      if (pace === SLOW_MS && !fastUnlocked) { void record("cleared-10s"); setJustUnlocked(true); }
-      if (pace === FAST_MS && !cleared) { void record("cleared-5s"); setJustCleared(true); }
+      if (pace === SLOW_MS && !fastUnlocked) { void record("cleared-10s").then(saved => { if (saved) setJustUnlocked(true); }); }
+      if (pace === FAST_MS && !cleared) { void record("cleared-5s").then(saved => { if (saved) setJustCleared(true); }); }
     }
     if (perfect) {
       const avg = results.reduce((s, r) => s + r.seconds, 0) / results.length;
@@ -171,8 +180,8 @@ export default function UnlessDrill() {
         setBest(avg);
       }
     }
-    writeSaved(patch);
-  }, [phase, results, pace, fastUnlocked, cleared, record]);
+    writeSaved(patch, deviceKey);
+  }, [phase, results, pace, fastUnlocked, cleared, record, deviceKey]);
 
   const begin = (set: UnlessRound[]) => {
     setRounds(set);
@@ -185,7 +194,8 @@ export default function UnlessDrill() {
     setPhase("ready");
   };
 
-  const choosePace = (ms: number) => { setPace(ms); writeSaved({ pace: ms }); };
+  const choosePace = (ms: number) => { setPace(ms); writeSaved({ pace: ms }, deviceKey); };
+  const savingNotice = <>{pending && <p role="status">Saving your round unlock…</p>}{saveError && <p role="alert">{saveError} <button type="button" className="cir-btn" onClick={() => void retry()}>Retry saving</button></p>}</>;
 
   const place = useCallback((token: string) => {
     setPlaced(p => (!p.left ? { ...p, left: token } : !p.right ? { ...p, right: token } : p));
@@ -217,6 +227,7 @@ export default function UnlessDrill() {
   if (phase === "idle") {
     return (
       <section className="cir-card">
+        {savingNotice}
         <p className="cir-prompt">Four unless statements. Beat the clock on each one.</p>
         <div className="ud-move">
           <p className="ud-move-title">The Group 3 move</p>
@@ -249,7 +260,7 @@ export default function UnlessDrill() {
         <p className="ud-instruction">
           Start every LSAT study session with this quick workout until you can diagram Unless accurately in under 5 seconds.
         </p>
-        <div className="cir-actions"><button type="button" className="cir-btn" onClick={() => begin(buildRound())}>Start round</button></div>
+        <div className="cir-actions"><button type="button" className="cir-btn" disabled={milestonesLoading || pending} onClick={() => begin(buildRound())}>Start round</button></div>
         {best !== undefined && <p className="cir-meta ud-best">Fastest perfect round: {best.toFixed(1)}s per statement</p>}
       </section>
     );
@@ -267,13 +278,14 @@ export default function UnlessDrill() {
 
   /* -------------------------------- Review -------------------------------- */
   if (phase === "summary") {
-    const correct = results.filter(r => r.verdict === "correct").length;
+    const correct = results.filter(r => r.verdict === "correct" && !r.timedOut).length;
     const avg = results.reduce((s, r) => s + r.seconds, 0) / Math.max(results.length, 1);
     const missed: UnlessRound[] = results
-      .filter(r => r.verdict !== "correct")
+      .filter(r => r.verdict !== "correct" || r.timedOut)
       .map(({ pattern, x, y }) => ({ pattern, x, y }));
     return (
       <section className="cir-card">
+        {savingNotice}
         <p className="cir-prompt">Round review</p>
         {justUnlocked && (
           <p className="ud-goal">All four right at 10 seconds. 5 seconds is unlocked.</p>
@@ -363,7 +375,7 @@ function ReviewRow({ n, result }: { n: number; result: UnlessResult }) {
   const answer = unlessAnswer(result);
   const contra = contrapositiveOf(answer.left, answer.right);
   const { after, other } = unlessParts(result);
-  const ok = result.verdict === "correct";
+  const ok = result.verdict === "correct" && !result.timedOut;
   return (
     <div className={`cir-summary-row ud-row${ok ? " is-right" : " is-wrong"}`}>
       <div className="cir-summary-meta ud-row-meta">
@@ -394,7 +406,7 @@ function ReviewRow({ n, result }: { n: number; result: UnlessResult }) {
       </div>
       {!ok && (
         <>
-          <p className="ud-why">{VERDICT_TEXT[result.verdict as Exclude<UnlessVerdict, "correct">]}</p>
+          <p className="ud-why">{result.timedOut ? 'Time ran out before you locked in. Filled boxes do not count as a timed success.' : VERDICT_TEXT[result.verdict as Exclude<UnlessVerdict, "correct">]}</p>
           <p className="ud-steps">
             Choose <Tok text={other} />. Negate it: <Tok text={negateToken(other)} />
             {other.startsWith("/") ? " (the two slashes cancel)" : ""}. That goes left.{" "}

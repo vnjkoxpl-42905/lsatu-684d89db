@@ -13,10 +13,15 @@ function readDevice(key: string): unknown {
   try { return JSON.parse(localStorage.getItem(key) ?? 'null'); } catch { return null; }
 }
 
+export function IndicatorWordDeck(props: { stepId?: string; group?: IndicatorGroup; storageScope?: string }) {
+  return <IndicatorWordDeckRun key={`${props.storageScope ?? 'legacy'}:${props.group ?? 'all'}`} {...props}/>;
+}
+
 /** One word per card. The student commits to a group, the card flips, and the back says which group it was. */
-export function IndicatorWordDeck({ group, stepId = group ? `${INDICATOR_DECK_STEP}-group-${group}` : INDICATOR_DECK_STEP }: { stepId?: string; group?: IndicatorGroup }) {
+function IndicatorWordDeckRun({ storageScope, group, stepId = group ? `${INDICATOR_DECK_STEP}-group-${group}` : INDICATOR_DECK_STEP }: { stepId?: string; group?: IndicatorGroup; storageScope?: string }) {
   const cards = indicatorWordCards.filter(card => !group || card.group === group);
-  const deviceKey = group ? `${DEVICE_KEY}-group-${group}` : DEVICE_KEY;
+  const legacyKey = group ? `${DEVICE_KEY}-group-${group}` : DEVICE_KEY;
+  const deviceKey = storageScope ? `${legacyKey}:${storageScope}` : legacyKey;
   const course = useCourseStep(stepId);
   const record = course?.record;
   const [state, setState] = useState<DeckState>(() => readDeckState(course?.saved?.state, cards) ?? readDeckState(readDevice(deviceKey), cards) ?? newRound(undefined, Math.random, cards));
