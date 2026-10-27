@@ -388,9 +388,9 @@ html.dark .classroom-root .classroom-home-notice {
   padding: 14px 2px;
   text-align: left;
   transition: background-color 140ms var(--home-ease);
-  width: 100%;
-@media (hover: hover) and (pointer: fine) {
+  width: 100%
 }
+@media (hover: hover) and (pointer: fine) {
 
 .classroom-root .classroom-home-row:hover,
 .classroom-root .classroom-home-thread-row:hover,
@@ -503,9 +503,10 @@ html.dark .classroom-root .classroom-home-notice {
   gap: 8px;
   min-height: 46px;
   padding: 0 22px;
-  transition: background-color 140ms var(--home-ease);
-@media (hover: hover) and (pointer: fine) {
+  transition: background-color 140ms var(--home-ease)
 }
+
+@media (hover: hover) and (pointer: fine) {
 
 .classroom-root .classroom-home-cta:hover {
   background: #ffffff;
@@ -723,9 +724,10 @@ html.dark .classroom-root .classroom-home-notice {
   gap: 8px;
   min-height: 40px;
   padding: 0 14px;
-  transition: background-color 160ms ease, border-color 160ms ease;
-@media (hover: hover) and (pointer: fine) {
+  transition: background-color 160ms ease, border-color 160ms ease
 }
+
+@media (hover: hover) and (pointer: fine) {
 
 .classroom-root .classroom-home-action:hover {
   background: var(--home-hover);
@@ -795,9 +797,10 @@ html.dark .classroom-root .classroom-home-notice {
   gap: 12px;
   padding: 8px 6px;
   text-align: left;
-  width: 100%;
-@media (hover: hover) and (pointer: fine) {
+  width: 100%
 }
+
+@media (hover: hover) and (pointer: fine) {
 
 .classroom-root .classroom-home-message:hover {
   background: var(--home-hover);
@@ -859,8 +862,8 @@ html.dark .classroom-root .classroom-home-notice {
 .classroom-root .classroom-home-day-abbr { font-family: var(--home-ui); font-size: 12px; letter-spacing: 0; text-transform: none; }
 .classroom-root .classroom-home-day-num { color: var(--home-ink); font-family: var(--home-ui); font-size: 24px; font-weight: 400; font-style: normal; line-height: 1; }
 .classroom-root .classroom-home-day-label { display: block; max-width: 100%; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.classroom-root .classroom-home-day-today { background: var(--home-ink); border-color: var(--home-ink); color: var(--classroom-page); box-shadow: none; }
 @media (hover: hover) and (pointer: fine) {
-.classroom-root .classroom-home-day-today,
 .classroom-root button.classroom-home-day-today:hover { background: var(--home-ink); border-color: var(--home-ink); color: var(--classroom-page); box-shadow: none; }
 }
 .classroom-root .classroom-home-day-today .classroom-home-day-head,
@@ -1002,9 +1005,10 @@ html.dark .classroom-root .classroom-home-notice {
   display: inline-flex;
   height: 36px;
   justify-content: center;
-  width: 36px;
-@media (hover: hover) and (pointer: fine) {
+  width: 36px
 }
+
+@media (hover: hover) and (pointer: fine) {
 
 .classroom-root .classroom-home-search-clear:hover {
   background: var(--home-hover);
@@ -1123,10 +1127,20 @@ html.dark .classroom-root .classroom-home-notice {
    same as a narrow window. Below 900px everything is one column in DOM
    order: greeting, featured work, Up next, then tools and context. */
 
-@container classroom-home (max-width: 720px) {
+@container classroom-home (max-width: 900px) {
   .classroom-root .classroom-home-grid,
   .classroom-root .classroom-home-teacher .classroom-home-top {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.classroom-root .classroom-home-week-scroll {
+  padding-right: 18px;
+}
+
+@container classroom-home (min-width: 641px) and (max-width: 900px) {
+  .classroom-root .classroom-home .classroom-home-days {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

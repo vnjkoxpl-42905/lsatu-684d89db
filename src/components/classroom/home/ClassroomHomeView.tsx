@@ -240,7 +240,7 @@ export function ClassroomHomeView({
   const featuredHero = showWork && !featuredContinue ? model.hero : null;
   const featuredKey = featuredContinue?.key ?? featuredHero?.row.key ?? null;
   const upNext = model.rows.filter((row) => row.key !== featuredKey);
-  const remainingNew = upNext.filter((row) => row.isNew).length;
+  const remainingNew = Math.max(0, model.newCount - ((featuredContinue ?? featuredHero?.row)?.isNew ? 1 : 0));
   const [briefing, setBriefing] = React.useState<SectionBriefingData | null>(null);
 
   /**

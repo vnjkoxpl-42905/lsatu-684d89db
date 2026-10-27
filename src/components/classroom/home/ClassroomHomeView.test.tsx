@@ -1010,7 +1010,7 @@ describe("featured work and Up next", () => {
   it("reconciles the featured key, remaining new badge and totals after refresh", () => {
     const first = FULL.rows[0];
     const second = { ...first, key: "second", title: "Flaw drill", route: "/guided/second", isNew: true, workStatus: "in_progress" as const };
-    const { rerender } = render(<ClassroomHomeView model={{ ...FULL, continueRow: first, rows: [first, second], workSummary: { open: 2, inProgress: 1 } }} loading={false} onOpen={vi.fn()} />);
+    const { rerender } = render(<ClassroomHomeView model={{ ...FULL, continueRow: first, rows: [first, second], newCount: 2, workSummary: { open: 2, inProgress: 1 } }} loading={false} onOpen={vi.fn()} />);
     expect(screen.getByRole("region", { name: "Up next" })).toHaveTextContent("Flaw drill");
     expect(screen.getByRole("region", { name: "Up next" })).toHaveTextContent("1 new");
     expect(screen.getByText("2 open assignments · 1 with saved work")).toBeInTheDocument();
@@ -1019,5 +1019,14 @@ describe("featured work and Up next", () => {
     expect(screen.getByRole("region", { name: "Up next" })).not.toHaveTextContent("Flaw drill");
     expect(screen.queryByText("1 new")).toBeNull();
     expect(screen.getByText("1 open assignment · 1 with saved work")).toBeInTheDocument();
+  });
+
+  it("includes new assignments beyond the five visible rows in the queue count", () => {
+    const rows = Array.from({ length: 5 }, (_, i) => ({ ...FULL.rows[0], key: i ? `work-${i}` : "a", title: `Assignment ${i + 1}` }));
+    render(<ClassroomHomeView model={{ ...FULL, rows, newCount: 8, workSummary: { open: 8, inProgress: 0 } }} loading={false} onOpen={vi.fn()} />);
+    const queue = screen.getByRole("region", { name: "Up next" });
+    expect(queue).toHaveTextContent("7 new");
+    expect(queue.querySelectorAll(".classroom-home-row")).toHaveLength(4);
+    expect(screen.getByText("8 open assignments · 0 with saved work")).toBeInTheDocument();
   });
 });

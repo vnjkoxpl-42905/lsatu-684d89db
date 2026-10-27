@@ -1,6 +1,6 @@
 {
  "url": "http://127.0.0.1:5276/docs/verification/role-home-preview.html?role=student&state=full&width=fluid&theme=light",
- "at": "2026-10-27T12:04:11.866Z",
+ "at": "2026-10-27T18:50:33.044Z",
  "allow": [],
  "viewports": [
   {
@@ -9,8 +9,8 @@
    "load": "load",
    "screens": 2,
    "filled": [
-    0.88,
-    0.91
+    0.86,
+    0.82
    ],
    "motion": {
     "elements": 0,
@@ -26,8 +26,8 @@
      "h": 900
     },
     "page": {
-     "height": 1218,
-     "screens": 1.4,
+     "height": 1132,
+     "screens": 1.3,
      "words": 215,
      "img": 0,
      "video": 0,
@@ -49,9 +49,9 @@
      "videosNoPoster": 0
     },
     "hero": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "words": 3,
-     "chars": 18,
+     "chars": 20,
      "lines": 1,
      "size": 32,
      "vw": 2.2,
@@ -59,14 +59,14 @@
      "weight": 400,
      "tracking": -0.02,
      "leading": 1.14,
-     "top": 140,
+     "top": 110,
      "tag": "h1",
      "kind": "heading",
      "align": "left",
      "position": "left"
     },
     "h1": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "words": 3,
      "lines": 1,
      "size": 32,
@@ -74,9 +74,9 @@
     },
     "headings": [
      {
-      "text": "Good morning, Ada.",
+      "text": "Good afternoon, Ada.",
       "words": 3,
-      "chars": 18,
+      "chars": 20,
       "lines": 1,
       "size": 32,
       "vw": 2.2,
@@ -89,8 +89,8 @@
       "mono": false,
       "align": "left",
       "position": "center",
-      "widthRatio": 0.77,
-      "top": 140,
+      "widthRatio": 0.87,
+      "top": 110,
       "tag": "h1",
       "kind": "heading"
      },
@@ -110,8 +110,8 @@
       "mono": false,
       "align": "left",
       "position": "left",
-      "widthRatio": 0.41,
-      "top": 308,
+      "widthRatio": 0.47,
+      "top": 278,
       "tag": "h2",
       "kind": "heading"
      }
@@ -166,7 +166,7 @@
       "size": 32,
       "vw": 2.2,
       "font": "Fraunces",
-      "text": "Good morning, ."
+      "text": "Good afternoon, ."
      },
      "monoShare": 0,
      "monoProseShare": 0,
@@ -188,7 +188,7 @@
       "mono": false,
       "pill": false,
       "size": 13,
-      "top": 280
+      "top": 250
      }
     ],
     "numbered": [],
@@ -285,11 +285,11 @@
      "gradientText": 0,
      "hairlines": 6,
      "hairlineSamples": [
-      "aside.classroom-home-progress 585px",
-      "li.classroom-home-row-wrap 589px",
-      "li.classroom-home-row-wrap 589px",
-      "li.classroom-home-work-summary 416px",
-      "li 416px"
+      "aside.classroom-home-progress 671px",
+      "li.classroom-home-row-wrap 675px",
+      "li.classroom-home-row-wrap 675px",
+      "li.classroom-home-work-summary 478px",
+      "li 478px"
      ],
      "outlinedBoxes": 0,
      "dashed": 0,
@@ -305,7 +305,7 @@
        "count": 6,
        "iconTopped": false,
        "rounded": false,
-       "top": 1013
+       "top": 983
       }
      ]
     },
@@ -324,29 +324,29 @@
      "w": 1440,
      "h": 900
     },
-    "pageH": 1218,
+    "pageH": 1132,
     "margins": {
-     "left": 76,
-     "right": 256
+     "left": 92,
+     "right": 92
     },
     "sections": [
      {
       "sel": "section.classroom-home-top",
       "tag": "section",
-      "top": 109,
+      "top": 79,
       "height": 122,
       "words": 20,
       "media": 0,
       "middle": 0,
       "heading": {
-       "text": "Good morning",
+       "text": "Good afternoon",
        "size": 32,
        "tag": "h1"
       },
-      "left": 76,
-      "right": 925,
-      "textLeft": 76,
-      "textRight": 925,
+      "left": 92,
+      "right": 909,
+      "textLeft": 92,
+      "textRight": 909,
       "fullBleed": false,
       "footer": false,
       "hero": true,
@@ -356,7 +356,7 @@
      {
       "sel": "div.classroom-home-grid",
       "tag": "div",
-      "top": 256,
+      "top": 226,
       "height": 692,
       "words": 113,
       "media": 0,
@@ -366,10 +366,10 @@
        "size": 28,
        "tag": "h2"
       },
-      "left": 98,
-      "right": 256,
-      "textLeft": 98,
-      "textRight": 284,
+      "left": 114,
+      "right": 92,
+      "textLeft": 114,
+      "textRight": 120,
       "fullBleed": false,
       "footer": true,
       "hero": true,
@@ -379,7 +379,7 @@
      {
       "sel": "section.classroom-home-week",
       "tag": "section",
-      "top": 972,
+      "top": 942,
       "height": 150,
       "words": 42,
       "media": 0,
@@ -389,10 +389,10 @@
        "size": 24,
        "tag": "span"
       },
-      "left": 76,
-      "right": 256,
-      "textLeft": 76,
-      "textRight": 256,
+      "left": 92,
+      "right": 92,
+      "textLeft": 92,
+      "textRight": 92,
       "fullBleed": false,
       "footer": true,
       "hero": false,
@@ -403,28 +403,28 @@
     "gaps": [],
     "h1s": [
      {
-      "text": "Good morning, Ada.",
+      "text": "Good afternoon, Ada.",
       "size": 32,
-      "top": 140,
+      "top": 110,
       "firstScreen": true
      }
     ],
     "edgeText": [],
     "edges": [
      {
-      "x": 76,
+      "x": 92,
       "n": 3
      },
      {
-      "x": 98,
+      "x": 114,
       "n": 3
      },
      {
-      "x": 289,
+      "x": 320,
       "n": 1
      },
      {
-      "x": 754,
+      "x": 857,
       "n": 1
      }
     ],
@@ -433,12 +433,12 @@
     "stage": false,
     "explains": false,
     "slivers": [],
-    "voidShare": 0.14,
+    "voidShare": 0.08,
     "voidBox": {
-     "x": 1200,
-     "y": 120,
-     "w": 240,
-     "h": 780
+     "x": 840,
+     "y": 720,
+     "w": 600,
+     "h": 180
     }
    },
    "app": {
@@ -453,13 +453,13 @@
      "h": 45
     },
     "canvas": {
-     "left": 76,
-     "right": 256
+     "left": 92,
+     "right": 92
     },
     "hero": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "words": 3,
-     "chars": 18,
+     "chars": 20,
      "lines": 1,
      "size": 32,
      "vw": 2.2,
@@ -467,7 +467,7 @@
      "weight": 400,
      "tracking": -0.02,
      "leading": 1.14,
-     "top": 140,
+     "top": 110,
      "tag": "h1",
      "kind": "heading",
      "align": "left",
@@ -536,9 +536,9 @@
      ]
     },
     "title": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "size": 32,
-     "top": 140
+     "top": 110
     },
     "colourShare": 0
    },
@@ -550,8 +550,8 @@
    "load": "load",
    "screens": 2,
    "filled": [
-    0.84,
-    0.94
+    0.88,
+    0.91
    ],
    "motion": {
     "elements": 0,
@@ -567,8 +567,8 @@
      "h": 1024
     },
     "page": {
-     "height": 1689,
-     "screens": 1.6,
+     "height": 1232,
+     "screens": 1.2,
      "words": 215,
      "img": 0,
      "video": 0,
@@ -590,9 +590,9 @@
      "videosNoPoster": 0
     },
     "hero": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "words": 3,
-     "chars": 18,
+     "chars": 20,
      "lines": 1,
      "size": 26,
      "vw": 3.4,
@@ -600,14 +600,14 @@
      "weight": 400,
      "tracking": -0.02,
      "leading": 1.14,
-     "top": 158,
+     "top": 128,
      "tag": "h1",
      "kind": "heading",
      "align": "left",
      "position": "left"
     },
     "h1": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "words": 3,
      "lines": 1,
      "size": 26,
@@ -615,9 +615,9 @@
     },
     "headings": [
      {
-      "text": "Good morning, Ada.",
+      "text": "Good afternoon, Ada.",
       "words": 3,
-      "chars": 18,
+      "chars": 20,
       "lines": 1,
       "size": 26,
       "vw": 3.4,
@@ -630,8 +630,8 @@
       "mono": false,
       "align": "left",
       "position": "center",
-      "widthRatio": 0.84,
-      "top": 158,
+      "widthRatio": 0.95,
+      "top": 128,
       "tag": "h1",
       "kind": "heading"
      }
@@ -686,7 +686,7 @@
       "size": 26,
       "vw": 3.4,
       "font": "Fraunces",
-      "text": "Good morning, ."
+      "text": "Good afternoon, ."
      },
      "monoShare": 0,
      "monoProseShare": 0,
@@ -699,18 +699,7 @@
      "centerShare": 0.1,
      "smallText": 0
     },
-    "eyebrows": [
-     {
-      "text": "Tuesday, October 27, 2026",
-      "above": "Good morning, Ada.",
-      "upper": false,
-      "tracked": false,
-      "mono": false,
-      "pill": false,
-      "size": 13,
-      "top": 128
-     }
-    ],
+    "eyebrows": [],
     "numbered": [],
     "color": {
      "bodyBg": "#131718",
@@ -737,15 +726,6 @@
         "h": 40,
         "s": 0.36,
         "l": 0.95
-       }
-      },
-      {
-       "color": "#fbf9f4",
-       "top": 580,
-       "hsl": {
-        "h": 43,
-        "s": 0.47,
-        "l": 0.97
        }
       }
      ],
@@ -783,8 +763,8 @@
      "lowContrast": []
     },
     "buttons": {
-     "count": 8,
-     "inHero": 3,
+     "count": 6,
+     "inHero": 6,
      "radius": "pill",
      "height": 40,
      "withShadow": 0,
@@ -794,7 +774,9 @@
      "heroLabels": [
       "Continue",
       "Mark done",
-      "Find a question"
+      "Find a question",
+      "Smart Drill",
+      "Timed section"
      ]
     },
     "surfaces": {
@@ -812,11 +794,11 @@
      "gradientText": 0,
      "hairlines": 6,
      "hairlineSamples": [
-      "aside.classroom-home-progress 596px",
-      "li.classroom-home-row-wrap 600px",
-      "li.classroom-home-row-wrap 600px",
-      "li.classroom-home-work-summary 608px",
-      "li 608px"
+      "aside.classroom-home-progress 360px",
+      "li.classroom-home-row-wrap 364px",
+      "li.classroom-home-row-wrap 364px",
+      "li.classroom-home-work-summary 264px",
+      "li 264px"
      ],
      "outlinedBoxes": 0,
      "dashed": 0,
@@ -844,29 +826,29 @@
      "w": 768,
      "h": 1024
     },
-    "pageH": 1689,
+    "pageH": 1232,
     "margins": {
-     "left": 62,
-     "right": 62
+     "left": 18,
+     "right": 18
     },
     "sections": [
      {
       "sel": "div.classroom-home-grid",
       "tag": "div",
-      "top": 267,
-      "height": 1152,
+      "top": 237,
+      "height": 781,
       "words": 113,
       "media": 0,
-      "middle": 0,
+      "middle": 46,
       "heading": {
        "text": "Negation Station",
        "size": 23,
        "tag": "h2"
       },
-      "left": 62,
-      "right": 62,
-      "textLeft": 80,
-      "textRight": 88,
+      "left": 40,
+      "right": 18,
+      "textLeft": 40,
+      "textRight": 40,
       "fullBleed": false,
       "footer": true,
       "hero": true,
@@ -876,20 +858,20 @@
      {
       "sel": "section.classroom-home-week",
       "tag": "section",
-      "top": 1443,
+      "top": 1042,
       "height": 150,
-      "words": 38,
+      "words": 42,
       "media": 0,
-      "middle": 14,
+      "middle": 8,
       "heading": {
        "text": "27",
        "size": 24,
        "tag": "span"
       },
-      "left": 62,
+      "left": 18,
       "right": 0,
-      "textLeft": 62,
-      "textRight": 58,
+      "textLeft": 18,
+      "textRight": 14,
       "fullBleed": false,
       "footer": true,
       "hero": false,
@@ -900,24 +882,39 @@
     "gaps": [],
     "h1s": [
      {
-      "text": "Good morning, Ada.",
+      "text": "Good afternoon, Ada.",
       "size": 26,
-      "top": 158,
+      "top": 128,
       "firstScreen": true
      }
     ],
-    "edgeText": [],
-    "edges": [
+    "edgeText": [
      {
-      "x": 84,
-      "n": 4
+      "text": "MON",
+      "side": "right",
+      "px": 14
      },
      {
-      "x": 62,
+      "text": "No items shown",
+      "side": "right",
+      "px": 14
+     }
+    ],
+    "edges": [
+     {
+      "x": 18,
       "n": 3
      },
      {
-      "x": 235,
+      "x": 40,
+      "n": 3
+     },
+     {
+      "x": 204,
+      "n": 1
+     },
+     {
+      "x": 472,
       "n": 1
      }
     ],
@@ -941,13 +938,13 @@
      "h": 78
     },
     "canvas": {
-     "left": 24,
-     "right": -57
+     "left": 18,
+     "right": -13
     },
     "hero": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "words": 3,
-     "chars": 18,
+     "chars": 20,
      "lines": 1,
      "size": 26,
      "vw": 3.4,
@@ -955,7 +952,7 @@
      "weight": 400,
      "tracking": -0.02,
      "leading": 1.14,
-     "top": 158,
+     "top": 128,
      "tag": "h1",
      "kind": "heading",
      "align": "left",
@@ -964,8 +961,13 @@
     "charts": 0,
     "layout": {
      "panels": 4,
-     "firstScreen": 2,
-     "ragged": [],
+     "firstScreen": 4,
+     "ragged": [
+      {
+       "diff": 249,
+       "top": 572
+      }
+     ],
      "voids": []
     },
     "tiles": 0,
@@ -1020,9 +1022,9 @@
      ]
     },
     "title": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "size": 26,
-     "top": 158
+     "top": 128
     },
     "colourShare": 0.001
    },
@@ -1034,9 +1036,9 @@
    "load": "load",
    "screens": 3,
    "filled": [
-    0.76,
-    0.94,
-    0.94
+    0.83,
+    0.93,
+    0.88
    ],
    "motion": {
     "elements": 0,
@@ -1052,8 +1054,8 @@
      "h": 844
     },
     "page": {
-     "height": 1888,
-     "screens": 2.2,
+     "height": 1769,
+     "screens": 2.1,
      "words": 212,
      "img": 0,
      "video": 0,
@@ -1075,9 +1077,9 @@
      "videosNoPoster": 0
     },
     "hero": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "words": 3,
-     "chars": 18,
+     "chars": 20,
      "lines": 1,
      "size": 26,
      "vw": 6.7,
@@ -1085,14 +1087,14 @@
      "weight": 400,
      "tracking": -0.02,
      "leading": 1.14,
-     "top": 195,
+     "top": 171,
      "tag": "h1",
      "kind": "heading",
      "align": "left",
      "position": "left"
     },
     "h1": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "words": 3,
      "lines": 1,
      "size": 26,
@@ -1100,9 +1102,9 @@
     },
     "headings": [
      {
-      "text": "Good morning, Ada.",
+      "text": "Good afternoon, Ada.",
       "words": 3,
-      "chars": 18,
+      "chars": 20,
       "lines": 1,
       "size": 26,
       "vw": 6.7,
@@ -1115,8 +1117,8 @@
       "mono": false,
       "align": "left",
       "position": "center",
-      "widthRatio": 0.82,
-      "top": 195,
+      "widthRatio": 0.91,
+      "top": 171,
       "tag": "h1",
       "kind": "heading"
      },
@@ -1136,8 +1138,8 @@
       "mono": false,
       "align": "left",
       "position": "center",
-      "widthRatio": 0.73,
-      "top": 349,
+      "widthRatio": 0.83,
+      "top": 325,
       "tag": "h2",
       "kind": "heading"
      },
@@ -1158,7 +1160,7 @@
       "align": "left",
       "position": "left",
       "widthRatio": 0.07,
-      "top": 1713,
+      "top": 1642,
       "tag": "span",
       "kind": "statement"
      },
@@ -1177,9 +1179,9 @@
       "italic": false,
       "mono": false,
       "align": "left",
-      "position": "right",
+      "position": "center",
       "widthRatio": 0.07,
-      "top": 1714,
+      "top": 1643,
       "tag": "span",
       "kind": "statement"
      },
@@ -1200,7 +1202,7 @@
       "align": "left",
       "position": "right",
       "widthRatio": 0.07,
-      "top": 1714,
+      "top": 1643,
       "tag": "span",
       "kind": "statement"
      },
@@ -1221,7 +1223,7 @@
       "align": "left",
       "position": "right",
       "widthRatio": 0.07,
-      "top": 1714,
+      "top": 1643,
       "tag": "span",
       "kind": "statement"
      },
@@ -1242,7 +1244,7 @@
       "align": "left",
       "position": "right",
       "widthRatio": 0.07,
-      "top": 1714,
+      "top": 1643,
       "tag": "span",
       "kind": "statement"
      },
@@ -1263,7 +1265,7 @@
       "align": "left",
       "position": "right",
       "widthRatio": 0.03,
-      "top": 1714,
+      "top": 1643,
       "tag": "span",
       "kind": "statement"
      },
@@ -1284,7 +1286,7 @@
       "align": "left",
       "position": "right",
       "widthRatio": 0.03,
-      "top": 1714,
+      "top": 1643,
       "tag": "span",
       "kind": "statement"
      }
@@ -1334,12 +1336,12 @@
       "tracking": 0,
       "contrast": 13.2
      },
-     "measureChars": 40,
+     "measureChars": 44,
      "max": {
       "size": 26,
       "vw": 6.7,
       "font": "Fraunces",
-      "text": "Good morning, ."
+      "text": "Good afternoon, ."
      },
      "monoShare": 0,
      "monoProseShare": 0,
@@ -1355,13 +1357,13 @@
     "eyebrows": [
      {
       "text": "Tuesday, October 27, 2026",
-      "above": "Good morning, Ada.",
+      "above": "Good afternoon, Ada.",
       "upper": false,
       "tracked": false,
       "mono": false,
       "pill": false,
       "size": 13,
-      "top": 164
+      "top": 140
      },
      {
       "text": "October 27 to November 2",
@@ -1371,7 +1373,7 @@
       "mono": false,
       "pill": false,
       "size": 12,
-      "top": 1662
+      "top": 1591
      },
      {
       "text": "October 27 to November 2",
@@ -1381,7 +1383,7 @@
       "mono": false,
       "pill": false,
       "size": 12,
-      "top": 1662
+      "top": 1591
      }
     ],
     "numbered": [],
@@ -1413,8 +1415,17 @@
        }
       },
       {
+       "color": "#131718",
+       "top": 279,
+       "hsl": {
+        "h": 192,
+        "s": 0.12,
+        "l": 0.08
+       }
+      },
+      {
        "color": "#fbf9f4",
-       "top": 624,
+       "top": 600,
        "hsl": {
         "h": 43,
         "s": 0.47,
@@ -1425,7 +1436,7 @@
      "textColors": [
       {
        "color": "#252b26",
-       "share": 0.57
+       "share": 0.55
       },
       {
        "color": "#64645b",
@@ -1440,8 +1451,8 @@
        "share": 0.06
       },
       {
-       "color": "#131718",
-       "share": 0.01
+       "color": "#f7f4ee",
+       "share": 0.02
       }
      ],
      "button": {
@@ -1457,7 +1468,7 @@
     },
     "buttons": {
      "count": 6,
-     "inHero": 1,
+     "inHero": 2,
      "radius": "pill",
      "height": 44,
      "withShadow": 0,
@@ -1465,7 +1476,8 @@
      "mono": 0,
      "upper": 0,
      "heroLabels": [
-      "Continue"
+      "Continue",
+      "Mark done"
      ]
     },
     "surfaces": {
@@ -1483,11 +1495,11 @@
      "gradientText": 0,
      "hairlines": 5,
      "hairlineSamples": [
-      "aside.classroom-home-progress 286px",
-      "li.classroom-home-row-wrap 282px",
-      "li.classroom-home-row-wrap 282px",
-      "li.classroom-home-work-summary 282px",
-      "li 282px"
+      "aside.classroom-home-progress 322px",
+      "li.classroom-home-row-wrap 318px",
+      "li.classroom-home-row-wrap 318px",
+      "li.classroom-home-work-summary 318px",
+      "li 318px"
      ],
      "outlinedBoxes": 0,
      "dashed": 0,
@@ -1515,17 +1527,17 @@
      "w": 390,
      "h": 844
     },
-    "pageH": 1888,
+    "pageH": 1769,
     "margins": {
      "left": 16,
-     "right": 32
+     "right": 18
     },
     "sections": [
      {
       "sel": "div.classroom-home-grid",
       "tag": "div",
-      "top": 303,
-      "height": 1335,
+      "top": 279,
+      "height": 1289,
       "words": 110,
       "media": 0,
       "middle": 0,
@@ -1534,10 +1546,10 @@
        "size": 23,
        "tag": "h2"
       },
-      "left": 36,
-      "right": 36,
-      "textLeft": 52,
-      "textRight": 56,
+      "left": 18,
+      "right": 18,
+      "textLeft": 34,
+      "textRight": 38,
       "fullBleed": false,
       "footer": true,
       "hero": true,
@@ -1547,20 +1559,20 @@
      {
       "sel": "section.classroom-home-week",
       "tag": "section",
-      "top": 1658,
+      "top": 1587,
       "height": 142,
       "words": 24,
       "media": 0,
-      "middle": 366,
+      "middle": 348,
       "heading": {
        "text": "27",
        "size": 24,
        "tag": "span"
       },
-      "left": 36,
+      "left": 18,
       "right": 0,
-      "textLeft": 36,
-      "textRight": 32,
+      "textLeft": 18,
+      "textRight": 18,
       "fullBleed": false,
       "footer": true,
       "hero": false,
@@ -1571,24 +1583,24 @@
     "gaps": [],
     "h1s": [
      {
-      "text": "Good morning, Ada.",
+      "text": "Good afternoon, Ada.",
       "size": 26,
-      "top": 195,
+      "top": 171,
       "firstScreen": true
      }
     ],
     "edgeText": [],
     "edges": [
      {
-      "x": 52,
+      "x": 34,
       "n": 4
      },
      {
-      "x": 36,
+      "x": 18,
       "n": 3
      },
      {
-      "x": 209,
+      "x": 204,
       "n": 1
      }
     ],
@@ -1611,12 +1623,12 @@
     "topbar": null,
     "canvas": {
      "left": 16,
-     "right": -409
+     "right": -391
     },
     "hero": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "words": 3,
-     "chars": 18,
+     "chars": 20,
      "lines": 1,
      "size": 26,
      "vw": 6.7,
@@ -1624,7 +1636,7 @@
      "weight": 400,
      "tracking": -0.02,
      "leading": 1.14,
-     "top": 195,
+     "top": 171,
      "tag": "h1",
      "kind": "heading",
      "align": "left",
@@ -1689,9 +1701,9 @@
      ]
     },
     "title": {
-     "text": "Good morning, Ada.",
+     "text": "Good afternoon, Ada.",
      "size": 26,
-     "top": 195
+     "top": 171
     },
     "colourShare": 0
    },
@@ -1712,17 +1724,24 @@
   },
   {
    "level": "WARN",
-   "id": "unused-canvas",
-   "width": 1440,
-   "message": "The content stops 256px short of the right edge while it starts 76px from the sidebar.",
-   "fix": "Let the grid fill the canvas (columns in fr units), or centre a capped canvas with equal margins. A dead strip on one side reads as unfinished."
-  },
-  {
-   "level": "WARN",
    "id": "below-fold",
    "width": 1440,
    "message": "Only 4 of 11 blocks start on the first 1440px screen.",
    "fix": "Every block the brief names shows its header and first rows on the first desktop screen: size the headline block to its question, cap long lists with \"View all\", and put time-sensitive blocks before long tables."
+  },
+  {
+   "level": "FAIL",
+   "id": "edge-text",
+   "width": 768,
+   "message": "2 text block(s) sit within 16px of the screen edge: \"MON\" (14px from the right); \"No items shown\" (14px from the right)",
+   "fix": "Keep text inside the page margin (16–32px or more). Only display type deliberately bled past the edge may touch it."
+  },
+  {
+   "level": "WARN",
+   "id": "ragged-row",
+   "width": 768,
+   "message": "1 pair(s) of cards in one row end at different heights (by 249px).",
+   "fix": "Cards that share a row share a bottom edge: balance them by their content (the same number of rows, a block of similar height beside it), or stack them. In testing, ragged rows were marked down every time."
   }
  ],
  "images": [

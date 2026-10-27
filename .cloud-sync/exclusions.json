@@ -316,7 +316,27 @@
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {
+    "path": "dist-home-preview/assets/role-home-preview-B4gE8cSH.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-B69ieNBH.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
     "path": "dist-home-preview/assets/role-home-preview-BhrspnEe.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-Cj0ne1XA.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-DGnVHwvO.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-DNH15jNu.js",
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {

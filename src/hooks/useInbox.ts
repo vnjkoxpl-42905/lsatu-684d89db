@@ -80,7 +80,7 @@ export function useInbox() {
     // Get conversations the user participates in. A swallowed error here (and
     // in each read below) yielded null -> an empty inbox rendered as if the
     // student had no messages: a swallowed-error AND a truthful-UI violation.
-    // On any failure we set an error, KEEP the prior conversations, and stop.
+    // On a required read failure we keep the prior conversations and stop.
     const { data: myParts, error: partsError } = await supabase
       .from('conversation_participants')
       .select('conversation_id, last_read_at, home_cleared_at')
@@ -103,10 +103,10 @@ export function useInbox() {
     }
 
     const lastReadMap = new Map<string, number>(
-      (myParts ?? []).map((p) => [
-        p.conversation_id,
-        p.last_read_at ? new Date(p.last_read_at).getTime() : 0,
-      ])
+      (myParts ?? []).map((p) => {
+        const timestamp = p.last_read_at ? new Date(p.last_read_at).getTime() : 0;
+        return [p.conversation_id, Number.isFinite(timestamp) ? timestamp : 0];
+      })
     );
 
     const homeClearedMap = new Map<string, string | null>(
@@ -222,8 +222,10 @@ export function useInbox() {
         .in('id', previewIds.slice(offset, offset + 100));
       if (!isCurrent()) return;
       if (previewError) {
-        console.error('[inbox] load unread previews failed:', previewError);
-        setError('Could not load your messages'); setLoading(false); return;
+        // The unread scan already established fresh counts and timestamps.
+        // An optional body preview must not prevent that snapshot from loading.
+        console.warn('[inbox] load unread previews failed:', previewError);
+        continue;
       }
       for (const message of previews ?? []) {
         unreadPreviewMap.set(message.conversation_id, {

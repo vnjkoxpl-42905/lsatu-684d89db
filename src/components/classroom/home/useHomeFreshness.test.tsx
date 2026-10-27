@@ -72,4 +72,23 @@ describe("useHomeFreshness", () => {
     await act(async () => focusManager.setFocused(true));
     expect(invalidate).not.toHaveBeenCalled();
   });
+
+  it("shares an active refresh across repeated focus and manual requests", async () => {
+    const { invalidate, hook } = setup("ada");
+    let finish!: () => void;
+    const pending = new Promise<void>((resolve) => { finish = resolve; });
+    invalidate.mockImplementation(() => pending);
+    let first!: Promise<void>;
+    act(() => { first = hook.result.current.refresh(); });
+    expect(hook.result.current.refreshing).toBe(true);
+    act(() => {
+      focusManager.setFocused(false);
+      focusManager.setFocused(true);
+      void hook.result.current.refresh();
+    });
+    expect(invalidate).toHaveBeenCalledTimes(homeAssignmentKeys("ada").length);
+    expect(hook.result.current.refreshing).toBe(true);
+    await act(async () => { finish(); await first; });
+    expect(hook.result.current.refreshing).toBe(false);
+  });
 });

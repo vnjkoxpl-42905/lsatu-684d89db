@@ -31,17 +31,20 @@ export function homeAssignmentKeys(actorId: string): QueryKey[] {
 export function useHomeFreshness(actorId: string | undefined) {
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = React.useState(false);
+  const inFlight = React.useRef<Promise<void> | null>(null);
 
-  const refresh = React.useCallback(async () => {
-    if (!actorId) return;
+  const refresh = React.useCallback(() => {
+    if (!actorId) return Promise.resolve();
+    if (inFlight.current) return inFlight.current;
     setRefreshing(true);
-    try {
-      await Promise.all(
+    const pending = Promise.all(
         homeAssignmentKeys(actorId).map((queryKey) => queryClient.invalidateQueries({ queryKey })),
-      );
-    } finally {
+      ).then(() => undefined).finally(() => {
+      inFlight.current = null;
       setRefreshing(false);
-    }
+    });
+    inFlight.current = pending;
+    return pending;
   }, [actorId, queryClient]);
 
   React.useEffect(() => {
