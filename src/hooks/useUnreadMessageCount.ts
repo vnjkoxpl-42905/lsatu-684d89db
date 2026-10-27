@@ -1,116 +1,73 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
-/**
- * How many messages are waiting for the signed-in user, counted as MESSAGES and
- * not as threads.
- *
- * `useInbox` already exposes an `unreadCount`, but it counts conversations, so a
- * student with one thread can only ever see "1" no matter how many replies are
- * sitting there. The rail badge is supposed to read 1 / 2 / 3, so it needs this.
- *
- * This is deliberately NOT `useInbox`: the rail is mounted on every classroom
- * page, and `useInbox` runs six sequential queries plus an unfiltered realtime
- * subscription to build full thread rows the rail never draws. Two small reads
- * are the whole cost here.
- */
+const PAGE_SIZE = 500;
+
+/** Count incoming messages, not conversations, without the API's default row cap. */
+export async function loadUnreadMessageCount(userId: string): Promise<number> {
+  const participants: Array<{ conversation_id: string; last_read_at: string | null }> = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await supabase.from('conversation_participants')
+      .select('conversation_id, last_read_at').eq('user_id', userId)
+      .order('conversation_id', { ascending: true }).range(from, from + PAGE_SIZE - 1);
+    if (error) throw error;
+    participants.push(...(data ?? []));
+    if ((data?.length ?? 0) < PAGE_SIZE) break;
+  }
+  const uniqueParticipants = [...new Map(participants.map((participant) => [participant.conversation_id, participant])).values()];
+  let total = 0;
+  // Each bounded batch keeps every conversation's own watermark while a
+  // server-side exact count avoids transferring or truncating message history.
+  for (let offset = 0; offset < uniqueParticipants.length; offset += 25) {
+    const conditions = uniqueParticipants.slice(offset, offset + 25).map((participant) =>
+      `and(conversation_id.eq.${participant.conversation_id},created_at.gt.${participant.last_read_at ?? '1970-01-01T00:00:00.000Z'})`,
+    );
+    const { count, error } = await supabase.from('messages')
+      .select('id', { count: 'exact', head: true }).neq('sender_id', userId)
+      .or(conditions.join(','));
+    if (error) throw error;
+    total += count ?? 0;
+  }
+  return total;
+}
+
 export function useUnreadMessageCount() {
   const { user } = useAuth();
-  const [count, setCount] = useState(0);
-
+  const userId = user?.id;
+  const actor = useRef(userId);
+  actor.current = userId;
+  const generation = useRef(0);
+  const [state, setState] = useState({ userId, count: 0 });
   const load = useCallback(async () => {
-    if (!user) {
-      setCount(0);
-      return;
+    const request = ++generation.current;
+    if (!userId) return;
+    try {
+      const count = await loadUnreadMessageCount(userId);
+      if (request === generation.current && actor.current === userId) setState({ userId, count });
+    } catch (error) {
+      console.warn('[inbox] unread count failed:', error);
     }
-
-    const { data: parts, error: partsError } = await supabase
-      .from('conversation_participants')
-      .select('conversation_id, last_read_at')
-      .eq('user_id', user.id);
-    if (partsError) {
-      // A failed count must not invent a number: leave the badge as it was.
-      console.warn('[inbox] unread count participants read failed:', partsError.message);
-      return;
-    }
-
-    const rows = parts ?? [];
-    if (rows.length === 0) {
-      setCount(0);
-      return;
-    }
-
-    // A null last_read_at means the thread has never been opened, so every
-    // message in it is unread — which is exactly what the epoch floor gives.
-    const lastReadMap = new Map<string, number>(
-      rows.map((p) => [p.conversation_id, p.last_read_at ? new Date(p.last_read_at).getTime() : 0]),
-    );
-    const earliest = Math.min(...lastReadMap.values());
-
-    // Bound the read at the oldest last-read instant and drop the caller's own
-    // messages server-side, so this stays a small payload rather than the
-    // whole message history.
-    const { data: msgs, error: msgsError } = await supabase
-      .from('messages')
-      .select('conversation_id, created_at')
-      .in('conversation_id', Array.from(lastReadMap.keys()))
-      .neq('sender_id', user.id)
-      .gt('created_at', new Date(earliest).toISOString());
-    if (msgsError) {
-      console.warn('[inbox] unread count messages read failed:', msgsError.message);
-      return;
-    }
-
-    setCount(
-      (msgs ?? []).filter(
-        (m) => new Date(m.created_at).getTime() > (lastReadMap.get(m.conversation_id) ?? 0),
-      ).length,
-    );
-  }, [user]);
+  }, [userId]);
 
   useEffect(() => {
     void load();
-  }, [load]);
-
-  // Clear immediately in the current tab when a thread is opened. Realtime
-  // remains the cross-tab/server source of truth, but should not be required
-  // for a badge the teacher just acted on to disappear.
-  useEffect(() => {
-    const handleRead = () => void load();
+    if (!userId) return;
+    const handleRead = (event: Event) => {
+      const detail = (event as CustomEvent<{ userId?: string }>).detail;
+      if (!detail?.userId || detail.userId === userId) void load();
+    };
     window.addEventListener('inbox:read', handleRead);
-    return () => window.removeEventListener('inbox:read', handleRead);
-  }, [load]);
-
-  // The badge has to move the moment a message lands, and has to clear the
-  // moment the thread is opened (which writes last_read_at), so both tables are
-  // watched.
-  useEffect(() => {
-    if (!user) return;
-    const channel = supabase
-      // Unique per subscription: the rail is rendered twice (desktop aside +
-      // mobile sheet), and two channels sharing one topic collide.
-      .channel(`inbox-unread-${user.id}-${Math.random().toString(36).slice(2)}`)
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'messages' },
-        () => void load(),
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'conversation_participants',
-          filter: `user_id=eq.${user.id}`,
-        },
-        () => void load(),
-      )
+    const channel = supabase.channel(`inbox-unread-${userId}-${Math.random().toString(36).slice(2)}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => void load())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'conversation_participants', filter: `user_id=eq.${userId}` }, () => void load())
       .subscribe();
     return () => {
+      ++generation.current;
+      window.removeEventListener('inbox:read', handleRead);
       void supabase.removeChannel(channel);
     };
-  }, [user, load]);
+  }, [userId, load]);
 
-  return count;
+  return state.userId === userId ? state.count : 0;
 }

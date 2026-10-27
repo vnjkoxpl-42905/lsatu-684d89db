@@ -106,7 +106,7 @@ function StudentNotesSection() {
   };
   return <section className="my-work-student-notes" aria-labelledby="my-notes-heading">
     <button type="button" className="classroom-button" disabled={saving} onClick={() => navigate(null, true)}>Back to teaching notes</button>
-    <div className="my-work-notes-heading"><div><h2 id="my-notes-heading">My notes</h2><p>Your personal notebook.</p></div><button type="button" className="classroom-button" disabled={saving} onClick={() => navigate("new")}>New note</button></div>
+    <div className="my-work-notes-heading"><div><h2 id="my-notes-heading">Personal notes</h2><p>Your personal notebook.</p></div><button type="button" className="classroom-button" disabled={saving} onClick={() => navigate("new")}>New note</button></div>
     {storageError && <p role="alert" className="my-work-note-notice">This browser cannot recover your draft after leaving. Save your note before leaving.</p>}
     {query.isLoading && <p role="status" className="my-work-note-notice">Loading your notes…</p>}
     {query.isError && <div role="alert" className="my-work-note-notice"><p>Your notes could not be loaded.</p><button type="button" className="classroom-button" onClick={() => void query.refetch()}>Try again</button></div>}

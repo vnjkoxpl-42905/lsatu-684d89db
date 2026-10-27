@@ -109,16 +109,41 @@ export function ConversationView({
   const stageLayout = layout === 'stage';
   const { user } = useAuth();
   const { is_admin } = useUserPermissions();
-  const { messages, loading, error: threadError, refresh, deleteMessage } = useConversationMessages(conversation.id);
+  useEffect(() => {
+    if (!user?.id) return;
+    const channel = supabase.channel(`receipt-${user.id}-${conversation.id}-${Math.random().toString(36).slice(2)}`)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'conversation_participants', filter: `conversation_id=eq.${conversation.id}` }, (payload) => {
+        if (payload.new.user_id !== user.id) window.dispatchEvent(new CustomEvent('inbox:participants', { detail: { conversationId: conversation.id } }));
+      }).subscribe();
+    return () => { void supabase.removeChannel(channel); };
+  }, [conversation.id, user?.id]);
   const reducedMotion = useReducedMotion();
   const scrollRef = useRef<HTMLDivElement>(null);
   const nearBottomRef = useRef(true);
+  const [readerAtBottom, setReaderAtBottom] = useState(true);
+  const [readerVisible, setReaderVisible] = useState(false);
+  const { messages, loading, error: threadError, refresh, deleteMessage } = useConversationMessages(conversation.id, readerVisible && readerAtBottom);
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(([entry]) => setReaderVisible(entry.isIntersecting));
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [conversation.id, user?.id]);
   const prevCountRef = useRef(0);
   const [showScrollPill, setShowScrollPill] = useState(false);
   const [newWhileAway, setNewWhileAway] = useState(0);
   const [previewAttachment, setPreviewAttachment] = useState<MessageAttachment | null>(null);
   const [pending, setPending] = useState<PendingMessage[]>([]);
   const [composerSeed, setComposerSeed] = useState<ComposerSeed | null>(null);
+
+  useEffect(() => {
+    nearBottomRef.current = true;
+    prevCountRef.current = 0;
+    setReaderAtBottom(true);
+    setShowScrollPill(false);
+    setNewWhileAway(0);
+  }, [conversation.id, user?.id]);
 
   const { otherTyping, broadcastTyping, broadcastStopped } = useTypingIndicator(
     conversation.id,
@@ -149,6 +174,7 @@ export function ConversationView({
     if (!el) return;
     const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < NEAR_BOTTOM_PX;
     nearBottomRef.current = nearBottom;
+    setReaderAtBottom(nearBottom);
     setShowScrollPill(!nearBottom);
     if (nearBottom) setNewWhileAway(0);
   }, []);
@@ -159,6 +185,8 @@ export function ConversationView({
       if (!el) return;
       el.scrollTo({ top: el.scrollHeight, behavior: smooth && !reducedMotion ? 'smooth' : 'auto' });
       setNewWhileAway(0);
+      nearBottomRef.current = true;
+      setReaderAtBottom(true);
     },
     [reducedMotion],
   );

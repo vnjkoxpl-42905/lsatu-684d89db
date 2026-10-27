@@ -17,8 +17,8 @@ describe('TeachingNotesArchive', () => {
   it('makes read archive notes visible and opens the current detail route with return state', () => {
     state.data[1].metadata_json = { read_at: '2026-10-26' };
     show('/my-work/notes?q=Reference&shown=24');
-    expect(screen.getByRole('heading', { name: 'Browse your notes' })).toBeInTheDocument();
-    const link = screen.getByRole('link', { name: /Reference 1 Oct/ });
+    expect(screen.getByRole('heading', { name: 'Teaching notes' })).toBeInTheDocument();
+    const link = screen.getByRole('link', { name: /Read Reference 1\./ });
     expect(link).toHaveAttribute('href', '/classroom/item/note-1?returnTo=%2Fmy-work%2Fnotes%3Fq%3DReference%26shown%3D24');
     expect(screen.queryByRole('link', { name: /Assigned work/ })).not.toBeInTheDocument();
   });
@@ -88,6 +88,76 @@ describe('TeachingNotesArchive', () => {
     expect(JSON.parse(sessionStorage.getItem('my-work-notes-anchor:student-a:/my-work/notes')!)).toMatchObject({ id: 'note-0' });
     fireEvent.click(screen.getByRole('link', { name: 'Back to notes' }));
     expect(screen.getByRole('link', { name: /Reference 0/ })).toHaveFocus();
+  });
+
+  it('combines exact type with unread and search while preserving type on detail links', () => {
+    state.data[0].type = 'session_recap';
+    state.data[1].type = 'announcement';
+    show('/my-work/notes?filter=unread&shown=24');
+    fireEvent.change(screen.getByRole('combobox', { name: 'Type' }), { target: { value: 'session_recap' } });
+    expect(screen.getByLabelText('Location')).toHaveTextContent('filter=unread&type=session_recap');
+    expect(screen.getByLabelText('Location')).not.toHaveTextContent('shown=');
+    expect(screen.getByText('1 note found')).toBeInTheDocument();
+    const link = screen.getByRole('link', { name: /Read Reference 0/ });
+    expect(link).toHaveAttribute('href', '/classroom/item/note-0?returnTo=%2Fmy-work%2Fnotes%3Ffilter%3Dunread%26type%3Dsession_recap');
+    expect(link.getAttribute('aria-label')).not.toContain('A useful explanation');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'absent' } });
+    expect(screen.getByRole('combobox', { name: 'Type' })).toHaveValue('session_recap');
+    fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
+    expect(screen.getByLabelText('Location').textContent).toBe('');
+  });
+  it('keeps a valid absent type selectable so its empty result can recover', () => {
+    show('/my-work/notes?type=smartboard_recap');
+    expect(screen.getByRole('combobox', { name: 'Type' })).toHaveValue('smartboard_recap');
+    expect(screen.getByText('No notes match these filters.')).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'Type' }), { target: { value: '' } });
+    expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+    expect(screen.getByText('Reference 0')).toBeInTheDocument();
+  });
+  it('uses one teaching heading and groups a small archive when months differ', () => {
+    state.data = [note(0), { ...note(1), created_at: '2026-09-20T12:00:00Z' }];
+    show();
+    expect(screen.getAllByRole('heading', { name: 'Teaching notes' })).toHaveLength(1);
+    expect(screen.queryByRole('heading', { name: 'Browse your notes' })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'October 2026' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'September 2026' })).toBeInTheDocument();
+    expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+  });
+
+  it('presents an excerpt without one repeated leading title while searching the full body', () => {
+    state.data = [{ ...note(0), title: 'The complete condition', content_html: '<h2>The complete condition</h2><p>Keep the trigger and result.</p><p>Body search marker</p>' }];
+    show();
+    const excerpt = document.querySelector('.teaching-note-excerpt');
+    expect(excerpt).toHaveTextContent('Keep the trigger and result. Body search marker');
+    expect(excerpt).not.toHaveTextContent('The complete condition');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Body search marker' } });
+    expect(screen.getByText('1 note found')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Read The complete condition/ })).toBeInTheDocument();
+  });
+  it('prefers the authored description in the excerpt without losing hidden body search', () => {
+    state.data = [{ ...note(0), description: 'A short authored preview.', content_html: '<p>Hidden full body search marker</p>' }];
+    show();
+    expect(document.querySelector('.teaching-note-excerpt')).toHaveTextContent('A short authored preview.');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Hidden full body' } });
+    expect(screen.getByText('1 note found')).toBeInTheDocument();
+  });
+
+  it('makes read-state counts predict results within the selected type and search', () => {
+    state.data = [
+      { ...note(0), type: 'session_recap' },
+      { ...note(1), type: 'session_recap', metadata_json: { read_at: '2026-10-26' } },
+      { ...note(2), type: 'note' },
+    ];
+    show('/my-work/notes?type=session_recap&filter=unread');
+    expect(screen.getByRole('button', { name: 'All' })).toHaveTextContent('All 2');
+    expect(screen.getByRole('button', { name: 'Unread' })).toHaveTextContent('Unread 1');
+    expect(screen.getByText('1 note found')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'All' }));
+    expect(screen.getByText('2 notes found')).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Reference 1' } });
+    expect(screen.getByRole('button', { name: 'All' })).toHaveTextContent('All 1');
+    expect(screen.getByRole('button', { name: 'Unread' })).toHaveTextContent('Unread 0');
+    expect(screen.getByRole('option', { name: 'Notes' })).toBeInTheDocument();
   });
 
 });

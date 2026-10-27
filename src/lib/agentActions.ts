@@ -185,7 +185,7 @@ async function executeMessage(
     type: 'message',
     title: 'New message from Joshua',
     body: body.length > 120 ? `${body.slice(0, 120)}…` : body,
-    link: '/messages',
+    link: `/inbox/${encodeURIComponent(conversationId)}`,
   });
 
   return { ok: true, summary: `Message sent to ${proposal.student.name}` };

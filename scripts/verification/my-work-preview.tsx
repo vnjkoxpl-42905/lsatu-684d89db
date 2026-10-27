@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Link, Route, Routes, useLocation } from 'react-router-dom';
 import MyWorkNotesPage from '../../src/pages/MyWorkNotesPage';
+import MyWorkPage from '../../src/pages/MyWorkPage';
 import { StudentDestination } from '../../src/pages/StudentDestination';
 import { ClassroomItemView } from '../../src/components/classroom/ClassroomRouteViews';
 import '../../src/index.css';
@@ -11,6 +12,14 @@ import '../../src/components/classroom/classroom.css';
 
 const titles = ['Conditional logic: checking the rule', 'Reading flaw answer choices', 'What the argument needs', 'Keep the conclusion separate', 'Reading for the author’s position', 'Reviewing a timed section', 'Why the tempting answer fails', 'Finding the role of a sentence', 'Translate before you diagram', 'A plan for this week', 'Negating an answer choice', 'Evidence and explanation', 'Comparing two passages', 'Recognizing the gap', 'A method worth keeping', 'Your next practice session'];
 const fixtureWindow = window as any;
+fixtureWindow.__workFixture = [
+  ['rule', 'Conditional Indicators Refresher', 'bootcamp', 'lr', 'in_progress'],
+  ['recall', 'Read, Recall, Colour · PT112 Section 4', 'activity', 'rc', 'assigned'],
+  ['assumption', 'Necessary Assumption: First Taste', 'guided', 'lr', 'assigned'],
+  ['saved', 'Review your reasoning', 'guided', 'lr', 'in_progress'],
+  ['done-1', 'Read, Recall, Colour · PT134 Section 3', 'activity', 'rc', 'completed'],
+  ['done-2', 'Read, Recall, Colour · PT134 Section 3', 'activity', 'rc', 'completed'],
+].map(([id, title, kind, workSection, status], i) => ({ key: id, refId: id, sourceTable: kind === 'guided' ? 'guided_drill_assignments' : 'activities', title, kind, workSection, status, subtitle: kind === 'guided' ? '10 questions · 60 minutes' : 'Read the instructions and continue with your assigned practice.', route: kind === 'guided' ? `/guided/${id}` : `/activities/${id}`, createdAt: new Date(Date.UTC(2026, 9, 20 - i, 12)).toISOString(), dueAt: i === 1 ? '2026-10-30T19:00:00Z' : null, progressUnverified: id === 'saved' }));
 fixtureWindow.__notesFixture = titles.map((title, i) => ({
   id: `fixture-note-${i}`, student_id: 'local-student', class_id: null, created_by: 'local-teacher',
   type: i % 3 === 0 ? 'session_recap' : 'note', title,
@@ -31,8 +40,8 @@ function Fixture() {
     <main className="classroom-column notes-fixture-main"><Routes>
       <Route element={<StudentDestination destination="my-work" />}>
         <Route path="/my-work/notes" element={<MyWorkNotesPage />} />
-        <Route path="/my-work/to-do" element={<section><h2>Assigned work</h2><p>Fixture destination reached. The production assignment feed is unchanged.</p><Link to="/my-work/notes">Back to notes</Link></section>} />
-        <Route path="/my-work/completed" element={<section><h2>Completed</h2><Link to="/my-work/notes">Back to notes</Link></section>} />
+        <Route path="/my-work/to-do" element={<MyWorkPage completed={false} />} />
+        <Route path="/my-work/completed" element={<MyWorkPage completed />} />
       </Route>
       <Route path="/classroom/item/:itemId" element={<ClassroomItemView />} />
       <Route path="/classroom/recaps" element={<MyWorkNotesPage />} />

@@ -1,6 +1,7 @@
 import DOMPurify from 'dompurify';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import { classroomNotes, isNoteUnread } from '@/components/classroom/classroomData';
+import type { TeachingNoteType } from '@/lib/myWorkNotesNavigation';
 
 /** Parse only inert, sanitized content. No authored resources enter the live document. */
 export function htmlToArchiveText(html: string): string {
@@ -25,9 +26,9 @@ export function archiveShown(value: string | null) {
   return value && /^\d+$/.test(value) ? Math.max(12, Math.min(10000, Number(value))) : 12;
 }
 
-export function filterTeachingNotes(notes: ClassroomItem[], text: Map<string, string>, query: string, unreadOnly: boolean) {
+export function filterTeachingNotes(notes: ClassroomItem[], text: Map<string, string>, query: string, unreadOnly: boolean, type: TeachingNoteType | '' = '') {
   const term = query.trim().toLocaleLowerCase();
-  return notes.filter((note) => (!unreadOnly || isNoteUnread(note)) && (!term || `${note.title} ${text.get(note.id) ?? ''}`.toLocaleLowerCase().includes(term)));
+  return notes.filter((note) => (!type || note.type === type) && (!unreadOnly || isNoteUnread(note)) && (!term || `${note.title} ${text.get(note.id) ?? ''}`.toLocaleLowerCase().includes(term)));
 }
 
 export function nearestArchiveNote(previousIds: string[], openedId: string, currentIds: string[]) {
