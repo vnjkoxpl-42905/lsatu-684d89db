@@ -1,3 +1,5 @@
+> 2026-10-27 visual refinement: the later [material polish plan](my-work-material-polish.md), independently approved by Claude, supersedes the visual shelf, card-grid and Assigned work side-panel clauses in steps 2, 3 and 5 below. The chosen design is one lead-entry ledger with search first; Assigned work remains in the shared tabs. Historical approval and all data, access, archive and persistence contracts below remain preserved.
+
 # Make My Work a useful home for teaching notes
 
 Date: 2026-10-26. Status: proposal for Joshua's approval, not implementation authorization.

@@ -107,19 +107,19 @@ function StudentNotesSection() {
   return <section className="my-work-student-notes" aria-labelledby="my-notes-heading">
     <button type="button" className="classroom-button" disabled={saving} onClick={() => navigate(null, true)}>Back to teaching notes</button>
     <div className="my-work-notes-heading"><div><h2 id="my-notes-heading">My notes</h2><p>Your personal notebook.</p></div><button type="button" className="classroom-button" disabled={saving} onClick={() => navigate("new")}>New note</button></div>
-    {storageError && <p role="alert">This browser cannot recover your draft after leaving. Save your note before leaving.</p>}
-    {query.isLoading && <p role="status">Loading your notes…</p>}
-    {query.isError && <div role="alert"><p>Your notes could not be loaded.</p><button type="button" onClick={() => void query.refetch()}>Try again</button></div>}
+    {storageError && <p role="alert" className="my-work-note-notice">This browser cannot recover your draft after leaving. Save your note before leaving.</p>}
+    {query.isLoading && <p role="status" className="my-work-note-notice">Loading your notes…</p>}
+    {query.isError && <div role="alert" className="my-work-note-notice"><p>Your notes could not be loaded.</p><button type="button" className="classroom-button" onClick={() => void query.refetch()}>Try again</button></div>}
     {!query.isLoading && !query.isError && <div className="my-work-notes-workspace"><div className="my-work-notes-list">
       {notes.length === 0 ? <p>You have not written a note yet.</p> : <ul>{notes.map((note) => <li key={note.id}><button type="button" disabled={saving} className={selectedId === note.id ? "my-work-note-selected" : ""} onClick={() => navigate(note.id)} aria-current={selectedId === note.id ? "true" : undefined}><strong>{note.title}</strong><span>{updatedDate(note.updated_at)}</span></button></li>)}</ul>}
     </div>{selectedId ? <div className="my-work-notes-editor" aria-label={selectedId === "new" ? "New note" : "Edit note"}>
       {selectedId !== "new" && !selected ? <p>This note is unavailable in your account.</p> : <>
         <label>Title<input disabled={saving} type="text" value={draft.title} onChange={(event) => change("title", event.target.value)} placeholder="Untitled note" maxLength={200} /></label>
         <label>Note<textarea disabled={saving} value={draft.body} onChange={(event) => change("body", event.target.value)} placeholder="Write what you want to remember…" rows={10} /></label>
-        {dirty && <p role="status">Unsaved draft. Save to keep it in your account.</p>}
+        {dirty && <p role="status" className="my-work-note-notice">Unsaved draft. Save to keep it in your account.</p>}
         {saveError && <p role="alert" className="my-work-note-error">{saveError}</p>}
         {saved && <p role="status" className="my-work-note-saved">Saved to your account.</p>}
-        {conflict && <div role="alert"><p>A newer account version exists. Your draft has been kept. Choose which version to keep.</p><button type="button" disabled={saving} onClick={useServerVersion}>Use account version</button><button type="button" disabled={saving} onClick={() => void save(conflict.updated_at)}>Replace account version with my draft</button></div>}
+        {conflict && <div role="alert" className="my-work-note-notice"><p>A newer account version exists. Your draft has been kept. Choose which version to keep.</p><button type="button" className="classroom-button" disabled={saving} onClick={useServerVersion}>Use account version</button><button type="button" className="classroom-button" disabled={saving} onClick={() => void save(conflict.updated_at)}>Replace account version with my draft</button></div>}
         <div className="my-work-notes-actions"><button type="button" className="classroom-button classroom-button-primary" disabled={saving || !!conflict} onClick={() => void save()}>{saving ? "Saving…" : "Save note"}</button><button type="button" className="classroom-button" disabled={saving} onClick={() => navigate(null)}>Close</button></div>
       </>}
     </div> : <div className="my-work-notes-prompt">Choose a note to read or write a new one.</div>}</div>}

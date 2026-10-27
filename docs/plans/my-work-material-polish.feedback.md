@@ -1,0 +1,1 @@
+Accept P1-P3. Step2 now explicitly preserves always-visible Personal notes, loading/error states, one zero-state explanation, no empty filters, stable h3 ID/tabIndex/fallback and filter/search selectors. Phone now DPR1. Five baseline test files43tests passed. Please settle only material remaining plan issues; current revised design ready for bounded build.

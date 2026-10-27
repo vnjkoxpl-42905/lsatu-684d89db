@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { MemoryRouter, useLocation } from 'react-router-dom';
+import { Link, MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import { TeachingNotesArchive } from './TeachingNotesArchive';
@@ -20,7 +20,7 @@ describe('TeachingNotesArchive', () => {
     expect(screen.getByRole('heading', { name: 'Browse your notes' })).toBeInTheDocument();
     const link = screen.getByRole('link', { name: /Reference 1 Oct/ });
     expect(link).toHaveAttribute('href', '/classroom/item/note-1?returnTo=%2Fmy-work%2Fnotes%3Fq%3DReference%26shown%3D24');
-    expect(screen.getByRole('link', { name: /Assigned work/ })).toHaveAttribute('href', '/my-work/to-do');
+    expect(screen.queryByRole('link', { name: /Assigned work/ })).not.toBeInTheDocument();
   });
   it('searches body text beyond the initial twelve and preserves query in the URL', () => {
     show();
@@ -43,9 +43,51 @@ describe('TeachingNotesArchive', () => {
     show();
     expect(screen.getByRole('alert')).toHaveTextContent('complete archive');
     expect(screen.queryByText('All notes')).not.toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Assigned work/ })).toHaveAttribute('href', '/my-work/to-do');
+    expect(screen.queryByRole('link', { name: /Assigned work/ })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Personal notes' })).toHaveAttribute('href', '/my-work/notes?view=mine');
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
     expect(state.refetch).toHaveBeenCalledOnce();
   });
+  it('shows each note once and gives only the unfiltered newest row lead emphasis', () => {
+    show();
+    expect(screen.getAllByText('Reference 0')).toHaveLength(1);
+    expect(screen.getByText('Reference 0').closest('a')).toHaveClass('teaching-note-lead');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Reference 14' } });
+    expect(screen.queryByText('Reference 0')).not.toBeInTheDocument();
+    expect(screen.getByText('Reference 14').closest('a')).not.toHaveClass('teaching-note-lead');
+  });
+  it('does not show a read newest note above unread results', () => {
+    state.data[0].metadata_json = { read_at: '2026-10-26' };
+    show('/my-work/notes?filter=unread');
+    expect(screen.queryByText('Reference 0')).not.toBeInTheDocument();
+    expect(document.querySelector('.teaching-note-lead')).toBeNull();
+  });
+  it('shows one empty explanation and retains personal access without empty filters', () => {
+    state.data = [];
+    show();
+    expect(screen.getByRole('heading', { name: 'Your notes will live here.' })).toBeInTheDocument();
+    expect(screen.queryByText('Your archive is ready for your first note.')).not.toBeInTheDocument();
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Personal notes' })).toBeInTheDocument();
+  });
+  it('keeps personal access while loading and omits misleading controls', () => {
+    state.loading = true;
+    state.data = undefined as unknown as ClassroomItem[];
+    show();
+    expect(screen.getByText('Loading your notes…')).toHaveAttribute('role', 'status');
+    expect(screen.getByRole('link', { name: 'Personal notes' })).toBeInTheDocument();
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+  });
+
+  it('stores the lead identity on detail navigation and restores its focus on return', () => {
+    render(<MemoryRouter initialEntries={['/my-work/notes']}><Routes>
+      <Route path="/my-work/notes" element={<TeachingNotesArchive />} />
+      <Route path="/classroom/item/:id" element={<Link to="/my-work/notes">Back to notes</Link>} />
+    </Routes></MemoryRouter>);
+    fireEvent.click(screen.getByRole('link', { name: /Reference 0/ }));
+    expect(JSON.parse(sessionStorage.getItem('my-work-notes-anchor:student-a:/my-work/notes')!)).toMatchObject({ id: 'note-0' });
+    fireEvent.click(screen.getByRole('link', { name: 'Back to notes' }));
+    expect(screen.getByRole('link', { name: /Reference 0/ })).toHaveFocus();
+  });
+
 });
