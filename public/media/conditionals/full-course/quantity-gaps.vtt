@@ -1,0 +1,65 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:06.211
+Two quantity statements can concern overlapping categories without describing the same members.
+
+2
+00:00:06.511 --> 00:00:09.945
+A shared category does not itself guarantee a new overlap.
+
+3
+00:00:10.245 --> 00:00:12.059
+Some volunteers speak Spanish.
+
+4
+00:00:12.359 --> 00:00:14.257
+Some Spanish speakers are trained.
+
+5
+00:00:14.557 --> 00:00:18.333
+The first statement guarantees one volunteer who speaks Spanish.
+
+6
+00:00:18.633 --> 00:00:24.009
+The second guarantees a trained Spanish speaker, but does not say that person volunteers.
+
+7
+00:00:24.309 --> 00:00:30.645
+Put those properties on two different people and both sentences remain true without any trained volunteer.
+
+8
+00:00:30.945 --> 00:00:34.081
+The proposed overlap is possible, but not required.
+
+9
+00:00:34.381 --> 00:00:39.395
+This prevents plausible combinations from being mistaken for proven inferences.
+
+10
+00:00:39.695 --> 00:00:43.343
+A valid-looking sequence of some or most labels is not enough.
+
+11
+00:00:43.643 --> 00:00:47.269
+Some in one premise may name different people from some in another.
+
+12
+00:00:47.569 --> 00:00:50.513
+Most in two premises may count different groups.
+
+13
+00:00:50.813 --> 00:00:52.648
+Keep both possibilities visible.
+
+14
+00:00:52.948 --> 00:00:55.081
+Distinguish possible from guaranteed.
+
+15
+00:00:55.381 --> 00:01:01.483
+When the overlap fails, say which connection is missing rather than concluding that the groups never overlap.
+
+16
+00:01:01.783 --> 00:01:06.540
+The premises may permit both an overlapping arrangement and a nonoverlapping one.

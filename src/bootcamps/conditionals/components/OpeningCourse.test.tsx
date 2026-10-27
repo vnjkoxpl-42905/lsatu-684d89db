@@ -1,21 +1,85 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, useLocation } from 'react-router-dom';
-import { afterEach, expect, it } from 'vitest';
-import { OPENING_COURSE_PATH, LEGACY_OPENING_COURSE_STEPS, openingCourseStep, openingDrillNumber } from '../openingCoursePath';
+import { afterEach, expect, it, vi } from 'vitest';
+import { OPENING_COURSE_PATH, COURSE_STEP_REGISTRY, LEGACY_OPENING_COURSE_STEPS, openingCourseStep, openingDrillNumber } from '../openingCoursePath';
 import { OpeningCourseNavigation, OpeningCourseScreen } from './OpeningCourse';
+import { sufficientStagedItems } from './StagedReasoningDrill';
 
 const url = (id: string, run = false) => `/course/${id}${run ? '?run=1' : ''}`;
 afterEach(cleanup);
 
+it.each([
+  { scope: 'legacy-account', expectedIndex: 2 },
+  { scope: 'new-account:full-conditionals-v3', expectedIndex: 0 },
+])('preserves historical staged drafts only for the old edition ($scope)', ({ scope, expectedIndex }) => {
+  const oldKey = 'conditional-staged-v1:sufficient';
+  const scopedKey = `conditional-staged-v1:${scope}:sufficient`;
+  const prior = JSON.stringify({ index: 2, step: 0, answers: {}, fingerprint: JSON.stringify(sufficientStagedItems) });
+  localStorage.setItem(oldKey, prior);
+  try {
+    render(<MemoryRouter><OpeningCourseScreen view="sufficient-practice" run url={url} storageScope={scope} progressStore={{ steps: {}, save: vi.fn() }}/></MemoryRouter>);
+    expect(screen.getByText(sufficientStagedItems[expectedIndex].sentence)).toBeVisible();
+    if (expectedIndex === 0) expect(localStorage.getItem(oldKey)).toBe(prior);
+    else expect(localStorage.getItem(scopedKey)).toBeNull();
+  } finally {
+    cleanup();
+    localStorage.removeItem(oldKey);
+    localStorage.removeItem(scopedKey);
+  }
+});
+
+it('observes completion of the AND and OR lessons at the end of each page, with no page gate', () => {
+  const callbacks: IntersectionObserverCallback[] = [];
+  vi.stubGlobal('IntersectionObserver', class {
+    constructor(callback: IntersectionObserverCallback) { callbacks.push(callback); }
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  });
+  try {
+    for (const [id, title] of [['and-or-both-or-either', 'AND'], ['and-or-either-condition', 'OR']]) {
+      callbacks.length = 0;
+      const save = vi.fn();
+      const step = COURSE_STEP_REGISTRY.find(item => item.id === id)!;
+      render(<MemoryRouter><OpeningCourseScreen view={step.id} url={url} steps={[step]} progressStore={{ steps: {}, save }}/></MemoryRouter>);
+      expect(screen.getByRole('heading', { level: 1, name: title })).toBeVisible();
+      expect(save).toHaveBeenCalledWith(step.id, {});
+      expect(callbacks.length).toBeGreaterThan(0);
+      expect(screen.queryByRole('button', { name: /page/i })).toBeNull();
+      expect(document.body.textContent).not.toMatch(/Page \d of \d/);
+      cleanup();
+    }
+  } finally {
+    cleanup();
+    vi.unstubAllGlobals();
+  }
+});
+
+it.each(['meaning', 'source-intro-diagrams'])('keeps completed-earlier %s read-only until explicit resume', stepId => {
+  const save = vi.fn();
+  const resume = vi.fn();
+  const readDevice = vi.spyOn(Storage.prototype, 'getItem');
+  const store = { steps: { [stepId]: { status: 'done' as const, updatedAt: '2026-10-25T00:00:00Z' } }, save, resume, priorCompletion: { [stepId]: { sourceKey: stepId, completedAt: '2026-10-25T00:00:00Z', contentRevision: 'main-6a167c85' } } };
+  render(<MemoryRouter><OpeningCourseScreen view={stepId} run url={url} progressStore={store}/></MemoryRouter>);
+  expect(screen.getByText('Completed earlier')).toBeVisible();
+  expect(document.querySelector('.opening-course-content')).toBeNull();
+  expect(document.querySelector('.sw-experience')).toBeNull();
+  expect(save).not.toHaveBeenCalled();
+  expect(readDevice).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: 'Resume and revise' }));
+  expect(resume).toHaveBeenCalledWith(stepId);
+  readDevice.mockRestore();
+});
+
 it('offers five numbered lessons in Chapter 1 and eleven interleaved drill entries', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
   expect(screen.getByRole('region', { name: 'Chapter 1' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Chapter 1' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: /^Chapter 1 ·/ })).toBeVisible();
   expect(screen.queryByText('Part 1')).toBeNull();
-  const list = document.querySelector<HTMLElement>('ol.oc-course-path')!;
-  expect(list.children).toHaveLength(16);
-  expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
-  expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(11);
+  const chapterOne = within(screen.getByRole('region', { name: 'Chapter 1' }));
+  expect(document.querySelector<HTMLElement>('ol.oc-course-path')!.children).toHaveLength(16);
+  expect(chapterOne.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
+  expect(chapterOne.getAllByRole('link', { name: /View drill/ })).toHaveLength(11);
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'contrapositive', 'foundation-practice']);
 });
@@ -43,7 +107,7 @@ it('teaches each prerequisite before the source drills that use it', () => {
 it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an old reader index', async step => {
   render(<MemoryRouter><OpeningCourseScreen view={step.id} run={step.type === 'drill'} url={url}/></MemoryRouter>);
   expect(screen.getByRole('heading', { level: 1, name: step.title })).toBeVisible();
-  if (step.lessonNumber) expect(screen.getByText(`Chapter 1 · Lesson ${step.lessonNumber}`)).toBeVisible();
+  if (step.lessonNumber) expect(screen.getByText(`Chapter ${step.part} · Lesson ${step.lessonNumber}`)).toBeVisible();
   await waitFor(() => expect(document.querySelector('.opening-course-content')).not.toBeNull());
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(screen.getByRole('navigation', { name: 'Course navigation' })).toBeVisible();
@@ -136,6 +200,8 @@ it('focuses the destination after drawer navigation and restores the trigger aft
 
 it('retains legacy destinations without duplicating the numbered course', () => {
   expect(OPENING_COURSE_PATH.filter(step => step.type === 'note').map(step => step.lessonNumber)).toEqual(['1.1', '1.2', '1.3', '1.4', '1.5']);
+  expect(COURSE_STEP_REGISTRY.filter(step => step.type === 'note' && step.part === 2).map(step => step.lessonNumber)).toEqual(['2.1', '2.2', '2.3', '2.4', '2.5']);
+  expect(OPENING_COURSE_PATH.filter(step => step.part === 1 && step.type === 'note').map(step => step.lessonNumber)).toEqual(['1.1', '1.2', '1.3', '1.4', '1.5']);
   expect(OPENING_COURSE_PATH.findIndex(step => step.id === 'contrapositive')).toBeLessThan(OPENING_COURSE_PATH.findIndex(step => step.id === 'foundation-practice'));
   for (const step of LEGACY_OPENING_COURSE_STEPS) {
     expect(openingCourseStep(step.id)).toBe(step);
@@ -198,9 +264,10 @@ it('shows 100 percent only after all available course steps are done', () => {
  expect(screen.getByText((_, node) => node?.tagName === 'STRONG' && node.textContent === '100% complete')).toBeVisible();
 });
 
-it('numbers the eleven active drills once and preserves the retired roles destination', () => {
- const drills = OPENING_COURSE_PATH.filter(step => step.type === 'drill');
- expect(drills.map(step => openingDrillNumber(step.id))).toEqual([1,2,3,4,5,6,7,8,9,10,11]);
+it('numbers the fifteen active drills once, Chapter 2 continuing after Chapter 1, and preserves the retired roles destination', () => {
+ const drills = COURSE_STEP_REGISTRY.filter(step => step.type === 'drill' && (step.part ?? 1) <= 2);
+ expect(drills.map(step => openingDrillNumber(step.id))).toEqual([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
+ expect(drills.slice(11).map(step => step.id)).toEqual(['and-or-meaning-practice', 'and-or-placement-practice', 'and-or-whole-group-practice', 'and-or-transfer-practice']);
  expect(drills.every(step => !/Drill \d/.test(step.title))).toBe(true);
  expect(openingCourseStep('source-roles')?.title).toBe('Place the conditions');
  expect(openingDrillNumber('source-roles')).toBeUndefined();

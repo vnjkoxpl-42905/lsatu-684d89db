@@ -1,9 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { contrapositiveOf, gradeUnless, unlessAnswer, unlessStatement, type UnlessRound } from "@/features/conditional-refresher/content";
+import { unlessLockTiming } from './unlessTiming';
 
 const round = (pattern: 1 | 2 | 3 | 4): UnlessRound => ({ pattern, x: "A", y: "B" });
 
 describe("Unless drill answers follow the Group 3 move", () => {
+  it('accepts only explicit locks strictly before the deadline', () => {
+    expect(unlessLockTiming(100, 10099, 10000)).toEqual({ timedOut: false, seconds: 9.999 });
+    expect(unlessLockTiming(100, 10100, 10000).timedOut).toBe(true);
+    expect(unlessLockTiming(100, 10101, 10000).timedOut).toBe(true);
+    expect(unlessLockTiming(100, 200, 10000, true).timedOut).toBe(true);
+  });
   // Joshua's answer key, letter for letter.
   it.each([
     [1, "/A, unless B.", "A", "B"],

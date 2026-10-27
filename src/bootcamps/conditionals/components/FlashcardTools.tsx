@@ -21,7 +21,7 @@ const sets = [
   { id: 'group-2', title: 'Group 2 words', description: 'Practice words that introduce a necessary condition.' },
   { id: 'indicators', title: 'Indicator words', description: 'Group 1 or Group 2? Pick for each word.' },
 ];
-export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowed: string[] }) {
+export function FlashcardTools({ url, allowed, storageScope }: { url: OpeningCourseUrl; allowed: string[]; storageScope?: string }) {
   const [params] = useSearchParams();
   const available = [...allowed.filter(id => ['foundation', 'group-1', 'group-2'].includes(id)), 'indicators'];
   const requested = params.get('deck');
@@ -34,7 +34,7 @@ export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowe
   if (set.id !== 'foundation') return <div className="oc-course-note co-flashcard-tools">
     <nav className="co-flashcard-return" aria-label="Flashcard navigation"><Link to={url('tools')}><ArrowLeft size={16}/>All flashcard sets</Link>{(params.get('from') === 'sufficient' || params.get('from') === 'necessary') && <Link to={url(params.get('from')!)}>Back to {params.get('from') === 'sufficient' ? 'sufficient' : 'necessary'} condition<ArrowRight size={16}/></Link>}</nav>
     <header data-course-heading><h1>{set.title}</h1></header>
-    <IndicatorWordDeck key={set.id} group={set.id === 'group-1' ? 1 : set.id === 'group-2' ? 2 : undefined}/>
+    <IndicatorWordDeck key={`${storageScope ?? "legacy"}:${set.id}`} storageScope={storageScope} group={set.id === 'group-1' ? 1 : set.id === 'group-2' ? 2 : undefined}/>
   </div>;
   return <div className="oc-course-note co-flashcard-tools">
     <nav className="co-flashcard-return" aria-label="Flashcard navigation"><Link to={url('tools')}><ArrowLeft size={16}/>All flashcard sets</Link></nav>

@@ -184,7 +184,16 @@ describe("what a Conditional Rephrase student is shown", () => {
     const rubric = joined(instructions.coach.rubric);
     expect(rubric).toMatch(/reversing the arrow/i);
     expect(rubric).toMatch(/negating the trigger/i);
-    expect(joined(instructions.rules)).toMatch(/two moves are always wrong/i);
+    expect(joined(instructions.rules)).toMatch(/ordinary one-way rule.*reversing the arrow.*negating both sides without swapping/i);
+  });
+
+  it('preserves temporal and negative scope instead of assigning every negative to one side', () => {
+    const guidance = joined([...instructions.rules, ...instructions.coach.rubric]);
+    expect(guidance).not.toMatch(/until and without all mean the same|necessary side, never to the trigger/);
+    expect(guidance).toMatch(/until.*time boundary/i);
+    expect(guidance).toMatch(/double negative/i);
+    expect(guidance).toMatch(/not all.*at least one/i);
+    expect(guidance).toMatch(/prohibition.*proof that nobody violates/i);
   });
 
   // Both found by adversarial review of the shipped rubric. The prompt held two

@@ -93,9 +93,9 @@ export const contrapositiveStagedItems: Item[] = referencePracticeItems.map((ite
   ] };
 });
 
-export function StagedReasoningDrill({ mode }: { mode: 'sufficient' | 'contrapositive' | 'mixed' }) {
+export function StagedReasoningDrill({ mode, storageScope }: { mode: 'sufficient' | 'contrapositive' | 'mixed'; storageScope?: string }) {
   if (mode === 'mixed') return <div className="sr-mixed"><OpeningMixedDrill stepId="mixed-practice"/></div>;
-  return <StagedRun key={mode} stepId={`${mode}-practice`} storageKey={`conditional-staged-v1:${mode}`} items={mode === 'sufficient' ? sufficientStagedItems : contrapositiveStagedItems}/>;
+  return <StagedRun key={`${storageScope ?? "legacy"}:${mode}`} stepId={`${mode}-practice`} storageKey={storageScope ? `conditional-staged-v1:${storageScope}:${mode}` : `conditional-staged-v1:${mode}`} items={mode === 'sufficient' ? sufficientStagedItems : contrapositiveStagedItems}/>;
 }
 
 /** Short content fingerprint: a changed item set invalidates earlier checks. */

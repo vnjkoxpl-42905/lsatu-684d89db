@@ -1,7 +1,8 @@
+import { FULL_CONDITIONAL_EDITION } from '@/lib/conditionalCourseEdition';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { IndicatorWordDeck } from './IndicatorWordDeck';
-import { CourseProgressProvider, useDeviceCourseProgress } from '../courseProgress';
+import { CourseProgressProvider, createEditionCourseStore, useDeviceCourseProgress } from '../courseProgress';
 import { displayWord, indicatorWordCards } from '../content/indicatorWordCards';
 
 beforeEach(() => localStorage.clear());
@@ -64,4 +65,33 @@ it('saves every answer to the course record, and resumes from it when the device
   render(<Provider/>);
   expect(screen.getByText('Card 2 of 20')).toBeVisible();
   expect(screen.getByRole('button', { name: 'Next card' })).toBeVisible();
+});
+it('keeps v3 indicator drafts scoped without importing or writing legacy bytes', () => {
+  const old = render(<IndicatorWordDeck/>);
+  answer(true);
+  const legacy = localStorage.getItem('conditional-indicator-words-v1')!;
+  old.unmount();
+  localStorage.setItem('conditional-indicator-words-v1:other:conditional-full-v3', legacy);
+  const scoped = render(<IndicatorWordDeck storageScope="alice:conditional-full-v3"/>);
+  expect(document.querySelector('.iw-stage')).not.toHaveAttribute('data-result', 'right');
+  answer(true);
+  expect(localStorage.getItem('conditional-indicator-words-v1')).toBe(legacy);
+  expect(localStorage.getItem('conditional-indicator-words-v1:other:conditional-full-v3')).toBe(legacy);
+  expect(localStorage.getItem('conditional-indicator-words-v1:alice:conditional-full-v3')).not.toBeNull();
+  scoped.rerender(<IndicatorWordDeck storageScope="bob:conditional-full-v3"/>);
+  expect(document.querySelector('.iw-stage')).not.toHaveAttribute('data-result', 'right');
+});
+
+it('resumes a prefixed account-only deck absent from the lesson registry with no device cache', () => {
+  const first = render(<IndicatorWordDeck/>);
+  answer(true); click('Next card'); answer(false);
+  const word = document.querySelector('.iw-front .iw-word')!.textContent;
+  const state = JSON.parse(localStorage.getItem('conditional-indicator-words-v1')!);
+  first.unmount(); localStorage.clear();
+  const store = createEditionCourseStore({ [`${FULL_CONDITIONAL_EDITION}:flashcards-indicators`]: { status: 'started', updatedAt: '2026-10-25', state } }, () => undefined, [{ id: 'meaning', contentRevision: 'r1' }], FULL_CONDITIONAL_EDITION, `alice:${FULL_CONDITIONAL_EDITION}`);
+  render(<CourseProgressProvider store={store}><IndicatorWordDeck storageScope={store.storageScope}/></CourseProgressProvider>);
+  expect(screen.getByText('Card 2 of 20')).toBeVisible();
+  expect(document.querySelector('.iw-front .iw-word')!.textContent).toBe(word);
+  expect(document.querySelector('.iw-stage')).toHaveAttribute('data-result', 'wrong');
+  expect(localStorage.getItem('conditional-indicator-words-v1')).toBeNull();
 });
