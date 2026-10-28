@@ -1,0 +1,549 @@
+/*
+ * The Signal Observatory: Spot the Relationship's world.
+ *
+ * A celestial cartographer's dome. Deep midnight indigo with drifting nebulae,
+ * a gilt-ribbed dome overhead, and the statement's words hung as stars on the
+ * field. The relationship is the constellation drawn between them, and each of
+ * the three geometries now carries its own starlight: conditional draws in
+ * gold, causal in comet cyan, comparative in nebula rose. Shape still does the
+ * discriminating — the hue is atmosphere on top of geometry, never instead of
+ * it, so the alphabet survives a grayscale print.
+ *
+ * SVG and CSS transforms only; the sky is layered gradients, not a renderer.
+ */
+
+.observatory {
+  --ob-sky: 233 46% 9%;
+  --ob-sky-deep: 237 55% 4%;
+  --ob-star: 45 85% 76%;
+  --ob-ink: 44 35% 93%;
+  --ob-ink-dim: 231 18% 68%;
+  --ob-gilt: 42 60% 60%;
+  --ob-line: 45 60% 76%;
+  --ob-cond: 45 90% 68%;
+  --ob-caus: 187 85% 62%;
+  --ob-comp: 330 72% 70%;
+  --ob-panel: 234 32% 12%;
+  --ob-edge: 234 24% 28%;
+
+  position: relative;
+  color: hsl(var(--ob-ink));
+  background: hsl(var(--ob-sky-deep));
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.observatory > :not(.ob-room) {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- The dome ---------- */
+
+.ob-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Nebulae: two slow clouds of violet and teal behind everything. */
+.ob-nebula {
+  position: absolute;
+  inset: -12%;
+  background:
+    radial-gradient(46% 40% at 24% 26%, hsl(262 65% 36% / 0.42), transparent 70%),
+    radial-gradient(38% 36% at 78% 14%, hsl(198 75% 36% / 0.32), transparent 68%),
+    radial-gradient(30% 30% at 60% 66%, hsl(330 55% 30% / 0.14), transparent 70%);
+  filter: blur(28px);
+  animation: ob-nebula-drift 34s ease-in-out infinite alternate;
+}
+
+@keyframes ob-nebula-drift {
+  from {
+    transform: translate3d(-1.5%, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(1.5%, 2%, 0) scale(1.06);
+  }
+}
+
+/* The fixed stars: two sheets at different depths, twinkling out of phase. */
+.ob-stars,
+.ob-stars::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 12% 22%, hsl(var(--ob-star)), transparent 100%),
+    radial-gradient(1.5px 1.5px at 32% 12%, hsl(0 0% 100% / 0.95), transparent 100%),
+    radial-gradient(2px 2px at 54% 28%, hsl(var(--ob-caus) / 0.95), transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 8%, hsl(var(--ob-star) / 0.9), transparent 100%),
+    radial-gradient(1.5px 1.5px at 86% 24%, hsl(0 0% 100% / 0.9), transparent 100%),
+    radial-gradient(2px 2px at 44% 6%, hsl(var(--ob-comp) / 0.85), transparent 100%),
+    radial-gradient(1.5px 1.5px at 8% 54%, hsl(var(--ob-star) / 0.75), transparent 100%),
+    radial-gradient(1.5px 1.5px at 92% 48%, hsl(var(--ob-star) / 0.8), transparent 100%),
+    radial-gradient(1px 1px at 24% 66%, hsl(var(--ob-star) / 0.6), transparent 100%),
+    radial-gradient(1.5px 1.5px at 58% 58%, hsl(0 0% 100% / 0.55), transparent 100%),
+    radial-gradient(1px 1px at 76% 70%, hsl(var(--ob-caus) / 0.5), transparent 100%),
+    radial-gradient(1px 1px at 40% 84%, hsl(var(--ob-star) / 0.5), transparent 100%);
+  animation: ob-twinkle 7s ease-in-out infinite alternate;
+}
+
+.ob-stars::after {
+  background-image:
+    radial-gradient(1px 1px at 22% 38%, hsl(0 0% 100% / 0.6), transparent 100%),
+    radial-gradient(1px 1px at 62% 18%, hsl(var(--ob-star) / 0.6), transparent 100%),
+    radial-gradient(1.5px 1.5px at 80% 36%, hsl(var(--ob-caus) / 0.5), transparent 100%),
+    radial-gradient(1px 1px at 38% 46%, hsl(0 0% 100% / 0.5), transparent 100%),
+    radial-gradient(1px 1px at 16% 10%, hsl(var(--ob-comp) / 0.5), transparent 100%);
+  animation-delay: -3.5s;
+  animation-duration: 9s;
+}
+
+@keyframes ob-twinkle {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The dome's gilt ribs: three nested arcs overhead, drawn with huge circles. */
+.ob-dome {
+  position: absolute;
+  top: -84vw;
+  left: 50%;
+  width: 160vw;
+  height: 160vw;
+  margin-left: -80vw;
+  border-radius: 50%;
+  border: 1px solid hsl(var(--ob-gilt) / 0.28);
+  box-shadow:
+    0 0 0 28px hsl(var(--ob-sky-deep) / 0),
+    inset 0 0 0 1px hsl(var(--ob-gilt) / 0),
+    0 0 0 56px hsl(var(--ob-gilt) / 0.1),
+    0 0 0 112px hsl(var(--ob-gilt) / 0.05);
+}
+
+/* The meridian: a faint vertical survey line down the dome's center. */
+.ob-meridian {
+  position: absolute;
+  top: 0;
+  bottom: 46%;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, hsl(var(--ob-gilt) / 0.24), transparent);
+}
+
+/* The horizon: a low warm glow where the dome meets the dark. */
+.ob-horizonline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30%;
+  background: linear-gradient(0deg, hsl(232 40% 14% / 0.85), transparent);
+}
+
+/* ---------- Type ---------- */
+
+.observatory-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* The cartographer's engraved capitals. */
+.observatory-display {
+  font-family: "Marcellus", var(--ac-serif, Georgia, serif);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.observatory-type {
+  font-family: "Spectral", var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  font-weight: 300;
+  color: hsl(var(--ob-ink));
+}
+
+/* ---------- The field ---------- */
+
+/* Each word sits on the baseline grid with a star-point under it. The word
+   gap is an explicit margin: an inline-block trims its own trailing space, so
+   without this the whole statement sets as one unbroken string. */
+.ob-word {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  margin-right: 0.34em;
+}
+
+.ob-word::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: hsl(var(--ob-star) / 0.45);
+  transform: translateX(-50%);
+}
+
+/* An indicator's star flares once its figure is drawn, and not before:
+   lighting it early would answer the question. */
+.ob-word[data-anchor="true"][data-drawn="true"]::after {
+  width: 5px;
+  height: 5px;
+  background: hsl(var(--ob-star));
+  box-shadow:
+    0 0 8px hsl(var(--ob-star)),
+    0 0 22px hsl(var(--ob-star) / 0.6);
+}
+
+/* The four-point glint over a drawn anchor star. */
+.ob-word[data-anchor="true"][data-drawn="true"]::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2.5px;
+  width: 11px;
+  height: 11px;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(0deg, transparent 46%, hsl(var(--ob-star) / 0.9) 50%, transparent 54%),
+    linear-gradient(90deg, transparent 46%, hsl(var(--ob-star) / 0.9) 50%, transparent 54%);
+}
+
+.ob-word[data-anchor="true"][data-drawn="true"] {
+  color: hsl(var(--ob-ink));
+  text-shadow: 0 0 14px hsl(var(--ob-star) / 0.5);
+}
+
+@keyframes ob-shimmer {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* The arrival shimmer: once, then still. */
+.ob-field[data-arriving="true"] .ob-word::after {
+  animation: ob-shimmer 200ms ease-in-out 1;
+}
+
+/* ---------- The three geometries ---------- */
+
+.ob-figure {
+  fill: none;
+  stroke: hsl(var(--ob-line));
+  stroke-linecap: round;
+}
+
+/* Conditional: a single hard, precise shaft, drawn in gold. A rule. */
+.ob-figure[data-kind="conditional"] {
+  stroke: hsl(var(--ob-cond));
+  stroke-width: 1.75;
+  filter: drop-shadow(0 0 6px hsl(var(--ob-cond) / 0.85));
+}
+
+/* Causal: doubled and heavier, in comet cyan. Something pushes. */
+.ob-figure[data-kind="causal"] {
+  stroke: hsl(var(--ob-caus));
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 7px hsl(var(--ob-caus) / 0.85));
+}
+
+/* Comparative: the beam, in nebula rose. Weight, not direction. */
+.ob-figure[data-kind="comparative"] {
+  stroke: hsl(var(--ob-comp));
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px hsl(var(--ob-comp) / 0.85));
+}
+
+.ob-arrowhead {
+  fill: hsl(var(--ob-line));
+  stroke: none;
+}
+
+g[data-kind="conditional"] .ob-arrowhead {
+  fill: hsl(var(--ob-cond));
+}
+
+g[data-kind="causal"] .ob-arrowhead {
+  fill: hsl(var(--ob-caus));
+}
+
+/* Drawn on verdict over 420ms. The dash length is set inline from the measured
+   path so the draw works at any span. */
+.ob-figure[data-draw="true"] {
+  animation: ob-draw 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ob-draw {
+  from {
+    stroke-dashoffset: var(--ob-len, 200);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* A wrongly named relationship: the shape is visibly tried, then dissolves. */
+.ob-figure[data-ghost="true"] {
+  stroke-dasharray: 3 3;
+  filter: none;
+  animation: ob-dissolve 900ms ease-out both;
+}
+
+@keyframes ob-dissolve {
+  0% {
+    opacity: 0.7;
+  }
+  70% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The balance beam stays level. It used to tip, but it tipped the same way on
+   every item, including "as strong as", and an SVG transform-origin of
+   "center" is the centre of the whole field, so the tip swung the beam off its
+   own words. The figure does not know which term is greater; it says only that
+   two things are weighed. */
+.ob-beam {
+  transform-box: fill-box;
+}
+
+/* ---------- The three seals ---------- */
+
+/* Astrolabe medallions along the dome's rail. Real completions only. */
+.ob-seal {
+  position: relative;
+  border: 1px solid hsl(var(--ob-edge));
+  border-radius: 999px;
+  background:
+    radial-gradient(120% 140% at 50% 0%, hsl(var(--ob-panel)), hsl(var(--ob-sky-deep)));
+  color: hsl(var(--ob-ink-dim));
+  transition:
+    border-color 320ms ease,
+    color 320ms ease,
+    box-shadow 320ms ease;
+}
+
+.ob-seal[data-kind="conditional"][data-lit="true"] {
+  border-color: hsl(var(--ob-cond) / 0.8);
+  box-shadow:
+    0 0 0 1px hsl(var(--ob-cond) / 0.25),
+    0 0 16px hsl(var(--ob-cond) / 0.25);
+}
+
+.ob-seal[data-kind="causal"][data-lit="true"] {
+  border-color: hsl(var(--ob-caus) / 0.8);
+  box-shadow:
+    0 0 0 1px hsl(var(--ob-caus) / 0.25),
+    0 0 16px hsl(var(--ob-caus) / 0.25);
+}
+
+.ob-seal[data-kind="comparative"][data-lit="true"] {
+  border-color: hsl(var(--ob-comp) / 0.8);
+  box-shadow:
+    0 0 0 1px hsl(var(--ob-comp) / 0.25),
+    0 0 16px hsl(var(--ob-comp) / 0.25);
+}
+
+.ob-seal[data-lit="true"] {
+  color: hsl(var(--ob-ink));
+}
+
+/* ---------- Captions ---------- */
+
+/* The figure's reading, engraved in the cartographer's own hand rather than
+   schematic mono: this is the payoff line, not a footnote. */
+.ob-caption {
+  font-family: "Marcellus", var(--ac-serif, Georgia, serif);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: hsl(var(--ob-ink-dim));
+}
+
+.ob-caption[data-kind="conditional"] {
+  color: hsl(var(--ob-cond) / 0.9);
+}
+
+.ob-caption[data-kind="causal"] {
+  color: hsl(var(--ob-caus) / 0.9);
+}
+
+.ob-caption[data-kind="comparative"] {
+  color: hsl(var(--ob-comp) / 0.9);
+}
+
+/* ---------- Controls (shared by the wings) ---------- */
+
+.ob-button {
+  border: 1px solid hsl(var(--ob-edge));
+  background: hsl(var(--ob-panel));
+  color: hsl(var(--ob-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.ob-button:hover:not(:disabled) {
+  border-color: hsl(var(--ob-gilt) / 0.7);
+  box-shadow: 0 0 12px hsl(var(--ob-gilt) / 0.18);
+}
+
+.ob-button:disabled {
+  opacity: 0.55;
+}
+
+.ob-button[data-picked="true"] {
+  background: hsl(var(--ob-sky));
+  opacity: 1;
+}
+
+.ob-button[data-truth="true"] {
+  border-color: hsl(var(--ob-star));
+  box-shadow: inset 2px 0 0 hsl(var(--ob-star));
+  opacity: 1;
+}
+
+.ob-input {
+  border: 1px solid hsl(var(--ob-edge));
+  background: hsl(var(--ob-panel));
+  color: hsl(var(--ob-ink));
+  max-width: 34rem;
+}
+
+.ob-input::placeholder {
+  color: hsl(var(--ob-ink-dim) / 0.7);
+}
+
+/* The bare indicator in the speed round, alone on the sky. */
+.ob-flash {
+  color: hsl(var(--ob-ink));
+  text-shadow: 0 0 18px hsl(var(--ob-star) / 0.35);
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes ob-resolve {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@keyframes ob-power-on {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ob-entrance-stars {
+  animation: ob-resolve 900ms ease both;
+}
+
+.ob-entrance-seal {
+  animation: ob-power-on 420ms ease both;
+}
+
+/* The meteor that crosses the dome once as the observatory opens. */
+.ob-meteor {
+  position: absolute;
+  top: 18%;
+  left: -12%;
+  width: 130px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--ob-star)) 85%, hsl(0 0% 100%));
+  border-radius: 1px;
+  transform: rotate(9deg);
+  filter: drop-shadow(0 0 5px hsl(var(--ob-star) / 0.8));
+  animation: ob-meteor 1400ms cubic-bezier(0.4, 0, 0.6, 1) 500ms both;
+}
+
+@keyframes ob-meteor {
+  0% {
+    transform: translateX(0) rotate(9deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120vw) rotate(9deg);
+    opacity: 0;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .observatory *,
+  .observatory *::before,
+  .observatory *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  /* Figures appear already drawn rather than drawing, per the spec. */
+  .ob-figure[data-draw="true"] {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  /* A dissolve that is shortened to nothing would flash; it just stays faint. */
+  .ob-figure[data-ghost="true"] {
+    animation: none !important;
+    opacity: 0.35;
+  }
+
+  .ob-field[data-arriving="true"] .ob-word::after {
+    animation: none !important;
+  }
+
+  .ob-nebula,
+  .ob-stars,
+  .ob-stars::after,
+  .ob-meteor {
+    animation: none !important;
+  }
+
+  .ob-entrance-stars,
+  .ob-entrance-seal {
+    animation: none !important;
+    opacity: 1;
+    filter: none;
+  }
+}

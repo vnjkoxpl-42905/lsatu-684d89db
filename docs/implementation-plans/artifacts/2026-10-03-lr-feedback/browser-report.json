@@ -1,0 +1,44 @@
+{
+  "runId": "b50e814f-ae58-4447-a358-1cde975d5653",
+  "savedProvenance": {
+    "layout": "official",
+    "version": 1,
+    "feedback": "manual_answer_and_explanation",
+    "pick_model": "list",
+    "source_key": "drill::type-drill::set-8b0t9u",
+    "study_mode": "training",
+    "launch_kind": "questions"
+  },
+  "firstAttemptProvenance": {
+    "layout": "official",
+    "version": 1,
+    "feedback": "manual_answer_and_explanation",
+    "pick_model": "list",
+    "source_key": "drill::type-drill::set-8b0t9u",
+    "study_mode": "training",
+    "launch_kind": "questions"
+  },
+  "completed": true,
+  "answerCount": 2,
+  "resumedSavedSourceDespiteChangedUrl": true,
+  "responsive": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "clientWidth": 390
+    },
+    {
+      "width": 820,
+      "scrollWidth": 820,
+      "clientWidth": 820
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "clientWidth": 1280
+    }
+  ],
+  "resultsPolicyVisible": true,
+  "reviewPolicyVisible": true,
+  "legacyDisclosureVisible": null
+}

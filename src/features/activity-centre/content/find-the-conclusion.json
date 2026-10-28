@@ -1,0 +1,596 @@
+{
+  "slug": "find-the-conclusion",
+  "title": "Find the Conclusion",
+  "subtitle": "Name the claim the argument is trying to prove",
+  "item_format": "free-text",
+  "instructions": {
+    "coach": {
+      "drill": "a main-conclusion identification drill: the student reads an argument and names the claim the author is trying to prove",
+      "rubric": [
+        "The credited answer is the argument's main conclusion. Accept any accurate paraphrase as readily as a direct quote; students are told to answer in their own words.",
+        "Apply the 2-Point Check: a conclusion sounds like the author's opinion (facts are not conclusions) and is supported by at least one other explicit claim in the argument.",
+        "The conclusion is usually NOT the last sentence. Do not reward a response just because it quotes the closing line.",
+        "If the argument's stated conclusion uses referential language (this position, such a rule, they are wrong), a response that writes the reference back in is correct, and one that leaves the pronoun unresolved is at best partial."
+      ],
+      "partial_rule": "Mark 'partial' when the student names an INTERMEDIATE conclusion (a claim that is supported but is itself there to support the main one), or names the right claim but drops a qualifier that changes its scope or strength (an 'even if', a comparison, a time limit). Mark 'incorrect' when they give a premise, the opposing view the author is arguing against, background framing, or a claim the author would agree with but never argues for."
+    },
+    "tagline": "The conclusion is rarely the last thing you read.",
+    "task": "Read the argument and tell me, in your own words or as a direct quote, the main conclusion. Then I will tell you what I see.",
+    "rules": [
+      "Run the 2-Point Check on any claim you are considering. Does it sound like the author's opinion? Facts are not conclusions. And is it supported by at least one other claim in the argument?",
+      "More than nine times out of ten the conclusion comes before its support. Look at the first sentence, and look at the claim right after a But, Yet, or However.",
+      "FABS marks evidence: for, after all, because, since. Whatever follows one of those is support, so the claim in front of it is usually the point.",
+      "If the conclusion is a pronoun sentence (this position, such a rule, they are wrong), write the reference back in before you say it.",
+      "Point at your candidate and ask, why should we believe that? If the rest of the argument answers you, you have found it."
+    ],
+    "worked_example": {
+      "statement": "Some critics say the reading room should stay open past midnight. But the security desk closes at eleven, and an unstaffed room with open stacks is how the last three thefts happened. Extended hours are not worth the risk to the collection.",
+      "credited_answers": [
+        "Extended hours are not worth the risk to the collection."
+      ],
+      "explanation": "The attribution comes first, the pivot at But turns to the author, and the last sentence is the claim the theft history is there to support. The critics' proposal is somebody else's view, and the thefts are evidence."
+    },
+    "answer_label": "Your conclusion",
+    "answer_placeholder": "Name the claim the argument is trying to prove…"
+  },
+  "items": [
+    {
+      "order": 1,
+      "prompt": "The city's bike-share docks sit full every weekday morning. Ridership logs show almost no trips beginning before ten. Therefore the program's early-commuter goal has not been met.",
+      "credited_answers": [
+        "The program's early-commuter goal has not been met."
+      ],
+      "explanation": "Wrong turn: \"Almost no trips begin before ten\" (premise). \"Therefore,\" final seat. Baseline. Note: the clean case, so the student can feel the shape before it gets hidden.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 2,
+      "prompt": "So the archive should digitize the glass negatives before the paper files. The negatives are deteriorating faster and a single loss is unrecoverable, while the paper files are stable in current storage.",
+      "credited_answers": [
+        "The archive should digitize the glass negatives before the paper files."
+      ],
+      "explanation": "Wrong turn: \"The negatives are deteriorating faster\" (premise). \"So\" opening plus \"should,\" initial seat. Baseline. Note: a conclusion indicator can open an argument. Position is not the tell; support is.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 3,
+      "prompt": "Attendance at the lunchtime lecture series has fallen for six straight terms. The room runs half empty even for invited speakers. It follows that the series in its current form no longer earns the room booking.",
+      "credited_answers": [
+        "The series in its current form no longer earns the room booking."
+      ],
+      "explanation": "Wrong turn: the attendance fact. \"It follows that,\" final seat. Baseline.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 4,
+      "prompt": "Consequently the co-op should stock the smaller flour sacks. Members living alone report throwing out spoiled flour, and the twenty-pound sack is the only size on the shelf.",
+      "credited_answers": [
+        "The co-op should stock the smaller flour sacks."
+      ],
+      "explanation": "Wrong turn: \"the twenty-pound sack is the only size\" (premise). \"Consequently\" opening. Baseline.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 5,
+      "prompt": "Hospital records show the revised triage script cut average wait time by eleven minutes. Complaints about waiting dropped over the same period. Thus the script is doing what it was written to do.",
+      "credited_answers": [
+        "The script is doing what it was written to do."
+      ],
+      "explanation": "Wrong turn: the eleven-minute figure. \"Thus,\" final seat. Baseline.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 6,
+      "prompt": "This shows that the vineyard's frost fans are earning their cost. Rows inside the fan radius lost four percent of buds in the April freeze. Unprotected rows lost nineteen.",
+      "credited_answers": [
+        "The frost fans are earning their cost."
+      ],
+      "explanation": "Wrong turn: either bud-loss figure. \"This shows that,\" initial seat. Baseline. Note: \"This shows that\" usually marks an intermediate conclusion at Level 4. Here it marks the main one. The phrase is a clue, never a verdict.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 7,
+      "prompt": "The translation committee has met eleven times without producing a chapter. Two members have not attended since spring. As a result the committee cannot deliver the manuscript on the promised schedule.",
+      "credited_answers": [
+        "The committee cannot deliver the manuscript on the promised schedule."
+      ],
+      "explanation": "Wrong turn: the attendance fact. \"As a result,\" final seat. Baseline.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 8,
+      "prompt": "Hence the museum's audio guide needs rewriting. Visitors surveyed at the exit could not recall a single fact from it, and the guide has not been revised since the collection was rehung.",
+      "credited_answers": [
+        "The audio guide needs rewriting."
+      ],
+      "explanation": "Wrong turn: the survey result. \"Hence,\" initial seat. Baseline.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 9,
+      "prompt": "Every trailhead sign in the park was replaced last season. Rangers report a sharp drop in calls from lost hikers. We can conclude that the new signs are doing their job.",
+      "credited_answers": [
+        "The new signs are doing their job."
+      ],
+      "explanation": "Wrong turn: the drop in calls. \"We can conclude,\" final seat. Baseline.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 10,
+      "prompt": "The press should keep the hardcover in print. Libraries continue to order it, the paperback has not displaced those orders, and the plates are already paid for. So the print run should be renewed on the current schedule.",
+      "credited_answers": [
+        "The press should keep the hardcover in print."
+      ],
+      "explanation": "Near miss (partial): \"the print run should be renewed on the current schedule\" (the closing sentence restates the opening claim; crediting it is acceptable, but a student who picks it because it carries \"So\" has used the wrong reason). Wrong turn: \"the plates are already paid for.\" \"So,\" final seat, with the real claim opening. Trait 1 preview. Note: first sighting of the Last Claim Trap in a friendly setting.",
+      "category": "Level 1: Basic conclusion indicator"
+    },
+    {
+      "order": 11,
+      "prompt": "The apprenticeship should be extended to a second year. After all, first-year apprentices still need supervision on every complex repair, and the shop cannot bill their hours at full rate.",
+      "credited_answers": [
+        "The apprenticeship should be extended to a second year."
+      ],
+      "explanation": "Wrong turn: either supervision or billing fact. \"After all,\" support. Trait 3. Note: \"After all\" is the purest FABS marker. Nothing after it is ever the conclusion.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 12,
+      "prompt": "The lab's freezer alarm is inadequate, since it pages one technician and gives no second alert if that page goes unanswered.",
+      "credited_answers": [
+        "The freezer alarm is inadequate."
+      ],
+      "explanation": "Wrong turn: the paging description. \"Since,\" support. Trait 3.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 13,
+      "prompt": "The island grocery now runs short by Thursday because the ferry schedule was cut to two crossings. The store cannot restock between crossings, and Thursday is when weekend demand begins.",
+      "credited_answers": [
+        "The grocery runs short by Thursday because the ferry schedule was cut."
+      ],
+      "explanation": "Near miss (partial): \"the grocery runs short by Thursday\" with the cause dropped (scope loss: the claim is causal). Wrong turn: \"the store cannot restock between crossings.\" \"Because,\" support. Trait 4. Note: when the conclusion is causal, an answer that keeps only the effect is a scope drop.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 14,
+      "prompt": "Reviewers should be paid for their time. For the journal now waits five months on average for a report, and unpaid work is the first thing a busy academic drops.",
+      "credited_answers": [
+        "Reviewers should be paid for their time."
+      ],
+      "explanation": "Wrong turn: the five-month figure. \"For,\" support. Trait 3. Note: sentence-initial \"For\" reads as archaic to students and gets misread as a preposition. Worth one Coach line.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 15,
+      "prompt": "The removable resin is the better choice for this restoration, since it comes off with a solvent that does not touch the original pigment.",
+      "credited_answers": [
+        "The removable resin is the better choice for this restoration."
+      ],
+      "explanation": "Near miss (partial): \"the resin is the better choice\" with \"for this restoration\" dropped. \"Since,\" support. Trait 4.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 16,
+      "prompt": "Digitizing the oral histories is more urgent than cataloguing them, because the tapes shed oxide with every playback while the catalogue can be built from a digital copy at any time.",
+      "credited_answers": [
+        "Digitizing is more urgent than cataloguing."
+      ],
+      "explanation": "Near miss (partial): \"digitizing is urgent\" (drops the comparison, which is the whole claim). \"Because,\" support. Trait 4. Note: comparative conclusions lose their meaning the moment the comparison is trimmed.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 17,
+      "prompt": "The second bakery will not break even this year. After all, it opened in March, its lease is nearly double the original shop's, and the neighborhood empties out in summer.",
+      "credited_answers": [
+        "The second bakery will not break even this year."
+      ],
+      "explanation": "Wrong turn: the lease fact. \"After all,\" support. Trait 5. Note: an answer saying the second location was a mistake is agreeable and not the claim.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 18,
+      "prompt": "The council's parking study is unreliable, for the counts were taken during the two weeks the arena was closed for repairs.",
+      "credited_answers": [
+        "The parking study is unreliable."
+      ],
+      "explanation": "Wrong turn: the closure fact. \"For,\" support. Trait 3.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 19,
+      "prompt": "Students learn the citation rules faster by marking up a flawed bibliography than by reading the style guide, since correcting an error forces them to name the rule it breaks.",
+      "credited_answers": [
+        "The comparative claim about the two methods."
+      ],
+      "explanation": "Near miss (partial): \"marking up a flawed bibliography teaches citation rules\" (comparison dropped). \"Since,\" support. Trait 4.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 20,
+      "prompt": "The orchard should replace its older pollinator hives this winter, because a fifth-season hive produces roughly half the foraging activity of a second-season hive, and the bloom window is too short to make up the difference.",
+      "credited_answers": [
+        "The orchard should replace its older hives this winter."
+      ],
+      "explanation": "Near miss (partial): \"older hives forage less\" (that is the premise doing the work). \"Because,\" support. Trait 3.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 21,
+      "prompt": "It is not worth resurfacing the north court this year. After all, the surface is worn but still playable, and the crew charges a premium before June.",
+      "credited_answers": [
+        "It is not worth resurfacing the north court this year."
+      ],
+      "explanation": "Near miss (partial): \"the court does not need resurfacing\" (drops \"this year,\" which is the qualification carrying the claim). \"After all,\" support. Trait 4.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 22,
+      "prompt": "The revised intake form is an improvement, since the field that most often went blank has been split into two shorter questions and now gets answered.",
+      "credited_answers": [
+        "The revised intake form is an improvement."
+      ],
+      "explanation": "Wrong turn: the split-field description. \"Since,\" support. Trait 3.",
+      "category": "Level 2: Conclusion before a support indicator (FABS)"
+    },
+    {
+      "order": 23,
+      "prompt": "Some curators maintain that rotating the textiles every three months keeps any single piece from fading. But the handling is what damages the fibers. Each rotation means two mountings and two dismountings, and conservators have logged more thread loss from handling than from light.",
+      "credited_answers": [
+        "The handling is what damages the fibers."
+      ],
+      "explanation": "Near miss (partial): the thread-loss comparison (support). Wrong turn: the curators' rotation claim (opposing view). \"Some curators maintain\" attribution, \"But\" pivot. Trait 3.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 24,
+      "prompt": "It is commonly believed that a longer warranty signals a more durable product. However, warranty length is set by the finance department, not by the engineers. Two of the company's shortest-lived models carry its longest warranties.",
+      "credited_answers": [
+        "Warranty length is set by finance, not engineering (therefore it does not signal durability). Credit either the stated pivot claim or the unpacked version."
+      ],
+      "explanation": "Wrong turn: the common belief. \"It's commonly believed\" attribution, \"However\" pivot. Trait 3.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 25,
+      "prompt": "Some economists argue that the vacancy tax will bring rents down. Yet the tax applies only to units empty more than a year, and the units driving the increase turn over every few months.",
+      "credited_answers": [
+        "The vacancy tax will not bring rents down (the pivot claim, unpacked)."
+      ],
+      "explanation": "Near miss (partial): \"the tax applies only to units empty more than a year\" left as-is without drawing the point. Wrong turn: the economists' claim. \"Yet\" pivot. Trait 2 blend. Note: the pivot sentence here is evidence for a conclusion the author leaves implicit. Flagged deliberately.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 26,
+      "prompt": "Trainers often say the taper week before a race is optional for recreational runners. That advice is probably wrong. Recreational runners accumulate the same relative fatigue as competitive ones and have less recovery capacity to absorb it.",
+      "credited_answers": [
+        "(substituted): The taper week is not optional for recreational runners."
+      ],
+      "explanation": "Near miss (partial): \"that advice is probably wrong\" left referential. Wrong turn: the trainers' advice. \"Often say\" attribution, \"probably\" opinion indicator. Trait 3 plus referential substitution. Note: the explicit conclusion is a pronoun sentence. Write the reference back in.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 27,
+      "prompt": "Several reviewers have written that the novel's second half loses focus. But the shift they describe is the point. The narrator's account fragments precisely as her memory does, and every apparent digression returns in the final chapter.",
+      "credited_answers": [
+        "The shift the reviewers describe is deliberate, not a loss of focus."
+      ],
+      "explanation": "Near miss (partial): \"the digressions return in the final chapter\" (support). Wrong turn: the reviewers' complaint. \"But\" pivot. Trait 3.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 28,
+      "prompt": "The received view is that the fort was abandoned after the flood. However, the abandonment layer sits below the flood silt, not above it. Whatever emptied the fort happened first.",
+      "credited_answers": [
+        "Whatever emptied the fort happened before the flood."
+      ],
+      "explanation": "Near miss (partial): the stratigraphy fact (this is the pivot sentence, and it is evidence). Wrong turn: the received view. \"However\" pivot carrying evidence, conclusion in the final seat. Trait 7 cousin. Note: designed counterexample. The pivot marks where the author turns, not always what the author concludes. Run the 2-Point Check.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 29,
+      "prompt": "Many gardeners insist that autumn mulching protects perennials through winter. But mulch laid before the ground freezes keeps the soil warm enough for voles to tunnel, and vole damage costs more crowns than frost does.",
+      "credited_answers": [
+        "Autumn mulching does not protect perennials as claimed (the pivot claim, unpacked)."
+      ],
+      "explanation": "Wrong turn: the gardeners' claim. \"But\" pivot. Trait 2 blend.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 30,
+      "prompt": "Administrators have claimed the new scheduling software saves staff time. It clearly does not. The software removed the paper roster but added a daily reconciliation step that takes longer than the roster ever did.",
+      "credited_answers": [
+        "(substituted): The new scheduling software does not save staff time."
+      ],
+      "explanation": "Near miss (partial): \"it clearly does not\" left referential. Wrong turn: the administrators' claim. \"Clearly\" opinion indicator. Trait 3 plus referential substitution.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 31,
+      "prompt": "Some readers hold that footnotes interrupt a narrative history. Granted, a dense note can pull a reader out of a scene. Even so, a history without notes asks the reader to take every claim on trust, and that is the worse interruption.",
+      "credited_answers": [
+        "A history without notes is the worse interruption."
+      ],
+      "explanation": "Near miss (partial): the concession (\"a dense note can pull a reader out of a scene\"). Wrong turn: the readers' position. \"Granted\" concession, \"Even so\" pivot. Trait 5. Note: the concession is engineered to sound balanced and reasonable. It is not the point.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 32,
+      "prompt": "Critics of the ferry subsidy say it benefits only weekend visitors. However, the ridership data separate residents from visitors, and residents account for two-thirds of subsidized trips. The subsidy is primarily a resident service.",
+      "credited_answers": [
+        "The subsidy is primarily a resident service."
+      ],
+      "explanation": "Near miss (partial): the two-thirds figure. Wrong turn: the critics' claim. \"However\" pivot carrying evidence, conclusion final. Trait 7 cousin. Note: second designed counterexample, paired with item 28.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 33,
+      "prompt": "Prevailing opinion treats the anonymous letters as forgeries. Yet the paper stock matches the mill's records for those years, and the watermark could not have been reproduced with period equipment. The letters are almost certainly genuine.",
+      "credited_answers": [
+        "The letters are almost certainly genuine."
+      ],
+      "explanation": "Near miss (partial): \"the letters are genuine\" (drops \"almost certainly\"). Wrong turn: the prevailing opinion. \"Yet\" pivot, conclusion final with a hedge. Trait 4.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 34,
+      "prompt": "Some argue the reading room should stay open past midnight. But the security desk closes at eleven, and an unstaffed room with open stacks is how the last three thefts happened. Extended hours are not worth the risk to the collection.",
+      "credited_answers": [
+        "Extended hours are not worth the risk to the collection."
+      ],
+      "explanation": "Near miss (partial): the theft history. Wrong turn: the proposal being rejected. \"But\" pivot, conclusion final. Trait 5.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 35,
+      "prompt": "It is often said that a small press cannot compete for prizes. This is not so. Three of the last five poetry awards went to presses with fewer than four employees.",
+      "credited_answers": [
+        "(substituted): A small press can compete for prizes."
+      ],
+      "explanation": "Near miss (partial): \"this is not so\" left referential; also \"small presses win most poetry awards\" (overshoot). Wrong turn: the award statistic. \"It is often said\" attribution, bare referential rejection. Trait 4 plus substitution. Note: the closest item in this bank to Rebuttal Rephrase. Same anatomy, different task: here you name the conclusion, there you rewrite it.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 36,
+      "prompt": "Some historians argue the guild records understate apprentice numbers. But the records were kept for tax purposes, and the tax fell on masters rather than apprentices, so the guild had no reason to undercount them.",
+      "credited_answers": [
+        "The guild had no reason to undercount apprentices."
+      ],
+      "explanation": "Near miss (partial): \"the tax fell on masters\" (support). Wrong turn: the historians' claim. \"But\" pivot plus \"so.\" Trait 3.",
+      "category": "Level 3: Pivot from an opposing view"
+    },
+    {
+      "order": 37,
+      "prompt": "The bindery's new adhesive holds a text block through three thousand open-and-close cycles. The old adhesive failed at eight hundred. This shows the new adhesive is substantially more durable. Therefore the library should specify it for all rebinding going forward.",
+      "credited_answers": [
+        "The library should specify the new adhesive for all rebinding."
+      ],
+      "explanation": "Near miss (partial): \"the new adhesive is substantially more durable\" (intermediate). Wrong turn: the cycle counts. \"This shows that\" then \"Therefore.\" Trait 7 baseline. Note: two indicators, two claims. The one that supports the other is the intermediate.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 38,
+      "prompt": "Enrollment in the evening section has doubled while the morning section has shrunk. Thus students prefer the evening slot. The department should move the second lecture to the evening as well.",
+      "credited_answers": [
+        "The department should move the second lecture to the evening."
+      ],
+      "explanation": "Near miss (partial): \"students prefer the evening slot\" (intermediate, and it carries the \"Thus\"). Wrong turn: the enrollment figures. Unmarked final conclusion. Trait 7.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 39,
+      "prompt": "Every batch that failed inspection last quarter came from the same mixing line. That line has not been recalibrated since installation. So the calibration schedule, not the operators, explains the failures. The plant should recalibrate before assigning any retraining.",
+      "credited_answers": [
+        "The plant should recalibrate before assigning retraining."
+      ],
+      "explanation": "Near miss (partial): \"the calibration schedule explains the failures\" (intermediate). Wrong turn: the same-line fact. \"So\" on the intermediate. Trait 7.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 40,
+      "prompt": "Rooftop sensors record surface temperatures twenty degrees higher on tar roofs than on planted roofs. Planted roofs cost more to install but need no cooling equipment on the floors below. The city's roof-replacement grant should favor planted roofs. Thus a building that switches will draw less power on the hottest afternoons of the year.",
+      "credited_answers": [
+        "The grant should favor planted roofs."
+      ],
+      "explanation": "Near miss (partial): the closing \"Thus\" sentence (a downstream consequence, not the point). Wrong turn: the temperature reading. \"Thus\" in the final seat on a non-conclusion. Trait 7 inverted. Note: this is the trap his part 2 names outright. A mechanical reader takes the \"thus\" sentence every time.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 41,
+      "prompt": "The new bus route carries three times the riders the planners forecast. This shows the forecast model underestimates demand on cross-town corridors. The agency should re-run its projections for the two remaining corridors before setting their schedules.",
+      "credited_answers": [
+        "The agency should re-run its projections before setting schedules."
+      ],
+      "explanation": "Near miss (partial): \"the model underestimates cross-town demand\" (intermediate). \"This shows that.\" Trait 7.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 42,
+      "prompt": "Wheat sown after the first hard frost germinated at less than half the rate of wheat sown two weeks earlier. Thus the planting window is narrower than the almanac suggests. Growers who wait for the almanac date are losing yield they could keep by sowing early.",
+      "credited_answers": [
+        "Growers who wait for the almanac date are losing yield."
+      ],
+      "explanation": "Near miss (partial): \"the planting window is narrower than the almanac suggests\" (intermediate). \"Thus\" on the intermediate. Trait 7.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 43,
+      "prompt": "Since the clinic began calling patients the day before an appointment, no-shows have fallen by a third. This demonstrates the reminder call works. The clinic should extend the calls to its satellite location, where the no-show rate is higher still.",
+      "credited_answers": [
+        "The clinic should extend the calls to the satellite location."
+      ],
+      "explanation": "Near miss (partial): \"the reminder call works\" (intermediate). Wrong turn: the one-third figure. \"Since\" opening a premise, \"This demonstrates\" on the intermediate. Trait 7. Note: \"Since\" here is temporal, not FABS. Worth a Coach line.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 44,
+      "prompt": "The recording made in the stone chapel has a reverberation tail nearly four seconds long. Thus the chapel is acoustically unsuitable for spoken word. The society should book the rehearsal hall for the audiobook sessions and keep the chapel for choral work.",
+      "credited_answers": [
+        "The society should book the rehearsal hall for audiobooks and keep the chapel for choral work."
+      ],
+      "explanation": "Near miss (partial): \"the chapel is unsuitable for spoken word\" (intermediate); also the recommendation with only half its content (scope drop). Trait 4 plus Trait 7.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 45,
+      "prompt": "Sea ice around the inlet breaks up eleven days earlier than it did thirty years ago. Seals rely on stable ice for pupping, and the pups are not weaned when the ice goes. The inlet's seal population is unlikely to recover without a change in ice conditions. Thus the operators who advertise reliable seal sightings will disappoint their customers more often each year.",
+      "credited_answers": [
+        "The seal population is unlikely to recover without a change in ice conditions."
+      ],
+      "explanation": "Near miss (partial): the closing \"Thus\" sentence (consequence). Wrong turn: the weaning fact. Trait 7 inverted.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 46,
+      "prompt": "Applications rose the year the fee was waived and fell the year it returned. This suggests the fee, not the program's reputation, drives application volume. The admissions office should treat the fee as a policy lever rather than a revenue line.",
+      "credited_answers": [
+        "The office should treat the fee as a policy lever rather than a revenue line."
+      ],
+      "explanation": "Near miss (partial): \"the fee drives application volume\" (intermediate). Trait 7.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 47,
+      "prompt": "Two independent labs dated the timber to within five years of each other. So the construction date is now well established. The gallery's wall text, which still gives a range of two centuries, needs replacing.",
+      "credited_answers": [
+        "The wall text needs replacing."
+      ],
+      "explanation": "Near miss (partial): \"the construction date is well established\" (intermediate). \"So\" on the intermediate. Trait 7.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 48,
+      "prompt": "The pump station has failed twice during storms and never in dry weather. This points to the storm drain intake rather than the pump motor as the source. Replacing the motor a third time would not address the problem.",
+      "credited_answers": [
+        "Replacing the motor a third time would not address the problem."
+      ],
+      "explanation": "Near miss (partial): \"the intake is the source\" (intermediate). Wrong turn: the failure pattern. Trait 7.",
+      "category": "Level 4: Intermediate versus main conclusion"
+    },
+    {
+      "order": 49,
+      "prompt": "The board's decision to sell the water rights before commissioning a hydrology study was indefensible. The study would have taken four months. The buyer's offer was open for a year. Nothing about the timeline required acting first and learning later.",
+      "credited_answers": [
+        "The decision to sell before commissioning the study was indefensible."
+      ],
+      "explanation": "Near miss (partial): \"the board should have commissioned the study first\" (close, but drops the evaluative force the argument is defending). Wrong turn: the four-month figure. No indicator; evaluative word \"indefensible\" in the first seat. Trait 1 and Trait 4. Note: with no indicator anywhere, the evaluative word is the tell, and the last three sentences answer \"Why should we believe that?\"",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 50,
+      "prompt": "The orchestra's committee argues that screened auditions eliminate bias and that this alone settles the question. Screens do remove one kind of bias. But the repertoire list is set before the screen goes up, and that list favors the training available at a few conservatories. Even if the screen works exactly as intended, it cannot correct a bias that operates before anyone plays.",
+      "credited_answers": [
+        "Even if the screen works as intended, it cannot correct a bias operating before anyone plays."
+      ],
+      "explanation": "Near miss (partial): \"screened auditions do not eliminate bias\" (drops the \"even if,\" which is the author's careful concession). Wrong turn: \"screens do remove one kind of bias\" (concession) or the committee's position. Outside party's conclusion, author's objection, qualified main conclusion. Trait 4 and Trait 5. Note: the hardest shape in his taxonomy. The qualification is not decoration; removing it makes a claim the author declined to make.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 51,
+      "prompt": "No manuscript enters the conservation queue without a condition report. Condition reports are written only by staff conservators. Both staff conservators have been on leave since January, and no reports have been filed since.",
+      "credited_answers": [
+        "(derived): No manuscript has entered the conservation queue since January."
+      ],
+      "explanation": "Near miss (partial): \"no condition reports have been filed since January\" (a link in the chain, not its end). Wrong turn: any single premise. No conclusion stated at all. Trait 2. Note: connect the chain, then say what has to be true if every premise is.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 52,
+      "prompt": "Any exhibit that travels must be crated to the lender's specification. The lender specifies a climate-controlled crate for anything on panel. The altarpiece is on panel and is scheduled to travel in March.",
+      "credited_answers": [
+        "(derived): The altarpiece must be crated in a climate-controlled crate."
+      ],
+      "explanation": "Near miss (partial): \"the altarpiece must be crated to the lender's specification\" (true, one link short). No conclusion stated. Trait 2.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 53,
+      "prompt": "Good archival practice is ultimately a matter of judgment rather than rules. The retention schedule the state provides cannot anticipate the records this office generates. Half our series have no matching category, and the categories that do match were written for paper. So the schedule should be treated as a starting point, not an authority.",
+      "credited_answers": [
+        "The retention schedule should be treated as a starting point, not an authority."
+      ],
+      "explanation": "Near miss (partial): \"the state schedule does not fit this office's records\" (support). Wrong turn: the opening sentence, which is broad, confident, and supported by nothing. Trait 1. Note: his exact Trait 1 shape. Support beats sound.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 54,
+      "prompt": "A total ban on rooftop beekeeping is too strong a response. Two hives on one building did swarm into a schoolyard. That building had eight hives on a roof rated for two. Nothing in the incident tells us anything about a properly limited hive count.",
+      "credited_answers": [
+        "A total ban is too strong a response."
+      ],
+      "explanation": "Near miss (partial): \"the ban should be narrower.\" Wrong turn: \"rooftop beekeeping is safe\" (the overshoot the argument specifically does not license); also the swarm incident. No indicator; conclusion first. Trait 4. Note: the reasons refute an absolute ban and nothing more. This is the scope trap in its cleanest form.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 55,
+      "prompt": "The department will lose the fellowship line whether or not it files an appeal. The appeal window closed in August, the provost's memo calls the reallocation final, and the two departments that appealed last year received the letter we received. It would be better if the university funded these lines properly, but that is not what will happen here.",
+      "credited_answers": [
+        "The department will lose the fellowship line regardless of an appeal."
+      ],
+      "explanation": "Near miss (partial): \"an appeal would fail.\" Wrong turn: \"the university should fund these lines properly\" (the author agrees with it and is not arguing it). No indicator; prediction in the first seat. Trait 5. Note: do not turn a prediction into a policy. If the argument predicts, the conclusion predicts.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 56,
+      "prompt": "The dispute assumes a work is either an original or a copy. The workshop that produced these panels used a master's drawing, the master's pigments, and the master's hand on the faces alone. Calling the panels copies erases what the master did. Calling them originals erases the workshop. The category this argument needs does not exist in the catalogue.",
+      "credited_answers": [
+        "The category the argument needs does not exist in the catalogue."
+      ],
+      "explanation": "Near miss (partial): \"the panels are neither originals nor copies\" (an acceptable paraphrase, and worth crediting; a student who lands here has the idea). Wrong turn: \"the master painted the faces\" (concrete, memorable, a premise). No indicator; abstract conclusion in the final seat. Trait 6. Note: the correct answer is the abstract one sitting next to a vivid concrete distractor.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 57,
+      "prompt": "Some members propose requiring a sponsor for every new applicant. Such a requirement would not do what they expect. The applicants the society has failed to attract do not know anyone who could sponsor them, and that is the substance of the problem the rule is meant to solve.",
+      "credited_answers": [
+        "(substituted): Requiring a sponsor for every applicant would not solve the society's problem attracting applicants."
+      ],
+      "explanation": "Near miss (partial): \"such a requirement would not do what they expect\" left referential. Wrong turn: the members' proposal. Attribution plus referential rejection, no pivot word. Trait 3 plus substitution.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 58,
+      "prompt": "The survey went to every household on the water system. Only nine percent responded, and respondents skewed heavily toward the two neighborhoods that already had complaints on file. The results cannot support a system-wide conclusion. The utility has nonetheless printed them in the annual report under the heading Customer Satisfaction.",
+      "credited_answers": [
+        "The results cannot support a system-wide conclusion."
+      ],
+      "explanation": "Near miss (partial): \"the utility should not have printed the results\" (a reasonable extension the author does not state). Wrong turn: the final sentence (Last Claim Trap; it is a further fact). No indicator; conclusion sandwiched third of four. Trait 1 and the Last Claim Trap.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 59,
+      "prompt": "The consultant's report concludes that the branch should close because its transaction volume is the lowest in the region. Transaction volume is the wrong measure here. The branch handles the region's only safe-deposit vault and most of its notarizations, and the report counts neither.",
+      "credited_answers": [
+        "Transaction volume is the wrong measure for this decision."
+      ],
+      "explanation": "Near miss (partial): \"the branch should not close\" (the author implies it and argues something narrower). Wrong turn: \"the branch should close\" (the consultant's conclusion, not the author's). Two conclusions in one argument, one of them quoted. Trait 5. Note: separate the author's conclusion from a conclusion the author is reporting.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 60,
+      "prompt": "Even if the new filtration removes every trace of the compound, the district should not treat the well as a long-term source. The aquifer beneath it is recharged by the same fields where the compound originated, and filtration addresses what is already in the water rather than what keeps arriving.",
+      "credited_answers": [
+        "The district should not treat the well as a long-term source, even if filtration works completely."
+      ],
+      "explanation": "Near miss (partial): \"filtration will not remove the compound\" (contradicts the concession the author granted); \"the district should not use the well\" (drops the long-term qualifier). No indicator; conclusion in the first seat behind an \"even if.\" Trait 4.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 61,
+      "prompt": "The board's timeline for the renovation is evidently optimistic. Permits alone took fourteen months on the last project of this size, and the drawings for this one are not finished.",
+      "credited_answers": [
+        "The board's renovation timeline is optimistic."
+      ],
+      "explanation": "Near miss (partial): \"the renovation will be late\" (a prediction the author does not quite make). Wrong turn: the fourteen-month figure. \"Evidently\" opinion indicator, no structural marker. Trait 4. Note: when nothing else marks the claim, an opinion indicator is the best clue available.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    },
+    {
+      "order": 62,
+      "prompt": "The tool library will be out of the tile saw for the rest of the season. Requests are arriving at four times last spring's rate, the member who donated it has stopped lending, and no one has offered a substitute.",
+      "credited_answers": [
+        "The tool library will be out of the tile saw for the rest of the season."
+      ],
+      "explanation": "Near miss (partial): \"the tool library needs another tile saw\" (a sensible recommendation the argument does not make). Wrong turn: the request rate. No indicator at all; prediction in the first seat, three reasons after. Trait 5. Note: the closing bare case. No marker anywhere, so the 2-Point Check and the \"Why should we believe that?\" test are the only tools left, which is the point of putting it last.",
+      "category": "Level 5: No clean indicator, unstated, qualified, or somebody else's conclusion"
+    }
+  ]
+}

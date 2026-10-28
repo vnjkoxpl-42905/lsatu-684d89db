@@ -1,0 +1,86 @@
+[
+  {
+    "articleWidth": 343,
+    "buttons": [
+      {
+        "borderBottom": "0.8px",
+        "borderBoxHeight": 48,
+        "borderTop": "0.8px",
+        "innerHeight": 46
+      },
+      {
+        "borderBottom": "0.8px",
+        "borderBoxHeight": 48,
+        "borderTop": "0.8px",
+        "innerHeight": 46
+      }
+    ],
+    "documentWidth": 375,
+    "formulaOverflow": 0,
+    "paths": "343.2px",
+    "viewportWidth": 375
+  },
+  {
+    "articleWidth": 540,
+    "buttons": [
+      {
+        "borderBottom": "0.8px",
+        "borderBoxHeight": 48,
+        "borderTop": "0.8px",
+        "innerHeight": 46
+      },
+      {
+        "borderBottom": "0.8px",
+        "borderBoxHeight": 48,
+        "borderTop": "0.8px",
+        "innerHeight": 46
+      }
+    ],
+    "documentWidth": 768,
+    "formulaOverflow": 0,
+    "paths": "540px",
+    "viewportWidth": 768
+  },
+  {
+    "articleWidth": 680,
+    "buttons": [
+      {
+        "borderBottom": "0.8px",
+        "borderBoxHeight": 48,
+        "borderTop": "0.8px",
+        "innerHeight": 46
+      },
+      {
+        "borderBottom": "0.8px",
+        "borderBoxHeight": 48,
+        "borderTop": "0.8px",
+        "innerHeight": 46
+      }
+    ],
+    "documentWidth": 980,
+    "formulaOverflow": 0,
+    "paths": "340px 340px",
+    "viewportWidth": 980
+  },
+  {
+    "articleWidth": 860,
+    "buttons": [
+      {
+        "borderBottom": "0.8px",
+        "borderBoxHeight": 48,
+        "borderTop": "0.8px",
+        "innerHeight": 46
+      },
+      {
+        "borderBottom": "0.8px",
+        "borderBoxHeight": 48,
+        "borderTop": "0.8px",
+        "innerHeight": 46
+      }
+    ],
+    "documentWidth": 1280,
+    "formulaOverflow": 0,
+    "paths": "430px 430px",
+    "viewportWidth": 1280
+  }
+]

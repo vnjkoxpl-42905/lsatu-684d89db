@@ -1,0 +1,472 @@
+/* Conditional Indicators Refresher — self-contained paper-and-ink surface.
+   Tokens are scoped to the page root so nothing here leaks into the rest of
+   the app, and no component hardcodes a colour utility. */
+
+.cir-root {
+  --cir-paper: #f6f2e8;
+  --cir-paper-raised: #fdfaf2;
+  --cir-ink: #13332a;
+  --cir-ink-soft: #3c574c;
+  --cir-ink-mute: #6d7f77;
+  --cir-rule: #d8cfbb;
+  --cir-rule-soft: #e7e0d0;
+  --cir-good: #1f5c4a;
+  --cir-bad: #8d3a33;
+  min-height: 100vh;
+  background: var(--cir-paper);
+  color: var(--cir-ink);
+  font-size: 16px;
+}
+
+.cir-shell { max-width: 1040px; margin: 0 auto; padding: 32px clamp(16px, 4vw, 44px) 80px; }
+
+.cir-title {
+  font-family: var(--font-display, Georgia, "Times New Roman", serif);
+  font-size: clamp(30px, 5vw, 46px);
+  line-height: 1.1;
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+.cir-sub { color: var(--cir-ink-mute); font-size: 14px; margin: 0 0 24px; }
+
+.cir-tabs { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--cir-rule); padding-bottom: 12px; margin-bottom: 28px; }
+.cir-tab {
+  border: 1px solid var(--cir-rule); background: transparent; color: var(--cir-ink-soft);
+  border-radius: 999px; padding: 8px 16px; font-size: 14px; cursor: pointer;
+}
+.cir-tab:hover { border-color: var(--cir-ink-mute); }
+.cir-tab[aria-selected="true"] { background: var(--cir-ink); color: var(--cir-paper-raised); border-color: var(--cir-ink); }
+
+.cir-lead { font-family: var(--font-display, Georgia, serif); font-size: clamp(20px, 3vw, 26px); margin: 0 0 20px; }
+
+/* Cheat sheet -------------------------------------------------------------- */
+.cir-quadrants { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cir-quad { background: var(--cir-paper-raised); border: 1px solid var(--cir-rule); border-radius: 14px; padding: clamp(18px, 2.4vw, 26px); }
+.cir-quad-n { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cir-ink-mute); }
+.cir-quad h2 { font-family: var(--font-display, Georgia, serif); font-size: 22px; margin: 6px 0 14px; font-weight: 600; }
+.cir-words { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.cir-word { border: 1px solid var(--cir-rule); border-radius: 8px; padding: 5px 10px; font-size: 14px; background: var(--cir-paper); }
+.cir-quad p { color: var(--cir-ink-soft); line-height: 1.65; font-size: 15px; margin: 0; }
+.cir-steps { list-style: decimal; margin: 0; padding-left: 20px; color: var(--cir-ink-soft); line-height: 1.7; font-size: 15px; }
+.cir-note { margin-top: 12px; font-size: 14px; color: var(--cir-ink-mute); font-style: italic; }
+.cir-legend { margin-top: 22px; border-top: 1px solid var(--cir-rule); padding-top: 18px; display: flex; flex-wrap: wrap; gap: 28px; align-items: center; color: var(--cir-ink-soft); font-size: 14px; }
+.cir-legend > div { display: flex; align-items: center; gap: 10px; }
+
+/* Notation ----------------------------------------------------------------- */
+.cir-neg { display: inline; text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.cir-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.cir-stack { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.25; }
+.cir-stack-join { font-size: .85em; color: var(--cir-ink-mute); }
+.cir-arrow { margin: 0 .55em; color: var(--cir-ink-soft); }
+.cir-diagram { font-size: clamp(18px, 2.4vw, 22px); display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+
+/* Shared drill furniture --------------------------------------------------- */
+.cir-card { background: var(--cir-paper-raised); border: 1px solid var(--cir-rule); border-radius: 14px; padding: clamp(20px, 3vw, 32px); }
+.cir-bar { height: 6px; border-radius: 999px; background: var(--cir-rule-soft); overflow: hidden; margin-bottom: 22px; }
+.cir-bar > span { display: block; height: 100%; background: var(--cir-good); transition: width .25s ease; }
+.cir-prompt { font-family: var(--font-display, Georgia, serif); font-size: clamp(22px, 3.4vw, 30px); line-height: 1.3; margin: 0 0 22px; }
+.cir-choices { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.cir-choice { text-align: left; border: 1px solid var(--cir-rule); background: var(--cir-paper); color: var(--cir-ink); border-radius: 10px; padding: 14px 16px; font-size: 15px; cursor: pointer; }
+.cir-choice:hover:not(:disabled) { border-color: var(--cir-ink-mute); }
+.cir-choice:disabled { cursor: default; }
+.cir-choice.is-right { border-color: var(--cir-good); color: var(--cir-good); }
+.cir-choice.is-wrong { border-color: var(--cir-bad); color: var(--cir-bad); }
+.cir-feedback { margin-top: 18px; font-size: 15px; color: var(--cir-ink-soft); }
+.cir-feedback strong { color: var(--cir-ink); }
+.cir-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.cir-btn { min-height: 44px; border: 1px solid var(--cir-ink); background: var(--cir-ink); color: var(--cir-paper-raised); border-radius: 6px; padding: 10px 18px; font-size: 14px; cursor: pointer; transition: background-color .15s cubic-bezier(.25, 1, .5, 1), color .15s cubic-bezier(.25, 1, .5, 1); }
+.cir-btn:hover:not(:disabled) { background: var(--cir-ink-soft); border-color: var(--cir-ink-soft); }
+.cir-btn.ghost:hover:not(:disabled) { background: var(--cir-rule-soft); border-color: var(--cir-rule); }
+.cir-btn.ghost { background: transparent; color: var(--cir-ink); border-color: var(--cir-rule); }
+.cir-btn:disabled { opacity: .45; cursor: not-allowed; }
+.cir-meta { font-size: 13px; color: var(--cir-ink-mute); margin-bottom: 14px; }
+
+/* Flashcards --------------------------------------------------------------- */
+.cir-step { border-left: 2px solid var(--cir-rule); padding: 4px 0 4px 16px; margin: 16px 0; color: var(--cir-ink-soft); line-height: 1.7; }
+.cir-step b { color: var(--cir-ink); }
+.cir-reveal { margin-top: 22px; border-top: 1px solid var(--cir-rule); padding-top: 20px; display: grid; gap: 14px; }
+.cir-reveal-row { display: grid; gap: 4px; }
+.cir-reveal-row span { font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--cir-ink-mute); }
+.cir-reveal-row p { margin: 0; line-height: 1.6; }
+
+/* Diagram builder ---------------------------------------------------------- */
+.cir-build { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; background: var(--cir-paper); border: 1px dashed var(--cir-rule); border-radius: 12px; padding: 18px; min-height: 84px; }
+.cir-slot { min-width: 120px; min-height: 42px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--cir-rule); padding: 6px 10px; font-size: 18px; }
+.cir-slot.active { border-color: var(--cir-ink); }
+.cir-skill-activity { --cir-paper: #f6f2e8; --cir-paper-raised: #fdfaf2; --cir-ink: #243b34; --cir-ink-soft: #3c574c; --cir-ink-mute: #52665e; --cir-rule: #d8cfbb; --cir-rule-soft: #e7e0d0; --cir-good: #1f5c4a; color: var(--cir-ink); box-shadow: 0 2px 3px #31291f08, 0 8px 18px #31291f04; min-width: 0; }
+.cir-skill-activity p { line-height: 1.65; }
+.cir-skill-activity h2 { font: 600 26px/1.25 Georgia, serif; margin: 16px 0; }
+.cir-skill-activity h3 { font-size: 16px; font-weight: 600; margin: 0 0 10px; }
+.cir-skill-activity .cir-prompt { margin-top: 14px; }
+.cir-skill-activity .cir-save { font-size: 12px; color: var(--cir-ink-soft); margin: 0 0 18px; }
+.cir-skill-activity .cir-slot { background: transparent; color: var(--cir-ink); border: 1px solid var(--cir-rule); border-radius: 8px; flex: 1 1 130px; min-width: 0; overflow-wrap: anywhere; }
+.cir-skill-activity .cir-slot[aria-pressed="true"] { border-color: var(--cir-ink); box-shadow: inset 0 0 0 1px var(--cir-ink); }
+.cir-skill-activity .cir-slot b { width: 100%; font-size: 11px; letter-spacing: .1em; }
+.cir-skill-activity .cir-token { max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+.cir-skill-activity .cir-answer + .cir-answer { border-top: 1px solid var(--cir-rule-soft); padding-top: 16px; }
+.cir-skill-activity .cir-comparison { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px; margin: 20px 0; }
+.cir-skill-activity .cir-comparison > p { margin: 0; padding: 18px; background: var(--cir-paper); border: 1px solid var(--cir-rule); border-radius: 8px; font: 500 clamp(20px, 2.6vw, 26px)/1.45 Georgia, serif; text-wrap: pretty; }
+.cir-skill-activity .cir-comparison > span { font-size: 13px; font-weight: 600; color: var(--cir-ink-soft); }
+.cir-skill-activity .cir-comparison > h2 { grid-column: 1 / -1; margin: 4px 0 0; font-family: inherit; font-size: 18px; font-weight: 600; line-height: 1.5; }
+.cir-skill-activity .cir-answer { min-width: 0; }
+.cir-skill-activity .cir-answer > p { max-width: 70ch; margin: 10px 0 0; }
+.cir-skill-activity .cir-reveal { gap: 20px; }
+.cir-skill-activity .cir-btn:disabled, .cir-skill-activity .cir-token:disabled { cursor: default; }
+.cir-skill-activity .cir-token:hover:disabled { border-color: var(--cir-rule); }
+.cir-meaning-legend { display: grid; gap: 10px; margin: 18px 0; padding: 14px; background: var(--cir-paper); border-radius: 8px; font-size: 13px; }
+.cir-meaning-legend dt { font-weight: 600; }
+.cir-meaning-legend dd { margin: 2px 0 0; line-height: 1.5; }
+.cir-settings { display: flex; flex-wrap: wrap; gap: 14px; margin: 0 0 20px; padding: 14px; border: 1px solid var(--cir-rule); border-radius: 10px; }
+.cir-settings legend { padding: 0 8px; font-size: 14px; }
+.cir-settings label { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 14px; }
+.cir-settings select { background: var(--cir-paper-raised); color: var(--cir-ink); border: 1px solid var(--cir-rule); border-radius: 6px; min-height: 40px; padding: 6px; }
+.cir-group-settings { display: flex; flex-wrap: wrap; gap: 14px; width: 100%; }
+.cir-skill-activity .cir-round-controls { border-top: 1px solid var(--cir-rule-soft); padding-top: 12px; }
+.cir-skill-activity button:focus-visible { outline: 2px solid var(--cir-ink); outline-offset: 3px; }
+@media (max-width: 620px) { .cir-skill-activity .cir-comparison { grid-template-columns: minmax(0, 1fr); gap: 10px; } .cir-skill-activity .cir-comparison > span { justify-self: center; } }
+@media (max-width: 480px) { .cir-skill-activity { padding: 18px; } .cir-skill-activity .cir-choices { grid-template-columns: minmax(0, 1fr); } }
+.cir-palette { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.cir-token { min-height: 44px; border: 1px solid var(--cir-rule); background: var(--cir-paper); color: var(--cir-ink); border-radius: 6px; padding: 8px 14px; font-size: 15px; cursor: pointer; transition: background-color .15s cubic-bezier(.25, 1, .5, 1), border-color .15s cubic-bezier(.25, 1, .5, 1); }
+.cir-token:active:not(:disabled) { background: var(--cir-rule-soft); }
+.cir-token:hover { border-color: var(--cir-ink-mute); }
+.cir-side-toggle { display: flex; gap: 8px; margin-top: 14px; }
+
+/* Unless drill ------------------------------------------------------------- */
+.cir-timer { font-family: var(--font-display, Georgia, serif); font-size: clamp(34px, 6vw, 54px); text-align: center; margin: 0; }
+.cir-timer small { display: block; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--cir-ink-mute); font-family: inherit; }
+.cir-statement { font-family: var(--font-display, Georgia, serif); font-size: clamp(26px, 5vw, 40px); text-align: center; margin: 18px 0 26px; }
+.cir-summary-row { border-top: 1px solid var(--cir-rule); padding: 18px 0; display: grid; gap: 8px; }
+/* Only the meta line is small. A bare `span` selector here used to shrink the
+   statement and both diagrams too, which wrecked the review. */
+.cir-summary-meta { font-size: 12px; color: var(--cir-ink-mute); }
+
+.ud-move { margin: 0 0 30px; }
+.ud-move-title { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cir-ink-mute); margin: 0 0 10px; }
+.ud-example { display: grid; gap: 8px; margin-top: 16px; border-top: 1px solid var(--cir-rule-soft); padding-top: 14px; color: var(--cir-ink-soft); }
+.ud-example-label { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cir-ink-mute); }
+.ud-example-statement { font-family: var(--font-display, Georgia, serif); font-size: 22px; color: var(--cir-ink); }
+.ud-example-row { display: block; margin: 0; line-height: 1.8; }
+.ud-example .cir-diagram, .ud-row-grid .cir-diagram { display: inline-flex; vertical-align: middle; font-size: 20px; }
+.ud-muted { color: var(--cir-ink-mute); font-size: 14px; }
+.ud-pace { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.ud-pace .cir-tab[aria-checked="true"] { background: var(--cir-ink); color: var(--cir-paper-raised); border-color: var(--cir-ink); }
+.ud-best { margin: 14px 0 0; }
+.ud-instruction { margin: 18px 0 0; font-size: 15px; color: var(--cir-ink); font-style: italic; }
+.ud-goal { margin: 0 0 14px; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--cir-good); color: var(--cir-good); font-weight: 600; }
+
+.ud-stage { text-align: center; }
+.ud-ready { font-family: var(--font-display, Georgia, serif); font-size: clamp(64px, 12vw, 110px); margin: 10px 0 18px; line-height: 1; }
+.ud-head { display: flex; justify-content: space-between; align-items: baseline; }
+.ud-head .cir-meta { margin: 0; }
+.ud-count { font-family: var(--font-display, Georgia, serif); font-size: clamp(28px, 5vw, 40px); font-variant-numeric: tabular-nums; color: var(--cir-ink); }
+.ud-count.is-warn { color: var(--cir-bad); }
+.ud-clock { height: 8px; border-radius: 999px; background: var(--cir-rule-soft); overflow: hidden; margin: 10px 0 6px; }
+.ud-clock > span { display: block; height: 100%; background: var(--cir-good); transform-origin: left center; }
+.ud-clock.is-warn > span { background: var(--cir-bad); }
+.ud-build { gap: 14px; }
+.ud-slot { background: transparent; color: var(--cir-ink); font: inherit; font-size: 26px; min-width: 96px; min-height: 52px; border-width: 0 0 1px; border-style: solid; border-color: var(--cir-ink-mute); border-radius: 0; cursor: pointer; }
+.ud-slot:disabled { cursor: default; }
+.ud-build .cir-arrow { font-size: 26px; }
+.ud-tokens { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+.ud-token { position: relative; font-size: 24px; padding: 14px 0; min-height: 56px; }
+.ud-token:disabled { opacity: .45; cursor: default; }
+.ud-token kbd { position: absolute; top: 4px; right: 7px; font-size: 10px; font-family: inherit; color: var(--cir-ink-mute); }
+.ud-lock { justify-content: center; }
+.ud-lock .cir-btn { min-width: 160px; }
+.ud-hint { margin: 14px 0 0; }
+
+.ud-score { display: flex; flex-wrap: wrap; gap: 8px 36px; margin: 0 0 8px; padding-bottom: 16px; }
+.ud-score > div { display: grid; gap: 2px; }
+.ud-score b { font-family: var(--font-display, Georgia, serif); font-size: 26px; font-weight: 600; }
+.ud-score span { font-size: 12px; color: var(--cir-ink-mute); }
+.ud-row-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.ud-status { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; border: 1px solid currentColor; border-radius: 4px; padding: 2px 8px; }
+.ud-status.is-right { color: var(--cir-good); }
+.ud-status.is-wrong { color: var(--cir-bad); }
+.ud-row-statement { font-family: var(--font-display, Georgia, serif); font-size: 24px; margin: 0; }
+.ud-row-grid { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 16px; align-items: center; }
+.ud-row-grid > span { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.ud-row-label { font-size: 12px; color: var(--cir-ink-mute); }
+.ud-why { margin: 0; color: var(--cir-bad); font-size: 15px; }
+.ud-steps { margin: 0; color: var(--cir-ink-soft); font-size: 15px; line-height: 1.7; }
+
+@media (max-width: 720px) {
+  .cir-quadrants { grid-template-columns: minmax(0, 1fr); }
+  .ud-tokens { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ud-row-grid { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .ud-hint { display: none; }
+  .ud-build { flex-wrap: nowrap; }
+  .ud-slot { min-width: 72px; }
+  .cir-shell { padding-bottom: 56px; }
+}
+
+/* Unless drill preview clip ------------------------------------------------ */
+.ud-preview { margin: 0 0 18px; }
+.ud-preview-frame { position: relative; }
+.ud-preview-label { position: absolute; top: -9px; left: 14px; z-index: 2; background: var(--cir-ink); color: var(--cir-paper-raised); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; border-radius: 999px; padding: 3px 10px; }
+.ud-play { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 12px; background: color-mix(in srgb, var(--cir-paper) 72%, transparent); color: var(--cir-ink); font-size: 15px; font-weight: 600; cursor: pointer; }
+.ud-play-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 999px; background: var(--cir-ink); color: var(--cir-paper-raised); font-size: 24px; padding-left: 4px; transition: background-color .15s cubic-bezier(.25, 1, .5, 1); }
+.ud-play:hover .ud-play-icon { background: var(--cir-ink-soft); }
+.ud-play:focus-visible { outline: 2px solid var(--cir-ink); outline-offset: 2px; }
+.ud-pace .cir-tab:disabled { opacity: .5; cursor: not-allowed; }
+.ud-unlock-note { margin: 8px 0 0; }
+.ud-preview-screen { position: relative; text-align: center; background: var(--cir-paper-raised); border: 1px solid var(--cir-rule); border-radius: 12px; padding: 16px 18px 18px; pointer-events: none; user-select: none; }
+.ud-preview-screen .cir-statement { font-size: clamp(22px, 4vw, 30px); margin: 12px 0 16px; }
+.ud-preview-screen .ud-token { font-size: 20px; padding: 10px 0; min-height: 0; transition: transform .15s ease, border-color .15s ease; }
+.ud-preview-screen .is-pressed { background: var(--cir-rule-soft); border-color: var(--cir-ink); }
+.ud-preview-screen .cir-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 140px; }
+.ud-preview-screen .cir-btn.is-pressed { background: var(--cir-ink-soft); }
+.ud-preview-result { min-height: 44px; margin: 0; display: inline-flex; align-items: center; gap: 8px; background: var(--cir-paper-raised); border: 1px solid var(--cir-good); color: var(--cir-good); border-radius: 999px; padding: 6px 16px; font-weight: 600; white-space: nowrap; }
+.ud-preview-result .cir-diagram { font-size: 18px; }
+.ud-preview-caption { margin: 10px 0 0; font-size: 14px; color: var(--cir-ink-soft); text-align: center; min-height: 2.6em; }
+
+/* One focus treatment for every control in this room: a solid two-pixel ink
+   outline, offset two pixels, never animated. */
+.cir-root :is(button, [role="tab"], [role="radio"]):focus-visible { outline: 2px solid var(--cir-ink); outline-offset: 2px; transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cir-root *, .cir-root *::before, .cir-root *::after { transition: none !important; animation: none !important; }
+  .cir-skill-activity *, .cir-skill-activity *::before, .cir-skill-activity *::after { transition: none !important; animation: none !important; }
+}
+
+/* The bootcamp's study sheet shares its host material. The standalone
+   refresher keeps its original surface and scale. */
+.cc-centre .cir-skill-activity,
+.cc-centre .cir-root {
+  --cir-paper: var(--cc-surface, #f0ece2);
+  --cir-paper-raised: var(--cc-raised, #fffdf7);
+  --cir-ink: var(--cc-ink, #292f2a);
+  --cir-ink-soft: var(--cc-muted, #48534b);
+  --cir-ink-mute: var(--cc-muted, #62695f);
+  --cir-rule: var(--cc-control, #d4d0c4);
+  --cir-rule-soft: #e8e4d9;
+  --cir-good: #285f49;
+  --cir-bad: #963d32;
+}
+.cc-centre .cir-root .cir-card {
+  padding: clamp(22px, 3.5vw, 40px);
+  border-color: var(--cc-line, #ded9cd);
+  border-radius: 18px;
+  background: var(--cir-paper-raised);
+  box-shadow: 0 1px 3px #3833260a;
+}
+.cc-centre .cir-root :is(.cir-btn, .cir-token, .cir-tab) {
+  min-height: 44px;
+  font-family: "LSATU Inter", system-ui, sans-serif;
+  font-size: 14px;
+  border-radius: 7px;
+}
+.cc-centre .cir-root .cir-statement { font-size: clamp(26px, 3.2vw, 36px); line-height: 1.3; letter-spacing: -.015em; }
+.cc-centre .cir-root .ud-move-title,
+.cc-centre .cir-root .ud-example-label,
+.cc-centre .cir-root .ud-status { font-size: 12px; letter-spacing: 0; text-transform: none; }
+.cc-centre .cir-root .ud-goal { border: 0; background: #e9eee5; color: var(--cir-good); }
+.cc-centre .cir-root .cir-build { border-style: solid; border-color: var(--cir-rule-soft); background: var(--cir-paper); }
+.cc-centre .cir-root .ud-slot { border-radius: 4px; }
+.cc-centre .cir-root .ud-score b { font-weight: 400; font-variant-numeric: tabular-nums; }
+.cc-centre .cir-root .ud-row-statement { font-size: clamp(22px, 2.5vw, 28px); line-height: 1.4; }
+.cc-centre .cir-root .ud-status { padding: 4px 8px; }
+.cc-centre .cir-skill-activity {
+  padding: clamp(22px, 3.5vw, 40px);
+  border: 1px solid #ded9cd;
+  border-radius: 18px;
+  background: var(--cir-paper-raised);
+  box-shadow: 0 1px 3px #3833260a;
+  font-family: "LSATU Inter", system-ui, sans-serif;
+  font-size: 16px;
+}
+.cc-centre .cir-skill-activity > .cir-meta:first-child {
+  margin: 0 0 5px;
+  color: var(--cir-ink-soft);
+  font-size: 13px;
+  font-weight: 500;
+}
+.cc-centre .cir-skill-activity .cir-save {
+  margin-bottom: 20px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--cir-ink-mute);
+}
+.cc-centre .cir-skill-activity .cir-bar {
+  height: 3px;
+  margin-bottom: 26px;
+  background: var(--cir-rule-soft);
+}
+.cc-centre .cir-skill-activity .cir-bar > span { transition: none; }
+.cc-centre .cir-skill-activity .cir-prompt {
+  max-width: 32ch;
+  margin: 14px 0 18px;
+  color: var(--cir-ink);
+  font-family: var(--font-display, Georgia, serif);
+  font-size: clamp(25px, 2.55vw, 34px);
+  font-weight: 400;
+  line-height: 1.33;
+  letter-spacing: -.018em;
+  text-wrap: pretty;
+}
+.cc-centre .cir-skill-activity[data-kind="sort"] .cir-prompt {
+  margin-block: 16px 14px;
+  font-size: clamp(32px, 4vw, 48px);
+}
+.cc-centre .cir-skill-activity > p:not(.cir-prompt, .cir-meta, .cir-save) {
+  max-width: 68ch;
+  margin-block: 12px 18px;
+  color: var(--cir-ink-soft);
+  font-size: 15px;
+  line-height: 1.65;
+}
+.cc-centre .cir-skill-activity h2 {
+  font: 400 clamp(25px, 3vw, 32px)/1.25 var(--font-display, Georgia, serif);
+  letter-spacing: -.02em;
+}
+.cc-centre .cir-skill-activity .cir-comparison {
+  align-items: stretch;
+  gap: 16px;
+  margin: 14px 0 20px;
+}
+.cc-centre .cir-skill-activity .cir-comparison > p {
+  display: flex;
+  align-items: center;
+  padding: clamp(18px, 2.5vw, 28px);
+  border: 0;
+  border-radius: 12px;
+  background: var(--cir-paper);
+  font: 400 clamp(22px, 2.4vw, 29px)/1.42 var(--font-display, Georgia, serif);
+  letter-spacing: -.012em;
+}
+.cc-centre .cir-skill-activity .cir-comparison > span {
+  align-self: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cir-ink-mute);
+}
+.cc-centre .cir-skill-activity .cir-comparison > h2 {
+  margin: 8px 0 0;
+  font: 500 17px/1.5 "LSATU Inter", system-ui, sans-serif;
+  letter-spacing: 0;
+}
+.cc-centre .cir-skill-activity .cir-meaning-legend {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin: 22px 0;
+  padding: 18px 20px;
+  background: #f5f2ea;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.cc-centre .cir-skill-activity .cir-meaning-legend dt { color: var(--cir-ink); }
+.cc-centre .cir-skill-activity .cir-meaning-legend dd { color: var(--cir-ink-soft); line-height: 1.6; }
+.cc-centre .cir-skill-activity .cir-build {
+  gap: 14px;
+  padding: 18px;
+  border: 0;
+  background: var(--cir-paper);
+  border-radius: 14px;
+}
+.cc-centre .cir-skill-activity .cir-slot {
+  min-height: 88px;
+  padding: 14px 16px;
+  gap: 7px;
+  border: 1px solid #d0ccbf;
+  border-radius: 9px;
+  background: #faf8f1;
+  font-size: 21px;
+  box-shadow: inset 0 1px 2px #292f2a05;
+}
+.cc-centre .cir-skill-activity .cir-slot b {
+  color: var(--cir-ink-mute);
+  font: 600 12px/1.3 "LSATU Inter", system-ui, sans-serif;
+  letter-spacing: .035em;
+}
+.cc-centre .cir-skill-activity .cir-slot[aria-pressed="true"] {
+  border-color: var(--cir-ink);
+  background: var(--cir-paper-raised);
+  box-shadow: inset 0 0 0 1px var(--cir-ink), 0 2px 4px #292f2a07;
+}
+.cc-centre .cir-skill-activity .cir-slot[aria-pressed="true"] b { color: var(--cir-ink); }
+.cc-centre .cir-skill-activity .cir-build > span { font-size: 24px; }
+.cc-centre .cir-skill-activity .cir-neg {
+  text-decoration-thickness: 1.7px;
+  text-decoration-color: currentColor;
+  text-decoration-skip-ink: none;
+}
+.cc-centre .cir-skill-activity .cir-palette { gap: 9px; margin-top: 16px; }
+.cc-centre .cir-skill-activity :is(.cir-btn, .cir-token, .cir-choice) {
+  min-height: 44px;
+  font-family: "LSATU Inter", system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  border-radius: 7px;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.cc-centre .cir-skill-activity .cir-btn { padding: 11px 18px; }
+.cc-centre .cir-skill-activity .cir-token { padding: 10px 16px; background: #faf8f1; }
+.cc-centre .cir-skill-activity .cir-btn.ghost { background: transparent; border-color: var(--cir-rule); }
+.cc-centre .cir-skill-activity .cir-choices { gap: 10px; margin-top: 18px; }
+.cc-centre .cir-skill-activity .cir-choice { padding: 17px 18px; background: #f5f2ea; border-color: transparent; }
+.cc-centre .cir-skill-activity :is(.cir-btn, .cir-token, .cir-choice):active:not(:disabled) {
+  box-shadow: inset 0 2px 4px #292f2a16;
+}
+.cc-centre .cir-skill-activity :is(button, select):focus-visible {
+  outline: 2px solid var(--cir-ink);
+  outline-offset: 3px;
+  transition: none;
+}
+.cc-centre .cir-skill-activity .cir-actions { gap: 10px; margin-top: 22px; }
+.cc-centre .cir-skill-activity .cir-round-controls { margin-top: 30px; padding-top: 18px; }
+.cc-centre .cir-skill-activity .cir-round-controls .cir-btn { font-size: 13px; color: var(--cir-ink-soft); }
+.cc-centre .cir-skill-activity .cir-answer-feedback:not(:empty) {
+  margin-top: 24px;
+  padding: 20px 22px;
+  border-radius: 11px;
+  background: #edf1e9;
+  color: var(--cir-ink);
+}
+.cc-centre .cir-skill-activity[data-feedback="hint"] .cir-answer-feedback:not(:empty) {
+  background: #f3ecdf;
+  box-shadow: inset 3px 0 #9a7748;
+}
+.cc-centre .cir-skill-activity .cir-answer-feedback p { margin: 0 0 12px; font-size: 15px; }
+.cc-centre .cir-skill-activity .cir-answer-feedback p:last-child { margin-bottom: 0; }
+.cc-centre .cir-skill-activity .cir-answer-feedback .cir-diagram { margin-block: 12px; }
+.cc-centre .cir-skill-activity .cir-reveal { gap: 24px; margin-top: 28px; padding-top: 26px; }
+.cc-centre .cir-skill-activity .cir-answer h3 {
+  margin-bottom: 14px;
+  font: 500 16px/1.5 "LSATU Inter", system-ui, sans-serif;
+  color: var(--cir-ink-soft);
+}
+.cc-centre .cir-skill-activity .cir-answer .cir-diagram {
+  width: fit-content;
+  max-width: 100%;
+  padding: 13px 18px;
+  border-radius: 8px;
+  background: var(--cir-paper);
+  font-size: 22px;
+}
+.cc-centre .cir-skill-activity .cir-answer > p { font-size: 15px; line-height: 1.65; }
+.cc-centre .cir-skill-activity[data-finished="true"] { padding-block: 38px; }
+@media (hover: hover) and (pointer: fine) {
+  .cc-centre .cir-skill-activity :is(.cir-token, .cir-choice):hover:not(:disabled) {
+    background: #e9e5da;
+    border-color: #aaa99a;
+  }
+  .cc-centre .cir-skill-activity .cir-btn.ghost:hover:not(:disabled) { background: #f0ece2; }
+}
+@media (max-width: 700px) {
+  .cc-centre .cir-skill-activity .cir-comparison { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  .cc-centre .cir-skill-activity .cir-comparison > span { justify-self: center; }
+  .cc-centre .cir-skill-activity .cir-comparison > p { min-height: 100px; font-size: 24px; }
+  .cc-centre .cir-skill-activity .cir-meaning-legend { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+@media (max-width: 480px) {
+  .cc-centre .cir-skill-activity { padding: 22px 18px; border-radius: 13px; }
+  .cc-centre .cir-skill-activity .cir-prompt { font-size: 25px; }
+  .cc-centre .cir-skill-activity .cir-build { gap: 9px; padding: 12px; flex-wrap: nowrap; }
+  .cc-centre .cir-skill-activity .cir-slot { min-height: 84px; padding: 12px 8px; font-size: 18px; }
+  .cc-centre .cir-skill-activity .cir-build > span { font-size: 19px; }
+  .cc-centre .cir-skill-activity .cir-choices { grid-template-columns: minmax(0, 1fr); }
+  .cc-centre .cir-skill-activity .cir-answer-feedback:not(:empty) { padding: 18px; }
+  .cc-centre .cir-skill-activity .cir-actions .cir-btn { flex-grow: 1; }
+}
