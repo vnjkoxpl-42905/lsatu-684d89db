@@ -285,4 +285,61 @@ describe("Teacher desk data boundaries", () => {
     );
     expect(requests[1]._operation_key).not.toBe(requests[0]._operation_key);
   });
+  it("treats the live email setup envelope as setup rather than renderable data while other sections load", async () => {
+    const body = {
+      ok: false,
+      setup_required: true,
+      error: "student_email_setup_required",
+      fetched_at: "2026-10-28T16:21:40.683Z",
+    };
+    mocks.invoke.mockImplementation(async (name, options) => ({
+      data:
+        name === "admin-manage-users"
+          ? []
+          : options.body.action === "email"
+            ? body
+            : {
+                ok: true,
+                events: [],
+                next_cursor: null,
+                fetched_at: "2026-10-28T16:21:40.683Z",
+                time_zone: "America/New_York",
+              },
+      error: null,
+    }));
+    const { wrapper } = fixture();
+    const { result } = renderHook(() => useTeachingDesk("actor", true), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.email.state).toBe("setup"));
+    expect(result.current.email.data).toBeUndefined();
+    await waitFor(() => expect(result.current.agenda.state).toBe("ready"));
+    expect(result.current.agenda.data?.events).toEqual([]);
+    expect(result.current.manual.state).toBe("ready");
+    expect(result.current.payments.state).toBe("ready");
+  });
+  it("isolates a malformed provider success response to that section instead of publishing undefined list data", async () => {
+    mocks.invoke.mockImplementation(async (name, options) => ({
+      data:
+        name === "admin-manage-users"
+          ? []
+          : options.body.action === "email"
+            ? { ok: true, synced: 0 }
+            : {
+                ok: true,
+                events: [],
+                next_cursor: null,
+                fetched_at: new Date().toISOString(),
+              },
+      error: null,
+    }));
+    const { wrapper } = fixture();
+    const { result } = renderHook(() => useTeachingDesk("actor", true), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.email.state).toBe("error"));
+    expect(result.current.email.data).toBeUndefined();
+    expect(result.current.agenda.state).toBe("ready");
+    expect(result.current.manual.state).toBe("ready");
+  });
 });
