@@ -1,7 +1,7 @@
 {
   "enabled": true,
   "format": 2,
-  "file_count": 87,
+  "file_count": 92,
   "paths": [
     "lsatu-home-polish-20261027/.agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
     "lsatu-home-polish-20261027/.agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
@@ -75,21 +75,26 @@
     "lsatu-home-polish-20261027/.claude/skills/notebooklm/tests/cassettes/sources_refresh.yaml",
     "lsatu-home-polish-20261027/.claude/skills/notebooklm/tests/cassettes/sources_rename.yaml",
     "lsatu-home-polish-20261027/.claude/skills/watch/scripts/setup.py",
+    "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-8a6Ugh6y.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-B0NfyT-A.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-B4gE8cSH.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-B69ieNBH.js",
+    "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-BbKXDMyX.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-BdW5Wbvh.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-BhrspnEe.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-BuYwejGp.js",
+    "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-CMmy9XQt.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-CXatVwYQ.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-Cj0ne1XA.js",
+    "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-DDd8LhML.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-DGnVHwvO.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-DNH15jNu.js",
     "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-DhrPL7hd.js",
     "lsatu-home-polish-20261027/scripts/verification/start-rc-builder-preview.mjs",
     "lsatu-home-polish-20261027/src/contexts/AuthContext.tsx",
     "lsatu-home-polish-20261027/src/lib/googleDrive.ts",
-    "lsatu-home-polish-20261027/supabase/functions/handle-email-events/index.ts"
+    "lsatu-home-polish-20261027/supabase/functions/handle-email-events/index.ts",
+    "lsatu-home-polish-20261027/supabase/functions/teacher-post-session-sync/desk.ts"
   ],
-  "ciphertext_sha256": "f35a755746083e466915f423f63fd9643793e364cc90b9a5f71253a4b2f0061f"
+  "ciphertext_sha256": "6a4f9910d241df48081303a8643a9d651638401b8d0b464d892563bad867ce76"
 }

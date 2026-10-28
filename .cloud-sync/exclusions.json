@@ -308,8 +308,32 @@
     "reason": "excluded file"
   },
   {
+    "path": ".taste-skill/home-merge-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".taste-skill/teacher-last-fixes.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".taste-skill/teacher-tests-final.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".taste-skill/teacher-tests.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".taste-skill/teacher-typecheck-final.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "dist",
     "reason": "excluded directory"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-8a6Ugh6y.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {
     "path": "dist-home-preview/assets/role-home-preview-B0NfyT-A.js",
@@ -321,6 +345,10 @@
   },
   {
     "path": "dist-home-preview/assets/role-home-preview-B69ieNBH.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-BbKXDMyX.js",
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {
@@ -336,11 +364,19 @@
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {
+    "path": "dist-home-preview/assets/role-home-preview-CMmy9XQt.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
     "path": "dist-home-preview/assets/role-home-preview-CXatVwYQ.js",
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {
     "path": "dist-home-preview/assets/role-home-preview-Cj0ne1XA.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-DDd8LhML.js",
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {
@@ -377,6 +413,10 @@
   },
   {
     "path": "supabase/functions/handle-email-events/index.ts",
+    "reason": "credential assignment redacted in snapshot"
+  },
+  {
+    "path": "supabase/functions/teacher-post-session-sync/desk.ts",
     "reason": "credential assignment redacted in snapshot"
   }
 ]

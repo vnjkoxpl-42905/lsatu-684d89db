@@ -48,6 +48,14 @@ describe('resolving an identity-named guided run', () => {
     });
   });
 
+  it('resolves a bundled slug identity without querying a UUID database column', async () => {
+    dependencies.getLocalGuidedDrillBySlug.mockReturnValueOnce({ id: 'local-slug', slug: 'local-slug', bank_filter: {}, question_count: 2 });
+    dependencies.loadGuidedDrillSession.mockResolvedValue(null);
+    dependencies.resolveGuidedDrillQidsForLevel.mockReturnValue({ qids: ['local-q1'], warning: null });
+    await expect(resolveDrillLaunch({ kind: 'guided-drill', drillId: 'local-slug' }, 'user_1')).resolves.toEqual(['local-q1']);
+    expect(dependencies.getGuidedDrill).not.toHaveBeenCalled();
+  });
+
   it('adopts the stored queue by drill identity before drawing again', async () => {
     dependencies.loadGuidedDrillSession.mockResolvedValue({
       status: 'in_progress',

@@ -132,7 +132,7 @@ describe("ClassroomHome role dispatch", () => {
   it("shows the teaching desk to an admin and never the admin's own assigned work", () => {
     setPermissions({ is_admin: true });
     renderHome();
-    expect(screen.getByRole("heading", { name: "Assign work" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Good afternoon, Joshua." })).toBeInTheDocument();
     expect(teacherHook).toHaveBeenCalled();
     expect(studentHook).not.toHaveBeenCalled();
     expectNoStudentContent();
@@ -142,11 +142,11 @@ describe("ClassroomHome role dispatch", () => {
     const retry = vi.fn();
     setPermissions({ is_admin: true });
     const { rerender } = renderHome();
-    const desk = screen.getByRole("heading", { name: "Assign work" });
+    const desk = screen.getByRole("heading", { name: "Good afternoon, Joshua." });
     setPermissions({ is_admin: true, isError: true, retry });
     rerender(<ClassroomHome />);
     // Same node: the desk was not torn down and rebuilt.
-    expect(screen.getByRole("heading", { name: "Assign work" })).toBe(desk);
+    expect(screen.getByRole("heading", { name: "Good afternoon, Joshua." })).toBe(desk);
     expect(screen.getByRole("status")).toHaveTextContent("did not refresh");
     expect(studentHook).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
@@ -177,7 +177,7 @@ describe("ClassroomHome role dispatch", () => {
     studentHook.mockClear();
     setPermissions({ is_admin: true });
     rerender(<ClassroomHome />);
-    expect(screen.getByRole("heading", { name: "Assign work" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Good afternoon, Joshua." })).toBeInTheDocument();
     expectNoStudentContent();
     expect(studentHook).not.toHaveBeenCalled();
   });
@@ -185,9 +185,9 @@ describe("ClassroomHome role dispatch", () => {
   it("remounts for a different account rather than reusing the previous Home", () => {
     setPermissions({ is_admin: true, resolvedFor: "actor-1" });
     const { rerender } = renderHome();
-    const first = screen.getByRole("heading", { name: "Assign work" });
+    const first = screen.getByRole("heading", { name: "Good afternoon, Joshua." });
     setPermissions({ is_admin: true, resolvedFor: "actor-2" });
     rerender(<ClassroomHome />);
-    expect(screen.getByRole("heading", { name: "Assign work" })).not.toBe(first);
+    expect(screen.getByRole("heading", { name: "Good afternoon, Joshua." })).not.toBe(first);
   });
 });

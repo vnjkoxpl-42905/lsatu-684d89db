@@ -7,10 +7,10 @@ import { FullCourseLesson } from './FullCourseLesson';
 afterEach(cleanup);
 const media = { src: '/lesson.mp4', poster: '/lesson.jpg', captions: '/lesson.vtt', transcript: ['A unique written fallback for this test.'] };
 
-it.each(fullCourseLessons.filter(lesson => !['exception-language', 'exclusion-language', 'negative-translation'].includes(lesson.id)))('keeps $id in the approved teaching order with a real learner attempt', lesson => {
+it.each(fullCourseLessons.filter(lesson => !['exception-language', 'exclusion-language', 'negative-translation', 'missing-bridges'].includes(lesson.id)))('keeps $id in the approved teaching order with a real learner attempt', lesson => {
   const { container } = render(<FullCourseLesson lesson={lesson} media={media}/>);
   const headings = [...container.querySelectorAll('article > section > h2')].map(node => node.textContent);
-  expect(headings).toEqual(['What it is', 'Why it matters', 'Watch the lesson', 'How to use it', 'What it is not', 'Pop Quiz']);
+  expect(headings).toEqual(['What it is', 'Why it matters', 'Watch the lesson', 'How to use it', 'What it is not', 'Pop Quiz', ...(lesson.id === 'sufficient-bridges' ? ['Try the connection in English'] : [])]);
   expect(screen.getByRole('button', { name: lesson.demos[0].steps[0].label })).toBeVisible();
   expect(screen.getByRole('button', { name: lesson.demos[1].steps[0].label })).toBeVisible();
   expect(screen.queryByRole('status')).toBeNull();

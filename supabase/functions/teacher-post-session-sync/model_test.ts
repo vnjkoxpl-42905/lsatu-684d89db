@@ -7,6 +7,7 @@ import {
   coverage,
   docId,
   isSyncAction,
+  matchStudent,
   recordSyncAttempt,
   runWorker,
   type WorkerIO,
@@ -305,4 +306,37 @@ Deno.test("read, status and import actions cannot write sync attempt or failure 
   await recordSyncAttempt("sync", write);
   await recordSyncAttempt(undefined, write);
   assertEquals(writes, 2);
+});
+
+Deno.test("worker classify and agenda matcher agree on identical organizer/resource/ambiguous inputs", () => {
+  const teacher = "teacher@x.com";
+  const students = [{ id: "a", email: "a@example.com", name: "A" }, {
+    id: "b",
+    email: "b@example.com",
+    name: "B",
+  }];
+  const inputs = [
+    [{ email: teacher, organizer: true }, { email: "a@example.com" }],
+    [{ email: "a@example.com", organizer: true }],
+    [{ email: "a@example.com", organizer: true, responseStatus: "declined" }],
+    [{ email: "a@example.com", resource: true }],
+    [{ email: "a@example.com" }, { email: "b@example.com" }],
+  ];
+  for (const attendees of inputs) {
+    const input = { ...event, attendees };
+    assertEquals(
+      classify(input, students, teacher, cutoff, now)?.student_id ?? null,
+      matchStudent(input, students, teacher)?.id ?? null,
+    );
+  }
+  assertEquals(
+    classify(
+      { ...event, attendees: [{ email: "a@example.com", organizer: true }] },
+      students,
+      teacher,
+      cutoff,
+      now,
+    )?.student_id,
+    "a",
+  );
 });

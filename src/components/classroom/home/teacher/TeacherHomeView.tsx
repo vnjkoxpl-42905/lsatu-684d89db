@@ -1,155 +1,41 @@
-/**
- * The teaching desk: Joshua's Home.
- *
- * Presentational only. Takes a finished model and draws it, so the whole page
- * can be driven from fixtures. There is no assigned-work list, Smart Drill,
- * student booking prompt here in any state, including loading and
- * error: those belong to a student's Home.
- *
- * Composition: an open masthead with the one ink action beside it, then an
- * open, ruled working column (what is waiting) and a quieter rail (find a
- * student, sessions). No region sits in a box inside another box.
- */
-
 import * as React from "react";
-import {
-  ArrowRightIcon,
-  Cross2Icon,
-  FileIcon,
-  MagnifyingGlassIcon,
-  ReloadIcon,
-} from "@radix-ui/react-icons";
-import { useHomeFeedback } from "../useHomeFeedback";
-import { HomeWeekStrip } from "../HomeWeekStrip";
-import { buildWeek, weekDates, weekLabelFor } from "../homeModel";
-import { localDayISO } from "@/lib/localDate";
 import type { TeacherHomeModel } from "./teacherHomeModel";
-import { filterStudents, teacherLede } from "./teacherHomeModel";
-import { PostSessionWork } from './PostSessionWork';
-import { postSessionLede } from './postSessionModel';
-
-const SHOWN_MATCHES = 8;
-
-function RegionRetry({ label, onRetry }: { label: string; onRetry?: () => void }) {
-  return (
-    <div className="classroom-home-state classroom-home-state-error" role="alert">
-      <p>{label}</p>
-      {onRetry ? (
-        <button type="button" className="classroom-home-quiet-button" onClick={onRetry}>
-          <ReloadIcon aria-hidden="true" />
-          Try again
-        </button>
-      ) : null}
-    </div>
-  );
+import { filterStudents } from "./teacherHomeModel";
+import { PostSessionWork } from "./PostSessionWork";
+import { MyList, AllTasksSheet, DeskStatus } from "./TeacherTasks";
+import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
+import {
+  EMPTY_DESK,
+  deskMoney,
+  paymentLabel,
+  safeGoogleLink,
+} from "./teachingDeskModel";
+import type { ManagedUser } from "@/lib/adminUsers";
+const CALENDAR = "https://calendar.google.com/calendar/u/0/r";
+const EMAIL = "https://mail.google.com/mail/u/0/#inbox";
+function when(value: string) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value))
+    return (
+      new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+      }).format(new Date(`${value}T12:00:00`)) + " · All day"
+    );
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? value
+    : new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      }).format(date);
 }
-
-/** Cached content is still shown; this says it may be out of date. */
-function RegionStale({ onRetry }: { onRetry?: () => void }) {
-  return (
-    <div className="classroom-home-stale" role="status">
-      <span>Could not refresh. Showing what loaded last.</span>
-      {onRetry ? (
-        <button type="button" className="classroom-home-quiet-button" onClick={onRetry}>
-          <ReloadIcon aria-hidden="true" />
-          Try again
-        </button>
-      ) : null}
-    </div>
-  );
-}
-
-function SkeletonRows({ count, label }: { count: number; label: string }) {
-  return (
-    <div className="classroom-home-skeleton" aria-busy="true" aria-label={label}>
-      {Array.from({ length: count }, (_, index) => (
-        <span key={index} className="classroom-home-skeleton-row" aria-hidden="true">
-          <i />
-          <span>
-            <i />
-            <i />
-          </span>
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function StudentFinder({
-  roster,
-  onOpen,
-}: {
-  roster: TeacherHomeModel["roster"];
-  onOpen: (route: string) => void;
-}) {
-  const [query, setQuery] = React.useState("");
-  const inputId = React.useId();
-  const all = roster.all ?? roster.recent;
-  const searching = query.trim().length > 0;
-  const matches = searching ? filterStudents(all, query) : roster.recent;
-  const shown = matches.slice(0, SHOWN_MATCHES);
-
-  return (
-    <>
-      <div className="classroom-home-search">
-        <label htmlFor={inputId} className="classroom-home-search-label">Find a student</label>
-        <div className="classroom-home-search-field">
-          <MagnifyingGlassIcon aria-hidden="true" />
-          <input
-            id={inputId}
-            type="search"
-            autoComplete="off"
-            value={query}
-            placeholder="Type a name"
-            onChange={(event) => setQuery(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" && searching && shown.length > 0) onOpen(shown[0].route);
-              if (event.key === "Escape") setQuery("");
-            }}
-          />
-          {searching ? (
-            <button type="button" className="classroom-home-search-clear" aria-label="Clear student search" onClick={() => setQuery("")}>
-              <Cross2Icon aria-hidden="true" />
-            </button>
-          ) : null}
-        </div>
-      </div>
-      <p className="classroom-home-sr" aria-live="polite">
-        {searching ? `${matches.length} ${matches.length === 1 ? "student matches" : "students match"}` : ""}
-      </p>
-      {searching && matches.length === 0 ? (
-        <p className="classroom-home-state">No student matches “{query.trim()}”.</p>
-      ) : shown.length === 0 ? (
-        <p className="classroom-home-state">
-          {roster.refreshFailed ? "No students had loaded when the roster last refreshed." : "No student accounts yet."}
-        </p>
-      ) : (
-        <ul className="classroom-home-ruled" aria-label={searching ? "Matching students" : "Recently active students"}>
-          {shown.map((row) => (
-            <li key={row.id}>
-              <button type="button" className="classroom-home-student-row" onClick={() => onOpen(row.route)}>
-                <b>{row.name}</b>
-                <span>{row.activityLabel}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-      {searching && matches.length > shown.length ? (
-        <p className="classroom-home-state">
-          {matches.length - shown.length} more {matches.length - shown.length === 1 ? "student matches" : "students match"}. Keep typing to narrow the list.
-        </p>
-      ) : null}
-    </>
-  );
-}
-
-export function TeacherHomeView({
+function TeacherDeskContent({
   model,
   onOpen,
   onRetryInbox,
   onRetryRoster,
-  onRetrySessions,
 }: {
   model: TeacherHomeModel;
   onOpen: (route: string) => void;
@@ -157,174 +43,552 @@ export function TeacherHomeView({
   onRetryRoster?: () => void;
   onRetrySessions?: () => void;
 }) {
-  const rootRef = React.useRef<HTMLDivElement>(null);
-  useHomeFeedback(rootRef);
-  const dates = weekDates();
-  const week = buildWeek(dates, model.sessions.rows.flatMap((row) => {
-    if (!row.scheduledAt || Number.isNaN(new Date(row.scheduledAt).getTime())) return [];
-    return [{ iso: localDayISO(new Date(row.scheduledAt)), label: `${row.timeLabel} · ${row.name}` }];
-  }));
-  const calendarEmptyLabel = model.sessions.state === "loading" ? "Loading…"
-    : model.sessions.state === "error" || model.sessions.refreshFailed ? "Unavailable"
-    : model.sessions.rows.length === 0 ? "No sessions" : "No sessions shown";
-  const unreadTotal = model.unread.state === "ready" ? model.unread.total : null;
-  const extraUnread =
-    unreadTotal !== null && unreadTotal > model.unread.rows.length ? unreadTotal - model.unread.rows.length : 0;
-
+  const desk = model.desk ?? EMPTY_DESK;
+  const students = model.roster.all ?? model.roster.recent;
+  const [allTasks, setAllTasks] = React.useState(false);
+  const [booking, setBooking] = React.useState(false);
+  const [access, setAccess] = React.useState<ManagedUser | null>(null);
+  const [search, setSearch] = React.useState("");
+  const [classifyError, setClassifyError] = React.useState("");
+  const pendingAccess = desk.access.data?.filter((p) => !p.access_tier) ?? [];
+  const matches = search.trim()
+    ? filterStudents(students, search).slice(0, 5)
+    : [];
+  const jump = (id: string) => {
+    document
+      .getElementById(id)
+      ?.scrollIntoView({
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+        block: "start",
+      });
+    document.getElementById(id)?.focus({ preventScroll: true });
+  };
+  const count = (state: string, count: number | undefined) =>
+    state === "ready" ? (count ?? 0) : "—";
   return (
-    <div ref={rootRef} className="classroom-home classroom-home-teacher" data-motion-skip data-role-home="teacher">
-      <section className="classroom-home-top" aria-label="Today" data-home-reveal>
-        <header className="classroom-home-masthead">
-          <p className="classroom-home-dateline">
-            <span>{model.dateline}</span>
-            <span className="classroom-home-dateline-role">Teaching desk</span>
-          </p>
-          <h1 className="classroom-home-title">
+    <div
+      className="classroom-home classroom-home-teacher home-desk"
+      data-motion-skip
+      data-role-home="teacher"
+    >
+      <header className="home-desk-masthead">
+        <div>
+          <h1>
             {model.greeting}
-            {model.displayName ? <>, <span>{model.displayName}</span>.</> : "."}
+            {model.displayName ? `, ${model.displayName}.` : "."}
           </h1>
-          <p className="classroom-home-subtitle">{postSessionLede(model.postSession) ?? teacherLede(model.unread)}</p>
-        </header>
-
-        <section className="classroom-home-focus" aria-labelledby="teacher-home-assign-title">
-          <h2 id="teacher-home-assign-title">Assign work</h2>
-          <p>Pick a student, then send a drill, homework set, activity or timed section.</p>
-          <div className="classroom-home-focus-actions">
-            <button type="button" className="classroom-home-cta" onClick={() => onOpen("/teacher/library/assignments")}>
-              Open assignments
-              <ArrowRightIcon aria-hidden="true" />
+          <p>
+            {model.dateline} <span>Teaching desk</span>
+          </p>
+        </div>
+        <div className="home-desk-header-actions">
+          <a href={EMAIL} target="_blank" rel="noopener noreferrer">
+            Open email ↗
+          </a>
+          <button
+            className="home-desk-primary"
+            onClick={() => onOpen("/teacher/library/assignments")}
+          >
+            Assign work ↗
+          </button>
+          <details className="home-desk-more-menu">
+            <summary>More</summary>
+            <div>
+              <button onClick={() => setBooking(true)}>
+                Create session link
+              </button>
+              <button onClick={() => onOpen("/teacher/students")}>
+                All students
+              </button>
+            </div>
+          </details>
+        </div>
+      </header>
+      <nav className="home-desk-attention" aria-label="Jump to work">
+        <button onClick={() => jump("home-session-work")}>
+          <span>After-session</span>
+          <b>
+            {count(
+              model.postSession?.state ?? "setup",
+              model.postSession?.data?.total ??
+                model.postSession?.data?.tasks.length,
+            )}
+          </b>
+        </button>
+        <button onClick={() => jump("home-decisions")}>
+          <span>Payment decisions</span>
+          <b>
+            {count(desk.payments.state, desk.payments.data?.attention_total)}
+          </b>
+        </button>
+        <button onClick={() => jump("home-decisions")}>
+          <span>Access decisions</span>
+          <b>{count(desk.access.state, pendingAccess.length)}</b>
+        </button>
+        <button onClick={() => jump("home-correspondence")}>
+          <span>Email</span>
+          <b>{count(desk.email.state, desk.email.data?.count)}{desk.email.state === "ready" && desk.email.data?.count_is_lower_bound ? "+" : ""}</b>
+        </button>
+      </nav>
+      <div className="home-desk-main">
+        <div className="home-desk-work-column">
+          <PostSessionWork
+            work={model.postSession}
+            students={students}
+            onOpen={onOpen}
+            onAll={() => setAllTasks(true)}
+          />
+          <MyList
+            desk={desk}
+            students={students}
+            onAll={() => setAllTasks(true)}
+          />
+        </div>
+        <aside
+          className="home-desk-side-column"
+          aria-label="Agenda and decisions"
+        >
+          <section className="classroom-home-region home-desk-agenda">
+            <header className="classroom-home-region-head">
+              <h2>Next up</h2>
+              <a href={CALENDAR} target="_blank" rel="noopener noreferrer">
+                Calendar ↗
+              </a>
+            </header>
+            <DeskStatus region={desk.agenda} noun="primary calendar" />
+            {desk.agenda.state === "ready" ? (
+              desk.agenda.data?.events.length ? (
+                <ul className="home-desk-agenda-list">
+                  {desk.agenda.data.events.slice(0, 3).map((event) => (
+                    <li key={event.id}>
+                      <time dateTime={event.starts_at}>
+                        {when(event.starts_at)}
+                      </time>
+                      {safeGoogleLink(event.calendar_url, "calendar") ? (
+                        <a
+                          href={safeGoogleLink(event.calendar_url, "calendar")!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {event.title}
+                        </a>
+                      ) : (
+                        <b>{event.title}</b>
+                      )}
+                      {event.student_id ? (
+                        <button
+                          onClick={() =>
+                            onOpen(
+                              `/teacher/students/${encodeURIComponent(event.student_id!)}`,
+                            )
+                          }
+                        >
+                          Prepare for {event.student_name || "student"} ↗
+                        </button>
+                      ) : (
+                        <details>
+                          <summary>Label event</summary>
+                          <p>
+                            Only student sessions and consultations create
+                            follow-up work.
+                          </p>
+                          <button
+                            disabled={!desk.classify}
+                            onClick={() =>
+                              void desk
+                                .classify?.(event.id, "session")
+                                .catch(() =>
+                                  setClassifyError(
+                                    "Could not label this event.",
+                                  ),
+                                )
+                            }
+                          >
+                            Student session
+                          </button>
+                          <button
+                            disabled={!desk.classify}
+                            onClick={() =>
+                              void desk
+                                .classify?.(event.id, "consultation")
+                                .catch(() =>
+                                  setClassifyError(
+                                    "Could not label this event.",
+                                  ),
+                                )
+                            }
+                          >
+                            Consultation
+                          </button>
+                        </details>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="home-desk-empty">
+                  No events in the next seven days.
+                </p>
+              )
+            ) : null}
+            {classifyError ? <p role="alert">{classifyError}</p> : null}
+            {desk.agenda.data?.fetched_at ? (
+              <p className="home-desk-footnote">
+                Checked {when(desk.agenda.data.fetched_at)} · Primary calendar
+              </p>
+            ) : null}
+          </section>
+          <section
+            className="classroom-home-region home-desk-decisions"
+            id="home-decisions"
+            tabIndex={-1}
+          >
+            <header className="classroom-home-region-head">
+              <h2>Needs a decision</h2>
+            </header>
+            <DeskStatus region={desk.payments} noun="payment decisions" />
+            {desk.payments.state === "ready" ? (
+              desk.payments.data?.attention.length ? (
+                <ul>
+                  {desk.payments.data.attention.slice(0, 2).map((p) => (
+                    <li key={p.id}>
+                      <button onClick={() => onOpen("/teacher/today")}>
+                        <span>
+                          <b>{p.payer_name || p.email || "Unmatched payer"}</b>
+                          <small>
+                            {paymentLabel(p)} · {deskMoney(p)}
+                          </small>
+                        </span>
+                        <span aria-hidden="true">↗</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="home-desk-empty">No payment decisions waiting.</p>
+              )
+            ) : null}
+            <DeskStatus region={desk.access} noun="access decisions" />
+            {desk.access.state === "ready" ? (
+              pendingAccess.length ? (
+                <ul>
+                  {pendingAccess.slice(0, 2).map((person) => (
+                    <li key={person.class_id}>
+                      <button onClick={() => setAccess(person)}>
+                        <span>
+                          <b>{person.display_name || person.email}</b>
+                          <small>Choose student access</small>
+                        </span>
+                        <span aria-hidden="true">↗</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="home-desk-empty">
+                  Every active account has an access choice.
+                </p>
+              )
+            ) : null}
+            <div className="home-desk-decision-actions">
+              <button onClick={() => onOpen("/teacher/today")}>
+                Payments and history ↗
+              </button>
+              <button onClick={() => onOpen("/teacher/students")}>
+                Student access ↗
+              </button>
+            </div>
+          </section>
+        </aside>
+      </div>
+      <div className="home-desk-lower">
+        <section className="classroom-home-region" id="home-payments">
+          <header className="classroom-home-region-head">
+            <h2>Payment activity</h2>
+            <span className="home-desk-period">Last 90 days</span>
+            <button
+              className="classroom-home-more"
+              onClick={() => onOpen("/teacher/today")}
+            >
+              History ↗
             </button>
-            <button type="button" className="classroom-home-focus-link" onClick={() => onOpen("/teacher/students")}>
-              Open students
-            </button>
-          </div>
+          </header>
+          <DeskStatus region={desk.payments} noun="payment activity" />
+          {desk.payments.state === "ready" ? (
+            desk.payments.data?.recent.length ? (
+              <ul className="home-desk-payment-list">
+                {desk.payments.data.recent.slice(0, 3).map((p) => (
+                  <li key={p.id}>
+                    <span>
+                      <b>{p.payer_name || p.email || "Payer not linked"}</b>
+                      <small>
+                        {paymentLabel(p)} · {when(p.paid_at)}
+                      </small>
+                    </span>
+                    <strong>{deskMoney(p)}</strong>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="home-desk-empty">No payment activity recorded.</p>
+            )
+          ) : null}
         </section>
-      </section>
-
-      <div className="classroom-home-grid">
-        <PostSessionWork work={model.postSession} students={model.roster.all ?? model.roster.recent} onOpen={onOpen} />
         <section
-          className="classroom-home-region classroom-home-region-main"
-          aria-labelledby="teacher-home-unread-title"
-          data-home-reveal
+          className="classroom-home-region"
+          id="home-correspondence"
+          tabIndex={-1}
         >
           <header className="classroom-home-region-head">
-            <h2 id="teacher-home-unread-title">Unread conversations</h2>
-            {unreadTotal !== null && unreadTotal > 0 ? (
-              <span className="classroom-home-count" aria-label={`${unreadTotal} unread`}>{unreadTotal}</span>
-            ) : null}
+            <h2>Correspondence</h2>
           </header>
-          {model.unread.refreshFailed ? <RegionStale onRetry={onRetryInbox} /> : null}
-
-          {model.unread.state === "loading" ? (
-            <SkeletonRows count={3} label="Loading unread conversations" />
-          ) : model.unread.state === "error" ? (
-            <RegionRetry label="Could not load your inbox, so the unread count is unknown." onRetry={onRetryInbox} />
-          ) : model.unread.rows.length === 0 ? (
-            <p className="classroom-home-state">
-              {model.unread.refreshFailed
-                ? "Nothing was unread when your inbox last loaded."
-                : "Nothing unread. New messages from students land here first."}
-            </p>
-          ) : (
-            <ul className="classroom-home-ruled" aria-label="Unread conversations">
-              {model.unread.rows.map((row) => (
-                <li key={row.id}>
-                  <button type="button" className="classroom-home-thread-row" onClick={() => onOpen(row.route)}>
-                    <span className="classroom-home-avatar" aria-hidden="true">{row.initial}</span>
-                    <span className="classroom-home-thread-text">
-                      <span className="classroom-home-thread-head">
-                        <b>{row.name}</b>
-                        <span className="classroom-home-thread-meta">
-                          <time>{row.timeLabel}</time>
-                          {row.hasAttachments ? (
-                            <FileIcon className="classroom-home-thread-file" aria-label="Has attachments" role="img" />
-                          ) : null}
-                        </span>
-                      </span>
-                      <span className="classroom-home-thread-snippet">{row.snippet}</span>
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-          <footer className="classroom-home-region-foot">
-            <button type="button" className="classroom-home-more" onClick={() => onOpen("/teacher/inbox")}>
-              {extraUnread > 0 ? `Open the inbox, ${extraUnread} more unread` : "Open the inbox"}
-              <ArrowRightIcon aria-hidden="true" />
-            </button>
-          </footer>
-        </section>
-
-        <aside className="classroom-home-rail" aria-label="Students and sessions">
-          <section className="classroom-home-region" aria-labelledby="teacher-home-roster-title" data-home-reveal>
-            <header className="classroom-home-region-head">
-              <h2 id="teacher-home-roster-title">Students</h2>
-              {model.roster.state === "ready" && model.roster.total !== null ? (
-                <span className="classroom-home-count classroom-home-count-quiet">{model.roster.total}</span>
+          <div className="home-desk-correspondence">
+            <div>
+              <div className="home-desk-subhead">
+                <h3>Email</h3>
+                <a href={EMAIL} target="_blank" rel="noopener noreferrer">
+                  Open email ↗
+                </a>
+              </div>
+              <DeskStatus
+                region={desk.email}
+                noun="student and enquiry email"
+              />
+              {desk.email.data?.enquiries_configured === false ? (
+                <p role="status" className="home-desk-empty">
+                  Student email is shown. Add the Gmail label “LSAT U/Tutoring
+                  enquiries” to include enquiries.
+                </p>
               ) : null}
-            </header>
-            {model.roster.refreshFailed ? <RegionStale onRetry={onRetryRoster} /> : null}
-            {model.roster.state === "loading" ? (
-              <SkeletonRows count={3} label="Loading students" />
-            ) : model.roster.state === "error" ? (
-              <RegionRetry label="Could not load the roster." onRetry={onRetryRoster} />
-            ) : (
-              <StudentFinder roster={model.roster} onOpen={onOpen} />
-            )}
-            <footer className="classroom-home-region-foot">
-              <button type="button" className="classroom-home-more" onClick={() => onOpen("/teacher/students")}>
-                All students
-                <ArrowRightIcon aria-hidden="true" />
-              </button>
-            </footer>
-          </section>
-
-          <section className="classroom-home-region" aria-labelledby="teacher-home-sessions-title" data-home-reveal>
-            <header className="classroom-home-region-head">
-              <h2 id="teacher-home-sessions-title">Upcoming sessions</h2>
-            </header>
-            {model.sessions.refreshFailed ? <RegionStale onRetry={onRetrySessions} /> : null}
-            {model.sessions.state === "loading" ? (
-              <SkeletonRows count={2} label="Loading upcoming sessions" />
-            ) : model.sessions.state === "error" ? (
-              <RegionRetry label="Could not load scheduled sessions." onRetry={onRetrySessions} />
-            ) : model.sessions.rows.length === 0 ? (
-              <p className="classroom-home-state">
-                {model.sessions.refreshFailed
-                  ? "No sessions were scheduled when this last loaded."
-                  : "No sessions scheduled on the platform."}
+              {desk.email.data?.threads.length ? (
+                <ul>
+                  {desk.email.data.threads.slice(0, 2).map((thread) => (
+                    <li key={thread.id}>
+                      {safeGoogleLink(thread.url, "email") ? (
+                        <a
+                          href={safeGoogleLink(thread.url, "email")!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <b>{thread.sender}</b>
+                          <small>{thread.subject}</small>
+                        </a>
+                      ) : (
+                        <>
+                          <b>{thread.sender}</b>
+                          <small>{thread.subject}</small>
+                        </>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : desk.email.state === "ready" ? (
+                <p className="home-desk-empty">
+                  {desk.email.data?.enquiries_configured === false
+                    ? "No unread student email."
+                    : "No unread student or enquiry email."}
+                </p>
+              ) : null}
+            </div>
+            <div>
+              <div className="home-desk-subhead">
+                <h3>
+                  Messages{" "}
+                  {model.unread.state === "ready"
+                    ? `(${model.unread.total})`
+                    : ""}
+                </h3>
+                <button onClick={() => onOpen("/teacher/inbox")}>
+                  Inbox ↗
+                </button>
+              </div>
+              {model.unread.state === "loading" ? (
+                <p className="home-desk-empty">Loading messages…</p>
+              ) : model.unread.state === "error" ? (
+                <p role="alert">
+                  Unread messages are unknown.{" "}
+                  <button onClick={onRetryInbox}>Retry</button>
+                </p>
+              ) : (
+                <>
+                  {model.unread.refreshFailed ? (
+                    <p role="status" className="home-desk-empty">
+                      Could not refresh messages. Showing the last loaded
+                      conversations.
+                    </p>
+                  ) : null}
+                  <ul aria-label="Unread conversations">
+                    {model.unread.rows.slice(0, 2).map((t) => (
+                      <li key={t.id}>
+                        <button onClick={() => onOpen(t.route)}>
+                          <b>{t.name}</b>
+                          <small>{t.snippet}</small>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  {!model.unread.rows.length ? (
+                    <p className="home-desk-empty">
+                      {model.unread.refreshFailed
+                        ? "No conversations were unread when the inbox last loaded."
+                        : "No unread conversations."}
+                    </p>
+                  ) : null}
+                </>
+              )}
+            </div>
+          </div>
+        </section>
+      </div>
+      <section className="classroom-home-region home-desk-students">
+        <header className="classroom-home-region-head">
+          <h2>Students at a glance</h2>
+          <button
+            className="classroom-home-more"
+            onClick={() => onOpen("/teacher/students")}
+          >
+            All students ↗
+          </button>
+        </header>
+        <div className="home-desk-student-columns">
+          <div>
+            <h3>Recent activity</h3>
+            {model.roster.refreshFailed ? (
+              <p role="status">Could not refresh student activity.</p>
+            ) : null}
+            {model.roster.state === "error" ? (
+              <p role="alert">
+                Activity unavailable.{" "}
+                <button onClick={onRetryRoster}>Retry</button>
               </p>
+            ) : model.roster.state === "loading" ? (
+              <p>Loading activity…</p>
             ) : (
-              <ul className="classroom-home-ruled" aria-label="Upcoming sessions">
-                {model.sessions.rows.map((row) => (
-                  <li key={row.id}>
-                    <button type="button" className="classroom-home-session-row" onClick={() => onOpen(row.route)}>
-                      <span className="classroom-home-session-when">
-                        <b>{row.dayLabel}</b>
-                        <span>{row.timeLabel}</span>
-                      </span>
-                      <span className="classroom-home-session-name">
-                        {row.name}
-                        {row.durationLabel ? <small>{row.durationLabel}</small> : null}
-                      </span>
+              <ul aria-label="Recently active students">
+                {model.roster.recent.slice(0, 3).map((s) => (
+                  <li key={s.id}>
+                    <button onClick={() => onOpen(s.route)}>
+                      <b>{s.name}</b>
+                      <small>{s.activityLabel}</small>
                     </button>
                   </li>
                 ))}
               </ul>
             )}
-          </section>
-        </aside>
-      </div>
-      <HomeWeekStrip
-        days={week}
-        range={weekLabelFor(dates)}
-        emptyLabel={calendarEmptyLabel}
-        description="Sessions shown above, placed across the week."
+            <p className="home-desk-footnote">
+              Recent activity is based on the last recorded visit.
+            </p>
+          </div>
+          <div>
+            <h3>Recent results</h3>
+            <DeskStatus region={desk.results} noun="test results" />
+            {desk.results.state === "ready" ? (
+              desk.results.data?.length ? (
+                <ul>
+                  {desk.results.data.slice(0, 3).map((r) => (
+                    <li key={r.id}>
+                      <button
+                        onClick={() =>
+                          onOpen(
+                            `/teacher/students/${encodeURIComponent(r.student_id)}/work`,
+                          )
+                        }
+                      >
+                        <b>{r.student_name}</b>
+                        <small>
+                          {r.title} · {r.score ?? "Result available"}
+                        </small>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="home-desk-empty">No recent results recorded.</p>
+              )
+            ) : null}
+          </div>
+          <div>
+            <label className="home-desk-label" htmlFor="home-student-search">
+              Find a student
+              <input
+                id="home-student-search"
+                type="search"
+                placeholder="Student name"
+                disabled={model.roster.state !== "ready"}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && matches[0]) onOpen(matches[0].route);
+                  if (e.key === "Escape") setSearch("");
+                }}
+              />
+            </label>
+            {search.trim() ? (
+              matches.length ? (
+                <ul aria-label="Matching students">
+                  {matches.map((s) => (
+                    <li key={s.id}>
+                      <button onClick={() => onOpen(s.route)}>
+                        {s.name} ↗
+                      </button>
+                      {desk.access.data?.find((p) => p.class_id === s.id) ? (
+                        <button
+                          onClick={() =>
+                            setAccess(
+                              desk.access.data!.find(
+                                (p) => p.class_id === s.id,
+                              )!,
+                            )
+                          }
+                        >
+                          Edit access
+                        </button>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No matching students.</p>
+              )
+            ) : (
+              <p className="home-desk-empty">
+                Open notes, assignments and student details.
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+      <AllTasksSheet
+        open={allTasks}
+        onClose={() => setAllTasks(false)}
+        desk={desk}
+        work={model.postSession}
+        students={students}
+        onOpen={onOpen}
+      />
+      <AccessSheet
+        save={desk.actions?.saveHomeAccess}
+        person={access}
+        onClose={() => setAccess(null)}
+        onSaved={() => desk.refreshAccess?.()}
+      />
+      <BookingSheet
+        actions={desk.actions}
+        open={booking}
+        onClose={() => setBooking(false)}
+        actorId={desk.actorId}
+        students={desk.access.data ?? []}
       />
     </div>
   );
 }
-
+export function TeacherHomeView(
+  props: React.ComponentProps<typeof TeacherDeskContent>,
+) {
+  return (
+    <TeacherDeskContent key={props.model.desk?.actorId ?? "home"} {...props} />
+  );
+}
 export default TeacherHomeView;

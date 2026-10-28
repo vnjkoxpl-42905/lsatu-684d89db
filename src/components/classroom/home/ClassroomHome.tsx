@@ -37,12 +37,12 @@ export default function ClassroomHome() {
   return (
     <>
       {permissions.isError ? <HomeRefreshNotice onRetry={permissions.retry} /> : null}
-      {permissions.is_admin ? <TeacherHome key={`teacher:${permissions.resolvedFor}`} /> : <StudentHome key={`student:${permissions.resolvedFor}`} />}
+      {permissions.is_admin ? <TeacherHome key={`teacher:${permissions.resolvedFor}`} /> : <StudentHome key={`student:${permissions.resolvedFor}`} permissionsResolved={permissions.resolved} />}
     </>
   );
 }
 
-function StudentHome() {
+function StudentHome({permissionsResolved}: {permissionsResolved:boolean}) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { openSection } = useClassroomLayout();
@@ -53,6 +53,8 @@ function StudentHome() {
     <ClassroomHomeView
       model={model}
       loading={loading}
+      actorId={user?.id}
+      permissionsResolved={permissionsResolved}
       onOpen={(route) => navigate(route)}
       onSeeAllWork={() => openSection("work")}
       onMarkDone={markDone}

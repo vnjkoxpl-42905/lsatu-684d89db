@@ -3,7 +3,7 @@
 export function Tok({ text }: { text: string }) {
   const negated = text.startsWith("/");
   const label = negated ? text.slice(1) : text;
-  return negated ? <span className="cir-neg">{label}</span> : <span>{label}</span>;
+  return negated ? <span><span className="cir-sr-only">not </span><span className="cir-neg">{label}</span></span> : <span>{label}</span>;
 }
 
 export function Side({ text }: { text: string }) {
@@ -24,10 +24,14 @@ export function Side({ text }: { text: string }) {
 
 export function Diagram({ left, right }: { left: string; right: string }) {
   return (
-    <span className="cir-diagram">
-      <Side text={left} />
-      <span className="cir-arrow">&rarr;</span>
-      <Side text={right} />
+    <span className="cir-diagram" role="img" aria-label={`If ${spokenSide(left)}, then ${spokenSide(right)}`}>
+      <span aria-hidden="true"><Side text={left} /></span>
+      <span className="cir-arrow" aria-hidden="true">&rarr;</span>
+      <span aria-hidden="true"><Side text={right} /></span>
     </span>
   );
+}
+
+function spokenSide(text: string) {
+  return text.split(/ (\+|or) /).map(part => part === '+' ? 'and' : part.startsWith('/') ? `not ${part.slice(1)}` : part).join(' ');
 }

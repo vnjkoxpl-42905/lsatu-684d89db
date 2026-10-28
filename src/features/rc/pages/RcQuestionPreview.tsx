@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { loadPassage } from '../lib/rcBank';
 import { createSession, getSession } from '../api/rcProgress';
@@ -18,6 +18,7 @@ const pendingKey = (actor: string) => `lsatu:rc-preview-launch:v1:${actor}`;
 export default function RcQuestionPreview() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const actor = React.useRef(user?.id);
   actor.current = user?.id;
@@ -137,7 +138,7 @@ export default function RcQuestionPreview() {
   const question = passage?.questions.find((q) => q.questionId === questionId);
   const type = rcTypeStyles(1, 0);
   return <main className="mx-auto max-w-7xl p-4 sm:p-6">
-    <button type="button" className="min-h-11 rounded-md border px-4 py-2 focus-visible:outline focus-visible:outline-2" disabled={starting} onClick={() => navigate(back)}>{back.startsWith('/practice') ? 'Back to Practice' : 'Back'}</button>
+    <button type="button" className="min-h-11 rounded-md border px-4 py-2 focus-visible:outline focus-visible:outline-2" disabled={starting} onClick={() => location.state?.finderPreviewHistory === "push" ? navigate(-1) : navigate(back, { replace: true })}>{back.startsWith('/practice') ? 'Back to Practice' : 'Back'}</button>
     <h1 className="mt-4 text-2xl font-semibold">{questionId === null ? 'Passage preview' : 'Question preview'}</h1>
     <p>Metadata preview. Answers and explanations are hidden. Revealing text records that you have seen this passage.</p>
     {loading && <p role="status">Loading preview…</p>}

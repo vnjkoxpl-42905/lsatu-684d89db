@@ -13,18 +13,25 @@ function readDevice(key: string): unknown {
   try { return JSON.parse(localStorage.getItem(key) ?? 'null'); } catch { return null; }
 }
 
-export function IndicatorWordDeck(props: { stepId?: string; group?: IndicatorGroup; storageScope?: string }) {
+export function IndicatorWordDeck(props: { stepId?: string; group?: IndicatorGroup; storageScope?: string; initialCardId?: string }) {
+  if (props.initialCardId && !indicatorWordCards.some(card => card.id === props.initialCardId && (!props.group || card.group === props.group))) return <p role="alert">This card is not available in this set. Choose a card from the available flashcards.</p>;
   return <IndicatorWordDeckRun key={`${props.storageScope ?? 'legacy'}:${props.group ?? 'all'}`} {...props}/>;
 }
 
 /** One word per card. The student commits to a group, the card flips, and the back says which group it was. */
-function IndicatorWordDeckRun({ storageScope, group, stepId = group ? `${INDICATOR_DECK_STEP}-group-${group}` : INDICATOR_DECK_STEP }: { stepId?: string; group?: IndicatorGroup; storageScope?: string }) {
+function IndicatorWordDeckRun({ storageScope, group, initialCardId, stepId = group ? `${INDICATOR_DECK_STEP}-group-${group}` : INDICATOR_DECK_STEP }: { stepId?: string; group?: IndicatorGroup; storageScope?: string; initialCardId?: string }) {
   const cards = indicatorWordCards.filter(card => !group || card.group === group);
   const legacyKey = group ? `${DEVICE_KEY}-group-${group}` : DEVICE_KEY;
-  const deviceKey = storageScope ? `${legacyKey}:${storageScope}` : legacyKey;
+  const scopedKey = storageScope ? `${legacyKey}:${storageScope}` : legacyKey;
+  const deviceKey = scopedKey;
   const course = useCourseStep(stepId);
   const record = course?.record;
-  const [state, setState] = useState<DeckState>(() => readDeckState(course?.saved?.state, cards) ?? readDeckState(readDevice(deviceKey), cards) ?? newRound(undefined, Math.random, cards));
+  const [state, setState] = useState<DeckState>(() => {
+    const saved = readDeckState(course?.saved?.state, cards) ?? readDeckState(readDevice(deviceKey), cards);
+    if (saved || !initialCardId || !cards.some(card => card.id === initialCardId)) return saved ?? newRound(undefined, Math.random, cards);
+    const fresh = newRound(undefined, Math.random, cards);
+    return { ...fresh, queue: [...fresh.queue.filter(entry => entry.id === initialCardId), ...fresh.queue.filter(entry => entry.id !== initialCardId)] };
+  });
   const next = useRef<HTMLButtonElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const finished = isFinished(state);
@@ -63,6 +70,7 @@ function IndicatorWordDeckRun({ storageScope, group, stepId = group ? `${INDICAT
   const choose = (group: IndicatorGroup) => setState(previous => pick(previous, group));
 
   return <section className="iw-deck" aria-label="Indicator word flashcards">
+    {initialCardId && card.id !== initialCardId && <p>Your saved round takes priority over the card in this link.</p>}
     {progress}
     <p className="iw-count">{position}</p>
     <div className="iw-stage" data-result={answered ? (right ? 'right' : 'wrong') : undefined}>

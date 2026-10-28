@@ -1,3 +1,4 @@
+import { normalizeConditionalActivityConfig } from './activityRegistry';
 import { conditionalUnits, findConditionalUnit } from './content';
 import { DIFFICULTIES, type ConditionalDifficulty } from './content/types';
 import { getCurriculumDifficulty, getCurriculumUnits } from './curriculumPath';
@@ -21,11 +22,18 @@ export interface ResolvedConditionalAssignment {
 export function parseTarget(value: unknown): ConditionalAssignmentTarget | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
   const target = value as ConditionalAssignmentTarget;
-  if (!['course', 'stage', 'area', 'skill', 'general'].includes(target.scope) ||
+  if (!['course', 'stage', 'area', 'skill', 'general', 'activity'].includes(target.scope) ||
     !['learn', 'practice'].includes(target.mode) || !DIFFICULTIES.includes(target.difficulty) ||
     !validConditionalEditionTarget(target)) return null;
   if ((target.scope === 'skill' || target.scope === 'stage') && !findConditionalUnit(target.unitId)) return null;
   if (target.scope === 'area' && !CONDITIONAL_AREAS.some(area => area.id === target.area)) return null;
+  if (target.scope === 'activity') {
+    if (Object.keys(target).some(key => !['scope', 'mode', 'difficulty', 'curriculumVersion', 'courseEdition', 'activityId', 'activitySettings'].includes(key))) return null;
+    const config = normalizeConditionalActivityConfig({ activity: target.activityId, ...target.activitySettings });
+    if (!config) return null;
+    const { activity, ...settings } = config;
+    return { ...target, activityId: activity, activitySettings: settings };
+  }
   return target;
 }
 /** Only call on a row fetched from the database. Browser search parameters never reach this parser. */
@@ -34,12 +42,15 @@ export function protectedConditionalTarget(row: Pick<ConditionalAssignmentRow, '
   const url = new URL(row.source_id, 'https://local.invalid');
   if (url.origin !== 'https://local.invalid' || url.pathname !== '/bootcamp/conditionals' || url.searchParams.get('assignment') !== row.id) return null;
   const p = url.searchParams;
-  const allowed = new Set(['curriculumVersion', 'edition', 'scope', 'mode', 'difficulty', 'unitId', 'area', 'assignment']);
+  const allowed = new Set(['curriculumVersion', 'edition', 'scope', 'mode', 'difficulty', 'unitId', 'area', 'assignment', 'activityId', 'activitySettings']);
   if ([...p.keys()].some(key => !allowed.has(key) || p.getAll(key).length !== 1) || p.get('curriculumVersion') !== '3') return null;
-  const target = parseTarget({ scope: p.get('scope'), mode: p.get('mode'), difficulty: p.get('difficulty'), curriculumVersion: 3, courseEdition: p.get('edition'), ...(p.has('unitId') ? { unitId: p.get('unitId') } : {}), ...(p.has('area') ? { area: p.get('area') } : {}) });
+  let activitySettings: unknown;
+  try { activitySettings = p.has('activitySettings') ? JSON.parse(p.get('activitySettings')!) : undefined; } catch { return null; }
+  const target = parseTarget({ ...(p.has('activityId') ? { activityId: p.get('activityId'), activitySettings } : {}), scope: p.get('scope'), mode: p.get('mode'), difficulty: p.get('difficulty'), curriculumVersion: 3, courseEdition: p.get('edition'), ...(p.has('unitId') ? { unitId: p.get('unitId') } : {}), ...(p.has('area') ? { area: p.get('area') } : {}) });
   const metadataTarget = parseTarget(row.metadata_json?.conditional_target);
   if (!target || !metadataTarget || target.courseEdition !== FULL_CONDITIONAL_EDITION || row.metadata_json?.bootcamp_id !== 'conditionals') return null;
   if (target.scope === 'course' && (target.difficulty !== 'beginner' || p.has('unitId') || p.has('area')) || target.scope === 'skill' && p.has('area') || target.scope === 'area' && p.has('unitId')) return null;
+  if (target.scope !== 'activity' && (p.has('activityId') || p.has('activitySettings')) || target.scope === 'activity' && (p.has('unitId') || p.has('area') || !p.has('activitySettings'))) return null;
   if (conditionalTargetKey(target) !== conditionalTargetKey(metadataTarget) || target.difficulty !== metadataTarget.difficulty || target.scope !== metadataTarget.scope) return null;
   if (row.metadata_json?.conditional_target_key !== conditionalTargetKey(target)) return null;
   return target;
@@ -64,6 +75,7 @@ function legacyTarget(source: string | null): ConditionalAssignmentTarget | null
   return url.pathname === base && !url.search ? { ...DEFAULT_CONDITIONAL_TARGET } : null;
 }
 export function conditionalAssignmentUnitIds(target: ConditionalAssignmentTarget): string[] {
+  if (target.scope === 'activity') return [];
   if (target.scope === 'course') return getCurriculumUnits(conditionalUnits).map(unit => unit.id);
   if (target.scope === 'stage') {
     if (target.curriculumVersion === 2) return getCurriculumUnits(conditionalUnits, target.unitId).map(unit => unit.id);
@@ -94,7 +106,7 @@ export async function readConditionalAssignments(rows: ConditionalAssignmentRow[
       continue;
     }
     let requirements: ConditionalRequirements | undefined;
-    if (target.courseEdition === FULL_CONDITIONAL_EDITION) {
+    if (target.courseEdition === FULL_CONDITIONAL_EDITION && target.scope !== 'activity') {
       try { requirements = resolveConditionalRequirements(target, metadata?.conditional_requirements); }
       catch { unavailableAssignments.push({ id: row.id, title: row.title, reason: 'teacher-update' }); continue; }
     }
