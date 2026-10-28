@@ -133,13 +133,46 @@ function expectNoStudentContent() {
 }
 
 describe("TeacherHomeView", () => {
+  it("keeps the masthead truthful when a saved empty queue cannot refresh", () => {
+    const { container } = render(
+      <TeacherHomeView
+        model={{
+          ...EMPTY,
+          postSession: {
+            state: "ready",
+            refreshFailed: true,
+            data: {
+              tasks: [],
+              handled: [],
+              total: 0,
+              settings: {
+                enabled: true,
+                activation_cutoff: "2026-10-28T12:00:00Z",
+                last_success_at: new Date().toISOString(),
+                last_error: null,
+                catching_up: false,
+                drive_root_url: null,
+              },
+            },
+          },
+        }}
+        onOpen={vi.fn()}
+      />,
+    );
+    expect(
+      within(
+        container.querySelector(".home-desk-masthead") as HTMLElement,
+      ).getByText("0 sessions were waiting when your work list last loaded."),
+    ).toBeInTheDocument();
+    expect(container.querySelector('[data-work-state="quiet"]')).toBeNull();
+  });
   it("keeps Assign work in the header without a student assignment promotion", () => {
     const onOpen = vi.fn();
     render(<TeacherHomeView model={READY} onOpen={onOpen} />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "Good afternoon, Joshua.",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Assign work ↗" }));
+    fireEvent.click(screen.getByRole("button", { name: "Assign work" }));
     expect(onOpen).toHaveBeenCalledWith("/teacher/library/assignments");
     expectNoStudentContent();
   });
